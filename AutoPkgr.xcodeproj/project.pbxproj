@@ -18,6 +18,7 @@
 		1AC69571195B59EE00D2BD81 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1AC69550195B59ED00D2BD81 /* Cocoa.framework */; };
 		1AC69579195B59EE00D2BD81 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 1AC69577195B59EE00D2BD81 /* InfoPlist.strings */; };
 		1AC6957B195B59EE00D2BD81 /* AutoPkgrTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 1AC6957A195B59EE00D2BD81 /* AutoPkgrTests.m */; };
+		8B6A3199195B7AC1007A7A16 /* linde-logo@400px.png in Resources */ = {isa = PBXBuildFile; fileRef = 8B6A3198195B7AC1007A7A16 /* linde-logo@400px.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -50,6 +51,7 @@
 		1AC69576195B59EE00D2BD81 /* AutoPkgrTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "AutoPkgrTests-Info.plist"; sourceTree = "<group>"; };
 		1AC69578195B59EE00D2BD81 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		1AC6957A195B59EE00D2BD81 /* AutoPkgrTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AutoPkgrTests.m; sourceTree = "<group>"; };
+		8B6A3198195B7AC1007A7A16 /* linde-logo@400px.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "linde-logo@400px.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -115,6 +117,7 @@
 		1AC69556195B59ED00D2BD81 /* AutoPkgr */ = {
 			isa = PBXGroup;
 			children = (
+				8B6A3198195B7AC1007A7A16 /* linde-logo@400px.png */,
 				1AC69562195B59EE00D2BD81 /* LGAppDelegate.h */,
 				1AC69563195B59EE00D2BD81 /* LGAppDelegate.m */,
 				1AC69565195B59EE00D2BD81 /* MainMenu.xib */,
@@ -233,6 +236,7 @@
 			files = (
 				1AC6955B195B59ED00D2BD81 /* InfoPlist.strings in Resources */,
 				1AC69569195B59EE00D2BD81 /* Images.xcassets in Resources */,
+				8B6A3199195B7AC1007A7A16 /* linde-logo@400px.png in Resources */,
 				1AC69561195B59EE00D2BD81 /* Credits.rtf in Resources */,
 				1AC69567195B59EE00D2BD81 /* MainMenu.xib in Resources */,
 			);
@@ -467,6 +471,7 @@
 				1AC69580195B59EE00D2BD81 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		1AC69581195B59EE00D2BD81 /* Build configuration list for PBXNativeTarget "AutoPkgrTests" */ = {
 			isa = XCConfigurationList;
@@ -475,6 +480,7 @@
 				1AC69583195B59EE00D2BD81 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
