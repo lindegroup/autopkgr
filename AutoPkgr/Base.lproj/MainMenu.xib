@@ -681,12 +681,12 @@
                         <font key="font" metaFont="system"/>
                         <tabViewItems>
                             <tabViewItem label="Install" identifier="1" id="Zhh-Xh-rCL">
-                                <view key="view" ambiguous="YES" id="2bQ-4E-zZC">
-                                    <rect key="frame" x="10" y="33" width="258" height="0.0"/>
+                                <view key="view" id="2bQ-4E-zZC">
+                                    <rect key="frame" x="10" y="33" width="706" height="518"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="1OV-ak-YDz">
-                                            <rect key="frame" x="137" y="-211" width="206" height="32"/>
+                                            <rect key="frame" x="137" y="307" width="206" height="32"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                             <buttonCell key="cell" type="push" title="Install Git" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="2sX-dE-R3R">
                                                 <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
@@ -694,7 +694,7 @@
                                             </buttonCell>
                                         </button>
                                         <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="UPm-xJ-iCo">
-                                            <rect key="frame" x="367" y="-202" width="323" height="17"/>
+                                            <rect key="frame" x="367" y="316" width="323" height="17"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                             <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Git has been installed." id="Yf9-1l-gV6">
                                                 <font key="font" metaFont="system"/>
@@ -708,7 +708,7 @@
                                             <imageCell key="cell" refusesFirstResponder="YES" alignment="left" animates="YES" imageScaling="proportionallyDown" image="NSStatusAvailable" id="nBo-Ab-MJu"/>
                                         </imageView>
                                         <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="v18-vA-oGh">
-                                            <rect key="frame" x="137" y="-252" width="206" height="32"/>
+                                            <rect key="frame" x="137" y="266" width="206" height="32"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                             <buttonCell key="cell" type="push" title="Install AutoPkg" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="4GQ-YN-3Jj">
                                                 <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
@@ -716,7 +716,7 @@
                                             </buttonCell>
                                         </button>
                                         <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="1m3-rd-lzl">
-                                            <rect key="frame" x="367" y="-243" width="323" height="17"/>
+                                            <rect key="frame" x="367" y="275" width="323" height="17"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                             <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="AutoPkg has been installed." id="cLc-lQ-8Mk">
                                                 <font key="font" metaFont="system"/>
@@ -730,7 +730,7 @@
                                             <imageCell key="cell" refusesFirstResponder="YES" alignment="left" animates="YES" imageScaling="proportionallyDown" image="NSStatusAvailable" id="l2w-RU-tDz"/>
                                         </imageView>
                                         <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="fdc-0Y-xY6">
-                                            <rect key="frame" x="15" y="-320" width="676" height="34"/>
+                                            <rect key="frame" x="15" y="198" width="676" height="34"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                             <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="center" title="If you're having trouble, you can click the buttons again to reinstall the tools." id="AmK-4u-Dn6">
                                                 <font key="font" metaFont="system"/>
@@ -918,7 +918,7 @@
                                 </view>
                             </tabViewItem>
                             <tabViewItem label="Configure Schedule" identifier="" id="u8w-5H-W3Z">
-                                <view key="view" id="nAJ-ry-gpo">
+                                <view key="view" ambiguous="YES" id="nAJ-ry-gpo">
                                     <rect key="frame" x="10" y="33" width="706" height="518"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
@@ -930,10 +930,10 @@
                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                 <subviews>
                                                     <matrix verticalHuggingPriority="750" fixedFrame="YES" allowsEmptySelection="NO" autorecalculatesCellSize="YES" translatesAutoresizingMaskIntoConstraints="NO" id="8cD-vZ-JoU">
-                                                        <rect key="frame" x="87" y="62" width="182" height="106"/>
+                                                        <rect key="frame" x="87" y="62" width="187" height="106"/>
                                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                                                        <size key="cellSize" width="118" height="18"/>
+                                                        <size key="cellSize" width="187" height="25"/>
                                                         <size key="intercellSpacing" width="4" height="2"/>
                                                         <buttonCell key="prototype" type="radio" title="Radio" imagePosition="left" alignment="left" inset="2" id="7ZK-Kf-Y99">
                                                             <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
