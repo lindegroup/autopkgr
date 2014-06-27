@@ -8,8 +8,16 @@
 
 #import <Cocoa/Cocoa.h>
 
-@interface LGAppDelegate : NSObject <NSApplicationDelegate>
+@class LGConfigurationWindowController;
 
-@property (assign) IBOutlet NSWindow *window;
+@interface LGAppDelegate : NSObject <NSApplicationDelegate>
+{
+    @private
+    LGConfigurationWindowController *configurationWindowController;
+}
+
+//@property (assign) IBOutlet NSWindow *window;
+@property (strong, nonatomic) IBOutlet NSMenu *statusMenu;
+@property (strong, nonatomic) NSStatusItem *statusItem;
 
 @end

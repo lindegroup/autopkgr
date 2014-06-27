@@ -26,6 +26,8 @@
 		1AC98416195CE99E0071CAB3 /* SSKeychain.m in Sources */ = {isa = PBXBuildFile; fileRef = 1AC98415195CE99E0071CAB3 /* SSKeychain.m */; };
 		1AC9841F195CEC360071CAB3 /* LGConfigurationWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1AC9841D195CEC350071CAB3 /* LGConfigurationWindowController.m */; };
 		1AC98420195CEC360071CAB3 /* LGConfigurationWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1AC9841E195CEC360071CAB3 /* LGConfigurationWindowController.xib */; };
+		1AC98427195DF6350071CAB3 /* autopkgr.png in Resources */ = {isa = PBXBuildFile; fileRef = 1AC98425195DF6350071CAB3 /* autopkgr.png */; };
+		1AC98429195DF6DE0071CAB3 /* autopkgr_alt.png in Resources */ = {isa = PBXBuildFile; fileRef = 1AC98428195DF6DE0071CAB3 /* autopkgr_alt.png */; };
 		8B6A3199195B7AC1007A7A16 /* linde-logo@400px.png in Resources */ = {isa = PBXBuildFile; fileRef = 8B6A3198195B7AC1007A7A16 /* linde-logo@400px.png */; };
 /* End PBXBuildFile section */
 
@@ -125,6 +127,8 @@
 		1AC9841C195CEC350071CAB3 /* LGConfigurationWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGConfigurationWindowController.h; sourceTree = "<group>"; };
 		1AC9841D195CEC350071CAB3 /* LGConfigurationWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGConfigurationWindowController.m; sourceTree = "<group>"; };
 		1AC9841E195CEC360071CAB3 /* LGConfigurationWindowController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LGConfigurationWindowController.xib; sourceTree = "<group>"; };
+		1AC98425195DF6350071CAB3 /* autopkgr.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = autopkgr.png; sourceTree = "<group>"; };
+		1AC98428195DF6DE0071CAB3 /* autopkgr_alt.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = autopkgr_alt.png; sourceTree = "<group>"; };
 		8B6A3198195B7AC1007A7A16 /* linde-logo@400px.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "linde-logo@400px.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -220,6 +224,7 @@
 				1AC9841E195CEC360071CAB3 /* LGConfigurationWindowController.xib */,
 				1AC69565195B59EE00D2BD81 /* MainMenu.xib */,
 				1AC69568195B59EE00D2BD81 /* Images.xcassets */,
+				1AC98423195DF6270071CAB3 /* Resources */,
 				1AC69557195B59ED00D2BD81 /* Supporting Files */,
 			);
 			path = AutoPkgr;
@@ -262,6 +267,15 @@
 				1AC98415195CE99E0071CAB3 /* SSKeychain.m */,
 			);
 			name = "Other Sources";
+			sourceTree = "<group>";
+		};
+		1AC98423195DF6270071CAB3 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				1AC98425195DF6350071CAB3 /* autopkgr.png */,
+				1AC98428195DF6DE0071CAB3 /* autopkgr_alt.png */,
+			);
+			name = Resources;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -387,10 +401,12 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1AC98429195DF6DE0071CAB3 /* autopkgr_alt.png in Resources */,
 				1AC6955B195B59ED00D2BD81 /* InfoPlist.strings in Resources */,
 				1AC69569195B59EE00D2BD81 /* Images.xcassets in Resources */,
 				1AC98420195CEC360071CAB3 /* LGConfigurationWindowController.xib in Resources */,
 				8B6A3199195B7AC1007A7A16 /* linde-logo@400px.png in Resources */,
+				1AC98427195DF6350071CAB3 /* autopkgr.png in Resources */,
 				1AC69561195B59EE00D2BD81 /* Credits.rtf in Resources */,
 				1AC69567195B59EE00D2BD81 /* MainMenu.xib in Resources */,
 			);

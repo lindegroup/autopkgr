@@ -17,3 +17,4 @@ NSString *const kSMTPFrom = @"SMTPFrom";
 NSString *const kSMTPTo = @"SMTPTo";
 NSString *const kSMTPTLSEnabled = @"SMTPTLSEnabled";
 NSString *const kWarnBeforeQuitting = @"WarnBeforeQuitting";
+NSString *const kHasCompletedInitialSetup = @"HasCompletedInitialSetup";

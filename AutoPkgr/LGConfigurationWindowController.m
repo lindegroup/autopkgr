@@ -24,6 +24,7 @@
 @synthesize smtpPort;
 @synthesize smtpAuthenticationEnabledButton;
 @synthesize smtpTLSEnabledButton;
+@synthesize warnBeforeQuittingButton;
 
 - (void)awakeFromNib
 {
@@ -99,6 +100,47 @@
     // Send the test email notification by sending the
     // sendTestEmail message to our object
     [emailer sendTestEmail];
+}
+
+- (IBAction)saveAndClose:(id)sender {
+    // Store the SMTP settings in NSUserDefaults
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+
+    [defaults setObject:[smtpServer stringValue] forKey:kSMTPServer];
+    [defaults setInteger:[smtpPort integerValue]forKey:kSMTPPort];
+    [defaults setObject:[smtpUsername stringValue] forKey:kSMTPUsername];
+    [defaults setBool:YES forKey:kHasCompletedInitialSetup];
+    // We use objectValue here because objectValue returns an
+    // array of strings if the field contains a series of strings
+    [defaults setObject:[smtpTo objectValue] forKey:kSMTPTo];
+
+    if ([smtpTLSEnabledButton state] == NSOnState) {
+        // The user wants to enable TLS for this SMTP configuration
+        NSLog(@"Enabling TLS.");
+        [defaults setBool:YES forKey:kSMTPTLSEnabled];
+    } else {
+        // The user wants to disable TLS for this SMTP configuration
+        NSLog(@"Disabling TLS.");
+        [defaults setBool:NO forKey:kSMTPTLSEnabled];
+    }
+
+    if ([warnBeforeQuittingButton state] == NSOnState)
+    {
+        NSLog(@"Enabling warning before quitting.");
+        [defaults setBool:YES forKey:kWarnBeforeQuitting];
+    } else {
+        NSLog(@"Disabling warning before quitting.");
+        [defaults setBool:NO forKey:kWarnBeforeQuitting];
+    }
+
+    // Store the password used for SMTP authentication in the default keychain
+    [SSKeychain setPassword:[smtpPassword stringValue] forService:kApplicationName account:[smtpUsername stringValue]];
+
+    // Synchronize with the defaults database
+    [defaults synchronize];
+
+    // Close the window
+    [self close];
 }
 
 @end

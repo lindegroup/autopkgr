@@ -15,3 +15,4 @@ extern NSString *const kSMTPFrom;
 extern NSString *const kSMTPTo;
 extern NSString *const kSMTPTLSEnabled;
 extern NSString *const kWarnBeforeQuitting;
+extern NSString *const kHasCompletedInitialSetup;

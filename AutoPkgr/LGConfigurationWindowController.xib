@@ -13,6 +13,7 @@
                 <outlet property="smtpTLSEnabledButton" destination="Bwp-ds-cik" id="Bju-cF-WNs"/>
                 <outlet property="smtpTo" destination="zwb-GB-3SL" id="kgo-ue-OWa"/>
                 <outlet property="smtpUsername" destination="zi5-oQ-M5R" id="xYd-18-aOJ"/>
+                <outlet property="warnBeforeQuittingButton" destination="U4k-FQ-NXc" id="hKJ-Cm-Ubg"/>
                 <outlet property="window" destination="F0z-JX-Cv5" id="gIp-Ho-8D9"/>
             </connections>
         </customObject>
@@ -22,7 +23,7 @@
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="196" y="240" width="752" height="645"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="2560" height="1418"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1920" height="1058"/>
             <view key="contentView" id="se5-gp-TjO">
                 <rect key="frame" x="0.0" y="0.0" width="752" height="645"/>
                 <autoresizingMask key="autoresizingMask"/>
@@ -59,7 +60,7 @@
                                                     </textFieldCell>
                                                 </textField>
                                                 <imageView fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="00R-tv-agW">
-                                                    <rect key="frame" x="345" y="316" width="16" height="16"/>
+                                                    <rect key="frame" x="345" y="350" width="16" height="16"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <imageCell key="cell" refusesFirstResponder="YES" alignment="left" animates="YES" imageScaling="proportionallyDown" image="NSStatusAvailable" id="Nwu-aH-Vde"/>
                                                 </imageView>
@@ -81,7 +82,7 @@
                                                     </textFieldCell>
                                                 </textField>
                                                 <imageView fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="dzY-Ei-6ZX">
-                                                    <rect key="frame" x="345" y="275" width="16" height="16"/>
+                                                    <rect key="frame" x="345" y="309" width="16" height="16"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <imageCell key="cell" refusesFirstResponder="YES" alignment="left" animates="YES" imageScaling="proportionallyDown" image="NSStatusAvailable" id="KK7-d2-oiF"/>
                                                 </imageView>
@@ -99,11 +100,11 @@
                                     </tabViewItem>
                                     <tabViewItem label="Configure Repos &amp; Apps" identifier="2" id="hvS-35-Bas">
                                         <view key="view" id="Kzw-up-jZN">
-                                            <rect key="frame" x="10" y="33" width="706" height="518"/>
+                                            <rect key="frame" x="10" y="33" width="706" height="552"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             <subviews>
                                                 <scrollView fixedFrame="YES" autohidesScrollers="YES" horizontalLineScroll="19" horizontalPageScroll="10" verticalLineScroll="19" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9vg-XB-Pqv">
-                                                    <rect key="frame" x="94" y="336" width="519" height="94"/>
+                                                    <rect key="frame" x="94" y="370" width="519" height="94"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                     <clipView key="contentView" ambiguous="YES" misplaced="YES" id="baD-Ze-qNS">
                                                         <rect key="frame" x="1" y="1" width="517" height="92"/>
@@ -143,7 +144,7 @@
                                                     </scroller>
                                                 </scrollView>
                                                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="c6a-G7-vZU">
-                                                    <rect key="frame" x="94" y="438" width="133" height="17"/>
+                                                    <rect key="frame" x="94" y="472" width="133" height="17"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Popular Repositories" id="vz5-Q8-aHi">
                                                         <font key="font" metaFont="system"/>
@@ -152,7 +153,7 @@
                                                     </textFieldCell>
                                                 </textField>
                                                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="OQZ-m7-NDG">
-                                                    <rect key="frame" x="94" y="244" width="86" height="17"/>
+                                                    <rect key="frame" x="94" y="278" width="86" height="17"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Popular apps" id="0cX-bB-x15">
                                                         <font key="font" metaFont="system"/>
@@ -161,7 +162,7 @@
                                                     </textFieldCell>
                                                 </textField>
                                                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="6E4-OJ-BCm">
-                                                    <rect key="frame" x="92" y="311" width="167" height="17"/>
+                                                    <rect key="frame" x="92" y="345" width="167" height="17"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Add a repo URL manually:" id="1IN-jG-Kev">
                                                         <font key="font" metaFont="system"/>
@@ -170,7 +171,7 @@
                                                     </textFieldCell>
                                                 </textField>
                                                 <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="PWu-1D-EW1">
-                                                    <rect key="frame" x="265" y="308" width="286" height="22"/>
+                                                    <rect key="frame" x="265" y="342" width="286" height="22"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" placeholderString="https://github.com/autopkg/recipes.git" drawsBackground="YES" id="hVj-tR-yVr">
                                                         <font key="font" metaFont="system"/>
@@ -179,7 +180,7 @@
                                                     </textFieldCell>
                                                 </textField>
                                                 <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="mla-ao-F4d">
-                                                    <rect key="frame" x="553" y="302" width="66" height="32"/>
+                                                    <rect key="frame" x="553" y="336" width="66" height="32"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                     <buttonCell key="cell" type="push" title="Add" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="wxI-F8-DuU">
                                                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
@@ -187,7 +188,7 @@
                                                     </buttonCell>
                                                 </button>
                                                 <searchField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Su6-Sd-cOj">
-                                                    <rect key="frame" x="433" y="435" width="180" height="22"/>
+                                                    <rect key="frame" x="433" y="469" width="180" height="22"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                     <searchFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" borderStyle="bezel" placeholderString="Search repos by name" usesSingleLineMode="YES" bezelStyle="round" id="kxU-o8-COd">
                                                         <font key="font" metaFont="system"/>
@@ -196,7 +197,7 @@
                                                     </searchFieldCell>
                                                 </searchField>
                                                 <searchField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="8hi-WA-S41">
-                                                    <rect key="frame" x="433" y="241" width="180" height="22"/>
+                                                    <rect key="frame" x="433" y="275" width="180" height="22"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                     <searchFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" borderStyle="bezel" placeholderString="Search apps by name" usesSingleLineMode="YES" bezelStyle="round" id="oqD-5E-S2C">
                                                         <font key="font" metaFont="system"/>
@@ -205,7 +206,7 @@
                                                     </searchFieldCell>
                                                 </searchField>
                                                 <scrollView fixedFrame="YES" autohidesScrollers="YES" horizontalLineScroll="19" horizontalPageScroll="10" verticalLineScroll="19" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FaV-GR-28e">
-                                                    <rect key="frame" x="94" y="142" width="519" height="94"/>
+                                                    <rect key="frame" x="94" y="176" width="519" height="94"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                     <clipView key="contentView" ambiguous="YES" misplaced="YES" id="gzb-cW-veF">
                                                         <rect key="frame" x="1" y="1" width="517" height="92"/>
@@ -245,7 +246,7 @@
                                                     </scroller>
                                                 </scrollView>
                                                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="cuS-uy-wiB">
-                                                    <rect key="frame" x="92" y="79" width="123" height="17"/>
+                                                    <rect key="frame" x="92" y="113" width="123" height="17"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Local Munki repo:" id="nvP-vo-MoK">
                                                         <font key="font" metaFont="system"/>
@@ -254,7 +255,7 @@
                                                     </textFieldCell>
                                                 </textField>
                                                 <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="smb-Vt-Cyt">
-                                                    <rect key="frame" x="210" y="76" width="308" height="22"/>
+                                                    <rect key="frame" x="210" y="110" width="308" height="22"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" placeholderString="/Users/Shared/munki_repo" drawsBackground="YES" id="HFR-Ly-44L">
                                                         <font key="font" metaFont="system"/>
@@ -263,7 +264,7 @@
                                                     </textFieldCell>
                                                 </textField>
                                                 <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="M6N-DN-bDn">
-                                                    <rect key="frame" x="520" y="70" width="99" height="32"/>
+                                                    <rect key="frame" x="520" y="104" width="99" height="32"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                     <buttonCell key="cell" type="push" title="Choose..." bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="6be-Gh-TUj">
                                                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
@@ -289,7 +290,7 @@
                                                                 <rect key="frame" x="87" y="62" width="129" height="106"/>
                                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                                 <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                                                                <size key="cellSize" width="129" height="25"/>
+                                                                <size key="cellSize" width="118" height="18"/>
                                                                 <size key="intercellSpacing" width="4" height="2"/>
                                                                 <buttonCell key="prototype" type="radio" title="Radio" imagePosition="left" alignment="left" inset="2" id="04Z-xc-9uF">
                                                                     <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
@@ -643,7 +644,7 @@
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             <subviews>
                                                 <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="TYE-36-bIi">
-                                                    <rect key="frame" x="225" y="438" width="257" height="32"/>
+                                                    <rect key="frame" x="225" y="421" width="257" height="32"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                     <buttonCell key="cell" type="push" title="Open AutoPkg Cache Folder" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="aaW-Xo-fdG">
                                                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
@@ -651,7 +652,7 @@
                                                     </buttonCell>
                                                 </button>
                                                 <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="5lK-cr-mp5">
-                                                    <rect key="frame" x="225" y="397" width="257" height="32"/>
+                                                    <rect key="frame" x="225" y="388" width="257" height="32"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                     <buttonCell key="cell" type="push" title="Open AutoPkg RecipeRepos Folder" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="gTC-Jl-CoB">
                                                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
@@ -666,43 +667,14 @@
                                                         <font key="font" metaFont="system"/>
                                                     </buttonCell>
                                                 </button>
-                                                <imageView fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="bgh-Zj-17s">
-                                                    <rect key="frame" x="255" y="117" width="197" height="72"/>
-                                                    <autoresizingMask key="autoresizingMask"/>
-                                                    <imageCell key="cell" refusesFirstResponder="YES" alignment="left" animates="YES" imageScaling="proportionallyDown" image="linde-logo@400px" id="GBF-ng-SgL"/>
-                                                </imageView>
-                                                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Ddg-cc-ve6">
-                                                    <rect key="frame" x="248" y="129" width="211" height="14"/>
+                                                <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="U4k-FQ-NXc">
+                                                    <rect key="frame" x="245" y="326" width="216" height="18"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="center" title="Technology • Strategy • Integrity" id="BcL-6g-Og1">
-                                                        <font key="font" metaFont="smallSystem"/>
-                                                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
-                                                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                                                    </textFieldCell>
-                                                </textField>
-                                                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="qTs-X0-VDf">
-                                                    <rect key="frame" x="248" y="51" width="211" height="70"/>
-                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="center" id="7Kl-eC-NVY">
-                                                        <font key="font" metaFont="smallSystem"/>
-                                                        <string key="title">1331 Seventh St. Ste. G
-Berkeley, CA 94710
-(510) 705-8910
-
-www.lindegroup.com</string>
-                                                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
-                                                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                                                    </textFieldCell>
-                                                </textField>
-                                                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="KoC-c0-yDm">
-                                                    <rect key="frame" x="248" y="245" width="211" height="14"/>
-                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="center" title="AutoPkgr is brought to you by:" id="4aV-9E-8DY">
-                                                        <font key="font" metaFont="smallSystem"/>
-                                                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
-                                                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                                                    </textFieldCell>
-                                                </textField>
+                                                    <buttonCell key="cell" type="check" title="Warn Before Quitting AutoPkgr" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="lr1-cC-Qxj">
+                                                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                                        <font key="font" metaFont="system"/>
+                                                    </buttonCell>
+                                                </button>
                                             </subviews>
                                         </view>
                                     </tabViewItem>
@@ -718,6 +690,9 @@ www.lindegroup.com</string>
 DQ
 </string>
                                 </buttonCell>
+                                <connections>
+                                    <action selector="saveAndClose:" target="-2" id="1CI-au-ORy"/>
+                                </connections>
                             </button>
                         </subviews>
                     </view>
@@ -730,6 +705,5 @@ DQ
     </objects>
     <resources>
         <image name="NSStatusAvailable" width="16" height="16"/>
-        <image name="linde-logo@400px" width="400" height="146"/>
     </resources>
 </document>

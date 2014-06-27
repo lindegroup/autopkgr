@@ -20,8 +20,10 @@
 // Check boxes
 @property (weak) IBOutlet NSButton *smtpAuthenticationEnabledButton;
 @property (weak) IBOutlet NSButton *smtpTLSEnabledButton;
+@property (weak) IBOutlet NSButton *warnBeforeQuittingButton;
 
 // Actions
 - (IBAction)sendTestEmail:(id)sender;
+- (IBAction)saveAndClose:(id)sender;
 
 @end
