@@ -18,12 +18,15 @@
 
     // Show the configuration window if we haven't
     // completed the initial setup
-    //
-    // TODO: This raises an exception. Fix it.
-//    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-//    if ([defaults objectForKey:kHasCompletedInitialSetup]) {
-//        [self showConfigurationWindow:nil];
-//    }
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    if ([defaults objectForKey:kHasCompletedInitialSetup]) {
+
+        BOOL hasCompletedInitialSetup = [[defaults objectForKey:kHasCompletedInitialSetup] boolValue];
+
+        if (!hasCompletedInitialSetup) {
+            [self showConfigurationWindow:nil];
+        }
+    }
 }
 
 - (void)setupStatusItem
@@ -31,7 +34,6 @@
     // Setup the systemStatusBar
     self.statusItem = [[NSStatusBar systemStatusBar] statusItemWithLength:NSVariableStatusItemLength];
     [self.statusItem setMenu:self.statusMenu];
-    [self.statusItem setTitle:@""];
     [self.statusItem setImage:[NSImage imageNamed:@"autopkgr.png"]];
     [self.statusItem setAlternateImage:[NSImage imageNamed:@"autopkgr_alt.png"]];
     [self.statusItem setHighlightMode:YES];

@@ -9,6 +9,7 @@
 #import "LGConfigurationWindowController.h"
 #import "LGConstants.h"
 #import "LGEmailer.h"
+#import "LGHostInfo.h"
 #import "SSKeychain.h"
 
 @interface LGConfigurationWindowController ()
@@ -30,6 +31,32 @@
 {
     // This is for the token field support
     [self.smtpTo setDelegate:self];
+
+    [smtpAuthenticationEnabledButton addObserver:self
+                                      forKeyPath:@"cell.state"
+                                         options:(NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld)
+                                         context:NULL];
+}
+
+- (void)dealloc
+{
+    [smtpAuthenticationEnabledButton removeObserver:self forKeyPath:@"cell.state"];
+}
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
+{
+//    NSLog(@"Keypath: %@", keyPath);
+//    NSLog(@"ofObject: %@", object);
+//    NSLog(@"change: %@", change);
+    if ([keyPath isEqualToString:@"cell.state"]) {
+        if ([[change objectForKey:@"new"] integerValue] == 1) {
+            [smtpUsername setEnabled:YES];
+            [smtpPassword setEnabled:YES];
+        } else {
+            [smtpUsername setEnabled:NO];
+            [smtpPassword setEnabled:NO];
+        }
+    }
 }
 
 - (id)initWithWindow:(NSWindow *)window
@@ -71,6 +98,12 @@
     if ([defaults objectForKey:kSMTPTLSEnabled]) {
         [smtpTLSEnabledButton setState:[[defaults objectForKey:kSMTPTLSEnabled] boolValue]];
     }
+    if ([defaults objectForKey:kSMTPAuthenticationEnabled]) {
+        [smtpAuthenticationEnabledButton setState:[[defaults objectForKey:kSMTPAuthenticationEnabled] boolValue]];
+    }
+    if ([defaults objectForKey:kWarnBeforeQuittingEnabled]) {
+        [warnBeforeQuittingButton setState:[[defaults objectForKey:kWarnBeforeQuittingEnabled] boolValue]];
+    }
 
     // Read the SMTP password from the keychain and populate in NSSecureTextField
     NSError *error = nil;
@@ -85,6 +118,12 @@
             [smtpPassword setStringValue:password];
         }
     }
+
+    // Create an instance of the LGHostInfo class
+    LGHostInfo *hostInfo = [[LGHostInfo alloc] init];
+
+    // Set the SMTPFrom key to shortname@hostname
+    [defaults setObject:[hostInfo getUserAtHostName] forKey:kSMTPFrom];
 
     // Synchronize with the defaults database
     [defaults synchronize];
@@ -106,9 +145,13 @@
     // Store the SMTP settings in NSUserDefaults
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 
+    // Create an instance of the LGHostInfo class
+    LGHostInfo *hostInfo = [[LGHostInfo alloc] init];
+
     [defaults setObject:[smtpServer stringValue] forKey:kSMTPServer];
     [defaults setInteger:[smtpPort integerValue]forKey:kSMTPPort];
     [defaults setObject:[smtpUsername stringValue] forKey:kSMTPUsername];
+    [defaults setObject:[hostInfo getUserAtHostName] forKey:kSMTPFrom];
     [defaults setBool:YES forKey:kHasCompletedInitialSetup];
     // We use objectValue here because objectValue returns an
     // array of strings if the field contains a series of strings
@@ -124,13 +167,20 @@
         [defaults setBool:NO forKey:kSMTPTLSEnabled];
     }
 
-    if ([warnBeforeQuittingButton state] == NSOnState)
-    {
+    if ([warnBeforeQuittingButton state] == NSOnState) {
         NSLog(@"Enabling warning before quitting.");
-        [defaults setBool:YES forKey:kWarnBeforeQuitting];
+        [defaults setBool:YES forKey:kWarnBeforeQuittingEnabled];
     } else {
         NSLog(@"Disabling warning before quitting.");
-        [defaults setBool:NO forKey:kWarnBeforeQuitting];
+        [defaults setBool:NO forKey:kWarnBeforeQuittingEnabled];
+    }
+
+    if ([smtpAuthenticationEnabledButton state] == NSOnState) {
+        NSLog(@"Enabling SMTP authentication.");
+        [defaults setBool:YES forKey:kSMTPAuthenticationEnabled];
+    } else {
+        NSLog(@"Disabling SMTP authentication.");
+        [defaults setBool:NO forKey:kSMTPAuthenticationEnabled];
     }
 
     // Store the password used for SMTP authentication in the default keychain

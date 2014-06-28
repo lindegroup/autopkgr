@@ -8,6 +8,7 @@
 
 #import "LGEmailer.h"
 #import "LGConstants.h"
+#import "LGHostInfo.h"
 #import "SSKeychain.h"
 
 @implementation LGEmailer
@@ -60,7 +61,7 @@
     [[builder header] setTo:to];
     [[builder header] setSubject:subject];
     [builder setHTMLBody:message];
-    NSData *rfc822Data = [builder data];
+    NSData * rfc822Data = [builder data];
 
     MCOSMTPSendOperation *sendOperation = [smtpSession sendOperationWithData:rfc822Data];
     [sendOperation start:^(NSError *error) {

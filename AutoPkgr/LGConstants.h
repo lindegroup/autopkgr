@@ -14,5 +14,6 @@ extern NSString *const kSMTPPassword;
 extern NSString *const kSMTPFrom;
 extern NSString *const kSMTPTo;
 extern NSString *const kSMTPTLSEnabled;
-extern NSString *const kWarnBeforeQuitting;
+extern NSString *const kSMTPAuthenticationEnabled;
+extern NSString *const kWarnBeforeQuittingEnabled;
 extern NSString *const kHasCompletedInitialSetup;

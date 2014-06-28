@@ -21,6 +21,7 @@
 		1AC69571195B59EE00D2BD81 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1AC69550195B59ED00D2BD81 /* Cocoa.framework */; };
 		1AC69579195B59EE00D2BD81 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 1AC69577195B59EE00D2BD81 /* InfoPlist.strings */; };
 		1AC6957B195B59EE00D2BD81 /* AutoPkgrTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 1AC6957A195B59EE00D2BD81 /* AutoPkgrTests.m */; };
+		1AC86D3D195E0AC6006FDD2B /* LGHostInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 1AC86D3C195E0AC6006FDD2B /* LGHostInfo.m */; };
 		1AC9840A195CE7D60071CAB3 /* LGConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 1AC98409195CE7D60071CAB3 /* LGConstants.m */; };
 		1AC98412195CE8520071CAB3 /* LGEmailer.m in Sources */ = {isa = PBXBuildFile; fileRef = 1AC98411195CE8520071CAB3 /* LGEmailer.m */; };
 		1AC98416195CE99E0071CAB3 /* SSKeychain.m in Sources */ = {isa = PBXBuildFile; fileRef = 1AC98415195CE99E0071CAB3 /* SSKeychain.m */; };
@@ -118,6 +119,8 @@
 		1AC69576195B59EE00D2BD81 /* AutoPkgrTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "AutoPkgrTests-Info.plist"; sourceTree = "<group>"; };
 		1AC69578195B59EE00D2BD81 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		1AC6957A195B59EE00D2BD81 /* AutoPkgrTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AutoPkgrTests.m; sourceTree = "<group>"; };
+		1AC86D3B195E0AC6006FDD2B /* LGHostInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGHostInfo.h; sourceTree = "<group>"; };
+		1AC86D3C195E0AC6006FDD2B /* LGHostInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGHostInfo.m; sourceTree = "<group>"; };
 		1AC98408195CE7D60071CAB3 /* LGConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGConstants.h; sourceTree = "<group>"; };
 		1AC98409195CE7D60071CAB3 /* LGConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGConstants.m; sourceTree = "<group>"; };
 		1AC98410195CE8510071CAB3 /* LGEmailer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGEmailer.h; sourceTree = "<group>"; };
@@ -211,8 +214,8 @@
 		1AC69556195B59ED00D2BD81 /* AutoPkgr */ = {
 			isa = PBXGroup;
 			children = (
+				1AC86D36195E0972006FDD2B /* Models */,
 				1A0A869D195CE5DB00A49434 /* mailcore2.xcodeproj */,
-				8B6A3198195B7AC1007A7A16 /* linde-logo@400px.png */,
 				1AC69562195B59EE00D2BD81 /* LGAppDelegate.h */,
 				1AC69563195B59EE00D2BD81 /* LGAppDelegate.m */,
 				1AC98410195CE8510071CAB3 /* LGEmailer.h */,
@@ -260,6 +263,15 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
+		1AC86D36195E0972006FDD2B /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				1AC86D3B195E0AC6006FDD2B /* LGHostInfo.h */,
+				1AC86D3C195E0AC6006FDD2B /* LGHostInfo.m */,
+			);
+			name = Models;
+			sourceTree = "<group>";
+		};
 		1AC98413195CE9860071CAB3 /* Other Sources */ = {
 			isa = PBXGroup;
 			children = (
@@ -274,6 +286,7 @@
 			children = (
 				1AC98425195DF6350071CAB3 /* autopkgr.png */,
 				1AC98428195DF6DE0071CAB3 /* autopkgr_alt.png */,
+				8B6A3198195B7AC1007A7A16 /* linde-logo@400px.png */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -427,6 +440,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1AC86D3D195E0AC6006FDD2B /* LGHostInfo.m in Sources */,
 				1AC98412195CE8520071CAB3 /* LGEmailer.m in Sources */,
 				1AC9841F195CEC360071CAB3 /* LGConfigurationWindowController.m in Sources */,
 				1AC6955D195B59EE00D2BD81 /* main.m in Sources */,
