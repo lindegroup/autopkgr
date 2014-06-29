@@ -17,3 +17,4 @@ extern NSString *const kSMTPTLSEnabled;
 extern NSString *const kSMTPAuthenticationEnabled;
 extern NSString *const kWarnBeforeQuittingEnabled;
 extern NSString *const kHasCompletedInitialSetup;
+extern NSString *const kAutoPkgDownloadURL;

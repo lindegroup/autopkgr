@@ -19,3 +19,4 @@ NSString *const kSMTPTLSEnabled = @"SMTPTLSEnabled";
 NSString *const kSMTPAuthenticationEnabled = @"SMTPAuthenticationEnabled";
 NSString *const kWarnBeforeQuittingEnabled = @"WarnBeforeQuitting";
 NSString *const kHasCompletedInitialSetup = @"HasCompletedInitialSetup";
+NSString *const kAutoPkgDownloadURL = @"https://github.com/autopkg/autopkg/zipball/master";

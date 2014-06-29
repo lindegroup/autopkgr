@@ -217,6 +217,20 @@
     [self close];
 }
 
+- (void)runCommandAsRoot
+{
+    // Super dirty hack, but way easier than
+    // using Authorization Services
+    NSDictionary *error = [[NSDictionary alloc] init];
+    NSString *script =  @"do shell script \"whoami > /tmp/me\" with administrator privileges";
+    NSAppleScript *appleScript = [[NSAppleScript alloc] initWithSource:script];
+    if ([appleScript executeAndReturnError:&error]) {
+        NSLog(@"Authorization successful!");
+    } else {
+        NSLog(@"Authorization failed!");
+    }
+}
+
 /*
  This should prompt for Xcode CLI tools
  installation on systems without Git.
@@ -234,11 +248,27 @@
     [installGitFileHandle readInBackgroundAndNotify];
 }
 
+- (void)downloadAutoPkg
+{
+    NSString *tmpPath = [NSTemporaryDirectory() stringByAppendingPathComponent:@"autopkg.zip"];
+    NSLog(@"tmpPath: %@", tmpPath);
+    NSData *autoPkg = [[NSData alloc] initWithContentsOfURL:[NSURL URLWithString:kAutoPkgDownloadURL]];
+    [autoPkg writeToFile:tmpPath atomically:YES];
+}
+
 - (IBAction)installAutoPkg:(id)sender {
     // Get authorization
     // Download AutoPkg zipball from https://github.com/autopkg/autopkg/zipball/master
     // Store zip in /tmp
     // Unzip AutoPkg, then run Scripts/install.sh as root
+    NSOperationQueue *queue = [[NSOperationQueue alloc] init];
+    NSInvocationOperation *operation = [[NSInvocationOperation alloc]
+                                        initWithTarget:self
+                                        selector:@selector(downloadAutoPkg)
+                                        object:nil];
+    [queue addOperation:operation];
+
+    [self runCommandAsRoot];
 }
 
 @end
