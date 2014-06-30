@@ -31,15 +31,12 @@
     [unzipTask setCurrentDirectoryPath:targetDir];
     [unzipTask setArguments:args];
     [unzipTask launch];
-//    NSData *data = [[pipe fileHandleForReading] readDataToEndOfFile];
     [unzipTask waitUntilExit];
 
     if ([unzipTask terminationStatus] == 0) {
         return YES;
     }
-//    if ([data == nil]) {
-//        return nil;
-//    }
+
     return NO;
 }
 
