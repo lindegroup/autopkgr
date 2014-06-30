@@ -10,6 +10,7 @@
 #import "LGConstants.h"
 #import "LGEmailer.h"
 #import "LGHostInfo.h"
+#import "LGUnzipper.h"
 #import "SSKeychain.h"
 
 @interface LGConfigurationWindowController ()
@@ -250,10 +251,18 @@
 
 - (void)downloadAutoPkg
 {
+    LGUnzipper *unzipper = [[LGUnzipper alloc] init];
     NSString *tmpPath = [NSTemporaryDirectory() stringByAppendingPathComponent:@"autopkg.zip"];
     NSLog(@"tmpPath: %@", tmpPath);
     NSData *autoPkg = [[NSData alloc] initWithContentsOfURL:[NSURL URLWithString:kAutoPkgDownloadURL]];
     [autoPkg writeToFile:tmpPath atomically:YES];
+    BOOL autoPkgUnzipped = [unzipper unzip:tmpPath targetDir:[NSTemporaryDirectory() stringByAppendingPathComponent:@"autopkg"]];
+
+    if (autoPkgUnzipped) {
+        NSLog(@"Successfully unzipped AutoPkg!");
+    } else {
+        NSLog(@":(");
+    }
 }
 
 - (IBAction)installAutoPkg:(id)sender {
