@@ -321,43 +321,71 @@
 
 - (IBAction)openAutoPkgCacheFolder:(id)sender
 {
-    // We should actually read this from com.github.autopkg
-    // if it exists rather than assuming it's ~/Library/AutoPkg/Cache
     BOOL isDir;
-    NSString *autoPkgCacheFolder = [NSString stringWithFormat:@"%@/Library/AutoPkg/Cache", NSHomeDirectory()];
-    if ([[NSFileManager defaultManager] fileExistsAtPath:autoPkgCacheFolder isDirectory:&isDir] && isDir) {
-        NSURL *autoPkgCacheFolderURL = [NSURL fileURLWithPath:autoPkgCacheFolder];
-        [[NSWorkspace sharedWorkspace] openURL:autoPkgCacheFolderURL];
+    NSString *autoPkgCacheFolderFromPrefs = (__bridge_transfer NSString *)CFPreferencesCopyAppValue(CFSTR("CACHE_DIR"), CFSTR("com.github.autopkg"));
+
+    if (!autoPkgCacheFolderFromPrefs) {
+        NSLog(@"The preference domain com.github.autopkg doesn't exist or key CACHE_DIR doesn't exist.");
+        NSString *autoPkgCacheFolder = [NSString stringWithFormat:@"%@/Library/AutoPkg/Cache", NSHomeDirectory()];
+        if ([[NSFileManager defaultManager] fileExistsAtPath:autoPkgCacheFolder isDirectory:&isDir] && isDir) {
+            NSURL *autoPkgCacheFolderURL = [NSURL fileURLWithPath:autoPkgCacheFolder];
+            [[NSWorkspace sharedWorkspace] openURL:autoPkgCacheFolderURL];
+        } else {
+            NSLog(@"%@ does not exist.", autoPkgCacheFolder);  // TODO: Either grey out the button or present NSAlert
+        }
     } else {
-        NSLog(@"%@ does not exist.", autoPkgCacheFolder);  // TODO: Either grey out the button or present NSAlert
+        if ([[NSFileManager defaultManager] fileExistsAtPath:autoPkgCacheFolderFromPrefs isDirectory:&isDir] && isDir) {
+            NSURL *autoPkgCacheFolderURL = [NSURL fileURLWithPath:autoPkgCacheFolderFromPrefs];
+            [[NSWorkspace sharedWorkspace] openURL:autoPkgCacheFolderURL];
+        } else {
+            NSLog(@"%@ does not exist.", autoPkgCacheFolderFromPrefs);  // TODO: Either grey out the button or present NSAlert
+        }
     }
 }
 
 - (IBAction)openAutoPkgRecipeReposFolder:(id)sender
 {
-    // We should actually read this from com.github.autopkg
-    // if it exists rather than assuming it's ~/Library/AutoPkg/RecipeRepos
     BOOL isDir;
-    NSString *autoPkgRecipeReposFolder = [NSString stringWithFormat:@"%@/Library/AutoPkg/RecipeRepos", NSHomeDirectory()];
-    if ([[NSFileManager defaultManager] fileExistsAtPath:autoPkgRecipeReposFolder isDirectory:&isDir] && isDir) {
-        NSURL *autoPkgRecipeReposFolderURL = [NSURL fileURLWithPath:autoPkgRecipeReposFolder];
-        [[NSWorkspace sharedWorkspace] openURL:autoPkgRecipeReposFolderURL];
+    NSString *autoPkgRecipeReposFolderFromPrefs = (__bridge_transfer NSString *)CFPreferencesCopyAppValue(CFSTR("RECIPE_REPO_DIR"), CFSTR("com.github.autopkg"));
+    if (!autoPkgRecipeReposFolderFromPrefs) {
+        NSLog(@"The preference domain com.github.autopkg doesn't exist or key RECIPE_REPO_DIR doesn't exist.");
+        NSString *autoPkgRecipeReposFolder = [NSString stringWithFormat:@"%@/Library/AutoPkg/RecipeRepos", NSHomeDirectory()];
+        if ([[NSFileManager defaultManager] fileExistsAtPath:autoPkgRecipeReposFolder isDirectory:&isDir] && isDir) {
+            NSURL *autoPkgRecipeReposFolderURL = [NSURL fileURLWithPath:autoPkgRecipeReposFolder];
+            [[NSWorkspace sharedWorkspace] openURL:autoPkgRecipeReposFolderURL];
+        } else {
+            NSLog(@"%@ does not exist.", autoPkgRecipeReposFolder);  // TODO: Either grey out the button or present NSAlert
+        }
     } else {
-        NSLog(@"%@ does not exist.", autoPkgRecipeReposFolder);  // TODO: Either grey out the button or present NSAlert
+        if ([[NSFileManager defaultManager] fileExistsAtPath:autoPkgRecipeReposFolderFromPrefs isDirectory:&isDir] && isDir) {
+            NSURL *autoPkgRecipeReposFolderURL = [NSURL fileURLWithPath:autoPkgRecipeReposFolderFromPrefs];
+            [[NSWorkspace sharedWorkspace] openURL:autoPkgRecipeReposFolderURL];
+        } else {
+            NSLog(@"%@ does not exist.", autoPkgRecipeReposFolderFromPrefs);  // TODO: Either grey out the button or present NSAlert
+        }
     }
 }
 
 - (IBAction)openLocalMunkiRepoFolder:(id)sender
 {
-    // We should actually read this from the munki plist
-    // if it exists rather than assuming it's /Users/Shared/munki_repo
     BOOL isDir;
-    NSString *localMunkiRepoFolder = @"/Users/Shared/munki_repo";
-    if ([[NSFileManager defaultManager] fileExistsAtPath:localMunkiRepoFolder isDirectory:&isDir] && isDir) {
-        NSURL *localMunkiRepoFolderURL = [NSURL fileURLWithPath:localMunkiRepoFolder];
-        [[NSWorkspace sharedWorkspace] openURL:localMunkiRepoFolderURL];
+    NSString *localMunkiRepoFolderFromPrefs = (__bridge_transfer NSString *)CFPreferencesCopyAppValue(CFSTR("repo_path"), CFSTR("com.googlecode.munki.munkiimport"));
+    if (!localMunkiRepoFolderFromPrefs) {
+        NSLog(@"The preference domain com.googlecode.munki.munkiimport doesn't exist or key repo_path doesn't exist.");
+        NSString *localMunkiRepoFolder = @"/Users/Shared/munki_repo";
+        if ([[NSFileManager defaultManager] fileExistsAtPath:localMunkiRepoFolder isDirectory:&isDir] && isDir) {
+            NSURL *localMunkiRepoFolderURL = [NSURL fileURLWithPath:localMunkiRepoFolder];
+            [[NSWorkspace sharedWorkspace] openURL:localMunkiRepoFolderURL];
+        } else {
+            NSLog(@"%@ does not exist.", localMunkiRepoFolder);  // TODO: Either grey out the button or present NSAlert
+        }
     } else {
-        NSLog(@"%@ does not exist.", localMunkiRepoFolder);  // TODO: Either grey out the button or present NSAlert
+        if ([[NSFileManager defaultManager] fileExistsAtPath:localMunkiRepoFolderFromPrefs isDirectory:&isDir] && isDir) {
+            NSURL *localMunkiRepoFolderURL = [NSURL fileURLWithPath:localMunkiRepoFolderFromPrefs];
+            [[NSWorkspace sharedWorkspace] openURL:localMunkiRepoFolderURL];
+        } else {
+            NSLog(@"%@ does not exist.", localMunkiRepoFolderFromPrefs);  // TODO: Either grey out the button or present NSAlert
+        }
     }
 }
 
