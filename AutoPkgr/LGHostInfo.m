@@ -29,7 +29,7 @@
 
 - (BOOL)gitInstalled
 {
-    NSArray *knownGitPaths = [[NSArray alloc] initWithObjects:@"/usr/bin/git", @"/usr/local/bin/git", @"/opt/boxen/homebrew/git", nil];
+    NSArray *knownGitPaths = [[NSArray alloc] initWithObjects:@"/usr/bin/git", @"/usr/local/bin/git", @"/opt/boxen/homebrew/bin/git", nil];
 
     for (NSString *path in knownGitPaths) {
         if ([[NSFileManager defaultManager] isExecutableFileAtPath:path]) {

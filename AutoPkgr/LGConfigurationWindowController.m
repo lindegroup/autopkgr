@@ -154,7 +154,8 @@
     [defaults synchronize];
 }
 
-- (IBAction)sendTestEmail:(id)sender {
+- (IBAction)sendTestEmail:(id)sender
+{
     // Send a test email notification when the user
     // clicks "Send Test Email"
 
@@ -166,7 +167,8 @@
     [emailer sendTestEmail];
 }
 
-- (IBAction)saveAndClose:(id)sender {
+- (IBAction)saveAndClose:(id)sender
+{
     // Store the SMTP settings in NSUserDefaults
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 
@@ -246,7 +248,8 @@
  This should prompt for Xcode CLI tools
  installation on systems without Git.
  */
-- (IBAction)installGit:(id)sender {
+- (IBAction)installGit:(id)sender
+{
     NSTask *task = [[NSTask alloc] init];
     NSPipe *pipe = [NSPipe pipe];
     NSFileHandle *installGitFileHandle = [pipe fileHandleForReading];
@@ -305,7 +308,8 @@
     }
 }
 
-- (IBAction)installAutoPkg:(id)sender {
+- (IBAction)installAutoPkg:(id)sender
+{
     // Download and install AutoPkg on a background thread
     NSOperationQueue *queue = [[NSOperationQueue alloc] init];
     NSInvocationOperation *operation = [[NSInvocationOperation alloc]
