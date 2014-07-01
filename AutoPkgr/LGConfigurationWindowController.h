@@ -38,6 +38,9 @@
 - (IBAction)saveAndClose:(id)sender;
 - (IBAction)installGit:(id)sender;
 - (IBAction)installAutoPkg:(id)sender;
+- (IBAction)openAutoPkgCacheFolder:(id)sender;
+- (IBAction)openAutoPkgRecipeReposFolder:(id)sender;
+- (IBAction)openLocalMunkiRepoFolder:(id)sender;
 
 - (void)runCommandAsRoot:(NSString *)runDirectory command:(NSString *)command;
 - (void)downloadAndInstallAutoPkg;

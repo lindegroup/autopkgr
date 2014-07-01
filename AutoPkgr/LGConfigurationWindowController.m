@@ -319,4 +319,46 @@
     [queue addOperation:operation];
 }
 
+- (IBAction)openAutoPkgCacheFolder:(id)sender
+{
+    // We should actually read this from com.github.autopkg
+    // if it exists rather than assuming it's ~/Library/AutoPkg/Cache
+    BOOL isDir;
+    NSString *autoPkgCacheFolder = [NSString stringWithFormat:@"%@/Library/AutoPkg/Cache", NSHomeDirectory()];
+    if ([[NSFileManager defaultManager] fileExistsAtPath:autoPkgCacheFolder isDirectory:&isDir] && isDir) {
+        NSURL *autoPkgCacheFolderURL = [NSURL fileURLWithPath:autoPkgCacheFolder];
+        [[NSWorkspace sharedWorkspace] openURL:autoPkgCacheFolderURL];
+    } else {
+        NSLog(@"%@ does not exist.", autoPkgCacheFolder);  // TODO: Either grey out the button or present NSAlert
+    }
+}
+
+- (IBAction)openAutoPkgRecipeReposFolder:(id)sender
+{
+    // We should actually read this from com.github.autopkg
+    // if it exists rather than assuming it's ~/Library/AutoPkg/RecipeRepos
+    BOOL isDir;
+    NSString *autoPkgRecipeReposFolder = [NSString stringWithFormat:@"%@/Library/AutoPkg/RecipeRepos", NSHomeDirectory()];
+    if ([[NSFileManager defaultManager] fileExistsAtPath:autoPkgRecipeReposFolder isDirectory:&isDir] && isDir) {
+        NSURL *autoPkgRecipeReposFolderURL = [NSURL fileURLWithPath:autoPkgRecipeReposFolder];
+        [[NSWorkspace sharedWorkspace] openURL:autoPkgRecipeReposFolderURL];
+    } else {
+        NSLog(@"%@ does not exist.", autoPkgRecipeReposFolder);  // TODO: Either grey out the button or present NSAlert
+    }
+}
+
+- (IBAction)openLocalMunkiRepoFolder:(id)sender
+{
+    // We should actually read this from the munki plist
+    // if it exists rather than assuming it's /Users/Shared/munki_repo
+    BOOL isDir;
+    NSString *localMunkiRepoFolder = @"/Users/Shared/munki_repo";
+    if ([[NSFileManager defaultManager] fileExistsAtPath:localMunkiRepoFolder isDirectory:&isDir] && isDir) {
+        NSURL *localMunkiRepoFolderURL = [NSURL fileURLWithPath:localMunkiRepoFolder];
+        [[NSWorkspace sharedWorkspace] openURL:localMunkiRepoFolderURL];
+    } else {
+        NSLog(@"%@ does not exist.", localMunkiRepoFolder);  // TODO: Either grey out the button or present NSAlert
+    }
+}
+
 @end
