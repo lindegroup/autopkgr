@@ -22,6 +22,11 @@
 @property (weak) IBOutlet NSButton *smtpTLSEnabledButton;
 @property (weak) IBOutlet NSButton *warnBeforeQuittingButton;
 
+// Buttons
+@property (weak) IBOutlet NSButton *autoPkgCacheFolderButton;
+@property (weak) IBOutlet NSButton *autoPkgRecipeReposFolderButton;
+@property (weak) IBOutlet NSButton *localMunkiRepoFolderButton;
+
 // Labels
 @property (weak) IBOutlet NSTextField *gitStatusLabel;
 @property (weak) IBOutlet NSTextField *autoPkgStatusLabel;
@@ -38,6 +43,9 @@
 - (IBAction)saveAndClose:(id)sender;
 - (IBAction)installGit:(id)sender;
 - (IBAction)installAutoPkg:(id)sender;
+- (IBAction)openAutoPkgCacheFolder:(id)sender;
+- (IBAction)openAutoPkgRecipeReposFolder:(id)sender;
+- (IBAction)openLocalMunkiRepoFolder:(id)sender;
 
 - (void)runCommandAsRoot:(NSString *)runDirectory command:(NSString *)command;
 - (void)downloadAndInstallAutoPkg;

@@ -60,4 +60,26 @@
     [configurationWindowController showWindow:self];
 }
 
+- (NSApplicationTerminateReply)applicationShouldTerminate:(NSApplication *)sender
+{
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    BOOL warnBeforeQuitting = [[defaults objectForKey:kWarnBeforeQuittingEnabled] boolValue];
+
+    if (warnBeforeQuitting) {
+        NSAlert *alert = [[NSAlert alloc] init];
+        [alert addButtonWithTitle:@"Quit"];
+        [alert addButtonWithTitle:@"Cancel"];
+        [alert setMessageText:[NSString stringWithFormat:@"Are you sure you want to quit %@?", kApplicationName]];
+        [alert setInformativeText:[NSString stringWithFormat:@"%@ will not be able to run AutoPkg recipes or send email notifications until you relaunch the application.", kApplicationName]];
+        [alert setAlertStyle:NSWarningAlertStyle];
+
+        if ([alert runModal] == NSAlertSecondButtonReturn) {
+            NSLog(@"User cancelled quit.");
+            return NSTerminateCancel;
+        }
+    }
+
+    return NSTerminateNow;
+}
+
 @end

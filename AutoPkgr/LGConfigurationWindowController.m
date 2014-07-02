@@ -27,6 +27,9 @@
 @synthesize smtpAuthenticationEnabledButton;
 @synthesize smtpTLSEnabledButton;
 @synthesize warnBeforeQuittingButton;
+@synthesize autoPkgCacheFolderButton;
+@synthesize autoPkgRecipeReposFolderButton;
+@synthesize localMunkiRepoFolderButton;
 @synthesize gitStatusLabel;
 @synthesize autoPkgStatusLabel;
 @synthesize gitStatusIcon;
@@ -150,11 +153,28 @@
         [autoPkgStatusIcon setImage:[NSImage imageNamed:kStatusUnavailableImage]];
     }
 
+    // Enable tools buttons if directories exist
+    BOOL isDir;
+    NSString *autoPkgCacheFolder = [hostInfo getAutoPkgCacheDir];
+    NSString *autoPkgRecipeReposFolder = [hostInfo getAutoPkgRecipeReposDir];
+    NSString *localMunkiRepoFolder = [hostInfo getMunkiRepoDir];
+
+    if ([[NSFileManager defaultManager] fileExistsAtPath:autoPkgCacheFolder isDirectory:&isDir] && isDir) {
+        [autoPkgCacheFolderButton setEnabled:YES];
+    }
+    if ([[NSFileManager defaultManager] fileExistsAtPath:autoPkgRecipeReposFolder isDirectory:&isDir] && isDir) {
+        [autoPkgRecipeReposFolderButton setEnabled:YES];
+    }
+    if ([[NSFileManager defaultManager] fileExistsAtPath:localMunkiRepoFolder isDirectory:&isDir] && isDir) {
+        [localMunkiRepoFolderButton setEnabled:YES];
+    }
+
     // Synchronize with the defaults database
     [defaults synchronize];
 }
 
-- (IBAction)sendTestEmail:(id)sender {
+- (IBAction)sendTestEmail:(id)sender
+{
     // Send a test email notification when the user
     // clicks "Send Test Email"
 
@@ -166,7 +186,8 @@
     [emailer sendTestEmail];
 }
 
-- (IBAction)saveAndClose:(id)sender {
+- (IBAction)saveAndClose:(id)sender
+{
     // Store the SMTP settings in NSUserDefaults
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 
@@ -246,7 +267,8 @@
  This should prompt for Xcode CLI tools
  installation on systems without Git.
  */
-- (IBAction)installGit:(id)sender {
+- (IBAction)installGit:(id)sender
+{
     NSTask *task = [[NSTask alloc] init];
     NSPipe *pipe = [NSPipe pipe];
     NSFileHandle *installGitFileHandle = [pipe fileHandleForReading];
@@ -305,7 +327,8 @@
     }
 }
 
-- (IBAction)installAutoPkg:(id)sender {
+- (IBAction)installAutoPkg:(id)sender
+{
     // Download and install AutoPkg on a background thread
     NSOperationQueue *queue = [[NSOperationQueue alloc] init];
     NSInvocationOperation *operation = [[NSInvocationOperation alloc]
@@ -313,6 +336,66 @@
                                         selector:@selector(downloadAndInstallAutoPkg)
                                         object:nil];
     [queue addOperation:operation];
+}
+
+- (IBAction)openAutoPkgCacheFolder:(id)sender
+{
+    BOOL isDir;
+    LGHostInfo *hostInfo = [[LGHostInfo alloc] init];
+    NSString *autoPkgCacheFolder = [hostInfo getAutoPkgCacheDir];
+
+    if ([[NSFileManager defaultManager] fileExistsAtPath:autoPkgCacheFolder isDirectory:&isDir] && isDir) {
+        NSURL *autoPkgCacheFolderURL = [NSURL fileURLWithPath:autoPkgCacheFolder];
+        [[NSWorkspace sharedWorkspace] openURL:autoPkgCacheFolderURL];
+    } else {
+        NSLog(@"%@ does not exist.", autoPkgCacheFolder);
+        NSAlert *alert = [[NSAlert alloc] init];
+        [alert addButtonWithTitle:@"OK"];
+        [alert setMessageText:@"Cannot find the AutoPkg Cache folder."];
+        [alert setInformativeText:[NSString stringWithFormat:@"%@ could not find the AutoPkg Cache folder located in %@. Please verify that this folder exists.", kApplicationName, autoPkgCacheFolder]];
+        [alert setAlertStyle:NSWarningAlertStyle];
+        [alert runModal];
+    }
+}
+
+- (IBAction)openAutoPkgRecipeReposFolder:(id)sender
+{
+    BOOL isDir;
+    LGHostInfo *hostInfo = [[LGHostInfo alloc] init];
+    NSString *autoPkgRecipeReposFolder = [hostInfo getAutoPkgRecipeReposDir];
+
+    if ([[NSFileManager defaultManager] fileExistsAtPath:autoPkgRecipeReposFolder isDirectory:&isDir] && isDir) {
+        NSURL *autoPkgRecipeReposFolderURL = [NSURL fileURLWithPath:autoPkgRecipeReposFolder];
+        [[NSWorkspace sharedWorkspace] openURL:autoPkgRecipeReposFolderURL];
+    } else {
+        NSLog(@"%@ does not exist.", autoPkgRecipeReposFolder);
+        NSAlert *alert = [[NSAlert alloc] init];
+        [alert addButtonWithTitle:@"OK"];
+        [alert setMessageText:@"Cannot find the AutoPkg RecipeRepos folder."];
+        [alert setInformativeText:[NSString stringWithFormat:@"%@ could not find the AutoPkg RecipeRepos folder located in %@. Please verify that this folder exists.", kApplicationName, autoPkgRecipeReposFolder]];
+        [alert setAlertStyle:NSWarningAlertStyle];
+        [alert runModal];
+    }
+}
+
+- (IBAction)openLocalMunkiRepoFolder:(id)sender
+{
+    BOOL isDir;
+    LGHostInfo *hostInfo = [[LGHostInfo alloc] init];
+    NSString *localMunkiRepoFolder = [hostInfo getMunkiRepoDir];
+
+    if ([[NSFileManager defaultManager] fileExistsAtPath:localMunkiRepoFolder isDirectory:&isDir] && isDir) {
+        NSURL *localMunkiRepoFolderURL = [NSURL fileURLWithPath:localMunkiRepoFolder];
+        [[NSWorkspace sharedWorkspace] openURL:localMunkiRepoFolderURL];
+    } else {
+        NSLog(@"%@ does not exist.", localMunkiRepoFolder);
+        NSAlert *alert = [[NSAlert alloc] init];
+        [alert addButtonWithTitle:@"OK"];
+        [alert setMessageText:@"Cannot find the Munki Repository."];
+        [alert setInformativeText:[NSString stringWithFormat:@"%@ could not find the Munki repository located in %@. Please verify that this folder exists.", kApplicationName, localMunkiRepoFolder]];
+        [alert setAlertStyle:NSWarningAlertStyle];
+        [alert runModal];
+    }
 }
 
 @end
