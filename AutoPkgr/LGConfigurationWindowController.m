@@ -10,6 +10,7 @@
 #import "LGConstants.h"
 #import "LGEmailer.h"
 #import "LGHostInfo.h"
+#import "LGUnzipper.h"
 #import "SSKeychain.h"
 
 @interface LGConfigurationWindowController ()
@@ -134,19 +135,19 @@
     [defaults setObject:[hostInfo getUserAtHostName] forKey:kSMTPFrom];
 
     if ([hostInfo gitInstalled]) {
-        [gitStatusLabel setStringValue:@"Git has been installed."];
-        [gitStatusIcon setImage:[NSImage imageNamed:@"status-available.tiff"]];
+        [gitStatusLabel setStringValue:kGitInstalledLabel];
+        [gitStatusIcon setImage:[NSImage imageNamed:kStatusAvailableImage]];
     } else {
-        [gitStatusLabel setStringValue:@"Git is not installed."];
-        [gitStatusIcon setImage:[NSImage imageNamed:@"status-unavailable.tiff"]];
+        [gitStatusLabel setStringValue:kGitNotInstalledLabel];
+        [gitStatusIcon setImage:[NSImage imageNamed:kStatusUnavailableImage]];
     }
 
     if ([hostInfo autoPkgInstalled]) {
-        [autoPkgStatusLabel setStringValue:@"AutoPkg has been installed."];
-        [autoPkgStatusIcon setImage:[NSImage imageNamed:@"status-available.tiff"]];
+        [autoPkgStatusLabel setStringValue:kAutoPkgInstalledLabel];
+        [autoPkgStatusIcon setImage:[NSImage imageNamed:kStatusAvailableImage]];
     } else {
-        [autoPkgStatusLabel setStringValue:@"AutoPkg is not installed."];
-        [autoPkgStatusIcon setImage:[NSImage imageNamed:@"status-unavailable.tiff"]];
+        [autoPkgStatusLabel setStringValue:kAutoPkgNotInstalledLabel];
+        [autoPkgStatusIcon setImage:[NSImage imageNamed:kStatusUnavailableImage]];
     }
 
     // Synchronize with the defaults database
@@ -217,6 +218,30 @@
     [self close];
 }
 
+- (void)runCommandAsRoot:(NSString *)runDirectory command:(NSString *)command
+{
+    // Get the current working directory
+    NSString *bundlePath = [[NSBundle mainBundle] bundlePath];
+
+    // Change the path to the AutoPkg directory
+    [[NSFileManager defaultManager] changeCurrentDirectoryPath:runDirectory];
+
+    // Super dirty hack, but way easier than
+    // using Authorization Services
+    NSDictionary *error = [[NSDictionary alloc] init];
+    NSString *script = [NSString stringWithFormat:@"do shell script \"sh -c '%@'\" with administrator privileges", command];
+    NSLog(@"appleScript commands: %@", script);
+    NSAppleScript *appleScript = [[NSAppleScript alloc] initWithSource:script];
+    if ([appleScript executeAndReturnError:&error]) {
+        NSLog(@"Authorization successful!");
+    } else {
+        NSLog(@"Authorization failed! Error: %@.", error);
+    }
+
+    // Change back to the bundle path when we're done
+    [[NSFileManager defaultManager] changeCurrentDirectoryPath:bundlePath];
+}
+
 /*
  This should prompt for Xcode CLI tools
  installation on systems without Git.
@@ -234,11 +259,60 @@
     [installGitFileHandle readInBackgroundAndNotify];
 }
 
+- (void)downloadAndInstallAutoPkg
+{
+    LGUnzipper *unzipper = [[LGUnzipper alloc] init];
+    LGHostInfo *hostInfo = [[LGHostInfo alloc] init];
+    NSError *error;
+
+    // Get paths for autopkg.zip and expansion directory
+    NSString *tmpPath = [NSTemporaryDirectory() stringByAppendingPathComponent:@"autopkg.zip"];
+    NSString *autoPkgTmpPath = [NSTemporaryDirectory() stringByAppendingPathComponent:@"autopkg"];
+
+    // Download AutoPkg to temp directory
+    NSData *autoPkg = [[NSData alloc] initWithContentsOfURL:[NSURL URLWithString:kAutoPkgDownloadURL]];
+    [autoPkg writeToFile:tmpPath atomically:YES];
+
+    // Unzip AutoPkg from the temp directory
+    BOOL autoPkgUnzipped = [unzipper unzip:tmpPath targetDir:autoPkgTmpPath];
+    if (autoPkgUnzipped) {
+        NSLog(@"Successfully unzipped AutoPkg!");
+    } else {
+        NSLog(@"Couldn't unzip AutoPkg :(");
+    }
+
+    // Get the AutoPkg run directory and script path
+    NSFileManager *fm = [NSFileManager defaultManager];
+    NSArray *dirContents = [fm contentsOfDirectoryAtPath:autoPkgTmpPath error:&error];
+
+    if (error) {
+        NSLog(@"An error occurred when attempting to get the contents of the directory %@. Error: %@", autoPkgTmpPath, error);
+    }
+
+    NSPredicate *fltr = [NSPredicate predicateWithFormat:@"self BEGINSWITH 'autopkg-autopkg-'"];
+    NSArray *autoPkgDir = [dirContents filteredArrayUsingPredicate:fltr];
+    NSString *autoPkgPath = [autoPkgTmpPath stringByAppendingPathComponent:[NSString stringWithFormat:@"/%@", [autoPkgDir objectAtIndex:0]]];
+    NSString *autoPkgInstallScriptPath = [NSString stringWithFormat:@"%@/Scripts/install.sh", autoPkgPath];
+
+    // Run the AutoPkg installer script as root
+    [self runCommandAsRoot:autoPkgPath command:autoPkgInstallScriptPath];
+
+    // Update the autoPkgStatus icon and label if it installed successfully
+    if ([hostInfo autoPkgInstalled]) {
+        NSLog(@"AutoPkg installed successfully!");
+        [autoPkgStatusLabel setStringValue:kAutoPkgInstalledLabel];
+        [autoPkgStatusIcon setImage:[NSImage imageNamed:kStatusAvailableImage]];
+    }
+}
+
 - (IBAction)installAutoPkg:(id)sender {
-    // Get authorization
-    // Download AutoPkg zipball from https://github.com/autopkg/autopkg/zipball/master
-    // Store zip in /tmp
-    // Unzip AutoPkg, then run Scripts/install.sh as root
+    // Download and install AutoPkg on a background thread
+    NSOperationQueue *queue = [[NSOperationQueue alloc] init];
+    NSInvocationOperation *operation = [[NSInvocationOperation alloc]
+                                        initWithTarget:self
+                                        selector:@selector(downloadAndInstallAutoPkg)
+                                        object:nil];
+    [queue addOperation:operation];
 }
 
 @end

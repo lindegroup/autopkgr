@@ -10,6 +10,7 @@
 		1A0A86AF195CE63900A49434 /* MailCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1A0A86AE195CE5DC00A49434 /* MailCore.framework */; };
 		1A0A86B1195CE69300A49434 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1A0A86B0195CE69300A49434 /* Security.framework */; };
 		1A0A86B5195CE6D800A49434 /* MailCore.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 1A0A86AE195CE5DC00A49434 /* MailCore.framework */; };
+		1A979FE01960BCCC00EE9881 /* LGUnzipper.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A979FDF1960BCCC00EE9881 /* LGUnzipper.m */; };
 		1AA5B32A195FD136006DA2CD /* status-available.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 1AA5B328195FD135006DA2CD /* status-available.tiff */; };
 		1AA5B32B195FD136006DA2CD /* status-unavailable.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 1AA5B329195FD135006DA2CD /* status-unavailable.tiff */; };
 		1AC69551195B59ED00D2BD81 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1AC69550195B59ED00D2BD81 /* Cocoa.framework */; };
@@ -102,6 +103,8 @@
 /* Begin PBXFileReference section */
 		1A0A869D195CE5DB00A49434 /* mailcore2.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = mailcore2.xcodeproj; path = "mailcore2/build-mac/mailcore2.xcodeproj"; sourceTree = SOURCE_ROOT; };
 		1A0A86B0195CE69300A49434 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
+		1A979FDE1960BCCC00EE9881 /* LGUnzipper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGUnzipper.h; sourceTree = "<group>"; };
+		1A979FDF1960BCCC00EE9881 /* LGUnzipper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGUnzipper.m; sourceTree = "<group>"; };
 		1AA5B328195FD135006DA2CD /* status-available.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = "status-available.tiff"; sourceTree = "<group>"; };
 		1AA5B329195FD135006DA2CD /* status-unavailable.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = "status-unavailable.tiff"; sourceTree = "<group>"; };
 		1AC6954D195B59ED00D2BD81 /* AutoPkgr.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AutoPkgr.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -228,6 +231,8 @@
 				1AC98409195CE7D60071CAB3 /* LGConstants.m */,
 				1AC9841C195CEC350071CAB3 /* LGConfigurationWindowController.h */,
 				1AC9841D195CEC350071CAB3 /* LGConfigurationWindowController.m */,
+				1A979FDE1960BCCC00EE9881 /* LGUnzipper.h */,
+				1A979FDF1960BCCC00EE9881 /* LGUnzipper.m */,
 				1AC9841E195CEC360071CAB3 /* LGConfigurationWindowController.xib */,
 				1AC69565195B59EE00D2BD81 /* MainMenu.xib */,
 				1AC69568195B59EE00D2BD81 /* Images.xcassets */,
@@ -455,6 +460,7 @@
 				1AC69564195B59EE00D2BD81 /* LGAppDelegate.m in Sources */,
 				1AC9840A195CE7D60071CAB3 /* LGConstants.m in Sources */,
 				1AC98416195CE99E0071CAB3 /* SSKeychain.m in Sources */,
+				1A979FE01960BCCC00EE9881 /* LGUnzipper.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -39,4 +39,7 @@
 - (IBAction)installGit:(id)sender;
 - (IBAction)installAutoPkg:(id)sender;
 
+- (void)runCommandAsRoot:(NSString *)runDirectory command:(NSString *)command;
+- (void)downloadAndInstallAutoPkg;
+
 @end
