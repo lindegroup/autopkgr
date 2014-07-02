@@ -17,13 +17,26 @@
 @property (weak) IBOutlet NSSecureTextField *smtpPassword;
 @property (weak) IBOutlet NSTextField *smtpPort;
 
-// Check boxes
+// Checkboxes
 @property (weak) IBOutlet NSButton *smtpAuthenticationEnabledButton;
 @property (weak) IBOutlet NSButton *smtpTLSEnabledButton;
 @property (weak) IBOutlet NSButton *warnBeforeQuittingButton;
 
-// Actions
+// Labels
+@property (weak) IBOutlet NSTextField *gitStatusLabel;
+@property (weak) IBOutlet NSTextField *autoPkgStatusLabel;
+
+// Status icons
+@property (weak) IBOutlet NSImageView *gitStatusIcon;
+@property (weak) IBOutlet NSImageView *autoPkgStatusIcon;
+
+// Matrices
+@property (weak) IBOutlet NSMatrix *scheduleMatrix;
+
+// IBActions
 - (IBAction)sendTestEmail:(id)sender;
 - (IBAction)saveAndClose:(id)sender;
+- (IBAction)installGit:(id)sender;
+- (IBAction)installAutoPkg:(id)sender;
 
 @end

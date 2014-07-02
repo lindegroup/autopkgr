@@ -13,5 +13,7 @@
 - (NSString *)getUserName;
 - (NSString *)getHostName;
 - (NSString *)getUserAtHostName;
+- (BOOL)gitInstalled;
+- (BOOL)autoPkgInstalled;
 
 @end

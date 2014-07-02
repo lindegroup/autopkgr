@@ -26,6 +26,11 @@
 @synthesize smtpAuthenticationEnabledButton;
 @synthesize smtpTLSEnabledButton;
 @synthesize warnBeforeQuittingButton;
+@synthesize gitStatusLabel;
+@synthesize autoPkgStatusLabel;
+@synthesize gitStatusIcon;
+@synthesize autoPkgStatusIcon;
+@synthesize scheduleMatrix;
 
 - (void)awakeFromNib
 {
@@ -73,6 +78,9 @@
     [super windowDidLoad];
     
     // Implement this method to handle any initialization after your window controller's window has been loaded from its nib file.
+
+    // Set matrix size (IB effs this up)
+    [scheduleMatrix setIntercellSpacing:NSMakeSize(10.0, 10.5)];
 
     // Populate the SMTP settings from the user defaults if they exist
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
@@ -124,6 +132,22 @@
 
     // Set the SMTPFrom key to shortname@hostname
     [defaults setObject:[hostInfo getUserAtHostName] forKey:kSMTPFrom];
+
+    if ([hostInfo gitInstalled]) {
+        [gitStatusLabel setStringValue:@"Git has been installed."];
+        [gitStatusIcon setImage:[NSImage imageNamed:@"status-available.tiff"]];
+    } else {
+        [gitStatusLabel setStringValue:@"Git is not installed."];
+        [gitStatusIcon setImage:[NSImage imageNamed:@"status-unavailable.tiff"]];
+    }
+
+    if ([hostInfo autoPkgInstalled]) {
+        [autoPkgStatusLabel setStringValue:@"AutoPkg has been installed."];
+        [autoPkgStatusIcon setImage:[NSImage imageNamed:@"status-available.tiff"]];
+    } else {
+        [autoPkgStatusLabel setStringValue:@"AutoPkg is not installed."];
+        [autoPkgStatusIcon setImage:[NSImage imageNamed:@"status-unavailable.tiff"]];
+    }
 
     // Synchronize with the defaults database
     [defaults synchronize];
@@ -191,6 +215,30 @@
 
     // Close the window
     [self close];
+}
+
+/*
+ This should prompt for Xcode CLI tools
+ installation on systems without Git.
+ */
+- (IBAction)installGit:(id)sender {
+    NSTask *task = [[NSTask alloc] init];
+    NSPipe *pipe = [NSPipe pipe];
+    NSFileHandle *installGitFileHandle = [pipe fileHandleForReading];
+    NSString *gitCmd = @"git";
+
+    [task setLaunchPath:gitCmd];
+    [task setArguments:[NSArray arrayWithObjects:@"--version", nil]];
+    [task setStandardError:pipe];
+    [task launch];
+    [installGitFileHandle readInBackgroundAndNotify];
+}
+
+- (IBAction)installAutoPkg:(id)sender {
+    // Get authorization
+    // Download AutoPkg zipball from https://github.com/autopkg/autopkg/zipball/master
+    // Store zip in /tmp
+    // Unzip AutoPkg, then run Scripts/install.sh as root
 }
 
 @end
