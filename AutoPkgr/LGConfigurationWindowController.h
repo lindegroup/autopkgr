@@ -22,6 +22,11 @@
 @property (weak) IBOutlet NSButton *smtpTLSEnabledButton;
 @property (weak) IBOutlet NSButton *warnBeforeQuittingButton;
 
+// Buttons
+@property (weak) IBOutlet NSButton *autoPkgCacheFolderButton;
+@property (weak) IBOutlet NSButton *autoPkgRecipeReposFolderButton;
+@property (weak) IBOutlet NSButton *localMunkiRepoFolderButton;
+
 // Labels
 @property (weak) IBOutlet NSTextField *gitStatusLabel;
 @property (weak) IBOutlet NSTextField *autoPkgStatusLabel;

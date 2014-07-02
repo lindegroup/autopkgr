@@ -13,6 +13,9 @@
 - (NSString *)getUserName;
 - (NSString *)getHostName;
 - (NSString *)getUserAtHostName;
+- (NSString *)getAutoPkgCacheDir;
+- (NSString *)getAutoPkgRecipeReposDir;
+- (NSString *)getMunkiRepoDir;
 - (BOOL)gitInstalled;
 - (BOOL)autoPkgInstalled;
 

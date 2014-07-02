@@ -27,6 +27,9 @@
 @synthesize smtpAuthenticationEnabledButton;
 @synthesize smtpTLSEnabledButton;
 @synthesize warnBeforeQuittingButton;
+@synthesize autoPkgCacheFolderButton;
+@synthesize autoPkgRecipeReposFolderButton;
+@synthesize localMunkiRepoFolderButton;
 @synthesize gitStatusLabel;
 @synthesize autoPkgStatusLabel;
 @synthesize gitStatusIcon;
@@ -148,6 +151,22 @@
     } else {
         [autoPkgStatusLabel setStringValue:kAutoPkgNotInstalledLabel];
         [autoPkgStatusIcon setImage:[NSImage imageNamed:kStatusUnavailableImage]];
+    }
+
+    // Enable tools buttons if directories exist
+    BOOL isDir;
+    NSString *autoPkgCacheFolder = [hostInfo getAutoPkgCacheDir];
+    NSString *autoPkgRecipeReposFolder = [hostInfo getAutoPkgRecipeReposDir];
+    NSString *localMunkiRepoFolder = [hostInfo getMunkiRepoDir];
+
+    if ([[NSFileManager defaultManager] fileExistsAtPath:autoPkgCacheFolder isDirectory:&isDir] && isDir) {
+        [autoPkgCacheFolderButton setEnabled:YES];
+    }
+    if ([[NSFileManager defaultManager] fileExistsAtPath:autoPkgRecipeReposFolder isDirectory:&isDir] && isDir) {
+        [autoPkgRecipeReposFolderButton setEnabled:YES];
+    }
+    if ([[NSFileManager defaultManager] fileExistsAtPath:localMunkiRepoFolder isDirectory:&isDir] && isDir) {
+        [localMunkiRepoFolderButton setEnabled:YES];
     }
 
     // Synchronize with the defaults database
@@ -322,70 +341,60 @@
 - (IBAction)openAutoPkgCacheFolder:(id)sender
 {
     BOOL isDir;
-    NSString *autoPkgCacheFolderFromPrefs = (__bridge_transfer NSString *)CFPreferencesCopyAppValue(CFSTR("CACHE_DIR"), CFSTR("com.github.autopkg"));
+    LGHostInfo *hostInfo = [[LGHostInfo alloc] init];
+    NSString *autoPkgCacheFolder = [hostInfo getAutoPkgCacheDir];
 
-    if (!autoPkgCacheFolderFromPrefs) {
-        NSLog(@"The preference domain com.github.autopkg doesn't exist or key CACHE_DIR doesn't exist.");
-        NSString *autoPkgCacheFolder = [NSString stringWithFormat:@"%@/Library/AutoPkg/Cache", NSHomeDirectory()];
-        if ([[NSFileManager defaultManager] fileExistsAtPath:autoPkgCacheFolder isDirectory:&isDir] && isDir) {
-            NSURL *autoPkgCacheFolderURL = [NSURL fileURLWithPath:autoPkgCacheFolder];
-            [[NSWorkspace sharedWorkspace] openURL:autoPkgCacheFolderURL];
-        } else {
-            NSLog(@"%@ does not exist.", autoPkgCacheFolder);  // TODO: Either grey out the button or present NSAlert
-        }
+    if ([[NSFileManager defaultManager] fileExistsAtPath:autoPkgCacheFolder isDirectory:&isDir] && isDir) {
+        NSURL *autoPkgCacheFolderURL = [NSURL fileURLWithPath:autoPkgCacheFolder];
+        [[NSWorkspace sharedWorkspace] openURL:autoPkgCacheFolderURL];
     } else {
-        if ([[NSFileManager defaultManager] fileExistsAtPath:autoPkgCacheFolderFromPrefs isDirectory:&isDir] && isDir) {
-            NSURL *autoPkgCacheFolderURL = [NSURL fileURLWithPath:autoPkgCacheFolderFromPrefs];
-            [[NSWorkspace sharedWorkspace] openURL:autoPkgCacheFolderURL];
-        } else {
-            NSLog(@"%@ does not exist.", autoPkgCacheFolderFromPrefs);  // TODO: Either grey out the button or present NSAlert
-        }
+        NSLog(@"%@ does not exist.", autoPkgCacheFolder);
+        NSAlert *alert = [[NSAlert alloc] init];
+        [alert addButtonWithTitle:@"OK"];
+        [alert setMessageText:@"Cannot find the AutoPkg Cache folder."];
+        [alert setInformativeText:[NSString stringWithFormat:@"%@ could not find the AutoPkg Cache folder located in %@. Please verify that this folder exists.", kApplicationName, autoPkgCacheFolder]];
+        [alert setAlertStyle:NSWarningAlertStyle];
+        [alert runModal];
     }
 }
 
 - (IBAction)openAutoPkgRecipeReposFolder:(id)sender
 {
     BOOL isDir;
-    NSString *autoPkgRecipeReposFolderFromPrefs = (__bridge_transfer NSString *)CFPreferencesCopyAppValue(CFSTR("RECIPE_REPO_DIR"), CFSTR("com.github.autopkg"));
-    if (!autoPkgRecipeReposFolderFromPrefs) {
-        NSLog(@"The preference domain com.github.autopkg doesn't exist or key RECIPE_REPO_DIR doesn't exist.");
-        NSString *autoPkgRecipeReposFolder = [NSString stringWithFormat:@"%@/Library/AutoPkg/RecipeRepos", NSHomeDirectory()];
-        if ([[NSFileManager defaultManager] fileExistsAtPath:autoPkgRecipeReposFolder isDirectory:&isDir] && isDir) {
-            NSURL *autoPkgRecipeReposFolderURL = [NSURL fileURLWithPath:autoPkgRecipeReposFolder];
-            [[NSWorkspace sharedWorkspace] openURL:autoPkgRecipeReposFolderURL];
-        } else {
-            NSLog(@"%@ does not exist.", autoPkgRecipeReposFolder);  // TODO: Either grey out the button or present NSAlert
-        }
+    LGHostInfo *hostInfo = [[LGHostInfo alloc] init];
+    NSString *autoPkgRecipeReposFolder = [hostInfo getAutoPkgRecipeReposDir];
+
+    if ([[NSFileManager defaultManager] fileExistsAtPath:autoPkgRecipeReposFolder isDirectory:&isDir] && isDir) {
+        NSURL *autoPkgRecipeReposFolderURL = [NSURL fileURLWithPath:autoPkgRecipeReposFolder];
+        [[NSWorkspace sharedWorkspace] openURL:autoPkgRecipeReposFolderURL];
     } else {
-        if ([[NSFileManager defaultManager] fileExistsAtPath:autoPkgRecipeReposFolderFromPrefs isDirectory:&isDir] && isDir) {
-            NSURL *autoPkgRecipeReposFolderURL = [NSURL fileURLWithPath:autoPkgRecipeReposFolderFromPrefs];
-            [[NSWorkspace sharedWorkspace] openURL:autoPkgRecipeReposFolderURL];
-        } else {
-            NSLog(@"%@ does not exist.", autoPkgRecipeReposFolderFromPrefs);  // TODO: Either grey out the button or present NSAlert
-        }
+        NSLog(@"%@ does not exist.", autoPkgRecipeReposFolder);
+        NSAlert *alert = [[NSAlert alloc] init];
+        [alert addButtonWithTitle:@"OK"];
+        [alert setMessageText:@"Cannot find the AutoPkg RecipeRepos folder."];
+        [alert setInformativeText:[NSString stringWithFormat:@"%@ could not find the AutoPkg RecipeRepos folder located in %@. Please verify that this folder exists.", kApplicationName, autoPkgRecipeReposFolder]];
+        [alert setAlertStyle:NSWarningAlertStyle];
+        [alert runModal];
     }
 }
 
 - (IBAction)openLocalMunkiRepoFolder:(id)sender
 {
     BOOL isDir;
-    NSString *localMunkiRepoFolderFromPrefs = (__bridge_transfer NSString *)CFPreferencesCopyAppValue(CFSTR("repo_path"), CFSTR("com.googlecode.munki.munkiimport"));
-    if (!localMunkiRepoFolderFromPrefs) {
-        NSLog(@"The preference domain com.googlecode.munki.munkiimport doesn't exist or key repo_path doesn't exist.");
-        NSString *localMunkiRepoFolder = @"/Users/Shared/munki_repo";
-        if ([[NSFileManager defaultManager] fileExistsAtPath:localMunkiRepoFolder isDirectory:&isDir] && isDir) {
-            NSURL *localMunkiRepoFolderURL = [NSURL fileURLWithPath:localMunkiRepoFolder];
-            [[NSWorkspace sharedWorkspace] openURL:localMunkiRepoFolderURL];
-        } else {
-            NSLog(@"%@ does not exist.", localMunkiRepoFolder);  // TODO: Either grey out the button or present NSAlert
-        }
+    LGHostInfo *hostInfo = [[LGHostInfo alloc] init];
+    NSString *localMunkiRepoFolder = [hostInfo getMunkiRepoDir];
+
+    if ([[NSFileManager defaultManager] fileExistsAtPath:localMunkiRepoFolder isDirectory:&isDir] && isDir) {
+        NSURL *localMunkiRepoFolderURL = [NSURL fileURLWithPath:localMunkiRepoFolder];
+        [[NSWorkspace sharedWorkspace] openURL:localMunkiRepoFolderURL];
     } else {
-        if ([[NSFileManager defaultManager] fileExistsAtPath:localMunkiRepoFolderFromPrefs isDirectory:&isDir] && isDir) {
-            NSURL *localMunkiRepoFolderURL = [NSURL fileURLWithPath:localMunkiRepoFolderFromPrefs];
-            [[NSWorkspace sharedWorkspace] openURL:localMunkiRepoFolderURL];
-        } else {
-            NSLog(@"%@ does not exist.", localMunkiRepoFolderFromPrefs);  // TODO: Either grey out the button or present NSAlert
-        }
+        NSLog(@"%@ does not exist.", localMunkiRepoFolder);
+        NSAlert *alert = [[NSAlert alloc] init];
+        [alert addButtonWithTitle:@"OK"];
+        [alert setMessageText:@"Cannot find the Munki Repository."];
+        [alert setInformativeText:[NSString stringWithFormat:@"%@ could not find the Munki repository located in %@. Please verify that this folder exists.", kApplicationName, localMunkiRepoFolder]];
+        [alert setAlertStyle:NSWarningAlertStyle];
+        [alert runModal];
     }
 }
 
