@@ -13,6 +13,7 @@
 		1A979FE01960BCCC00EE9881 /* LGUnzipper.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A979FDF1960BCCC00EE9881 /* LGUnzipper.m */; };
 		1AA5B32A195FD136006DA2CD /* status-available.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 1AA5B328195FD135006DA2CD /* status-available.tiff */; };
 		1AA5B32B195FD136006DA2CD /* status-unavailable.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 1AA5B329195FD135006DA2CD /* status-unavailable.tiff */; };
+		1AAAA5CC196C82DB00623804 /* LGAutoPkgRunner.m in Sources */ = {isa = PBXBuildFile; fileRef = 1AAAA5CB196C82DB00623804 /* LGAutoPkgRunner.m */; };
 		1AC69551195B59ED00D2BD81 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1AC69550195B59ED00D2BD81 /* Cocoa.framework */; };
 		1AC6955B195B59ED00D2BD81 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 1AC69559195B59ED00D2BD81 /* InfoPlist.strings */; };
 		1AC6955D195B59EE00D2BD81 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 1AC6955C195B59ED00D2BD81 /* main.m */; };
@@ -107,6 +108,8 @@
 		1A979FDF1960BCCC00EE9881 /* LGUnzipper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGUnzipper.m; sourceTree = "<group>"; };
 		1AA5B328195FD135006DA2CD /* status-available.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = "status-available.tiff"; sourceTree = "<group>"; };
 		1AA5B329195FD135006DA2CD /* status-unavailable.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = "status-unavailable.tiff"; sourceTree = "<group>"; };
+		1AAAA5CA196C82DB00623804 /* LGAutoPkgRunner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGAutoPkgRunner.h; sourceTree = "<group>"; };
+		1AAAA5CB196C82DB00623804 /* LGAutoPkgRunner.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGAutoPkgRunner.m; sourceTree = "<group>"; };
 		1AC6954D195B59ED00D2BD81 /* AutoPkgr.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AutoPkgr.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1AC69550195B59ED00D2BD81 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		1AC69553195B59ED00D2BD81 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
@@ -229,6 +232,8 @@
 				1AC98411195CE8520071CAB3 /* LGEmailer.m */,
 				1AC98408195CE7D60071CAB3 /* LGConstants.h */,
 				1AC98409195CE7D60071CAB3 /* LGConstants.m */,
+				1AAAA5CA196C82DB00623804 /* LGAutoPkgRunner.h */,
+				1AAAA5CB196C82DB00623804 /* LGAutoPkgRunner.m */,
 				1AC9841C195CEC350071CAB3 /* LGConfigurationWindowController.h */,
 				1AC9841D195CEC350071CAB3 /* LGConfigurationWindowController.m */,
 				1A979FDE1960BCCC00EE9881 /* LGUnzipper.h */,
@@ -461,6 +466,7 @@
 				1AC9840A195CE7D60071CAB3 /* LGConstants.m in Sources */,
 				1AC98416195CE99E0071CAB3 /* SSKeychain.m in Sources */,
 				1A979FE01960BCCC00EE9881 /* LGUnzipper.m in Sources */,
+				1AAAA5CC196C82DB00623804 /* LGAutoPkgRunner.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
