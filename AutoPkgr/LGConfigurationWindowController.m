@@ -11,6 +11,7 @@
 #import "LGEmailer.h"
 #import "LGHostInfo.h"
 #import "LGUnzipper.h"
+#import "LGAutoPkgRunner.h"
 #import "SSKeychain.h"
 
 @interface LGConfigurationWindowController ()
@@ -24,6 +25,7 @@
 @synthesize smtpUsername;
 @synthesize smtpPassword;
 @synthesize smtpPort;
+@synthesize repoURLToAdd;
 @synthesize smtpAuthenticationEnabledButton;
 @synthesize smtpTLSEnabledButton;
 @synthesize warnBeforeQuittingButton;
@@ -396,6 +398,13 @@
         [alert setAlertStyle:NSWarningAlertStyle];
         [alert runModal];
     }
+}
+
+- (IBAction)addAutoPkgRepoURL:(id)sender
+{
+    // TODO: Input validation + success/failure notification
+    LGAutoPkgRunner *autoPkgRunner = [[LGAutoPkgRunner alloc] init];
+    [autoPkgRunner addAutoPkgRecipeRepo:[repoURLToAdd stringValue]];
 }
 
 @end
