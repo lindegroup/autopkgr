@@ -151,6 +151,9 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
     if ([defaults objectForKey:kSMTPAuthenticationEnabled]) {
         [smtpAuthenticationEnabledButton setState:[[defaults objectForKey:kSMTPAuthenticationEnabled] boolValue]];
     }
+    if ([defaults objectForKey:kSendEmailNotificationsWhenNewVersionsAreFoundEnabled]) {
+        [sendEmailNotificationsWhenNewVersionsAreFoundButton setState:[[defaults objectForKey:kSendEmailNotificationsWhenNewVersionsAreFoundEnabled] boolValue]];
+    }
     if ([defaults objectForKey:kWarnBeforeQuittingEnabled]) {
         [warnBeforeQuittingButton setState:[[defaults objectForKey:kWarnBeforeQuittingEnabled] boolValue]];
     }
@@ -369,6 +372,14 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
     } else {
         NSLog(@"Disabling SMTP authentication.");
         [defaults setBool:NO forKey:kSMTPAuthenticationEnabled];
+    }
+
+    if ([sendEmailNotificationsWhenNewVersionsAreFoundButton state] == NSOnState) {
+        NSLog(@"Enabling email notifications.");
+        [defaults setBool:YES forKey:kSendEmailNotificationsWhenNewVersionsAreFoundEnabled];
+    } else {
+        NSLog(@"Disabling email notificaitons.");
+        [defaults setBool:NO forKey:kSendEmailNotificationsWhenNewVersionsAreFoundEnabled];
     }
 
     // Store the password used for SMTP authentication in the default keychain
