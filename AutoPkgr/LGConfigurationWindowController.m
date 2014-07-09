@@ -29,6 +29,9 @@
 @synthesize smtpAuthenticationEnabledButton;
 @synthesize smtpTLSEnabledButton;
 @synthesize warnBeforeQuittingButton;
+@synthesize checkForNewVersionsOfAppsAutomaticallyButton;
+@synthesize checkForRepoUpdatesAutomaticallyButton;
+@synthesize sendEmailNotificationsWhenNewVersionsAreFoundButton;
 @synthesize autoPkgCacheFolderButton;
 @synthesize autoPkgRecipeReposFolderButton;
 @synthesize localMunkiRepoFolderButton;
@@ -38,6 +41,11 @@
 @synthesize autoPkgStatusIcon;
 @synthesize scheduleMatrix;
 
+static void *XXCheckForNewAppsAutomaticallyEnabledContext = &XXCheckForNewAppsAutomaticallyEnabledContext;
+static void *XXCheckForRepoUpdatesAutomaticallyEnabledContext = &XXCheckForRepoUpdatesAutomaticallyEnabledContext;
+static void *XXEmailNotificationsEnabledContext = &XXEmailNotificationsEnabledContext;
+static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
+
 - (void)awakeFromNib
 {
     // This is for the token field support
@@ -46,12 +54,18 @@
     [smtpAuthenticationEnabledButton addObserver:self
                                       forKeyPath:@"cell.state"
                                          options:(NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld)
-                                         context:NULL];
+                                         context:XXAuthenticationEnabledContext];
+
+    [sendEmailNotificationsWhenNewVersionsAreFoundButton addObserver:self
+                                                          forKeyPath:@"cell.state"
+                                                             options:(NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld)
+                                                             context:XXEmailNotificationsEnabledContext];
 }
 
 - (void)dealloc
 {
-    [smtpAuthenticationEnabledButton removeObserver:self forKeyPath:@"cell.state"];
+    [smtpAuthenticationEnabledButton removeObserver:self forKeyPath:@"cell.state" context:XXAuthenticationEnabledContext];
+    [sendEmailNotificationsWhenNewVersionsAreFoundButton removeObserver:self forKeyPath:@"cell.state" context:XXEmailNotificationsEnabledContext];
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
@@ -59,13 +73,35 @@
 //    NSLog(@"Keypath: %@", keyPath);
 //    NSLog(@"ofObject: %@", object);
 //    NSLog(@"change: %@", change);
-    if ([keyPath isEqualToString:@"cell.state"]) {
-        if ([[change objectForKey:@"new"] integerValue] == 1) {
-            [smtpUsername setEnabled:YES];
-            [smtpPassword setEnabled:YES];
-        } else {
-            [smtpUsername setEnabled:NO];
-            [smtpPassword setEnabled:NO];
+    if (context == XXAuthenticationEnabledContext) {
+        if ([keyPath isEqualToString:@"cell.state"]) {
+            if ([[change objectForKey:@"new"] integerValue] == 1) {
+                [smtpUsername setEnabled:YES];
+                [smtpPassword setEnabled:YES];
+            } else {
+                [smtpUsername setEnabled:NO];
+                [smtpPassword setEnabled:NO];
+            }
+        }
+    } else if (context == XXEmailNotificationsEnabledContext) {
+        if ([keyPath isEqualToString:@"cell.state"]) {
+            if ([[change objectForKey:@"new"] integerValue] == 1) {
+                [smtpTo setEnabled:YES];
+                [smtpServer setEnabled:YES];
+                [smtpUsername setEnabled:YES];
+                [smtpPassword setEnabled:YES];
+                [smtpPort setEnabled:YES];
+                [smtpAuthenticationEnabledButton setEnabled:YES];
+                [smtpTLSEnabledButton setEnabled:YES];
+            } else {
+                [smtpTo setEnabled:NO];
+                [smtpServer setEnabled:NO];
+                [smtpUsername setEnabled:NO];
+                [smtpPassword setEnabled:NO];
+                [smtpPort setEnabled:NO];
+                [smtpAuthenticationEnabledButton setEnabled:NO];
+                [smtpTLSEnabledButton setEnabled:NO];
+            }
         }
     }
 }

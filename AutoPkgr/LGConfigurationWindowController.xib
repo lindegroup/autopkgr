@@ -10,11 +10,14 @@
                 <outlet property="autoPkgRecipeReposFolderButton" destination="5lK-cr-mp5" id="aKy-dK-4Vs"/>
                 <outlet property="autoPkgStatusIcon" destination="dzY-Ei-6ZX" id="8Bu-LS-hY9"/>
                 <outlet property="autoPkgStatusLabel" destination="Pbf-A7-T4b" id="hxh-Eo-6ky"/>
+                <outlet property="checkForNewVersionsOfAppsAutomaticallyButton" destination="J8d-qW-trQ" id="lHS-nM-74R"/>
+                <outlet property="checkForRepoUpdatesAutomaticallyButton" destination="K6Q-1C-fKu" id="enB-L8-gVQ"/>
                 <outlet property="gitStatusIcon" destination="00R-tv-agW" id="qbk-yg-37W"/>
                 <outlet property="gitStatusLabel" destination="OPb-IV-o9L" id="iUI-9q-yU4"/>
                 <outlet property="localMunkiRepoFolderButton" destination="z6I-Bv-EFk" id="Pai-q2-byn"/>
                 <outlet property="repoURLToAdd" destination="PWu-1D-EW1" id="nyi-oP-8Yl"/>
                 <outlet property="scheduleMatrix" destination="k2D-GX-3cW" id="OvT-cd-qsg"/>
+                <outlet property="sendEmailNotificationsWhenNewVersionsAreFoundButton" destination="TPC-Gd-b8O" id="F4h-2O-FcT"/>
                 <outlet property="smtpAuthenticationEnabledButton" destination="6N3-g1-fHC" id="yy0-0M-C5o"/>
                 <outlet property="smtpPassword" destination="aRk-NU-9Jl" id="vwv-jT-FoD"/>
                 <outlet property="smtpPort" destination="HmV-Dc-TUb" id="JN2-sh-pV8"/>
@@ -308,7 +311,7 @@
                                                                 <rect key="frame" x="87" y="62" width="537" height="106"/>
                                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                                 <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                                                                <size key="cellSize" width="537" height="25"/>
+                                                                <size key="cellSize" width="118" height="18"/>
                                                                 <size key="intercellSpacing" width="4" height="2"/>
                                                                 <buttonCell key="prototype" type="radio" title="Radio" imagePosition="left" alignment="left" inset="2" id="04Z-xc-9uF">
                                                                     <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
