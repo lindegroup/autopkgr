@@ -112,7 +112,7 @@
 
 - (void)removeAutoPkgRecipeRepo:(NSString *)repoURL
 {
-    // Set up task, pipe, and file handle
+    // Set up task and pipe
     NSTask *autoPkgRepoRemoveTask = [[NSTask alloc] init];
     NSPipe *autoPkgRepoRemovePipe = [NSPipe pipe];
 
@@ -127,6 +127,52 @@
 
     // Launch the task
     [autoPkgRepoRemoveTask launch];
+}
+
+- (void)updateAutoPkgRecipeRepos
+{
+    // Set up task and pipe
+    NSTask *updateAutoPkgReposTask = [[NSTask alloc] init];
+    NSPipe *updateAutoPkgReposPipe = [NSPipe pipe];
+
+    // Set up launch path and args
+    NSString *launchPath = @"/usr/bin/python";
+    NSArray *args = [NSArray arrayWithObjects:@"/usr/local/bin/autopkg", @"repo-update", @"all", nil];
+
+    // Configure the task
+    [updateAutoPkgReposTask setLaunchPath:launchPath];
+    [updateAutoPkgReposTask setArguments:args];
+    [updateAutoPkgReposTask setStandardOutput:updateAutoPkgReposPipe];
+
+    // Launch the task
+    [updateAutoPkgReposTask launch];
+}
+
+- (NSString *)runAutoPkgWithRecipeListAndReturnReportPlist:(NSString *)recipeListPath // TODO: This blocks now, use a background thread
+{
+    // Set up our task, pipe, and file handle
+    NSTask *autoPkgRunTask = [[NSTask alloc] init];
+    NSPipe *autoPkgRunPipe = [NSPipe pipe];
+    NSFileHandle *fileHandle = [autoPkgRunPipe fileHandleForReading];
+
+    // Set up our launch path and args
+    NSString *launchPath = @"/usr/bin/python";
+    NSArray *args = [NSArray arrayWithObjects:@"/usr/local/bin/autopkg", @"run", @"--report-plist", @"--recipe-list", [NSString stringWithFormat:@"%@", recipeListPath], nil];
+
+    // Configure the task
+    [autoPkgRunTask setLaunchPath:launchPath];
+    [autoPkgRunTask setArguments:args];
+    [autoPkgRunTask setStandardOutput:autoPkgRunPipe];
+
+    // Launch the task
+    [autoPkgRunTask launch];
+
+    // Read our data from the fileHandle
+    NSData *autoPkgRunReportPlistData = [fileHandle readDataToEndOfFile];
+    // Init our string with data from the fileHandle
+    NSString *autoPkgRunReportPlistString = [[NSString alloc] initWithData:autoPkgRunReportPlistData encoding:NSUTF8StringEncoding];
+
+    return autoPkgRunReportPlistString;
 }
 
 @end

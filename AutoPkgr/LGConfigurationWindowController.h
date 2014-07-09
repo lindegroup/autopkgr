@@ -51,8 +51,12 @@
 - (IBAction)openAutoPkgRecipeReposFolder:(id)sender;
 - (IBAction)openLocalMunkiRepoFolder:(id)sender;
 - (IBAction)addAutoPkgRepoURL:(id)sender;
+- (IBAction)updateReposNow:(id)sender;
+- (IBAction)checkAppsNow:(id)sender;
 
 - (void)runCommandAsRoot:(NSString *)runDirectory command:(NSString *)command;
 - (void)downloadAndInstallAutoPkg;
+- (NSString *)createRecipeListFromArrayOfRecipesAndReturnRecipeListPath:(NSArray *)recipes inDirectory:(NSString *)dir;
+- (NSArray *)tempAutoPkgRecipesToRun; // temp
 
 @end
