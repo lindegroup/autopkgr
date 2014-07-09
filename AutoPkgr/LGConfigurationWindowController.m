@@ -443,4 +443,16 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
     [autoPkgRunner addAutoPkgRecipeRepo:[repoURLToAdd stringValue]];
 }
 
+- (IBAction)updateReposNow:(id)sender
+{
+    // TODO: Success/failure notification
+    NSLog(@"Updating AutoPkg recipe repos.");
+    LGAutoPkgRunner *autoPkgRunner = [[LGAutoPkgRunner alloc] init];
+    [autoPkgRunner updateAutoPkgRecipeRepos];
+}
+
+- (IBAction)checkAppsNow:(id)sender
+{
+}
+
 @end

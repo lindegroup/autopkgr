@@ -14,5 +14,6 @@
 - (NSArray *)getLocalAutoPkgRecipeRepos;
 - (void)addAutoPkgRecipeRepo:(NSString *)repoURL;
 - (void)removeAutoPkgRecipeRepo:(NSString *)repoURL;
+- (void)updateAutoPkgRecipeRepos;
 
 @end

@@ -112,7 +112,7 @@
 
 - (void)removeAutoPkgRecipeRepo:(NSString *)repoURL
 {
-    // Set up task, pipe, and file handle
+    // Set up task and pipe
     NSTask *autoPkgRepoRemoveTask = [[NSTask alloc] init];
     NSPipe *autoPkgRepoRemovePipe = [NSPipe pipe];
 
@@ -127,6 +127,25 @@
 
     // Launch the task
     [autoPkgRepoRemoveTask launch];
+}
+
+- (void)updateAutoPkgRecipeRepos
+{
+    // Set up task and pipe
+    NSTask *updateAutoPkgReposTask = [[NSTask alloc] init];
+    NSPipe *updateAutoPkgReposPipe = [NSPipe pipe];
+
+    // Set up launch path and args
+    NSString *launchPath = @"/usr/bin/python";
+    NSArray *args = [NSArray arrayWithObjects:@"/usr/local/bin/autopkg", @"repo-update", @"all", nil];
+
+    // Configure the task
+    [updateAutoPkgReposTask setLaunchPath:launchPath];
+    [updateAutoPkgReposTask setArguments:args];
+    [updateAutoPkgReposTask setStandardOutput:updateAutoPkgReposPipe];
+
+    // Launch the task
+    [updateAutoPkgReposTask launch];
 }
 
 @end
