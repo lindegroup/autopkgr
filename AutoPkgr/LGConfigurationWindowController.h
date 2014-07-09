@@ -56,8 +56,7 @@
 
 - (void)runCommandAsRoot:(NSString *)runDirectory command:(NSString *)command;
 - (void)downloadAndInstallAutoPkg;
-- (void)runAutoPkgWithRecipeList:(NSString *)recipeListPath;
-- (void)createRecipeListFromArrayOfRecipes:(NSArray *)recipes inDirectory:(NSString *)dir;
+- (NSString *)createRecipeListFromArrayOfRecipesAndReturnRecipeListPath:(NSArray *)recipes inDirectory:(NSString *)dir;
 - (NSArray *)tempAutoPkgRecipesToRun; // temp
 
 @end

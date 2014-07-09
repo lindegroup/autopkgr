@@ -283,12 +283,7 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
     return result;
 }
 
-- (void)runAutoPkgWithRecipeList:(NSString *)recipeListPath
-{
-
-}
-
-- (void)createRecipeListFromArrayOfRecipes:(NSArray *)recipes inDirectory:(NSString *)dir
+- (NSString *)createRecipeListFromArrayOfRecipesAndReturnRecipeListPath:(NSArray *)recipes inDirectory:(NSString *)dir
 {
     NSFileManager *fm = [NSFileManager defaultManager];
     NSError *error;
@@ -309,7 +304,10 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
 
     if (error) {
         NSLog(@"Unable to write the AutoPkg recipe list to a file at %@. Error: %@. Recipes: %@\n", recipeListFilePath, error, recipeStringsSeparatedByNewLines);
+        return nil;
     }
+
+    return recipeListFilePath;
 }
 
 - (NSArray *)tempAutoPkgRecipesToRun // TODO: Remove me, (should get results from table view)
@@ -563,7 +561,11 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
     NSString *applicationSupportDirectory = [self applicationSupportDirectory];
     NSLog(@"Application Support directory is %@.", applicationSupportDirectory);
     NSLog(@"Creating a recipe list.");
-    [self createRecipeListFromArrayOfRecipes:[self tempAutoPkgRecipesToRun] inDirectory:applicationSupportDirectory];
+    NSString *recipeListFilePath = [self createRecipeListFromArrayOfRecipesAndReturnRecipeListPath:[self tempAutoPkgRecipesToRun] inDirectory:applicationSupportDirectory];
+    NSLog(@"Running AutoPkg with our recipe_list.txt.");
+    LGAutoPkgRunner *autoPkgRunner = [[LGAutoPkgRunner alloc] init];
+    NSString *autoPkgRunReportPlistString = [autoPkgRunner runAutoPkgWithRecipeListAndReturnReportPlist:recipeListFilePath];
+    NSLog(@"autoPkgRunReportPlistString: %@.", autoPkgRunReportPlistString);
 }
 
 @end

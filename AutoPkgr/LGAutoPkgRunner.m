@@ -148,4 +148,31 @@
     [updateAutoPkgReposTask launch];
 }
 
+- (NSString *)runAutoPkgWithRecipeListAndReturnReportPlist:(NSString *)recipeListPath // TODO: This blocks now, use a background thread
+{
+    // Set up our task, pipe, and file handle
+    NSTask *autoPkgRunTask = [[NSTask alloc] init];
+    NSPipe *autoPkgRunPipe = [NSPipe pipe];
+    NSFileHandle *fileHandle = [autoPkgRunPipe fileHandleForReading];
+
+    // Set up our launch path and args
+    NSString *launchPath = @"/usr/bin/python";
+    NSArray *args = [NSArray arrayWithObjects:@"/usr/local/bin/autopkg", @"run", @"--report-plist", @"--recipe-list", [NSString stringWithFormat:@"%@", recipeListPath], nil];
+
+    // Configure the task
+    [autoPkgRunTask setLaunchPath:launchPath];
+    [autoPkgRunTask setArguments:args];
+    [autoPkgRunTask setStandardOutput:autoPkgRunPipe];
+
+    // Launch the task
+    [autoPkgRunTask launch];
+
+    // Read our data from the fileHandle
+    NSData *autoPkgRunReportPlistData = [fileHandle readDataToEndOfFile];
+    // Init our string with data from the fileHandle
+    NSString *autoPkgRunReportPlistString = [[NSString alloc] initWithData:autoPkgRunReportPlistData encoding:NSUTF8StringEncoding];
+
+    return autoPkgRunReportPlistString;
+}
+
 @end
