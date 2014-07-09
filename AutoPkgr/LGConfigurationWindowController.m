@@ -211,6 +211,112 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
     [defaults synchronize];
 }
 
+- (BOOL)createDirectoryAtPath:(NSString *)resolvedPath withIntermediateDirectories:(BOOL)createIntermediates attributes:(NSDictionary *)attributes error:(NSError *__autoreleasing *)error
+{
+    BOOL isDir;
+    NSFileManager *fm = [NSFileManager defaultManager];
+    [fm createDirectoryAtPath:resolvedPath withIntermediateDirectories:createIntermediates attributes:attributes error:error];
+
+    if ([fm fileExistsAtPath:resolvedPath isDirectory:&isDir] && isDir) {
+        return YES;
+    }
+
+    return NO;
+}
+
+- (NSString *)findOrCreateDirectory:(NSSearchPathDirectory)searchPathDirectory
+                           inDomain:(NSSearchPathDomainMask)domainMask
+                appendPathComponent:(NSString *)appendComponent
+                              error:(NSError **)errorOut
+{
+    // Search for the path
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(searchPathDirectory,
+                                                         domainMask,
+                                                         YES);
+    if ([paths count] == 0) {
+        return nil;
+    }
+
+    // Normally only need the first path
+    NSString *resolvedPath = [paths objectAtIndex:0];
+
+    if (appendComponent) {
+        resolvedPath = [resolvedPath
+                        stringByAppendingPathComponent:appendComponent];
+    }
+
+    // Create the path if it doesn't exist
+    NSError *error;
+    BOOL success = [self createDirectoryAtPath:resolvedPath
+                   withIntermediateDirectories:YES
+                                    attributes:nil
+                                         error:&error];
+    if (!success) {
+        if (errorOut) {
+            *errorOut = error;
+        }
+
+        return nil;
+    }
+    
+    // If we've made it this far, we have succeeded
+    if (errorOut) {
+        *errorOut = nil;
+    }
+
+    return resolvedPath;
+}
+
+- (NSString *)applicationSupportDirectory
+{
+    NSString *executableName =
+    [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleExecutable"];
+    NSError *error;
+    NSString *result = [self findOrCreateDirectory:NSApplicationSupportDirectory
+                                          inDomain:NSUserDomainMask
+                               appendPathComponent:executableName
+                                             error:&error];
+    if (error) {
+        NSLog(@"Unable to find or create application support directory:\n%@", error);
+    }
+
+    return result;
+}
+
+- (void)runAutoPkgWithRecipeList:(NSString *)recipeListPath
+{
+
+}
+
+- (void)createRecipeListFromArrayOfRecipes:(NSArray *)recipes inDirectory:(NSString *)dir
+{
+    NSFileManager *fm = [NSFileManager defaultManager];
+    NSError *error;
+    NSString *recipeListFilePath = [NSString stringWithFormat:@"%@/recipe_list.txt", dir];
+    NSLog(@"recipeListFilePath: %@.", recipeListFilePath);
+
+    // Remove the file if it already exists (start fresh
+    // every time the user saves)
+    if ([fm fileExistsAtPath:recipeListFilePath]) {
+        [fm removeItemAtPath:recipeListFilePath error:&error];
+        if (error) {
+            NSLog(@"Unable to remove existing recipe list at %@. Error: %@.", recipeListFilePath, error);
+        }
+    }
+
+    NSString *recipeStringsSeparatedByNewLines = [recipes componentsJoinedByString:@"\n"];
+    [recipeStringsSeparatedByNewLines writeToFile:recipeListFilePath atomically:NO encoding:NSUTF8StringEncoding error:&error];
+
+    if (error) {
+        NSLog(@"Unable to write the AutoPkg recipe list to a file at %@. Error: %@. Recipes: %@\n", recipeListFilePath, error, recipeStringsSeparatedByNewLines);
+    }
+}
+
+- (NSArray *)tempAutoPkgRecipesToRun // TODO: Remove me, (should get results from table view)
+{
+    return [NSArray arrayWithObjects:@"Firefox.pkg", @"GoogleChrome.pkg", @"Evernote.pkg", nil];
+}
+
 - (IBAction)sendTestEmail:(id)sender
 {
     // Send a test email notification when the user
@@ -453,6 +559,11 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
 
 - (IBAction)checkAppsNow:(id)sender
 {
+    NSLog(@"Creating Application Support directory for %@.", kApplicationName);
+    NSString *applicationSupportDirectory = [self applicationSupportDirectory];
+    NSLog(@"Application Support directory is %@.", applicationSupportDirectory);
+    NSLog(@"Creating a recipe list.");
+    [self createRecipeListFromArrayOfRecipes:[self tempAutoPkgRecipesToRun] inDirectory:applicationSupportDirectory];
 }
 
 @end
