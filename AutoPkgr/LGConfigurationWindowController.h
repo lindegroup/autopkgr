@@ -17,6 +17,7 @@
 @property (weak) IBOutlet NSSecureTextField *smtpPassword;
 @property (weak) IBOutlet NSTextField *smtpPort;
 @property (weak) IBOutlet NSTextField *repoURLToAdd;
+@property (weak) IBOutlet NSTextField *autoPkgRunInterval;
 
 // Checkboxes
 @property (weak) IBOutlet NSButton *smtpAuthenticationEnabledButton;
