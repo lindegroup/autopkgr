@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="5056" systemVersion="13E28" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="5056" systemVersion="13D65" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="5056"/>
     </dependencies>
@@ -34,7 +34,7 @@
         <window title="AutoPkgr" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" oneShot="NO" releasedWhenClosed="NO" animationBehavior="default" id="F0z-JX-Cv5">
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
             <rect key="contentRect" x="196" y="240" width="752" height="514"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1680" height="1028"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1920" height="1058"/>
             <view key="contentView" id="se5-gp-TjO">
                 <rect key="frame" x="0.0" y="0.0" width="752" height="514"/>
                 <autoresizingMask key="autoresizingMask"/>
@@ -50,11 +50,11 @@
                                 <tabViewItems>
                                     <tabViewItem label="Install" identifier="1" id="P8W-IS-m5j">
                                         <view key="view" id="pCK-5F-Geg">
-                                            <rect key="frame" x="10" y="33" width="706" height="430"/>
+                                            <rect key="frame" x="10" y="33" width="258" height="0.0"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             <subviews>
                                                 <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ClY-1a-e2c">
-                                                    <rect key="frame" x="137" y="263" width="206" height="32"/>
+                                                    <rect key="frame" x="137" y="-167" width="206" height="32"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                     <buttonCell key="cell" type="push" title="Install Git" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="SeD-0I-N1O">
                                                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
@@ -65,7 +65,7 @@
                                                     </connections>
                                                 </button>
                                                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="OPb-IV-o9L">
-                                                    <rect key="frame" x="367" y="273" width="324" height="17"/>
+                                                    <rect key="frame" x="367" y="-157" width="324" height="17"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Git has been installed." id="c7N-WP-Kn2">
                                                         <font key="font" metaFont="system"/>
@@ -79,7 +79,7 @@
                                                     <imageCell key="cell" refusesFirstResponder="YES" alignment="left" animates="YES" imageScaling="proportionallyDown" image="NSStatusAvailable" id="Nwu-aH-Vde"/>
                                                 </imageView>
                                                 <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="x1S-bd-tl3">
-                                                    <rect key="frame" x="137" y="222" width="206" height="32"/>
+                                                    <rect key="frame" x="137" y="-208" width="206" height="32"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                     <buttonCell key="cell" type="push" title="Install AutoPkg" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="fT8-Dd-41f">
                                                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
@@ -90,7 +90,7 @@
                                                     </connections>
                                                 </button>
                                                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Pbf-A7-T4b">
-                                                    <rect key="frame" x="367" y="232" width="324" height="17"/>
+                                                    <rect key="frame" x="367" y="-198" width="324" height="17"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="AutoPkg has been installed." id="Jh6-Qb-lwm">
                                                         <font key="font" metaFont="system"/>
@@ -104,7 +104,7 @@
                                                     <imageCell key="cell" refusesFirstResponder="YES" alignment="left" animates="YES" imageScaling="proportionallyDown" image="NSStatusAvailable" id="KK7-d2-oiF"/>
                                                 </imageView>
                                                 <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="g4F-gg-Xfq">
-                                                    <rect key="frame" x="15" y="154" width="676" height="34"/>
+                                                    <rect key="frame" x="15" y="-276" width="676" height="34"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                     <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="center" title="Installing Git through AutoPkgr will prompt you to install the Xcode CLI tools." id="Kh2-iw-DFk">
                                                         <font key="font" metaFont="system"/>
@@ -116,7 +116,7 @@
                                         </view>
                                     </tabViewItem>
                                     <tabViewItem label="Configure Repos &amp; Apps" identifier="2" id="hvS-35-Bas">
-                                        <view key="view" id="Kzw-up-jZN">
+                                        <view key="view" ambiguous="YES" id="Kzw-up-jZN">
                                             <rect key="frame" x="10" y="33" width="706" height="430"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             <subviews>
@@ -134,19 +134,36 @@
                                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                                 <color key="gridColor" name="gridColor" catalog="System" colorSpace="catalog"/>
                                                                 <tableColumns>
-                                                                    <tableColumn width="667" minWidth="40" maxWidth="1000" id="A4c-aN-okl">
+                                                                    <tableColumn identifier="repoCheckbox" width="20" minWidth="20" maxWidth="20" id="rpK-Bj-A2d">
                                                                         <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left">
                                                                             <font key="font" metaFont="smallSystem"/>
                                                                             <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
                                                                             <color key="backgroundColor" white="0.33333298560000002" alpha="1" colorSpace="calibratedWhite"/>
                                                                         </tableHeaderCell>
-                                                                        <buttonCell key="dataCell" type="check" title="https://github.com/autopkg/recipes.git" bezelStyle="regularSquare" imagePosition="left" alignment="left" inset="2" id="apK-dH-fnB">
+                                                                        <buttonCell key="dataCell" type="check" bezelStyle="regularSquare" imagePosition="left" alignment="left" inset="2" id="Njx-oQ-9y9">
                                                                             <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                                                             <font key="font" metaFont="system"/>
                                                                         </buttonCell>
                                                                         <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                                                     </tableColumn>
+                                                                    <tableColumn identifier="repoURL" width="644" minWidth="40" maxWidth="1000" id="A4c-aN-okl">
+                                                                        <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left">
+                                                                            <font key="font" metaFont="smallSystem"/>
+                                                                            <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
+                                                                            <color key="backgroundColor" white="0.33333298560000002" alpha="1" colorSpace="calibratedWhite"/>
+                                                                        </tableHeaderCell>
+                                                                        <textFieldCell key="dataCell" lineBreakMode="truncatingTail" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" title="http://git.git.git.git/git.git" placeholderString="http://git.git.git.git/git.git" id="mGk-yU-97G">
+                                                                            <font key="font" metaFont="system"/>
+                                                                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                                                        </textFieldCell>
+                                                                        <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
+                                                                    </tableColumn>
                                                                 </tableColumns>
+                                                                <connections>
+                                                                    <outlet property="dataSource" destination="mvj-kT-UYD" id="hTB-pV-Xo0"/>
+                                                                    <outlet property="delegate" destination="mvj-kT-UYD" id="Hip-io-w3k"/>
+                                                                </connections>
                                                             </tableView>
                                                         </subviews>
                                                         <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -299,14 +316,14 @@
                                             <rect key="frame" x="10" y="33" width="706" height="430"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             <subviews>
-                                                <box autoresizesSubviews="NO" misplaced="YES" title="Automatic update checking" borderType="line" translatesAutoresizingMaskIntoConstraints="NO" id="aSh-hg-mty">
+                                                <box autoresizesSubviews="NO" title="Automatic update checking" borderType="line" translatesAutoresizingMaskIntoConstraints="NO" id="aSh-hg-mty">
                                                     <rect key="frame" x="31" y="298" width="644" height="112"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                     <view key="contentView">
                                                         <rect key="frame" x="1" y="1" width="642" height="96"/>
                                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                         <subviews>
-                                                            <button verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="7vx-nK-KRd">
+                                                            <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="7vx-nK-KRd">
                                                                 <rect key="frame" x="460" y="46" width="170" height="32"/>
                                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                                 <constraints>
@@ -340,7 +357,7 @@
                                                                     <font key="font" metaFont="system"/>
                                                                 </buttonCell>
                                                             </button>
-                                                            <button misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="K6Q-1C-fKu">
+                                                            <button translatesAutoresizingMaskIntoConstraints="NO" id="K6Q-1C-fKu">
                                                                 <rect key="frame" x="16" y="26" width="376" height="18"/>
                                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                                 <buttonCell key="cell" type="check" title="Check for repo updates automatically" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="2Rc-4D-cra">
@@ -348,7 +365,7 @@
                                                                     <font key="font" metaFont="system"/>
                                                                 </buttonCell>
                                                             </button>
-                                                            <button verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="X02-En-nic">
+                                                            <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="X02-En-nic">
                                                                 <rect key="frame" x="460" y="17" width="170" height="32"/>
                                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                                 <buttonCell key="cell" type="push" title="Update Repos Now" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="AmY-R1-NJM">
@@ -393,14 +410,14 @@
                                                     <color key="borderColor" white="0.0" alpha="0.41999999999999998" colorSpace="calibratedWhite"/>
                                                     <color key="fillColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                 </box>
-                                                <box autoresizesSubviews="NO" misplaced="YES" title="Email notifications" borderType="line" translatesAutoresizingMaskIntoConstraints="NO" id="0A8-YK-H2P">
+                                                <box autoresizesSubviews="NO" title="Email notifications" borderType="line" translatesAutoresizingMaskIntoConstraints="NO" id="0A8-YK-H2P">
                                                     <rect key="frame" x="31" y="17" width="644" height="271"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                     <view key="contentView">
                                                         <rect key="frame" x="1" y="1" width="642" height="255"/>
                                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                         <subviews>
-                                                            <textField verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="uO3-QG-q9R">
+                                                            <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="uO3-QG-q9R">
                                                                 <rect key="frame" x="172" y="155" width="286" height="22"/>
                                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" placeholderString="smtp.gmail.com" drawsBackground="YES" id="XrX-VY-sGj">
@@ -409,7 +426,7 @@
                                                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                                 </textFieldCell>
                                                             </textField>
-                                                            <textField verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="HmV-Dc-TUb">
+                                                            <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="HmV-Dc-TUb">
                                                                 <rect key="frame" x="501" y="156" width="52" height="22"/>
                                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                                 <constraints>
@@ -421,7 +438,7 @@
                                                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                                 </textFieldCell>
                                                             </textField>
-                                                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="cUb-Ex-bej">
+                                                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="cUb-Ex-bej">
                                                                 <rect key="frame" x="81" y="158" width="89" height="17"/>
                                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="SMTP server:" id="dIA-je-2nB">
@@ -430,7 +447,7 @@
                                                                     <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                                                 </textFieldCell>
                                                             </textField>
-                                                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="0MT-rL-IEP">
+                                                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="0MT-rL-IEP">
                                                                 <rect key="frame" x="464" y="159" width="31" height="17"/>
                                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="port" id="Yxg-J9-3du">
@@ -439,7 +456,7 @@
                                                                     <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                                                 </textFieldCell>
                                                             </textField>
-                                                            <button misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="6N3-g1-fHC">
+                                                            <button translatesAutoresizingMaskIntoConstraints="NO" id="6N3-g1-fHC">
                                                                 <rect key="frame" x="49" y="111" width="152" height="18"/>
                                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                                 <buttonCell key="cell" type="check" title="Use authentication" bezelStyle="regularSquare" imagePosition="left" inset="2" id="t0c-kT-pxo">
@@ -447,7 +464,7 @@
                                                                     <font key="font" metaFont="system"/>
                                                                 </buttonCell>
                                                             </button>
-                                                            <textField verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="zi5-oQ-M5R">
+                                                            <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="zi5-oQ-M5R">
                                                                 <rect key="frame" x="172" y="83" width="286" height="22"/>
                                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" enabled="NO" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" placeholderString="autopkgr@yourdomain.example" drawsBackground="YES" id="jrh-l3-iKT">
@@ -456,7 +473,7 @@
                                                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                                 </textFieldCell>
                                                             </textField>
-                                                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ToE-0q-pH2">
+                                                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="ToE-0q-pH2">
                                                                 <rect key="frame" x="81" y="86" width="89" height="17"/>
                                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Username:" id="mPh-pa-Wg4">
@@ -465,7 +482,7 @@
                                                                     <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                                                 </textFieldCell>
                                                             </textField>
-                                                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Jki-MF-GcS">
+                                                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Jki-MF-GcS">
                                                                 <rect key="frame" x="104" y="54" width="66" height="17"/>
                                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Password:" id="gMF-3J-P98">
@@ -474,7 +491,7 @@
                                                                     <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                                                 </textFieldCell>
                                                             </textField>
-                                                            <secureTextField verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="aRk-NU-9Jl">
+                                                            <secureTextField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="aRk-NU-9Jl">
                                                                 <rect key="frame" x="173" y="51" width="285" height="22"/>
                                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                                 <secureTextFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" enabled="NO" sendsActionOnEndEditing="YES" borderStyle="bezel" placeholderString="" drawsBackground="YES" usesSingleLineMode="YES" id="GVq-gK-DQJ">
@@ -486,7 +503,7 @@
                                                                     </allowedInputSourceLocales>
                                                                 </secureTextFieldCell>
                                                             </secureTextField>
-                                                            <button verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="SZ2-Hj-GiD">
+                                                            <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="SZ2-Hj-GiD">
                                                                 <rect key="frame" x="460" y="45" width="170" height="32"/>
                                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                                 <buttonCell key="cell" type="push" title="Send Test Email" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="IRF-p5-PAm">
@@ -497,7 +514,7 @@
                                                                     <action selector="sendTestEmail:" target="-2" id="8ry-oP-EUl"/>
                                                                 </connections>
                                                             </button>
-                                                            <button misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="TPC-Gd-b8O">
+                                                            <button translatesAutoresizingMaskIntoConstraints="NO" id="TPC-Gd-b8O">
                                                                 <rect key="frame" x="16" y="213" width="376" height="18"/>
                                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                                 <constraints>
@@ -508,7 +525,7 @@
                                                                     <font key="font" metaFont="system"/>
                                                                 </buttonCell>
                                                             </button>
-                                                            <tokenField verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="zwb-GB-3SL">
+                                                            <tokenField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="zwb-GB-3SL">
                                                                 <rect key="frame" x="172" y="185" width="286" height="22"/>
                                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                                 <tokenFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" borderStyle="bezel" alignment="left" drawsBackground="YES" allowsEditingTextAttributes="YES" id="9P7-je-apN">
@@ -517,7 +534,7 @@
                                                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                                 </tokenFieldCell>
                                                             </tokenField>
-                                                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="PIX-o6-vdF">
+                                                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="PIX-o6-vdF">
                                                                 <rect key="frame" x="97" y="188" width="73" height="17"/>
                                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Recipients:" id="Vsf-uW-fns">
@@ -526,7 +543,7 @@
                                                                     <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                                                 </textFieldCell>
                                                             </textField>
-                                                            <button misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Bwp-ds-cik">
+                                                            <button translatesAutoresizingMaskIntoConstraints="NO" id="Bwp-ds-cik">
                                                                 <rect key="frame" x="171" y="27" width="213" height="18"/>
                                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                                 <buttonCell key="cell" type="check" title="Use Secure Sockets Layer (SSL)" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="HLR-S4-ckM">
@@ -663,6 +680,11 @@ DQ
             </connections>
         </window>
         <userDefaultsController representsSharedInstance="YES" id="6hU-Zy-Fpz"/>
+        <customObject id="mvj-kT-UYD" customClass="LGPopularRepositories">
+            <connections>
+                <outlet property="popularRepositoresTableView" destination="n0R-ew-DOT" id="wSR-vr-GYH"/>
+            </connections>
+        </customObject>
     </objects>
     <resources>
         <image name="NSStatusAvailable" width="16" height="16"/>
