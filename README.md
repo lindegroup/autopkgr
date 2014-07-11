@@ -5,7 +5,9 @@ Latest release is [here](https://github.com/lindegroup/autopkgr/releases/latest)
 
 AutoPkgr is a background app that makes it easy to install and configure [AutoPkg](https://github.com/autopkg/autopkg).
 
-AutoPkg is an awesomely powerful tool for automating OS X software packaging and distribution, but it requires its users to be comfortable with command-line tools and methods. We made AutoPkgr for people who are 1) uncomfortable with Terminal, but still eager to use AutoPkg to automate software packaging, or 2) comfortable with Terminal and manual administration of AutoPkg, but seeking a turnkey solution for quick deployment and configuration of AutoPkg.
+AutoPkg is an awesomely powerful tool for automating OS X software packaging and distribution, but it requires its users to be comfortable with command-line tools and methods.
+
+If you're not comfortable with Terminal, or if you just want to set up AutoPkg more quickly, AutoPkgr is for you.
 
 Here are the tasks that AutoPkgr makes easier:
 
@@ -56,4 +58,6 @@ You'll also find some useful shortcuts on the **Tools** tab, which will take you
 Credits
 -------
 
-AutoPkgr was created by James Barclay, Elliot Jordan, Josh Senick of the [Linde Group](http://www.lindegroup.com)
+AutoPkgr was created by James Barclay, Elliot Jordan, Josh Senick of the [Linde Group](http://www.lindegroup.com).
+
+We're very friendly. Stop by Berkeley sometime and have a bagel.
