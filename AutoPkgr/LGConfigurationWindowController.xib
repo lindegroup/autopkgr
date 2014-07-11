@@ -50,7 +50,7 @@
                                 <font key="font" metaFont="system"/>
                                 <tabViewItems>
                                     <tabViewItem label="Install" identifier="1" id="P8W-IS-m5j">
-                                        <view key="view" id="pCK-5F-Geg">
+                                        <view key="view" ambiguous="YES" id="pCK-5F-Geg">
                                             <rect key="frame" x="10" y="33" width="258" height="0.0"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             <subviews>
@@ -117,7 +117,7 @@
                                         </view>
                                     </tabViewItem>
                                     <tabViewItem label="Configure Repos &amp; Apps" identifier="2" id="hvS-35-Bas">
-                                        <view key="view" ambiguous="YES" id="Kzw-up-jZN">
+                                        <view key="view" id="Kzw-up-jZN">
                                             <rect key="frame" x="10" y="33" width="706" height="430"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             <subviews>
@@ -683,7 +683,7 @@ DQ
         <userDefaultsController representsSharedInstance="YES" id="6hU-Zy-Fpz"/>
         <customObject id="mvj-kT-UYD" customClass="LGPopularRepositories">
             <connections>
-                <outlet property="popularRepositoresTableView" destination="n0R-ew-DOT" id="wSR-vr-GYH"/>
+                <outlet property="popularRepositoriesTableView" destination="n0R-ew-DOT" id="GpB-Ij-S0H"/>
             </connections>
         </customObject>
     </objects>

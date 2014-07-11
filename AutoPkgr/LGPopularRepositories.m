@@ -44,12 +44,12 @@
     return self;
 }
 
-- (void)reload
+- (void)reload // TODO:  This doesn't seem to work and I can't figure out why.
 {
     [popularRepositoriesTableView beginUpdates];
-    [popularRepositoriesTableView removeRowsAtIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0,popularRepos.count-1)] withAnimation:NSTableViewAnimationEffectNone];
+    [popularRepositoriesTableView removeRowsAtIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0,popularRepos.count)] withAnimation:NSTableViewAnimationEffectNone];
     [self assembleRepos];
-    [popularRepositoriesTableView insertRowsAtIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0,popularRepos.count-1)] withAnimation:NSTableViewAnimationEffectNone];
+    [popularRepositoriesTableView insertRowsAtIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0,popularRepos.count)] withAnimation:NSTableViewAnimationEffectNone];
     [popularRepositoriesTableView endUpdates];
 }
 
@@ -120,13 +120,11 @@
 
 - (NSInteger)numberOfRowsInTableView:(NSTableView *)tableView
 {
-    NSLog(@"Called!");
     return [popularRepos count];
 }
 
 - (id)tableView:(NSTableView *)tableView objectValueForTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row
 {
-    NSLog(@"Called objectValueForTableColumn for row %ld", (long)row);
     if ([[tableColumn identifier] isEqualToString:@"repoCheckbox"]) {
         NSString *repo = [popularRepos objectAtIndex:row];
         
@@ -163,15 +161,9 @@
 
 - (void)awakeFromNib
 {
-    [popularRepositoriesTableView beginUpdates];
+    /* [popularRepositoriesTableView beginUpdates];
     [popularRepositoriesTableView insertRowsAtIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0,popularRepos.count)] withAnimation:NSTableViewAnimationEffectFade];
-    [popularRepositoriesTableView endUpdates];
-    NSLog(@"Awake rows: %ld", (long)[popularRepositoriesTableView numberOfRows]);
-}
-
-- (void)tableView:(NSTableView *)t didRemoveRowView:(NSTableRowView *)rowView forRow:(NSInteger)row
-{
-    NSLog(@"Row %ld removed", (long)row);
+    [popularRepositoriesTableView endUpdates]; */
 }
 
 @end
