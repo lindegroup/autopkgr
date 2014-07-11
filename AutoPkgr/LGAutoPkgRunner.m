@@ -108,6 +108,7 @@
 
     // Launch the task
     [autoPkgRepoAddTask launch];
+    [autoPkgRepoAddTask waitUntilExit];
 }
 
 - (void)removeAutoPkgRecipeRepo:(NSString *)repoURL
@@ -118,7 +119,7 @@
 
     // Set up launch path and args
     NSString *launchPath = @"/usr/bin/python";
-    NSArray *args = [NSArray arrayWithObjects:@"/usr/local/bin/autopkg", @"repo-add", [NSString stringWithFormat:@"%@", repoURL], nil];
+    NSArray *args = [NSArray arrayWithObjects:@"/usr/local/bin/autopkg", @"repo-delete", [NSString stringWithFormat:@"%@", repoURL], nil];
 
     // Configure the task
     [autoPkgRepoRemoveTask setLaunchPath:launchPath];
@@ -127,6 +128,7 @@
 
     // Launch the task
     [autoPkgRepoRemoveTask launch];
+    [autoPkgRepoRemoveTask waitUntilExit];
 }
 
 - (void)updateAutoPkgRecipeRepos

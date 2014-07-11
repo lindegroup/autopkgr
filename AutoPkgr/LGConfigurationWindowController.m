@@ -387,6 +387,9 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
 
     // Synchronize with the defaults database
     [defaults synchronize];
+    
+    // Write recipe_list.txt
+    [_appTableViewHandler writeRecipeList];
 
     // Close the window
     [self close];
@@ -554,8 +557,12 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
 - (IBAction)addAutoPkgRepoURL:(id)sender
 {
     // TODO: Input validation + success/failure notification
+    [repoURLToAdd setStringValue:@""];
+    
     LGAutoPkgRunner *autoPkgRunner = [[LGAutoPkgRunner alloc] init];
     [autoPkgRunner addAutoPkgRecipeRepo:[repoURLToAdd stringValue]];
+    
+    [_popRepoTableViewHandler reload];
 }
 
 - (IBAction)updateReposNow:(id)sender

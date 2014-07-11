@@ -7,6 +7,8 @@
 //
 
 #import <Cocoa/Cocoa.h>
+#import "LGPopularRepositories.h"
+#import "LGApplications.h"
 
 @interface LGConfigurationWindowController : NSWindowController <NSTokenFieldDelegate>
 
@@ -17,6 +19,7 @@
 @property (weak) IBOutlet NSSecureTextField *smtpPassword;
 @property (weak) IBOutlet NSTextField *smtpPort;
 @property (weak) IBOutlet NSTextField *repoURLToAdd;
+@property (weak) IBOutlet NSTextField *autoPkgRunInterval;
 
 // Checkboxes
 @property (weak) IBOutlet NSButton *smtpAuthenticationEnabledButton;
@@ -41,6 +44,10 @@
 
 // Matrices
 @property (weak) IBOutlet NSMatrix *scheduleMatrix;
+
+// Objects
+@property (strong) IBOutlet LGPopularRepositories *popRepoTableViewHandler;
+@property (strong) IBOutlet LGApplications *appTableViewHandler;
 
 // IBActions
 - (IBAction)sendTestEmail:(id)sender;

@@ -26,6 +26,8 @@
         if (!hasCompletedInitialSetup) {
             [self showConfigurationWindow:nil];
         }
+    } else {
+        [self showConfigurationWindow:nil];
     }
 }
 
