@@ -154,6 +154,12 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
     if ([defaults objectForKey:kSendEmailNotificationsWhenNewVersionsAreFoundEnabled]) {
         [sendEmailNotificationsWhenNewVersionsAreFoundButton setState:[[defaults objectForKey:kSendEmailNotificationsWhenNewVersionsAreFoundEnabled] boolValue]];
     }
+    if ([defaults objectForKey:kCheckForNewVersionsOfAppsAutomaticallyEnabled]) {
+        [checkForNewVersionsOfAppsAutomaticallyButton setState:[[defaults objectForKey:kCheckForNewVersionsOfAppsAutomaticallyEnabled] boolValue]];
+    }
+    if ([defaults objectForKey:kCheckForRepoUpdatesAutomaticallyEnabled]) {
+        [checkForRepoUpdatesAutomaticallyButton setState:[[defaults objectForKey:kCheckForRepoUpdatesAutomaticallyEnabled] boolValue]];
+    }
     if ([defaults objectForKey:kWarnBeforeQuittingEnabled]) {
         [warnBeforeQuittingButton setState:[[defaults objectForKey:kWarnBeforeQuittingEnabled] boolValue]];
     }
@@ -214,109 +220,138 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
     [defaults synchronize];
 }
 
-- (BOOL)createDirectoryAtPath:(NSString *)resolvedPath withIntermediateDirectories:(BOOL)createIntermediates attributes:(NSDictionary *)attributes error:(NSError *__autoreleasing *)error
+/*
+ This method invokes the AutoPkg run in a background thread,
+ which prevents the user interface from becoming unresponsive.
+ */
+- (void)invokeAutoPkgInBackgroundThread
 {
-    BOOL isDir;
-    NSFileManager *fm = [NSFileManager defaultManager];
-    [fm createDirectoryAtPath:resolvedPath withIntermediateDirectories:createIntermediates attributes:attributes error:error];
-
-    if ([fm fileExistsAtPath:resolvedPath isDirectory:&isDir] && isDir) {
-        return YES;
-    }
-
-    return NO;
+    NSOperationQueue *queue = [[NSOperationQueue alloc] init];
+    // This ensures that no more than one thread will be spawned
+    // to run AutoPkg.
+    [queue setMaxConcurrentOperationCount:1];
+    NSInvocationOperation *task = [[NSInvocationOperation alloc] initWithTarget:self selector:@selector(runAutoPkgWithRecipeList) object:nil];
+    [queue addOperation:task];
 }
 
-- (NSString *)findOrCreateDirectory:(NSSearchPathDirectory)searchPathDirectory
-                           inDomain:(NSSearchPathDomainMask)domainMask
-                appendPathComponent:(NSString *)appendComponent
-                              error:(NSError **)errorOut
+- (void)runAutoPkgWithRecipeList
 {
-    // Search for the path
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(searchPathDirectory,
-                                                         domainMask,
-                                                         YES);
-    if ([paths count] == 0) {
-        return nil;
-    }
+    NSLog(@"Creating Application Support directory for %@.", kApplicationName);
+    LGApplications *apps = [[LGApplications alloc] init];
+    NSString *applicationSupportDirectory = [apps getAppSupportDirectory];
+    NSLog(@"Application Support directory is %@.", applicationSupportDirectory);
+    NSLog(@"Creating a recipe list.");
+    NSString *recipeListFilePath = [applicationSupportDirectory stringByAppendingString:@"/recipe_list.txt"];
+    NSLog(@"Running AutoPkg with our recipe_list.txt.");
+    LGAutoPkgRunner *autoPkgRunner = [[LGAutoPkgRunner alloc] init];
+    NSString *autoPkgRunReportPlistString = [autoPkgRunner runAutoPkgWithRecipeListAndReturnReportPlist:recipeListFilePath];
+    NSLog(@"autoPkgRunReportPlistString: %@.", autoPkgRunReportPlistString);
 
-    // Normally only need the first path
-    NSString *resolvedPath = [paths objectAtIndex:0];
-
-    if (appendComponent) {
-        resolvedPath = [resolvedPath
-                        stringByAppendingPathComponent:appendComponent];
-    }
-
-    // Create the path if it doesn't exist
-    NSError *error;
-    BOOL success = [self createDirectoryAtPath:resolvedPath
-                   withIntermediateDirectories:YES
-                                    attributes:nil
-                                         error:&error];
-    if (!success) {
-        if (errorOut) {
-            *errorOut = error;
-        }
-
-        return nil;
-    }
-    
-    // If we've made it this far, we have succeeded
-    if (errorOut) {
-        *errorOut = nil;
-    }
-
-    return resolvedPath;
 }
 
-- (NSString *)applicationSupportDirectory
-{
-    NSString *executableName =
-    [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleExecutable"];
-    NSError *error;
-    NSString *result = [self findOrCreateDirectory:NSApplicationSupportDirectory
-                                          inDomain:NSUserDomainMask
-                               appendPathComponent:executableName
-                                             error:&error];
-    if (error) {
-        NSLog(@"Unable to find or create application support directory:\n%@", error);
-    }
-
-    return result;
-}
-
-- (NSString *)createRecipeListFromArrayOfRecipesAndReturnRecipeListPath:(NSArray *)recipes inDirectory:(NSString *)dir
-{
-    NSFileManager *fm = [NSFileManager defaultManager];
-    NSError *error;
-    NSString *recipeListFilePath = [NSString stringWithFormat:@"%@/recipe_list.txt", dir];
-    NSLog(@"recipeListFilePath: %@.", recipeListFilePath);
-
-    // Remove the file if it already exists (start fresh
-    // every time the user saves)
-    if ([fm fileExistsAtPath:recipeListFilePath]) {
-        [fm removeItemAtPath:recipeListFilePath error:&error];
-        if (error) {
-            NSLog(@"Unable to remove existing recipe list at %@. Error: %@.", recipeListFilePath, error);
-        }
-    }
-
-    NSString *recipeStringsSeparatedByNewLines = [recipes componentsJoinedByString:@"\n"];
-    [recipeStringsSeparatedByNewLines writeToFile:recipeListFilePath atomically:NO encoding:NSUTF8StringEncoding error:&error];
-
-    if (error) {
-        NSLog(@"Unable to write the AutoPkg recipe list to a file at %@. Error: %@. Recipes: %@\n", recipeListFilePath, error, recipeStringsSeparatedByNewLines);
-        return nil;
-    }
-
-    return recipeListFilePath;
-}
-
-- (NSArray *)tempAutoPkgRecipesToRun // TODO: Remove me, (should get results from table view)
-{
-    return [NSArray arrayWithObjects:@"Firefox.pkg", @"GoogleChrome.pkg", @"Evernote.pkg", nil];
-}
+//- (BOOL)createDirectoryAtPath:(NSString *)resolvedPath withIntermediateDirectories:(BOOL)createIntermediates attributes:(NSDictionary *)attributes error:(NSError *__autoreleasing *)error
+//{
+//    BOOL isDir;
+//    NSFileManager *fm = [NSFileManager defaultManager];
+//    [fm createDirectoryAtPath:resolvedPath withIntermediateDirectories:createIntermediates attributes:attributes error:error];
+//
+//    if ([fm fileExistsAtPath:resolvedPath isDirectory:&isDir] && isDir) {
+//        return YES;
+//    }
+//
+//    return NO;
+//}
+//
+//- (NSString *)findOrCreateDirectory:(NSSearchPathDirectory)searchPathDirectory
+//                           inDomain:(NSSearchPathDomainMask)domainMask
+//                appendPathComponent:(NSString *)appendComponent
+//                              error:(NSError **)errorOut
+//{
+//    // Search for the path
+//    NSArray *paths = NSSearchPathForDirectoriesInDomains(searchPathDirectory,
+//                                                         domainMask,
+//                                                         YES);
+//    if ([paths count] == 0) {
+//        return nil;
+//    }
+//
+//    // Normally only need the first path
+//    NSString *resolvedPath = [paths objectAtIndex:0];
+//
+//    if (appendComponent) {
+//        resolvedPath = [resolvedPath
+//                        stringByAppendingPathComponent:appendComponent];
+//    }
+//
+//    // Create the path if it doesn't exist
+//    NSError *error;
+//    BOOL success = [self createDirectoryAtPath:resolvedPath
+//                   withIntermediateDirectories:YES
+//                                    attributes:nil
+//                                         error:&error];
+//    if (!success) {
+//        if (errorOut) {
+//            *errorOut = error;
+//        }
+//
+//        return nil;
+//    }
+//    
+//    // If we've made it this far, we have succeeded
+//    if (errorOut) {
+//        *errorOut = nil;
+//    }
+//
+//    return resolvedPath;
+//}
+//
+//- (NSString *)applicationSupportDirectory
+//{
+//    NSString *executableName =
+//    [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleExecutable"];
+//    NSError *error;
+//    NSString *result = [self findOrCreateDirectory:NSApplicationSupportDirectory
+//                                          inDomain:NSUserDomainMask
+//                               appendPathComponent:executableName
+//                                             error:&error];
+//    if (error) {
+//        NSLog(@"Unable to find or create application support directory:\n%@", error);
+//    }
+//
+//    return result;
+//}
+//
+//- (NSString *)createRecipeListFromArrayOfRecipesAndReturnRecipeListPath:(NSArray *)recipes inDirectory:(NSString *)dir
+//{
+//    NSFileManager *fm = [NSFileManager defaultManager];
+//    NSError *error;
+//    NSString *recipeListFilePath = [NSString stringWithFormat:@"%@/recipe_list.txt", dir];
+//    NSLog(@"recipeListFilePath: %@.", recipeListFilePath);
+//
+//    // Remove the file if it already exists (start fresh
+//    // every time the user saves)
+//    if ([fm fileExistsAtPath:recipeListFilePath]) {
+//        [fm removeItemAtPath:recipeListFilePath error:&error];
+//        if (error) {
+//            NSLog(@"Unable to remove existing recipe list at %@. Error: %@.", recipeListFilePath, error);
+//        }
+//    }
+//
+//    NSString *recipeStringsSeparatedByNewLines = [recipes componentsJoinedByString:@"\n"];
+//    [recipeStringsSeparatedByNewLines writeToFile:recipeListFilePath atomically:NO encoding:NSUTF8StringEncoding error:&error];
+//
+//    if (error) {
+//        NSLog(@"Unable to write the AutoPkg recipe list to a file at %@. Error: %@. Recipes: %@\n", recipeListFilePath, error, recipeStringsSeparatedByNewLines);
+//        return nil;
+//    }
+//
+//    return recipeListFilePath;
+//}
+//
+//- (NSArray *)tempAutoPkgRecipesToRun // TODO: Remove me, (should get results from table view)
+//{
+//    return [NSArray arrayWithObjects:@"Firefox.pkg", @"GoogleChrome.pkg", @"Evernote.pkg", nil];
+//}
 
 - (IBAction)sendTestEmail:(id)sender
 {
@@ -380,6 +415,22 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
     } else {
         NSLog(@"Disabling email notificaitons.");
         [defaults setBool:NO forKey:kSendEmailNotificationsWhenNewVersionsAreFoundEnabled];
+    }
+
+    if ([checkForNewVersionsOfAppsAutomaticallyButton state] == NSOnState) {
+        NSLog(@"Enabling checking for new apps automatically.");
+        [defaults setBool:YES forKey:kCheckForNewVersionsOfAppsAutomaticallyEnabled];
+    } else {
+        NSLog(@"Disabling checking for new apps automatically.");
+        [defaults setBool:NO forKey:kCheckForNewVersionsOfAppsAutomaticallyEnabled];
+    }
+
+    if ([checkForRepoUpdatesAutomaticallyButton state] == NSOnState) {
+        NSLog(@"Enabling checking for repo updates automatically.");
+        [defaults setBool:YES forKey:kCheckForRepoUpdatesAutomaticallyEnabled];
+    } else {
+        NSLog(@"Disabling checking for repo updates automatically.");
+        [defaults setBool:NO forKey:kCheckForRepoUpdatesAutomaticallyEnabled];
     }
 
     // Store the password used for SMTP authentication in the default keychain
@@ -575,15 +626,7 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
 
 - (IBAction)checkAppsNow:(id)sender
 {
-    NSLog(@"Creating Application Support directory for %@.", kApplicationName);
-    NSString *applicationSupportDirectory = [self applicationSupportDirectory];
-    NSLog(@"Application Support directory is %@.", applicationSupportDirectory);
-    NSLog(@"Creating a recipe list.");
-    NSString *recipeListFilePath = [self createRecipeListFromArrayOfRecipesAndReturnRecipeListPath:[self tempAutoPkgRecipesToRun] inDirectory:applicationSupportDirectory];
-    NSLog(@"Running AutoPkg with our recipe_list.txt.");
-    LGAutoPkgRunner *autoPkgRunner = [[LGAutoPkgRunner alloc] init];
-    NSString *autoPkgRunReportPlistString = [autoPkgRunner runAutoPkgWithRecipeListAndReturnReportPlist:recipeListFilePath];
-    NSLog(@"autoPkgRunReportPlistString: %@.", autoPkgRunReportPlistString);
+    [self invokeAutoPkgInBackgroundThread];
 }
 
 @end

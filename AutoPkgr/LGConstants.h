@@ -18,6 +18,8 @@ extern NSString *const kSMTPAuthenticationEnabled;
 extern NSString *const kWarnBeforeQuittingEnabled;
 extern NSString *const kHasCompletedInitialSetup;
 extern NSString *const kSendEmailNotificationsWhenNewVersionsAreFoundEnabled;
+extern NSString *const kCheckForNewVersionsOfAppsAutomaticallyEnabled;
+extern NSString *const kCheckForRepoUpdatesAutomaticallyEnabled;
 extern NSString *const kAutoPkgDownloadURL;
 extern NSString *const kStatusAvailableImage;
 extern NSString *const kStatusUnavailableImage;

@@ -19,5 +19,6 @@
 }
 
 - (void)writeRecipeList;
+- (NSString *)getAppSupportDirectory;
 
 @end
