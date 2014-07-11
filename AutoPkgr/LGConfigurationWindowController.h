@@ -7,6 +7,7 @@
 //
 
 #import <Cocoa/Cocoa.h>
+#import "LGPopularRepositories.h"
 
 @interface LGConfigurationWindowController : NSWindowController <NSTokenFieldDelegate>
 
@@ -42,6 +43,9 @@
 
 // Matrices
 @property (weak) IBOutlet NSMatrix *scheduleMatrix;
+
+// Objects
+@property (strong) IBOutlet LGPopularRepositories *popRepoTableViewHandler;
 
 // IBActions
 - (IBAction)sendTestEmail:(id)sender;

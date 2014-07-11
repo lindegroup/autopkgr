@@ -556,6 +556,8 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
     // TODO: Input validation + success/failure notification
     LGAutoPkgRunner *autoPkgRunner = [[LGAutoPkgRunner alloc] init];
     [autoPkgRunner addAutoPkgRecipeRepo:[repoURLToAdd stringValue]];
+    
+    [_popRepoTableViewHandler reload];
 }
 
 - (IBAction)updateReposNow:(id)sender

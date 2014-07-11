@@ -16,6 +16,7 @@
                 <outlet property="gitStatusIcon" destination="00R-tv-agW" id="qbk-yg-37W"/>
                 <outlet property="gitStatusLabel" destination="OPb-IV-o9L" id="iUI-9q-yU4"/>
                 <outlet property="localMunkiRepoFolderButton" destination="z6I-Bv-EFk" id="Pai-q2-byn"/>
+                <outlet property="popRepoTableViewHandler" destination="mvj-kT-UYD" id="JIm-Zi-DtB"/>
                 <outlet property="repoURLToAdd" destination="PWu-1D-EW1" id="nyi-oP-8Yl"/>
                 <outlet property="sendEmailNotificationsWhenNewVersionsAreFoundButton" destination="TPC-Gd-b8O" id="F4h-2O-FcT"/>
                 <outlet property="smtpAuthenticationEnabledButton" destination="6N3-g1-fHC" id="yy0-0M-C5o"/>
@@ -140,7 +141,7 @@
                                                                             <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
                                                                             <color key="backgroundColor" white="0.33333298560000002" alpha="1" colorSpace="calibratedWhite"/>
                                                                         </tableHeaderCell>
-                                                                        <buttonCell key="dataCell" type="check" bezelStyle="regularSquare" imagePosition="left" alignment="left" inset="2" id="Njx-oQ-9y9">
+                                                                        <buttonCell key="dataCell" type="check" bezelStyle="regularSquare" imagePosition="only" alignment="left" inset="2" id="Njx-oQ-9y9">
                                                                             <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                                                             <font key="font" metaFont="system"/>
                                                                         </buttonCell>

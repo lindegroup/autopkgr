@@ -13,7 +13,10 @@
     IBOutlet NSTableView *popularRepositoriesTableView;
     
     NSArray *popularRepos;
+    NSArray *activeRepos;
     LGAutoPkgRunner *pkgRunner;
 }
+
+- (void)reload;
 
 @end
