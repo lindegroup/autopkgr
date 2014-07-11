@@ -387,6 +387,9 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
 
     // Synchronize with the defaults database
     [defaults synchronize];
+    
+    // Write recipe_list.txt
+    [_appTableViewHandler writeRecipeList];
 
     // Close the window
     [self close];

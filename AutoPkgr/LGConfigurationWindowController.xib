@@ -6,6 +6,7 @@
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="LGConfigurationWindowController">
             <connections>
+                <outlet property="appTableViewHandler" destination="oLk-Uk-whI" id="Y2j-Zo-ZLE"/>
                 <outlet property="autoPkgCacheFolderButton" destination="TYE-36-bIi" id="gtk-a1-W4C"/>
                 <outlet property="autoPkgRecipeReposFolderButton" destination="5lK-cr-mp5" id="aKy-dK-4Vs"/>
                 <outlet property="autoPkgRunInterval" destination="oZ2-P7-4IE" id="5kw-lh-4er"/>
@@ -50,7 +51,7 @@
                                 <font key="font" metaFont="system"/>
                                 <tabViewItems>
                                     <tabViewItem label="Install" identifier="1" id="P8W-IS-m5j">
-                                        <view key="view" ambiguous="YES" id="pCK-5F-Geg">
+                                        <view key="view" id="pCK-5F-Geg">
                                             <rect key="frame" x="10" y="33" width="258" height="0.0"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             <subviews>
@@ -117,7 +118,7 @@
                                         </view>
                                     </tabViewItem>
                                     <tabViewItem label="Configure Repos &amp; Apps" identifier="2" id="hvS-35-Bas">
-                                        <view key="view" id="Kzw-up-jZN">
+                                        <view key="view" ambiguous="YES" id="Kzw-up-jZN">
                                             <rect key="frame" x="10" y="33" width="706" height="430"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             <subviews>
@@ -181,16 +182,16 @@
                                                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="c6a-G7-vZU">
                                                     <rect key="frame" x="15" y="403" width="133" height="17"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Popular Repositories" id="vz5-Q8-aHi">
+                                                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Repositories" id="vz5-Q8-aHi">
                                                         <font key="font" metaFont="system"/>
                                                         <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                                     </textFieldCell>
                                                 </textField>
                                                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="OQZ-m7-NDG">
-                                                    <rect key="frame" x="15" y="191" width="86" height="17"/>
+                                                    <rect key="frame" x="15" y="191" width="162" height="17"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Popular apps" id="0cX-bB-x15">
+                                                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Available Applications" id="0cX-bB-x15">
                                                         <font key="font" metaFont="system"/>
                                                         <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
@@ -257,19 +258,36 @@
                                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                                 <color key="gridColor" name="gridColor" catalog="System" colorSpace="catalog"/>
                                                                 <tableColumns>
-                                                                    <tableColumn width="667" minWidth="40" maxWidth="1000" id="qiq-rG-iyC">
+                                                                    <tableColumn identifier="appCheckbox" width="20" minWidth="20" maxWidth="20" id="qiq-rG-iyC">
                                                                         <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left">
                                                                             <font key="font" metaFont="smallSystem"/>
                                                                             <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
                                                                             <color key="backgroundColor" white="0.33333298560000002" alpha="1" colorSpace="calibratedWhite"/>
                                                                         </tableHeaderCell>
-                                                                        <buttonCell key="dataCell" type="check" title="Firefox.pkg" bezelStyle="regularSquare" imagePosition="left" alignment="left" inset="2" id="fUy-m6-yUG">
+                                                                        <buttonCell key="dataCell" type="check" bezelStyle="regularSquare" imagePosition="only" alignment="left" inset="2" id="1aY-O4-T4j">
                                                                             <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                                                             <font key="font" metaFont="system"/>
                                                                         </buttonCell>
                                                                         <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                                                     </tableColumn>
+                                                                    <tableColumn identifier="appName" width="644" minWidth="40" maxWidth="1000" id="BlP-un-SwO">
+                                                                        <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left">
+                                                                            <font key="font" metaFont="smallSystem"/>
+                                                                            <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
+                                                                            <color key="backgroundColor" white="0.33333298560000002" alpha="1" colorSpace="calibratedWhite"/>
+                                                                        </tableHeaderCell>
+                                                                        <textFieldCell key="dataCell" lineBreakMode="truncatingTail" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" title="http://git.git.git.git/git.git" placeholderString="http://git.git.git.git/git.git" id="dJo-7R-RpK">
+                                                                            <font key="font" metaFont="system"/>
+                                                                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                                                        </textFieldCell>
+                                                                        <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
+                                                                    </tableColumn>
                                                                 </tableColumns>
+                                                                <connections>
+                                                                    <outlet property="dataSource" destination="oLk-Uk-whI" id="JUq-o3-zfN"/>
+                                                                    <outlet property="delegate" destination="oLk-Uk-whI" id="cUZ-AX-dtL"/>
+                                                                </connections>
                                                             </tableView>
                                                         </subviews>
                                                         <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -684,6 +702,11 @@ DQ
         <customObject id="mvj-kT-UYD" customClass="LGPopularRepositories">
             <connections>
                 <outlet property="popularRepositoriesTableView" destination="n0R-ew-DOT" id="GpB-Ij-S0H"/>
+            </connections>
+        </customObject>
+        <customObject id="oLk-Uk-whI" customClass="LGApplications">
+            <connections>
+                <outlet property="applicationTableView" destination="HAz-3M-Rgt" id="jPi-gx-bbh"/>
             </connections>
         </customObject>
     </objects>

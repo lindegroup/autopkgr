@@ -8,6 +8,7 @@
 
 #import <Cocoa/Cocoa.h>
 #import "LGPopularRepositories.h"
+#import "LGApplications.h"
 
 @interface LGConfigurationWindowController : NSWindowController <NSTokenFieldDelegate>
 
@@ -46,6 +47,7 @@
 
 // Objects
 @property (strong) IBOutlet LGPopularRepositories *popRepoTableViewHandler;
+@property (strong) IBOutlet LGApplications *appTableViewHandler;
 
 // IBActions
 - (IBAction)sendTestEmail:(id)sender;

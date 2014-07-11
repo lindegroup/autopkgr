@@ -6,6 +6,7 @@
 //  Copyright (c) 2014 The Linde Group, Inc. All rights reserved.
 //
 
+#import <Foundation/Foundation.h>
 #import "LGAutoPkgRunner.h"
 
 @interface LGPopularRepositories : NSObject <NSApplicationDelegate, NSTableViewDelegate, NSTableViewDataSource> {

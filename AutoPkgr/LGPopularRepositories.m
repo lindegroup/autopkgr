@@ -159,11 +159,4 @@
     }
 }
 
-- (void)awakeFromNib
-{
-    /* [popularRepositoriesTableView beginUpdates];
-    [popularRepositoriesTableView insertRowsAtIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0,popularRepos.count)] withAnimation:NSTableViewAnimationEffectFade];
-    [popularRepositoriesTableView endUpdates]; */
-}
-
 @end
