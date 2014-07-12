@@ -36,6 +36,7 @@
 @synthesize autoPkgCacheFolderButton;
 @synthesize autoPkgRecipeReposFolderButton;
 @synthesize localMunkiRepoFolderButton;
+@synthesize sendTestEmailButton;
 @synthesize gitStatusLabel;
 @synthesize autoPkgStatusLabel;
 @synthesize gitStatusIcon;
@@ -61,27 +62,32 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
                                                           forKeyPath:@"cell.state"
                                                              options:(NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld)
                                                              context:XXEmailNotificationsEnabledContext];
+
+    [checkForNewVersionsOfAppsAutomaticallyButton addObserver:self
+                         forKeyPath:@"cell.state"
+                            options:(NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld)
+                            context:XXCheckForNewAppsAutomaticallyEnabledContext];
 }
 
 - (void)dealloc
 {
     [smtpAuthenticationEnabledButton removeObserver:self forKeyPath:@"cell.state" context:XXAuthenticationEnabledContext];
     [sendEmailNotificationsWhenNewVersionsAreFoundButton removeObserver:self forKeyPath:@"cell.state" context:XXEmailNotificationsEnabledContext];
+    [checkForNewVersionsOfAppsAutomaticallyButton removeObserver:self forKeyPath:@"cell.state" context:XXCheckForNewAppsAutomaticallyEnabledContext];
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
-//    NSLog(@"Keypath: %@", keyPath);
-//    NSLog(@"ofObject: %@", object);
-//    NSLog(@"change: %@", change);
     if (context == XXAuthenticationEnabledContext) {
         if ([keyPath isEqualToString:@"cell.state"]) {
             if ([[change objectForKey:@"new"] integerValue] == 1) {
                 [smtpUsername setEnabled:YES];
                 [smtpPassword setEnabled:YES];
+                [smtpTLSEnabledButton setEnabled:YES];
             } else {
                 [smtpUsername setEnabled:NO];
                 [smtpPassword setEnabled:NO];
+                [smtpTLSEnabledButton setEnabled:NO];
             }
         }
     } else if (context == XXEmailNotificationsEnabledContext) {
@@ -94,6 +100,7 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
                 [smtpPort setEnabled:YES];
                 [smtpAuthenticationEnabledButton setEnabled:YES];
                 [smtpTLSEnabledButton setEnabled:YES];
+                [sendTestEmailButton setEnabled:YES];
             } else {
                 [smtpTo setEnabled:NO];
                 [smtpServer setEnabled:NO];
@@ -102,6 +109,15 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
                 [smtpPort setEnabled:NO];
                 [smtpAuthenticationEnabledButton setEnabled:NO];
                 [smtpTLSEnabledButton setEnabled:NO];
+                [sendTestEmailButton setEnabled:NO];
+            }
+        }
+    } else if (context == XXCheckForNewAppsAutomaticallyEnabledContext) {
+        if ([keyPath isEqualToString:@"cell.state"]) {
+            if ([[change objectForKey:@"new"] integerValue] == 1) {
+                [autoPkgRunInterval setEnabled:YES];
+            } else {
+                [autoPkgRunInterval setEnabled:NO];
             }
         }
     }
