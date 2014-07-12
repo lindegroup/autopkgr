@@ -507,7 +507,7 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
     // TODO: Success/failure notification
     NSLog(@"Updating AutoPkg recipe repos.");
     LGAutoPkgRunner *autoPkgRunner = [[LGAutoPkgRunner alloc] init];
-    [autoPkgRunner updateAutoPkgRecipeRepos];
+    [autoPkgRunner invokeAutoPkgRepoUpdateInBackgroundThread];
 }
 
 - (IBAction)checkAppsNow:(id)sender

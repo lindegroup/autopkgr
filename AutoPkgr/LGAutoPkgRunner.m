@@ -189,6 +189,16 @@
     [queue addOperation:task];
 }
 
+- (void)invokeAutoPkgRepoUpdateInBackgroundThread
+{
+    NSOperationQueue *queue = [[NSOperationQueue alloc] init];
+    // This ensures that no more than one thread will be spawned
+    // to run AutoPkg repo updates.
+    [queue setMaxConcurrentOperationCount:1];
+    NSInvocationOperation *task = [[NSInvocationOperation alloc] initWithTarget:self selector:@selector(updateAutoPkgRecipeRepos) object:nil];
+    [queue addOperation:task];
+}
+
 - (void)runAutoPkgWithRecipeList
 {
     LGApplications *apps = [[LGApplications alloc] init];
