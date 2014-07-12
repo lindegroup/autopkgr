@@ -29,6 +29,14 @@
     } else {
         [self showConfigurationWindow:nil];
     }
+
+    [self startAutoPkgRunTimer];
+}
+
+- (void)startAutoPkgRunTimer
+{
+    LGAutoPkgRunner *autoPkgRunner = [[LGAutoPkgRunner alloc] init];
+    [autoPkgRunner startAutoPkgRunTimer];
 }
 
 - (void)setupStatusItem

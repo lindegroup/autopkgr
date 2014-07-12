@@ -16,5 +16,8 @@
 - (void)removeAutoPkgRecipeRepo:(NSString *)repoURL;
 - (void)updateAutoPkgRecipeRepos;
 - (NSString *)runAutoPkgWithRecipeListAndReturnReportPlist:(NSString *)recipeListPath;
+- (void)invokeAutoPkgInBackgroundThread;
+- (void)runAutoPkgWithRecipeList;
+- (void)startAutoPkgRunTimer;
 
 @end

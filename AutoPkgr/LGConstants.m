@@ -15,6 +15,7 @@ NSString *const kSMTPUsername = @"SMTPUsername";
 NSString *const kSMTPPassword = @"SMTPPassword";
 NSString *const kSMTPFrom = @"SMTPFrom";
 NSString *const kSMTPTo = @"SMTPTo";
+NSString *const kAutoPkgRunInterval = @"AutoPkgRunInterval";
 NSString *const kSMTPTLSEnabled = @"SMTPTLSEnabled";
 NSString *const kSMTPAuthenticationEnabled = @"SMTPAuthenticationEnabled";
 NSString *const kWarnBeforeQuittingEnabled = @"WarnBeforeQuitting";
