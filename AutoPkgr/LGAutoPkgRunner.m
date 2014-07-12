@@ -152,7 +152,7 @@
     [updateAutoPkgReposTask launch];
 }
 
-- (NSString *)runAutoPkgWithRecipeListAndReturnReportPlist:(NSString *)recipeListPath // TODO: This blocks now, use a background thread
+- (NSString *)runAutoPkgWithRecipeListAndReturnReportPlist:(NSString *)recipeListPath
 {
     // Set up our task, pipe, and file handle
     NSTask *autoPkgRunTask = [[NSTask alloc] init];

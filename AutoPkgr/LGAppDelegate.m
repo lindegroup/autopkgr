@@ -30,6 +30,7 @@
         [self showConfigurationWindow:nil];
     }
 
+    // Start the AutoPkg run timer if the user enabled it
     [self startAutoPkgRunTimer];
 }
 
