@@ -26,7 +26,7 @@
 {
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory, NSUserDomainMask, YES);
     NSString *applicationSupportDirectory = [paths firstObject];
-    NSString *autoPkgrSupportDirectory = [applicationSupportDirectory stringByAppendingString:@"/Autopkgr"];
+    NSString *autoPkgrSupportDirectory = [applicationSupportDirectory stringByAppendingString:@"/AutoPkgr"];
     NSFileManager *fm = [NSFileManager defaultManager];
     BOOL isDir;
     NSError *error;

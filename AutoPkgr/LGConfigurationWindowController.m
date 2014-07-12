@@ -25,6 +25,7 @@
 @synthesize smtpUsername;
 @synthesize smtpPassword;
 @synthesize smtpPort;
+@synthesize autoPkgRunInterval;
 @synthesize repoURLToAdd;
 @synthesize smtpAuthenticationEnabledButton;
 @synthesize smtpTLSEnabledButton;
@@ -127,6 +128,9 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
     // Populate the SMTP settings from the user defaults if they exist
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 
+    if ([defaults objectForKey:kAutoPkgRunInterval]) {
+        [autoPkgRunInterval setIntegerValue:[defaults integerForKey:kAutoPkgRunInterval]];
+    }
     if ([defaults objectForKey:kSMTPServer]) {
         [smtpServer setStringValue:[defaults objectForKey:kSMTPServer]];
     }
@@ -153,6 +157,12 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
     }
     if ([defaults objectForKey:kSendEmailNotificationsWhenNewVersionsAreFoundEnabled]) {
         [sendEmailNotificationsWhenNewVersionsAreFoundButton setState:[[defaults objectForKey:kSendEmailNotificationsWhenNewVersionsAreFoundEnabled] boolValue]];
+    }
+    if ([defaults objectForKey:kCheckForNewVersionsOfAppsAutomaticallyEnabled]) {
+        [checkForNewVersionsOfAppsAutomaticallyButton setState:[[defaults objectForKey:kCheckForNewVersionsOfAppsAutomaticallyEnabled] boolValue]];
+    }
+    if ([defaults objectForKey:kCheckForRepoUpdatesAutomaticallyEnabled]) {
+        [checkForRepoUpdatesAutomaticallyButton setState:[[defaults objectForKey:kCheckForRepoUpdatesAutomaticallyEnabled] boolValue]];
     }
     if ([defaults objectForKey:kWarnBeforeQuittingEnabled]) {
         [warnBeforeQuittingButton setState:[[defaults objectForKey:kWarnBeforeQuittingEnabled] boolValue]];
@@ -214,110 +224,6 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
     [defaults synchronize];
 }
 
-- (BOOL)createDirectoryAtPath:(NSString *)resolvedPath withIntermediateDirectories:(BOOL)createIntermediates attributes:(NSDictionary *)attributes error:(NSError *__autoreleasing *)error
-{
-    BOOL isDir;
-    NSFileManager *fm = [NSFileManager defaultManager];
-    [fm createDirectoryAtPath:resolvedPath withIntermediateDirectories:createIntermediates attributes:attributes error:error];
-
-    if ([fm fileExistsAtPath:resolvedPath isDirectory:&isDir] && isDir) {
-        return YES;
-    }
-
-    return NO;
-}
-
-- (NSString *)findOrCreateDirectory:(NSSearchPathDirectory)searchPathDirectory
-                           inDomain:(NSSearchPathDomainMask)domainMask
-                appendPathComponent:(NSString *)appendComponent
-                              error:(NSError **)errorOut
-{
-    // Search for the path
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(searchPathDirectory,
-                                                         domainMask,
-                                                         YES);
-    if ([paths count] == 0) {
-        return nil;
-    }
-
-    // Normally only need the first path
-    NSString *resolvedPath = [paths objectAtIndex:0];
-
-    if (appendComponent) {
-        resolvedPath = [resolvedPath
-                        stringByAppendingPathComponent:appendComponent];
-    }
-
-    // Create the path if it doesn't exist
-    NSError *error;
-    BOOL success = [self createDirectoryAtPath:resolvedPath
-                   withIntermediateDirectories:YES
-                                    attributes:nil
-                                         error:&error];
-    if (!success) {
-        if (errorOut) {
-            *errorOut = error;
-        }
-
-        return nil;
-    }
-    
-    // If we've made it this far, we have succeeded
-    if (errorOut) {
-        *errorOut = nil;
-    }
-
-    return resolvedPath;
-}
-
-- (NSString *)applicationSupportDirectory
-{
-    NSString *executableName =
-    [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleExecutable"];
-    NSError *error;
-    NSString *result = [self findOrCreateDirectory:NSApplicationSupportDirectory
-                                          inDomain:NSUserDomainMask
-                               appendPathComponent:executableName
-                                             error:&error];
-    if (error) {
-        NSLog(@"Unable to find or create application support directory:\n%@", error);
-    }
-
-    return result;
-}
-
-- (NSString *)createRecipeListFromArrayOfRecipesAndReturnRecipeListPath:(NSArray *)recipes inDirectory:(NSString *)dir
-{
-    NSFileManager *fm = [NSFileManager defaultManager];
-    NSError *error;
-    NSString *recipeListFilePath = [NSString stringWithFormat:@"%@/recipe_list.txt", dir];
-    NSLog(@"recipeListFilePath: %@.", recipeListFilePath);
-
-    // Remove the file if it already exists (start fresh
-    // every time the user saves)
-    if ([fm fileExistsAtPath:recipeListFilePath]) {
-        [fm removeItemAtPath:recipeListFilePath error:&error];
-        if (error) {
-            NSLog(@"Unable to remove existing recipe list at %@. Error: %@.", recipeListFilePath, error);
-        }
-    }
-
-    NSString *recipeStringsSeparatedByNewLines = [recipes componentsJoinedByString:@"\n"];
-    [recipeStringsSeparatedByNewLines writeToFile:recipeListFilePath atomically:NO encoding:NSUTF8StringEncoding error:&error];
-
-    if (error) {
-        NSLog(@"Unable to write the AutoPkg recipe list to a file at %@. Error: %@. Recipes: %@\n", recipeListFilePath, error, recipeStringsSeparatedByNewLines);
-        return nil;
-    }
-
-    return recipeListFilePath;
-}
-
-- (NSArray *)tempAutoPkgRecipesToRun // TODO: Remove me, (should get results from table view)
-{
-    return [NSArray arrayWithObjects:@"Firefox.pkg", @"GoogleChrome.pkg", @"Evernote.pkg", nil];
-}
-
 - (IBAction)sendTestEmail:(id)sender
 {
     // Send a test email notification when the user
@@ -347,6 +253,12 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
     // We use objectValue here because objectValue returns an
     // array of strings if the field contains a series of strings
     [defaults setObject:[smtpTo objectValue] forKey:kSMTPTo];
+
+    // If the value doesn’t begin with a valid decimal text
+    // representation of a number integerValue will return 0.
+    if ([autoPkgRunInterval integerValue] != 0) {
+        [defaults setInteger:[autoPkgRunInterval integerValue] forKey:kAutoPkgRunInterval];
+    }
 
     if ([smtpTLSEnabledButton state] == NSOnState) {
         // The user wants to enable TLS for this SMTP configuration
@@ -382,6 +294,22 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
         [defaults setBool:NO forKey:kSendEmailNotificationsWhenNewVersionsAreFoundEnabled];
     }
 
+    if ([checkForNewVersionsOfAppsAutomaticallyButton state] == NSOnState) {
+        NSLog(@"Enabling checking for new apps automatically.");
+        [defaults setBool:YES forKey:kCheckForNewVersionsOfAppsAutomaticallyEnabled];
+    } else {
+        NSLog(@"Disabling checking for new apps automatically.");
+        [defaults setBool:NO forKey:kCheckForNewVersionsOfAppsAutomaticallyEnabled];
+    }
+
+    if ([checkForRepoUpdatesAutomaticallyButton state] == NSOnState) {
+        NSLog(@"Enabling checking for repo updates automatically.");
+        [defaults setBool:YES forKey:kCheckForRepoUpdatesAutomaticallyEnabled];
+    } else {
+        NSLog(@"Disabling checking for repo updates automatically.");
+        [defaults setBool:NO forKey:kCheckForRepoUpdatesAutomaticallyEnabled];
+    }
+
     // Store the password used for SMTP authentication in the default keychain
     [SSKeychain setPassword:[smtpPassword stringValue] forService:kApplicationName account:[smtpUsername stringValue]];
 
@@ -391,8 +319,17 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
     // Write recipe_list.txt
     [_appTableViewHandler writeRecipeList];
 
+    // Start the AutoPkg run timer if the user enabled it
+    [self startAutoPkgRunTimer];
+
     // Close the window
     [self close];
+}
+
+- (void)startAutoPkgRunTimer
+{
+    LGAutoPkgRunner *autoPkgRunner = [[LGAutoPkgRunner alloc] init];
+    [autoPkgRunner startAutoPkgRunTimer];
 }
 
 - (void)runCommandAsRoot:(NSString *)runDirectory command:(NSString *)command
@@ -431,7 +368,7 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
     NSString *gitCmd = @"git";
 
     [task setLaunchPath:gitCmd];
-    [task setArguments:[NSArray arrayWithObjects:@"--version", nil]];
+    [task setArguments:[NSArray arrayWithObject:@"--version"]];
     [task setStandardError:pipe];
     [task launch];
     [installGitFileHandle readInBackgroundAndNotify];
@@ -575,15 +512,8 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
 
 - (IBAction)checkAppsNow:(id)sender
 {
-    NSLog(@"Creating Application Support directory for %@.", kApplicationName);
-    NSString *applicationSupportDirectory = [self applicationSupportDirectory];
-    NSLog(@"Application Support directory is %@.", applicationSupportDirectory);
-    NSLog(@"Creating a recipe list.");
-    NSString *recipeListFilePath = [self createRecipeListFromArrayOfRecipesAndReturnRecipeListPath:[self tempAutoPkgRecipesToRun] inDirectory:applicationSupportDirectory];
-    NSLog(@"Running AutoPkg with our recipe_list.txt.");
     LGAutoPkgRunner *autoPkgRunner = [[LGAutoPkgRunner alloc] init];
-    NSString *autoPkgRunReportPlistString = [autoPkgRunner runAutoPkgWithRecipeListAndReturnReportPlist:recipeListFilePath];
-    NSLog(@"autoPkgRunReportPlistString: %@.", autoPkgRunReportPlistString);
+    [autoPkgRunner invokeAutoPkgInBackgroundThread];
 }
 
 @end

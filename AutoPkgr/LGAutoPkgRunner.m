@@ -7,6 +7,8 @@
 //
 
 #import "LGAutoPkgRunner.h"
+#import "LGApplications.h"
+#import "LGConstants.h"
 
 @implementation LGAutoPkgRunner
 
@@ -150,7 +152,7 @@
     [updateAutoPkgReposTask launch];
 }
 
-- (NSString *)runAutoPkgWithRecipeListAndReturnReportPlist:(NSString *)recipeListPath // TODO: This blocks now, use a background thread
+- (NSString *)runAutoPkgWithRecipeListAndReturnReportPlist:(NSString *)recipeListPath
 {
     // Set up our task, pipe, and file handle
     NSTask *autoPkgRunTask = [[NSTask alloc] init];
@@ -175,6 +177,50 @@
     NSString *autoPkgRunReportPlistString = [[NSString alloc] initWithData:autoPkgRunReportPlistData encoding:NSUTF8StringEncoding];
 
     return autoPkgRunReportPlistString;
+}
+
+- (void)invokeAutoPkgInBackgroundThread
+{
+    NSOperationQueue *queue = [[NSOperationQueue alloc] init];
+    // This ensures that no more than one thread will be spawned
+    // to run AutoPkg.
+    [queue setMaxConcurrentOperationCount:1];
+    NSInvocationOperation *task = [[NSInvocationOperation alloc] initWithTarget:self selector:@selector(runAutoPkgWithRecipeList) object:nil];
+    [queue addOperation:task];
+}
+
+- (void)runAutoPkgWithRecipeList
+{
+    LGApplications *apps = [[LGApplications alloc] init];
+    NSString *applicationSupportDirectory = [apps getAppSupportDirectory];
+    NSString *recipeListFilePath = [applicationSupportDirectory stringByAppendingString:@"/recipe_list.txt"];
+    NSString *autoPkgRunReportPlistString = [self runAutoPkgWithRecipeListAndReturnReportPlist:recipeListFilePath];
+    NSLog(@"autoPkgRunReportPlistString: %@.", autoPkgRunReportPlistString);
+
+}
+
+- (void)startAutoPkgRunTimer
+{
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+
+    if ([defaults objectForKey:kCheckForNewVersionsOfAppsAutomaticallyEnabled]) {
+
+        BOOL checkForNewVersionsOfAppsAutomaticallyEnabled = [[defaults objectForKey:kCheckForNewVersionsOfAppsAutomaticallyEnabled] boolValue];
+
+        if (checkForNewVersionsOfAppsAutomaticallyEnabled) {
+            if ([defaults integerForKey:kAutoPkgRunInterval]) {
+                double i = [defaults integerForKey:kAutoPkgRunInterval];
+                if (i != 0) {
+                    NSTimeInterval ti = i * 60 * 60; // Convert hours to seconds for our time interval
+                    [NSTimer scheduledTimerWithTimeInterval:ti target:self selector:@selector(invokeAutoPkgInBackgroundThread) userInfo:nil repeats:YES];
+                } else {
+                    NSLog(@"i is 0 because that's what the user entered or what they entered wasn't a digit.");
+                }
+            } else {
+                NSLog(@"The user enabled automatic checking for app updates but they specified no interval.");
+            }
+        }
+    }
 }
 
 @end

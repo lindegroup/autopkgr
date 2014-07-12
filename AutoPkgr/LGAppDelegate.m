@@ -29,6 +29,15 @@
     } else {
         [self showConfigurationWindow:nil];
     }
+
+    // Start the AutoPkg run timer if the user enabled it
+    [self startAutoPkgRunTimer];
+}
+
+- (void)startAutoPkgRunTimer
+{
+    LGAutoPkgRunner *autoPkgRunner = [[LGAutoPkgRunner alloc] init];
+    [autoPkgRunner startAutoPkgRunTimer];
 }
 
 - (void)setupStatusItem
