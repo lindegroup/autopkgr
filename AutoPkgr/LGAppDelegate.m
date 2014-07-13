@@ -99,7 +99,7 @@
         [alert addButtonWithTitle:@"Quit"];
         [alert addButtonWithTitle:@"Cancel"];
         [alert setMessageText:[NSString stringWithFormat:@"Are you sure you want to quit %@?", kApplicationName]];
-        [alert setInformativeText:[NSString stringWithFormat:@"%@ will not be able to run AutoPkg recipes or send email notifications until you relaunch the application.", kApplicationName]];
+        [alert setInformativeText:[NSString stringWithFormat:@"%@ will not be able to run AutoPkg in the background or send email notifications until you relaunch the application.", kApplicationName]];
         [alert setAlertStyle:NSWarningAlertStyle];
 
         if ([alert runModal] == NSAlertSecondButtonReturn) {
