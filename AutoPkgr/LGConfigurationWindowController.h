@@ -33,6 +33,7 @@
 @property (weak) IBOutlet NSButton *autoPkgCacheFolderButton;
 @property (weak) IBOutlet NSButton *autoPkgRecipeReposFolderButton;
 @property (weak) IBOutlet NSButton *localMunkiRepoFolderButton;
+@property (weak) IBOutlet NSButton *sendTestEmailButton;
 
 // Labels
 @property (weak) IBOutlet NSTextField *gitStatusLabel;

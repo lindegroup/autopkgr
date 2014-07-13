@@ -32,12 +32,30 @@
 
     // Start the AutoPkg run timer if the user enabled it
     [self startAutoPkgRunTimer];
+
+    // Update AutoPkg recipe repos when the application launches
+    // if the user has enabled automatic repo updates
+    if ([defaults objectForKey:kCheckForRepoUpdatesAutomaticallyEnabled]) {
+
+        BOOL checkForRepoUpdatesAutomaticallyEnabled = [[defaults objectForKey:kCheckForRepoUpdatesAutomaticallyEnabled] boolValue];
+
+        if (checkForRepoUpdatesAutomaticallyEnabled) {
+            NSLog(@"Updating AutoPkg recipe repos.");
+            [self updateAutoPkgRecipeReposInBackgroundAtAppLaunch];
+        }
+    }
 }
 
 - (void)startAutoPkgRunTimer
 {
     LGAutoPkgRunner *autoPkgRunner = [[LGAutoPkgRunner alloc] init];
     [autoPkgRunner startAutoPkgRunTimer];
+}
+
+- (void)updateAutoPkgRecipeReposInBackgroundAtAppLaunch
+{
+    LGAutoPkgRunner *autoPkgRunner = [[LGAutoPkgRunner alloc] init];
+    [autoPkgRunner invokeAutoPkgRepoUpdateInBackgroundThread];
 }
 
 - (void)setupStatusItem
@@ -81,7 +99,7 @@
         [alert addButtonWithTitle:@"Quit"];
         [alert addButtonWithTitle:@"Cancel"];
         [alert setMessageText:[NSString stringWithFormat:@"Are you sure you want to quit %@?", kApplicationName]];
-        [alert setInformativeText:[NSString stringWithFormat:@"%@ will not be able to run AutoPkg recipes or send email notifications until you relaunch the application.", kApplicationName]];
+        [alert setInformativeText:[NSString stringWithFormat:@"%@ will not be able to run AutoPkg in the background or send email notifications until you relaunch the application.", kApplicationName]];
         [alert setAlertStyle:NSWarningAlertStyle];
 
         if ([alert runModal] == NSAlertSecondButtonReturn) {
