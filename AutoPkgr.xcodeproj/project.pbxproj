@@ -11,8 +11,6 @@
 		1A0A86B1195CE69300A49434 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1A0A86B0195CE69300A49434 /* Security.framework */; };
 		1A0A86B5195CE6D800A49434 /* MailCore.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 1A0A86AE195CE5DC00A49434 /* MailCore.framework */; };
 		1A979FE01960BCCC00EE9881 /* LGUnzipper.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A979FDF1960BCCC00EE9881 /* LGUnzipper.m */; };
-		1AA5B32A195FD136006DA2CD /* status-available.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 1AA5B328195FD135006DA2CD /* status-available.tiff */; };
-		1AA5B32B195FD136006DA2CD /* status-unavailable.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 1AA5B329195FD135006DA2CD /* status-unavailable.tiff */; };
 		1AAAA5CC196C82DB00623804 /* LGAutoPkgRunner.m in Sources */ = {isa = PBXBuildFile; fileRef = 1AAAA5CB196C82DB00623804 /* LGAutoPkgRunner.m */; };
 		1AC69551195B59ED00D2BD81 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1AC69550195B59ED00D2BD81 /* Cocoa.framework */; };
 		1AC6955B195B59ED00D2BD81 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 1AC69559195B59ED00D2BD81 /* InfoPlist.strings */; };
@@ -109,8 +107,6 @@
 		1A0A86B0195CE69300A49434 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		1A979FDE1960BCCC00EE9881 /* LGUnzipper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGUnzipper.h; sourceTree = "<group>"; };
 		1A979FDF1960BCCC00EE9881 /* LGUnzipper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGUnzipper.m; sourceTree = "<group>"; };
-		1AA5B328195FD135006DA2CD /* status-available.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = "status-available.tiff"; sourceTree = "<group>"; };
-		1AA5B329195FD135006DA2CD /* status-unavailable.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = "status-unavailable.tiff"; sourceTree = "<group>"; };
 		1AAAA5CA196C82DB00623804 /* LGAutoPkgRunner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGAutoPkgRunner.h; sourceTree = "<group>"; };
 		1AAAA5CB196C82DB00623804 /* LGAutoPkgRunner.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGAutoPkgRunner.m; sourceTree = "<group>"; };
 		1AC6954D195B59ED00D2BD81 /* AutoPkgr.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AutoPkgr.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -311,8 +307,6 @@
 			isa = PBXGroup;
 			children = (
 				8BB217F519709A2C00EF8B93 /* AutoPkgrIcon.png */,
-				1AA5B328195FD135006DA2CD /* status-available.tiff */,
-				1AA5B329195FD135006DA2CD /* status-unavailable.tiff */,
 				1AC98425195DF6350071CAB3 /* autopkgr.png */,
 				1AC98428195DF6DE0071CAB3 /* autopkgr_alt.png */,
 				8B6A3198195B7AC1007A7A16 /* linde-logo@400px.png */,
@@ -445,7 +439,6 @@
 			files = (
 				1AC98429195DF6DE0071CAB3 /* autopkgr_alt.png in Resources */,
 				8BB217F619709A2C00EF8B93 /* AutoPkgrIcon.png in Resources */,
-				1AA5B32A195FD136006DA2CD /* status-available.tiff in Resources */,
 				1AC6955B195B59ED00D2BD81 /* InfoPlist.strings in Resources */,
 				1AC69569195B59EE00D2BD81 /* Images.xcassets in Resources */,
 				1AC98420195CEC360071CAB3 /* LGConfigurationWindowController.xib in Resources */,
@@ -453,7 +446,6 @@
 				1AC98427195DF6350071CAB3 /* autopkgr.png in Resources */,
 				1AC69561195B59EE00D2BD81 /* Credits.rtf in Resources */,
 				1AC69567195B59EE00D2BD81 /* MainMenu.xib in Resources */,
-				1AA5B32B195FD136006DA2CD /* status-unavailable.tiff in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
