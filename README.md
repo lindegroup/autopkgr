@@ -41,8 +41,8 @@ Usage
 1.  Switch to the **Configure Repos & Apps** tab and select the repositories you'd like to subscribe to. We recommend the first one, to get you started.
     ![Configure Repos & Apps](doc-images/config_tab2.png)
 1.  Select the apps you'd like to watch.
-1.  If you're piping the apps into a Munki repo, put the repo path in the **Local Munki Repo** box.
-1.  Switch to the **Configure Schedule** tab. Set your automatic update checking preferences — we recommend checking at least once per day, and checking for repo updates automatically.
+1.  If you're importing the apps into a Munki repo, put the repo path in the **Local Munki Repo** box.
+1.  Switch to the **Configure Schedule** tab. Set your automatic update checking preferences — we recommend checking at least once per day, and checking for repo updates when AutoPkgr starts.
     ![Configure Schedule](doc-images/config_tab3.png)
 1.  Configure email notifications, if desired.
 1.  Click Save and Close.
