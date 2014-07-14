@@ -244,7 +244,7 @@
                                                 <searchField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="8hi-WA-S41">
                                                     <rect key="frame" x="509" y="188" width="180" height="22"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                                    <searchFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" borderStyle="bezel" placeholderString="Search apps by name" usesSingleLineMode="YES" bezelStyle="round" id="oqD-5E-S2C">
+                                                    <searchFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" borderStyle="bezel" placeholderString="Search apps by name" usesSingleLineMode="YES" bezelStyle="round" sendsSearchStringImmediately="YES" id="oqD-5E-S2C">
                                                         <font key="font" metaFont="system"/>
                                                         <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                                         <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -710,6 +710,7 @@
         </customObject>
         <customObject id="oLk-Uk-whI" customClass="LGApplications">
             <connections>
+                <outlet property="appSearch" destination="8hi-WA-S41" id="Eyf-9W-8Cs"/>
                 <outlet property="applicationTableView" destination="HAz-3M-Rgt" id="jPi-gx-bbh"/>
             </connections>
         </customObject>

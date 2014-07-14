@@ -170,7 +170,7 @@
     [popularRepositoriesTableView removeRowsAtIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0,searchedRepos.count)] withAnimation:NSTableViewAnimationEffectNone];
     
     if ([[_repoSearch stringValue] isEqualToString:@""]) {
-        searchedRepos = [NSArray arrayWithArray:popularRepos];
+        searchedRepos = popularRepos;
     } else {
         NSMutableArray *workingSearchArray = [[NSMutableArray alloc] init];
         
