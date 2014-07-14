@@ -65,8 +65,13 @@
         if ([result numberOfRanges] == 2) {
             NSString *workingString = [repo substringWithRange:[result rangeAtIndex:1]];
             
-            if ([self stringInPopularRepos:workingString] == NO) {
+            NSUInteger searchResult = [self string:workingString inArray:workingPopularRepos];
+            
+            if (searchResult == NSNotFound) {
                 [workingPopularRepos addObject:[repo substringWithRange:[result rangeAtIndex:0]]];
+            } else {
+                // This line is necessary to resolve http / https conflicts
+                [workingPopularRepos replaceObjectAtIndex:searchResult withObject:repo];
             }
         }
     }
@@ -75,28 +80,16 @@
     [self executeRepoSearch:nil];
 }
 
-- (BOOL)stringInActiveRepos:(NSString *)s
+- (NSUInteger)string:(NSString *)s inArray:(NSArray *)a
 {
-    BOOL foundMatch = NO;
-    for (NSString *actRepo in activeRepos) {
-        if ([actRepo hasSuffix:s]) {
-            foundMatch = YES;
+    NSUInteger match = NSNotFound;
+    for (NSString *ws in a) {
+        if ([ws hasSuffix:s]) {
+            match = [a indexOfObject:ws];
             break;
         }
     }
-    return foundMatch;
-}
-
-- (BOOL)stringInPopularRepos:(NSString *)s
-{
-    BOOL foundMatch = NO;
-    for (NSString *popRepo in popularRepos) {
-        if ([popRepo hasSuffix:s]) {
-            foundMatch = YES;
-            break;
-        }
-    }
-    return foundMatch;
+    return match;
 }
 
 - (NSArray *)getAndParseLocalAutoPkgRecipeRepos // Strips out the local path of the cloned git repository and returns an array with only the URLs
@@ -132,10 +125,10 @@
         NSTextCheckingResult *result = [regex firstMatchInString:repo options:0 range:NSMakeRange(0, [repo length])];
         
         if ([result numberOfRanges] == 2) {
-            if ([self stringInActiveRepos:[repo substringWithRange:[result rangeAtIndex:1]]]) {
-                return @YES;
-            } else {
+            if ([self string:[repo substringWithRange:[result rangeAtIndex:1]] inArray:activeRepos] == NSNotFound) {
                 return @NO;
+            } else {
+                return @YES;
             }
         } else {
             return @NO;
