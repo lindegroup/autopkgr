@@ -27,6 +27,7 @@
 @synthesize smtpPort;
 @synthesize autoPkgRunInterval;
 @synthesize repoURLToAdd;
+@synthesize localMunkiRepo;
 @synthesize smtpAuthenticationEnabledButton;
 @synthesize smtpTLSEnabledButton;
 @synthesize warnBeforeQuittingButton;
@@ -147,6 +148,9 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
     if ([defaults objectForKey:kAutoPkgRunInterval]) {
         [autoPkgRunInterval setIntegerValue:[defaults integerForKey:kAutoPkgRunInterval]];
     }
+    if ([defaults objectForKey:kLocalMunkiRepoPath]) {
+        [localMunkiRepo setStringValue:[defaults objectForKey:kLocalMunkiRepoPath]];
+    }
     if ([defaults objectForKey:kSMTPServer]) {
         [smtpServer setStringValue:[defaults objectForKey:kSMTPServer]];
     }
@@ -266,6 +270,7 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
     [defaults setObject:[smtpUsername stringValue] forKey:kSMTPUsername];
     [defaults setObject:[hostInfo getUserAtHostName] forKey:kSMTPFrom];
     [defaults setBool:YES forKey:kHasCompletedInitialSetup];
+    [defaults setObject:[localMunkiRepo stringValue] forKey:kLocalMunkiRepoPath];
     // We use objectValue here because objectValue returns an
     // array of strings if the field contains a series of strings
     [defaults setObject:[smtpTo objectValue] forKey:kSMTPTo];
@@ -530,6 +535,49 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
 {
     LGAutoPkgRunner *autoPkgRunner = [[LGAutoPkgRunner alloc] init];
     [autoPkgRunner invokeAutoPkgInBackgroundThread];
+}
+
+- (IBAction)chooseLocalMunkiRepo:(id)sender
+{
+    LGAutoPkgRunner *autoPkgRunner = [[LGAutoPkgRunner alloc] init];
+    NSOpenPanel *chooseDialog = [NSOpenPanel openPanel];
+
+    // Disable the selection of files in the dialog
+    [chooseDialog setCanChooseFiles:NO];
+
+    // Enable the selection of directories in the dialog
+    [chooseDialog setCanChooseDirectories:YES];
+
+    // Enable the creation of directories in the dialog
+    [chooseDialog setCanCreateDirectories:YES];
+
+    // Set the prompt to "Choose" instead of "Open"
+    [chooseDialog setPrompt:@"Choose"];
+
+    // Disable multiple selection
+    [chooseDialog setAllowsMultipleSelection:NO];
+
+    // Set the default directory to /Users/Shared
+    [chooseDialog setDirectoryURL:[NSURL URLWithString:@"/Users/Shared"]];
+
+    // Display the dialog. If the "Choose" button was
+    // pressed, process the directory path.
+    [chooseDialog beginSheetModalForWindow:self.window completionHandler:^(NSInteger result) {
+        if (result == NSFileHandlingPanelOKButton) {
+            NSURL *url = [chooseDialog URL];
+            if ([url isFileURL]) {
+                BOOL isDir = NO;
+                // Verify that the file exists and is a directory
+                if ([[NSFileManager defaultManager] fileExistsAtPath:[url path] isDirectory:&isDir] && isDir) {
+                    // Here we can be certain the URL exists and it is a directory
+                    NSString *urlPath = [url path];
+                    [localMunkiRepo setStringValue:urlPath];
+                    [autoPkgRunner setLocalMunkiRepoForAutoPkg:urlPath];
+                }
+            }
+
+        }
+    }];
 }
 
 @end

@@ -20,6 +20,7 @@
 @property (weak) IBOutlet NSTextField *smtpPort;
 @property (weak) IBOutlet NSTextField *repoURLToAdd;
 @property (weak) IBOutlet NSTextField *autoPkgRunInterval;
+@property (weak) IBOutlet NSTextField *localMunkiRepo;
 
 // Checkboxes
 @property (weak) IBOutlet NSButton *smtpAuthenticationEnabledButton;
@@ -61,10 +62,9 @@
 - (IBAction)addAutoPkgRepoURL:(id)sender;
 - (IBAction)updateReposNow:(id)sender;
 - (IBAction)checkAppsNow:(id)sender;
+- (IBAction)chooseLocalMunkiRepo:(id)sender;
 
 - (void)runCommandAsRoot:(NSString *)runDirectory command:(NSString *)command;
 - (void)downloadAndInstallAutoPkg;
-//- (NSString *)createRecipeListFromArrayOfRecipesAndReturnRecipeListPath:(NSArray *)recipes inDirectory:(NSString *)dir;
-//- (NSArray *)tempAutoPkgRecipesToRun; // temp
 
 @end

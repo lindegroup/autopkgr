@@ -300,4 +300,19 @@
     }
 }
 
+- (void)setLocalMunkiRepoForAutoPkg:(NSString *)localMunkiRepo
+{
+    CFStringRef key = (CFSTR("MUNKI_REPO"));
+    // Create a CoreFoundation string reference from the
+    // localMunkiRepo NSString pointer, (no need to release)
+    CFStringRef val = (__bridge CFStringRef)localMunkiRepo;
+    CFStringRef appID = (CFSTR("com.github.autopkg"));
+
+    CFPreferencesSetAppValue(key, val, appID);
+
+    // Release our key and appID refs
+    CFRelease(key);
+    CFRelease(appID);
+}
+
 @end
