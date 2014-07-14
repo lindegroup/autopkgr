@@ -3,11 +3,11 @@ AutoPkgr
 
 Latest release is [here](https://github.com/lindegroup/autopkgr/releases/latest).
 
-AutoPkgr is a background app that makes it easy to install and configure [AutoPkg](https://github.com/autopkg/autopkg).
+AutoPkgr is an app that makes it easy to install and configure [AutoPkg](https://github.com/autopkg/autopkg).
 
 AutoPkg is an awesomely powerful tool for automating OS X software packaging and distribution, but it requires its users to be comfortable with command-line tools and methods.
 
-If you're not comfortable with the command-line, or if you just want to set up AutoPkg more quickly, AutoPkgr is for you.
+If you're not comfortable with the command-line, or if you just want to get AutoPkg set up from scratch quickly, AutoPkgr is for you.
 
 Here are the tasks that AutoPkgr makes easier:
 
@@ -49,7 +49,7 @@ Usage
 
 That's it! AutoPkgr will now check for the latest app updates you specified, and when an update is available you'll receive an email notification.
 
-Anytime you'd like to make changes to AutoPkgr's configuration, just click on the AutoPkgr icon in the menu bar (it looks like an awesome little suitcase), and choose **Configure...**
+Anytime you'd like to make changes to AutoPkgr's configuration, just click on the AutoPkgr icon in the menu bar (![Menu bar icon](doc-images/menulet.png)), and choose **Configure...**
 
 You'll also find some useful shortcuts on the **Tools** tab, which will take you directly to several convenient folders.
     ![Tools](doc-images/config_tab4.png)
@@ -61,3 +61,5 @@ Credits
 AutoPkgr was created by James Barclay, Elliot Jordan, Josh Senick of the [Linde Group](http://www.lindegroup.com).
 
 We're very friendly. Stop by Berkeley sometime and have an espresso.
+
+Briefcase icon from [FontAwesome](http://fontawesome.io/).
