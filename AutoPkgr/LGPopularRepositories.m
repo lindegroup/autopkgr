@@ -14,6 +14,8 @@
 {
     self = [super init];
     
+    awake = NO;
+    
     pkgRunner = [[LGAutoPkgRunner alloc] init];
     
     // popularRepos = [pkgRunner getLocalAutoPkgRecipeRepos];
@@ -44,13 +46,9 @@
     return self;
 }
 
-- (void)reload // TODO:  This doesn't seem to work and I can't figure out why.
+- (void)reload
 {
-    [popularRepositoriesTableView beginUpdates];
-    [popularRepositoriesTableView removeRowsAtIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0,popularRepos.count)] withAnimation:NSTableViewAnimationEffectNone];
     [self assembleRepos];
-    [popularRepositoriesTableView insertRowsAtIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0,popularRepos.count)] withAnimation:NSTableViewAnimationEffectNone];
-    [popularRepositoriesTableView endUpdates];
 }
 
 - (void)assembleRepos
@@ -74,6 +72,7 @@
     }
     
     popularRepos = [NSArray arrayWithArray:workingPopularRepos];
+    [self executeRepoSearch:nil];
 }
 
 - (BOOL)stringInActiveRepos:(NSString *)s
@@ -120,13 +119,13 @@
 
 - (NSInteger)numberOfRowsInTableView:(NSTableView *)tableView
 {
-    return [popularRepos count];
+    return [searchedRepos count];
 }
 
 - (id)tableView:(NSTableView *)tableView objectValueForTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row
 {
     if ([[tableColumn identifier] isEqualToString:@"repoCheckbox"]) {
-        NSString *repo = [popularRepos objectAtIndex:row];
+        NSString *repo = [searchedRepos objectAtIndex:row];
         
         NSError *error = NULL;
         NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@"https?://(.+)" options:0 error:&error];
@@ -142,21 +141,58 @@
             return @NO;
         }
     } else if ([[tableColumn identifier] isEqualToString:@"repoURL"]) {
-        return [popularRepos objectAtIndex:row];
+        return [searchedRepos objectAtIndex:row];
     }
     
     return nil;
 }
 
-- (void)tableView:(NSTableView *)tableView setObjectValue:(id)object forTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row {
+- (void)tableView:(NSTableView *)tableView setObjectValue:(id)object forTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row
+{
     if([[tableColumn identifier] isEqualToString:@"repoCheckbox"]) {
         if ([object isEqual:@YES]) {
-            [pkgRunner addAutoPkgRecipeRepo:[popularRepos objectAtIndex:row]];
+            [pkgRunner addAutoPkgRecipeRepo:[searchedRepos objectAtIndex:row]];
         } else {
-            [pkgRunner removeAutoPkgRecipeRepo:[popularRepos objectAtIndex:row]];
+            [pkgRunner removeAutoPkgRecipeRepo:[searchedRepos objectAtIndex:row]];
         }
         activeRepos = [self getAndParseLocalAutoPkgRecipeRepos];
     }
+}
+
+- (void)executeRepoSearch:(id)sender
+{
+    if (awake == NO) {
+        searchedRepos = [NSArray arrayWithArray:popularRepos];
+        return;
+    }
+
+    [popularRepositoriesTableView beginUpdates];
+    [popularRepositoriesTableView removeRowsAtIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0,searchedRepos.count)] withAnimation:NSTableViewAnimationEffectNone];
+    
+    if ([[_repoSearch stringValue] isEqualToString:@""]) {
+        searchedRepos = [NSArray arrayWithArray:popularRepos];
+    } else {
+        NSMutableArray *workingSearchArray = [[NSMutableArray alloc] init];
+        
+        for (NSString *string in popularRepos) {
+            NSRange range = [string rangeOfString:[_repoSearch stringValue]];
+            if ( !NSEqualRanges(range, NSMakeRange(NSNotFound, 0))) {
+                [workingSearchArray addObject:string];
+            }
+        }
+        
+        searchedRepos = [NSArray arrayWithArray:workingSearchArray];
+    }
+    
+    [popularRepositoriesTableView insertRowsAtIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0,searchedRepos.count)] withAnimation:NSTableViewAnimationEffectNone];
+    [popularRepositoriesTableView endUpdates];
+}
+
+- (void)awakeFromNib
+{
+    awake = YES;
+    [_repoSearch setTarget:self];
+    [_repoSearch setAction:@selector(executeRepoSearch:)];
 }
 
 @end

@@ -12,12 +12,16 @@
 @interface LGPopularRepositories : NSObject <NSApplicationDelegate, NSTableViewDelegate, NSTableViewDataSource> {
     
     IBOutlet NSTableView *popularRepositoriesTableView;
+    __weak NSSearchField *_repoSearch;
     
     NSArray *popularRepos;
     NSArray *activeRepos;
+    NSArray *searchedRepos;
     LGAutoPkgRunner *pkgRunner;
+    BOOL awake;
 }
 
 - (void)reload;
 
+@property (weak) IBOutlet NSSearchField *repoSearch;
 @end
