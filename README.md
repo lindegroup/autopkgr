@@ -7,7 +7,7 @@ AutoPkgr is a background app that makes it easy to install and configure [AutoPk
 
 AutoPkg is an awesomely powerful tool for automating OS X software packaging and distribution, but it requires its users to be comfortable with command-line tools and methods.
 
-If you're not comfortable with Terminal, or if you just want to set up AutoPkg more quickly, AutoPkgr is for you.
+If you're not comfortable with the command-line, or if you just want to set up AutoPkg more quickly, AutoPkgr is for you.
 
 Here are the tasks that AutoPkgr makes easier:
 
