@@ -10,7 +10,7 @@
 
 @implementation LGApplications
 
-- (id) init
+- (id)init
 {
     self = [super init];
     
@@ -18,8 +18,16 @@
     
     apps = [pkgRunner getLocalAutoPkgRecipes];
     activeApps = [self getActiveApps];
+    searchedApps = apps;
     
     return self;
+}
+
+- (void)reload
+{
+    apps = [pkgRunner getLocalAutoPkgRecipes];
+    
+    [self executeAppSearch:self];
 }
 
 - (NSString *)getAppSupportDirectory
@@ -85,15 +93,15 @@
 
 - (NSInteger)numberOfRowsInTableView:(NSTableView *)tableView
 {
-    return [apps count];
+    return [searchedApps count];
 }
 
 - (id)tableView:(NSTableView *)tableView objectValueForTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row
 {
     if ([[tableColumn identifier] isEqualToString:@"appCheckbox"]) {
-        return @([activeApps containsObject:[apps objectAtIndex:row]]);
+        return @([activeApps containsObject:[searchedApps objectAtIndex:row]]);
     } else if ([[tableColumn identifier] isEqualToString:@"appName"]) {
-        return [apps objectAtIndex:row];
+        return [searchedApps objectAtIndex:row];
     }
     
     return nil;
@@ -104,13 +112,13 @@
     if([[tableColumn identifier] isEqualToString:@"appCheckbox"]) {
         NSMutableArray *workingArray = [NSMutableArray arrayWithArray:activeApps];
         if ([object isEqual:@YES]) {
-            [workingArray addObject:[apps objectAtIndex:row]];
+            [workingArray addObject:[searchedApps objectAtIndex:row]];
         } else {
-            NSUInteger index = [workingArray indexOfObject:[apps objectAtIndex:row]];
+            NSUInteger index = [workingArray indexOfObject:[searchedApps objectAtIndex:row]];
             if (index != NSNotFound) {
                 [workingArray removeObjectAtIndex:index];
             } else {
-                NSLog(@"Cannot find item %@ in workingArray", [apps objectAtIndex:row]);
+                NSLog(@"Cannot find item %@ in workingArray", [searchedApps objectAtIndex:row]);
             }
         }
         activeApps = [NSArray arrayWithArray:workingArray];
@@ -119,8 +127,26 @@
     return;
 }
 
+- (void)cleanActiveApps
+{
+    // This runs through the updated recipes and removes any recipes from the
+    // activeApps array that cannot be found in the new apps array.
+    
+    NSMutableArray *workingArray = [NSMutableArray arrayWithArray:activeApps];
+
+    for (NSString *string in activeApps) {
+        if (![apps containsObject:string]) {
+            [workingArray removeObject:string];
+        }
+    }
+    
+    activeApps = [NSArray arrayWithArray:workingArray];
+}
+
 - (void)writeRecipeList
 {
+    [self cleanActiveApps];
+    
     NSError *error;
     
     NSString *autoPkgrSupportDirectory = [self getAppSupportDirectory];
@@ -139,5 +165,36 @@
     }
 }
 
+- (void)executeAppSearch:(id)sender
+{
+    [applicationTableView beginUpdates];
+    [applicationTableView removeRowsAtIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0,searchedApps.count)] withAnimation:NSTableViewAnimationEffectNone];
+    
+    if ([[_appSearch stringValue] isEqualToString:@""]) {
+        searchedApps = apps;
+    } else {
+        NSMutableArray *workingSearchArray = [[NSMutableArray alloc] init];
+        
+        for (NSString *string in apps) {
+            NSRange range = [string rangeOfString:[_appSearch stringValue] options:NSCaseInsensitiveSearch];
+            
+            if (!NSEqualRanges(range, NSMakeRange(NSNotFound, 0))) {
+                [workingSearchArray addObject:string];
+            }
+        }
+        
+        searchedApps = [NSArray arrayWithArray:workingSearchArray];
+    }
+    
+    [applicationTableView insertRowsAtIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0,searchedApps.count)] withAnimation:NSTableViewAnimationEffectNone];
+
+    [applicationTableView endUpdates];
+}
+
+- (void)awakeFromNib
+{
+    [_appSearch setTarget:self];
+    [_appSearch setAction:@selector(executeAppSearch:)];
+}
 
 @end

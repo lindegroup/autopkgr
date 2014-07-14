@@ -14,6 +14,8 @@
 {
     self = [super init];
     
+    awake = NO;
+    
     pkgRunner = [[LGAutoPkgRunner alloc] init];
     
     // popularRepos = [pkgRunner getLocalAutoPkgRecipeRepos];
@@ -44,13 +46,9 @@
     return self;
 }
 
-- (void)reload // TODO:  This doesn't seem to work and I can't figure out why.
+- (void)reload
 {
-    [popularRepositoriesTableView beginUpdates];
-    [popularRepositoriesTableView removeRowsAtIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0,popularRepos.count)] withAnimation:NSTableViewAnimationEffectNone];
     [self assembleRepos];
-    [popularRepositoriesTableView insertRowsAtIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0,popularRepos.count)] withAnimation:NSTableViewAnimationEffectNone];
-    [popularRepositoriesTableView endUpdates];
 }
 
 - (void)assembleRepos
@@ -67,37 +65,31 @@
         if ([result numberOfRanges] == 2) {
             NSString *workingString = [repo substringWithRange:[result rangeAtIndex:1]];
             
-            if ([self stringInPopularRepos:workingString] == NO) {
+            NSUInteger searchResult = [self string:workingString inArray:workingPopularRepos];
+            
+            if (searchResult == NSNotFound) {
                 [workingPopularRepos addObject:[repo substringWithRange:[result rangeAtIndex:0]]];
+            } else {
+                // This line is necessary to resolve http / https conflicts
+                [workingPopularRepos replaceObjectAtIndex:searchResult withObject:repo];
             }
         }
     }
     
     popularRepos = [NSArray arrayWithArray:workingPopularRepos];
+    [self executeRepoSearch:nil];
 }
 
-- (BOOL)stringInActiveRepos:(NSString *)s
+- (NSUInteger)string:(NSString *)s inArray:(NSArray *)a
 {
-    BOOL foundMatch = NO;
-    for (NSString *actRepo in activeRepos) {
-        if ([actRepo hasSuffix:s]) {
-            foundMatch = YES;
+    NSUInteger match = NSNotFound;
+    for (NSString *ws in a) {
+        if ([ws hasSuffix:s]) {
+            match = [a indexOfObject:ws];
             break;
         }
     }
-    return foundMatch;
-}
-
-- (BOOL)stringInPopularRepos:(NSString *)s
-{
-    BOOL foundMatch = NO;
-    for (NSString *popRepo in popularRepos) {
-        if ([popRepo hasSuffix:s]) {
-            foundMatch = YES;
-            break;
-        }
-    }
-    return foundMatch;
+    return match;
 }
 
 - (NSArray *)getAndParseLocalAutoPkgRecipeRepos // Strips out the local path of the cloned git repository and returns an array with only the URLs
@@ -120,43 +112,81 @@
 
 - (NSInteger)numberOfRowsInTableView:(NSTableView *)tableView
 {
-    return [popularRepos count];
+    return [searchedRepos count];
 }
 
 - (id)tableView:(NSTableView *)tableView objectValueForTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row
 {
     if ([[tableColumn identifier] isEqualToString:@"repoCheckbox"]) {
-        NSString *repo = [popularRepos objectAtIndex:row];
+        NSString *repo = [searchedRepos objectAtIndex:row];
         
         NSError *error = NULL;
         NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@"https?://(.+)" options:0 error:&error];
         NSTextCheckingResult *result = [regex firstMatchInString:repo options:0 range:NSMakeRange(0, [repo length])];
         
         if ([result numberOfRanges] == 2) {
-            if ([self stringInActiveRepos:[repo substringWithRange:[result rangeAtIndex:1]]]) {
-                return @YES;
-            } else {
+            if ([self string:[repo substringWithRange:[result rangeAtIndex:1]] inArray:activeRepos] == NSNotFound) {
                 return @NO;
+            } else {
+                return @YES;
             }
         } else {
             return @NO;
         }
     } else if ([[tableColumn identifier] isEqualToString:@"repoURL"]) {
-        return [popularRepos objectAtIndex:row];
+        return [searchedRepos objectAtIndex:row];
     }
     
     return nil;
 }
 
-- (void)tableView:(NSTableView *)tableView setObjectValue:(id)object forTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row {
+- (void)tableView:(NSTableView *)tableView setObjectValue:(id)object forTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row
+{
     if([[tableColumn identifier] isEqualToString:@"repoCheckbox"]) {
         if ([object isEqual:@YES]) {
-            [pkgRunner addAutoPkgRecipeRepo:[popularRepos objectAtIndex:row]];
+            [pkgRunner addAutoPkgRecipeRepo:[searchedRepos objectAtIndex:row]];
         } else {
-            [pkgRunner removeAutoPkgRecipeRepo:[popularRepos objectAtIndex:row]];
+            [pkgRunner removeAutoPkgRecipeRepo:[searchedRepos objectAtIndex:row]];
         }
         activeRepos = [self getAndParseLocalAutoPkgRecipeRepos];
+        [_appObject reload];
     }
+}
+
+- (void)executeRepoSearch:(id)sender
+{
+    if (awake == NO) {
+        searchedRepos = [NSArray arrayWithArray:popularRepos];
+        return;
+    }
+
+    [popularRepositoriesTableView beginUpdates];
+    [popularRepositoriesTableView removeRowsAtIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0,searchedRepos.count)] withAnimation:NSTableViewAnimationEffectNone];
+    
+    if ([[_repoSearch stringValue] isEqualToString:@""]) {
+        searchedRepos = popularRepos;
+    } else {
+        NSMutableArray *workingSearchArray = [[NSMutableArray alloc] init];
+        
+        for (NSString *string in popularRepos) {
+            NSRange range = [string rangeOfString:[_repoSearch stringValue] options:NSCaseInsensitiveSearch];
+            if ( !NSEqualRanges(range, NSMakeRange(NSNotFound, 0))) {
+                [workingSearchArray addObject:string];
+            }
+        }
+        
+        searchedRepos = [NSArray arrayWithArray:workingSearchArray];
+    }
+    
+    [popularRepositoriesTableView insertRowsAtIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0,searchedRepos.count)] withAnimation:NSTableViewAnimationEffectNone];
+    [popularRepositoriesTableView endUpdates];
+}
+
+- (void)awakeFromNib
+{
+    awake = YES;
+    [_repoSearch setTarget:self];
+    [_repoSearch setAction:@selector(executeRepoSearch:)];
 }
 
 @end

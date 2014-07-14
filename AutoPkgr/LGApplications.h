@@ -15,10 +15,14 @@
     
     NSArray *apps;
     NSArray *activeApps;
+    NSArray *searchedApps;
     LGAutoPkgRunner *pkgRunner;
+    __weak NSSearchField *_appSearch;
 }
 
+- (void)reload;
 - (void)writeRecipeList;
 - (NSString *)getAppSupportDirectory;
 
+@property (weak) IBOutlet NSSearchField *appSearch;
 @end
