@@ -20,6 +20,7 @@
     __weak NSSearchField *_appSearch;
 }
 
+- (void)reload;
 - (void)writeRecipeList;
 - (NSString *)getAppSupportDirectory;
 

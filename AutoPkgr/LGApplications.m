@@ -10,7 +10,7 @@
 
 @implementation LGApplications
 
-- (id) init
+- (id)init
 {
     self = [super init];
     
@@ -21,6 +21,13 @@
     searchedApps = apps;
     
     return self;
+}
+
+- (void)reload
+{
+    apps = [pkgRunner getLocalAutoPkgRecipes];
+    
+    [self executeAppSearch:self];
 }
 
 - (NSString *)getAppSupportDirectory
@@ -120,8 +127,26 @@
     return;
 }
 
+- (void)cleanActiveApps
+{
+    // This runs through the updated recipes and removes any recipes from the
+    // activeApps array that cannot be found in the new apps array.
+    
+    NSMutableArray *workingArray = [NSMutableArray arrayWithArray:activeApps];
+
+    for (NSString *string in activeApps) {
+        if (![apps containsObject:string]) {
+            [workingArray removeObject:string];
+        }
+    }
+    
+    activeApps = [NSArray arrayWithArray:workingArray];
+}
+
 - (void)writeRecipeList
 {
+    [self cleanActiveApps];
+    
     NSError *error;
     
     NSString *autoPkgrSupportDirectory = [self getAppSupportDirectory];

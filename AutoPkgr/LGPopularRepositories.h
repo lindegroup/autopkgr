@@ -8,11 +8,13 @@
 
 #import <Foundation/Foundation.h>
 #import "LGAutoPkgRunner.h"
+#import "LGApplications.h"
 
 @interface LGPopularRepositories : NSObject <NSApplicationDelegate, NSTableViewDelegate, NSTableViewDataSource> {
     
     IBOutlet NSTableView *popularRepositoriesTableView;
     __weak NSSearchField *_repoSearch;
+    __weak LGApplications *_appObject;
     
     NSArray *popularRepos;
     NSArray *activeRepos;
@@ -24,4 +26,5 @@
 - (void)reload;
 
 @property (weak) IBOutlet NSSearchField *repoSearch;
+@property (weak) IBOutlet LGApplications *appObject;
 @end

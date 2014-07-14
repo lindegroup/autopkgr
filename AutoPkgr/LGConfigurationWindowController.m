@@ -517,6 +517,7 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
     [repoURLToAdd setStringValue:@""];
     
     [_popRepoTableViewHandler reload];
+    [_appTableViewHandler reload];
 }
 
 - (IBAction)updateReposNow:(id)sender

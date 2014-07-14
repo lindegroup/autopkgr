@@ -156,6 +156,7 @@
             [pkgRunner removeAutoPkgRecipeRepo:[searchedRepos objectAtIndex:row]];
         }
         activeRepos = [self getAndParseLocalAutoPkgRecipeRepos];
+        [_appObject reload];
     }
 }
 
