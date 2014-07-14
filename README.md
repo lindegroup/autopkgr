@@ -60,4 +60,4 @@ Credits
 
 AutoPkgr was created by James Barclay, Elliot Jordan, Josh Senick of the [Linde Group](http://www.lindegroup.com).
 
-We're very friendly. Stop by Berkeley sometime and have a bagel.
+We're very friendly. Stop by Berkeley sometime and have an espresso.
