@@ -175,7 +175,7 @@
         NSMutableArray *workingSearchArray = [[NSMutableArray alloc] init];
         
         for (NSString *string in popularRepos) {
-            NSRange range = [string rangeOfString:[_repoSearch stringValue]];
+            NSRange range = [string rangeOfString:[_repoSearch stringValue] options:NSCaseInsensitiveSearch];
             if ( !NSEqualRanges(range, NSMakeRange(NSNotFound, 0))) {
                 [workingSearchArray addObject:string];
             }

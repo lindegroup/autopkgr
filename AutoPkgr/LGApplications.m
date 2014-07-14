@@ -151,7 +151,7 @@
         NSMutableArray *workingSearchArray = [[NSMutableArray alloc] init];
         
         for (NSString *string in apps) {
-            NSRange range = [string rangeOfString:[_appSearch stringValue]];
+            NSRange range = [string rangeOfString:[_appSearch stringValue] options:NSCaseInsensitiveSearch];
             
             if (!NSEqualRanges(range, NSMakeRange(NSNotFound, 0))) {
                 [workingSearchArray addObject:string];
