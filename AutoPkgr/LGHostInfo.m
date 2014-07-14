@@ -7,6 +7,7 @@
 //
 
 #import "LGHostInfo.h"
+#import "LGConstants.h"
 
 @implementation LGHostInfo
 
@@ -55,15 +56,28 @@
 
 - (NSString *)getMunkiRepoDir
 {
-    NSString *localMunkiRepoFolderFromPrefs = (__bridge_transfer NSString *)CFPreferencesCopyAppValue(CFSTR("repo_path"), CFSTR("com.googlecode.munki.munkiimport"));
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 
-    if (!localMunkiRepoFolderFromPrefs) {
-        NSString *localMunkiRepoFolder = @"/Users/Shared/munki_repo";
-        NSLog(@"Unable to get repo_path from the com.googlecode.munki.munkiimport preference domain. Using the default path of %@.", localMunkiRepoFolder);
-        return localMunkiRepoFolder;
+    if (![defaults objectForKey:kLocalMunkiRepoPath]) {
+        NSLog(@"Unable to find local Munki repo path in user defaults.");
+        NSString *localMunkiRepoFolderFromMunkiPrefs = (__bridge_transfer NSString *)CFPreferencesCopyAppValue(CFSTR("repo_path"), CFSTR("com.googlecode.munki.munkiimport"));
+        NSString *localMunkiRepoFolderFromAutoPkgPrefs = (__bridge_transfer NSString *)CFPreferencesCopyAppValue(CFSTR("MUNKI_REPO"), CFSTR("com.github.autopkg"));
+
+        if (!localMunkiRepoFolderFromMunkiPrefs) {
+
+            if (!localMunkiRepoFolderFromAutoPkgPrefs) {
+                NSString *localMunkiRepoFolder = @"/Users/Shared/munki_repo";
+                NSLog(@"Unable to get repo_path from the com.googlecode.munki.munkiimport preference domain or MUNKI_REPO from the com.github.autopkg preference domain. Using the default path of %@.", localMunkiRepoFolder);
+                return localMunkiRepoFolder;
+            }
+
+            return localMunkiRepoFolderFromAutoPkgPrefs;
+        }
+
+        return localMunkiRepoFolderFromMunkiPrefs;
     }
 
-    return localMunkiRepoFolderFromPrefs;
+    return [defaults objectForKey:kLocalMunkiRepoPath];
 }
 
 - (BOOL)gitInstalled
