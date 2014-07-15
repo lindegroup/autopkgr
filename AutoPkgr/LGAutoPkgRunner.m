@@ -249,8 +249,8 @@
     NSEnumerator *e = [newDownloadsArray objectEnumerator];
     id dictionary;
     while ((dictionary = [e nextObject]) != nil)
-        [newDownloadsString appendFormat:@"\n%@: %@", [dictionary objectForKey:@"app"], [dictionary objectForKey:@"version"]];
-    NSString *message = [NSString stringWithFormat:@"The following software is now available for testing:\n\n%@", newDownloadsString];
+        [newDownloadsString appendFormat:@"<br /><strong>%@</strong>: %@", [dictionary objectForKey:@"app"], [dictionary objectForKey:@"version"]];
+    NSString *message = [NSString stringWithFormat:@"The following software is now available for testing:<br />%@", newDownloadsString];
 
     [emailer sendEmailNotification:subject message:message];
 }
