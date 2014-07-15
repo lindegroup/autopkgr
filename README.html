@@ -277,12 +277,13 @@ table.codehilitetable td.code div pre {
 <p>AutoPkgr is an app that makes it easy to install and configure <a href="https://github.com/autopkg/autopkg">AutoPkg</a>.</p>
 <p>AutoPkg is an awesomely powerful tool for automating OS X software packaging and distribution, but it requires its users to be comfortable with command-line tools and methods.</p>
 <p>If you&rsquo;re not comfortable with the command-line, or if you just want to get AutoPkg set up from scratch quickly, AutoPkgr is for you.</p>
+<h2 id="features"><a name="user-content-features" href="#features" class="headeranchor-link"  aria-hidden="true"><span class="headeranchor"></span></a>Features</h2>
 <p>Here are the tasks that AutoPkgr makes easier:</p>
 <ul>
 <li>Installation of AutoPkg itself.</li>
 <li>Installation of Git, which AutoPkg requires.</li>
-<li>Discovery and subscription to popular AutoPkg recipe repositories.</li>
-<li>Configuration of AutoPkg with a local <a href="https://code.google.com/p/munki/">Munki</a> repo.</li>
+<li>Discovery of and subscription to popular AutoPkg recipe repositories.</li>
+<li>Configuration of AutoPkg to use a local <a href="https://code.google.com/p/munki/">Munki</a> repo.</li>
 </ul>
 <p>AutoPkgr also lets you do all of the following, which wouldn&rsquo;t be possible using AutoPkg alone:</p>
 <ul>
@@ -292,28 +293,55 @@ table.codehilitetable td.code div pre {
 <li>One-click access to common folders that Munki and AutoPkg admins need.</li>
 </ul>
 <h2 id="installation"><a name="user-content-installation" href="#installation" class="headeranchor-link"  aria-hidden="true"><span class="headeranchor"></span></a>Installation</h2>
+<p>AutoPkgr requires Mac OS X 10.8 or higher.</p>
 <p>Download the <a href="https://github.com/lindegroup/autopkgr/releases/latest">latest release</a>, and drag the AutoPkgr app to your Applications folder. Then launch it.</p>
 <h2 id="usage"><a name="user-content-usage" href="#usage" class="headeranchor-link"  aria-hidden="true"><span class="headeranchor"></span></a>Usage</h2>
 <ol>
-<li>Launch the AutoPkgr app.</li>
-<li>On first launch, you&rsquo;ll see the configuration window:<br />
-<img alt="AutoPkgr Install" src="/Users/elliot/Documents/GitHub Repositories/autopkgr/doc-images/config_tab1.png" /></li>
-<li>Click the button to <strong>Install Git</strong> if needed.</li>
-<li>Click the button to <strong>Install AutoPkg</strong> if needed.</li>
-<li>Switch to the <strong>Configure Repos &amp; Apps</strong> tab and select the repositories you&rsquo;d like to subscribe to. We recommend the first one, to get you started.<br />
-<img alt="Configure Repos &amp; Apps" src="/Users/elliot/Documents/GitHub Repositories/autopkgr/doc-images/config_tab2.png" /></li>
-<li>Select the apps you&rsquo;d like to watch.</li>
-<li>If you&rsquo;re importing the apps into a Munki repo, put the repo path in the <strong>Local Munki Repo</strong> box.</li>
-<li>Switch to the <strong>Configure Schedule</strong> tab. Set your automatic update checking preferences — we recommend checking at least once per day, and checking for repo updates when AutoPkgr starts.<br />
-<img alt="Configure Schedule" src="/Users/elliot/Documents/GitHub Repositories/autopkgr/doc-images/config_tab3.png" /></li>
-<li>Configure email notifications, if desired.</li>
-<li>Click Save and Close.</li>
+<li>
+<p>Launch the AutoPkgr app.</p>
+</li>
+<li>
+<p>On first launch, you&rsquo;ll see the configuration window:<br />
+<img alt="AutoPkgr Install" src="/Users/elliot/Documents/GitHub/autopkgr/doc-images/config_tab1.png" /></p>
+</li>
+<li>
+<p>Click the button to <strong>Install Git</strong> if needed.</p>
+</li>
+<li>
+<p>Click the button to <strong>Install AutoPkg</strong> if needed.</p>
+</li>
+<li>
+<p>Switch to the <strong>Configure Repos &amp; Recipes</strong> tab.<br />
+<img alt="Configure Repos &amp; Recipes" src="/Users/elliot/Documents/GitHub/autopkgr/doc-images/config_tab2.png" /></p>
+</li>
+<li>
+<p>Select the repositories you&rsquo;d like to subscribe to. We recommend the first one, to get you started. You can also add repositories manually by pasting their URL into the text field and clicking Add.</p>
+</li>
+<li>
+<p>Select the recipes you&rsquo;d like to watch for changes.</p>
+</li>
+<li>
+<p>If you&rsquo;re importing the apps into a Munki repo, put the repo path in the <strong>Local Munki Repo</strong> box.</p>
+</li>
+<li>
+<p>Switch to the <strong>Configure Schedule</strong> tab.<br />
+<img alt="Configure Schedule" src="/Users/elliot/Documents/GitHub/autopkgr/doc-images/config_tab3.png" /></p>
+</li>
+<li>
+<p>Set your automatic update checking preferences — we recommend checking at least once per day, and checking for repo updates when AutoPkgr starts.</p>
+</li>
+<li>
+<p>Configure email notifications, if desired.</p>
+</li>
+<li>
+<p>Click <strong>Save and Close</strong>.</p>
+</li>
 </ol>
 <p>That&rsquo;s it! AutoPkgr will now check for the latest app updates you specified, and when an update is available you&rsquo;ll receive an email notification.</p>
-<p>Anytime you&rsquo;d like to make changes to AutoPkgr&rsquo;s configuration, just click on the AutoPkgr icon in the menu bar (<img alt="Menu bar icon" src="/Users/elliot/Documents/GitHub Repositories/autopkgr/doc-images/menulet.png" />), and choose <strong>Configure&hellip;</strong></p>
+<p>Anytime you&rsquo;d like to make changes to AutoPkgr&rsquo;s configuration, just click on the AutoPkgr icon in the menu bar (<img alt="Menu bar icon" src="/Users/elliot/Documents/GitHub/autopkgr/doc-images/menulet.png" />), and choose <strong>Configure&hellip;</strong></p>
 <p>You&rsquo;ll also find some useful shortcuts on the <strong>Tools</strong> tab, which will take you directly to several convenient folders.<br />
-<img alt="Tools" src="/Users/elliot/Documents/GitHub Repositories/autopkgr/doc-images/config_tab4.png" /></p>
+<img alt="Tools" src="/Users/elliot/Documents/GitHub/autopkgr/doc-images/config_tab4.png" /></p>
 <h2 id="credits"><a name="user-content-credits" href="#credits" class="headeranchor-link"  aria-hidden="true"><span class="headeranchor"></span></a>Credits</h2>
-<p>AutoPkgr was created by James Barclay, Elliot Jordan, Josh Senick of the <a href="http://www.lindegroup.com">Linde Group</a>.</p>
+<p>AutoPkgr was created by James Barclay, Elliot Jordan, and Josh Senick of the <a href="http://www.lindegroup.com">Linde Group</a>.</p>
 <p>We&rsquo;re very friendly. Stop by Berkeley sometime and have an espresso.</p>
 <p>Briefcase icon from <a href="http://fontawesome.io/">FontAwesome</a>.</p></body></html>

@@ -39,7 +39,7 @@
         <window title="AutoPkgr" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" oneShot="NO" releasedWhenClosed="NO" animationBehavior="default" id="F0z-JX-Cv5">
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
             <rect key="contentRect" x="196" y="240" width="752" height="514"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1680" height="1028"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1440" height="878"/>
             <view key="contentView" id="se5-gp-TjO">
                 <rect key="frame" x="0.0" y="0.0" width="752" height="514"/>
                 <autoresizingMask key="autoresizingMask"/>
@@ -54,7 +54,7 @@
                                 <font key="font" metaFont="system"/>
                                 <tabViewItems>
                                     <tabViewItem label="Install" identifier="1" id="P8W-IS-m5j">
-                                        <view key="view" id="pCK-5F-Geg">
+                                        <view key="view" ambiguous="YES" id="pCK-5F-Geg">
                                             <rect key="frame" x="10" y="33" width="258" height="0.0"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             <subviews>
@@ -125,8 +125,8 @@
                                             </subviews>
                                         </view>
                                     </tabViewItem>
-                                    <tabViewItem label="Configure Repos &amp; Apps" identifier="2" id="hvS-35-Bas">
-                                        <view key="view" ambiguous="YES" id="Kzw-up-jZN">
+                                    <tabViewItem label="Configure Repos &amp; Recipes" identifier="2" id="hvS-35-Bas">
+                                        <view key="view" id="Kzw-up-jZN">
                                             <rect key="frame" x="10" y="33" width="706" height="430"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             <subviews>
@@ -179,11 +179,11 @@
                                                         <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                     </clipView>
                                                     <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="YES" id="zbJ-c5-Mnr">
-                                                        <rect key="frame" x="-7" y="-14" width="0.0" height="15"/>
+                                                        <rect key="frame" x="1" y="-15" width="0.0" height="16"/>
                                                         <autoresizingMask key="autoresizingMask"/>
                                                     </scroller>
                                                     <scroller key="verticalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="NO" id="ipV-ye-gno">
-                                                        <rect key="frame" x="-14" y="-7" width="15" height="0.0"/>
+                                                        <rect key="frame" x="-15" y="1" width="16" height="0.0"/>
                                                         <autoresizingMask key="autoresizingMask"/>
                                                     </scroller>
                                                 </scrollView>
@@ -301,11 +301,11 @@
                                                         <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                     </clipView>
                                                     <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="YES" id="jol-Dg-6k1">
-                                                        <rect key="frame" x="-7" y="-14" width="0.0" height="15"/>
+                                                        <rect key="frame" x="1" y="-15" width="0.0" height="16"/>
                                                         <autoresizingMask key="autoresizingMask"/>
                                                     </scroller>
                                                     <scroller key="verticalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="NO" id="hH6-fw-9si">
-                                                        <rect key="frame" x="-14" y="-7" width="15" height="0.0"/>
+                                                        <rect key="frame" x="-15" y="1" width="16" height="0.0"/>
                                                         <autoresizingMask key="autoresizingMask"/>
                                                     </scroller>
                                                 </scrollView>
