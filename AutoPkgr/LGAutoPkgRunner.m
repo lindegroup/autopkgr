@@ -241,8 +241,16 @@
         [apps addObject:app];
     }
 
+    // Create the subject string
     NSString *subject = [NSString stringWithFormat:@"[%@] The Following Software is Now Available for Testing (%@)", kApplicationName, [apps componentsJoinedByString:@", "]];
-    NSString *message = [NSString stringWithFormat:@"The following software is now available for testing:\n\n%@", newDownloadsArray];
+
+    // Create the message string
+    NSMutableString *newDownloadsString = [NSMutableString string];
+    NSEnumerator *e = [newDownloadsArray objectEnumerator];
+    id dictionary;
+    while ((dictionary = [e nextObject]) != nil)
+        [newDownloadsString appendFormat:@"\n%@: %@", [dictionary objectForKey:@"app"], [dictionary objectForKey:@"version"]];
+    NSString *message = [NSString stringWithFormat:@"The following software is now available for testing:\n\n%@", newDownloadsString];
 
     [emailer sendEmailNotification:subject message:message];
 }
