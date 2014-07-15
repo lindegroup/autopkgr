@@ -78,7 +78,7 @@
     // Send a test email notification when the user
     // clicks "Send Test Email"
     NSString *subject = @"Test notification from AutoPkgr";
-    NSString *message = @"<html><body><div><p>This is a test notification from <strong>AutoPkgr</strong>.</p></div></body></html>";
+    NSString *message = @"This is a test notification from <strong>AutoPkgr</strong>.";
     // Send the email
     [self sendEmailNotification:subject message:message];
     
