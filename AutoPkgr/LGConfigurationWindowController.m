@@ -260,7 +260,7 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
 - (IBAction)saveAndClose:(id)sender
 {
     // Store the SMTP settings in NSUserDefaults
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults]; // implemented
 
     // Create an instance of the LGHostInfo class
     LGHostInfo *hostInfo = [[LGHostInfo alloc] init];
@@ -335,7 +335,7 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
     [SSKeychain setPassword:[smtpPassword stringValue] forService:kApplicationName account:[smtpUsername stringValue]];
 
     // Synchronize with the defaults database
-    [defaults synchronize];
+    [defaults synchronize];  // Implemented
     
     // Write recipe_list.txt
     [_appTableViewHandler writeRecipeList];
