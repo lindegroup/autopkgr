@@ -84,7 +84,8 @@
 {
     NSUInteger match = NSNotFound;
     for (NSString *ws in a) {
-        if ([ws hasSuffix:s]) {
+        NSRange range = [ws rangeOfString:s];
+        if (!NSEqualRanges(range, NSMakeRange(NSNotFound, 0))) {
             match = [a indexOfObject:ws];
             break;
         }
