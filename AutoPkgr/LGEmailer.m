@@ -34,14 +34,23 @@
 
     // Retrieve the SMTP password from the default keychain
     NSError *error = nil;
+    NSString *smtpUsernameString = [defaults objectForKey:kSMTPUsername];
     NSString *password = [SSKeychain passwordForService:kApplicationName
-                                                account:[[NSUserDefaults standardUserDefaults] objectForKey:kSMTPUsername]
+                                                account:smtpUsernameString
                                                   error:&error];
 
     if ([error code] == SSKeychainErrorNotFound) {
-        NSLog(@"Unable to retrieve password for account %@.", smtpSession.username);
+        NSLog(@"Keychain item not found for account %@.", smtpSession.username);
+    } else if([error code] == SSKeychainErrorNoPassword) {
+        NSLog(@"Found the keychain item for %@ but no password value was returned.", smtpUsernameString);
+    } else if (error != nil) {
+        NSLog(@"An error occurred when attempting to retrieve the keychain entry for %@. Error: %@", smtpUsernameString, [error localizedDescription]);
     } else {
-        smtpSession.password = password;
+        // Only set the SMTP session password if the username exists
+        if (smtpUsernameString != nil && ![smtpUsernameString isEqual:@""]) {
+            NSLog(@"Retrieved password from keychain for account %@.", smtpUsernameString);
+            smtpSession.password = password;
+        }
     }
 
     MCOMessageBuilder * builder = [[MCOMessageBuilder alloc] init];
