@@ -78,7 +78,7 @@
     [menu addItemWithTitle:@"Check Now" action:@selector(checkNowFromMenu:) keyEquivalent:@""];
     [menu addItemWithTitle:@"Configure..." action:@selector(showConfigurationWindow:) keyEquivalent:@""];
     [menu addItem:[NSMenuItem separatorItem]];
-    [menu addItemWithTitle:@"Quit" action:@selector(terminate:) keyEquivalent:@""];
+    [menu addItemWithTitle:@"Quit AutoPkgr" action:@selector(terminate:) keyEquivalent:@""];
     self.statusItem.menu = menu;
 }
 
