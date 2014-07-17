@@ -44,9 +44,6 @@
 @property (weak) IBOutlet NSImageView *gitStatusIcon;
 @property (weak) IBOutlet NSImageView *autoPkgStatusIcon;
 
-// Matrices
-@property (weak) IBOutlet NSMatrix *scheduleMatrix;
-
 // Objects
 @property (strong) IBOutlet LGPopularRepositories *popRepoTableViewHandler;
 @property (strong) IBOutlet LGApplications *appTableViewHandler;

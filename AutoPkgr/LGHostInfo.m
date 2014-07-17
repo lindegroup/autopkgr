@@ -80,14 +80,39 @@
     return [defaults objectForKey:kLocalMunkiRepoPath];
 }
 
+- (BOOL)executableInstalled:(NSString *)exe
+{
+    NSTask *exeCheckTask = [[NSTask alloc] init];
+    NSPipe *exeCheckPipe = [NSPipe pipe];
+
+    [exeCheckTask setLaunchPath:@"/usr/bin/which"];
+    [exeCheckTask setArguments:[NSArray arrayWithObject:exe]];
+    [exeCheckTask setStandardOutput:exeCheckPipe];
+    [exeCheckTask setStandardError:exeCheckPipe];
+    [exeCheckTask launch];
+    [exeCheckTask waitUntilExit];
+
+    int terminationStatus = [exeCheckTask terminationStatus];
+
+    if (terminationStatus == 0) {
+        NSLog(@"%@ is installed.", exe);
+        return YES;
+    } else {
+        NSLog(@"Unable to find executable %@ with `which`. Exit status: %d", exe, terminationStatus);
+        return NO;
+    }
+}
+
 - (BOOL)gitInstalled
 {
-    NSArray *knownGitPaths = [[NSArray alloc] initWithObjects:@"/usr/bin/git", @"/usr/local/bin/git", @"/opt/boxen/homebrew/bin/git", nil];
-
-    for (NSString *path in knownGitPaths) {
-        if ([[NSFileManager defaultManager] isExecutableFileAtPath:path]) {
-            return YES;
-        }
+    if ([self executableInstalled:@"git"]) {
+        return YES;
+    } else if ([self executableInstalled:@"/usr/bin/git"]) {
+        return YES;
+    } else if ([self executableInstalled:@"/usr/local/bin/git"]) {
+        return YES;
+    } else if ([self executableInstalled:@"/opt/boxen/homebrew/bin/git"]) {
+        return YES;
     }
 
     return NO;
@@ -95,12 +120,10 @@
 
 - (BOOL)autoPkgInstalled
 {
-    NSArray *knownAutoPkgPaths = [[NSArray alloc] initWithObjects:@"/usr/local/bin/autopkg", @"/usr/bin/autopkg", nil];
-
-    for (NSString *path in knownAutoPkgPaths) {
-        if ([[NSFileManager defaultManager] isExecutableFileAtPath:path]) {
-            return YES;
-        }
+    if ([self executableInstalled:@"autopkg"]) {
+        return YES;
+    } else if ([self executableInstalled:@"/usr/local/bin/autopkg"]) {
+        return YES;
     }
 
     return NO;

@@ -42,7 +42,6 @@
 @synthesize autoPkgStatusLabel;
 @synthesize gitStatusIcon;
 @synthesize autoPkgStatusIcon;
-@synthesize scheduleMatrix;
 
 static void *XXCheckForNewAppsAutomaticallyEnabledContext = &XXCheckForNewAppsAutomaticallyEnabledContext;
 static void *XXCheckForRepoUpdatesAutomaticallyEnabledContext = &XXCheckForRepoUpdatesAutomaticallyEnabledContext;
@@ -136,11 +135,6 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
 - (void)windowDidLoad
 {
     [super windowDidLoad];
-    
-    // Implement this method to handle any initialization after your window controller's window has been loaded from its nib file.
-
-    // Set matrix size (IB effs this up)
-    [scheduleMatrix setIntercellSpacing:NSMakeSize(10.0, 10.5)];
 
     // Populate the SMTP settings from the user defaults if they exist
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
@@ -194,6 +188,8 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
 
     if ([error code] == SSKeychainErrorNotFound) {
         NSLog(@"Password not found for account %@.", [defaults objectForKey:kSMTPUsername]);
+    } else if (error != nil) {
+        NSLog(@"An error occurred when attempting to retrieve the keychain entry %@. Error: %@", [defaults objectForKey:kSMTPUsername], [error localizedDescription]);
     } else {
         // Only populate the SMTP Password field if the username exists
         if (![[defaults objectForKey:kSMTPUsername] isEqual:@""]) {
