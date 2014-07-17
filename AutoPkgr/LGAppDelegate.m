@@ -75,6 +75,7 @@
     NSMenu *menu = [[NSMenu alloc] init];
 //    [menu addItemWithTitle:@"Send Test Email..." action:@selector(sendTestEmailFromMenu) keyEquivalent:@""];
 //    [menu addItem:[NSMenuItem separatorItem]];
+    [menu addItemWithTitle:@"Check Now" action:@selector(checkAppsNow:) keyEquivalent:@""];
     [menu addItemWithTitle:@"Configure..." action:@selector(showConfigurationWindow:) keyEquivalent:@""];
     [menu addItem:[NSMenuItem separatorItem]];
     [menu addItemWithTitle:@"Quit" action:@selector(terminate:) keyEquivalent:@""];
