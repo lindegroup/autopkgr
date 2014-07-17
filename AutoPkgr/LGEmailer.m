@@ -32,24 +32,28 @@
         smtpSession.connectionType = MCOConnectionTypeClear;
     }
 
-    // Retrieve the SMTP password from the default keychain
+    // Retrieve the SMTP password from the default
+    // keychain if it exists
     NSError *error = nil;
     NSString *smtpUsernameString = [defaults objectForKey:kSMTPUsername];
-    NSString *password = [SSKeychain passwordForService:kApplicationName
-                                                account:smtpUsernameString
-                                                  error:&error];
 
-    if ([error code] == SSKeychainErrorNotFound) {
-        NSLog(@"Keychain item not found for account %@.", smtpSession.username);
-    } else if([error code] == SSKeychainErrorNoPassword) {
-        NSLog(@"Found the keychain item for %@ but no password value was returned.", smtpUsernameString);
-    } else if (error != nil) {
-        NSLog(@"An error occurred when attempting to retrieve the keychain entry for %@. Error: %@", smtpUsernameString, [error localizedDescription]);
-    } else {
-        // Only set the SMTP session password if the username exists
-        if (smtpUsernameString != nil && ![smtpUsernameString isEqual:@""]) {
-            NSLog(@"Retrieved password from keychain for account %@.", smtpUsernameString);
-            smtpSession.password = password;
+    if (smtpUsernameString) {
+        NSString *password = [SSKeychain passwordForService:kApplicationName
+                                                    account:smtpUsernameString
+                                                      error:&error];
+
+        if ([error code] == SSKeychainErrorNotFound) {
+            NSLog(@"Keychain item not found for account %@.", smtpSession.username);
+        } else if([error code] == SSKeychainErrorNoPassword) {
+            NSLog(@"Found the keychain item for %@ but no password value was returned.", smtpUsernameString);
+        } else if (error != nil) {
+            NSLog(@"An error occurred when attempting to retrieve the keychain entry for %@. Error: %@", smtpUsernameString, [error localizedDescription]);
+        } else {
+            // Only set the SMTP session password if the username exists
+            if (smtpUsernameString != nil && ![smtpUsernameString isEqual:@""]) {
+                NSLog(@"Retrieved password from keychain for account %@.", smtpUsernameString);
+                smtpSession.password = password;
+            }
         }
     }
 

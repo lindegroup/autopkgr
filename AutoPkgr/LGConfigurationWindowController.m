@@ -182,24 +182,28 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
         [warnBeforeQuittingButton setState:[[defaults objectForKey:kWarnBeforeQuittingEnabled] boolValue]];
     }
 
-    // Read the SMTP password from the keychain and populate in NSSecureTextField
+    // Read the SMTP password from the keychain and populate in
+    // NSSecureTextField if it exists
     NSError *error = nil;
     NSString *smtpUsernameString = [defaults objectForKey:kSMTPUsername];
-    NSString *password = [SSKeychain passwordForService:kApplicationName
-                                                account:smtpUsernameString
-                                                  error:&error];
 
-    if ([error code] == SSKeychainErrorNotFound) {
-        NSLog(@"Keychain item not found for account %@.", smtpUsernameString);
-    } else if([error code] == SSKeychainErrorNoPassword) {
-        NSLog(@"Found the keychain item for %@ but no password value was returned.", smtpUsernameString);
-    } else if (error != nil) {
-        NSLog(@"An error occurred when attempting to retrieve the keychain entry for %@. Error: %@", smtpUsernameString, [error localizedDescription]);
-    } else {
-        // Only populate the SMTP Password field if the username exists
-        if (smtpUsernameString != nil && ![smtpUsernameString isEqual:@""]) {
-            NSLog(@"Retrieved password from keychain for account %@.", smtpUsernameString);
-            [smtpPassword setStringValue:password];
+    if (smtpUsernameString) {
+        NSString *password = [SSKeychain passwordForService:kApplicationName
+                                                    account:smtpUsernameString
+                                                      error:&error];
+
+        if ([error code] == SSKeychainErrorNotFound) {
+            NSLog(@"Keychain item not found for account %@.", smtpUsernameString);
+        } else if([error code] == SSKeychainErrorNoPassword) {
+            NSLog(@"Found the keychain item for %@ but no password value was returned.", smtpUsernameString);
+        } else if (error != nil) {
+            NSLog(@"An error occurred when attempting to retrieve the keychain entry for %@. Error: %@", smtpUsernameString, [error localizedDescription]);
+        } else {
+            // Only populate the SMTP Password field if the username exists
+            if (smtpUsernameString != nil && ![smtpUsernameString isEqual:@""]) {
+                NSLog(@"Retrieved password from keychain for account %@.", smtpUsernameString);
+                [smtpPassword setStringValue:password];
+            }
         }
     }
 
