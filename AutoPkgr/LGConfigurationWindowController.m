@@ -38,6 +38,8 @@
 @synthesize autoPkgRecipeReposFolderButton;
 @synthesize localMunkiRepoFolderButton;
 @synthesize sendTestEmailButton;
+@synthesize installGitButton;
+@synthesize installAutoPkgButton;
 @synthesize gitStatusLabel;
 @synthesize autoPkgStatusLabel;
 @synthesize gitStatusIcon;
@@ -214,17 +216,21 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
     [defaults setObject:[hostInfo getUserAtHostName] forKey:kSMTPFrom];
 
     if ([hostInfo gitInstalled]) {
+        [installGitButton setEnabled:NO];
         [gitStatusLabel setStringValue:kGitInstalledLabel];
         [gitStatusIcon setImage:[NSImage imageNamed:kStatusAvailableImage]];
     } else {
+        [installGitButton setEnabled:YES];
         [gitStatusLabel setStringValue:kGitNotInstalledLabel];
         [gitStatusIcon setImage:[NSImage imageNamed:kStatusUnavailableImage]];
     }
 
     if ([hostInfo autoPkgInstalled]) {
+        [installAutoPkgButton setEnabled:NO];
         [autoPkgStatusLabel setStringValue:kAutoPkgInstalledLabel];
         [autoPkgStatusIcon setImage:[NSImage imageNamed:kStatusAvailableImage]];
     } else {
+        [installAutoPkgButton setEnabled:YES];
         [autoPkgStatusLabel setStringValue:kAutoPkgNotInstalledLabel];
         [autoPkgStatusIcon setImage:[NSImage imageNamed:kStatusUnavailableImage]];
     }
@@ -388,6 +394,11 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
  */
 - (IBAction)installGit:(id)sender
 {
+    // Change the button label to "Installing..."
+    // and disable the button to prevent multiple clicks
+    [installGitButton setTitle:@"Installing..."];
+    [installGitButton setEnabled:NO];
+
     NSTask *task = [[NSTask alloc] init];
     NSPipe *pipe = [NSPipe pipe];
     NSFileHandle *installGitFileHandle = [pipe fileHandleForReading];
@@ -398,6 +409,16 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
     [task setStandardError:pipe];
     [task launch];
     [installGitFileHandle readInBackgroundAndNotify];
+    [task waitUntilExit];
+
+    LGHostInfo *hostInfo = [[LGHostInfo alloc] init];
+
+    // TODO: We should probably be installing the official
+    // Git PKG rather than dealing with the Xcode CLI tools
+    if ([hostInfo gitInstalled]) {
+        [installGitButton setTitle:@"Install Git"];
+        [installGitButton setEnabled:NO];
+    }
 }
 
 - (void)downloadAndInstallAutoPkg
@@ -443,11 +464,18 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
         NSLog(@"AutoPkg installed successfully!");
         [autoPkgStatusLabel setStringValue:kAutoPkgInstalledLabel];
         [autoPkgStatusIcon setImage:[NSImage imageNamed:kStatusAvailableImage]];
+        [installAutoPkgButton setTitle:@"Install AutoPkg"];
+        [installAutoPkgButton setEnabled:NO];
     }
 }
 
 - (IBAction)installAutoPkg:(id)sender
 {
+    // Change the button label to "Installing..."
+    // and disable the button to prevent multiple clicks
+    [installAutoPkgButton setTitle:@"Installing..."];
+    [installAutoPkgButton setEnabled:NO];
+
     // Download and install AutoPkg on a background thread
     NSOperationQueue *queue = [[NSOperationQueue alloc] init];
     NSInvocationOperation *operation = [[NSInvocationOperation alloc]
