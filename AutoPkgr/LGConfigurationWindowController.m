@@ -29,7 +29,6 @@
 @synthesize repoURLToAdd;
 @synthesize localMunkiRepo;
 @synthesize smtpAuthenticationEnabledButton;
-@synthesize smtpTLSEnabledButton;
 @synthesize warnBeforeQuittingButton;
 @synthesize checkForNewVersionsOfAppsAutomaticallyButton;
 @synthesize checkForRepoUpdatesAutomaticallyButton;
@@ -38,6 +37,7 @@
 @synthesize autoPkgRecipeReposFolderButton;
 @synthesize localMunkiRepoFolderButton;
 @synthesize sendTestEmailButton;
+@synthesize smtpEncryptionDropdown;
 @synthesize gitStatusLabel;
 @synthesize autoPkgStatusLabel;
 @synthesize gitStatusIcon;
@@ -84,11 +84,11 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
             if ([[change objectForKey:@"new"] integerValue] == 1) {
                 [smtpUsername setEnabled:YES];
                 [smtpPassword setEnabled:YES];
-                [smtpTLSEnabledButton setEnabled:YES];
+                [smtpEncryptionDropdown setEnabled:YES];
             } else {
                 [smtpUsername setEnabled:NO];
                 [smtpPassword setEnabled:NO];
-                [smtpTLSEnabledButton setEnabled:NO];
+                [smtpEncryptionDropdown setEnabled:NO];
             }
         }
     } else if (context == XXEmailNotificationsEnabledContext) {
@@ -100,7 +100,7 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
                 [smtpPassword setEnabled:YES];
                 [smtpPort setEnabled:YES];
                 [smtpAuthenticationEnabledButton setEnabled:YES];
-                [smtpTLSEnabledButton setEnabled:YES];
+                [smtpEncryptionDropdown setEnabled:YES];
                 [sendTestEmailButton setEnabled:YES];
             } else {
                 [smtpTo setEnabled:NO];
@@ -109,7 +109,7 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
                 [smtpPassword setEnabled:NO];
                 [smtpPort setEnabled:NO];
                 [smtpAuthenticationEnabledButton setEnabled:NO];
-                [smtpTLSEnabledButton setEnabled:NO];
+                [smtpEncryptionDropdown setEnabled:NO];
                 [sendTestEmailButton setEnabled:NO];
             }
         }
@@ -169,8 +169,8 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
         }
         [smtpTo setObjectValue:to];
     }
-    if ([defaults objectForKey:kSMTPTLSEnabled]) {
-        [smtpTLSEnabledButton setState:[[defaults objectForKey:kSMTPTLSEnabled] boolValue]];
+    if ([defaults integerForKey:kSMTPEncryption]) {
+        [smtpEncryptionDropdown selectItemAtIndex:[defaults integerForKey:kSMTPEncryption]];
     }
     if ([defaults objectForKey:kSMTPAuthenticationEnabled]) {
         [smtpAuthenticationEnabledButton setState:[[defaults objectForKey:kSMTPAuthenticationEnabled] boolValue]];
@@ -281,15 +281,7 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
         [defaults setInteger:[autoPkgRunInterval integerValue] forKey:kAutoPkgRunInterval];
     }
 
-    if ([smtpTLSEnabledButton state] == NSOnState) {
-        // The user wants to enable TLS for this SMTP configuration
-        NSLog(@"Enabling TLS.");
-        [defaults setBool:YES forKey:kSMTPTLSEnabled];
-    } else {
-        // The user wants to disable TLS for this SMTP configuration
-        NSLog(@"Disabling TLS.");
-        [defaults setBool:NO forKey:kSMTPTLSEnabled];
-    }
+    [defaults setInteger:[smtpEncryptionDropdown indexOfSelectedItem] forKey:kSMTPEncryption];
 
     if ([warnBeforeQuittingButton state] == NSOnState) {
         NSLog(@"Enabling warning before quitting.");

@@ -17,18 +17,20 @@
 {
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 
-    BOOL TLS = [[defaults objectForKey:kSMTPTLSEnabled] boolValue];
-
     MCOSMTPSession *smtpSession = [[MCOSMTPSession alloc] init];
     smtpSession.hostname = [defaults objectForKey:kSMTPServer];
     smtpSession.port = (int)[defaults integerForKey:kSMTPPort];
     smtpSession.username = [defaults objectForKey:kSMTPUsername];
 
-    if (TLS) {
+	NSInteger encryption = [defaults integerForKey:kSMTPEncryption];
+    if (encryption == 1) {
         NSLog(@"SSL/TLS is enabled for %@.", [defaults objectForKey:kSMTPServer]);
         smtpSession.connectionType = MCOConnectionTypeTLS;
+	} else if (encryption == 2) {
+        NSLog(@"StartTLS is enabled for %@.", [defaults objectForKey:kSMTPServer]);
+        smtpSession.connectionType = MCOConnectionTypeStartTLS;
     } else {
-        NSLog(@"SSL/TLS is _not_ enabled for %@.", [defaults objectForKey:kSMTPServer]);
+        NSLog(@"Encryption is _not_ enabled for %@.", [defaults objectForKey:kSMTPServer]);
         smtpSession.connectionType = MCOConnectionTypeClear;
     }
 

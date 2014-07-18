@@ -24,7 +24,6 @@
 
 // Checkboxes
 @property (weak) IBOutlet NSButton *smtpAuthenticationEnabledButton;
-@property (weak) IBOutlet NSButton *smtpTLSEnabledButton;
 @property (weak) IBOutlet NSButton *warnBeforeQuittingButton;
 @property (weak) IBOutlet NSButton *checkForNewVersionsOfAppsAutomaticallyButton;
 @property (weak) IBOutlet NSButton *checkForRepoUpdatesAutomaticallyButton;
@@ -35,6 +34,9 @@
 @property (weak) IBOutlet NSButton *autoPkgRecipeReposFolderButton;
 @property (weak) IBOutlet NSButton *localMunkiRepoFolderButton;
 @property (weak) IBOutlet NSButton *sendTestEmailButton;
+
+// Popups
+@property (weak) IBOutlet NSPopUpButton *smtpEncryptionDropdown;
 
 // Labels
 @property (weak) IBOutlet NSTextField *gitStatusLabel;
