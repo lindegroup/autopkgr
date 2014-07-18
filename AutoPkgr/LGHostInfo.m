@@ -95,12 +95,10 @@
 
 - (BOOL)autoPkgInstalled
 {
-    NSArray *knownAutoPkgPaths = [[NSArray alloc] initWithObjects:@"/usr/local/bin/autopkg", @"/usr/bin/autopkg", nil];
+    NSString *autoPkgPath = @"/usr/local/bin/autopkg";
 
-    for (NSString *path in knownAutoPkgPaths) {
-        if ([[NSFileManager defaultManager] isExecutableFileAtPath:path]) {
-            return YES;
-        }
+    if ([[NSFileManager defaultManager] isExecutableFileAtPath:autoPkgPath]) {
+        return YES;
     }
 
     return NO;

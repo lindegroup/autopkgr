@@ -35,6 +35,8 @@
 @property (weak) IBOutlet NSButton *autoPkgRecipeReposFolderButton;
 @property (weak) IBOutlet NSButton *localMunkiRepoFolderButton;
 @property (weak) IBOutlet NSButton *sendTestEmailButton;
+@property (weak) IBOutlet NSButton *installGitButton;
+@property (weak) IBOutlet NSButton *installAutoPkgButton;
 
 // Labels
 @property (weak) IBOutlet NSTextField *gitStatusLabel;
@@ -43,9 +45,6 @@
 // Status icons
 @property (weak) IBOutlet NSImageView *gitStatusIcon;
 @property (weak) IBOutlet NSImageView *autoPkgStatusIcon;
-
-// Matrices
-@property (weak) IBOutlet NSMatrix *scheduleMatrix;
 
 // Objects
 @property (strong) IBOutlet LGPopularRepositories *popRepoTableViewHandler;
