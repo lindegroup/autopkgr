@@ -12,6 +12,7 @@
 #import "LGHostInfo.h"
 #import "LGUnzipper.h"
 #import "LGAutoPkgRunner.h"
+#import "LGGitHubJSONLoader.h"
 #import "SSKeychain.h"
 
 @interface LGConfigurationWindowController ()
@@ -255,7 +256,11 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
     [defaults synchronize];
     // TODO: REMOVE ME
     NSString *autoPkgVersionString = [hostInfo getAutoPkgVersion];
-    NSLog(@"autoPkgVersionString (%@)", autoPkgVersionString);
+    NSLog(@"locally installed autoPkgVersionString (%@)", autoPkgVersionString);
+    // TODO: REMOVE ME
+    LGGitHubJSONLoader *jsonLoader = [[LGGitHubJSONLoader alloc] init];
+    NSArray *releasesArray = [jsonLoader getAutoPkgReleasesJSON:[NSURL URLWithString:@"https://api.github.com/repos/autopkg/autopkg/releases"]];
+    NSLog(@"latest autoPkgVersionsArray: (%@)", releasesArray);
 }
 
 - (IBAction)sendTestEmail:(id)sender

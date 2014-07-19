@@ -11,6 +11,8 @@
 		1A0A86B1195CE69300A49434 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1A0A86B0195CE69300A49434 /* Security.framework */; };
 		1A0A86B5195CE6D800A49434 /* MailCore.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 1A0A86AE195CE5DC00A49434 /* MailCore.framework */; };
 		1A1BAD96197A0407008192A7 /* LGVersionComparator.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A1BAD95197A0407008192A7 /* LGVersionComparator.m */; };
+		1A1BAD9E197A4133008192A7 /* LGGitHubJSONLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A1BAD9D197A4133008192A7 /* LGGitHubJSONLoader.m */; };
+		1A1BADA5197A46A8008192A7 /* LGGitHubRelease.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A1BADA4197A46A8008192A7 /* LGGitHubRelease.m */; };
 		1A979FE01960BCCC00EE9881 /* LGUnzipper.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A979FDF1960BCCC00EE9881 /* LGUnzipper.m */; };
 		1AAAA5CC196C82DB00623804 /* LGAutoPkgRunner.m in Sources */ = {isa = PBXBuildFile; fileRef = 1AAAA5CB196C82DB00623804 /* LGAutoPkgRunner.m */; };
 		1AC69551195B59ED00D2BD81 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1AC69550195B59ED00D2BD81 /* Cocoa.framework */; };
@@ -108,6 +110,10 @@
 		1A0A86B0195CE69300A49434 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		1A1BAD94197A0407008192A7 /* LGVersionComparator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGVersionComparator.h; sourceTree = "<group>"; };
 		1A1BAD95197A0407008192A7 /* LGVersionComparator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGVersionComparator.m; sourceTree = "<group>"; };
+		1A1BAD9C197A4133008192A7 /* LGGitHubJSONLoader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGGitHubJSONLoader.h; sourceTree = "<group>"; };
+		1A1BAD9D197A4133008192A7 /* LGGitHubJSONLoader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGGitHubJSONLoader.m; sourceTree = "<group>"; };
+		1A1BADA3197A46A8008192A7 /* LGGitHubRelease.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGGitHubRelease.h; sourceTree = "<group>"; };
+		1A1BADA4197A46A8008192A7 /* LGGitHubRelease.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGGitHubRelease.m; sourceTree = "<group>"; };
 		1A979FDE1960BCCC00EE9881 /* LGUnzipper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGUnzipper.h; sourceTree = "<group>"; };
 		1A979FDF1960BCCC00EE9881 /* LGUnzipper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGUnzipper.m; sourceTree = "<group>"; };
 		1AAAA5CA196C82DB00623804 /* LGAutoPkgRunner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGAutoPkgRunner.h; sourceTree = "<group>"; };
@@ -295,6 +301,10 @@
 			children = (
 				1AC86D3B195E0AC6006FDD2B /* LGHostInfo.h */,
 				1AC86D3C195E0AC6006FDD2B /* LGHostInfo.m */,
+				1A1BAD9C197A4133008192A7 /* LGGitHubJSONLoader.h */,
+				1A1BAD9D197A4133008192A7 /* LGGitHubJSONLoader.m */,
+				1A1BADA3197A46A8008192A7 /* LGGitHubRelease.h */,
+				1A1BADA4197A46A8008192A7 /* LGGitHubRelease.m */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -474,6 +484,8 @@
 				1AC98412195CE8520071CAB3 /* LGEmailer.m in Sources */,
 				6A0ACE34196FB349002C7FE4 /* LGApplications.m in Sources */,
 				1AC9841F195CEC360071CAB3 /* LGConfigurationWindowController.m in Sources */,
+				1A1BADA5197A46A8008192A7 /* LGGitHubRelease.m in Sources */,
+				1A1BAD9E197A4133008192A7 /* LGGitHubJSONLoader.m in Sources */,
 				1AC6955D195B59EE00D2BD81 /* main.m in Sources */,
 				1AC69564195B59EE00D2BD81 /* LGAppDelegate.m in Sources */,
 				1AC9840A195CE7D60071CAB3 /* LGConstants.m in Sources */,
