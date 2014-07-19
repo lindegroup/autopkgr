@@ -93,6 +93,30 @@
     return NO;
 }
 
+- (NSString *)getAutoPkgVersion
+{
+    NSTask *getAutoPkgVersionTask = [[NSTask alloc] init];
+    NSPipe *getAutoPkgVersionPipe = [NSPipe pipe];
+    NSFileHandle *fileHandle = [getAutoPkgVersionPipe fileHandleForReading];
+
+    NSString *launchPath = @"/usr/bin/python";
+    NSArray *args = [NSArray arrayWithObjects:@"/usr/local/bin/autopkg", @"version", nil];
+
+    [getAutoPkgVersionTask setLaunchPath:launchPath];
+    [getAutoPkgVersionTask setArguments:args];
+    [getAutoPkgVersionTask setStandardOutput:getAutoPkgVersionPipe];
+    [getAutoPkgVersionTask setStandardError:getAutoPkgVersionPipe];
+
+    [getAutoPkgVersionTask launch];
+    [getAutoPkgVersionTask waitUntilExit];
+
+    NSData *autoPkgVersionData = [fileHandle readDataToEndOfFile];
+    NSString *autoPkgVersionString = [[NSString alloc] initWithData:autoPkgVersionData encoding:NSUTF8StringEncoding];
+    NSString *trimmedVersionString = [autoPkgVersionString stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+
+    return trimmedVersionString;
+}
+
 - (BOOL)autoPkgInstalled
 {
     NSString *autoPkgPath = @"/usr/local/bin/autopkg";

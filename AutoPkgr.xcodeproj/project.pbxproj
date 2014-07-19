@@ -10,6 +10,7 @@
 		1A0A86AF195CE63900A49434 /* MailCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1A0A86AE195CE5DC00A49434 /* MailCore.framework */; };
 		1A0A86B1195CE69300A49434 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1A0A86B0195CE69300A49434 /* Security.framework */; };
 		1A0A86B5195CE6D800A49434 /* MailCore.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 1A0A86AE195CE5DC00A49434 /* MailCore.framework */; };
+		1A1BAD96197A0407008192A7 /* LGVersionComparator.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A1BAD95197A0407008192A7 /* LGVersionComparator.m */; };
 		1A979FE01960BCCC00EE9881 /* LGUnzipper.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A979FDF1960BCCC00EE9881 /* LGUnzipper.m */; };
 		1AAAA5CC196C82DB00623804 /* LGAutoPkgRunner.m in Sources */ = {isa = PBXBuildFile; fileRef = 1AAAA5CB196C82DB00623804 /* LGAutoPkgRunner.m */; };
 		1AC69551195B59ED00D2BD81 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1AC69550195B59ED00D2BD81 /* Cocoa.framework */; };
@@ -105,6 +106,8 @@
 /* Begin PBXFileReference section */
 		1A0A869D195CE5DB00A49434 /* mailcore2.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = mailcore2.xcodeproj; path = "mailcore2/build-mac/mailcore2.xcodeproj"; sourceTree = SOURCE_ROOT; };
 		1A0A86B0195CE69300A49434 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
+		1A1BAD94197A0407008192A7 /* LGVersionComparator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGVersionComparator.h; sourceTree = "<group>"; };
+		1A1BAD95197A0407008192A7 /* LGVersionComparator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGVersionComparator.m; sourceTree = "<group>"; };
 		1A979FDE1960BCCC00EE9881 /* LGUnzipper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGUnzipper.h; sourceTree = "<group>"; };
 		1A979FDF1960BCCC00EE9881 /* LGUnzipper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGUnzipper.m; sourceTree = "<group>"; };
 		1AAAA5CA196C82DB00623804 /* LGAutoPkgRunner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGAutoPkgRunner.h; sourceTree = "<group>"; };
@@ -246,6 +249,8 @@
 				6A0BABE8196E560000A136BB /* LGPopularRepositories.m */,
 				6A0ACE32196FB349002C7FE4 /* LGApplications.h */,
 				6A0ACE33196FB349002C7FE4 /* LGApplications.m */,
+				1A1BAD94197A0407008192A7 /* LGVersionComparator.h */,
+				1A1BAD95197A0407008192A7 /* LGVersionComparator.m */,
 				1AC9841E195CEC360071CAB3 /* LGConfigurationWindowController.xib */,
 				1AC69565195B59EE00D2BD81 /* MainMenu.xib */,
 				1AC69568195B59EE00D2BD81 /* Images.xcassets */,
@@ -465,6 +470,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				1AC86D3D195E0AC6006FDD2B /* LGHostInfo.m in Sources */,
+				1A1BAD96197A0407008192A7 /* LGVersionComparator.m in Sources */,
 				1AC98412195CE8520071CAB3 /* LGEmailer.m in Sources */,
 				6A0ACE34196FB349002C7FE4 /* LGApplications.m in Sources */,
 				1AC9841F195CEC360071CAB3 /* LGConfigurationWindowController.m in Sources */,

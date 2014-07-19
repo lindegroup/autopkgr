@@ -16,6 +16,7 @@
 - (NSString *)getAutoPkgCacheDir;
 - (NSString *)getAutoPkgRecipeReposDir;
 - (NSString *)getMunkiRepoDir;
+- (NSString *)getAutoPkgVersion;
 - (BOOL)gitInstalled;
 - (BOOL)autoPkgInstalled;
 

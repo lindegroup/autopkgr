@@ -253,6 +253,9 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
 
     // Synchronize with the defaults database
     [defaults synchronize];
+    // TODO: REMOVE ME
+    NSString *autoPkgVersionString = [hostInfo getAutoPkgVersion];
+    NSLog(@"autoPkgVersionString (%@)", autoPkgVersionString);
 }
 
 - (IBAction)sendTestEmail:(id)sender
