@@ -25,6 +25,7 @@
 @synthesize smtpUsername;
 @synthesize smtpPassword;
 @synthesize smtpPort;
+@synthesize smtpFrom;
 @synthesize autoPkgRunInterval;
 @synthesize repoURLToAdd;
 @synthesize localMunkiRepo;
@@ -49,11 +50,9 @@ static void *XXCheckForRepoUpdatesAutomaticallyEnabledContext = &XXCheckForRepoU
 static void *XXEmailNotificationsEnabledContext = &XXEmailNotificationsEnabledContext;
 static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
 
+
 - (void)awakeFromNib
 {
-    // This is for the token field support
-    [self.smtpTo setDelegate:self];
-
     [smtpAuthenticationEnabledButton addObserver:self
                                       forKeyPath:@"cell.state"
                                          options:(NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld)
@@ -68,6 +67,21 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
                          forKeyPath:@"cell.state"
                             options:(NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld)
                             context:XXCheckForNewAppsAutomaticallyEnabledContext];
+    
+    // Set up buttons to save their defaults
+    [smtpTLSEnabledButton setTarget:self];
+    [smtpTLSEnabledButton setAction:@selector(changeTLSButtonState)];
+    [warnBeforeQuittingButton setTarget:self];
+    [warnBeforeQuittingButton setAction:@selector(changeWarnBeforeQuittingButtonState)];
+    [smtpAuthenticationEnabledButton setTarget:self];
+    [smtpAuthenticationEnabledButton setAction:@selector(changeSmtpAuthenticationButtonState)];
+    [sendEmailNotificationsWhenNewVersionsAreFoundButton setTarget:self];
+    [sendEmailNotificationsWhenNewVersionsAreFoundButton setAction:@selector(changeSendEmailNotificationsWhenNewVersionsAreFoundButtonState)];
+    [checkForNewVersionsOfAppsAutomaticallyButton setTarget:self];
+    [checkForNewVersionsOfAppsAutomaticallyButton setAction:@selector(changeCheckForNewVersionsOfAppsAutomaticallyButtonState)];
+    [checkForRepoUpdatesAutomaticallyButton setTarget:self];
+    [checkForRepoUpdatesAutomaticallyButton setAction:@selector(changeCheckForRepoUpdatesAutomaticallyButtonState)];
+    
 }
 
 - (void)dealloc
@@ -102,6 +116,7 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
                 [smtpAuthenticationEnabledButton setEnabled:YES];
                 [smtpTLSEnabledButton setEnabled:YES];
                 [sendTestEmailButton setEnabled:YES];
+                [smtpFrom setEnabled:YES];
             } else {
                 [smtpTo setEnabled:NO];
                 [smtpServer setEnabled:NO];
@@ -111,6 +126,7 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
                 [smtpAuthenticationEnabledButton setEnabled:NO];
                 [smtpTLSEnabledButton setEnabled:NO];
                 [sendTestEmailButton setEnabled:NO];
+                [smtpFrom setEnabled:NO];
             }
         }
     } else if (context == XXCheckForNewAppsAutomaticallyEnabledContext) {
@@ -129,6 +145,7 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
     self = [super initWithWindow:window];
     if (self) {
         // Initialization code here.
+        defaults = [NSUserDefaults standardUserDefaults];
     }
     return self;
 }
@@ -143,7 +160,7 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
     [scheduleMatrix setIntercellSpacing:NSMakeSize(10.0, 10.5)];
 
     // Populate the SMTP settings from the user defaults if they exist
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    // NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 
     if ([defaults objectForKey:kAutoPkgRunInterval]) {
         [autoPkgRunInterval setIntegerValue:[defaults integerForKey:kAutoPkgRunInterval]];
@@ -153,6 +170,9 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
     }
     if ([defaults objectForKey:kSMTPServer]) {
         [smtpServer setStringValue:[defaults objectForKey:kSMTPServer]];
+    }
+    if ([defaults objectForKey:kSMTPFrom]) {
+        [smtpFrom setStringValue:[defaults objectForKey:kSMTPFrom]];
     }
     if ([defaults integerForKey:kSMTPPort]) {
         [smtpPort setIntegerValue:[defaults integerForKey:kSMTPPort]];
@@ -205,9 +225,6 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
     // Create an instance of the LGHostInfo class
     LGHostInfo *hostInfo = [[LGHostInfo alloc] init];
 
-    // Set the SMTPFrom key to shortname@hostname
-    [defaults setObject:[hostInfo getUserAtHostName] forKey:kSMTPFrom];
-
     if ([hostInfo gitInstalled]) {
         [gitStatusLabel setStringValue:kGitInstalledLabel];
         [gitStatusIcon setImage:[NSImage imageNamed:kStatusAvailableImage]];
@@ -248,6 +265,9 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
 {
     // Send a test email notification when the user
     // clicks "Send Test Email"
+    
+    // First saves the defaults
+    [self save];
 
     // Create an instance of the LGEmailer class
     LGEmailer *emailer = [[LGEmailer alloc] init];
@@ -257,20 +277,15 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
     [emailer sendTestEmail];
 }
 
-- (IBAction)saveAndClose:(id)sender
+- (void)save
 {
-    // Store the SMTP settings in NSUserDefaults
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults]; // implemented
-
-    // Create an instance of the LGHostInfo class
-    LGHostInfo *hostInfo = [[LGHostInfo alloc] init];
-
     [defaults setObject:[smtpServer stringValue] forKey:kSMTPServer];
     [defaults setInteger:[smtpPort integerValue]forKey:kSMTPPort];
     [defaults setObject:[smtpUsername stringValue] forKey:kSMTPUsername];
-    [defaults setObject:[hostInfo getUserAtHostName] forKey:kSMTPFrom];
+    [defaults setObject:[smtpFrom stringValue] forKey:kSMTPFrom];
     [defaults setBool:YES forKey:kHasCompletedInitialSetup];
     [defaults setObject:[localMunkiRepo stringValue] forKey:kLocalMunkiRepoPath];
+    
     // We use objectValue here because objectValue returns an
     // array of strings if the field contains a series of strings
     [defaults setObject:[smtpTo objectValue] forKey:kSMTPTo];
@@ -307,16 +322,14 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
         [defaults setBool:NO forKey:kSMTPAuthenticationEnabled];
     }
 
-    if ([sendEmailNotificationsWhenNewVersionsAreFoundButton state] == NSOnState) {
-        NSLog(@"Enabling email notifications.");
+    if ([sendEmailNotificationsWhenNewVersionsAreFoundButton state] == NSOnState) {          NSLog(@"Enabling email notifications.");
         [defaults setBool:YES forKey:kSendEmailNotificationsWhenNewVersionsAreFoundEnabled];
     } else {
         NSLog(@"Disabling email notificaitons.");
         [defaults setBool:NO forKey:kSendEmailNotificationsWhenNewVersionsAreFoundEnabled];
     }
 
-    if ([checkForNewVersionsOfAppsAutomaticallyButton state] == NSOnState) {
-        NSLog(@"Enabling checking for new apps automatically.");
+    if ([checkForNewVersionsOfAppsAutomaticallyButton state] == NSOnState) {          NSLog(@"Enabling checking for new apps automatically.");
         [defaults setBool:YES forKey:kCheckForNewVersionsOfAppsAutomaticallyEnabled];
     } else {
         NSLog(@"Disabling checking for new apps automatically.");
@@ -333,18 +346,12 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
 
     // Store the password used for SMTP authentication in the default keychain
     [SSKeychain setPassword:[smtpPassword stringValue] forService:kApplicationName account:[smtpUsername stringValue]];
-
-    // Synchronize with the defaults database
-    [defaults synchronize];  // Implemented
     
-    // Write recipe_list.txt
-    [_appTableViewHandler writeRecipeList];
+    // Synchronize with the defaults database
+    [defaults synchronize];
 
     // Start the AutoPkg run timer if the user enabled it
     [self startAutoPkgRunTimer];
-
-    // Close the window
-    [self close];
 }
 
 - (void)startAutoPkgRunTimer
@@ -581,5 +588,128 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
         }
     }];
 }
+
+- (void)controlTextDidEndEditing:(NSNotification *)notification
+{
+    id object = [notification object];
+    
+    if ([object isEqual:smtpServer]) {
+        [defaults setObject:[smtpServer stringValue] forKey:kSMTPServer];
+    } else if ([object isEqual:smtpPort]) {
+        [defaults setInteger:[smtpPort integerValue] forKey:kSMTPPort];
+    } else if ([object isEqual:smtpUsername]) {
+        [defaults setObject:[smtpUsername stringValue] forKey:kSMTPUsername];
+    } else if ([object isEqual:smtpFrom]) {
+        [defaults setObject:[smtpFrom stringValue] forKey:kSMTPFrom];
+    } else if ([object isEqual:localMunkiRepo]) {
+        [defaults setObject:[localMunkiRepo stringValue] forKey:kLocalMunkiRepoPath];
+    } else if ([object isEqual:smtpTo]) {
+        // We use objectValue here because objectValue returns an
+        // array of strings if the field contains a series of strings
+        [defaults setObject:[smtpTo objectValue] forKey:kSMTPTo];
+    } else if ([object isEqual:autoPkgRunInterval]) {
+        if ([autoPkgRunInterval integerValue] != 0) {
+            [defaults setInteger:[autoPkgRunInterval integerValue] forKey:kAutoPkgRunInterval];
+            [self startAutoPkgRunTimer];
+        }
+    } else if ([object isEqual:smtpPassword]) {
+        [SSKeychain setPassword:[smtpPassword stringValue] forService:kApplicationName account:[smtpUsername stringValue]];
+    } else {
+        NSLog(@"Uncaught controlTextDidEndEditing");
+        return;
+    }
+    
+    // Synchronize with the defaults database
+    [defaults synchronize];
+    
+    // This makes the initial config screen not appear automatically on start.
+    [defaults setBool:YES forKey:kHasCompletedInitialSetup];
+}
+
+- (NSArray *)tokenField:(NSTokenField *)tokenField shouldAddObjects:(NSArray *)tokens atIndex:(NSUInteger)index
+{
+    // We use objectValue here because objectValue returns an
+    // array of strings if the field contains a series of strings
+    [defaults setObject:[smtpTo objectValue] forKey:kSMTPTo];
+    [defaults synchronize];
+    return tokens;
+}
+
+- (void)changeTLSButtonState
+{
+    if ([smtpTLSEnabledButton state] == NSOnState) {
+        // The user wants to enable TLS for this SMTP configuration
+        NSLog(@"Enabling TLS.");
+        [defaults setBool:YES forKey:kSMTPTLSEnabled];
+    } else {
+        // The user wants to disable TLS for this SMTP configuration
+        NSLog(@"Disabling TLS.");
+        [defaults setBool:NO forKey:kSMTPTLSEnabled];
+    }
+    [defaults synchronize];
+}
+
+
+- (void)changeWarnBeforeQuittingButtonState
+{
+    if ([warnBeforeQuittingButton state] == NSOnState) {
+        NSLog(@"Enabling warning before quitting.");
+        [defaults setBool:YES forKey:kWarnBeforeQuittingEnabled];
+    } else {
+        NSLog(@"Disabling warning before quitting.");
+        [defaults setBool:NO forKey:kWarnBeforeQuittingEnabled];
+    }
+    [defaults synchronize];
+}
+
+- (void)changeSmtpAuthenticationButtonState
+{
+    if ([smtpAuthenticationEnabledButton state] == NSOnState) {
+        NSLog(@"Enabling SMTP authentication.");
+        [defaults setBool:YES forKey:kSMTPAuthenticationEnabled];
+    } else {
+        NSLog(@"Disabling SMTP authentication.");
+        [defaults setBool:NO forKey:kSMTPAuthenticationEnabled];
+    }
+    [defaults synchronize];
+}
+
+- (void)changeSendEmailNotificationsWhenNewVersionsAreFoundButtonState
+{
+    if ([sendEmailNotificationsWhenNewVersionsAreFoundButton state] == NSOnState) {
+        NSLog(@"Enabling email notifications.");
+        [defaults setBool:YES forKey:kSendEmailNotificationsWhenNewVersionsAreFoundEnabled];
+    } else {
+        NSLog(@"Disabling email notificaitons.");
+        [defaults setBool:NO forKey:kSendEmailNotificationsWhenNewVersionsAreFoundEnabled];
+    }
+    [defaults synchronize];
+}
+
+- (void)changeCheckForNewVersionsOfAppsAutomaticallyButtonState
+{
+    if ([checkForNewVersionsOfAppsAutomaticallyButton state] == NSOnState) {
+        NSLog(@"Enabling checking for new apps automatically.");
+        [defaults setBool:YES forKey:kCheckForNewVersionsOfAppsAutomaticallyEnabled];
+    } else {
+        NSLog(@"Disabling checking for new apps automatically.");
+        [defaults setBool:NO forKey:kCheckForNewVersionsOfAppsAutomaticallyEnabled];
+    }
+    [defaults synchronize];
+    [self startAutoPkgRunTimer];
+}
+
+- (void)changeCheckForRepoUpdatesAutomaticallyButtonState
+{
+    if ([checkForRepoUpdatesAutomaticallyButton state] == NSOnState) {
+        NSLog(@"Enabling checking for repo updates automatically.");
+        [defaults setBool:YES forKey:kCheckForRepoUpdatesAutomaticallyEnabled];
+    } else {
+        NSLog(@"Disabling checking for repo updates automatically.");
+        [defaults setBool:NO forKey:kCheckForRepoUpdatesAutomaticallyEnabled];
+    }
+    [defaults synchronize];
+}
+
 
 @end

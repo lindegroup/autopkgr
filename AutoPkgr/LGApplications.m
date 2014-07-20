@@ -122,6 +122,7 @@
             }
         }
         activeApps = [NSArray arrayWithArray:workingArray];
+        [self writeRecipeList];
     }
     
     return;

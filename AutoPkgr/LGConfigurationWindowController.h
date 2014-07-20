@@ -10,10 +10,14 @@
 #import "LGPopularRepositories.h"
 #import "LGApplications.h"
 
-@interface LGConfigurationWindowController : NSWindowController <NSTokenFieldDelegate>
+@interface LGConfigurationWindowController : NSWindowController <NSTextDelegate,NSTokenFieldDelegate>
+{
+    NSUserDefaults *defaults;
+}
 
 // Text/token fields
 @property (weak) IBOutlet NSTokenField *smtpTo;
+@property (weak) IBOutlet NSTextField *smtpFrom;
 @property (weak) IBOutlet NSTextField *smtpServer;
 @property (weak) IBOutlet NSTextField *smtpUsername;
 @property (weak) IBOutlet NSSecureTextField *smtpPassword;
@@ -53,7 +57,6 @@
 
 // IBActions
 - (IBAction)sendTestEmail:(id)sender;
-- (IBAction)saveAndClose:(id)sender;
 - (IBAction)installGit:(id)sender;
 - (IBAction)installAutoPkg:(id)sender;
 - (IBAction)openAutoPkgCacheFolder:(id)sender;

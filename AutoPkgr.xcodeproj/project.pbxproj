@@ -33,7 +33,6 @@
 		1AC98429195DF6DE0071CAB3 /* autopkgr_alt.png in Resources */ = {isa = PBXBuildFile; fileRef = 1AC98428195DF6DE0071CAB3 /* autopkgr_alt.png */; };
 		6A0ACE34196FB349002C7FE4 /* LGApplications.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A0ACE33196FB349002C7FE4 /* LGApplications.m */; };
 		6A0BABE9196E560000A136BB /* LGPopularRepositories.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A0BABE8196E560000A136BB /* LGPopularRepositories.m */; };
-		6A28DD42197638340025E193 /* LGChangeHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A28DD41197638340025E193 /* LGChangeHandler.m */; };
 		8B6A3199195B7AC1007A7A16 /* linde-logo@400px.png in Resources */ = {isa = PBXBuildFile; fileRef = 8B6A3198195B7AC1007A7A16 /* linde-logo@400px.png */; };
 		8BB217F619709A2C00EF8B93 /* AutoPkgrIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 8BB217F519709A2C00EF8B93 /* AutoPkgrIcon.png */; };
 /* End PBXBuildFile section */
@@ -146,8 +145,6 @@
 		6A0ACE33196FB349002C7FE4 /* LGApplications.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGApplications.m; sourceTree = "<group>"; };
 		6A0BABE7196E560000A136BB /* LGPopularRepositories.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGPopularRepositories.h; sourceTree = "<group>"; };
 		6A0BABE8196E560000A136BB /* LGPopularRepositories.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGPopularRepositories.m; sourceTree = "<group>"; };
-		6A28DD40197638340025E193 /* LGChangeHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGChangeHandler.h; sourceTree = "<group>"; };
-		6A28DD41197638340025E193 /* LGChangeHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGChangeHandler.m; sourceTree = "<group>"; };
 		8B6A3198195B7AC1007A7A16 /* linde-logo@400px.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "linde-logo@400px.png"; sourceTree = "<group>"; };
 		8BB217F519709A2C00EF8B93 /* AutoPkgrIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = AutoPkgrIcon.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -237,8 +234,6 @@
 				1AC69563195B59EE00D2BD81 /* LGAppDelegate.m */,
 				1AC98410195CE8510071CAB3 /* LGEmailer.h */,
 				1AC98411195CE8520071CAB3 /* LGEmailer.m */,
-				6A28DD40197638340025E193 /* LGChangeHandler.h */,
-				6A28DD41197638340025E193 /* LGChangeHandler.m */,
 				1AC98408195CE7D60071CAB3 /* LGConstants.h */,
 				1AC98409195CE7D60071CAB3 /* LGConstants.m */,
 				1AAAA5CA196C82DB00623804 /* LGAutoPkgRunner.h */,
@@ -480,7 +475,6 @@
 				1A979FE01960BCCC00EE9881 /* LGUnzipper.m in Sources */,
 				6A0BABE9196E560000A136BB /* LGPopularRepositories.m in Sources */,
 				1AAAA5CC196C82DB00623804 /* LGAutoPkgRunner.m in Sources */,
-				6A28DD42197638340025E193 /* LGChangeHandler.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
