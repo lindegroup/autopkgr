@@ -7,7 +7,7 @@
 //
 
 #import "LGGitHubJSONLoader.h"
-#import "LGGitHubRelease.h"
+#import "LGConstants.h"
 
 @implementation LGGitHubJSONLoader
 
@@ -37,21 +37,24 @@
     if (error ) {
         NSLog(@"NSJSONSerialization error when attempting to serialize JSON data from the GitHub API: Error: %@.", error);
     }
-
-    // Create a mutable array to hold releases
-    NSMutableArray *mutableReleases = [[NSMutableArray alloc] init];
-
-    for (NSDictionary *dct in releases) {
-        // Create a new LGGitHubRelease object
-        // and initialize it with info from
-        // the dictionary
-        LGGitHubRelease *release = [[LGGitHubRelease alloc] initWithJSONDictionary:dct];
-        // Add the LGGitHubRelease object to the
-        // mutable array
-        [mutableReleases addObject:release];
-    }
     
-    return [NSArray arrayWithArray:mutableReleases];
+    return releases;
+}
+
+- (NSString *)getLatestAutoPkgReleaseVersionNumber
+{
+    // Get the JSON data
+    NSArray *releasesArray = [self getAutoPkgReleasesJSON:[NSURL URLWithString:kAutoPkgReleasesJSONURL]];
+
+    // GitHub returns the latest release from the API at index 0
+    NSDictionary *latestVersionDict = [releasesArray objectAtIndex:0];
+
+    // AutoPkg version numbers are prepended with "v"
+    // Let's remove that from our version string
+    NSString *latestVersionNumber = [[latestVersionDict objectForKey:@"tag_name"] stringByReplacingOccurrencesOfString:@"v" withString:@""];
+    NSLog(@"Latest version of AutoPkg available on GitHub: %@.", latestVersionNumber);
+
+    return latestVersionNumber;
 }
 
 @end
