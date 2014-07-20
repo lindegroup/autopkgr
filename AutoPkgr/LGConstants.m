@@ -30,4 +30,4 @@ NSString *const kGitInstalledLabel = @"Git has been installed.";
 NSString *const kGitNotInstalledLabel = @"Git is not installed.";
 NSString *const kAutoPkgInstalledLabel = @"AutoPkg has been installed.";
 NSString *const kAutoPkgNotInstalledLabel = @"AutoPkg is not installed.";
-NSString *const kAutoPkgUpdateAvailableLabel = @"AutoPkg update available.";
+NSString *const kAutoPkgUpdateAvailableLabel = @"An update is available for AutoPkg.";

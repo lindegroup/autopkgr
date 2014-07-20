@@ -34,7 +34,7 @@
     // Create an array from the JSON data
     NSArray *releases = [[NSArray alloc] initWithArray:[NSJSONSerialization JSONObjectWithData:reqData options:NSJSONReadingMutableContainers error:&error]];
 
-    if (error ) {
+    if (error) {
         NSLog(@"NSJSONSerialization error when attempting to serialize JSON data from the GitHub API: Error: %@.", error);
     }
     

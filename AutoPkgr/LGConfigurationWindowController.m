@@ -370,6 +370,8 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
 
 - (BOOL)autoPkgUpdateAvailable
 {
+    // TODO: This check shouldn't block the main thread
+
     // Get the currently installed version of AutoPkg
     LGHostInfo *hostInfo = [[LGHostInfo alloc] init];
     NSString *installedAutoPkgVersionString = [hostInfo getAutoPkgVersion];
