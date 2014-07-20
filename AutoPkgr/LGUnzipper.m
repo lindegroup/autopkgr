@@ -13,13 +13,25 @@
 - (BOOL)unzip:(NSString *)zipPath targetDir:(NSString *)targetDir
 {
     NSFileManager* fm = [NSFileManager defaultManager];
-
     NSError *error;
+
+    // Remove the targetDir if it already exists
+    BOOL isDir;
+    if ([fm fileExistsAtPath:targetDir isDirectory:&isDir] && isDir) {
+        NSLog(@"%@ already exists. Removing it.", targetDir);
+        [fm removeItemAtPath:targetDir error:&error];
+
+        if (error) {
+            NSLog(@"An error occurred when attempting to remove %@. Error: %@.", targetDir, error);
+        }
+    }
+
+    // Create the targetDir
     [fm createDirectoryAtPath:targetDir withIntermediateDirectories:NO
                    attributes:nil error:&error];
 
     if (error) {
-        NSLog(@"Error when attempting to create tmp dir %@. Error: %@.", targetDir, error);
+        NSLog(@"An error occurred when attempting to create tmp dir %@. Error: %@.", targetDir, error);
     }
 
     // Create unzip NSTask

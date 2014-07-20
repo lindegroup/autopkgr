@@ -12,6 +12,8 @@
 #import "LGHostInfo.h"
 #import "LGUnzipper.h"
 #import "LGAutoPkgRunner.h"
+#import "LGGitHubJSONLoader.h"
+#import "LGVersionComparator.h"
 #import "SSKeychain.h"
 
 @interface LGConfigurationWindowController ()
@@ -218,21 +220,29 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
     if ([hostInfo gitInstalled]) {
         [installGitButton setEnabled:NO];
         [gitStatusLabel setStringValue:kGitInstalledLabel];
-        [gitStatusIcon setImage:[NSImage imageNamed:kStatusAvailableImage]];
+        [gitStatusIcon setImage:[NSImage imageNamed:NSImageNameStatusAvailable]];
     } else {
         [installGitButton setEnabled:YES];
         [gitStatusLabel setStringValue:kGitNotInstalledLabel];
-        [gitStatusIcon setImage:[NSImage imageNamed:kStatusUnavailableImage]];
+        [gitStatusIcon setImage:[NSImage imageNamed:NSImageNameStatusUnavailable]];
     }
 
     if ([hostInfo autoPkgInstalled]) {
-        [installAutoPkgButton setEnabled:NO];
-        [autoPkgStatusLabel setStringValue:kAutoPkgInstalledLabel];
-        [autoPkgStatusIcon setImage:[NSImage imageNamed:kStatusAvailableImage]];
+        BOOL updateAvailable = [self autoPkgUpdateAvailable];
+        if (updateAvailable) {
+            [installAutoPkgButton setEnabled:YES];
+            [installAutoPkgButton setTitle:@"Update AutoPkg"];
+            [autoPkgStatusLabel setStringValue:kAutoPkgUpdateAvailableLabel];
+            [autoPkgStatusIcon setImage:[NSImage imageNamed:NSImageNameStatusPartiallyAvailable]];
+        } else {
+            [installAutoPkgButton setEnabled:NO];
+            [autoPkgStatusLabel setStringValue:kAutoPkgInstalledLabel];
+            [autoPkgStatusIcon setImage:[NSImage imageNamed:NSImageNameStatusAvailable]];
+        }
     } else {
         [installAutoPkgButton setEnabled:YES];
         [autoPkgStatusLabel setStringValue:kAutoPkgNotInstalledLabel];
-        [autoPkgStatusIcon setImage:[NSImage imageNamed:kStatusUnavailableImage]];
+        [autoPkgStatusIcon setImage:[NSImage imageNamed:NSImageNameStatusUnavailable]];
     }
 
     // Enable tools buttons if directories exist
@@ -358,6 +368,30 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
     [self close];
 }
 
+- (BOOL)autoPkgUpdateAvailable
+{
+    // TODO: This check shouldn't block the main thread
+
+    // Get the currently installed version of AutoPkg
+    LGHostInfo *hostInfo = [[LGHostInfo alloc] init];
+    NSString *installedAutoPkgVersionString = [hostInfo getAutoPkgVersion];
+    NSLog(@"Installed version of AutoPkg: %@", installedAutoPkgVersionString);
+
+    // Get the latest version of AutoPkg available on GitHub
+    LGGitHubJSONLoader *jsonLoader = [[LGGitHubJSONLoader alloc] init];
+    NSString *latestAutoPkgVersionString = [jsonLoader getLatestAutoPkgReleaseVersionNumber];
+
+    // Determine if AutoPkg is up-to-date by comparing the version strings
+    LGVersionComparator *vc = [[LGVersionComparator alloc] init];
+    BOOL newVersionAvailable = [vc isVersion:latestAutoPkgVersionString greaterThanVersion:installedAutoPkgVersionString];
+    if (newVersionAvailable) {
+        NSLog(@"A new version of AutoPkg is available. Version %@ is installed and version %@ is available.", installedAutoPkgVersionString, latestAutoPkgVersionString);
+        return YES;
+    }
+
+    return NO;
+}
+
 - (void)startAutoPkgRunTimer
 {
     LGAutoPkgRunner *autoPkgRunner = [[LGAutoPkgRunner alloc] init];
@@ -463,7 +497,7 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
     if ([hostInfo autoPkgInstalled]) {
         NSLog(@"AutoPkg installed successfully!");
         [autoPkgStatusLabel setStringValue:kAutoPkgInstalledLabel];
-        [autoPkgStatusIcon setImage:[NSImage imageNamed:kStatusAvailableImage]];
+        [autoPkgStatusIcon setImage:[NSImage imageNamed:NSImageNameStatusAvailable]];
         [installAutoPkgButton setTitle:@"Install AutoPkg"];
         [installAutoPkgButton setEnabled:NO];
     }

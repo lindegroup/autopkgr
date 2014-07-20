@@ -47,7 +47,6 @@
             [arrayWithoutEmptyStrings addObject:recipe];
         }
     }
-    NSLog(@"recipesArrayWithoutEmptyStrings: %@.", arrayWithoutEmptyStrings);
 
     return arrayWithoutEmptyStrings;
 }
@@ -86,7 +85,6 @@
             [arrayWithoutEmptyStrings addObject:repo];
         }
     }
-    NSLog(@"reposArrayWithoutEmptyStrings: %@.", arrayWithoutEmptyStrings);
 
     return arrayWithoutEmptyStrings;
 }
