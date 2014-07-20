@@ -18,12 +18,12 @@
     // Remove the targetDir if it already exists
     BOOL isDir;
     if ([fm fileExistsAtPath:targetDir isDirectory:&isDir] && isDir) {
-        NSLog(@"removing %@.", targetDir);
+        NSLog(@"%@ already exists. Removing it.", targetDir);
         [fm removeItemAtPath:targetDir error:&error];
-    }
 
-    if (error) {
-        NSLog(@"An error occurred when attempting to remove %@.", targetDir);
+        if (error) {
+            NSLog(@"An error occurred when attempting to remove %@. Error: %@.", targetDir, error);
+        }
     }
 
     // Create the targetDir
