@@ -17,6 +17,8 @@
                 <outlet property="checkForRepoUpdatesAutomaticallyButton" destination="K6Q-1C-fKu" id="enB-L8-gVQ"/>
                 <outlet property="gitStatusIcon" destination="KkE-qM-Hy6" id="wI4-eW-8JZ"/>
                 <outlet property="gitStatusLabel" destination="OPb-IV-o9L" id="iUI-9q-yU4"/>
+                <outlet property="installAutoPkgButton" destination="x1S-bd-tl3" id="4PM-4V-zR4"/>
+                <outlet property="installGitButton" destination="ClY-1a-e2c" id="FKm-rN-CAw"/>
                 <outlet property="localMunkiRepo" destination="smb-Vt-Cyt" id="Ycw-UD-St3"/>
                 <outlet property="localMunkiRepoFolderButton" destination="z6I-Bv-EFk" id="Pai-q2-byn"/>
                 <outlet property="popRepoTableViewHandler" destination="mvj-kT-UYD" id="JIm-Zi-DtB"/>

@@ -34,7 +34,7 @@
 
     if (!autoPkgCacheFolderFromPrefs) {
         NSString *autoPkgCacheFolder = [NSString stringWithFormat:@"%@/Library/AutoPkg/Cache", NSHomeDirectory()];
-        NSLog(@"Unable to get CACHE_DIR from the com.github.autopkg preference domain. Using the default path of %@.", autoPkgCacheFolder);
+        NSLog(@"CACHE_DIR is not specified in the com.github.autopkg preference domain. Using the default path of %@ instead.", autoPkgCacheFolder);
         return autoPkgCacheFolder;
     }
 
@@ -47,7 +47,7 @@
 
     if (!autoPkgRecipeReposFolderFromPrefs) {
         NSString *autoPkgRecipeReposFolder = [NSString stringWithFormat:@"%@/Library/AutoPkg/RecipeRepos", NSHomeDirectory()];
-        NSLog(@"Unable to get RECIPE_REPO_DIR from the com.github.autopkg preference domain. Using the default path of %@.", autoPkgRecipeReposFolder);
+        NSLog(@"RECIPE_REPO_DIR is not specified in the com.github.autopkg preference domain. Using the default path of %@ instead.", autoPkgRecipeReposFolder);
         return autoPkgRecipeReposFolder;
     }
 
@@ -67,7 +67,7 @@
 
             if (!localMunkiRepoFolderFromAutoPkgPrefs) {
                 NSString *localMunkiRepoFolder = @"/Users/Shared/munki_repo";
-                NSLog(@"Unable to get repo_path from the com.googlecode.munki.munkiimport preference domain or MUNKI_REPO from the com.github.autopkg preference domain. Using the default path of %@.", localMunkiRepoFolder);
+                NSLog(@"MUNKI_REPO is not specified in the com.github.autopkg or com.googlecode.munki.munkiimport preference domains. Using the default path of %@ instead.", localMunkiRepoFolder);
                 return localMunkiRepoFolder;
             }
 
@@ -95,12 +95,10 @@
 
 - (BOOL)autoPkgInstalled
 {
-    NSArray *knownAutoPkgPaths = [[NSArray alloc] initWithObjects:@"/usr/local/bin/autopkg", @"/usr/bin/autopkg", nil];
+    NSString *autoPkgPath = @"/usr/local/bin/autopkg";
 
-    for (NSString *path in knownAutoPkgPaths) {
-        if ([[NSFileManager defaultManager] isExecutableFileAtPath:path]) {
-            return YES;
-        }
+    if ([[NSFileManager defaultManager] isExecutableFileAtPath:autoPkgPath]) {
+        return YES;
     }
 
     return NO;
