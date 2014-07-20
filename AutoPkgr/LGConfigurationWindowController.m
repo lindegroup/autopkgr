@@ -39,11 +39,12 @@
 @synthesize autoPkgRecipeReposFolderButton;
 @synthesize localMunkiRepoFolderButton;
 @synthesize sendTestEmailButton;
+@synthesize installGitButton;
+@synthesize installAutoPkgButton;
 @synthesize gitStatusLabel;
 @synthesize autoPkgStatusLabel;
 @synthesize gitStatusIcon;
 @synthesize autoPkgStatusIcon;
-@synthesize scheduleMatrix;
 
 static void *XXCheckForNewAppsAutomaticallyEnabledContext = &XXCheckForNewAppsAutomaticallyEnabledContext;
 static void *XXCheckForRepoUpdatesAutomaticallyEnabledContext = &XXCheckForRepoUpdatesAutomaticallyEnabledContext;
@@ -153,11 +154,6 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
 - (void)windowDidLoad
 {
     [super windowDidLoad];
-    
-    // Implement this method to handle any initialization after your window controller's window has been loaded from its nib file.
-
-    // Set matrix size (IB effs this up)
-    [scheduleMatrix setIntercellSpacing:NSMakeSize(10.0, 10.5)];
 
     // Populate the SMTP settings from the user defaults if they exist
     // NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
@@ -208,17 +204,28 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
         [warnBeforeQuittingButton setState:[[defaults objectForKey:kWarnBeforeQuittingEnabled] boolValue]];
     }
 
-    // Read the SMTP password from the keychain and populate in NSSecureTextField
+    // Read the SMTP password from the keychain and populate in
+    // NSSecureTextField if it exists
     NSError *error = nil;
-    NSString *password = [SSKeychain passwordForService:kApplicationName account:[defaults objectForKey:kSMTPUsername] error:&error];
+    NSString *smtpUsernameString = [defaults objectForKey:kSMTPUsername];
 
-    if ([error code] == SSKeychainErrorNotFound) {
-        NSLog(@"Password not found for account %@.", [defaults objectForKey:kSMTPUsername]);
-    } else {
-        // Only populate the SMTP Password field if the username exists
-        if (![[defaults objectForKey:kSMTPUsername] isEqual:@""]) {
-            NSLog(@"Retrieved password from keychain for account %@.", [defaults objectForKey:kSMTPUsername]);
-            [smtpPassword setStringValue:password];
+    if (smtpUsernameString) {
+        NSString *password = [SSKeychain passwordForService:kApplicationName
+                                                    account:smtpUsernameString
+                                                      error:&error];
+
+        if ([error code] == SSKeychainErrorNotFound) {
+            NSLog(@"Keychain item not found for account %@.", smtpUsernameString);
+        } else if([error code] == SSKeychainErrorNoPassword) {
+            NSLog(@"Found the keychain item for %@ but no password value was returned.", smtpUsernameString);
+        } else if (error != nil) {
+            NSLog(@"An error occurred when attempting to retrieve the keychain entry for %@. Error: %@", smtpUsernameString, [error localizedDescription]);
+        } else {
+            // Only populate the SMTP Password field if the username exists
+            if (smtpUsernameString != nil && ![smtpUsernameString isEqual:@""]) {
+                NSLog(@"Retrieved password from keychain for account %@.", smtpUsernameString);
+                [smtpPassword setStringValue:password];
+            }
         }
     }
 
@@ -226,17 +233,21 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
     LGHostInfo *hostInfo = [[LGHostInfo alloc] init];
 
     if ([hostInfo gitInstalled]) {
+        [installGitButton setEnabled:NO];
         [gitStatusLabel setStringValue:kGitInstalledLabel];
         [gitStatusIcon setImage:[NSImage imageNamed:kStatusAvailableImage]];
     } else {
+        [installGitButton setEnabled:YES];
         [gitStatusLabel setStringValue:kGitNotInstalledLabel];
         [gitStatusIcon setImage:[NSImage imageNamed:kStatusUnavailableImage]];
     }
 
     if ([hostInfo autoPkgInstalled]) {
+        [installAutoPkgButton setEnabled:NO];
         [autoPkgStatusLabel setStringValue:kAutoPkgInstalledLabel];
         [autoPkgStatusIcon setImage:[NSImage imageNamed:kStatusAvailableImage]];
     } else {
+        [installAutoPkgButton setEnabled:YES];
         [autoPkgStatusLabel setStringValue:kAutoPkgNotInstalledLabel];
         [autoPkgStatusIcon setImage:[NSImage imageNamed:kStatusUnavailableImage]];
     }
@@ -390,6 +401,11 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
  */
 - (IBAction)installGit:(id)sender
 {
+    // Change the button label to "Installing..."
+    // and disable the button to prevent multiple clicks
+    [installGitButton setTitle:@"Installing..."];
+    [installGitButton setEnabled:NO];
+
     NSTask *task = [[NSTask alloc] init];
     NSPipe *pipe = [NSPipe pipe];
     NSFileHandle *installGitFileHandle = [pipe fileHandleForReading];
@@ -400,6 +416,16 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
     [task setStandardError:pipe];
     [task launch];
     [installGitFileHandle readInBackgroundAndNotify];
+    [task waitUntilExit];
+
+    LGHostInfo *hostInfo = [[LGHostInfo alloc] init];
+
+    // TODO: We should probably be installing the official
+    // Git PKG rather than dealing with the Xcode CLI tools
+    if ([hostInfo gitInstalled]) {
+        [installGitButton setTitle:@"Install Git"];
+        [installGitButton setEnabled:NO];
+    }
 }
 
 - (void)downloadAndInstallAutoPkg
@@ -445,11 +471,18 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
         NSLog(@"AutoPkg installed successfully!");
         [autoPkgStatusLabel setStringValue:kAutoPkgInstalledLabel];
         [autoPkgStatusIcon setImage:[NSImage imageNamed:kStatusAvailableImage]];
+        [installAutoPkgButton setTitle:@"Install AutoPkg"];
+        [installAutoPkgButton setEnabled:NO];
     }
 }
 
 - (IBAction)installAutoPkg:(id)sender
 {
+    // Change the button label to "Installing..."
+    // and disable the button to prevent multiple clicks
+    [installAutoPkgButton setTitle:@"Installing..."];
+    [installAutoPkgButton setEnabled:NO];
+
     // Download and install AutoPkg on a background thread
     NSOperationQueue *queue = [[NSOperationQueue alloc] init];
     NSInvocationOperation *operation = [[NSInvocationOperation alloc]

@@ -73,12 +73,17 @@
 {
     // Setup menu items for statusItem
     NSMenu *menu = [[NSMenu alloc] init];
-//    [menu addItemWithTitle:@"Send Test Email..." action:@selector(sendTestEmailFromMenu) keyEquivalent:@""];
-//    [menu addItem:[NSMenuItem separatorItem]];
+    [menu addItemWithTitle:@"Check Now" action:@selector(checkNowFromMenu:) keyEquivalent:@""];
     [menu addItemWithTitle:@"Configure..." action:@selector(showConfigurationWindow:) keyEquivalent:@""];
     [menu addItem:[NSMenuItem separatorItem]];
-    [menu addItemWithTitle:@"Quit" action:@selector(terminate:) keyEquivalent:@""];
+    [menu addItemWithTitle:[NSString stringWithFormat:@"Quit %@", kApplicationName] action:@selector(terminate:) keyEquivalent:@""];
     self.statusItem.menu = menu;
+}
+
+- (void)checkNowFromMenu:(id)sender
+{
+    LGAutoPkgRunner *autoPkgRunner = [[LGAutoPkgRunner alloc] init];
+    [autoPkgRunner invokeAutoPkgInBackgroundThread];
 }
 
 - (void)showConfigurationWindow:(id)sender
