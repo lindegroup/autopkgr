@@ -26,7 +26,13 @@
 
     if (TLS) {
         NSLog(@"SSL/TLS is enabled for %@.", [defaults objectForKey:kSMTPServer]);
-        smtpSession.connectionType = MCOConnectionTypeTLS;
+        // If the SMTP port is 465, use MCOConnectionTypeTLS.
+        // Otherwise use MCOConnectionTypeStartTLS.
+        if (smtpSession.port == 465) {
+            smtpSession.connectionType = MCOConnectionTypeTLS;
+        } else {
+            smtpSession.connectionType = MCOConnectionTypeStartTLS;
+        }
     } else {
         NSLog(@"SSL/TLS is _not_ enabled for %@.", [defaults objectForKey:kSMTPServer]);
         smtpSession.connectionType = MCOConnectionTypeClear;
