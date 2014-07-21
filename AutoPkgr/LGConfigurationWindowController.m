@@ -779,5 +779,12 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
     [defaults synchronize];
 }
 
+- (BOOL)windowShouldClose:(id)sender
+{
+    [self save];
+    
+    return YES;
+}
+
 
 @end
