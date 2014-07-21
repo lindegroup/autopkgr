@@ -155,8 +155,7 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
 {
     [super windowDidLoad];
 
-    // Populate the SMTP settings from the user defaults if they exist
-    // NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    // Populate the preference values from the user defaults if they exist
 
     if ([defaults objectForKey:kAutoPkgRunInterval]) {
         [autoPkgRunInterval setIntegerValue:[defaults integerForKey:kAutoPkgRunInterval]];
@@ -333,14 +332,16 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
         [defaults setBool:NO forKey:kSMTPAuthenticationEnabled];
     }
 
-    if ([sendEmailNotificationsWhenNewVersionsAreFoundButton state] == NSOnState) {          NSLog(@"Enabling email notifications.");
+    if ([sendEmailNotificationsWhenNewVersionsAreFoundButton state] == NSOnState) {
+        NSLog(@"Enabling email notifications.");
         [defaults setBool:YES forKey:kSendEmailNotificationsWhenNewVersionsAreFoundEnabled];
     } else {
         NSLog(@"Disabling email notificaitons.");
         [defaults setBool:NO forKey:kSendEmailNotificationsWhenNewVersionsAreFoundEnabled];
     }
 
-    if ([checkForNewVersionsOfAppsAutomaticallyButton state] == NSOnState) {          NSLog(@"Enabling checking for new apps automatically.");
+    if ([checkForNewVersionsOfAppsAutomaticallyButton state] == NSOnState) {
+        NSLog(@"Enabling checking for new apps automatically.");
         [defaults setBool:YES forKey:kCheckForNewVersionsOfAppsAutomaticallyEnabled];
     } else {
         NSLog(@"Disabling checking for new apps automatically.");
@@ -357,7 +358,7 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
 
     // Store the password used for SMTP authentication in the default keychain
     [SSKeychain setPassword:[smtpPassword stringValue] forService:kApplicationName account:[smtpUsername stringValue]];
-    
+
     // Synchronize with the defaults database
     [defaults synchronize];
 
