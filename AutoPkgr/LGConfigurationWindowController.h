@@ -10,7 +10,7 @@
 #import "LGPopularRepositories.h"
 #import "LGApplications.h"
 
-@interface LGConfigurationWindowController : NSWindowController <NSTextDelegate, NSTokenFieldDelegate>
+@interface LGConfigurationWindowController : NSWindowController <NSTextDelegate, NSTokenFieldDelegate, NSWindowDelegate>
 {
     NSUserDefaults *defaults;
 }
