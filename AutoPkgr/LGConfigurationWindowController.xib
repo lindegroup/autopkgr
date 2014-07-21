@@ -457,7 +457,7 @@
                                                         <rect key="frame" x="1" y="1" width="642" height="279"/>
                                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                         <subviews>
-                                                            <textField identifier="smtpServer" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="uO3-QG-q9R">
+                                                            <textField identifier="smtpServer" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="uO3-QG-q9R">
                                                                 <rect key="frame" x="172" y="148" width="286" height="22"/>
                                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" placeholderString="smtp.gmail.com" drawsBackground="YES" id="XrX-VY-sGj">
@@ -469,7 +469,7 @@
                                                                     <outlet property="delegate" destination="-2" id="PbD-AA-J5d"/>
                                                                 </connections>
                                                             </textField>
-                                                            <textField verticalHuggingPriority="750" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="HmV-Dc-TUb">
+                                                            <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="HmV-Dc-TUb">
                                                                 <rect key="frame" x="501" y="148" width="52" height="22"/>
                                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                                 <constraints>
@@ -493,7 +493,7 @@
                                                                     <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                                                 </textFieldCell>
                                                             </textField>
-                                                            <textField identifier="smtpFrom" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="0uY-tb-AXy">
+                                                            <textField identifier="smtpFrom" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="0uY-tb-AXy">
                                                                 <rect key="frame" x="172" y="206" width="286" height="22"/>
                                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" placeholderString="sender@yourdomain.example" drawsBackground="YES" id="aHL-d7-Or8">
@@ -514,7 +514,7 @@
                                                                     <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                                                 </textFieldCell>
                                                             </textField>
-                                                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="0MT-rL-IEP">
+                                                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="0MT-rL-IEP">
                                                                 <rect key="frame" x="464" y="151" width="31" height="17"/>
                                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="port" id="Yxg-J9-3du">
@@ -531,7 +531,7 @@
                                                                     <font key="font" metaFont="system"/>
                                                                 </buttonCell>
                                                             </button>
-                                                            <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="zi5-oQ-M5R">
+                                                            <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="zi5-oQ-M5R">
                                                                 <rect key="frame" x="172" y="74" width="286" height="22"/>
                                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" enabled="NO" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" placeholderString="autopkgr@yourdomain.example" drawsBackground="YES" id="jrh-l3-iKT">
@@ -561,7 +561,7 @@
                                                                     <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                                                 </textFieldCell>
                                                             </textField>
-                                                            <secureTextField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="aRk-NU-9Jl">
+                                                            <secureTextField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="aRk-NU-9Jl">
                                                                 <rect key="frame" x="172" y="45" width="286" height="22"/>
                                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                                 <secureTextFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" enabled="NO" sendsActionOnEndEditing="YES" borderStyle="bezel" placeholderString="" drawsBackground="YES" usesSingleLineMode="YES" id="GVq-gK-DQJ">
@@ -576,7 +576,7 @@
                                                                     <outlet property="delegate" destination="-2" id="R2E-wq-6wZ"/>
                                                                 </connections>
                                                             </secureTextField>
-                                                            <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="SZ2-Hj-GiD">
+                                                            <button verticalHuggingPriority="750" placeholderIntrinsicWidth="158" placeholderIntrinsicHeight="21" translatesAutoresizingMaskIntoConstraints="NO" id="SZ2-Hj-GiD">
                                                                 <rect key="frame" x="460" y="38" width="170" height="32"/>
                                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                                 <buttonCell key="cell" type="push" title="Send Test Email" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="IRF-p5-PAm">
@@ -615,7 +615,7 @@
                                                                     <font key="font" metaFont="system"/>
                                                                 </buttonCell>
                                                             </button>
-                                                            <tokenField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="lqq-Vv-857">
+                                                            <tokenField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="lqq-Vv-857">
                                                                 <rect key="frame" x="172" y="177" width="286" height="22"/>
                                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                                 <tokenFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" borderStyle="bezel" alignment="left" drawsBackground="YES" allowsEditingTextAttributes="YES" id="2bQ-qO-Nhr">
@@ -629,6 +629,30 @@
                                                             </tokenField>
                                                         </subviews>
                                                     </view>
+                                                    <constraints>
+                                                        <constraint firstItem="0uY-tb-AXy" firstAttribute="leading" secondItem="0A8-YK-H2P" secondAttribute="leading" constant="170" id="8k7-7h-2Pp"/>
+                                                        <constraint firstItem="zi5-oQ-M5R" firstAttribute="top" secondItem="0A8-YK-H2P" secondAttribute="top" constant="198" id="8xQ-07-qGf"/>
+                                                        <constraint firstAttribute="trailing" secondItem="HmV-Dc-TUb" secondAttribute="trailing" constant="87" id="C7z-7z-2Ax"/>
+                                                        <constraint firstAttribute="trailing" secondItem="0uY-tb-AXy" secondAttribute="trailing" constant="182" id="Def-op-wlL"/>
+                                                        <constraint firstAttribute="trailing" secondItem="SZ2-Hj-GiD" secondAttribute="trailing" constant="16" id="EQr-Yz-vCv"/>
+                                                        <constraint firstItem="zi5-oQ-M5R" firstAttribute="leading" secondItem="0A8-YK-H2P" secondAttribute="leading" constant="170" id="ERH-3G-c41"/>
+                                                        <constraint firstItem="SZ2-Hj-GiD" firstAttribute="top" secondItem="0A8-YK-H2P" secondAttribute="top" constant="228" id="Mmk-XV-BE6"/>
+                                                        <constraint firstAttribute="trailing" secondItem="zi5-oQ-M5R" secondAttribute="trailing" constant="182" id="RBU-w3-2po"/>
+                                                        <constraint firstItem="HmV-Dc-TUb" firstAttribute="top" secondItem="0A8-YK-H2P" secondAttribute="top" constant="124" id="UxQ-7q-Y4m"/>
+                                                        <constraint firstAttribute="trailing" secondItem="lqq-Vv-857" secondAttribute="trailing" constant="182" id="W9a-9V-sAS"/>
+                                                        <constraint firstAttribute="trailing" secondItem="uO3-QG-q9R" secondAttribute="trailing" constant="182" id="Woo-zj-8W9"/>
+                                                        <constraint firstItem="lqq-Vv-857" firstAttribute="top" secondItem="0A8-YK-H2P" secondAttribute="top" constant="95" id="YX3-bB-QHM"/>
+                                                        <constraint firstItem="aRk-NU-9Jl" firstAttribute="top" secondItem="0A8-YK-H2P" secondAttribute="top" constant="227" id="a7R-tW-aRu"/>
+                                                        <constraint firstItem="0uY-tb-AXy" firstAttribute="top" secondItem="0A8-YK-H2P" secondAttribute="top" constant="66" id="b5I-dy-RZd"/>
+                                                        <constraint firstItem="0MT-rL-IEP" firstAttribute="top" secondItem="0A8-YK-H2P" secondAttribute="top" constant="126" id="gMn-HW-McJ"/>
+                                                        <constraint firstItem="lqq-Vv-857" firstAttribute="leading" secondItem="0A8-YK-H2P" secondAttribute="leading" constant="170" id="jaR-pu-zfu"/>
+                                                        <constraint firstAttribute="trailing" secondItem="0MT-rL-IEP" secondAttribute="trailing" constant="147" id="nK3-2x-WY7"/>
+                                                        <constraint firstItem="aRk-NU-9Jl" firstAttribute="leading" secondItem="0A8-YK-H2P" secondAttribute="leading" constant="170" id="nwg-sV-9RJ"/>
+                                                        <constraint firstItem="uO3-QG-q9R" firstAttribute="leading" secondItem="0A8-YK-H2P" secondAttribute="leading" constant="170" id="tDV-h6-H2d"/>
+                                                        <constraint firstItem="uO3-QG-q9R" firstAttribute="top" secondItem="0A8-YK-H2P" secondAttribute="top" constant="124" id="uhx-us-WVi"/>
+                                                        <constraint firstAttribute="trailing" secondItem="aRk-NU-9Jl" secondAttribute="trailing" constant="182" id="vOH-jM-rW4"/>
+                                                        <constraint firstItem="SZ2-Hj-GiD" firstAttribute="leading" secondItem="aRk-NU-9Jl" secondAttribute="trailing" constant="8" id="xEy-CD-eZT"/>
+                                                    </constraints>
                                                     <color key="borderColor" white="0.0" alpha="0.41999999999999998" colorSpace="calibratedWhite"/>
                                                     <color key="fillColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                 </box>
