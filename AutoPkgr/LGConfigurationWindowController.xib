@@ -649,7 +649,7 @@
                                             <rect key="frame" x="10" y="33" width="706" height="454"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             <subviews>
-                                                <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="TYE-36-bIi">
+                                                <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="TYE-36-bIi">
                                                     <rect key="frame" x="225" y="279" width="257" height="32"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                     <buttonCell key="cell" type="push" title="Open AutoPkg Cache Folder" bezelStyle="rounded" alignment="center" enabled="NO" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="aaW-Xo-fdG">
@@ -660,7 +660,7 @@
                                                         <action selector="openAutoPkgCacheFolder:" target="-2" id="1Bn-og-cDe"/>
                                                     </connections>
                                                 </button>
-                                                <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="5lK-cr-mp5">
+                                                <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="5lK-cr-mp5">
                                                     <rect key="frame" x="225" y="246" width="257" height="32"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                     <buttonCell key="cell" type="push" title="Open AutoPkg RecipeRepos Folder" bezelStyle="rounded" alignment="center" enabled="NO" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="gTC-Jl-CoB">
@@ -671,7 +671,7 @@
                                                         <action selector="openAutoPkgRecipeReposFolder:" target="-2" id="UKh-EQ-fps"/>
                                                     </connections>
                                                 </button>
-                                                <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="z6I-Bv-EFk">
+                                                <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="z6I-Bv-EFk">
                                                     <rect key="frame" x="225" y="213" width="257" height="32"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                     <buttonCell key="cell" type="push" title="Open Local Munki Repo" bezelStyle="rounded" alignment="center" enabled="NO" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="qgf-a1-Jg7">
@@ -682,7 +682,7 @@
                                                         <action selector="openLocalMunkiRepoFolder:" target="-2" id="mii-Zg-AKA"/>
                                                     </connections>
                                                 </button>
-                                                <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="U4k-FQ-NXc">
+                                                <button translatesAutoresizingMaskIntoConstraints="NO" id="U4k-FQ-NXc">
                                                     <rect key="frame" x="245" y="184" width="216" height="18"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                     <buttonCell key="cell" type="check" title="Warn Before Quitting AutoPkgr" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="lr1-cC-Qxj">
@@ -691,6 +691,19 @@
                                                     </buttonCell>
                                                 </button>
                                             </subviews>
+                                            <constraints>
+                                                <constraint firstAttribute="centerY" secondItem="z6I-Bv-EFk" secondAttribute="centerY" constant="3.5" id="789-S0-j2n"/>
+                                                <constraint firstAttribute="centerY" secondItem="U4k-FQ-NXc" secondAttribute="centerY" constant="-34" id="8E7-je-3Jm"/>
+                                                <constraint firstItem="5lK-cr-mp5" firstAttribute="leading" secondItem="EXk-0U-hHL" secondAttribute="leading" constant="231" id="AQ1-i8-fPX"/>
+                                                <constraint firstItem="TYE-36-bIi" firstAttribute="leading" secondItem="EXk-0U-hHL" secondAttribute="leading" constant="231" id="JSj-lW-fRV"/>
+                                                <constraint firstAttribute="trailing" secondItem="z6I-Bv-EFk" secondAttribute="trailing" constant="230" id="Qha-jJ-jCs"/>
+                                                <constraint firstAttribute="centerX" secondItem="U4k-FQ-NXc" secondAttribute="centerX" id="X7i-Sa-cGo"/>
+                                                <constraint firstAttribute="trailing" secondItem="5lK-cr-mp5" secondAttribute="trailing" constant="230" id="bvT-x5-MBu"/>
+                                                <constraint firstAttribute="centerY" secondItem="5lK-cr-mp5" secondAttribute="centerY" constant="36.5" id="nD3-az-cdB"/>
+                                                <constraint firstItem="z6I-Bv-EFk" firstAttribute="leading" secondItem="EXk-0U-hHL" secondAttribute="leading" constant="231" id="t4l-IB-BPF"/>
+                                                <constraint firstAttribute="trailing" secondItem="TYE-36-bIi" secondAttribute="trailing" constant="230" id="zWA-Et-7JA"/>
+                                                <constraint firstAttribute="centerY" secondItem="TYE-36-bIi" secondAttribute="centerY" constant="69.5" id="zlb-bm-4Bf"/>
+                                            </constraints>
                                         </view>
                                     </tabViewItem>
                                 </tabViewItems>
