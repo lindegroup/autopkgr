@@ -128,6 +128,7 @@
                                                 </imageView>
                                             </subviews>
                                             <constraints>
+                                                <constraint firstItem="geX-ws-F4Z" firstAttribute="top" secondItem="pCK-5F-Geg" secondAttribute="top" constant="55" id="0pI-HY-orc"/>
                                                 <constraint firstItem="x1S-bd-tl3" firstAttribute="centerY" secondItem="Pbf-A7-T4b" secondAttribute="centerY" constant="1" id="34Q-rm-2Qm"/>
                                                 <constraint firstItem="Pbf-A7-T4b" firstAttribute="leading" secondItem="x1S-bd-tl3" secondAttribute="trailing" constant="32" id="3Lm-j0-KAU"/>
                                                 <constraint firstItem="KkE-qM-Hy6" firstAttribute="centerY" secondItem="ClY-1a-e2c" secondAttribute="centerY" constant="-0.5" id="Bth-H0-o3y"/>
@@ -136,17 +137,17 @@
                                                 <constraint firstItem="f8q-xY-QUg" firstAttribute="centerY" secondItem="x1S-bd-tl3" secondAttribute="centerY" constant="-0.5" id="PjC-Bs-QqX"/>
                                                 <constraint firstAttribute="trailing" secondItem="ClY-1a-e2c" secondAttribute="trailing" constant="369" id="QdT-rT-YL0"/>
                                                 <constraint firstItem="ClY-1a-e2c" firstAttribute="leading" secondItem="pCK-5F-Geg" secondAttribute="leading" constant="143" id="SDD-U2-YX7"/>
-                                                <constraint firstAttribute="centerX" secondItem="geX-ws-F4Z" secondAttribute="centerX" constant="-0.5" id="T5r-tc-wks"/>
                                                 <constraint firstItem="ClY-1a-e2c" firstAttribute="top" secondItem="pCK-5F-Geg" secondAttribute="top" constant="228" id="TwR-Sp-GI1"/>
                                                 <constraint firstAttribute="trailing" secondItem="g4F-gg-Xfq" secondAttribute="trailing" constant="17" id="Y6g-7S-rHi"/>
                                                 <constraint firstItem="KkE-qM-Hy6" firstAttribute="leading" secondItem="ClY-1a-e2c" secondAttribute="trailing" constant="8" id="aiH-A5-oee"/>
-                                                <constraint firstItem="geX-ws-F4Z" firstAttribute="top" secondItem="pCK-5F-Geg" secondAttribute="top" constant="55" id="cOb-15-1Iv"/>
                                                 <constraint firstItem="OPb-IV-o9L" firstAttribute="centerY" secondItem="ClY-1a-e2c" secondAttribute="centerY" constant="-1" id="dhL-RJ-dKJ"/>
+                                                <constraint firstItem="ClY-1a-e2c" firstAttribute="top" secondItem="geX-ws-F4Z" secondAttribute="bottom" constant="38" id="efq-Lo-V69"/>
                                                 <constraint firstItem="f8q-xY-QUg" firstAttribute="leading" secondItem="x1S-bd-tl3" secondAttribute="trailing" constant="8" id="fD2-Vg-yN3"/>
                                                 <constraint firstItem="g4F-gg-Xfq" firstAttribute="leading" secondItem="pCK-5F-Geg" secondAttribute="leading" constant="17" id="lg2-yO-AOc"/>
                                                 <constraint firstItem="x1S-bd-tl3" firstAttribute="leading" secondItem="pCK-5F-Geg" secondAttribute="leading" constant="143" id="nDH-cA-3FM"/>
                                                 <constraint firstAttribute="trailing" secondItem="x1S-bd-tl3" secondAttribute="trailing" constant="369" id="oKA-WH-Zdk"/>
                                                 <constraint firstItem="g4F-gg-Xfq" firstAttribute="top" secondItem="pCK-5F-Geg" secondAttribute="top" constant="331" id="pyF-26-QZ1"/>
+                                                <constraint firstAttribute="centerX" secondItem="geX-ws-F4Z" secondAttribute="centerX" constant="-0.5" id="t8L-5Q-eFW"/>
                                             </constraints>
                                         </view>
                                     </tabViewItem>
