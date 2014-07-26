@@ -56,6 +56,11 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
 
 - (void)awakeFromNib
 {
+    // TODO: REMOVE ME
+    LGGitHubJSONLoader *jsonLoader = [[LGGitHubJSONLoader alloc] init];
+    NSString *browserDownloadURL = [jsonLoader getLatestAutoPkgDownloadURL];
+    NSLog(@"browser_download_url: %@", browserDownloadURL);
+
     [smtpAuthenticationEnabledButton addObserver:self
                                       forKeyPath:@"cell.state"
                                          options:(NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld)
