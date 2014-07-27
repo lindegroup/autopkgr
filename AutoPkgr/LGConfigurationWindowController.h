@@ -66,7 +66,7 @@
 - (IBAction)checkAppsNow:(id)sender;
 - (IBAction)chooseLocalMunkiRepo:(id)sender;
 
-- (void)runCommandAsRoot:(NSString *)runDirectory command:(NSString *)command;
+- (void)runCommandAsRoot:(NSString *)command;
 - (void)downloadAndInstallAutoPkg;
 
 @end

@@ -23,7 +23,6 @@ extern NSString *const kHasCompletedInitialSetup;
 extern NSString *const kSendEmailNotificationsWhenNewVersionsAreFoundEnabled;
 extern NSString *const kCheckForNewVersionsOfAppsAutomaticallyEnabled;
 extern NSString *const kCheckForRepoUpdatesAutomaticallyEnabled;
-extern NSString *const kAutoPkgDownloadURL;
 extern NSString *const kGitInstalledLabel;
 extern NSString *const kGitNotInstalledLabel;
 extern NSString *const kAutoPkgInstalledLabel;

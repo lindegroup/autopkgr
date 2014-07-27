@@ -70,11 +70,8 @@
     // Get an NSDictionary of the latest release JSON
     NSDictionary *latestVersionDict = [self getLatestAutoPkgReleaseDictionary];
 
-    // Get the "assets" from the dictionary
-    NSDictionary *assets = [[latestVersionDict objectForKey:@"assets"] objectAtIndex:0];
-
     // Get the AutoPkg PKG download URL
-    NSString *browserDownloadURL = [assets objectForKey:@"browser_download_url"];
+    NSString *browserDownloadURL = [[[latestVersionDict objectForKey:@"assets"] objectAtIndex:0] objectForKey:@"browser_download_url"];
 
     return browserDownloadURL;
 }
