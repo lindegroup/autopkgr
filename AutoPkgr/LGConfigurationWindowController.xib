@@ -42,7 +42,7 @@
         <window title="AutoPkgr" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" oneShot="NO" releasedWhenClosed="NO" animationBehavior="default" id="F0z-JX-Cv5">
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
             <rect key="contentRect" x="196" y="240" width="752" height="514"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1440" height="878"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="2560" height="1418"/>
             <value key="minSize" type="size" width="752" height="514"/>
             <view key="contentView" id="se5-gp-TjO">
                 <rect key="frame" x="0.0" y="0.0" width="752" height="514"/>
@@ -678,31 +678,54 @@
                                                                     <outlet property="delegate" destination="-2" id="ww4-Ik-6Ze"/>
                                                                 </connections>
                                                             </tokenField>
+                                                            <imageView translatesAutoresizingMaskIntoConstraints="NO" id="VDb-hs-bB1">
+                                                                <rect key="frame" x="561" y="151" width="16" height="16"/>
+                                                                <autoresizingMask key="autoresizingMask"/>
+                                                                <imageCell key="cell" refusesFirstResponder="YES" alignment="left" animates="YES" imageScaling="proportionallyDown" image="NSStatusNone" id="gNF-i1-jtG"/>
+                                                            </imageView>
+                                                            <imageView translatesAutoresizingMaskIntoConstraints="NO" id="nHy-JB-d14">
+                                                                <rect key="frame" x="561" y="151" width="16" height="16"/>
+                                                                <autoresizingMask key="autoresizingMask"/>
+                                                                <imageCell key="cell" refusesFirstResponder="YES" alignment="left" animates="YES" imageScaling="proportionallyDown" image="NSStatusAvailable" id="cad-Z3-uaf"/>
+                                                            </imageView>
+                                                            <imageView translatesAutoresizingMaskIntoConstraints="NO" id="YvQ-r8-BsA">
+                                                                <rect key="frame" x="561" y="151" width="16" height="16"/>
+                                                                <autoresizingMask key="autoresizingMask"/>
+                                                                <imageCell key="cell" refusesFirstResponder="YES" alignment="left" animates="YES" imageScaling="proportionallyDown" image="NSStatusUnavailable" id="nwJ-xW-cCJ"/>
+                                                            </imageView>
                                                         </subviews>
                                                     </view>
                                                     <constraints>
                                                         <constraint firstItem="0uY-tb-AXy" firstAttribute="leading" secondItem="0A8-YK-H2P" secondAttribute="leading" constant="170" id="8k7-7h-2Pp"/>
                                                         <constraint firstItem="zi5-oQ-M5R" firstAttribute="top" secondItem="0A8-YK-H2P" secondAttribute="top" constant="198" id="8xQ-07-qGf"/>
-                                                        <constraint firstAttribute="trailing" secondItem="HmV-Dc-TUb" secondAttribute="trailing" constant="87" id="C7z-7z-2Ax"/>
+                                                        <constraint firstItem="VDb-hs-bB1" firstAttribute="top" secondItem="0A8-YK-H2P" secondAttribute="top" constant="127" id="DZl-Op-M5E"/>
                                                         <constraint firstAttribute="trailing" secondItem="0uY-tb-AXy" secondAttribute="trailing" constant="182" id="Def-op-wlL"/>
                                                         <constraint firstAttribute="trailing" secondItem="SZ2-Hj-GiD" secondAttribute="trailing" constant="16" id="EQr-Yz-vCv"/>
                                                         <constraint firstItem="zi5-oQ-M5R" firstAttribute="leading" secondItem="0A8-YK-H2P" secondAttribute="leading" constant="170" id="ERH-3G-c41"/>
+                                                        <constraint firstItem="nHy-JB-d14" firstAttribute="top" secondItem="0A8-YK-H2P" secondAttribute="top" constant="127" id="KfJ-Jl-xKT"/>
                                                         <constraint firstItem="SZ2-Hj-GiD" firstAttribute="top" secondItem="0A8-YK-H2P" secondAttribute="top" constant="228" id="Mmk-XV-BE6"/>
                                                         <constraint firstAttribute="trailing" secondItem="zi5-oQ-M5R" secondAttribute="trailing" constant="182" id="RBU-w3-2po"/>
+                                                        <constraint firstItem="YvQ-r8-BsA" firstAttribute="leading" secondItem="HmV-Dc-TUb" secondAttribute="trailing" constant="8" id="ROJ-iz-HKg"/>
+                                                        <constraint firstAttribute="trailing" secondItem="nHy-JB-d14" secondAttribute="trailing" constant="63" id="Rea-oK-6jm"/>
                                                         <constraint firstItem="HmV-Dc-TUb" firstAttribute="top" secondItem="0A8-YK-H2P" secondAttribute="top" constant="124" id="UxQ-7q-Y4m"/>
                                                         <constraint firstAttribute="trailing" secondItem="lqq-Vv-857" secondAttribute="trailing" constant="182" id="W9a-9V-sAS"/>
                                                         <constraint firstAttribute="trailing" secondItem="uO3-QG-q9R" secondAttribute="trailing" constant="182" id="Woo-zj-8W9"/>
                                                         <constraint firstItem="lqq-Vv-857" firstAttribute="top" secondItem="0A8-YK-H2P" secondAttribute="top" constant="95" id="YX3-bB-QHM"/>
+                                                        <constraint firstAttribute="trailing" secondItem="YvQ-r8-BsA" secondAttribute="trailing" constant="63" id="Z7C-6R-dmN"/>
                                                         <constraint firstItem="aRk-NU-9Jl" firstAttribute="top" secondItem="0A8-YK-H2P" secondAttribute="top" constant="227" id="a7R-tW-aRu"/>
                                                         <constraint firstItem="0uY-tb-AXy" firstAttribute="top" secondItem="0A8-YK-H2P" secondAttribute="top" constant="66" id="b5I-dy-RZd"/>
                                                         <constraint firstItem="0MT-rL-IEP" firstAttribute="top" secondItem="0A8-YK-H2P" secondAttribute="top" constant="126" id="gMn-HW-McJ"/>
+                                                        <constraint firstItem="YvQ-r8-BsA" firstAttribute="top" secondItem="0A8-YK-H2P" secondAttribute="top" constant="127" id="hff-yU-HjO"/>
+                                                        <constraint firstItem="nHy-JB-d14" firstAttribute="leading" secondItem="HmV-Dc-TUb" secondAttribute="trailing" constant="8" id="jEd-vb-LOr"/>
                                                         <constraint firstItem="lqq-Vv-857" firstAttribute="leading" secondItem="0A8-YK-H2P" secondAttribute="leading" constant="170" id="jaR-pu-zfu"/>
                                                         <constraint firstAttribute="trailing" secondItem="0MT-rL-IEP" secondAttribute="trailing" constant="147" id="nK3-2x-WY7"/>
                                                         <constraint firstItem="aRk-NU-9Jl" firstAttribute="leading" secondItem="0A8-YK-H2P" secondAttribute="leading" constant="170" id="nwg-sV-9RJ"/>
+                                                        <constraint firstItem="VDb-hs-bB1" firstAttribute="leading" secondItem="HmV-Dc-TUb" secondAttribute="trailing" constant="8" id="sp9-j6-7Jq"/>
                                                         <constraint firstItem="uO3-QG-q9R" firstAttribute="leading" secondItem="0A8-YK-H2P" secondAttribute="leading" constant="170" id="tDV-h6-H2d"/>
                                                         <constraint firstItem="uO3-QG-q9R" firstAttribute="top" secondItem="0A8-YK-H2P" secondAttribute="top" constant="124" id="uhx-us-WVi"/>
                                                         <constraint firstAttribute="trailing" secondItem="aRk-NU-9Jl" secondAttribute="trailing" constant="182" id="vOH-jM-rW4"/>
                                                         <constraint firstItem="SZ2-Hj-GiD" firstAttribute="leading" secondItem="aRk-NU-9Jl" secondAttribute="trailing" constant="8" id="xEy-CD-eZT"/>
+                                                        <constraint firstAttribute="trailing" secondItem="VDb-hs-bB1" secondAttribute="trailing" constant="63" id="yqS-iE-ylW"/>
                                                     </constraints>
                                                     <color key="borderColor" white="0.0" alpha="0.41999999999999998" colorSpace="calibratedWhite"/>
                                                     <color key="fillColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -818,9 +841,29 @@
             </connections>
         </customObject>
         <customObject id="8xE-Xf-V2o" customClass="LGChangeHandler"/>
+        <levelIndicator verticalHuggingPriority="750" id="XyQ-1A-OtA">
+            <rect key="frame" x="0.0" y="0.0" width="96" height="18"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+            <levelIndicatorCell key="cell" alignment="left" doubleValue="2" maxValue="2" warningValue="2" criticalValue="2" id="UMp-Tf-ABp"/>
+        </levelIndicator>
+        <levelIndicator verticalHuggingPriority="750" id="X1I-Ff-RfE">
+            <rect key="frame" x="0.0" y="0.0" width="96" height="18"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+            <levelIndicatorCell key="cell" alignment="left" doubleValue="2" maxValue="2" warningValue="2" criticalValue="2" id="Smn-09-iCM"/>
+        </levelIndicator>
+        <button verticalHuggingPriority="750" id="TT6-cL-Sje">
+            <rect key="frame" x="0.0" y="0.0" width="82" height="32"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+            <buttonCell key="cell" type="push" title="Button" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="rCr-MO-pe0">
+                <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                <font key="font" metaFont="system"/>
+            </buttonCell>
+        </button>
     </objects>
     <resources>
         <image name="AutoPkgrIcon" width="512" height="512"/>
         <image name="NSStatusAvailable" width="16" height="16"/>
+        <image name="NSStatusNone" width="16" height="16"/>
+        <image name="NSStatusUnavailable" width="16" height="16"/>
     </resources>
 </document>
