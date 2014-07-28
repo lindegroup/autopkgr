@@ -25,7 +25,6 @@ NSString *const kHasCompletedInitialSetup = @"HasCompletedInitialSetup";
 NSString *const kSendEmailNotificationsWhenNewVersionsAreFoundEnabled = @"SendEmailNotificationsWhenNewVersionsAreFoundEnabled";
 NSString *const kCheckForNewVersionsOfAppsAutomaticallyEnabled = @"CheckForNewVersionsOfAppsAutomaticallyEnabled";
 NSString *const kCheckForRepoUpdatesAutomaticallyEnabled = @"CheckForRepoUpdatesAutomaticallyEnabled";
-NSString *const kAutoPkgDownloadURL = @"https://github.com/autopkg/autopkg/zipball/master";
 NSString *const kGitInstalledLabel = @"Git has been installed.";
 NSString *const kGitNotInstalledLabel = @"Git is not installed.";
 NSString *const kAutoPkgInstalledLabel = @"AutoPkg has been installed.";

@@ -41,7 +41,7 @@
     return releases;
 }
 
-- (NSString *)getLatestAutoPkgReleaseVersionNumber
+- (NSDictionary *)getLatestAutoPkgReleaseDictionary
 {
     // Get the JSON data
     NSArray *releasesArray = [self getAutoPkgReleasesJSON:[NSURL URLWithString:kAutoPkgReleasesJSONURL]];
@@ -49,12 +49,31 @@
     // GitHub returns the latest release from the API at index 0
     NSDictionary *latestVersionDict = [releasesArray objectAtIndex:0];
 
+    return latestVersionDict;
+}
+
+- (NSString *)getLatestAutoPkgReleaseVersionNumber
+{
+    // Get an NSDictionary of the latest release JSON
+    NSDictionary *latestVersionDict = [self getLatestAutoPkgReleaseDictionary];
+
     // AutoPkg version numbers are prepended with "v"
     // Let's remove that from our version string
     NSString *latestVersionNumber = [[latestVersionDict objectForKey:@"tag_name"] stringByReplacingOccurrencesOfString:@"v" withString:@""];
     NSLog(@"Latest version of AutoPkg available on GitHub: %@.", latestVersionNumber);
 
     return latestVersionNumber;
+}
+
+- (NSString *)getLatestAutoPkgDownloadURL
+{
+    // Get an NSDictionary of the latest release JSON
+    NSDictionary *latestVersionDict = [self getLatestAutoPkgReleaseDictionary];
+
+    // Get the AutoPkg PKG download URL
+    NSString *browserDownloadURL = [[[latestVersionDict objectForKey:@"assets"] objectAtIndex:0] objectForKey:@"browser_download_url"];
+
+    return browserDownloadURL;
 }
 
 @end

@@ -10,7 +10,6 @@
 #import "LGConstants.h"
 #import "LGEmailer.h"
 #import "LGHostInfo.h"
-#import "LGUnzipper.h"
 #import "LGAutoPkgRunner.h"
 #import "LGGitHubJSONLoader.h"
 #import "LGVersionComparator.h"
@@ -406,28 +405,19 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
     [autoPkgRunner startAutoPkgRunTimer];
 }
 
-- (void)runCommandAsRoot:(NSString *)runDirectory command:(NSString *)command
+- (void)runCommandAsRoot:(NSString *)command
 {
-    // Get the current working directory
-    NSString *bundlePath = [[NSBundle mainBundle] bundlePath];
-
-    // Change the path to the AutoPkg directory
-    [[NSFileManager defaultManager] changeCurrentDirectoryPath:runDirectory];
-
     // Super dirty hack, but way easier than
     // using Authorization Services
     NSDictionary *error = [[NSDictionary alloc] init];
     NSString *script = [NSString stringWithFormat:@"do shell script \"sh -c '%@'\" with administrator privileges", command];
-    NSLog(@"appleScript commands: %@", script);
+    NSLog(@"AppleScript commands: %@", script);
     NSAppleScript *appleScript = [[NSAppleScript alloc] initWithSource:script];
     if ([appleScript executeAndReturnError:&error]) {
         NSLog(@"Authorization successful!");
     } else {
         NSLog(@"Authorization failed! Error: %@.", error);
     }
-
-    // Change back to the bundle path when we're done
-    [[NSFileManager defaultManager] changeCurrentDirectoryPath:bundlePath];
 }
 
 /*
@@ -465,41 +455,24 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
 
 - (void)downloadAndInstallAutoPkg
 {
-    LGUnzipper *unzipper = [[LGUnzipper alloc] init];
     LGHostInfo *hostInfo = [[LGHostInfo alloc] init];
-    NSError *error;
+    LGGitHubJSONLoader *jsonLoader = [[LGGitHubJSONLoader alloc] init];
 
-    // Get paths for autopkg.zip and expansion directory
-    NSString *tmpPath = [NSTemporaryDirectory() stringByAppendingPathComponent:@"autopkg.zip"];
-    NSString *autoPkgTmpPath = [NSTemporaryDirectory() stringByAppendingPathComponent:@"autopkg"];
+    // Get the latest AutoPkg PKG download URL
+    NSString *downloadURL = [jsonLoader getLatestAutoPkgDownloadURL];
 
-    // Download AutoPkg to temp directory
-    NSData *autoPkg = [[NSData alloc] initWithContentsOfURL:[NSURL URLWithString:kAutoPkgDownloadURL]];
-    [autoPkg writeToFile:tmpPath atomically:YES];
+    // Get path for autopkg-x.x.x.pkg
+    NSString *autoPkgPkg = [NSTemporaryDirectory() stringByAppendingPathComponent:[downloadURL lastPathComponent]];
 
-    // Unzip AutoPkg from the temp directory
-    BOOL autoPkgUnzipped = [unzipper unzip:tmpPath targetDir:autoPkgTmpPath];
-    if (autoPkgUnzipped) {
-        NSLog(@"Successfully unzipped AutoPkg!");
-    } else {
-        NSLog(@"Couldn't unzip AutoPkg :(");
-    }
+    // Download AutoPkg to the temporary directory
+    NSData *autoPkg = [[NSData alloc] initWithContentsOfURL:[NSURL URLWithString:downloadURL]];
+    [autoPkg writeToFile:autoPkgPkg atomically:YES];
 
-    // Get the AutoPkg run directory and script path
-    NSFileManager *fm = [NSFileManager defaultManager];
-    NSArray *dirContents = [fm contentsOfDirectoryAtPath:autoPkgTmpPath error:&error];
+    // Set the `installer` command
+    NSString *command = [NSString stringWithFormat:@"/usr/sbin/installer -pkg %@ -target /", autoPkgPkg];
 
-    if (error) {
-        NSLog(@"An error occurred when attempting to get the contents of the directory %@. Error: %@", autoPkgTmpPath, error);
-    }
-
-    NSPredicate *fltr = [NSPredicate predicateWithFormat:@"self BEGINSWITH 'autopkg-autopkg-'"];
-    NSArray *autoPkgDir = [dirContents filteredArrayUsingPredicate:fltr];
-    NSString *autoPkgPath = [autoPkgTmpPath stringByAppendingPathComponent:[NSString stringWithFormat:@"/%@", [autoPkgDir objectAtIndex:0]]];
-    NSString *autoPkgInstallScriptPath = [NSString stringWithFormat:@"%@/Scripts/install.sh", autoPkgPath];
-
-    // Run the AutoPkg installer script as root
-    [self runCommandAsRoot:autoPkgPath command:autoPkgInstallScriptPath];
+    // Install the AutoPkg PKG as root
+    [self runCommandAsRoot:command];
 
     // Update the autoPkgStatus icon and label if it installed successfully
     if ([hostInfo autoPkgInstalled]) {
