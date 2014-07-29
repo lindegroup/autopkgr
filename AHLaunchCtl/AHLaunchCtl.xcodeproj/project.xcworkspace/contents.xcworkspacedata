@@ -2,6 +2,6 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "self:AutoPkgr.xcodeproj">
+      location = "self:AHLaunchCtl.xcodeproj">
    </FileRef>
 </Workspace>

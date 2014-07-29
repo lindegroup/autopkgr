@@ -8,8 +8,10 @@
 
 #import "LGAutoPkgRunner.h"
 #import "LGApplications.h"
-#import "LGEmailer.h"
 #import "LGConstants.h"
+#import "LGAutoPkgrHelperConnection.h"
+#import "LGAutoPkgrProtocol.h"
+#import "AHLaunchCtl.h"
 
 @implementation LGAutoPkgRunner
 
@@ -230,7 +232,7 @@
 
 - (void)sendNewDowloadsEmail:(NSArray *)newDownloadsArray
 {
-    LGEmailer *emailer = [[LGEmailer alloc] init];
+    self.emailer = [[LGEmailer alloc] init];
 
     NSMutableArray *apps = [[NSMutableArray alloc] init];
 
@@ -250,7 +252,7 @@
         [newDownloadsString appendFormat:@"<br /><strong>%@</strong>: %@", [dictionary objectForKey:@"app"], [dictionary objectForKey:@"version"]];
     NSString *message = [NSString stringWithFormat:@"The following software is now available for testing:<br />%@", newDownloadsString];
 
-    [emailer sendEmailNotification:subject message:message];
+    [self.emailer sendEmailNotification:subject message:message];
 }
 
 - (void)invokeAutoPkgInBackgroundThread
@@ -275,7 +277,7 @@
 
 - (void)runAutoPkgWithRecipeList
 {
-    LGApplications *apps = [[LGApplications alloc] init];
+    LGApplications *apps = [[LGApplications alloc] init];    
     NSString *applicationSupportDirectory = [apps getAppSupportDirectory];
     NSString *recipeListFilePath = [applicationSupportDirectory stringByAppendingString:@"/recipe_list.txt"];
     [self runAutoPkgWithRecipeListAndSendEmailNotificationIfConfigured:recipeListFilePath];
@@ -285,23 +287,46 @@
 - (void)startAutoPkgRunTimer
 {
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    LGAutoPkgrHelperConnection *helper = [LGAutoPkgrHelperConnection new];
+    [helper connectToHelper];
 
     if ([defaults objectForKey:kCheckForNewVersionsOfAppsAutomaticallyEnabled]) {
+        NSError *error;
 
+        if(![AHLaunchCtl installHelper:kHelperName prompt:@"To schedule" error:&error]){
+            if(error){
+                NSLog(@"%@",error.localizedDescription);
+                [NSApp presentError:error];
+                return;
+            }
+        }
+        
         BOOL checkForNewVersionsOfAppsAutomaticallyEnabled = [[defaults objectForKey:kCheckForNewVersionsOfAppsAutomaticallyEnabled] boolValue];
 
         if (checkForNewVersionsOfAppsAutomaticallyEnabled) {
             if ([defaults integerForKey:kAutoPkgRunInterval]) {
                 double i = [defaults integerForKey:kAutoPkgRunInterval];
                 if (i != 0) {
-                    NSTimeInterval ti = i * 60 * 60; // Convert hours to seconds for our time interval
-                    [NSTimer scheduledTimerWithTimeInterval:ti target:self selector:@selector(invokeAutoPkgInBackgroundThread) userInfo:nil repeats:YES];
+                    NSInteger timer = i * 60 * 60; // Convert hours to seconds for our time interval
+                    NSString *program = [[NSProcessInfo processInfo]arguments].firstObject;
+                    
+                    [[helper.connection remoteObjectProxy]scheduleRun:timer user:NSUserName() program:program withReply:^(NSError *error) {
+                        if(error){
+                            [NSApp presentError:error];
+                        }
+                    }];
                 } else {
                     NSLog(@"i is 0 because that's what the user entered or what they entered wasn't a digit.");
                 }
             } else {
                 NSLog(@"The user enabled automatic checking for app updates but they specified no interval.");
             }
+        }else{
+            [[helper.connection remoteObjectProxy] removeScheduleWithReply:^(NSError *error) {
+                if(error){
+                    [NSApp presentError:error];
+                }
+            }];
         }
     }
 }

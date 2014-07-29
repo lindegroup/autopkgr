@@ -21,6 +21,8 @@
 	<dict>
 		<key>026F280F-1C98-4936-9C8C-43DE0D2802B2</key>
 		<string>../../mailcore2</string>
+		<key>20B31555-04ED-41EF-8662-A40190646E32</key>
+		<string>../../AHLaunchCtl</string>
 		<key>BE02C102-5A70-48C2-A395-81BCE2455E30</key>
 		<string>../..</string>
 	</dict>
@@ -32,6 +34,14 @@
 	<string>BE02C102-5A70-48C2-A395-81BCE2455E30</string>
 	<key>IDESourceControlProjectWCConfigurations</key>
 	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>20B31555-04ED-41EF-8662-A40190646E32</string>
+			<key>IDESourceControlWCCName</key>
+			<string>AHLaunchCtl</string>
+		</dict>
 		<dict>
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
 			<string>public.vcs.git</string>

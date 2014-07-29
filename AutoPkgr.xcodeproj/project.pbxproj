@@ -9,7 +9,7 @@
 /* Begin PBXBuildFile section */
 		1A0A86AF195CE63900A49434 /* MailCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1A0A86AE195CE5DC00A49434 /* MailCore.framework */; };
 		1A0A86B1195CE69300A49434 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1A0A86B0195CE69300A49434 /* Security.framework */; };
-		1A0A86B5195CE6D800A49434 /* MailCore.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 1A0A86AE195CE5DC00A49434 /* MailCore.framework */; };
+		1A0A86B5195CE6D800A49434 /* MailCore.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 1A0A86AE195CE5DC00A49434 /* MailCore.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		1A1BAD96197A0407008192A7 /* LGVersionComparator.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A1BAD95197A0407008192A7 /* LGVersionComparator.m */; };
 		1A1BAD9E197A4133008192A7 /* LGGitHubJSONLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A1BAD9D197A4133008192A7 /* LGGitHubJSONLoader.m */; };
 		1A979FE01960BCCC00EE9881 /* LGUnzipper.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A979FDF1960BCCC00EE9881 /* LGUnzipper.m */; };
@@ -37,6 +37,18 @@
 		6A0BABE9196E560000A136BB /* LGPopularRepositories.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A0BABE8196E560000A136BB /* LGPopularRepositories.m */; };
 		8B6A3199195B7AC1007A7A16 /* linde-logo@400px.png in Resources */ = {isa = PBXBuildFile; fileRef = 8B6A3198195B7AC1007A7A16 /* linde-logo@400px.png */; };
 		8BB217F619709A2C00EF8B93 /* AutoPkgrIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 8BB217F519709A2C00EF8B93 /* AutoPkgrIcon.png */; };
+		BE8ECB1C1986F53E00A99390 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BE8ECB1B1986F53E00A99390 /* Foundation.framework */; };
+		BE8ECB1F1986F53E00A99390 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = BE8ECB1E1986F53E00A99390 /* main.m */; };
+		BE8ECB2D1986F64000A99390 /* LGAutoPkgrHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = BE8ECB2C1986F64000A99390 /* LGAutoPkgrHelper.m */; };
+		BEB00C711987012D00B6206E /* com.lindegroup.AutoPkgr.helper in CopyFiles */ = {isa = PBXBuildFile; fileRef = BE8ECB1A1986F53E00A99390 /* com.lindegroup.AutoPkgr.helper */; };
+		BEB00C8C19873E2100B6206E /* libAHLaunchCtl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BEB00C8719873D7A00B6206E /* libAHLaunchCtl.a */; };
+		BEB00C8D19873E2900B6206E /* libAHLaunchCtl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BEB00C8719873D7A00B6206E /* libAHLaunchCtl.a */; };
+		BEB00C9119873E4700B6206E /* ServiceManagement.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BEB00C9019873E4700B6206E /* ServiceManagement.framework */; };
+		BEB00C9219873E5200B6206E /* ServiceManagement.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BEB00C9019873E4700B6206E /* ServiceManagement.framework */; };
+		BEB00C9419873E8100B6206E /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BEB00C9319873E8100B6206E /* SystemConfiguration.framework */; };
+		BEB00C9519873E8F00B6206E /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BEB00C9319873E8100B6206E /* SystemConfiguration.framework */; };
+		BEB00CA5198754CC00B6206E /* LGAutoPkgrHelperConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = BEB00CA4198754CC00B6206E /* LGAutoPkgrHelperConnection.m */; };
+		BEB00CA619876B7A00B6206E /* LGConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 1AC98409195CE7D60071CAB3 /* LGConstants.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -89,6 +101,48 @@
 			remoteGlobalIDString = 1AC6954C195B59ED00D2BD81;
 			remoteInfo = AutoPkgr;
 		};
+		BE2482C1198584AC00993E96 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1AC69545195B59ED00D2BD81 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 1AC6954C195B59ED00D2BD81;
+			remoteInfo = AutoPkgr;
+		};
+		BE8ECB36198700C400A99390 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1AC69545195B59ED00D2BD81 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = BE8ECB191986F53E00A99390;
+			remoteInfo = com.lindegroup.AutoPkgr.helper;
+		};
+		BEB00C8619873D7A00B6206E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BEB00C7B19873D7A00B6206E /* AHLaunchCtl.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = BE76C6F118A19369003C94A0;
+			remoteInfo = AHLaunchCtl;
+		};
+		BEB00C8819873D7A00B6206E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BEB00C7B19873D7A00B6206E /* AHLaunchCtl.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = BE76C70418A19369003C94A0;
+			remoteInfo = AHLaunchCtlTests;
+		};
+		BEB00C8A19873DF400B6206E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BEB00C7B19873D7A00B6206E /* AHLaunchCtl.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = BE76C6F018A19369003C94A0;
+			remoteInfo = AHLaunchCtl;
+		};
+		BEB00C8E19873E2F00B6206E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BEB00C7B19873D7A00B6206E /* AHLaunchCtl.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = BE76C6F018A19369003C94A0;
+			remoteInfo = AHLaunchCtl;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -99,6 +153,16 @@
 			dstSubfolderSpec = 10;
 			files = (
 				1A0A86B5195CE6D800A49434 /* MailCore.framework in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		BE8ECB2F1986FEEA00A99390 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = Contents/Library/LaunchServices;
+			dstSubfolderSpec = 1;
+			files = (
+				BEB00C711987012D00B6206E /* com.lindegroup.AutoPkgr.helper in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -153,6 +217,21 @@
 		6A0BABE8196E560000A136BB /* LGPopularRepositories.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGPopularRepositories.m; sourceTree = "<group>"; };
 		8B6A3198195B7AC1007A7A16 /* linde-logo@400px.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "linde-logo@400px.png"; sourceTree = "<group>"; };
 		8BB217F519709A2C00EF8B93 /* AutoPkgrIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = AutoPkgrIcon.png; sourceTree = "<group>"; };
+		BE8ECB1A1986F53E00A99390 /* com.lindegroup.AutoPkgr.helper */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = com.lindegroup.AutoPkgr.helper; sourceTree = BUILT_PRODUCTS_DIR; };
+		BE8ECB1B1986F53E00A99390 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		BE8ECB1E1986F53E00A99390 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		BE8ECB211986F53E00A99390 /* helper-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "helper-Prefix.pch"; sourceTree = "<group>"; };
+		BE8ECB2B1986F64000A99390 /* LGAutoPkgrHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGAutoPkgrHelper.h; sourceTree = "<group>"; };
+		BE8ECB2C1986F64000A99390 /* LGAutoPkgrHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGAutoPkgrHelper.m; sourceTree = "<group>"; };
+		BE8ECB2E1986FEB200A99390 /* LGAutoPkgrProtocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LGAutoPkgrProtocol.h; sourceTree = "<group>"; };
+		BE8ECB311986FF7200A99390 /* helper-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "helper-Info.plist"; sourceTree = "<group>"; };
+		BE8ECB321986FF7200A99390 /* helper-Launchd.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "helper-Launchd.plist"; sourceTree = "<group>"; };
+		BE8ECB331987000900A99390 /* HelperTool_CodeSign_RunScript.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = HelperTool_CodeSign_RunScript.py; sourceTree = "<group>"; };
+		BEB00C7B19873D7A00B6206E /* AHLaunchCtl.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = AHLaunchCtl.xcodeproj; path = AHLaunchCtl/AHLaunchCtl.xcodeproj; sourceTree = SOURCE_ROOT; };
+		BEB00C9019873E4700B6206E /* ServiceManagement.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ServiceManagement.framework; path = System/Library/Frameworks/ServiceManagement.framework; sourceTree = SDKROOT; };
+		BEB00C9319873E8100B6206E /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		BEB00CA3198754CC00B6206E /* LGAutoPkgrHelperConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGAutoPkgrHelperConnection.h; sourceTree = "<group>"; };
+		BEB00CA4198754CC00B6206E /* LGAutoPkgrHelperConnection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGAutoPkgrHelperConnection.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -160,8 +239,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1A0A86B1195CE69300A49434 /* Security.framework in Frameworks */,
+				BEB00C8C19873E2100B6206E /* libAHLaunchCtl.a in Frameworks */,
 				1A0A86AF195CE63900A49434 /* MailCore.framework in Frameworks */,
+				BEB00C9219873E5200B6206E /* ServiceManagement.framework in Frameworks */,
+				BEB00C9419873E8100B6206E /* SystemConfiguration.framework in Frameworks */,
+				1A0A86B1195CE69300A49434 /* Security.framework in Frameworks */,
 				1AC69551195B59ED00D2BD81 /* Cocoa.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -172,6 +254,17 @@
 			files = (
 				1AC69571195B59EE00D2BD81 /* Cocoa.framework in Frameworks */,
 				1AC69570195B59EE00D2BD81 /* XCTest.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		BE8ECB171986F53E00A99390 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BEB00C8D19873E2900B6206E /* libAHLaunchCtl.a in Frameworks */,
+				BEB00C9119873E4700B6206E /* ServiceManagement.framework in Frameworks */,
+				BEB00C9519873E8F00B6206E /* SystemConfiguration.framework in Frameworks */,
+				BE8ECB1C1986F53E00A99390 /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -193,7 +286,9 @@
 		1AC69544195B59ED00D2BD81 = {
 			isa = PBXGroup;
 			children = (
+				BE8ECB331987000900A99390 /* HelperTool_CodeSign_RunScript.py */,
 				1AC69556195B59ED00D2BD81 /* AutoPkgr */,
+				BE8ECB1D1986F53E00A99390 /* AutoPkgr Helper */,
 				1AC69574195B59EE00D2BD81 /* AutoPkgrTests */,
 				1AC6954F195B59ED00D2BD81 /* Frameworks */,
 				1AC6954E195B59ED00D2BD81 /* Products */,
@@ -206,6 +301,7 @@
 			children = (
 				1AC6954D195B59ED00D2BD81 /* AutoPkgr.app */,
 				1AC6956E195B59EE00D2BD81 /* AutoPkgrTests.xctest */,
+				BE8ECB1A1986F53E00A99390 /* com.lindegroup.AutoPkgr.helper */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -213,9 +309,12 @@
 		1AC6954F195B59ED00D2BD81 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				BEB00C9319873E8100B6206E /* SystemConfiguration.framework */,
+				BEB00C9019873E4700B6206E /* ServiceManagement.framework */,
 				1A0A86B0195CE69300A49434 /* Security.framework */,
 				1AC69550195B59ED00D2BD81 /* Cocoa.framework */,
 				1AC6956F195B59EE00D2BD81 /* XCTest.framework */,
+				BE8ECB1B1986F53E00A99390 /* Foundation.framework */,
 				1AC69552195B59ED00D2BD81 /* Other Frameworks */,
 			);
 			name = Frameworks;
@@ -236,6 +335,7 @@
 			children = (
 				1AC86D36195E0972006FDD2B /* Models */,
 				1A0A869D195CE5DB00A49434 /* mailcore2.xcodeproj */,
+				BEB00C7B19873D7A00B6206E /* AHLaunchCtl.xcodeproj */,
 				1AC69562195B59EE00D2BD81 /* LGAppDelegate.h */,
 				1AC69563195B59EE00D2BD81 /* LGAppDelegate.m */,
 				1AC98410195CE8510071CAB3 /* LGEmailer.h */,
@@ -254,6 +354,8 @@
 				6A0ACE33196FB349002C7FE4 /* LGApplications.m */,
 				1A1BAD94197A0407008192A7 /* LGVersionComparator.h */,
 				1A1BAD95197A0407008192A7 /* LGVersionComparator.m */,
+				BEB00CA3198754CC00B6206E /* LGAutoPkgrHelperConnection.h */,
+				BEB00CA4198754CC00B6206E /* LGAutoPkgrHelperConnection.m */,
 				1AC9841E195CEC360071CAB3 /* LGConfigurationWindowController.xib */,
 				1AC69565195B59EE00D2BD81 /* MainMenu.xib */,
 				1AC69568195B59EE00D2BD81 /* Images.xcassets */,
@@ -324,6 +426,38 @@
 			name = Resources;
 			sourceTree = "<group>";
 		};
+		BE8ECB1D1986F53E00A99390 /* AutoPkgr Helper */ = {
+			isa = PBXGroup;
+			children = (
+				BE8ECB2E1986FEB200A99390 /* LGAutoPkgrProtocol.h */,
+				BE8ECB2B1986F64000A99390 /* LGAutoPkgrHelper.h */,
+				BE8ECB2C1986F64000A99390 /* LGAutoPkgrHelper.m */,
+				BE8ECB1E1986F53E00A99390 /* main.m */,
+				BE8ECB201986F53E00A99390 /* Supporting Files */,
+			);
+			name = "AutoPkgr Helper";
+			path = helper;
+			sourceTree = "<group>";
+		};
+		BE8ECB201986F53E00A99390 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				BE8ECB311986FF7200A99390 /* helper-Info.plist */,
+				BE8ECB321986FF7200A99390 /* helper-Launchd.plist */,
+				BE8ECB211986F53E00A99390 /* helper-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		BEB00C7C19873D7A00B6206E /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				BEB00C8719873D7A00B6206E /* libAHLaunchCtl.a */,
+				BEB00C8919873D7A00B6206E /* AHLaunchCtlTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -331,14 +465,18 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 1AC6957E195B59EE00D2BD81 /* Build configuration list for PBXNativeTarget "AutoPkgr" */;
 			buildPhases = (
+				BEB00C76198739D300B6206E /* ShellScript */,
 				1AC69549195B59ED00D2BD81 /* Sources */,
 				1AC6954A195B59ED00D2BD81 /* Frameworks */,
 				1AC6954B195B59ED00D2BD81 /* Resources */,
 				1A0A86B4195CE6BF00A49434 /* CopyFiles */,
+				BE8ECB2F1986FEEA00A99390 /* CopyFiles */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				BEB00C8B19873DF400B6206E /* PBXTargetDependency */,
+				BE8ECB37198700C400A99390 /* PBXTargetDependency */,
 				1A0A86B3195CE6B500A49434 /* PBXTargetDependency */,
 			);
 			name = AutoPkgr;
@@ -358,11 +496,29 @@
 			);
 			dependencies = (
 				1AC69573195B59EE00D2BD81 /* PBXTargetDependency */,
+				BE2482C2198584AC00993E96 /* PBXTargetDependency */,
 			);
 			name = AutoPkgrTests;
 			productName = AutoPkgrTests;
 			productReference = 1AC6956E195B59EE00D2BD81 /* AutoPkgrTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		BE8ECB191986F53E00A99390 /* com.lindegroup.AutoPkgr.helper */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = BE8ECB241986F53E00A99390 /* Build configuration list for PBXNativeTarget "com.lindegroup.AutoPkgr.helper" */;
+			buildPhases = (
+				BE8ECB161986F53E00A99390 /* Sources */,
+				BE8ECB171986F53E00A99390 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				BEB00C8F19873E2F00B6206E /* PBXTargetDependency */,
+			);
+			name = com.lindegroup.AutoPkgr.helper;
+			productName = helper;
+			productReference = BE8ECB1A1986F53E00A99390 /* com.lindegroup.AutoPkgr.helper */;
+			productType = "com.apple.product-type.tool";
 		};
 /* End PBXNativeTarget section */
 
@@ -371,7 +527,7 @@
 			isa = PBXProject;
 			attributes = {
 				CLASSPREFIX = LG;
-				LastUpgradeCheck = 0510;
+				LastUpgradeCheck = 0600;
 				ORGANIZATIONNAME = "The Linde Group, Inc.";
 				TargetAttributes = {
 					1AC6956D195B59EE00D2BD81 = {
@@ -392,6 +548,10 @@
 			projectDirPath = "";
 			projectReferences = (
 				{
+					ProductGroup = BEB00C7C19873D7A00B6206E /* Products */;
+					ProjectRef = BEB00C7B19873D7A00B6206E /* AHLaunchCtl.xcodeproj */;
+				},
+				{
 					ProductGroup = 1A0A869E195CE5DB00A49434 /* Products */;
 					ProjectRef = 1A0A869D195CE5DB00A49434 /* mailcore2.xcodeproj */;
 				},
@@ -400,6 +560,7 @@
 			targets = (
 				1AC6954C195B59ED00D2BD81 /* AutoPkgr */,
 				1AC6956D195B59EE00D2BD81 /* AutoPkgrTests */,
+				BE8ECB191986F53E00A99390 /* com.lindegroup.AutoPkgr.helper */,
 			);
 		};
 /* End PBXProject section */
@@ -440,6 +601,20 @@
 			remoteRef = 1A0A86AD195CE5DC00A49434 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
+		BEB00C8719873D7A00B6206E /* libAHLaunchCtl.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libAHLaunchCtl.a;
+			remoteRef = BEB00C8619873D7A00B6206E /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		BEB00C8919873D7A00B6206E /* AHLaunchCtlTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = AHLaunchCtlTests.xctest;
+			remoteRef = BEB00C8819873D7A00B6206E /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 /* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
@@ -469,6 +644,22 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		BEB00C76198739D300B6206E /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "/Volumes/myHome/Users/eldon/Downloads/autopkgr-master/HelperTool_CodeSign_RunScript.py";
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		1AC69549195B59ED00D2BD81 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -487,6 +678,7 @@
 				1A979FE01960BCCC00EE9881 /* LGUnzipper.m in Sources */,
 				6A0BABE9196E560000A136BB /* LGPopularRepositories.m in Sources */,
 				1AAAA5CC196C82DB00623804 /* LGAutoPkgRunner.m in Sources */,
+				BEB00CA5198754CC00B6206E /* LGAutoPkgrHelperConnection.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -495,6 +687,16 @@
 			buildActionMask = 2147483647;
 			files = (
 				1AC6957B195B59EE00D2BD81 /* AutoPkgrTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		BE8ECB161986F53E00A99390 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BE8ECB1F1986F53E00A99390 /* main.m in Sources */,
+				BE8ECB2D1986F64000A99390 /* LGAutoPkgrHelper.m in Sources */,
+				BEB00CA619876B7A00B6206E /* LGConstants.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -510,6 +712,26 @@
 			isa = PBXTargetDependency;
 			target = 1AC6954C195B59ED00D2BD81 /* AutoPkgr */;
 			targetProxy = 1AC69572195B59EE00D2BD81 /* PBXContainerItemProxy */;
+		};
+		BE2482C2198584AC00993E96 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 1AC6954C195B59ED00D2BD81 /* AutoPkgr */;
+			targetProxy = BE2482C1198584AC00993E96 /* PBXContainerItemProxy */;
+		};
+		BE8ECB37198700C400A99390 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = BE8ECB191986F53E00A99390 /* com.lindegroup.AutoPkgr.helper */;
+			targetProxy = BE8ECB36198700C400A99390 /* PBXContainerItemProxy */;
+		};
+		BEB00C8B19873DF400B6206E /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = AHLaunchCtl;
+			targetProxy = BEB00C8A19873DF400B6206E /* PBXContainerItemProxy */;
+		};
+		BEB00C8F19873E2F00B6206E /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = AHLaunchCtl;
+			targetProxy = BEB00C8E19873E2F00B6206E /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -623,12 +845,20 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "Developer ID Application";
 				COMBINE_HIDPI_IMAGES = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "AutoPkgr/AutoPkgr-Prefix.pch";
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
+					"$(BUILT_PRODUCTS_DIR)/**",
+				);
 				INFOPLIST_FILE = "AutoPkgr/AutoPkgr-Info.plist";
 				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				OTHER_CODE_SIGN_FLAGS = "--deep";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -637,12 +867,20 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "Developer ID Application";
 				COMBINE_HIDPI_IMAGES = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "AutoPkgr/AutoPkgr-Prefix.pch";
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
+					"$(BUILT_PRODUCTS_DIR)/**",
+				);
 				INFOPLIST_FILE = "AutoPkgr/AutoPkgr-Info.plist";
 				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				OTHER_CODE_SIGN_FLAGS = "--deep";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
@@ -664,6 +902,7 @@
 				);
 				INFOPLIST_FILE = "AutoPkgrTests/AutoPkgrTests-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx10.9;
 				TEST_HOST = "$(BUNDLE_LOADER)";
 				WRAPPER_EXTENSION = xctest;
 			};
@@ -682,8 +921,65 @@
 				GCC_PREFIX_HEADER = "AutoPkgr/AutoPkgr-Prefix.pch";
 				INFOPLIST_FILE = "AutoPkgrTests/AutoPkgrTests-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx10.9;
 				TEST_HOST = "$(BUNDLE_LOADER)";
 				WRAPPER_EXTENSION = xctest;
+			};
+			name = Release;
+		};
+		BE8ECB251986F53E00A99390 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "Developer ID Application";
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "helper/helper-Prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
+					"$(BUILT_PRODUCTS_DIR)/**",
+				);
+				OTHER_LDFLAGS = (
+					"-sectcreate",
+					__TEXT,
+					__info_plist,
+					"helper/helper-Info.plist",
+					"-sectcreate",
+					__TEXT,
+					__launchd_plist,
+					"helper/helper-Launchd.plist",
+					"-ObjC",
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		BE8ECB261986F53E00A99390 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "Developer ID Application";
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "helper/helper-Prefix.pch";
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
+					"$(BUILT_PRODUCTS_DIR)/**",
+				);
+				OTHER_LDFLAGS = (
+					"-sectcreate",
+					__TEXT,
+					__info_plist,
+					"helper/helper-Info.plist",
+					"-sectcreate",
+					__TEXT,
+					__launchd_plist,
+					"helper/helper-Launchd.plist",
+					"-ObjC",
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
 		};
@@ -713,6 +1009,15 @@
 			buildConfigurations = (
 				1AC69582195B59EE00D2BD81 /* Debug */,
 				1AC69583195B59EE00D2BD81 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		BE8ECB241986F53E00A99390 /* Build configuration list for PBXNativeTarget "com.lindegroup.AutoPkgr.helper" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BE8ECB251986F53E00A99390 /* Debug */,
+				BE8ECB261986F53E00A99390 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
