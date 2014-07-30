@@ -84,6 +84,11 @@
 
     MCOSMTPSendOperation *sendOperation = [smtpSession sendOperationWithData:rfc822Data];
     [sendOperation start:^(NSError *error) {
+        NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
+        NSDictionary *d = [NSDictionary dictionaryWithObjects:[NSArray arrayWithObjects:subject, message, error, nil]
+                                                      forKeys:[NSArray arrayWithObjects:kEmailSentNotificationSubject, kEmailSentNotificationMessage, kEmailSentNotificationError, nil]];
+        [center postNotificationName:kEmailSentNotification object:rfc822Data userInfo:d];
+        
         if (error) {
             NSLog(@"%@ Error sending email:%@", smtpSession.username, error);
         } else {

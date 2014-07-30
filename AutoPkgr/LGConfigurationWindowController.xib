@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="5056" systemVersion="13E28" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="5056" systemVersion="13D65" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment defaultVersion="1080" identifier="macosx"/>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="5056"/>
@@ -42,7 +42,7 @@
         <window title="AutoPkgr" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" oneShot="NO" releasedWhenClosed="NO" animationBehavior="default" id="F0z-JX-Cv5">
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
             <rect key="contentRect" x="196" y="240" width="752" height="514"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="2560" height="1418"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1920" height="1058"/>
             <value key="minSize" type="size" width="752" height="514"/>
             <view key="contentView" id="se5-gp-TjO">
                 <rect key="frame" x="0.0" y="0.0" width="752" height="514"/>
@@ -482,11 +482,11 @@
                                                                     <outlet property="delegate" destination="-2" id="lxX-Di-pxh"/>
                                                                 </connections>
                                                             </textField>
-                                                            <progressIndicator horizontalHuggingPriority="750" verticalHuggingPriority="750" ambiguous="YES" misplaced="YES" maxValue="100" bezeled="NO" indeterminate="YES" controlSize="small" style="spinning" translatesAutoresizingMaskIntoConstraints="NO" id="fMQ-Z8-MFg">
+                                                            <progressIndicator hidden="YES" horizontalHuggingPriority="750" verticalHuggingPriority="750" ambiguous="YES" misplaced="YES" maxValue="100" bezeled="NO" indeterminate="YES" controlSize="small" style="spinning" translatesAutoresizingMaskIntoConstraints="NO" id="fMQ-Z8-MFg">
                                                                 <rect key="frame" x="608" y="54" width="16" height="16"/>
                                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                             </progressIndicator>
-                                                            <progressIndicator horizontalHuggingPriority="750" verticalHuggingPriority="750" ambiguous="YES" misplaced="YES" maxValue="100" bezeled="NO" indeterminate="YES" controlSize="small" style="spinning" translatesAutoresizingMaskIntoConstraints="NO" id="BrZ-vQ-eC9">
+                                                            <progressIndicator hidden="YES" horizontalHuggingPriority="750" verticalHuggingPriority="750" ambiguous="YES" misplaced="YES" maxValue="100" bezeled="NO" indeterminate="YES" controlSize="small" style="spinning" translatesAutoresizingMaskIntoConstraints="NO" id="BrZ-vQ-eC9">
                                                                 <rect key="frame" x="608" y="25" width="16" height="16"/>
                                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                             </progressIndicator>
@@ -691,25 +691,24 @@
                                                                     <outlet property="delegate" destination="-2" id="ww4-Ik-6Ze"/>
                                                                 </connections>
                                                             </tokenField>
+                                                            <progressIndicator hidden="YES" horizontalHuggingPriority="750" verticalHuggingPriority="750" ambiguous="YES" misplaced="YES" maxValue="100" bezeled="NO" indeterminate="YES" controlSize="small" style="spinning" translatesAutoresizingMaskIntoConstraints="NO" id="6ha-Zn-VKa">
+                                                                <rect key="frame" x="537" y="151" width="16" height="16"/>
+                                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                                            </progressIndicator>
                                                             <imageView ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="VDb-hs-bB1">
                                                                 <rect key="frame" x="537" y="151" width="16" height="16"/>
                                                                 <autoresizingMask key="autoresizingMask"/>
                                                                 <imageCell key="cell" refusesFirstResponder="YES" alignment="left" animates="YES" imageScaling="proportionallyDown" image="NSStatusNone" id="gNF-i1-jtG"/>
                                                             </imageView>
-                                                            <imageView ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="nHy-JB-d14">
-                                                                <rect key="frame" x="537" y="151" width="16" height="16"/>
-                                                                <autoresizingMask key="autoresizingMask"/>
-                                                                <imageCell key="cell" refusesFirstResponder="YES" alignment="left" animates="YES" imageScaling="proportionallyDown" image="NSStatusAvailable" id="cad-Z3-uaf"/>
-                                                            </imageView>
-                                                            <imageView ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="YvQ-r8-BsA">
-                                                                <rect key="frame" x="537" y="151" width="16" height="16"/>
-                                                                <autoresizingMask key="autoresizingMask"/>
-                                                                <imageCell key="cell" refusesFirstResponder="YES" alignment="left" animates="YES" imageScaling="proportionallyDown" image="NSStatusUnavailable" id="nwJ-xW-cCJ"/>
-                                                            </imageView>
-                                                            <progressIndicator horizontalHuggingPriority="750" verticalHuggingPriority="750" ambiguous="YES" misplaced="YES" maxValue="100" bezeled="NO" indeterminate="YES" controlSize="small" style="spinning" translatesAutoresizingMaskIntoConstraints="NO" id="T27-XK-VY4">
+                                                            <progressIndicator hidden="YES" horizontalHuggingPriority="750" verticalHuggingPriority="750" ambiguous="YES" misplaced="YES" maxValue="100" bezeled="NO" indeterminate="YES" controlSize="small" style="spinning" translatesAutoresizingMaskIntoConstraints="NO" id="T27-XK-VY4">
                                                                 <rect key="frame" x="608" y="47" width="16" height="16"/>
                                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                             </progressIndicator>
+                                                            <imageView identifier="emailSuccess" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="2DN-h6-kQ5">
+                                                                <rect key="frame" x="608" y="47" width="16" height="16"/>
+                                                                <autoresizingMask key="autoresizingMask"/>
+                                                                <imageCell key="cell" refusesFirstResponder="YES" alignment="left" animates="YES" imageScaling="proportionallyDown" image="NSStatusNone" id="gCQ-4N-GO8"/>
+                                                            </imageView>
                                                         </subviews>
                                                     </view>
                                                     <constraints>
@@ -725,29 +724,29 @@
                                                         <constraint firstAttribute="trailing" secondItem="T27-XK-VY4" secondAttribute="trailing" constant="16" id="FDW-F8-aCy"/>
                                                         <constraint firstAttribute="trailing" secondItem="SZ2-Hj-GiD" secondAttribute="trailing" constant="40" id="G9E-gL-O20"/>
                                                         <constraint firstItem="VDb-hs-bB1" firstAttribute="leading" secondItem="HmV-Dc-TUb" secondAttribute="trailing" constant="8" id="Gop-i1-1QI"/>
-                                                        <constraint firstItem="nHy-JB-d14" firstAttribute="top" secondItem="0A8-YK-H2P" secondAttribute="top" constant="127" id="KfJ-Jl-xKT"/>
                                                         <constraint firstItem="SZ2-Hj-GiD" firstAttribute="top" secondItem="0A8-YK-H2P" secondAttribute="top" constant="228" id="Mmk-XV-BE6"/>
-                                                        <constraint firstAttribute="trailing" secondItem="nHy-JB-d14" secondAttribute="trailing" constant="87" id="OuC-Cv-mWf"/>
-                                                        <constraint firstItem="nHy-JB-d14" firstAttribute="leading" secondItem="HmV-Dc-TUb" secondAttribute="trailing" constant="8" id="PJG-d2-Dhv"/>
                                                         <constraint firstItem="HmV-Dc-TUb" firstAttribute="top" secondItem="0A8-YK-H2P" secondAttribute="top" constant="124" id="UxQ-7q-Y4m"/>
                                                         <constraint firstAttribute="trailing" secondItem="zi5-oQ-M5R" secondAttribute="trailing" constant="206" id="Wwh-HS-Jja"/>
                                                         <constraint firstAttribute="trailing" secondItem="lqq-Vv-857" secondAttribute="trailing" constant="206" id="XC1-jZ-EiM"/>
+                                                        <constraint firstAttribute="trailing" secondItem="2DN-h6-kQ5" secondAttribute="trailing" constant="16" id="Xa6-CV-n4h"/>
                                                         <constraint firstItem="lqq-Vv-857" firstAttribute="top" secondItem="0A8-YK-H2P" secondAttribute="top" constant="95" id="YX3-bB-QHM"/>
+                                                        <constraint firstItem="6ha-Zn-VKa" firstAttribute="top" secondItem="0A8-YK-H2P" secondAttribute="top" constant="127" id="a10-XQ-dyR"/>
                                                         <constraint firstItem="aRk-NU-9Jl" firstAttribute="top" secondItem="0A8-YK-H2P" secondAttribute="top" constant="227" id="a7R-tW-aRu"/>
                                                         <constraint firstItem="0MT-rL-IEP" firstAttribute="leading" secondItem="uO3-QG-q9R" secondAttribute="trailing" constant="8" id="aiH-0U-HRP"/>
                                                         <constraint firstItem="T27-XK-VY4" firstAttribute="top" secondItem="0A8-YK-H2P" secondAttribute="top" constant="231" id="ayN-Cw-rFg"/>
                                                         <constraint firstItem="0uY-tb-AXy" firstAttribute="top" secondItem="0A8-YK-H2P" secondAttribute="top" constant="66" id="b5I-dy-RZd"/>
+                                                        <constraint firstItem="2DN-h6-kQ5" firstAttribute="top" secondItem="0A8-YK-H2P" secondAttribute="top" constant="231" id="fVW-TQ-5zN"/>
+                                                        <constraint firstItem="2DN-h6-kQ5" firstAttribute="leading" secondItem="SZ2-Hj-GiD" secondAttribute="trailing" constant="8" id="fx1-Y6-cZF"/>
                                                         <constraint firstItem="0MT-rL-IEP" firstAttribute="top" secondItem="0A8-YK-H2P" secondAttribute="top" constant="126" id="gMn-HW-McJ"/>
-                                                        <constraint firstItem="YvQ-r8-BsA" firstAttribute="top" secondItem="0A8-YK-H2P" secondAttribute="top" constant="127" id="hff-yU-HjO"/>
                                                         <constraint firstItem="lqq-Vv-857" firstAttribute="leading" secondItem="0A8-YK-H2P" secondAttribute="leading" constant="170" id="jaR-pu-zfu"/>
                                                         <constraint firstItem="aRk-NU-9Jl" firstAttribute="leading" secondItem="0A8-YK-H2P" secondAttribute="leading" constant="170" id="nwg-sV-9RJ"/>
                                                         <constraint firstAttribute="trailing" secondItem="HmV-Dc-TUb" secondAttribute="trailing" constant="111" id="sNg-mN-c4s"/>
                                                         <constraint firstAttribute="trailing" secondItem="aRk-NU-9Jl" secondAttribute="trailing" constant="206" id="saR-cP-cJS"/>
                                                         <constraint firstItem="uO3-QG-q9R" firstAttribute="leading" secondItem="0A8-YK-H2P" secondAttribute="leading" constant="170" id="tDV-h6-H2d"/>
                                                         <constraint firstItem="uO3-QG-q9R" firstAttribute="top" secondItem="0A8-YK-H2P" secondAttribute="top" constant="124" id="uhx-us-WVi"/>
-                                                        <constraint firstItem="YvQ-r8-BsA" firstAttribute="leading" secondItem="HmV-Dc-TUb" secondAttribute="trailing" constant="8" id="vxy-Si-ee1"/>
+                                                        <constraint firstAttribute="trailing" secondItem="6ha-Zn-VKa" secondAttribute="trailing" constant="87" id="w3d-Kx-fD2"/>
                                                         <constraint firstAttribute="trailing" secondItem="VDb-hs-bB1" secondAttribute="trailing" constant="87" id="xWJ-c6-SFY"/>
-                                                        <constraint firstAttribute="trailing" secondItem="YvQ-r8-BsA" secondAttribute="trailing" constant="87" id="xsO-RO-r5S"/>
+                                                        <constraint firstItem="6ha-Zn-VKa" firstAttribute="leading" secondItem="HmV-Dc-TUb" secondAttribute="trailing" constant="8" id="z5t-ug-2uN"/>
                                                     </constraints>
                                                     <color key="borderColor" white="0.0" alpha="0.41999999999999998" colorSpace="calibratedWhite"/>
                                                     <color key="fillColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -868,6 +867,5 @@
         <image name="AutoPkgrIcon" width="512" height="512"/>
         <image name="NSStatusAvailable" width="16" height="16"/>
         <image name="NSStatusNone" width="16" height="16"/>
-        <image name="NSStatusUnavailable" width="16" height="16"/>
     </resources>
 </document>

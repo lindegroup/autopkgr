@@ -28,3 +28,7 @@ extern NSString *const kGitNotInstalledLabel;
 extern NSString *const kAutoPkgInstalledLabel;
 extern NSString *const kAutoPkgNotInstalledLabel;
 extern NSString *const kAutoPkgUpdateAvailableLabel;
+extern NSString *const kEmailSentNotification;
+extern NSString *const kEmailSentNotificationSubject;
+extern NSString *const kEmailSentNotificationMessage;
+extern NSString *const kEmailSentNotificationError;
