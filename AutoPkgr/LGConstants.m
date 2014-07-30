@@ -31,6 +31,6 @@ NSString *const kAutoPkgInstalledLabel = @"AutoPkg has been installed.";
 NSString *const kAutoPkgNotInstalledLabel = @"AutoPkg is not installed.";
 NSString *const kAutoPkgUpdateAvailableLabel = @"An update is available for AutoPkg.";
 NSString *const kEmailSentNotification = @"EmailSentNotification";
-NSString *const kEmailSentNotificationSubjet = @"EmailSentNotificationSubject";
+NSString *const kEmailSentNotificationSubject = @"EmailSentNotificationSubject";
 NSString *const kEmailSentNotificationMessage = @"EmailSentNotificationMessage";
 NSString *const kEmailSentNotificationError = @"EmailSentNotificationError";

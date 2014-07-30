@@ -25,6 +25,8 @@
                 <outlet property="repoURLToAdd" destination="PWu-1D-EW1" id="nyi-oP-8Yl"/>
                 <outlet property="sendEmailNotificationsWhenNewVersionsAreFoundButton" destination="TPC-Gd-b8O" id="F4h-2O-FcT"/>
                 <outlet property="sendTestEmailButton" destination="SZ2-Hj-GiD" id="yMv-1b-dWv"/>
+                <outlet property="sendTestEmailSpinner" destination="T27-XK-VY4" id="fCv-Vz-MUd"/>
+                <outlet property="sendTestEmailStatus" destination="2DN-h6-kQ5" id="Vrq-SP-Kl6"/>
                 <outlet property="smtpAuthenticationEnabledButton" destination="6N3-g1-fHC" id="yy0-0M-C5o"/>
                 <outlet property="smtpFrom" destination="0uY-tb-AXy" id="kWY-fq-D6a"/>
                 <outlet property="smtpPassword" destination="aRk-NU-9Jl" id="vwv-jT-FoD"/>
@@ -704,7 +706,7 @@
                                                                 <rect key="frame" x="608" y="47" width="16" height="16"/>
                                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                             </progressIndicator>
-                                                            <imageView identifier="emailSuccess" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="2DN-h6-kQ5">
+                                                            <imageView identifier="emailSuccess" hidden="YES" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="2DN-h6-kQ5">
                                                                 <rect key="frame" x="608" y="47" width="16" height="16"/>
                                                                 <autoresizingMask key="autoresizingMask"/>
                                                                 <imageCell key="cell" refusesFirstResponder="YES" alignment="left" animates="YES" imageScaling="proportionallyDown" image="NSStatusNone" id="gCQ-4N-GO8"/>

@@ -49,6 +49,10 @@
 // Status icons
 @property (weak) IBOutlet NSImageView *gitStatusIcon;
 @property (weak) IBOutlet NSImageView *autoPkgStatusIcon;
+@property (weak) IBOutlet NSImageView *sendTestEmailStatus;
+
+// Spinners
+@property (weak) IBOutlet NSProgressIndicator *sendTestEmailSpinner;
 
 // Objects
 @property (strong) IBOutlet LGPopularRepositories *popRepoTableViewHandler;

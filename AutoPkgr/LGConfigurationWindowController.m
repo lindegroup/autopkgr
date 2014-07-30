@@ -46,6 +46,8 @@
 @synthesize autoPkgStatusLabel;
 @synthesize gitStatusIcon;
 @synthesize autoPkgStatusIcon;
+@synthesize sendTestEmailStatus;
+@synthesize sendTestEmailSpinner;
 
 static void *XXCheckForNewAppsAutomaticallyEnabledContext = &XXCheckForNewAppsAutomaticallyEnabledContext;
 static void *XXCheckForRepoUpdatesAutomaticallyEnabledContext = &XXCheckForRepoUpdatesAutomaticallyEnabledContext;
@@ -285,15 +287,50 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
     // Send a test email notification when the user
     // clicks "Send Test Email"
     
+    // Handle UI
+    [sendTestEmailButton setEnabled:NO];  // disable button
+    [sendTestEmailStatus setHidden:YES];  // hide status light
+    [sendTestEmailSpinner setHidden:NO];  // show spinner
+    [sendTestEmailSpinner startAnimation:self];  // animate spinner
+    
     // First saves the defaults
     [self save];
 
     // Create an instance of the LGEmailer class
     LGEmailer *emailer = [[LGEmailer alloc] init];
+    
+    // Listen for notifications on completion
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(testEmailReceived:)
+                                                 name:kEmailSentNotification
+                                               object:emailer];
 
     // Send the test email notification by sending the
     // sendTestEmail message to our object
     [emailer sendTestEmail];
+}
+
+- (void)testEmailReceived:(NSNotification *)n
+{
+    [sendTestEmailButton setEnabled:YES]; // enable button
+    
+    // Handle Spinner
+    [sendTestEmailSpinner stopAnimation:self]; // stop animation
+    [sendTestEmailSpinner setHidden:YES]; // hide spinner
+    
+    // Show status light
+    [sendTestEmailStatus setHidden:NO]; // unhide status light
+
+    
+    NSError *e = [[n userInfo] objectForKey:kEmailSentNotificationError]; // pull the error out of the userInfo dictionary
+    if (e) {
+        [sendTestEmailStatus setImage:[NSImage imageNamed:@"NSStatusUnavailable"]]; // change status red
+        NSLog(@"Error:  %@", e);
+        NSAlert *alert = [NSAlert alertWithError:e];
+        [alert runModal];
+    } else {
+        [sendTestEmailStatus setImage:[NSImage imageNamed:@"NSStatusAvailable"]];
+    }
 }
 
 - (void)save
@@ -365,8 +402,14 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
         [defaults setBool:NO forKey:kCheckForRepoUpdatesAutomaticallyEnabled];
     }
 
+    NSError *error;
     // Store the password used for SMTP authentication in the default keychain
-    [SSKeychain setPassword:[smtpPassword stringValue] forService:kApplicationName account:[smtpUsername stringValue]];
+    [SSKeychain setPassword:[smtpPassword stringValue] forService:kApplicationName account:[smtpUsername stringValue] error:&error];
+    if (error) {
+        NSLog(@"Error while storing e-mail password: %@", error);
+    } else {
+        NSLog(@"Reset password");
+    }
 
     // Synchronize with the defaults database
     [defaults synchronize];
@@ -654,7 +697,13 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
             [self startAutoPkgRunTimer];
         }
     } else if ([object isEqual:smtpPassword]) {
-        [SSKeychain setPassword:[smtpPassword stringValue] forService:kApplicationName account:[smtpUsername stringValue]];
+        NSError *error;
+        [SSKeychain setPassword:[smtpPassword stringValue] forService:kApplicationName account:[smtpUsername stringValue] error:&error];
+        if (error) {
+            NSLog(@"Error while storing e-mail password: %@", error);
+        } else {
+            NSLog(@"Reset password");
+        }
     } else {
         NSLog(@"Uncaught controlTextDidEndEditing");
         return;
