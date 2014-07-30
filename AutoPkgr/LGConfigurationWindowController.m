@@ -48,6 +48,8 @@
 @synthesize autoPkgStatusIcon;
 @synthesize sendTestEmailStatus;
 @synthesize sendTestEmailSpinner;
+@synthesize testSmtpServerSpinner;
+@synthesize testSmtpServerStatus;
 
 static void *XXCheckForNewAppsAutomaticallyEnabledContext = &XXCheckForNewAppsAutomaticallyEnabledContext;
 static void *XXCheckForRepoUpdatesAutomaticallyEnabledContext = &XXCheckForRepoUpdatesAutomaticallyEnabledContext;
@@ -312,6 +314,10 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
 
 - (void)testEmailReceived:(NSNotification *)n
 {
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                    name:kEmailSentNotification
+                                                  object:[n object]];
+    
     [sendTestEmailButton setEnabled:YES]; // enable button
     
     // Handle Spinner
@@ -330,6 +336,61 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
         [alert runModal];
     } else {
         [sendTestEmailStatus setImage:[NSImage imageNamed:@"NSStatusAvailable"]];
+    }
+}
+
+- (void)testSmtpServerPort:(id)sender
+{
+    if (![[smtpServer stringValue] isEqualToString:@""] && [smtpPort integerValue
+                                                            ] > 0 ) {
+    
+        NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
+        
+        // If a test is currently in progress we'll just remove the notification for it.
+        [center removeObserver:self
+                          name:kTestSmtpServerPortNotification
+                        object:nil];
+        
+        // Set up the UI
+        [testSmtpServerStatus setHidden:YES];
+        [testSmtpServerSpinner setHidden:NO];
+        [testSmtpServerSpinner startAnimation:self];
+        
+        LGTestPort *tester = [[LGTestPort alloc] init];
+        
+        [center addObserver:self
+                   selector:@selector(testSmtpServerPortNotificationReceiver:)
+                       name:kTestSmtpServerPortNotification
+                     object:tester];
+        
+        [tester testHost:[NSHost hostWithName:[smtpServer stringValue]]
+                withPort:[smtpPort integerValue]];
+
+    } else {
+        NSLog(@"Cannot test; either host is blank or port is unreadable.");
+    }
+}
+
+- (void)testSmtpServerPortNotificationReceiver:(NSNotification *)n
+{
+    // Set up the spinner and show the status image
+    [testSmtpServerSpinner setHidden:YES];
+    [testSmtpServerSpinner stopAnimation:self];
+    [testSmtpServerStatus setHidden:NO];
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                    name:kTestSmtpServerPortNotification
+                                                  object:[n object]];
+    
+    NSDictionary *d = [n userInfo];
+    NSString *r = [d objectForKey:kTestSmtpServerPortResult];
+    if ([r isEqualToString:kTestSmtpServerPortError]) {
+        [testSmtpServerStatus setImage:[NSImage imageNamed:@"NSStatusUnavailable"]];
+    } else if ([r isEqualToString:kTestSmtpServerPortSuccess]) {
+        [testSmtpServerStatus setImage:[NSImage imageNamed:@"NSStatusAvailable"]];
+    } else {
+        NSLog(@"Unexpected result for kTestSmtpServerPortError.");
+        [testSmtpServerStatus setImage:[NSImage imageNamed:@"NSStatusPartiallyAvailable"]];
     }
 }
 
@@ -679,8 +740,10 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
     
     if ([object isEqual:smtpServer]) {
         [defaults setObject:[smtpServer stringValue] forKey:kSMTPServer];
+        [self testSmtpServerPort:self];
     } else if ([object isEqual:smtpPort]) {
         [defaults setInteger:[smtpPort integerValue] forKey:kSMTPPort];
+        [self testSmtpServerPort:self];
     } else if ([object isEqual:smtpUsername]) {
         [defaults setObject:[smtpUsername stringValue] forKey:kSMTPUsername];
     } else if ([object isEqual:smtpFrom]) {
@@ -807,6 +870,5 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
     
     return YES;
 }
-
 
 @end

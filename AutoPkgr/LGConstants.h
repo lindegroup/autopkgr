@@ -32,3 +32,7 @@ extern NSString *const kEmailSentNotification;
 extern NSString *const kEmailSentNotificationSubject;
 extern NSString *const kEmailSentNotificationMessage;
 extern NSString *const kEmailSentNotificationError;
+extern NSString *const kTestSmtpServerPortNotification;
+extern NSString *const kTestSmtpServerPortError;
+extern NSString *const kTestSmtpServerPortSuccess;
+extern NSString *const kTestSmtpServerPortResult;

@@ -35,6 +35,8 @@
                 <outlet property="smtpTLSEnabledButton" destination="Bwp-ds-cik" id="Bju-cF-WNs"/>
                 <outlet property="smtpTo" destination="lqq-Vv-857" id="vbR-EY-h7S"/>
                 <outlet property="smtpUsername" destination="zi5-oQ-M5R" id="xYd-18-aOJ"/>
+                <outlet property="testSmtpServerSpinner" destination="6ha-Zn-VKa" id="gnY-fl-miO"/>
+                <outlet property="testSmtpServerStatus" destination="VDb-hs-bB1" id="jIN-1C-wZW"/>
                 <outlet property="warnBeforeQuittingButton" destination="U4k-FQ-NXc" id="hKJ-Cm-Ubg"/>
                 <outlet property="window" destination="F0z-JX-Cv5" id="gIp-Ho-8D9"/>
             </connections>

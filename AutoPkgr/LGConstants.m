@@ -34,3 +34,7 @@ NSString *const kEmailSentNotification = @"EmailSentNotification";
 NSString *const kEmailSentNotificationSubject = @"EmailSentNotificationSubject";
 NSString *const kEmailSentNotificationMessage = @"EmailSentNotificationMessage";
 NSString *const kEmailSentNotificationError = @"EmailSentNotificationError";
+NSString *const kTestSmtpServerPortNotification = @"TestSmtpServerPortNotification";
+NSString *const kTestSmtpServerPortError = @"TestSmtpServerPortError";
+NSString *const kTestSmtpServerPortSuccess = @"TestSmtpServerPortSuccess";
+NSString *const kTestSmtpServerPortResult = @"TestSmtpServerPortResult";

@@ -9,6 +9,7 @@
 #import <Cocoa/Cocoa.h>
 #import "LGPopularRepositories.h"
 #import "LGApplications.h"
+#import "LGTestPort.h"
 
 @interface LGConfigurationWindowController : NSWindowController <NSTextDelegate, NSTokenFieldDelegate, NSWindowDelegate>
 {
@@ -50,9 +51,11 @@
 @property (weak) IBOutlet NSImageView *gitStatusIcon;
 @property (weak) IBOutlet NSImageView *autoPkgStatusIcon;
 @property (weak) IBOutlet NSImageView *sendTestEmailStatus;
+@property (weak) IBOutlet NSImageView *testSmtpServerStatus;
 
 // Spinners
 @property (weak) IBOutlet NSProgressIndicator *sendTestEmailSpinner;
+@property (weak) IBOutlet NSProgressIndicator *testSmtpServerSpinner;
 
 // Objects
 @property (strong) IBOutlet LGPopularRepositories *popRepoTableViewHandler;
