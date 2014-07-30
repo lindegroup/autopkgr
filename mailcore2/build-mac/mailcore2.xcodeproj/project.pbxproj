@@ -2519,7 +2519,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "cd \"$SRCROOT/../scripts\"\n./prepare.sh\nif test x$? != x0 ; then\n  exit 1\nfi\nfor lib in ctemplate icu4c libetpan ; do\n  rsync -av \"$SRCROOT/../Externals/$lib/lib/\" \"$BUILT_PRODUCTS_DIR\"\ndone\n";
+			shellScript = "cd \"$SRCROOT/../scripts\"\n./prepare-mac.sh\nif test x$? != x0 ; then\n  exit 1\nfi\nfor lib in ctemplate icu4c libetpan ; do\n  rsync -av \"$SRCROOT/../Externals/$lib/lib/\" \"$BUILT_PRODUCTS_DIR\"\ndone\n";
 		};
 		C6BA2B0A1705F4E6003F0E9E /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
