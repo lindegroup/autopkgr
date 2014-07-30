@@ -292,18 +292,18 @@
 
     if ([defaults objectForKey:kCheckForNewVersionsOfAppsAutomaticallyEnabled]) {
         NSError *error;
-
-        if(![AHLaunchCtl installHelper:kHelperName prompt:@"To schedule" error:&error]){
-            if(error){
-                NSLog(@"%@",error.localizedDescription);
-                [NSApp presentError:error];
-                return;
-            }
-        }
         
         BOOL checkForNewVersionsOfAppsAutomaticallyEnabled = [[defaults objectForKey:kCheckForNewVersionsOfAppsAutomaticallyEnabled] boolValue];
 
         if (checkForNewVersionsOfAppsAutomaticallyEnabled) {
+            if(![AHLaunchCtl installHelper:kHelperName prompt:@"To schedule" error:&error]){
+                if(error){
+                    NSLog(@"%@",error.localizedDescription);
+                    [NSApp presentError:error];
+                    return;
+                }
+            }
+            
             if ([defaults integerForKey:kAutoPkgRunInterval]) {
                 double i = [defaults integerForKey:kAutoPkgRunInterval];
                 if (i != 0) {
@@ -324,7 +324,7 @@
         }else{
             [[helper.connection remoteObjectProxy] removeScheduleWithReply:^(NSError *error) {
                 if(error){
-                    [NSApp presentError:error];
+                    NSLog(@"%@",error);
                 }
             }];
         }

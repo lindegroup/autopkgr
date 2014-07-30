@@ -426,7 +426,7 @@
 		BE76C71618A19369003C94A0 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "Mac Developer";
+				CODE_SIGN_IDENTITY = "Developer ID Application";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "AHLaunchCtl/AHLaunchCtl-Prefix.pch";
 				INSTALL_PATH = /usr/local/lib;
@@ -442,7 +442,7 @@
 		BE76C71718A19369003C94A0 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "Mac Developer";
+				CODE_SIGN_IDENTITY = "Developer ID Application";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "AHLaunchCtl/AHLaunchCtl-Prefix.pch";
 				INSTALL_PATH = /usr/local/lib;

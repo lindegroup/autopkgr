@@ -16,6 +16,7 @@
          withReply:(void (^)(NSError *error))reply;
 
 -(void)removeScheduleWithReply:(void (^)(NSError *error))reply;
+-(void)installPackageFromPath:(NSString*)path reply:(void (^)(NSError *error))reply;
 
 -(void)quitHelper:(void (^)(BOOL success))reply;
 -(void)uninstall:(void (^)(NSError*))reply;

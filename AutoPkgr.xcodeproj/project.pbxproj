@@ -656,7 +656,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "/Volumes/myHome/Users/eldon/Downloads/autopkgr-master/HelperTool_CodeSign_RunScript.py";
+			shellScript = "\"${PROJECT_DIR}/HelperTool_CodeSign_RunScript.py\"\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -856,7 +856,7 @@
 				);
 				INFOPLIST_FILE = "AutoPkgr/AutoPkgr-Info.plist";
 				MACOSX_DEPLOYMENT_TARGET = 10.8;
-				OTHER_CODE_SIGN_FLAGS = "--deep";
+				OTHER_CODE_SIGN_FLAGS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
 				WRAPPER_EXTENSION = app;
@@ -878,7 +878,7 @@
 				);
 				INFOPLIST_FILE = "AutoPkgr/AutoPkgr-Info.plist";
 				MACOSX_DEPLOYMENT_TARGET = 10.8;
-				OTHER_CODE_SIGN_FLAGS = "--deep";
+				OTHER_CODE_SIGN_FLAGS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
 				WRAPPER_EXTENSION = app;

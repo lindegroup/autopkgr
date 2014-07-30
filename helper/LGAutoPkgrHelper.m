@@ -64,6 +64,7 @@ static const NSTimeInterval kHelperCheckInterval = 1.0; // how often to check wh
     [[AHLaunchCtl sharedControler]remove:kLGAutoPkgrLaunchDaemonPlist fromDomain:kAHGlobalLaunchDaemon error:&error];
     reply(error);
 }
+
 -(void)quitHelper:(void (^)(BOOL success))reply{
     // this will cause the run-loop to exit;
     // you should call it via NSXPCConnection
@@ -72,11 +73,42 @@ static const NSTimeInterval kHelperCheckInterval = 1.0; // how often to check wh
     reply(YES);
 }
 
--(void)uninstall:(void (^)(NSError *))reply{
-    reply(nil);
-//    [AHLaunchCtl uninstallHelper:kHelperName error:nil];
+-(void)installPackageFromPath:(NSString *)path
+                        reply:(void (^)(NSError *))reply
+{
+    NSError *error;
+    NSTask *task = [NSTask new];
+    task.launchPath = @"/usr/sbin/installer";
+    task.arguments = @[@"-pkg",path,@"-target",@"/"];
+    task.standardError = [NSPipe pipe];
+    
+    [task launch];
+    [task waitUntilExit];
+    [self errorFromTask:task error:&error];
+    reply(error);
+
 }
 
+-(void)uninstall:(void (^)(NSError *))reply{
+    NSError *error;
+    [AHLaunchCtl uninstallHelper:kHelperName error:&error];
+    reply(error);
+}
+
+-(BOOL)errorFromTask:(NSTask *)task error:(NSError *__autoreleasing *)error{
+    if(error && task.terminationStatus != 0){
+        NSString *errMsg;
+        if([task.standardError isKindOfClass:[NSPipe class]]){
+            NSData *data = [[task.standardError fileHandleForReading]readDataToEndOfFile];
+            errMsg = [[NSString alloc]initWithData:data encoding:NSASCIIStringEncoding];
+        }else{
+            errMsg = [NSString stringWithFormat:@"There was a problem executing %@",task.launchPath];
+        }
+        
+        *error = [NSError errorWithDomain:[[NSBundle mainBundle]bundleIdentifier] code:task.terminationStatus userInfo:@{NSLocalizedDescriptionKey:errMsg}];
+    }
+    return (task.terminationStatus == 0);
+}
 
 //----------------------------------------
 // Set up the one method of NSXPClistener
