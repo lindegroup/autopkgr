@@ -95,6 +95,8 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
     [smtpAuthenticationEnabledButton removeObserver:self forKeyPath:@"cell.state" context:XXAuthenticationEnabledContext];
     [sendEmailNotificationsWhenNewVersionsAreFoundButton removeObserver:self forKeyPath:@"cell.state" context:XXEmailNotificationsEnabledContext];
     [checkForNewVersionsOfAppsAutomaticallyButton removeObserver:self forKeyPath:@"cell.state" context:XXCheckForNewAppsAutomaticallyEnabledContext];
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
@@ -152,8 +154,26 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
     if (self) {
         // Initialization code here.
         defaults = [NSUserDefaults standardUserDefaults];
+        NSNotificationCenter* ndc = [NSNotificationCenter defaultCenter];
+        [ndc addObserver:self selector:@selector(autoPkgRunComplete)
+                    name:kRunAutoPkgComplete object:nil];
+        
+        [ndc addObserver:self selector:@selector(updateReposNowComplete)
+                    name:kUpdateReposComplete object:nil];
     }
     return self;
+}
+
+- (void)autoPkgRunComplete{
+    [self.checkAppsNowButton setEnabled:YES];
+    [self.checkAppsNowSpinner setHidden:YES];
+    [self.checkAppsNowSpinner stopAnimation:nil];
+}
+
+- (void)updateReposNowComplete{
+    [self.updateRepoNowSpinner stopAnimation:nil];
+    [self.updateRepoNowSpinner setHidden:YES];
+    [self.updateRepoNowButton setEnabled:YES];
 }
 
 - (void)windowDidLoad
@@ -680,6 +700,10 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
 - (IBAction)updateReposNow:(id)sender
 {
     // TODO: Success/failure notification
+    [self.updateRepoNowSpinner startAnimation:nil];
+    [self.updateRepoNowSpinner setHidden:NO];
+    [self.updateRepoNowButton setEnabled:NO];
+    
     NSLog(@"Updating AutoPkg recipe repos.");
     LGAutoPkgRunner *autoPkgRunner = [[LGAutoPkgRunner alloc] init];
     [autoPkgRunner invokeAutoPkgRepoUpdateInBackgroundThread];
@@ -687,6 +711,10 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
 
 - (IBAction)checkAppsNow:(id)sender
 {
+    [self.checkAppsNowButton setEnabled:NO];
+    [self.checkAppsNowSpinner startAnimation:nil];
+    [self.checkAppsNowSpinner setHidden:NO];
+
     LGAutoPkgRunner *autoPkgRunner = [[LGAutoPkgRunner alloc] init];
     [autoPkgRunner invokeAutoPkgInBackgroundThread];
 }

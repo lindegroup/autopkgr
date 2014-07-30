@@ -42,6 +42,8 @@
 @property (weak) IBOutlet NSButton *sendTestEmailButton;
 @property (weak) IBOutlet NSButton *installGitButton;
 @property (weak) IBOutlet NSButton *installAutoPkgButton;
+@property (weak) IBOutlet NSButton *checkAppsNowButton;
+@property (weak) IBOutlet NSButton *updateRepoNowButton;
 
 // Labels
 @property (weak) IBOutlet NSTextField *gitStatusLabel;
@@ -56,6 +58,8 @@
 // Spinners
 @property (weak) IBOutlet NSProgressIndicator *sendTestEmailSpinner;
 @property (weak) IBOutlet NSProgressIndicator *testSmtpServerSpinner;
+@property (weak) IBOutlet NSProgressIndicator *checkAppsNowSpinner;
+@property (weak) IBOutlet NSProgressIndicator *updateRepoNowSpinner;
 
 // Objects
 @property (strong) IBOutlet LGPopularRepositories *popRepoTableViewHandler;

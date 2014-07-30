@@ -138,12 +138,17 @@
     // Set up launch path and args
     NSString *launchPath = @"/usr/bin/python";
     NSArray *args = [NSArray arrayWithObjects:@"/usr/local/bin/autopkg", @"repo-update", @"all", nil];
-
+    
     // Configure the task
     [updateAutoPkgReposTask setLaunchPath:launchPath];
     [updateAutoPkgReposTask setArguments:args];
     [updateAutoPkgReposTask setStandardOutput:updateAutoPkgReposPipe];
 
+    updateAutoPkgReposTask.terminationHandler = ^(NSTask *aTask){
+        NSNotification *updateRepoCompleteNotification = [[NSNotification alloc]initWithName:kUpdateReposComplete object:nil userInfo:nil];
+        [[NSNotificationCenter defaultCenter]postNotification:updateRepoCompleteNotification];
+    };
+    
     // Launch the task
     [updateAutoPkgReposTask launch];
 }
@@ -159,6 +164,11 @@
     NSString *launchPath = @"/usr/bin/python";
     NSArray *args = [NSArray arrayWithObjects:@"/usr/local/bin/autopkg", @"run", @"--report-plist", @"--recipe-list", [NSString stringWithFormat:@"%@", recipeListPath], nil];
 
+    autoPkgRunTask.terminationHandler = ^(NSTask *aTask){
+        NSNotification *runAutoPkgCompleteNotification = [[NSNotification alloc]initWithName:kRunAutoPkgComplete object:nil userInfo:nil];
+        [[NSNotificationCenter defaultCenter]postNotification:runAutoPkgCompleteNotification];
+    };
+    
     // Configure the task
     [autoPkgRunTask setLaunchPath:launchPath];
     [autoPkgRunTask setArguments:args];
