@@ -29,6 +29,7 @@
 
     if (error) {
         NSLog(@"NSURLConnection error when attempting to get the latest AutoPkg releases from the GitHub API. Error: %@.", error);
+        return nil;
     }
 
     // Create an array from the JSON data
@@ -36,6 +37,7 @@
 
     if (error) {
         NSLog(@"NSJSONSerialization error when attempting to serialize JSON data from the GitHub API: Error: %@.", error);
+        return nil;
     }
     
     return releases;
