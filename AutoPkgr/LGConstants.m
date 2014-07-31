@@ -39,5 +39,5 @@ NSString *const kTestSmtpServerPortError = @"TestSmtpServerPortError";
 NSString *const kTestSmtpServerPortSuccess = @"TestSmtpServerPortSuccess";
 NSString *const kTestSmtpServerPortResult = @"TestSmtpServerPortResult";
 
-NSString *const kRunAutoPkgComplete = @"com.lindegroup.autopkgr.autopkgruncomplete";
-NSString *const kUpdateReposComplete = @"com.lindegroup.autopkgr.updatereposcomplete";
+NSString *const kRunAutoPkgCompleteNotification = @"com.lindegroup.autopkgr.autopkgruncomplete";
+NSString *const kUpdateReposCompleteNotification = @"com.lindegroup.autopkgr.updatereposcomplete";

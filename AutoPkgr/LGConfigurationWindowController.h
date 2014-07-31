@@ -61,6 +61,12 @@
 @property (weak) IBOutlet NSProgressIndicator *checkAppsNowSpinner;
 @property (weak) IBOutlet NSProgressIndicator *updateRepoNowSpinner;
 
+// Progress panel
+@property (weak) IBOutlet NSPanel *progressPanel;
+@property (weak) IBOutlet NSProgressIndicator *progressIndicator;
+@property (weak) IBOutlet NSTextField *progressMessage;
+
+
 // Objects
 @property (strong) IBOutlet LGPopularRepositories *popRepoTableViewHandler;
 @property (strong) IBOutlet LGApplications *appTableViewHandler;

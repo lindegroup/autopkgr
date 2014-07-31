@@ -24,6 +24,9 @@
                 <outlet property="localMunkiRepo" destination="smb-Vt-Cyt" id="Ycw-UD-St3"/>
                 <outlet property="localMunkiRepoFolderButton" destination="z6I-Bv-EFk" id="Pai-q2-byn"/>
                 <outlet property="popRepoTableViewHandler" destination="mvj-kT-UYD" id="JIm-Zi-DtB"/>
+                <outlet property="progressIndicator" destination="qol-Go-AJd" id="L2u-sJ-XVZ"/>
+                <outlet property="progressMessage" destination="u7l-Fz-3uc" id="bfC-89-DgO"/>
+                <outlet property="progressPanel" destination="043-gL-HLj" id="EfU-ER-kYK"/>
                 <outlet property="repoURLToAdd" destination="PWu-1D-EW1" id="nyi-oP-8Yl"/>
                 <outlet property="sendEmailNotificationsWhenNewVersionsAreFoundButton" destination="TPC-Gd-b8O" id="F4h-2O-FcT"/>
                 <outlet property="sendTestEmailButton" destination="SZ2-Hj-GiD" id="yMv-1b-dWv"/>
@@ -870,6 +873,42 @@
             </connections>
         </customObject>
         <customObject id="8xE-Xf-V2o" customClass="LGChangeHandler"/>
+        <window title="progressPanel" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" restorable="NO" hidesOnDeactivate="YES" oneShot="NO" showsToolbarButton="NO" visibleAtLaunch="NO" animationBehavior="default" id="043-gL-HLj" customClass="NSPanel">
+            <windowStyleMask key="styleMask" closable="YES" miniaturizable="YES" resizable="YES" utility="YES"/>
+            <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
+            <rect key="contentRect" x="385" y="323" width="450" height="133"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1280" height="778"/>
+            <view key="contentView" id="dCS-sn-B3a">
+                <rect key="frame" x="0.0" y="0.0" width="450" height="133"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <progressIndicator verticalHuggingPriority="750" ambiguous="YES" misplaced="YES" maxValue="100" bezeled="NO" style="bar" translatesAutoresizingMaskIntoConstraints="NO" id="qol-Go-AJd">
+                        <rect key="frame" x="18" y="60" width="403" height="20"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="403" id="fiW-aR-lOB"/>
+                        </constraints>
+                    </progressIndicator>
+                    <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="u7l-Fz-3uc">
+                        <rect key="frame" x="18" y="96" width="398" height="17"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="394" id="cZY-Ee-aQe"/>
+                        </constraints>
+                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Adding..." id="oW2-L7-9c7">
+                            <font key="font" metaFont="system"/>
+                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                    </textField>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="u7l-Fz-3uc" firstAttribute="top" secondItem="dCS-sn-B3a" secondAttribute="top" constant="20" symbolic="YES" id="4Xf-Wi-WNS"/>
+                    <constraint firstItem="u7l-Fz-3uc" firstAttribute="leading" secondItem="dCS-sn-B3a" secondAttribute="leading" constant="20" symbolic="YES" id="AkP-Zq-RcJ"/>
+                    <constraint firstItem="qol-Go-AJd" firstAttribute="leading" secondItem="dCS-sn-B3a" secondAttribute="leading" constant="18" id="Cq5-Tm-XgI"/>
+                </constraints>
+            </view>
+        </window>
     </objects>
     <resources>
         <image name="AutoPkgrIcon" width="512" height="512"/>

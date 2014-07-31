@@ -133,7 +133,6 @@
 {
     // Set up task and pipe
     NSTask *updateAutoPkgReposTask = [[NSTask alloc] init];
-    NSPipe *updateAutoPkgReposPipe = [NSPipe pipe];
 
     // Set up launch path and args
     NSString *launchPath = @"/usr/bin/python";
@@ -142,11 +141,24 @@
     // Configure the task
     [updateAutoPkgReposTask setLaunchPath:launchPath];
     [updateAutoPkgReposTask setArguments:args];
-    [updateAutoPkgReposTask setStandardOutput:updateAutoPkgReposPipe];
+    [updateAutoPkgReposTask setStandardOutput:[NSPipe pipe]];
+    [updateAutoPkgReposTask setStandardError:[NSPipe pipe]];
 
     updateAutoPkgReposTask.terminationHandler = ^(NSTask *aTask){
-        NSNotification *updateRepoCompleteNotification = [[NSNotification alloc]initWithName:kUpdateReposComplete object:nil userInfo:nil];
-        [[NSNotificationCenter defaultCenter]postNotification:updateRepoCompleteNotification];
+        NSError *error;
+        NSData *errData = [[aTask.standardError fileHandleForReading ]readDataToEndOfFile];
+        NSString *errString = [[NSString alloc]initWithData:errData encoding:NSASCIIStringEncoding];
+        // autopkg's rc on a failed repo-update is 0, so check the stderr for "ERROR" string
+        if([errString rangeOfString:@"ERROR"].location != NSNotFound){
+            error = [NSError errorWithDomain:[[NSBundle mainBundle] bundleIdentifier]
+                                        code:1
+                                    userInfo:@{NSLocalizedDescriptionKey:@"Error updating autopkg repos",
+                                               NSLocalizedRecoverySuggestionErrorKey:errString,
+                                               }];
+        }
+        
+        NSNotification *updateReposCompleteNotification = [[NSNotification alloc]initWithName:kUpdateReposCompleteNotification object:error userInfo:nil];
+        [[NSNotificationCenter defaultCenter]postNotification:updateReposCompleteNotification];
     };
     
     // Launch the task
@@ -165,7 +177,18 @@
     NSArray *args = [NSArray arrayWithObjects:@"/usr/local/bin/autopkg", @"run", @"--report-plist", @"--recipe-list", [NSString stringWithFormat:@"%@", recipeListPath], nil];
 
     autoPkgRunTask.terminationHandler = ^(NSTask *aTask){
-        NSNotification *runAutoPkgCompleteNotification = [[NSNotification alloc]initWithName:kRunAutoPkgComplete object:nil userInfo:nil];
+        NSError *error;
+        if(aTask.terminationStatus != 0){
+            NSData *errData = [[aTask.standardError fileHandleForReading ]readDataToEndOfFile];
+            NSString *errString = [[NSString alloc]initWithData:errData encoding:NSASCIIStringEncoding];
+            
+            error = [NSError errorWithDomain:[[NSBundle mainBundle] bundleIdentifier]
+                                        code:aTask.terminationStatus
+                                    userInfo:@{NSLocalizedDescriptionKey:@"Error running autopkg",
+                                               NSLocalizedRecoverySuggestionErrorKey:errString,}];
+        }
+        
+        NSNotification *runAutoPkgCompleteNotification = [[NSNotification alloc]initWithName:kRunAutoPkgCompleteNotification object:error userInfo:nil];
         [[NSNotificationCenter defaultCenter]postNotification:runAutoPkgCompleteNotification];
     };
     
@@ -173,6 +196,7 @@
     [autoPkgRunTask setLaunchPath:launchPath];
     [autoPkgRunTask setArguments:args];
     [autoPkgRunTask setStandardOutput:autoPkgRunPipe];
+    [autoPkgRunTask setStandardError:[NSPipe pipe]];
 
     // Launch the task
     [autoPkgRunTask launch];

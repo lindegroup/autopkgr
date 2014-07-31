@@ -56,6 +56,22 @@ static void *XXCheckForRepoUpdatesAutomaticallyEnabledContext = &XXCheckForRepoU
 static void *XXEmailNotificationsEnabledContext = &XXEmailNotificationsEnabledContext;
 static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
 
+- (void)dealloc
+{
+    [smtpAuthenticationEnabledButton removeObserver:self forKeyPath:@"cell.state" context:XXAuthenticationEnabledContext];
+    [sendEmailNotificationsWhenNewVersionsAreFoundButton removeObserver:self forKeyPath:@"cell.state" context:XXEmailNotificationsEnabledContext];
+    [checkForNewVersionsOfAppsAutomaticallyButton removeObserver:self forKeyPath:@"cell.state" context:XXCheckForNewAppsAutomaticallyEnabledContext];
+}
+
+- (id)initWithWindow:(NSWindow *)window
+{
+    self = [super initWithWindow:window];
+    if (self) {
+        // Initialization code here.
+        defaults = [NSUserDefaults standardUserDefaults];
+    }
+    return self;
+}
 
 - (void)awakeFromNib
 {
@@ -88,15 +104,6 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
     [checkForRepoUpdatesAutomaticallyButton setTarget:self];
     [checkForRepoUpdatesAutomaticallyButton setAction:@selector(changeCheckForRepoUpdatesAutomaticallyButtonState)];
     
-}
-
-- (void)dealloc
-{
-    [smtpAuthenticationEnabledButton removeObserver:self forKeyPath:@"cell.state" context:XXAuthenticationEnabledContext];
-    [sendEmailNotificationsWhenNewVersionsAreFoundButton removeObserver:self forKeyPath:@"cell.state" context:XXEmailNotificationsEnabledContext];
-    [checkForNewVersionsOfAppsAutomaticallyButton removeObserver:self forKeyPath:@"cell.state" context:XXCheckForNewAppsAutomaticallyEnabledContext];
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
-
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
@@ -146,34 +153,6 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
             }
         }
     }
-}
-
-- (id)initWithWindow:(NSWindow *)window
-{
-    self = [super initWithWindow:window];
-    if (self) {
-        // Initialization code here.
-        defaults = [NSUserDefaults standardUserDefaults];
-        NSNotificationCenter* ndc = [NSNotificationCenter defaultCenter];
-        [ndc addObserver:self selector:@selector(autoPkgRunComplete)
-                    name:kRunAutoPkgComplete object:nil];
-        
-        [ndc addObserver:self selector:@selector(updateReposNowComplete)
-                    name:kUpdateReposComplete object:nil];
-    }
-    return self;
-}
-
-- (void)autoPkgRunComplete{
-    [self.checkAppsNowButton setEnabled:YES];
-    [self.checkAppsNowSpinner setHidden:YES];
-    [self.checkAppsNowSpinner stopAnimation:nil];
-}
-
-- (void)updateReposNowComplete{
-    [self.updateRepoNowSpinner stopAnimation:nil];
-    [self.updateRepoNowSpinner setHidden:YES];
-    [self.updateRepoNowButton setEnabled:YES];
 }
 
 - (void)windowDidLoad
@@ -314,7 +293,7 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
     [sendTestEmailStatus setHidden:YES];  // hide status light
     [sendTestEmailSpinner setHidden:NO];  // show spinner
     [sendTestEmailSpinner startAnimation:self];  // animate spinner
-    
+    [self startProgressWithMessage:@"Sending test email"];
     // First saves the defaults
     [self save];
 
@@ -332,11 +311,11 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
     [emailer sendTestEmail];
 }
 
-- (void)testEmailReceived:(NSNotification *)n
+- (void)testEmailReceived:(NSNotification *)notification
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self
                                                     name:kEmailSentNotification
-                                                  object:[n object]];
+                                                  object:[notification object]];
     
     [sendTestEmailButton setEnabled:YES]; // enable button
     
@@ -346,14 +325,16 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
     
     // Show status light
     [sendTestEmailStatus setHidden:NO]; // unhide status light
-
+    [self stopProgress];
     
-    NSError *e = [[n userInfo] objectForKey:kEmailSentNotificationError]; // pull the error out of the userInfo dictionary
+    NSError *e = [[notification userInfo] objectForKey:kEmailSentNotificationError]; // pull the error out of the userInfo dictionary
     if (e) {
         [sendTestEmailStatus setImage:[NSImage imageNamed:@"NSStatusUnavailable"]]; // change status red
         NSLog(@"Error:  %@", e);
-        NSAlert *alert = [NSAlert alertWithError:e];
-        [alert runModal];
+        [[NSAlert alertWithError:e]beginSheetModalForWindow:self.window
+                                              modalDelegate:self
+                                             didEndSelector:nil
+                                                contextInfo:nil];
     } else {
         [sendTestEmailStatus setImage:[NSImage imageNamed:@"NSStatusAvailable"]];
     }
@@ -511,7 +492,7 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
     // Get the latest version of AutoPkg available on GitHub
     LGGitHubJSONLoader *jsonLoader = [[LGGitHubJSONLoader alloc] init];
     NSString *latestAutoPkgVersionString = [jsonLoader getLatestAutoPkgReleaseVersionNumber];
-
+    
     // Determine if AutoPkg is up-to-date by comparing the version strings
     LGVersionComparator *vc = [[LGVersionComparator alloc] init];
     BOOL newVersionAvailable = [vc isVersion:latestAutoPkgVersionString greaterThanVersion:installedAutoPkgVersionString];
@@ -614,7 +595,8 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
     // and disable the button to prevent multiple clicks
     [installAutoPkgButton setTitle:@"Installing..."];
     [installAutoPkgButton setEnabled:NO];
-
+    [self startProgressWithMessage:@"Installing newest version of AutoPkg"];
+    
     // Download and install AutoPkg on a background thread
     NSOperationQueue *queue = [[NSOperationQueue alloc] init];
     NSInvocationOperation *operation = [[NSInvocationOperation alloc]
@@ -640,7 +622,10 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
         [alert setMessageText:@"Cannot find the AutoPkg Cache folder."];
         [alert setInformativeText:[NSString stringWithFormat:@"%@ could not find the AutoPkg Cache folder located in %@. Please verify that this folder exists.", kApplicationName, autoPkgCacheFolder]];
         [alert setAlertStyle:NSWarningAlertStyle];
-        [alert runModal];
+        [alert beginSheetModalForWindow:self.window
+                          modalDelegate:self
+                         didEndSelector:nil
+                            contextInfo:nil];
     }
 }
 
@@ -660,7 +645,10 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
         [alert setMessageText:@"Cannot find the AutoPkg RecipeRepos folder."];
         [alert setInformativeText:[NSString stringWithFormat:@"%@ could not find the AutoPkg RecipeRepos folder located in %@. Please verify that this folder exists.", kApplicationName, autoPkgRecipeReposFolder]];
         [alert setAlertStyle:NSWarningAlertStyle];
-        [alert runModal];
+        [alert beginSheetModalForWindow:self.window
+                          modalDelegate:self
+                         didEndSelector:nil
+                            contextInfo:nil];
     }
 }
 
@@ -680,7 +668,10 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
         [alert setMessageText:@"Cannot find the Munki Repository."];
         [alert setInformativeText:[NSString stringWithFormat:@"%@ could not find the Munki repository located in %@. Please verify that this folder exists.", kApplicationName, localMunkiRepoFolder]];
         [alert setAlertStyle:NSWarningAlertStyle];
-        [alert runModal];
+        [alert beginSheetModalForWindow:self.window
+                          modalDelegate:self
+                         didEndSelector:nil
+                            contextInfo:nil];
     }
 }
 
@@ -699,24 +690,72 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
 
 - (IBAction)updateReposNow:(id)sender
 {
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(updateReposNowCompleteNotificationRecieved:)
+                                                 name:kUpdateReposCompleteNotification object:nil];
+    
     // TODO: Success/failure notification
-    [self.updateRepoNowSpinner startAnimation:nil];
-    [self.updateRepoNowSpinner setHidden:NO];
     [self.updateRepoNowButton setEnabled:NO];
+    [self startProgressWithMessage:@"Updating autopkg repos"];
     
     NSLog(@"Updating AutoPkg recipe repos.");
     LGAutoPkgRunner *autoPkgRunner = [[LGAutoPkgRunner alloc] init];
     [autoPkgRunner invokeAutoPkgRepoUpdateInBackgroundThread];
 }
 
+- (void)updateReposNowCompleteNotificationRecieved:(NSNotification*)notification{
+    [[NSNotificationCenter defaultCenter]removeObserver:self
+                                                   name:kUpdateReposCompleteNotification
+                                                 object:nil];
+    // stop progress panel
+    [self stopProgress];
+    
+    // for the ui update get back on the main thread
+    if([notification.object isKindOfClass:[NSError class]]){
+        [[NSOperationQueue mainQueue]addOperationWithBlock:^{
+            [[NSAlert alertWithError:notification.object] beginSheetModalForWindow:self.window
+                                                                     modalDelegate:self
+                                                                    didEndSelector:nil
+                                                                       contextInfo:nil];
+        }];
+    }
+    
+    [self.updateRepoNowButton setEnabled:YES];
+}
+
 - (IBAction)checkAppsNow:(id)sender
 {
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(autoPkgRunCompleteNotificationRecieved:)
+                                                 name:kRunAutoPkgCompleteNotification
+                                               object:nil];
+    
     [self.checkAppsNowButton setEnabled:NO];
     [self.checkAppsNowSpinner startAnimation:nil];
     [self.checkAppsNowSpinner setHidden:NO];
-
+    [self startProgressWithMessage:@"Checking for new applications"];
+    
     LGAutoPkgRunner *autoPkgRunner = [[LGAutoPkgRunner alloc] init];
     [autoPkgRunner invokeAutoPkgInBackgroundThread];
+}
+
+- (void)autoPkgRunCompleteNotificationRecieved:(NSNotification*)notification{
+    [[NSNotificationCenter defaultCenter]removeObserver:self
+                                                   name:kRunAutoPkgCompleteNotification
+                                                 object:nil];
+    [self stopProgress];
+    if([notification.object isKindOfClass:[NSError class]]){
+        [[NSOperationQueue mainQueue]addOperationWithBlock:^{
+            [[NSAlert alertWithError:notification.object] beginSheetModalForWindow:self.window
+                                                       modalDelegate:self
+                                                      didEndSelector:nil
+                                                         contextInfo:nil];
+        }];
+    }
+    
+    [self.checkAppsNowButton setEnabled:YES];
+    [self.checkAppsNowSpinner setHidden:YES];
+    [self.checkAppsNowSpinner stopAnimation:nil];
 }
 
 - (IBAction)chooseLocalMunkiRepo:(id)sender
@@ -891,6 +930,23 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
     }
     [defaults synchronize];
 }
+
+-(void)startProgressWithMessage:(NSString*)message{
+    [self.progressMessage setStringValue:message];
+    
+    [NSApp beginSheet:self.progressPanel modalForWindow:self.window modalDelegate:self didEndSelector:nil contextInfo:NULL];
+    [self.progressIndicator setHidden:NO];
+    [self.progressIndicator setIndeterminate:YES];
+    [self.progressIndicator displayIfNeeded];
+    [self.progressIndicator startAnimation:nil];
+}
+
+-(void)stopProgress{
+    [self.progressMessage setStringValue:@"Starting..."];
+    [self.progressPanel orderOut:self];
+    [NSApp endSheet:self.progressPanel returnCode:0];
+}
+
 
 - (BOOL)windowShouldClose:(id)sender
 {

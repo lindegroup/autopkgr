@@ -37,5 +37,5 @@ extern NSString *const kTestSmtpServerPortError;
 extern NSString *const kTestSmtpServerPortSuccess;
 extern NSString *const kTestSmtpServerPortResult;
 
-extern NSString *const kRunAutoPkgComplete;
-extern NSString *const kUpdateReposComplete;
+extern NSString *const kRunAutoPkgCompleteNotification;
+extern NSString *const kUpdateReposCompleteNotification;
