@@ -14,20 +14,21 @@ static int maximumValuesInVersion = 4;
 
 - (BOOL)isVersion:(NSString *)a greaterThanVersion:(NSString *)b
 {
-    NSArray *versionA = [a componentsSeparatedByString:@"."];
-    versionA = [self normalizeVersionFromArray:versionA];
+    // make sure neither a or b are nil
+    if (a && b){
+        NSArray *versionA = [a componentsSeparatedByString:@"."];
+        versionA = [self normalizeVersionFromArray:versionA];
 
-    NSArray *versionB = [b componentsSeparatedByString:@"."];
-    versionB = [self normalizeVersionFromArray:versionB];
-
-    for (NSInteger i=0; i < maximumValuesInVersion; i++) {
-        if ([[versionA objectAtIndex:i] integerValue] > [[versionB objectAtIndex:i] integerValue]) {
-            return YES;
-        } else if ([[versionA objectAtIndex:i] integerValue] < [[versionB objectAtIndex:i] integerValue]) {
-            return NO;
+        NSArray *versionB = [b componentsSeparatedByString:@"."];
+        versionB = [self normalizeVersionFromArray:versionB];
+        for (NSInteger i=0; i < maximumValuesInVersion; i++) {
+            if ([[versionA objectAtIndex:i] integerValue] > [[versionB objectAtIndex:i] integerValue]) {
+                return YES;
+            } else if ([[versionA objectAtIndex:i] integerValue] < [[versionB objectAtIndex:i] integerValue]) {
+                return NO;
+            }
         }
     }
-
     return NO;
 }
 
