@@ -165,7 +165,7 @@
     NSMutableArray * workingArray = [NSMutableArray arrayWithArray:[activeApps filteredArrayUsingPredicate:makeCatalogPredicate]];
 
     // Check if any of the apps is a .munki run
-    if([workingArray filteredArrayUsingPredicate:munkiPredicate].count){
+    if ([workingArray filteredArrayUsingPredicate:munkiPredicate].count) {
         // If so add MakeCatalogs.munki to the end of the list (so it runs last)
         [workingArray addObject:@"MakeCatalogs.munki"];
     }
