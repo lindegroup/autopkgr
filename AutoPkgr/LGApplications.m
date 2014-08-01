@@ -158,7 +158,20 @@
     
     NSString *recipeListFile = [autoPkgrSupportDirectory stringByAppendingString:@"/recipe_list.txt"];
     
-    NSString *recipe_list = [activeApps componentsJoinedByString:@"\n"];
+    NSPredicate *makeCatalogPredicate = [NSPredicate predicateWithFormat:@"not SELF contains[cd] %@",@"MakeCatalogs.munki"];
+    NSPredicate *munkiPredicate = [NSPredicate predicateWithFormat:@"SELF contains[cd] %@",@"munki"];
+    
+    // Make a working array filtering out any instances of MakeCatalogs.munki, so there will only be one occurence
+    NSMutableArray * workingArray = [NSMutableArray arrayWithArray:[activeApps filteredArrayUsingPredicate:makeCatalogPredicate]];
+
+    // Check if any of the apps is a .munki run
+    if([workingArray filteredArrayUsingPredicate:munkiPredicate].count){
+        // If so add MakeCatalogs.munki to the end of the list (so it runs last)
+        [workingArray addObject:@"MakeCatalogs.munki"];
+    }
+    
+    NSString *recipe_list = [workingArray componentsJoinedByString:@"\n"];
+    
     [recipe_list writeToFile:recipeListFile atomically:YES encoding:NSUTF8StringEncoding error:&error];
     
     if (error) {
