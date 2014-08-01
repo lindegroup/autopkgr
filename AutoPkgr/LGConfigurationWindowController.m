@@ -61,6 +61,7 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
     [smtpAuthenticationEnabledButton removeObserver:self forKeyPath:@"cell.state" context:XXAuthenticationEnabledContext];
     [sendEmailNotificationsWhenNewVersionsAreFoundButton removeObserver:self forKeyPath:@"cell.state" context:XXEmailNotificationsEnabledContext];
     [checkForNewVersionsOfAppsAutomaticallyButton removeObserver:self forKeyPath:@"cell.state" context:XXCheckForNewAppsAutomaticallyEnabledContext];
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (id)initWithWindow:(NSWindow *)window
@@ -69,6 +70,9 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
     if (self) {
         // Initialization code here.
         defaults = [NSUserDefaults standardUserDefaults];
+        NSNotificationCenter *ndc = [NSNotificationCenter defaultCenter];
+        [ndc addObserver:self selector:@selector(startProgressNotificationReceived:) name:kProgressStartNotification object:nil];
+        [ndc addObserver:self selector:@selector(stopProgressNotificationReceived:) name:kProgressStopNotification object:nil];
     }
     return self;
 }
@@ -219,7 +223,7 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
 
         if ([error code] == SSKeychainErrorNotFound) {
             NSLog(@"Keychain item not found for account %@.", smtpUsernameString);
-        } else if([error code] == SSKeychainErrorNoPassword) {
+        } else if ([error code] == SSKeychainErrorNoPassword) {
             NSLog(@"Found the keychain item for %@ but no password value was returned.", smtpUsernameString);
         } else if (error != nil) {
             NSLog(@"An error occurred when attempting to retrieve the keychain entry for %@. Error: %@", smtpUsernameString, [error localizedDescription]);
@@ -325,7 +329,7 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
     
     // Show status light
     [sendTestEmailStatus setHidden:NO]; // unhide status light
-    [self stopProgress];
+    
     
     NSError *e = [[notification userInfo] objectForKey:kEmailSentNotificationError]; // pull the error out of the userInfo dictionary
     if (e) {
@@ -338,6 +342,9 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
     } else {
         [sendTestEmailStatus setImage:[NSImage imageNamed:@"NSStatusAvailable"]];
     }
+    
+    [self stopProgress:e];
+    
 }
 
 - (void)testSmtpServerPort:(id)sender
@@ -708,10 +715,14 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
                                                    name:kUpdateReposCompleteNotification
                                                  object:nil];
     // stop progress panel
-    [self stopProgress];
+    NSError *error = nil;
+    if ([notification.object isKindOfClass:[NSError class]]) {
+        error = notification.object;
+    }
+    [self stopProgress:error];
     
     // for the ui update get back on the main thread
-    if([notification.object isKindOfClass:[NSError class]]){
+    if ([notification.object isKindOfClass:[NSError class]]) {
         [[NSOperationQueue mainQueue]addOperationWithBlock:^{
             [[NSAlert alertWithError:notification.object] beginSheetModalForWindow:self.window
                                                                      modalDelegate:self
@@ -743,15 +754,12 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
     [[NSNotificationCenter defaultCenter]removeObserver:self
                                                    name:kRunAutoPkgCompleteNotification
                                                  object:nil];
-    [self stopProgress];
-    if([notification.object isKindOfClass:[NSError class]]){
-        [[NSOperationQueue mainQueue]addOperationWithBlock:^{
-            [[NSAlert alertWithError:notification.object] beginSheetModalForWindow:self.window
-                                                       modalDelegate:self
-                                                      didEndSelector:nil
-                                                         contextInfo:nil];
-        }];
+    
+    NSError *error = nil;
+    if ([notification.object isKindOfClass:[NSError class]]) {
+        error = notification.object;
     }
+    [self stopProgress:error];
     
     [self.checkAppsNowButton setEnabled:YES];
     [self.checkAppsNowSpinner setHidden:YES];
@@ -931,20 +939,46 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
     [defaults synchronize];
 }
 
--(void)startProgressWithMessage:(NSString*)message{
-    [self.progressMessage setStringValue:message];
-    
-    [NSApp beginSheet:self.progressPanel modalForWindow:self.window modalDelegate:self didEndSelector:nil contextInfo:NULL];
-    [self.progressIndicator setHidden:NO];
-    [self.progressIndicator setIndeterminate:YES];
-    [self.progressIndicator displayIfNeeded];
-    [self.progressIndicator startAnimation:nil];
+-(void)startProgressNotificationReceived:(NSNotification*)notification{
+    [self startProgressWithMessage:notification.object];
 }
 
--(void)stopProgress{
-    [self.progressMessage setStringValue:@"Starting..."];
-    [self.progressPanel orderOut:self];
-    [NSApp endSheet:self.progressPanel returnCode:0];
+-(void)stopProgressNotificationReceived:(NSNotification*)notification{
+    NSError *error = nil;
+    if ([notification.object isKindOfClass:[NSError class]]) {
+        error = notification.object;
+    }
+    [self stopProgress:error];
+}
+
+-(void)startProgressWithMessage:(NSString*)message
+{
+    [[NSOperationQueue mainQueue]addOperationWithBlock:^{
+        [self.progressMessage setStringValue:message];
+        [NSApp beginSheet:self.progressPanel modalForWindow:self.window modalDelegate:self didEndSelector:nil contextInfo:NULL];
+        [self.progressIndicator setHidden:NO];
+        [self.progressIndicator setIndeterminate:YES];
+        [self.progressIndicator displayIfNeeded];
+        [self.progressIndicator startAnimation:nil];
+
+    }];
+}
+
+-(void)stopProgress:(NSError*)error
+{
+    // Stop the progress panel, and if and error was sent in
+    // do a sheet modal
+    [[NSOperationQueue mainQueue]addOperationWithBlock:^{
+        [self.progressPanel orderOut:self];
+        [NSApp endSheet:self.progressPanel returnCode:0];
+        [self.progressMessage setStringValue:@"Starting..."];
+        if (error) {
+            [[NSAlert alertWithError:error] beginSheetModalForWindow:self.window
+                                                       modalDelegate:self
+                                                      didEndSelector:nil
+                                                         contextInfo:nil];
+        }
+    }];
 }
 
 

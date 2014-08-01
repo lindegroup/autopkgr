@@ -91,6 +91,8 @@
 
 - (void)addAutoPkgRecipeRepo:(NSString *)repoURL
 {
+    [[NSNotificationCenter defaultCenter] postNotificationName:kProgressStartNotification object:@"Adding Repo"];
+    NSLog(@"Posting notification to start addRepo");
     // Set up task, pipe, and file handle
     NSTask *autoPkgRepoAddTask = [[NSTask alloc] init];
     NSPipe *autoPkgRepoAddPipe = [NSPipe pipe];
@@ -98,19 +100,38 @@
     // Set up launch path and args
     NSString *launchPath = @"/usr/bin/python";
     NSArray *args = [NSArray arrayWithObjects:@"/usr/local/bin/autopkg", @"repo-add", [NSString stringWithFormat:@"%@", repoURL], nil];
-
+        
     // Configure the task
     [autoPkgRepoAddTask setLaunchPath:launchPath];
     [autoPkgRepoAddTask setArguments:args];
     [autoPkgRepoAddTask setStandardOutput:autoPkgRepoAddPipe];
+    [autoPkgRepoAddTask setStandardError:[NSPipe pipe]];
 
+    autoPkgRepoAddTask.terminationHandler = ^(NSTask *aTask) {
+        NSError *error = nil;
+        NSData *errData = [[aTask.standardError fileHandleForReading ]readDataToEndOfFile];
+        NSString *errString = [[NSString alloc]initWithData:errData encoding:NSASCIIStringEncoding];
+        // autopkg's rc on a failed repo-update is 0, so check the stderr for "ERROR" string
+        if ([errString rangeOfString:@"ERROR"].location != NSNotFound) {
+            error = [NSError errorWithDomain:[[NSBundle mainBundle] bundleIdentifier]
+                                        code:1
+                                    userInfo:@{NSLocalizedDescriptionKey:@"Error adding repo",
+                                               NSLocalizedRecoverySuggestionErrorKey:errString,
+                                               }];
+        }
+        [[NSNotificationCenter defaultCenter]postNotificationName:kProgressStopNotification object:error];
+    };
+    
     // Launch the task
     [autoPkgRepoAddTask launch];
     [autoPkgRepoAddTask waitUntilExit];
+    
 }
 
 - (void)removeAutoPkgRecipeRepo:(NSString *)repoURL
 {
+    [[NSNotificationCenter defaultCenter] postNotificationName:kProgressStartNotification object:@"Removing Repo"];
+
     // Set up task and pipe
     NSTask *autoPkgRepoRemoveTask = [[NSTask alloc] init];
     NSPipe *autoPkgRepoRemovePipe = [NSPipe pipe];
@@ -123,10 +144,27 @@
     [autoPkgRepoRemoveTask setLaunchPath:launchPath];
     [autoPkgRepoRemoveTask setArguments:args];
     [autoPkgRepoRemoveTask setStandardOutput:autoPkgRepoRemovePipe];
+    [autoPkgRepoRemoveTask setStandardError:[NSPipe pipe]];
 
+    autoPkgRepoRemoveTask.terminationHandler = ^(NSTask *aTask) {
+        NSError *error = nil;
+        NSData *errData = [[aTask.standardError fileHandleForReading ]readDataToEndOfFile];
+        NSString *errString = [[NSString alloc]initWithData:errData encoding:NSASCIIStringEncoding];
+        // autopkg's rc on a failed repo-update is 0, so check the stderr for "ERROR" string
+        if ([errString rangeOfString:@"ERROR"].location != NSNotFound) {
+            error = [NSError errorWithDomain:[[NSBundle mainBundle] bundleIdentifier]
+                                        code:1
+                                    userInfo:@{NSLocalizedDescriptionKey:@"Error removing repo",
+                                               NSLocalizedRecoverySuggestionErrorKey:errString,
+                                               }];
+        }
+        [[NSNotificationCenter defaultCenter]postNotificationName:kProgressStopNotification object:error];
+    };
+    
     // Launch the task
     [autoPkgRepoRemoveTask launch];
     [autoPkgRepoRemoveTask waitUntilExit];
+
 }
 
 - (void)updateAutoPkgRecipeRepos
@@ -144,12 +182,12 @@
     [updateAutoPkgReposTask setStandardOutput:[NSPipe pipe]];
     [updateAutoPkgReposTask setStandardError:[NSPipe pipe]];
 
-    updateAutoPkgReposTask.terminationHandler = ^(NSTask *aTask){
+    updateAutoPkgReposTask.terminationHandler = ^(NSTask *aTask) {
         NSError *error;
         NSData *errData = [[aTask.standardError fileHandleForReading ]readDataToEndOfFile];
         NSString *errString = [[NSString alloc]initWithData:errData encoding:NSASCIIStringEncoding];
         // autopkg's rc on a failed repo-update is 0, so check the stderr for "ERROR" string
-        if([errString rangeOfString:@"ERROR"].location != NSNotFound){
+        if ([errString rangeOfString:@"ERROR"].location != NSNotFound) {
             error = [NSError errorWithDomain:[[NSBundle mainBundle] bundleIdentifier]
                                         code:1
                                     userInfo:@{NSLocalizedDescriptionKey:@"Error updating autopkg repos",
@@ -176,9 +214,9 @@
     NSString *launchPath = @"/usr/bin/python";
     NSArray *args = [NSArray arrayWithObjects:@"/usr/local/bin/autopkg", @"run", @"--report-plist", @"--recipe-list", [NSString stringWithFormat:@"%@", recipeListPath], nil];
 
-    autoPkgRunTask.terminationHandler = ^(NSTask *aTask){
+    autoPkgRunTask.terminationHandler = ^(NSTask *aTask) {
         NSError *error;
-        if(aTask.terminationStatus != 0){
+        if (aTask.terminationStatus != 0) {
             NSData *errData = [[aTask.standardError fileHandleForReading ]readDataToEndOfFile];
             NSString *errString = [[NSString alloc]initWithData:errData encoding:NSASCIIStringEncoding];
             
