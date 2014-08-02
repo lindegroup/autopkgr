@@ -36,6 +36,7 @@
 @synthesize checkForNewVersionsOfAppsAutomaticallyButton;
 @synthesize checkForRepoUpdatesAutomaticallyButton;
 @synthesize sendEmailNotificationsWhenNewVersionsAreFoundButton;
+@synthesize autoPkgRecipeOverridesFolderButton;
 @synthesize autoPkgCacheFolderButton;
 @synthesize autoPkgRecipeReposFolderButton;
 @synthesize localMunkiRepoFolderButton;
@@ -262,10 +263,14 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
 
     // Enable tools buttons if directories exist
     BOOL isDir;
+    NSString *autoPkgRecipeOverridesFolder = [hostInfo getAutoPkgRecipeOverridesDir];
     NSString *autoPkgCacheFolder = [hostInfo getAutoPkgCacheDir];
     NSString *autoPkgRecipeReposFolder = [hostInfo getAutoPkgRecipeReposDir];
     NSString *localMunkiRepoFolder = [hostInfo getMunkiRepoDir];
 
+    if ([[NSFileManager defaultManager] fileExistsAtPath:autoPkgRecipeOverridesFolder isDirectory:&isDir] && isDir) {
+        [autoPkgRecipeOverridesFolderButton setEnabled:YES];
+    }
     if ([[NSFileManager defaultManager] fileExistsAtPath:autoPkgCacheFolder isDirectory:&isDir] && isDir) {
         [autoPkgCacheFolderButton setEnabled:YES];
     }
@@ -628,6 +633,26 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
 
         }
     }];
+}
+
+- (IBAction)openAutoPkgRecipeOverridesFolder:(id)sender
+{
+    BOOL isDir;
+    LGHostInfo *hostInfo = [[LGHostInfo alloc] init];
+    NSString *autoPkgRecipeOverridesFolder = [hostInfo getAutoPkgRecipeOverridesDir];
+
+    if ([[NSFileManager defaultManager] fileExistsAtPath:autoPkgRecipeOverridesFolder isDirectory:&isDir] && isDir) {
+        NSURL *autoPkgRecipeOverridesFolderURL = [NSURL fileURLWithPath:autoPkgRecipeOverridesFolder];
+        [[NSWorkspace sharedWorkspace] openURL:autoPkgRecipeOverridesFolderURL];
+    } else {
+        NSLog(@"%@ does not exist.", autoPkgRecipeOverridesFolder);
+        NSAlert *alert = [[NSAlert alloc] init];
+        [alert addButtonWithTitle:@"OK"];
+        [alert setMessageText:@"Cannot find the AutoPkg RecipeOverrides folder."];
+        [alert setInformativeText:[NSString stringWithFormat:@"%@ could not find the AutoPkg RecipeOverrides folder located in %@. Please verify that this folder exists.", kApplicationName, autoPkgRecipeOverridesFolder]];
+        [alert setAlertStyle:NSWarningAlertStyle];
+        [alert runModal];
+    }
 }
 
 - (void)controlTextDidEndEditing:(NSNotification *)notification

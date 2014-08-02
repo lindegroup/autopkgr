@@ -41,6 +41,7 @@
 @property (weak) IBOutlet NSButton *sendTestEmailButton;
 @property (weak) IBOutlet NSButton *installGitButton;
 @property (weak) IBOutlet NSButton *installAutoPkgButton;
+@property (weak) IBOutlet NSButton *autoPkgRecipeOverridesFolderButton;
 
 // Labels
 @property (weak) IBOutlet NSTextField *gitStatusLabel;
@@ -65,6 +66,7 @@
 - (IBAction)updateReposNow:(id)sender;
 - (IBAction)checkAppsNow:(id)sender;
 - (IBAction)chooseLocalMunkiRepo:(id)sender;
+- (IBAction)openAutoPkgRecipeOverridesFolder:(id)sender;
 
 - (void)runCommandAsRoot:(NSString *)command;
 - (void)downloadAndInstallAutoPkg;

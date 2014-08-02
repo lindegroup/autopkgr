@@ -28,6 +28,19 @@
     return userAtHostName;
 }
 
+- (NSString *)getAutoPkgRecipeOverridesDir
+{
+    NSString *autoPkgRecipeOverridesFolderFromPrefs = (__bridge_transfer NSString *)CFPreferencesCopyAppValue(CFSTR("RECIPE_OVERRIDE_DIRS"), CFSTR("com.github.autopkg"));
+
+    if (!autoPkgRecipeOverridesFolderFromPrefs) {
+        NSString *autoPkgRecipeOverridesFolder = [NSString stringWithFormat:@"%@/Library/AutoPkg/RecipeOverrides", NSHomeDirectory()];
+        NSLog(@"RECIPE_OVERRIDE_DIRS is not specified in the com.github.autopkg preference domain. Using the default value of %@ instead.", autoPkgRecipeOverridesFolder);
+        return autoPkgRecipeOverridesFolder;
+    }
+
+    return autoPkgRecipeOverridesFolderFromPrefs;
+}
+
 - (NSString *)getAutoPkgCacheDir
 {
     NSString *autoPkgCacheFolderFromPrefs = (__bridge_transfer NSString *)CFPreferencesCopyAppValue(CFSTR("CACHE_DIR"), CFSTR("com.github.autopkg"));
