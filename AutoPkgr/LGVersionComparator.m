@@ -14,8 +14,8 @@ static int maximumValuesInVersion = 4;
 
 - (BOOL)isVersion:(NSString *)a greaterThanVersion:(NSString *)b
 {
-    // make sure neither a or b are nil
-    if (a && b){
+    // Make sure neither a or b are nil
+    if (a && b) {
         NSArray *versionA = [a componentsSeparatedByString:@"."];
         versionA = [self normalizeVersionFromArray:versionA];
 
