@@ -44,3 +44,4 @@ NSString *const kUpdateReposCompleteNotification = @"com.lindegroup.autopkgr.upd
 NSString *const kProgressStartNotification = @"com.lindegroup.autopkgr.progress.start.notification";
 NSString *const kProgressStopNotification = @"com.lindegroup.autopkgr.progress.stop.notification";
 
+NSString *const kProgressMessageUpdateNotification = @"com.lindegroup.autopkgr.progress.message.notification";

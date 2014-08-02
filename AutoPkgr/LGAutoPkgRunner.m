@@ -100,7 +100,7 @@
     // Set up launch path and args
     NSString *launchPath = @"/usr/bin/python";
     NSArray *args = [NSArray arrayWithObjects:@"/usr/local/bin/autopkg", @"repo-add", [NSString stringWithFormat:@"%@", repoURL], nil];
-        
+
     // Configure the task
     [autoPkgRepoAddTask setLaunchPath:launchPath];
     [autoPkgRepoAddTask setArguments:args];
@@ -121,7 +121,7 @@
         }
         [[NSNotificationCenter defaultCenter]postNotificationName:kProgressStopNotification object:error];
     };
-    
+
     // Launch the task
     [autoPkgRepoAddTask launch];
     [autoPkgRepoAddTask waitUntilExit];
@@ -160,7 +160,7 @@
         }
         [[NSNotificationCenter defaultCenter]postNotificationName:kProgressStopNotification object:error];
     };
-    
+
     // Launch the task
     [autoPkgRepoRemoveTask launch];
     [autoPkgRepoRemoveTask waitUntilExit];
@@ -175,7 +175,7 @@
     // Set up launch path and args
     NSString *launchPath = @"/usr/bin/python";
     NSArray *args = [NSArray arrayWithObjects:@"/usr/local/bin/autopkg", @"repo-update", @"all", nil];
-    
+
     // Configure the task
     [updateAutoPkgReposTask setLaunchPath:launchPath];
     [updateAutoPkgReposTask setArguments:args];
@@ -198,7 +198,7 @@
         NSNotification *updateReposCompleteNotification = [[NSNotification alloc]initWithName:kUpdateReposCompleteNotification object:error userInfo:nil];
         [[NSNotificationCenter defaultCenter]postNotification:updateReposCompleteNotification];
     };
-    
+
     // Launch the task
     [updateAutoPkgReposTask launch];
 }
@@ -229,12 +229,17 @@
         NSNotification *runAutoPkgCompleteNotification = [[NSNotification alloc]initWithName:kRunAutoPkgCompleteNotification object:error userInfo:nil];
         [[NSNotificationCenter defaultCenter]postNotification:runAutoPkgCompleteNotification];
     };
-    
+
     // Configure the task
     [autoPkgRunTask setLaunchPath:launchPath];
     [autoPkgRunTask setArguments:args];
     [autoPkgRunTask setStandardOutput:autoPkgRunPipe];
     [autoPkgRunTask setStandardError:[NSPipe pipe]];
+
+    [autoPkgRunTask.standardError fileHandleForReading].readabilityHandler = ^(NSFileHandle *handle) {
+        NSString *string = [[NSString alloc ] initWithData:[handle availableData] encoding:NSASCIIStringEncoding];
+        [[NSNotificationCenter defaultCenter]postNotificationName:kProgressMessageUpdateNotification object:string];
+    };
 
     // Launch the task
     [autoPkgRunTask launch];
@@ -289,10 +294,10 @@
                     }
                     [newDownloadsArray addObject:newDownloadDict];
                 }
-                
+
                 NSLog(@"New software was downloaded. Sending an email alert.");
                 [self sendNewDowloadsEmail:newDownloadsArray];
-                
+
             } else {
                 NSLog(@"Nothing new was downloaded.");
             }
