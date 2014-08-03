@@ -11,6 +11,8 @@
 #import "LGEmailer.h"
 #import "LGHostInfo.h"
 #import "LGAutoPkgRunner.h"
+#import "LGAutoPkgrProtocol.h"
+#import "LGAutoPkgrHelperConnection.h"
 #import "LGGitHubJSONLoader.h"
 #import "LGVersionComparator.h"
 #import "SSKeychain.h"
@@ -467,21 +469,25 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
     // Download AutoPkg to the temporary directory
     NSData *autoPkg = [[NSData alloc] initWithContentsOfURL:[NSURL URLWithString:downloadURL]];
     [autoPkg writeToFile:autoPkgPkg atomically:YES];
-
-    // Set the `installer` command
-    NSString *command = [NSString stringWithFormat:@"/usr/sbin/installer -pkg %@ -target /", autoPkgPkg];
-
-    // Install the AutoPkg PKG as root
-    [self runCommandAsRoot:command];
-
-    // Update the autoPkgStatus icon and label if it installed successfully
-    if ([hostInfo autoPkgInstalled]) {
-        NSLog(@"AutoPkg installed successfully!");
-        [autoPkgStatusLabel setStringValue:kAutoPkgInstalledLabel];
-        [autoPkgStatusIcon setImage:[NSImage imageNamed:NSImageNameStatusAvailable]];
-        [installAutoPkgButton setTitle:@"Install AutoPkg"];
-        [installAutoPkgButton setEnabled:NO];
-    }
+    
+    // when connecting to the helper tool, get back on the main thread
+    [[NSOperationQueue mainQueue]addOperationWithBlock:^{
+        LGAutoPkgrHelperConnection *helper = [LGAutoPkgrHelperConnection new];
+        [helper connectToHelper];
+        [[helper.connection remoteObjectProxy]installPackageFromPath:autoPkgPkg reply:^(NSError *error) {
+            if(error){
+                NSLog(@"%@",error.localizedDescription);
+            }else{
+                if ([hostInfo autoPkgInstalled]) {
+                    NSLog(@"AutoPkg installed successfully!");
+                    [autoPkgStatusLabel setStringValue:kAutoPkgInstalledLabel];
+                    [autoPkgStatusIcon setImage:[NSImage imageNamed:NSImageNameStatusAvailable]];
+                    [installAutoPkgButton setTitle:@"Install AutoPkg"];
+                    [installAutoPkgButton setEnabled:NO];
+                }
+            }
+        }];
+    }];
 }
 
 - (IBAction)installAutoPkg:(id)sender

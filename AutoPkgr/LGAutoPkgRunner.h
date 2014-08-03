@@ -7,8 +7,10 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "LGEmailer.h"
 
 @interface LGAutoPkgRunner : NSObject
+@property (strong,nonatomic) LGEmailer *emailer;
 
 - (NSArray *)getLocalAutoPkgRecipes;
 - (NSArray *)getLocalAutoPkgRecipeRepos;

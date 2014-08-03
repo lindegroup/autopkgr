@@ -77,18 +77,22 @@
         }
     }
 
-    [[builder header] setTo:to];
+    [[builder header] setTo:to];    
     [[builder header] setSubject:subject];
     [builder setHTMLBody:message];
     NSData * rfc822Data = [builder data];
 
     MCOSMTPSendOperation *sendOperation = [smtpSession sendOperationWithData:rfc822Data];
+    
     [sendOperation start:^(NSError *error) {
         if (error) {
             NSLog(@"%@ Error sending email:%@", smtpSession.username, error);
         } else {
             NSLog(@"%@ Successfully sent email!", smtpSession.username);
         }
+        // since this is in a operation block, set as complete so cli invocation
+        // can watch and exit out of run loop
+        self.complete = YES;
     }];
 }
 

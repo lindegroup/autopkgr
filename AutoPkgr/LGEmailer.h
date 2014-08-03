@@ -11,6 +11,12 @@
 
 @interface LGEmailer : NSObject
 
+/*
+ * complete observable property of current LGEmailer status
+ * returns NO while in the process of sending and email, YES on complete or error 
+ */
+@property (nonatomic) BOOL complete;
+
 - (void)sendEmailNotification:(NSString *)subject message:(NSString *)message;
 - (void)sendTestEmail;
 
