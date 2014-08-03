@@ -16,15 +16,16 @@
 {
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 
+    // Setup the status item
     [self setupStatusItem];
-    
+
     if (![defaults boolForKey:kHasCompletedInitialSetup]) {
-        [self showConfigurationWindow];
+        [self showConfigurationWindow:nil];
         [defaults setObject:@YES forKey:kHasCompletedInitialSetup];
     }
-    
+
     // Start the AutoPkg run timer if the user enabled it
-   [self startAutoPkgRunTimer];
+    [self startAutoPkgRunTimer];
 
     // Update AutoPkg recipe repos when the application launches
     // if the user has enabled automatic repo updates
@@ -54,18 +55,7 @@
     [self.statusItem setImage:[NSImage imageNamed:@"autopkgr.png"]];
     [self.statusItem setAlternateImage:[NSImage imageNamed:@"autopkgr_alt.png"]];
     [self.statusItem setHighlightMode:YES];
-    [self setupMenu];
-}
-
-- (void)setupMenu
-{
-    // Setup menu items for statusItem
-    NSMenu *menu = [[NSMenu alloc] init];
-    [menu addItemWithTitle:@"Check Now" action:@selector(checkNowFromMenu:) keyEquivalent:@""];
-    [menu addItemWithTitle:@"Configure..." action:@selector(showConfigurationWindow) keyEquivalent:@""];
-    [menu addItem:[NSMenuItem separatorItem]];
-    [menu addItemWithTitle:[NSString stringWithFormat:@"Quit %@", kApplicationName] action:@selector(terminate:) keyEquivalent:@""];
-    self.statusItem.menu = menu;
+    self.statusItem.menu = self.statusMenu;
 }
 
 - (void)checkNowFromMenu:(id)sender
@@ -74,20 +64,20 @@
     [autoPkgRunner invokeAutoPkgInBackgroundThread];
 }
 
-- (void)showConfigurationWindow
+- (void)showConfigurationWindow:(id)sender
 {
     if (!self->configurationWindowController) {
         self->configurationWindowController = [[LGConfigurationWindowController alloc] initWithWindowNibName:@"LGConfigurationWindowController"];
     }
-    
-	[NSApp activateIgnoringOtherApps:YES];
-	[self->configurationWindowController.window makeKeyAndOrderFront:nil];
+
+    [NSApp activateIgnoringOtherApps:YES];
+    [self->configurationWindowController.window makeKeyAndOrderFront:nil];
 }
 
 - (NSApplicationTerminateReply)applicationShouldTerminate:(NSApplication *)sender
 {
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    
+
     if ([defaults boolForKey:kWarnBeforeQuittingEnabled]) {
         NSAlert *alert = [[NSAlert alloc] init];
         [alert addButtonWithTitle:@"Quit"];

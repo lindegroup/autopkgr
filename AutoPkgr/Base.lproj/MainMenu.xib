@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="5056" systemVersion="13D65" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="5056" systemVersion="13E28" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
+        <deployment defaultVersion="1080" identifier="macosx"/>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="5056"/>
     </dependencies>
     <objects>
@@ -668,14 +669,24 @@
         </menu>
         <menu id="VXP-Yr-lJz">
             <items>
-                <menuItem title="Item 1" id="BHu-Te-2QX">
+                <menuItem title="Check Now" id="BHu-Te-2QX">
                     <modifierMask key="keyEquivalentModifierMask"/>
+                    <connections>
+                        <action selector="checkNowFromMenu:" target="Voe-Tx-rLC" id="PJj-eR-lGj"/>
+                    </connections>
                 </menuItem>
-                <menuItem title="Item 2" id="YbD-Wc-dYg">
+                <menuItem title="Configure..." id="YbD-Wc-dYg">
                     <modifierMask key="keyEquivalentModifierMask"/>
+                    <connections>
+                        <action selector="showConfigurationWindow:" target="Voe-Tx-rLC" id="q4g-vL-fgF"/>
+                    </connections>
                 </menuItem>
-                <menuItem title="Item 3" id="cuo-db-FBC">
+                <menuItem isSeparatorItem="YES" id="5vA-zg-b1N"/>
+                <menuItem title="Quit" id="cuo-db-FBC">
                     <modifierMask key="keyEquivalentModifierMask"/>
+                    <connections>
+                        <action selector="terminate:" target="-2" id="t6s-yZ-lSS"/>
+                    </connections>
                 </menuItem>
             </items>
         </menu>
