@@ -15,26 +15,14 @@
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {
     [self setupStatusItem];
-
-    // Show the configuration window if we haven't
-    // completed the initial setup
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    if ([defaults objectForKey:kHasCompletedInitialSetup]) {
-
-        BOOL hasCompletedInitialSetup = [[defaults objectForKey:kHasCompletedInitialSetup] boolValue];
-
-        if (!hasCompletedInitialSetup) {
-            [self showConfigurationWindow:nil];
-        }
-    } else {
-        [self showConfigurationWindow:nil];
-    }
+	[self setupConfigurationWindow];
 
     // Start the AutoPkg run timer if the user enabled it
     [self startAutoPkgRunTimer];
 
     // Update AutoPkg recipe repos when the application launches
     // if the user has enabled automatic repo updates
+	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     if ([defaults objectForKey:kCheckForRepoUpdatesAutomaticallyEnabled]) {
 
         BOOL checkForRepoUpdatesAutomaticallyEnabled = [[defaults objectForKey:kCheckForRepoUpdatesAutomaticallyEnabled] boolValue];
@@ -74,7 +62,7 @@
     // Setup menu items for statusItem
     NSMenu *menu = [[NSMenu alloc] init];
     [menu addItemWithTitle:@"Check Now" action:@selector(checkNowFromMenu:) keyEquivalent:@""];
-    [menu addItemWithTitle:@"Configure..." action:@selector(showConfigurationWindow:) keyEquivalent:@""];
+    [menu addItemWithTitle:@"Configure..." action:@selector(showConfigurationWindow) keyEquivalent:@""];
     [menu addItem:[NSMenuItem separatorItem]];
     [menu addItemWithTitle:[NSString stringWithFormat:@"Quit %@", kApplicationName] action:@selector(terminate:) keyEquivalent:@""];
     self.statusItem.menu = menu;
@@ -86,12 +74,30 @@
     [autoPkgRunner invokeAutoPkgInBackgroundThread];
 }
 
-- (void)showConfigurationWindow:(id)sender
+- (void)setupConfigurationWindow
 {
-    if (!configurationWindowController) {
-        configurationWindowController = [[LGConfigurationWindowController alloc] initWithWindowNibName:@"LGConfigurationWindowController"];
-    }
-    [configurationWindowController showWindow:self];
+    if (!self->configurationWindowController) {
+        self->configurationWindowController = [[LGConfigurationWindowController alloc] initWithWindowNibName:@"LGConfigurationWindowController"];
+		
+		// Show the configuration window if we haven't
+		// completed the initial setup
+		NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+		if ([defaults objectForKey:kHasCompletedInitialSetup]) {
+			BOOL hasCompletedInitialSetup = [[defaults objectForKey:kHasCompletedInitialSetup] boolValue];
+			
+			if (!hasCompletedInitialSetup) {
+				[self showConfigurationWindow];
+			}
+		} else {
+			[self showConfigurationWindow];
+		}
+	}
+}
+
+- (void)showConfigurationWindow
+{
+	[NSApp activateIgnoringOtherApps:YES];
+	[self->configurationWindowController.window makeKeyAndOrderFront:nil];
 }
 
 - (NSApplicationTerminateReply)applicationShouldTerminate:(NSApplication *)sender
