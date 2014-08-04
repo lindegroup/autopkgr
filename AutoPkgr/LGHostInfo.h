@@ -13,6 +13,7 @@
 - (NSString *)getUserName;
 - (NSString *)getHostName;
 - (NSString *)getUserAtHostName;
+- (NSString *)getAutoPkgRecipeOverridesDir;
 - (NSString *)getAutoPkgCacheDir;
 - (NSString *)getAutoPkgRecipeReposDir;
 - (NSString *)getMunkiRepoDir;

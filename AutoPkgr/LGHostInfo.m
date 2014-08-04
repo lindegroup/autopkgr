@@ -28,6 +28,36 @@
     return userAtHostName;
 }
 
+- (NSString *)getAutoPkgRecipeOverridesDir
+{
+    CFPropertyListRef ref = CFPreferencesCopyAppValue(CFSTR("RECIPE_OVERRIDE_DIRS"), CFSTR("com.github.autopkg"));
+
+    if (ref != nil) {
+        CFTypeID type = CFGetTypeID(ref);
+
+        if (CFArrayGetTypeID() == type) {
+            // RECIPE_OVERRIDE_DIRS is an array
+            NSArray *autoPkgRecipeOverrideFoldersArrayFromPrefs = (__bridge_transfer NSArray *)CFPreferencesCopyAppValue(CFSTR("RECIPE_OVERRIDE_DIRS"), CFSTR("com.github.autopkg"));
+
+            // Only return the first RecipeOverrides dir for now
+            return [[autoPkgRecipeOverrideFoldersArrayFromPrefs objectAtIndex:0] stringByStandardizingPath];
+
+        } else if (CFStringGetTypeID() == type) {
+            // RECIPE_OVERRIDE_DIRS is a string
+            NSString *autoPkgRecipeOverrideFolderFromPrefs = (__bridge_transfer NSString *)CFPreferencesCopyAppValue(CFSTR("RECIPE_OVERRIDE_DIRS"), CFSTR("com.github.autopkg"));
+
+            return [autoPkgRecipeOverrideFolderFromPrefs stringByStandardizingPath];
+        }
+
+        CFRelease(ref);
+    }
+
+    NSString *autoPkgRecipeOverridesFolder = [NSString stringWithFormat:@"%@/Library/AutoPkg/RecipeOverrides", NSHomeDirectory()];
+    NSLog(@"RECIPE_OVERRIDE_DIRS is not specified in the com.github.autopkg preference domain. Using the default value of %@ instead.", autoPkgRecipeOverridesFolder);
+
+    return autoPkgRecipeOverridesFolder;
+}
+
 - (NSString *)getAutoPkgCacheDir
 {
     NSString *autoPkgCacheFolderFromPrefs = (__bridge_transfer NSString *)CFPreferencesCopyAppValue(CFSTR("CACHE_DIR"), CFSTR("com.github.autopkg"));
@@ -38,7 +68,7 @@
         return autoPkgCacheFolder;
     }
 
-    return autoPkgCacheFolderFromPrefs;
+    return [autoPkgCacheFolderFromPrefs stringByStandardizingPath];
 }
 
 - (NSString *)getAutoPkgRecipeReposDir
@@ -51,7 +81,7 @@
         return autoPkgRecipeReposFolder;
     }
 
-    return autoPkgRecipeReposFolderFromPrefs;
+    return [autoPkgRecipeReposFolderFromPrefs stringByStandardizingPath];
 }
 
 - (NSString *)getMunkiRepoDir
@@ -71,10 +101,10 @@
                 return localMunkiRepoFolder;
             }
 
-            return localMunkiRepoFolderFromMunkiPrefs;
+            return [localMunkiRepoFolderFromMunkiPrefs stringByStandardizingPath];
         }
 
-        return localMunkiRepoFolderFromAutoPkgPrefs;
+        return [localMunkiRepoFolderFromAutoPkgPrefs stringByStandardizingPath];
     }
 
     return [defaults objectForKey:kLocalMunkiRepoPath];
