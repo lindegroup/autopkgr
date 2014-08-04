@@ -9,6 +9,7 @@
             <connections>
                 <outlet property="appTableViewHandler" destination="oLk-Uk-whI" id="Y2j-Zo-ZLE"/>
                 <outlet property="autoPkgCacheFolderButton" destination="TYE-36-bIi" id="gtk-a1-W4C"/>
+                <outlet property="autoPkgRecipeOverridesFolderButton" destination="ihY-xc-qTz" id="GVu-a7-BW9"/>
                 <outlet property="autoPkgRecipeReposFolderButton" destination="5lK-cr-mp5" id="aKy-dK-4Vs"/>
                 <outlet property="autoPkgRunInterval" destination="oZ2-P7-4IE" id="5kw-lh-4er"/>
                 <outlet property="autoPkgStatusIcon" destination="f8q-xY-QUg" id="sEw-rG-73c"/>
@@ -52,19 +53,19 @@
         <customObject id="-3" userLabel="Application"/>
         <window title="AutoPkgr" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" oneShot="NO" releasedWhenClosed="NO" animationBehavior="default" id="F0z-JX-Cv5">
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
-            <rect key="contentRect" x="196" y="240" width="752" height="514"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1280" height="778"/>
+            <rect key="contentRect" x="196" y="240" width="775" height="514"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1920" height="1058"/>
             <value key="minSize" type="size" width="752" height="514"/>
             <view key="contentView" id="se5-gp-TjO">
-                <rect key="frame" x="0.0" y="0.0" width="752" height="514"/>
+                <rect key="frame" x="0.0" y="0.0" width="775" height="514"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <view translatesAutoresizingMaskIntoConstraints="NO" id="wtX-Sr-awJ">
-                        <rect key="frame" x="0.0" y="0.0" width="752" height="514"/>
+                        <rect key="frame" x="0.0" y="0.0" width="775" height="514"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
                             <tabView initialItem="P8W-IS-m5j" translatesAutoresizingMaskIntoConstraints="NO" id="Dvq-fn-q18">
-                                <rect key="frame" x="13" y="8" width="726" height="500"/>
+                                <rect key="frame" x="13" y="8" width="749" height="500"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <font key="font" metaFont="system"/>
                                 <tabViewItems>
@@ -776,11 +777,11 @@
                                     </tabViewItem>
                                     <tabViewItem label="Tools" identifier="" id="YLD-8L-uk6">
                                         <view key="view" id="EXk-0U-hHL">
-                                            <rect key="frame" x="10" y="33" width="706" height="454"/>
+                                            <rect key="frame" x="10" y="33" width="729" height="454"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             <subviews>
                                                 <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="TYE-36-bIi">
-                                                    <rect key="frame" x="225" y="279" width="257" height="32"/>
+                                                    <rect key="frame" x="225" y="279" width="280" height="32"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                     <buttonCell key="cell" type="push" title="Open AutoPkg Cache Folder" bezelStyle="rounded" alignment="center" enabled="NO" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="aaW-Xo-fdG">
                                                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
@@ -791,7 +792,7 @@
                                                     </connections>
                                                 </button>
                                                 <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="5lK-cr-mp5">
-                                                    <rect key="frame" x="225" y="246" width="257" height="32"/>
+                                                    <rect key="frame" x="225" y="246" width="280" height="32"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                     <buttonCell key="cell" type="push" title="Open AutoPkg RecipeRepos Folder" bezelStyle="rounded" alignment="center" enabled="NO" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="gTC-Jl-CoB">
                                                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
@@ -802,7 +803,7 @@
                                                     </connections>
                                                 </button>
                                                 <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="z6I-Bv-EFk">
-                                                    <rect key="frame" x="225" y="213" width="257" height="32"/>
+                                                    <rect key="frame" x="225" y="213" width="280" height="32"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                     <buttonCell key="cell" type="push" title="Open Local Munki Repo" bezelStyle="rounded" alignment="center" enabled="NO" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="qgf-a1-Jg7">
                                                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
@@ -813,12 +814,23 @@
                                                     </connections>
                                                 </button>
                                                 <button translatesAutoresizingMaskIntoConstraints="NO" id="U4k-FQ-NXc">
-                                                    <rect key="frame" x="245" y="184" width="216" height="18"/>
+                                                    <rect key="frame" x="257" y="184" width="216" height="18"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                     <buttonCell key="cell" type="check" title="Warn Before Quitting AutoPkgr" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="lr1-cC-Qxj">
                                                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                                         <font key="font" metaFont="system"/>
                                                     </buttonCell>
+                                                </button>
+                                                <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="ihY-xc-qTz">
+                                                    <rect key="frame" x="225" y="312" width="280" height="32"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                                    <buttonCell key="cell" type="push" title="Open AutoPkg RecipeOverrides Folder" bezelStyle="rounded" alignment="center" enabled="NO" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="kq7-0T-C1j">
+                                                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                                        <font key="font" metaFont="system"/>
+                                                    </buttonCell>
+                                                    <connections>
+                                                        <action selector="openAutoPkgRecipeOverridesFolder:" target="-2" id="MYp-ly-5q6"/>
+                                                    </connections>
                                                 </button>
                                             </subviews>
                                             <constraints>
@@ -829,9 +841,12 @@
                                                 <constraint firstAttribute="trailing" secondItem="z6I-Bv-EFk" secondAttribute="trailing" constant="230" id="Qha-jJ-jCs"/>
                                                 <constraint firstAttribute="centerX" secondItem="U4k-FQ-NXc" secondAttribute="centerX" id="X7i-Sa-cGo"/>
                                                 <constraint firstAttribute="trailing" secondItem="5lK-cr-mp5" secondAttribute="trailing" constant="230" id="bvT-x5-MBu"/>
+                                                <constraint firstItem="ihY-xc-qTz" firstAttribute="top" secondItem="EXk-0U-hHL" secondAttribute="top" constant="114" id="cNo-d7-bgj"/>
+                                                <constraint firstItem="ihY-xc-qTz" firstAttribute="leading" secondItem="EXk-0U-hHL" secondAttribute="leading" constant="231" id="dGe-Fp-q3k"/>
                                                 <constraint firstItem="5lK-cr-mp5" firstAttribute="top" secondItem="EXk-0U-hHL" secondAttribute="top" constant="180" id="lZK-hP-xIc"/>
                                                 <constraint firstItem="z6I-Bv-EFk" firstAttribute="leading" secondItem="EXk-0U-hHL" secondAttribute="leading" constant="231" id="tH6-JA-jx4"/>
                                                 <constraint firstItem="TYE-36-bIi" firstAttribute="top" secondItem="EXk-0U-hHL" secondAttribute="top" constant="147" id="vhs-k0-Yli"/>
+                                                <constraint firstAttribute="trailing" secondItem="ihY-xc-qTz" secondAttribute="trailing" constant="230" id="xE2-tD-NKD"/>
                                                 <constraint firstAttribute="trailing" secondItem="TYE-36-bIi" secondAttribute="trailing" constant="230" id="zWA-Et-7JA"/>
                                             </constraints>
                                         </view>
