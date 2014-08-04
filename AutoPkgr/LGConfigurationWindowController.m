@@ -3,7 +3,20 @@
 //  AutoPkgr
 //
 //  Created by James Barclay on 6/26/14.
-//  Copyright (c) 2014 The Linde Group, Inc. All rights reserved.
+//
+//  Copyright 2014 The Linde Group, Inc.
+//
+//  Licensed under the Apache License, Version 2.0 (the "License");
+//  you may not use this file except in compliance with the License.
+//  You may obtain a copy of the License at
+//
+//  http://www.apache.org/licenses/LICENSE-2.0
+//
+//  Unless required by applicable law or agreed to in writing, software
+//  distributed under the License is distributed on an "AS IS" BASIS,
+//  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//  See the License for the specific language governing permissions and
+//  limitations under the License.
 //
 
 #import "LGConfigurationWindowController.h"
@@ -36,6 +49,7 @@
 @synthesize checkForNewVersionsOfAppsAutomaticallyButton;
 @synthesize checkForRepoUpdatesAutomaticallyButton;
 @synthesize sendEmailNotificationsWhenNewVersionsAreFoundButton;
+@synthesize autoPkgRecipeOverridesFolderButton;
 @synthesize autoPkgCacheFolderButton;
 @synthesize autoPkgRecipeReposFolderButton;
 @synthesize localMunkiRepoFolderButton;
@@ -265,10 +279,14 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
 
     // Enable tools buttons if directories exist
     BOOL isDir;
+    NSString *autoPkgRecipeOverridesFolder = [hostInfo getAutoPkgRecipeOverridesDir];
     NSString *autoPkgCacheFolder = [hostInfo getAutoPkgCacheDir];
     NSString *autoPkgRecipeReposFolder = [hostInfo getAutoPkgRecipeReposDir];
     NSString *localMunkiRepoFolder = [hostInfo getMunkiRepoDir];
 
+    if ([[NSFileManager defaultManager] fileExistsAtPath:autoPkgRecipeOverridesFolder isDirectory:&isDir] && isDir) {
+        [autoPkgRecipeOverridesFolderButton setEnabled:YES];
+    }
     if ([[NSFileManager defaultManager] fileExistsAtPath:autoPkgCacheFolder isDirectory:&isDir] && isDir) {
         [autoPkgCacheFolderButton setEnabled:YES];
     }
@@ -631,6 +649,26 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
 
         }
     }];
+}
+
+- (IBAction)openAutoPkgRecipeOverridesFolder:(id)sender
+{
+    BOOL isDir;
+    LGHostInfo *hostInfo = [[LGHostInfo alloc] init];
+    NSString *autoPkgRecipeOverridesFolder = [hostInfo getAutoPkgRecipeOverridesDir];
+
+    if ([[NSFileManager defaultManager] fileExistsAtPath:autoPkgRecipeOverridesFolder isDirectory:&isDir] && isDir) {
+        NSURL *autoPkgRecipeOverridesFolderURL = [NSURL fileURLWithPath:autoPkgRecipeOverridesFolder];
+        [[NSWorkspace sharedWorkspace] openURL:autoPkgRecipeOverridesFolderURL];
+    } else {
+        NSLog(@"%@ does not exist.", autoPkgRecipeOverridesFolder);
+        NSAlert *alert = [[NSAlert alloc] init];
+        [alert addButtonWithTitle:@"OK"];
+        [alert setMessageText:@"Cannot find the AutoPkg RecipeOverrides folder."];
+        [alert setInformativeText:[NSString stringWithFormat:@"%@ could not find the AutoPkg RecipeOverrides folder located in %@. Please verify that this folder exists.", kApplicationName, autoPkgRecipeOverridesFolder]];
+        [alert setAlertStyle:NSWarningAlertStyle];
+        [alert runModal];
+    }
 }
 
 - (void)controlTextDidEndEditing:(NSNotification *)notification
