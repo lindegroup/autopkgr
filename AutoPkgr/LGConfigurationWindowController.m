@@ -15,7 +15,7 @@
 #import "LGAutoPkgrHelperConnection.h"
 #import "LGGitHubJSONLoader.h"
 #import "LGVersionComparator.h"
-#import "SSKeychain.h"
+#import "AHKeychain.h"
 
 @interface LGConfigurationWindowController ()
 
@@ -54,7 +54,6 @@ static void *XXCheckForRepoUpdatesAutomaticallyEnabledContext = &XXCheckForRepoU
 static void *XXEmailNotificationsEnabledContext = &XXEmailNotificationsEnabledContext;
 static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
 
-
 - (void)awakeFromNib
 {
     [smtpAuthenticationEnabledButton addObserver:self
@@ -68,10 +67,10 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
                                                              context:XXEmailNotificationsEnabledContext];
 
     [checkForNewVersionsOfAppsAutomaticallyButton addObserver:self
-                         forKeyPath:@"cell.state"
-                            options:(NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld)
-                            context:XXCheckForNewAppsAutomaticallyEnabledContext];
-    
+                                                   forKeyPath:@"cell.state"
+                                                      options:(NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld)
+                                                      context:XXCheckForNewAppsAutomaticallyEnabledContext];
+
     // Set up buttons to save their defaults
     [smtpTLSEnabledButton setTarget:self];
     [smtpTLSEnabledButton setAction:@selector(changeTLSButtonState)];
@@ -85,7 +84,6 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
     [checkForNewVersionsOfAppsAutomaticallyButton setAction:@selector(changeCheckForNewVersionsOfAppsAutomaticallyButtonState)];
     [checkForRepoUpdatesAutomaticallyButton setTarget:self];
     [checkForRepoUpdatesAutomaticallyButton setAction:@selector(changeCheckForRepoUpdatesAutomaticallyButtonState)];
-    
 }
 
 - (void)dealloc
@@ -212,21 +210,12 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
     NSString *smtpUsernameString = [defaults objectForKey:kSMTPUsername];
 
     if (smtpUsernameString) {
-        NSString *password = [SSKeychain passwordForService:kApplicationName
-                                                    account:smtpUsernameString
-                                                      error:&error];
-
-        if ([error code] == SSKeychainErrorNotFound) {
-            NSLog(@"Keychain item not found for account %@.", smtpUsernameString);
-        } else if([error code] == SSKeychainErrorNoPassword) {
-            NSLog(@"Found the keychain item for %@ but no password value was returned.", smtpUsernameString);
-        } else if (error != nil) {
-            NSLog(@"An error occurred when attempting to retrieve the keychain entry for %@. Error: %@", smtpUsernameString, [error localizedDescription]);
-        } else {
+        NSString *password = [AHKeychain getPasswordForService:kApplicationName account:smtpUsernameString keychain:kAHKeychainSystemKeychain error:&error];
+        {
             // Only populate the SMTP Password field if the username exists
             if (smtpUsernameString != nil && ![smtpUsernameString isEqual:@""]) {
                 NSLog(@"Retrieved password from keychain for account %@.", smtpUsernameString);
-                [smtpPassword setStringValue:password];
+                [smtpPassword setStringValue:password ? password : @""];
             }
         }
     }
@@ -286,7 +275,7 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
 {
     // Send a test email notification when the user
     // clicks "Send Test Email"
-    
+
     // First saves the defaults
     [self save];
 
@@ -298,15 +287,37 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
     [emailer sendTestEmail];
 }
 
+- (IBAction)updateKeychainPassword:(id)sender
+{
+    // we send the autoPkgr Executable to the helper, so it can add that
+    // to the list of trusted applications in the keychain item's ACL
+    NSString *autoPkgrExecutable = [NSProcessInfo processInfo].arguments[0];
+
+    LGAutoPkgrHelperConnection *helper = [LGAutoPkgrHelperConnection new];
+    [helper connectToHelper];
+    [[helper.connection remoteObjectProxyWithErrorHandler:^(NSError *error) {
+        if (error) {
+            NSLog(@"Error Connecting to helper: %@", error);
+        }
+    }] addPassword:[smtpPassword stringValue]
+            forUser:[smtpUsername stringValue]
+        andAutoPkgr:autoPkgrExecutable
+              reply:^(NSError *error) {
+         if (error) {
+             NSLog(@"Error while storing e-mail password: %@", error);
+         }
+              }];
+}
+
 - (void)save
 {
     [defaults setObject:[smtpServer stringValue] forKey:kSMTPServer];
-    [defaults setInteger:[smtpPort integerValue]forKey:kSMTPPort];
+    [defaults setInteger:[smtpPort integerValue] forKey:kSMTPPort];
     [defaults setObject:[smtpUsername stringValue] forKey:kSMTPUsername];
     [defaults setObject:[smtpFrom stringValue] forKey:kSMTPFrom];
     [defaults setBool:YES forKey:kHasCompletedInitialSetup];
     [defaults setObject:[localMunkiRepo stringValue] forKey:kLocalMunkiRepoPath];
-    
+
     // We use objectValue here because objectValue returns an
     // array of strings if the field contains a series of strings
     [defaults setObject:[smtpTo objectValue] forKey:kSMTPTo];
@@ -367,8 +378,8 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
         [defaults setBool:NO forKey:kCheckForRepoUpdatesAutomaticallyEnabled];
     }
 
-    // Store the password used for SMTP authentication in the default keychain
-    [SSKeychain setPassword:[smtpPassword stringValue] forService:kApplicationName account:[smtpUsername stringValue]];
+    // Store the password used for SMTP authentication in the system keychain
+    [self updateKeychainPassword:self];
 
     // Synchronize with the defaults database
     [defaults synchronize];
@@ -469,9 +480,9 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
     // Download AutoPkg to the temporary directory
     NSData *autoPkg = [[NSData alloc] initWithContentsOfURL:[NSURL URLWithString:downloadURL]];
     [autoPkg writeToFile:autoPkgPkg atomically:YES];
-    
+
     // when connecting to the helper tool, get back on the main thread
-    [[NSOperationQueue mainQueue]addOperationWithBlock:^{
+    [[NSOperationQueue mainQueue] addOperationWithBlock:^{
         LGAutoPkgrHelperConnection *helper = [LGAutoPkgrHelperConnection new];
         [helper connectToHelper];
         [[helper.connection remoteObjectProxy]installPackageFromPath:autoPkgPkg reply:^(NSError *error) {
@@ -500,9 +511,9 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
     // Download and install AutoPkg on a background thread
     NSOperationQueue *queue = [[NSOperationQueue alloc] init];
     NSInvocationOperation *operation = [[NSInvocationOperation alloc]
-                                        initWithTarget:self
-                                        selector:@selector(downloadAndInstallAutoPkg)
-                                        object:nil];
+        initWithTarget:self
+              selector:@selector(downloadAndInstallAutoPkg)
+                object:nil];
     [queue addOperation:operation];
 }
 
@@ -569,12 +580,12 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
 - (IBAction)addAutoPkgRepoURL:(id)sender
 {
     // TODO: Input validation + success/failure notification
-    
+
     LGAutoPkgRunner *autoPkgRunner = [[LGAutoPkgRunner alloc] init];
     [autoPkgRunner addAutoPkgRecipeRepo:[repoURLToAdd stringValue]];
-    
+
     [repoURLToAdd setStringValue:@""];
-    
+
     [_popRepoTableViewHandler reload];
     [_appTableViewHandler reload];
 }
@@ -639,7 +650,7 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
 - (void)controlTextDidEndEditing:(NSNotification *)notification
 {
     id object = [notification object];
-    
+
     if ([object isEqual:smtpServer]) {
         [defaults setObject:[smtpServer stringValue] forKey:kSMTPServer];
     } else if ([object isEqual:smtpPort]) {
@@ -660,15 +671,15 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
             [self startAutoPkgRunTimer];
         }
     } else if ([object isEqual:smtpPassword]) {
-        [SSKeychain setPassword:[smtpPassword stringValue] forService:kApplicationName account:[smtpUsername stringValue]];
+        [self updateKeychainPassword:self];
     } else {
         NSLog(@"Uncaught controlTextDidEndEditing");
         return;
     }
-    
+
     // Synchronize with the defaults database
     [defaults synchronize];
-    
+
     // This makes the initial config screen not appear automatically on start.
     [defaults setBool:YES forKey:kHasCompletedInitialSetup];
 }
@@ -695,7 +706,6 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
     }
     [defaults synchronize];
 }
-
 
 - (void)changeWarnBeforeQuittingButtonState
 {
@@ -761,9 +771,8 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
 - (BOOL)windowShouldClose:(id)sender
 {
     [self save];
-    
+
     return YES;
 }
-
 
 @end

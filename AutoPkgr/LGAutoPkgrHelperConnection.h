@@ -7,9 +7,10 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "LGAutoPkgrProtocol.h"
 
 @interface LGAutoPkgrHelperConnection : NSObject
 
-@property (atomic, strong, readonly) NSXPCConnection * connection;
--(void)connectToHelper;
+@property (atomic, strong, readonly) NSXPCConnection *connection;
+- (void)connectToHelper;
 @end

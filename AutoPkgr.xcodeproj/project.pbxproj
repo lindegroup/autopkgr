@@ -49,6 +49,10 @@
 		BEB00C9519873E8F00B6206E /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BEB00C9319873E8100B6206E /* SystemConfiguration.framework */; };
 		BEB00CA5198754CC00B6206E /* LGAutoPkgrHelperConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = BEB00CA4198754CC00B6206E /* LGAutoPkgrHelperConnection.m */; };
 		BEB00CA619876B7A00B6206E /* LGConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 1AC98409195CE7D60071CAB3 /* LGConstants.m */; };
+		BEFAB9B71991760A0037BEC4 /* AHKeychain.m in Sources */ = {isa = PBXBuildFile; fileRef = BEFAB9B41991760A0037BEC4 /* AHKeychain.m */; };
+		BEFAB9B81991760A0037BEC4 /* AHKeychain.m in Sources */ = {isa = PBXBuildFile; fileRef = BEFAB9B41991760A0037BEC4 /* AHKeychain.m */; };
+		BEFAB9B91991760A0037BEC4 /* AHKeychainItem.m in Sources */ = {isa = PBXBuildFile; fileRef = BEFAB9B61991760A0037BEC4 /* AHKeychainItem.m */; };
+		BEFAB9BA1991760A0037BEC4 /* AHKeychainItem.m in Sources */ = {isa = PBXBuildFile; fileRef = BEFAB9B61991760A0037BEC4 /* AHKeychainItem.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -232,6 +236,10 @@
 		BEB00C9319873E8100B6206E /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		BEB00CA3198754CC00B6206E /* LGAutoPkgrHelperConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGAutoPkgrHelperConnection.h; sourceTree = "<group>"; };
 		BEB00CA4198754CC00B6206E /* LGAutoPkgrHelperConnection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGAutoPkgrHelperConnection.m; sourceTree = "<group>"; };
+		BEFAB9B31991760A0037BEC4 /* AHKeychain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AHKeychain.h; sourceTree = "<group>"; };
+		BEFAB9B41991760A0037BEC4 /* AHKeychain.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AHKeychain.m; sourceTree = "<group>"; };
+		BEFAB9B51991760A0037BEC4 /* AHKeychainItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AHKeychainItem.h; sourceTree = "<group>"; };
+		BEFAB9B61991760A0037BEC4 /* AHKeychainItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AHKeychainItem.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -411,6 +419,10 @@
 			children = (
 				1AC98414195CE99E0071CAB3 /* SSKeychain.h */,
 				1AC98415195CE99E0071CAB3 /* SSKeychain.m */,
+				BEFAB9B31991760A0037BEC4 /* AHKeychain.h */,
+				BEFAB9B41991760A0037BEC4 /* AHKeychain.m */,
+				BEFAB9B51991760A0037BEC4 /* AHKeychainItem.h */,
+				BEFAB9B61991760A0037BEC4 /* AHKeychainItem.m */,
 			);
 			name = "Other Sources";
 			sourceTree = "<group>";
@@ -669,6 +681,7 @@
 				1A1BAD96197A0407008192A7 /* LGVersionComparator.m in Sources */,
 				1AC98412195CE8520071CAB3 /* LGEmailer.m in Sources */,
 				6A0ACE34196FB349002C7FE4 /* LGApplications.m in Sources */,
+				BEFAB9B71991760A0037BEC4 /* AHKeychain.m in Sources */,
 				1AC9841F195CEC360071CAB3 /* LGConfigurationWindowController.m in Sources */,
 				1A1BAD9E197A4133008192A7 /* LGGitHubJSONLoader.m in Sources */,
 				1AC6955D195B59EE00D2BD81 /* main.m in Sources */,
@@ -679,6 +692,7 @@
 				6A0BABE9196E560000A136BB /* LGPopularRepositories.m in Sources */,
 				1AAAA5CC196C82DB00623804 /* LGAutoPkgRunner.m in Sources */,
 				BEB00CA5198754CC00B6206E /* LGAutoPkgrHelperConnection.m in Sources */,
+				BEFAB9B91991760A0037BEC4 /* AHKeychainItem.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -694,6 +708,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BEFAB9B81991760A0037BEC4 /* AHKeychain.m in Sources */,
+				BEFAB9BA1991760A0037BEC4 /* AHKeychainItem.m in Sources */,
 				BE8ECB1F1986F53E00A99390 /* main.m in Sources */,
 				BE8ECB2D1986F64000A99390 /* LGAutoPkgrHelper.m in Sources */,
 				BEB00CA619876B7A00B6206E /* LGConstants.m in Sources */,

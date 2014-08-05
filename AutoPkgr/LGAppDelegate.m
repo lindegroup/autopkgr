@@ -8,7 +8,9 @@
 
 #import "LGAppDelegate.h"
 #import "LGConstants.h"
+#import "LGAutoPkgrHelperConnection.h"
 #import "LGConfigurationWindowController.h"
+#import "AHLaunchCTL.h"
 
 @implementation LGAppDelegate
 
@@ -29,7 +31,16 @@
     } else {
         [self showConfigurationWindow:nil];
     }
-
+    
+    NSError *error;
+    if (![AHLaunchCtl installHelper:kHelperName prompt:@"To schedule" error:&error]) {
+        if (error) {
+            NSLog(@"%@", error.localizedDescription);
+            [NSApp presentError:error];
+            [self applicationShouldTerminate:nil];
+        }
+    }
+    
     // Start the AutoPkg run timer if the user enabled it
     [self startAutoPkgRunTimer];
 
@@ -74,9 +85,16 @@
     // Setup menu items for statusItem
     NSMenu *menu = [[NSMenu alloc] init];
     [menu addItemWithTitle:@"Check Now" action:@selector(checkNowFromMenu:) keyEquivalent:@""];
+
     [menu addItemWithTitle:@"Configure..." action:@selector(showConfigurationWindow:) keyEquivalent:@""];
     [menu addItem:[NSMenuItem separatorItem]];
     [menu addItemWithTitle:[NSString stringWithFormat:@"Quit %@", kApplicationName] action:@selector(terminate:) keyEquivalent:@""];
+    
+    NSMenuItem *uninstallHelper = [[NSMenuItem alloc]initWithTitle:@"Uninstall" action:@selector(uninstallHelper:) keyEquivalent:@""];
+    uninstallHelper.keyEquivalentModifierMask = NSControlKeyMask;
+    uninstallHelper.alternate = YES;
+    [menu addItem:uninstallHelper];
+    
     self.statusItem.menu = menu;
 }
 
@@ -93,6 +111,17 @@
     }
     [configurationWindowController showWindow:self];
 }
+
+- (IBAction)uninstallHelper:(id)sender{
+    LGAutoPkgrHelperConnection *helper = [LGAutoPkgrHelperConnection new];
+    [helper connectToHelper];
+    [[helper.connection remoteObjectProxy] uninstall:^(NSError *error) {
+        if(error){
+            [NSApp presentError:error];
+        }
+    }];
+}
+
 
 - (NSApplicationTerminateReply)applicationShouldTerminate:(NSApplication *)sender
 {
@@ -112,6 +141,10 @@
             return NSTerminateCancel;
         }
     }
+
+    LGAutoPkgrHelperConnection *helper = [LGAutoPkgrHelperConnection new];
+    [helper connectToHelper];
+    [[helper.connection remoteObjectProxy] quitHelper:^(BOOL success) {}];
 
     return NSTerminateNow;
 }

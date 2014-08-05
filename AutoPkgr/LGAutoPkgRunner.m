@@ -11,7 +11,6 @@
 #import "LGConstants.h"
 #import "LGAutoPkgrHelperConnection.h"
 #import "LGAutoPkgrProtocol.h"
-#import "AHLaunchCtl.h"
 
 @implementation LGAutoPkgRunner
 
@@ -219,10 +218,10 @@
                     }
                     [newDownloadsArray addObject:newDownloadDict];
                 }
-                
+
                 NSLog(@"New software was downloaded. Sending an email alert.");
                 [self sendNewDowloadsEmail:newDownloadsArray];
-                
+
             } else {
                 NSLog(@"Nothing new was downloaded.");
             }
@@ -277,11 +276,10 @@
 
 - (void)runAutoPkgWithRecipeList
 {
-    LGApplications *apps = [[LGApplications alloc] init];    
+    LGApplications *apps = [[LGApplications alloc] init];
     NSString *applicationSupportDirectory = [apps getAppSupportDirectory];
     NSString *recipeListFilePath = [applicationSupportDirectory stringByAppendingString:@"/recipe_list.txt"];
     [self runAutoPkgWithRecipeListAndSendEmailNotificationIfConfigured:recipeListFilePath];
-
 }
 
 - (void)startAutoPkgRunTimer
@@ -291,26 +289,16 @@
     [helper connectToHelper];
 
     if ([defaults objectForKey:kCheckForNewVersionsOfAppsAutomaticallyEnabled]) {
-        NSError *error;
-        
         BOOL checkForNewVersionsOfAppsAutomaticallyEnabled = [[defaults objectForKey:kCheckForNewVersionsOfAppsAutomaticallyEnabled] boolValue];
 
         if (checkForNewVersionsOfAppsAutomaticallyEnabled) {
-            if(![AHLaunchCtl installHelper:kHelperName prompt:@"To schedule" error:&error]){
-                if(error){
-                    NSLog(@"%@",error.localizedDescription);
-                    [NSApp presentError:error];
-                    return;
-                }
-            }
-            
             if ([defaults integerForKey:kAutoPkgRunInterval]) {
                 double i = [defaults integerForKey:kAutoPkgRunInterval];
                 if (i != 0) {
                     NSInteger timer = i * 60 * 60; // Convert hours to seconds for our time interval
-                    NSString *program = [[NSProcessInfo processInfo]arguments].firstObject;
-                    
-                    [[helper.connection remoteObjectProxy]scheduleRun:timer user:NSUserName() program:program withReply:^(NSError *error) {
+                    NSString *program = [[NSProcessInfo processInfo] arguments].firstObject;
+
+                    [[helper.connection remoteObjectProxy] scheduleRun:timer user:NSUserName() program:program reply:^(NSError *error) {
                         if(error){
                             [NSApp presentError:error];
                         }
@@ -321,7 +309,7 @@
             } else {
                 NSLog(@"The user enabled automatic checking for app updates but they specified no interval.");
             }
-        }else{
+        } else {
             [[helper.connection remoteObjectProxy] removeScheduleWithReply:^(NSError *error) {
                 if(error){
                     NSLog(@"%@",error);

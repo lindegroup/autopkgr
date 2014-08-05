@@ -10,14 +10,19 @@
 #import "LGConstants.h"
 
 @protocol HelperAgent <NSObject>
--(void)scheduleRun:(NSInteger)interval
-              user:(NSString*)user
-           program:(NSString*)program
-         withReply:(void (^)(NSError *error))reply;
+- (void)scheduleRun:(NSInteger)interval
+               user:(NSString *)user
+            program:(NSString *)program
+              reply:(void (^)(NSError *error))reply;
 
--(void)removeScheduleWithReply:(void (^)(NSError *error))reply;
--(void)installPackageFromPath:(NSString*)path reply:(void (^)(NSError *error))reply;
+- (void)removeScheduleWithReply:(void (^)(NSError *error))reply;
+- (void)installPackageFromPath:(NSString *)path reply:(void (^)(NSError *error))reply;
 
--(void)quitHelper:(void (^)(BOOL success))reply;
--(void)uninstall:(void (^)(NSError*))reply;
+- (void)addPassword:(NSString *)password
+            forUser:(NSString *)user
+        andAutoPkgr:(NSString *)autoPkgrLaunchPath
+              reply:(void (^)(NSError *error))reply;
+
+- (void)quitHelper:(void (^)(BOOL success))reply;
+- (void)uninstall:(void (^)(NSError *))reply;
 @end
