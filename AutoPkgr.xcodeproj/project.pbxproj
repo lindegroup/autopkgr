@@ -37,6 +37,7 @@
 		6A0BABE9196E560000A136BB /* LGPopularRepositories.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A0BABE8196E560000A136BB /* LGPopularRepositories.m */; };
 		8B6A3199195B7AC1007A7A16 /* linde-logo@400px.png in Resources */ = {isa = PBXBuildFile; fileRef = 8B6A3198195B7AC1007A7A16 /* linde-logo@400px.png */; };
 		8BB217F619709A2C00EF8B93 /* AutoPkgrIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 8BB217F519709A2C00EF8B93 /* AutoPkgrIcon.png */; };
+		BE7F5A771991F0EB0071548A /* LGDefaults.m in Sources */ = {isa = PBXBuildFile; fileRef = BE7F5A761991F0EB0071548A /* LGDefaults.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -153,6 +154,8 @@
 		6A0BABE8196E560000A136BB /* LGPopularRepositories.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGPopularRepositories.m; sourceTree = "<group>"; };
 		8B6A3198195B7AC1007A7A16 /* linde-logo@400px.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "linde-logo@400px.png"; sourceTree = "<group>"; };
 		8BB217F519709A2C00EF8B93 /* AutoPkgrIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = AutoPkgrIcon.png; sourceTree = "<group>"; };
+		BE7F5A751991F0EB0071548A /* LGDefaults.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGDefaults.h; sourceTree = "<group>"; };
+		BE7F5A761991F0EB0071548A /* LGDefaults.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGDefaults.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -300,6 +303,8 @@
 				1AC86D3C195E0AC6006FDD2B /* LGHostInfo.m */,
 				1A1BAD9C197A4133008192A7 /* LGGitHubJSONLoader.h */,
 				1A1BAD9D197A4133008192A7 /* LGGitHubJSONLoader.m */,
+				BE7F5A751991F0EB0071548A /* LGDefaults.h */,
+				BE7F5A761991F0EB0071548A /* LGDefaults.m */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -480,6 +485,7 @@
 				6A0ACE34196FB349002C7FE4 /* LGApplications.m in Sources */,
 				1AC9841F195CEC360071CAB3 /* LGConfigurationWindowController.m in Sources */,
 				1A1BAD9E197A4133008192A7 /* LGGitHubJSONLoader.m in Sources */,
+				BE7F5A771991F0EB0071548A /* LGDefaults.m in Sources */,
 				1AC6955D195B59EE00D2BD81 /* main.m in Sources */,
 				1AC69564195B59EE00D2BD81 /* LGAppDelegate.m in Sources */,
 				1AC9840A195CE7D60071CAB3 /* LGConstants.m in Sources */,
