@@ -170,6 +170,9 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
 {
     [super windowDidLoad];
 
+	// Hide the configuration window
+	[self.window orderOut:nil];
+	
     // Populate the preference values from the user defaults if they exist
 
     if ([defaults objectForKey:kAutoPkgRunInterval]) {
