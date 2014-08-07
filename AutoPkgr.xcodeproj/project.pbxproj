@@ -225,6 +225,7 @@
 		8BB217F519709A2C00EF8B93 /* AutoPkgrIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = AutoPkgrIcon.png; sourceTree = "<group>"; };
 		BE237A211993A365007204AA /* LGAutoPkgrAuthorizer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LGAutoPkgrAuthorizer.h; path = ../AutoPkgr/LGAutoPkgrAuthorizer.h; sourceTree = "<group>"; };
 		BE237A221993A365007204AA /* LGAutoPkgrAuthorizer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LGAutoPkgrAuthorizer.m; path = ../AutoPkgr/LGAutoPkgrAuthorizer.m; sourceTree = "<group>"; };
+		BE8080BE199431AD00AE396C /* Resign_CodeSign_RunScript.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = Resign_CodeSign_RunScript.py; sourceTree = "<group>"; };
 		BE8ECB1A1986F53E00A99390 /* com.lindegroup.AutoPkgr.helper */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = com.lindegroup.AutoPkgr.helper; sourceTree = BUILT_PRODUCTS_DIR; };
 		BE8ECB1B1986F53E00A99390 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		BE8ECB1E1986F53E00A99390 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -299,6 +300,7 @@
 			isa = PBXGroup;
 			children = (
 				BE8ECB331987000900A99390 /* HelperTool_CodeSign_RunScript.py */,
+				BE8080BE199431AD00AE396C /* Resign_CodeSign_RunScript.py */,
 				1AC69556195B59ED00D2BD81 /* AutoPkgr */,
 				BE8ECB1D1986F53E00A99390 /* AutoPkgr Helper */,
 				1AC69574195B59EE00D2BD81 /* AutoPkgrTests */,
@@ -489,6 +491,7 @@
 				1AC6954B195B59ED00D2BD81 /* Resources */,
 				1A0A86B4195CE6BF00A49434 /* CopyFiles */,
 				BE8ECB2F1986FEEA00A99390 /* CopyFiles */,
+				BE8080C4199431DD00AE396C /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -663,6 +666,19 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		BE8080C4199431DD00AE396C /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PROJECT_DIR}/Resign_CodeSign_RunScript.py\"";
+		};
 		BEB00C76198739D300B6206E /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
