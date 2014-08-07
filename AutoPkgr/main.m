@@ -95,6 +95,20 @@ void migratePreferences(NSArray *preferences, NSString *fromUser, NSString *toUs
         if (error) {
             NSLog(@"%@", error.localizedDescription);
         }
+        
+        // Now that the file is created, register it with cfprefsd
+        NSLog(@"Registering Defaults: %@",pref);
+        NSUserDefaults *defaults;
+        
+        if(![pref isEqualToString:[[NSBundle mainBundle] bundleIdentifier]]){
+            defaults = [[NSUserDefaults alloc]initWithSuiteName:pref];
+        }else{
+            defaults = [NSUserDefaults standardUserDefaults];
+        }
+        
+        if(![defaults synchronize]){
+            NSLog(@"There was a problem synchronizing the pref");
+        }
     }
 }
 
@@ -145,6 +159,7 @@ BOOL restoreLinkedBackup(NSString *originalPath)
 
 BOOL setFolderOwnerRecursively(NSString *user, NSString *path)
 {
+    NSLog(@"Resetting ownership: %@ ",path);
     NSFileManager *fileManager = [NSFileManager new];
 
     NSArray *subPaths = [fileManager subpathsAtPath:path];
@@ -186,8 +201,14 @@ void cleanUpRootContext(NSString *user)
     restoreLinkedBackup(autoPkgFolder(kRootUser));
     restoreLinkedBackup(autoPkgrFolder(kRootUser));
 
-    // Reset Folders created by root need their permissions fixed
+    // Reset Folders created by root to their proper permissions
     setFolderOwnerRecursively(user, autoPkgFolder(user));
+    
+    // Fix AutoPkg's CACHE_DIR Directory as well
+    NSUserDefaults *apd = [[NSUserDefaults alloc]initWithSuiteName:kAutoPkgPreferenceDomain];
+    if ( [[apd objectForKey:@"CACHE_DIR"] isKindOfClass:[NSString class]] ) {
+        setFolderOwnerRecursively(user, [apd objectForKey:@"CACHE_DIR"]);
+    }
 }
 
 int main(int argc, const char *argv[])
