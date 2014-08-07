@@ -29,6 +29,7 @@ extern NSString *const kSMTPTo;
 extern NSString *const kAutoPkgRunInterval;
 extern NSString *const kLocalMunkiRepoPath;
 extern NSString *const kAutoPkgReleasesJSONURL;
+extern NSString *const kAutoPkgRepositoriesJSONURL;
 extern NSString *const kSMTPTLSEnabled;
 extern NSString *const kSMTPAuthenticationEnabled;
 extern NSString *const kWarnBeforeQuittingEnabled;
