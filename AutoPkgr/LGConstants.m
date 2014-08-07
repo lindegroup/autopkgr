@@ -20,7 +20,6 @@ NSString *const kLocalMunkiRepoPath = @"LocalMunkiRepoPath";
 NSString *const kAutoPkgReleasesJSONURL = @"https://api.github.com/repos/autopkg/autopkg/releases";
 NSString *const kSMTPTLSEnabled = @"SMTPTLSEnabled";
 NSString *const kSMTPAuthenticationEnabled = @"SMTPAuthenticationEnabled";
-NSString *const kWarnBeforeQuittingEnabled = @"WarnBeforeQuitting";
 NSString *const kHasCompletedInitialSetup = @"HasCompletedInitialSetup";
 NSString *const kSendEmailNotificationsWhenNewVersionsAreFoundEnabled = @"SendEmailNotificationsWhenNewVersionsAreFoundEnabled";
 NSString *const kCheckForNewVersionsOfAppsAutomaticallyEnabled = @"CheckForNewVersionsOfAppsAutomaticallyEnabled";

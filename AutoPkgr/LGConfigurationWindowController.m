@@ -34,7 +34,6 @@
 @synthesize localMunkiRepo;
 @synthesize smtpAuthenticationEnabledButton;
 @synthesize smtpTLSEnabledButton;
-@synthesize warnBeforeQuittingButton;
 @synthesize checkForNewVersionsOfAppsAutomaticallyButton;
 @synthesize checkForRepoUpdatesAutomaticallyButton;
 @synthesize sendEmailNotificationsWhenNewVersionsAreFoundButton;
@@ -74,8 +73,6 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
     // Set up buttons to save their defaults
     [smtpTLSEnabledButton setTarget:self];
     [smtpTLSEnabledButton setAction:@selector(changeTLSButtonState)];
-    [warnBeforeQuittingButton setTarget:self];
-    [warnBeforeQuittingButton setAction:@selector(changeWarnBeforeQuittingButtonState)];
     [smtpAuthenticationEnabledButton setTarget:self];
     [smtpAuthenticationEnabledButton setAction:@selector(changeSmtpAuthenticationButtonState)];
     [sendEmailNotificationsWhenNewVersionsAreFoundButton setTarget:self];
@@ -199,9 +196,6 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
     }
     if ([defaults objectForKey:kCheckForRepoUpdatesAutomaticallyEnabled]) {
         [checkForRepoUpdatesAutomaticallyButton setState:[[defaults objectForKey:kCheckForRepoUpdatesAutomaticallyEnabled] boolValue]];
-    }
-    if ([defaults objectForKey:kWarnBeforeQuittingEnabled]) {
-        [warnBeforeQuittingButton setState:[[defaults objectForKey:kWarnBeforeQuittingEnabled] boolValue]];
     }
 
     // Read the SMTP password from the keychain and populate in
@@ -336,14 +330,6 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
         // The user wants to disable TLS for this SMTP configuration
         NSLog(@"Disabling TLS.");
         [defaults setBool:NO forKey:kSMTPTLSEnabled];
-    }
-
-    if ([warnBeforeQuittingButton state] == NSOnState) {
-        NSLog(@"Enabling warning before quitting.");
-        [defaults setBool:YES forKey:kWarnBeforeQuittingEnabled];
-    } else {
-        NSLog(@"Disabling warning before quitting.");
-        [defaults setBool:NO forKey:kWarnBeforeQuittingEnabled];
     }
 
     if ([smtpAuthenticationEnabledButton state] == NSOnState) {
@@ -703,18 +689,6 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
         // The user wants to disable TLS for this SMTP configuration
         NSLog(@"Disabling TLS.");
         [defaults setBool:NO forKey:kSMTPTLSEnabled];
-    }
-    [defaults synchronize];
-}
-
-- (void)changeWarnBeforeQuittingButtonState
-{
-    if ([warnBeforeQuittingButton state] == NSOnState) {
-        NSLog(@"Enabling warning before quitting.");
-        [defaults setBool:YES forKey:kWarnBeforeQuittingEnabled];
-    } else {
-        NSLog(@"Disabling warning before quitting.");
-        [defaults setBool:NO forKey:kWarnBeforeQuittingEnabled];
     }
     [defaults synchronize];
 }

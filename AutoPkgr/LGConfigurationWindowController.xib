@@ -33,7 +33,6 @@
                 <outlet property="smtpTLSEnabledButton" destination="Bwp-ds-cik" id="Bju-cF-WNs"/>
                 <outlet property="smtpTo" destination="lqq-Vv-857" id="vbR-EY-h7S"/>
                 <outlet property="smtpUsername" destination="zi5-oQ-M5R" id="xYd-18-aOJ"/>
-                <outlet property="warnBeforeQuittingButton" destination="U4k-FQ-NXc" id="hKJ-Cm-Ubg"/>
                 <outlet property="window" destination="F0z-JX-Cv5" id="gIp-Ho-8D9"/>
             </connections>
         </customObject>
@@ -42,7 +41,7 @@
         <window title="AutoPkgr" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" oneShot="NO" releasedWhenClosed="NO" animationBehavior="default" id="F0z-JX-Cv5">
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
             <rect key="contentRect" x="196" y="240" width="752" height="514"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1440" height="878"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1280" height="778"/>
             <value key="minSize" type="size" width="752" height="514"/>
             <view key="contentView" id="se5-gp-TjO">
                 <rect key="frame" x="0.0" y="0.0" width="752" height="514"/>
@@ -757,22 +756,12 @@
                                                         <action selector="openLocalMunkiRepoFolder:" target="-2" id="mii-Zg-AKA"/>
                                                     </connections>
                                                 </button>
-                                                <button translatesAutoresizingMaskIntoConstraints="NO" id="U4k-FQ-NXc">
-                                                    <rect key="frame" x="245" y="184" width="216" height="18"/>
-                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                                    <buttonCell key="cell" type="check" title="Warn Before Quitting AutoPkgr" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="lr1-cC-Qxj">
-                                                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
-                                                        <font key="font" metaFont="system"/>
-                                                    </buttonCell>
-                                                </button>
                                             </subviews>
                                             <constraints>
                                                 <constraint firstItem="z6I-Bv-EFk" firstAttribute="top" secondItem="EXk-0U-hHL" secondAttribute="top" constant="213" id="8Q4-zA-Tl2"/>
                                                 <constraint firstItem="5lK-cr-mp5" firstAttribute="leading" secondItem="EXk-0U-hHL" secondAttribute="leading" constant="231" id="AQ1-i8-fPX"/>
                                                 <constraint firstItem="TYE-36-bIi" firstAttribute="leading" secondItem="EXk-0U-hHL" secondAttribute="leading" constant="231" id="JSj-lW-fRV"/>
-                                                <constraint firstItem="U4k-FQ-NXc" firstAttribute="top" secondItem="EXk-0U-hHL" secondAttribute="top" constant="254" id="L2i-bI-cZn"/>
                                                 <constraint firstAttribute="trailing" secondItem="z6I-Bv-EFk" secondAttribute="trailing" constant="230" id="Qha-jJ-jCs"/>
-                                                <constraint firstAttribute="centerX" secondItem="U4k-FQ-NXc" secondAttribute="centerX" id="X7i-Sa-cGo"/>
                                                 <constraint firstAttribute="trailing" secondItem="5lK-cr-mp5" secondAttribute="trailing" constant="230" id="bvT-x5-MBu"/>
                                                 <constraint firstItem="5lK-cr-mp5" firstAttribute="top" secondItem="EXk-0U-hHL" secondAttribute="top" constant="180" id="lZK-hP-xIc"/>
                                                 <constraint firstItem="z6I-Bv-EFk" firstAttribute="leading" secondItem="EXk-0U-hHL" secondAttribute="leading" constant="231" id="tH6-JA-jx4"/>
