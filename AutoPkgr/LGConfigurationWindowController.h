@@ -72,8 +72,6 @@
 // Spinners
 @property (weak) IBOutlet NSProgressIndicator *sendTestEmailSpinner;
 @property (weak) IBOutlet NSProgressIndicator *testSmtpServerSpinner;
-@property (weak) IBOutlet NSProgressIndicator *checkAppsNowSpinner;
-@property (weak) IBOutlet NSProgressIndicator *updateRepoNowSpinner;
 
 // Progress panel
 @property (weak) IBOutlet NSPanel *progressPanel;
