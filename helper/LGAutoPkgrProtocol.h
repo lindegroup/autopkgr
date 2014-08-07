@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "LGConstants.h"
+#import "LGAutoPkgrAuthorizer.h"
 
 @protocol HelperAgent <NSObject>
 - (void)scheduleRun:(NSInteger)interval
@@ -16,7 +17,10 @@
               reply:(void (^)(NSError *error))reply;
 
 - (void)removeScheduleWithReply:(void (^)(NSError *error))reply;
-- (void)installPackageFromPath:(NSString *)path reply:(void (^)(NSError *error))reply;
+
+- (void)installPackageFromPath:(NSString *)path
+                 authorization:(NSData *)authData
+                         reply:(void (^)(NSError *error))reply;
 
 - (void)addPassword:(NSString *)password
             forUser:(NSString *)user

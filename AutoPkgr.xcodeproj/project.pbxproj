@@ -37,6 +37,8 @@
 		6A0BABE9196E560000A136BB /* LGPopularRepositories.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A0BABE8196E560000A136BB /* LGPopularRepositories.m */; };
 		8B6A3199195B7AC1007A7A16 /* linde-logo@400px.png in Resources */ = {isa = PBXBuildFile; fileRef = 8B6A3198195B7AC1007A7A16 /* linde-logo@400px.png */; };
 		8BB217F619709A2C00EF8B93 /* AutoPkgrIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 8BB217F519709A2C00EF8B93 /* AutoPkgrIcon.png */; };
+		BE237A231993A365007204AA /* LGAutoPkgrAuthorizer.m in Sources */ = {isa = PBXBuildFile; fileRef = BE237A221993A365007204AA /* LGAutoPkgrAuthorizer.m */; };
+		BE237A241993A365007204AA /* LGAutoPkgrAuthorizer.m in Sources */ = {isa = PBXBuildFile; fileRef = BE237A221993A365007204AA /* LGAutoPkgrAuthorizer.m */; };
 		BE8ECB1C1986F53E00A99390 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BE8ECB1B1986F53E00A99390 /* Foundation.framework */; };
 		BE8ECB1F1986F53E00A99390 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = BE8ECB1E1986F53E00A99390 /* main.m */; };
 		BE8ECB2D1986F64000A99390 /* LGAutoPkgrHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = BE8ECB2C1986F64000A99390 /* LGAutoPkgrHelper.m */; };
@@ -221,6 +223,8 @@
 		6A0BABE8196E560000A136BB /* LGPopularRepositories.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGPopularRepositories.m; sourceTree = "<group>"; };
 		8B6A3198195B7AC1007A7A16 /* linde-logo@400px.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "linde-logo@400px.png"; sourceTree = "<group>"; };
 		8BB217F519709A2C00EF8B93 /* AutoPkgrIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = AutoPkgrIcon.png; sourceTree = "<group>"; };
+		BE237A211993A365007204AA /* LGAutoPkgrAuthorizer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LGAutoPkgrAuthorizer.h; path = ../AutoPkgr/LGAutoPkgrAuthorizer.h; sourceTree = "<group>"; };
+		BE237A221993A365007204AA /* LGAutoPkgrAuthorizer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LGAutoPkgrAuthorizer.m; path = ../AutoPkgr/LGAutoPkgrAuthorizer.m; sourceTree = "<group>"; };
 		BE8ECB1A1986F53E00A99390 /* com.lindegroup.AutoPkgr.helper */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = com.lindegroup.AutoPkgr.helper; sourceTree = BUILT_PRODUCTS_DIR; };
 		BE8ECB1B1986F53E00A99390 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		BE8ECB1E1986F53E00A99390 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -441,6 +445,8 @@
 		BE8ECB1D1986F53E00A99390 /* AutoPkgr Helper */ = {
 			isa = PBXGroup;
 			children = (
+				BE237A211993A365007204AA /* LGAutoPkgrAuthorizer.h */,
+				BE237A221993A365007204AA /* LGAutoPkgrAuthorizer.m */,
 				BE8ECB2E1986FEB200A99390 /* LGAutoPkgrProtocol.h */,
 				BE8ECB2B1986F64000A99390 /* LGAutoPkgrHelper.h */,
 				BE8ECB2C1986F64000A99390 /* LGAutoPkgrHelper.m */,
@@ -677,6 +683,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BE237A231993A365007204AA /* LGAutoPkgrAuthorizer.m in Sources */,
 				1AC86D3D195E0AC6006FDD2B /* LGHostInfo.m in Sources */,
 				1A1BAD96197A0407008192A7 /* LGVersionComparator.m in Sources */,
 				1AC98412195CE8520071CAB3 /* LGEmailer.m in Sources */,
@@ -708,6 +715,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BE237A241993A365007204AA /* LGAutoPkgrAuthorizer.m in Sources */,
 				BEFAB9B81991760A0037BEC4 /* AHKeychain.m in Sources */,
 				BEFAB9BA1991760A0037BEC4 /* AHKeychainItem.m in Sources */,
 				BE8ECB1F1986F53E00A99390 /* main.m in Sources */,

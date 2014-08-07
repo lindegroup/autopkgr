@@ -92,9 +92,17 @@ static const NSTimeInterval kHelperCheckInterval = 1.0; // how often to check wh
 }
 
 - (void)installPackageFromPath:(NSString *)path
-                         reply:(void (^)(NSError *))reply
+                 authorization:(NSData *)authData
+                         reply:(void (^)(NSError *error))reply;
 {
     NSError *error;
+    
+    error = [LGAutoPkgrAuthorizer checkAuthorization:authData command:_cmd];
+    if(error != nil){
+        reply(error);
+        return;
+    }
+    
     NSTask *task = [NSTask new];
     task.launchPath = @"/usr/sbin/installer";
     task.arguments = @[ @"-pkg", path, @"-target", @"/" ];

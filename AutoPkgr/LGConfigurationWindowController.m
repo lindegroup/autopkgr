@@ -467,11 +467,16 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
     NSData *autoPkg = [[NSData alloc] initWithContentsOfURL:[NSURL URLWithString:downloadURL]];
     [autoPkg writeToFile:autoPkgPkg atomically:YES];
 
-    // when connecting to the helper tool, get back on the main thread
+    
+    // Create the external form authorization data for the helper
+    NSData *authorization = [LGAutoPkgrAuthorizer authorizeHelper];
+    assert(authorization != nil);
+    
+    // When connecting to the helper tool, get back on the main thread
     [[NSOperationQueue mainQueue] addOperationWithBlock:^{
         LGAutoPkgrHelperConnection *helper = [LGAutoPkgrHelperConnection new];
         [helper connectToHelper];
-        [[helper.connection remoteObjectProxy]installPackageFromPath:autoPkgPkg reply:^(NSError *error) {
+        [[helper.connection remoteObjectProxy]installPackageFromPath:autoPkgPkg authorization:authorization reply:^(NSError *error) {
             if(error){
                 NSLog(@"%@",error.localizedDescription);
             }else{
