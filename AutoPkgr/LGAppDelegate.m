@@ -18,6 +18,17 @@
 {
     [self setupStatusItem];
 
+    // Check if we're authorized to install helper tool,
+    // if not just quit
+    NSError *error;
+    if (![AHLaunchCtl installHelper:kAutoPkgrHelperToolName prompt:@"To schedule" error:&error]) {
+        if (error) {
+            NSLog(@"%@", error.localizedDescription);
+            [NSApp presentError:[NSError errorWithDomain:kApplicationName code:-1 userInfo:@{NSLocalizedDescriptionKey:@"The associated helper tool could not be installed, we must now quit"}]];
+            [[NSApplication sharedApplication]terminate:self];
+        }
+    }
+    
     // Show the configuration window if we haven't
     // completed the initial setup
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
@@ -30,15 +41,6 @@
         }
     } else {
         [self showConfigurationWindow:nil];
-    }
-    
-    NSError *error;
-    if (![AHLaunchCtl installHelper:kAutoPkgrHelperToolName prompt:@"To schedule" error:&error]) {
-        if (error) {
-            NSLog(@"%@", error.localizedDescription);
-            [NSApp presentError:error];
-            [self applicationShouldTerminate:nil];
-        }
     }
     
     // Start the AutoPkg run timer if the user enabled it
@@ -117,17 +119,34 @@
     [[helper.connection remoteObjectProxy] uninstall:^(NSError *error) {
         if(error){
             [NSApp presentError:error];
+        }else{
+            [self didEndWithUninstallRequest];
         }
+        
     }];
 }
 
+- (void)didEndWithUninstallRequest{
+    NSError *error = [NSError errorWithDomain:kApplicationName code:0 userInfo:@{NSLocalizedDescriptionKey:@"AutoPkgr's helper tool, launchd schedule, and other associated files have been removed.  You can safely remove it from your Application Folder"}];
+    [NSApp presentError:error
+         modalForWindow:nil
+               delegate:nil
+     didPresentSelector:@selector(didEndWithTerminalError)
+            contextInfo:nil];
+}
 
-- (NSApplicationTerminateReply)applicationShouldTerminate:(NSApplication *)sender
-{
+- (void)didEndWithTerminalError{
+    [[NSApplication sharedApplication]terminate:self];
+}
+
+-(void)applicationWillTerminate:(NSNotification *)notification{
     LGAutoPkgrHelperConnection *helper = [LGAutoPkgrHelperConnection new];
     [helper connectToHelper];
     [[helper.connection remoteObjectProxy] quitHelper:^(BOOL success) {}];
+}
 
+- (NSApplicationTerminateReply)applicationShouldTerminate:(NSApplication *)sender
+{
     return NSTerminateNow;
 }
 
