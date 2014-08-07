@@ -215,7 +215,7 @@
                                                NSLocalizedRecoverySuggestionErrorKey:errString,
                                                }];
         }
-        
+
         [[NSNotificationCenter defaultCenter]postNotificationName:kUpdateReposCompleteNotification
                                                            object:self
                                                          userInfo:error ? @{kNotificationUserInfoError:error}:nil];
@@ -239,9 +239,15 @@
     autoPkgRunTask.terminationHandler = ^(NSTask *aTask) {
         NSError *error;
         if (aTask.terminationStatus != 0) {
-            NSData *errData = [[aTask.standardError fileHandleForReading ]readDataToEndOfFile];
-            NSString *errString = [[NSString alloc]initWithData:errData encoding:NSASCIIStringEncoding];
-            
+            NSString *errString;
+            if(aTask.terminationStatus == 255){
+                errString = @"No Recipes Specified.";
+            }else{
+                NSData *errData = [[aTask.standardError fileHandleForReading ]readDataToEndOfFile];
+                if ( errData ){
+                    errString = [[NSString alloc]initWithData:errData encoding:NSASCIIStringEncoding];
+                }
+            }
             error = [NSError errorWithDomain:[[NSBundle mainBundle] bundleIdentifier]
                                         code:aTask.terminationStatus
                                     userInfo:@{NSLocalizedDescriptionKey:@"Error running autopkg",
@@ -259,24 +265,23 @@
     [autoPkgRunTask setStandardOutput:autoPkgRunPipe];
     [autoPkgRunTask setStandardError:[NSPipe pipe]];
 
-    [autoPkgRunTask.standardError fileHandleForReading].readabilityHandler = ^(NSFileHandle *handle) {
+    [autoPkgRunTask.standardOutput fileHandleForReading].readabilityHandler = ^(NSFileHandle *handle) {
         NSString *string = [[NSString alloc ] initWithData:[handle availableData] encoding:NSASCIIStringEncoding];
         [[NSNotificationCenter defaultCenter] postNotificationName:kProgressMessageUpdateNotification
                                                             object:nil
                                                           userInfo:@{kNotificationUserInfoMessage: string}];
     };
-
+    
     // Launch the task
     [autoPkgRunTask launch];
 
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    if ([defaults objectForKey:kSendEmailNotificationsWhenNewVersionsAreFoundEnabled]) {
-        BOOL sendEmailNotificationsWhenNewVersionsAreFoundEnabled = [[defaults objectForKey:kSendEmailNotificationsWhenNewVersionsAreFoundEnabled] boolValue];
-        if (sendEmailNotificationsWhenNewVersionsAreFoundEnabled) {
-            // Read our data from the fileHandle
-            NSData *autoPkgRunReportPlistData = [fileHandle readDataToEndOfFile];
-            // Init our string with data from the fileHandle
-            NSString *autoPkgRunReportPlistString = [[NSString alloc] initWithData:autoPkgRunReportPlistData encoding:NSUTF8StringEncoding];
+    if ([defaults boolForKey:kSendEmailNotificationsWhenNewVersionsAreFoundEnabled]) {
+        // Read our data from the fileHandle
+        NSData *autoPkgRunReportPlistData = [fileHandle readDataToEndOfFile];
+        // Init our string with data from the fileHandle
+        NSString *autoPkgRunReportPlistString = [[NSString alloc] initWithData:autoPkgRunReportPlistData encoding:NSUTF8StringEncoding];
+        if (![autoPkgRunReportPlistString isEqualToString:@""]){
             // Convert string back to data for plist serialization
             NSData *plistData = [autoPkgRunReportPlistString dataUsingEncoding:NSUTF8StringEncoding];
             // Initialize our error object
@@ -284,6 +289,7 @@
             // Initialize plist format
             NSPropertyListFormat format;
             // Initialize our dict
+
             NSDictionary *plist = [NSPropertyListSerialization propertyListWithData:plistData options:NSPropertyListImmutable format:&format error:&error];
             NSLog(@"This is our plist: %@.", plist);
 

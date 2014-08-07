@@ -740,7 +740,7 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
     if ([notification.userInfo[kNotificationUserInfoError] isKindOfClass:[NSError class]]) {
         error = notification.userInfo[kNotificationUserInfoError];
     }
-
+    
     [self stopProgress:error];
     [self.updateRepoNowButton setEnabled:YES];
 }
@@ -976,6 +976,7 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
         self.progressMessage.stringValue = message;
     }];
 }
+
 - (void)startProgressNotificationReceived:(NSNotification *)notification
 {
     NSString *messge = @"Starting...";
@@ -998,12 +999,11 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
 {
     [[NSOperationQueue mainQueue] addOperationWithBlock:^{
         [self.progressMessage setStringValue:message];
-        [NSApp beginSheet:self.progressPanel modalForWindow:self.window modalDelegate:self didEndSelector:nil contextInfo:NULL];
         [self.progressIndicator setHidden:NO];
         [self.progressIndicator setIndeterminate:YES];
         [self.progressIndicator displayIfNeeded];
         [self.progressIndicator startAnimation:nil];
-
+        [NSApp beginSheet:self.progressPanel modalForWindow:self.window modalDelegate:self didEndSelector:nil contextInfo:NULL];
     }];
 }
 
