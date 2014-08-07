@@ -55,3 +55,5 @@ extern NSString *const kUpdateReposCompleteNotification;
 extern NSString *const kProgressStartNotification;
 extern NSString *const kProgressStopNotification;
 extern NSString *const kProgressMessageUpdateNotification;
+extern NSString *const kNotificationUserInfoError;
+extern NSString *const kNotificationUserInfoMessage;

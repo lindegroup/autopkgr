@@ -52,9 +52,10 @@ NSString *const kTestSmtpServerPortError = @"TestSmtpServerPortError";
 NSString *const kTestSmtpServerPortSuccess = @"TestSmtpServerPortSuccess";
 NSString *const kTestSmtpServerPortResult = @"TestSmtpServerPortResult";
 
-NSString *const kRunAutoPkgCompleteNotification = @"com.lindegroup.autopkgr.autopkgruncomplete";
-NSString *const kUpdateReposCompleteNotification = @"com.lindegroup.autopkgr.updatereposcomplete";
-NSString *const kProgressStartNotification = @"com.lindegroup.autopkgr.progress.start.notification";
-NSString *const kProgressStopNotification = @"com.lindegroup.autopkgr.progress.stop.notification";
-
+NSString *const kRunAutoPkgCompleteNotification = @"com.lindegroup.autopkgr.notification.autopkgrun.complete";
+NSString *const kUpdateReposCompleteNotification = @"com.lindegroup.autopkgr.notification.updaterepos.complete";
+NSString *const kProgressStartNotification = @"com.lindegroup.autopkgr.notification.progress.start";
+NSString *const kProgressStopNotification = @"com.lindegroup.autopkgr.notification.progress.stop";
 NSString *const kProgressMessageUpdateNotification = @"com.lindegroup.autopkgr.progress.message.notification";
+NSString *const kNotificationUserInfoError = @"com.lindegroup.autopkgr.notification.userinfo.error";
+NSString *const kNotificationUserInfoMessage = @"com.lindegroup.autopkgr.notification.userinfo.error";

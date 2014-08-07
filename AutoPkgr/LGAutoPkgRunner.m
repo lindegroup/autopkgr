@@ -104,8 +104,10 @@
 
 - (void)addAutoPkgRecipeRepo:(NSString *)repoURL
 {
-    [[NSNotificationCenter defaultCenter] postNotificationName:kProgressStartNotification object:@"Adding Repo"];
-    NSLog(@"Posting notification to start addRepo");
+    NSString *addString = [NSString stringWithFormat:@"Adding %@",repoURL];
+    [[NSNotificationCenter defaultCenter] postNotificationName:kProgressStartNotification
+                                                        object:nil
+                                                      userInfo:@{kNotificationUserInfoMessage:addString}];
     // Set up task, pipe, and file handle
     NSTask *autoPkgRepoAddTask = [[NSTask alloc] init];
     NSPipe *autoPkgRepoAddPipe = [NSPipe pipe];
@@ -132,7 +134,9 @@
                                                NSLocalizedRecoverySuggestionErrorKey:errString,
                                                }];
         }
-        [[NSNotificationCenter defaultCenter]postNotificationName:kProgressStopNotification object:error];
+        [[NSNotificationCenter defaultCenter]postNotificationName:kProgressStopNotification
+                                                           object:self
+                                                         userInfo:error ? @{kNotificationUserInfoError:error}:nil];
     };
 
     // Launch the task
@@ -143,7 +147,9 @@
 
 - (void)removeAutoPkgRecipeRepo:(NSString *)repoURL
 {
-    [[NSNotificationCenter defaultCenter] postNotificationName:kProgressStartNotification object:@"Removing Repo"];
+    [[NSNotificationCenter defaultCenter] postNotificationName:kProgressStartNotification
+                                                        object:nil
+                                                      userInfo:@{kNotificationUserInfoMessage:@"Removing Repo"}];
 
     // Set up task and pipe
     NSTask *autoPkgRepoRemoveTask = [[NSTask alloc] init];
@@ -171,7 +177,9 @@
                                                NSLocalizedRecoverySuggestionErrorKey:errString,
                                                }];
         }
-        [[NSNotificationCenter defaultCenter]postNotificationName:kProgressStopNotification object:error];
+        [[NSNotificationCenter defaultCenter]postNotificationName:kProgressStopNotification
+                                                           object:self
+                                                         userInfo:error ? @{kNotificationUserInfoError:error}:nil];
     };
 
     // Launch the task
@@ -208,8 +216,9 @@
                                                }];
         }
         
-        NSNotification *updateReposCompleteNotification = [[NSNotification alloc]initWithName:kUpdateReposCompleteNotification object:error userInfo:nil];
-        [[NSNotificationCenter defaultCenter]postNotification:updateReposCompleteNotification];
+        [[NSNotificationCenter defaultCenter]postNotificationName:kUpdateReposCompleteNotification
+                                                           object:self
+                                                         userInfo:error ? @{kNotificationUserInfoError:error}:nil];
     };
 
     // Launch the task
@@ -239,8 +248,9 @@
                                                NSLocalizedRecoverySuggestionErrorKey:errString,}];
         }
         
-        NSNotification *runAutoPkgCompleteNotification = [[NSNotification alloc]initWithName:kRunAutoPkgCompleteNotification object:error userInfo:nil];
-        [[NSNotificationCenter defaultCenter]postNotification:runAutoPkgCompleteNotification];
+        [[NSNotificationCenter defaultCenter]postNotificationName:kRunAutoPkgCompleteNotification
+                                                           object:self
+                                                         userInfo:error ? @{kNotificationUserInfoError:error}:nil];
     };
 
     // Configure the task
@@ -251,7 +261,9 @@
 
     [autoPkgRunTask.standardError fileHandleForReading].readabilityHandler = ^(NSFileHandle *handle) {
         NSString *string = [[NSString alloc ] initWithData:[handle availableData] encoding:NSASCIIStringEncoding];
-        [[NSNotificationCenter defaultCenter]postNotificationName:kProgressMessageUpdateNotification object:string];
+        [[NSNotificationCenter defaultCenter] postNotificationName:kProgressMessageUpdateNotification
+                                                            object:nil
+                                                          userInfo:@{kNotificationUserInfoMessage: string}];
     };
 
     // Launch the task

@@ -716,17 +716,17 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
 
 - (IBAction)updateReposNow:(id)sender
 {
+    LGAutoPkgRunner *autoPkgRunner = [[LGAutoPkgRunner alloc] init];
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(updateReposNowCompleteNotificationRecieved:)
                                                  name:kUpdateReposCompleteNotification
-                                               object:nil];
+                                               object:autoPkgRunner];
 
     // TODO: Success/failure notification
     [self.updateRepoNowButton setEnabled:NO];
     [self startProgressWithMessage:@"Updating autopkg repos"];
 
     NSLog(@"Updating AutoPkg recipe repos.");
-    LGAutoPkgRunner *autoPkgRunner = [[LGAutoPkgRunner alloc] init];
     [autoPkgRunner invokeAutoPkgRepoUpdateInBackgroundThread];
 }
 
@@ -734,38 +734,28 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self
                                                     name:kUpdateReposCompleteNotification
-                                                  object:nil];
+                                                  object:notification.object];
     // stop progress panel
     NSError *error = nil;
-    if ([notification.object isKindOfClass:[NSError class]]) {
-        error = notification.object;
+    if ([notification.userInfo[kNotificationUserInfoError] isKindOfClass:[NSError class]]) {
+        error = notification.userInfo[kNotificationUserInfoError];
     }
+
     [self stopProgress:error];
-
-    // for the ui update get back on the main thread
-    if ([notification.object isKindOfClass:[NSError class]]) {
-        [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-            [[NSAlert alertWithError:notification.object] beginSheetModalForWindow:self.window
-                                                                     modalDelegate:self
-                                                                    didEndSelector:nil
-                                                                       contextInfo:nil];
-        }];
-    }
-
     [self.updateRepoNowButton setEnabled:YES];
 }
 
 - (IBAction)checkAppsNow:(id)sender
 {
+    LGAutoPkgRunner *autoPkgRunner = [[LGAutoPkgRunner alloc] init];
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(autoPkgRunCompleteNotificationRecieved:)
                                                  name:kRunAutoPkgCompleteNotification
-                                               object:nil];
+                                               object:autoPkgRunner];
 
     [self.checkAppsNowButton setEnabled:NO];
     [self startProgressWithMessage:@"Checking for new applications"];
 
-    LGAutoPkgRunner *autoPkgRunner = [[LGAutoPkgRunner alloc] init];
     [autoPkgRunner invokeAutoPkgInBackgroundThread];
 }
 
@@ -773,24 +763,21 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self
                                                     name:kRunAutoPkgCompleteNotification
-                                                  object:nil];
+                                                  object:notification.object];
 
     NSError *error = nil;
-    if ([notification.object isKindOfClass:[NSError class]]) {
-        error = notification.object;
+    if ([notification.userInfo[kNotificationUserInfoError] isKindOfClass:[NSError class]]) {
+        error = notification.userInfo[kNotificationUserInfoError];
     }
     [self stopProgress:error];
-
     [self.checkAppsNowButton setEnabled:YES];
-    [self.checkAppsNowSpinner setHidden:YES];
-    [self.checkAppsNowSpinner stopAnimation:nil];
+
 }
 
 - (IBAction)chooseLocalMunkiRepo:(id)sender
 {
     LGAutoPkgRunner *autoPkgRunner = [[LGAutoPkgRunner alloc] init];
     NSOpenPanel *chooseDialog = [NSOpenPanel openPanel];
-
     // Disable the selection of files in the dialog
     [chooseDialog setCanChooseFiles:NO];
 
@@ -982,21 +969,27 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
 - (void)updateProgressNotificationReceived:(NSNotification *)notification
 {
     [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-        if ([notification.object isKindOfClass:[NSString class]]) {
-            self.progressMessage.stringValue = notification.object;
+        NSString *message = @"";
+        if ([notification.userInfo[kNotificationUserInfoMessage] isKindOfClass:[NSString class]]) {
+             message = notification.userInfo[kNotificationUserInfoMessage];
         }
+        self.progressMessage.stringValue = message;
     }];
 }
 - (void)startProgressNotificationReceived:(NSNotification *)notification
 {
-    [self startProgressWithMessage:notification.object];
+    NSString *messge = @"Starting...";
+    if ([notification.userInfo[kNotificationUserInfoMessage] isKindOfClass:[NSString class]]) {
+        messge = notification.userInfo[kNotificationUserInfoMessage];
+    }
+    [self startProgressWithMessage:messge];
 }
 
 - (void)stopProgressNotificationReceived:(NSNotification *)notification
 {
     NSError *error = nil;
-    if ([notification.object isKindOfClass:[NSError class]]) {
-        error = notification.object;
+    if ([notification.userInfo[kNotificationUserInfoError] isKindOfClass:[NSError class]]) {
+        error = notification.userInfo[kNotificationUserInfoError];
     }
     [self stopProgress:error];
 }
