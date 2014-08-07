@@ -29,7 +29,7 @@ static const NSTimeInterval kHelperCheckInterval = 1.0; // how often to check wh
 {
     self = [super init];
     if (self) {
-        self->_listener = [[NSXPCListener alloc] initWithMachServiceName:kHelperName];
+        self->_listener = [[NSXPCListener alloc] initWithMachServiceName:kAutoPkgrHelperToolName];
         self->_listener.delegate = self;
     }
     return self;
@@ -117,7 +117,7 @@ static const NSTimeInterval kHelperCheckInterval = 1.0; // how often to check wh
 - (void)uninstall:(void (^)(NSError *))reply
 {
     NSError *error;
-    [AHLaunchCtl uninstallHelper:kHelperName error:&error];
+    [AHLaunchCtl uninstallHelper:kAutoPkgrHelperToolName error:&error];
     reply(error);
 }
 

@@ -30,6 +30,6 @@ NSString *const kGitNotInstalledLabel = @"Git is not installed.";
 NSString *const kAutoPkgInstalledLabel = @"AutoPkg has been installed.";
 NSString *const kAutoPkgNotInstalledLabel = @"AutoPkg is not installed.";
 NSString *const kAutoPkgUpdateAvailableLabel = @"An update is available for AutoPkg.";
-NSString *const kHelperName = @"com.lindegroup.AutoPkgr.helper";
+NSString *const kAutoPkgrHelperToolName = @"com.lindegroup.AutoPkgr.helper";
 NSString *const kLGAutoPkgrLaunchDaemonPlist = @"com.lindegroup.AutoPkgr.schedule";
 

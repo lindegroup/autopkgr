@@ -28,5 +28,5 @@ extern NSString *const kGitNotInstalledLabel;
 extern NSString *const kAutoPkgInstalledLabel;
 extern NSString *const kAutoPkgNotInstalledLabel;
 extern NSString *const kAutoPkgUpdateAvailableLabel;
-extern NSString *const kHelperName;
+extern NSString *const kAutoPkgrHelperToolName;
 extern NSString *const kLGAutoPkgrLaunchDaemonPlist;

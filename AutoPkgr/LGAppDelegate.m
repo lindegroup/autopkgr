@@ -33,7 +33,7 @@
     }
     
     NSError *error;
-    if (![AHLaunchCtl installHelper:kHelperName prompt:@"To schedule" error:&error]) {
+    if (![AHLaunchCtl installHelper:kAutoPkgrHelperToolName prompt:@"To schedule" error:&error]) {
         if (error) {
             NSLog(@"%@", error.localizedDescription);
             [NSApp presentError:error];
