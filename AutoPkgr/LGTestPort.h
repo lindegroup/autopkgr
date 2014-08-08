@@ -9,9 +9,10 @@
 #import <Foundation/Foundation.h>
 #import "LGConstants.h"
 
-@interface LGTestPort : NSObject <NSStreamDelegate> {
+@interface LGTestPort : NSObject <NSStreamDelegate>{
     NSInputStream *read;
     NSOutputStream *write;
+    NSTimer *streamTimeoutTimer;
 }
 
 - (void)testHost:(NSHost *)host withPort:(NSInteger)port;

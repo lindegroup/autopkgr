@@ -373,11 +373,6 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
 
         NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
 
-        // If a test is currently in progress we'll just remove the notification for it.
-        [center removeObserver:self
-                          name:kTestSmtpServerPortNotification
-                        object:nil];
-
         // Set up the UI
         [testSmtpServerStatus setHidden:YES];
         [testSmtpServerSpinner setHidden:NO];
@@ -388,7 +383,7 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
         [center addObserver:self
                    selector:@selector(testSmtpServerPortNotificationReceiver:)
                        name:kTestSmtpServerPortNotification
-                     object:tester];
+                     object:nil];
 
         [tester testHost:[NSHost hostWithName:[smtpServer stringValue]]
                 withPort:[smtpPort integerValue]];
@@ -398,7 +393,7 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
     }
 }
 
-- (void)testSmtpServerPortNotificationReceiver:(NSNotification *)n
+- (void)testSmtpServerPortNotificationReceiver:(NSNotification *)notification
 {
     // Set up the spinner and show the status image
     [testSmtpServerSpinner setHidden:YES];
@@ -407,13 +402,12 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
 
     [[NSNotificationCenter defaultCenter] removeObserver:self
                                                     name:kTestSmtpServerPortNotification
-                                                  object:[n object]];
+                                                  object:nil];
 
-    NSDictionary *d = [n userInfo];
-    NSString *r = [d objectForKey:kTestSmtpServerPortResult];
-    if ([r isEqualToString:kTestSmtpServerPortError]) {
+    NSString *status = notification.userInfo[kTestSmtpServerPortResult];
+    if ([status isEqualToString:kTestSmtpServerPortError]) {
         [testSmtpServerStatus setImage:[NSImage imageNamed:@"NSStatusUnavailable"]];
-    } else if ([r isEqualToString:kTestSmtpServerPortSuccess]) {
+    } else if ([status isEqualToString:kTestSmtpServerPortSuccess]) {
         [testSmtpServerStatus setImage:[NSImage imageNamed:@"NSStatusAvailable"]];
     } else {
         NSLog(@"Unexpected result for kTestSmtpServerPortError.");
