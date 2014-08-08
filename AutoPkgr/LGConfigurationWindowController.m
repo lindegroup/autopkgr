@@ -718,7 +718,7 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
 
     // TODO: Success/failure notification
     [self.updateRepoNowButton setEnabled:NO];
-    [self startProgressWithMessage:@"Updating autopkg repos"];
+    [self startProgressWithMessage:@"Updating AutoPkg recipe repos."];
 
     NSLog(@"Updating AutoPkg recipe repos.");
     [autoPkgRunner invokeAutoPkgRepoUpdateInBackgroundThread];
@@ -748,7 +748,7 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
                                                object:autoPkgRunner];
 
     [self.checkAppsNowButton setEnabled:NO];
-    [self startProgressWithMessage:@"Checking for new applications"];
+    [self startProgressWithMessage:@"Running selected AutoPkg recipes."];
 
     [autoPkgRunner invokeAutoPkgInBackgroundThread];
 }

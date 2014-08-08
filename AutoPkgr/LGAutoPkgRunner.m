@@ -348,7 +348,7 @@
     }
 
     // Create the subject string
-    NSString *subject = [NSString stringWithFormat:@"[%@] The Following Software is Now Available for Testing (%@)", kApplicationName, [apps componentsJoinedByString:@", "]];
+    NSString *subject = [NSString stringWithFormat:@"[%@] The Following Software Is Now Available for Testing (%@)", kApplicationName, [apps componentsJoinedByString:@", "]];
 
     // Create the message string
     NSMutableString *newDownloadsString = [NSMutableString string];
