@@ -160,6 +160,8 @@ BOOL restoreLinkedBackup(NSString *originalPath)
 BOOL setFolderOwnerRecursively(NSString *user, NSString *path)
 {
     NSLog(@"Resetting ownership: %@ ",path);
+    NSLog(@"Setting owner as: %@ ",user);
+
     NSFileManager *fileManager = [NSFileManager new];
 
     NSArray *subPaths = [fileManager subpathsAtPath:path];
@@ -193,6 +195,12 @@ BOOL setupRootContext(NSString *user)
     return YES;
 }
 
+NSString *ownerOfItemAtPath(NSString *folderPath){
+    NSFileManager *manager = [NSFileManager new];
+    NSDictionary *attrs = [manager attributesOfItemAtPath:folderPath error:nil];
+    return attrs[NSFileOwnerAccountName];
+}
+
 void cleanUpRootContext(NSString *user)
 {
     NSLog(@"Cleaning up root context");
@@ -206,8 +214,12 @@ void cleanUpRootContext(NSString *user)
     
     // Fix AutoPkg's CACHE_DIR Directory as well
     NSUserDefaults *apd = [[NSUserDefaults alloc]initWithSuiteName:kAutoPkgPreferenceDomain];
-    if ( [[apd objectForKey:@"CACHE_DIR"] isKindOfClass:[NSString class]] ) {
-        setFolderOwnerRecursively(user, [apd objectForKey:@"CACHE_DIR"]);
+    NSString *cacheDir = [apd objectForKey:@"CACHE_DIR"];
+    if ( cacheDir ) {
+        // Don't assume the user this is running as is the same
+        // as the cache dir's owner, in the case of a shared env
+        NSString *currentOwner = ownerOfItemAtPath(cacheDir);
+        setFolderOwnerRecursively(currentOwner, cacheDir);
     }
 }
 
