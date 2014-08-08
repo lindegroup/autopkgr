@@ -31,7 +31,6 @@
                 <outlet property="sendEmailNotificationsWhenNewVersionsAreFoundButton" destination="TPC-Gd-b8O" id="F4h-2O-FcT"/>
                 <outlet property="sendTestEmailButton" destination="SZ2-Hj-GiD" id="yMv-1b-dWv"/>
                 <outlet property="sendTestEmailSpinner" destination="T27-XK-VY4" id="fCv-Vz-MUd"/>
-                <outlet property="sendTestEmailStatus" destination="2DN-h6-kQ5" id="Vrq-SP-Kl6"/>
                 <outlet property="smtpAuthenticationEnabledButton" destination="6N3-g1-fHC" id="yy0-0M-C5o"/>
                 <outlet property="smtpFrom" destination="0uY-tb-AXy" id="kWY-fq-D6a"/>
                 <outlet property="smtpPassword" destination="aRk-NU-9Jl" id="vwv-jT-FoD"/>
@@ -52,7 +51,7 @@
         <window title="AutoPkgr" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" oneShot="NO" releasedWhenClosed="NO" animationBehavior="default" id="F0z-JX-Cv5">
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
             <rect key="contentRect" x="196" y="240" width="775" height="514"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1280" height="778"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1920" height="1058"/>
             <value key="minSize" type="size" width="752" height="514"/>
             <view key="contentView" id="se5-gp-TjO">
                 <rect key="frame" x="0.0" y="0.0" width="775" height="514"/>
@@ -702,11 +701,6 @@
                                                                 <rect key="frame" x="608" y="47" width="16" height="16"/>
                                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                             </progressIndicator>
-                                                            <imageView identifier="emailSuccess" hidden="YES" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="2DN-h6-kQ5">
-                                                                <rect key="frame" x="608" y="47" width="16" height="16"/>
-                                                                <autoresizingMask key="autoresizingMask"/>
-                                                                <imageCell key="cell" refusesFirstResponder="YES" alignment="left" animates="YES" imageScaling="proportionallyDown" image="NSStatusNone" id="gCQ-4N-GO8"/>
-                                                            </imageView>
                                                         </subviews>
                                                     </view>
                                                     <constraints>
@@ -726,15 +720,12 @@
                                                         <constraint firstItem="HmV-Dc-TUb" firstAttribute="top" secondItem="0A8-YK-H2P" secondAttribute="top" constant="124" id="UxQ-7q-Y4m"/>
                                                         <constraint firstAttribute="trailing" secondItem="zi5-oQ-M5R" secondAttribute="trailing" constant="206" id="Wwh-HS-Jja"/>
                                                         <constraint firstAttribute="trailing" secondItem="lqq-Vv-857" secondAttribute="trailing" constant="206" id="XC1-jZ-EiM"/>
-                                                        <constraint firstAttribute="trailing" secondItem="2DN-h6-kQ5" secondAttribute="trailing" constant="16" id="Xa6-CV-n4h"/>
                                                         <constraint firstItem="lqq-Vv-857" firstAttribute="top" secondItem="0A8-YK-H2P" secondAttribute="top" constant="95" id="YX3-bB-QHM"/>
                                                         <constraint firstItem="6ha-Zn-VKa" firstAttribute="top" secondItem="0A8-YK-H2P" secondAttribute="top" constant="127" id="a10-XQ-dyR"/>
                                                         <constraint firstItem="aRk-NU-9Jl" firstAttribute="top" secondItem="0A8-YK-H2P" secondAttribute="top" constant="227" id="a7R-tW-aRu"/>
                                                         <constraint firstItem="0MT-rL-IEP" firstAttribute="leading" secondItem="uO3-QG-q9R" secondAttribute="trailing" constant="8" id="aiH-0U-HRP"/>
                                                         <constraint firstItem="T27-XK-VY4" firstAttribute="top" secondItem="0A8-YK-H2P" secondAttribute="top" constant="231" id="ayN-Cw-rFg"/>
                                                         <constraint firstItem="0uY-tb-AXy" firstAttribute="top" secondItem="0A8-YK-H2P" secondAttribute="top" constant="66" id="b5I-dy-RZd"/>
-                                                        <constraint firstItem="2DN-h6-kQ5" firstAttribute="top" secondItem="0A8-YK-H2P" secondAttribute="top" constant="231" id="fVW-TQ-5zN"/>
-                                                        <constraint firstItem="2DN-h6-kQ5" firstAttribute="leading" secondItem="SZ2-Hj-GiD" secondAttribute="trailing" constant="8" id="fx1-Y6-cZF"/>
                                                         <constraint firstItem="0MT-rL-IEP" firstAttribute="top" secondItem="0A8-YK-H2P" secondAttribute="top" constant="126" id="gMn-HW-McJ"/>
                                                         <constraint firstItem="lqq-Vv-857" firstAttribute="leading" secondItem="0A8-YK-H2P" secondAttribute="leading" constant="170" id="jaR-pu-zfu"/>
                                                         <constraint firstItem="aRk-NU-9Jl" firstAttribute="leading" secondItem="0A8-YK-H2P" secondAttribute="leading" constant="170" id="nwg-sV-9RJ"/>
@@ -878,7 +869,7 @@
             <windowStyleMask key="styleMask" closable="YES" miniaturizable="YES" resizable="YES" utility="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="385" y="323" width="610" height="133"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1280" height="778"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1920" height="1058"/>
             <view key="contentView" id="dCS-sn-B3a">
                 <rect key="frame" x="0.0" y="0.0" width="610" height="133"/>
                 <autoresizingMask key="autoresizingMask"/>

@@ -60,7 +60,6 @@
 @synthesize autoPkgStatusLabel;
 @synthesize gitStatusIcon;
 @synthesize autoPkgStatusIcon;
-@synthesize sendTestEmailStatus;
 @synthesize sendTestEmailSpinner;
 @synthesize testSmtpServerSpinner;
 @synthesize testSmtpServerStatus;
@@ -313,10 +312,8 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
 
     // Handle UI
     [sendTestEmailButton setEnabled:NO]; // disable button
-    [sendTestEmailStatus setHidden:YES]; // hide status light
     [sendTestEmailSpinner setHidden:NO]; // show spinner
     [sendTestEmailSpinner startAnimation:self]; // animate spinner
-    [self startProgressWithMessage:@"Sending test email"];
     // First saves the defaults
     [self save];
 
@@ -345,25 +342,17 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
     // Handle Spinner
     [sendTestEmailSpinner stopAnimation:self]; // stop animation
     [sendTestEmailSpinner setHidden:YES]; // hide spinner
-
-    // Show status light
-    [sendTestEmailStatus setHidden:NO]; // unhide status light
-
     
     NSError *e = [[notification userInfo] objectForKey:kEmailSentNotificationError]; // pull the error out of the userInfo dictionary
     if (e) {
-        [sendTestEmailStatus setImage:[NSImage imageNamed:@"NSStatusUnavailable"]]; // change status red
-        NSLog(@"Error:  %@", e);
+        NSLog(@"Unable to send test email. Error: %@", e);
         [[NSAlert alertWithError:e] beginSheetModalForWindow:self.window
                                                modalDelegate:self
                                               didEndSelector:nil
                                                  contextInfo:nil];
-    } else {
-        [sendTestEmailStatus setImage:[NSImage imageNamed:@"NSStatusAvailable"]];
     }
 
     [self stopProgress:e];
-    
 }
 
 - (void)testSmtpServerPort:(id)sender
