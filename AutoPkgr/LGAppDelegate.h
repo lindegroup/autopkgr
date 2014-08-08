@@ -33,4 +33,7 @@
 @property (strong, nonatomic) IBOutlet NSMenu *statusMenu;
 @property (strong, nonatomic) NSStatusItem *statusItem;
 
+- (IBAction)checkNowFromMenu:(id)sender;
+- (IBAction)showConfigurationWindow:(id)sender;
+
 @end

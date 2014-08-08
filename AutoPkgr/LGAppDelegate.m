@@ -27,23 +27,24 @@
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+
+    // Setup the status item
     [self setupStatusItem];
-	[self setupConfigurationWindow];
+
+    if (![defaults boolForKey:kHasCompletedInitialSetup]) {
+        [self showConfigurationWindow:nil];
+        [defaults setObject:@YES forKey:kHasCompletedInitialSetup];
+    }
 
     // Start the AutoPkg run timer if the user enabled it
     [self startAutoPkgRunTimer];
 
     // Update AutoPkg recipe repos when the application launches
     // if the user has enabled automatic repo updates
-	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    if ([defaults objectForKey:kCheckForRepoUpdatesAutomaticallyEnabled]) {
-
-        BOOL checkForRepoUpdatesAutomaticallyEnabled = [[defaults objectForKey:kCheckForRepoUpdatesAutomaticallyEnabled] boolValue];
-
-        if (checkForRepoUpdatesAutomaticallyEnabled) {
-            NSLog(@"Updating AutoPkg recipe repos.");
-            [self updateAutoPkgRecipeReposInBackgroundAtAppLaunch];
-        }
+    if ([defaults boolForKey:kCheckForRepoUpdatesAutomaticallyEnabled]) {
+        NSLog(@"Updating AutoPkg recipe repos.");
+        [self updateAutoPkgRecipeReposInBackgroundAtAppLaunch];
     }
 }
 
@@ -67,18 +68,7 @@
     [self.statusItem setImage:[NSImage imageNamed:@"autopkgr.png"]];
     [self.statusItem setAlternateImage:[NSImage imageNamed:@"autopkgr_alt.png"]];
     [self.statusItem setHighlightMode:YES];
-    [self setupMenu];
-}
-
-- (void)setupMenu
-{
-    // Setup menu items for statusItem
-    NSMenu *menu = [[NSMenu alloc] init];
-    [menu addItemWithTitle:@"Check Now" action:@selector(checkNowFromMenu:) keyEquivalent:@""];
-    [menu addItemWithTitle:@"Configure..." action:@selector(showConfigurationWindow) keyEquivalent:@""];
-    [menu addItem:[NSMenuItem separatorItem]];
-    [menu addItemWithTitle:[NSString stringWithFormat:@"Quit %@", kApplicationName] action:@selector(terminate:) keyEquivalent:@""];
-    self.statusItem.menu = menu;
+    self.statusItem.menu = self.statusMenu;
 }
 
 - (void)checkNowFromMenu:(id)sender
@@ -87,38 +77,21 @@
     [autoPkgRunner invokeAutoPkgInBackgroundThread];
 }
 
-- (void)setupConfigurationWindow
+- (void)showConfigurationWindow:(id)sender
 {
     if (!self->configurationWindowController) {
         self->configurationWindowController = [[LGConfigurationWindowController alloc] initWithWindowNibName:@"LGConfigurationWindowController"];
-		
-		// Show the configuration window if we haven't
-		// completed the initial setup
-		NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-		if ([defaults objectForKey:kHasCompletedInitialSetup]) {
-			BOOL hasCompletedInitialSetup = [[defaults objectForKey:kHasCompletedInitialSetup] boolValue];
-			
-			if (!hasCompletedInitialSetup) {
-				[self showConfigurationWindow];
-			}
-		} else {
-			[self showConfigurationWindow];
-		}
-	}
-}
+    }
 
-- (void)showConfigurationWindow
-{
-	[NSApp activateIgnoringOtherApps:YES];
-	[self->configurationWindowController.window makeKeyAndOrderFront:nil];
+    [NSApp activateIgnoringOtherApps:YES];
+    [self->configurationWindowController.window makeKeyAndOrderFront:nil];
 }
 
 - (NSApplicationTerminateReply)applicationShouldTerminate:(NSApplication *)sender
 {
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    BOOL warnBeforeQuitting = [[defaults objectForKey:kWarnBeforeQuittingEnabled] boolValue];
 
-    if (warnBeforeQuitting) {
+    if ([defaults boolForKey:kWarnBeforeQuittingEnabled]) {
         NSAlert *alert = [[NSAlert alloc] init];
         [alert addButtonWithTitle:@"Quit"];
         [alert addButtonWithTitle:@"Cancel"];
