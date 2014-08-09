@@ -24,9 +24,9 @@
 
 @interface LGDefaults ()
 // Make these readwrite here so we can use these with methods
-@property (copy, nonatomic,readwrite) NSString *autoPkgRecipeRepoDir;
-@property (copy, nonatomic,readwrite) NSArray *autoPkgRecipeSearchDirs;
-@property (copy, nonatomic,readwrite) NSDictionary *autoPkgRecipeRepos;
+@property (copy, nonatomic, readwrite) NSString *autoPkgRecipeRepoDir;
+@property (copy, nonatomic, readwrite) NSArray *autoPkgRecipeSearchDirs;
+@property (copy, nonatomic, readwrite) NSDictionary *autoPkgRecipeRepos;
 @end
 
 @implementation LGDefaults {
@@ -204,9 +204,9 @@
 //
 - (NSArray *)autoPkgRecipeSearchDirs
 {
-
-    return [[[self class] new] objectForKey:@"RECIPE_SEARCH_DIRS"];
+    return [_autoPkgDefaults objectForKey:@"RECIPE_SEARCH_DIRS"];
 }
+
 - (void)setAutoPkgRecipeSearchDirs:(NSArray *)autoPkgRecipeSearchDirs
 {
     [_autoPkgDefaults setObject:autoPkgRecipeSearchDirs forKey:@"RECIPE_SEARCH_DIRS"];
