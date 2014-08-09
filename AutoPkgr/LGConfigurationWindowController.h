@@ -22,6 +22,7 @@
 #import <Cocoa/Cocoa.h>
 #import "LGPopularRepositories.h"
 #import "LGApplications.h"
+#import "LGTestPort.h"
 
 @interface LGConfigurationWindowController : NSWindowController <NSTextDelegate, NSTokenFieldDelegate, NSWindowDelegate>
 {
@@ -54,6 +55,8 @@
 @property (weak) IBOutlet NSButton *sendTestEmailButton;
 @property (weak) IBOutlet NSButton *installGitButton;
 @property (weak) IBOutlet NSButton *installAutoPkgButton;
+@property (weak) IBOutlet NSButton *checkAppsNowButton;
+@property (weak) IBOutlet NSButton *updateRepoNowButton;
 @property (weak) IBOutlet NSButton *autoPkgRecipeOverridesFolderButton;
 
 // Labels
@@ -63,6 +66,18 @@
 // Status icons
 @property (weak) IBOutlet NSImageView *gitStatusIcon;
 @property (weak) IBOutlet NSImageView *autoPkgStatusIcon;
+@property (weak) IBOutlet NSImageView *sendTestEmailStatus;
+@property (weak) IBOutlet NSImageView *testSmtpServerStatus;
+
+// Spinners
+@property (weak) IBOutlet NSProgressIndicator *sendTestEmailSpinner;
+@property (weak) IBOutlet NSProgressIndicator *testSmtpServerSpinner;
+
+// Progress panel
+@property (weak) IBOutlet NSPanel *progressPanel;
+@property (weak) IBOutlet NSProgressIndicator *progressIndicator;
+@property (weak) IBOutlet NSTextField *progressMessage;
+
 
 // Objects
 @property (strong) IBOutlet LGPopularRepositories *popRepoTableViewHandler;

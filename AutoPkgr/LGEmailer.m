@@ -20,7 +20,6 @@
 //
 
 #import "LGEmailer.h"
-#import "LGConstants.h"
 #import "LGHostInfo.h"
 #import "SSKeychain.h"
 
@@ -97,11 +96,20 @@
 
     MCOSMTPSendOperation *sendOperation = [smtpSession sendOperationWithData:rfc822Data];
     [sendOperation start:^(NSError *error) {
+        NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
+        NSMutableDictionary *d = [NSMutableDictionary dictionaryWithObjects:[NSArray arrayWithObjects:subject, message, nil]
+                                                      forKeys:[NSArray arrayWithObjects:kEmailSentNotificationSubject, kEmailSentNotificationMessage, nil]];
+        
         if (error) {
             NSLog(@"%@ Error sending email:%@", smtpSession.username, error);
+            [d setObject:error forKey:kEmailSentNotificationError];
         } else {
             NSLog(@"%@ Successfully sent email!", smtpSession.username);
         }
+        
+        [center postNotificationName:kEmailSentNotification
+                              object:self
+                            userInfo:[NSDictionary dictionaryWithDictionary:d]];
     }];
 }
 

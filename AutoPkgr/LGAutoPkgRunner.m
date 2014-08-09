@@ -104,6 +104,10 @@
 
 - (void)addAutoPkgRecipeRepo:(NSString *)repoURL
 {
+    NSString *addString = [NSString stringWithFormat:@"Adding %@",repoURL];
+    [[NSNotificationCenter defaultCenter] postNotificationName:kProgressStartNotification
+                                                        object:nil
+                                                      userInfo:@{kNotificationUserInfoMessage:addString}];
     // Set up task, pipe, and file handle
     NSTask *autoPkgRepoAddTask = [[NSTask alloc] init];
     NSPipe *autoPkgRepoAddPipe = [NSPipe pipe];
@@ -116,14 +120,37 @@
     [autoPkgRepoAddTask setLaunchPath:launchPath];
     [autoPkgRepoAddTask setArguments:args];
     [autoPkgRepoAddTask setStandardOutput:autoPkgRepoAddPipe];
+    [autoPkgRepoAddTask setStandardError:[NSPipe pipe]];
+
+    autoPkgRepoAddTask.terminationHandler = ^(NSTask *aTask) {
+        NSError *error = nil;
+        NSData *errData = [[aTask.standardError fileHandleForReading ]readDataToEndOfFile];
+        NSString *errString = [[NSString alloc]initWithData:errData encoding:NSASCIIStringEncoding];
+        // autopkg's rc on a failed repo-update is 0, so check the stderr for "ERROR" string
+        if ([errString rangeOfString:@"ERROR"].location != NSNotFound) {
+            error = [NSError errorWithDomain:[[NSBundle mainBundle] bundleIdentifier]
+                                        code:1
+                                    userInfo:@{NSLocalizedDescriptionKey:@"Error adding repo",
+                                               NSLocalizedRecoverySuggestionErrorKey:errString,
+                                               }];
+        }
+        [[NSNotificationCenter defaultCenter]postNotificationName:kProgressStopNotification
+                                                           object:self
+                                                         userInfo:error ? @{kNotificationUserInfoError:error}:nil];
+    };
 
     // Launch the task
     [autoPkgRepoAddTask launch];
     [autoPkgRepoAddTask waitUntilExit];
+    
 }
 
 - (void)removeAutoPkgRecipeRepo:(NSString *)repoURL
 {
+    [[NSNotificationCenter defaultCenter] postNotificationName:kProgressStartNotification
+                                                        object:nil
+                                                      userInfo:@{kNotificationUserInfoMessage:@"Removing Repo"}];
+
     // Set up task and pipe
     NSTask *autoPkgRepoRemoveTask = [[NSTask alloc] init];
     NSPipe *autoPkgRepoRemovePipe = [NSPipe pipe];
@@ -136,17 +163,35 @@
     [autoPkgRepoRemoveTask setLaunchPath:launchPath];
     [autoPkgRepoRemoveTask setArguments:args];
     [autoPkgRepoRemoveTask setStandardOutput:autoPkgRepoRemovePipe];
+    [autoPkgRepoRemoveTask setStandardError:[NSPipe pipe]];
+
+    autoPkgRepoRemoveTask.terminationHandler = ^(NSTask *aTask) {
+        NSError *error = nil;
+        NSData *errData = [[aTask.standardError fileHandleForReading ]readDataToEndOfFile];
+        NSString *errString = [[NSString alloc]initWithData:errData encoding:NSASCIIStringEncoding];
+        // autopkg's rc on a failed repo-update is 0, so check the stderr for "ERROR" string
+        if ([errString rangeOfString:@"ERROR"].location != NSNotFound) {
+            error = [NSError errorWithDomain:[[NSBundle mainBundle] bundleIdentifier]
+                                        code:1
+                                    userInfo:@{NSLocalizedDescriptionKey:@"Error removing repo",
+                                               NSLocalizedRecoverySuggestionErrorKey:errString,
+                                               }];
+        }
+        [[NSNotificationCenter defaultCenter]postNotificationName:kProgressStopNotification
+                                                           object:self
+                                                         userInfo:error ? @{kNotificationUserInfoError:error}:nil];
+    };
 
     // Launch the task
     [autoPkgRepoRemoveTask launch];
     [autoPkgRepoRemoveTask waitUntilExit];
+
 }
 
 - (void)updateAutoPkgRecipeRepos
 {
     // Set up task and pipe
     NSTask *updateAutoPkgReposTask = [[NSTask alloc] init];
-    NSPipe *updateAutoPkgReposPipe = [NSPipe pipe];
 
     // Set up launch path and args
     NSString *launchPath = @"/usr/bin/python";
@@ -155,7 +200,26 @@
     // Configure the task
     [updateAutoPkgReposTask setLaunchPath:launchPath];
     [updateAutoPkgReposTask setArguments:args];
-    [updateAutoPkgReposTask setStandardOutput:updateAutoPkgReposPipe];
+    [updateAutoPkgReposTask setStandardOutput:[NSPipe pipe]];
+    [updateAutoPkgReposTask setStandardError:[NSPipe pipe]];
+
+    updateAutoPkgReposTask.terminationHandler = ^(NSTask *aTask) {
+        NSError *error;
+        NSData *errData = [[aTask.standardError fileHandleForReading ]readDataToEndOfFile];
+        NSString *errString = [[NSString alloc]initWithData:errData encoding:NSASCIIStringEncoding];
+        // autopkg's rc on a failed repo-update is 0, so check the stderr for "ERROR" string
+        if ([errString rangeOfString:@"ERROR"].location != NSNotFound) {
+            error = [NSError errorWithDomain:[[NSBundle mainBundle] bundleIdentifier]
+                                        code:1
+                                    userInfo:@{NSLocalizedDescriptionKey:@"Error updating autopkg repos",
+                                               NSLocalizedRecoverySuggestionErrorKey:errString,
+                                               }];
+        }
+
+        [[NSNotificationCenter defaultCenter]postNotificationName:kUpdateReposCompleteNotification
+                                                           object:self
+                                                         userInfo:error ? @{kNotificationUserInfoError:error}:nil];
+    };
 
     // Launch the task
     [updateAutoPkgReposTask launch];
@@ -172,22 +236,52 @@
     NSString *launchPath = @"/usr/bin/python";
     NSArray *args = [NSArray arrayWithObjects:@"/usr/local/bin/autopkg", @"run", @"--report-plist", @"--recipe-list", [NSString stringWithFormat:@"%@", recipeListPath], nil];
 
+    autoPkgRunTask.terminationHandler = ^(NSTask *aTask) {
+        NSError *error;
+        if (aTask.terminationStatus != 0) {
+            NSString *errString;
+            if(aTask.terminationStatus == 255){
+                errString = @"No Recipes Specified.";
+            }else{
+                NSData *errData = [[aTask.standardError fileHandleForReading ]readDataToEndOfFile];
+                if ( errData ){
+                    errString = [[NSString alloc]initWithData:errData encoding:NSASCIIStringEncoding];
+                }
+            }
+            error = [NSError errorWithDomain:[[NSBundle mainBundle] bundleIdentifier]
+                                        code:aTask.terminationStatus
+                                    userInfo:@{NSLocalizedDescriptionKey:@"Error running autopkg",
+                                               NSLocalizedRecoverySuggestionErrorKey:errString,}];
+        }
+        
+        [[NSNotificationCenter defaultCenter]postNotificationName:kRunAutoPkgCompleteNotification
+                                                           object:self
+                                                         userInfo:error ? @{kNotificationUserInfoError:error}:nil];
+    };
+
     // Configure the task
     [autoPkgRunTask setLaunchPath:launchPath];
     [autoPkgRunTask setArguments:args];
     [autoPkgRunTask setStandardOutput:autoPkgRunPipe];
+    [autoPkgRunTask setStandardError:[NSPipe pipe]];
 
+    [autoPkgRunTask.standardOutput fileHandleForReading].readabilityHandler = ^(NSFileHandle *handle) {
+        NSString *string = [[NSString alloc ] initWithData:[handle availableData] encoding:NSASCIIStringEncoding];
+        [[NSNotificationCenter defaultCenter] postNotificationName:kProgressMessageUpdateNotification
+                                                            object:nil
+                                                          userInfo:@{kNotificationUserInfoMessage: string}];
+    };
+    
     // Launch the task
     [autoPkgRunTask launch];
 
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    if ([defaults objectForKey:kSendEmailNotificationsWhenNewVersionsAreFoundEnabled]) {
-        BOOL sendEmailNotificationsWhenNewVersionsAreFoundEnabled = [[defaults objectForKey:kSendEmailNotificationsWhenNewVersionsAreFoundEnabled] boolValue];
-        if (sendEmailNotificationsWhenNewVersionsAreFoundEnabled) {
-            // Read our data from the fileHandle
-            NSData *autoPkgRunReportPlistData = [fileHandle readDataToEndOfFile];
-            // Init our string with data from the fileHandle
-            NSString *autoPkgRunReportPlistString = [[NSString alloc] initWithData:autoPkgRunReportPlistData encoding:NSUTF8StringEncoding];
+    if ([defaults boolForKey:kSendEmailNotificationsWhenNewVersionsAreFoundEnabled]) {
+        // Read our data from the fileHandle
+        NSData *autoPkgRunReportPlistData = [fileHandle readDataToEndOfFile];
+        // Init our string with data from the fileHandle
+        NSString *autoPkgRunReportPlistString = [[NSString alloc] initWithData:autoPkgRunReportPlistData encoding:NSUTF8StringEncoding];
+        if (![autoPkgRunReportPlistString isEqualToString:@""]){
             // Convert string back to data for plist serialization
             NSData *plistData = [autoPkgRunReportPlistString dataUsingEncoding:NSUTF8StringEncoding];
             // Initialize our error object
@@ -195,6 +289,7 @@
             // Initialize plist format
             NSPropertyListFormat format;
             // Initialize our dict
+
             NSDictionary *plist = [NSPropertyListSerialization propertyListWithData:plistData options:NSPropertyListImmutable format:&format error:&error];
             NSLog(@"This is our plist: %@.", plist);
 
@@ -230,10 +325,10 @@
                     }
                     [newDownloadsArray addObject:newDownloadDict];
                 }
-                
+
                 NSLog(@"New software was downloaded. Sending an email alert.");
                 [self sendNewDowloadsEmail:newDownloadsArray];
-                
+
             } else {
                 NSLog(@"Nothing new was downloaded.");
             }
@@ -253,7 +348,7 @@
     }
 
     // Create the subject string
-    NSString *subject = [NSString stringWithFormat:@"[%@] The Following Software is Now Available for Testing (%@)", kApplicationName, [apps componentsJoinedByString:@", "]];
+    NSString *subject = [NSString stringWithFormat:@"[%@] The Following Software Is Now Available for Testing (%@)", kApplicationName, [apps componentsJoinedByString:@", "]];
 
     // Create the message string
     NSMutableString *newDownloadsString = [NSMutableString string];
