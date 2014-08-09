@@ -49,10 +49,10 @@
 @property (nonatomic) NSInteger autoPkgRunInterval;
 @property (copy, nonatomic) NSString *autoPkgCacheDir;
 @property (copy, nonatomic) NSString *munkiRepo;
-@property (copy, nonatomic,readonly) NSString *autoPkgRecipeRepoDir;
-@property (copy, nonatomic,readonly) NSArray *autoPkgRecipeSearchDirs;
-@property (copy, nonatomic,readonly) NSDictionary *autoPkgRecipeRepos;
+@property (copy, nonatomic, readonly) NSString *autoPkgRecipeRepoDir;
+@property (copy, nonatomic, readonly) NSArray *autoPkgRecipeSearchDirs;
+@property (copy, nonatomic, readonly) NSDictionary *autoPkgRecipeRepos;
 
 #pragma Class Methods
-+ (BOOL)fixRelativePathsInAutoPkgDefaults;
++ (BOOL)fixRelativePathsInAutoPkgDefaults:(NSError *__autoreleasing *)error;
 @end

@@ -232,46 +232,91 @@
 //
 
 #pragma Class Methods
-+ (BOOL)fixRelativePathsInAutoPkgDefaults
++ (BOOL)fixRelativePathsInAutoPkgDefaults:(NSError *__autoreleasing *)error
 {
     LGDefaults *defaults = [LGDefaults new];
-
     BOOL neededFixing = NO;
+
+    // Check the RECIPE_REPO_DIR key
     if ([[defaults.autoPkgRecipeRepoDir pathComponents].firstObject isEqualToString:@"~"]) {
-        NSLog(@"%@", [defaults.autoPkgRecipeRepoDir stringByExpandingTildeInPath]);
         defaults.autoPkgRecipeRepoDir = defaults.autoPkgRecipeRepoDir.stringByExpandingTildeInPath;
         neededFixing = YES;
     }
 
-    NSMutableArray *newRecipeSearchDirs = [NSMutableArray new];
+    // Check the RECIPE_SEARCH_DIRS array
+    // NSSet is used her so that only unique items are listed in the array.
+    NSMutableSet *newRecipeSearchDirs = [NSMutableSet new];
     for (NSString *dir in defaults.autoPkgRecipeSearchDirs) {
-        if ([[dir pathComponents].firstObject isEqualToString:@"~"]) {
-            [newRecipeSearchDirs addObject:[dir stringByExpandingTildeInPath]];
-            neededFixing = YES;
-        } else if ([dir length] > 1 && [[dir substringToIndex:2] isEqualToString:@"/~"]) {
-            [newRecipeSearchDirs addObject:[[dir substringFromIndex:1] stringByExpandingTildeInPath]];
+        NSString *repairedDir;
+        NSArray *splitDir = [dir componentsSeparatedByString:@"~"];
+        // If we've got a count that's greater than 1 we found a ~
+        if (splitDir.count > 1) {
+            // Take the last item in the array and just append that to the home directory
+            repairedDir = [NSHomeDirectory() stringByAppendingString:splitDir.lastObject];
             neededFixing = YES;
         } else {
-            [newRecipeSearchDirs addObject:dir];
+            repairedDir = dir;
         }
+        [newRecipeSearchDirs addObject:repairedDir];
     }
-    defaults.autoPkgRecipeSearchDirs = newRecipeSearchDirs;
+    defaults.autoPkgRecipeSearchDirs = [newRecipeSearchDirs allObjects];
 
     NSMutableDictionary *newRecipeRepos = [NSMutableDictionary new];
     for (NSString *key in defaults.autoPkgRecipeRepos.allKeys) {
-        if ([[key pathComponents].firstObject isEqualToString:@"~"]) {
-            [newRecipeRepos setObject:defaults.autoPkgRecipeRepos[key] forKey:[key stringByExpandingTildeInPath]];
-            neededFixing = YES;
-        } else if ([key length] > 1 && [[key substringToIndex:2] isEqualToString:@"/~"]) {
-            [newRecipeRepos setObject:defaults.autoPkgRecipeRepos[key] forKey:[[key substringFromIndex:1] stringByExpandingTildeInPath]];
+        NSString *repairedKey;
+        NSArray *splitKey = [key componentsSeparatedByString:@"~"];
+        // If we've got a count that's greater than 1 we found a ~
+        if (splitKey.count > 1) {
+            // Take the last item in the array and just append that to the home directory
+            repairedKey = [NSHomeDirectory() stringByAppendingString:splitKey.lastObject];
+            if (![self moveRepoFrom:key to:repairedKey]) {
+                // If a bad repo was found but could not be moved, do not add it to the list.
+                NSLog(@"The repo could not be migrated, it will not get added to the list.");
+                repairedKey = nil;
+            }
             neededFixing = YES;
         } else {
-            [newRecipeRepos setObject:defaults.autoPkgRecipeRepos[key] forKey:key];
+            repairedKey = key;
+        }
+        if (repairedKey) {
+            [newRecipeRepos setObject:defaults.autoPkgRecipeRepos[key] forKey:repairedKey];
         }
     }
     defaults.autoPkgRecipeRepos = newRecipeRepos;
     [defaults synchronize];
     return neededFixing;
+}
+
++ (BOOL)moveRepoFrom:(NSString *)fromPath to:(NSString *)toPath
+{
+    NSFileManager *manager = [NSFileManager new];
+    // If the dest is a git repo everything is most likely fine
+    if (![manager fileExistsAtPath:[toPath stringByAppendingPathComponent:@".git"]]) {
+        // If the source is a git repo try and move it to the dest
+        if ([manager fileExistsAtPath:[fromPath stringByAppendingPathComponent:@".git"]]) {
+            // If the folder exists and looks like a recipe repo
+            // try and remove it
+            if ([manager fileExistsAtPath:toPath] &&
+                [toPath rangeOfString:@"recipes"].location != NSNotFound) {
+                NSLog(@"We found an item at %@ that needs to be removed", toPath);
+                [manager removeItemAtPath:toPath error:nil];
+            } else {
+                // There is something realy wrong with the toPath, abort
+                NSLog(@"Somthing is wrong with the RECIPE_REPO path: %@", toPath);
+                NSLog(@"The folder exists, but dose not look like an actual recipe repo");
+                return NO;
+            }
+            NSLog(@"Copying repo from %@ to %@", fromPath, toPath);
+
+            return [manager moveItemAtPath:fromPath toPath:toPath error:nil];
+        }
+        // However if the source is not a git repo return NO so it won't get added to the repo list
+        else {
+            return NO;
+        }
+    }
+    NSLog(@"Repo already exists at %@, no need to migrate", toPath);
+    return YES;
 }
 
 @end
