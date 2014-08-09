@@ -21,20 +21,21 @@
 
 #import "LGAppDelegate.h"
 #import "LGConstants.h"
+#import "LGDefaults.h"
 #import "LGConfigurationWindowController.h"
 
 @implementation LGAppDelegate
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    LGDefaults *defaults = [LGDefaults new];
 
     // Setup the status item
     [self setupStatusItem];
 
-    if (![defaults boolForKey:kHasCompletedInitialSetup]) {
+    if (!defaults.hasCompletedInitialSetup) {
         [self showConfigurationWindow:nil];
-        [defaults setObject:@YES forKey:kHasCompletedInitialSetup];
+        defaults.HasCompletedInitialSetup = YES;
     }
 
     // Start the AutoPkg run timer if the user enabled it
@@ -42,7 +43,7 @@
 
     // Update AutoPkg recipe repos when the application launches
     // if the user has enabled automatic repo updates
-    if ([defaults boolForKey:kCheckForRepoUpdatesAutomaticallyEnabled]) {
+    if (defaults.checkForNewVersionsOfAppsAutomaticallyEnabled) {
         NSLog(@"Updating AutoPkg recipe repos.");
         [self updateAutoPkgRecipeReposInBackgroundAtAppLaunch];
     }
@@ -89,9 +90,9 @@
 
 - (NSApplicationTerminateReply)applicationShouldTerminate:(NSApplication *)sender
 {
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    LGDefaults *defaults = [LGDefaults new];
 
-    if ([defaults boolForKey:kWarnBeforeQuittingEnabled]) {
+    if (defaults.warnBeforeQuittingEnabled) {
         NSAlert *alert = [[NSAlert alloc] init];
         [alert addButtonWithTitle:@"Quit"];
         [alert addButtonWithTitle:@"Cancel"];

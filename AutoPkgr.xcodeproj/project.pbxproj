@@ -38,6 +38,7 @@
 		6A53625D1988BE59008A949C /* LGTestPort.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A53625C1988BE59008A949C /* LGTestPort.m */; };
 		8B6A3199195B7AC1007A7A16 /* linde-logo@400px.png in Resources */ = {isa = PBXBuildFile; fileRef = 8B6A3198195B7AC1007A7A16 /* linde-logo@400px.png */; };
 		8BB217F619709A2C00EF8B93 /* AutoPkgrIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 8BB217F519709A2C00EF8B93 /* AutoPkgrIcon.png */; };
+		BE87994B1995BA410082472B /* LGDefaults.m in Sources */ = {isa = PBXBuildFile; fileRef = BE87994A1995BA410082472B /* LGDefaults.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -156,6 +157,8 @@
 		6A53625C1988BE59008A949C /* LGTestPort.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGTestPort.m; sourceTree = "<group>"; };
 		8B6A3198195B7AC1007A7A16 /* linde-logo@400px.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "linde-logo@400px.png"; sourceTree = "<group>"; };
 		8BB217F519709A2C00EF8B93 /* AutoPkgrIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = AutoPkgrIcon.png; sourceTree = "<group>"; };
+		BE8799491995BA410082472B /* LGDefaults.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGDefaults.h; sourceTree = "<group>"; };
+		BE87994A1995BA410082472B /* LGDefaults.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGDefaults.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -305,6 +308,8 @@
 				1AC86D3C195E0AC6006FDD2B /* LGHostInfo.m */,
 				1A1BAD9C197A4133008192A7 /* LGGitHubJSONLoader.h */,
 				1A1BAD9D197A4133008192A7 /* LGGitHubJSONLoader.m */,
+				BE8799491995BA410082472B /* LGDefaults.h */,
+				BE87994A1995BA410082472B /* LGDefaults.m */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -488,6 +493,7 @@
 				1AC6955D195B59EE00D2BD81 /* main.m in Sources */,
 				6A53625D1988BE59008A949C /* LGTestPort.m in Sources */,
 				1AC69564195B59EE00D2BD81 /* LGAppDelegate.m in Sources */,
+				BE87994B1995BA410082472B /* LGDefaults.m in Sources */,
 				1AC9840A195CE7D60071CAB3 /* LGConstants.m in Sources */,
 				1AC98416195CE99E0071CAB3 /* SSKeychain.m in Sources */,
 				1A979FE01960BCCC00EE9881 /* LGUnzipper.m in Sources */,
