@@ -110,7 +110,7 @@
 //
 - (NSArray *)SMTPTo
 {
-    return [self objectForKey:kSMTPUsername];
+    return [self objectForKey:kSMTPTo];
 }
 //
 - (void)setSMTPTo:(NSArray *)SMTPTo
@@ -130,7 +130,7 @@
 //
 - (BOOL)SMTPAuthenticationEnabled
 {
-    return [self boolForKey:kSMTPTLSEnabled];
+    return [self boolForKey:kSMTPAuthenticationEnabled];
 }
 - (void)setSMTPAuthenticationEnabled:(BOOL)SMTPAuthenticationEnabled
 {
