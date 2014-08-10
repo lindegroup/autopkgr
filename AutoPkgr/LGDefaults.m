@@ -192,6 +192,14 @@
 {
     [_autoPkgDefaults setObject:autoPkgCacheDir forKey:@"CACHE_DIR"];
 }
+- (NSString *)autoPkgRecipeOverridesDir
+{
+    return [_autoPkgDefaults objectForKey:@"RECIPE_OVERRIDE_DIRS"];
+}
+- (void)setAutoPkgRecipeOverridesDir:(NSString *)autoPkgRecipeOverridesDir
+{
+    [_autoPkgDefaults setObject:autoPkgRecipeOverridesDir forKey:@"RECIPE_OVERRIDE_DIRS"];
+}
 //
 - (NSString *)autoPkgRecipeRepoDir
 {

@@ -48,6 +48,7 @@
 #pragma mark - AutoPkg Defaults
 @property (nonatomic) NSInteger autoPkgRunInterval;
 @property (copy, nonatomic) NSString *autoPkgCacheDir;
+@property (copy, nonatomic) NSString *autoPkgRecipeOverridesDir;
 @property (copy, nonatomic) NSString *munkiRepo;
 @property (copy, nonatomic, readonly) NSString *autoPkgRecipeRepoDir;
 @property (copy, nonatomic, readonly) NSArray *autoPkgRecipeSearchDirs;
