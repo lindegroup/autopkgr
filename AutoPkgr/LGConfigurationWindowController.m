@@ -86,7 +86,7 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
     self = [super initWithWindow:window];
     if (self) {
         // Initialization code here.
-        defaults = [[LGDefaults alloc] init];
+        defaults = [LGDefaults new];
         NSNotificationCenter *ndc = [NSNotificationCenter defaultCenter];
         [ndc addObserver:self selector:@selector(startProgressNotificationReceived:) name:kProgressStartNotification object:nil];
         [ndc addObserver:self selector:@selector(stopProgressNotificationReceived:) name:kProgressStopNotification object:nil];
