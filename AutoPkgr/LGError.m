@@ -107,7 +107,7 @@ static NSString *errorMessageFromAutoPkgVerb(LGAutoPkgrVerb verb)
         *error = err;
     else
         DLog(@"Error: %@", err.localizedDescription);
-    return (code != kLGErrorSuccess);
+    return (code == kLGErrorSuccess);
 }
 
 + (NSError *)errorWithCode:(LGErrorCodes)code
@@ -129,8 +129,8 @@ static NSString *errorMessageFromAutoPkgVerb(LGAutoPkgrVerb verb)
     if (error && taskError) {
         *error = taskError;
     }
-    // if we have a Task error return YES if the taskError codes is not 0, otherwise NO
-    return taskError ? taskError.code != kLGErrorSuccess : NO;
+    // if we have a Task error return YES if the taskError codes is 0, otherwise NO
+    return taskError ? taskError.code == kLGErrorSuccess : NO;
 }
 
 + (NSError *)errorWithTaskError:(NSTask *)task verb:(LGAutoPkgrVerb)verb
