@@ -121,7 +121,6 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
     [checkForNewVersionsOfAppsAutomaticallyButton setAction:@selector(changeCheckForNewVersionsOfAppsAutomaticallyButtonState)];
     [checkForRepoUpdatesAutomaticallyButton setTarget:self];
     [checkForRepoUpdatesAutomaticallyButton setAction:@selector(changeCheckForRepoUpdatesAutomaticallyButtonState)];
-    
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
@@ -177,9 +176,9 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
 {
     [super windowDidLoad];
 
-	// Hide the configuration window
-	[self.window orderOut:nil];
-	
+    // Hide the configuration window
+    [self.window orderOut:nil];
+
     // Populate the preference values from the user defaults if they exist
 
     if ([defaults objectForKey:kAutoPkgRunInterval]) {
@@ -345,7 +344,7 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
     // Handle Spinner
     [sendTestEmailSpinner stopAnimation:self]; // stop animation
     [sendTestEmailSpinner setHidden:YES]; // hide spinner
-    
+
     NSError *e = [[notification userInfo] objectForKey:kEmailSentNotificationError]; // pull the error out of the userInfo dictionary
     if (e) {
         NSLog(@"Unable to send test email. Error: %@", e);
@@ -360,8 +359,7 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
 
 - (void)testSmtpServerPort:(id)sender
 {
-    if (![[smtpServer stringValue] isEqualToString:@""] && [smtpPort integerValue
-                                                            ] > 0 ) {
+    if (![[smtpServer stringValue] isEqualToString:@""] && [smtpPort integerValue] > 0) {
 
         NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
 
@@ -726,7 +724,7 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
     if ([notification.userInfo[kNotificationUserInfoError] isKindOfClass:[NSError class]]) {
         error = notification.userInfo[kNotificationUserInfoError];
     }
-    
+
     [self stopProgress:error];
     [self.updateRepoNowButton setEnabled:YES];
 }
@@ -757,7 +755,6 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
     }
     [self stopProgress:error];
     [self.checkAppsNowButton setEnabled:YES];
-
 }
 
 - (IBAction)chooseLocalMunkiRepo:(id)sender
@@ -890,7 +887,6 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
     [defaults synchronize];
 }
 
-
 - (void)changeWarnBeforeQuittingButtonState
 {
     if ([warnBeforeQuittingButton state] == NSOnState) {
@@ -955,11 +951,10 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
 - (void)updateProgressNotificationReceived:(NSNotification *)notification
 {
     [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-        NSString *message = @"";
         if ([notification.userInfo[kNotificationUserInfoMessage] isKindOfClass:[NSString class]]) {
-             message = notification.userInfo[kNotificationUserInfoMessage];
+            NSString *message = notification.userInfo[kNotificationUserInfoMessage];
+            self.progressDetailsMessage.stringValue = message;
         }
-        self.progressMessage.stringValue = message;
     }];
 }
 
@@ -1001,6 +996,7 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
         [self.progressPanel orderOut:self];
         [NSApp endSheet:self.progressPanel returnCode:0];
         [self.progressMessage setStringValue:@"Starting..."];
+        [self.progressDetailsMessage setStringValue:@""];
         if (error) {
             [[NSAlert alertWithError:error] beginSheetModalForWindow:self.window
                                                        modalDelegate:self
@@ -1009,7 +1005,6 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
         }
     }];
 }
-
 
 - (BOOL)windowShouldClose:(id)sender
 {
