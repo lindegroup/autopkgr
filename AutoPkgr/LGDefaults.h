@@ -55,5 +55,5 @@
 @property (copy, nonatomic, readonly) NSDictionary *autoPkgRecipeRepos;
 
 #pragma Class Methods
-+ (BOOL)fixRelativePathsInAutoPkgDefaults:(NSError *__autoreleasing *)error;
++ (BOOL)fixRelativePathsInAutoPkgDefaults:(NSError **)error neededFixing:(NSInteger *)neededFixing;
 @end

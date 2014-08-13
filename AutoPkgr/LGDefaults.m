@@ -240,19 +240,21 @@
 //
 
 #pragma Class Methods
-+ (BOOL)fixRelativePathsInAutoPkgDefaults:(NSError *__autoreleasing *)error
++ (BOOL)fixRelativePathsInAutoPkgDefaults:(NSError *__autoreleasing *)error neededFixing:(NSInteger *)neededFixing
 {
     LGDefaults *defaults = [LGDefaults new];
-    BOOL neededFixing = NO;
+    NSInteger pathRepaired = 0;
+    NSInteger errorEncountered = 0;
 
+    NSFileManager *manager = [NSFileManager new];
     // Check the RECIPE_REPO_DIR key
     if ([[defaults.autoPkgRecipeRepoDir pathComponents].firstObject isEqualToString:@"~"]) {
         defaults.autoPkgRecipeRepoDir = defaults.autoPkgRecipeRepoDir.stringByExpandingTildeInPath;
-        neededFixing = YES;
+        pathRepaired++;
     }
 
     // Check the RECIPE_SEARCH_DIRS array
-    // NSSet is used her so that only unique items are listed in the array.
+    // NSSet is used here so that only unique items are listed in the array.
     NSMutableSet *newRecipeSearchDirs = [NSMutableSet new];
     for (NSString *dir in defaults.autoPkgRecipeSearchDirs) {
         NSString *repairedDir;
@@ -261,11 +263,17 @@
         if (splitDir.count > 1) {
             // Take the last item in the array and just append that to the home directory
             repairedDir = [NSHomeDirectory() stringByAppendingString:splitDir.lastObject];
-            neededFixing = YES;
         } else {
             repairedDir = dir;
         }
-        [newRecipeSearchDirs addObject:repairedDir];
+        BOOL isDir;
+        // Check to make sure the new directory actually exists
+        if ([manager fileExistsAtPath:dir isDirectory:&isDir] && isDir) {
+            [newRecipeSearchDirs addObject:repairedDir];
+            pathRepaired++;
+        } else {
+            errorEncountered = YES;
+        }
     }
     defaults.autoPkgRecipeSearchDirs = [newRecipeSearchDirs allObjects];
 
@@ -279,20 +287,32 @@
             repairedKey = [NSHomeDirectory() stringByAppendingString:splitKey.lastObject];
             if (![self moveRepoFrom:key to:repairedKey]) {
                 // If a bad repo was found but could not be moved, do not add it to the list.
-                NSLog(@"The repo could not be migrated, it will not get added to the list.");
                 repairedKey = nil;
+                errorEncountered = YES;
             }
-            neededFixing = YES;
         } else {
             repairedKey = key;
         }
-        if (repairedKey) {
-            [newRecipeRepos setObject:defaults.autoPkgRecipeRepos[key] forKey:repairedKey];
+        BOOL isDir;
+        if ([manager fileExistsAtPath:key isDirectory:&isDir] && isDir) {
+            if (defaults.autoPkgRecipeRepos[key] && repairedKey) {
+                [newRecipeRepos setObject:defaults.autoPkgRecipeRepos[key] forKey:repairedKey];
+                pathRepaired++;
+            }
+        } else {
+            errorEncountered = YES;
         }
     }
     defaults.autoPkgRecipeRepos = newRecipeRepos;
     [defaults synchronize];
-    return neededFixing;
+
+    // Populate the pointers if needed
+    if (neededFixing)
+        *neededFixing = pathRepaired;
+    if (errorEncountered) {
+        return [LGError errorWithCode:kLGErrorReparingAutoPkgPrefs error:error];
+    }
+    return YES;
 }
 
 + (BOOL)moveRepoFrom:(NSString *)fromPath to:(NSString *)toPath
