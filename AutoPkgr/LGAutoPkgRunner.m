@@ -125,7 +125,7 @@
     autoPkgRepoAddTask.terminationHandler = ^(NSTask *aTask) {
         NSError *error;
         NSDictionary *userInfo;
-        if ([LGError errorWithTaskError:aTask verb:kLGAutoPkgrRepoAdd error:&error]) {
+        if (![LGError errorWithTaskError:aTask verb:kLGAutoPkgrRepoAdd error:&error]) {
             userInfo = @{kNotificationUserInfoError:error};
         }
         [[NSNotificationCenter defaultCenter]postNotificationName:kProgressStopNotification
@@ -161,7 +161,7 @@
     autoPkgRepoRemoveTask.terminationHandler = ^(NSTask *aTask) {
         NSError *error;
         NSDictionary *userInfo;
-        if ([LGError errorWithTaskError:aTask verb:kLGAutoPkgrRepoDelete error:&error]) {
+        if (![LGError errorWithTaskError:aTask verb:kLGAutoPkgrRepoDelete error:&error]) {
             userInfo = @{kNotificationUserInfoError:error};
         }
         [[NSNotificationCenter defaultCenter]postNotificationName:kProgressStopNotification
@@ -192,7 +192,7 @@
     updateAutoPkgReposTask.terminationHandler = ^(NSTask *aTask) {
         NSDictionary *userInfo;
         NSError *error;
-        if ([LGError errorWithTaskError:aTask verb:kLGAutoPkgrRepoUpdate error:&error]) {
+        if (![LGError errorWithTaskError:aTask verb:kLGAutoPkgrRepoUpdate error:&error]) {
             userInfo = @{kNotificationUserInfoError:error};
         }
 
@@ -219,7 +219,7 @@
     autoPkgRunTask.terminationHandler = ^(NSTask *aTask) {
         NSDictionary *userInfo = nil;
         NSError *error;
-        if ([LGError errorWithTaskError:aTask verb:kLGAutoPkgrRun error:&error]) {
+        if (![LGError errorWithTaskError:aTask verb:kLGAutoPkgrRun error:&error]) {
             userInfo = @{kNotificationUserInfoError:error};
         }
         [[NSNotificationCenter defaultCenter]postNotificationName:kRunAutoPkgCompleteNotification
