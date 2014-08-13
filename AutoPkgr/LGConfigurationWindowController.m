@@ -784,7 +784,7 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
 {
     NSOpenPanel *chooseDialog = [self setupOpenPanel];
 
-    // Set the default directory to /Users/Shared
+    // Set the default directory to the user's ~/Library/AutoPkg/Cache"
     [chooseDialog setDirectoryURL:[NSURL URLWithString:[NSHomeDirectory() stringByAppendingPathComponent:@"Library/AutoPkg/Cache"]]];
 
     // Display the dialog. If the "Choose" button was
@@ -811,7 +811,7 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
 {
     NSOpenPanel *chooseDialog = [self setupOpenPanel];
 
-    // Set the default directory to /Users/Shared
+    // Set the default directory to the user's ~/Library/AutoPkg/RecipeOverrides"
     [chooseDialog setDirectoryURL:[NSURL URLWithString:[NSHomeDirectory() stringByAppendingPathComponent:@"Library/AutoPkg/RecipeOverrides"]]];
 
     // Display the dialog. If the "Choose" button was
@@ -1016,12 +1016,42 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
         [NSApp endSheet:self.progressPanel returnCode:0];
         [self.progressMessage setStringValue:@"Starting..."];
         if (error) {
-            [[NSAlert alertWithError:error] beginSheetModalForWindow:self.window
-                                                       modalDelegate:self
-                                                      didEndSelector:nil
-                                                         contextInfo:nil];
+            SEL selector = nil;
+            NSAlert *alert = [NSAlert alertWithError:error];
+            [alert addButtonWithTitle:@"OK"];
+            // Autopkg exits -1 it may be mis configured.
+            if(error.code == kLGErrorAutoPkgConfig){
+                [alert addButtonWithTitle:@"Try and repair settings"];
+                selector = @selector(didEndWithPreferenceRepairRequest:returnCode:);
+            }
+            
+            [alert beginSheetModalForWindow:self.window
+                              modalDelegate:self
+                             didEndSelector:selector
+                                contextInfo:nil];
         }
     }];
+}
+
+- (void)didEndWithPreferenceRepairRequest:(NSAlert *)alert returnCode:(NSInteger)returnCode
+{
+    if (returnCode == NSAlertSecondButtonReturn) {
+        NSError *error;
+        NSInteger neededFixing;
+        BOOL rc = [LGDefaults fixRelativePathsInAutoPkgDefaults:&error neededFixing:&neededFixing];
+        if (neededFixing > 0) {
+            NSAlert *alert = [NSAlert new];
+            alert.messageText = [NSString stringWithFormat:@"%ld problems were found in preference file", neededFixing];
+            alert.informativeText = rc ? @"and were successfully repaired" : @"some could not be repaired, if the problem consists create an issue on the AutoPkgr github page";
+            [alert beginSheetModalForWindow:self.window
+                              modalDelegate:self
+                             didEndSelector:nil
+                                contextInfo:nil];
+
+        } else {
+            DLog(@"No problems detected in preference file");
+        }
+    }
 }
 
 - (BOOL)windowShouldClose:(id)sender

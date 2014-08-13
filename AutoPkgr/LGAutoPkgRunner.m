@@ -198,7 +198,7 @@
 
         [[NSNotificationCenter defaultCenter]postNotificationName:kUpdateReposCompleteNotification
                                                            object:self
-                                                         userInfo:error ? @{kNotificationUserInfoError:error}:nil];
+                                                         userInfo:userInfo];
     };
 
     // Launch the task

@@ -23,10 +23,25 @@
 
 void DLog(NSString *format, ...);
 
+#pragma mark - AutoPkgr specific Error codes
 typedef NS_ENUM(NSInteger, LGErrorCodes) {
+    /** Success */
     kLGErrorSuccess,
+    /** Error when sending email fails */
     kLGErrorSendingEmail,
+    /** Error when testing port failed */
     kLGErrorTestingPort,
+    /** Error when some preferences could not be repaired, and values were removed */
+    kLGErrorReparingAutoPkgPrefs,
+};
+
+#pragma mark - AutoPkg specific Error codes
+typedef NS_ENUM(NSInteger, LGErrorAutoPkgCodes) {
+    /** Autopkg most often return -1 on misconfiguration errors */
+    kLGErrorAutoPkgConfig = -1,
+
+    /** Autopkg returns 255 if no recipe is specified */
+    kLGErrorAutoPkgNoRecipes = 255,
 };
 
 typedef NS_ENUM(NSInteger, LGAutoPkgrVerb) {
