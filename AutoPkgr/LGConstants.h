@@ -19,6 +19,8 @@
 //  limitations under the License.
 //
 
+#import "LGError.h"
+
 extern NSString *const kApplicationName;
 extern NSString *const kSMTPServer;
 extern NSString *const kSMTPPort;
