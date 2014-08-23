@@ -50,18 +50,22 @@
 
 - (NSArray *)getArrayFromJSONData:(NSData *)reqData
 {
-    // Initialize our error object
-    NSError *error = nil;
+    if (reqData != nil) {
+        // Initialize our error object
+        NSError *error = nil;
 
-    // Create an array from the JSON data
-    NSArray *arr = [[NSArray alloc] initWithArray:[NSJSONSerialization JSONObjectWithData:reqData options:NSJSONReadingMutableContainers error:&error]];
+        // Create an array from the JSON data
+        NSArray *arr = [[NSArray alloc] initWithArray:[NSJSONSerialization JSONObjectWithData:reqData options:NSJSONReadingMutableContainers error:&error]];
 
-    if (error) {
-        NSLog(@"NSJSONSerialization error when attempting to serialize JSON data from the GitHub API: Error: %@.", error);
-        return nil;
+        if (error) {
+            NSLog(@"NSJSONSerialization error when attempting to serialize JSON data from the GitHub API: Error: %@.", error);
+            return nil;
+        }
+
+        return arr;
     }
 
-    return arr;
+    return nil;
 }
 
 - (NSDictionary *)getLatestAutoPkgReleaseDictionary
