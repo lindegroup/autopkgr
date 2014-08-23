@@ -54,17 +54,16 @@
         // Initialize our error object
         NSError *error = nil;
 
-        // Create an array from the JSON data
-        NSArray *arr = [[NSArray alloc] initWithArray:[NSJSONSerialization JSONObjectWithData:reqData options:NSJSONReadingMutableContainers error:&error]];
-
-        if (error) {
+        // get the JSON object out of the data
+        id jsonObject = [NSJSONSerialization JSONObjectWithData:reqData options:NSJSONReadingMutableContainers error:&error];
+        
+        // Check that the object is an array, and if so set it return object
+        if ([jsonObject isKindOfClass:[NSArray class]]){
+            return jsonObject;
+        }else if (error) {
             NSLog(@"NSJSONSerialization error when attempting to serialize JSON data from the GitHub API: Error: %@.", error);
-            return nil;
         }
-
-        return arr;
     }
-
     return nil;
 }
 
