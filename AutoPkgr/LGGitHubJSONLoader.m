@@ -57,7 +57,7 @@
         // get the JSON object out of the data
         id jsonObject = [NSJSONSerialization JSONObjectWithData:reqData options:NSJSONReadingMutableContainers error:&error];
         
-        // Check that the object is an array, and if so set it return object
+        // Check that the object is an array, and if so return it
         if ([jsonObject isKindOfClass:[NSArray class]]){
             return jsonObject;
         }else if (error) {
