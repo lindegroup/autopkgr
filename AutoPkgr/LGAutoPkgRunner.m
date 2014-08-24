@@ -225,6 +225,9 @@
         [[NSNotificationCenter defaultCenter]postNotificationName:kRunAutoPkgCompleteNotification
                                                            object:self
                                                          userInfo:userInfo];
+        
+        // nil the readability handler so the file handle is properly cleaned up
+        [aTask.standardOutput fileHandleForReading].readabilityHandler = nil;
     };
 
     // Configure the task
