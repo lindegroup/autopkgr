@@ -551,14 +551,14 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
     NSTask *task = [[NSTask alloc] init];
 
     task.launchPath = @"/usr/bin/xcode-select";
-    task.arguments = @[ @"--install" ];
+    task.arguments = @[@"--install"];
     task.standardError = [NSPipe pipe];
 
     task.terminationHandler = ^(NSTask *aTask) {
         // TODO: We should probably be installing the official
         // Git PKG rather than dealing with the Xcode CLI tools
         [[NSOperationQueue mainQueue]addOperationWithBlock:^{
-            NSString *alertMessage = @"After the command line tools installation completes, click OK";
+            NSString *alertMessage = @"After the Command Line Tools installation completes, click OK";
             NSAlert *alert = [NSAlert alertWithMessageText:alertMessage
                                              defaultButton:@"OK"
                                            alternateButton:nil
@@ -566,19 +566,19 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
                                  informativeTextWithFormat:@""];
             
             if ([alert runModal] == NSAlertDefaultReturn){
-                [installGitButton setTitle:@"Install git"];
+                [installGitButton setTitle:@"Install Git"];
                 
                 LGHostInfo *hostInfo = [[LGHostInfo alloc] init];
                 if ([hostInfo gitInstalled]) {
                     [installGitButton setEnabled:NO];
                 }else {
-                    [installGitButton setTitle:@"Install git"];
+                    [installGitButton setTitle:@"Install Git"];
                     [installGitButton setEnabled:YES];
-                    alert = [NSAlert alertWithMessageText:@"There was a problem installing git"
-                                            defaultButton:@"Go get git"
+                    alert = [NSAlert alertWithMessageText:@"There was a problem installing Git!"
+                                            defaultButton:@"Go get Git!"
                                           alternateButton:@"Cancel"
                                               otherButton:nil
-                                informativeTextWithFormat:@"You can try and reinstall from here, or download and install the official version from http://git-scm.com/downloads"];
+                                informativeTextWithFormat:@"You can try to reinstall from here, or download and install the official version from http://git-scm.com/downloads."];
 
                     if ( [alert runModal] == NSAlertDefaultReturn) {
                         [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:@"http://git-scm.com/downloads"]];
