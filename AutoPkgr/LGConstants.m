@@ -31,6 +31,7 @@ NSString *const kSMTPTo = @"SMTPTo";
 NSString *const kAutoPkgRunInterval = @"AutoPkgRunInterval";
 NSString *const kLocalMunkiRepoPath = @"LocalMunkiRepoPath";
 NSString *const kAutoPkgReleasesJSONURL = @"https://api.github.com/repos/autopkg/autopkg/releases";
+NSString *const kAutoPkgRepositoriesJSONURL = @"https://api.github.com/orgs/autopkg/repos";
 NSString *const kSMTPTLSEnabled = @"SMTPTLSEnabled";
 NSString *const kSMTPAuthenticationEnabled = @"SMTPAuthenticationEnabled";
 NSString *const kWarnBeforeQuittingEnabled = @"WarnBeforeQuitting";

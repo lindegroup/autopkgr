@@ -30,29 +30,40 @@
     awake = NO;
     
     pkgRunner = [[LGAutoPkgRunner alloc] init];
-    
-    // popularRepos = [pkgRunner getLocalAutoPkgRecipeRepos];
-    popularRepos = [NSArray arrayWithObjects:@"https://github.com/autopkg/recipes.git",
-                                             @"https://github.com/autopkg/arubdesu-recipes.git",
-                                             @"https://github.com/autopkg/dankeller-recipes.git",
-                                             @"https://github.com/autopkg/derak-recipes.git",
-                                             @"https://github.com/autopkg/gerardkok-recipes.git",
-                                             @"https://github.com/autopkg/hansen-m-recipes.git",
-                                             @"https://github.com/autopkg/hjuutilainen-recipes.git",
-                                             @"https://github.com/autopkg/jaharmi-recipes.git",
-                                             @"https://github.com/autopkg/jessepeterson-recipes.git",
-                                             @"https://github.com/autopkg/jleggat-recipes.git",
-                                             @"https://github.com/autopkg/joshua-d-miller-recipes.git",
-                                             @"https://github.com/autopkg/jps3-recipes.git",
-                                             @"https://github.com/autopkg/keeleysam-recipes.git",
-                                             @"https://github.com/autopkg/lashomb-recipes.git",
-                                             @"https://github.com/autopkg/nmcspadden-recipes.git",
-                                             @"https://github.com/autopkg/rustymyers-recipes.git",
-                                             @"https://github.com/autopkg/scriptingosx-recipes.git",
-                                             @"https://github.com/autopkg/sheagcraig-recipes.git",
-                                             @"https://github.com/autopkg/swy-recipes.git",
-                                             @"https://github.com/autopkg/timsutton-recipes.git",
-                                             nil];
+    jsonLoader = [[LGGitHubJSONLoader alloc] init];
+
+    recipeRepos = [jsonLoader getAutoPkgRecipeRepos];
+
+    if (recipeRepos != nil) {
+        popularRepos = recipeRepos;
+    } else {
+        popularRepos = [NSArray arrayWithObjects:@"https://github.com/autopkg/recipes.git",
+                                                 @"https://github.com/autopkg/keeleysam-recipes.git",
+                                                 @"https://github.com/autopkg/hjuutilainen-recipes.git",
+                                                 @"https://github.com/autopkg/timsutton-recipes.git",
+                                                 @"https://github.com/autopkg/nmcspadden-recipes.git",
+                                                 @"https://github.com/autopkg/jleggat-recipes.git",
+                                                 @"https://github.com/autopkg/jaharmi-recipes.git",
+                                                 @"https://github.com/autopkg/jessepeterson-recipes.git",
+                                                 @"https://github.com/autopkg/dankeller-recipes.git",
+                                                 @"https://github.com/autopkg/hansen-m-recipes.git",
+                                                 @"https://github.com/autopkg/scriptingosx-recipes.git",
+                                                 @"https://github.com/autopkg/derak-recipes.git",
+                                                 @"https://github.com/autopkg/sheagcraig-recipes.git",
+                                                 @"https://github.com/autopkg/arubdesu-recipes.git",
+                                                 @"https://github.com/autopkg/jps3-recipes.git",
+                                                 @"https://github.com/autopkg/joshua-d-miller-recipes.git",
+                                                 @"https://github.com/autopkg/gerardkok-recipes.git",
+                                                 @"https://github.com/autopkg/swy-recipes.git",
+                                                 @"https://github.com/autopkg/lashomb-recipes.git",
+                                                 @"https://github.com/autopkg/rustymyers-recipes.git",
+                                                 @"https://github.com/autopkg/luisgiraldo-recipes.git",
+                                                 @"https://github.com/autopkg/justinrummel-recipes.git",
+                                                 @"https://github.com/autopkg/n8felton-recipes.git",
+                                                 @"https://github.com/autopkg/groob-recipes.git",
+                                                 @"https://github.com/autopkg/jazzace-recipes.git",
+                                                 nil];
+    }
     
     [self assembleRepos];
     

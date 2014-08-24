@@ -21,6 +21,7 @@
 
 #import <Foundation/Foundation.h>
 #import "LGAutoPkgRunner.h"
+#import "LGGitHubJSONLoader.h"
 #import "LGApplications.h"
 
 @interface LGPopularRepositories : NSObject <NSApplicationDelegate, NSTableViewDelegate, NSTableViewDataSource> {
@@ -28,11 +29,13 @@
     IBOutlet NSTableView *popularRepositoriesTableView;
     __weak NSSearchField *_repoSearch;
     __weak LGApplications *_appObject;
-    
+
+    NSArray *recipeRepos;
     NSArray *popularRepos;
     NSArray *activeRepos;
     NSArray *searchedRepos;
     LGAutoPkgRunner *pkgRunner;
+    LGGitHubJSONLoader *jsonLoader;
     BOOL awake;
 }
 
