@@ -23,8 +23,10 @@
 
 @interface LGGitHubJSONLoader : NSObject
 
-- (NSArray *)getAutoPkgReleasesJSON:(NSURL *)url;
+- (NSData *)getJSONFromURL:(NSURL *)url;
+- (NSArray *)getArrayFromJSONData:(NSData *)reqData;
 - (NSDictionary *)getLatestAutoPkgReleaseDictionary;
+- (NSArray *)getAutoPkgRecipeRepos;
 - (NSString *)getLatestAutoPkgReleaseVersionNumber;
 - (NSString *)getLatestAutoPkgDownloadURL;
 

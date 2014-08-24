@@ -24,7 +24,7 @@
 
 @implementation LGGitHubJSONLoader
 
-- (NSArray *)getAutoPkgReleasesJSON:(NSURL *)url
+- (NSData *)getJSONFromURL:(NSURL *)url
 {
     // Create the NSURLRequest object with the given URL
     NSURLRequest *req = [NSURLRequest requestWithURL:url
@@ -41,30 +41,84 @@
                                                         error:&error];
 
     if (error) {
-        NSLog(@"NSURLConnection error when attempting to get the latest AutoPkg releases from the GitHub API. Error: %@.", error);
+        NSLog(@"NSURLConnection error when attempting to get JSON data from the GitHub API. Error: %@.", error);
         return nil;
     }
 
-    // Create an array from the JSON data
-    NSArray *releases = [[NSArray alloc] initWithArray:[NSJSONSerialization JSONObjectWithData:reqData options:NSJSONReadingMutableContainers error:&error]];
+    return reqData;
+}
 
-    if (error) {
-        NSLog(@"NSJSONSerialization error when attempting to serialize JSON data from the GitHub API: Error: %@.", error);
-        return nil;
+- (NSArray *)getArrayFromJSONData:(NSData *)reqData
+{
+    if (reqData != nil) {
+        // Initialize our error object
+        NSError *error = nil;
+
+        // get the JSON object out of the data
+        id jsonObject = [NSJSONSerialization JSONObjectWithData:reqData options:NSJSONReadingMutableContainers error:&error];
+        
+        // Check that the object is an array, and if so return it
+        if ([jsonObject isKindOfClass:[NSArray class]]){
+            return jsonObject;
+        } else if (error) {
+            NSLog(@"NSJSONSerialization error when attempting to serialize JSON data from the GitHub API: Error: %@.", error);
+        }
     }
-    
-    return releases;
+    return nil;
 }
 
 - (NSDictionary *)getLatestAutoPkgReleaseDictionary
 {
     // Get the JSON data
-    NSArray *releasesArray = [self getAutoPkgReleasesJSON:[NSURL URLWithString:kAutoPkgReleasesJSONURL]];
+    NSArray *releasesArray = [self getArrayFromJSONData:[self getJSONFromURL:[NSURL URLWithString:kLGAutoPkgReleasesJSONURL]]];
 
     // GitHub returns the latest release from the API at index 0
     NSDictionary *latestVersionDict = [releasesArray objectAtIndex:0];
 
     return latestVersionDict;
+}
+
+- (NSArray *)getAutoPkgRecipeRepos
+{
+    // Assign the keys we'll be using
+    NSString *cloneURL = @"clone_url";
+    NSString *fullName = @"full_name";
+    NSString *stargazersCount = @"stargazers_count";
+
+    // Get the JSON data
+    NSArray *reposArray = [self getArrayFromJSONData:[self getJSONFromURL:[NSURL URLWithString:kLGAutoPkgRepositoriesJSONURL]]];
+    NSMutableArray *mutableArray = [[NSMutableArray alloc] init];
+
+    for (NSDictionary *dct in reposArray) {
+        // Create a mutable dictionary for our repo and star count
+        NSMutableDictionary *mutableDict = [[NSMutableDictionary alloc] init];
+
+        // Skip adding the clone URL and stargazers count if it's not a recipe repo
+        if ([[dct objectForKey:fullName] isEqual:@"autopkg/autopkg"]) {
+            continue;
+        }
+
+        [mutableDict setObject:[dct objectForKey:cloneURL] forKey:cloneURL];
+        [mutableDict setObject:[dct objectForKey:stargazersCount] forKey:stargazersCount];
+        [mutableArray addObject:mutableDict];
+    }
+
+    if ([mutableArray count]) {
+        NSSortDescriptor *stargazersCountDescriptor = [[NSSortDescriptor alloc]
+                                                       initWithKey:stargazersCount
+                                                       ascending:NO];
+        NSArray *descriptors = [NSArray arrayWithObjects:stargazersCountDescriptor, nil];
+        NSArray *sortedArrayOfDictionaries = [mutableArray sortedArrayUsingDescriptors:descriptors];
+
+        NSMutableArray *sortedArrayOfRepos = [[NSMutableArray alloc] init];
+        for (NSDictionary *sortedStarsAndRepos in sortedArrayOfDictionaries) {
+            [sortedArrayOfRepos addObject:[sortedStarsAndRepos objectForKey:cloneURL]];
+        }
+
+        return [NSArray arrayWithArray:sortedArrayOfRepos];
+    }
+
+    return nil;
 }
 
 - (NSString *)getLatestAutoPkgReleaseVersionNumber

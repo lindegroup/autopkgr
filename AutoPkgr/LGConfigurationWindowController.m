@@ -20,7 +20,7 @@
 //
 
 #import "LGConfigurationWindowController.h"
-#import "LGConstants.h"
+#import "LGAutoPkgr.h"
 #import "LGDefaults.h"
 #import "LGEmailer.h"
 #import "LGHostInfo.h"
@@ -88,9 +88,9 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
         // Initialization code here.
         defaults = [LGDefaults new];
         NSNotificationCenter *ndc = [NSNotificationCenter defaultCenter];
-        [ndc addObserver:self selector:@selector(startProgressNotificationReceived:) name:kProgressStartNotification object:nil];
-        [ndc addObserver:self selector:@selector(stopProgressNotificationReceived:) name:kProgressStopNotification object:nil];
-        [ndc addObserver:self selector:@selector(updateProgressNotificationReceived:) name:kProgressMessageUpdateNotification object:nil];
+        [ndc addObserver:self selector:@selector(startProgressNotificationReceived:) name:kLGNotificationProgressStart object:nil];
+        [ndc addObserver:self selector:@selector(stopProgressNotificationReceived:) name:kLGNotificationProgressStop object:nil];
+        [ndc addObserver:self selector:@selector(updateProgressNotificationReceived:) name:kLGNotificationProgressMessageUpdate object:nil];
     }
     return self;
 }
@@ -244,7 +244,7 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
     NSString *smtpUsernameString = [defaults SMTPUsername];
 
     if (smtpUsernameString) {
-        NSString *password = [SSKeychain passwordForService:kApplicationName
+        NSString *password = [SSKeychain passwordForService:kLGApplicationName
                                                     account:smtpUsernameString
                                                       error:&error];
 
@@ -268,11 +268,11 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
 
     if ([hostInfo gitInstalled]) {
         [installGitButton setEnabled:NO];
-        [gitStatusLabel setStringValue:kGitInstalledLabel];
+        [gitStatusLabel setStringValue:kLGGitInstalledLabel];
         [gitStatusIcon setImage:[NSImage imageNamed:NSImageNameStatusAvailable]];
     } else {
         [installGitButton setEnabled:YES];
-        [gitStatusLabel setStringValue:kGitNotInstalledLabel];
+        [gitStatusLabel setStringValue:kLGGitNotInstalledLabel];
         [gitStatusIcon setImage:[NSImage imageNamed:NSImageNameStatusUnavailable]];
     }
 
@@ -281,16 +281,16 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
         if (updateAvailable) {
             [installAutoPkgButton setEnabled:YES];
             [installAutoPkgButton setTitle:@"Update AutoPkg"];
-            [autoPkgStatusLabel setStringValue:kAutoPkgUpdateAvailableLabel];
+            [autoPkgStatusLabel setStringValue:kLGAutoPkgUpdateAvailableLabel];
             [autoPkgStatusIcon setImage:[NSImage imageNamed:NSImageNameStatusPartiallyAvailable]];
         } else {
             [installAutoPkgButton setEnabled:NO];
-            [autoPkgStatusLabel setStringValue:kAutoPkgInstalledLabel];
+            [autoPkgStatusLabel setStringValue:kLGAutoPkgInstalledLabel];
             [autoPkgStatusIcon setImage:[NSImage imageNamed:NSImageNameStatusAvailable]];
         }
     } else {
         [installAutoPkgButton setEnabled:YES];
-        [autoPkgStatusLabel setStringValue:kAutoPkgNotInstalledLabel];
+        [autoPkgStatusLabel setStringValue:kLGAutoPkgNotInstalledLabel];
         [autoPkgStatusIcon setImage:[NSImage imageNamed:NSImageNameStatusUnavailable]];
     }
 
@@ -336,7 +336,7 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
     // Listen for notifications on completion
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(testEmailReceived:)
-                                                 name:kEmailSentNotification
+                                                 name:kLGNotificationEmailSent
                                                object:emailer];
 
     // Send the test email notification by sending the
@@ -347,7 +347,7 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
 - (void)testEmailReceived:(NSNotification *)notification
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self
-                                                    name:kEmailSentNotification
+                                                    name:kLGNotificationEmailSent
                                                   object:[notification object]];
 
     [sendTestEmailButton setEnabled:YES]; // enable button
@@ -356,7 +356,7 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
     [sendTestEmailSpinner stopAnimation:self]; // stop animation
     [sendTestEmailSpinner setHidden:YES]; // hide spinner
 
-    NSError *e = [[notification userInfo] objectForKey:kEmailSentNotificationError]; // pull the error out of the userInfo dictionary
+    NSError *e = [[notification userInfo] objectForKey:kLGNotificationUserInfoError]; // pull the error out of the userInfo dictionary
     if (e) {
         NSLog(@"Unable to send test email. Error: %@", e);
         [[NSAlert alertWithError:e] beginSheetModalForWindow:self.window
@@ -383,7 +383,7 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
 
         [center addObserver:self
                    selector:@selector(testSmtpServerPortNotificationReceiver:)
-                       name:kTestSmtpServerPortNotification
+                       name:kLGNotificationTestSmtpServerPort
                      object:nil];
 
         [tester testHost:[NSHost hostWithName:[smtpServer stringValue]]
@@ -402,16 +402,16 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
     [testSmtpServerStatus setHidden:NO];
 
     [[NSNotificationCenter defaultCenter] removeObserver:self
-                                                    name:kTestSmtpServerPortNotification
+                                                    name:kLGNotificationTestSmtpServerPort
                                                   object:nil];
 
-    NSString *status = notification.userInfo[kTestSmtpServerPortResult];
-    if ([status isEqualToString:kTestSmtpServerPortError]) {
+    NSString *status = notification.userInfo[kLGNotificationUserInfoSuccess];
+    if ([status isEqualTo:@NO]) {
         [testSmtpServerStatus setImage:[NSImage imageNamed:@"NSStatusUnavailable"]];
-    } else if ([status isEqualToString:kTestSmtpServerPortSuccess]) {
+    } else if ([status isEqualTo:@YES]) {
         [testSmtpServerStatus setImage:[NSImage imageNamed:@"NSStatusAvailable"]];
     } else {
-        NSLog(@"Unexpected result for kTestSmtpServerPortError.");
+        NSLog(@"Unexpected result for recieved from port test.");
         [testSmtpServerStatus setImage:[NSImage imageNamed:@"NSStatusPartiallyAvailable"]];
     }
 }
@@ -451,7 +451,7 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
 
     NSError *error;
     // Store the password used for SMTP authentication in the default keychain
-    [SSKeychain setPassword:[smtpPassword stringValue] forService:kApplicationName account:[smtpUsername stringValue] error:&error];
+    [SSKeychain setPassword:[smtpPassword stringValue] forService:kLGApplicationName account:[smtpUsername stringValue] error:&error];
     if (error) {
         NSLog(@"Error while storing e-mail password: %@", error);
     } else {
@@ -567,7 +567,7 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
     // Update the autoPkgStatus icon and label if it installed successfully
     if ([hostInfo autoPkgInstalled]) {
         NSLog(@"AutoPkg installed successfully!");
-        [autoPkgStatusLabel setStringValue:kAutoPkgInstalledLabel];
+        [autoPkgStatusLabel setStringValue:kLGAutoPkgInstalledLabel];
         [autoPkgStatusIcon setImage:[NSImage imageNamed:NSImageNameStatusAvailable]];
         [installAutoPkgButton setTitle:@"Install AutoPkg"];
         [installAutoPkgButton setEnabled:NO];
@@ -605,7 +605,7 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
         NSAlert *alert = [[NSAlert alloc] init];
         [alert addButtonWithTitle:@"OK"];
         [alert setMessageText:@"Cannot find the AutoPkg Cache folder."];
-        [alert setInformativeText:[NSString stringWithFormat:@"%@ could not find the AutoPkg Cache folder located in %@. Please verify that this folder exists.", kApplicationName, autoPkgCacheFolder]];
+        [alert setInformativeText:[NSString stringWithFormat:@"%@ could not find the AutoPkg Cache folder located in %@. Please verify that this folder exists.", kLGApplicationName, autoPkgCacheFolder]];
         [alert setAlertStyle:NSWarningAlertStyle];
         [alert beginSheetModalForWindow:self.window
                           modalDelegate:self
@@ -628,7 +628,7 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
         NSAlert *alert = [[NSAlert alloc] init];
         [alert addButtonWithTitle:@"OK"];
         [alert setMessageText:@"Cannot find the AutoPkg RecipeRepos folder."];
-        [alert setInformativeText:[NSString stringWithFormat:@"%@ could not find the AutoPkg RecipeRepos folder located in %@. Please verify that this folder exists.", kApplicationName, autoPkgRecipeReposFolder]];
+        [alert setInformativeText:[NSString stringWithFormat:@"%@ could not find the AutoPkg RecipeRepos folder located in %@. Please verify that this folder exists.", kLGApplicationName, autoPkgRecipeReposFolder]];
         [alert setAlertStyle:NSWarningAlertStyle];
         [alert beginSheetModalForWindow:self.window
                           modalDelegate:self
@@ -649,7 +649,7 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
         NSAlert *alert = [[NSAlert alloc] init];
         [alert addButtonWithTitle:@"OK"];
         [alert setMessageText:@"Cannot find the Munki Repository."];
-        [alert setInformativeText:[NSString stringWithFormat:@"%@ could not find the Munki repository located in %@. Please verify that this folder exists.", kApplicationName, defaults.munkiRepo]];
+        [alert setInformativeText:[NSString stringWithFormat:@"%@ could not find the Munki repository located in %@. Please verify that this folder exists.", kLGApplicationName, defaults.munkiRepo]];
         [alert setAlertStyle:NSWarningAlertStyle];
         [alert beginSheetModalForWindow:self.window
                           modalDelegate:self
@@ -676,7 +676,7 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
     LGAutoPkgRunner *autoPkgRunner = [[LGAutoPkgRunner alloc] init];
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(updateReposNowCompleteNotificationRecieved:)
-                                                 name:kUpdateReposCompleteNotification
+                                                 name:kLGNotificationUpdateReposComplete
                                                object:autoPkgRunner];
 
     // TODO: Success/failure notification
@@ -690,12 +690,12 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
 - (void)updateReposNowCompleteNotificationRecieved:(NSNotification *)notification
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self
-                                                    name:kUpdateReposCompleteNotification
+                                                    name:kLGNotificationUpdateReposComplete
                                                   object:notification.object];
     // stop progress panel
     NSError *error = nil;
-    if ([notification.userInfo[kNotificationUserInfoError] isKindOfClass:[NSError class]]) {
-        error = notification.userInfo[kNotificationUserInfoError];
+    if ([notification.userInfo[kLGNotificationUserInfoError] isKindOfClass:[NSError class]]) {
+        error = notification.userInfo[kLGNotificationUserInfoError];
     }
 
     [self stopProgress:error];
@@ -707,7 +707,7 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
     LGAutoPkgRunner *autoPkgRunner = [[LGAutoPkgRunner alloc] init];
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(autoPkgRunCompleteNotificationRecieved:)
-                                                 name:kRunAutoPkgCompleteNotification
+                                                 name:kLGNotificationRunAutoPkgComplete
                                                object:autoPkgRunner];
 
     [self.checkAppsNowButton setEnabled:NO];
@@ -719,12 +719,12 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
 - (void)autoPkgRunCompleteNotificationRecieved:(NSNotification *)notification
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self
-                                                    name:kRunAutoPkgCompleteNotification
+                                                    name:kLGNotificationRunAutoPkgComplete
                                                   object:notification.object];
 
     NSError *error = nil;
-    if ([notification.userInfo[kNotificationUserInfoError] isKindOfClass:[NSError class]]) {
-        error = notification.userInfo[kNotificationUserInfoError];
+    if ([notification.userInfo[kLGNotificationUserInfoError] isKindOfClass:[NSError class]]) {
+        error = notification.userInfo[kLGNotificationUserInfoError];
     }
     [self stopProgress:error];
     [self.checkAppsNowButton setEnabled:YES];
@@ -849,7 +849,7 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
         NSAlert *alert = [[NSAlert alloc] init];
         [alert addButtonWithTitle:@"OK"];
         [alert setMessageText:@"Cannot find the AutoPkg RecipeOverrides folder."];
-        [alert setInformativeText:[NSString stringWithFormat:@"%@ could not find the AutoPkg RecipeOverrides folder located in %@. Please verify that this folder exists.", kApplicationName, autoPkgRecipeOverridesFolder]];
+        [alert setInformativeText:[NSString stringWithFormat:@"%@ could not find the AutoPkg RecipeOverrides folder located in %@. Please verify that this folder exists.", kLGApplicationName, autoPkgRecipeOverridesFolder]];
         [alert setAlertStyle:NSWarningAlertStyle];
         [alert runModal];
     }
@@ -892,7 +892,7 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
         }
     } else if ([object isEqual:smtpPassword]) {
         NSError *error;
-        [SSKeychain setPassword:[smtpPassword stringValue] forService:kApplicationName account:[smtpUsername stringValue] error:&error];
+        [SSKeychain setPassword:[smtpPassword stringValue] forService:kLGApplicationName account:[smtpUsername stringValue] error:&error];
         if (error) {
             NSLog(@"Error while storing e-mail password: %@", error);
         } else {
@@ -907,14 +907,14 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
     [defaults synchronize];
 
     // This makes the initial config screen not appear automatically on start.
-    [defaults setBool:YES forKey:kHasCompletedInitialSetup];
+    [defaults setBool:YES forKey:kLGHasCompletedInitialSetup];
 }
 
 - (NSArray *)tokenField:(NSTokenField *)tokenField shouldAddObjects:(NSArray *)tokens atIndex:(NSUInteger)index
 {
     // We use objectValue here because objectValue returns an
     // array of strings if the field contains a series of strings
-    [defaults setObject:[smtpTo objectValue] forKey:kSMTPTo];
+    [defaults setObject:[smtpTo objectValue] forKey:kLGSMTPTo];
     [defaults synchronize];
     return tokens;
 }
@@ -924,11 +924,11 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
     if ([smtpTLSEnabledButton state] == NSOnState) {
         // The user wants to enable TLS for this SMTP configuration
         NSLog(@"Enabling TLS.");
-        [defaults setBool:YES forKey:kSMTPTLSEnabled];
+        [defaults setBool:YES forKey:kLGSMTPTLSEnabled];
     } else {
         // The user wants to disable TLS for this SMTP configuration
         NSLog(@"Disabling TLS.");
-        [defaults setBool:NO forKey:kSMTPTLSEnabled];
+        [defaults setBool:NO forKey:kLGSMTPTLSEnabled];
     }
     [defaults synchronize];
 }
@@ -971,8 +971,8 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
 {
     [[NSOperationQueue mainQueue] addOperationWithBlock:^{
         NSString *message = @"";
-        if ([notification.userInfo[kNotificationUserInfoMessage] isKindOfClass:[NSString class]]) {
-             message = notification.userInfo[kNotificationUserInfoMessage];
+        if ([notification.userInfo[kLGNotificationUserInfoMessage] isKindOfClass:[NSString class]]) {
+             message = notification.userInfo[kLGNotificationUserInfoMessage];
         }
         self.progressMessage.stringValue = message;
     }];
@@ -981,8 +981,8 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
 - (void)startProgressNotificationReceived:(NSNotification *)notification
 {
     NSString *messge = @"Starting...";
-    if ([notification.userInfo[kNotificationUserInfoMessage] isKindOfClass:[NSString class]]) {
-        messge = notification.userInfo[kNotificationUserInfoMessage];
+    if ([notification.userInfo[kLGNotificationUserInfoMessage] isKindOfClass:[NSString class]]) {
+        messge = notification.userInfo[kLGNotificationUserInfoMessage];
     }
     [self startProgressWithMessage:messge];
 }
@@ -990,8 +990,8 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
 - (void)stopProgressNotificationReceived:(NSNotification *)notification
 {
     NSError *error = nil;
-    if ([notification.userInfo[kNotificationUserInfoError] isKindOfClass:[NSError class]]) {
-        error = notification.userInfo[kNotificationUserInfoError];
+    if ([notification.userInfo[kLGNotificationUserInfoError] isKindOfClass:[NSError class]]) {
+        error = notification.userInfo[kLGNotificationUserInfoError];
     }
     [self stopProgress:error];
 }

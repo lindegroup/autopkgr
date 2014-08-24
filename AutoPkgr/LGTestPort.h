@@ -7,7 +7,6 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "LGConstants.h"
 
 @interface LGTestPort : NSObject <NSStreamDelegate>{
     NSInputStream *read;

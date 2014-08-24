@@ -101,7 +101,7 @@
 {
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 
-    if (![defaults objectForKey:kLocalMunkiRepoPath]) {
+    if (![defaults objectForKey:kLGAutoPkgMunkiRepoPath]) {
         NSLog(@"Unable to find local Munki repo path in user defaults.");
         NSString *localMunkiRepoFolderFromAutoPkgPrefs = (__bridge_transfer NSString *)CFPreferencesCopyAppValue(CFSTR("MUNKI_REPO"), CFSTR("com.github.autopkg"));
         NSString *localMunkiRepoFolderFromMunkiPrefs = (__bridge_transfer NSString *)CFPreferencesCopyAppValue(CFSTR("repo_path"), CFSTR("com.googlecode.munki.munkiimport"));
@@ -120,7 +120,7 @@
         return [localMunkiRepoFolderFromAutoPkgPrefs stringByStandardizingPath];
     }
 
-    return [defaults objectForKey:kLocalMunkiRepoPath];
+    return [defaults objectForKey:kLGAutoPkgMunkiRepoPath];
 }
 
 - (BOOL)gitInstalled
