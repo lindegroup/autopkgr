@@ -116,7 +116,7 @@ static NSString *errorMessageFromAutoPkgVerb(LGAutoPkgrVerb verb)
     NSError *error;
     if (code != kLGErrorSuccess) {
         NSString *errorMsg = errorMsgFromCode(code);
-        error = [NSError errorWithDomain:kApplicationName
+        error = [NSError errorWithDomain:kLGApplicationName
                                     code:code
                                 userInfo:@{ NSLocalizedDescriptionKey : errorMsg }];
         DLog(@"Error [%d ] %@ \n %@", code, errorMsg);
@@ -164,7 +164,7 @@ static NSString *errorMessageFromAutoPkgVerb(LGAutoPkgrVerb verb)
 
     // Otherwise we can just use the termination status
     if (taskError != 0) {
-        error = [NSError errorWithDomain:kApplicationName
+        error = [NSError errorWithDomain:kLGApplicationName
                                     code:taskError
                                 userInfo:@{ NSLocalizedDescriptionKey : errorMsg,
                                             NSLocalizedRecoverySuggestionErrorKey : errorDetails ? errorDetails : @"" }];

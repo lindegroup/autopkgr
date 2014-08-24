@@ -70,7 +70,7 @@
 - (NSDictionary *)getLatestAutoPkgReleaseDictionary
 {
     // Get the JSON data
-    NSArray *releasesArray = [self getArrayFromJSONData:[self getJSONFromURL:[NSURL URLWithString:kAutoPkgReleasesJSONURL]]];
+    NSArray *releasesArray = [self getArrayFromJSONData:[self getJSONFromURL:[NSURL URLWithString:kLGAutoPkgReleasesJSONURL]]];
 
     // GitHub returns the latest release from the API at index 0
     NSDictionary *latestVersionDict = [releasesArray objectAtIndex:0];
@@ -86,7 +86,7 @@
     NSString *stargazersCount = @"stargazers_count";
 
     // Get the JSON data
-    NSArray *reposArray = [self getArrayFromJSONData:[self getJSONFromURL:[NSURL URLWithString:kAutoPkgRepositoriesJSONURL]]];
+    NSArray *reposArray = [self getArrayFromJSONData:[self getJSONFromURL:[NSURL URLWithString:kLGAutoPkgRepositoriesJSONURL]]];
     NSMutableArray *mutableArray = [[NSMutableArray alloc] init];
 
     for (NSDictionary *dct in reposArray) {
