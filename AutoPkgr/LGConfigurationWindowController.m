@@ -296,10 +296,10 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
 
     // Enable tools buttons if directories exist
     BOOL isDir;
-    NSString *autoPkgRecipeOverridesFolder = [hostInfo getAutoPkgRecipeOverridesDir];
-    NSString *autoPkgCacheFolder = [hostInfo getAutoPkgCacheDir];
-    NSString *autoPkgRecipeReposFolder = [hostInfo getAutoPkgRecipeReposDir];
-    NSString *localMunkiRepoFolder = [hostInfo getMunkiRepoDir];
+    NSString *autoPkgRecipeOverridesFolder = defaults.autoPkgRecipeOverridesDir;
+    NSString *autoPkgCacheFolder = defaults.autoPkgCacheDir;
+    NSString *autoPkgRecipeReposFolder = defaults.autoPkgRecipeRepoDir;
+    NSString *localMunkiRepoFolder = defaults.munkiRepo;
 
     if ([[NSFileManager defaultManager] fileExistsAtPath:autoPkgRecipeOverridesFolder isDirectory:&isDir] && isDir) {
         [autoPkgRecipeOverridesFolderButton setEnabled:YES];
@@ -772,6 +772,7 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
                     // Here we can be certain the URL exists and it is a directory
                     NSString *urlPath = [url path];
                     [localMunkiRepo setStringValue:urlPath];
+                    [localMunkiRepoFolderButton setEnabled:YES];
                     defaults.munkiRepo = urlPath;
                 }
             }
