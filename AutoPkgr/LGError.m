@@ -130,7 +130,7 @@ static NSString *errorMessageFromAutoPkgVerb(LGAutoPkgrVerb verb)
     if (error && taskError) {
         *error = taskError;
     }
-    // if we have a Task error return YES if the taskError codes is 0, otherwise NO
+    // If no error object was created, or the error code is 0 return YES, otherwise NO.
     return taskError ? taskError.code == kLGErrorSuccess : YES;
 }
 
