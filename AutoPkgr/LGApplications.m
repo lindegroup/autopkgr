@@ -20,6 +20,7 @@
 //
 
 #import "LGApplications.h"
+#import "LGAutoPkgr.h"
 
 @implementation LGApplications
 

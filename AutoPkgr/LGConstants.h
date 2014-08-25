@@ -1,4 +1,3 @@
-//
 //  LGConstants.h
 //  AutoPkgr
 //
@@ -19,44 +18,62 @@
 //  limitations under the License.
 //
 
-#import "LGError.h"
+#pragma mark - App Names
+extern NSString *const kLGApplicationName;
+extern NSString *const kLGAutoPkgPreferenceDomain;
+extern NSString *const kLGAutoPkgrPreferenceDomain;
 
-extern NSString *const kApplicationName;
-extern NSString *const kSMTPServer;
-extern NSString *const kSMTPPort;
-extern NSString *const kSMTPUsername;
-extern NSString *const kSMTPPassword;
-extern NSString *const kSMTPFrom;
-extern NSString *const kSMTPTo;
-extern NSString *const kAutoPkgRunInterval;
-extern NSString *const kLocalMunkiRepoPath;
-extern NSString *const kAutoPkgReleasesJSONURL;
-extern NSString *const kAutoPkgRepositoriesJSONURL;
-extern NSString *const kSMTPTLSEnabled;
-extern NSString *const kSMTPAuthenticationEnabled;
-extern NSString *const kWarnBeforeQuittingEnabled;
-extern NSString *const kHasCompletedInitialSetup;
-extern NSString *const kSendEmailNotificationsWhenNewVersionsAreFoundEnabled;
-extern NSString *const kCheckForNewVersionsOfAppsAutomaticallyEnabled;
-extern NSString *const kCheckForRepoUpdatesAutomaticallyEnabled;
-extern NSString *const kGitInstalledLabel;
-extern NSString *const kGitNotInstalledLabel;
-extern NSString *const kAutoPkgInstalledLabel;
-extern NSString *const kAutoPkgNotInstalledLabel;
-extern NSString *const kAutoPkgUpdateAvailableLabel;
-extern NSString *const kEmailSentNotification;
-extern NSString *const kEmailSentNotificationSubject;
-extern NSString *const kEmailSentNotificationMessage;
-extern NSString *const kEmailSentNotificationError;
-extern NSString *const kTestSmtpServerPortNotification;
-extern NSString *const kTestSmtpServerPortError;
-extern NSString *const kTestSmtpServerPortSuccess;
-extern NSString *const kTestSmtpServerPortResult;
+#pragma mark - Message Strings / Labels
+extern NSString *const kLGGitInstalledLabel;
+extern NSString *const kLGGitNotInstalledLabel;
+extern NSString *const kLGAutoPkgInstalledLabel;
+extern NSString *const kLGAutoPkgNotInstalledLabel;
+extern NSString *const kLGAutoPkgUpdateAvailableLabel;
 
-extern NSString *const kRunAutoPkgCompleteNotification;
-extern NSString *const kUpdateReposCompleteNotification;
-extern NSString *const kProgressStartNotification;
-extern NSString *const kProgressStopNotification;
-extern NSString *const kProgressMessageUpdateNotification;
-extern NSString *const kNotificationUserInfoError;
-extern NSString *const kNotificationUserInfoMessage;
+#pragma mark - Static URLs
+extern NSString *const kLGAutoPkgReleasesJSONURL;
+extern NSString *const kLGAutoPkgDownloadURL;
+extern NSString *const kLGAutoPkgRepositoriesJSONURL;
+
+#pragma mark - Defaults
+extern NSString *const kLGSMTPServer;
+extern NSString *const kLGSMTPPort;
+extern NSString *const kLGSMTPUsername;
+extern NSString *const kLGSMTPPassword;
+extern NSString *const kLGSMTPFrom;
+extern NSString *const kLGSMTPTo;
+extern NSString *const kLGPlistEditor;
+extern NSString *const kLGAutoPkgRunInterval;
+extern NSString *const kLGAutoPkgMunkiRepoPath;
+extern NSString *const kLGHasCompletedInitialSetup;
+extern NSString *const kLGSendEmailNotificationsWhenNewVersionsAreFoundEnabled;
+extern NSString *const kLGCheckForNewVersionsOfAppsAutomaticallyEnabled;
+extern NSString *const kLGCheckForRepoUpdatesAutomaticallyEnabled;
+extern NSString *const kLGSMTPTLSEnabled;
+extern NSString *const kLGSMTPAuthenticationEnabled;
+extern NSString *const kLGWarnBeforeQuittingEnabled;
+
+#pragma mark - Notifications
+#pragma mark -- Progress
+extern NSString *const kLGNotificationProgressStart;
+extern NSString *const kLGNotificationProgressStop;
+extern NSString *const kLGNotificationProgressMessageUpdate;
+
+#pragma mark -- AutoPkg Task
+extern NSString *const kLGNotificationRunAutoPkgComplete;
+extern NSString *const kLGNotificationUpdateReposComplete;
+extern NSString *const kLGNotificationOverrideFileCreated;
+
+#pragma mark -- Email
+extern NSString *const kLGNotificationEmailSent;
+extern NSString *const kLGNotificationTestSmtpServerPort;
+
+#pragma mark -- UserInfo dict keys
+//* key cooresponding to NSError object in Notification's userInfo dictionary */
+extern NSString *const kLGNotificationUserInfoError;
+//* key cooresponding to a message string object in Notification's userInfo dictionary */
+extern NSString *const kLGNotificationUserInfoMessage;
+//* key cooresponding to NSNumber BOOL object in Notification's userInfo dictionary, indicating success/failure */
+extern NSString *const kLGNotificationUserInfoSuccess;
+//* key cooresponding to NSError object in Notification's userInfo dictionary */
+extern NSString *const kLGNotificationUserInfoSubject;

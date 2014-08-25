@@ -20,6 +20,7 @@
 //
 
 #import "LGPopularRepositories.h"
+#import "LGAutoPkgr.h"
 
 @implementation LGPopularRepositories
 

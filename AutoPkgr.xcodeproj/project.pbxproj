@@ -157,6 +157,7 @@
 		6A53625C1988BE59008A949C /* LGTestPort.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGTestPort.m; sourceTree = "<group>"; };
 		8B6A3198195B7AC1007A7A16 /* linde-logo@400px.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "linde-logo@400px.png"; sourceTree = "<group>"; };
 		8BB217F519709A2C00EF8B93 /* AutoPkgrIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = AutoPkgrIcon.png; sourceTree = "<group>"; };
+		BE34DF2B19AA21E200DC2FAF /* LGAutoPkgr.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LGAutoPkgr.h; sourceTree = "<group>"; };
 		BEFC931B1995F0710074C938 /* LGError.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGError.h; sourceTree = "<group>"; };
 		BEFC931C1995F0710074C938 /* LGError.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGError.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -242,6 +243,7 @@
 			children = (
 				1AC86D36195E0972006FDD2B /* Models */,
 				1A0A869D195CE5DB00A49434 /* mailcore2.xcodeproj */,
+				BE34DF2B19AA21E200DC2FAF /* LGAutoPkgr.h */,
 				1AC69562195B59EE00D2BD81 /* LGAppDelegate.h */,
 				1AC69563195B59EE00D2BD81 /* LGAppDelegate.m */,
 				1AC98410195CE8510071CAB3 /* LGEmailer.h */,
