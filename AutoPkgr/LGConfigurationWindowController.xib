@@ -54,14 +54,14 @@
         <customObject id="-3" userLabel="Application"/>
         <window title="AutoPkgr" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" oneShot="NO" releasedWhenClosed="NO" animationBehavior="default" id="F0z-JX-Cv5">
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
-            <rect key="contentRect" x="196" y="240" width="775" height="563"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1280" height="778"/>
+            <rect key="contentRect" x="196" y="240" width="775" height="554"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1440" height="878"/>
             <value key="minSize" type="size" width="752" height="514"/>
             <view key="contentView" id="se5-gp-TjO">
-                <rect key="frame" x="0.0" y="0.0" width="775" height="563"/>
+                <rect key="frame" x="0.0" y="0.0" width="775" height="554"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <view translatesAutoresizingMaskIntoConstraints="NO" id="wtX-Sr-awJ">
+                    <view misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="wtX-Sr-awJ">
                         <rect key="frame" x="0.0" y="0.0" width="775" height="563"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
@@ -75,7 +75,7 @@
                                             <rect key="frame" x="10" y="33" width="729" height="503"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             <subviews>
-                                                <button verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ClY-1a-e2c">
+                                                <button verticalHuggingPriority="750" placeholderIntrinsicWidth="194" placeholderIntrinsicHeight="21" translatesAutoresizingMaskIntoConstraints="NO" id="ClY-1a-e2c">
                                                     <rect key="frame" x="137" y="247" width="206" height="32"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                     <buttonCell key="cell" type="push" title="Install Git" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="SeD-0I-N1O">
@@ -86,8 +86,8 @@
                                                         <action selector="installGit:" target="-2" id="45W-uW-KIS"/>
                                                     </connections>
                                                 </button>
-                                                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="OPb-IV-o9L">
-                                                    <rect key="frame" x="367" y="257" width="324" height="17"/>
+                                                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="OPb-IV-o9L">
+                                                    <rect key="frame" x="367" y="255" width="324" height="17"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Git has been installed." id="c7N-WP-Kn2">
                                                         <font key="font" metaFont="system"/>
@@ -95,7 +95,7 @@
                                                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                                     </textFieldCell>
                                                 </textField>
-                                                <button verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="x1S-bd-tl3">
+                                                <button verticalHuggingPriority="750" placeholderIntrinsicWidth="194" placeholderIntrinsicHeight="21" translatesAutoresizingMaskIntoConstraints="NO" id="x1S-bd-tl3">
                                                     <rect key="frame" x="137" y="206" width="206" height="32"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                     <buttonCell key="cell" type="push" title="Install AutoPkg" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="fT8-Dd-41f">
@@ -106,8 +106,8 @@
                                                         <action selector="installAutoPkg:" target="-2" id="SZ8-Xu-HTQ"/>
                                                     </connections>
                                                 </button>
-                                                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Pbf-A7-T4b">
-                                                    <rect key="frame" x="367" y="216" width="324" height="17"/>
+                                                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Pbf-A7-T4b">
+                                                    <rect key="frame" x="367" y="215" width="324" height="17"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="AutoPkg has been installed." id="Jh6-Qb-lwm">
                                                         <font key="font" metaFont="system"/>
@@ -116,7 +116,7 @@
                                                     </textFieldCell>
                                                 </textField>
                                                 <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" misplaced="YES" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="g4F-gg-Xfq">
-                                                    <rect key="frame" x="15" y="138" width="676" height="34"/>
+                                                    <rect key="frame" x="15" y="124" width="676" height="34"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                     <textFieldCell key="cell" allowsUndo="NO" sendsActionOnEndEditing="YES" alignment="center" title="Installing Git through AutoPkgr will prompt you to install the Xcode Command Line Tools." id="Kh2-iw-DFk">
                                                         <font key="font" metaFont="smallSystem"/>
@@ -124,43 +124,49 @@
                                                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                                     </textFieldCell>
                                                 </textField>
-                                                <imageView misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="geX-ws-F4Z">
-                                                    <rect key="frame" x="286" y="264" width="135" height="135"/>
+                                                <imageView placeholderIntrinsicWidth="135" placeholderIntrinsicHeight="135" translatesAutoresizingMaskIntoConstraints="NO" id="geX-ws-F4Z">
+                                                    <rect key="frame" x="286" y="320" width="135" height="135"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <imageCell key="cell" refusesFirstResponder="YES" alignment="left" animates="YES" imageScaling="proportionallyDown" image="AutoPkgrIcon" id="bdC-Ay-5Db"/>
                                                 </imageView>
-                                                <imageView misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="KkE-qM-Hy6">
-                                                    <rect key="frame" x="345" y="208" width="16" height="16"/>
+                                                <imageView translatesAutoresizingMaskIntoConstraints="NO" id="KkE-qM-Hy6">
+                                                    <rect key="frame" x="345" y="255" width="16" height="16"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <imageCell key="cell" refusesFirstResponder="YES" alignment="left" animates="YES" imageScaling="proportionallyDown" image="NSStatusAvailable" id="Syx-8J-ERB"/>
                                                 </imageView>
-                                                <imageView misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="f8q-xY-QUg">
-                                                    <rect key="frame" x="345" y="167" width="16" height="16"/>
+                                                <imageView translatesAutoresizingMaskIntoConstraints="NO" id="f8q-xY-QUg">
+                                                    <rect key="frame" x="345" y="215" width="16" height="16"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <imageCell key="cell" refusesFirstResponder="YES" alignment="left" animates="YES" imageScaling="proportionallyDown" image="NSStatusAvailable" id="e1g-5e-fLi"/>
                                                 </imageView>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstItem="geX-ws-F4Z" firstAttribute="top" secondItem="pCK-5F-Geg" secondAttribute="top" constant="55" id="0pI-HY-orc"/>
-                                                <constraint firstItem="x1S-bd-tl3" firstAttribute="centerY" secondItem="Pbf-A7-T4b" secondAttribute="centerY" constant="1" id="34Q-rm-2Qm"/>
-                                                <constraint firstItem="Pbf-A7-T4b" firstAttribute="leading" secondItem="x1S-bd-tl3" secondAttribute="trailing" constant="32" id="3Lm-j0-KAU"/>
-                                                <constraint firstItem="KkE-qM-Hy6" firstAttribute="centerY" secondItem="ClY-1a-e2c" secondAttribute="centerY" constant="-0.5" id="Bth-H0-o3y"/>
-                                                <constraint firstItem="x1S-bd-tl3" firstAttribute="top" secondItem="pCK-5F-Geg" secondAttribute="top" constant="269" id="FuB-x0-ur7"/>
-                                                <constraint firstItem="OPb-IV-o9L" firstAttribute="leading" secondItem="ClY-1a-e2c" secondAttribute="trailing" constant="32" id="Pih-TL-aZM"/>
-                                                <constraint firstItem="f8q-xY-QUg" firstAttribute="centerY" secondItem="x1S-bd-tl3" secondAttribute="centerY" constant="-0.5" id="PjC-Bs-QqX"/>
-                                                <constraint firstAttribute="trailing" secondItem="ClY-1a-e2c" secondAttribute="trailing" constant="369" id="QdT-rT-YL0"/>
-                                                <constraint firstItem="ClY-1a-e2c" firstAttribute="leading" secondItem="pCK-5F-Geg" secondAttribute="leading" constant="143" id="SDD-U2-YX7"/>
-                                                <constraint firstItem="ClY-1a-e2c" firstAttribute="top" secondItem="pCK-5F-Geg" secondAttribute="top" constant="228" id="TwR-Sp-GI1"/>
-                                                <constraint firstAttribute="trailing" secondItem="g4F-gg-Xfq" secondAttribute="trailing" constant="17" id="Y6g-7S-rHi"/>
-                                                <constraint firstItem="KkE-qM-Hy6" firstAttribute="leading" secondItem="ClY-1a-e2c" secondAttribute="trailing" constant="8" id="aiH-A5-oee"/>
-                                                <constraint firstItem="OPb-IV-o9L" firstAttribute="centerY" secondItem="ClY-1a-e2c" secondAttribute="centerY" constant="-1" id="dhL-RJ-dKJ"/>
-                                                <constraint firstItem="ClY-1a-e2c" firstAttribute="top" secondItem="geX-ws-F4Z" secondAttribute="bottom" constant="38" id="efq-Lo-V69"/>
-                                                <constraint firstItem="f8q-xY-QUg" firstAttribute="leading" secondItem="x1S-bd-tl3" secondAttribute="trailing" constant="8" id="fD2-Vg-yN3"/>
-                                                <constraint firstItem="g4F-gg-Xfq" firstAttribute="leading" secondItem="pCK-5F-Geg" secondAttribute="leading" constant="17" id="lg2-yO-AOc"/>
-                                                <constraint firstItem="x1S-bd-tl3" firstAttribute="leading" secondItem="pCK-5F-Geg" secondAttribute="leading" constant="143" id="nDH-cA-3FM"/>
-                                                <constraint firstAttribute="trailing" secondItem="x1S-bd-tl3" secondAttribute="trailing" constant="369" id="oKA-WH-Zdk"/>
-                                                <constraint firstItem="g4F-gg-Xfq" firstAttribute="top" secondItem="pCK-5F-Geg" secondAttribute="top" constant="331" id="pyF-26-QZ1"/>
-                                                <constraint firstAttribute="centerX" secondItem="geX-ws-F4Z" secondAttribute="centerX" constant="-0.5" id="t8L-5Q-eFW"/>
+                                                <constraint firstItem="KkE-qM-Hy6" firstAttribute="top" secondItem="pCK-5F-Geg" secondAttribute="top" constant="232" id="1Op-D4-MZF"/>
+                                                <constraint firstItem="g4F-gg-Xfq" firstAttribute="top" secondItem="x1S-bd-tl3" secondAttribute="bottom" constant="55" id="1zD-Ie-Tm2"/>
+                                                <constraint firstAttribute="centerX" secondItem="KkE-qM-Hy6" secondAttribute="centerX" constant="11.5" id="4cw-6Z-9s9"/>
+                                                <constraint firstItem="Pbf-A7-T4b" firstAttribute="top" secondItem="pCK-5F-Geg" secondAttribute="top" constant="271" id="75y-gN-bW3"/>
+                                                <constraint firstItem="geX-ws-F4Z" firstAttribute="top" secondItem="pCK-5F-Geg" secondAttribute="top" constant="48" id="7wf-Pr-MMR"/>
+                                                <constraint firstItem="f8q-xY-QUg" firstAttribute="top" secondItem="pCK-5F-Geg" secondAttribute="top" constant="272" id="Azj-K7-3yD"/>
+                                                <constraint firstItem="KkE-qM-Hy6" firstAttribute="leading" secondItem="ClY-1a-e2c" secondAttribute="trailing" constant="8" id="EWa-Cp-2dS"/>
+                                                <constraint firstItem="OPb-IV-o9L" firstAttribute="leading" secondItem="ClY-1a-e2c" secondAttribute="trailing" constant="32" id="GBk-yC-xgs"/>
+                                                <constraint firstItem="ClY-1a-e2c" firstAttribute="top" secondItem="pCK-5F-Geg" secondAttribute="top" constant="228" id="Gbe-x7-H5G"/>
+                                                <constraint firstAttribute="centerX" secondItem="g4F-gg-Xfq" secondAttribute="centerX" constant="11.5" id="KVD-EL-ca0"/>
+                                                <constraint firstAttribute="centerX" secondItem="x1S-bd-tl3" secondAttribute="centerX" constant="124.5" id="LhX-3y-862"/>
+                                                <constraint firstItem="ClY-1a-e2c" firstAttribute="width" secondItem="x1S-bd-tl3" secondAttribute="width" id="On0-Cw-sYr"/>
+                                                <constraint firstItem="x1S-bd-tl3" firstAttribute="top" secondItem="ClY-1a-e2c" secondAttribute="bottom" constant="20" id="Pl4-JW-UnI"/>
+                                                <constraint firstAttribute="bottom" secondItem="geX-ws-F4Z" secondAttribute="bottom" constant="320" id="RQf-Hp-Qge"/>
+                                                <constraint firstItem="OPb-IV-o9L" firstAttribute="height" secondItem="Pbf-A7-T4b" secondAttribute="height" id="U87-NK-7gP"/>
+                                                <constraint firstAttribute="centerX" secondItem="geX-ws-F4Z" secondAttribute="centerX" constant="11" id="WXb-wl-4Lu"/>
+                                                <constraint firstItem="Pbf-A7-T4b" firstAttribute="leading" secondItem="x1S-bd-tl3" secondAttribute="trailing" constant="32" id="XFM-O9-YgW"/>
+                                                <constraint firstItem="g4F-gg-Xfq" firstAttribute="height" secondItem="Pbf-A7-T4b" secondAttribute="height" id="ao0-lK-bXo"/>
+                                                <constraint firstAttribute="centerX" secondItem="f8q-xY-QUg" secondAttribute="centerX" constant="11.5" id="fNr-pE-WOi"/>
+                                                <constraint firstItem="x1S-bd-tl3" firstAttribute="top" secondItem="pCK-5F-Geg" secondAttribute="top" constant="269" id="gDD-6l-Fdl"/>
+                                                <constraint firstAttribute="centerX" secondItem="Pbf-A7-T4b" secondAttribute="centerX" constant="-164.5" id="kaB-8h-JRZ"/>
+                                                <constraint firstItem="f8q-xY-QUg" firstAttribute="leading" secondItem="x1S-bd-tl3" secondAttribute="trailing" constant="8" id="laF-pr-954"/>
+                                                <constraint firstItem="ClY-1a-e2c" firstAttribute="height" secondItem="x1S-bd-tl3" secondAttribute="height" id="nTA-1D-srT"/>
+                                                <constraint firstAttribute="centerX" secondItem="ClY-1a-e2c" secondAttribute="centerX" constant="124.5" id="oEA-sG-FbE"/>
+                                                <constraint firstItem="OPb-IV-o9L" firstAttribute="top" secondItem="pCK-5F-Geg" secondAttribute="top" constant="231" id="sXi-eb-Jch"/>
+                                                <constraint firstAttribute="centerX" secondItem="OPb-IV-o9L" secondAttribute="centerX" constant="-164.5" id="xEa-YJ-rRv"/>
                                             </constraints>
                                         </view>
                                     </tabViewItem>
@@ -958,7 +964,7 @@
             <windowStyleMask key="styleMask" closable="YES" miniaturizable="YES" resizable="YES" utility="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="385" y="323" width="610" height="133"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1280" height="778"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1440" height="878"/>
             <view key="contentView" id="dCS-sn-B3a">
                 <rect key="frame" x="0.0" y="0.0" width="610" height="133"/>
                 <autoresizingMask key="autoresizingMask"/>
