@@ -55,7 +55,7 @@
                           port:port
                    inputStream:&tempRead
                   outputStream:&tempWrite];
-    
+
     if (tempRead && tempWrite) {
         [self startStreamTimeoutTimer];
         read = tempRead;
@@ -64,7 +64,7 @@
         [write setDelegate:self];
         [read open];
         [write open];
-        
+
         [read scheduleInRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
         [write scheduleInRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
     } else {

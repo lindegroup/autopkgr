@@ -522,25 +522,47 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
     [installGitButton setEnabled:NO];
 
     NSTask *task = [[NSTask alloc] init];
-    NSPipe *pipe = [NSPipe pipe];
-    NSFileHandle *installGitFileHandle = [pipe fileHandleForReading];
-    NSString *gitCmd = @"git";
 
-    [task setLaunchPath:gitCmd];
-    [task setArguments:[NSArray arrayWithObject:@"--version"]];
-    [task setStandardError:pipe];
+    task.launchPath = @"/usr/bin/xcode-select";
+    task.arguments = @[@"--install"];
+    task.standardError = [NSPipe pipe];
+
+    task.terminationHandler = ^(NSTask *aTask) {
+        // TODO: We should probably be installing the official
+        // Git PKG rather than dealing with the Xcode CLI tools
+        [[NSOperationQueue mainQueue]addOperationWithBlock:^{
+            NSString *alertMessage = @"After the Command Line Tools installation completes, click OK";
+            NSAlert *alert = [NSAlert alertWithMessageText:alertMessage
+                                             defaultButton:@"OK"
+                                           alternateButton:nil
+                                               otherButton:nil
+                                 informativeTextWithFormat:@""];
+            
+            if ([alert runModal] == NSAlertDefaultReturn){
+                [installGitButton setTitle:@"Install Git"];
+                
+                LGHostInfo *hostInfo = [[LGHostInfo alloc] init];
+                if ([hostInfo gitInstalled]) {
+                    [installGitButton setEnabled:NO];
+                } else {
+                    [installGitButton setTitle:@"Install Git"];
+                    [installGitButton setEnabled:YES];
+                    alert = [NSAlert alertWithMessageText:@"There was a problem installing Git!"
+                                            defaultButton:@"Go get Git!"
+                                          alternateButton:@"Cancel"
+                                              otherButton:nil
+                                informativeTextWithFormat:@"You can try to reinstall from here, or download and install the official version from http://git-scm.com/downloads."];
+
+                    if ( [alert runModal] == NSAlertDefaultReturn) {
+                        [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:@"http://git-scm.com/downloads"]];
+                    }
+                    
+                }
+            }
+        }];
+    };
+
     [task launch];
-    [installGitFileHandle readInBackgroundAndNotify];
-    [task waitUntilExit];
-
-    LGHostInfo *hostInfo = [[LGHostInfo alloc] init];
-
-    // TODO: We should probably be installing the official
-    // Git PKG rather than dealing with the Xcode CLI tools
-    if ([hostInfo gitInstalled]) {
-        [installGitButton setTitle:@"Install Git"];
-        [installGitButton setEnabled:NO];
-    }
 }
 
 - (void)downloadAndInstallAutoPkg
