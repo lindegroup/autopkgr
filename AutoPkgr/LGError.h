@@ -23,10 +23,25 @@
 
 void DLog(NSString *format, ...);
 
+#pragma mark - AutoPkgr specific Error codes
 typedef NS_ENUM(NSInteger, LGErrorCodes) {
+    /** Success */
     kLGErrorSuccess,
+    /** Error when sending email fails */
     kLGErrorSendingEmail,
+    /** Error when testing port failed */
     kLGErrorTestingPort,
+    /** Error when some preferences could not be repaired, and values were removed */
+    kLGErrorReparingAutoPkgPrefs,
+};
+
+#pragma mark - AutoPkg specific Error codes
+typedef NS_ENUM(NSInteger, LGErrorAutoPkgCodes) {
+    /** AutoPkg most often returns -1 on misconfiguration errors */
+    kLGErrorAutoPkgConfig = -1,
+
+    /** AutoPkg returns 255 if no recipe is specified */
+    kLGErrorAutoPkgNoRecipes = 255,
 };
 
 typedef NS_ENUM(NSInteger, LGAutoPkgrVerb) {
@@ -56,7 +71,7 @@ typedef NS_ENUM(NSInteger, LGAutoPkgrVerb) {
  *  @param code  cooresponging LGErrorCodes
  *  @param error __autoreleasing NSError object
  *
- *  @return NO if error occured and error.code is not 0, otherwise YES
+ *  @return NO if error occured and error.code is not 0, otherwise YES;
  */
 + (BOOL)errorWithCode:(LGErrorCodes)code error:(NSError **)error;
 /**
@@ -76,7 +91,7 @@ typedef NS_ENUM(NSInteger, LGAutoPkgrVerb) {
  *  @param verb  Cooresponding Action Word Describing the AutoPkgr task process
  *  @param error __autoreleasing NSError object
  *
- *  @return NO if error occured and the exit code is not 0, otherwise YES
+ *  @return NO if error occured and the exit code is not 0, otherwise YES;
  *  @discussion If the task is not complete this will return YES;
  */
 + (BOOL)errorWithTaskError:(NSTask *)task verb:(LGAutoPkgrVerb)verb error:(NSError **)error;

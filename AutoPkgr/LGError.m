@@ -22,7 +22,7 @@
 #import "LGError.h"
 #import "LGConstants.h"
 
-// Debug Loggin Method
+// Debug Logging Method
 void DLog(NSString *format, ...)
 {
 #if DEBUG
@@ -46,6 +46,8 @@ static NSString *errorMsgFromCode(LGErrorCodes code)
     case kLGErrorTestingPort:
         msg = @"Error verifying server and port";
         break;
+    case kLGErrorReparingAutoPkgPrefs:
+        msg = @"We were unable to resolve some issues with the autopkg preferences.";
     default:
         break;
     }
@@ -119,7 +121,7 @@ static NSString *errorMessageFromAutoPkgVerb(LGAutoPkgrVerb verb)
         error = [NSError errorWithDomain:kLGApplicationName
                                     code:code
                                 userInfo:@{ NSLocalizedDescriptionKey : errorMsg }];
-        DLog(@"Error [%d ] %@ \n %@", code, errorMsg);
+        DLog(@"Error [%d] %@ \n %@", code, errorMsg);
     }
     return error;
 }
@@ -150,15 +152,16 @@ static NSString *errorMessageFromAutoPkgVerb(LGAutoPkgrVerb verb)
 
     errorDetails = [[NSString alloc] initWithData:errData encoding:NSASCIIStringEncoding];
     taskError = task.terminationStatus;
+    DLog(@"%ld : %@", task.terminationStatus, errorDetails);
 
-    // AutoPkg's rc on a failed repo-update is 0, so check the stderr for "ERROR" string
-    if (verb == kLGAutoPkgrRepoUpdate) {
+    // AutoPkg's rc on a failed repo-update / delete is 0, so check the stderr for "ERROR" string
+    if (verb == kLGAutoPkgrRepoUpdate || verb == kLGAutoPkgrRepoDelete) {
         if ([errorDetails rangeOfString:@"ERROR"].location != NSNotFound) {
-            taskError = -1;
+            taskError = kLGErrorAutoPkgConfig;
         }
     }
     // autopkg run exits 255 if no recipe speciifed
-    else if (verb == kLGAutoPkgrRun && task.terminationStatus == 255) {
+    else if (verb == kLGAutoPkgrRun && task.terminationStatus == kLGErrorAutoPkgNoRecipes) {
         errorDetails = @"No recipes specified.";
     }
 

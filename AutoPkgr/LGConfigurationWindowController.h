@@ -25,9 +25,6 @@
 #import "LGTestPort.h"
 
 @interface LGConfigurationWindowController : NSWindowController <NSTextDelegate, NSTokenFieldDelegate, NSWindowDelegate>
-{
-    NSUserDefaults *defaults;
-}
 
 // Text/token fields
 @property (weak) IBOutlet NSTokenField *smtpTo;
@@ -39,6 +36,8 @@
 @property (weak) IBOutlet NSTextField *repoURLToAdd;
 @property (weak) IBOutlet NSTextField *autoPkgRunInterval;
 @property (weak) IBOutlet NSTextField *localMunkiRepo;
+@property (weak) IBOutlet NSTextField *autoPkgCacheDir;
+@property (weak) IBOutlet NSTextField *autoPkgRecipeOverridesDir;
 
 // Checkboxes
 @property (weak) IBOutlet NSButton *smtpAuthenticationEnabledButton;
@@ -52,6 +51,9 @@
 @property (weak) IBOutlet NSButton *autoPkgCacheFolderButton;
 @property (weak) IBOutlet NSButton *autoPkgRecipeReposFolderButton;
 @property (weak) IBOutlet NSButton *localMunkiRepoFolderButton;
+@property (weak) IBOutlet NSButton *autoPkgCacheDirButton;
+@property (weak) IBOutlet NSButton *autoPkgRecipeOverridesButton;
+
 @property (weak) IBOutlet NSButton *sendTestEmailButton;
 @property (weak) IBOutlet NSButton *installGitButton;
 @property (weak) IBOutlet NSButton *installAutoPkgButton;
@@ -77,7 +79,6 @@
 @property (weak) IBOutlet NSPanel *progressPanel;
 @property (weak) IBOutlet NSProgressIndicator *progressIndicator;
 @property (weak) IBOutlet NSTextField *progressMessage;
-
 
 // Objects
 @property (strong) IBOutlet LGPopularRepositories *popRepoTableViewHandler;
