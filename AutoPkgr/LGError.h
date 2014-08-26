@@ -37,10 +37,10 @@ typedef NS_ENUM(NSInteger, LGErrorCodes) {
 
 #pragma mark - AutoPkg specific Error codes
 typedef NS_ENUM(NSInteger, LGErrorAutoPkgCodes) {
-    /** Autopkg most often return -1 on misconfiguration errors */
+    /** AutoPkg most often returns -1 on misconfiguration errors */
     kLGErrorAutoPkgConfig = -1,
 
-    /** Autopkg returns 255 if no recipe is specified */
+    /** AutoPkg returns 255 if no recipe is specified */
     kLGErrorAutoPkgNoRecipes = 255,
 };
 
@@ -71,7 +71,7 @@ typedef NS_ENUM(NSInteger, LGAutoPkgrVerb) {
  *  @param code  cooresponging LGErrorCodes
  *  @param error __autoreleasing NSError object
  *
- *  @return NO if error occured and error.code is not 0, otherwise YES
+ *  @return NO if error occured and error.code is not 0, otherwise YES;
  */
 + (BOOL)errorWithCode:(LGErrorCodes)code error:(NSError **)error;
 /**
@@ -91,7 +91,7 @@ typedef NS_ENUM(NSInteger, LGAutoPkgrVerb) {
  *  @param verb  Cooresponding Action Word Describing the AutoPkgr task process
  *  @param error __autoreleasing NSError object
  *
- *  @return NO if error occured and the exit code is not 0, otherwise YES
+ *  @return NO if error occured and the exit code is not 0, otherwise YES;
  *  @discussion If the task is not complete this will return YES;
  */
 + (BOOL)errorWithTaskError:(NSTask *)task verb:(LGAutoPkgrVerb)verb error:(NSError **)error;

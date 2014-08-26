@@ -22,7 +22,7 @@
 #import "LGError.h"
 #import "LGConstants.h"
 
-// Debug Loggin Method
+// Debug Logging Method
 void DLog(NSString *format, ...)
 {
 #if DEBUG

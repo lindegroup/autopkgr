@@ -1042,9 +1042,9 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
             SEL selector = nil;
             NSAlert *alert = [NSAlert alertWithError:error];
             [alert addButtonWithTitle:@"OK"];
-            // Autopkg exits -1 it may be mis configured.
-            if(error.code == kLGErrorAutoPkgConfig){
-                [alert addButtonWithTitle:@"Try and repair settings"];
+            // If AutoPkg exits -1 it may be misconfigured
+            if (error.code == kLGErrorAutoPkgConfig) {
+                [alert addButtonWithTitle:@"Try to repair settings"];
                 selector = @selector(didEndWithPreferenceRepairRequest:returnCode:);
             }
             
@@ -1064,15 +1064,16 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
         BOOL rc = [LGDefaults fixRelativePathsInAutoPkgDefaults:&error neededFixing:&neededFixing];
         if (neededFixing > 0) {
             NSAlert *alert = [NSAlert new];
-            alert.messageText = [NSString stringWithFormat:@"%ld problems were found in preference file", neededFixing];
-            alert.informativeText = rc ? @"and were successfully repaired" : @"some could not be repaired, if the problem consists create an issue on the AutoPkgr github page";
+            alert.messageText = [NSString stringWithFormat:@"%ld problems were found in the AutoPkg preference file", neededFixing];
+            alert.informativeText = rc ? @"AutoPkgr was able to repair the preference file. No further action is required." :
+                                         @"AutoPkgr could not repair the preference file. If the problem persists open an issue on the AutoPkgr GitHub page.";
             [alert beginSheetModalForWindow:self.window
                               modalDelegate:self
                              didEndSelector:nil
                                 contextInfo:nil];
 
         } else {
-            DLog(@"No problems detected in preference file");
+            DLog(@"No problems were detected in the AutoPkg preference file.");
         }
     }
 }

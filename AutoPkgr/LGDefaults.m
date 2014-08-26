@@ -23,9 +23,8 @@
 #import "LGConstants.h"
 #import "LGError.h"
 
-
 @interface LGDefaults ()
-// Make these readwrite here so we can use these with methods
+// Make these readwrite here so we can use them within methods
 @property (copy, nonatomic, readwrite) NSString *autoPkgRecipeRepoDir;
 @property (copy, nonatomic, readwrite) NSArray *autoPkgRecipeSearchDirs;
 @property (copy, nonatomic, readwrite) NSDictionary *autoPkgRecipeRepos;
@@ -328,15 +327,15 @@
             // try and remove it
             if ([manager fileExistsAtPath:toPath] &&
                 [toPath rangeOfString:@"recipes"].location != NSNotFound) {
-                NSLog(@"We found an item at %@ that needs to be removed", toPath);
+                NSLog(@"We found an item at %@ that needs to be removed.", toPath);
                 [manager removeItemAtPath:toPath error:nil];
             } else {
-                // There is something realy wrong with the toPath, abort
-                NSLog(@"Somthing is wrong with the RECIPE_REPO path: %@", toPath);
-                NSLog(@"The folder exists, but dose not look like an actual recipe repo");
+                // There is something really wrong with the toPath, abort
+                NSLog(@"Somthing is wrong with the RECIPE_REPO path: %@.", toPath);
+                NSLog(@"The folder exists, but does not look like an actual recipe repo.");
                 return NO;
             }
-            NSLog(@"Copying repo from %@ to %@", fromPath, toPath);
+            NSLog(@"Copying repo from %@ to %@.", fromPath, toPath);
 
             return [manager moveItemAtPath:fromPath toPath:toPath error:nil];
         }
@@ -345,7 +344,7 @@
             return NO;
         }
     }
-    NSLog(@"Repo already exists at %@, no need to migrate", toPath);
+    NSLog(@"Repo already exists at %@, no need to migrate.", toPath);
     return YES;
 }
 
