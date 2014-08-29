@@ -224,25 +224,18 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
         }
         [smtpTo setObjectValue:to];
     }
-    if ([defaults SMTPTLSEnabled]) {
-        [smtpTLSEnabledButton setState:[defaults SMTPTLSEnabled]];
-    }
-    if ([defaults SMTPAuthenticationEnabled]) {
-        [smtpAuthenticationEnabledButton setState:[defaults SMTPAuthenticationEnabled]];
-    }
-    if ([defaults sendEmailNotificationsWhenNewVersionsAreFoundEnabled]) {
-        [sendEmailNotificationsWhenNewVersionsAreFoundButton setState:[defaults sendEmailNotificationsWhenNewVersionsAreFoundEnabled]];
-    }
-    if ([defaults checkForNewVersionsOfAppsAutomaticallyEnabled]) {
-        [checkForNewVersionsOfAppsAutomaticallyButton setState:[defaults checkForNewVersionsOfAppsAutomaticallyEnabled]];
-    }
-    if ([defaults checkForRepoUpdatesAutomaticallyEnabled]) {
-        [checkForRepoUpdatesAutomaticallyButton setState:[defaults checkForRepoUpdatesAutomaticallyEnabled]];
-    }
-    if ([defaults warnBeforeQuittingEnabled]) {
-        [warnBeforeQuittingButton setState:[defaults warnBeforeQuittingEnabled]];
-    }
+    
+    [smtpTLSEnabledButton setState:[defaults SMTPTLSEnabled]];
 
+    [smtpAuthenticationEnabledButton setState:[defaults SMTPAuthenticationEnabled]];
+
+    [sendEmailNotificationsWhenNewVersionsAreFoundButton setState:[defaults sendEmailNotificationsWhenNewVersionsAreFoundEnabled]];
+    [checkForNewVersionsOfAppsAutomaticallyButton setState:[defaults checkForNewVersionsOfAppsAutomaticallyEnabled]];
+
+    [checkForRepoUpdatesAutomaticallyButton setState:[defaults checkForRepoUpdatesAutomaticallyEnabled]];
+
+    [warnBeforeQuittingButton setState:[defaults warnBeforeQuittingEnabled]];
+    
     // Read the SMTP password from the keychain and populate in
     // NSSecureTextField if it exists
     NSError *error = nil;
