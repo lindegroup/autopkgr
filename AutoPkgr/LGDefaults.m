@@ -24,7 +24,6 @@
 
 @interface LGDefaults ()
 // Make these readwrite here so we can use these with methods
-@property (copy, nonatomic, readwrite) NSString *autoPkgRecipeRepoDir;
 @property (copy, nonatomic, readwrite) NSArray *autoPkgRecipeSearchDirs;
 @property (copy, nonatomic, readwrite) NSDictionary *autoPkgRecipeRepos;
 @end

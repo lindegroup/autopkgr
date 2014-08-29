@@ -8,8 +8,9 @@
         <customObject id="-2" userLabel="File's Owner" customClass="LGConfigurationWindowController">
             <connections>
                 <outlet property="appTableViewHandler" destination="oLk-Uk-whI" id="Y2j-Zo-ZLE"/>
-                <outlet property="autoPkgCacheFolderButton" destination="TYE-36-bIi" id="gtk-a1-W4C"/>
-                <outlet property="autoPkgRecipeReposFolderButton" destination="5lK-cr-mp5" id="aKy-dK-4Vs"/>
+                <outlet property="autoPkgCacheDir" destination="fAS-2t-NJR" id="IWd-LX-9p0"/>
+                <outlet property="autoPkgRecipeOverridesDir" destination="KC4-Ks-uGR" id="ydL-sc-Gjg"/>
+                <outlet property="autoPkgRecipeRepoDir" destination="Tl2-iz-Ard" id="a6L-QG-NtU"/>
                 <outlet property="autoPkgRunInterval" destination="oZ2-P7-4IE" id="5kw-lh-4er"/>
                 <outlet property="autoPkgStatusIcon" destination="f8q-xY-QUg" id="sEw-rG-73c"/>
                 <outlet property="autoPkgStatusLabel" destination="Pbf-A7-T4b" id="hxh-Eo-6ky"/>
@@ -20,7 +21,11 @@
                 <outlet property="gitStatusLabel" destination="OPb-IV-o9L" id="iUI-9q-yU4"/>
                 <outlet property="installAutoPkgButton" destination="x1S-bd-tl3" id="4PM-4V-zR4"/>
                 <outlet property="installGitButton" destination="ClY-1a-e2c" id="FKm-rN-CAw"/>
-                <outlet property="localMunkiRepoFolderButton" destination="z6I-Bv-EFk" id="Pai-q2-byn"/>
+                <outlet property="localMunkiRepo" destination="ME9-rG-Y8o" id="ejh-Qk-6mT"/>
+                <outlet property="openAutoPkgCacheFolderButton" destination="TYE-36-bIi" id="xbC-TJ-DYP"/>
+                <outlet property="openAutoPkgRecipeOverridesFolderButton" destination="SPx-dH-wAP" id="xtp-uW-mVy"/>
+                <outlet property="openAutoPkgRecipeReposFolderButton" destination="5lK-cr-mp5" id="Xje-0l-4jA"/>
+                <outlet property="openLocalMunkiRepoFolderButton" destination="z6I-Bv-EFk" id="Skd-AB-axz"/>
                 <outlet property="popRepoTableViewHandler" destination="mvj-kT-UYD" id="JIm-Zi-DtB"/>
                 <outlet property="progressIndicator" destination="qol-Go-AJd" id="L2u-sJ-XVZ"/>
                 <outlet property="progressMessage" destination="u7l-Fz-3uc" id="bfC-89-DgO"/>
@@ -40,6 +45,7 @@
                 <outlet property="testSmtpServerSpinner" destination="6ha-Zn-VKa" id="gnY-fl-miO"/>
                 <outlet property="testSmtpServerStatus" destination="VDb-hs-bB1" id="jIN-1C-wZW"/>
                 <outlet property="updateRepoNowButton" destination="X02-En-nic" id="yZU-6m-VPk"/>
+                <outlet property="warnBeforeQuittingButton" destination="KMe-Rd-d2t" id="28W-Xr-e8Z"/>
                 <outlet property="window" destination="F0z-JX-Cv5" id="gIp-Ho-8D9"/>
             </connections>
         </customObject>
@@ -48,7 +54,7 @@
         <window title="AutoPkgr" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" oneShot="NO" releasedWhenClosed="NO" animationBehavior="default" id="F0z-JX-Cv5">
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
             <rect key="contentRect" x="196" y="240" width="657" height="478"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1440" height="878"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1280" height="778"/>
             <value key="minSize" type="size" width="657" height="478"/>
             <view key="contentView" id="se5-gp-TjO">
                 <rect key="frame" x="0.0" y="0.0" width="657" height="478"/>
@@ -94,7 +100,7 @@
                                                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                                     </textFieldCell>
                                                 </textField>
-                                                <button verticalHuggingPriority="750" misplaced="YES" placeholderIntrinsicWidth="194" placeholderIntrinsicHeight="21" translatesAutoresizingMaskIntoConstraints="NO" id="x1S-bd-tl3">
+                                                <button verticalHuggingPriority="750" placeholderIntrinsicWidth="194" placeholderIntrinsicHeight="21" translatesAutoresizingMaskIntoConstraints="NO" id="x1S-bd-tl3">
                                                     <rect key="frame" x="89" y="147" width="206" height="32"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                     <buttonCell key="cell" type="push" title="Install AutoPkg" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="fT8-Dd-41f">
@@ -114,7 +120,7 @@
                                                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                                     </textFieldCell>
                                                 </textField>
-                                                <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" misplaced="YES" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="g4F-gg-Xfq">
+                                                <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="g4F-gg-Xfq">
                                                     <rect key="frame" x="47" y="103" width="516" height="20"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                     <constraints>
@@ -145,7 +151,7 @@
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <imageCell key="cell" refusesFirstResponder="YES" alignment="left" animates="YES" imageScaling="proportionallyDown" image="NSStatusAvailable" id="e1g-5e-fLi"/>
                                                 </imageView>
-                                                <button misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="KMe-Rd-d2t">
+                                                <button translatesAutoresizingMaskIntoConstraints="NO" id="KMe-Rd-d2t">
                                                     <rect key="frame" x="198" y="21" width="215" height="18"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                     <constraints>
@@ -323,7 +329,7 @@
                                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                         <subviews>
                                                             <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnSelection="YES" columnResizing="NO" multipleSelection="NO" autosaveColumns="NO" id="HAz-3M-Rgt">
-                                                                <rect key="frame" x="0.0" y="0.0" width="581.5" height="143"/>
+                                                                <rect key="frame" x="0.0" y="0.0" width="581" height="143"/>
                                                                 <autoresizingMask key="autoresizingMask"/>
                                                                 <size key="intercellSpacing" width="3" height="2"/>
                                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -341,7 +347,7 @@
                                                                         </buttonCell>
                                                                         <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                                                     </tableColumn>
-                                                                    <tableColumn identifier="appName" width="555.5" minWidth="40" maxWidth="1000" id="BlP-un-SwO">
+                                                                    <tableColumn identifier="appName" width="554.5" minWidth="40" maxWidth="1000" id="BlP-un-SwO">
                                                                         <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left">
                                                                             <font key="font" metaFont="smallSystem"/>
                                                                             <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
@@ -363,7 +369,7 @@
                                                         </subviews>
                                                         <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                     </clipView>
-                                                    <scroller key="horizontalScroller" verticalHuggingPriority="750" horizontal="YES" id="jol-Dg-6k1">
+                                                    <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="YES" id="jol-Dg-6k1">
                                                         <rect key="frame" x="1" y="128" width="581" height="16"/>
                                                         <autoresizingMask key="autoresizingMask"/>
                                                     </scroller>
@@ -939,7 +945,7 @@
                                                                     <font key="font" metaFont="system"/>
                                                                 </buttonCell>
                                                                 <connections>
-                                                                    <action selector="chooseAutoPkgCacheDir:" target="-2" id="2zB-SI-WNq"/>
+                                                                    <action selector="chooseAutoPkgReciepRepoDir:" target="-2" id="kdd-Zh-XNV"/>
                                                                 </connections>
                                                             </button>
                                                             <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="5lK-cr-mp5">
@@ -988,7 +994,7 @@
                                                                     <font key="font" metaFont="system"/>
                                                                 </buttonCell>
                                                                 <connections>
-                                                                    <action selector="chooseAutoPkgRecipeOverridesDir:" target="-2" id="miM-LR-sDa"/>
+                                                                    <action selector="chooseAutoPkgRecipeOverridesDir:" target="-2" id="TTd-4i-b4j"/>
                                                                 </connections>
                                                             </button>
                                                             <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="SPx-dH-wAP">
@@ -1090,7 +1096,7 @@
             <windowStyleMask key="styleMask" closable="YES" miniaturizable="YES" resizable="YES" utility="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="385" y="323" width="610" height="133"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1440" height="878"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1280" height="778"/>
             <view key="contentView" id="dCS-sn-B3a">
                 <rect key="frame" x="0.0" y="0.0" width="610" height="133"/>
                 <autoresizingMask key="autoresizingMask"/>

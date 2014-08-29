@@ -47,16 +47,18 @@
 @synthesize repoURLToAdd;
 @synthesize localMunkiRepo;
 @synthesize autoPkgCacheDir;
+@synthesize autoPkgRecipeRepoDir;
+@synthesize autoPkgRecipeOverridesDir;
 @synthesize smtpAuthenticationEnabledButton;
 @synthesize smtpTLSEnabledButton;
 @synthesize warnBeforeQuittingButton;
 @synthesize checkForNewVersionsOfAppsAutomaticallyButton;
 @synthesize checkForRepoUpdatesAutomaticallyButton;
 @synthesize sendEmailNotificationsWhenNewVersionsAreFoundButton;
-@synthesize autoPkgRecipeOverridesFolderButton;
-@synthesize autoPkgCacheFolderButton;
-@synthesize autoPkgRecipeReposFolderButton;
-@synthesize localMunkiRepoFolderButton;
+@synthesize openLocalMunkiRepoFolderButton;
+@synthesize openAutoPkgRecipeReposFolderButton;
+@synthesize openAutoPkgCacheFolderButton;
+@synthesize openAutoPkgRecipeOverridesFolderButton;
 @synthesize sendTestEmailButton;
 @synthesize installGitButton;
 @synthesize installAutoPkgButton;
@@ -194,8 +196,11 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
     if ([defaults autoPkgCacheDir]) {
         [autoPkgCacheDir setStringValue:[defaults autoPkgCacheDir]];
     }
+    if ([defaults autoPkgRecipeRepos]) {
+        [autoPkgRecipeRepoDir setStringValue:[defaults autoPkgRecipeRepoDir]];
+    }
     if ([defaults autoPkgRecipeOverridesDir]) {
-        [_autoPkgRecipeOverridesDir setStringValue:[defaults autoPkgRecipeOverridesDir]];
+        [autoPkgRecipeOverridesDir setStringValue:[defaults autoPkgRecipeOverridesDir]];
     }
     if ([defaults SMTPServer]) {
         [smtpServer setStringValue:[defaults SMTPServer]];
@@ -296,22 +301,18 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
 
     // Enable tools buttons if directories exist
     BOOL isDir;
-    NSString *autoPkgRecipeOverridesFolder = [hostInfo getAutoPkgRecipeOverridesDir];
-    NSString *autoPkgCacheFolder = [hostInfo getAutoPkgCacheDir];
-    NSString *autoPkgRecipeReposFolder = [hostInfo getAutoPkgRecipeReposDir];
-    NSString *localMunkiRepoFolder = [hostInfo getMunkiRepoDir];
 
-    if ([[NSFileManager defaultManager] fileExistsAtPath:autoPkgRecipeOverridesFolder isDirectory:&isDir] && isDir) {
-        [autoPkgRecipeOverridesFolderButton setEnabled:YES];
+    if ([[NSFileManager defaultManager] fileExistsAtPath:defaults.autoPkgRecipeOverridesDir isDirectory:&isDir] && isDir) {
+        [openAutoPkgRecipeOverridesFolderButton setEnabled:YES];
     }
-    if ([[NSFileManager defaultManager] fileExistsAtPath:autoPkgCacheFolder isDirectory:&isDir] && isDir) {
-        [autoPkgCacheFolderButton setEnabled:YES];
+    if ([[NSFileManager defaultManager] fileExistsAtPath:defaults.autoPkgCacheDir isDirectory:&isDir] && isDir) {
+        [openAutoPkgCacheFolderButton setEnabled:YES];
     }
-    if ([[NSFileManager defaultManager] fileExistsAtPath:autoPkgRecipeReposFolder isDirectory:&isDir] && isDir) {
-        [autoPkgRecipeReposFolderButton setEnabled:YES];
+    if ([[NSFileManager defaultManager] fileExistsAtPath:defaults.autoPkgRecipeRepoDir isDirectory:&isDir] && isDir) {
+        [openAutoPkgRecipeReposFolderButton setEnabled:YES];
     }
-    if ([[NSFileManager defaultManager] fileExistsAtPath:localMunkiRepoFolder isDirectory:&isDir] && isDir) {
-        [localMunkiRepoFolderButton setEnabled:YES];
+    if ([[NSFileManager defaultManager] fileExistsAtPath:defaults.munkiRepo isDirectory:&isDir] && isDir) {
+        [openLocalMunkiRepoFolderButton setEnabled:YES];
     }
 
     // Synchronize with the defaults database
@@ -591,6 +592,50 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
     [queue addOperation:operation];
 }
 
+- (IBAction)openLocalMunkiRepoFolder:(id)sender
+{
+    BOOL isDir;
+    
+    if ([[NSFileManager defaultManager] fileExistsAtPath:defaults.munkiRepo isDirectory:&isDir] && isDir) {
+        NSURL *localMunkiRepoFolderURL = [NSURL fileURLWithPath:defaults.munkiRepo];
+        [[NSWorkspace sharedWorkspace] openURL:localMunkiRepoFolderURL];
+    } else {
+        NSLog(@"%@ does not exist.", defaults.munkiRepo);
+        NSAlert *alert = [[NSAlert alloc] init];
+        [alert addButtonWithTitle:@"OK"];
+        [alert setMessageText:@"Cannot find the Munki Repository."];
+        [alert setInformativeText:[NSString stringWithFormat:@"%@ could not find the Munki repository located in %@. Please verify that this folder exists.", kApplicationName, defaults.munkiRepo]];
+        [alert setAlertStyle:NSWarningAlertStyle];
+        [alert beginSheetModalForWindow:self.window
+                          modalDelegate:self
+                         didEndSelector:nil
+                            contextInfo:nil];
+    }
+}
+
+- (IBAction)openAutoPkgRecipeReposFolder:(id)sender
+{
+    BOOL isDir;
+    LGHostInfo *hostInfo = [[LGHostInfo alloc] init];
+    NSString *autoPkgRecipeReposFolder = [hostInfo getAutoPkgRecipeReposDir];
+    
+    if ([[NSFileManager defaultManager] fileExistsAtPath:autoPkgRecipeReposFolder isDirectory:&isDir] && isDir) {
+        NSURL *autoPkgRecipeReposFolderURL = [NSURL fileURLWithPath:autoPkgRecipeReposFolder];
+        [[NSWorkspace sharedWorkspace] openURL:autoPkgRecipeReposFolderURL];
+    } else {
+        NSLog(@"%@ does not exist.", autoPkgRecipeReposFolder);
+        NSAlert *alert = [[NSAlert alloc] init];
+        [alert addButtonWithTitle:@"OK"];
+        [alert setMessageText:@"Cannot find the AutoPkg RecipeRepos folder."];
+        [alert setInformativeText:[NSString stringWithFormat:@"%@ could not find the AutoPkg RecipeRepos folder located in %@. Please verify that this folder exists.", kApplicationName, autoPkgRecipeReposFolder]];
+        [alert setAlertStyle:NSWarningAlertStyle];
+        [alert beginSheetModalForWindow:self.window
+                          modalDelegate:self
+                         didEndSelector:nil
+                            contextInfo:nil];
+    }
+}
+
 - (IBAction)openAutoPkgCacheFolder:(id)sender
 {
     BOOL isDir;
@@ -614,48 +659,130 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
     }
 }
 
-- (IBAction)openAutoPkgRecipeReposFolder:(id)sender
+- (IBAction)openAutoPkgRecipeOverridesFolder:(id)sender
 {
     BOOL isDir;
     LGHostInfo *hostInfo = [[LGHostInfo alloc] init];
-    NSString *autoPkgRecipeReposFolder = [hostInfo getAutoPkgRecipeReposDir];
-
-    if ([[NSFileManager defaultManager] fileExistsAtPath:autoPkgRecipeReposFolder isDirectory:&isDir] && isDir) {
-        NSURL *autoPkgRecipeReposFolderURL = [NSURL fileURLWithPath:autoPkgRecipeReposFolder];
-        [[NSWorkspace sharedWorkspace] openURL:autoPkgRecipeReposFolderURL];
+    NSString *autoPkgRecipeOverridesFolder = [hostInfo getAutoPkgRecipeOverridesDir];
+    
+    if ([[NSFileManager defaultManager] fileExistsAtPath:autoPkgRecipeOverridesFolder isDirectory:&isDir] && isDir) {
+        NSURL *autoPkgRecipeOverridesFolderURL = [NSURL fileURLWithPath:autoPkgRecipeOverridesFolder];
+        [[NSWorkspace sharedWorkspace] openURL:autoPkgRecipeOverridesFolderURL];
     } else {
-        NSLog(@"%@ does not exist.", autoPkgRecipeReposFolder);
+        NSLog(@"%@ does not exist.", autoPkgRecipeOverridesFolder);
         NSAlert *alert = [[NSAlert alloc] init];
         [alert addButtonWithTitle:@"OK"];
-        [alert setMessageText:@"Cannot find the AutoPkg RecipeRepos folder."];
-        [alert setInformativeText:[NSString stringWithFormat:@"%@ could not find the AutoPkg RecipeRepos folder located in %@. Please verify that this folder exists.", kApplicationName, autoPkgRecipeReposFolder]];
+        [alert setMessageText:@"Cannot find the AutoPkg RecipeOverrides folder."];
+        [alert setInformativeText:[NSString stringWithFormat:@"%@ could not find the AutoPkg RecipeOverrides folder located in %@. Please verify that this folder exists.", kApplicationName, autoPkgRecipeOverridesFolder]];
         [alert setAlertStyle:NSWarningAlertStyle];
-        [alert beginSheetModalForWindow:self.window
-                          modalDelegate:self
-                         didEndSelector:nil
-                            contextInfo:nil];
+        [alert runModal];
     }
 }
 
-- (IBAction)openLocalMunkiRepoFolder:(id)sender
-{
-    BOOL isDir;
+#pragma mark - Choose AutoPkg defaults
 
-    if ([[NSFileManager defaultManager] fileExistsAtPath:defaults.munkiRepo isDirectory:&isDir] && isDir) {
-        NSURL *localMunkiRepoFolderURL = [NSURL fileURLWithPath:defaults.munkiRepo];
-        [[NSWorkspace sharedWorkspace] openURL:localMunkiRepoFolderURL];
-    } else {
-        NSLog(@"%@ does not exist.", defaults.munkiRepo);
-        NSAlert *alert = [[NSAlert alloc] init];
-        [alert addButtonWithTitle:@"OK"];
-        [alert setMessageText:@"Cannot find the Munki Repository."];
-        [alert setInformativeText:[NSString stringWithFormat:@"%@ could not find the Munki repository located in %@. Please verify that this folder exists.", kApplicationName, defaults.munkiRepo]];
-        [alert setAlertStyle:NSWarningAlertStyle];
-        [alert beginSheetModalForWindow:self.window
-                          modalDelegate:self
-                         didEndSelector:nil
-                            contextInfo:nil];
-    }
+- (IBAction)chooseLocalMunkiRepo:(id)sender
+{
+    NSOpenPanel *chooseDialog = [self setupOpenPanel];
+    
+    // Set the default directory to /Users/Shared
+    [chooseDialog setDirectoryURL:[NSURL URLWithString:@"/Users/Shared"]];
+    
+    // Display the dialog. If the "Choose" button was
+    // pressed, process the directory path.
+    [chooseDialog beginSheetModalForWindow:self.window completionHandler:^(NSInteger result) {
+        if (result == NSFileHandlingPanelOKButton) {
+            NSURL *url = [chooseDialog URL];
+            if ([url isFileURL]) {
+                BOOL isDir = NO;
+                // Verify that the file exists and is a directory
+                if ([[NSFileManager defaultManager] fileExistsAtPath:[url path] isDirectory:&isDir] && isDir) {
+                    // Here we can be certain the URL exists and it is a directory
+                    NSString *urlPath = [url path];
+                    [localMunkiRepo setStringValue:urlPath];
+                    defaults.munkiRepo = urlPath;
+                }
+            }
+            
+        }
+    }];
+}
+
+- (IBAction)chooseAutoPkgReciepRepoDir:(id)sender
+{
+    NSOpenPanel *chooseDialog = [self setupOpenPanel];
+    
+    // Display the dialog. If the "Choose" button was
+    // pressed, process the directory path.
+    [chooseDialog beginSheetModalForWindow:self.window completionHandler:^(NSInteger result) {
+        if (result == NSFileHandlingPanelOKButton) {
+            NSURL *url = [chooseDialog URL];
+            if ([url isFileURL]) {
+                BOOL isDir = NO;
+                // Verify that the file exists and is a directory
+                if ([[NSFileManager defaultManager] fileExistsAtPath:[url path] isDirectory:&isDir] && isDir) {
+                    // Here we can be certain the URL exists and it is a directory
+                    NSString *urlPath = [url path];
+                    [autoPkgRecipeRepoDir setStringValue:urlPath];
+                    [openAutoPkgRecipeReposFolderButton setEnabled:YES];
+                    defaults.autoPkgRecipeRepoDir = urlPath;
+                }
+            }
+            
+        }
+    }];
+    
+}
+
+- (IBAction)chooseAutoPkgCacheDir:(id)sender
+{
+    NSOpenPanel *chooseDialog = [self setupOpenPanel];
+    
+    // Display the dialog. If the "Choose" button was
+    // pressed, process the directory path.
+    [chooseDialog beginSheetModalForWindow:self.window completionHandler:^(NSInteger result) {
+        if (result == NSFileHandlingPanelOKButton) {
+            NSURL *url = [chooseDialog URL];
+            if ([url isFileURL]) {
+                BOOL isDir = NO;
+                // Verify that the file exists and is a directory
+                if ([[NSFileManager defaultManager] fileExistsAtPath:[url path] isDirectory:&isDir] && isDir) {
+                    // Here we can be certain the URL exists and it is a directory
+                    NSString *urlPath = [url path];
+                    [autoPkgCacheDir setStringValue:urlPath];
+                    [openAutoPkgCacheFolderButton setEnabled:YES];
+                    defaults.autoPkgCacheDir = urlPath;
+                }
+            }
+            
+        }
+    }];
+}
+
+- (IBAction)chooseAutoPkgRecipeOverridesDir:(id)sender
+{
+    NSOpenPanel *chooseDialog = [self setupOpenPanel];
+    
+    
+    // Display the dialog. If the "Choose" button was
+    // pressed, process the directory path.
+    [chooseDialog beginSheetModalForWindow:self.window completionHandler:^(NSInteger result) {
+        if (result == NSFileHandlingPanelOKButton) {
+            NSURL *url = [chooseDialog URL];
+            if ([url isFileURL]) {
+                BOOL isDir = NO;
+                // Verify that the file exists and is a directory
+                if ([[NSFileManager defaultManager] fileExistsAtPath:[url path] isDirectory:&isDir] && isDir) {
+                    // Here we can be certain the URL exists and it is a directory
+                    NSString *urlPath = [url path];
+                    [autoPkgRecipeOverridesDir setStringValue:urlPath];
+                    [openAutoPkgRecipeOverridesFolderButton setEnabled:YES];
+                    defaults.autoPkgRecipeOverridesDir = urlPath;
+                }
+            }
+            
+        }
+    }];
 }
 
 - (IBAction)addAutoPkgRepoURL:(id)sender
@@ -750,109 +877,10 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
 
     // Set the default directory to /Users/Shared
     [openPanel setDirectoryURL:[NSURL URLWithString:@"/Users/Shared"]];
+    
     return openPanel;
 }
 
-- (IBAction)chooseLocalMunkiRepo:(id)sender
-{
-    NSOpenPanel *chooseDialog = [self setupOpenPanel];
-
-    // Set the default directory to /Users/Shared
-    [chooseDialog setDirectoryURL:[NSURL URLWithString:@"/Users/Shared"]];
-
-    // Display the dialog. If the "Choose" button was
-    // pressed, process the directory path.
-    [chooseDialog beginSheetModalForWindow:self.window completionHandler:^(NSInteger result) {
-        if (result == NSFileHandlingPanelOKButton) {
-            NSURL *url = [chooseDialog URL];
-            if ([url isFileURL]) {
-                BOOL isDir = NO;
-                // Verify that the file exists and is a directory
-                if ([[NSFileManager defaultManager] fileExistsAtPath:[url path] isDirectory:&isDir] && isDir) {
-                    // Here we can be certain the URL exists and it is a directory
-                    NSString *urlPath = [url path];
-                    [localMunkiRepo setStringValue:urlPath];
-                    defaults.munkiRepo = urlPath;
-                }
-            }
-
-        }
-    }];
-}
-
-- (IBAction)chooseAutoPkgCacheDir:(id)sender
-{
-    NSOpenPanel *chooseDialog = [self setupOpenPanel];
-
-    // Set the default directory to the user's ~/Library/AutoPkg/Cache"
-    [chooseDialog setDirectoryURL:[NSURL URLWithString:[NSHomeDirectory() stringByAppendingPathComponent:@"Library/AutoPkg/Cache"]]];
-
-    // Display the dialog. If the "Choose" button was
-    // pressed, process the directory path.
-    [chooseDialog beginSheetModalForWindow:self.window completionHandler:^(NSInteger result) {
-        if (result == NSFileHandlingPanelOKButton) {
-            NSURL *url = [chooseDialog URL];
-            if ([url isFileURL]) {
-                BOOL isDir = NO;
-                // Verify that the file exists and is a directory
-                if ([[NSFileManager defaultManager] fileExistsAtPath:[url path] isDirectory:&isDir] && isDir) {
-                    // Here we can be certain the URL exists and it is a directory
-                    NSString *urlPath = [url path];
-                    [autoPkgCacheDir setStringValue:urlPath];
-                    defaults.autoPkgCacheDir = urlPath;
-                }
-            }
-            
-        }
-    }];
-}
-
-- (IBAction)chooseAutoPkgRecipeOverridesDir:(id)sender
-{
-    NSOpenPanel *chooseDialog = [self setupOpenPanel];
-
-    // Set the default directory to the user's ~/Library/AutoPkg/RecipeOverrides"
-    [chooseDialog setDirectoryURL:[NSURL URLWithString:[NSHomeDirectory() stringByAppendingPathComponent:@"Library/AutoPkg/RecipeOverrides"]]];
-
-    // Display the dialog. If the "Choose" button was
-    // pressed, process the directory path.
-    [chooseDialog beginSheetModalForWindow:self.window completionHandler:^(NSInteger result) {
-        if (result == NSFileHandlingPanelOKButton) {
-            NSURL *url = [chooseDialog URL];
-            if ([url isFileURL]) {
-                BOOL isDir = NO;
-                // Verify that the file exists and is a directory
-                if ([[NSFileManager defaultManager] fileExistsAtPath:[url path] isDirectory:&isDir] && isDir) {
-                    // Here we can be certain the URL exists and it is a directory
-                    NSString *urlPath = [url path];
-                    [_autoPkgRecipeOverridesDir setStringValue:urlPath];
-                    defaults.autoPkgRecipeOverridesDir = urlPath;
-                }
-            }
-            
-        }
-    }];
-}
-
-- (IBAction)openAutoPkgRecipeOverridesFolder:(id)sender
-{
-    BOOL isDir;
-    LGHostInfo *hostInfo = [[LGHostInfo alloc] init];
-    NSString *autoPkgRecipeOverridesFolder = [hostInfo getAutoPkgRecipeOverridesDir];
-
-    if ([[NSFileManager defaultManager] fileExistsAtPath:autoPkgRecipeOverridesFolder isDirectory:&isDir] && isDir) {
-        NSURL *autoPkgRecipeOverridesFolderURL = [NSURL fileURLWithPath:autoPkgRecipeOverridesFolder];
-        [[NSWorkspace sharedWorkspace] openURL:autoPkgRecipeOverridesFolderURL];
-    } else {
-        NSLog(@"%@ does not exist.", autoPkgRecipeOverridesFolder);
-        NSAlert *alert = [[NSAlert alloc] init];
-        [alert addButtonWithTitle:@"OK"];
-        [alert setMessageText:@"Cannot find the AutoPkg RecipeOverrides folder."];
-        [alert setInformativeText:[NSString stringWithFormat:@"%@ could not find the AutoPkg RecipeOverrides folder located in %@. Please verify that this folder exists.", kApplicationName, autoPkgRecipeOverridesFolder]];
-        [alert setAlertStyle:NSWarningAlertStyle];
-        [alert runModal];
-    }
-}
 
 - (void)controlTextDidEndEditing:(NSNotification *)notification
 {
@@ -872,9 +900,9 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
         // Pass nil here if string is "" so it removes the key from the defaults
         NSString *value = [[localMunkiRepo stringValue] isEqualToString:@""] ? nil : [localMunkiRepo stringValue];
         defaults.munkiRepo = value;
-    } else if ([object isEqual:_autoPkgRecipeOverridesDir]) {
+    } else if ([object isEqual:autoPkgRecipeOverridesDir]) {
         // Pass nil here if string is "" so it removes the key from the defaults
-        NSString *value = [[_autoPkgRecipeOverridesDir stringValue] isEqualToString:@""] ? nil : [_autoPkgRecipeOverridesDir stringValue];
+        NSString *value = [[autoPkgRecipeOverridesDir stringValue] isEqualToString:@""] ? nil : [autoPkgRecipeOverridesDir stringValue];
         defaults.autoPkgRecipeOverridesDir = value;
     } else if ([object isEqual:autoPkgCacheDir]) {
         // Pass nil here if string is "" so it removes the key from the defaults
