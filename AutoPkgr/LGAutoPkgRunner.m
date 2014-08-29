@@ -334,6 +334,8 @@
                 NSLog(@"Nothing new was downloaded.");
             }
         }
+        [aTask.standardError fileHandleForReading].readabilityHandler = nil;
+        [aTask.standardOutput fileHandleForReading].readabilityHandler = nil;
     };
 
     // Launch the task
