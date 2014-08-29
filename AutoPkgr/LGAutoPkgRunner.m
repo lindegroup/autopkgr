@@ -221,7 +221,11 @@
         NSError *error;
         if (![LGError errorWithTaskError:aTask verb:kLGAutoPkgrRun error:&error]) {
             userInfo = @{kLGNotificationUserInfoError:error};
+            LGEmailer *emailer = [[LGEmailer alloc]init];
+            [emailer sendEmailNotification:@"Error while running autopkg."
+                                   message:error.localizedRecoverySuggestion];
         }
+        
         [[NSNotificationCenter defaultCenter]postNotificationName:kLGNotificationRunAutoPkgComplete
                                                            object:self
                                                          userInfo:userInfo];

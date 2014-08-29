@@ -152,7 +152,6 @@ static NSString *errorMessageFromAutoPkgVerb(LGAutoPkgrVerb verb)
 
     errorDetails = [[NSString alloc] initWithData:errData encoding:NSASCIIStringEncoding];
     taskError = task.terminationStatus;
-    DLog(@"%ld : %@", task.terminationStatus, errorDetails);
 
     // AutoPkg's rc on a failed repo-update / delete is 0, so check the stderr for "ERROR" string
     if (verb == kLGAutoPkgrRepoUpdate || verb == kLGAutoPkgrRepoDelete) {
@@ -162,7 +161,7 @@ static NSString *errorMessageFromAutoPkgVerb(LGAutoPkgrVerb verb)
     }
     // autopkg run exits 255 if no recipe speciifed
     else if (verb == kLGAutoPkgrRun && task.terminationStatus == kLGErrorAutoPkgNoRecipes) {
-        errorDetails = @"No recipes specified.";
+        errorDetails = @"At lease one recipe must be specified when running AutoPkg.\nPlease make sure you have some checked in AutoPkgr's \"Configure Repos & Recipes\" tab.";
     }
 
     // Otherwise we can just use the termination status
@@ -173,7 +172,7 @@ static NSString *errorMessageFromAutoPkgVerb(LGAutoPkgrVerb verb)
                                             NSLocalizedRecoverySuggestionErrorKey : errorDetails ? errorDetails : @"" }];
 
         // If Debugging is enabled, log the error message
-        DLog(@"Error [%d ] %@ \n %@", taskError, errorMsg, errorDetails);
+        DLog(@"Error [%d] %@ \n %@", taskError, errorMsg, errorDetails);
     }
     return error;
 }

@@ -89,9 +89,9 @@
             [to addObject:newAddress];
         }
     }
-
+    NSString *fullSubject = [NSString stringWithFormat:@"%@ on %@",subject,[[NSHost currentHost] name]];
     [[builder header] setTo:to];
-    [[builder header] setSubject:subject];
+    [[builder header] setSubject:fullSubject];
     [builder setHTMLBody:message];
     NSData * rfc822Data = [builder data];
 
