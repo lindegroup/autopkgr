@@ -594,6 +594,7 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
         [installAutoPkgButton setTitle:@"Install AutoPkg"];
         [installAutoPkgButton setEnabled:NO];
     }
+    [self stopProgress:nil];
 }
 
 - (IBAction)installAutoPkg:(id)sender
