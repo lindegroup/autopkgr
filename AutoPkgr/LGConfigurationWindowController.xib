@@ -24,7 +24,6 @@
                 <outlet property="localMunkiRepo" destination="smb-Vt-Cyt" id="Ycw-UD-St3"/>
                 <outlet property="localMunkiRepoFolderButton" destination="z6I-Bv-EFk" id="Pai-q2-byn"/>
                 <outlet property="popRepoTableViewHandler" destination="mvj-kT-UYD" id="JIm-Zi-DtB"/>
-                <outlet property="progressDetailsMessage" destination="3oo-aU-LM0" id="Wtv-bW-PLF"/>
                 <outlet property="progressIndicator" destination="qol-Go-AJd" id="L2u-sJ-XVZ"/>
                 <outlet property="progressMessage" destination="u7l-Fz-3uc" id="bfC-89-DgO"/>
                 <outlet property="progressPanel" destination="043-gL-HLj" id="EfU-ER-kYK"/>
@@ -163,7 +162,7 @@
                                     </tabViewItem>
                                     <tabViewItem label="Configure Repos &amp; Recipes" identifier="2" id="hvS-35-Bas">
                                         <view key="view" id="Kzw-up-jZN">
-                                            <rect key="frame" x="10" y="33" width="706" height="454"/>
+                                            <rect key="frame" x="10" y="33" width="729" height="454"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             <subviews>
                                                 <scrollView autohidesScrollers="YES" horizontalLineScroll="19" horizontalPageScroll="10" verticalLineScroll="19" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9vg-XB-Pqv">
@@ -869,21 +868,24 @@
         <window title="progressPanel" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" restorable="NO" hidesOnDeactivate="YES" oneShot="NO" showsToolbarButton="NO" visibleAtLaunch="NO" animationBehavior="default" id="043-gL-HLj" customClass="NSPanel">
             <windowStyleMask key="styleMask" closable="YES" miniaturizable="YES" resizable="YES" utility="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
-            <rect key="contentRect" x="385" y="323" width="610" height="147"/>
+            <rect key="contentRect" x="385" y="323" width="610" height="133"/>
             <rect key="screenRect" x="0.0" y="0.0" width="1280" height="778"/>
             <view key="contentView" id="dCS-sn-B3a">
-                <rect key="frame" x="0.0" y="0.0" width="610" height="147"/>
+                <rect key="frame" x="0.0" y="0.0" width="610" height="133"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <progressIndicator verticalHuggingPriority="750" maxValue="100" bezeled="NO" style="bar" translatesAutoresizingMaskIntoConstraints="NO" id="qol-Go-AJd">
-                        <rect key="frame" x="20" y="76" width="570" height="20"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                    </progressIndicator>
-                    <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="u7l-Fz-3uc">
-                        <rect key="frame" x="18" y="110" width="398" height="17"/>
+                        <rect key="frame" x="20" y="62" width="570" height="20"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <constraints>
-                            <constraint firstAttribute="width" constant="394" id="j7B-tF-HOT"/>
+                            <constraint firstAttribute="width" constant="570" id="fiW-aR-lOB"/>
+                        </constraints>
+                    </progressIndicator>
+                    <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="u7l-Fz-3uc">
+                        <rect key="frame" x="18" y="96" width="398" height="17"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="394" id="cZY-Ee-aQe"/>
                         </constraints>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Adding..." id="oW2-L7-9c7">
                             <font key="font" metaFont="system"/>
@@ -891,25 +893,12 @@
                             <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                         </textFieldCell>
                     </textField>
-                    <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" misplaced="YES" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="3oo-aU-LM0">
-                        <rect key="frame" x="20" y="50" width="572" height="17"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                        <textFieldCell key="cell" sendsActionOnEndEditing="YES" placeholderString="" id="Ilg-nf-72i">
-                            <font key="font" metaFont="system"/>
-                            <color key="textColor" name="disabledControlTextColor" catalog="System" colorSpace="catalog"/>
-                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                        </textFieldCell>
-                    </textField>
                 </subviews>
                 <constraints>
-                    <constraint firstItem="3oo-aU-LM0" firstAttribute="leading" secondItem="dCS-sn-B3a" secondAttribute="leading" constant="22" id="1J7-GD-F9H"/>
-                    <constraint firstItem="qol-Go-AJd" firstAttribute="top" secondItem="u7l-Fz-3uc" secondAttribute="bottom" constant="15" id="EKu-Yu-cP9"/>
-                    <constraint firstAttribute="trailing" secondItem="qol-Go-AJd" secondAttribute="trailing" constant="20" symbolic="YES" id="Hld-1J-Azh"/>
-                    <constraint firstItem="u7l-Fz-3uc" firstAttribute="leading" secondItem="dCS-sn-B3a" secondAttribute="leading" constant="20" symbolic="YES" id="HpX-fi-kRp"/>
-                    <constraint firstItem="3oo-aU-LM0" firstAttribute="trailing" secondItem="qol-Go-AJd" secondAttribute="trailing" id="KE6-hK-fkf"/>
-                    <constraint firstItem="u7l-Fz-3uc" firstAttribute="leading" secondItem="qol-Go-AJd" secondAttribute="leading" id="Kh0-El-BRa"/>
-                    <constraint firstItem="3oo-aU-LM0" firstAttribute="top" secondItem="qol-Go-AJd" secondAttribute="bottom" constant="19" id="hm3-qJ-k6w"/>
-                    <constraint firstItem="u7l-Fz-3uc" firstAttribute="top" secondItem="dCS-sn-B3a" secondAttribute="top" constant="20" symbolic="YES" id="xZD-w2-gvT"/>
+                    <constraint firstItem="u7l-Fz-3uc" firstAttribute="top" secondItem="dCS-sn-B3a" secondAttribute="top" constant="20" symbolic="YES" id="4Xf-Wi-WNS"/>
+                    <constraint firstItem="u7l-Fz-3uc" firstAttribute="leading" secondItem="dCS-sn-B3a" secondAttribute="leading" constant="20" symbolic="YES" id="AkP-Zq-RcJ"/>
+                    <constraint firstItem="qol-Go-AJd" firstAttribute="leading" secondItem="dCS-sn-B3a" secondAttribute="leading" constant="20" id="Cq5-Tm-XgI"/>
+                    <constraint firstItem="qol-Go-AJd" firstAttribute="top" secondItem="u7l-Fz-3uc" secondAttribute="bottom" constant="15" id="OJr-07-tMW"/>
                 </constraints>
             </view>
         </window>

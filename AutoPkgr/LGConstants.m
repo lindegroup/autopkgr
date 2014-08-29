@@ -21,41 +21,62 @@
 
 #import "LGConstants.h"
 
-NSString *const kApplicationName = @"AutoPkgr";
-NSString *const kSMTPServer = @"SMTPServer";
-NSString *const kSMTPPort = @"SMTPPort";
-NSString *const kSMTPUsername = @"SMTPUsername";
-NSString *const kSMTPPassword = @"SMTPPassword";
-NSString *const kSMTPFrom = @"SMTPFrom";
-NSString *const kSMTPTo = @"SMTPTo";
-NSString *const kAutoPkgRunInterval = @"AutoPkgRunInterval";
-NSString *const kLocalMunkiRepoPath = @"LocalMunkiRepoPath";
-NSString *const kAutoPkgReleasesJSONURL = @"https://api.github.com/repos/autopkg/autopkg/releases";
-NSString *const kSMTPTLSEnabled = @"SMTPTLSEnabled";
-NSString *const kSMTPAuthenticationEnabled = @"SMTPAuthenticationEnabled";
-NSString *const kWarnBeforeQuittingEnabled = @"WarnBeforeQuitting";
-NSString *const kHasCompletedInitialSetup = @"HasCompletedInitialSetup";
-NSString *const kSendEmailNotificationsWhenNewVersionsAreFoundEnabled = @"SendEmailNotificationsWhenNewVersionsAreFoundEnabled";
-NSString *const kCheckForNewVersionsOfAppsAutomaticallyEnabled = @"CheckForNewVersionsOfAppsAutomaticallyEnabled";
-NSString *const kCheckForRepoUpdatesAutomaticallyEnabled = @"CheckForRepoUpdatesAutomaticallyEnabled";
-NSString *const kGitInstalledLabel = @"Git has been installed.";
-NSString *const kGitNotInstalledLabel = @"Git is not installed.";
-NSString *const kAutoPkgInstalledLabel = @"AutoPkg has been installed.";
-NSString *const kAutoPkgNotInstalledLabel = @"AutoPkg is not installed.";
-NSString *const kAutoPkgUpdateAvailableLabel = @"An update is available for AutoPkg.";
-NSString *const kEmailSentNotification = @"EmailSentNotification";
-NSString *const kEmailSentNotificationSubject = @"EmailSentNotificationSubject";
-NSString *const kEmailSentNotificationMessage = @"EmailSentNotificationMessage";
-NSString *const kEmailSentNotificationError = @"EmailSentNotificationError";
-NSString *const kTestSmtpServerPortNotification = @"TestSmtpServerPortNotification";
-NSString *const kTestSmtpServerPortError = @"TestSmtpServerPortError";
-NSString *const kTestSmtpServerPortSuccess = @"TestSmtpServerPortSuccess";
-NSString *const kTestSmtpServerPortResult = @"TestSmtpServerPortResult";
+#pragma mark - App Names
+NSString *const kLGApplicationName = @"AutoPkgr";
+NSString *const kLGAutoPkgPreferenceDomain = @"com.github.autopkg";
+NSString *const kLGAutoPkgrPreferenceDomain = @"com.lindegroup.AutoPkgr";
 
-NSString *const kRunAutoPkgCompleteNotification = @"com.lindegroup.autopkgr.notification.autopkgrun.complete";
-NSString *const kUpdateReposCompleteNotification = @"com.lindegroup.autopkgr.notification.updaterepos.complete";
-NSString *const kProgressStartNotification = @"com.lindegroup.autopkgr.notification.progress.start";
-NSString *const kProgressStopNotification = @"com.lindegroup.autopkgr.notification.progress.stop";
-NSString *const kProgressMessageUpdateNotification = @"com.lindegroup.autopkgr.progress.message.notification";
-NSString *const kNotificationUserInfoError = @"com.lindegroup.autopkgr.notification.userinfo.error";
-NSString *const kNotificationUserInfoMessage = @"com.lindegroup.autopkgr.notification.userinfo.error";
+#pragma mark - Message Strings / Labels
+NSString *const kLGGitInstalledLabel = @"Git has been installed.";
+NSString *const kLGGitNotInstalledLabel = @"Git is not installed.";
+NSString *const kLGAutoPkgInstalledLabel = @"AutoPkg has been installed.";
+NSString *const kLGAutoPkgNotInstalledLabel = @"AutoPkg is not installed.";
+NSString *const kLGAutoPkgUpdateAvailableLabel = @"An update is available for AutoPkg.";
+
+#pragma mark - Static URLs
+NSString *const kLGAutoPkgReleasesJSONURL = @"https://api.github.com/repos/autopkg/autopkg/releases";
+NSString *const kLGAutoPkgDownloadURL = @"https://github.com/autopkg/autopkg/zipball/master";
+NSString *const kLGAutoPkgRepositoriesJSONURL = @"https://api.github.com/orgs/autopkg/repos";
+
+#pragma mark - Defaults
+NSString *const kLGSMTPServer = @"SMTPServer";
+NSString *const kLGSMTPPort = @"SMTPPort";
+NSString *const kLGSMTPUsername = @"SMTPUsername";
+NSString *const kLGSMTPPassword = @"SMTPPassword";
+NSString *const kLGSMTPFrom = @"SMTPFrom";
+NSString *const kLGSMTPTo = @"SMTPTo";
+NSString *const kLGPlistEditor = @"PlistEditor";
+NSString *const kLGAutoPkgRunInterval = @"AutoPkgRunInterval";
+NSString *const kLGAutoPkgMunkiRepoPath = @"AutoPkgMunkiRepoPath";
+
+NSString *const kLGSMTPTLSEnabled = @"SMTPTLSEnabled";
+NSString *const kLGSMTPAuthenticationEnabled = @"SMTPAuthenticationEnabled";
+NSString *const kLGHasCompletedInitialSetup = @"HasCompletedInitialSetup";
+NSString *const kLGSendEmailNotificationsWhenNewVersionsAreFoundEnabled = @"SendEmailNotificationsWhenNewVersionsAreFoundEnabled";
+NSString *const kLGCheckForNewVersionsOfAppsAutomaticallyEnabled = @"CheckForNewVersionsOfAppsAutomaticallyEnabled";
+NSString *const kLGCheckForRepoUpdatesAutomaticallyEnabled = @"CheckForRepoUpdatesAutomaticallyEnabled";
+NSString *const kLGWarnBeforeQuittingEnabled = @"WarnBeforeQuitting";
+
+#pragma mark - Notifications
+#pragma mark -- Progress
+NSString *const kLGNotificationProgressStart = @"com.lindegroup.autopkgr.notification.progress.start";
+NSString *const kLGNotificationProgressStop = @"com.lindegroup.autopkgr.notification.progress.stop";
+NSString *const kLGNotificationProgressMessageUpdate = @"com.lindegroup.autopkgr.progress.message.notification";
+
+#pragma mark -- AutoPkg Task
+NSString *const kLGNotificationRunAutoPkgComplete = @"com.lindegroup.autopkgr.notification.autopkgrun.complete";
+NSString *const kLGNotificationUpdateReposComplete = @"com.lindegroup.autopkgr.notification.updaterepos.complete";
+NSString *const kLGNotificationOverrideFileCreated = @"com.lindegroup.autopkgr.notification.override.file.addorremoved";
+
+#pragma mark -- Email
+NSString *const kLGNotificationEmailSent = @"com.lindegroup.autopkgr.email.sent.notification";
+NSString *const kLGNotificationTestSmtpServerPort = @"com.lindegroup.autopkgr.test.smpt.port.notification";
+
+#pragma mark -- UserInfo dict keys
+NSString *const kLGNotificationUserInfoError = @"com.lindegroup.autopkgr.notification.userinfo.error";
+NSString *const kLGNotificationUserInfoMessage = @"com.lindegroup.autopkgr.notification.userinfo.message";
+NSString *const kLGNotificationUserInfoSuccess = @"com.lindelgroup.autopkgr.notification.userinfo.success";
+NSString *const kLGNotificationUserInfoSubject = @"com.lindelgroup.autopkgr.notification.userinfo.subject";
+
+
+

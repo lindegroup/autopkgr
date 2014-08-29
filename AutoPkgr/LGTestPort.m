@@ -7,6 +7,7 @@
 //
 
 #import "LGTestPort.h"
+#import "LGAutoPkgr.h"
 
 @implementation LGTestPort {
     
@@ -20,10 +21,10 @@
     if (eventCode & (NSStreamEventOpenCompleted | NSStreamEventErrorOccurred)) {
         if ([read streamStatus] == NSStreamStatusError ||
             [write streamStatus] == NSStreamStatusError) {
-            [self postTestPortNotification:kTestSmtpServerPortError];
+            [self portTestDidCompletedWithSuccess:NO];
         } else if ([read streamStatus] == NSStreamStatusOpen &&
                    [write streamStatus] == NSStreamStatusOpen) {
-            [self postTestPortNotification:kTestSmtpServerPortSuccess];
+            [self portTestDidCompletedWithSuccess:YES];
         }
     }
 }
@@ -67,7 +68,7 @@
         [read scheduleInRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
         [write scheduleInRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
     } else {
-        [self postTestPortNotification:kTestSmtpServerPortError];
+        [self portTestDidCompletedWithSuccess:NO];
     }
 }
 
@@ -82,15 +83,15 @@
 
 - (void)handleStreamTimeout
 {
-    [self postTestPortNotification:kTestSmtpServerPortError];
+    [self portTestDidCompletedWithSuccess:NO];
     [self stopTest];
 }
 
-- (void)postTestPortNotification:(NSString *)notice
+- (void)portTestDidCompletedWithSuccess:(BOOL )success
 {
-    [[NSNotificationCenter defaultCenter] postNotificationName:kTestSmtpServerPortNotification
+    [[NSNotificationCenter defaultCenter] postNotificationName:kLGNotificationTestSmtpServerPort
                                                         object:nil
-                                                      userInfo:@{ kTestSmtpServerPortResult : notice }];
+                                                      userInfo:@{ kLGNotificationUserInfoSuccess : @(success)}];
 }
 
 @end

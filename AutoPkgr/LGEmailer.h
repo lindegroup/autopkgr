@@ -21,7 +21,6 @@
 
 #import <Foundation/Foundation.h>
 #import <MailCore/MailCore.h>
-#import "LGConstants.h"
 
 @interface LGEmailer : NSObject
 

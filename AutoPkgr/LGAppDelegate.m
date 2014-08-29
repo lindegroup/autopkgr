@@ -20,21 +20,21 @@
 //
 
 #import "LGAppDelegate.h"
-#import "LGConstants.h"
+#import "LGAutoPkgr.h"
 #import "LGConfigurationWindowController.h"
 
 @implementation LGAppDelegate
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    LGDefaults *defaults = [LGDefaults new];
 
     // Setup the status item
     [self setupStatusItem];
 
-    if (![defaults boolForKey:kHasCompletedInitialSetup]) {
+    if (!defaults.hasCompletedInitialSetup) {
         [self showConfigurationWindow:nil];
-        [defaults setObject:@YES forKey:kHasCompletedInitialSetup];
+        defaults.HasCompletedInitialSetup = YES;
     }
 
     // Start the AutoPkg run timer if the user enabled it
@@ -42,7 +42,7 @@
 
     // Update AutoPkg recipe repos when the application launches
     // if the user has enabled automatic repo updates
-    if ([defaults boolForKey:kCheckForRepoUpdatesAutomaticallyEnabled]) {
+    if (defaults.checkForNewVersionsOfAppsAutomaticallyEnabled) {
         NSLog(@"Updating AutoPkg recipe repos.");
         [self updateAutoPkgRecipeReposInBackgroundAtAppLaunch];
     }
@@ -89,14 +89,14 @@
 
 - (NSApplicationTerminateReply)applicationShouldTerminate:(NSApplication *)sender
 {
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    LGDefaults *defaults = [LGDefaults new];
 
-    if ([defaults boolForKey:kWarnBeforeQuittingEnabled]) {
+    if (defaults.warnBeforeQuittingEnabled) {
         NSAlert *alert = [[NSAlert alloc] init];
         [alert addButtonWithTitle:@"Quit"];
         [alert addButtonWithTitle:@"Cancel"];
-        [alert setMessageText:[NSString stringWithFormat:@"Are you sure you want to quit %@?", kApplicationName]];
-        [alert setInformativeText:[NSString stringWithFormat:@"%@ will not be able to run AutoPkg in the background or send email notifications until you relaunch the application.", kApplicationName]];
+        [alert setMessageText:[NSString stringWithFormat:@"Are you sure you want to quit %@?", kLGApplicationName]];
+        [alert setInformativeText:[NSString stringWithFormat:@"%@ will not be able to run AutoPkg in the background or send email notifications until you relaunch the application.", kLGApplicationName]];
         [alert setAlertStyle:NSWarningAlertStyle];
 
         if ([alert runModal] == NSAlertSecondButtonReturn) {

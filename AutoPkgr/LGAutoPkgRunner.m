@@ -20,11 +20,11 @@
 //
 
 #import "LGAutoPkgRunner.h"
-#import "LGApplications.h"
-#import "LGEmailer.h"
+#import "LGAutoPkgr.h"
 #import "LGHostInfo.h"
 #import "LGVersionComparator.h"
-#import "LGConstants.h"
+#import "LGApplications.h"
+#import "LGEmailer.h"
 
 @implementation LGAutoPkgRunner
 
@@ -107,9 +107,9 @@
 - (void)addAutoPkgRecipeRepo:(NSString *)repoURL
 {
     NSString *addString = [NSString stringWithFormat:@"Adding %@", repoURL];
-    [[NSNotificationCenter defaultCenter] postNotificationName:kProgressStartNotification
+    [[NSNotificationCenter defaultCenter] postNotificationName:kLGNotificationProgressStart
                                                         object:nil
-                                                      userInfo:@{ kNotificationUserInfoMessage : addString }];
+                                                      userInfo:@{ kLGNotificationUserInfoMessage : addString }];
     // Set up task, pipe, and file handle
     NSTask *autoPkgRepoAddTask = [[NSTask alloc] init];
     NSPipe *autoPkgRepoAddPipe = [NSPipe pipe];
@@ -125,20 +125,14 @@
     [autoPkgRepoAddTask setStandardError:[NSPipe pipe]];
 
     autoPkgRepoAddTask.terminationHandler = ^(NSTask *aTask) {
-        NSError *error = nil;
-        NSData *errData = [[aTask.standardError fileHandleForReading ]readDataToEndOfFile];
-        NSString *errString = [[NSString alloc]initWithData:errData encoding:NSASCIIStringEncoding];
-        // autopkg's rc on a failed repo-update is 0, so check the stderr for "ERROR" string
-        if ([errString rangeOfString:@"ERROR"].location != NSNotFound) {
-            error = [NSError errorWithDomain:[[NSBundle mainBundle] bundleIdentifier]
-                                        code:1
-                                    userInfo:@{NSLocalizedDescriptionKey:@"Error adding repo",
-                                               NSLocalizedRecoverySuggestionErrorKey:errString,
-                                               }];
+        NSError *error;
+        NSDictionary *userInfo;
+        if (![LGError errorWithTaskError:aTask verb:kLGAutoPkgrRepoAdd error:&error]) {
+            userInfo = @{kLGNotificationUserInfoError:error};
         }
-        [[NSNotificationCenter defaultCenter]postNotificationName:kProgressStopNotification
+        [[NSNotificationCenter defaultCenter]postNotificationName:kLGNotificationProgressStop
                                                            object:self
-                                                         userInfo:error ? @{kNotificationUserInfoError:error}:nil];
+                                                         userInfo:userInfo];
     };
 
     // Launch the task
@@ -148,9 +142,9 @@
 
 - (void)removeAutoPkgRecipeRepo:(NSString *)repoURL
 {
-    [[NSNotificationCenter defaultCenter] postNotificationName:kProgressStartNotification
+    [[NSNotificationCenter defaultCenter] postNotificationName:kLGNotificationProgressStart
                                                         object:nil
-                                                      userInfo:@{ kNotificationUserInfoMessage : @"Removing Repo" }];
+                                                      userInfo:@{ kLGNotificationUserInfoMessage : @"Removing Repo" }];
 
     // Set up task and pipe
     NSTask *autoPkgRepoRemoveTask = [[NSTask alloc] init];
@@ -167,20 +161,14 @@
     [autoPkgRepoRemoveTask setStandardError:[NSPipe pipe]];
 
     autoPkgRepoRemoveTask.terminationHandler = ^(NSTask *aTask) {
-        NSError *error = nil;
-        NSData *errData = [[aTask.standardError fileHandleForReading ]readDataToEndOfFile];
-        NSString *errString = [[NSString alloc]initWithData:errData encoding:NSASCIIStringEncoding];
-        // autopkg's rc on a failed repo-update is 0, so check the stderr for "ERROR" string
-        if ([errString rangeOfString:@"ERROR"].location != NSNotFound) {
-            error = [NSError errorWithDomain:[[NSBundle mainBundle] bundleIdentifier]
-                                        code:1
-                                    userInfo:@{NSLocalizedDescriptionKey:@"Error removing repo",
-                                               NSLocalizedRecoverySuggestionErrorKey:errString,
-                                               }];
+        NSError *error;
+        NSDictionary *userInfo;
+        if (![LGError errorWithTaskError:aTask verb:kLGAutoPkgrRepoDelete error:&error]) {
+            userInfo = @{kLGNotificationUserInfoError:error};
         }
-        [[NSNotificationCenter defaultCenter]postNotificationName:kProgressStopNotification
+        [[NSNotificationCenter defaultCenter]postNotificationName:kLGNotificationProgressStop
                                                            object:self
-                                                         userInfo:error ? @{kNotificationUserInfoError:error}:nil];
+                                                         userInfo:userInfo];
     };
 
     // Launch the task
@@ -204,21 +192,15 @@
     [updateAutoPkgReposTask setStandardError:[NSPipe pipe]];
 
     updateAutoPkgReposTask.terminationHandler = ^(NSTask *aTask) {
+        NSDictionary *userInfo;
         NSError *error;
-        NSData *errData = [[aTask.standardError fileHandleForReading ]readDataToEndOfFile];
-        NSString *errString = [[NSString alloc]initWithData:errData encoding:NSASCIIStringEncoding];
-        // autopkg's rc on a failed repo-update is 0, so check the stderr for "ERROR" string
-        if ([errString rangeOfString:@"ERROR"].location != NSNotFound) {
-            error = [NSError errorWithDomain:[[NSBundle mainBundle] bundleIdentifier]
-                                        code:1
-                                    userInfo:@{NSLocalizedDescriptionKey:@"Error updating autopkg repos",
-                                               NSLocalizedRecoverySuggestionErrorKey:errString,
-                                               }];
+        if (![LGError errorWithTaskError:aTask verb:kLGAutoPkgrRepoUpdate error:&error]) {
+            userInfo = @{kLGNotificationUserInfoError:error};
         }
 
-        [[NSNotificationCenter defaultCenter]postNotificationName:kUpdateReposCompleteNotification
+        [[NSNotificationCenter defaultCenter]postNotificationName:kLGNotificationUpdateReposComplete
                                                            object:self
-                                                         userInfo:error ? @{kNotificationUserInfoError:error}:nil];
+                                                         userInfo:userInfo];
     };
 
     // Launch the task
@@ -269,39 +251,27 @@
             NSString *detailString = [NSString stringWithFormat:@"%@ (%ld/%ld)",strippedString,installCount,totalCount];
             // Post notification
             installCount++;
-            [[NSNotificationCenter defaultCenter] postNotificationName:kProgressMessageUpdateNotification
+            [[NSNotificationCenter defaultCenter] postNotificationName:kLGNotificationProgressMessageUpdate
                                                                 object:nil
-                                                              userInfo:@{kNotificationUserInfoMessage:detailString}];
+                                                              userInfo:@{kLGNotificationUserInfoMessage:detailString}];
         };
     }
 
     autoPkgRunTask.arguments = args;
 
     autoPkgRunTask.terminationHandler = ^(NSTask *aTask) {
+        NSDictionary *userInfo = nil;
         NSError *error;
-        if (aTask.terminationStatus != 0) {
-            NSString *errString;
-            if(aTask.terminationStatus == 255){
-                errString = @"No Recipes Specified.";
-            }else{
-                NSData *errData = [[aTask.standardError fileHandleForReading ]readDataToEndOfFile];
-                if ( errData ){
-                    errString = [[NSString alloc]initWithData:errData encoding:NSASCIIStringEncoding];
-                }
-            }
-            error = [NSError errorWithDomain:[[NSBundle mainBundle] bundleIdentifier]
-                                        code:aTask.terminationStatus
-                                    userInfo:@{NSLocalizedDescriptionKey:@"Error running autopkg",
-                                               NSLocalizedRecoverySuggestionErrorKey:errString,}];
+        if (![LGError errorWithTaskError:aTask verb:kLGAutoPkgrRun error:&error]) {
+            userInfo = @{kLGNotificationUserInfoError:error};
         }
-        
-        [[NSNotificationCenter defaultCenter]postNotificationName:kRunAutoPkgCompleteNotification
+        [[NSNotificationCenter defaultCenter]postNotificationName:kLGNotificationRunAutoPkgComplete
                                                            object:self
-                                                         userInfo:error ? @{kNotificationUserInfoError:error}:nil];
+                                                         userInfo:userInfo];
         
-        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+        LGDefaults *defaults = [[LGDefaults alloc] init];
         // If the autopkg run exited successfully and the send email is enabled continue
-        if (aTask.terminationStatus == 0 && [defaults boolForKey:kSendEmailNotificationsWhenNewVersionsAreFoundEnabled]) {
+        if (aTask.terminationStatus == 0 && [defaults sendEmailNotificationsWhenNewVersionsAreFoundEnabled]) {
             NSDictionary *plist;
             NSError *error;
             
@@ -382,7 +352,7 @@
     }
 
     // Create the subject string
-    NSString *subject = [NSString stringWithFormat:@"[%@] The Following Software Is Now Available for Testing (%@)", kApplicationName, [apps componentsJoinedByString:@", "]];
+    NSString *subject = [NSString stringWithFormat:@"[%@] The Following Software Is Now Available for Testing (%@)", kLGApplicationName, [apps componentsJoinedByString:@", "]];
 
     // Create the message string
     NSMutableString *newDownloadsString = [NSMutableString string];
@@ -427,13 +397,13 @@
 {
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 
-    if ([defaults objectForKey:kCheckForNewVersionsOfAppsAutomaticallyEnabled]) {
+    if ([defaults objectForKey:kLGCheckForNewVersionsOfAppsAutomaticallyEnabled]) {
 
-        BOOL checkForNewVersionsOfAppsAutomaticallyEnabled = [[defaults objectForKey:kCheckForNewVersionsOfAppsAutomaticallyEnabled] boolValue];
+        BOOL checkForNewVersionsOfAppsAutomaticallyEnabled = [[defaults objectForKey:kLGCheckForNewVersionsOfAppsAutomaticallyEnabled] boolValue];
 
         if (checkForNewVersionsOfAppsAutomaticallyEnabled) {
-            if ([defaults integerForKey:kAutoPkgRunInterval]) {
-                double i = [defaults integerForKey:kAutoPkgRunInterval];
+            if ([defaults integerForKey:kLGAutoPkgRunInterval]) {
+                double i = [defaults integerForKey:kLGAutoPkgRunInterval];
                 if (i != 0) {
                     NSTimeInterval ti = i * 60 * 60; // Convert hours to seconds for our time interval
                     [NSTimer scheduledTimerWithTimeInterval:ti target:self selector:@selector(invokeAutoPkgInBackgroundThread) userInfo:nil repeats:YES];
