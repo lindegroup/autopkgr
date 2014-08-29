@@ -609,8 +609,7 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
 - (IBAction)openAutoPkgRecipeReposFolder:(id)sender
 {
     BOOL isDir;
-    LGHostInfo *hostInfo = [[LGHostInfo alloc] init];
-    NSString *autoPkgRecipeReposFolder = [hostInfo getAutoPkgRecipeReposDir];
+    NSString *autoPkgRecipeReposFolder = [defaults autoPkgRecipeRepoDir];
     
     if ([[NSFileManager defaultManager] fileExistsAtPath:autoPkgRecipeReposFolder isDirectory:&isDir] && isDir) {
         NSURL *autoPkgRecipeReposFolderURL = [NSURL fileURLWithPath:autoPkgRecipeReposFolder];
@@ -632,8 +631,7 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
 - (IBAction)openAutoPkgCacheFolder:(id)sender
 {
     BOOL isDir;
-    LGHostInfo *hostInfo = [[LGHostInfo alloc] init];
-    NSString *autoPkgCacheFolder = [hostInfo getAutoPkgCacheDir];
+    NSString *autoPkgCacheFolder = [defaults autoPkgCacheDir];
 
     if ([[NSFileManager defaultManager] fileExistsAtPath:autoPkgCacheFolder isDirectory:&isDir] && isDir) {
         NSURL *autoPkgCacheFolderURL = [NSURL fileURLWithPath:autoPkgCacheFolder];
@@ -655,8 +653,7 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
 - (IBAction)openAutoPkgRecipeOverridesFolder:(id)sender
 {
     BOOL isDir;
-    LGHostInfo *hostInfo = [[LGHostInfo alloc] init];
-    NSString *autoPkgRecipeOverridesFolder = [hostInfo getAutoPkgRecipeOverridesDir];
+    NSString *autoPkgRecipeOverridesFolder = [defaults autoPkgRecipeOverridesDir];
     
     if ([[NSFileManager defaultManager] fileExistsAtPath:autoPkgRecipeOverridesFolder isDirectory:&isDir] && isDir) {
         NSURL *autoPkgRecipeOverridesFolderURL = [NSURL fileURLWithPath:autoPkgRecipeOverridesFolder];
