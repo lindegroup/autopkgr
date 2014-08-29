@@ -21,6 +21,7 @@
 
 #import "LGDefaults.h"
 #import "LGConstants.h"
+#import "LGError.h"
 
 @interface LGDefaults ()
 // Make these readwrite here so we can use these with methods
@@ -53,7 +54,7 @@
 
 - (instancetype)initForAutoPkg
 {
-    return [super initWithSuiteName:@"com.github.autopkg"];
+    return [super initWithSuiteName:kLGAutoPkgPreferenceDomain];
 }
 
 - (instancetype)initForMunki
@@ -73,114 +74,114 @@
 //
 - (NSString *)SMTPServer
 {
-    return [self objectForKey:kSMTPServer];
+    return [self objectForKey:kLGSMTPServer];
 }
 - (void)setSMTPServer:(NSString *)SMTPServer
 {
-    [self setObject:SMTPServer forKey:kSMTPServer];
+    [self setObject:SMTPServer forKey:kLGSMTPServer];
 }
 //
 - (NSInteger)SMTPPort
 {
-    return [self integerForKey:kSMTPPort];
+    return [self integerForKey:kLGSMTPPort];
 }
 - (void)setSMTPPort:(NSInteger)SMTPPort
 {
-    [self setInteger:SMTPPort forKey:kSMTPPort];
+    [self setInteger:SMTPPort forKey:kLGSMTPPort];
 }
 //
 - (NSString *)SMTPUsername
 {
-    return [self objectForKey:kSMTPUsername];
+    return [self objectForKey:kLGSMTPUsername];
 }
 - (void)setSMTPUsername:(NSString *)SMTPUsername
 {
-    [self setObject:SMTPUsername forKey:kSMTPUsername];
+    [self setObject:SMTPUsername forKey:kLGSMTPUsername];
 }
 //
 - (NSString *)SMTPFrom
 {
-    return [self objectForKey:kSMTPFrom];
+    return [self objectForKey:kLGSMTPFrom];
 }
 - (void)setSMTPFrom:(NSString *)SMTPFrom
 {
-    [self setObject:SMTPFrom forKey:kSMTPFrom];
+    [self setObject:SMTPFrom forKey:kLGSMTPFrom];
 }
 //
 - (NSArray *)SMTPTo
 {
-    return [self objectForKey:kSMTPTo];
+    return [self objectForKey:kLGSMTPTo];
 }
 //
 - (void)setSMTPTo:(NSArray *)SMTPTo
 {
-    [self setObject:SMTPTo forKey:kSMTPTo];
+    [self setObject:SMTPTo forKey:kLGSMTPTo];
 }
 
 #pragma mark - BOOL
 - (BOOL)SMTPTLSEnabled
 {
-    return [self boolForKey:kSMTPTLSEnabled];
+    return [self boolForKey:kLGSMTPTLSEnabled];
 }
 - (void)setSMTPTLSEnabled:(BOOL)SMTPTLSEnabled
 {
-    [self setBool:SMTPTLSEnabled forKey:kSMTPTLSEnabled];
+    [self setBool:SMTPTLSEnabled forKey:kLGSMTPTLSEnabled];
 }
 //
 - (BOOL)SMTPAuthenticationEnabled
 {
-    return [self boolForKey:kSMTPAuthenticationEnabled];
+    return [self boolForKey:kLGSMTPAuthenticationEnabled];
 }
 - (void)setSMTPAuthenticationEnabled:(BOOL)SMTPAuthenticationEnabled
 {
-    [self setBool:SMTPAuthenticationEnabled forKey:kSMTPAuthenticationEnabled];
+    [self setBool:SMTPAuthenticationEnabled forKey:kLGSMTPAuthenticationEnabled];
 }
 //
 - (BOOL)warnBeforeQuittingEnabled
 {
-    return [self boolForKey:kWarnBeforeQuittingEnabled];
+    return [self boolForKey:kLGWarnBeforeQuittingEnabled];
 }
 - (void)setWarnBeforeQuittingEnabled:(BOOL)WarnBeforeQuittingEnabled
 {
-    [self setBool:WarnBeforeQuittingEnabled forKey:kWarnBeforeQuittingEnabled];
+    [self setBool:WarnBeforeQuittingEnabled forKey:kLGWarnBeforeQuittingEnabled];
 }
 //
 - (BOOL)hasCompletedInitialSetup
 {
-    return [self boolForKey:kHasCompletedInitialSetup];
+    return [self boolForKey:kLGHasCompletedInitialSetup];
 }
 - (void)setHasCompletedInitialSetup:(BOOL)HasCompletedInitialSetup
 {
-    [self setBool:HasCompletedInitialSetup forKey:kHasCompletedInitialSetup];
+    [self setBool:HasCompletedInitialSetup forKey:kLGHasCompletedInitialSetup];
 }
 //
 - (BOOL)sendEmailNotificationsWhenNewVersionsAreFoundEnabled
 {
-    return [self boolForKey:kSendEmailNotificationsWhenNewVersionsAreFoundEnabled];
+    return [self boolForKey:kLGSendEmailNotificationsWhenNewVersionsAreFoundEnabled];
 }
 - (void)setSendEmailNotificationsWhenNewVersionsAreFoundEnabled:(BOOL)SendEmailNotificationsWhenNewVersionsAreFoundEnabled
 {
-    [self setBool:SendEmailNotificationsWhenNewVersionsAreFoundEnabled forKey:kSendEmailNotificationsWhenNewVersionsAreFoundEnabled];
+    [self setBool:SendEmailNotificationsWhenNewVersionsAreFoundEnabled forKey:kLGSendEmailNotificationsWhenNewVersionsAreFoundEnabled];
 }
 //
 - (BOOL)checkForNewVersionsOfAppsAutomaticallyEnabled
 {
-    return [self boolForKey:kCheckForNewVersionsOfAppsAutomaticallyEnabled];
+    return [self boolForKey:kLGCheckForNewVersionsOfAppsAutomaticallyEnabled];
 }
 - (void)setCheckForNewVersionsOfAppsAutomaticallyEnabled:(BOOL)CheckForNewVersionsOfAppsAutomaticallyEnabled
 {
-    [self setBool:CheckForNewVersionsOfAppsAutomaticallyEnabled forKey:kCheckForNewVersionsOfAppsAutomaticallyEnabled];
+    [self setBool:CheckForNewVersionsOfAppsAutomaticallyEnabled forKey:kLGCheckForNewVersionsOfAppsAutomaticallyEnabled];
 }
 //
 
 #pragma mark - AutoPkg Defaults
 - (NSInteger)autoPkgRunInterval
 {
-    return [self integerForKey:kAutoPkgRunInterval];
+    return [self integerForKey:kLGAutoPkgRunInterval];
 }
 - (void)setAutoPkgRunInterval:(NSInteger)autoPkgRunInterval
 {
-    [self setInteger:autoPkgRunInterval forKey:kAutoPkgRunInterval];
+    [self setInteger:autoPkgRunInterval forKey:kLGAutoPkgRunInterval];
 }
 //
 - (NSString *)autoPkgCacheDir
@@ -325,15 +326,15 @@
             // try and remove it
             if ([manager fileExistsAtPath:toPath] &&
                 [toPath rangeOfString:@"recipes"].location != NSNotFound) {
-                NSLog(@"We found an item at %@ that needs to be removed", toPath);
+                NSLog(@"We found an item at %@ that needs to be removed.", toPath);
                 [manager removeItemAtPath:toPath error:nil];
             } else {
-                // There is something realy wrong with the toPath, abort
-                NSLog(@"Somthing is wrong with the RECIPE_REPO path: %@", toPath);
-                NSLog(@"The folder exists, but dose not look like an actual recipe repo");
+                // There is something really wrong with the toPath, abort
+                NSLog(@"Somthing is wrong with the RECIPE_REPO path: %@.", toPath);
+                NSLog(@"The folder exists, but does not look like an actual recipe repo.");
                 return NO;
             }
-            NSLog(@"Copying repo from %@ to %@", fromPath, toPath);
+            NSLog(@"Copying repo from %@ to %@.", fromPath, toPath);
 
             return [manager moveItemAtPath:fromPath toPath:toPath error:nil];
         }
@@ -342,7 +343,7 @@
             return NO;
         }
     }
-    NSLog(@"Repo already exists at %@, no need to migrate", toPath);
+    NSLog(@"Repo already exists at %@, no need to migrate.", toPath);
     return YES;
 }
 

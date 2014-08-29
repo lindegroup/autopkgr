@@ -20,6 +20,7 @@
 //
 
 #import "LGEmailer.h"
+#import "LGAutoPkgr.h"
 #import "LGHostInfo.h"
 #import "SSKeychain.h"
 
@@ -29,15 +30,15 @@
 {
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 
-    BOOL TLS = [[defaults objectForKey:kSMTPTLSEnabled] boolValue];
+    BOOL TLS = [[defaults objectForKey:kLGSMTPTLSEnabled] boolValue];
 
     MCOSMTPSession *smtpSession = [[MCOSMTPSession alloc] init];
-    smtpSession.hostname = [defaults objectForKey:kSMTPServer];
-    smtpSession.port = (int)[defaults integerForKey:kSMTPPort];
-    smtpSession.username = [defaults objectForKey:kSMTPUsername];
+    smtpSession.hostname = [defaults objectForKey:kLGSMTPServer];
+    smtpSession.port = (int)[defaults integerForKey:kLGSMTPPort];
+    smtpSession.username = [defaults objectForKey:kLGSMTPUsername];
 
     if (TLS) {
-        NSLog(@"SSL/TLS is enabled for %@.", [defaults objectForKey:kSMTPServer]);
+        NSLog(@"SSL/TLS is enabled for %@.", [defaults objectForKey:kLGSMTPServer]);
         // If the SMTP port is 465, use MCOConnectionTypeTLS.
         // Otherwise use MCOConnectionTypeStartTLS.
         if (smtpSession.port == 465) {
@@ -46,17 +47,17 @@
             smtpSession.connectionType = MCOConnectionTypeStartTLS;
         }
     } else {
-        NSLog(@"SSL/TLS is _not_ enabled for %@.", [defaults objectForKey:kSMTPServer]);
+        NSLog(@"SSL/TLS is _not_ enabled for %@.", [defaults objectForKey:kLGSMTPServer]);
         smtpSession.connectionType = MCOConnectionTypeClear;
     }
 
     // Retrieve the SMTP password from the default
     // keychain if it exists
     NSError *error = nil;
-    NSString *smtpUsernameString = [defaults objectForKey:kSMTPUsername];
+    NSString *smtpUsernameString = [defaults objectForKey:kLGSMTPUsername];
 
     if (smtpUsernameString) {
-        NSString *password = [SSKeychain passwordForService:kApplicationName
+        NSString *password = [SSKeychain passwordForService:kLGApplicationName
                                                     account:smtpUsernameString
                                                       error:&error];
 
@@ -79,10 +80,10 @@
 
     [[builder header] setFrom:[MCOAddress addressWithDisplayName:@"AutoPkgr Notification"
                                                          mailbox:[[NSUserDefaults standardUserDefaults]
-                                                                  objectForKey:kSMTPFrom]]];
+                                                                  objectForKey:kLGSMTPFrom]]];
 
     NSMutableArray *to = [[NSMutableArray alloc] init];
-    for (NSString *toAddress in [[NSUserDefaults standardUserDefaults] objectForKey:kSMTPTo]) {
+    for (NSString *toAddress in [[NSUserDefaults standardUserDefaults] objectForKey:kLGSMTPTo]) {
         if (![toAddress isEqual:@""]) {
             MCOAddress *newAddress = [MCOAddress addressWithMailbox:toAddress];
             [to addObject:newAddress];
@@ -97,19 +98,19 @@
     MCOSMTPSendOperation *sendOperation = [smtpSession sendOperationWithData:rfc822Data];
     [sendOperation start:^(NSError *error) {
         NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
-        NSMutableDictionary *d = [NSMutableDictionary dictionaryWithObjects:[NSArray arrayWithObjects:subject, message, nil]
-                                                      forKeys:[NSArray arrayWithObjects:kEmailSentNotificationSubject, kEmailSentNotificationMessage, nil]];
+        NSMutableDictionary *userInfo = [NSMutableDictionary dictionaryWithDictionary:@{kLGNotificationUserInfoSubject:subject,
+                                                                                        kLGNotificationUserInfoMessage:message}];
         
         if (error) {
             NSLog(@"%@ Error sending email:%@", smtpSession.username, error);
-            [d setObject:error forKey:kEmailSentNotificationError];
+            [userInfo setObject:error forKey:kLGNotificationUserInfoError];
         } else {
             NSLog(@"%@ Successfully sent email!", smtpSession.username);
         }
         
-        [center postNotificationName:kEmailSentNotification
+        [center postNotificationName:kLGNotificationEmailSent
                               object:self
-                            userInfo:[NSDictionary dictionaryWithDictionary:d]];
+                            userInfo:[NSDictionary dictionaryWithDictionary:userInfo]];
     }];
 }
 

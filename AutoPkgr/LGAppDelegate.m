@@ -20,8 +20,7 @@
 //
 
 #import "LGAppDelegate.h"
-#import "LGConstants.h"
-#import "LGDefaults.h"
+#import "LGAutoPkgr.h"
 #import "LGConfigurationWindowController.h"
 
 @implementation LGAppDelegate
@@ -96,8 +95,8 @@
         NSAlert *alert = [[NSAlert alloc] init];
         [alert addButtonWithTitle:@"Quit"];
         [alert addButtonWithTitle:@"Cancel"];
-        [alert setMessageText:[NSString stringWithFormat:@"Are you sure you want to quit %@?", kApplicationName]];
-        [alert setInformativeText:[NSString stringWithFormat:@"%@ will not be able to run AutoPkg in the background or send email notifications until you relaunch the application.", kApplicationName]];
+        [alert setMessageText:[NSString stringWithFormat:@"Are you sure you want to quit %@?", kLGApplicationName]];
+        [alert setInformativeText:[NSString stringWithFormat:@"%@ will not be able to run AutoPkg in the background or send email notifications until you relaunch the application.", kLGApplicationName]];
         [alert setAlertStyle:NSWarningAlertStyle];
 
         if ([alert runModal] == NSAlertSecondButtonReturn) {
