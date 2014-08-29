@@ -73,7 +73,10 @@ extern NSString *const kLGNotificationTestSmtpServerPort;
 extern NSString *const kLGNotificationUserInfoError;
 //* key cooresponding to a message string object in Notification's userInfo dictionary */
 extern NSString *const kLGNotificationUserInfoMessage;
+//* key cooresponding to a the total recipe count in Notification's userInfo dictionary during an autopkgr run task*/
+extern NSString *const kLGNotificationUserInfoTotalRecipeCount;
 //* key cooresponding to NSNumber BOOL object in Notification's userInfo dictionary, indicating success/failure */
+
 extern NSString *const kLGNotificationUserInfoSuccess;
 //* key cooresponding to NSError object in Notification's userInfo dictionary */
 extern NSString *const kLGNotificationUserInfoSubject;

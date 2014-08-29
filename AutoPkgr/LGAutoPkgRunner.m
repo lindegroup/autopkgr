@@ -26,6 +26,8 @@
 #import "LGApplications.h"
 #import "LGEmailer.h"
 
+#import <util.h>
+
 @implementation LGAutoPkgRunner
 
 - (NSArray *)getLocalAutoPkgRecipes
@@ -221,7 +223,7 @@
     // Set up our task, pipe, and file handle
     NSTask *autoPkgRunTask = [[NSTask alloc] init];
     autoPkgRunTask.launchPath = @"/usr/bin/python";
-    autoPkgRunTask.standardOutput = [NSPipe pipe];
+    
     autoPkgRunTask.standardError = [NSPipe pipe];
 
     // Set up args based on wether report is a file or piped to stdout
@@ -233,6 +235,20 @@
 
     NSString *plistFile;
     if (autoPkgAboveV0_3_2) {
+        
+        // set up a sudoPTY so stdout gets flushed and we can get status updates
+        int fdMaster, fdSlave;
+        
+        if(openpty(&fdMaster, &fdSlave, NULL, NULL, NULL) == 0){
+            fcntl(fdMaster, F_SETFD, FD_CLOEXEC);
+            fcntl(fdSlave, F_SETFD, FD_CLOEXEC);
+            
+            NSFileHandle *stdOut = [[NSFileHandle alloc] initWithFileDescriptor:fdMaster closeOnDealloc:YES];
+            
+            autoPkgRunTask.standardOutput = stdOut;
+        }
+
+        // Create a unique temp file where AutoPkg will write the plist file.
         plistFile = [NSTemporaryDirectory() stringByAppendingString:[[NSProcessInfo processInfo] globallyUniqueString]];
         // Add arg for the file path to the report-plist and turn on verbose mode.
         [args addObjectsFromArray:@[ plistFile ]];
@@ -242,19 +258,26 @@
         NSArray  *recipeListArray = [recipeListString componentsSeparatedByString:@"\n"];
         __block NSInteger installCount = 1;
         NSInteger totalCount = recipeListArray.count;
-        [autoPkgRunTask.standardOutput fileHandleForReading].readabilityHandler = ^(NSFileHandle *handle) {
-            // Generate the string from the task's avaliable data
+        
+        [autoPkgRunTask.standardOutput setReadabilityHandler:^(NSFileHandle *handle) {
             NSString *string = [[NSString alloc ] initWithData:[handle availableData] encoding:NSASCIIStringEncoding];
             // Strip out any new line characters so it displays better
             NSString *strippedString = [string stringByReplacingOccurrencesOfString:@"\n" withString:@""];
             // Add the count of the
-            NSString *detailString = [NSString stringWithFormat:@"%@ (%ld/%ld)",strippedString,installCount,totalCount];
+            NSString *detailString = [NSString stringWithFormat:@"(%ld/%ld) %@",installCount,totalCount,strippedString];
             // Post notification
-            installCount++;
-            [[NSNotificationCenter defaultCenter] postNotificationName:kLGNotificationProgressMessageUpdate
-                                                                object:nil
-                                                              userInfo:@{kLGNotificationUserInfoMessage:detailString}];
-        };
+            if (installCount <= totalCount) {
+                installCount ++;
+                [[NSNotificationCenter defaultCenter] postNotificationName:kLGNotificationProgressMessageUpdate
+                                                                    object:nil
+                                                                  userInfo:@{kLGNotificationUserInfoMessage:detailString,
+                                                                             kLGNotificationUserInfoTotalRecipeCount:@(totalCount)}];
+            }
+        }];
+        
+    } else {
+        // if still using AutoPkg 0.3.2 set up the pipe for --report-plist data
+        autoPkgRunTask.standardOutput = [NSPipe pipe];
     }
 
     autoPkgRunTask.arguments = args;
@@ -278,7 +301,11 @@
             // Read our data from file if autopkg v > 0.3.2 else read from stdout filehandle
             if (autoPkgAboveV0_3_2) {
                 if (plistFile) {
+                    // create the plist from the temp file
                     plist = [NSDictionary dictionaryWithContentsOfFile:plistFile];
+                    
+                    // nil out the readability handler
+                    [aTask.standardOutput setReadabilityHandler:nil];
                 }
             } else {
                 NSData *autoPkgRunReportPlistData = [[aTask.standardOutput fileHandleForReading] readDataToEndOfFile];
@@ -335,9 +362,8 @@
             }
         }
         [aTask.standardError fileHandleForReading].readabilityHandler = nil;
-        [aTask.standardOutput fileHandleForReading].readabilityHandler = nil;
     };
-
+    
     // Launch the task
     [autoPkgRunTask launch];
 }
@@ -435,3 +461,4 @@
 }
 
 @end
+

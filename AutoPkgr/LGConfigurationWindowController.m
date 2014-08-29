@@ -992,9 +992,15 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
 - (void)updateProgressNotificationReceived:(NSNotification *)notification
 {
     [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-        NSString *message = @"";
+        [_progressIndicator setIndeterminate:NO];
+        NSNumber *total = notification.userInfo[kLGNotificationUserInfoTotalRecipeCount];
+        
         if ([notification.userInfo[kLGNotificationUserInfoMessage] isKindOfClass:[NSString class]]) {
-             message = notification.userInfo[kLGNotificationUserInfoMessage];
+            NSString *message = notification.userInfo[kLGNotificationUserInfoMessage];
+            _progressDetailsMessage.stringValue = message;
+        }
+        if ( total ){
+            [_progressIndicator incrementBy:100/total.doubleValue];
         }
     }];
 }

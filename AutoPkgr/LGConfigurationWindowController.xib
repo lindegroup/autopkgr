@@ -24,6 +24,7 @@
                 <outlet property="localMunkiRepo" destination="smb-Vt-Cyt" id="Ycw-UD-St3"/>
                 <outlet property="localMunkiRepoFolderButton" destination="z6I-Bv-EFk" id="Pai-q2-byn"/>
                 <outlet property="popRepoTableViewHandler" destination="mvj-kT-UYD" id="JIm-Zi-DtB"/>
+                <outlet property="progressDetailsMessage" destination="fh0-g5-tGl" id="62w-Er-kQW"/>
                 <outlet property="progressIndicator" destination="qol-Go-AJd" id="L2u-sJ-XVZ"/>
                 <outlet property="progressMessage" destination="u7l-Fz-3uc" id="bfC-89-DgO"/>
                 <outlet property="progressPanel" destination="043-gL-HLj" id="EfU-ER-kYK"/>
@@ -165,10 +166,10 @@
                                             <rect key="frame" x="10" y="33" width="729" height="454"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             <subviews>
-                                                <scrollView autohidesScrollers="YES" horizontalLineScroll="19" horizontalPageScroll="10" verticalLineScroll="19" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9vg-XB-Pqv">
+                                                <scrollView misplaced="YES" autohidesScrollers="YES" horizontalLineScroll="19" horizontalPageScroll="10" verticalLineScroll="19" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9vg-XB-Pqv">
                                                     <rect key="frame" x="17" y="280" width="672" height="135"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                                    <clipView key="contentView" id="baD-Ze-qNS">
+                                                    <clipView key="contentView" misplaced="YES" id="baD-Ze-qNS">
                                                         <rect key="frame" x="1" y="1" width="670" height="133"/>
                                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                         <subviews>
@@ -231,7 +232,7 @@
                                                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                                     </textFieldCell>
                                                 </textField>
-                                                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="OQZ-m7-NDG">
+                                                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="OQZ-m7-NDG">
                                                     <rect key="frame" x="15" y="215" width="133" height="17"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Recipes" id="0cX-bB-x15">
@@ -249,7 +250,7 @@
                                                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                                     </textFieldCell>
                                                 </textField>
-                                                <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="PWu-1D-EW1">
+                                                <textField verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="PWu-1D-EW1">
                                                     <rect key="frame" x="188" y="252" width="406" height="22"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" placeholderString="https://github.com/autopkg/recipes.git" drawsBackground="YES" id="hVj-tR-yVr">
@@ -258,7 +259,7 @@
                                                         <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                     </textFieldCell>
                                                 </textField>
-                                                <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="mla-ao-F4d">
+                                                <button verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="mla-ao-F4d">
                                                     <rect key="frame" x="596" y="246" width="99" height="32"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                     <buttonCell key="cell" type="push" title="Add" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="wxI-F8-DuU">
@@ -269,7 +270,7 @@
                                                         <action selector="addAutoPkgRepoURL:" target="-2" id="Q5z-iA-mjw"/>
                                                     </connections>
                                                 </button>
-                                                <searchField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Su6-Sd-cOj">
+                                                <searchField verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Su6-Sd-cOj">
                                                     <rect key="frame" x="499" y="423" width="190" height="22"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                     <searchFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" borderStyle="bezel" placeholderString="Search repos by name" usesSingleLineMode="YES" bezelStyle="round" sendsSearchStringImmediately="YES" id="kxU-o8-COd">
@@ -278,7 +279,7 @@
                                                         <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                     </searchFieldCell>
                                                 </searchField>
-                                                <searchField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="8hi-WA-S41">
+                                                <searchField verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="8hi-WA-S41">
                                                     <rect key="frame" x="499" y="212" width="190" height="22"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                     <searchFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" borderStyle="bezel" placeholderString="Search recipes by name" usesSingleLineMode="YES" bezelStyle="round" sendsSearchStringImmediately="YES" id="oqD-5E-S2C">
@@ -287,10 +288,10 @@
                                                         <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                     </searchFieldCell>
                                                 </searchField>
-                                                <scrollView autohidesScrollers="YES" horizontalLineScroll="19" horizontalPageScroll="10" verticalLineScroll="19" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FaV-GR-28e">
+                                                <scrollView misplaced="YES" autohidesScrollers="YES" horizontalLineScroll="19" horizontalPageScroll="10" verticalLineScroll="19" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FaV-GR-28e">
                                                     <rect key="frame" x="17" y="69" width="672" height="135"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                                    <clipView key="contentView" id="gzb-cW-veF">
+                                                    <clipView key="contentView" misplaced="YES" id="gzb-cW-veF">
                                                         <rect key="frame" x="1" y="1" width="670" height="133"/>
                                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                         <subviews>
@@ -353,7 +354,7 @@
                                                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                                     </textFieldCell>
                                                 </textField>
-                                                <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="smb-Vt-Cyt">
+                                                <textField verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="smb-Vt-Cyt">
                                                     <rect key="frame" x="133" y="17" width="461" height="22"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" placeholderString="/Users/Shared/munki_repo" drawsBackground="YES" id="HFR-Ly-44L">
@@ -365,7 +366,7 @@
                                                         <outlet property="delegate" destination="-2" id="AHw-jf-8j3"/>
                                                     </connections>
                                                 </textField>
-                                                <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="M6N-DN-bDn">
+                                                <button verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="M6N-DN-bDn">
                                                     <rect key="frame" x="596" y="11" width="99" height="32"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                     <buttonCell key="cell" type="push" title="Choose..." bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="6be-Gh-TUj">
@@ -888,6 +889,15 @@
                             <constraint firstAttribute="width" constant="394" id="cZY-Ee-aQe"/>
                         </constraints>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Adding..." id="oW2-L7-9c7">
+                            <font key="font" metaFont="system"/>
+                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                    </textField>
+                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="fh0-g5-tGl">
+                        <rect key="frame" x="20" y="28" width="572" height="17"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" id="x80-ZH-qGl">
                             <font key="font" metaFont="system"/>
                             <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                             <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
