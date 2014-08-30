@@ -126,6 +126,7 @@
     [autoPkgRepoAddTask setStandardOutput:autoPkgRepoAddPipe];
     [autoPkgRepoAddTask setStandardError:[NSPipe pipe]];
 
+    __weak LGAutoPkgRunner *notificationObject = self;
     autoPkgRepoAddTask.terminationHandler = ^(NSTask *aTask) {
         NSError *error;
         NSDictionary *userInfo;
@@ -133,7 +134,7 @@
             userInfo = @{kLGNotificationUserInfoError:error};
         }
         [[NSNotificationCenter defaultCenter]postNotificationName:kLGNotificationProgressStop
-                                                           object:self
+                                                           object:notificationObject
                                                          userInfo:userInfo];
     };
 
@@ -162,6 +163,7 @@
     [autoPkgRepoRemoveTask setStandardOutput:autoPkgRepoRemovePipe];
     [autoPkgRepoRemoveTask setStandardError:[NSPipe pipe]];
 
+    __weak LGAutoPkgRunner *notificationObject = self;
     autoPkgRepoRemoveTask.terminationHandler = ^(NSTask *aTask) {
         NSError *error;
         NSDictionary *userInfo;
@@ -169,7 +171,7 @@
             userInfo = @{kLGNotificationUserInfoError:error};
         }
         [[NSNotificationCenter defaultCenter]postNotificationName:kLGNotificationProgressStop
-                                                           object:self
+                                                           object:notificationObject
                                                          userInfo:userInfo];
     };
 
@@ -190,8 +192,9 @@
     // Configure the task
     [updateAutoPkgReposTask setLaunchPath:launchPath];
     [updateAutoPkgReposTask setArguments:args];
-    [updateAutoPkgReposTask setStandardOutput:[NSPipe pipe]];
-    [updateAutoPkgReposTask setStandardError:[NSPipe pipe]];
+    
+    updateAutoPkgReposTask.standardOutput =[NSPipe pipe];
+    updateAutoPkgReposTask.standardError =[NSPipe pipe];
 
     updateAutoPkgReposTask.terminationHandler = ^(NSTask *aTask) {
         NSDictionary *userInfo;
@@ -201,7 +204,7 @@
         }
 
         [[NSNotificationCenter defaultCenter]postNotificationName:kLGNotificationUpdateReposComplete
-                                                           object:self
+                                                           object:nil
                                                          userInfo:userInfo];
     };
 
@@ -213,9 +216,6 @@
 {
     // Determine version so we chan properly handle --report-plist
     BOOL autoPkgAboveV0_3_2;
-    
-    // Full file system path if AutoPkg > 0.3.2 otherwise it will remain unallocated.
-    NSString *plistFile = nil;
 
     LGHostInfo *info = [LGHostInfo new];
     LGVersionComparator *comparator = [LGVersionComparator new];
@@ -226,7 +226,7 @@
     // Set up our task, pipe, and file handle
     NSTask *autoPkgRunTask = [[NSTask alloc] init];
     autoPkgRunTask.launchPath = @"/usr/bin/python";
-    
+
     autoPkgRunTask.standardError = [NSPipe pipe];
 
     // Set up args based on wether report is a file or piped to stdout
@@ -240,17 +240,18 @@
         // set up a pseudo terminal so stdout gets flushed and we can get status updates
         // concept taken from http://stackoverflow.com/a/13355870
         int fdMaster, fdSlave;
-        
-        if(openpty(&fdMaster, &fdSlave, NULL, NULL, NULL) == 0){
+
+        if (openpty(&fdMaster, &fdSlave, NULL, NULL, NULL) == 0) {
             fcntl(fdMaster, F_SETFD, FD_CLOEXEC);
             fcntl(fdSlave, F_SETFD, FD_CLOEXEC);
             autoPkgRunTask.standardOutput = [[NSFileHandle alloc] initWithFileDescriptor:fdMaster closeOnDealloc:YES];
         }
 
         // Create a unique temp file where AutoPkg will write the plist file.
-        plistFile = [NSTemporaryDirectory() stringByAppendingString:[[NSProcessInfo processInfo] globallyUniqueString]];
+        NSString *plistFile = [NSTemporaryDirectory() stringByAppendingString:[[NSProcessInfo processInfo] globallyUniqueString]];
+        
         // Add arg for the file path to the report-plist and turn on verbose mode.
-        [args addObjectsFromArray:@[ plistFile ]];
+        [args addObject:plistFile];
 
         // If the version of AutoPkg is > 0.3.2 we'll be able to provide lots more information
         NSString *recipeListString = [NSString stringWithContentsOfFile:recipeListPath
@@ -295,8 +296,9 @@
         if (![LGError errorWithTaskError:aTask verb:kLGAutoPkgrRun error:&error]) {
             userInfo = @{kLGNotificationUserInfoError:error};
         }
+        
         [[NSNotificationCenter defaultCenter]postNotificationName:kLGNotificationRunAutoPkgComplete
-                                                           object:self
+                                                           object:nil
                                                          userInfo:userInfo];
         
         LGDefaults *defaults = [[LGDefaults alloc] init];
@@ -307,13 +309,12 @@
             
             // Read our data from file if autopkg v > 0.3.2 else read from stdout filehandle
             if (autoPkgAboveV0_3_2) {
-                if (plistFile) {
-                    // create the plist from the temp file
-                    plist = [NSDictionary dictionaryWithContentsOfFile:plistFile];
-                    
-                    // nil out the readability handler
-                    [aTask.standardOutput setReadabilityHandler:nil];
-                }
+                // create the plist from the temp file
+                plist = [NSDictionary dictionaryWithContentsOfFile:[aTask.arguments lastObject]];
+                
+                // nil out the readability handler
+                [aTask.standardOutput setReadabilityHandler:nil];
+                
             } else {
                 NSData *autoPkgRunReportPlistData = [[aTask.standardOutput fileHandleForReading] readDataToEndOfFile];
                 // Init our string with data from the fileHandle
@@ -362,15 +363,20 @@
                 }
                 
                 NSLog(@"New software was downloaded. Sending an email alert.");
-                [self sendNewDowloadsEmail:newDownloadsArray];
+               
+                LGAutoPkgRunner *sendmail = [[LGAutoPkgRunner alloc] init];
+                [sendmail sendNewDowloadsEmail:newDownloadsArray];
                 
             } else {
                 NSLog(@"Nothing new was downloaded.");
             }
         }
         [aTask.standardError fileHandleForReading].readabilityHandler = nil;
+        
+        // seting this to nil doesn't seem right, but it prevents memory leak
+        [aTask setTerminationHandler:nil];
     };
-    
+
     // Launch the task
     [autoPkgRunTask launch];
 }
@@ -425,7 +431,8 @@
     LGApplications *apps = [[LGApplications alloc] init];
     NSString *applicationSupportDirectory = [apps getAppSupportDirectory];
     NSString *recipeListFilePath = [applicationSupportDirectory stringByAppendingString:@"/recipe_list.txt"];
-    [self runAutoPkgWithRecipeListAndSendEmailNotificationIfConfigured:recipeListFilePath];
+    __weak LGAutoPkgRunner *weakSelf = self;
+    [weakSelf runAutoPkgWithRecipeListAndSendEmailNotificationIfConfigured:recipeListFilePath];
 }
 
 - (void)startAutoPkgRunTimer
@@ -468,4 +475,3 @@
 }
 
 @end
-
