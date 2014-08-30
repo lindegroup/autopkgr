@@ -213,6 +213,9 @@
 {
     // Determine version so we chan properly handle --report-plist
     BOOL autoPkgAboveV0_3_2;
+    
+    // Full file system path if AutoPkg > 0.3.2 otherwise it will remain unallocated.
+    NSString *plistFile = nil;
 
     LGHostInfo *info = [LGHostInfo new];
     LGVersionComparator *comparator = [LGVersionComparator new];
@@ -233,19 +236,15 @@
                                                                     recipeListPath,
                                                                     @"--report-plist" ]];
 
-    NSString *plistFile;
     if (autoPkgAboveV0_3_2) {
-        
-        // set up a sudoPTY so stdout gets flushed and we can get status updates
+        // set up a pseudo terminal so stdout gets flushed and we can get status updates
+        // concept taken from http://stackoverflow.com/a/13355870
         int fdMaster, fdSlave;
         
         if(openpty(&fdMaster, &fdSlave, NULL, NULL, NULL) == 0){
             fcntl(fdMaster, F_SETFD, FD_CLOEXEC);
             fcntl(fdSlave, F_SETFD, FD_CLOEXEC);
-            
-            NSFileHandle *stdOut = [[NSFileHandle alloc] initWithFileDescriptor:fdMaster closeOnDealloc:YES];
-            
-            autoPkgRunTask.standardOutput = stdOut;
+            autoPkgRunTask.standardOutput = [[NSFileHandle alloc] initWithFileDescriptor:fdMaster closeOnDealloc:YES];
         }
 
         // Create a unique temp file where AutoPkg will write the plist file.
@@ -254,17 +253,25 @@
         [args addObjectsFromArray:@[ plistFile ]];
 
         // If the version of AutoPkg is > 0.3.2 we'll be able to provide lots more information
-        NSString *recipeListString = [NSString stringWithContentsOfFile:recipeListPath encoding:NSASCIIStringEncoding error:nil];
-        NSArray  *recipeListArray = [recipeListString componentsSeparatedByString:@"\n"];
+        NSString *recipeListString = [NSString stringWithContentsOfFile:recipeListPath
+                                                               encoding:NSASCIIStringEncoding
+                                                                  error:nil];
+
+        NSArray *recipeListArray = [recipeListString componentsSeparatedByString:@"\n"];
+
         __block NSInteger installCount = 1;
         NSInteger totalCount = recipeListArray.count;
-        
+
         [autoPkgRunTask.standardOutput setReadabilityHandler:^(NSFileHandle *handle) {
             NSString *string = [[NSString alloc ] initWithData:[handle availableData] encoding:NSASCIIStringEncoding];
+            
             // Strip out any new line characters so it displays better
-            NSString *strippedString = [string stringByReplacingOccurrencesOfString:@"\n" withString:@""];
+            NSString *strippedString = [string stringByReplacingOccurrencesOfString:@"\n"
+                                                                         withString:@""];
+            
             // Add the count of the
             NSString *detailString = [NSString stringWithFormat:@"(%ld/%ld) %@",installCount,totalCount,strippedString];
+            
             // Post notification
             if (installCount <= totalCount) {
                 installCount ++;
@@ -274,7 +281,7 @@
                                                                              kLGNotificationUserInfoTotalRecipeCount:@(totalCount)}];
             }
         }];
-        
+
     } else {
         // if still using AutoPkg 0.3.2 set up the pipe for --report-plist data
         autoPkgRunTask.standardOutput = [NSPipe pipe];
