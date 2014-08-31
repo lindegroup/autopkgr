@@ -184,6 +184,9 @@
         [workingArray addObject:@"MakeCatalogs.munki"];
     }
     
+    // AutoPkg 0.4.0 will raise an exception if the recipe_list.txt file is completely empty, so add newline
+    [workingArray addObject:@"\n"];
+    
     NSString *recipe_list = [workingArray componentsJoinedByString:@"\n"];
     
     [recipe_list writeToFile:recipeListFile atomically:YES encoding:NSUTF8StringEncoding error:&error];
