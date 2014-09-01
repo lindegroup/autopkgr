@@ -42,7 +42,7 @@
 
     // Update AutoPkg recipe repos when the application launches
     // if the user has enabled automatic repo updates
-    if (defaults.checkForNewVersionsOfAppsAutomaticallyEnabled) {
+    if (defaults.checkForRepoUpdatesAutomaticallyEnabled) {
         NSLog(@"Updating AutoPkg recipe repos.");
         [self updateAutoPkgRecipeReposInBackgroundAtAppLaunch];
     }
