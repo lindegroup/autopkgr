@@ -699,7 +699,7 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(updateReposNowCompleteNotificationRecieved:)
                                                  name:kLGNotificationUpdateReposComplete
-                                               object:autoPkgRunner];
+                                               object:nil];
 
     // TODO: Success/failure notification
     [self.updateRepoNowButton setEnabled:NO];
@@ -713,7 +713,7 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self
                                                     name:kLGNotificationUpdateReposComplete
-                                                  object:notification.object];
+                                                  object:nil];
     // stop progress panel
     NSError *error = nil;
     if ([notification.userInfo[kLGNotificationUserInfoError] isKindOfClass:[NSError class]]) {
@@ -730,11 +730,11 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(autoPkgRunCompleteNotificationRecieved:)
                                                  name:kLGNotificationRunAutoPkgComplete
-                                               object:autoPkgRunner];
+                                               object:nil];
 
     [self.checkAppsNowButton setEnabled:NO];
     [self startProgressWithMessage:@"Running selected AutoPkg recipes."];
-
+    
     [autoPkgRunner invokeAutoPkgInBackgroundThread];
 }
 
@@ -742,7 +742,7 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self
                                                     name:kLGNotificationRunAutoPkgComplete
-                                                  object:notification.object];
+                                                  object:nil];
 
     NSError *error = nil;
     if ([notification.userInfo[kLGNotificationUserInfoError] isKindOfClass:[NSError class]]) {
@@ -992,11 +992,16 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
 - (void)updateProgressNotificationReceived:(NSNotification *)notification
 {
     [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-        NSString *message = @"";
+        [_progressIndicator setIndeterminate:NO];
+        NSNumber *total = notification.userInfo[kLGNotificationUserInfoTotalRecipeCount];
+        
         if ([notification.userInfo[kLGNotificationUserInfoMessage] isKindOfClass:[NSString class]]) {
-             message = notification.userInfo[kLGNotificationUserInfoMessage];
+            NSString *message = notification.userInfo[kLGNotificationUserInfoMessage];
+            _progressDetailsMessage.stringValue = message;
         }
-        self.progressMessage.stringValue = message;
+        if ( total ){
+            [_progressIndicator incrementBy:100/total.doubleValue];
+        }
     }];
 }
 
@@ -1038,6 +1043,7 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
         [self.progressPanel orderOut:self];
         [NSApp endSheet:self.progressPanel returnCode:0];
         [self.progressMessage setStringValue:@"Starting..."];
+        [self.progressDetailsMessage setStringValue:@""];
         if (error) {
             SEL selector = nil;
             NSAlert *alert = [NSAlert alertWithError:error];
