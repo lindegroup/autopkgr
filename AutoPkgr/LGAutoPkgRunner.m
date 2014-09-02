@@ -221,9 +221,6 @@
         NSError *error;
         if (![LGError errorWithTaskError:aTask verb:kLGAutoPkgrRun error:&error]) {
             userInfo = @{kLGNotificationUserInfoError:error};
-            LGEmailer *emailer = [[LGEmailer alloc]init];
-            [emailer sendEmailNotification:@"Error while running autopkg."
-                                   message:error.localizedRecoverySuggestion];
         }
         
         [[NSNotificationCenter defaultCenter]postNotificationName:kLGNotificationRunAutoPkgComplete
@@ -232,6 +229,33 @@
         
         // nil the readability handler so the file handle is properly cleaned up
         [aTask.standardOutput fileHandleForReading].readabilityHandler = nil;
+        
+        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+        if ([defaults boolForKey:kLGSendEmailNotificationsWhenNewVersionsAreFoundEnabled]) {
+            // Read our data from the fileHandle
+            NSData *autoPkgRunReportPlistData = [fileHandle readDataToEndOfFile];
+            // Init our string with data from the fileHandle
+            NSString *autoPkgRunReportPlistString = [[NSString alloc] initWithData:autoPkgRunReportPlistData encoding:NSUTF8StringEncoding];
+            if (![autoPkgRunReportPlistString isEqualToString:@""]) {
+                // Convert string back to data for plist serialization
+                NSData *plistData = [autoPkgRunReportPlistString dataUsingEncoding:NSUTF8StringEncoding];
+                // Initialize our error object
+                NSError *plistError;
+                // Initialize plist format
+                NSPropertyListFormat format;
+                // Initialize our dict
+                
+                NSDictionary *plist = [NSPropertyListSerialization propertyListWithData:plistData options:NSPropertyListImmutable format:&format error:&plistError];
+                NSLog(@"This is our plist: %@.", plist);
+                
+                if (!plist) {
+                    NSLog(@"Could not serialize the plist. Error: %@.", plistError);
+                }
+                LGEmailer *emailer = [[LGEmailer alloc] init];
+                [emailer sendEmailForReport:plist error:error];
+            }
+        }
+
     };
 
     // Configure the task
@@ -250,90 +274,6 @@
     // Launch the task
     [autoPkgRunTask launch];
 
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    if ([defaults boolForKey:kLGSendEmailNotificationsWhenNewVersionsAreFoundEnabled]) {
-        // Read our data from the fileHandle
-        NSData *autoPkgRunReportPlistData = [fileHandle readDataToEndOfFile];
-        // Init our string with data from the fileHandle
-        NSString *autoPkgRunReportPlistString = [[NSString alloc] initWithData:autoPkgRunReportPlistData encoding:NSUTF8StringEncoding];
-        if (![autoPkgRunReportPlistString isEqualToString:@""]) {
-            // Convert string back to data for plist serialization
-            NSData *plistData = [autoPkgRunReportPlistString dataUsingEncoding:NSUTF8StringEncoding];
-            // Initialize our error object
-            NSError *error;
-            // Initialize plist format
-            NSPropertyListFormat format;
-            // Initialize our dict
-
-            NSDictionary *plist = [NSPropertyListSerialization propertyListWithData:plistData options:NSPropertyListImmutable format:&format error:&error];
-            NSLog(@"This is our plist: %@.", plist);
-
-            if (!plist) {
-                NSLog(@"Could not serialize the plist. Error: %@.", error);
-            }
-
-            // Get arrays of new downloads/packages from the plist
-            NSArray *newDownloads = [plist objectForKey:@"new_downloads"];
-            NSArray *newPackages = [plist objectForKey:@"new_packages"];
-
-            if ([newDownloads count]) {
-                NSLog(@"New stuff was downloaded.");
-                NSMutableArray *newDownloadsArray = [[NSMutableArray alloc] init];
-
-                for (NSString *path in newDownloads) {
-                    NSMutableDictionary *newDownloadDict = [[NSMutableDictionary alloc] init];
-                    // Get just the application name from the path in the new_downloads dict
-                    NSString *app = [[path lastPathComponent] stringByDeletingPathExtension];
-                    // Insert the app name into the dictionary for the "app" key
-                    [newDownloadDict setObject:app forKey:@"app"];
-
-                    for (NSDictionary *dct in newPackages) {
-                        NSString *pkgPath = [dct objectForKey:@"pkg_path"];
-
-                        if ([pkgPath rangeOfString:app options:NSCaseInsensitiveSearch].location != NSNotFound && [dct objectForKey:@"version"]) {
-                            NSString *version = [dct objectForKey:@"version"];
-                            [newDownloadDict setObject:version forKey:@"version"];
-                            break;
-                        } else {
-                            [newDownloadDict setObject:@"N/A" forKey:@"version"];
-                        }
-                    }
-                    [newDownloadsArray addObject:newDownloadDict];
-                }
-
-                NSLog(@"New software was downloaded. Sending an email alert.");
-                [self sendNewDowloadsEmail:newDownloadsArray];
-
-            } else {
-                NSLog(@"Nothing new was downloaded.");
-            }
-        }
-    }
-}
-
-- (void)sendNewDowloadsEmail:(NSArray *)newDownloadsArray
-{
-    LGEmailer *emailer = [[LGEmailer alloc] init];
-
-    NSMutableArray *apps = [[NSMutableArray alloc] init];
-
-    for (NSDictionary *download in newDownloadsArray) {
-        NSString *app = [download objectForKey:@"app"];
-        [apps addObject:app];
-    }
-
-    // Create the subject string
-    NSString *subject = [NSString stringWithFormat:@"[%@] The Following Software Is Now Available for Testing (%@)", kLGApplicationName, [apps componentsJoinedByString:@", "]];
-
-    // Create the message string
-    NSMutableString *newDownloadsString = [NSMutableString string];
-    NSEnumerator *e = [newDownloadsArray objectEnumerator];
-    id dictionary;
-    while ((dictionary = [e nextObject]) != nil)
-        [newDownloadsString appendFormat:@"<br /><strong>%@</strong>: %@", [dictionary objectForKey:@"app"], [dictionary objectForKey:@"version"]];
-    NSString *message = [NSString stringWithFormat:@"The following software is now available for testing:<br />%@", newDownloadsString];
-
-    [emailer sendEmailNotification:subject message:message];
 }
 
 - (void)invokeAutoPkgInBackgroundThread

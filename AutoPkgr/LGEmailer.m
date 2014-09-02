@@ -125,4 +125,74 @@
     
 }
 
+- (void)sendEmailForReport:(NSDictionary *)report error:(NSError *)error
+{
+    // Get arrays of new downloads/packages from the plist
+    NSMutableString *message = [[NSMutableString alloc] init];
+    NSString *subject;
+    NSMutableArray *newDownloadsArray;
+    NSArray *newDownloads;
+    NSArray *newPackages;
+    
+    if (report) {
+        newDownloads = [report objectForKey:@"new_downloads"];
+        newPackages = [report objectForKey:@"new_packages"];
+    }
+    
+    if ([newDownloads count]) {
+        NSLog(@"New stuff was downloaded.");
+        newDownloadsArray = [[NSMutableArray alloc] init];
+        for (NSString *path in newDownloads) {
+            NSMutableDictionary *newDownloadDict = [[NSMutableDictionary alloc] init];
+            // Get just the application name from the path in the new_downloads dict
+            NSString *app = [[path lastPathComponent] stringByDeletingPathExtension];
+            // Insert the app name into the dictionary for the "app" key
+            [newDownloadDict setObject:app forKey:@"app"];
+            
+            for (NSDictionary *dct in newPackages) {
+                NSString *pkgPath = [dct objectForKey:@"pkg_path"];
+                [newDownloadDict setObject:@"Version Undetected" forKey:@"version"];
+
+                if ([pkgPath rangeOfString:app options:NSCaseInsensitiveSearch].location != NSNotFound && [dct objectForKey:@"version"]) {
+                    NSString *version = [dct objectForKey:@"version"];
+                    [newDownloadDict setObject:version forKey:@"version"];
+                    break;
+                }
+            }
+            [newDownloadsArray addObject:newDownloadDict];
+        }
+        
+        NSMutableArray *apps = [[NSMutableArray alloc] init];
+        
+        for (NSDictionary *download in report) {
+            NSString *app = [download objectForKey:@"app"];
+            [apps addObject:app];
+        }
+        
+        // Create the subject string
+        subject = [NSString stringWithFormat:@"[%@] New Software Avaliable For Testing On %@",kLGApplicationName,[NSHost currentHost]];
+        
+        // Create the message string
+        NSMutableString *newDownloadsString = [NSMutableString string];
+        NSEnumerator *e = [newDownloadsArray objectEnumerator];
+        id dictionary;
+        while ((dictionary = [e nextObject]) != nil)
+            [newDownloadsString appendFormat:@"<br /><strong>%@</strong>: %@", [dictionary objectForKey:@"app"], [dictionary objectForKey:@"version"]];
+        
+        [message appendFormat:@"The following software is now available for testing:<br />%@", newDownloadsString];
+        
+    } else {
+        DLog(@"Nothing new was downloaded.");
+    }
+
+    if (error) {
+        if (!subject){
+            subject = [NSString stringWithFormat:@"[%@] Error Occured While Running AutoPkg On %@",kLGApplicationName,[NSHost currentHost]];
+        }
+        [message appendFormat:@"The following error occured:<br />%@",error.localizedDescription];
+    }
+    
+    [self sendEmailNotification:subject message:[NSString stringWithString:message]];
+}
+
 @end
