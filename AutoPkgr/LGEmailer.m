@@ -36,7 +36,7 @@
     smtpSession.hostname = [defaults objectForKey:kLGSMTPServer];
     smtpSession.port = (int)[defaults integerForKey:kLGSMTPPort];
     smtpSession.username = [defaults objectForKey:kLGSMTPUsername];
-
+    
     if (TLS) {
         NSLog(@"SSL/TLS is enabled for %@.", [defaults objectForKey:kLGSMTPServer]);
         // If the SMTP port is 465, use MCOConnectionTypeTLS.
@@ -77,7 +77,6 @@
     }
 
     MCOMessageBuilder * builder = [[MCOMessageBuilder alloc] init];
-
     [[builder header] setFrom:[MCOAddress addressWithDisplayName:@"AutoPkgr Notification"
                                                          mailbox:[[NSUserDefaults standardUserDefaults]
                                                                   objectForKey:kLGSMTPFrom]]];
@@ -89,7 +88,7 @@
             [to addObject:newAddress];
         }
     }
-    NSString *fullSubject = [NSString stringWithFormat:@"%@ on %@",subject,[[NSHost currentHost] name]];
+    NSString *fullSubject = [NSString stringWithFormat:@"%@ On %@",subject,[[NSHost currentHost] name]];
     [[builder header] setTo:to];
     [[builder header] setSubject:fullSubject];
     [builder setHTMLBody:message];
@@ -128,9 +127,8 @@
 - (void)sendEmailForReport:(NSDictionary *)report error:(NSError *)error
 {
     // Get arrays of new downloads/packages from the plist
-    NSMutableString *message = [[NSMutableString alloc] init];
+    NSMutableString *message;
     NSString *subject;
-    NSMutableArray *newDownloadsArray;
     NSArray *newDownloads;
     NSArray *newPackages;
     
@@ -140,59 +138,51 @@
     }
     
     if ([newDownloads count]) {
+        message = [[NSMutableString alloc] init];
         NSLog(@"New stuff was downloaded.");
-        newDownloadsArray = [[NSMutableArray alloc] init];
+        
+        // Create the subject string
+        subject = [NSString stringWithFormat:@"[%@] New Software Avaliable For Testing",kLGApplicationName];
+        
+        // Append the the message string with report
+        [message appendFormat:@"The following software is now available for testing:<br />"];
+        
         for (NSString *path in newDownloads) {
-            NSMutableDictionary *newDownloadDict = [[NSMutableDictionary alloc] init];
             // Get just the application name from the path in the new_downloads dict
             NSString *app = [[path lastPathComponent] stringByDeletingPathExtension];
-            // Insert the app name into the dictionary for the "app" key
-            [newDownloadDict setObject:app forKey:@"app"];
             
+            // Write the app to the string
+            [message appendFormat:@"<br /><strong>%@</strong>: ",app];
+
+            // The default version is undetected, override later
+            NSString *version = @"Version Undetected";
             for (NSDictionary *dct in newPackages) {
                 NSString *pkgPath = [dct objectForKey:@"pkg_path"];
-                [newDownloadDict setObject:@"Version Undetected" forKey:@"version"];
-
                 if ([pkgPath rangeOfString:app options:NSCaseInsensitiveSearch].location != NSNotFound && [dct objectForKey:@"version"]) {
-                    NSString *version = [dct objectForKey:@"version"];
-                    [newDownloadDict setObject:version forKey:@"version"];
+                    version = dct[@"version"];
                     break;
                 }
             }
-            [newDownloadsArray addObject:newDownloadDict];
+            [message appendFormat:@"%@",version];
         }
-        
-        NSMutableArray *apps = [[NSMutableArray alloc] init];
-        
-        for (NSDictionary *download in report) {
-            NSString *app = [download objectForKey:@"app"];
-            [apps addObject:app];
-        }
-        
-        // Create the subject string
-        subject = [NSString stringWithFormat:@"[%@] New Software Avaliable For Testing On %@",kLGApplicationName,[NSHost currentHost]];
-        
-        // Create the message string
-        NSMutableString *newDownloadsString = [NSMutableString string];
-        NSEnumerator *e = [newDownloadsArray objectEnumerator];
-        id dictionary;
-        while ((dictionary = [e nextObject]) != nil)
-            [newDownloadsString appendFormat:@"<br /><strong>%@</strong>: %@", [dictionary objectForKey:@"app"], [dictionary objectForKey:@"version"]];
-        
-        [message appendFormat:@"The following software is now available for testing:<br />%@", newDownloadsString];
-        
     } else {
         DLog(@"Nothing new was downloaded.");
     }
 
     if (error) {
-        if (!subject){
-            subject = [NSString stringWithFormat:@"[%@] Error Occured While Running AutoPkg On %@",kLGApplicationName,[NSHost currentHost]];
+        if(!message){
+            message = [[NSMutableString alloc] init];
         }
-        [message appendFormat:@"The following error occured:<br />%@",error.localizedDescription];
+        
+        if (!subject){
+            subject = [NSString stringWithFormat:@"[%@] Error Occured While Running AutoPkg",kLGApplicationName];
+        }
+        [message appendFormat:@"<strong>The following error occured:</strong><br />  %@<br />  %@",error.localizedDescription,error.localizedRecoverySuggestion];
     }
     
-    [self sendEmailNotification:subject message:[NSString stringWithString:message]];
+    if (message) {
+        [self sendEmailNotification:subject message:message];
+    }
 }
 
 @end

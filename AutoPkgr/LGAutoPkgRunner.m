@@ -303,14 +303,12 @@
         
         LGDefaults *defaults = [[LGDefaults alloc] init];
         // If the autopkg run exited successfully and the send email is enabled continue
-        if (aTask.terminationStatus == 0 && [defaults sendEmailNotificationsWhenNewVersionsAreFoundEnabled]) {
-            NSDictionary *plist;
-            NSError *error;
-            
+        if ([defaults sendEmailNotificationsWhenNewVersionsAreFoundEnabled]) {
+            NSDictionary *report;            
             // Read our data from file if autopkg v > 0.3.2 else read from stdout filehandle
             if (autoPkgAboveV0_3_2) {
                 // create the plist from the temp file
-                plist = [NSDictionary dictionaryWithContentsOfFile:[aTask.arguments lastObject]];
+                report = [NSDictionary dictionaryWithContentsOfFile:[aTask.arguments lastObject]];
                 
                 // nil out the readability handler
                 [aTask.standardOutput setReadabilityHandler:nil];
@@ -325,51 +323,16 @@
                     // Initialize plist format
                     NSPropertyListFormat format;
                     // Initialize our dict
-                    plist = [NSPropertyListSerialization propertyListWithData:plistData options:NSPropertyListImmutable format:&format error:&error];
+                    report = [NSPropertyListSerialization propertyListWithData:plistData options:NSPropertyListImmutable format:&format error:&error];
                 }
             }
-            NSLog(@"This is our plist: %@.", plist);
+            NSLog(@"This is our report: %@.", report);
             
-            if (!plist) {
-                NSLog(@"Could not serialize the plist. Error: %@.", error);
-                return;
+            if (!report) {
+                NSLog(@"Could not serialize the report. Error: %@.", error);
             }
-            
-            // Get arrays of new downloads/packages from the plist
-            NSArray *newDownloads = [plist objectForKey:@"new_downloads"];
-            NSArray *newPackages = [plist objectForKey:@"new_packages"];
-            if ([newDownloads count]) {
-                NSLog(@"New stuff was downloaded.");
-                NSMutableArray *newDownloadsArray = [[NSMutableArray alloc] init];
-                
-                for (NSString *path in newDownloads) {
-                    NSMutableDictionary *newDownloadDict = [[NSMutableDictionary alloc] init];
-                    // Get just the application name from the path in the new_downloads dict
-                    NSString *app = [[path lastPathComponent] stringByDeletingPathExtension];
-                    // Insert the app name into the dictionary for the "app" key
-                    [newDownloadDict setObject:app forKey:@"app"];
-                    [newDownloadDict setObject:@"N/A" forKey:@"version"];
-                    
-                    for (NSDictionary *dct in newPackages) {
-                        NSString *pkgPath = [dct objectForKey:@"pkg_path"];
-                        
-                        if ([pkgPath rangeOfString:app options:NSCaseInsensitiveSearch].location != NSNotFound && [dct objectForKey:@"version"]) {
-                            NSString *version = [dct objectForKey:@"version"];
-                            [newDownloadDict setObject:version forKey:@"version"];
-                            break;
-                        }
-                    }
-                    [newDownloadsArray addObject:newDownloadDict];
-                }
-                
-                NSLog(@"New software was downloaded. Sending an email alert.");
-               
-                LGAutoPkgRunner *sendmail = [[LGAutoPkgRunner alloc] init];
-                [sendmail sendNewDowloadsEmail:newDownloadsArray];
-                
-            } else {
-                NSLog(@"Nothing new was downloaded.");
-            }
+            LGEmailer *emailer = [[LGEmailer alloc] init];
+            [emailer sendEmailForReport:report error:error];
         }
         [aTask.standardError fileHandleForReading].readabilityHandler = nil;
         
