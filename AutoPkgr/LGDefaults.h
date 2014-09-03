@@ -50,7 +50,7 @@
 @property (copy, nonatomic) NSString *autoPkgCacheDir;
 @property (copy, nonatomic) NSString *autoPkgRecipeOverridesDir;
 @property (copy, nonatomic) NSString *munkiRepo;
-@property (copy, nonatomic, readonly) NSString *autoPkgRecipeRepoDir;
+@property (copy, nonatomic) NSString *autoPkgRecipeRepoDir;
 @property (copy, nonatomic, readonly) NSArray *autoPkgRecipeSearchDirs;
 @property (copy, nonatomic, readonly) NSDictionary *autoPkgRecipeRepos;
 

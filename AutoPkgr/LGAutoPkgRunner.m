@@ -437,24 +437,19 @@
 
 - (void)startAutoPkgRunTimer
 {
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    LGDefaults *defaults = [[LGDefaults alloc]init];
 
-    if ([defaults objectForKey:kLGCheckForNewVersionsOfAppsAutomaticallyEnabled]) {
-
-        BOOL checkForNewVersionsOfAppsAutomaticallyEnabled = [[defaults objectForKey:kLGCheckForNewVersionsOfAppsAutomaticallyEnabled] boolValue];
-
-        if (checkForNewVersionsOfAppsAutomaticallyEnabled) {
-            if ([defaults integerForKey:kLGAutoPkgRunInterval]) {
-                double i = [defaults integerForKey:kLGAutoPkgRunInterval];
-                if (i != 0) {
-                    NSTimeInterval ti = i * 60 * 60; // Convert hours to seconds for our time interval
-                    [NSTimer scheduledTimerWithTimeInterval:ti target:self selector:@selector(invokeAutoPkgInBackgroundThread) userInfo:nil repeats:YES];
-                } else {
-                    NSLog(@"i is 0 because that's what the user entered or what they entered wasn't a digit.");
-                }
+    if ([defaults checkForNewVersionsOfAppsAutomaticallyEnabled]) {
+        if ([defaults integerForKey:kLGAutoPkgRunInterval]) {
+            double i = [defaults integerForKey:kLGAutoPkgRunInterval];
+            if (i != 0) {
+                NSTimeInterval ti = i * 60 * 60; // Convert hours to seconds for our time interval
+                [NSTimer scheduledTimerWithTimeInterval:ti target:self selector:@selector(invokeAutoPkgInBackgroundThread) userInfo:nil repeats:YES];
             } else {
-                NSLog(@"The user enabled automatic checking for app updates but they specified no interval.");
+                NSLog(@"i is 0 because that's what the user entered or what they entered wasn't a digit.");
             }
+        } else {
+            NSLog(@"The user enabled automatic checking for app updates but they specified no interval.");
         }
     }
 }
