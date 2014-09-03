@@ -1058,6 +1058,8 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
     // do a sheet modal
     [[NSOperationQueue mainQueue] addOperationWithBlock:^{
         [self.progressPanel orderOut:self];
+        [self.progressIndicator setDoubleValue:0.0];
+        [self.progressIndicator setIndeterminate:YES];
         [NSApp endSheet:self.progressPanel returnCode:0];
         [self.progressMessage setStringValue:@"Starting..."];
         [self.progressDetailsMessage setStringValue:@""];
