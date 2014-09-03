@@ -229,16 +229,16 @@
 
     autoPkgRunTask.standardError = [NSPipe pipe];
 
-    // Set up args based on wether report is a file or piped to stdout
-    NSMutableArray *args = [[NSMutableArray alloc] initWithArray:@[ @"/usr/local/bin/autopkg",
-                                                                    @"run",
-                                                                    @"--recipe-list",
-                                                                    recipeListPath,
-                                                                    @"--report-plist" ]];
+    // Set up args based on whether report is a file or piped to stdout
+    NSMutableArray *args = [[NSMutableArray alloc] initWithArray:@[@"/usr/local/bin/autopkg",
+                                                                   @"run",
+                                                                   @"--recipe-list",
+                                                                   recipeListPath,
+                                                                   @"--report-plist"]];
 
     if (autoPkgAboveV0_3_2) {
-        // set up a pseudo terminal so stdout gets flushed and we can get status updates
-        // concept taken from http://stackoverflow.com/a/13355870
+        // Set up a pseudo terminal so stdout gets flushed and we can get status updates.
+        // Concept taken from http://stackoverflow.com/a/13355870
         int fdMaster, fdSlave;
 
         if (openpty(&fdMaster, &fdSlave, NULL, NULL, NULL) == 0) {
@@ -264,14 +264,14 @@
         NSInteger totalCount = recipeListArray.count;
 
         [autoPkgRunTask.standardOutput setReadabilityHandler:^(NSFileHandle *handle) {
-            NSString *string = [[NSString alloc ] initWithData:[handle availableData] encoding:NSASCIIStringEncoding];
+            NSString *string = [[NSString alloc] initWithData:[handle availableData] encoding:NSASCIIStringEncoding];
             
             // Strip out any new line characters so it displays better
             NSString *strippedString = [string stringByReplacingOccurrencesOfString:@"\n"
                                                                          withString:@""];
             
-            // Add the count of the
-            NSString *detailString = [NSString stringWithFormat:@"(%ld/%ld) %@",installCount,totalCount,strippedString];
+            // Set the detail string for the notification
+            NSString *detailString = [NSString stringWithFormat:@"(%ld/%ld) %@", installCount, totalCount, strippedString];
             
             // Post notification
             if (installCount <= totalCount) {
@@ -284,7 +284,7 @@
         }];
 
     } else {
-        // if still using AutoPkg 0.3.2 set up the pipe for --report-plist data
+        // If still using AutoPkg v0.3.2 set up the pipe for --report-plist data
         autoPkgRunTask.standardOutput = [NSPipe pipe];
     }
 
@@ -302,14 +302,14 @@
                                                          userInfo:userInfo];
         
         LGDefaults *defaults = [[LGDefaults alloc] init];
-        // If the autopkg run exited successfully and the send email is enabled continue
+        // If the AutoPkg run exited successfully and email notifications are enabled continue
         if (aTask.terminationStatus == 0 && [defaults sendEmailNotificationsWhenNewVersionsAreFoundEnabled]) {
             NSDictionary *plist;
             NSError *error;
             
             // Read our data from file if autopkg v > 0.3.2 else read from stdout filehandle
             if (autoPkgAboveV0_3_2) {
-                // create the plist from the temp file
+                // Create the plist from the temp file
                 plist = [NSDictionary dictionaryWithContentsOfFile:[aTask.arguments lastObject]];
                 
                 // nil out the readability handler
@@ -329,19 +329,19 @@
                 }
             }
             NSLog(@"This is our plist: %@.", plist);
-            
+
             if (!plist) {
                 NSLog(@"Could not serialize the plist. Error: %@.", error);
                 return;
             }
-            
+
             // Get arrays of new downloads/packages from the plist
             NSArray *newDownloads = [plist objectForKey:@"new_downloads"];
             NSArray *newPackages = [plist objectForKey:@"new_packages"];
             if ([newDownloads count]) {
                 NSLog(@"New stuff was downloaded.");
                 NSMutableArray *newDownloadsArray = [[NSMutableArray alloc] init];
-                
+
                 for (NSString *path in newDownloads) {
                     NSMutableDictionary *newDownloadDict = [[NSMutableDictionary alloc] init];
                     // Get just the application name from the path in the new_downloads dict
@@ -352,7 +352,7 @@
                     
                     for (NSDictionary *dct in newPackages) {
                         NSString *pkgPath = [dct objectForKey:@"pkg_path"];
-                        
+
                         if ([pkgPath rangeOfString:app options:NSCaseInsensitiveSearch].location != NSNotFound && [dct objectForKey:@"version"]) {
                             NSString *version = [dct objectForKey:@"version"];
                             [newDownloadDict setObject:version forKey:@"version"];
@@ -361,7 +361,7 @@
                     }
                     [newDownloadsArray addObject:newDownloadDict];
                 }
-                
+
                 NSLog(@"New software was downloaded. Sending an email alert.");
                
                 LGAutoPkgRunner *sendmail = [[LGAutoPkgRunner alloc] init];
@@ -373,7 +373,7 @@
         }
         [aTask.standardError fileHandleForReading].readabilityHandler = nil;
         
-        // seting this to nil doesn't seem right, but it prevents memory leak
+        // Setting this to nil doesn't seem right, but it prevents memory leak
         [aTask setTerminationHandler:nil];
     };
 
@@ -437,7 +437,7 @@
 
 - (void)startAutoPkgRunTimer
 {
-    LGDefaults *defaults = [[LGDefaults alloc]init];
+    LGDefaults *defaults = [[LGDefaults alloc] init];
 
     if ([defaults checkForNewVersionsOfAppsAutomaticallyEnabled]) {
         if ([defaults integerForKey:kLGAutoPkgRunInterval]) {

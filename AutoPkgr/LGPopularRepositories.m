@@ -187,7 +187,7 @@
     }
 
     [popularRepositoriesTableView beginUpdates];
-    [popularRepositoriesTableView removeRowsAtIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0,searchedRepos.count)] withAnimation:NSTableViewAnimationEffectNone];
+    [popularRepositoriesTableView removeRowsAtIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, searchedRepos.count)] withAnimation:NSTableViewAnimationEffectNone];
     
     if ([[_repoSearch stringValue] isEqualToString:@""]) {
         searchedRepos = popularRepos;
@@ -196,7 +196,7 @@
         
         for (NSString *string in popularRepos) {
             NSRange range = [string rangeOfString:[_repoSearch stringValue] options:NSCaseInsensitiveSearch];
-            if ( !NSEqualRanges(range, NSMakeRange(NSNotFound, 0))) {
+            if (!NSEqualRanges(range, NSMakeRange(NSNotFound, 0))) {
                 [workingSearchArray addObject:string];
             }
         }
@@ -204,7 +204,7 @@
         searchedRepos = [NSArray arrayWithArray:workingSearchArray];
     }
     
-    [popularRepositoriesTableView insertRowsAtIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0,searchedRepos.count)] withAnimation:NSTableViewAnimationEffectNone];
+    [popularRepositoriesTableView insertRowsAtIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, searchedRepos.count)] withAnimation:NSTableViewAnimationEffectNone];
     [popularRepositoriesTableView endUpdates];
 }
 

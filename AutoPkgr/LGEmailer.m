@@ -28,7 +28,7 @@
 
 - (void)sendEmailNotification:(NSString *)subject message:(NSString *)message
 {
-    LGDefaults *defaults = [[LGDefaults alloc]init];
+    LGDefaults *defaults = [[LGDefaults alloc] init];
 
     BOOL TLS = [defaults SMTPTLSEnabled];
 
@@ -77,7 +77,7 @@
     }
 
     MCOMessageBuilder * builder = [[MCOMessageBuilder alloc] init];
-    
+
     [[builder header] setFrom:[MCOAddress addressWithDisplayName:@"AutoPkgr Notification"
                                                          mailbox:[defaults SMTPFrom]]];
 

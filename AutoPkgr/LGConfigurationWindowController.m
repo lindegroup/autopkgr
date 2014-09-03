@@ -532,7 +532,7 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
                                                otherButton:nil
                                  informativeTextWithFormat:@""];
             
-            if ([alert runModal] == NSAlertDefaultReturn){
+            if ([alert runModal] == NSAlertDefaultReturn) {
                 [installGitButton setTitle:@"Install Git"];
                 
                 LGHostInfo *hostInfo = [[LGHostInfo alloc] init];
@@ -547,7 +547,7 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
                                               otherButton:nil
                                 informativeTextWithFormat:@"You can try to reinstall from here, or download and install the official version from http://git-scm.com/downloads."];
 
-                    if ( [alert runModal] == NSAlertDefaultReturn) {
+                    if ([alert runModal] == NSAlertDefaultReturn) {
                         [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:@"http://git-scm.com/downloads"]];
                     }
                     
@@ -851,7 +851,7 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
 
     [self.checkAppsNowButton setEnabled:NO];
     [self startProgressWithMessage:@"Running selected AutoPkg recipes."];
-    
+
     [autoPkgRunner invokeAutoPkgInBackgroundThread];
 }
 
@@ -1016,7 +1016,7 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
             NSString *message = notification.userInfo[kLGNotificationUserInfoMessage];
             _progressDetailsMessage.stringValue = message;
         }
-        if ( total ){
+        if (total) {
             [_progressIndicator incrementBy:100/total.doubleValue];
         }
     }];
