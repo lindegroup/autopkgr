@@ -173,6 +173,14 @@
     [self setBool:CheckForNewVersionsOfAppsAutomaticallyEnabled forKey:kLGCheckForNewVersionsOfAppsAutomaticallyEnabled];
 }
 //
+-(BOOL)checkForRepoUpdatesAutomaticallyEnabled
+{
+    return [self boolForKey:kLGCheckForRepoUpdatesAutomaticallyEnabled];
+}
+-(void)setCheckForRepoUpdatesAutomaticallyEnabled:(BOOL)checkForRepoUpdatesAutomaticallyEnabled
+{
+    [self setBool:checkForRepoUpdatesAutomaticallyEnabled forKey:kLGCheckForRepoUpdatesAutomaticallyEnabled];
+}
 
 #pragma mark - AutoPkg Defaults
 - (NSInteger)autoPkgRunInterval
