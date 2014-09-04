@@ -1092,7 +1092,6 @@
                 <outlet property="applicationTableView" destination="HAz-3M-Rgt" id="jPi-gx-bbh"/>
             </connections>
         </customObject>
-        <customObject id="8xE-Xf-V2o" customClass="LGChangeHandler"/>
         <window title="progressPanel" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" restorable="NO" hidesOnDeactivate="YES" oneShot="NO" showsToolbarButton="NO" visibleAtLaunch="NO" animationBehavior="default" id="043-gL-HLj" customClass="NSPanel">
             <windowStyleMask key="styleMask" closable="YES" miniaturizable="YES" resizable="YES" utility="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
