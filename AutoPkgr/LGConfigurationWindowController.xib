@@ -145,12 +145,12 @@
                                                 <imageView translatesAutoresizingMaskIntoConstraints="NO" id="KkE-qM-Hy6">
                                                     <rect key="frame" x="297" y="197" width="16" height="16"/>
                                                     <autoresizingMask key="autoresizingMask"/>
-                                                    <imageCell key="cell" refusesFirstResponder="YES" alignment="left" animates="YES" imageScaling="proportionallyDown" image="NSStatusAvailable" id="Syx-8J-ERB"/>
+                                                    <imageCell key="cell" refusesFirstResponder="YES" alignment="left" animates="YES" imageScaling="proportionallyDown" image="NSStatusUnavailable" id="Syx-8J-ERB"/>
                                                 </imageView>
                                                 <imageView translatesAutoresizingMaskIntoConstraints="NO" id="f8q-xY-QUg">
                                                     <rect key="frame" x="297" y="156" width="16" height="16"/>
                                                     <autoresizingMask key="autoresizingMask"/>
-                                                    <imageCell key="cell" refusesFirstResponder="YES" alignment="left" animates="YES" imageScaling="proportionallyDown" image="NSStatusAvailable" id="e1g-5e-fLi"/>
+                                                    <imageCell key="cell" refusesFirstResponder="YES" alignment="left" animates="YES" imageScaling="proportionallyDown" image="NSStatusUnavailable" id="e1g-5e-fLi"/>
                                                 </imageView>
                                                 <button translatesAutoresizingMaskIntoConstraints="NO" id="KMe-Rd-d2t">
                                                     <rect key="frame" x="198" y="21" width="215" height="18"/>
@@ -1142,7 +1142,7 @@
     </objects>
     <resources>
         <image name="AutoPkgrIcon" width="512" height="512"/>
-        <image name="NSStatusAvailable" width="16" height="16"/>
         <image name="NSStatusNone" width="16" height="16"/>
+        <image name="NSStatusUnavailable" width="16" height="16"/>
     </resources>
 </document>
