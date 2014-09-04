@@ -32,10 +32,9 @@
     // Setup the status item
     [self setupStatusItem];
 
-    if (!defaults.hasCompletedInitialSetup) {
-        [self showConfigurationWindow:nil];
-        defaults.HasCompletedInitialSetup = YES;
-    }
+    // Show the configuration window
+    [self showConfigurationWindow:nil];
+    defaults.HasCompletedInitialSetup = YES;
 
     // Start the AutoPkg run timer if the user enabled it
     [self startAutoPkgRunTimer];
