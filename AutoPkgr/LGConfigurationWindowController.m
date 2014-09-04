@@ -182,9 +182,6 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
 {
     [super windowDidLoad];
 
-    // Hide the configuration window
-    [self.window orderOut:nil];
-
     // Populate the preference values from the user defaults if they exist
 
     if ([defaults autoPkgRunInterval]) {
@@ -261,37 +258,40 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
         }
     }
 
-    // Create an instance of the LGHostInfo class
-    LGHostInfo *hostInfo = [[LGHostInfo alloc] init];
-
-    if ([hostInfo gitInstalled]) {
-        [installGitButton setEnabled:NO];
-        [gitStatusLabel setStringValue:kLGGitInstalledLabel];
-        [gitStatusIcon setImage:[NSImage imageNamed:NSImageNameStatusAvailable]];
-    } else {
-        [installGitButton setEnabled:YES];
-        [gitStatusLabel setStringValue:kLGGitNotInstalledLabel];
-        [gitStatusIcon setImage:[NSImage imageNamed:NSImageNameStatusUnavailable]];
-    }
-
-    if ([hostInfo autoPkgInstalled]) {
-        BOOL updateAvailable = [self autoPkgUpdateAvailable];
-        if (updateAvailable) {
-            [installAutoPkgButton setEnabled:YES];
-            [installAutoPkgButton setTitle:@"Update AutoPkg"];
-            [autoPkgStatusLabel setStringValue:kLGAutoPkgUpdateAvailableLabel];
-            [autoPkgStatusIcon setImage:[NSImage imageNamed:NSImageNameStatusPartiallyAvailable]];
+    NSOperationQueue *bgQueue = [[NSOperationQueue alloc] init];
+    [bgQueue addOperationWithBlock:^{
+        // Create an instance of the LGHostInfo class
+        LGHostInfo *hostInfo = [[LGHostInfo alloc] init];
+        
+        if ([hostInfo gitInstalled]) {
+            [installGitButton setEnabled:NO];
+            [gitStatusLabel setStringValue:kLGGitInstalledLabel];
+            [gitStatusIcon setImage:[NSImage imageNamed:NSImageNameStatusAvailable]];
         } else {
-            [installAutoPkgButton setEnabled:NO];
-            [autoPkgStatusLabel setStringValue:kLGAutoPkgInstalledLabel];
-            [autoPkgStatusIcon setImage:[NSImage imageNamed:NSImageNameStatusAvailable]];
+            [installGitButton setEnabled:YES];
+            [gitStatusLabel setStringValue:kLGGitNotInstalledLabel];
+            [gitStatusIcon setImage:[NSImage imageNamed:NSImageNameStatusUnavailable]];
         }
-    } else {
-        [installAutoPkgButton setEnabled:YES];
-        [autoPkgStatusLabel setStringValue:kLGAutoPkgNotInstalledLabel];
-        [autoPkgStatusIcon setImage:[NSImage imageNamed:NSImageNameStatusUnavailable]];
-    }
-
+        
+        if ([hostInfo autoPkgInstalled]) {
+            BOOL updateAvailable = [self autoPkgUpdateAvailable];
+            if (updateAvailable) {
+                [installAutoPkgButton setEnabled:YES];
+                [installAutoPkgButton setTitle:@"Update AutoPkg"];
+                [autoPkgStatusLabel setStringValue:kLGAutoPkgUpdateAvailableLabel];
+                [autoPkgStatusIcon setImage:[NSImage imageNamed:NSImageNameStatusPartiallyAvailable]];
+            } else {
+                [installAutoPkgButton setEnabled:NO];
+                [autoPkgStatusLabel setStringValue:kLGAutoPkgInstalledLabel];
+                [autoPkgStatusIcon setImage:[NSImage imageNamed:NSImageNameStatusAvailable]];
+            }
+        } else {
+            [installAutoPkgButton setEnabled:YES];
+            [autoPkgStatusLabel setStringValue:kLGAutoPkgNotInstalledLabel];
+            [autoPkgStatusIcon setImage:[NSImage imageNamed:NSImageNameStatusUnavailable]];
+        }
+    }];
+    
     // Enable tools buttons if directories exist
     BOOL isDir;
 
