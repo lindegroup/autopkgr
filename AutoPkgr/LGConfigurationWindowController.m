@@ -196,7 +196,7 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
     if ([defaults autoPkgCacheDir]) {
         [autoPkgCacheDir setStringValue:[defaults autoPkgCacheDir]];
     }
-    if ([defaults autoPkgRecipeRepos]) {
+    if ([defaults autoPkgRecipeRepoDir]) {
         [autoPkgRecipeRepoDir setStringValue:[defaults autoPkgRecipeRepoDir]];
     }
     if ([defaults autoPkgRecipeOverridesDir]) {
