@@ -697,8 +697,9 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
 {
     NSOpenPanel *chooseDialog = [self setupOpenPanel];
     
-    // Set the default directory to /Users/Shared
-    [chooseDialog setDirectoryURL:[NSURL URLWithString:@"/Users/Shared"]];
+    // Set the default directory to the current setting for munkiRepo, else /Users/Shared
+    [chooseDialog setDirectoryURL:[NSURL URLWithString:defaults.munkiRepo ?
+                                   defaults.munkiRepo : @"/Users/Shared"]];
     
     // Display the dialog. If the "Choose" button was
     // pressed, process the directory path.
@@ -724,6 +725,10 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
 {
     NSOpenPanel *chooseDialog = [self setupOpenPanel];
     
+    // Set the default directory to the current setting for autoPkgRecipeRepoDir, else ~/Library/AutoPkg
+    [chooseDialog setDirectoryURL:[NSURL URLWithString:defaults.autoPkgRecipeRepoDir ?
+                                   defaults.autoPkgRecipeRepoDir : [@"~/Library/AutoPkg" stringByExpandingTildeInPath]]];
+    
     // Display the dialog. If the "Choose" button was
     // pressed, process the directory path.
     [chooseDialog beginSheetModalForWindow:self.window completionHandler:^(NSInteger result) {
@@ -743,12 +748,15 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
             
         }
     }];
-    
 }
 
 - (IBAction)chooseAutoPkgCacheDir:(id)sender
 {
     NSOpenPanel *chooseDialog = [self setupOpenPanel];
+    
+    // Set the default directory to the current setting for autoPkgCacheDir, else ~/Library/AutoPkg
+    [chooseDialog setDirectoryURL:[NSURL URLWithString:defaults.autoPkgCacheDir ?
+                                   defaults.autoPkgCacheDir : [@"~/Library/AutoPkg" stringByExpandingTildeInPath]]];
     
     // Display the dialog. If the "Choose" button was
     // pressed, process the directory path.
@@ -775,6 +783,9 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
 {
     NSOpenPanel *chooseDialog = [self setupOpenPanel];
     
+    // Set the default directory to the current setting for autoPkgRecipeOverridesDir, else ~/Library/AutoPkg
+    [chooseDialog setDirectoryURL:[NSURL URLWithString:defaults.autoPkgRecipeOverridesDir ?
+                                   defaults.autoPkgRecipeOverridesDir : [@"~/Library/AutoPkg" stringByExpandingTildeInPath]]];
     
     // Display the dialog. If the "Choose" button was
     // pressed, process the directory path.
@@ -886,9 +897,6 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
 
     // Disable multiple selection
     [openPanel setAllowsMultipleSelection:NO];
-
-    // Set the default directory to /Users/Shared
-    [openPanel setDirectoryURL:[NSURL URLWithString:@"/Users/Shared"]];
     
     return openPanel;
 }
@@ -916,6 +924,10 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
         // Pass nil here if string is "" so it removes the key from the defaults
         NSString *value = [[autoPkgRecipeOverridesDir stringValue] isEqualToString:@""] ? nil : [autoPkgRecipeOverridesDir stringValue];
         defaults.autoPkgRecipeOverridesDir = value;
+    } else if ([object isEqual:autoPkgRecipeRepoDir]) {
+        // Pass nil here if string is "" so it removes the key from the defaults
+        NSString *value = [[autoPkgRecipeRepoDir stringValue] isEqualToString:@""] ? nil : [autoPkgRecipeRepoDir stringValue];
+        defaults.autoPkgRecipeRepoDir = value;
     } else if ([object isEqual:autoPkgCacheDir]) {
         // Pass nil here if string is "" so it removes the key from the defaults
         NSString *value = [[autoPkgCacheDir stringValue] isEqualToString:@""] ? nil : [autoPkgCacheDir stringValue];
