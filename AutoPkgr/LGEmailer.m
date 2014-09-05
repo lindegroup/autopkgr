@@ -28,9 +28,9 @@
 
 - (void)sendEmailNotification:(NSString *)subject message:(NSString *)message
 {
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    LGDefaults *defaults = [[LGDefaults alloc] init];
 
-    BOOL TLS = [[defaults objectForKey:kLGSMTPTLSEnabled] boolValue];
+    BOOL TLS = [defaults SMTPTLSEnabled];
 
     MCOSMTPSession *smtpSession = [[MCOSMTPSession alloc] init];
     smtpSession.hostname = [defaults objectForKey:kLGSMTPServer];
@@ -79,11 +79,10 @@
     MCOMessageBuilder * builder = [[MCOMessageBuilder alloc] init];
 
     [[builder header] setFrom:[MCOAddress addressWithDisplayName:@"AutoPkgr Notification"
-                                                         mailbox:[[NSUserDefaults standardUserDefaults]
-                                                                  objectForKey:kLGSMTPFrom]]];
+                                                         mailbox:[defaults SMTPFrom]]];
 
     NSMutableArray *to = [[NSMutableArray alloc] init];
-    for (NSString *toAddress in [[NSUserDefaults standardUserDefaults] objectForKey:kLGSMTPTo]) {
+    for (NSString *toAddress in [defaults SMTPTo]) {
         if (![toAddress isEqual:@""]) {
             MCOAddress *newAddress = [MCOAddress addressWithMailbox:toAddress];
             [to addObject:newAddress];
@@ -100,14 +99,14 @@
         NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
         NSMutableDictionary *userInfo = [NSMutableDictionary dictionaryWithDictionary:@{kLGNotificationUserInfoSubject:subject,
                                                                                         kLGNotificationUserInfoMessage:message}];
-        
+
         if (error) {
             NSLog(@"%@ Error sending email:%@", smtpSession.username, error);
             [userInfo setObject:error forKey:kLGNotificationUserInfoError];
         } else {
             NSLog(@"%@ Successfully sent email!", smtpSession.username);
         }
-        
+
         [center postNotificationName:kLGNotificationEmailSent
                               object:self
                             userInfo:[NSDictionary dictionaryWithDictionary:userInfo]];
@@ -122,7 +121,7 @@
     NSString *message = @"This is a test notification from <strong>AutoPkgr</strong>.";
     // Send the email
     [self sendEmailNotification:subject message:message];
-    
+
 }
 
 @end

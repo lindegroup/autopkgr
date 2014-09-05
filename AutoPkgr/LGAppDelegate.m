@@ -32,17 +32,16 @@
     // Setup the status item
     [self setupStatusItem];
 
-    if (!defaults.hasCompletedInitialSetup) {
-        [self showConfigurationWindow:nil];
-        defaults.HasCompletedInitialSetup = YES;
-    }
+    // Show the configuration window
+    [self showConfigurationWindow:nil];
+    defaults.HasCompletedInitialSetup = YES;
 
     // Start the AutoPkg run timer if the user enabled it
     [self startAutoPkgRunTimer];
 
     // Update AutoPkg recipe repos when the application launches
     // if the user has enabled automatic repo updates
-    if (defaults.checkForNewVersionsOfAppsAutomaticallyEnabled) {
+    if (defaults.checkForRepoUpdatesAutomaticallyEnabled) {
         NSLog(@"Updating AutoPkg recipe repos.");
         [self updateAutoPkgRecipeReposInBackgroundAtAppLaunch];
     }

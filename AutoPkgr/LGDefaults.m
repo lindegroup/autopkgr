@@ -24,8 +24,7 @@
 #import "LGError.h"
 
 @interface LGDefaults ()
-// Make these readwrite here so we can use them within methods
-@property (copy, nonatomic, readwrite) NSString *autoPkgRecipeRepoDir;
+// Make these readwrite here so we can use these with methods
 @property (copy, nonatomic, readwrite) NSArray *autoPkgRecipeSearchDirs;
 @property (copy, nonatomic, readwrite) NSDictionary *autoPkgRecipeRepos;
 @end
@@ -174,6 +173,14 @@
     [self setBool:CheckForNewVersionsOfAppsAutomaticallyEnabled forKey:kLGCheckForNewVersionsOfAppsAutomaticallyEnabled];
 }
 //
+-(BOOL)checkForRepoUpdatesAutomaticallyEnabled
+{
+    return [self boolForKey:kLGCheckForRepoUpdatesAutomaticallyEnabled];
+}
+-(void)setCheckForRepoUpdatesAutomaticallyEnabled:(BOOL)checkForRepoUpdatesAutomaticallyEnabled
+{
+    [self setBool:checkForRepoUpdatesAutomaticallyEnabled forKey:kLGCheckForRepoUpdatesAutomaticallyEnabled];
+}
 
 #pragma mark - AutoPkg Defaults
 - (NSInteger)autoPkgRunInterval

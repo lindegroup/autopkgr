@@ -69,11 +69,13 @@ extern NSString *const kLGNotificationEmailSent;
 extern NSString *const kLGNotificationTestSmtpServerPort;
 
 #pragma mark -- UserInfo dict keys
-//* key cooresponding to NSError object in Notification's userInfo dictionary */
+//* key corresponding to NSError object in Notification's userInfo dictionary */
 extern NSString *const kLGNotificationUserInfoError;
-//* key cooresponding to a message string object in Notification's userInfo dictionary */
+//* key corresponding to a message string object in Notification's userInfo dictionary */
 extern NSString *const kLGNotificationUserInfoMessage;
-//* key cooresponding to NSNumber BOOL object in Notification's userInfo dictionary, indicating success/failure */
+//* key corresponding to the total recipe count in Notification's userInfo dictionary during an AutoPkgr run task */
+extern NSString *const kLGNotificationUserInfoTotalRecipeCount;
+//* key corresponding to NSNumber BOOL object in Notification's userInfo dictionary, indicating success/failure */
 extern NSString *const kLGNotificationUserInfoSuccess;
-//* key cooresponding to NSError object in Notification's userInfo dictionary */
+//* key corresponding to NSError object in Notification's userInfo dictionary */
 extern NSString *const kLGNotificationUserInfoSubject;

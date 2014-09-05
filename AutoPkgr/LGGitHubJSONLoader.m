@@ -56,9 +56,9 @@
 
         // get the JSON object out of the data
         id jsonObject = [NSJSONSerialization JSONObjectWithData:reqData options:NSJSONReadingMutableContainers error:&error];
-        
+
         // Check that the object is an array, and if so return it
-        if ([jsonObject isKindOfClass:[NSArray class]]){
+        if ([jsonObject isKindOfClass:[NSArray class]]) {
             return jsonObject;
         } else if (error) {
             NSLog(@"NSJSONSerialization error when attempting to serialize JSON data from the GitHub API: Error: %@.", error);

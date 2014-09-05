@@ -36,6 +36,7 @@
 @property (weak) IBOutlet NSTextField *repoURLToAdd;
 @property (weak) IBOutlet NSTextField *autoPkgRunInterval;
 @property (weak) IBOutlet NSTextField *localMunkiRepo;
+@property (weak) IBOutlet NSTextField *autoPkgRecipeRepoDir;
 @property (weak) IBOutlet NSTextField *autoPkgCacheDir;
 @property (weak) IBOutlet NSTextField *autoPkgRecipeOverridesDir;
 
@@ -48,18 +49,16 @@
 @property (weak) IBOutlet NSButton *sendEmailNotificationsWhenNewVersionsAreFoundButton;
 
 // Buttons
-@property (weak) IBOutlet NSButton *autoPkgCacheFolderButton;
-@property (weak) IBOutlet NSButton *autoPkgRecipeReposFolderButton;
-@property (weak) IBOutlet NSButton *localMunkiRepoFolderButton;
-@property (weak) IBOutlet NSButton *autoPkgCacheDirButton;
-@property (weak) IBOutlet NSButton *autoPkgRecipeOverridesButton;
+@property (weak) IBOutlet NSButton *openLocalMunkiRepoFolderButton;
+@property (weak) IBOutlet NSButton *openAutoPkgRecipeReposFolderButton;
+@property (weak) IBOutlet NSButton *openAutoPkgCacheFolderButton;
+@property (weak) IBOutlet NSButton *openAutoPkgRecipeOverridesFolderButton;
 
 @property (weak) IBOutlet NSButton *sendTestEmailButton;
 @property (weak) IBOutlet NSButton *installGitButton;
 @property (weak) IBOutlet NSButton *installAutoPkgButton;
 @property (weak) IBOutlet NSButton *checkAppsNowButton;
 @property (weak) IBOutlet NSButton *updateRepoNowButton;
-@property (weak) IBOutlet NSButton *autoPkgRecipeOverridesFolderButton;
 
 // Labels
 @property (weak) IBOutlet NSTextField *gitStatusLabel;
@@ -79,6 +78,7 @@
 @property (weak) IBOutlet NSPanel *progressPanel;
 @property (weak) IBOutlet NSProgressIndicator *progressIndicator;
 @property (weak) IBOutlet NSTextField *progressMessage;
+@property (weak) IBOutlet NSTextField *progressDetailsMessage;
 
 // Objects
 @property (strong) IBOutlet LGPopularRepositories *popRepoTableViewHandler;
@@ -88,14 +88,19 @@
 - (IBAction)sendTestEmail:(id)sender;
 - (IBAction)installGit:(id)sender;
 - (IBAction)installAutoPkg:(id)sender;
-- (IBAction)openAutoPkgCacheFolder:(id)sender;
-- (IBAction)openAutoPkgRecipeReposFolder:(id)sender;
+
 - (IBAction)openLocalMunkiRepoFolder:(id)sender;
+- (IBAction)openAutoPkgRecipeReposFolder:(id)sender;
+- (IBAction)openAutoPkgCacheFolder:(id)sender;
+- (IBAction)openAutoPkgRecipeOverridesFolder:(id)sender;
+
+- (IBAction)chooseLocalMunkiRepo:(id)sender;
+- (IBAction)chooseAutoPkgCacheDir:(id)sender;
+- (IBAction)chooseAutoPkgRecipeOverridesDir:(id)sender;
+
 - (IBAction)addAutoPkgRepoURL:(id)sender;
 - (IBAction)updateReposNow:(id)sender;
 - (IBAction)checkAppsNow:(id)sender;
-- (IBAction)chooseLocalMunkiRepo:(id)sender;
-- (IBAction)openAutoPkgRecipeOverridesFolder:(id)sender;
 
 - (void)runCommandAsRoot:(NSString *)command;
 - (void)downloadAndInstallAutoPkg;

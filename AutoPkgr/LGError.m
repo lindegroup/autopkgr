@@ -41,13 +41,13 @@ static NSString *errorMsgFromCode(LGErrorCodes code)
     NSString *msg;
     switch (code) {
     case kLGErrorSendingEmail:
-        msg = @"Error sending e-mail";
+        msg = @"Error sending email";
         break;
     case kLGErrorTestingPort:
         msg = @"Error verifying server and port";
         break;
     case kLGErrorReparingAutoPkgPrefs:
-        msg = @"We were unable to resolve some issues with the autopkg preferences.";
+        msg = @"Unable to resolve some issues with the AutoPkg preferences.";
     default:
         break;
     }

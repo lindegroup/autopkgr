@@ -75,6 +75,7 @@ NSString *const kLGNotificationTestSmtpServerPort = @"com.lindegroup.autopkgr.te
 #pragma mark -- UserInfo dict keys
 NSString *const kLGNotificationUserInfoError = @"com.lindegroup.autopkgr.notification.userinfo.error";
 NSString *const kLGNotificationUserInfoMessage = @"com.lindegroup.autopkgr.notification.userinfo.message";
+NSString *const kLGNotificationUserInfoTotalRecipeCount= @"com.lindegroup.autopkgr.notification.userinfo.total.recipe.count";
 NSString *const kLGNotificationUserInfoSuccess = @"com.lindelgroup.autopkgr.notification.userinfo.success";
 NSString *const kLGNotificationUserInfoSubject = @"com.lindelgroup.autopkgr.notification.userinfo.subject";
 
