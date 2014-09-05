@@ -40,51 +40,54 @@ static NSString *errorMsgFromCode(LGErrorCodes code)
 {
     NSString *msg;
     switch (code) {
-    case kLGErrorSendingEmail:
-        msg = @"Error sending email";
-        break;
-    case kLGErrorTestingPort:
-        msg = @"Error verifying server and port";
-        break;
-    case kLGErrorReparingAutoPkgPrefs:
-        msg = @"Unable to resolve some issues with the AutoPkg preferences.";
-    default:
-        break;
+        case kLGErrorSendingEmail:
+            msg = @"Error sending email";
+            break;
+        case kLGErrorTestingPort:
+            msg = @"Error verifying server and port";
+            break;
+        case kLGErrorReparingAutoPkgPrefs:
+            msg = @"Unable to resolve some issues with the AutoPkg preferences.";
+        case kLGErrorInstallGit:
+            msg = @"Error installing/updating AutoPkg";
+            break;
+        case kLGErrorInstallAutoPkg:
+            msg = @"Error installing git";
+            break;
+        case kLGErrorInstallAutoPkgr:
+            msg = @"Error updating AutoPkgr";
+            break;
+        default:
+            break;
     }
     return msg;
 }
 
-static NSString *errorMessageFromAutoPkgVerb(LGAutoPkgrVerb verb)
+static NSString *errorMessageFromAutoPkgVerb(LGAutoPkgVerb verb)
 {
     NSString *msg;
     switch (verb) {
-    case kLGUnknown:
-        msg = @"AutoPkgr encountered an error";
-        break;
-    case kLGAutoPkgrRun:
-        msg = @"Error running recipes";
-        break;
-    case kLGAutoPkgrRepoUpdate:
-        msg = @"Error updating repos";
-        break;
-    case kLGAutoPkgrRepoAdd:
-        msg = @"Error adding selected repo";
-        break;
-    case kLGAutoPkgrRepoDelete:
-        msg = @"Error removing selected repo";
-        break;
-    case kLGAutoPkgrMakeOverride:
-        msg = @"Error creating overrides file";
-        break;
-    case kLGAutoPkgrInstallAutoPkg:
-        msg = @"Error installing git";
-        break;
-    case kLGAutoPkgrInstallGit:
-        msg = @"Error installing/updating AutoPkg";
-        break;
-    default:
-        msg = @"AutoPkgr encountered an error";
-        break;
+        case kLGAutoPkgUndefinedVerb:
+            msg = @"AutoPkgr encountered an error";
+            break;
+        case kLGAutoPkgRun:
+            msg = @"Error running recipes";
+            break;
+        case kLGAutoPkgRepoUpdate:
+            msg = @"Error updating repos";
+            break;
+        case kLGAutoPkgRepoAdd:
+            msg = @"Error adding selected repo";
+            break;
+        case kLGAutoPkgRepoDelete:
+            msg = @"Error removing selected repo";
+            break;
+        case kLGAutoPkgMakeOverride:
+            msg = @"Error creating overrides file";
+            break;
+        default:
+            msg = @"AutoPkgr encountered an error";
+            break;
     }
     return msg;
 }
@@ -96,10 +99,10 @@ static NSString *errorMessageFromAutoPkgVerb(LGAutoPkgrVerb verb)
     NSError *error;
     [[self class] errorWithCode:code error:&error];
     [NSApp presentError:error
-            modalForWindow:NULL
-                  delegate:sender
-        didPresentSelector:selector
-               contextInfo:NULL];
+         modalForWindow:NULL
+               delegate:sender
+     didPresentSelector:selector
+            contextInfo:NULL];
 }
 #endif
 
@@ -126,7 +129,7 @@ static NSString *errorMessageFromAutoPkgVerb(LGAutoPkgrVerb verb)
     return error;
 }
 
-+ (BOOL)errorWithTaskError:(NSTask *)task verb:(LGAutoPkgrVerb)verb error:(NSError **)error
++ (BOOL)errorWithTaskError:(NSTask *)task verb:(LGAutoPkgVerb)verb error:(NSError **)error
 {
     NSError *taskError = [self errorWithTaskError:task verb:verb];
     if (error && taskError) {
@@ -136,44 +139,47 @@ static NSString *errorMessageFromAutoPkgVerb(LGAutoPkgrVerb verb)
     return taskError ? taskError.code == kLGErrorSuccess : YES;
 }
 
-+ (NSError *)errorWithTaskError:(NSTask *)task verb:(LGAutoPkgrVerb)verb
++ (NSError *)errorWithTaskError:(NSTask *)task verb:(LGAutoPkgVerb)verb
 {
     // if task is running
     if ([task isRunning]) {
         return nil;
     }
-
+    
     NSError *error;
     NSString *errorMsg = errorMessageFromAutoPkgVerb(verb);
     NSString *errorDetails;
     NSInteger taskError;
-
-    NSData *errData = [[task.standardError fileHandleForReading] readDataToEndOfFile];
-
-    errorDetails = [[NSString alloc] initWithData:errData encoding:NSASCIIStringEncoding];
+    
+    if([task.standardError isKindOfClass:[NSPipe class]]){
+        NSData *errData = [[task.standardError fileHandleForReading] readDataToEndOfFile];
+        if(errData){
+            errorDetails = [[NSString alloc] initWithData:errData encoding:NSASCIIStringEncoding];
+        }
+    }
+    
     taskError = task.terminationStatus;
-    DLog(@"%ld : %@", task.terminationStatus, errorDetails);
-
+    
     // AutoPkg's rc on a failed repo-update / delete is 0, so check the stderr for "ERROR" string
-    if (verb == kLGAutoPkgrRepoUpdate || verb == kLGAutoPkgrRepoDelete) {
+    if (verb == kLGAutoPkgRepoUpdate || verb == kLGAutoPkgRepoDelete) {
         if ([errorDetails rangeOfString:@"ERROR"].location != NSNotFound) {
             taskError = kLGErrorAutoPkgConfig;
         }
     }
     // autopkg run exits 255 if no recipe speciifed
-    else if (verb == kLGAutoPkgrRun && task.terminationStatus == kLGErrorAutoPkgNoRecipes) {
+    else if (verb == kLGAutoPkgRun && task.terminationStatus == kLGErrorAutoPkgNoRecipes) {
         errorDetails = @"No recipes specified.";
     }
-
+    
     // Otherwise we can just use the termination status
     if (taskError != 0) {
         error = [NSError errorWithDomain:kLGApplicationName
                                     code:taskError
                                 userInfo:@{ NSLocalizedDescriptionKey : errorMsg,
                                             NSLocalizedRecoverySuggestionErrorKey : errorDetails ? errorDetails : @"" }];
-
+        
         // If Debugging is enabled, log the error message
-        DLog(@"Error [%d ] %@ \n %@", taskError, errorMsg, errorDetails);
+        DLog(@"Error [%d] %@ \n %@", taskError, errorMsg, errorDetails);
     }
     return error;
 }
