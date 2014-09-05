@@ -23,9 +23,9 @@
 #import "LGAutoPkgRunner.h"
 
 @interface LGApplications : NSObject <NSApplicationDelegate, NSTableViewDataSource, NSTableViewDelegate> {
-    
+
     IBOutlet NSTableView *applicationTableView;
-    
+
     NSArray *apps;
     NSArray *activeApps;
     NSArray *searchedApps;
@@ -38,4 +38,5 @@
 - (NSString *)getAppSupportDirectory;
 
 @property (weak) IBOutlet NSSearchField *appSearch;
+
 @end

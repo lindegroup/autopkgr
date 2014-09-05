@@ -192,7 +192,7 @@
     // Configure the task
     [updateAutoPkgReposTask setLaunchPath:launchPath];
     [updateAutoPkgReposTask setArguments:args];
-    
+
     updateAutoPkgReposTask.standardOutput =[NSPipe pipe];
     updateAutoPkgReposTask.standardError =[NSPipe pipe];
 
@@ -229,16 +229,16 @@
 
     autoPkgRunTask.standardError = [NSPipe pipe];
 
-    // Set up args based on wether report is a file or piped to stdout
-    NSMutableArray *args = [[NSMutableArray alloc] initWithArray:@[ @"/usr/local/bin/autopkg",
-                                                                    @"run",
-                                                                    @"--recipe-list",
-                                                                    recipeListPath,
-                                                                    @"--report-plist" ]];
+    // Set up args based on whether report is a file or piped to stdout
+    NSMutableArray *args = [[NSMutableArray alloc] initWithArray:@[@"/usr/local/bin/autopkg",
+                                                                   @"run",
+                                                                   @"--recipe-list",
+                                                                   recipeListPath,
+                                                                   @"--report-plist"]];
 
     if (autoPkgAboveV0_3_2) {
-        // set up a pseudo terminal so stdout gets flushed and we can get status updates
-        // concept taken from http://stackoverflow.com/a/13355870
+        // Set up a pseudo terminal so stdout gets flushed and we can get status updates.
+        // Concept taken from http://stackoverflow.com/a/13355870
         int fdMaster, fdSlave;
 
         if (openpty(&fdMaster, &fdSlave, NULL, NULL, NULL) == 0) {
@@ -249,7 +249,7 @@
 
         // Create a unique temp file where AutoPkg will write the plist file.
         NSString *plistFile = [NSTemporaryDirectory() stringByAppendingString:[[NSProcessInfo processInfo] globallyUniqueString]];
-        
+
         // Add arg for the file path to the report-plist and turn on verbose mode.
         [args addObject:plistFile];
 
@@ -264,15 +264,15 @@
         NSInteger totalCount = recipeListArray.count;
 
         [autoPkgRunTask.standardOutput setReadabilityHandler:^(NSFileHandle *handle) {
-            NSString *string = [[NSString alloc ] initWithData:[handle availableData] encoding:NSASCIIStringEncoding];
-            
+            NSString *string = [[NSString alloc] initWithData:[handle availableData] encoding:NSASCIIStringEncoding];
+
             // Strip out any new line characters so it displays better
             NSString *strippedString = [string stringByReplacingOccurrencesOfString:@"\n"
                                                                          withString:@""];
-            
-            // Add the count of the
-            NSString *detailString = [NSString stringWithFormat:@"(%ld/%ld) %@",installCount,totalCount,strippedString];
-            
+
+            // Set the detail string for the notification
+            NSString *detailString = [NSString stringWithFormat:@"(%ld/%ld) %@", installCount, totalCount, strippedString];
+
             // Post notification
             if (installCount <= totalCount) {
                 installCount ++;
@@ -284,7 +284,7 @@
         }];
 
     } else {
-        // if still using AutoPkg 0.3.2 set up the pipe for --report-plist data
+        // If still using AutoPkg v0.3.2 set up the pipe for --report-plist data
         autoPkgRunTask.standardOutput = [NSPipe pipe];
     }
 
@@ -296,11 +296,11 @@
         if (![LGError errorWithTaskError:aTask verb:kLGAutoPkgrRun error:&error]) {
             userInfo = @{kLGNotificationUserInfoError:error};
         }
-        
+
         [[NSNotificationCenter defaultCenter]postNotificationName:kLGNotificationRunAutoPkgComplete
                                                            object:nil
                                                          userInfo:userInfo];
-        
+
         LGDefaults *defaults = [[LGDefaults alloc] init];
         // If the autopkg run exited successfully and the send email is enabled continue
         if ([defaults sendEmailNotificationsWhenNewVersionsAreFoundEnabled]) {
@@ -312,7 +312,7 @@
                 
                 // nil out the readability handler
                 [aTask.standardOutput setReadabilityHandler:nil];
-                
+
             } else {
                 NSData *autoPkgRunReportPlistData = [[aTask.standardOutput fileHandleForReading] readDataToEndOfFile];
                 // Init our string with data from the fileHandle
@@ -335,8 +335,8 @@
             [emailer sendEmailForReport:report error:error];
         }
         [aTask.standardError fileHandleForReading].readabilityHandler = nil;
-        
-        // seting this to nil doesn't seem right, but it prevents memory leak
+
+        // Setting this to nil doesn't seem right, but it prevents memory leak
         [aTask setTerminationHandler:nil];
     };
 
@@ -375,24 +375,19 @@
 
 - (void)startAutoPkgRunTimer
 {
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    LGDefaults *defaults = [[LGDefaults alloc] init];
 
-    if ([defaults objectForKey:kLGCheckForNewVersionsOfAppsAutomaticallyEnabled]) {
-
-        BOOL checkForNewVersionsOfAppsAutomaticallyEnabled = [[defaults objectForKey:kLGCheckForNewVersionsOfAppsAutomaticallyEnabled] boolValue];
-
-        if (checkForNewVersionsOfAppsAutomaticallyEnabled) {
-            if ([defaults integerForKey:kLGAutoPkgRunInterval]) {
-                double i = [defaults integerForKey:kLGAutoPkgRunInterval];
-                if (i != 0) {
-                    NSTimeInterval ti = i * 60 * 60; // Convert hours to seconds for our time interval
-                    [NSTimer scheduledTimerWithTimeInterval:ti target:self selector:@selector(invokeAutoPkgInBackgroundThread) userInfo:nil repeats:YES];
-                } else {
-                    NSLog(@"i is 0 because that's what the user entered or what they entered wasn't a digit.");
-                }
+    if ([defaults checkForNewVersionsOfAppsAutomaticallyEnabled]) {
+        if ([defaults integerForKey:kLGAutoPkgRunInterval]) {
+            double i = [defaults integerForKey:kLGAutoPkgRunInterval];
+            if (i != 0) {
+                NSTimeInterval ti = i * 60 * 60; // Convert hours to seconds for our time interval
+                [NSTimer scheduledTimerWithTimeInterval:ti target:self selector:@selector(invokeAutoPkgInBackgroundThread) userInfo:nil repeats:YES];
             } else {
-                NSLog(@"The user enabled automatic checking for app updates but they specified no interval.");
+                NSLog(@"i is 0 because that's what the user entered or what they entered wasn't a digit.");
             }
+        } else {
+            NSLog(@"The user enabled automatic checking for app updates but they specified no interval.");
         }
     }
 }
