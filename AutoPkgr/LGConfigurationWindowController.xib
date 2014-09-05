@@ -55,7 +55,7 @@
         <window title="AutoPkgr" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" oneShot="NO" releasedWhenClosed="NO" animationBehavior="default" id="F0z-JX-Cv5">
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
             <rect key="contentRect" x="196" y="240" width="657" height="478"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1680" height="1028"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1440" height="878"/>
             <value key="minSize" type="size" width="657" height="478"/>
             <view key="contentView" id="se5-gp-TjO">
                 <rect key="frame" x="0.0" y="0.0" width="657" height="478"/>
@@ -1096,7 +1096,7 @@
             <windowStyleMask key="styleMask" closable="YES" miniaturizable="YES" resizable="YES" utility="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="385" y="323" width="610" height="133"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1680" height="1028"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1440" height="878"/>
             <view key="contentView" id="dCS-sn-B3a">
                 <rect key="frame" x="0.0" y="0.0" width="610" height="133"/>
                 <autoresizingMask key="autoresizingMask"/>
@@ -1104,23 +1104,17 @@
                     <progressIndicator verticalHuggingPriority="750" maxValue="100" bezeled="NO" style="bar" translatesAutoresizingMaskIntoConstraints="NO" id="qol-Go-AJd">
                         <rect key="frame" x="20" y="62" width="570" height="20"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                        <constraints>
-                            <constraint firstAttribute="width" constant="570" id="fiW-aR-lOB"/>
-                        </constraints>
                     </progressIndicator>
                     <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="u7l-Fz-3uc">
-                        <rect key="frame" x="18" y="96" width="398" height="17"/>
+                        <rect key="frame" x="18" y="96" width="574" height="17"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                        <constraints>
-                            <constraint firstAttribute="width" constant="394" id="cZY-Ee-aQe"/>
-                        </constraints>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Adding..." id="oW2-L7-9c7">
                             <font key="font" metaFont="system"/>
                             <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                             <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                         </textFieldCell>
                     </textField>
-                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="KHL-zp-6jp">
+                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="KHL-zp-6jp">
                         <rect key="frame" x="20" y="26" width="572" height="17"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" id="qQH-Mt-pLc">
@@ -1131,10 +1125,15 @@
                     </textField>
                 </subviews>
                 <constraints>
-                    <constraint firstItem="u7l-Fz-3uc" firstAttribute="top" secondItem="dCS-sn-B3a" secondAttribute="top" constant="20" symbolic="YES" id="4Xf-Wi-WNS"/>
-                    <constraint firstItem="u7l-Fz-3uc" firstAttribute="leading" secondItem="dCS-sn-B3a" secondAttribute="leading" constant="20" symbolic="YES" id="AkP-Zq-RcJ"/>
-                    <constraint firstItem="qol-Go-AJd" firstAttribute="leading" secondItem="dCS-sn-B3a" secondAttribute="leading" constant="20" id="Cq5-Tm-XgI"/>
-                    <constraint firstItem="qol-Go-AJd" firstAttribute="top" secondItem="u7l-Fz-3uc" secondAttribute="bottom" constant="15" id="OJr-07-tMW"/>
+                    <constraint firstAttribute="trailing" secondItem="u7l-Fz-3uc" secondAttribute="trailing" constant="20" id="57D-zC-X65"/>
+                    <constraint firstItem="u7l-Fz-3uc" firstAttribute="leading" secondItem="dCS-sn-B3a" secondAttribute="leading" constant="20" id="7Rp-ip-yz2"/>
+                    <constraint firstItem="KHL-zp-6jp" firstAttribute="leading" secondItem="dCS-sn-B3a" secondAttribute="leading" constant="22" id="S3l-WC-g6w"/>
+                    <constraint firstAttribute="bottom" secondItem="KHL-zp-6jp" secondAttribute="bottom" constant="26" id="X74-xF-AFV"/>
+                    <constraint firstItem="u7l-Fz-3uc" firstAttribute="top" secondItem="dCS-sn-B3a" secondAttribute="top" constant="20" id="XAf-x9-6Oe"/>
+                    <constraint firstItem="qol-Go-AJd" firstAttribute="leading" secondItem="dCS-sn-B3a" secondAttribute="leading" constant="20" id="cl2-zB-yPB"/>
+                    <constraint firstAttribute="trailing" secondItem="qol-Go-AJd" secondAttribute="trailing" constant="20" id="d6E-bC-Oml"/>
+                    <constraint firstAttribute="trailing" secondItem="KHL-zp-6jp" secondAttribute="trailing" constant="20" id="hyJ-sC-plT"/>
+                    <constraint firstItem="qol-Go-AJd" firstAttribute="top" secondItem="u7l-Fz-3uc" secondAttribute="bottom" constant="15" id="iXN-Pa-tLK"/>
                 </constraints>
             </view>
         </window>
