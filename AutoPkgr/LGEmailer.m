@@ -30,15 +30,15 @@
 {
     LGDefaults *defaults = [[LGDefaults alloc] init];
 
-    BOOL TLS = [defaults SMTPTLSEnabled];
+    BOOL TLS = defaults.SMTPTLSEnabled;
 
     MCOSMTPSession *smtpSession = [[MCOSMTPSession alloc] init];
-    smtpSession.hostname = [defaults objectForKey:kLGSMTPServer];
-    smtpSession.port = (int)[defaults integerForKey:kLGSMTPPort];
-    smtpSession.username = [defaults objectForKey:kLGSMTPUsername];
+    smtpSession.hostname = defaults.SMTPServer;
+    smtpSession.port = (int)defaults.SMTPPort;
+    smtpSession.username = defaults.SMTPUsername;
     
     if (TLS) {
-        NSLog(@"SSL/TLS is enabled for %@.", [defaults objectForKey:kLGSMTPServer]);
+        NSLog(@"SSL/TLS is enabled for %@.", defaults.SMTPServer);
         // If the SMTP port is 465, use MCOConnectionTypeTLS.
         // Otherwise use MCOConnectionTypeStartTLS.
         if (smtpSession.port == 465) {
@@ -47,14 +47,14 @@
             smtpSession.connectionType = MCOConnectionTypeStartTLS;
         }
     } else {
-        NSLog(@"SSL/TLS is _not_ enabled for %@.", [defaults objectForKey:kLGSMTPServer]);
+        NSLog(@"SSL/TLS is _not_ enabled for %@.", defaults.SMTPServer);
         smtpSession.connectionType = MCOConnectionTypeClear;
     }
 
     // Retrieve the SMTP password from the default
     // keychain if it exists
     NSError *error = nil;
-    NSString *smtpUsernameString = [defaults objectForKey:kLGSMTPUsername];
+    NSString *smtpUsernameString = defaults.SMTPUsername;
 
     if (smtpUsernameString) {
         NSString *password = [SSKeychain passwordForService:kLGApplicationName
@@ -78,10 +78,10 @@
 
     MCOMessageBuilder * builder = [[MCOMessageBuilder alloc] init];
     [[builder header] setFrom:[MCOAddress addressWithDisplayName:@"AutoPkgr Notification"
-                                                         mailbox:[defaults SMTPFrom]]];
+                                                         mailbox:defaults.SMTPFrom]];
 
     NSMutableArray *to = [[NSMutableArray alloc] init];
-    for (NSString *toAddress in [defaults SMTPTo]) {
+    for (NSString *toAddress in defaults.SMTPTo) {
         if (![toAddress isEqual:@""]) {
             MCOAddress *newAddress = [MCOAddress addressWithMailbox:toAddress];
             [to addObject:newAddress];
@@ -157,7 +157,7 @@
             NSString *version = @"Version Undetected";
             for (NSDictionary *dct in newPackages) {
                 NSString *pkgPath = [dct objectForKey:@"pkg_path"];
-                if ([pkgPath rangeOfString:app options:NSCaseInsensitiveSearch].location != NSNotFound && [dct objectForKey:@"version"]) {
+                if ([pkgPath rangeOfString:app options:NSCaseInsensitiveSearch].location != NSNotFound && dct[@"version"]) {
                     version = dct[@"version"];
                     break;
                 }
