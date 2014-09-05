@@ -36,31 +36,42 @@ void DLog(NSString *format, ...)
 #endif
 }
 
-static NSString *errorMsgFromCode(LGErrorCodes code)
+static NSDictionary *userInfoFromCode(LGErrorCodes code)
 {
     NSString *msg;
+    NSString *suggestion;
     switch (code) {
         case kLGErrorSendingEmail:
             msg = @"Error sending email";
+            suggestion = @"Please verify the username, password, server and port are correct";
             break;
         case kLGErrorTestingPort:
             msg = @"Error verifying server and port";
+            suggestion = @"Please verify server and port are correct";
             break;
         case kLGErrorReparingAutoPkgPrefs:
             msg = @"Unable to resolve some issues with the AutoPkg preferences.";
+            suggestion =@"If the problem persists please inspect the com.github.autopkg manually for incorrect values";
         case kLGErrorInstallGit:
-            msg = @"Error installing/updating AutoPkg";
+            msg = @"Error installing/updating Git";
+            suggestion = @"If the problem persists please try manually downloading and installing Git manually";
             break;
         case kLGErrorInstallAutoPkg:
-            msg = @"Error installing git";
+            msg = @"Error installing AutoPkg";
+            suggestion = @"If the problem persists please try manually downloading and installing AutoPkg from it's github release page";
             break;
         case kLGErrorInstallAutoPkgr:
             msg = @"Error updating AutoPkgr";
+            suggestion = @"If the problem persists please try manually downloading and installing AutoPkgr from it's github release page";
             break;
         default:
+            msg = @"An unknown error occured";
             break;
     }
-    return msg;
+    NSMutableDictionary *userInfo = [[NSMutableDictionary alloc] init];
+    [userInfo setObject:msg forKey:NSLocalizedDescriptionKey];
+    [userInfo setObject:suggestion forKey:NSLocalizedRecoverySuggestionErrorKey];
+    return [NSDictionary dictionaryWithDictionary:userInfo];
 }
 
 static NSString *errorMessageFromAutoPkgVerb(LGAutoPkgVerb verb)
@@ -109,10 +120,7 @@ static NSString *errorMessageFromAutoPkgVerb(LGAutoPkgVerb verb)
 + (BOOL)errorWithCode:(LGErrorCodes)code error:(NSError *__autoreleasing *)error
 {
     NSError *err = [self errorWithCode:code];
-    if (error)
-        *error = err;
-    else
-        DLog(@"Error: %@", err.localizedDescription);
+    if (error)*error = err;
     return (code == kLGErrorSuccess);
 }
 
@@ -120,11 +128,11 @@ static NSString *errorMessageFromAutoPkgVerb(LGAutoPkgVerb verb)
 {
     NSError *error;
     if (code != kLGErrorSuccess) {
-        NSString *errorMsg = errorMsgFromCode(code);
+        NSDictionary *userInfo = userInfoFromCode(code);
         error = [NSError errorWithDomain:kLGApplicationName
                                     code:code
-                                userInfo:@{ NSLocalizedDescriptionKey : errorMsg }];
-        DLog(@"Error [%d] %@ \n %@", code, errorMsg);
+                                userInfo:userInfo];
+        DLog(@"Error [%d] %@ \n %@", code, userInfo[NSLocalizedDescriptionKey]);
     }
     return error;
 }
