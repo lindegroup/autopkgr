@@ -36,71 +36,96 @@ void DLog(NSString *format, ...)
 #endif
 }
 
+
 static NSDictionary *userInfoFromCode(LGErrorCodes code)
 {
-    NSString *msg;
+    NSString *localizedBaseString;
+    NSString *message;
     NSString *suggestion;
     switch (code) {
+        case kLGErrorSuccess:
+            localizedBaseString = @"kLGErrorSuccess";
+            break;
         case kLGErrorSendingEmail:
-            msg = @"Error sending email";
-            suggestion = @"Please verify the username, password, server and port are correct";
+            localizedBaseString = @"kLGErrorSendingEmail";
             break;
         case kLGErrorTestingPort:
-            msg = @"Error verifying server and port";
-            suggestion = @"Please verify server and port are correct";
+            localizedBaseString = @"kLGErrorTestingPort";
             break;
         case kLGErrorReparingAutoPkgPrefs:
-            msg = @"Unable to resolve some issues with the AutoPkg preferences.";
-            suggestion =@"If the problem persists please inspect the com.github.autopkg manually for incorrect values";
+            localizedBaseString = @"kLGErrorReparingAutoPkgPrefs";
+            break;
         case kLGErrorInstallGit:
-            msg = @"Error installing/updating Git";
-            suggestion = @"If the problem persists please try manually downloading and installing Git manually";
+            localizedBaseString = @"kLGErrorInstallGit";
             break;
         case kLGErrorInstallAutoPkg:
-            msg = @"Error installing AutoPkg";
-            suggestion = @"If the problem persists please try manually downloading and installing AutoPkg from it's github release page";
+            localizedBaseString = @"kLGErrorInstallAutoPkg";
             break;
         case kLGErrorInstallAutoPkgr:
-            msg = @"Error updating AutoPkgr";
-            suggestion = @"If the problem persists please try manually downloading and installing AutoPkgr from it's github release page";
+            localizedBaseString = @"kLGErrorInstallAutoPkgr";
             break;
         default:
-            msg = @"An unknown error occured";
+            localizedBaseString = @"kLGErrorUnknown";
             break;
     }
-    NSMutableDictionary *userInfo = [[NSMutableDictionary alloc] init];
-    [userInfo setObject:msg forKey:NSLocalizedDescriptionKey];
-    [userInfo setObject:suggestion forKey:NSLocalizedRecoverySuggestionErrorKey];
-    return [NSDictionary dictionaryWithDictionary:userInfo];
+    
+    // Setup the localized descripton
+    message = NSLocalizedString([localizedBaseString stringByAppendingString:@"Description"],
+                                @"NSLocalizedDescriptionKey");
+    
+    // Setup the localized recovery suggestion
+    suggestion = NSLocalizedString([localizedBaseString stringByAppendingString:@"Suggestion"],
+                                   @"NSLocalizedRecoverySuggestionErrorKey");
+
+    
+    return @{NSLocalizedDescriptionKey:message,
+              NSLocalizedRecoverySuggestionErrorKey:suggestion,};
 }
 
 static NSString *errorMessageFromAutoPkgVerb(LGAutoPkgVerb verb)
 {
-    NSString *msg;
+    NSString *localizedBaseString;
+    NSString *message;
+    
     switch (verb) {
         case kLGAutoPkgUndefinedVerb:
-            msg = @"AutoPkgr encountered an error";
+            localizedBaseString = @"kLGAutoPkgUndefinedVerb";
             break;
         case kLGAutoPkgRun:
-            msg = @"Error running recipes";
+            localizedBaseString = @"kLGAutoPkgRun";
             break;
-        case kLGAutoPkgRepoUpdate:
-            msg = @"Error updating repos";
-            break;
-        case kLGAutoPkgRepoAdd:
-            msg = @"Error adding selected repo";
-            break;
-        case kLGAutoPkgRepoDelete:
-            msg = @"Error removing selected repo";
+        case kLGAutoPkgRecipeList:
+            localizedBaseString = @"kLGAutoPkgRecipeList";
             break;
         case kLGAutoPkgMakeOverride:
-            msg = @"Error creating overrides file";
+            localizedBaseString = @"kLGAutoPkgMakeOverride";
+            break;
+        case kLGAutoPkgSearch:
+            localizedBaseString = @"kLGAutoPkgSearch";
+            break;
+        case kLGAutoPkgRepoAdd:
+            localizedBaseString = @"kLGAutoPkgRepoAdd";
+            break;
+        case kLGAutoPkgRepoDelete:
+            localizedBaseString = @"kLGAutoPkgRepoDelete";
+            break;
+        case kLGAutoPkgRepoUpdate:
+            localizedBaseString = @"kLGAutoPkgRepoUpdate";
+            break;
+        case kLGAutoPkgRepoList:
+            localizedBaseString = @"kLGAutoPkgRepoList";
+            break;
+        case kLGAutoPkgVersion:
+            localizedBaseString = @"kLGAutoPkgVersion";
             break;
         default:
-            msg = @"AutoPkgr encountered an error";
+            localizedBaseString = @"kLGAutoPkgUndefinedVerb";
             break;
     }
-    return msg;
+    
+    message = NSLocalizedString([localizedBaseString stringByAppendingString:@"Description"],
+                                @"NSLocalizedDescriptionKey");
+    return message;
 }
 
 @implementation LGError
@@ -132,7 +157,7 @@ static NSString *errorMessageFromAutoPkgVerb(LGAutoPkgVerb verb)
         error = [NSError errorWithDomain:kLGApplicationName
                                     code:code
                                 userInfo:userInfo];
-        DLog(@"Error [%d] %@ \n %@", code, userInfo[NSLocalizedDescriptionKey]);
+        DLog(@"Error [%d]: %@ \n %@", code, userInfo[NSLocalizedDescriptionKey],userInfo[NSLocalizedRecoverySuggestionErrorKey]);
     }
     return error;
 }

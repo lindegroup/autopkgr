@@ -1,0 +1,65 @@
+/* 
+  Localizable.strings
+  AutoPkgr
+
+  Created by Eldon on 9/5/14.
+  Copyright (c) 2014 The Linde Group Inc. All rights reserved.
+*/
+
+/**
+ *  AutoPkgr related Error code strings
+ *  keys ending in Description are intended for NSLocalizedDescriptioncriptionKey
+ *  keys ending in Suggestion are intended for NSLocalizedRecoverySuggestiongestionErrorKey
+ */
+
+/** Success */
+"kLGErrorSuccessDescription" = "Success!";
+"kLGErrorSuccessSuggestion" = "";
+
+/** Error when sending email fails */
+"kLGErrorSendingEmailDescription" = "Error sending email";
+"kLGErrorSendingEmailSuggestion" = "Please verify the username, password, server and port are correct (Localized)";
+
+/** Error when testing port failed */
+"kLGErrorTestingPortDescription" = "Error verifying server and port";
+"kLGErrorTestingPortSuggestion" = "Please verify server and port are correct";
+
+/** Error when some preferences could not be repairedDescription" = "" and values were removed */
+"kLGErrorReparingAutoPkgPrefsDescription" = "Unable to resolve some issues with the AutoPkg preferences";
+"kLGErrorReparingAutoPkgPrefsSuggestion" = "If the problem persists please inspect the com.github.autopkg manually for incorrect values";
+
+/** Error installing Git */
+"kLGErrorInstallGitDescription" = "Error installing/updating Git";
+"kLGErrorInstallGitSuggestion" = "If the problem persists please try manually downloading and installing Git manually";
+
+/** Error installing/updating AutoPkg */
+"kLGErrorInstallAutoPkgDescription" = "Error installing AutoPkg";
+"kLGErrorInstallAutoPkgSuggestion" = "If the problem persists please try manually downloading and installing AutoPkg from it's github release page";
+
+/** Error installing/updating AutoPkgr */
+"kLGErrorInstallAutoPkgrDescription" = "Error updating AutoPkgr";
+"kLGErrorInstallAutoPkgrSuggestion" = "If the problem persists please try manually downloading and installing AutoPkgr from it's github release page";
+
+
+
+/**
+ *  Errors relating specifically to AutoPkg
+ *  Recovery Suggestiongestion string is created from the task.standardError so unnecissary here
+ */
+
+"kLGAutoPkgUndefinedVerbDescription" = "AutoPkgr encountered an error";
+
+// recipe verbs
+"kLGAutoPkgRunDescription" = "Error running recipes";
+"kLGAutoPkgRecipeListDescription" = "Error encountered listing recipes";
+"kLGAutoPkgMakeOverrideDescription" = "Error creating overriDescription file";
+"kLGAutoPkgSearchDescription" = "Error encountered searching for recipe";
+
+// repo verbs
+"kLGAutoPkgRepoAddDescription" = "Error adding repo";
+"kLGAutoPkgRepoDeleteDescription" = "Error removing repo";
+"kLGAutoPkgRepoUpdateDescription" = "Error updating repo";
+"kLGAutoPkgRepoListDescription" = "Error encountered listing repos";
+
+// other verbs
+"kLGAutoPkgVersionDescription" = "Error getting AutoPkg version";
