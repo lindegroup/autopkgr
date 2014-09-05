@@ -42,14 +42,14 @@ Usage
 1.  Launch the AutoPkgr app.
 
 1.  On first launch, you'll see the configuration window:
-    ![AutoPkgr Install](doc-images/config_tab1.png)
+    ![Install](doc-images/config_tab1.png)
 
 1.  Click the button to **Install Git** if needed.
 
 1.  Click the button to **Install AutoPkg** if needed.
 
-1.  Switch to the **Configure Repos & Recipes** tab.
-    ![Configure Repos & Recipes](doc-images/config_tab2.png)
+1.  Switch to the **Repos & Recipes** tab.
+    ![Repos & Recipes](doc-images/config_tab2.png)
 
 1.  Select the repositories you'd like to subscribe to. We recommend the first one, to get you started. You can also add repositories manually by pasting their URL into the text field and clicking Add.
 
@@ -57,8 +57,8 @@ Usage
 
 1.  If you're importing the apps into a Munki repo, put the repo path in the **Local Munki Repo** box.
 
-1.  Switch to the **Configure Schedule** tab.
-    ![Configure Schedule](doc-images/config_tab3.png)
+1.  Switch to the **Schedule** tab.
+    ![Schedule](doc-images/config_tab3.png)
 
 1.  Set your automatic update checking preferences — we recommend checking at least once per day, and checking for repo updates when AutoPkgr starts.
 
@@ -70,14 +70,14 @@ That's it! AutoPkgr will now check for the latest app updates you specified, and
 
 Anytime you'd like to make changes to AutoPkgr's configuration, just click on the AutoPkgr icon in the menu bar (![Menu bar icon](doc-images/menulet.png)), and choose **Configure...**
 
-You'll also find some useful shortcuts on the **Tools** tab, which will take you directly to several convenient folders.
-    ![Tools](doc-images/config_tab4.png)
+You'll also find some useful shortcuts on the **Local Folders** tab, which will take you directly to several convenient AutoPkg folders. On that tab, you can also configure the location of your local Munki repo, if you use Munki.
+    ![Local Folders](doc-images/config_tab4.png)
 
 
 Credits
 -------
 
-AutoPkgr was created by James Barclay, Elliot Jordan, and Josh Senick of the [Linde Group](http://www.lindegroup.com).
+AutoPkgr was created by James Barclay, Elliot Jordan, and Josh Senick of the [Linde Group](http://www.lindegroup.com) with help from Eldon Ahrold.
 
 We're very friendly. Stop by Berkeley sometime and have an espresso.
 
