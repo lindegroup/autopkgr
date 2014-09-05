@@ -192,7 +192,7 @@
     // Configure the task
     [updateAutoPkgReposTask setLaunchPath:launchPath];
     [updateAutoPkgReposTask setArguments:args];
-    
+
     updateAutoPkgReposTask.standardOutput =[NSPipe pipe];
     updateAutoPkgReposTask.standardError =[NSPipe pipe];
 
@@ -249,7 +249,7 @@
 
         // Create a unique temp file where AutoPkg will write the plist file.
         NSString *plistFile = [NSTemporaryDirectory() stringByAppendingString:[[NSProcessInfo processInfo] globallyUniqueString]];
-        
+
         // Add arg for the file path to the report-plist and turn on verbose mode.
         [args addObject:plistFile];
 
@@ -265,14 +265,14 @@
 
         [autoPkgRunTask.standardOutput setReadabilityHandler:^(NSFileHandle *handle) {
             NSString *string = [[NSString alloc] initWithData:[handle availableData] encoding:NSASCIIStringEncoding];
-            
+
             // Strip out any new line characters so it displays better
             NSString *strippedString = [string stringByReplacingOccurrencesOfString:@"\n"
                                                                          withString:@""];
-            
+
             // Set the detail string for the notification
             NSString *detailString = [NSString stringWithFormat:@"(%ld/%ld) %@", installCount, totalCount, strippedString];
-            
+
             // Post notification
             if (installCount <= totalCount) {
                 installCount ++;
@@ -296,25 +296,25 @@
         if (![LGError errorWithTaskError:aTask verb:kLGAutoPkgrRun error:&error]) {
             userInfo = @{kLGNotificationUserInfoError:error};
         }
-        
+
         [[NSNotificationCenter defaultCenter]postNotificationName:kLGNotificationRunAutoPkgComplete
                                                            object:nil
                                                          userInfo:userInfo];
-        
+
         LGDefaults *defaults = [[LGDefaults alloc] init];
         // If the AutoPkg run exited successfully and email notifications are enabled continue
         if (aTask.terminationStatus == 0 && [defaults sendEmailNotificationsWhenNewVersionsAreFoundEnabled]) {
             NSDictionary *plist;
             NSError *error;
-            
+
             // Read our data from file if autopkg v > 0.3.2 else read from stdout filehandle
             if (autoPkgAboveV0_3_2) {
                 // Create the plist from the temp file
                 plist = [NSDictionary dictionaryWithContentsOfFile:[aTask.arguments lastObject]];
-                
+
                 // nil out the readability handler
                 [aTask.standardOutput setReadabilityHandler:nil];
-                
+
             } else {
                 NSData *autoPkgRunReportPlistData = [[aTask.standardOutput fileHandleForReading] readDataToEndOfFile];
                 // Init our string with data from the fileHandle
@@ -349,7 +349,7 @@
                     // Insert the app name into the dictionary for the "app" key
                     [newDownloadDict setObject:app forKey:@"app"];
                     [newDownloadDict setObject:@"N/A" forKey:@"version"];
-                    
+
                     for (NSDictionary *dct in newPackages) {
                         NSString *pkgPath = [dct objectForKey:@"pkg_path"];
 
@@ -363,16 +363,16 @@
                 }
 
                 NSLog(@"New software was downloaded. Sending an email alert.");
-               
+
                 LGAutoPkgRunner *sendmail = [[LGAutoPkgRunner alloc] init];
                 [sendmail sendNewDowloadsEmail:newDownloadsArray];
-                
+
             } else {
                 NSLog(@"Nothing new was downloaded.");
             }
         }
         [aTask.standardError fileHandleForReading].readabilityHandler = nil;
-        
+
         // Setting this to nil doesn't seem right, but it prevents memory leak
         [aTask setTerminationHandler:nil];
     };

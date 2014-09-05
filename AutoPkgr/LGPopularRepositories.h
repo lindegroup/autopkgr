@@ -25,7 +25,7 @@
 #import "LGApplications.h"
 
 @interface LGPopularRepositories : NSObject <NSApplicationDelegate, NSTableViewDelegate, NSTableViewDataSource> {
-    
+
     IBOutlet NSTableView *popularRepositoriesTableView;
     __weak NSSearchField *_repoSearch;
     __weak LGApplications *_appObject;
