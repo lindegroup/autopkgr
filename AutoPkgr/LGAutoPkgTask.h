@@ -27,62 +27,62 @@ extern NSString *const kLGAutoPkgRepoPathKey;
 
 @interface LGAutoPkgTask : NSObject
 
-@property (copy,nonatomic) NSArray* arguments;
+@property (copy, nonatomic) NSArray *arguments;
 
 /**
  *  The block to use for providing run status updates asynchronously. 
  */
-@property (copy) void(^runStatusUpdate)(NSString *message ,double progress);
-@property (copy,nonatomic,readonly) NSString *standardOutString;
-@property (copy,nonatomic,readonly) NSString *standardErrString;
+@property (copy) void (^runStatusUpdate)(NSString *message, double progress);
+@property (copy, nonatomic, readonly) NSString *standardOutString;
+@property (copy, nonatomic, readonly) NSString *standardErrString;
 
 /**
  * An array of dictionaries based on the autopkg verb
  * @discussion only, recipe-list, repo-list, and search will return values, all others will return nil;
  */
-@property (copy,nonatomic,readonly) NSArray *results;
+@property (copy, nonatomic, readonly) NSArray *results;
 
 /**
  *  Observable KVO property indicating the task has completed.
  */
-@property (nonatomic,readonly) BOOL complete;
+@property (nonatomic, readonly) BOOL complete;
 
--(BOOL)launch:(NSError**)error;
--(void)launchInBackground:(void (^)(NSError* error))reply;
+- (BOOL)launch:(NSError **)error;
+- (void)launchInBackground:(void (^)(NSError *error))reply;
 
--(BOOL)cancel:(NSError**)error;
+- (BOOL)cancel:(NSError **)error;
 
 #pragma mark - Class Methods
-#pragma mark -- Run methods
-+(void)runRecipeList:(NSString *)recipeList
-            progress:(void (^)(NSString *message, double taskProgress))progress
-               reply:(void (^)(NSDictionary* report,NSError* error))reply;
+#pragma mark-- Run methods
++ (void)runRecipeList:(NSString *)recipeList
+             progress:(void (^)(NSString *message, double taskProgress))progress
+                reply:(void (^)(NSDictionary *report, NSError *error))reply;
 
-+(void)runRecipes:(NSArray *)recipes
-        progress:(void (^)(NSString *message))progress
-           reply:(void (^)(NSError* error))reply;
++ (void)runRecipes:(NSArray *)recipes
+          progress:(void (^)(NSString *message))progress
+             reply:(void (^)(NSError *error))reply;
 
-+(void)search:(NSString *)recipe
-        reply:(void (^)( NSArray *results ,NSError* error))reply;
++ (void)search:(NSString *)recipe
+         reply:(void (^)(NSArray *results, NSError *error))reply;
 
-+(void)makeOverride:(NSString *)recipe
-              reply:(void (^)(NSError* error))reply;
++ (void)makeOverride:(NSString *)recipe
+               reply:(void (^)(NSError *error))reply;
 
-+(void)listRecipes:(void (^)(NSArray *recipes, NSError* error))reply;
-+(NSArray *)listRecipes;
++ (void)listRecipes:(void (^)(NSArray *recipes, NSError *error))reply;
++ (NSArray *)listRecipes;
 
-#pragma mark -- Repo methods
-+(void)repoAdd:(NSString *)repo
-        reply:(void (^)(NSError* error))reply;
+#pragma mark-- Repo methods
++ (void)repoAdd:(NSString *)repo
+          reply:(void (^)(NSError *error))reply;
 
-+(void)repoRemove:(NSString *)repo
-         reply:(void (^)(NSError *error))reply;
++ (void)repoRemove:(NSString *)repo
+             reply:(void (^)(NSError *error))reply;
 
-+(void)repoUpdate:(void (^)(NSError *error))reply;
++ (void)repoUpdate:(void (^)(NSError *error))reply;
 
-+(void)repoList:(void (^)(NSArray *repos, NSError* error))reply;
++ (void)repoList:(void (^)(NSArray *repos, NSError *error))reply;
 
-#pragma mark -- Other
-+(NSString *)version;
+#pragma mark-- Other
++ (NSString *)version;
 
 @end
