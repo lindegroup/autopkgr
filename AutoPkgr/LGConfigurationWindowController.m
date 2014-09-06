@@ -25,6 +25,8 @@
 #import "LGEmailer.h"
 #import "LGHostInfo.h"
 #import "LGAutoPkgRunner.h"
+#import "LGAutoPkgTask.h"
+#import "LGAutoPkgSchedule.h"
 #import "LGGitHubJSONLoader.h"
 #import "LGVersionComparator.h"
 #import "SSKeychain.h"
@@ -485,8 +487,8 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
 
 - (void)startAutoPkgRunTimer
 {
-    LGAutoPkgRunner *autoPkgRunner = [[LGAutoPkgRunner alloc] init];
-    [autoPkgRunner startAutoPkgRunTimer];
+    LGAutoPkgSchedule *schedule = [[LGAutoPkgSchedule alloc] init];
+    [schedule startTimer];
 }
 
 - (void)runCommandAsRoot:(NSString *)command
@@ -855,17 +857,18 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
 
 - (IBAction)checkAppsNow:(id)sender
 {
-    LGAutoPkgRunner *autoPkgRunner = [[LGAutoPkgRunner alloc] init];
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(autoPkgRunCompleteNotificationRecieved:)
-                                                 name:kLGNotificationRunAutoPkgComplete
-                                               object:nil];
-
-    [self.checkAppsNowButton setEnabled:NO];
+    NSString *recipeList = [LGApplications recipeList];
+    
     [self startProgressWithMessage:@"Running selected AutoPkg recipes."];
-
-    [autoPkgRunner invokeAutoPkgInBackgroundThread];
-}
+    [LGAutoPkgTask runRecipeList:recipeList
+                        progress:^(NSString *message, double taskProgress) {
+                            [self updateProgress:message progress:taskProgress];
+                            
+                        } reply:^(NSDictionary *report,NSError *error) {
+                            [self stopProgress:error];
+                            LGEmailer *emailer = [LGEmailer new];
+                            [emailer sendEmailForReport:report error:error];
+                        }];}
 
 - (void)autoPkgRunCompleteNotificationRecieved:(NSNotification *)notification
 {
@@ -1091,6 +1094,14 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
                              didEndSelector:selector
                                 contextInfo:nil];
         }
+    }];
+}
+
+- (void)updateProgress:(NSString *)message progress:(double)progress{
+    [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+        [self.progressIndicator setIndeterminate:NO];
+        [self.progressDetailsMessage setStringValue:message];
+        [self.progressIndicator setDoubleValue:progress];
     }];
 }
 

@@ -21,6 +21,9 @@
 
 #import "LGAppDelegate.h"
 #import "LGAutoPkgr.h"
+#import "LGAutoPkgTask.h"
+#import "LGEmailer.h"
+#import "LGAutoPkgSchedule.h"
 #import "LGConfigurationWindowController.h"
 
 @implementation LGAppDelegate
@@ -49,9 +52,10 @@
 
 - (void)startAutoPkgRunTimer
 {
-    LGAutoPkgRunner *autoPkgRunner = [[LGAutoPkgRunner alloc] init];
-    [autoPkgRunner startAutoPkgRunTimer];
+    LGAutoPkgSchedule *schedule = [[LGAutoPkgSchedule alloc] init];
+    [schedule startTimer];
 }
+
 
 - (void)updateAutoPkgRecipeReposInBackgroundAtAppLaunch
 {
@@ -72,9 +76,17 @@
 
 - (void)checkNowFromMenu:(id)sender
 {
-    LGAutoPkgRunner *autoPkgRunner = [[LGAutoPkgRunner alloc] init];
-    [autoPkgRunner invokeAutoPkgInBackgroundThread];
+    NSString *recipeList = [LGApplications recipeList];
+    [LGAutoPkgTask runRecipeList:recipeList
+                        progress:^(NSString *message, double taskProgress) {
+                            NSLog(@"%@",message);
+                        }
+                           reply:^(NSDictionary *report,NSError *error) {
+                            LGEmailer *emailer = [LGEmailer new];
+                            [emailer sendEmailForReport:report error:error];
+                        }];
 }
+
 
 - (void)showConfigurationWindow:(id)sender
 {
