@@ -76,12 +76,23 @@
 
 - (void)checkNowFromMenu:(id)sender
 {
+    __block NSMenuItem *item = [self.statusMenu itemAtIndex:0];
+    [item setAction:nil];
     NSString *recipeList = [LGApplications recipeList];
     [LGAutoPkgTask runRecipeList:recipeList
                         progress:^(NSString *message, double taskProgress) {
+                            if (message.length < 50) {
+                                [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+                                    [item setTitle:message];
+                                }];
+                            }
                             NSLog(@"%@",message);
                         }
                            reply:^(NSDictionary *report,NSError *error) {
+                            [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+                                [item setTitle:@"Check Now"];
+                                [item setAction:@selector(checkNowFromMenu:)];
+                            }];
                             LGEmailer *emailer = [LGEmailer new];
                             [emailer sendEmailForReport:report error:error];
                         }];
