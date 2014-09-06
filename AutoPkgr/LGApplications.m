@@ -225,4 +225,11 @@
     [_appSearch setAction:@selector(executeAppSearch:)];
 }
 
++ (NSString *)recipeList
+{
+    LGApplications *apps = [[LGApplications alloc] init];
+    NSString *applicationSupportDirectory = [apps getAppSupportDirectory];
+    return [applicationSupportDirectory stringByAppendingString:@"/recipe_list.txt"];
+}
+
 @end

@@ -39,4 +39,6 @@
 
 @property (weak) IBOutlet NSSearchField *appSearch;
 
++ (NSString *)recipeList;
+
 @end
