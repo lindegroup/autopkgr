@@ -21,8 +21,10 @@
 
 #import <Foundation/Foundation.h>
 #import "LGAutoPkgRunner.h"
+#import "LGAutoPkgTask.h"
 #import "LGGitHubJSONLoader.h"
 #import "LGApplications.h"
+#import "LGProgressDelegate.h"
 
 @interface LGPopularRepositories : NSObject <NSApplicationDelegate, NSTableViewDelegate, NSTableViewDataSource> {
 
@@ -34,7 +36,6 @@
     NSArray *popularRepos;
     NSArray *activeRepos;
     NSArray *searchedRepos;
-    LGAutoPkgRunner *pkgRunner;
     LGGitHubJSONLoader *jsonLoader;
     BOOL awake;
 }
@@ -43,4 +44,6 @@
 
 @property (weak) IBOutlet NSSearchField *repoSearch;
 @property (weak) IBOutlet LGApplications *appObject;
+@property (weak) id<LGProgressDelegate>progressDelegate;
+
 @end

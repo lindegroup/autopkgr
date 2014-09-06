@@ -27,11 +27,12 @@
 #import "LGAutoPkgRunner.h"
 #import "LGAutoPkgTask.h"
 #import "LGAutoPkgSchedule.h"
+#import "LGProgressDelegate.h"
 #import "LGGitHubJSONLoader.h"
 #import "LGVersionComparator.h"
 #import "SSKeychain.h"
 
-@interface LGConfigurationWindowController () {
+@interface LGConfigurationWindowController ()<LGProgressDelegate> {
     LGDefaults *defaults;
 }
 
@@ -310,6 +311,8 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
         [openLocalMunkiRepoFolderButton setEnabled:YES];
     }
 
+    _popRepoTableViewHandler.progressDelegate = self;
+    
     // Synchronize with the defaults database
     [defaults synchronize];
 }
@@ -814,30 +817,21 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
 - (IBAction)addAutoPkgRepoURL:(id)sender
 {
     // TODO: Input validation + success/failure notification
-
-    LGAutoPkgRunner *autoPkgRunner = [[LGAutoPkgRunner alloc] init];
-    [autoPkgRunner addAutoPkgRecipeRepo:[repoURLToAdd stringValue]];
-
+    [LGAutoPkgTask repoAdd:[repoURLToAdd stringValue] reply:^(NSError *error) {
+        [_popRepoTableViewHandler reload];
+        [_appTableViewHandler reload];
+    }];
     [repoURLToAdd setStringValue:@""];
-
-    [_popRepoTableViewHandler reload];
-    [_appTableViewHandler reload];
 }
 
 - (IBAction)updateReposNow:(id)sender
 {
-    LGAutoPkgRunner *autoPkgRunner = [[LGAutoPkgRunner alloc] init];
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(updateReposNowCompleteNotificationRecieved:)
-                                                 name:kLGNotificationUpdateReposComplete
-                                               object:nil];
-
-    // TODO: Success/failure notification
-    [self.updateRepoNowButton setEnabled:NO];
     [self startProgressWithMessage:@"Updating AutoPkg recipe repos."];
-
-    NSLog(@"Updating AutoPkg recipe repos.");
-    [autoPkgRunner invokeAutoPkgRepoUpdateInBackgroundThread];
+    [self.updateRepoNowButton setEnabled:NO];
+    
+    [LGAutoPkgTask repoUpdate:^(NSError *error) {
+        [self stopProgress:error];
+    }];
 }
 
 - (void)updateReposNowCompleteNotificationRecieved:(NSNotification *)notification
