@@ -29,45 +29,22 @@
 @property (copy, nonatomic, readwrite) NSDictionary *autoPkgRecipeRepos;
 @end
 
-@implementation LGDefaults {
-    LGDefaults *_autoPkgDefaults;
-}
+@implementation LGDefaults
 
-+ (LGDefaults *)autoPkgDefaults
++ (LGDefaults *)standardUserDefaults
 {
     static dispatch_once_t onceToken;
     static LGDefaults *shared;
     dispatch_once(&onceToken, ^{
-        shared = [[LGDefaults alloc] initForAutoPkg];
+        shared = [[LGDefaults alloc] init];
     });
     return shared;
 }
 
-- (instancetype)init
-{
-    self = [super init];
-    if (self) {
-        _autoPkgDefaults = [[[self class] alloc] initForAutoPkg];
-    }
-    return self;
-}
-
-- (instancetype)initForAutoPkg
-{
-    return [super initWithSuiteName:kLGAutoPkgPreferenceDomain];
-}
-
-- (instancetype)initForMunki
-{
-    return [super initWithSuiteName:@"ManagedInstalls"];
-}
-
 - (BOOL)synchronize
 {
-    if ([super synchronize] && [self->_autoPkgDefaults synchronize]) {
-        return YES;
-    }
-    return NO;
+    BOOL RC = [super synchronize] && CFPreferencesAppSynchronize((__bridge CFStringRef)(kLGAutoPkgPreferenceDomain));
+    return RC;
 }
 
 #pragma mark - EMail
@@ -194,60 +171,80 @@
 //
 - (NSString *)autoPkgCacheDir
 {
-    return [_autoPkgDefaults objectForKey:@"CACHE_DIR"];
+    return [self autoPkgDomainObject:@"CACHE_DIR"];
 }
+
 - (void)setAutoPkgCacheDir:(NSString *)autoPkgCacheDir
 {
-    [_autoPkgDefaults setObject:autoPkgCacheDir forKey:@"CACHE_DIR"];
+    [self setAutoPkgDomainObject:autoPkgCacheDir forKey:@"CACHE_DIR"];
 }
+
 - (NSString *)autoPkgRecipeOverridesDir
 {
-    return [_autoPkgDefaults objectForKey:@"RECIPE_OVERRIDE_DIRS"];
+    return [self autoPkgDomainObject:@"RECIPE_OVERRIDE_DIRS"];
 }
+
 - (void)setAutoPkgRecipeOverridesDir:(NSString *)autoPkgRecipeOverridesDir
 {
-    [_autoPkgDefaults setObject:autoPkgRecipeOverridesDir forKey:@"RECIPE_OVERRIDE_DIRS"];
+    [self setAutoPkgDomainObject:autoPkgRecipeOverridesDir forKey:@"RECIPE_OVERRIDE_DIRS"];
 }
 //
 - (NSString *)autoPkgRecipeRepoDir
 {
-    return [_autoPkgDefaults objectForKey:@"RECIPE_REPO_DIR"];
+    return [self autoPkgDomainObject:@"RECIPE_REPO_DIR"];
 }
 - (void)setAutoPkgRecipeRepoDir:(NSString *)autoPkgRecipeRepoDir
 {
-    [_autoPkgDefaults setObject:autoPkgRecipeRepoDir forKey:@"RECIPE_REPO_DIR"];
+    [self setAutoPkgDomainObject:autoPkgRecipeRepoDir forKey:@"RECIPE_REPO_DIR"];
 }
 //
 - (NSArray *)autoPkgRecipeSearchDirs
 {
-    return [_autoPkgDefaults objectForKey:@"RECIPE_SEARCH_DIRS"];
+    return [self autoPkgDomainObject:@"RECIPE_SEARCH_DIRS"];
 }
 
 - (void)setAutoPkgRecipeSearchDirs:(NSArray *)autoPkgRecipeSearchDirs
 {
-    [_autoPkgDefaults setObject:autoPkgRecipeSearchDirs forKey:@"RECIPE_SEARCH_DIRS"];
+    [self setAutoPkgDomainObject:autoPkgRecipeSearchDirs forKey:@"RECIPE_SEARCH_DIRS"];
 }
 //
 - (NSDictionary *)autoPkgRecipeRepos
 {
-    return [_autoPkgDefaults objectForKey:@"RECIPE_REPOS"];
+    return [self autoPkgDomainObject:@"RECIPE_REPOS"];
 }
 - (void)setAutoPkgRecipeRepos:(NSDictionary *)autoPkgRecipeRepos
 {
-    [_autoPkgDefaults setObject:autoPkgRecipeRepos forKey:@"RECIPE_REPOS"];
+    [self setAutoPkgDomainObject:autoPkgRecipeRepos forKey:@"RECIPE_REPOS"];
 }
 //
 - (NSString *)munkiRepo
 {
-    return [_autoPkgDefaults objectForKey:@"MUNKI_REPO"];
+    return [self autoPkgDomainObject:@"MUNKI_REPO"];
 }
 - (void)setMunkiRepo:(NSString *)munkiRepo
 {
-    [_autoPkgDefaults setObject:munkiRepo forKey:@"MUNKI_REPO"];
+    [self setAutoPkgDomainObject:munkiRepo forKey:@"MUNKI_REPO"];
 }
 //
 
-#pragma Class Methods
+
+#pragma mark - Util Methods
+#pragma mark - CFPrefs
+-(id)autoPkgDomainObject:(NSString*)key{
+    id value = CFBridgingRelease(CFPreferencesCopyAppValue((__bridge CFStringRef)(key),
+                                                                   (__bridge CFStringRef)(kLGAutoPkgPreferenceDomain)));
+    return value;
+}
+
+-(void)setAutoPkgDomainObject:(id)object forKey:(NSString *)key
+{
+    CFPreferencesSetAppValue((__bridge CFStringRef)(key),
+                             (__bridge CFTypeRef)(object),
+                             (__bridge CFStringRef)(kLGAutoPkgPreferenceDomain));
+}
+
+
+#pragma mark - Class Methods
 + (BOOL)fixRelativePathsInAutoPkgDefaults:(NSError *__autoreleasing *)error neededFixing:(NSInteger *)neededFixing
 {
     LGDefaults *defaults = [LGDefaults new];
