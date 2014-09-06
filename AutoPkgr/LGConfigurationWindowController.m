@@ -1098,11 +1098,13 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
 }
 
 - (void)updateProgress:(NSString *)message progress:(double)progress{
-    [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-        [self.progressIndicator setIndeterminate:NO];
-        [self.progressDetailsMessage setStringValue:message];
-        [self.progressIndicator setDoubleValue:progress];
-    }];
+    if (message.length < 100) {
+        [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+            [self.progressIndicator setIndeterminate:NO];
+            [self.progressDetailsMessage setStringValue:message];
+            [self.progressIndicator setDoubleValue:progress];
+        }];
+    }
 }
 
 - (void)didEndWithPreferenceRepairRequest:(NSAlert *)alert returnCode:(NSInteger)returnCode
