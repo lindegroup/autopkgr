@@ -28,12 +28,6 @@ NSString *const kLGAutoPkgRecipePathKey = @"recipe_path";
 NSString *const kLGAutoPkgRepoKey = @"repo";
 NSString *const kLGAutoPkgRepoPathKey = @"repo_path";
 
-BOOL AUTOPKG_VERSION_0_4_0()
-{
-    LGVersionComparator *vc = [[LGVersionComparator alloc] init];
-    return [vc isVersion:[LGAutoPkgTask version] greaterThanVersion:@"0.3.9"];
-}
-
 // This is a function so in the future this could be configured to
 // determine autopkg path in a more robust way.
 NSString *autopkg(){
@@ -43,6 +37,8 @@ NSString *autopkg(){
 @interface LGAutoPkgTask ()
 @property (copy, nonatomic) NSString *reportPlistFile;
 @property (copy, nonatomic) NSDictionary *reportPlist;
+@property (copy, nonatomic) NSString *version;
+@property (nonatomic) BOOL AUTOPKG_VERSION_0_4_0;
 
 @end
 
@@ -107,7 +103,7 @@ NSString *autopkg(){
     _task.standardError = [NSPipe pipe];
     switch (_verb) {
     case kLGAutoPkgRun:
-        if (AUTOPKG_VERSION_0_4_0()) {
+        if (self.AUTOPKG_VERSION_0_4_0) {
             __block double count = 1.0;
             __block double total = [self recipeListCount];
             __weak LGAutoPkgTask *weakSelf = self;
@@ -147,7 +143,7 @@ NSString *autopkg(){
     NSString *verbString = _arguments[0];
     if ([verbString isEqualToString:@"run"]) {
         _verb = kLGAutoPkgRun;
-        if (AUTOPKG_VERSION_0_4_0()) {
+        if (self.AUTOPKG_VERSION_0_4_0) {
             [_internalArgs addObject:self.reportPlistFile];
         }
     } else if ([verbString isEqualToString:@"search"]) {
@@ -196,7 +192,7 @@ NSString *autopkg(){
 
 - (NSDictionary *)reportPlist
 {
-    if (AUTOPKG_VERSION_0_4_0()) {
+    if (self.AUTOPKG_VERSION_0_4_0) {
         _reportPlist = [NSDictionary dictionaryWithContentsOfFile:_reportPlistFile];
     } else {
         NSString *plistString = self.standardOutString;
@@ -271,6 +267,18 @@ NSString *autopkg(){
         }
     }
     return results;
+}
+
+-(NSString *)version{
+    if (_version) {
+        return _version;
+    }
+    return [[self class]version];
+}
+
+-(BOOL)AUTOPKG_VERSION_0_4_0{
+    LGVersionComparator *vc = [[LGVersionComparator alloc] init];
+    return [vc isVersion:self.version greaterThanVersion:@"0.3.9"];
 }
 
 #pragma mark - Specialized settings
