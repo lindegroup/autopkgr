@@ -24,10 +24,8 @@
 @interface LGDefaults : NSUserDefaults
 
 #pragma mark - Singletons
-+ (LGDefaults *)autoPkgDefaults;
++ (LGDefaults *)standardUserDefaults;
 
-#pragma mark - init
-- (instancetype)initForAutoPkg;
 
 #pragma mark - Settings
 @property (copy, nonatomic) NSString *SMTPServer;
