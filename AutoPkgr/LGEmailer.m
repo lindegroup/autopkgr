@@ -162,7 +162,7 @@
                     break;
                 }
             }
-            [message appendFormat:@"%@",version];
+            [message appendFormat:@"%@<br/><br/>",version];
         }
     } else {
         DLog(@"Nothing new was downloaded.");
@@ -176,7 +176,7 @@
         if (!subject){
             subject = [NSString stringWithFormat:@"[%@] Error Occured While Running AutoPkg",kLGApplicationName];
         }
-        [message appendFormat:@"<strong>The following error occured:</strong><br />  %@<br />  %@",error.localizedDescription,error.localizedRecoverySuggestion];
+        [message appendFormat:@"<strong>The following error occured:</strong><br/>%@<br/> <br/>%@",error.localizedDescription,error.localizedRecoverySuggestion];
     }
     
     if (message) {
