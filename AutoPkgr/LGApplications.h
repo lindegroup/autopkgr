@@ -20,7 +20,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "LGAutoPkgRunner.h"
+#import "LGAutoPkgTask.h"
 
 @interface LGApplications : NSObject <NSApplicationDelegate, NSTableViewDataSource, NSTableViewDelegate> {
 
@@ -29,7 +29,6 @@
     NSArray *apps;
     NSArray *activeApps;
     NSArray *searchedApps;
-    LGAutoPkgRunner *pkgRunner;
     __weak NSSearchField *_appSearch;
 }
 

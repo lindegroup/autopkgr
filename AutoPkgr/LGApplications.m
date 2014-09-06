@@ -27,20 +27,15 @@
 - (id)init
 {
     self = [super init];
-
-    pkgRunner = [[LGAutoPkgRunner alloc] init];
-
-    apps = [pkgRunner getLocalAutoPkgRecipes];
     activeApps = [self getActiveApps];
     searchedApps = apps;
-
     return self;
 }
 
+
 - (void)reload
 {
-    apps = [pkgRunner getLocalAutoPkgRecipes];
-
+    apps = [LGAutoPkgTask listRecipes];
     [self executeAppSearch:self];
 }
 
@@ -221,6 +216,7 @@
 
 - (void)awakeFromNib
 {
+    [self reload];
     [_appSearch setTarget:self];
     [_appSearch setAction:@selector(executeAppSearch:)];
 }

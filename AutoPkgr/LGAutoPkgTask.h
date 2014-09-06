@@ -50,6 +50,8 @@ extern NSString *const kLGAutoPkgRepoPathKey;
 -(BOOL)launch:(NSError**)error;
 -(void)launchInBackground:(void (^)(NSError* error))reply;
 
+-(BOOL)cancel:(NSError**)error;
+
 #pragma mark - Class Methods
 #pragma mark -- Run methods
 +(void)runRecipeList:(NSString *)recipeList
@@ -67,6 +69,7 @@ extern NSString *const kLGAutoPkgRepoPathKey;
               reply:(void (^)(NSError* error))reply;
 
 +(void)listRecipes:(void (^)(NSArray *recipes, NSError* error))reply;
++(NSArray *)listRecipes;
 
 #pragma mark -- Repo methods
 +(void)repoAdd:(NSString *)repo

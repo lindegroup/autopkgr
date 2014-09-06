@@ -98,6 +98,11 @@ NSString *autopkg(){
     }];
 }
 
+-(BOOL)cancel:(NSError *__autoreleasing *)error{
+    [_task terminate];
+    return [LGError errorWithTaskError:_task verb:_verb error:error];
+}
+
 - (void)setFileHandles
 {
     _task.standardError = [NSPipe pipe];
@@ -383,6 +388,13 @@ NSString *autopkg(){
         }
         reply (results,error);
     }];
+}
+
++(NSArray *)listRecipes{
+    LGAutoPkgTask *task = [[LGAutoPkgTask alloc] init];
+    task.arguments = @[@"list-recipes"];
+    [task launch:nil];
+    return task.results;
 }
 
 #pragma mark -- Repo Methods
