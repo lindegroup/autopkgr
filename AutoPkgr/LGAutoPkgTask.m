@@ -115,7 +115,6 @@ NSString *autopkg(){
                     int totStr = (int)round(total);
 
                     NSString *message = [[NSString alloc]initWithData:[handle availableData] encoding:NSUTF8StringEncoding];
-                    NSLog(@"message: %@",message);
                     
                     NSString *fullMessage = [NSString stringWithFormat:@"(%d/%d) %@",cntStr,totStr,message];
                     if(weakSelf.runStatusUpdate){

@@ -30,7 +30,7 @@
 
 /** Error when attempting to spawn multiple instances of `autopkg run` at a time */
 "kLGErrorMultipleRunsOfAutopkgDescription" = "Only one instance of AutoPkg can be run at a time";
-"kLGErrorMultipleRunsOfAutopkgSuggestion" = "Please wait for the current run to complete, it may be on a timer";
+"kLGErrorMultipleRunsOfAutopkgSuggestion" = "Please wait for the current run to complete, it may be running in the backgroun or on a timer.";
 
 /** Error installing Git */
 "kLGErrorInstallGitDescription" = "Error installing/updating Git";
