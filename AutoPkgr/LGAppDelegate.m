@@ -59,8 +59,9 @@
 
 - (void)updateAutoPkgRecipeReposInBackgroundAtAppLaunch
 {
-    LGAutoPkgRunner *autoPkgRunner = [[LGAutoPkgRunner alloc] init];
-    [autoPkgRunner invokeAutoPkgRepoUpdateInBackgroundThread];
+   [LGAutoPkgTask repoUpdate:^(NSError *error) {
+       NSLog(@"%@", error ? error.localizedDescription:@"Repos updated");
+   }];
 }
 
 - (void)setupStatusItem

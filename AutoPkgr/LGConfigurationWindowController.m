@@ -24,7 +24,6 @@
 #import "LGDefaults.h"
 #import "LGEmailer.h"
 #import "LGHostInfo.h"
-#import "LGAutoPkgRunner.h"
 #import "LGAutoPkgTask.h"
 #import "LGAutoPkgSchedule.h"
 #import "LGProgressDelegate.h"
@@ -831,6 +830,7 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
     
     [LGAutoPkgTask repoUpdate:^(NSError *error) {
         [self stopProgress:error];
+        [self.updateRepoNowButton setEnabled:YES];
     }];
 }
 

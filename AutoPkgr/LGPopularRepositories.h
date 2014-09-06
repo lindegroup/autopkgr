@@ -20,7 +20,6 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "LGAutoPkgRunner.h"
 #import "LGAutoPkgTask.h"
 #import "LGGitHubJSONLoader.h"
 #import "LGApplications.h"
