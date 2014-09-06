@@ -191,11 +191,13 @@ static NSString *errorMessageFromAutoPkgVerb(LGAutoPkgVerb verb)
         }
     }
     
+    DLog(@"Raw Task Error Details: %@",errorDetails);
+    
     taskError = task.terminationStatus;
     
     // AutoPkg's rc on a failed repo-update / add / delete is 0, so check the stderr for "ERROR" string
     if (verb == kLGAutoPkgRepoUpdate || verb == kLGAutoPkgRepoDelete || verb == kLGAutoPkgRepoAdd) {
-        if ([errorDetails rangeOfString:@"ERROR"].location != NSNotFound) {
+        if (errorDetails && ![errorDetails isEqualToString:@""]) {
             taskError = kLGErrorAutoPkgConfig;
         }
     }
