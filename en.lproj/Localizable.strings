@@ -28,6 +28,10 @@
 "kLGErrorReparingAutoPkgPrefsDescription" = "Unable to resolve some issues with the AutoPkg preferences";
 "kLGErrorReparingAutoPkgPrefsSuggestion" = "If the problem persists please inspect the com.github.autopkg manually for incorrect values";
 
+/** Error when attempting to spawn multiple instances of `autopkg run` at a time */
+"kLGErrorMultipleRunsOfAutopkgDescription" = "Only one instance of AutoPkg can be run at a time";
+"kLGErrorMultipleRunsOfAutopkgSuggestion" = "Please wait for the current run to complete, it may be on a timer";
+
 /** Error installing Git */
 "kLGErrorInstallGitDescription" = "Error installing/updating Git";
 "kLGErrorInstallGitSuggestion" = "If the problem persists please try manually downloading and installing Git manually";

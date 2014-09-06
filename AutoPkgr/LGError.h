@@ -33,6 +33,8 @@ typedef NS_ENUM(NSInteger, LGErrorCodes) {
     kLGErrorTestingPort,
     /** Error when some preferences could not be repaired, and values were removed */
     kLGErrorReparingAutoPkgPrefs,
+    /** Error when attempting to spawn multiple instances of `autopkg run` at a time */
+    kLGErrorMultipleRunsOfAutopkg,
     /** Error installing Git */
     kLGErrorInstallGit,
     /** Error installing/updating AutoPkg */

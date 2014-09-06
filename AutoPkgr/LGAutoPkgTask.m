@@ -73,6 +73,15 @@ NSString *autopkg(){
 - (BOOL)launch:(NSError *__autoreleasing *)error
 {
     [_task setArguments:_internalArgs];
+    
+    // If an instance of autopkg is running, and we're trying to
+    // do a run, exit
+    if([[self class] instanceIsRunning] && _verb == kLGAutoPkgRun) {
+        return [LGError errorWithCode:kLGErrorMultipleRunsOfAutopkg
+                                error:error];
+
+    }
+    
     [self setFileHandles];
     [_task launch];
     [_task waitUntilExit];
@@ -80,6 +89,7 @@ NSString *autopkg(){
     return [LGError errorWithTaskError:_task
                                   verb:_verb
                                  error:error];
+    
 }
 
 - (void)launchInBackground:(void (^)(NSError *))reply
@@ -416,6 +426,29 @@ NSString *autopkg(){
     autoPkgTask.arguments = @[ @"version" ];
     [autoPkgTask launch:nil];
     return [autoPkgTask standardOutString];
+}
+
++(BOOL)instanceIsRunning{
+    NSTask* task = [NSTask new];
+    
+    task.launchPath     = @"/bin/ps";
+    task.arguments      = @[@"-e",@"-o",@"command="];
+    task.standardOutput = [NSPipe pipe];
+    task.standardError  = task.standardOutput;
+    
+    [task launch];
+    [task waitUntilExit];
+    
+    NSData *outputData = [[task.standardOutput fileHandleForReading] readDataToEndOfFile];
+    NSString *outputString = [[NSString alloc] initWithData:outputData encoding:NSUTF8StringEncoding];
+    
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"SELF CONTAINS %@",autopkg()];
+    NSArray* runningProcs = [outputString componentsSeparatedByString:@"\n"];
+    
+    if([[runningProcs filteredArrayUsingPredicate:predicate]count])
+        return YES;
+    
+    return NO;
 }
 
 @end
