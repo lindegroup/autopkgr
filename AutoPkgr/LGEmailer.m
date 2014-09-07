@@ -162,7 +162,7 @@
                     break;
                 }
             }
-            [message appendFormat:@"%@<br/><br/>",version];
+            [message appendFormat:@"%@<br/>",version];
         }
     } else {
         DLog(@"Nothing new was downloaded.");
