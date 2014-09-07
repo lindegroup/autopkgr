@@ -73,7 +73,7 @@ NSString *autopkg()
 
     // If an instance of autopkg is running, and we're trying to
     // do a run, exit
-    if ([[self class] instanceIsRunning] && _verb == kLGAutoPkgRun) {
+    if (_verb == kLGAutoPkgRun && [[self class] instanceIsRunning]) {
         return [LGError errorWithCode:kLGErrorMultipleRunsOfAutopkg
                                 error:error];
     }
