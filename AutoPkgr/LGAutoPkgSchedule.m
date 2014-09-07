@@ -17,7 +17,7 @@
 }
 -(void)startTimer
 {
-    NSLog(@"starting timer");
+    NSLog(@"Resetting time until next scheduled run of AutoPkg.");
     LGDefaults *defaults = [[LGDefaults alloc]init];
     
     if ([defaults integerForKey:kLGAutoPkgRunInterval]) {

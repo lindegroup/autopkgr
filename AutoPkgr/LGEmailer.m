@@ -87,7 +87,7 @@
             [to addObject:newAddress];
         }
     }
-    NSString *fullSubject = [NSString stringWithFormat:@"%@ On %@",subject,[[NSHost currentHost] name]];
+    NSString *fullSubject = [NSString stringWithFormat:@"%@ on %@",subject,[[NSHost currentHost] name]];
     [[builder header] setTo:to];
     [[builder header] setSubject:fullSubject];
     [builder setHTMLBody:message];
@@ -100,10 +100,10 @@
                                                                                         kLGNotificationUserInfoMessage:message}];
         
         if (error) {
-            NSLog(@"%@ Error sending email:%@", smtpSession.username, error);
+            NSLog(@"Error sending email from %@: %@", smtpSession.username, error);
             [userInfo setObject:error forKey:kLGNotificationUserInfoError];
         } else {
-            NSLog(@"%@ Successfully sent email!", smtpSession.username);
+            NSLog(@"Successfully sent email from %@.", smtpSession.username);
         }
         
         [center postNotificationName:kLGNotificationEmailSent
@@ -141,7 +141,7 @@
         NSLog(@"New stuff was downloaded.");
         
         // Create the subject string
-        subject = [NSString stringWithFormat:@"[%@] New Software Avaliable For Testing",kLGApplicationName];
+        subject = [NSString stringWithFormat:@"[%@] New software avaliable for testing",kLGApplicationName];
         
         // Append the the message string with report
         [message appendFormat:@"The following software is now available for testing:<br />"];
@@ -153,8 +153,8 @@
             // Write the app to the string
             [message appendFormat:@"<br /><strong>%@</strong>: ",app];
             
-            // The default version is undetected, override later
-            NSString *version = @"Version Undetected";
+            // The default version is not detected, override later
+            NSString *version = @"Version not detected";
             for (NSDictionary *dct in newPackages) {
                 NSString *pkgPath = [dct objectForKey:@"pkg_path"];
                 if ([pkgPath rangeOfString:app options:NSCaseInsensitiveSearch].location != NSNotFound && dct[@"version"]) {
@@ -174,7 +174,7 @@
         }
         
         if (!subject){
-            subject = [NSString stringWithFormat:@"[%@] Error Occured While Running AutoPkg",kLGApplicationName];
+            subject = [NSString stringWithFormat:@"[%@] Error occured while running AutoPkg",kLGApplicationName];
         }
         [message appendFormat:@"<strong>The following error occured:</strong><br/>%@<br/> <br/>%@",error.localizedDescription,error.localizedRecoverySuggestion];
     }
