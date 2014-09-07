@@ -37,7 +37,7 @@
                 NSTimeInterval ti = i * 60 * 60; // Convert hours to seconds for our time interval
                 _timer = [NSTimer scheduledTimerWithTimeInterval:ti target:self selector:@selector(runAutoPkg) userInfo:nil repeats:YES];
                 if ([_timer isValid]) {
-                    DLog(@"Successfully enabled AutoPkgr run timer");
+                    DLog(@"Successfully enabled AutoPkgr run timer.");
                 }
             } else {
                 NSLog(@"i is 0 because that's what the user entered or what they entered wasn't a digit.");
@@ -46,7 +46,7 @@
             NSLog(@"The user enabled automatic checking for app updates but they specified no interval.");
         }
     } else {
-        DLog(@"Successfully disabled AutoPkgr run timer");
+        DLog(@"Successfully disabled AutoPkgr run timer.");
         [self stopTimer];
     }
 }
