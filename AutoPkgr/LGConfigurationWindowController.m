@@ -816,9 +816,15 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
 - (IBAction)addAutoPkgRepoURL:(id)sender
 {
     // TODO: Input validation + success/failure notification
-    [LGAutoPkgTask repoAdd:[repoURLToAdd stringValue] reply:^(NSError *error) {
-        [_popRepoTableViewHandler reload];
-        [_appTableViewHandler reload];
+    NSString *repo = [repoURLToAdd stringValue];
+    [self startProgressWithMessage:[NSString stringWithFormat:@"Adding %@",repo]];
+    
+    [LGAutoPkgTask repoAdd:repo reply:^(NSError *error) {
+        [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+            [self stopProgress:error];
+            [_popRepoTableViewHandler reload];
+            [_appTableViewHandler reload];
+        }];
     }];
     [repoURLToAdd setStringValue:@""];
 }
