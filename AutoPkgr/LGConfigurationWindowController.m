@@ -91,6 +91,8 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
     if (self) {
         // Initialization code here.
         defaults = [LGDefaults new];
+        _menuProgressDelegate = [NSApp delegate];
+        
         NSNotificationCenter *ndc = [NSNotificationCenter defaultCenter];
         [ndc addObserver:self selector:@selector(startProgressNotificationReceived:) name:kLGNotificationProgressStart object:nil];
         [ndc addObserver:self selector:@selector(stopProgressNotificationReceived:) name:kLGNotificationProgressStop object:nil];
@@ -1051,6 +1053,7 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
 
 - (void)startProgressWithMessage:(NSString *)message
 {
+    [_menuProgressDelegate startProgressWithMessage:message];
     [[NSOperationQueue mainQueue] addOperationWithBlock:^{
         [self.progressMessage setStringValue:message];
         [self.progressIndicator setHidden:NO];
@@ -1065,6 +1068,7 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
 {
     // Stop the progress panel, and if and error was sent in
     // do a sheet modal
+    [_menuProgressDelegate stopProgress:error];
     [[NSOperationQueue mainQueue] addOperationWithBlock:^{
         [self.progressPanel orderOut:self];
         [self.progressIndicator setDoubleValue:0.0];
@@ -1091,6 +1095,7 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
 }
 
 - (void)updateProgress:(NSString *)message progress:(double)progress{
+    [_menuProgressDelegate updateProgress:message progress:progress];
     if (message.length < 100) {
         [[NSOperationQueue mainQueue] addOperationWithBlock:^{
             [self.progressIndicator setIndeterminate:NO];
