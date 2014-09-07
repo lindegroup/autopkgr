@@ -459,8 +459,6 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
     // Synchronize with the defaults database
     [defaults synchronize];
 
-    // Start the AutoPkg run timer if the user enabled it
-    [self startAutoPkgRunTimer];
 }
 
 - (BOOL)autoPkgUpdateAvailable
@@ -485,12 +483,6 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
     }
 
     return NO;
-}
-
-- (void)startAutoPkgRunTimer
-{
-    LGAutoPkgSchedule *schedule = [[LGAutoPkgSchedule alloc] init];
-    [schedule startTimer];
 }
 
 - (void)runCommandAsRoot:(NSString *)command
@@ -943,7 +935,7 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
     } else if ([object isEqual:autoPkgRunInterval]) {
         if ([autoPkgRunInterval integerValue] != 0) {
             defaults.autoPkgRunInterval = [autoPkgRunInterval integerValue];
-            [self startAutoPkgRunTimer];
+            [[LGAutoPkgSchedule sharedTimer] configure];
         }
     } else if ([object isEqual:smtpPassword]) {
         NSError *error;
@@ -1013,6 +1005,7 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
 {
     defaults.checkForNewVersionsOfAppsAutomaticallyEnabled = [checkForNewVersionsOfAppsAutomaticallyButton state];
     NSLog(@"%@ checking for new apps automatically.", defaults.checkForNewVersionsOfAppsAutomaticallyEnabled ? @"Enabling" : @"Disabling");
+    [[LGAutoPkgSchedule sharedTimer] configure];
 }
 
 - (void)changeCheckForRepoUpdatesAutomaticallyButtonState

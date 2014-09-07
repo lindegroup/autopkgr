@@ -7,7 +7,12 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "LGProgressDelegate.h"
 
 @interface LGAutoPkgSchedule : NSObject
--(void)startTimer;
+
+@property (weak) id<LGProgressDelegate>progressDelegate;
+
++ (LGAutoPkgSchedule *)sharedTimer;
+- (void)configure;
 @end

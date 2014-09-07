@@ -12,50 +12,73 @@
 #import "LGApplications.h"
 #import "LGEmailer.h"
 
-@implementation LGAutoPkgSchedule{
+@implementation LGAutoPkgSchedule {
     NSTimer *_timer;
 }
--(void)startTimer
+
++ (LGAutoPkgSchedule *)sharedTimer
 {
-    NSLog(@"Resetting time until next scheduled run of AutoPkg.");
-    LGDefaults *defaults = [[LGDefaults alloc]init];
-    
-    if ([defaults integerForKey:kLGAutoPkgRunInterval]) {
-        double i = [defaults integerForKey:kLGAutoPkgRunInterval];
-        if (i != 0) {
-            NSTimeInterval ti = i * 60 * 60; // Convert hours to seconds for our time interval
-            _timer = [NSTimer scheduledTimerWithTimeInterval:ti target:self selector:@selector(runAutoPkg) userInfo:nil repeats:YES];
+    static dispatch_once_t onceToken;
+    static LGAutoPkgSchedule *shared;
+    dispatch_once(&onceToken, ^{
+        shared = [[LGAutoPkgSchedule alloc] init];
+    });
+    return shared;
+}
+
+- (void)configure
+{
+    LGDefaults *defaults = [[LGDefaults alloc] init];
+    if (defaults.checkForNewVersionsOfAppsAutomaticallyEnabled) {
+        [self stopTimer];
+        if ([defaults integerForKey:kLGAutoPkgRunInterval]) {
+            double i = [defaults integerForKey:kLGAutoPkgRunInterval];
+            if (i != 0) {
+                NSTimeInterval ti = i * 60 * 60; // Convert hours to seconds for our time interval
+                _timer = [NSTimer scheduledTimerWithTimeInterval:ti target:self selector:@selector(runAutoPkg) userInfo:nil repeats:YES];
+                if ([_timer isValid]) {
+                    DLog(@"Successfully enabled AutoPkgr run timer");
+                }
+            } else {
+                NSLog(@"i is 0 because that's what the user entered or what they entered wasn't a digit.");
+            }
         } else {
-            NSLog(@"i is 0 because that's what the user entered or what they entered wasn't a digit.");
+            NSLog(@"The user enabled automatic checking for app updates but they specified no interval.");
         }
     } else {
-        NSLog(@"The user enabled automatic checking for app updates but they specified no interval.");
+        DLog(@"Successfully disabled AutoPkgr run timer");
+        [self stopTimer];
     }
 }
 
-- (void)stopTimer{
+- (void)stopTimer
+{
     if ([_timer isValid]) {
         [_timer invalidate];
     }
     _timer = nil;
 }
 
--(void)runAutoPkg{
+- (void)runAutoPkg
+{
+    
     LGDefaults *defaults = [[LGDefaults alloc] init];
     if (defaults.checkForNewVersionsOfAppsAutomaticallyEnabled) {
         NSLog(@"Beginning scheduled run of AutoPkg");
-        
+        [_progressDelegate startProgressWithMessage:@"Starting scheduled run..."];
         NSString *recipeList = [LGApplications recipeList];
-        
+
         [LGAutoPkgTask runRecipeList:recipeList
-                            progress:^(NSString *message, double taskProgress) {
-                                NSLog(@"%@",message);
-                            }
-                               reply:^(NSDictionary *report,NSError *error) {
-                                   LGEmailer *emailer = [LGEmailer new];
-                                   [emailer sendEmailForReport:report error:error];
-                               }];
-    }else{
+            progress:^(NSString *message, double taskProgress) {
+                [_progressDelegate updateProgress:message progress:taskProgress];
+            }
+            reply:^(NSDictionary *report, NSError *error) {
+                NSLog(@"Scheduled run of AutoPkg complete");
+                [_progressDelegate stopProgress:error];
+                LGEmailer *emailer = [LGEmailer new];
+                [emailer sendEmailForReport:report error:error];
+            }];
+    } else {
         [self stopTimer];
     }
 }
