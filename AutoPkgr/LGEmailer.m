@@ -30,86 +30,88 @@
 {
     LGDefaults *defaults = [[LGDefaults alloc] init];
     
-    BOOL TLS = defaults.SMTPTLSEnabled;
-    
-    MCOSMTPSession *smtpSession = [[MCOSMTPSession alloc] init];
-    smtpSession.hostname = defaults.SMTPServer;
-    smtpSession.port = (int)defaults.SMTPPort;
-    smtpSession.username = defaults.SMTPUsername;
-    
-    if (TLS) {
-        NSLog(@"SSL/TLS is enabled for %@.", defaults.SMTPServer);
-        // If the SMTP port is 465, use MCOConnectionTypeTLS.
-        // Otherwise use MCOConnectionTypeStartTLS.
-        if (smtpSession.port == 465) {
-            smtpSession.connectionType = MCOConnectionTypeTLS;
-        } else {
-            smtpSession.connectionType = MCOConnectionTypeStartTLS;
-        }
-    } else {
-        NSLog(@"SSL/TLS is _not_ enabled for %@.", defaults.SMTPServer);
-        smtpSession.connectionType = MCOConnectionTypeClear;
-    }
-    
-    // Retrieve the SMTP password from the default
-    // keychain if it exists
-    NSError *error = nil;
-    NSString *smtpUsernameString = defaults.SMTPUsername;
-    
-    if (smtpUsernameString) {
-        NSString *password = [SSKeychain passwordForService:kLGApplicationName
-                                                    account:smtpUsernameString
-                                                      error:&error];
+    if (defaults.sendEmailNotificationsWhenNewVersionsAreFoundEnabled) {
+        BOOL TLS = defaults.SMTPTLSEnabled;
         
-        if ([error code] == SSKeychainErrorNotFound) {
-            NSLog(@"Keychain item not found for account %@.", smtpSession.username);
-        } else if([error code] == SSKeychainErrorNoPassword) {
-            NSLog(@"Found the keychain item for %@ but no password value was returned.", smtpUsernameString);
-        } else if (error != nil) {
-            NSLog(@"An error occurred when attempting to retrieve the keychain entry for %@. Error: %@", smtpUsernameString, [error localizedDescription]);
+        MCOSMTPSession *smtpSession = [[MCOSMTPSession alloc] init];
+        smtpSession.username = defaults.SMTPUsername ? defaults.SMTPUsername:@"";
+        smtpSession.hostname = defaults.SMTPServer ? defaults.SMTPServer:@"";
+        smtpSession.port = (int)defaults.SMTPPort;
+        
+        if (TLS) {
+            NSLog(@"SSL/TLS is enabled for %@.", defaults.SMTPServer);
+            // If the SMTP port is 465, use MCOConnectionTypeTLS.
+            // Otherwise use MCOConnectionTypeStartTLS.
+            if (smtpSession.port == 465) {
+                smtpSession.connectionType = MCOConnectionTypeTLS;
+            } else {
+                smtpSession.connectionType = MCOConnectionTypeStartTLS;
+            }
         } else {
-            // Only set the SMTP session password if the username exists
-            if (smtpUsernameString != nil && ![smtpUsernameString isEqual:@""]) {
-                NSLog(@"Retrieved password from keychain for account %@.", smtpUsernameString);
-                smtpSession.password = password;
+            NSLog(@"SSL/TLS is _not_ enabled for %@.", defaults.SMTPServer);
+            smtpSession.connectionType = MCOConnectionTypeClear;
+        }
+        
+        // Retrieve the SMTP password from the default
+        // keychain if it exists
+        NSError *error = nil;
+        
+        if (smtpSession.username) {
+            NSString *password = [SSKeychain passwordForService:kLGApplicationName
+                                                        account:smtpSession.username
+                                                          error:&error];
+            
+            if ([error code] == SSKeychainErrorNotFound) {
+                NSLog(@"Keychain item not found for account %@.", smtpSession.username);
+            } else if([error code] == SSKeychainErrorNoPassword) {
+                NSLog(@"Found the keychain item for %@ but no password value was returned.", smtpSession.username);
+            } else if (error != nil) {
+                NSLog(@"An error occurred when attempting to retrieve the keychain entry for %@. Error: %@", smtpSession.username, [error localizedDescription]);
+            } else {
+                // Only set the SMTP session password if the username exists
+                if (smtpSession.username != nil && ![smtpSession.username isEqual:@""]) {
+                    NSLog(@"Retrieved password from keychain for account %@.", smtpSession.username);
+                    smtpSession.password = password ? password:@"";
+                }
             }
         }
-    }
-    
-    MCOMessageBuilder * builder = [[MCOMessageBuilder alloc] init];
-    [[builder header] setFrom:[MCOAddress addressWithDisplayName:@"AutoPkgr Notification"
-                                                         mailbox:defaults.SMTPFrom]];
-    
-    NSMutableArray *to = [[NSMutableArray alloc] init];
-    for (NSString *toAddress in defaults.SMTPTo) {
-        if (![toAddress isEqual:@""]) {
-            MCOAddress *newAddress = [MCOAddress addressWithMailbox:toAddress];
-            [to addObject:newAddress];
-        }
-    }
-    NSString *fullSubject = [NSString stringWithFormat:@"%@ on %@",subject,[[NSHost currentHost] name]];
-    [[builder header] setTo:to];
-    [[builder header] setSubject:fullSubject];
-    [builder setHTMLBody:message];
-    NSData * rfc822Data = [builder data];
-    
-    MCOSMTPSendOperation *sendOperation = [smtpSession sendOperationWithData:rfc822Data];
-    [sendOperation start:^(NSError *error) {
-        NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
-        NSMutableDictionary *userInfo = [NSMutableDictionary dictionaryWithDictionary:@{kLGNotificationUserInfoSubject:subject,
-                                                                                        kLGNotificationUserInfoMessage:message}];
         
-        if (error) {
-            NSLog(@"Error sending email from %@: %@", smtpSession.username, error);
-            [userInfo setObject:error forKey:kLGNotificationUserInfoError];
-        } else {
-            NSLog(@"Successfully sent email from %@.", smtpSession.username);
-        }
+        MCOMessageBuilder * builder = [[MCOMessageBuilder alloc] init];
+        [[builder header] setFrom:[MCOAddress addressWithDisplayName:@"AutoPkgr Notification"
+                                                             mailbox:defaults.SMTPFrom ? defaults.SMTPFrom:@""]];
         
-        [center postNotificationName:kLGNotificationEmailSent
-                              object:self
-                            userInfo:[NSDictionary dictionaryWithDictionary:userInfo]];
-    }];
+        NSMutableArray *to = [[NSMutableArray alloc] init];
+        for (NSString *toAddress in defaults.SMTPTo) {
+            if (![toAddress isEqual:@""]) {
+                MCOAddress *newAddress = [MCOAddress addressWithMailbox:toAddress];
+                [to addObject:newAddress];
+            }
+        }
+        NSString *fullSubject = [NSString stringWithFormat:@"%@ on %@",subject,[[NSHost currentHost] name]];
+        [[builder header] setTo:to];
+        [[builder header] setSubject:fullSubject];
+        [builder setHTMLBody:message];
+        NSData * rfc822Data = [builder data];
+        
+        MCOSMTPSendOperation *sendOperation = [smtpSession sendOperationWithData:rfc822Data];
+        [sendOperation start:^(NSError *error) {
+            NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
+            NSMutableDictionary *userInfo = [NSMutableDictionary dictionaryWithDictionary:@{kLGNotificationUserInfoSubject:subject,
+                                                                                            kLGNotificationUserInfoMessage:message}];
+            
+            if (error) {
+                NSLog(@"Error sending email from %@: %@", smtpSession.username, error);
+                [userInfo setObject:error forKey:kLGNotificationUserInfoError];
+            } else {
+                NSLog(@"Successfully sent email from %@.", smtpSession.username);
+            }
+            
+            [center postNotificationName:kLGNotificationEmailSent
+                                  object:self
+                                userInfo:[NSDictionary dictionaryWithDictionary:userInfo]];
+        }];
+    
+    }
 }
 
 - (void)sendTestEmail
