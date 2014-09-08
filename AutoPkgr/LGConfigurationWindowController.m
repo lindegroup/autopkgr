@@ -1113,7 +1113,7 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
         [[NSOperationQueue mainQueue] addOperationWithBlock:^{
             [self.progressIndicator setIndeterminate:NO];
             [self.progressDetailsMessage setStringValue:message];
-            [self.progressIndicator setDoubleValue:progress];
+            [self.progressIndicator setDoubleValue:progress > 5.0 ? progress:5.0 ];
         }];
     }
 }
