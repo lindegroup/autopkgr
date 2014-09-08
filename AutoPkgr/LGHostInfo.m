@@ -45,6 +45,24 @@
 {
     NSArray *knownGitPaths = [[NSArray alloc] initWithObjects:@"/usr/bin/git", @"/usr/local/bin/git", @"/opt/boxen/homebrew/bin/git", nil];
 
+    NSTask *task = [[NSTask alloc] init];
+    task.launchPath = @"/usr/bin/git";
+    task.standardError = [NSPipe pipe];
+    task.standardOutput = [NSPipe pipe];
+
+    NSPredicate *xcodeSelectPredicate = [NSPredicate predicateWithFormat:@"SELF CONTAINS[CD] 'xcode-select'"];
+    
+    [task launch];
+    [task waitUntilExit];
+    NSData *data = [[task.standardError fileHandleForReading]readDataToEndOfFile];
+    if(data){
+        NSString *results = [[NSString alloc]initWithData:data encoding:NSUTF8StringEncoding];
+        if([xcodeSelectPredicate evaluateWithObject:results]){
+            NSLog(@"Git is actually xcode-select, not really Git, installing command line tools");
+            return NO;
+        }
+    }
+    
     for (NSString *path in knownGitPaths) {
         if ([[NSFileManager defaultManager] isExecutableFileAtPath:path]) {
             return YES;
