@@ -255,7 +255,7 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
             NSLog(@"An error occurred when attempting to retrieve the keychain entry for %@. Error: %@", smtpUsernameString, [error localizedDescription]);
         } else {
             // Only populate the SMTP Password field if the username exists
-            if (smtpUsernameString != nil && ![smtpUsernameString isEqual:@""]) {
+            if (smtpUsernameString && password && ![smtpUsernameString isEqual:@""]) {
                 NSLog(@"Retrieved password from keychain for account %@.", smtpUsernameString);
                 [smtpPassword setStringValue:password];
             }
