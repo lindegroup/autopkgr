@@ -316,6 +316,13 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
     
     // Synchronize with the defaults database
     [defaults synchronize];
+    
+    // Update AutoPkg recipe repos when the application launches
+    // if the user has enabled automatic repo updates
+    if (defaults.checkForRepoUpdatesAutomaticallyEnabled) {
+        NSLog(@"Updating AutoPkg recipe repos.");
+        [self updateReposNow:nil];
+    }
 }
 
 - (IBAction)sendTestEmail:(id)sender
