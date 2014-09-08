@@ -906,7 +906,7 @@
                                                                 <constraints>
                                                                     <constraint firstAttribute="width" constant="122" id="wdW-Z5-nYw"/>
                                                                 </constraints>
-                                                                <buttonCell key="cell" type="push" title="Open in Finder" bezelStyle="rounded" alignment="center" enabled="NO" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="aaW-Xo-fdG">
+                                                                <buttonCell key="cell" type="push" title="Open in Finder" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="aaW-Xo-fdG">
                                                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                                                     <font key="font" metaFont="system"/>
                                                                 </buttonCell>
@@ -955,7 +955,7 @@
                                                                 <constraints>
                                                                     <constraint firstAttribute="width" constant="122" id="EBA-qQ-F7Q"/>
                                                                 </constraints>
-                                                                <buttonCell key="cell" type="push" title="Open in Finder" bezelStyle="rounded" alignment="center" enabled="NO" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="gTC-Jl-CoB">
+                                                                <buttonCell key="cell" type="push" title="Open in Finder" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="gTC-Jl-CoB">
                                                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                                                     <font key="font" metaFont="system"/>
                                                                 </buttonCell>
@@ -1004,7 +1004,7 @@
                                                                 <constraints>
                                                                     <constraint firstAttribute="width" constant="122" id="coS-5w-iMO"/>
                                                                 </constraints>
-                                                                <buttonCell key="cell" type="push" title="Open in Finder" bezelStyle="rounded" alignment="center" enabled="NO" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="1ck-Sa-gTO">
+                                                                <buttonCell key="cell" type="push" title="Open in Finder" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="1ck-Sa-gTO">
                                                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                                                     <font key="font" metaFont="system"/>
                                                                 </buttonCell>

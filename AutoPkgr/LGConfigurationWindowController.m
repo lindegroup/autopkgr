@@ -298,16 +298,6 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
 
     // Enable tools buttons if directories exist
     BOOL isDir;
-
-    if ([[NSFileManager defaultManager] fileExistsAtPath:defaults.autoPkgRecipeOverridesDir isDirectory:&isDir] && isDir) {
-        [openAutoPkgRecipeOverridesFolderButton setEnabled:YES];
-    }
-    if ([[NSFileManager defaultManager] fileExistsAtPath:defaults.autoPkgCacheDir isDirectory:&isDir] && isDir) {
-        [openAutoPkgCacheFolderButton setEnabled:YES];
-    }
-    if ([[NSFileManager defaultManager] fileExistsAtPath:defaults.autoPkgRecipeRepoDir isDirectory:&isDir] && isDir) {
-        [openAutoPkgRecipeReposFolderButton setEnabled:YES];
-    }
     if ([[NSFileManager defaultManager] fileExistsAtPath:defaults.munkiRepo isDirectory:&isDir] && isDir) {
         [openLocalMunkiRepoFolderButton setEnabled:YES];
     }
@@ -644,7 +634,8 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
 {
     BOOL isDir;
     NSString *autoPkgRecipeReposFolder = [defaults autoPkgRecipeRepoDir];
-
+    autoPkgRecipeReposFolder = autoPkgRecipeReposFolder ? autoPkgRecipeReposFolder:[@"~/Library/AutoPkg" stringByExpandingTildeInPath];
+    
     if ([[NSFileManager defaultManager] fileExistsAtPath:autoPkgRecipeReposFolder isDirectory:&isDir] && isDir) {
         NSURL *autoPkgRecipeReposFolderURL = [NSURL fileURLWithPath:autoPkgRecipeReposFolder];
         [[NSWorkspace sharedWorkspace] openURL:autoPkgRecipeReposFolderURL];
@@ -666,6 +657,7 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
 {
     BOOL isDir;
     NSString *autoPkgCacheFolder = [defaults autoPkgCacheDir];
+    autoPkgCacheFolder = autoPkgCacheFolder ? autoPkgCacheFolder:[@"~/Library/AutoPkg" stringByExpandingTildeInPath];
 
     if ([[NSFileManager defaultManager] fileExistsAtPath:autoPkgCacheFolder isDirectory:&isDir] && isDir) {
         NSURL *autoPkgCacheFolderURL = [NSURL fileURLWithPath:autoPkgCacheFolder];
@@ -688,7 +680,8 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
 {
     BOOL isDir;
     NSString *autoPkgRecipeOverridesFolder = [defaults autoPkgRecipeOverridesDir];
-
+    autoPkgRecipeOverridesFolder = autoPkgRecipeOverridesFolder ? autoPkgRecipeOverridesFolder:[@"~/Library/AutoPkg" stringByExpandingTildeInPath];
+    
     if ([[NSFileManager defaultManager] fileExistsAtPath:autoPkgRecipeOverridesFolder isDirectory:&isDir] && isDir) {
         NSURL *autoPkgRecipeOverridesFolderURL = [NSURL fileURLWithPath:autoPkgRecipeOverridesFolder];
         [[NSWorkspace sharedWorkspace] openURL:autoPkgRecipeOverridesFolderURL];
