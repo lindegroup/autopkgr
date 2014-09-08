@@ -320,8 +320,14 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
     // Update AutoPkg recipe repos when the application launches
     // if the user has enabled automatic repo updates
     if (defaults.checkForRepoUpdatesAutomaticallyEnabled) {
-        NSLog(@"Updating AutoPkg recipe repos.");
-        [self updateReposNow:nil];
+        [_updateRepoNowButton setEnabled:NO];
+        [_checkAppsNowButton setEnabled:NO];
+        [_updateRepoNowButton setTitle:@"Update in Progress..."];
+        [LGAutoPkgTask repoUpdate:^(NSError *error) {
+            [_updateRepoNowButton setEnabled:YES];
+            [_updateRepoNowButton setTitle:@"Update Repos Now"];
+            [_checkAppsNowButton setEnabled:YES];
+        }];
     }
 }
 
