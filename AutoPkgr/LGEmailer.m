@@ -178,7 +178,7 @@
         if (!subject){
             subject = [NSString stringWithFormat:@"[%@] Error occured while running AutoPkg",kLGApplicationName];
         }
-        [message appendFormat:@"<strong>The following error occured:</strong><br/>%@<br/> <br/>%@",error.localizedDescription,error.localizedRecoverySuggestion];
+        [message appendFormat:@"<br /><strong>The following error occured:</strong><br/>%@<br/>%@",error.localizedDescription,error.localizedRecoverySuggestion];
     }
     
     if (message) {
