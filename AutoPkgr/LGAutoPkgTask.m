@@ -115,10 +115,8 @@ NSString *autopkg()
             
             // To get status from autopkg set NSUnbufferedIO environment keyto YES
             // Thanks to help from -- http://stackoverflow.com/questions/8251010
-            NSMutableDictionary *IOUnbufferedEnviron = [NSMutableDictionary dictionaryWithDictionary:[[NSProcessInfo processInfo] environment]];
-            [IOUnbufferedEnviron setObject:@"YES" forKey:@"NSUnbufferedIO"];
-            _task.environment = IOUnbufferedEnviron;
-            
+            _task.environment = @{@"NSUnbufferedIO":@"YES"};
+
             NSPredicate *processingPredicate = [NSPredicate predicateWithFormat:@"SELF BEGINSWITH[cd] 'Processing'"];
             [[_task.standardOutput fileHandleForReading] setReadabilityHandler:^(NSFileHandle *handle) {
                 int cntStr = (int)round(count)+1;
