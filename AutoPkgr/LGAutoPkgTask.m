@@ -52,7 +52,9 @@ NSString *autopkg()
 - (void)dealloc
 {
     _task.terminationHandler = nil;
-    [_task.standardOutput fileHandleForReading].readabilityHandler = nil;
+    if ([_task.standardOutput isKindOfClass:[NSPipe class]]) {
+        [_task.standardOutput fileHandleForReading].readabilityHandler = nil;
+    }
 }
 
 - (id)init
