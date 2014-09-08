@@ -539,6 +539,7 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
                 LGHostInfo *hostInfo = [[LGHostInfo alloc] init];
                 if ([hostInfo gitInstalled]) {
                     [installGitButton setEnabled:NO];
+                    [gitStatusIcon setImage:[NSImage imageNamed:NSImageNameStatusAvailable]];
                 } else {
                     [installGitButton setTitle:@"Install Git"];
                     [installGitButton setEnabled:YES];
