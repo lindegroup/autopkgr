@@ -46,14 +46,13 @@ NSString *autopkg()
 @implementation LGAutoPkgTask {
     NSTask *_task;
     NSMutableArray *_internalArgs;
-    NSFileHandle *_masterFileHandle;
     LGAutoPkgVerb _verb;
 }
 
 - (void)dealloc
 {
     _task.terminationHandler = nil;
-    _masterFileHandle.readabilityHandler = nil;
+    [_task.standardOutput fileHandleForReading].readabilityHandler = nil;
 }
 
 - (id)init
@@ -70,7 +69,7 @@ NSString *autopkg()
 - (BOOL)launch:(NSError *__autoreleasing *)error
 {
     [_task setArguments:_internalArgs];
-
+    
     // If an instance of autopkg is running, and we're trying to
     // do a run, exit
     if (_verb == kLGAutoPkgRun && [[self class] instanceIsRunning]) {
@@ -106,36 +105,41 @@ NSString *autopkg()
 - (void)setFileHandles
 {
     _task.standardError = [NSPipe pipe];
-    switch (_verb) {
-    case kLGAutoPkgRun:
+    _task.standardOutput = [NSPipe pipe];
+
+    if (_verb == kLGAutoPkgRun) {
         if (self.AUTOPKG_VERSION_0_4_0) {
-            __block double count = 1.0;
+            __block double count = 0.0;
             __block double total = [self recipeListCount];
             __weak LGAutoPkgTask *weakSelf = self;
-            _masterFileHandle = [self ptyFileHandle];
-            if (_masterFileHandle) {
-                [_masterFileHandle setReadabilityHandler:^(NSFileHandle *handle) {
-
-                    int cntStr = (int)round(count);
-                    int totStr = (int)round(total);
-
-                    NSString *message = [[NSString alloc]initWithData:[handle availableData] encoding:NSUTF8StringEncoding];
-                    
-                    NSString *fullMessage = [NSString stringWithFormat:@"(%d/%d) %@",cntStr,totStr,message];
-                    if(weakSelf.runStatusUpdate){
-                        weakSelf.runStatusUpdate(fullMessage,((count/total)*100));
-                    }
-                    
-                    if (count <= total) {
-                        count++;
-                    }
-                }];
-            }
-            break;
+            
+            // To get status from autopkg set NSUnbufferedIO environment keyto YES
+            // Thanks to help from -- http://stackoverflow.com/questions/8251010
+            NSMutableDictionary *IOUnbufferedEnviron = [NSMutableDictionary dictionaryWithDictionary:[[NSProcessInfo processInfo] environment]];
+            [IOUnbufferedEnviron setObject:@"YES" forKey:@"NSUnbufferedIO"];
+            _task.environment = IOUnbufferedEnviron;
+            
+            NSPredicate *processingPredicate = [NSPredicate predicateWithFormat:@"SELF BEGINSWITH[cd] 'Processing'"];
+            [[_task.standardOutput fileHandleForReading] setReadabilityHandler:^(NSFileHandle *handle) {
+                int cntStr = (int)round(count)+1;
+                int totStr = (int)round(total);
+                NSString *message = [[NSString alloc]initWithData:[handle availableData] encoding:NSUTF8StringEncoding];
+                NSString *fullMessage;
+                if ([processingPredicate evaluateWithObject:message]) {
+                    fullMessage = [NSString stringWithFormat:@"(%d/%d) %@",cntStr,totStr,message];
+                } else {
+                    fullMessage = message;
+                }
+                
+                if(weakSelf.runStatusUpdate){
+                    weakSelf.runStatusUpdate(fullMessage,((count/total)*100));
+                }
+                
+                if (count < total) {
+                    count++;
+                }
+            }];
         }
-    default:
-        _task.standardOutput = [NSPipe pipe];
-        break;
     }
 }
 
@@ -290,22 +294,6 @@ NSString *autopkg()
 }
 
 #pragma mark - Specialized settings
-- (NSFileHandle *)ptyFileHandle
-{
-    NSFileHandle *masterHandle;
-    int fdMaster, fdSlave;
-    if (openpty(&fdMaster, &fdSlave, NULL, NULL, NULL) == 0) {
-        fcntl(fdMaster, F_SETFD, FD_CLOEXEC);
-        fcntl(fdSlave, F_SETFD, FD_CLOEXEC);
-        NSFileHandle *slaveHandle = [[NSFileHandle alloc] initWithFileDescriptor:fdSlave closeOnDealloc:NO];
-        masterHandle = [[NSFileHandle alloc] initWithFileDescriptor:fdMaster closeOnDealloc:YES];
-
-        _task.standardOutput = slaveHandle;
-        _task.standardInput = slaveHandle;
-    }
-    return masterHandle;
-}
-
 - (NSInteger)recipeListCount
 {
     NSInteger count = 0;
