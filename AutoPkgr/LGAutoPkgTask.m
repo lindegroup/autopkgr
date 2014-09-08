@@ -69,7 +69,7 @@ NSString *autopkg()
 - (BOOL)launch:(NSError *__autoreleasing *)error
 {
     [_task setArguments:_internalArgs];
-    
+
     // If an instance of autopkg is running, and we're trying to
     // do a run, exit
     if (_verb == kLGAutoPkgRun && [[self class] instanceIsRunning]) {
@@ -112,10 +112,10 @@ NSString *autopkg()
             __block double count = 0.0;
             __block double total = [self recipeListCount];
             __weak LGAutoPkgTask *weakSelf = self;
-            
+
             // To get status from autopkg set NSUnbufferedIO environment keyto YES
             // Thanks to help from -- http://stackoverflow.com/questions/8251010
-            _task.environment = @{@"NSUnbufferedIO":@"YES"};
+            _task.environment = @{ @"NSUnbufferedIO" : @"YES" };
 
             NSPredicate *processingPredicate = [NSPredicate predicateWithFormat:@"SELF BEGINSWITH[cd] 'Processing'"];
             [[_task.standardOutput fileHandleForReading] setReadabilityHandler:^(NSFileHandle *handle) {
