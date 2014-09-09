@@ -534,14 +534,12 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
                                  informativeTextWithFormat:@""];
 
             if ([alert runModal] == NSAlertDefaultReturn) {
-                [installGitButton setTitle:@"Install Git"];
-
                 LGHostInfo *hostInfo = [[LGHostInfo alloc] init];
                 if ([hostInfo gitInstalled]) {
                     [installGitButton setEnabled:NO];
+                    [gitStatusLabel setStringValue:@"Git is installed"];
                     [gitStatusIcon setImage:[NSImage imageNamed:NSImageNameStatusAvailable]];
                 } else {
-                    [installGitButton setTitle:@"Install Git"];
                     [installGitButton setEnabled:YES];
                     alert = [NSAlert alertWithMessageText:@"There was a problem installing Git!"
                                             defaultButton:@"Go get Git!"
@@ -552,9 +550,9 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
                     if ([alert runModal] == NSAlertDefaultReturn) {
                         [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:@"http://git-scm.com/downloads"]];
                     }
-
                 }
             }
+            [installGitButton setTitle:@"Install Git"];
         }];
     };
 
@@ -587,9 +585,9 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
         NSLog(@"AutoPkg installed successfully!");
         [autoPkgStatusLabel setStringValue:kLGAutoPkgInstalledLabel];
         [autoPkgStatusIcon setImage:[NSImage imageNamed:NSImageNameStatusAvailable]];
-        [installAutoPkgButton setTitle:@"Install AutoPkg"];
         [installAutoPkgButton setEnabled:NO];
     }
+    [installAutoPkgButton setTitle:@"Install AutoPkg"];
     [self stopProgress:nil];
 }
 
