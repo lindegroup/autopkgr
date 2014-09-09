@@ -153,7 +153,7 @@
             NSString *app = [[path lastPathComponent] stringByDeletingPathExtension];
             
             // Write the app to the string
-            [message appendFormat:@"<br /><strong>%@</strong>: ",app];
+            [message appendFormat:@"<strong>%@</strong>: ",app];
             
             // The default version is not detected, override later
             NSString *version = @"Version not detected";
