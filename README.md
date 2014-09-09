@@ -41,11 +41,12 @@ Usage
 
 1.  Launch the AutoPkgr app.
 
-1.  On first launch, you'll be prompted to install Git (via Xcode command line tools) if you don't already have it.
-    ![Git install](doc-images/git_install.png)
-
-1.  Then click the button to **Install AutoPkg** if needed.
+1.  On first launch, you'll see the configuration window:
     ![Install](doc-images/config_tab1.png)
+
+1.  Click the button to **Install Git** if needed. (This will prompt you to install the Xcode Command Line Tools.)
+
+1.  Click the button to **Install AutoPkg** if needed.
 
 1.  Switch to the **Repos & Recipes** tab.
     ![Repos & Recipes](doc-images/config_tab2.png)
