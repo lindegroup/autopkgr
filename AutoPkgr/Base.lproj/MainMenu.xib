@@ -682,7 +682,7 @@
                     </connections>
                 </menuItem>
                 <menuItem isSeparatorItem="YES" id="5vA-zg-b1N"/>
-                <menuItem title="Quit" id="cuo-db-FBC">
+                <menuItem title="Quit AutoPkgr" id="cuo-db-FBC">
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <connections>
                         <action selector="terminate:" target="-2" id="t6s-yZ-lSS"/>
