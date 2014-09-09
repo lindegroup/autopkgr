@@ -526,7 +526,7 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
         // TODO: We should probably be installing the official
         // Git PKG rather than dealing with the Xcode CLI tools
         [[NSOperationQueue mainQueue]addOperationWithBlock:^{
-            NSString *alertMessage = @"After the Command Line Tools installation completes, click OK";
+            NSString *alertMessage = @"After the Xcode Command Line Tools installation completes, click OK.";
             NSAlert *alert = [NSAlert alertWithMessageText:alertMessage
                                              defaultButton:@"OK"
                                            alternateButton:nil
