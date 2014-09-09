@@ -717,6 +717,7 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
                     // Here we can be certain the URL exists and it is a directory
                     NSString *urlPath = [url path];
                     [localMunkiRepo setStringValue:urlPath];
+                    [openLocalMunkiRepoFolderButton setEnabled:YES];
                     defaults.munkiRepo = urlPath;
                 }
             }
