@@ -21,6 +21,7 @@
 
 #import "LGHostInfo.h"
 #import "LGConstants.h"
+#import "LGAutoPkgr.h"
 
 @implementation LGHostInfo
 
@@ -43,17 +44,26 @@
 
 - (BOOL)gitInstalled
 {
-    NSArray *knownGitPaths = @[@"/usr/bin/git", @"/usr/local/bin/git", @"/opt/boxen/homebrew/bin/git"];
-    NSString *resPath = [@"/usr/bin/git" stringByResolvingSymlinksInPath];
-    
-    if ([resPath isEqualToString:@"/usr/bin/xcode-select"]) {
-        return NO;
-    }
-    
+    NSFileManager *fm = [[NSFileManager alloc] init];
+    NSArray *knownGitPaths = [[self class] knownGitPaths];
+
     for (NSString *path in knownGitPaths) {
-        if ([[NSFileManager defaultManager] isExecutableFileAtPath:path]) {
+        if ([fm isExecutableFileAtPath:[path stringByAppendingPathComponent:@"git"]]) {
+            if ([path isEqualToString:knownGitPaths[0]]) {
+                DLog(@"Git was installed via Xcode command line tools.");
+            } else {
+                DLog(@"Found Git binary at %@", path);
+            }
             return YES;
         }
+    }
+
+    NSPredicate *gitInstallPredicate = [NSPredicate predicateWithFormat:@"SELF CONTAINS[cd] 'GitOSX.Installer'"];
+    NSArray *receipts = [fm contentsOfDirectoryAtPath:@"/var/db/receipts" error:nil];
+
+    if ([receipts filteredArrayUsingPredicate:gitInstallPredicate].count) {
+        DLog(@"Git was installed via the official Git installer.");
+        return YES;
     }
 
     return NO;
@@ -94,4 +104,8 @@
     return NO;
 }
 
++ (NSArray *)knownGitPaths
+{
+    return @[ @"/Library/Developer/CommandLineTools/usr/bin/", @"/usr/local/bin/", @"/opt/boxen/homebrew/bin/" ];
+}
 @end
