@@ -541,6 +541,8 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
                     [gitStatusIcon setImage:[NSImage imageNamed:NSImageNameStatusAvailable]];
                 } else {
                     [installGitButton setEnabled:YES];
+                    [gitStatusLabel setStringValue:kLGGitNotInstalledLabel];
+                    [gitStatusIcon setImage:[NSImage imageNamed:NSImageNameStatusUnavailable]];
                     alert = [NSAlert alertWithMessageText:@"There was a problem installing Git!"
                                             defaultButton:@"Go get Git!"
                                           alternateButton:@"Cancel"
