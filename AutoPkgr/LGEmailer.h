@@ -25,6 +25,7 @@
 @interface LGEmailer : NSObject
 
 - (void)sendEmailNotification:(NSString *)subject message:(NSString *)message;
+- (void)sendEmailForReport:(NSDictionary *)report error:(NSError *)error;
 - (void)sendTestEmail;
 
 @end

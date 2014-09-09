@@ -20,10 +20,11 @@
 //
 
 #import <Cocoa/Cocoa.h>
+#import "LGProgressDelegate.h"
 
 @class LGConfigurationWindowController;
 
-@interface LGAppDelegate : NSObject <NSApplicationDelegate>
+@interface LGAppDelegate : NSObject <NSApplicationDelegate,LGProgressDelegate>
 {
     @private
     LGConfigurationWindowController *configurationWindowController;

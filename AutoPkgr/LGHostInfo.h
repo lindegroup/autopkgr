@@ -30,4 +30,5 @@
 - (BOOL)gitInstalled;
 - (BOOL)autoPkgInstalled;
 
++ (NSArray *)knownGitPaths;
 @end

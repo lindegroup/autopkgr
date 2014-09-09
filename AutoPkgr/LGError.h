@@ -33,26 +33,41 @@ typedef NS_ENUM(NSInteger, LGErrorCodes) {
     kLGErrorTestingPort,
     /** Error when some preferences could not be repaired, and values were removed */
     kLGErrorReparingAutoPkgPrefs,
+    /** Error when attempting to spawn multiple instances of `autopkg run` at a time */
+    kLGErrorMultipleRunsOfAutopkg,
+    /** Error installing Git */
+    kLGErrorInstallGit,
+    /** Error installing/updating AutoPkg */
+    kLGErrorInstallAutoPkg,
+    /** Error installing/updating AutoPkgr */
+    kLGErrorInstallAutoPkgr,
 };
 
 #pragma mark - AutoPkg specific Error codes
 typedef NS_ENUM(NSInteger, LGErrorAutoPkgCodes) {
-    /** AutoPkg most often returns -1 on misconfiguration errors */
+    /** AutoPkg often returns -1 on when misconfigured */
     kLGErrorAutoPkgConfig = -1,
-
+    
     /** AutoPkg returns 255 if no recipe is specified */
     kLGErrorAutoPkgNoRecipes = 255,
 };
 
-typedef NS_ENUM(NSInteger, LGAutoPkgrVerb) {
-    kLGUnknown,
-    kLGAutoPkgrRun,
-    kLGAutoPkgrRepoUpdate,
-    kLGAutoPkgrRepoAdd,
-    kLGAutoPkgrRepoDelete,
-    kLGAutoPkgrMakeOverride,
-    kLGAutoPkgrInstallGit,
-    kLGAutoPkgrInstallAutoPkg,
+typedef NS_ENUM(NSInteger, LGAutoPkgVerb) {
+    kLGAutoPkgUndefinedVerb,
+    // recipe verbs
+    kLGAutoPkgRun,
+    kLGAutoPkgRecipeList,
+    kLGAutoPkgMakeOverride,
+    kLGAutoPkgSearch,
+    
+    // repo verbs
+    kLGAutoPkgRepoAdd,
+    kLGAutoPkgRepoDelete,
+    kLGAutoPkgRepoUpdate,
+    kLGAutoPkgRepoList,
+    
+    // other verbs
+    kLGAutoPkgVersion,
 };
 
 @interface LGError : NSObject
@@ -94,7 +109,7 @@ typedef NS_ENUM(NSInteger, LGAutoPkgrVerb) {
  *  @return NO if error occured and the exit code is not 0, otherwise YES;
  *  @discussion If the task is not complete this will return YES;
  */
-+ (BOOL)errorWithTaskError:(NSTask *)task verb:(LGAutoPkgrVerb)verb error:(NSError **)error;
++ (BOOL)errorWithTaskError:(NSTask *)task verb:(LGAutoPkgVerb)verb error:(NSError **)error;
 /**
  *  Generated NSError Object from and AutoPkgr NSTask
  *
@@ -104,6 +119,6 @@ typedef NS_ENUM(NSInteger, LGAutoPkgrVerb) {
  *  @return Populated NSError Object if exit status is != kLGErrorSuccess, nil otherwise;
  *  @discussion If the returned object will be nil if the task has not complete;
  */
-+ (NSError *)errorWithTaskError:(NSTask *)task verb:(LGAutoPkgrVerb)verb;
++ (NSError *)errorWithTaskError:(NSTask *)task verb:(LGAutoPkgVerb)verb;
 
 @end

@@ -30,7 +30,6 @@
 
     awake = NO;
 
-    pkgRunner = [[LGAutoPkgRunner alloc] init];
     jsonLoader = [[LGGitHubJSONLoader alloc] init];
 
     recipeRepos = [jsonLoader getAutoPkgRecipeRepos];
@@ -71,14 +70,25 @@
     return self;
 }
 
+- (void)repoEditDidEndWithError:(NSError *)error withTableView:(NSTableView *)tableView{
+    [[NSOperationQueue mainQueue]addOperationWithBlock:^{
+        [self getAndParseLocalAutoPkgRecipeRepos];
+        [_appObject reload];
+        [tableView reloadData];
+        [_progressDelegate stopProgress:error];
+    }];
+}
+
 - (void)reload
 {
-    [self assembleRepos];
+    [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+        [self assembleRepos];
+    }];
 }
 
 - (void)assembleRepos
 {
-    activeRepos = [self getAndParseLocalAutoPkgRecipeRepos];
+    [self getAndParseLocalAutoPkgRecipeRepos];
 
     NSMutableArray *workingPopularRepos = [NSMutableArray arrayWithArray:popularRepos];
 
@@ -118,22 +128,22 @@
     return match;
 }
 
-- (NSArray *)getAndParseLocalAutoPkgRecipeRepos // Strips out the local path of the cloned git repository and returns an array with only the URLs
+- (void)getAndParseLocalAutoPkgRecipeRepos // Strips out the local path of the cloned git repository and returns an array with only the URLs
 {
-    NSArray *repos = [pkgRunner getLocalAutoPkgRecipeRepos];
-    NSMutableArray *strippedRepos = [[NSMutableArray alloc] init];
-
-    NSError *error = NULL;
-    NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@"\\((https?://.+)\\)" options:0 error:&error];
-
-    for (NSString *repo in repos) {
-        NSTextCheckingResult *result = [regex firstMatchInString:repo options:0 range:NSMakeRange(0,[repo length])];
-        if ([result numberOfRanges] == 2) {
-            [strippedRepos addObject:[repo substringWithRange:[result rangeAtIndex:1]]];
+    [LGAutoPkgTask repoList:^(NSArray *repos, NSError *error) {
+        NSMutableArray *strippedRepos = [[NSMutableArray alloc] init];
+        
+        NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@"\\((https?://.+)\\)" options:0 error:&error];
+        
+        for (NSString *repo in repos) {
+            NSTextCheckingResult *result = [regex firstMatchInString:repo options:0 range:NSMakeRange(0,[repo length])];
+            if ([result numberOfRanges] == 2) {
+                [strippedRepos addObject:[repo substringWithRange:[result rangeAtIndex:1]]];
+            }
         }
-    }
-
-    return [NSArray arrayWithArray:strippedRepos];
+        
+        activeRepos =  [NSArray arrayWithArray:strippedRepos];
+    }];
 }
 
 - (NSInteger)numberOfRowsInTableView:(NSTableView *)tableView
@@ -169,13 +179,20 @@
 - (void)tableView:(NSTableView *)tableView setObjectValue:(id)object forTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row
 {
     if([[tableColumn identifier] isEqualToString:@"repoCheckbox"]) {
-        if ([object isEqual:@YES]) {
-            [pkgRunner addAutoPkgRecipeRepo:[searchedRepos objectAtIndex:row]];
+        NSString *repo = [searchedRepos objectAtIndex:row];
+        BOOL add = [object isEqual:@YES];
+        NSString *message = [NSString stringWithFormat:@"%@ %@",add ? @"Adding":@"Removing",repo];
+        [_progressDelegate startProgressWithMessage:message];
+        if (add) {
+            [LGAutoPkgTask repoAdd:repo reply:^(NSError *error) {
+                [self repoEditDidEndWithError:error withTableView:tableView];
+            }];
         } else {
-            [pkgRunner removeAutoPkgRecipeRepo:[searchedRepos objectAtIndex:row]];
+            [LGAutoPkgTask repoRemove:repo reply:^(NSError *error) {
+                [self repoEditDidEndWithError:error withTableView:tableView];
+            }];
         }
-        activeRepos = [self getAndParseLocalAutoPkgRecipeRepos];
-        [_appObject reload];
+        
     }
 }
 

@@ -44,7 +44,7 @@ Usage
 1.  On first launch, you'll see the configuration window:
     ![Install](doc-images/config_tab1.png)
 
-1.  Click the button to **Install Git** if needed.
+1.  Click the button to **Install Git** if needed. (This will prompt you to install the Xcode Command Line Tools.)
 
 1.  Click the button to **Install AutoPkg** if needed.
 

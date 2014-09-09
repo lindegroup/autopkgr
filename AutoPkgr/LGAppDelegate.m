@@ -21,6 +21,9 @@
 
 #import "LGAppDelegate.h"
 #import "LGAutoPkgr.h"
+#import "LGAutoPkgTask.h"
+#import "LGEmailer.h"
+#import "LGAutoPkgSchedule.h"
 #import "LGConfigurationWindowController.h"
 
 @implementation LGAppDelegate
@@ -28,6 +31,10 @@
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {
     LGDefaults *defaults = [LGDefaults new];
+
+    // set self as the delegate for the time so the menu item is updated
+    // during timed runs.
+    [[LGAutoPkgSchedule sharedTimer] setProgressDelegate:self];
 
     // Setup the status item
     [self setupStatusItem];
@@ -39,24 +46,19 @@
     // Start the AutoPkg run timer if the user enabled it
     [self startAutoPkgRunTimer];
 
-    // Update AutoPkg recipe repos when the application launches
-    // if the user has enabled automatic repo updates
-    if (defaults.checkForRepoUpdatesAutomaticallyEnabled) {
-        NSLog(@"Updating AutoPkg recipe repos.");
-        [self updateAutoPkgRecipeReposInBackgroundAtAppLaunch];
-    }
 }
 
 - (void)startAutoPkgRunTimer
 {
-    LGAutoPkgRunner *autoPkgRunner = [[LGAutoPkgRunner alloc] init];
-    [autoPkgRunner startAutoPkgRunTimer];
+    [[LGAutoPkgSchedule sharedTimer] configure];
 }
+
 
 - (void)updateAutoPkgRecipeReposInBackgroundAtAppLaunch
 {
-    LGAutoPkgRunner *autoPkgRunner = [[LGAutoPkgRunner alloc] init];
-    [autoPkgRunner invokeAutoPkgRepoUpdateInBackgroundThread];
+   [LGAutoPkgTask repoUpdate:^(NSError *error) {
+       NSLog(@"%@", error ? error.localizedDescription:@"AutoPkg recipe repos updated.");
+   }];
 }
 
 - (void)setupStatusItem
@@ -72,9 +74,19 @@
 
 - (void)checkNowFromMenu:(id)sender
 {
-    LGAutoPkgRunner *autoPkgRunner = [[LGAutoPkgRunner alloc] init];
-    [autoPkgRunner invokeAutoPkgInBackgroundThread];
+    [self startProgressWithMessage:@"Starting..."];
+    NSString *recipeList = [LGApplications recipeList];
+    [LGAutoPkgTask runRecipeList:recipeList
+                        progress:^(NSString *message, double taskProgress) {
+                            [self updateProgress:message progress:taskProgress];
+                        }
+                           reply:^(NSDictionary *report,NSError *error) {
+                               [self stopProgress:error];
+                               LGEmailer *emailer = [LGEmailer new];
+                               [emailer sendEmailForReport:report error:error];
+                        }];
 }
+
 
 - (void)showConfigurationWindow:(id)sender
 {
@@ -105,6 +117,31 @@
     }
 
     return NSTerminateNow;
+}
+
+# pragma mark - Progress Protocol
+-(void)startProgressWithMessage:(NSString *)message{
+    __block NSMenuItem *item = [self.statusMenu itemAtIndex:0];
+    [item setAction:nil];
+    [item setTitle:message];
+}
+
+-(void)stopProgress:(NSError *)error{
+    __block NSMenuItem *item = [self.statusMenu itemAtIndex:0];
+    [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+        [item setTitle:@"Check Now"];
+        [item setAction:@selector(checkNowFromMenu:)];
+    }];
+}
+
+-(void)updateProgress:(NSString *)message progress:(double)progress{
+    __block NSMenuItem *item = [self.statusMenu itemAtIndex:0];
+    if (message.length < 50) {
+        [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+            [item setTitle:message];
+        }];
+    }
+    NSLog(@"%@",message);
 }
 
 @end
