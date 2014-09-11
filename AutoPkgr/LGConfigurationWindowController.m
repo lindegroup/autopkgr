@@ -25,6 +25,7 @@
 #import "LGEmailer.h"
 #import "LGHostInfo.h"
 #import "LGAutoPkgTask.h"
+#import "LGInstaller.h"
 #import "LGAutoPkgSchedule.h"
 #import "LGProgressDelegate.h"
 #import "LGGitHubJSONLoader.h"
@@ -492,86 +493,22 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
     [installGitButton setTitle:@"Installing..."];
     [installGitButton setEnabled:NO];
 
-    NSTask *task = [[NSTask alloc] init];
-
-    task.launchPath = @"/usr/bin/xcode-select";
-    task.arguments = @[@"--install"];
-    task.standardError = [NSPipe pipe];
-
-    task.terminationHandler = ^(NSTask *aTask) {
-        // TODO: We should probably be installing the official
-        // Git PKG rather than dealing with the Xcode CLI tools
-        [[NSOperationQueue mainQueue]addOperationWithBlock:^{
-            NSString *alertMessage = @"After the Xcode Command Line Tools installation completes, click OK.";
-            NSAlert *alert = [NSAlert alertWithMessageText:alertMessage
-                                             defaultButton:@"OK"
-                                           alternateButton:nil
-                                               otherButton:nil
-                                 informativeTextWithFormat:@""];
-
-            if ([alert runModal] == NSAlertDefaultReturn) {
-                LGHostInfo *hostInfo = [[LGHostInfo alloc] init];
-                if ([hostInfo gitInstalled]) {
-                    [installGitButton setEnabled:NO];
-                    [gitStatusLabel setStringValue:kLGGitInstalledLabel];
-                    [gitStatusIcon setImage:[NSImage imageNamed:NSImageNameStatusAvailable]];
-                } else {
-                    [installGitButton setEnabled:YES];
-                    [gitStatusLabel setStringValue:kLGGitNotInstalledLabel];
-                    [gitStatusIcon setImage:[NSImage imageNamed:NSImageNameStatusUnavailable]];
-                    alert = [NSAlert alertWithMessageText:@"There was a problem installing Git!"
-                                            defaultButton:@"Go get Git!"
-                                          alternateButton:@"Cancel"
-                                              otherButton:nil
-                                informativeTextWithFormat:@"You can try to reinstall from here, or download and install the official version from http://git-scm.com/downloads."];
-
-                    if ([alert runModal] == NSAlertDefaultReturn) {
-                        [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:@"http://git-scm.com/downloads"]];
-                    }
-                }
-            }
-            [installGitButton setTitle:@"Install Git"];
-        }];
-    };
-
-    [task launch];
-}
-
-- (void)downloadAndInstallAutoPkg
-{
-    LGHostInfo *hostInfo = [[LGHostInfo alloc] init];
-    LGGitHubJSONLoader *jsonLoader = [[LGGitHubJSONLoader alloc] init];
-
-    // Get the latest AutoPkg PKG download URL
-    NSString *downloadURL = [jsonLoader getLatestAutoPkgDownloadURL];
-
-    // Get path for autopkg-x.x.x.pkg
-    NSString *autoPkgPkg = [NSTemporaryDirectory() stringByAppendingPathComponent:[downloadURL lastPathComponent]];
-
-    // Download AutoPkg to the temporary directory
-    NSData *autoPkg = [[NSData alloc] initWithContentsOfURL:[NSURL URLWithString:downloadURL]];
-    [autoPkg writeToFile:autoPkgPkg atomically:YES];
-
-    // Set the `installer` command
-    NSString *command = [NSString stringWithFormat:@"/usr/sbin/installer -pkg %@ -target /", autoPkgPkg];
-
-    // Install the AutoPkg PKG as root
-    [self runCommandAsRoot:command];
-
-    // Update the autoPkgStatus icon and label if it installed successfully
-    if ([hostInfo autoPkgInstalled]) {
-        NSLog(@"AutoPkg installed successfully!");
-        [autoPkgStatusLabel setStringValue:kLGAutoPkgInstalledLabel];
-        [autoPkgStatusIcon setImage:[NSImage imageNamed:NSImageNameStatusAvailable]];
-        [installAutoPkgButton setEnabled:NO];
-    }else{
-        [autoPkgStatusLabel setStringValue:kLGAutoPkgNotInstalledLabel];
-        [autoPkgStatusIcon setImage:[NSImage imageNamed:NSImageNameStatusUnavailable]];
-        [installAutoPkgButton setEnabled:YES];
-    }
-    
-    [installAutoPkgButton setTitle:@"Install AutoPkg"];
-    [self stopProgress:nil];
+    LGInstaller *installer = [[LGInstaller alloc] init];
+    installer.progressDelegate = self;
+    [installer installGit:^(NSError *error) {
+        LGHostInfo *hostInfo = [[LGHostInfo alloc] init];
+        [self stopProgress:error];
+        if ([hostInfo gitInstalled]) {
+            NSLog(@"Git installed successfully!");
+            [installGitButton setEnabled:NO];
+            [gitStatusLabel setStringValue:kLGGitInstalledLabel];
+            [gitStatusIcon setImage:[NSImage imageNamed:NSImageNameStatusAvailable]];
+        } else {
+            [installGitButton setEnabled:YES];
+            [gitStatusLabel setStringValue:kLGGitNotInstalledLabel];
+            [gitStatusIcon setImage:[NSImage imageNamed:NSImageNameStatusUnavailable]];
+        }
+    }];
 }
 
 - (IBAction)installAutoPkg:(id)sender
@@ -582,13 +519,23 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
     [installAutoPkgButton setEnabled:NO];
     [self startProgressWithMessage:@"Installing newest version of AutoPkg"];
 
-    // Download and install AutoPkg on a background thread
-    NSOperationQueue *queue = [[NSOperationQueue alloc] init];
-    NSInvocationOperation *operation = [[NSInvocationOperation alloc]
-        initWithTarget:self
-              selector:@selector(downloadAndInstallAutoPkg)
-                object:nil];
-    [queue addOperation:operation];
+    LGInstaller *installer = [[LGInstaller alloc] init];
+    installer.progressDelegate = self;
+    [installer installAutoPkg:^(NSError *error) {
+        // Update the autoPkgStatus icon and label if it installed successfully
+        [self stopProgress:error];
+        LGHostInfo *hostInfo = [[LGHostInfo alloc] init];
+        if ([hostInfo autoPkgInstalled]) {
+            NSLog(@"AutoPkg installed successfully!");
+            [autoPkgStatusLabel setStringValue:kLGAutoPkgInstalledLabel];
+            [autoPkgStatusIcon setImage:[NSImage imageNamed:NSImageNameStatusAvailable]];
+            [installAutoPkgButton setEnabled:NO];
+        }else{
+            [autoPkgStatusLabel setStringValue:kLGAutoPkgNotInstalledLabel];
+            [autoPkgStatusIcon setImage:[NSImage imageNamed:NSImageNameStatusUnavailable]];
+            [installAutoPkgButton setEnabled:YES];
+        }
+    }];
 }
 
 - (IBAction)openLocalMunkiRepoFolder:(id)sender
