@@ -33,6 +33,7 @@
 
 @interface LGConfigurationWindowController ()<LGProgressDelegate> {
     LGDefaults *defaults;
+    LGAutoPkgTask *_task;
 }
 
 @end
@@ -865,17 +866,30 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
 - (IBAction)checkAppsNow:(id)sender
 {
     NSString *recipeList = [LGApplications recipeList];
-    
+    [_cancelAutoPkgRunButton setHidden:NO];
     [self startProgressWithMessage:@"Running selected AutoPkg recipes."];
-    [LGAutoPkgTask runRecipeList:recipeList
+    _task = [[LGAutoPkgTask alloc] init];
+    [_task runRecipeList:recipeList
                         progress:^(NSString *message, double taskProgress) {
                             [self updateProgress:message progress:taskProgress];
                             
                         } reply:^(NSDictionary *report,NSError *error) {
                             [self stopProgress:error];
-                            LGEmailer *emailer = [LGEmailer new];
-                            [emailer sendEmailForReport:report error:error];
-                        }];}
+                            if (report.count || error) {
+                                LGEmailer *emailer = [LGEmailer new];
+                                [emailer sendEmailForReport:report error:error];
+                            }
+                            _task = nil;
+                            [_cancelAutoPkgRunButton setHidden:YES];
+                        }];
+}
+
+- (IBAction)cancelAutoPkgRun:(id)sender{
+    if(_task){
+        [_task cancel];
+    }
+}
+
 
 - (void)autoPkgRunCompleteNotificationRecieved:(NSNotification *)notification
 {
