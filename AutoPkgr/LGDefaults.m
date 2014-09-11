@@ -227,6 +227,15 @@
 }
 //
 
+#pragma mark - Utility Settings
+- (BOOL)debug
+{
+    return [self boolForKey:@"debug"];
+}
+- (void)setDebug:(BOOL)debug
+{
+    [self setBool:debug forKey:@"debug"];
+}
 
 #pragma mark - Util Methods
 #pragma mark - CFPrefs
