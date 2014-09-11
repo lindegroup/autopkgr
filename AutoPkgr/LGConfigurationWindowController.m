@@ -457,9 +457,9 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
     // Store the password used for SMTP authentication in the default keychain
     [SSKeychain setPassword:[smtpPassword stringValue] forService:kLGApplicationName account:[smtpUsername stringValue] error:&error];
     if (error) {
-        NSLog(@"Error while storing e-mail password: %@", error);
+        NSLog(@"Error while storing email password in keychain: %@", error);
     } else {
-        NSLog(@"Reset password");
+        NSLog(@"Stored email password in keychain.");
     }
 
     // Synchronize with the defaults database
@@ -500,9 +500,9 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
     NSLog(@"AppleScript commands: %@", script);
     NSAppleScript *appleScript = [[NSAppleScript alloc] initWithSource:script];
     if ([appleScript executeAndReturnError:&error]) {
-        NSLog(@"Authorization successful!");
+        NSLog(@"Authorization successful.");
     } else {
-        NSLog(@"Authorization failed! Error: %@.", error);
+        NSLog(@"Authorization failed. Error: %@.", error);
     }
 }
 
@@ -585,7 +585,7 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
 
     // Update the autoPkgStatus icon and label if it installed successfully
     if ([hostInfo autoPkgInstalled]) {
-        NSLog(@"AutoPkg installed successfully!");
+        NSLog(@"AutoPkg installed successfully.");
         [autoPkgStatusLabel setStringValue:kLGAutoPkgInstalledLabel];
         [autoPkgStatusIcon setImage:[NSImage imageNamed:NSImageNameStatusAvailable]];
         [installAutoPkgButton setEnabled:NO];
@@ -627,7 +627,7 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
         NSLog(@"%@ does not exist.", defaults.munkiRepo);
         NSAlert *alert = [[NSAlert alloc] init];
         [alert addButtonWithTitle:@"OK"];
-        [alert setMessageText:@"Cannot find the Munki Repository."];
+        [alert setMessageText:@"Cannot find the Munki repository."];
         [alert setInformativeText:[NSString stringWithFormat:@"%@ could not find the Munki repository located in %@. Please verify that this folder exists.", kLGApplicationName, defaults.munkiRepo]];
         [alert setAlertStyle:NSWarningAlertStyle];
         [alert beginSheetModalForWindow:self.window
@@ -970,9 +970,9 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
         NSError *error;
         [SSKeychain setPassword:[smtpPassword stringValue] forService:kLGApplicationName account:[smtpUsername stringValue] error:&error];
         if (error) {
-            NSLog(@"Error while storing e-mail password: %@", error);
+            NSLog(@"Error while storing e-mail password in keychain: %@", error);
         } else {
-            NSLog(@"Reset password");
+            NSLog(@"Stored email password in keychain.");
         }
     } else {
         NSLog(@"Uncaught controlTextDidEndEditing");
@@ -1026,7 +1026,7 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
 - (void)changeSendEmailNotificationsWhenNewVersionsAreFoundButtonState
 {
     defaults.sendEmailNotificationsWhenNewVersionsAreFoundEnabled = [sendEmailNotificationsWhenNewVersionsAreFoundButton state];
-    NSLog(@"%@  email notifications.", defaults.sendEmailNotificationsWhenNewVersionsAreFoundEnabled ? @"Enabling" : @"Disabling");
+    NSLog(@"%@ email notifications.", defaults.sendEmailNotificationsWhenNewVersionsAreFoundEnabled ? @"Enabling" : @"Disabling");
     [defaults synchronize];
 }
 
