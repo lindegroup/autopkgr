@@ -67,15 +67,18 @@
     return nil;
 }
 
-- (NSDictionary *)getLatestAutoPkgReleaseDictionary
+- (NSArray *)getReleaseArray:(NSString *)githubURL
 {
     // Get the JSON data
-    NSArray *releasesArray = [self getArrayFromJSONData:[self getJSONFromURL:[NSURL URLWithString:kLGAutoPkgReleasesJSONURL]]];
+    NSData *data = [self getJSONFromURL:[NSURL URLWithString:githubURL]];
+    return [self getArrayFromJSONData:data];
+}
 
+- (NSDictionary *)getLatestReleaseDictionary:(NSString *)githubURL
+{
     // GitHub returns the latest release from the API at index 0
-    NSDictionary *latestVersionDict = [releasesArray objectAtIndex:0];
-
-    return latestVersionDict;
+    NSArray *releases = [self getReleaseArray:githubURL];
+    return releases.count ? releases[0] : nil;
 }
 
 - (NSArray *)getAutoPkgRecipeRepos
@@ -124,7 +127,7 @@
 - (NSString *)getLatestAutoPkgReleaseVersionNumber
 {
     // Get an NSDictionary of the latest release JSON
-    NSDictionary *latestVersionDict = [self getLatestAutoPkgReleaseDictionary];
+    NSDictionary *latestVersionDict = [self getLatestReleaseDictionary:kLGAutoPkgReleasesJSONURL];
 
     // AutoPkg version numbers are prepended with "v"
     // Let's remove that from our version string
@@ -137,12 +140,38 @@
 - (NSString *)getLatestAutoPkgDownloadURL
 {
     // Get an NSDictionary of the latest release JSON
-    NSDictionary *latestVersionDict = [self getLatestAutoPkgReleaseDictionary];
+    NSDictionary *latestVersionDict = [self getLatestReleaseDictionary:kLGAutoPkgReleasesJSONURL];
 
     // Get the AutoPkg PKG download URL
-    NSString *browserDownloadURL = [[[latestVersionDict objectForKey:@"assets"] objectAtIndex:0] objectForKey:@"browser_download_url"];
+    NSString *browserDownloadURL = [[[latestVersionDict objectForKey:@"assets"] firstObject] objectForKey:@"browser_download_url"];
 
     return browserDownloadURL;
 }
 
+- (NSString *)getGitDownloadURL
+{
+    NSString *version;
+    NSString *browserDownloadURL;
+
+    NSArray *releases = [self getReleaseArray:kLGGitReleasesJSONURL];
+    // Get an NSDictionary of the latest release JSON
+    if (floor(NSAppKitVersionNumber) > NSAppKitVersionNumber10_8) {
+        // Mavericks and beyond
+        version = [releases firstObject][@"tag_name"];
+    } else {
+        // Mountian Lion compatible
+        version = @"v1.8.5.2";
+    }
+
+    for (NSDictionary *dict in releases) {
+        if ([dict[@"tag_name"] isEqualToString:version]) {
+            browserDownloadURL = [dict[@"assets"] firstObject][@"browser_download_url"];
+            break;
+        }
+    }
+    // Get the Git DMG download URL for the approperiate version
+    NSLog(@"%@", browserDownloadURL);
+
+    return browserDownloadURL;
+}
 @end

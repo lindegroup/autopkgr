@@ -35,6 +35,7 @@ NSString *const kLGAutoPkgUpdateAvailableLabel = @"An update is available for Au
 
 #pragma mark - Static URLs
 NSString *const kLGAutoPkgReleasesJSONURL = @"https://api.github.com/repos/autopkg/autopkg/releases";
+NSString *const kLGGitReleasesJSONURL = @"https://api.github.com/repos/timcharper/git_osx_installer/releases";
 NSString *const kLGAutoPkgDownloadURL = @"https://github.com/autopkg/autopkg/zipball/master";
 NSString *const kLGAutoPkgRepositoriesJSONURL = @"https://api.github.com/orgs/autopkg/repos";
 

@@ -43,6 +43,7 @@
 		BE025CFF19BAEF8800D36345 /* LGAutoPkgSchedule.m in Sources */ = {isa = PBXBuildFile; fileRef = BE025CFD19BAEF8800D36345 /* LGAutoPkgSchedule.m */; };
 		BE57AC2A19BA3BBC00BB17B1 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = BE57AC2C19BA3BBC00BB17B1 /* Localizable.strings */; };
 		BE87994B1995BA410082472B /* LGDefaults.m in Sources */ = {isa = PBXBuildFile; fileRef = BE87994A1995BA410082472B /* LGDefaults.m */; };
+		BEAA76CC19BFD635002D73EE /* LGInstaller.m in Sources */ = {isa = PBXBuildFile; fileRef = BEAA76CB19BFD635002D73EE /* LGInstaller.m */; };
 		BEFC931D1995F0710074C938 /* LGError.m in Sources */ = {isa = PBXBuildFile; fileRef = BEFC931C1995F0710074C938 /* LGError.m */; };
 /* End PBXBuildFile section */
 
@@ -169,6 +170,8 @@
 		BE8799491995BA410082472B /* LGDefaults.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGDefaults.h; sourceTree = "<group>"; };
 		BE87994A1995BA410082472B /* LGDefaults.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGDefaults.m; sourceTree = "<group>"; };
 		BE94AA7B19BB8A78001A00D0 /* LGProgressDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LGProgressDelegate.h; sourceTree = "<group>"; };
+		BEAA76CA19BFD635002D73EE /* LGInstaller.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGInstaller.h; sourceTree = "<group>"; };
+		BEAA76CB19BFD635002D73EE /* LGInstaller.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGInstaller.m; sourceTree = "<group>"; };
 		BEFC931B1995F0710074C938 /* LGError.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGError.h; sourceTree = "<group>"; };
 		BEFC931C1995F0710074C938 /* LGError.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGError.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -329,6 +332,8 @@
 				BEFC931C1995F0710074C938 /* LGError.m */,
 				BE8799491995BA410082472B /* LGDefaults.h */,
 				BE87994A1995BA410082472B /* LGDefaults.m */,
+				BEAA76CA19BFD635002D73EE /* LGInstaller.h */,
+				BEAA76CB19BFD635002D73EE /* LGInstaller.m */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -519,6 +524,7 @@
 				BEFC931D1995F0710074C938 /* LGError.m in Sources */,
 				1AC98416195CE99E0071CAB3 /* SSKeychain.m in Sources */,
 				1A979FE01960BCCC00EE9881 /* LGUnzipper.m in Sources */,
+				BEAA76CC19BFD635002D73EE /* LGInstaller.m in Sources */,
 				BE025CF619BAE93400D36345 /* LGAutoPkgTask.m in Sources */,
 				6A0BABE9196E560000A136BB /* LGPopularRepositories.m in Sources */,
 			);
