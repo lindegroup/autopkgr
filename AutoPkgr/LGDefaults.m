@@ -47,49 +47,53 @@
     return RC;
 }
 
-#pragma mark - EMail
-//
+#pragma mark
+#pragma mark EMail
 - (NSString *)SMTPServer
 {
     return [self objectForKey:kLGSMTPServer];
 }
+
 - (void)setSMTPServer:(NSString *)SMTPServer
 {
     [self setObject:SMTPServer forKey:kLGSMTPServer];
 }
-//
+#pragma mark
 - (NSInteger)SMTPPort
 {
     return [self integerForKey:kLGSMTPPort];
 }
+
 - (void)setSMTPPort:(NSInteger)SMTPPort
 {
     [self setInteger:SMTPPort forKey:kLGSMTPPort];
 }
-//
+#pragma mark
 - (NSString *)SMTPUsername
 {
     return [self objectForKey:kLGSMTPUsername];
 }
+
 - (void)setSMTPUsername:(NSString *)SMTPUsername
 {
     [self setObject:SMTPUsername forKey:kLGSMTPUsername];
 }
-//
+#pragma mark
 - (NSString *)SMTPFrom
 {
     return [self objectForKey:kLGSMTPFrom];
 }
+
 - (void)setSMTPFrom:(NSString *)SMTPFrom
 {
     [self setObject:SMTPFrom forKey:kLGSMTPFrom];
 }
-//
+#pragma mark
 - (NSArray *)SMTPTo
 {
     return [self objectForKey:kLGSMTPTo];
 }
-//
+
 - (void)setSMTPTo:(NSArray *)SMTPTo
 {
     [self setObject:SMTPTo forKey:kLGSMTPTo];
@@ -100,61 +104,68 @@
 {
     return [self boolForKey:kLGSMTPTLSEnabled];
 }
+
 - (void)setSMTPTLSEnabled:(BOOL)SMTPTLSEnabled
 {
     [self setBool:SMTPTLSEnabled forKey:kLGSMTPTLSEnabled];
 }
-//
+#pragma mark
 - (BOOL)SMTPAuthenticationEnabled
 {
     return [self boolForKey:kLGSMTPAuthenticationEnabled];
 }
+
 - (void)setSMTPAuthenticationEnabled:(BOOL)SMTPAuthenticationEnabled
 {
     [self setBool:SMTPAuthenticationEnabled forKey:kLGSMTPAuthenticationEnabled];
 }
-//
+#pragma mark
 - (BOOL)warnBeforeQuittingEnabled
 {
     return [self boolForKey:kLGWarnBeforeQuittingEnabled];
 }
+
 - (void)setWarnBeforeQuittingEnabled:(BOOL)WarnBeforeQuittingEnabled
 {
     [self setBool:WarnBeforeQuittingEnabled forKey:kLGWarnBeforeQuittingEnabled];
 }
-//
+#pragma mark
 - (BOOL)hasCompletedInitialSetup
 {
     return [self boolForKey:kLGHasCompletedInitialSetup];
 }
+
 - (void)setHasCompletedInitialSetup:(BOOL)HasCompletedInitialSetup
 {
     [self setBool:HasCompletedInitialSetup forKey:kLGHasCompletedInitialSetup];
 }
-//
+#pragma mark
 - (BOOL)sendEmailNotificationsWhenNewVersionsAreFoundEnabled
 {
     return [self boolForKey:kLGSendEmailNotificationsWhenNewVersionsAreFoundEnabled];
 }
+
 - (void)setSendEmailNotificationsWhenNewVersionsAreFoundEnabled:(BOOL)SendEmailNotificationsWhenNewVersionsAreFoundEnabled
 {
     [self setBool:SendEmailNotificationsWhenNewVersionsAreFoundEnabled forKey:kLGSendEmailNotificationsWhenNewVersionsAreFoundEnabled];
 }
-//
+#pragma mark
 - (BOOL)checkForNewVersionsOfAppsAutomaticallyEnabled
 {
     return [self boolForKey:kLGCheckForNewVersionsOfAppsAutomaticallyEnabled];
 }
+
 - (void)setCheckForNewVersionsOfAppsAutomaticallyEnabled:(BOOL)CheckForNewVersionsOfAppsAutomaticallyEnabled
 {
     [self setBool:CheckForNewVersionsOfAppsAutomaticallyEnabled forKey:kLGCheckForNewVersionsOfAppsAutomaticallyEnabled];
 }
-//
--(BOOL)checkForRepoUpdatesAutomaticallyEnabled
+#pragma mark
+- (BOOL)checkForRepoUpdatesAutomaticallyEnabled
 {
     return [self boolForKey:kLGCheckForRepoUpdatesAutomaticallyEnabled];
 }
--(void)setCheckForRepoUpdatesAutomaticallyEnabled:(BOOL)checkForRepoUpdatesAutomaticallyEnabled
+
+- (void)setCheckForRepoUpdatesAutomaticallyEnabled:(BOOL)checkForRepoUpdatesAutomaticallyEnabled
 {
     [self setBool:checkForRepoUpdatesAutomaticallyEnabled forKey:kLGCheckForRepoUpdatesAutomaticallyEnabled];
 }
@@ -164,11 +175,13 @@
 {
     return [self integerForKey:kLGAutoPkgRunInterval];
 }
+
 - (void)setAutoPkgRunInterval:(NSInteger)autoPkgRunInterval
 {
     [self setInteger:autoPkgRunInterval forKey:kLGAutoPkgRunInterval];
 }
-//
+
+#pragma mark
 - (NSString *)autoPkgCacheDir
 {
     return [self autoPkgDomainObject:@"CACHE_DIR"];
@@ -179,6 +192,7 @@
     [self setAutoPkgDomainObject:autoPkgCacheDir forKey:@"CACHE_DIR"];
 }
 
+#pragma mark
 - (NSString *)autoPkgRecipeOverridesDir
 {
     return [self autoPkgDomainObject:@"RECIPE_OVERRIDE_DIRS"];
@@ -188,16 +202,19 @@
 {
     [self setAutoPkgDomainObject:autoPkgRecipeOverridesDir forKey:@"RECIPE_OVERRIDE_DIRS"];
 }
-//
+
+#pragma mark
 - (NSString *)autoPkgRecipeRepoDir
 {
     return [self autoPkgDomainObject:@"RECIPE_REPO_DIR"];
 }
+
 - (void)setAutoPkgRecipeRepoDir:(NSString *)autoPkgRecipeRepoDir
 {
     [self setAutoPkgDomainObject:autoPkgRecipeRepoDir forKey:@"RECIPE_REPO_DIR"];
 }
-//
+
+#pragma mark
 - (NSArray *)autoPkgRecipeSearchDirs
 {
     return [self autoPkgDomainObject:@"RECIPE_SEARCH_DIRS"];
@@ -207,42 +224,52 @@
 {
     [self setAutoPkgDomainObject:autoPkgRecipeSearchDirs forKey:@"RECIPE_SEARCH_DIRS"];
 }
-//
+#pragma mark
 - (NSDictionary *)autoPkgRecipeRepos
 {
     return [self autoPkgDomainObject:@"RECIPE_REPOS"];
 }
+
 - (void)setAutoPkgRecipeRepos:(NSDictionary *)autoPkgRecipeRepos
 {
     [self setAutoPkgDomainObject:autoPkgRecipeRepos forKey:@"RECIPE_REPOS"];
 }
-//
+#pragma mark
 - (NSString *)munkiRepo
 {
     return [self autoPkgDomainObject:@"MUNKI_REPO"];
 }
+
 - (void)setMunkiRepo:(NSString *)munkiRepo
 {
     [self setAutoPkgDomainObject:munkiRepo forKey:@"MUNKI_REPO"];
 }
-//
+#pragma mark
+- (NSString *)gitPath
+{
+    return [self autoPkgDomainObject:@"GIT_PATH"];
+}
 
+- (void)setGitPath:(NSString *)gitPath
+{
+    [self setAutoPkgDomainObject:gitPath forKey:@"GIT_PATH"];
+}
 
 #pragma mark - Util Methods
 #pragma mark - CFPrefs
--(id)autoPkgDomainObject:(NSString*)key{
+- (id)autoPkgDomainObject:(NSString *)key
+{
     id value = CFBridgingRelease(CFPreferencesCopyAppValue((__bridge CFStringRef)(key),
-                                                                   (__bridge CFStringRef)(kLGAutoPkgPreferenceDomain)));
+                                                           (__bridge CFStringRef)(kLGAutoPkgPreferenceDomain)));
     return value;
 }
 
--(void)setAutoPkgDomainObject:(id)object forKey:(NSString *)key
+- (void)setAutoPkgDomainObject:(id)object forKey:(NSString *)key
 {
     CFPreferencesSetAppValue((__bridge CFStringRef)(key),
                              (__bridge CFTypeRef)(object),
                              (__bridge CFStringRef)(kLGAutoPkgPreferenceDomain));
 }
-
 
 #pragma mark - Class Methods
 + (BOOL)fixRelativePathsInAutoPkgDefaults:(NSError *__autoreleasing *)error neededFixing:(NSInteger *)neededFixing

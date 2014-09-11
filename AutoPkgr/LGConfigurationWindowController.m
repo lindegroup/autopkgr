@@ -278,7 +278,7 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
         }
 
         if ([hostInfo autoPkgInstalled]) {
-            BOOL updateAvailable = [self autoPkgUpdateAvailable];
+            BOOL updateAvailable = [hostInfo autoPkgUpdateAvailable];
             if (updateAvailable) {
                 [installAutoPkgButton setEnabled:YES];
                 [installAutoPkgButton setTitle:@"Update AutoPkg"];
@@ -464,30 +464,6 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
     // Synchronize with the defaults database
     [defaults synchronize];
 
-}
-
-- (BOOL)autoPkgUpdateAvailable
-{
-    // TODO: This check shouldn't block the main thread
-
-    // Get the currently installed version of AutoPkg
-    LGHostInfo *hostInfo = [[LGHostInfo alloc] init];
-    NSString *installedAutoPkgVersionString = [hostInfo getAutoPkgVersion];
-    NSLog(@"Installed version of AutoPkg: %@", installedAutoPkgVersionString);
-
-    // Get the latest version of AutoPkg available on GitHub
-    LGGitHubJSONLoader *jsonLoader = [[LGGitHubJSONLoader alloc] init];
-    NSString *latestAutoPkgVersionString = [jsonLoader getLatestAutoPkgReleaseVersionNumber];
-
-    // Determine if AutoPkg is up-to-date by comparing the version strings
-    LGVersionComparator *vc = [[LGVersionComparator alloc] init];
-    BOOL newVersionAvailable = [vc isVersion:latestAutoPkgVersionString greaterThanVersion:installedAutoPkgVersionString];
-    if (newVersionAvailable) {
-        NSLog(@"A new version of AutoPkg is available. Version %@ is installed and version %@ is available.", installedAutoPkgVersionString, latestAutoPkgVersionString);
-        return YES;
-    }
-
-    return NO;
 }
 
 - (void)runCommandAsRoot:(NSString *)command
