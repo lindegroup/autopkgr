@@ -14,6 +14,7 @@
                 <outlet property="autoPkgRunInterval" destination="oZ2-P7-4IE" id="5kw-lh-4er"/>
                 <outlet property="autoPkgStatusIcon" destination="f8q-xY-QUg" id="sEw-rG-73c"/>
                 <outlet property="autoPkgStatusLabel" destination="Pbf-A7-T4b" id="hxh-Eo-6ky"/>
+                <outlet property="cancelAutoPkgRunButton" destination="xEr-jr-9qR" id="Emk-lI-q0t"/>
                 <outlet property="checkAppsNowButton" destination="7vx-nK-KRd" id="DFs-eb-sqP"/>
                 <outlet property="checkForNewVersionsOfAppsAutomaticallyButton" destination="J8d-qW-trQ" id="lHS-nM-74R"/>
                 <outlet property="checkForRepoUpdatesAutomaticallyButton" destination="K6Q-1C-fKu" id="enB-L8-gVQ"/>
@@ -1115,25 +1116,44 @@
                         </textFieldCell>
                     </textField>
                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="KHL-zp-6jp">
-                        <rect key="frame" x="20" y="26" width="572" height="17"/>
+                        <rect key="frame" x="20" y="36" width="572" height="17"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" id="qQH-Mt-pLc">
+                        <textFieldCell key="cell" lineBreakMode="truncatingTail" truncatesLastVisibleLine="YES" continuous="YES" sendsActionOnEndEditing="YES" usesSingleLineMode="YES" id="qQH-Mt-pLc">
                             <font key="font" metaFont="system"/>
                             <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                             <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                         </textFieldCell>
                     </textField>
+                    <button hidden="YES" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="xEr-jr-9qR">
+                        <rect key="frame" x="492" y="7" width="104" height="32"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="92" id="fxa-f0-Ply"/>
+                        </constraints>
+                        <buttonCell key="cell" type="push" title="Cancel" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="MNj-2I-2Jh">
+                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" metaFont="system"/>
+                            <string key="keyEquivalent" base64-UTF8="YES">
+Gw
+</string>
+                        </buttonCell>
+                        <connections>
+                            <action selector="cancelAutoPkgRun:" target="-2" id="SOY-Ah-jVK"/>
+                        </connections>
+                    </button>
                 </subviews>
                 <constraints>
                     <constraint firstAttribute="trailing" secondItem="u7l-Fz-3uc" secondAttribute="trailing" constant="20" id="57D-zC-X65"/>
                     <constraint firstItem="u7l-Fz-3uc" firstAttribute="leading" secondItem="dCS-sn-B3a" secondAttribute="leading" constant="20" id="7Rp-ip-yz2"/>
+                    <constraint firstItem="KHL-zp-6jp" firstAttribute="top" secondItem="qol-Go-AJd" secondAttribute="bottom" constant="10" id="IP1-mn-USo"/>
+                    <constraint firstAttribute="trailing" secondItem="xEr-jr-9qR" secondAttribute="trailing" constant="20" id="OFa-21-yIe"/>
                     <constraint firstItem="KHL-zp-6jp" firstAttribute="leading" secondItem="dCS-sn-B3a" secondAttribute="leading" constant="22" id="S3l-WC-g6w"/>
-                    <constraint firstAttribute="bottom" secondItem="KHL-zp-6jp" secondAttribute="bottom" constant="26" id="X74-xF-AFV"/>
                     <constraint firstItem="u7l-Fz-3uc" firstAttribute="top" secondItem="dCS-sn-B3a" secondAttribute="top" constant="20" id="XAf-x9-6Oe"/>
                     <constraint firstItem="qol-Go-AJd" firstAttribute="leading" secondItem="dCS-sn-B3a" secondAttribute="leading" constant="20" id="cl2-zB-yPB"/>
                     <constraint firstAttribute="trailing" secondItem="qol-Go-AJd" secondAttribute="trailing" constant="20" id="d6E-bC-Oml"/>
                     <constraint firstAttribute="trailing" secondItem="KHL-zp-6jp" secondAttribute="trailing" constant="20" id="hyJ-sC-plT"/>
                     <constraint firstItem="qol-Go-AJd" firstAttribute="top" secondItem="u7l-Fz-3uc" secondAttribute="bottom" constant="15" id="iXN-Pa-tLK"/>
+                    <constraint firstItem="xEr-jr-9qR" firstAttribute="top" secondItem="qol-Go-AJd" secondAttribute="bottom" constant="28" id="n7B-Sk-Auy"/>
                 </constraints>
             </view>
         </window>

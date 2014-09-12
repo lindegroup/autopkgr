@@ -182,6 +182,11 @@ static NSString *errorMessageFromAutoPkgVerb(LGAutoPkgVerb verb)
         return nil;
     }
     
+    if (task.terminationReason == NSTaskTerminationReasonUncaughtSignal) {
+        DLog(@"AutoPkg run canceled by user.");
+        return nil;
+    }
+    
     NSError *error;
     NSString *errorMsg = errorMessageFromAutoPkgVerb(verb);
     NSString *errorDetails;
