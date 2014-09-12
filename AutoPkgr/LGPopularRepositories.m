@@ -182,6 +182,7 @@
         NSString *repo = [searchedRepos objectAtIndex:row];
         BOOL add = [object isEqual:@YES];
         NSString *message = [NSString stringWithFormat:@"%@ %@",add ? @"Adding":@"Removing",repo];
+        NSLog(@"%@",message);
         [_progressDelegate startProgressWithMessage:message];
         if (add) {
             [LGAutoPkgTask repoAdd:repo reply:^(NSError *error) {
