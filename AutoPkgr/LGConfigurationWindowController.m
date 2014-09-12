@@ -887,7 +887,7 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
         NSError *error;
         [SSKeychain setPassword:[smtpPassword stringValue] forService:kLGApplicationName account:[smtpUsername stringValue] error:&error];
         if (error) {
-            NSLog(@"Error while storing e-mail password in keychain: %@", error);
+            NSLog(@"Error while storing email password in keychain: %@", error);
         } else {
             NSLog(@"Stored email password in keychain.");
         }
