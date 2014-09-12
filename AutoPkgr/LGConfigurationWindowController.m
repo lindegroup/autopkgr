@@ -500,7 +500,7 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
         LGHostInfo *hostInfo = [[LGHostInfo alloc] init];
         [self stopProgress:error];
         if ([hostInfo gitInstalled]) {
-            NSLog(@"Git installed successfully!");
+            NSLog(@"Git installed successfully.");
             [installGitButton setEnabled:NO];
             [gitStatusLabel setStringValue:kLGGitInstalledLabel];
             [gitStatusIcon setImage:[NSImage imageNamed:NSImageNameStatusAvailable]];
@@ -517,7 +517,7 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
 {
     // and disable the button to prevent multiple clicks
     [installAutoPkgButton setEnabled:NO];
-    [self startProgressWithMessage:@"Installing newest version of AutoPkg"];
+    [self startProgressWithMessage:@"Installing newest version of AutoPkg..."];
 
     LGInstaller *installer = [[LGInstaller alloc] init];
     installer.progressDelegate = self;
@@ -526,7 +526,7 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
         LGHostInfo *hostInfo = [[LGHostInfo alloc] init];
         [self stopProgress:error];
         if ([hostInfo autoPkgInstalled]) {
-            NSLog(@"AutoPkg installed successfully!");
+            NSLog(@"AutoPkg installed successfully.");
             [autoPkgStatusLabel setStringValue:kLGAutoPkgInstalledLabel];
             [autoPkgStatusIcon setImage:[NSImage imageNamed:NSImageNameStatusAvailable]];
             [installAutoPkgButton setEnabled:NO];

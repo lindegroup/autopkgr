@@ -30,27 +30,27 @@
 - (BOOL)runGitInstaller:(NSError *__autoreleasing *)error
 {
     // download pkg from google code (source forge is almost impossible to reach)
-    [_progressDelegate updateProgress:@"Downloading git" progress:5.0];
+    [_progressDelegate updateProgress:@"Downloading Git..." progress:5.0];
     LGGitHubJSONLoader *jsonLoader = [[LGGitHubJSONLoader alloc] init];
 
-    // Get the latest AutoPkg PKG download URL
+    // Get the latest Git PKG download URL
     NSString *downloadURL = [jsonLoader getGitDownloadURL];
 
     NSString *tmpFile = [NSTemporaryDirectory() stringByAppendingPathComponent:[downloadURL lastPathComponent]];
 
-    [_progressDelegate updateProgress:@"Building Package" progress:25.0];
-    // Download AutoPkg to the temporary directory
+    [_progressDelegate updateProgress:@"Building Git installer package..." progress:25.0];
+    // Download Git to the temporary directory
     if (![[NSFileManager defaultManager] fileExistsAtPath:tmpFile]) {
         NSData *gitDMG = [[NSData alloc] initWithContentsOfURL:[NSURL URLWithString:downloadURL]];
         if (!gitDMG || ![gitDMG writeToFile:tmpFile atomically:YES]) {
-            DLog(@"Could not write the Git installer DMG to the system path");
+            DLog(@"Could not write the Git installer disk iamge to the system path.");
             return [LGError errorWithCode:kLGErrorInstallGit error:error];
         }
     }
 
     // Open DMG
     BOOL RC = NO;
-    [_progressDelegate updateProgress:@"Mounting DMG" progress:50.0];
+    [_progressDelegate updateProgress:@"Mounting Git disk image..." progress:50.0];
     if ([self mountDMG:tmpFile] && _mountPoint) {
         // install Pkg
         NSArray *contents = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:_mountPoint error:nil];
@@ -62,7 +62,7 @@
 
         NSString *installCommand = [NSString stringWithFormat:@"/usr/sbin/installer -pkg %@ -target /", [asVolume stringByAppendingPathComponent:pkg]];
         DLog(@" %@", installCommand);
-        [_progressDelegate updateProgress:@"Installing..." progress:75.0];
+        [_progressDelegate updateProgress:@"Installing Git..." progress:75.0];
         RC = [self runCommandAsRoot:installCommand error:error];
     }
 
@@ -72,7 +72,7 @@
         [[LGDefaults standardUserDefaults] setGitPath:@"/usr/local/git/bin/git"];
     }
 
-    [_progressDelegate updateProgress:@"Unmounting DMG..." progress:100.0];
+    [_progressDelegate updateProgress:@"Unmounting Git disk image..." progress:100.0];
     [self unmountVolume];
     return RC;
 }
@@ -81,14 +81,14 @@
 {
     LGGitHubJSONLoader *jsonLoader = [[LGGitHubJSONLoader alloc] init];
 
-    [_progressDelegate updateProgress:@"Downloading git" progress:5.0];
+    [_progressDelegate updateProgress:@"Downloading AutoPkg..." progress:5.0];
     // Get the latest AutoPkg PKG download URL
     NSString *downloadURL = [jsonLoader getLatestAutoPkgDownloadURL];
 
     // Get path for autopkg-x.x.x.pkg
     NSString *autoPkgPkg = [NSTemporaryDirectory() stringByAppendingPathComponent:[downloadURL lastPathComponent]];
 
-    [_progressDelegate updateProgress:@"Building Package" progress:25.0];
+    [_progressDelegate updateProgress:@"Building AutoPkg installer package..." progress:25.0];
     // Download AutoPkg to the temporary directory
     NSData *autoPkg = [[NSData alloc] initWithContentsOfURL:[NSURL URLWithString:downloadURL]];
     [autoPkg writeToFile:autoPkgPkg atomically:YES];
@@ -97,9 +97,9 @@
     NSString *command = [NSString stringWithFormat:@"/usr/sbin/installer -pkg %@ -target /", autoPkgPkg];
 
     // Install the AutoPkg PKG as root
-    [_progressDelegate updateProgress:@"Installing package" progress:75.0];
+    [_progressDelegate updateProgress:@"Installing AutoPkg..." progress:75.0];
     return [self runCommandAsRoot:command error:error];
-    [_progressDelegate updateProgress:@"Installing package" progress:100.0];
+    [_progressDelegate updateProgress:@"Installing AutoPkg..." progress:100.0];
 }
 
 - (void)installAutoPkg:(void (^)(NSError *error))reply
@@ -107,7 +107,7 @@
     NSOperationQueue *bgQueue = [[NSOperationQueue alloc] init];
     [bgQueue addOperationWithBlock:^{
         NSError *error;
-        [_progressDelegate startProgressWithMessage:@"Installing AutoPkg"];
+        [_progressDelegate startProgressWithMessage:@"Installing AutoPkg..."];
         [self runAutoPkgInstaller:&error];
         [_progressDelegate stopProgress:error];
         reply(error);
