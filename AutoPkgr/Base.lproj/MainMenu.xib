@@ -681,6 +681,12 @@
                         <action selector="showConfigurationWindow:" target="Voe-Tx-rLC" id="q4g-vL-fgF"/>
                     </connections>
                 </menuItem>
+                <menuItem title="Verbose Logs" alternate="YES" id="Y3C-Qa-kUT">
+                    <modifierMask key="keyEquivalentModifierMask" control="YES"/>
+                    <connections>
+                        <binding destination="SYv-Ba-SbG" name="value" keyPath="values.debug" id="Cb3-Sl-N5Q"/>
+                    </connections>
+                </menuItem>
                 <menuItem isSeparatorItem="YES" id="5vA-zg-b1N"/>
                 <menuItem title="Quit AutoPkgr" id="cuo-db-FBC">
                     <modifierMask key="keyEquivalentModifierMask"/>
@@ -690,5 +696,6 @@
                 </menuItem>
             </items>
         </menu>
+        <userDefaultsController representsSharedInstance="YES" id="SYv-Ba-SbG"/>
     </objects>
 </document>

@@ -25,15 +25,15 @@
 // Debug Logging Method
 void DLog(NSString *format, ...)
 {
-#if DEBUG
-    if (format) {
-        va_list args;
-        va_start(args, format);
-        NSString *str = [[NSString alloc] initWithFormat:format arguments:args];
-        va_end(args);
-        NSLog(@"%@", str);
+    if([[NSUserDefaults standardUserDefaults] boolForKey:@"debug"]){
+        if (format) {
+            va_list args;
+            va_start(args, format);
+            NSString *str = [[NSString alloc] initWithFormat:format arguments:args];
+            va_end(args);
+            NSLog(@"[DEBUG] %@", str);
+        }
     }
-#endif
 }
 
 
