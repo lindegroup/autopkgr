@@ -39,7 +39,7 @@
         smtpSession.port = (int)defaults.SMTPPort;
         
         if (TLS) {
-            NSLog(@"SSL/TLS is enabled for %@.", defaults.SMTPServer);
+            DLog(@"SSL/TLS is enabled for %@.", defaults.SMTPServer);
             // If the SMTP port is 465, use MCOConnectionTypeTLS.
             // Otherwise use MCOConnectionTypeStartTLS.
             if (smtpSession.port == 465) {
@@ -48,7 +48,7 @@
                 smtpSession.connectionType = MCOConnectionTypeStartTLS;
             }
         } else {
-            NSLog(@"SSL/TLS is _not_ enabled for %@.", defaults.SMTPServer);
+            DLog(@"SSL/TLS is _not_ enabled for %@.", defaults.SMTPServer);
             smtpSession.connectionType = MCOConnectionTypeClear;
         }
         
@@ -70,7 +70,7 @@
             } else {
                 // Only set the SMTP session password if the username exists
                 if (smtpSession.username != nil && ![smtpSession.username isEqual:@""]) {
-                    NSLog(@"Retrieved password from keychain for account %@.", smtpSession.username);
+                    DLog(@"Retrieved password from keychain for account %@.", smtpSession.username);
                     smtpSession.password = password ? password:@"";
                 }
             }
