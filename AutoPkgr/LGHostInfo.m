@@ -25,8 +25,11 @@
 #import "LGGitHubJSONLoader.h"
 #import "LGVersionComparator.h"
 
+NSString *const kLGOfficialGit = @"/usr/local/git/bin";
 NSString *const kLGCLIToolsGit =  @"/Library/Developer/CommandLineTools/usr/bin" ;
 NSString *const kLGXcodeGit = @"/Applications/Xcode.app/Contents/Developer/usr/bin/git";
+NSString *const kLGHomeBrewGit = @"/usr/local/bin";
+NSString *const kLGBoxenBrewGit = @"/opt/boxen/homebrew/bin";
 
 @implementation LGHostInfo
 
@@ -51,45 +54,47 @@ NSString *const kLGXcodeGit = @"/Applications/Xcode.app/Contents/Developer/usr/b
 {
     NSFileManager *fm = [[NSFileManager alloc] init];
     LGDefaults *defaults = [[LGDefaults alloc] init];
+    NSString *foundGitPath;
     
-    // First see if AutoPkg already has a GIT_PATH key set
-    // and if the executable still exists
+    // First see if AutoPkg already has a GIT_PATH key set,
+    // and if the executable still exists.
+    BOOL RC = NO;
     BOOL isDir;
-    NSString *setGit = [defaults gitPath];
-    if ([fm fileExistsAtPath:setGit isDirectory:&isDir] && !isDir) {
-        if ([fm isExecutableFileAtPath:setGit]) {
-            return YES;
+    NSString *currentGit = [defaults gitPath];
+    if ([fm fileExistsAtPath:currentGit isDirectory:&isDir] && !isDir) {
+        if ([fm isExecutableFileAtPath:currentGit]) {
+            foundGitPath = currentGit;
+             RC = YES;
+        }
+    } else {
+        // If nothing is set, then iterate through the list
+        // of known git paths trying to locate one.
+        for (NSString *path in [self knownGitPaths]) {
+            NSString *gitExec = [path stringByAppendingPathComponent:@"git"];
+            if ([fm isExecutableFileAtPath:gitExec]) {
+                // if we found a viable git binary write it into AutoPkg's preferences
+                foundGitPath = gitExec;
+                defaults.gitPath = gitExec;
+                RC = YES;
+            }
         }
     }
     
-    // If nothing is set, then iterate through the list
-    // of known git paths trying to locate one.
-    for (NSString *path in [self knownGitPaths]) {
-        NSString *gitExec = [path stringByAppendingPathComponent:@"git"];
-        if ([fm isExecutableFileAtPath:gitExec]) {
-            if ([path isEqualToString:kLGCLIToolsGit]) {
-                DLog(@"Using Git was installed via Xcode command line tools.");
-            } else if ([path isEqualToString:kLGXcodeGit]){
-                DLog(@"Using Git from XCode Applicaiton.");
-            } else {
-                DLog(@"Using Git binary at %@", gitExec);
-            }
-            
-            // if we found a viable git binary write it into AutoPkg's preferences
-            defaults.gitPath = gitExec;
-            return YES;
-        }
+    if ([foundGitPath isEqualToString:kLGOfficialGit]) {
+        DLog(@"Using Official Git");
+    } else if ([foundGitPath isEqualToString:kLGCLIToolsGit]) {
+        DLog(@"Using Git installed via Xcode command line tools.");
+    } else if ([foundGitPath isEqualToString:kLGXcodeGit]) {
+        DLog(@"Using Git from XCode Applicaiton.");
+    } else if ( [foundGitPath isEqualToString:kLGHomeBrewGit]) {
+        DLog(@"Using Git from Homebrew.");
+    } else if ([foundGitPath isEqualToString:kLGBoxenBrewGit]) {
+        DLog(@"Using Git from boxen homebrew.");
+    } else {
+        DLog(@"Using Git binary at %@", foundGitPath);
     }
-
-    NSPredicate *gitInstallPredicate = [NSPredicate predicateWithFormat:@"SELF CONTAINS[cd] 'GitOSX.Installer'"];
-    NSArray *receipts = [fm contentsOfDirectoryAtPath:@"/var/db/receipts" error:nil];
-
-    if ([receipts filteredArrayUsingPredicate:gitInstallPredicate].count) {
-        DLog(@"Git was installed via the official Git installer.");
-        return YES;
-    }
-
-    return NO;
+    
+    return RC;
 }
 
 - (NSString *)getAutoPkgVersion
@@ -151,11 +156,12 @@ NSString *const kLGXcodeGit = @"/Applications/Xcode.app/Contents/Developer/usr/b
 
 - (NSArray *)knownGitPaths
 {
-    return @[ @"/usr/local/git/bin",
-              @"/opt/boxen/homebrew/bin",
-              @"/usr/local/bin",
+    return @[ kLGOfficialGit,
+              kLGBoxenBrewGit,
+              kLGHomeBrewGit,
               kLGCLIToolsGit,
-              kLGXcodeGit];
+              kLGXcodeGit
+              ];
 }
 
 @end

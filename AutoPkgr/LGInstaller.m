@@ -162,11 +162,13 @@
     [task waitUntilExit];
 
     NSData *data = [[task.standardOutput fileHandleForReading] readDataToEndOfFile];
+
     if (data) {
-        NSDictionary *dict = CFBridgingRelease(CFPropertyListCreateFromXMLData(kCFAllocatorDefault,
-                                                                               (__bridge CFDataRef)(data),
-                                                                               kCFPropertyListImmutable,
-                                                                               NULL));
+        NSPropertyListFormat format;
+        NSDictionary *dict = [NSPropertyListSerialization propertyListFromData:data
+                                                              mutabilityOption:NSPropertyListImmutable
+                                                                        format:&format
+                                                              errorDescription:nil];
 
         _mountPoint = dict[@"system-entities"][1][@"mount-point"];
     }

@@ -32,7 +32,7 @@
 #import "LGVersionComparator.h"
 #import "SSKeychain.h"
 
-@interface LGConfigurationWindowController ()<LGProgressDelegate> {
+@interface LGConfigurationWindowController () <LGProgressDelegate> {
     LGDefaults *defaults;
 }
 
@@ -263,22 +263,24 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
         }
     }
 
+    LGHostInfo *hostInfo = [[LGHostInfo alloc] init];
+    BOOL autoPkgInstalled = [hostInfo autoPkgInstalled];
+    BOOL gitInstalled = [hostInfo gitInstalled];
+
+    if (gitInstalled) {
+        [installGitButton setEnabled:NO];
+        [gitStatusLabel setStringValue:kLGGitInstalledLabel];
+        [gitStatusIcon setImage:[NSImage imageNamed:NSImageNameStatusAvailable]];
+    } else {
+        [installGitButton setEnabled:YES];
+        [gitStatusLabel setStringValue:kLGGitNotInstalledLabel];
+        [gitStatusIcon setImage:[NSImage imageNamed:NSImageNameStatusUnavailable]];
+    }
+
     NSOperationQueue *bgQueue = [[NSOperationQueue alloc] init];
     [bgQueue addOperationWithBlock:^{
-        // Create an instance of the LGHostInfo class
-        LGHostInfo *hostInfo = [[LGHostInfo alloc] init];
-
-        if ([hostInfo gitInstalled]) {
-            [installGitButton setEnabled:NO];
-            [gitStatusLabel setStringValue:kLGGitInstalledLabel];
-            [gitStatusIcon setImage:[NSImage imageNamed:NSImageNameStatusAvailable]];
-        } else {
-            [installGitButton setEnabled:YES];
-            [gitStatusLabel setStringValue:kLGGitNotInstalledLabel];
-            [gitStatusIcon setImage:[NSImage imageNamed:NSImageNameStatusUnavailable]];
-        }
-
-        if ([hostInfo autoPkgInstalled]) {
+        // Since checking for an update can take some time, run it in the background
+        if (autoPkgInstalled) {
             BOOL updateAvailable = [hostInfo autoPkgUpdateAvailable];
             if (updateAvailable) {
                 [installAutoPkgButton setEnabled:YES];
@@ -297,20 +299,9 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
         }
     }];
 
-    // Enable tools buttons if directories exist
-    BOOL isDir;
-    if ([[NSFileManager defaultManager] fileExistsAtPath:defaults.munkiRepo isDirectory:&isDir] && isDir) {
-        [openLocalMunkiRepoFolderButton setEnabled:YES];
-    }
-
-    _popRepoTableViewHandler.progressDelegate = self;
-    
-    // Synchronize with the defaults database
-    [defaults synchronize];
-    
     // Update AutoPkg recipe repos when the application launches
     // if the user has enabled automatic repo updates
-    if (defaults.checkForRepoUpdatesAutomaticallyEnabled) {
+    if (defaults.checkForRepoUpdatesAutomaticallyEnabled && gitInstalled && autoPkgInstalled) {
         [_updateRepoNowButton setEnabled:NO];
         [_checkAppsNowButton setEnabled:NO];
         [_updateRepoNowButton setTitle:@"Update in Progress..."];
@@ -320,6 +311,17 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
             [_checkAppsNowButton setEnabled:YES];
         }];
     }
+
+    // Enable tools buttons if directories exist
+    BOOL isDir;
+    if ([[NSFileManager defaultManager] fileExistsAtPath:defaults.munkiRepo isDirectory:&isDir] && isDir) {
+        [openLocalMunkiRepoFolderButton setEnabled:YES];
+    }
+
+    _popRepoTableViewHandler.progressDelegate = self;
+
+    // Synchronize with the defaults database
+    [defaults synchronize];
 }
 
 - (IBAction)sendTestEmail:(id)sender
@@ -464,7 +466,6 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
 
     // Synchronize with the defaults database
     [defaults synchronize];
-
 }
 
 - (void)runCommandAsRoot:(NSString *)command
@@ -490,7 +491,6 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
 {
     // Change the button label to "Installing..."
     // and disable the button to prevent multiple clicks
-    [installGitButton setTitle:@"Installing..."];
     [installGitButton setEnabled:NO];
 
     LGInstaller *installer = [[LGInstaller alloc] init];
@@ -504,6 +504,7 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
             [gitStatusLabel setStringValue:kLGGitInstalledLabel];
             [gitStatusIcon setImage:[NSImage imageNamed:NSImageNameStatusAvailable]];
         } else {
+            NSLog(@"%@",error.localizedDescription);
             [installGitButton setEnabled:YES];
             [gitStatusLabel setStringValue:kLGGitNotInstalledLabel];
             [gitStatusIcon setImage:[NSImage imageNamed:NSImageNameStatusUnavailable]];
@@ -513,9 +514,7 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
 
 - (IBAction)installAutoPkg:(id)sender
 {
-    // Change the button label to "Installing..."
     // and disable the button to prevent multiple clicks
-    [installAutoPkgButton setTitle:@"Installing..."];
     [installAutoPkgButton setEnabled:NO];
     [self startProgressWithMessage:@"Installing newest version of AutoPkg"];
 
@@ -523,8 +522,8 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
     installer.progressDelegate = self;
     [installer installAutoPkg:^(NSError *error) {
         // Update the autoPkgStatus icon and label if it installed successfully
-        [self stopProgress:error];
         LGHostInfo *hostInfo = [[LGHostInfo alloc] init];
+        [self stopProgress:error];
         if ([hostInfo autoPkgInstalled]) {
             NSLog(@"AutoPkg installed successfully!");
             [autoPkgStatusLabel setStringValue:kLGAutoPkgInstalledLabel];
@@ -563,8 +562,8 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
 {
     BOOL isDir;
     NSString *autoPkgRecipeReposFolder = [defaults autoPkgRecipeRepoDir];
-    autoPkgRecipeReposFolder = autoPkgRecipeReposFolder ? autoPkgRecipeReposFolder:[@"~/Library/AutoPkg" stringByExpandingTildeInPath];
-    
+    autoPkgRecipeReposFolder = autoPkgRecipeReposFolder ? autoPkgRecipeReposFolder : [@"~/Library/AutoPkg" stringByExpandingTildeInPath];
+
     if ([[NSFileManager defaultManager] fileExistsAtPath:autoPkgRecipeReposFolder isDirectory:&isDir] && isDir) {
         NSURL *autoPkgRecipeReposFolderURL = [NSURL fileURLWithPath:autoPkgRecipeReposFolder];
         [[NSWorkspace sharedWorkspace] openURL:autoPkgRecipeReposFolderURL];
@@ -586,7 +585,7 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
 {
     BOOL isDir;
     NSString *autoPkgCacheFolder = [defaults autoPkgCacheDir];
-    autoPkgCacheFolder = autoPkgCacheFolder ? autoPkgCacheFolder:[@"~/Library/AutoPkg" stringByExpandingTildeInPath];
+    autoPkgCacheFolder = autoPkgCacheFolder ? autoPkgCacheFolder : [@"~/Library/AutoPkg" stringByExpandingTildeInPath];
 
     if ([[NSFileManager defaultManager] fileExistsAtPath:autoPkgCacheFolder isDirectory:&isDir] && isDir) {
         NSURL *autoPkgCacheFolderURL = [NSURL fileURLWithPath:autoPkgCacheFolder];
@@ -609,8 +608,8 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
 {
     BOOL isDir;
     NSString *autoPkgRecipeOverridesFolder = [defaults autoPkgRecipeOverridesDir];
-    autoPkgRecipeOverridesFolder = autoPkgRecipeOverridesFolder ? autoPkgRecipeOverridesFolder:[@"~/Library/AutoPkg" stringByExpandingTildeInPath];
-    
+    autoPkgRecipeOverridesFolder = autoPkgRecipeOverridesFolder ? autoPkgRecipeOverridesFolder : [@"~/Library/AutoPkg" stringByExpandingTildeInPath];
+
     if ([[NSFileManager defaultManager] fileExistsAtPath:autoPkgRecipeOverridesFolder isDirectory:&isDir] && isDir) {
         NSURL *autoPkgRecipeOverridesFolderURL = [NSURL fileURLWithPath:autoPkgRecipeOverridesFolder];
         [[NSWorkspace sharedWorkspace] openURL:autoPkgRecipeOverridesFolderURL];
@@ -632,8 +631,7 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
     NSOpenPanel *chooseDialog = [self setupOpenPanel];
 
     // Set the default directory to the current setting for munkiRepo, else /Users/Shared
-    [chooseDialog setDirectoryURL:[NSURL URLWithString:defaults.munkiRepo ?
-                                   defaults.munkiRepo : @"/Users/Shared"]];
+    [chooseDialog setDirectoryURL:[NSURL URLWithString:defaults.munkiRepo ? defaults.munkiRepo : @"/Users/Shared"]];
 
     // Display the dialog. If the "Choose" button was
     // pressed, process the directory path.
@@ -661,8 +659,7 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
     NSOpenPanel *chooseDialog = [self setupOpenPanel];
 
     // Set the default directory to the current setting for autoPkgRecipeRepoDir, else ~/Library/AutoPkg
-    [chooseDialog setDirectoryURL:[NSURL URLWithString:defaults.autoPkgRecipeRepoDir ?
-                                   defaults.autoPkgRecipeRepoDir : [@"~/Library/AutoPkg" stringByExpandingTildeInPath]]];
+    [chooseDialog setDirectoryURL:[NSURL URLWithString:defaults.autoPkgRecipeRepoDir ? defaults.autoPkgRecipeRepoDir : [@"~/Library/AutoPkg" stringByExpandingTildeInPath]]];
 
     // Display the dialog. If the "Choose" button was
     // pressed, process the directory path.
@@ -690,8 +687,7 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
     NSOpenPanel *chooseDialog = [self setupOpenPanel];
 
     // Set the default directory to the current setting for autoPkgCacheDir, else ~/Library/AutoPkg
-    [chooseDialog setDirectoryURL:[NSURL URLWithString:defaults.autoPkgCacheDir ?
-                                   defaults.autoPkgCacheDir : [@"~/Library/AutoPkg" stringByExpandingTildeInPath]]];
+    [chooseDialog setDirectoryURL:[NSURL URLWithString:defaults.autoPkgCacheDir ? defaults.autoPkgCacheDir : [@"~/Library/AutoPkg" stringByExpandingTildeInPath]]];
 
     // Display the dialog. If the "Choose" button was
     // pressed, process the directory path.
@@ -719,8 +715,7 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
     NSOpenPanel *chooseDialog = [self setupOpenPanel];
 
     // Set the default directory to the current setting for autoPkgRecipeOverridesDir, else ~/Library/AutoPkg
-    [chooseDialog setDirectoryURL:[NSURL URLWithString:defaults.autoPkgRecipeOverridesDir ?
-                                   defaults.autoPkgRecipeOverridesDir : [@"~/Library/AutoPkg" stringByExpandingTildeInPath]]];
+    [chooseDialog setDirectoryURL:[NSURL URLWithString:defaults.autoPkgRecipeOverridesDir ? defaults.autoPkgRecipeOverridesDir : [@"~/Library/AutoPkg" stringByExpandingTildeInPath]]];
 
     // Display the dialog. If the "Choose" button was
     // pressed, process the directory path.
@@ -747,8 +742,8 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
 {
     // TODO: Input validation + success/failure notification
     NSString *repo = [repoURLToAdd stringValue];
-    [self startProgressWithMessage:[NSString stringWithFormat:@"Adding %@",repo]];
-    
+    [self startProgressWithMessage:[NSString stringWithFormat:@"Adding %@", repo]];
+
     [LGAutoPkgTask repoAdd:repo reply:^(NSError *error) {
         [[NSOperationQueue mainQueue] addOperationWithBlock:^{
             [self stopProgress:error];
@@ -763,7 +758,7 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
 {
     [self startProgressWithMessage:@"Updating AutoPkg recipe repos."];
     [self.updateRepoNowButton setEnabled:NO];
-    
+
     [LGAutoPkgTask repoUpdate:^(NSError *error) {
         [self stopProgress:error];
         [self.updateRepoNowButton setEnabled:YES];
@@ -788,17 +783,18 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
 - (IBAction)checkAppsNow:(id)sender
 {
     NSString *recipeList = [LGApplications recipeList];
-    
+
     [self startProgressWithMessage:@"Running selected AutoPkg recipes."];
     [LGAutoPkgTask runRecipeList:recipeList
-                        progress:^(NSString *message, double taskProgress) {
+        progress:^(NSString *message, double taskProgress) {
                             [self updateProgress:message progress:taskProgress];
-                            
-                        } reply:^(NSDictionary *report,NSError *error) {
+        }
+        reply:^(NSDictionary *report, NSError *error) {
                             [self stopProgress:error];
                             LGEmailer *emailer = [LGEmailer new];
                             [emailer sendEmailForReport:report error:error];
-                        }];}
+        }];
+}
 
 - (void)autoPkgRunCompleteNotificationRecieved:(NSNotification *)notification
 {
@@ -834,7 +830,6 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
 
     return openPanel;
 }
-
 
 - (void)controlTextDidEndEditing:(NSNotification *)notification
 {
@@ -1030,7 +1025,8 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
     }];
 }
 
-- (void)updateProgress:(NSString *)message progress:(double)progress{
+- (void)updateProgress:(NSString *)message progress:(double)progress
+{
     [_menuProgressDelegate updateProgress:message progress:progress];
     if (message.length < 100) {
         [[NSOperationQueue mainQueue] addOperationWithBlock:^{
@@ -1050,8 +1046,7 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
         if (neededFixing > 0) {
             NSAlert *alert = [NSAlert new];
             alert.messageText = [NSString stringWithFormat:@"%ld problems were found in the AutoPkg preference file", neededFixing];
-            alert.informativeText = rc ? @"AutoPkgr was able to repair the preference file. No further action is required." :
-                                         @"AutoPkgr could not repair the preference file. If the problem persists open an issue on the AutoPkgr GitHub page.";
+            alert.informativeText = rc ? @"AutoPkgr was able to repair the preference file. No further action is required." : @"AutoPkgr could not repair the preference file. If the problem persists open an issue on the AutoPkgr GitHub page.";
             [alert beginSheetModalForWindow:self.window
                               modalDelegate:self
                              didEndSelector:nil
