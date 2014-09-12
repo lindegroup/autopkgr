@@ -339,14 +339,14 @@ NSString *autopkg()
     for (NSString *recipe in recipes) {
         [fullRecipes addObject:recipe];
     }
-    
+
     [fullRecipes addObjectsFromArray:@[ @"-v", @"--report-plist" ]];
     self.arguments = [NSArray arrayWithArray:fullRecipes];
-    
+
     [self setRunStatusUpdate:^(NSString *message, double progressUpdate) {
         progress(message);
     }];
-    
+
     [self launchInBackground:^(NSError *error) {
         reply(error);
     }];
