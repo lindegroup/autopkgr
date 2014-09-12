@@ -159,8 +159,8 @@ NSString *const kLGBoxenBrewGit = @"/opt/boxen/homebrew/bin";
     return @[ kLGOfficialGit,
               kLGBoxenBrewGit,
               kLGHomeBrewGit,
+              kLGXcodeGit,
               kLGCLIToolsGit,
-              kLGXcodeGit
               ];
 }
 
