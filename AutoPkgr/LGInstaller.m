@@ -29,9 +29,6 @@
 
 - (BOOL)runGitInstaller:(NSError *__autoreleasing *)error
 {
-    // download pkg from google code (source forge is almost impossible to reach)
-
-    
     LGGitHubJSONLoader *jsonLoader = [[LGGitHubJSONLoader alloc] init];
     NSString *downloadURL = [jsonLoader getGitDownloadURL];
     
@@ -44,8 +41,9 @@
         NSData *gitDMG = [[NSData alloc] initWithContentsOfURL:[NSURL URLWithString:downloadURL]];
         
         [_progressDelegate updateProgress:@"Building Git installer package..." progress:25.0];
+        // If we were unable to download the file, or write it to disk error out.
         if (!gitDMG || ![gitDMG writeToFile:tmpFile atomically:YES]) {
-            NSLog(@"Could not write the Git installer disk iamge to the system path.");
+            NSLog(@"There was a problem downloading the installer.");
             return [LGError errorWithCode:kLGErrorInstallGit error:error];
         }
     }
@@ -58,11 +56,12 @@
         NSArray *contents = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:_mountPoint error:nil];
         DLog(@"Contents of DMG %@ ",contents);
         
+        // The predicate here is contains so we get both .pkg and .mpkg files
         NSPredicate *predicate = [NSPredicate predicateWithFormat:@"pathExtension CONTAINS[cd] 'pkg'"];
 
         NSString *pkg = [[contents filteredArrayUsingPredicate:predicate] firstObject];
         if ( pkg ) {
-            DLog(@"Using .pkg %@",pkg);
+            DLog(@"Found installer package: %@",pkg);
         } else {
             DLog(@"Could not locate .pkg file.");
         }
@@ -70,24 +69,24 @@
         NSString *appleScriptEscapedPath = [[_mountPoint stringByAppendingPathComponent:pkg] stringByReplacingOccurrencesOfString:@" " withString:@"\\\\ "];
         
         NSString *installCommand = [NSString stringWithFormat:@"/usr/sbin/installer -pkg %@ -target /", appleScriptEscapedPath];
-        DLog(@"Running package install command: %@", installCommand);
+        NSLog(@"Running package install command: %@", installCommand);
         [_progressDelegate updateProgress:@"Installing Git..." progress:75.0];
         
         success = [self runCommandAsRoot:installCommand error:error];
     }
     
-    LGDefaults *defaults = [[LGDefaults alloc] init];
-    
     if (success) {
+        LGDefaults *defaults = [[LGDefaults alloc] init];
+
         // If the installer was successful here set the autopkg GIT_PATH key
         if (floor(NSAppKitVersionNumber) > NSAppKitVersionNumber10_8) {
             // Mavericks and beyond
             defaults.gitPath = @"/usr/local/git/bin/git";
         } else {
-            // Mountian Lion compatible
+            // Mountain Lion compatible
             defaults.gitPath = @"/usr/bin/git";
         }
-        DLog(@"Setting the Git path for AutoPkg to %@",defaults.gitPath);
+        NSLog(@"Setting the Git path for AutoPkg to %@",defaults.gitPath);
     }
 
     [_progressDelegate updateProgress:@"Unmounting Git disk image..." progress:100.0];
@@ -135,7 +134,7 @@
 
 - (void)updateAutoPkgr:(void (^)(NSError *error))reply
 {
-    // possibly do what we need to with sparkle //
+    // TODO: possibly do what we need to with sparkle //
 }
 
 #pragma mark - Util Methods
@@ -193,7 +192,7 @@
         if(errorStr) {
             DLog(@"Error creating plist %@",errorStr);
         } else {
-            DLog(@"hdituil output dictionary %@",dict);
+            DLog(@"hdiutil output dictionary: %@",dict);
         }
         
         for ( NSDictionary *d in dict[@"system-entities"]){
@@ -207,7 +206,7 @@
         NSLog(@"Mounting installer DMG to %@",_mountPoint);
 
     } else {
-        DLog(@"There was a problem with the stdout of the hdituil process");
+        DLog(@"There was a problem retrieving the standard output of the hdiutil process");
     }
     
     return task.terminationStatus == 0;

@@ -74,7 +74,6 @@ NSString *const kLGBoxenBrewGit = @"/opt/boxen/homebrew/bin";
             if ([fm isExecutableFileAtPath:gitExec]) {
                 // if we found a viable git binary write it into AutoPkg's preferences
                 foundGitPath = gitExec;
-                defaults.gitPath = gitExec;
                 success = YES;
             }
         }
@@ -94,6 +93,7 @@ NSString *const kLGBoxenBrewGit = @"/opt/boxen/homebrew/bin";
         DLog(@"Using Git binary at %@", foundGitPath);
     }
 
+    defaults.gitPath = foundGitPath;
     return success;
 }
 
