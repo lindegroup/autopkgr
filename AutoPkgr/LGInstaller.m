@@ -30,20 +30,22 @@
 - (BOOL)runGitInstaller:(NSError *__autoreleasing *)error
 {
     // download pkg from google code (source forge is almost impossible to reach)
-    [_progressDelegate updateProgress:@"Downloading Git..." progress:5.0];
+
+    
     LGGitHubJSONLoader *jsonLoader = [[LGGitHubJSONLoader alloc] init];
-
-    // Get the latest Git PKG download URL
     NSString *downloadURL = [jsonLoader getGitDownloadURL];
-
+    
     NSString *tmpFile = [NSTemporaryDirectory() stringByAppendingPathComponent:[downloadURL lastPathComponent]];
-
-    [_progressDelegate updateProgress:@"Building Git installer package..." progress:25.0];
+    DLog(@"Setting download location to: %@",tmpFile);
+    
     // Download Git to the temporary directory
     if (![[NSFileManager defaultManager] fileExistsAtPath:tmpFile]) {
+        [_progressDelegate updateProgress:@"Downloading Git..." progress:5.0];
         NSData *gitDMG = [[NSData alloc] initWithContentsOfURL:[NSURL URLWithString:downloadURL]];
+        
+        [_progressDelegate updateProgress:@"Building Git installer package..." progress:25.0];
         if (!gitDMG || ![gitDMG writeToFile:tmpFile atomically:YES]) {
-            DLog(@"Could not write the Git installer disk iamge to the system path.");
+            NSLog(@"Could not write the Git installer disk iamge to the system path.");
             return [LGError errorWithCode:kLGErrorInstallGit error:error];
         }
     }
@@ -54,22 +56,38 @@
     if ([self mountDMG:tmpFile] && _mountPoint) {
         // install Pkg
         NSArray *contents = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:_mountPoint error:nil];
-
-        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"pathExtension == 'pkg'"];
+        DLog(@"Contents of DMG %@ ",contents);
+        
+        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"pathExtension CONTAINS[cd] 'pkg'"];
 
         NSString *pkg = [[contents filteredArrayUsingPredicate:predicate] firstObject];
-        NSString *asVolume = [_mountPoint stringByReplacingOccurrencesOfString:@" " withString:@"\\\\ "];
-
-        NSString *installCommand = [NSString stringWithFormat:@"/usr/sbin/installer -pkg %@ -target /", [asVolume stringByAppendingPathComponent:pkg]];
-        DLog(@" %@", installCommand);
+        if ( pkg ) {
+            DLog(@"Using .pkg %@",pkg);
+        } else {
+            DLog(@"Could not locate .pkg file.");
+        }
+        // Since this is getting invoked as an apple script wrapping in sh -c  you need 4 forward slashes to correctly escape the whitespace
+        NSString *appleScriptEscapedPath = [[_mountPoint stringByAppendingPathComponent:pkg] stringByReplacingOccurrencesOfString:@" " withString:@"\\\\ "];
+        
+        NSString *installCommand = [NSString stringWithFormat:@"/usr/sbin/installer -pkg %@ -target /", appleScriptEscapedPath];
+        DLog(@"Running package install command: %@", installCommand);
         [_progressDelegate updateProgress:@"Installing Git..." progress:75.0];
+        
         RC = [self runCommandAsRoot:installCommand error:error];
     }
-
+    
+    LGDefaults *defaults = [[LGDefaults alloc] init];
+    
     if (RC) {
-        // If the installer was performed from here
-        // set the autopkg GIT_PATH key
-        [[LGDefaults standardUserDefaults] setGitPath:@"/usr/local/git/bin/git"];
+        // If the installer was successful here set the autopkg GIT_PATH key
+        if (floor(NSAppKitVersionNumber) > NSAppKitVersionNumber10_8) {
+            // Mavericks and beyond
+            defaults.gitPath = @"/usr/local/git/bin/git";
+        } else {
+            // Mountian Lion compatible
+            defaults.gitPath = @"/usr/bin/git";
+        }
+        DLog(@"Setting the Git path for AutoPkg to %@",defaults.gitPath);
     }
 
     [_progressDelegate updateProgress:@"Unmounting Git disk image..." progress:100.0];
@@ -162,16 +180,35 @@
     [task waitUntilExit];
 
     NSData *data = [[task.standardOutput fileHandleForReading] readDataToEndOfFile];
-
+    
     if (data) {
+        NSString *errorStr;
         NSPropertyListFormat format;
         NSDictionary *dict = [NSPropertyListSerialization propertyListFromData:data
                                                               mutabilityOption:NSPropertyListImmutable
                                                                         format:&format
-                                                              errorDescription:nil];
+                                                              errorDescription:&errorStr];
+        
+        if(errorStr) {
+            DLog(@"Error creating plist %@",errorStr);
+        } else {
+            DLog(@"hdituil output dictionary %@",dict);
+        }
+        
+        for ( NSDictionary *d in dict[@"system-entities"]){
+            NSString *mountPoint = d[@"mount-point"];
+            if (mountPoint) {
+                _mountPoint = mountPoint;
+                break;
+            }
+        }
 
-        _mountPoint = dict[@"system-entities"][1][@"mount-point"];
+        NSLog(@"Mounting installer DMG to %@",_mountPoint);
+
+    } else {
+        DLog(@"There was a problem with the stdout of the hdituil process");
     }
+    
     return task.terminationStatus == 0;
 }
 @end
