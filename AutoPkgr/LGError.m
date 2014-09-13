@@ -21,6 +21,7 @@
 
 #import "LGError.h"
 #import "LGConstants.h"
+#import <syslog.h>
 
 // Debug Logging Method
 void DLog(NSString *format, ...)
@@ -29,9 +30,8 @@ void DLog(NSString *format, ...)
         if (format) {
             va_list args;
             va_start(args, format);
-            NSString *str = [[NSString alloc] initWithFormat:format arguments:args];
+            NSLogv([@"[DEBUG] "stringByAppendingString:format], args);
             va_end(args);
-            NSLog(@"[DEBUG] %@", str);
         }
     }
 }
