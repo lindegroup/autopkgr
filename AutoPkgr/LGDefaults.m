@@ -48,7 +48,7 @@
 }
 
 #pragma mark
-#pragma mark EMail
+#pragma mark Email
 - (NSString *)SMTPServer
 {
     return [self objectForKey:kLGSMTPServer];

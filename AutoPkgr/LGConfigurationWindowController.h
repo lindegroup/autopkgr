@@ -108,6 +108,5 @@
 - (IBAction)cancelAutoPkgRun:(id)sender;
 
 - (void)runCommandAsRoot:(NSString *)command;
-- (void)downloadAndInstallAutoPkg;
 
 @end

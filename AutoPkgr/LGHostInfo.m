@@ -93,7 +93,7 @@ NSString *const kLGBoxenBrewGit = @"/opt/boxen/homebrew/bin";
     } else {
         DLog(@"Using Git binary at %@", foundGitPath);
     }
-    
+
     return RC;
 }
 

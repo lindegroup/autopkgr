@@ -682,7 +682,7 @@
                     </connections>
                 </menuItem>
                 <menuItem title="Verbose Logs" alternate="YES" id="Y3C-Qa-kUT">
-                    <modifierMask key="keyEquivalentModifierMask" control="YES"/>
+                    <modifierMask key="keyEquivalentModifierMask" option="YES"/>
                     <connections>
                         <binding destination="SYv-Ba-SbG" name="value" keyPath="values.debug" id="Cb3-Sl-N5Q"/>
                     </connections>

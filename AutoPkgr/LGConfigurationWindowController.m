@@ -530,7 +530,7 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
             [autoPkgStatusLabel setStringValue:kLGAutoPkgInstalledLabel];
             [autoPkgStatusIcon setImage:[NSImage imageNamed:NSImageNameStatusAvailable]];
             [installAutoPkgButton setEnabled:NO];
-        }else{
+        } else {
             [autoPkgStatusLabel setStringValue:kLGAutoPkgNotInstalledLabel];
             [autoPkgStatusIcon setImage:[NSImage imageNamed:NSImageNameStatusUnavailable]];
             [installAutoPkgButton setEnabled:YES];
