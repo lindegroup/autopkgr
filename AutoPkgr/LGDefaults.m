@@ -43,8 +43,8 @@
 
 - (BOOL)synchronize
 {
-    BOOL RC = [super synchronize] && CFPreferencesAppSynchronize((__bridge CFStringRef)(kLGAutoPkgPreferenceDomain));
-    return RC;
+    BOOL success = [super synchronize] && CFPreferencesAppSynchronize((__bridge CFStringRef)(kLGAutoPkgPreferenceDomain));
+    return success;
 }
 
 #pragma mark

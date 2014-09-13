@@ -51,7 +51,7 @@
     }
 
     // Open DMG
-    BOOL RC = NO;
+    BOOL success = NO;
     [_progressDelegate updateProgress:@"Mounting Git disk image..." progress:50.0];
     if ([self mountDMG:tmpFile] && _mountPoint) {
         // install Pkg
@@ -73,12 +73,12 @@
         DLog(@"Running package install command: %@", installCommand);
         [_progressDelegate updateProgress:@"Installing Git..." progress:75.0];
         
-        RC = [self runCommandAsRoot:installCommand error:error];
+        success = [self runCommandAsRoot:installCommand error:error];
     }
     
     LGDefaults *defaults = [[LGDefaults alloc] init];
     
-    if (RC) {
+    if (success) {
         // If the installer was successful here set the autopkg GIT_PATH key
         if (floor(NSAppKitVersionNumber) > NSAppKitVersionNumber10_8) {
             // Mavericks and beyond
@@ -92,7 +92,7 @@
 
     [_progressDelegate updateProgress:@"Unmounting Git disk image..." progress:100.0];
     [self unmountVolume];
-    return RC;
+    return success;
 }
 
 - (BOOL)runAutoPkgInstaller:(NSError *__autoreleasing *)error
@@ -116,8 +116,9 @@
 
     // Install the AutoPkg PKG as root
     [_progressDelegate updateProgress:@"Installing AutoPkg..." progress:75.0];
-    return [self runCommandAsRoot:command error:error];
-    [_progressDelegate updateProgress:@"Installing AutoPkg..." progress:100.0];
+    BOOL success = [self runCommandAsRoot:command error:error];
+    [_progressDelegate updateProgress:@"AutoPkg installation complete." progress:100.0];
+    return success;
 }
 
 - (void)installAutoPkg:(void (^)(NSError *error))reply

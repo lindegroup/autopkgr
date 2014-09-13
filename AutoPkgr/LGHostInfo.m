@@ -58,13 +58,13 @@ NSString *const kLGBoxenBrewGit = @"/opt/boxen/homebrew/bin";
     
     // First see if AutoPkg already has a GIT_PATH key set,
     // and if the executable still exists.
-    BOOL RC = NO;
+    BOOL success = NO;
     BOOL isDir;
     NSString *currentGit = [defaults gitPath];
     if ([fm fileExistsAtPath:currentGit isDirectory:&isDir] && !isDir) {
         if ([fm isExecutableFileAtPath:currentGit]) {
             foundGitPath = currentGit;
-             RC = YES;
+             success = YES;
         }
     } else {
         // If nothing is set, then iterate through the list
@@ -75,7 +75,7 @@ NSString *const kLGBoxenBrewGit = @"/opt/boxen/homebrew/bin";
                 // if we found a viable git binary write it into AutoPkg's preferences
                 foundGitPath = gitExec;
                 defaults.gitPath = gitExec;
-                RC = YES;
+                success = YES;
             }
         }
     }
@@ -94,7 +94,7 @@ NSString *const kLGBoxenBrewGit = @"/opt/boxen/homebrew/bin";
         DLog(@"Using Git binary at %@", foundGitPath);
     }
 
-    return RC;
+    return success;
 }
 
 - (NSString *)getAutoPkgVersion
