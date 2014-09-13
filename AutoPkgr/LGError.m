@@ -160,7 +160,7 @@ static NSString *errorMessageFromAutoPkgVerb(LGAutoPkgVerb verb)
         error = [NSError errorWithDomain:kLGApplicationName
                                     code:code
                                 userInfo:userInfo];
-        DLog(@"Error [%d]: %@ \n %@", code, userInfo[NSLocalizedDescriptionKey],userInfo[NSLocalizedRecoverySuggestionErrorKey]);
+        DLog(@"Error [%ld]: %@ \n %@", code, userInfo[NSLocalizedDescriptionKey],userInfo[NSLocalizedRecoverySuggestionErrorKey]);
     }
     return error;
 }
@@ -219,7 +219,7 @@ static NSString *errorMessageFromAutoPkgVerb(LGAutoPkgVerb verb)
                                             NSLocalizedRecoverySuggestionErrorKey : errorDetails ? errorDetails : @"" }];
         
         // If Debugging is enabled, log the error message
-        DLog(@"Error [%d] %@ \n %@", taskError, errorMsg, errorDetails);
+        DLog(@"Error [%ld] %@ \n %@", (long)taskError, errorMsg, errorDetails);
     }
     return error;
 }
