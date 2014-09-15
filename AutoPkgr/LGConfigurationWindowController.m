@@ -313,10 +313,27 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
         }];
     }
 
-    // Enable tools buttons if directories exist
+    // Enable "Open in Finder" buttons if directories exist
     BOOL isDir;
+
+    NSString *autoPkgRecipeReposFolder = [defaults autoPkgRecipeRepoDir];
+    autoPkgRecipeReposFolder = autoPkgRecipeReposFolder ? autoPkgRecipeReposFolder : [@"~/Library/AutoPkg/RecipeRepos" stringByExpandingTildeInPath];
+    NSString *autoPkgCacheFolder = [defaults autoPkgCacheDir];
+    autoPkgCacheFolder = autoPkgCacheFolder ? autoPkgCacheFolder : [@"~/Library/AutoPkg/Cache" stringByExpandingTildeInPath];
+    NSString *autoPkgRecipeOverridesFolder = [defaults autoPkgRecipeOverridesDir];
+    autoPkgRecipeOverridesFolder = autoPkgRecipeOverridesFolder ? autoPkgRecipeOverridesFolder : [@"~/Library/AutoPkg/RecipeOverrides" stringByExpandingTildeInPath];
+
     if ([[NSFileManager defaultManager] fileExistsAtPath:defaults.munkiRepo isDirectory:&isDir] && isDir) {
         [openLocalMunkiRepoFolderButton setEnabled:YES];
+    }
+    if ([[NSFileManager defaultManager] fileExistsAtPath:autoPkgCacheFolder isDirectory:&isDir] && isDir) {
+        [openAutoPkgCacheFolderButton setEnabled:YES];
+    }
+    if ([[NSFileManager defaultManager] fileExistsAtPath:autoPkgRecipeReposFolder isDirectory:&isDir] && isDir) {
+        [openAutoPkgRecipeReposFolderButton setEnabled:YES];
+    }
+    if ([[NSFileManager defaultManager] fileExistsAtPath:autoPkgRecipeOverridesFolder isDirectory:&isDir] && isDir) {
+        [openAutoPkgRecipeOverridesFolderButton setEnabled:YES];
     }
 
     _popRepoTableViewHandler.progressDelegate = self;
