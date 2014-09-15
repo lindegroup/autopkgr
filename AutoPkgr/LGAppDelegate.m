@@ -32,7 +32,7 @@
 {
     LGDefaults *defaults = [LGDefaults new];
 
-    // set self as the delegate for the time so the menu item is updated
+    // Set self as the delegate for the time so the menu item is updated
     // during timed runs.
     [[LGAutoPkgSchedule sharedTimer] setProgressDelegate:self];
 
@@ -141,7 +141,7 @@
             [item setTitle:message];
         }];
     }
-    NSLog(@"%@",message);
+    NSLog(@"%@", message);
 }
 
 @end

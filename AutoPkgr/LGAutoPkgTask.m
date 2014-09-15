@@ -329,7 +329,7 @@ NSString *autopkg()
     return count;
 }
 
-#pragma mark - Convience Instance Methods
+#pragma mark - Convenience Instance Methods
 - (void)runRecipes:(NSArray *)recipes
           progress:(void (^)(NSString *))progress
              reply:(void (^)(NSError *))reply

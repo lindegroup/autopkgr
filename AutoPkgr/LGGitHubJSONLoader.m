@@ -164,7 +164,7 @@
     
     NSString *browserDownloadURL = [latestVersionDict[@"assets"] firstObject][@"browser_download_url"];
 
-    // Get the Git DMG download URL for the approperiate version
+    // Get the Git DMG download URL for the appropriate version
     DLog(@"Using github download URL for Git: %@", browserDownloadURL);
 
     return browserDownloadURL;

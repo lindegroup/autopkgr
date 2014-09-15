@@ -65,7 +65,7 @@
         } else {
             DLog(@"Could not locate .pkg file.");
         }
-        // Since this is getting invoked as an apple script wrapping in sh -c  you need 4 forward slashes to correctly escape the whitespace
+        // Since this is getting invoked as an AppleScript wrapping in sh -c  you need 4 forward slashes to correctly escape the whitespace
         NSString *appleScriptEscapedPath = [[_mountPoint stringByAppendingPathComponent:pkg] stringByReplacingOccurrencesOfString:@" " withString:@"\\\\ "];
         
         NSString *installCommand = [NSString stringWithFormat:@"/usr/sbin/installer -pkg %@ -target /", appleScriptEscapedPath];
@@ -78,7 +78,7 @@
     if (success) {
         LGDefaults *defaults = [[LGDefaults alloc] init];
 
-        // If the installer was successful here set the autopkg GIT_PATH key
+        // If the installer was successful here set the AutoPkg GIT_PATH key
         if (floor(NSAppKitVersionNumber) > NSAppKitVersionNumber10_8) {
             // Mavericks and beyond
             defaults.gitPath = @"/usr/local/git/bin/git";
@@ -134,7 +134,7 @@
 
 - (void)updateAutoPkgr:(void (^)(NSError *error))reply
 {
-    // TODO: possibly do what we need to with sparkle //
+    // TODO: Possibly do what we need to with Sparkle //
 }
 
 #pragma mark - Util Methods
@@ -189,13 +189,13 @@
                                                                         format:&format
                                                               errorDescription:&errorStr];
         
-        if(errorStr) {
-            DLog(@"Error creating plist %@",errorStr);
+        if (errorStr) {
+            DLog(@"Error creating plist %@", errorStr);
         } else {
-            DLog(@"hdiutil output dictionary: %@",dict);
+            DLog(@"hdiutil output dictionary: %@", dict);
         }
         
-        for ( NSDictionary *d in dict[@"system-entities"]){
+        for (NSDictionary *d in dict[@"system-entities"]) {
             NSString *mountPoint = d[@"mount-point"];
             if (mountPoint) {
                 _mountPoint = mountPoint;
@@ -203,7 +203,7 @@
             }
         }
 
-        NSLog(@"Mounting installer DMG to %@",_mountPoint);
+        NSLog(@"Mounting installer DMG to %@", _mountPoint);
 
     } else {
         DLog(@"There was a problem retrieving the standard output of the hdiutil process");

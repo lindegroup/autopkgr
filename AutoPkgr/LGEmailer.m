@@ -143,10 +143,10 @@
         NSLog(@"New stuff was downloaded.");
         
         // Create the subject string
-        subject = [NSString stringWithFormat:@"[%@] New software avaliable for testing",kLGApplicationName];
+        subject = [NSString stringWithFormat:@"[%@] New software avaliable for testing", kLGApplicationName];
         
         // Append the the message string with report
-        [message appendFormat:@"The following software is now available for testing:<br />"];
+        [message appendFormat:@"The following software is now available for testing:<br /><br />"];
         
         for (NSString *path in newDownloads) {
             // Get just the application name from the path in the new_downloads dict
@@ -164,7 +164,7 @@
                     break;
                 }
             }
-            [message appendFormat:@"%@<br/>",version];
+            [message appendFormat:@"%@<br/>", version];
         }
     } else {
         DLog(@"Nothing new was downloaded.");
@@ -176,9 +176,9 @@
         }
         
         if (!subject){
-            subject = [NSString stringWithFormat:@"[%@] Error occured while running AutoPkg",kLGApplicationName];
+            subject = [NSString stringWithFormat:@"[%@] Error occured while running AutoPkg", kLGApplicationName];
         }
-        [message appendFormat:@"<br /><strong>The following error occured:</strong><br/>%@<br/>%@",error.localizedDescription,error.localizedRecoverySuggestion];
+        [message appendFormat:@"<br /><strong>The following error occured:</strong><br /><br />%@<br />%@", error.localizedDescription, error.localizedRecoverySuggestion];
     }
     
     if (message) {
