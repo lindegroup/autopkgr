@@ -113,8 +113,11 @@ NSString *autopkg()
 
 - (BOOL)cancel
 {
-    [_task terminate];
-    return ![_task isRunning];
+    if(_task && _task.isRunning) {
+        [_task terminate];
+        return ![_task isRunning];
+    }
+    return YES;
 }
 
 - (void)setFileHandles
