@@ -169,6 +169,7 @@
 		BE8799491995BA410082472B /* LGDefaults.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGDefaults.h; sourceTree = "<group>"; };
 		BE87994A1995BA410082472B /* LGDefaults.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGDefaults.m; sourceTree = "<group>"; };
 		BE94AA7B19BB8A78001A00D0 /* LGProgressDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LGProgressDelegate.h; sourceTree = "<group>"; };
+		BECFF2BE19CA9927004C2721 /* Resign_CodeSign_RunScript.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = Resign_CodeSign_RunScript.py; sourceTree = "<group>"; };
 		BEFC931B1995F0710074C938 /* LGError.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGError.h; sourceTree = "<group>"; };
 		BEFC931C1995F0710074C938 /* LGError.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGError.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -211,6 +212,7 @@
 		1AC69544195B59ED00D2BD81 = {
 			isa = PBXGroup;
 			children = (
+				BECFF2BE19CA9927004C2721 /* Resign_CodeSign_RunScript.py */,
 				1AC69556195B59ED00D2BD81 /* AutoPkgr */,
 				1AC69574195B59EE00D2BD81 /* AutoPkgrTests */,
 				1AC6954F195B59ED00D2BD81 /* Frameworks */,
@@ -360,6 +362,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 1AC6957E195B59EE00D2BD81 /* Build configuration list for PBXNativeTarget "AutoPkgr" */;
 			buildPhases = (
+				BECFF2B619CA9854004C2721 /* ShellScript */,
 				1AC69549195B59ED00D2BD81 /* Sources */,
 				1AC6954A195B59ED00D2BD81 /* Frameworks */,
 				1AC6954B195B59ED00D2BD81 /* Resources */,
@@ -498,6 +501,22 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		BECFF2B619CA9854004C2721 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "#Update build number with number of git commits if in release mode\nif [ ${CONFIGURATION} == \"Release\" ]; then\nbuildNumber=$(git rev-list HEAD | wc -l | tr -d ' ')\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $buildNumber\" \"${PROJECT_DIR}/${INFOPLIST_FILE}\"\nfi;";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		1AC69549195B59ED00D2BD81 /* Sources */ = {
@@ -668,6 +687,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "Developer ID Application";
 				COMBINE_HIDPI_IMAGES = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "AutoPkgr/AutoPkgr-Prefix.pch";
@@ -682,6 +702,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "Developer ID Application";
 				COMBINE_HIDPI_IMAGES = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "AutoPkgr/AutoPkgr-Prefix.pch";
