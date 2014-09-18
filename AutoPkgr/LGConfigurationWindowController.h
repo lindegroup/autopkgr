@@ -58,6 +58,7 @@
 @property (weak) IBOutlet NSButton *installGitButton;
 @property (weak) IBOutlet NSButton *installAutoPkgButton;
 @property (weak) IBOutlet NSButton *checkAppsNowButton;
+@property (weak) IBOutlet NSButton *cancelAutoPkgRunButton;
 @property (weak) IBOutlet NSButton *updateRepoNowButton;
 
 // Labels
@@ -104,6 +105,7 @@
 - (IBAction)addAutoPkgRepoURL:(id)sender;
 - (IBAction)updateReposNow:(id)sender;
 - (IBAction)checkAppsNow:(id)sender;
+- (IBAction)cancelAutoPkgRun:(id)sender;
 
 - (void)runCommandAsRoot:(NSString *)command;
 - (void)downloadAndInstallAutoPkg;

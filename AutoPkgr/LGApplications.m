@@ -127,7 +127,7 @@
             if (index != NSNotFound) {
                 [workingArray removeObjectAtIndex:index];
             } else {
-                NSLog(@"Cannot find item %@ in workingArray", [searchedApps objectAtIndex:row]);
+                NSLog(@"Cannot find item %@ in workingArray.", [searchedApps objectAtIndex:row]);
             }
         }
         activeApps = [NSArray arrayWithArray:workingArray];
@@ -161,7 +161,7 @@
 
     NSString *autoPkgrSupportDirectory = [self getAppSupportDirectory];
     if ([autoPkgrSupportDirectory isEqual:@""]) {
-        NSLog(@"Could not write recipe_list.txt");
+        NSLog(@"Could not write recipe_list.txt.");
         return;
     }
 
@@ -184,7 +184,7 @@
     [recipe_list writeToFile:recipeListFile atomically:YES encoding:NSUTF8StringEncoding error:&error];
 
     if (error) {
-        NSLog(@"Error while writing %@", recipeListFile);
+        NSLog(@"Error while writing %@.", recipeListFile);
     }
 }
 

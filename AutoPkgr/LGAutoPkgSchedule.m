@@ -64,7 +64,7 @@
     
     LGDefaults *defaults = [[LGDefaults alloc] init];
     if (defaults.checkForNewVersionsOfAppsAutomaticallyEnabled) {
-        NSLog(@"Beginning scheduled run of AutoPkg");
+        NSLog(@"Beginning scheduled run of AutoPkg.");
         [_progressDelegate startProgressWithMessage:@"Starting scheduled run..."];
         NSString *recipeList = [LGApplications recipeList];
 
@@ -73,7 +73,7 @@
                 [_progressDelegate updateProgress:message progress:taskProgress];
             }
             reply:^(NSDictionary *report, NSError *error) {
-                NSLog(@"Scheduled run of AutoPkg complete");
+                NSLog(@"Scheduled run of AutoPkg complete.");
                 [_progressDelegate stopProgress:error];
                 LGEmailer *emailer = [LGEmailer new];
                 [emailer sendEmailForReport:report error:error];
