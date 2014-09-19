@@ -3,8 +3,10 @@
 '''
     Make sure nested Frameworks get properly signed,
     (in the Version/A folder).
-
-    Add this as a "Run Script" after all copy file phases...
+    
+    Place this file in a folder named 'scripts' at the root of your project
+    
+    Add this next line (including quotes) as a "Run Script" AFTER all copy file phases...
 
     "${PROJECT_DIR}/scripts/Resign_CodeSign_RunScript.py"
 
