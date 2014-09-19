@@ -3,14 +3,17 @@
 '''
     Make sure nested Frameworks get properly signed,
     (in the Version/A folder).
-    
-    Place this file in a folder named 'scripts' at the root of your project
-    
-    Add this next line (including quotes) as a "Run Script" AFTER all copy file phases...
+
+    Place this file in a folder named 'scripts' at
+    the root of your project.
+
+    Add this next line (including quotes) as a "Run Script"
+    AFTER all copy file phases.
 
     "${PROJECT_DIR}/scripts/Resign_CodeSign_RunScript.py"
 
-    Note: If you have `--deep` set on any of your codesign flags remove it!
+    Note: If you have `--deep` set on any of your codesign
+    flags remove it!
 
 '''
 

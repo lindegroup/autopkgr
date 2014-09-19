@@ -33,6 +33,6 @@
 	<key>NSPrincipalClass</key>
 	<string>NSApplication</string>
 	<key>SUFeedURL</key>
-	<string>https://github.com/lindegroup/autopkgr/blob/sparkle/appcast.xml</string>
+	<string>https://raw.githubusercontent.com/lindegroup/autopkgr/sparkle/appcast.xml</string>
 </dict>
 </plist>
