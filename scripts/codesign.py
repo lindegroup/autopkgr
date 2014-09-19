@@ -10,7 +10,7 @@
     Add this next line (including quotes) as a "Run Script"
     AFTER all copy file phases.
 
-    "${PROJECT_DIR}/scripts/Resign_CodeSign_RunScript.py"
+    "${PROJECT_DIR}/scripts/codesign.py"
 
     Note: If you have `--deep` set on any of your codesign
     flags remove it!

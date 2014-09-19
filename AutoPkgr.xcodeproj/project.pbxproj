@@ -12,7 +12,7 @@
 		1A0A86B5195CE6D800A49434 /* MailCore.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 1A0A86AE195CE5DC00A49434 /* MailCore.framework */; };
 		1A1BAD96197A0407008192A7 /* LGVersionComparator.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A1BAD95197A0407008192A7 /* LGVersionComparator.m */; };
 		1A1BAD9E197A4133008192A7 /* LGGitHubJSONLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A1BAD9D197A4133008192A7 /* LGGitHubJSONLoader.m */; };
-		1A56282B19CC01A000980AB9 /* Resign_CodeSign_RunScript.py in Resources */ = {isa = PBXBuildFile; fileRef = 1A56282A19CC01A000980AB9 /* Resign_CodeSign_RunScript.py */; };
+		1A2C7FAE19CC9F8300CFF472 /* codesign.py in Resources */ = {isa = PBXBuildFile; fileRef = 1A2C7FAD19CC9F8300CFF472 /* codesign.py */; };
 		1A979FE01960BCCC00EE9881 /* LGUnzipper.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A979FDF1960BCCC00EE9881 /* LGUnzipper.m */; };
 		1AC69551195B59ED00D2BD81 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1AC69550195B59ED00D2BD81 /* Cocoa.framework */; };
 		1AC6955B195B59ED00D2BD81 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 1AC69559195B59ED00D2BD81 /* InfoPlist.strings */; };
@@ -119,7 +119,7 @@
 		1A1BAD95197A0407008192A7 /* LGVersionComparator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGVersionComparator.m; sourceTree = "<group>"; };
 		1A1BAD9C197A4133008192A7 /* LGGitHubJSONLoader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGGitHubJSONLoader.h; sourceTree = "<group>"; };
 		1A1BAD9D197A4133008192A7 /* LGGitHubJSONLoader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGGitHubJSONLoader.m; sourceTree = "<group>"; };
-		1A56282A19CC01A000980AB9 /* Resign_CodeSign_RunScript.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = Resign_CodeSign_RunScript.py; sourceTree = "<group>"; };
+		1A2C7FAD19CC9F8300CFF472 /* codesign.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = codesign.py; sourceTree = "<group>"; };
 		1A979FDE1960BCCC00EE9881 /* LGUnzipper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGUnzipper.h; sourceTree = "<group>"; };
 		1A979FDF1960BCCC00EE9881 /* LGUnzipper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGUnzipper.m; sourceTree = "<group>"; };
 		1AC6954D195B59ED00D2BD81 /* AutoPkgr.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AutoPkgr.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -211,10 +211,10 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		1A56282919CC01A000980AB9 /* scripts */ = {
+		1A2C7FAC19CC9F8300CFF472 /* scripts */ = {
 			isa = PBXGroup;
 			children = (
-				1A56282A19CC01A000980AB9 /* Resign_CodeSign_RunScript.py */,
+				1A2C7FAD19CC9F8300CFF472 /* codesign.py */,
 			);
 			path = scripts;
 			sourceTree = SOURCE_ROOT;
@@ -348,7 +348,7 @@
 		1AC98423195DF6270071CAB3 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				1A56282919CC01A000980AB9 /* scripts */,
+				1A2C7FAC19CC9F8300CFF472 /* scripts */,
 				8BB217F519709A2C00EF8B93 /* AutoPkgrIcon.png */,
 				1AC98425195DF6350071CAB3 /* autopkgr.png */,
 				1AC98428195DF6DE0071CAB3 /* autopkgr_alt.png */,
@@ -488,7 +488,7 @@
 				8BB217F619709A2C00EF8B93 /* AutoPkgrIcon.png in Resources */,
 				1AC6955B195B59ED00D2BD81 /* InfoPlist.strings in Resources */,
 				1AC69569195B59EE00D2BD81 /* Images.xcassets in Resources */,
-				1A56282B19CC01A000980AB9 /* Resign_CodeSign_RunScript.py in Resources */,
+				1A2C7FAE19CC9F8300CFF472 /* codesign.py in Resources */,
 				1AC98420195CEC360071CAB3 /* LGConfigurationWindowController.xib in Resources */,
 				BE57AC2A19BA3BBC00BB17B1 /* Localizable.strings in Resources */,
 				8B6A3199195B7AC1007A7A16 /* linde-logo@400px.png in Resources */,
@@ -520,7 +520,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PROJECT_DIR}/scripts/Resign_CodeSign_RunScript.py\"";
+			shellScript = "\"${PROJECT_DIR}/scripts/codesign.py\"";
 		};
 		570AE652B42D4D4D86875A8A /* Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
