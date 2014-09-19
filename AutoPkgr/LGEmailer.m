@@ -61,9 +61,9 @@
                                                         account:smtpSession.username
                                                           error:&error];
             
-            if ([error code] == SSKeychainErrorNotFound) {
+            if ([error code] == errSecItemNotFound) {
                 NSLog(@"Keychain item not found for account %@.", smtpSession.username);
-            } else if([error code] == SSKeychainErrorNoPassword) {
+            } else if([error code] == errSecNotAvailable) {
                 NSLog(@"Found the keychain item for %@ but no password value was returned.", smtpSession.username);
             } else if (error != nil) {
                 NSLog(@"An error occurred when attempting to retrieve the keychain entry for %@. Error: %@", smtpSession.username, [error localizedDescription]);

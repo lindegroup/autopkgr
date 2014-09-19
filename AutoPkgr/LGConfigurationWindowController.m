@@ -248,9 +248,9 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
                                                     account:smtpUsernameString
                                                       error:&error];
 
-        if ([error code] == SSKeychainErrorNotFound) {
+        if ([error code] == errSecItemNotFound) {
             NSLog(@"Keychain item not found for account %@.", smtpUsernameString);
-        } else if ([error code] == SSKeychainErrorNoPassword) {
+        } else if ([error code] == errSecNotAvailable) {
             NSLog(@"Found the keychain item for %@ but no password value was returned.", smtpUsernameString);
         } else if (error != nil) {
             NSLog(@"An error occurred when attempting to retrieve the keychain entry for %@. Error: %@", smtpUsernameString, [error localizedDescription]);
