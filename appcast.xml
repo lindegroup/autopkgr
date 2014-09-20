@@ -11,13 +11,13 @@
           <![CDATA[
           <h4>Numerous changes and bug fixes this time around, including:</h4>
           <ul>
-            <li>- The ability to cancel installations, recipe checks, and other tasks in progress.</li>
-            <li>- More detail in logs, including the ability to enable a verbose log mode for troubleshooting.</li>
-            <li>- Improved behavior of the "Open in Finder" buttons.</li>
-            <li>- Resolved bug that would cause an incorrect hostname to be reported in notification emails.</li>
-            <li>- Resolved bug that would prevent "from" address from appearing in log output.</li>
-            <li>- Implemented code signing to avoid "unidentified developer" error upon first launch.</li>
-            <li>- Now using the Sparkle framework, so AutoPkgr can keep itself up to date.</li>
+            <li>The ability to cancel installations, recipe checks, and other tasks in progress.</li>
+            <li>More detail in logs, including the ability to enable a verbose log mode for troubleshooting.</li>
+            <li>Improved behavior of the "Open in Finder" buttons.</li>
+            <li>Resolved bug that would cause an incorrect hostname to be reported in notification emails.</li>
+            <li>Resolved bug that would prevent "from" address from appearing in log output.</li>
+            <li>Implemented code signing to avoid "unidentified developer" error upon first launch.</li>
+            <li>Now using the Sparkle framework, so AutoPkgr can keep itself up to date.</li>
           </ul>          
           ]]>
         </description>
