@@ -120,13 +120,15 @@
 }
 
 # pragma mark - Progress Protocol
--(void)startProgressWithMessage:(NSString *)message{
+- (void)startProgressWithMessage:(NSString *)message
+{
     __block NSMenuItem *item = [self.statusMenu itemAtIndex:0];
     [item setAction:nil];
     [item setTitle:message];
 }
 
--(void)stopProgress:(NSError *)error{
+- (void)stopProgress:(NSError *)error
+{
     __block NSMenuItem *item = [self.statusMenu itemAtIndex:0];
     [[NSOperationQueue mainQueue] addOperationWithBlock:^{
         [item setTitle:@"Check Now"];
@@ -134,7 +136,8 @@
     }];
 }
 
--(void)updateProgress:(NSString *)message progress:(double)progress{
+- (void)updateProgress:(NSString *)message progress:(double)progress
+{
     __block NSMenuItem *item = [self.statusMenu itemAtIndex:0];
     if (message.length < 50) {
         [[NSOperationQueue mainQueue] addOperationWithBlock:^{

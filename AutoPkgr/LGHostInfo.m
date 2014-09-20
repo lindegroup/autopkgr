@@ -64,7 +64,7 @@ NSString *const kLGBoxenBrewGit = @"/opt/boxen/homebrew/bin";
     if ([fm fileExistsAtPath:currentGit isDirectory:&isDir] && !isDir) {
         if ([fm isExecutableFileAtPath:currentGit]) {
             foundGitPath = currentGit;
-             success = YES;
+            success = YES;
         }
     } else {
         // If nothing is set, then iterate through the list
@@ -84,7 +84,7 @@ NSString *const kLGBoxenBrewGit = @"/opt/boxen/homebrew/bin";
     } else if ([foundGitPath isEqualToString:kLGCLIToolsGit]) {
         DLog(@"Using Git installed via Xcode command line tools.");
     } else if ([foundGitPath isEqualToString:kLGXcodeGit]) {
-        DLog(@"Using Git from XCode Applicaiton.");
+        DLog(@"Using Git from Xcode Application.");
     } else if ( [foundGitPath isEqualToString:kLGHomeBrewGit]) {
         DLog(@"Using Git from Homebrew.");
     } else if ([foundGitPath isEqualToString:kLGBoxenBrewGit]) {

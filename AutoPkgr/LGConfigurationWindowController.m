@@ -819,7 +819,8 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
                         }];
 }
 
-- (IBAction)cancelAutoPkgRun:(id)sender{
+- (IBAction)cancelAutoPkgRun:(id)sender
+{
     if(_task){
         [_task cancel];
     }

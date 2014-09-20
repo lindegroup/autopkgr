@@ -70,7 +70,8 @@
     return self;
 }
 
-- (void)repoEditDidEndWithError:(NSError *)error withTableView:(NSTableView *)tableView{
+- (void)repoEditDidEndWithError:(NSError *)error withTableView:(NSTableView *)tableView
+{
     [[NSOperationQueue mainQueue]addOperationWithBlock:^{
         [self getAndParseLocalAutoPkgRecipeRepos];
         [_appObject reload];
