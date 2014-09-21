@@ -179,7 +179,7 @@
 
 - (void)tableView:(NSTableView *)tableView setObjectValue:(id)object forTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row
 {
-    if([[tableColumn identifier] isEqualToString:@"repoCheckbox"]) {
+    if ([[tableColumn identifier] isEqualToString:@"repoCheckbox"]) {
         NSString *repo = [searchedRepos objectAtIndex:row];
         BOOL add = [object isEqual:@YES];
         NSString *message = [NSString stringWithFormat:@"%@ %@",add ? @"Adding":@"Removing",repo];

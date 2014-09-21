@@ -118,7 +118,7 @@
 
 - (void)tableView:(NSTableView *)tableView setObjectValue:(id)object forTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row
 {
-    if([[tableColumn identifier] isEqualToString:@"appCheckbox"]) {
+    if ([[tableColumn identifier] isEqualToString:@"appCheckbox"]) {
         NSMutableArray *workingArray = [NSMutableArray arrayWithArray:activeApps];
         if ([object isEqual:@YES]) {
             [workingArray addObject:[searchedApps objectAtIndex:row]];

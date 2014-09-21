@@ -25,7 +25,7 @@
 // Debug Logging Method
 void DLog(NSString *format, ...)
 {
-    if([[NSUserDefaults standardUserDefaults] boolForKey:@"debug"]){
+    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"debug"]) {
         if (format) {
             va_list args;
             va_start(args, format);
@@ -192,9 +192,9 @@ static NSString *errorMessageFromAutoPkgVerb(LGAutoPkgVerb verb)
     NSString *errorDetails;
     NSInteger taskError;
     
-    if([task.standardError isKindOfClass:[NSPipe class]]){
+    if ([task.standardError isKindOfClass:[NSPipe class]]) {
         NSData *errData = [[task.standardError fileHandleForReading] readDataToEndOfFile];
-        if(errData){
+        if (errData) {
             errorDetails = [[NSString alloc] initWithData:errData encoding:NSASCIIStringEncoding];
         }
     }

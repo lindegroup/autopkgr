@@ -140,7 +140,7 @@ NSString *autopkg()
 
             NSPredicate *processingPredicate = [NSPredicate predicateWithFormat:@"SELF BEGINSWITH[cd] 'Processing'"];
             [[_task.standardOutput fileHandleForReading] setReadabilityHandler:^(NSFileHandle *handle) {
-                int cntStr = (int)round(count)+1;
+                int cntStr = (int)round(count) + 1;
                 int totStr = (int)round(total);
                 NSString *message = [[NSString alloc]initWithData:[handle availableData] encoding:NSUTF8StringEncoding];
                 NSString *fullMessage;
@@ -150,7 +150,7 @@ NSString *autopkg()
                     fullMessage = message;
                 }
                 
-                if(weakSelf.runStatusUpdate){
+                if (weakSelf.runStatusUpdate) {
                     weakSelf.runStatusUpdate(fullMessage,((count/total)*100));
                 }
                 
@@ -269,7 +269,7 @@ NSString *autopkg()
                                                or SELF BEGINSWITH 'Name'"];
 
             [resultString enumerateLinesUsingBlock:^(NSString *line, BOOL *stop) {
-                if(![nonRecipePredicate evaluateWithObject:line ]){
+                if (![nonRecipePredicate evaluateWithObject:line ]) {
                     NSScanner *scanner = [NSScanner scannerWithString:line];
                     [scanner setCharactersToBeSkipped:skippedCharacters];
                     
@@ -279,8 +279,8 @@ NSString *autopkg()
                     [scanner scanCharactersFromSet:repoCharacters intoString:&repo];
                     [scanner scanCharactersFromSet:repoCharacters intoString:&path];
                     
-                    if(recipe && repo && path){
-                        if(!searchResults){
+                    if (recipe && repo && path) {
+                        if (!searchResults) {
                             searchResults = [[NSMutableArray alloc] init];
                         }
                         [searchResults addObject:@{kLGAutoPkgRecipeKey:[recipe stringByDeletingPathExtension],
@@ -399,7 +399,7 @@ NSString *autopkg()
     task.arguments = @[ @"search", recipe ];
     [task launchInBackground:^(NSError *error) {
         NSArray *results;
-        if(!error){
+        if (!error) {
             results = [task results];
         }
         reply (results,error);
@@ -421,7 +421,7 @@ NSString *autopkg()
     task.arguments = @[ @"list-recipes" ];
     [task launchInBackground:^(NSError *error) {
         NSArray *results;
-        if(!error){
+        if (!error) {
             results = [task results];
         }
         reply (results,error);
@@ -470,7 +470,7 @@ NSString *autopkg()
     task.arguments = @[ @"repo-list" ];
     [task launchInBackground:^(NSError *error) {
         NSArray *results;
-        if(!error){
+        if (!error) {
             results = [task results];
         }
         reply (results,error);

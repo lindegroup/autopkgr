@@ -821,7 +821,7 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
 
 - (IBAction)cancelAutoPkgRun:(id)sender
 {
-    if(_task){
+    if (_task) {
         [_task cancel];
     }
 }
