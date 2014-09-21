@@ -145,7 +145,7 @@ NSString *autopkg()
                 NSString *message = [[NSString alloc]initWithData:[handle availableData] encoding:NSUTF8StringEncoding];
                 NSString *fullMessage;
                 if ([processingPredicate evaluateWithObject:message]) {
-                    fullMessage = [NSString stringWithFormat:@"(%d/%d) %@",cntStr,totStr,message];
+                    fullMessage = [NSString stringWithFormat:@"(%d/%d) %@", cntStr, totStr, message];
                 } else {
                     fullMessage = message;
                 }
@@ -359,11 +359,11 @@ NSString *autopkg()
     self.arguments = @[ @"run", @"--recipe-list", recipeList, @"--report-plist" ];
     
     [self setRunStatusUpdate:^(NSString *message, double progressUpdate) {
-        progress(message,progressUpdate);
+        progress(message, progressUpdate);
     }];
     
     [self launchInBackground:^(NSError *error) {
-        reply(self.reportPlist,error);
+        reply(self.reportPlist, error);
     }];
 }
 
@@ -387,9 +387,9 @@ NSString *autopkg()
 {
     LGAutoPkgTask *task = [[LGAutoPkgTask alloc] init];
     [task runRecipeList:recipeList progress:^(NSString *message, double prog) {
-        progress(message,prog);
+        progress(message, prog);
     } reply:^(NSDictionary *report, NSError *error) {
-        reply(report,error);
+        reply(report, error);
     }];
 }
 
@@ -402,7 +402,7 @@ NSString *autopkg()
         if (!error) {
             results = [task results];
         }
-        reply (results,error);
+        reply(results, error);
     }];
 }
 
@@ -424,7 +424,7 @@ NSString *autopkg()
         if (!error) {
             results = [task results];
         }
-        reply (results,error);
+        reply(results, error);
     }];
 }
 
@@ -473,7 +473,7 @@ NSString *autopkg()
         if (!error) {
             results = [task results];
         }
-        reply (results,error);
+        reply(results, error);
     }];
 }
 

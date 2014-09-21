@@ -80,7 +80,7 @@
                         progress:^(NSString *message, double taskProgress) {
                             [self updateProgress:message progress:taskProgress];
                         }
-                           reply:^(NSDictionary *report,NSError *error) {
+                           reply:^(NSDictionary *report, NSError *error) {
                                [self stopProgress:error];
                                LGEmailer *emailer = [LGEmailer new];
                                [emailer sendEmailForReport:report error:error];

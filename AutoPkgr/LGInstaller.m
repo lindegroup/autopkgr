@@ -33,7 +33,7 @@
     NSString *downloadURL = [jsonLoader getGitDownloadURL];
     
     NSString *tmpFile = [NSTemporaryDirectory() stringByAppendingPathComponent:[downloadURL lastPathComponent]];
-    DLog(@"Setting download location to: %@",tmpFile);
+    DLog(@"Setting download location to: %@", tmpFile);
     
     // Download Git to the temporary directory
     if (![[NSFileManager defaultManager] fileExistsAtPath:tmpFile]) {
@@ -54,18 +54,18 @@
     if ([self mountDMG:tmpFile] && _mountPoint) {
         // install Pkg
         NSArray *contents = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:_mountPoint error:nil];
-        DLog(@"Contents of DMG %@ ",contents);
+        DLog(@"Contents of DMG %@ ", contents);
         
         // The predicate here is contains so we get both .pkg and .mpkg files
         NSPredicate *predicate = [NSPredicate predicateWithFormat:@"pathExtension CONTAINS[cd] 'pkg'"];
 
         NSString *pkg = [[contents filteredArrayUsingPredicate:predicate] firstObject];
-        if ( pkg ) {
-            DLog(@"Found installer package: %@",pkg);
+        if (pkg) {
+            DLog(@"Found installer package: %@", pkg);
         } else {
             DLog(@"Could not locate .pkg file.");
         }
-        // Since this is getting invoked as an AppleScript wrapping in sh -c  you need 4 forward slashes to correctly escape the whitespace
+        // Since this is getting invoked as an AppleScript wrapping in sh -c  you need 4 backslashes to correctly escape the whitespace
         NSString *appleScriptEscapedPath = [[_mountPoint stringByAppendingPathComponent:pkg] stringByReplacingOccurrencesOfString:@" " withString:@"\\\\ "];
         
         NSString *installCommand = [NSString stringWithFormat:@"/usr/sbin/installer -pkg %@ -target /", appleScriptEscapedPath];
@@ -86,7 +86,7 @@
             // Mountain Lion compatible
             defaults.gitPath = @"/usr/bin/git";
         }
-        NSLog(@"Setting the Git path for AutoPkg to %@",defaults.gitPath);
+        NSLog(@"Setting the Git path for AutoPkg to %@", defaults.gitPath);
     }
 
     [_progressDelegate updateProgress:@"Unmounting Git disk image..." progress:100.0];
