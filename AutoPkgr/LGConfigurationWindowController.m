@@ -359,30 +359,6 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
     [emailer sendTestEmail];
 }
 
-- (void)testEmailReceived:(NSNotification *)notification
-{
-    [[NSNotificationCenter defaultCenter] removeObserver:self
-                                                    name:kLGNotificationEmailSent
-                                                  object:[notification object]];
-
-    [sendTestEmailButton setEnabled:YES]; // enable button
-
-    // Handle Spinner
-    [sendTestEmailSpinner stopAnimation:self]; // stop animation
-    [sendTestEmailSpinner setHidden:YES]; // hide spinner
-
-    NSError *e = [[notification userInfo] objectForKey:kLGNotificationUserInfoError]; // pull the error out of the userInfo dictionary
-    if (e) {
-        NSLog(@"Unable to send test email. Error: %@", e);
-        [[NSAlert alertWithError:e] beginSheetModalForWindow:self.window
-                                               modalDelegate:self
-                                              didEndSelector:nil
-                                                 contextInfo:nil];
-    }
-
-    [self stopProgress:e];
-}
-
 - (void)testSmtpServerPort:(id)sender
 {
     if (![[smtpServer stringValue] isEqualToString:@""] && [smtpPort integerValue] > 0) {
@@ -397,7 +373,7 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
         LGTestPort *tester = [[LGTestPort alloc] init];
 
         [center addObserver:self
-                   selector:@selector(testSmtpServerPortNotificationReceiver:)
+                   selector:@selector(testSmtpServerPortNotificationReceived:)
                        name:kLGNotificationTestSmtpServerPort
                      object:nil];
 
@@ -408,29 +384,6 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
         NSLog(@"Cannot test; either host is blank or port is unreadable.");
     }
 }
-
-- (void)testSmtpServerPortNotificationReceiver:(NSNotification *)notification
-{
-    // Set up the spinner and show the status image
-    [testSmtpServerSpinner setHidden:YES];
-    [testSmtpServerSpinner stopAnimation:self];
-    [testSmtpServerStatus setHidden:NO];
-
-    [[NSNotificationCenter defaultCenter] removeObserver:self
-                                                    name:kLGNotificationTestSmtpServerPort
-                                                  object:nil];
-
-    NSString *status = notification.userInfo[kLGNotificationUserInfoSuccess];
-    if ([status isEqualTo:@NO]) {
-        [testSmtpServerStatus setImage:[NSImage imageNamed:@"NSStatusUnavailable"]];
-    } else if ([status isEqualTo:@YES]) {
-        [testSmtpServerStatus setImage:[NSImage imageNamed:@"NSStatusAvailable"]];
-    } else {
-        NSLog(@"Unexpected result for recieved from port test.");
-        [testSmtpServerStatus setImage:[NSImage imageNamed:@"NSStatusPartiallyAvailable"]];
-    }
-}
-
 
 # pragma mark - AutoPkgr actions
 - (void)save
@@ -906,7 +859,7 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
 #pragma mark - Tab View Delegate
 - (void)tabView:(NSTabView *)tabView didSelectTabViewItem:(NSTabViewItem *)tabViewItem
 {
-    if([tabViewItem.label isEqualToString:@"Local Folders"]){
+    if([tabViewItem.identifier isEqualTo:@"localFolders"]){
         [self enableOpenInFinderButtons];
     }
 }
@@ -1059,6 +1012,48 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
     [self stopProgress:error];
 }
 
+- (void)testEmailReceived:(NSNotification *)notification
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                    name:kLGNotificationEmailSent
+                                                  object:[notification object]];
+    
+    [sendTestEmailButton setEnabled:YES]; // enable button
+    
+    // Handle Spinner
+    [sendTestEmailSpinner stopAnimation:self]; // stop animation
+    [sendTestEmailSpinner setHidden:YES]; // hide spinner
+    
+    // pull the error out of the userInfo dictionary
+    id error = [notification.userInfo objectForKey:kLGNotificationUserInfoError];
+    
+    if ([error isKindOfClass:[NSError class]]) {
+        [self stopProgress:error];
+    }
+}
+
+- (void)testSmtpServerPortNotificationReceived:(NSNotification *)notification
+{
+    // Set up the spinner and show the status image
+    [testSmtpServerSpinner setHidden:YES];
+    [testSmtpServerSpinner stopAnimation:self];
+    [testSmtpServerStatus setHidden:NO];
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                    name:kLGNotificationTestSmtpServerPort
+                                                  object:nil];
+    
+    NSString *status = notification.userInfo[kLGNotificationUserInfoSuccess];
+    if ([status isEqualTo:@NO]) {
+        [testSmtpServerStatus setImage:[NSImage imageNamed:@"NSStatusUnavailable"]];
+    } else if ([status isEqualTo:@YES]) {
+        [testSmtpServerStatus setImage:[NSImage imageNamed:@"NSStatusAvailable"]];
+    } else {
+        NSLog(@"Unexpected result for recieved from port test.");
+        [testSmtpServerStatus setImage:[NSImage imageNamed:@"NSStatusPartiallyAvailable"]];
+    }
+}
+
 
 #pragma mark - LGProgressDelegate
 - (void)startProgressWithMessage:(NSString *)message
@@ -1117,7 +1112,7 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
 }
 
 
-#pragma mark - didEndWith selectors
+#pragma mark - NSAlert didEndWith selectors
 - (void)didEndWithPreferenceRepairRequest:(NSAlert *)alert returnCode:(NSInteger)returnCode
 {
     if (returnCode == NSAlertSecondButtonReturn) {

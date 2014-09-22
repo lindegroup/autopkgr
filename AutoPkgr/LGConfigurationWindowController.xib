@@ -716,7 +716,7 @@
                                             </constraints>
                                         </view>
                                     </tabViewItem>
-                                    <tabViewItem label="Local Folders" identifier="" id="YLD-8L-uk6">
+                                    <tabViewItem label="Local Folders" identifier="localFolders" id="YLD-8L-uk6">
                                         <view key="view" id="EXk-0U-hHL">
                                             <rect key="frame" x="10" y="33" width="617" height="412"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
