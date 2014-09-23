@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="5056" systemVersion="13E28" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="6245" systemVersion="13F34" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment defaultVersion="1080" identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="5056"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="6245"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="LGConfigurationWindowController">
@@ -56,7 +56,7 @@
         <window title="AutoPkgr" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" oneShot="NO" releasedWhenClosed="NO" animationBehavior="default" id="F0z-JX-Cv5">
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
             <rect key="contentRect" x="196" y="240" width="657" height="478"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1280" height="778"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="2560" height="1418"/>
             <value key="minSize" type="size" width="657" height="478"/>
             <view key="contentView" id="se5-gp-TjO">
                 <rect key="frame" x="0.0" y="0.0" width="657" height="478"/>
@@ -132,7 +132,7 @@
                                                     <rect key="frame" x="297" y="156" width="16" height="16"/>
                                                     <imageCell key="cell" refusesFirstResponder="YES" alignment="left" animates="YES" imageScaling="proportionallyDown" image="NSStatusUnavailable" id="e1g-5e-fLi"/>
                                                 </imageView>
-                                                <button ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="KMe-Rd-d2t">
+                                                <button translatesAutoresizingMaskIntoConstraints="NO" id="KMe-Rd-d2t">
                                                     <rect key="frame" x="198" y="21" width="215" height="18"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="211" id="ily-V7-o6E"/>
@@ -154,13 +154,14 @@
                                                 <constraint firstAttribute="centerX" secondItem="x1S-bd-tl3" secondAttribute="centerX" constant="116.5" id="XUL-CE-c2g"/>
                                                 <constraint firstAttribute="centerY" secondItem="geX-ws-F4Z" secondAttribute="centerY" constant="112.5" id="Z08-sL-Osx"/>
                                                 <constraint firstAttribute="centerY" secondItem="KkE-qM-Hy6" secondAttribute="centerY" constant="-1" id="ZYd-MU-r2r"/>
-                                                <constraint firstAttribute="centerX" secondItem="KMe-Rd-d2t" secondAttribute="centerX" constant="3" id="b7m-YQ-5Y2"/>
                                                 <constraint firstItem="f8q-xY-QUg" firstAttribute="leading" secondItem="x1S-bd-tl3" secondAttribute="trailing" constant="8" id="cra-8T-RjN"/>
                                                 <constraint firstAttribute="centerX" secondItem="ClY-1a-e2c" secondAttribute="centerX" constant="116.5" id="g7p-PG-fiZ"/>
                                                 <constraint firstItem="Pbf-A7-T4b" firstAttribute="leading" secondItem="f8q-xY-QUg" secondAttribute="trailing" constant="8" id="jqJ-1g-M7m"/>
+                                                <constraint firstAttribute="centerX" secondItem="KMe-Rd-d2t" secondAttribute="centerX" constant="3" id="kEh-Sa-lcW"/>
                                                 <constraint firstItem="KkE-qM-Hy6" firstAttribute="leading" secondItem="ClY-1a-e2c" secondAttribute="trailing" constant="8" id="oHr-K9-shF"/>
                                                 <constraint firstAttribute="centerY" secondItem="f8q-xY-QUg" secondAttribute="centerY" constant="-42" id="poa-PN-pTo"/>
                                                 <constraint firstAttribute="centerY" secondItem="Pbf-A7-T4b" secondAttribute="centerY" constant="-41.5" id="sK0-IT-bXJ"/>
+                                                <constraint firstAttribute="bottom" secondItem="KMe-Rd-d2t" secondAttribute="bottom" constant="23" id="yEb-cc-gm2"/>
                                             </constraints>
                                         </view>
                                     </tabViewItem>
@@ -176,7 +177,7 @@
                                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                         <subviews>
                                                             <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" columnSelection="YES" multipleSelection="NO" autosaveColumns="NO" id="n0R-ew-DOT">
-                                                                <rect key="frame" x="0.0" y="0.0" width="581" height="133"/>
+                                                                <rect key="frame" x="0.0" y="0.0" width="581" height="19"/>
                                                                 <autoresizingMask key="autoresizingMask"/>
                                                                 <size key="intercellSpacing" width="3" height="2"/>
                                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -294,7 +295,7 @@
                                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                         <subviews>
                                                             <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnSelection="YES" columnResizing="NO" multipleSelection="NO" autosaveColumns="NO" id="HAz-3M-Rgt">
-                                                                <rect key="frame" x="0.0" y="0.0" width="581" height="143"/>
+                                                                <rect key="frame" x="0.0" y="0.0" width="581" height="19"/>
                                                                 <autoresizingMask key="autoresizingMask"/>
                                                                 <size key="intercellSpacing" width="3" height="2"/>
                                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -1017,7 +1018,7 @@
             <windowStyleMask key="styleMask" closable="YES" miniaturizable="YES" resizable="YES" utility="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="385" y="323" width="610" height="133"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1280" height="778"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="2560" height="1418"/>
             <view key="contentView" id="dCS-sn-B3a">
                 <rect key="frame" x="0.0" y="0.0" width="610" height="133"/>
                 <autoresizingMask key="autoresizingMask"/>
