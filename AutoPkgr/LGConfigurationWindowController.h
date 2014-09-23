@@ -24,7 +24,7 @@
 #import "LGApplications.h"
 #import "LGTestPort.h"
 
-@interface LGConfigurationWindowController : NSWindowController <NSTextDelegate, NSTokenFieldDelegate, NSWindowDelegate,NSTabViewDelegate>
+@interface LGConfigurationWindowController : NSWindowController <NSTextDelegate, NSTokenFieldDelegate, NSWindowDelegate, NSTabViewDelegate>
 
 // Text/token fields
 @property (weak) IBOutlet NSTokenField *smtpTo;

@@ -928,7 +928,7 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
     
     if ([[NSFileManager defaultManager] fileExistsAtPath:defaults.munkiRepo isDirectory:&isDir] && isDir) {
         [openLocalMunkiRepoFolderButton setEnabled:YES];
-    }else{
+    } else {
         [openLocalMunkiRepoFolderButton setEnabled:NO];
     }
     if ([[NSFileManager defaultManager] fileExistsAtPath:autoPkgCacheFolder isDirectory:&isDir] && isDir) {
