@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0" xmlns:sparkle="http://www.andymatuschak.org/xml-namespaces/sparkle"  xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>AutoPkgr Changelog</title>
+    <link>https://raw.githubusercontent.com/lindegroup/autopkgr/sparkle/appcast.xml</link>
+    <description>Most recent changes with links to updates.</description>
+    <language>en</language>
+      <item>
+        <title>Version 1.0.4-beta</title>
+        <description>
+          <![CDATA[
+          <h4>Numerous changes and bug fixes this time around, including:</h4>
+          <ul>
+            <li>The ability to cancel installations, recipe checks, and other tasks in progress.</li>
+            <li>More detail in logs, including the ability to enable a verbose log mode for troubleshooting.</li>
+            <li>Improved behavior of the "Open in Finder" buttons.</li>
+            <li>Resolved bug that would cause an incorrect hostname to be reported in notification emails.</li>
+            <li>Resolved bug that would prevent "from" address from appearing in log output.</li>
+            <li>Implemented code signing to avoid "unidentified developer" error upon first launch.</li>
+            <li>Now using the Sparkle framework, so AutoPkgr can keep itself up to date.</li>
+          </ul>          
+          ]]>
+        </description>
+        <pubDate>Mon, 15 Sep 2014 18:00:00 +0000</pubDate>
+        <enclosure url="https://github.com/eahrold/autopkgr/releases/download/1.0.4-beta/AutoPkgr-Proxy.dmg" sparkle:version="345" sparkle:shortVersionString="1.0.4-beta" type="application/octet-stream" />
+      </item>
+  </channel>
+</rss>
