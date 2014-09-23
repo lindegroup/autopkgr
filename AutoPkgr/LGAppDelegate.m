@@ -32,7 +32,7 @@
 {
     LGDefaults *defaults = [LGDefaults new];
 
-    // set self as the delegate for the time so the menu item is updated
+    // Set self as the delegate for the time so the menu item is updated
     // during timed runs.
     [[LGAutoPkgSchedule sharedTimer] setProgressDelegate:self];
 
@@ -80,7 +80,7 @@
                         progress:^(NSString *message, double taskProgress) {
                             [self updateProgress:message progress:taskProgress];
                         }
-                           reply:^(NSDictionary *report,NSError *error) {
+                           reply:^(NSDictionary *report, NSError *error) {
                                [self stopProgress:error];
                                LGEmailer *emailer = [LGEmailer new];
                                [emailer sendEmailForReport:report error:error];
@@ -120,13 +120,15 @@
 }
 
 # pragma mark - Progress Protocol
--(void)startProgressWithMessage:(NSString *)message{
+- (void)startProgressWithMessage:(NSString *)message
+{
     __block NSMenuItem *item = [self.statusMenu itemAtIndex:0];
     [item setAction:nil];
     [item setTitle:message];
 }
 
--(void)stopProgress:(NSError *)error{
+- (void)stopProgress:(NSError *)error
+{
     __block NSMenuItem *item = [self.statusMenu itemAtIndex:0];
     [[NSOperationQueue mainQueue] addOperationWithBlock:^{
         [item setTitle:@"Check Now"];
@@ -134,14 +136,15 @@
     }];
 }
 
--(void)updateProgress:(NSString *)message progress:(double)progress{
+- (void)updateProgress:(NSString *)message progress:(double)progress
+{
     __block NSMenuItem *item = [self.statusMenu itemAtIndex:0];
     if (message.length < 50) {
         [[NSOperationQueue mainQueue] addOperationWithBlock:^{
             [item setTitle:message];
         }];
     }
-    NSLog(@"%@",message);
+    NSLog(@"%@", message);
 }
 
 @end

@@ -24,7 +24,7 @@
 
 @class LGConfigurationWindowController;
 
-@interface LGAppDelegate : NSObject <NSApplicationDelegate,LGProgressDelegate>
+@interface LGAppDelegate : NSObject <NSApplicationDelegate, LGProgressDelegate>
 {
     @private
     LGConfigurationWindowController *configurationWindowController;

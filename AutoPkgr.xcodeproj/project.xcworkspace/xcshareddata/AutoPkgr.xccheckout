@@ -12,7 +12,7 @@
 	<dict>
 		<key>026F280F-1C98-4936-9C8C-43DE0D2802B2</key>
 		<string>https://github.com/MailCore/mailcore2.git</string>
-		<key>BE02C102-5A70-48C2-A395-81BCE2455E30</key>
+		<key>941A3B01BA9BA1841C1477B8E57AB717E0D7F561</key>
 		<string>https://github.com/lindegroup/autopkgr.git</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
@@ -21,22 +21,22 @@
 	<dict>
 		<key>026F280F-1C98-4936-9C8C-43DE0D2802B2</key>
 		<string>../../mailcore2</string>
-		<key>BE02C102-5A70-48C2-A395-81BCE2455E30</key>
+		<key>941A3B01BA9BA1841C1477B8E57AB717E0D7F561</key>
 		<string>../..</string>
 	</dict>
 	<key>IDESourceControlProjectURL</key>
 	<string>https://github.com/lindegroup/autopkgr.git</string>
 	<key>IDESourceControlProjectVersion</key>
-	<integer>110</integer>
+	<integer>111</integer>
 	<key>IDESourceControlProjectWCCIdentifier</key>
-	<string>BE02C102-5A70-48C2-A395-81BCE2455E30</string>
+	<string>941A3B01BA9BA1841C1477B8E57AB717E0D7F561</string>
 	<key>IDESourceControlProjectWCConfigurations</key>
 	<array>
 		<dict>
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
 			<string>public.vcs.git</string>
 			<key>IDESourceControlWCCIdentifierKey</key>
-			<string>BE02C102-5A70-48C2-A395-81BCE2455E30</string>
+			<string>941A3B01BA9BA1841C1477B8E57AB717E0D7F561</string>
 			<key>IDESourceControlWCCName</key>
 			<string>autopkgr</string>
 		</dict>

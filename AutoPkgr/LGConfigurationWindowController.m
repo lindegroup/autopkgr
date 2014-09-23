@@ -25,13 +25,14 @@
 #import "LGEmailer.h"
 #import "LGHostInfo.h"
 #import "LGAutoPkgTask.h"
+#import "LGInstaller.h"
 #import "LGAutoPkgSchedule.h"
 #import "LGProgressDelegate.h"
 #import "LGGitHubJSONLoader.h"
 #import "LGVersionComparator.h"
 #import "SSKeychain.h"
 
-@interface LGConfigurationWindowController ()<LGProgressDelegate> {
+@interface LGConfigurationWindowController () <LGProgressDelegate> {
     LGDefaults *defaults;
     LGAutoPkgTask *_task;
 }
@@ -78,6 +79,8 @@ static void *XXCheckForRepoUpdatesAutomaticallyEnabledContext = &XXCheckForRepoU
 static void *XXEmailNotificationsEnabledContext = &XXEmailNotificationsEnabledContext;
 static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
 
+
+#pragma mark - init/dealloc/nib
 - (void)dealloc
 {
     [smtpAuthenticationEnabledButton removeObserver:self forKeyPath:@"cell.state" context:XXAuthenticationEnabledContext];
@@ -134,6 +137,8 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
     [checkForRepoUpdatesAutomaticallyButton setAction:@selector(changeCheckForRepoUpdatesAutomaticallyButtonState)];
 }
 
+
+#pragma mark - Observers
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
     if (context == XXAuthenticationEnabledContext) {
@@ -183,6 +188,8 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
     }
 }
 
+
+#pragma mark - NSWindowDelegate
 - (void)windowDidLoad
 {
     [super windowDidLoad];
@@ -263,23 +270,25 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
         }
     }
 
+    LGHostInfo *hostInfo = [[LGHostInfo alloc] init];
+    BOOL autoPkgInstalled = [hostInfo autoPkgInstalled];
+    BOOL gitInstalled = [hostInfo gitInstalled];
+
+    if (gitInstalled) {
+        [installGitButton setEnabled:NO];
+        [gitStatusLabel setStringValue:kLGGitInstalledLabel];
+        [gitStatusIcon setImage:[NSImage imageNamed:NSImageNameStatusAvailable]];
+    } else {
+        [installGitButton setEnabled:YES];
+        [gitStatusLabel setStringValue:kLGGitNotInstalledLabel];
+        [gitStatusIcon setImage:[NSImage imageNamed:NSImageNameStatusUnavailable]];
+    }
+
     NSOperationQueue *bgQueue = [[NSOperationQueue alloc] init];
     [bgQueue addOperationWithBlock:^{
-        // Create an instance of the LGHostInfo class
-        LGHostInfo *hostInfo = [[LGHostInfo alloc] init];
-
-        if ([hostInfo gitInstalled]) {
-            [installGitButton setEnabled:NO];
-            [gitStatusLabel setStringValue:kLGGitInstalledLabel];
-            [gitStatusIcon setImage:[NSImage imageNamed:NSImageNameStatusAvailable]];
-        } else {
-            [installGitButton setEnabled:YES];
-            [gitStatusLabel setStringValue:kLGGitNotInstalledLabel];
-            [gitStatusIcon setImage:[NSImage imageNamed:NSImageNameStatusUnavailable]];
-        }
-
-        if ([hostInfo autoPkgInstalled]) {
-            BOOL updateAvailable = [self autoPkgUpdateAvailable];
+        // Since checking for an update can take some time, run it in the background
+        if (autoPkgInstalled) {
+            BOOL updateAvailable = [hostInfo autoPkgUpdateAvailable];
             if (updateAvailable) {
                 [installAutoPkgButton setEnabled:YES];
                 [installAutoPkgButton setTitle:@"Update AutoPkg"];
@@ -297,20 +306,9 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
         }
     }];
 
-    // Enable tools buttons if directories exist
-    BOOL isDir;
-    if ([[NSFileManager defaultManager] fileExistsAtPath:defaults.munkiRepo isDirectory:&isDir] && isDir) {
-        [openLocalMunkiRepoFolderButton setEnabled:YES];
-    }
-
-    _popRepoTableViewHandler.progressDelegate = self;
-    
-    // Synchronize with the defaults database
-    [defaults synchronize];
-    
     // Update AutoPkg recipe repos when the application launches
     // if the user has enabled automatic repo updates
-    if (defaults.checkForRepoUpdatesAutomaticallyEnabled) {
+    if (defaults.checkForRepoUpdatesAutomaticallyEnabled && gitInstalled && autoPkgInstalled) {
         [_updateRepoNowButton setEnabled:NO];
         [_checkAppsNowButton setEnabled:NO];
         [_updateRepoNowButton setTitle:@"Update in Progress..."];
@@ -320,8 +318,21 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
             [_checkAppsNowButton setEnabled:YES];
         }];
     }
+    
+    _popRepoTableViewHandler.progressDelegate = self;
+
+    // Synchronize with the defaults database
+    [defaults synchronize];
 }
 
+- (BOOL)windowShouldClose:(id)sender
+{
+    [self save];
+    return YES;
+}
+
+
+#pragma mark - Email
 - (IBAction)sendTestEmail:(id)sender
 {
     // Send a test email notification when the user
@@ -348,30 +359,6 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
     [emailer sendTestEmail];
 }
 
-- (void)testEmailReceived:(NSNotification *)notification
-{
-    [[NSNotificationCenter defaultCenter] removeObserver:self
-                                                    name:kLGNotificationEmailSent
-                                                  object:[notification object]];
-
-    [sendTestEmailButton setEnabled:YES]; // enable button
-
-    // Handle Spinner
-    [sendTestEmailSpinner stopAnimation:self]; // stop animation
-    [sendTestEmailSpinner setHidden:YES]; // hide spinner
-
-    NSError *e = [[notification userInfo] objectForKey:kLGNotificationUserInfoError]; // pull the error out of the userInfo dictionary
-    if (e) {
-        NSLog(@"Unable to send test email. Error: %@", e);
-        [[NSAlert alertWithError:e] beginSheetModalForWindow:self.window
-                                               modalDelegate:self
-                                              didEndSelector:nil
-                                                 contextInfo:nil];
-    }
-
-    [self stopProgress:e];
-}
-
 - (void)testSmtpServerPort:(id)sender
 {
     if (![[smtpServer stringValue] isEqualToString:@""] && [smtpPort integerValue] > 0) {
@@ -386,7 +373,7 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
         LGTestPort *tester = [[LGTestPort alloc] init];
 
         [center addObserver:self
-                   selector:@selector(testSmtpServerPortNotificationReceiver:)
+                   selector:@selector(testSmtpServerPortNotificationReceived:)
                        name:kLGNotificationTestSmtpServerPort
                      object:nil];
 
@@ -398,28 +385,7 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
     }
 }
 
-- (void)testSmtpServerPortNotificationReceiver:(NSNotification *)notification
-{
-    // Set up the spinner and show the status image
-    [testSmtpServerSpinner setHidden:YES];
-    [testSmtpServerSpinner stopAnimation:self];
-    [testSmtpServerStatus setHidden:NO];
-
-    [[NSNotificationCenter defaultCenter] removeObserver:self
-                                                    name:kLGNotificationTestSmtpServerPort
-                                                  object:nil];
-
-    NSString *status = notification.userInfo[kLGNotificationUserInfoSuccess];
-    if ([status isEqualTo:@NO]) {
-        [testSmtpServerStatus setImage:[NSImage imageNamed:@"NSStatusUnavailable"]];
-    } else if ([status isEqualTo:@YES]) {
-        [testSmtpServerStatus setImage:[NSImage imageNamed:@"NSStatusAvailable"]];
-    } else {
-        NSLog(@"Unexpected result for recieved from port test.");
-        [testSmtpServerStatus setImage:[NSImage imageNamed:@"NSStatusPartiallyAvailable"]];
-    }
-}
-
+# pragma mark - AutoPkgr actions
 - (void)save
 {
     defaults.SMTPServer = [smtpServer stringValue];
@@ -464,31 +430,6 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
 
     // Synchronize with the defaults database
     [defaults synchronize];
-
-}
-
-- (BOOL)autoPkgUpdateAvailable
-{
-    // TODO: This check shouldn't block the main thread
-
-    // Get the currently installed version of AutoPkg
-    LGHostInfo *hostInfo = [[LGHostInfo alloc] init];
-    NSString *installedAutoPkgVersionString = [hostInfo getAutoPkgVersion];
-    NSLog(@"Installed version of AutoPkg: %@", installedAutoPkgVersionString);
-
-    // Get the latest version of AutoPkg available on GitHub
-    LGGitHubJSONLoader *jsonLoader = [[LGGitHubJSONLoader alloc] init];
-    NSString *latestAutoPkgVersionString = [jsonLoader getLatestAutoPkgReleaseVersionNumber];
-
-    // Determine if AutoPkg is up-to-date by comparing the version strings
-    LGVersionComparator *vc = [[LGVersionComparator alloc] init];
-    BOOL newVersionAvailable = [vc isVersion:latestAutoPkgVersionString greaterThanVersion:installedAutoPkgVersionString];
-    if (newVersionAvailable) {
-        NSLog(@"A new version of AutoPkg is available. Version %@ is installed and version %@ is available.", installedAutoPkgVersionString, latestAutoPkgVersionString);
-        return YES;
-    }
-
-    return NO;
 }
 
 - (void)runCommandAsRoot:(NSString *)command
@@ -514,106 +455,73 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
 {
     // Change the button label to "Installing..."
     // and disable the button to prevent multiple clicks
-    [installGitButton setTitle:@"Installing..."];
     [installGitButton setEnabled:NO];
 
-    NSTask *task = [[NSTask alloc] init];
-
-    task.launchPath = @"/usr/bin/xcode-select";
-    task.arguments = @[@"--install"];
-    task.standardError = [NSPipe pipe];
-
-    task.terminationHandler = ^(NSTask *aTask) {
-        // TODO: We should probably be installing the official
-        // Git PKG rather than dealing with the Xcode CLI tools
-        [[NSOperationQueue mainQueue]addOperationWithBlock:^{
-            NSString *alertMessage = @"After the Xcode Command Line Tools installation completes, click OK.";
-            NSAlert *alert = [NSAlert alertWithMessageText:alertMessage
-                                             defaultButton:@"OK"
-                                           alternateButton:nil
-                                               otherButton:nil
-                                 informativeTextWithFormat:@""];
-
-            if ([alert runModal] == NSAlertDefaultReturn) {
-                LGHostInfo *hostInfo = [[LGHostInfo alloc] init];
-                if ([hostInfo gitInstalled]) {
-                    [installGitButton setEnabled:NO];
-                    [gitStatusLabel setStringValue:kLGGitInstalledLabel];
-                    [gitStatusIcon setImage:[NSImage imageNamed:NSImageNameStatusAvailable]];
-                } else {
-                    [installGitButton setEnabled:YES];
-                    [gitStatusLabel setStringValue:kLGGitNotInstalledLabel];
-                    [gitStatusIcon setImage:[NSImage imageNamed:NSImageNameStatusUnavailable]];
-                    alert = [NSAlert alertWithMessageText:@"There was a problem installing Git!"
-                                            defaultButton:@"Go get Git!"
-                                          alternateButton:@"Cancel"
-                                              otherButton:nil
-                                informativeTextWithFormat:@"You can try to reinstall from here, or download and install the official version from http://git-scm.com/downloads."];
-
-                    if ([alert runModal] == NSAlertDefaultReturn) {
-                        [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:@"http://git-scm.com/downloads"]];
-                    }
-                }
-            }
-            [installGitButton setTitle:@"Install Git"];
-        }];
-    };
-
-    [task launch];
-}
-
-- (void)downloadAndInstallAutoPkg
-{
-    LGHostInfo *hostInfo = [[LGHostInfo alloc] init];
-    LGGitHubJSONLoader *jsonLoader = [[LGGitHubJSONLoader alloc] init];
-
-    // Get the latest AutoPkg PKG download URL
-    NSString *downloadURL = [jsonLoader getLatestAutoPkgDownloadURL];
-
-    // Get path for autopkg-x.x.x.pkg
-    NSString *autoPkgPkg = [NSTemporaryDirectory() stringByAppendingPathComponent:[downloadURL lastPathComponent]];
-
-    // Download AutoPkg to the temporary directory
-    NSData *autoPkg = [[NSData alloc] initWithContentsOfURL:[NSURL URLWithString:downloadURL]];
-    [autoPkg writeToFile:autoPkgPkg atomically:YES];
-
-    // Set the `installer` command
-    NSString *command = [NSString stringWithFormat:@"/usr/sbin/installer -pkg %@ -target /", autoPkgPkg];
-
-    // Install the AutoPkg PKG as root
-    [self runCommandAsRoot:command];
-
-    // Update the autoPkgStatus icon and label if it installed successfully
-    if ([hostInfo autoPkgInstalled]) {
-        NSLog(@"AutoPkg installed successfully.");
-        [autoPkgStatusLabel setStringValue:kLGAutoPkgInstalledLabel];
-        [autoPkgStatusIcon setImage:[NSImage imageNamed:NSImageNameStatusAvailable]];
-        [installAutoPkgButton setEnabled:NO];
-    }else{
-        [autoPkgStatusLabel setStringValue:kLGAutoPkgNotInstalledLabel];
-        [autoPkgStatusIcon setImage:[NSImage imageNamed:NSImageNameStatusUnavailable]];
-        [installAutoPkgButton setEnabled:YES];
-    }
-    
-    [installAutoPkgButton setTitle:@"Install AutoPkg"];
-    [self stopProgress:nil];
+    LGInstaller *installer = [[LGInstaller alloc] init];
+    installer.progressDelegate = self;
+    [installer installGit:^(NSError *error) {
+        LGHostInfo *hostInfo = [[LGHostInfo alloc] init];
+        [self stopProgress:error];
+        if ([hostInfo gitInstalled]) {
+            NSLog(@"Git installed successfully.");
+            [installGitButton setEnabled:NO];
+            [gitStatusLabel setStringValue:kLGGitInstalledLabel];
+            [gitStatusIcon setImage:[NSImage imageNamed:NSImageNameStatusAvailable]];
+        } else {
+            NSLog(@"%@",error.localizedDescription);
+            [installGitButton setEnabled:YES];
+            [gitStatusLabel setStringValue:kLGGitNotInstalledLabel];
+            [gitStatusIcon setImage:[NSImage imageNamed:NSImageNameStatusUnavailable]];
+        }
+    }];
 }
 
 - (IBAction)installAutoPkg:(id)sender
 {
-    // Change the button label to "Installing..."
     // and disable the button to prevent multiple clicks
-    [installAutoPkgButton setTitle:@"Installing..."];
     [installAutoPkgButton setEnabled:NO];
-    [self startProgressWithMessage:@"Installing newest version of AutoPkg"];
+    [self startProgressWithMessage:@"Installing newest version of AutoPkg..."];
 
-    // Download and install AutoPkg on a background thread
-    NSOperationQueue *queue = [[NSOperationQueue alloc] init];
-    NSInvocationOperation *operation = [[NSInvocationOperation alloc]
-        initWithTarget:self
-              selector:@selector(downloadAndInstallAutoPkg)
-                object:nil];
-    [queue addOperation:operation];
+    LGInstaller *installer = [[LGInstaller alloc] init];
+    installer.progressDelegate = self;
+    [installer installAutoPkg:^(NSError *error) {
+        // Update the autoPkgStatus icon and label if it installed successfully
+        LGHostInfo *hostInfo = [[LGHostInfo alloc] init];
+        [self stopProgress:error];
+        if ([hostInfo autoPkgInstalled]) {
+            NSLog(@"AutoPkg installed successfully.");
+            [autoPkgStatusLabel setStringValue:kLGAutoPkgInstalledLabel];
+            [autoPkgStatusIcon setImage:[NSImage imageNamed:NSImageNameStatusAvailable]];
+            [installAutoPkgButton setEnabled:NO];
+        } else {
+            [autoPkgStatusLabel setStringValue:kLGAutoPkgNotInstalledLabel];
+            [autoPkgStatusIcon setImage:[NSImage imageNamed:NSImageNameStatusUnavailable]];
+            [installAutoPkgButton setEnabled:YES];
+        }
+    }];
+}
+
+
+#pragma mark - Open Panels
+- (NSOpenPanel *)setupOpenPanel
+{
+    NSOpenPanel *openPanel = [NSOpenPanel openPanel];
+    // Disable the selection of files in the dialog
+    [openPanel setCanChooseFiles:NO];
+    
+    // Enable the selection of directories in the dialog
+    [openPanel setCanChooseDirectories:YES];
+    
+    // Enable the creation of directories in the dialog
+    [openPanel setCanCreateDirectories:YES];
+    
+    // Set the prompt to "Choose" instead of "Open"
+    [openPanel setPrompt:@"Choose"];
+    
+    // Disable multiple selection
+    [openPanel setAllowsMultipleSelection:NO];
+    
+    return openPanel;
 }
 
 - (IBAction)openLocalMunkiRepoFolder:(id)sender
@@ -641,8 +549,8 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
 {
     BOOL isDir;
     NSString *autoPkgRecipeReposFolder = [defaults autoPkgRecipeRepoDir];
-    autoPkgRecipeReposFolder = autoPkgRecipeReposFolder ? autoPkgRecipeReposFolder:[@"~/Library/AutoPkg" stringByExpandingTildeInPath];
-    
+    autoPkgRecipeReposFolder = autoPkgRecipeReposFolder ? autoPkgRecipeReposFolder : [@"~/Library/AutoPkg/RecipeRepos" stringByExpandingTildeInPath];
+
     if ([[NSFileManager defaultManager] fileExistsAtPath:autoPkgRecipeReposFolder isDirectory:&isDir] && isDir) {
         NSURL *autoPkgRecipeReposFolderURL = [NSURL fileURLWithPath:autoPkgRecipeReposFolder];
         [[NSWorkspace sharedWorkspace] openURL:autoPkgRecipeReposFolderURL];
@@ -664,7 +572,7 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
 {
     BOOL isDir;
     NSString *autoPkgCacheFolder = [defaults autoPkgCacheDir];
-    autoPkgCacheFolder = autoPkgCacheFolder ? autoPkgCacheFolder:[@"~/Library/AutoPkg" stringByExpandingTildeInPath];
+    autoPkgCacheFolder = autoPkgCacheFolder ? autoPkgCacheFolder : [@"~/Library/AutoPkg/Cache" stringByExpandingTildeInPath];
 
     if ([[NSFileManager defaultManager] fileExistsAtPath:autoPkgCacheFolder isDirectory:&isDir] && isDir) {
         NSURL *autoPkgCacheFolderURL = [NSURL fileURLWithPath:autoPkgCacheFolder];
@@ -687,8 +595,8 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
 {
     BOOL isDir;
     NSString *autoPkgRecipeOverridesFolder = [defaults autoPkgRecipeOverridesDir];
-    autoPkgRecipeOverridesFolder = autoPkgRecipeOverridesFolder ? autoPkgRecipeOverridesFolder:[@"~/Library/AutoPkg" stringByExpandingTildeInPath];
-    
+    autoPkgRecipeOverridesFolder = autoPkgRecipeOverridesFolder ? autoPkgRecipeOverridesFolder : [@"~/Library/AutoPkg/RecipeOverrides" stringByExpandingTildeInPath];
+
     if ([[NSFileManager defaultManager] fileExistsAtPath:autoPkgRecipeOverridesFolder isDirectory:&isDir] && isDir) {
         NSURL *autoPkgRecipeOverridesFolderURL = [NSURL fileURLWithPath:autoPkgRecipeOverridesFolder];
         [[NSWorkspace sharedWorkspace] openURL:autoPkgRecipeOverridesFolderURL];
@@ -703,15 +611,14 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
     }
 }
 
-#pragma mark - Choose AutoPkg defaults
 
+#pragma mark - Choose AutoPkg defaults
 - (IBAction)chooseLocalMunkiRepo:(id)sender
 {
     NSOpenPanel *chooseDialog = [self setupOpenPanel];
 
     // Set the default directory to the current setting for munkiRepo, else /Users/Shared
-    [chooseDialog setDirectoryURL:[NSURL URLWithString:defaults.munkiRepo ?
-                                   defaults.munkiRepo : @"/Users/Shared"]];
+    [chooseDialog setDirectoryURL:[NSURL URLWithString:defaults.munkiRepo ? defaults.munkiRepo : @"/Users/Shared"]];
 
     // Display the dialog. If the "Choose" button was
     // pressed, process the directory path.
@@ -739,8 +646,7 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
     NSOpenPanel *chooseDialog = [self setupOpenPanel];
 
     // Set the default directory to the current setting for autoPkgRecipeRepoDir, else ~/Library/AutoPkg
-    [chooseDialog setDirectoryURL:[NSURL URLWithString:defaults.autoPkgRecipeRepoDir ?
-                                   defaults.autoPkgRecipeRepoDir : [@"~/Library/AutoPkg" stringByExpandingTildeInPath]]];
+    [chooseDialog setDirectoryURL:[NSURL URLWithString:defaults.autoPkgRecipeRepoDir ? defaults.autoPkgRecipeRepoDir : [@"~/Library/AutoPkg" stringByExpandingTildeInPath]]];
 
     // Display the dialog. If the "Choose" button was
     // pressed, process the directory path.
@@ -768,8 +674,7 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
     NSOpenPanel *chooseDialog = [self setupOpenPanel];
 
     // Set the default directory to the current setting for autoPkgCacheDir, else ~/Library/AutoPkg
-    [chooseDialog setDirectoryURL:[NSURL URLWithString:defaults.autoPkgCacheDir ?
-                                   defaults.autoPkgCacheDir : [@"~/Library/AutoPkg" stringByExpandingTildeInPath]]];
+    [chooseDialog setDirectoryURL:[NSURL URLWithString:defaults.autoPkgCacheDir ? defaults.autoPkgCacheDir : [@"~/Library/AutoPkg" stringByExpandingTildeInPath]]];
 
     // Display the dialog. If the "Choose" button was
     // pressed, process the directory path.
@@ -797,8 +702,7 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
     NSOpenPanel *chooseDialog = [self setupOpenPanel];
 
     // Set the default directory to the current setting for autoPkgRecipeOverridesDir, else ~/Library/AutoPkg
-    [chooseDialog setDirectoryURL:[NSURL URLWithString:defaults.autoPkgRecipeOverridesDir ?
-                                   defaults.autoPkgRecipeOverridesDir : [@"~/Library/AutoPkg" stringByExpandingTildeInPath]]];
+    [chooseDialog setDirectoryURL:[NSURL URLWithString:defaults.autoPkgRecipeOverridesDir ? defaults.autoPkgRecipeOverridesDir : [@"~/Library/AutoPkg" stringByExpandingTildeInPath]]];
 
     // Display the dialog. If the "Choose" button was
     // pressed, process the directory path.
@@ -821,12 +725,13 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
     }];
 }
 
+
+#pragma mark - AutoPkg actions
 - (IBAction)addAutoPkgRepoURL:(id)sender
 {
-    // TODO: Input validation + success/failure notification
     NSString *repo = [repoURLToAdd stringValue];
-    [self startProgressWithMessage:[NSString stringWithFormat:@"Adding %@",repo]];
-    
+    [self startProgressWithMessage:[NSString stringWithFormat:@"Adding %@", repo]];
+
     [LGAutoPkgTask repoAdd:repo reply:^(NSError *error) {
         [[NSOperationQueue mainQueue] addOperationWithBlock:^{
             [self stopProgress:error];
@@ -841,26 +746,11 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
 {
     [self startProgressWithMessage:@"Updating AutoPkg recipe repos."];
     [self.updateRepoNowButton setEnabled:NO];
-    
+
     [LGAutoPkgTask repoUpdate:^(NSError *error) {
         [self stopProgress:error];
         [self.updateRepoNowButton setEnabled:YES];
     }];
-}
-
-- (void)updateReposNowCompleteNotificationRecieved:(NSNotification *)notification
-{
-    [[NSNotificationCenter defaultCenter] removeObserver:self
-                                                    name:kLGNotificationUpdateReposComplete
-                                                  object:nil];
-    // stop progress panel
-    NSError *error = nil;
-    if ([notification.userInfo[kLGNotificationUserInfoError] isKindOfClass:[NSError class]]) {
-        error = notification.userInfo[kLGNotificationUserInfoError];
-    }
-
-    [self stopProgress:error];
-    [self.updateRepoNowButton setEnabled:YES];
 }
 
 - (IBAction)checkAppsNow:(id)sender
@@ -872,8 +762,8 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
     [_task runRecipeList:recipeList
                         progress:^(NSString *message, double taskProgress) {
                             [self updateProgress:message progress:taskProgress];
-                            
-                        } reply:^(NSDictionary *report,NSError *error) {
+        }
+        reply:^(NSDictionary *report, NSError *error) {
                             [self stopProgress:error];
                             if (report.count || error) {
                                 LGEmailer *emailer = [LGEmailer new];
@@ -884,49 +774,15 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
                         }];
 }
 
-- (IBAction)cancelAutoPkgRun:(id)sender{
-    if(_task){
+- (IBAction)cancelAutoPkgRun:(id)sender
+{
+    if (_task) {
         [_task cancel];
     }
 }
 
 
-- (void)autoPkgRunCompleteNotificationRecieved:(NSNotification *)notification
-{
-    [[NSNotificationCenter defaultCenter] removeObserver:self
-                                                    name:kLGNotificationRunAutoPkgComplete
-                                                  object:nil];
-
-    NSError *error = nil;
-    if ([notification.userInfo[kLGNotificationUserInfoError] isKindOfClass:[NSError class]]) {
-        error = notification.userInfo[kLGNotificationUserInfoError];
-    }
-    [self stopProgress:error];
-    [self.checkAppsNowButton setEnabled:YES];
-}
-
-- (NSOpenPanel *)setupOpenPanel
-{
-    NSOpenPanel *openPanel = [NSOpenPanel openPanel];
-    // Disable the selection of files in the dialog
-    [openPanel setCanChooseFiles:NO];
-
-    // Enable the selection of directories in the dialog
-    [openPanel setCanChooseDirectories:YES];
-
-    // Enable the creation of directories in the dialog
-    [openPanel setCanCreateDirectories:YES];
-
-    // Set the prompt to "Choose" instead of "Open"
-    [openPanel setPrompt:@"Choose"];
-
-    // Disable multiple selection
-    [openPanel setAllowsMultipleSelection:NO];
-
-    return openPanel;
-}
-
-
+#pragma mark - NSTextDelegate
 - (void)controlTextDidEndEditing:(NSNotification *)notification
 {
     id object = [notification object];
@@ -945,18 +801,22 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
         // Pass nil here if string is "" so it removes the key from the defaults
         NSString *value = [[localMunkiRepo stringValue] isEqualToString:@""] ? nil : [localMunkiRepo stringValue];
         defaults.munkiRepo = value;
+        [self enableOpenInFinderButtons];
     } else if ([object isEqual:autoPkgRecipeOverridesDir]) {
         // Pass nil here if string is "" so it removes the key from the defaults
         NSString *value = [[autoPkgRecipeOverridesDir stringValue] isEqualToString:@""] ? nil : [autoPkgRecipeOverridesDir stringValue];
         defaults.autoPkgRecipeOverridesDir = value;
+        [self enableOpenInFinderButtons];
     } else if ([object isEqual:autoPkgRecipeRepoDir]) {
         // Pass nil here if string is "" so it removes the key from the defaults
         NSString *value = [[autoPkgRecipeRepoDir stringValue] isEqualToString:@""] ? nil : [autoPkgRecipeRepoDir stringValue];
         defaults.autoPkgRecipeRepoDir = value;
+        [self enableOpenInFinderButtons];
     } else if ([object isEqual:autoPkgCacheDir]) {
         // Pass nil here if string is "" so it removes the key from the defaults
         NSString *value = [[autoPkgCacheDir stringValue] isEqualToString:@""] ? nil : [autoPkgCacheDir stringValue];
         defaults.autoPkgCacheDir = value;
+        [self enableOpenInFinderButtons];
     } else if ([object isEqual:smtpTo]) {
         // We use objectValue here because objectValue returns an
         // array of strings if the field contains a series of strings
@@ -970,7 +830,7 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
         NSError *error;
         [SSKeychain setPassword:[smtpPassword stringValue] forService:kLGApplicationName account:[smtpUsername stringValue] error:&error];
         if (error) {
-            NSLog(@"Error while storing e-mail password in keychain: %@", error);
+            NSLog(@"Error while storing email password in keychain: %@", error);
         } else {
             NSLog(@"Stored email password in keychain.");
         }
@@ -986,6 +846,7 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
     [defaults setBool:YES forKey:kLGHasCompletedInitialSetup];
 }
 
+#pragma mark - NSTokenFieldDelegate
 - (NSArray *)tokenField:(NSTokenField *)tokenField shouldAddObjects:(NSArray *)tokens atIndex:(NSUInteger)index
 {
     // We use objectValue here because objectValue returns an
@@ -995,6 +856,15 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
     return tokens;
 }
 
+#pragma mark - Tab View Delegate
+- (void)tabView:(NSTabView *)tabView didSelectTabViewItem:(NSTabViewItem *)tabViewItem
+{
+    if([tabViewItem.identifier isEqualTo:@"localFolders"]){
+        [self enableOpenInFinderButtons];
+    }
+}
+
+#pragma mark - IB Object State Actions
 - (void)changeTLSButtonState
 {
     if ([smtpTLSEnabledButton state] == NSOnState) {
@@ -1044,6 +914,70 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
     [defaults synchronize];
 }
 
+- (void)enableOpenInFinderButtons
+{
+    // Enable "Open in Finder" buttons if directories exist
+    BOOL isDir;
+    
+    NSString *autoPkgRecipeReposFolder = [defaults autoPkgRecipeRepoDir];
+    autoPkgRecipeReposFolder = autoPkgRecipeReposFolder ? autoPkgRecipeReposFolder : [@"~/Library/AutoPkg/RecipeRepos" stringByExpandingTildeInPath];
+    NSString *autoPkgCacheFolder = [defaults autoPkgCacheDir];
+    autoPkgCacheFolder = autoPkgCacheFolder ? autoPkgCacheFolder : [@"~/Library/AutoPkg/Cache" stringByExpandingTildeInPath];
+    NSString *autoPkgRecipeOverridesFolder = [defaults autoPkgRecipeOverridesDir];
+    autoPkgRecipeOverridesFolder = autoPkgRecipeOverridesFolder ? autoPkgRecipeOverridesFolder : [@"~/Library/AutoPkg/RecipeOverrides" stringByExpandingTildeInPath];
+    
+    if ([[NSFileManager defaultManager] fileExistsAtPath:defaults.munkiRepo isDirectory:&isDir] && isDir) {
+        [openLocalMunkiRepoFolderButton setEnabled:YES];
+    } else {
+        [openLocalMunkiRepoFolderButton setEnabled:NO];
+    }
+    if ([[NSFileManager defaultManager] fileExistsAtPath:autoPkgCacheFolder isDirectory:&isDir] && isDir) {
+        [openAutoPkgCacheFolderButton setEnabled:YES];
+    } else {
+        [openAutoPkgCacheFolderButton setEnabled:NO];
+    }
+    if ([[NSFileManager defaultManager] fileExistsAtPath:autoPkgRecipeReposFolder isDirectory:&isDir] && isDir) {
+        [openAutoPkgRecipeReposFolderButton setEnabled:YES];
+    } else {
+        [openAutoPkgRecipeReposFolderButton setEnabled:NO];
+    }
+    if ([[NSFileManager defaultManager] fileExistsAtPath:autoPkgRecipeOverridesFolder isDirectory:&isDir] && isDir) {
+        [openAutoPkgRecipeOverridesFolderButton setEnabled:YES];
+    } else {
+        [openAutoPkgRecipeOverridesFolderButton setEnabled:NO];
+    }
+}
+
+#pragma mark - Notifications
+- (void)autoPkgRunCompleteNotificationRecieved:(NSNotification *)notification
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                    name:kLGNotificationRunAutoPkgComplete
+                                                  object:nil];
+    
+    NSError *error = nil;
+    if ([notification.userInfo[kLGNotificationUserInfoError] isKindOfClass:[NSError class]]) {
+        error = notification.userInfo[kLGNotificationUserInfoError];
+    }
+    [self stopProgress:error];
+    [self.checkAppsNowButton setEnabled:YES];
+}
+
+- (void)updateReposNowCompleteNotificationRecieved:(NSNotification *)notification
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                    name:kLGNotificationUpdateReposComplete
+                                                  object:nil];
+    // stop progress panel
+    NSError *error = nil;
+    if ([notification.userInfo[kLGNotificationUserInfoError] isKindOfClass:[NSError class]]) {
+        error = notification.userInfo[kLGNotificationUserInfoError];
+    }
+    
+    [self stopProgress:error];
+    [self.updateRepoNowButton setEnabled:YES];
+}
+
 - (void)updateProgressNotificationReceived:(NSNotification *)notification
 {
     [[NSOperationQueue mainQueue] addOperationWithBlock:^{
@@ -1078,6 +1012,50 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
     [self stopProgress:error];
 }
 
+- (void)testEmailReceived:(NSNotification *)notification
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                    name:kLGNotificationEmailSent
+                                                  object:[notification object]];
+    
+    [sendTestEmailButton setEnabled:YES]; // enable button
+    
+    // Handle Spinner
+    [sendTestEmailSpinner stopAnimation:self]; // stop animation
+    [sendTestEmailSpinner setHidden:YES]; // hide spinner
+    
+    // pull the error out of the userInfo dictionary
+    id error = [notification.userInfo objectForKey:kLGNotificationUserInfoError];
+    
+    if ([error isKindOfClass:[NSError class]]) {
+        [self stopProgress:error];
+    }
+}
+
+- (void)testSmtpServerPortNotificationReceived:(NSNotification *)notification
+{
+    // Set up the spinner and show the status image
+    [testSmtpServerSpinner setHidden:YES];
+    [testSmtpServerSpinner stopAnimation:self];
+    [testSmtpServerStatus setHidden:NO];
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                    name:kLGNotificationTestSmtpServerPort
+                                                  object:nil];
+    
+    NSString *status = notification.userInfo[kLGNotificationUserInfoSuccess];
+    if ([status isEqualTo:@NO]) {
+        [testSmtpServerStatus setImage:[NSImage imageNamed:@"NSStatusUnavailable"]];
+    } else if ([status isEqualTo:@YES]) {
+        [testSmtpServerStatus setImage:[NSImage imageNamed:@"NSStatusAvailable"]];
+    } else {
+        NSLog(@"Unexpected result for recieved from port test.");
+        [testSmtpServerStatus setImage:[NSImage imageNamed:@"NSStatusPartiallyAvailable"]];
+    }
+}
+
+
+#pragma mark - LGProgressDelegate
 - (void)startProgressWithMessage:(NSString *)message
 {
     [_menuProgressDelegate startProgressWithMessage:message];
@@ -1121,7 +1099,8 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
     }];
 }
 
-- (void)updateProgress:(NSString *)message progress:(double)progress{
+- (void)updateProgress:(NSString *)message progress:(double)progress
+{
     [_menuProgressDelegate updateProgress:message progress:progress];
     if (message.length < 100) {
         [[NSOperationQueue mainQueue] addOperationWithBlock:^{
@@ -1132,6 +1111,8 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
     }
 }
 
+
+#pragma mark - NSAlert didEndWith selectors
 - (void)didEndWithPreferenceRepairRequest:(NSAlert *)alert returnCode:(NSInteger)returnCode
 {
     if (returnCode == NSAlertSecondButtonReturn) {
@@ -1141,8 +1122,7 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
         if (neededFixing > 0) {
             NSAlert *alert = [NSAlert new];
             alert.messageText = [NSString stringWithFormat:@"%ld problems were found in the AutoPkg preference file", neededFixing];
-            alert.informativeText = rc ? @"AutoPkgr was able to repair the preference file. No further action is required." :
-                                         @"AutoPkgr could not repair the preference file. If the problem persists open an issue on the AutoPkgr GitHub page.";
+            alert.informativeText = rc ? @"AutoPkgr was able to repair the preference file. No further action is required." : @"AutoPkgr could not repair the preference file. If the problem persists open an issue on the AutoPkgr GitHub page.";
             [alert beginSheetModalForWindow:self.window
                               modalDelegate:self
                              didEndSelector:nil
@@ -1152,13 +1132,6 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
             DLog(@"No problems were detected in the AutoPkg preference file.");
         }
     }
-}
-
-- (BOOL)windowShouldClose:(id)sender
-{
-    [self save];
-
-    return YES;
 }
 
 @end

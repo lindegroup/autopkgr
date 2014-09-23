@@ -34,7 +34,10 @@ NSString *const kLGAutoPkgNotInstalledLabel = @"AutoPkg is not installed.";
 NSString *const kLGAutoPkgUpdateAvailableLabel = @"An update is available for AutoPkg.";
 
 #pragma mark - Static URLs
+#pragma mark -- GitHub
 NSString *const kLGAutoPkgReleasesJSONURL = @"https://api.github.com/repos/autopkg/autopkg/releases";
+NSString *const kLGGitMAVReleasesJSONURL = @"https://api.github.com/repos/timcharper/git_osx_installer/releases";
+NSString *const kLGGitMLReleasesJSONURL = @"https://api.github.com/repos/eahrold/git-for-mountainlion/releases";
 NSString *const kLGAutoPkgDownloadURL = @"https://github.com/autopkg/autopkg/zipball/master";
 NSString *const kLGAutoPkgRepositoriesJSONURL = @"https://api.github.com/orgs/autopkg/repos";
 

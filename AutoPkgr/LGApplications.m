@@ -118,7 +118,7 @@
 
 - (void)tableView:(NSTableView *)tableView setObjectValue:(id)object forTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row
 {
-    if([[tableColumn identifier] isEqualToString:@"appCheckbox"]) {
+    if ([[tableColumn identifier] isEqualToString:@"appCheckbox"]) {
         NSMutableArray *workingArray = [NSMutableArray arrayWithArray:activeApps];
         if ([object isEqual:@YES]) {
             [workingArray addObject:[searchedApps objectAtIndex:row]];
@@ -191,7 +191,7 @@
 - (void)executeAppSearch:(id)sender
 {
     [applicationTableView beginUpdates];
-    [applicationTableView removeRowsAtIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0,searchedApps.count)] withAnimation:NSTableViewAnimationEffectNone];
+    [applicationTableView removeRowsAtIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, searchedApps.count)] withAnimation:NSTableViewAnimationEffectNone];
 
     if ([[_appSearch stringValue] isEqualToString:@""]) {
         searchedApps = apps;
@@ -209,7 +209,7 @@
         searchedApps = [NSArray arrayWithArray:workingSearchArray];
     }
 
-    [applicationTableView insertRowsAtIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0,searchedApps.count)] withAnimation:NSTableViewAnimationEffectNone];
+    [applicationTableView insertRowsAtIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, searchedApps.count)] withAnimation:NSTableViewAnimationEffectNone];
 
     [applicationTableView endUpdates];
 }

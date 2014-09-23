@@ -20,6 +20,7 @@
 //
 
 #import <XCTest/XCTest.h>
+#import "LGInstaller.h"
 
 @interface AutoPkgrTests : XCTestCase
 
@@ -39,9 +40,18 @@
     [super tearDown];
 }
 
-- (void)testExample
+- (void)testInstallGit
 {
-    XCTFail(@"No implementation for \"%s\"", __PRETTY_FUNCTION__);
+    NSError *error;
+    LGInstaller *installer = [[LGInstaller alloc] init];
+    XCTAssertTrue([installer runGitInstaller:&error], @"%@",error);
+}
+
+- (void)testInstallAutoPkg
+{
+    NSError *error;
+    LGInstaller *installer = [[LGInstaller alloc] init];
+    XCTAssertTrue([installer runAutoPkgInstaller:&error], @"%@",error);
 }
 
 @end

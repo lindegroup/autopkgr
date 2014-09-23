@@ -70,7 +70,8 @@
     return self;
 }
 
-- (void)repoEditDidEndWithError:(NSError *)error withTableView:(NSTableView *)tableView{
+- (void)repoEditDidEndWithError:(NSError *)error withTableView:(NSTableView *)tableView
+{
     [[NSOperationQueue mainQueue]addOperationWithBlock:^{
         [self getAndParseLocalAutoPkgRecipeRepos];
         [_appObject reload];
@@ -178,7 +179,7 @@
 
 - (void)tableView:(NSTableView *)tableView setObjectValue:(id)object forTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row
 {
-    if([[tableColumn identifier] isEqualToString:@"repoCheckbox"]) {
+    if ([[tableColumn identifier] isEqualToString:@"repoCheckbox"]) {
         NSString *repo = [searchedRepos objectAtIndex:row];
         BOOL add = [object isEqual:@YES];
         NSString *message = [NSString stringWithFormat:@"%@ %@",add ? @"Adding":@"Removing",repo];

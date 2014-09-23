@@ -29,6 +29,7 @@
 - (NSString *)getAutoPkgVersion;
 - (BOOL)gitInstalled;
 - (BOOL)autoPkgInstalled;
+- (BOOL)autoPkgUpdateAvailable;
 
-+ (NSArray *)knownGitPaths;
+- (NSArray *)knownGitPaths;
 @end

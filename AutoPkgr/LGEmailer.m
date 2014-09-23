@@ -63,7 +63,7 @@
             
             if ([error code] == SSKeychainErrorNotFound) {
                 NSLog(@"Keychain item not found for account %@.", smtpSession.username);
-            } else if([error code] == SSKeychainErrorNoPassword) {
+            } else if ([error code] == SSKeychainErrorNoPassword) {
                 NSLog(@"Found the keychain item for %@ but no password value was returned.", smtpSession.username);
             } else if (error != nil) {
                 NSLog(@"An error occurred when attempting to retrieve the keychain entry for %@. Error: %@", smtpSession.username, [error localizedDescription]);
@@ -147,7 +147,7 @@
         NSLog(@"New stuff was downloaded.");
         
         // Create the subject string
-        subject = [NSString stringWithFormat:@"[%@] New software avaliable for testing",kLGApplicationName];
+        subject = [NSString stringWithFormat:@"[%@] New software avaliable for testing", kLGApplicationName];
         
         // Append the the message string with report
         [message appendFormat:@"The following software is now available for testing:<br />"];
@@ -157,7 +157,7 @@
             NSString *app = [[path lastPathComponent] stringByDeletingPathExtension];
             
             // Write the app to the string
-            [message appendFormat:@"<strong>%@</strong>: ",app];
+            [message appendFormat:@"<br /><strong>%@</strong>: ", app];
             
             // The default version is not detected, override later
             NSString *version = @"Version not detected";
@@ -168,21 +168,21 @@
                     break;
                 }
             }
-            [message appendFormat:@"%@<br/>",version];
+            [message appendFormat:@"%@", version];
         }
     } else {
         DLog(@"Nothing new was downloaded.");
     }
     
     if (error) {
-        if(!message){
+        if (!message) {
             message = [[NSMutableString alloc] init];
         }
         
-        if (!subject){
-            subject = [NSString stringWithFormat:@"[%@] Error occured while running AutoPkg",kLGApplicationName];
+        if (!subject) {
+            subject = [NSString stringWithFormat:@"[%@] Error occured while running AutoPkg", kLGApplicationName];
         }
-        [message appendFormat:@"<br /><strong>The following error occured:</strong><br/>%@<br/>%@",error.localizedDescription,error.localizedRecoverySuggestion];
+        [message appendFormat:@"<strong>The following error occured:</strong><br /><br />%@<br />%@", error.localizedDescription, error.localizedRecoverySuggestion];
     }
     
     if (message) {
