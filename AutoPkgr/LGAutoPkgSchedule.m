@@ -82,4 +82,5 @@
         [self stopTimer];
     }
 }
+
 @end

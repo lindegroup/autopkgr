@@ -143,17 +143,17 @@ NSString *autopkg()
 
             NSPredicate *processingPredicate = [NSPredicate predicateWithFormat:@"SELF BEGINSWITH[cd] 'Processing'"];
             [[_task.standardOutput fileHandleForReading] setReadabilityHandler:^(NSFileHandle *handle) {
-                int cntStr = (int)round(count)+1;
+                int cntStr = (int)round(count) + 1;
                 int totStr = (int)round(total);
                 NSString *message = [[NSString alloc]initWithData:[handle availableData] encoding:NSUTF8StringEncoding];
                 NSString *fullMessage;
                 if ([processingPredicate evaluateWithObject:message]) {
-                    fullMessage = [NSString stringWithFormat:@"(%d/%d) %@",cntStr,totStr,message];
+                    fullMessage = [NSString stringWithFormat:@"(%d/%d) %@", cntStr, totStr, message];
                 } else {
                     fullMessage = message;
                 }
                 
-                if(weakSelf.runStatusUpdate){
+                if (weakSelf.runStatusUpdate) {
                     weakSelf.runStatusUpdate(fullMessage,((count/total)*100));
                 }
                 
@@ -272,7 +272,7 @@ NSString *autopkg()
                                                or SELF BEGINSWITH 'Name'"];
 
             [resultString enumerateLinesUsingBlock:^(NSString *line, BOOL *stop) {
-                if(![nonRecipePredicate evaluateWithObject:line ]){
+                if (![nonRecipePredicate evaluateWithObject:line ]) {
                     NSScanner *scanner = [NSScanner scannerWithString:line];
                     [scanner setCharactersToBeSkipped:skippedCharacters];
                     
@@ -282,8 +282,8 @@ NSString *autopkg()
                     [scanner scanCharactersFromSet:repoCharacters intoString:&repo];
                     [scanner scanCharactersFromSet:repoCharacters intoString:&path];
                     
-                    if(recipe && repo && path){
-                        if(!searchResults){
+                    if (recipe && repo && path) {
+                        if (!searchResults) {
                             searchResults = [[NSMutableArray alloc] init];
                         }
                         [searchResults addObject:@{kLGAutoPkgRecipeKey:[recipe stringByDeletingPathExtension],
@@ -332,7 +332,7 @@ NSString *autopkg()
     return count;
 }
 
-#pragma mark - Convience Instance Methods
+#pragma mark - Convenience Instance Methods
 - (void)runRecipes:(NSArray *)recipes
           progress:(void (^)(NSString *))progress
              reply:(void (^)(NSError *))reply
@@ -362,11 +362,11 @@ NSString *autopkg()
     self.arguments = @[ @"run", @"--recipe-list", recipeList, @"--report-plist" ];
     
     [self setRunStatusUpdate:^(NSString *message, double progressUpdate) {
-        progress(message,progressUpdate);
+        progress(message, progressUpdate);
     }];
     
     [self launchInBackground:^(NSError *error) {
-        reply(self.reportPlist,error);
+        reply(self.reportPlist, error);
     }];
 }
 
@@ -390,9 +390,9 @@ NSString *autopkg()
 {
     LGAutoPkgTask *task = [[LGAutoPkgTask alloc] init];
     [task runRecipeList:recipeList progress:^(NSString *message, double prog) {
-        progress(message,prog);
+        progress(message, prog);
     } reply:^(NSDictionary *report, NSError *error) {
-        reply(report,error);
+        reply(report, error);
     }];
 }
 
@@ -402,10 +402,10 @@ NSString *autopkg()
     task.arguments = @[ @"search", recipe ];
     [task launchInBackground:^(NSError *error) {
         NSArray *results;
-        if(!error){
+        if (!error) {
             results = [task results];
         }
-        reply (results,error);
+        reply(results, error);
     }];
 }
 
@@ -424,10 +424,10 @@ NSString *autopkg()
     task.arguments = @[ @"list-recipes" ];
     [task launchInBackground:^(NSError *error) {
         NSArray *results;
-        if(!error){
+        if (!error) {
             results = [task results];
         }
-        reply (results,error);
+        reply(results, error);
     }];
 }
 
@@ -473,10 +473,10 @@ NSString *autopkg()
     task.arguments = @[ @"repo-list" ];
     [task launchInBackground:^(NSError *error) {
         NSArray *results;
-        if(!error){
+        if (!error) {
             results = [task results];
         }
-        reply (results,error);
+        reply(results, error);
     }];
 }
 
