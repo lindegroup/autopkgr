@@ -24,7 +24,7 @@
           ]]>
         </description>
         <pubDate>Mon, 15 Sep 2014 18:00:00 +0000</pubDate>
-        <enclosure url="https://github.com/eahrold/autopkgr/releases/download/1.0.4-beta/AutoPkgr-Proxy.dmg" sparkle:version="345" sparkle:shortVersionString="1.0.4-beta" type="application/octet-stream" />
+        <enclosure url="https://github.com/lindegroup/autopkgr/releases/download/v1.0.4/AutoPkgr-1.0.4.dmg" sparkle:version="345" sparkle:shortVersionString="1.0.4" type="application/octet-stream" />
       </item>
   </channel>
 </rss>
