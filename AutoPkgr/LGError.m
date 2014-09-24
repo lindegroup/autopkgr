@@ -160,7 +160,7 @@ static NSString *errorMessageFromAutoPkgVerb(LGAutoPkgVerb verb)
         error = [NSError errorWithDomain:kLGApplicationName
                                     code:code
                                 userInfo:userInfo];
-        DLog(@"Error [%ld]: %@ \n %@", code, userInfo[NSLocalizedDescriptionKey],userInfo[NSLocalizedRecoverySuggestionErrorKey]);
+        DLog(@"Error [%ld]: %@ \n %@", code, userInfo[NSLocalizedDescriptionKey], userInfo[NSLocalizedRecoverySuggestionErrorKey]);
     }
     return error;
 }

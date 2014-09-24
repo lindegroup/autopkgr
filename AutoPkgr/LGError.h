@@ -21,7 +21,7 @@
 
 #import <Foundation/Foundation.h>
 
-void DLog(NSString *format, ...) NS_FORMAT_FUNCTION(1,2);
+void DLog(NSString *format, ...) NS_FORMAT_FUNCTION(1, 2);
 
 #pragma mark - AutoPkgr specific Error codes
 typedef NS_ENUM(NSInteger, LGErrorCodes) {

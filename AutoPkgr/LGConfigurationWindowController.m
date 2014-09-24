@@ -468,7 +468,7 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
             [gitStatusLabel setStringValue:kLGGitInstalledLabel];
             [gitStatusIcon setImage:[NSImage imageNamed:NSImageNameStatusAvailable]];
         } else {
-            NSLog(@"%@",error.localizedDescription);
+            NSLog(@"%@", error.localizedDescription);
             [installGitButton setEnabled:YES];
             [gitStatusLabel setStringValue:kLGGitNotInstalledLabel];
             [gitStatusIcon setImage:[NSImage imageNamed:NSImageNameStatusUnavailable]];

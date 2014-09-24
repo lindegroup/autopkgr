@@ -90,7 +90,7 @@
             }
         }
 
-        NSString *fullSubject = [NSString stringWithFormat:@"%@ on %@",subject,[[NSHost currentHost] localizedName]];
+        NSString *fullSubject = [NSString stringWithFormat:@"%@ on %@", subject, [[NSHost currentHost] localizedName]];
         
         [[builder header] setTo:to];
         [[builder header] setSubject:fullSubject];
