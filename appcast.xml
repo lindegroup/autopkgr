@@ -18,7 +18,9 @@
             <li>Resolved bug that would prevent "from" address from appearing in log output.</li>
             <li>Implemented code signing to avoid "unidentified developer" error upon first launch.</li>
             <li>Now using the Sparkle framework, so AutoPkgr can keep itself up to date.</li>
-          </ul>          
+            <li>Git install feature is now available for Macs running 10.8.</li>
+            <li>Git installer for 10.9 no longer relies on the Xcode command line tools. No need to leave AutoPkgr to get Git!</li>
+          </ul>
           ]]>
         </description>
         <pubDate>Mon, 15 Sep 2014 18:00:00 +0000</pubDate>
