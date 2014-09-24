@@ -2,7 +2,7 @@
 <rss version="2.0" xmlns:sparkle="http://www.andymatuschak.org/xml-namespaces/sparkle"  xmlns:dc="http://purl.org/dc/elements/1.1/">
   <channel>
     <title>AutoPkgr Changelog</title>
-    <link>https://raw.githubusercontent.com/lindegroup/autopkgr/sparkle/appcast.xml</link>
+    <link>https://raw.githubusercontent.com/lindegroup/autopkgr/appcast/appcast.xml</link>
     <description>Most recent changes with links to updates.</description>
     <language>en</language>
       <item>
@@ -23,8 +23,8 @@
           </ul>
           ]]>
         </description>
-        <pubDate>Mon, 15 Sep 2014 18:00:00 +0000</pubDate>
-        <enclosure url="https://github.com/lindegroup/autopkgr/releases/download/v1.0.4/AutoPkgr-1.0.4.dmg" sparkle:version="345" sparkle:shortVersionString="1.0.4" type="application/octet-stream" />
+        <pubDate>Mon, 24 Sep 2014 09:40:00 +0000</pubDate>
+        <enclosure url="https://github.com/lindegroup/autopkgr/releases/download/v1.0.4/AutoPkgr-1.0.4.dmg" sparkle:version="386" sparkle:shortVersionString="1.0.4" type="application/octet-stream" />
       </item>
   </channel>
 </rss>
