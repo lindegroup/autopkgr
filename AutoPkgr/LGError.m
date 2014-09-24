@@ -21,19 +21,19 @@
 
 #import "LGError.h"
 #import "LGConstants.h"
+#import <syslog.h>
 
 // Debug Logging Method
 void DLog(NSString *format, ...)
 {
-#if DEBUG
-    if (format) {
-        va_list args;
-        va_start(args, format);
-        NSString *str = [[NSString alloc] initWithFormat:format arguments:args];
-        va_end(args);
-        NSLog(@"%@", str);
+    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"debug"]) {
+        if (format) {
+            va_list args;
+            va_start(args, format);
+            NSLogv([@"[DEBUG] "stringByAppendingString:format], args);
+            va_end(args);
+        }
     }
-#endif
 }
 
 
@@ -160,7 +160,7 @@ static NSString *errorMessageFromAutoPkgVerb(LGAutoPkgVerb verb)
         error = [NSError errorWithDomain:kLGApplicationName
                                     code:code
                                 userInfo:userInfo];
-        DLog(@"Error [%d]: %@ \n %@", code, userInfo[NSLocalizedDescriptionKey],userInfo[NSLocalizedRecoverySuggestionErrorKey]);
+        DLog(@"Error [%ld]: %@ \n %@", code, userInfo[NSLocalizedDescriptionKey], userInfo[NSLocalizedRecoverySuggestionErrorKey]);
     }
     return error;
 }
@@ -182,14 +182,19 @@ static NSString *errorMessageFromAutoPkgVerb(LGAutoPkgVerb verb)
         return nil;
     }
     
+    if (task.terminationReason == NSTaskTerminationReasonUncaughtSignal) {
+        DLog(@"AutoPkg run canceled by user.");
+        return nil;
+    }
+    
     NSError *error;
     NSString *errorMsg = errorMessageFromAutoPkgVerb(verb);
     NSString *errorDetails;
     NSInteger taskError;
     
-    if([task.standardError isKindOfClass:[NSPipe class]]){
+    if ([task.standardError isKindOfClass:[NSPipe class]]) {
         NSData *errData = [[task.standardError fileHandleForReading] readDataToEndOfFile];
-        if(errData){
+        if (errData) {
             errorDetails = [[NSString alloc] initWithData:errData encoding:NSASCIIStringEncoding];
         }
     }
@@ -214,7 +219,7 @@ static NSString *errorMessageFromAutoPkgVerb(LGAutoPkgVerb verb)
                                             NSLocalizedRecoverySuggestionErrorKey : errorDetails ? errorDetails : @"" }];
         
         // If Debugging is enabled, log the error message
-        DLog(@"Error [%d] %@ \n %@", taskError, errorMsg, errorDetails);
+        DLog(@"Error [%ld] %@ \n %@", (long)taskError, errorMsg, errorDetails);
     }
     return error;
 }

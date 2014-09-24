@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="5056" systemVersion="13E28" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="6245" systemVersion="13F34" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
-        <deployment defaultVersion="1080" identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="5056"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="6245"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="NSApplication">
@@ -11,13 +10,14 @@
             </connections>
         </customObject>
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
-        <customObject id="-3" userLabel="Application"/>
+        <customObject id="-3" userLabel="Application" customClass="NSObject"/>
         <customObject id="Voe-Tx-rLC" customClass="LGAppDelegate">
             <connections>
                 <outlet property="statusMenu" destination="VXP-Yr-lJz" id="35U-ad-DRr"/>
             </connections>
         </customObject>
         <customObject id="YLy-65-1bz" customClass="NSFontManager"/>
+        <customObject id="MZ8-j7-lrs" customClass="SUUpdater"/>
         <menu title="Main Menu" systemMenu="main" id="AYu-sK-qS6">
             <items>
                 <menuItem title="AutoPkgr" id="1Xt-HY-uBw">
@@ -28,6 +28,12 @@
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <connections>
                                     <action selector="orderFrontStandardAboutPanel:" target="-1" id="Exp-CZ-Vem"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="Check For Updates..." id="3R2-hO-YyK">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <connections>
+                                    <action selector="checkForUpdates:" target="MZ8-j7-lrs" id="a2q-WD-JPE"/>
                                 </connections>
                             </menuItem>
                             <menuItem isSeparatorItem="YES" id="VOq-y0-SEH"/>
@@ -681,6 +687,12 @@
                         <action selector="showConfigurationWindow:" target="Voe-Tx-rLC" id="q4g-vL-fgF"/>
                     </connections>
                 </menuItem>
+                <menuItem title="Verbose Logs" alternate="YES" id="Y3C-Qa-kUT">
+                    <modifierMask key="keyEquivalentModifierMask" option="YES"/>
+                    <connections>
+                        <binding destination="SYv-Ba-SbG" name="value" keyPath="values.debug" id="Cb3-Sl-N5Q"/>
+                    </connections>
+                </menuItem>
                 <menuItem isSeparatorItem="YES" id="5vA-zg-b1N"/>
                 <menuItem title="Quit AutoPkgr" id="cuo-db-FBC">
                     <modifierMask key="keyEquivalentModifierMask"/>
@@ -690,5 +702,6 @@
                 </menuItem>
             </items>
         </menu>
+        <userDefaultsController representsSharedInstance="YES" id="SYv-Ba-SbG"/>
     </objects>
 </document>

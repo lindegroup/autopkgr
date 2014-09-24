@@ -9,10 +9,10 @@
 #import "LGTestPort.h"
 #import "LGAutoPkgr.h"
 
-@implementation LGTestPort {
+@implementation LGTestPort
 
-}
--(void)dealloc{
+- (void)dealloc
+{
     [self stopTest];
 }
 

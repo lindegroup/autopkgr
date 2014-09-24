@@ -39,7 +39,7 @@
         smtpSession.port = (int)defaults.SMTPPort;
         
         if (TLS) {
-            NSLog(@"SSL/TLS is enabled for %@.", defaults.SMTPServer);
+            DLog(@"SSL/TLS is enabled for %@.", defaults.SMTPServer);
             // If the SMTP port is 465, use MCOConnectionTypeTLS.
             // Otherwise use MCOConnectionTypeStartTLS.
             if (smtpSession.port == 465) {
@@ -48,7 +48,7 @@
                 smtpSession.connectionType = MCOConnectionTypeStartTLS;
             }
         } else {
-            NSLog(@"SSL/TLS is _not_ enabled for %@.", defaults.SMTPServer);
+            DLog(@"SSL/TLS is _not_ enabled for %@.", defaults.SMTPServer);
             smtpSession.connectionType = MCOConnectionTypeClear;
         }
         
@@ -61,24 +61,26 @@
                                                         account:smtpSession.username
                                                           error:&error];
             
-            if ([error code] == SSKeychainErrorNotFound) {
+            if ([error code] == errSecItemNotFound) {
                 NSLog(@"Keychain item not found for account %@.", smtpSession.username);
-            } else if([error code] == SSKeychainErrorNoPassword) {
+            } else if ([error code] == errSecNotAvailable) {
                 NSLog(@"Found the keychain item for %@ but no password value was returned.", smtpSession.username);
             } else if (error != nil) {
                 NSLog(@"An error occurred when attempting to retrieve the keychain entry for %@. Error: %@", smtpSession.username, [error localizedDescription]);
             } else {
                 // Only set the SMTP session password if the username exists
                 if (smtpSession.username != nil && ![smtpSession.username isEqual:@""]) {
-                    NSLog(@"Retrieved password from keychain for account %@.", smtpSession.username);
+                    DLog(@"Retrieved password from keychain for account %@.", smtpSession.username);
                     smtpSession.password = password ? password:@"";
                 }
             }
         }
         
+        NSString *from = defaults.SMTPFrom ? defaults.SMTPFrom :@"AutoPkgr";
+        
         MCOMessageBuilder * builder = [[MCOMessageBuilder alloc] init];
         [[builder header] setFrom:[MCOAddress addressWithDisplayName:@"AutoPkgr Notification"
-                                                             mailbox:defaults.SMTPFrom ? defaults.SMTPFrom:@""]];
+                                                             mailbox:from]];
         
         NSMutableArray *to = [[NSMutableArray alloc] init];
         for (NSString *toAddress in defaults.SMTPTo) {
@@ -87,7 +89,9 @@
                 [to addObject:newAddress];
             }
         }
-        NSString *fullSubject = [NSString stringWithFormat:@"%@ on %@",subject,[[NSHost currentHost] name]];
+
+        NSString *fullSubject = [NSString stringWithFormat:@"%@ on %@", subject, [[NSHost currentHost] localizedName]];
+        
         [[builder header] setTo:to];
         [[builder header] setSubject:fullSubject];
         [builder setHTMLBody:message];
@@ -100,10 +104,10 @@
                                                                                             kLGNotificationUserInfoMessage:message}];
             
             if (error) {
-                NSLog(@"Error sending email from %@: %@", smtpSession.username, error);
+                NSLog(@"Error sending email from %@: %@", from, error);
                 [userInfo setObject:error forKey:kLGNotificationUserInfoError];
             } else {
-                NSLog(@"Successfully sent email from %@.", smtpSession.username);
+                NSLog(@"Successfully sent email from %@.", from);
             }
             
             [center postNotificationName:kLGNotificationEmailSent
@@ -143,7 +147,7 @@
         NSLog(@"New stuff was downloaded.");
         
         // Create the subject string
-        subject = [NSString stringWithFormat:@"[%@] New software avaliable for testing",kLGApplicationName];
+        subject = [NSString stringWithFormat:@"[%@] New software avaliable for testing", kLGApplicationName];
         
         // Append the the message string with report
         [message appendFormat:@"The following software is now available for testing:<br />"];
@@ -153,7 +157,7 @@
             NSString *app = [[path lastPathComponent] stringByDeletingPathExtension];
             
             // Write the app to the string
-            [message appendFormat:@"<strong>%@</strong>: ",app];
+            [message appendFormat:@"<br /><strong>%@</strong>: ", app];
             
             // The default version is not detected, override later
             NSString *version = @"Version not detected";
@@ -164,21 +168,21 @@
                     break;
                 }
             }
-            [message appendFormat:@"%@<br/>",version];
+            [message appendFormat:@"%@", version];
         }
     } else {
         DLog(@"Nothing new was downloaded.");
     }
     
     if (error) {
-        if(!message){
+        if (!message) {
             message = [[NSMutableString alloc] init];
         }
         
-        if (!subject){
-            subject = [NSString stringWithFormat:@"[%@] Error occured while running AutoPkg",kLGApplicationName];
+        if (!subject) {
+            subject = [NSString stringWithFormat:@"[%@] Error occured while running AutoPkg", kLGApplicationName];
         }
-        [message appendFormat:@"<br /><strong>The following error occured:</strong><br/>%@<br/>%@",error.localizedDescription,error.localizedRecoverySuggestion];
+        [message appendFormat:@"<strong>The following error occured:</strong><br /><br />%@<br />%@", error.localizedDescription, error.localizedRecoverySuggestion];
     }
     
     if (message) {

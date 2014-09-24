@@ -20,7 +20,6 @@
 #import "LGAutoPkgTask.h"
 #import "LGApplications.h"
 #import "LGVersionComparator.h"
-
 #import <util.h>
 
 NSString *const kLGAutoPkgRecipeKey = @"recipe";
@@ -36,10 +35,14 @@ NSString *autopkg()
 }
 
 @interface LGAutoPkgTask ()
+@property (copy, nonatomic, readwrite) NSString *standardOutString;
+@property (copy, nonatomic, readwrite) NSString *standardErrString;
 @property (copy, nonatomic) NSString *reportPlistFile;
 @property (copy, nonatomic) NSDictionary *reportPlist;
 @property (copy, nonatomic) NSString *version;
 @property (nonatomic) BOOL AUTOPKG_VERSION_0_4_0;
+@property (nonatomic, readwrite) BOOL complete;
+
 
 @end
 
@@ -52,9 +55,6 @@ NSString *autopkg()
 - (void)dealloc
 {
     _task.terminationHandler = nil;
-    if ([_task.standardOutput isKindOfClass:[NSPipe class]]) {
-        [_task.standardOutput fileHandleForReading].readabilityHandler = nil;
-    }
 }
 
 - (id)init
@@ -72,8 +72,8 @@ NSString *autopkg()
 {
     [_task setArguments:_internalArgs];
 
-    // If an instance of autopkg is running, and we're trying to
-    // do a run, exit
+    // If an instance of autopkg is running,
+    // and we're trying to do a run, exit
     if (_verb == kLGAutoPkgRun && [[self class] instanceIsRunning]) {
         return [LGError errorWithCode:kLGErrorMultipleRunsOfAutopkg
                                 error:error];
@@ -82,6 +82,19 @@ NSString *autopkg()
     [self setFileHandles];
     [_task launch];
     [_task waitUntilExit];
+    
+    // set the complete property to YES in case of an observer
+    _complete = YES;
+    
+    // make sure the out and error readability handlers get set to nil
+    // so the filehandle will get closed
+    if ([_task.standardOutput isKindOfClass:[NSPipe class]]) {
+        [_task.standardOutput fileHandleForReading].readabilityHandler = nil;
+    }
+    
+    if ([_task.standardError isKindOfClass:[NSPipe class]]) {
+        [_task.standardError fileHandleForReading].readabilityHandler = nil;
+    }
 
     return [LGError errorWithTaskError:_task
                                   verb:_verb
@@ -98,10 +111,13 @@ NSString *autopkg()
     }];
 }
 
-- (BOOL)cancel:(NSError *__autoreleasing *)error
+- (BOOL)cancel
 {
-    [_task terminate];
-    return [LGError errorWithTaskError:_task verb:_verb error:error];
+    if(_task && _task.isRunning) {
+        [_task terminate];
+        return ![_task isRunning];
+    }
+    return YES;
 }
 
 - (void)setFileHandles
@@ -117,21 +133,27 @@ NSString *autopkg()
 
             // To get status from autopkg set NSUnbufferedIO environment keyto YES
             // Thanks to help from -- http://stackoverflow.com/questions/8251010
-            _task.environment = @{ @"NSUnbufferedIO" : @"YES" };
+            NSMutableDictionary *environment = [[NSMutableDictionary alloc] init];
+            
+            NSDictionary *processEnvironment = [[NSProcessInfo processInfo] environment];
+            [environment addEntriesFromDictionary:processEnvironment];
+            [environment addEntriesFromDictionary:@{ @"NSUnbufferedIO" : @"YES"}];
+            
+            _task.environment = environment;
 
             NSPredicate *processingPredicate = [NSPredicate predicateWithFormat:@"SELF BEGINSWITH[cd] 'Processing'"];
             [[_task.standardOutput fileHandleForReading] setReadabilityHandler:^(NSFileHandle *handle) {
-                int cntStr = (int)round(count)+1;
+                int cntStr = (int)round(count) + 1;
                 int totStr = (int)round(total);
                 NSString *message = [[NSString alloc]initWithData:[handle availableData] encoding:NSUTF8StringEncoding];
                 NSString *fullMessage;
                 if ([processingPredicate evaluateWithObject:message]) {
-                    fullMessage = [NSString stringWithFormat:@"(%d/%d) %@",cntStr,totStr,message];
+                    fullMessage = [NSString stringWithFormat:@"(%d/%d) %@", cntStr, totStr, message];
                 } else {
                     fullMessage = message;
                 }
                 
-                if(weakSelf.runStatusUpdate){
+                if (weakSelf.runStatusUpdate) {
                     weakSelf.runStatusUpdate(fullMessage,((count/total)*100));
                 }
                 
@@ -175,28 +197,30 @@ NSString *autopkg()
 
 - (NSString *)standardErrString
 {
-    NSString *standardError;
-    NSData *data;
-    if ([_task.standardError isKindOfClass:[NSPipe class]]) {
-        data = [[_task.standardError fileHandleForReading] readDataToEndOfFile];
+    if ( !_standardErrString) {
+        NSData *data;
+        if ([_task.standardError isKindOfClass:[NSPipe class]]) {
+            data = [[_task.standardError fileHandleForReading] readDataToEndOfFile];
+        }
+        if (data) {
+            _standardErrString = [[NSString alloc] initWithData:data encoding:NSASCIIStringEncoding];
+        }
     }
-    if (data) {
-        standardError = [[NSString alloc] initWithData:data encoding:NSASCIIStringEncoding];
-    }
-    return standardError;
+    return _standardErrString;
 }
 
 - (NSString *)standardOutString
 {
-    NSString *standardOutput;
-    NSData *data;
-    if ([_task.standardOutput isKindOfClass:[NSPipe class]]) {
-        data = [[_task.standardOutput fileHandleForReading] readDataToEndOfFile];
+    if (!_standardOutString) {
+        NSData *data;
+        if ([_task.standardOutput isKindOfClass:[NSPipe class]]) {
+            data = [[_task.standardOutput fileHandleForReading] readDataToEndOfFile];
+        }
+        if (data) {
+            _standardOutString = [[NSString alloc] initWithData:data encoding:NSASCIIStringEncoding];
+        }
     }
-    if (data) {
-        standardOutput = [[NSString alloc] initWithData:data encoding:NSASCIIStringEncoding];
-    }
-    return standardOutput;
+    return _standardOutString;
 }
 
 - (NSDictionary *)reportPlist
@@ -248,7 +272,7 @@ NSString *autopkg()
                                                or SELF BEGINSWITH 'Name'"];
 
             [resultString enumerateLinesUsingBlock:^(NSString *line, BOOL *stop) {
-                if(![nonRecipePredicate evaluateWithObject:line ]){
+                if (![nonRecipePredicate evaluateWithObject:line ]) {
                     NSScanner *scanner = [NSScanner scannerWithString:line];
                     [scanner setCharactersToBeSkipped:skippedCharacters];
                     
@@ -258,8 +282,8 @@ NSString *autopkg()
                     [scanner scanCharactersFromSet:repoCharacters intoString:&repo];
                     [scanner scanCharactersFromSet:repoCharacters intoString:&path];
                     
-                    if(recipe && repo && path){
-                        if(!searchResults){
+                    if (recipe && repo && path) {
+                        if (!searchResults) {
                             searchResults = [[NSMutableArray alloc] init];
                         }
                         [searchResults addObject:@{kLGAutoPkgRecipeKey:[recipe stringByDeletingPathExtension],
@@ -284,7 +308,8 @@ NSString *autopkg()
     if (_version) {
         return _version;
     }
-    return [[self class] version];
+    _version = [[self class] version];
+    return _version;
 }
 
 - (BOOL)AUTOPKG_VERSION_0_4_0
@@ -307,13 +332,11 @@ NSString *autopkg()
     return count;
 }
 
-#pragma mark - Class Methods
-#pragma mark-- Recipe Methods
-+ (void)runRecipes:(NSArray *)recipes
+#pragma mark - Convenience Instance Methods
+- (void)runRecipes:(NSArray *)recipes
           progress:(void (^)(NSString *))progress
              reply:(void (^)(NSError *))reply
 {
-    LGAutoPkgTask *task = [[LGAutoPkgTask alloc] init];
     NSMutableArray *fullRecipes = [[NSMutableArray alloc] init];
     [fullRecipes addObject:@"run"];
     for (NSString *recipe in recipes) {
@@ -321,13 +344,42 @@ NSString *autopkg()
     }
 
     [fullRecipes addObjectsFromArray:@[ @"-v", @"--report-plist" ]];
-    task.arguments = [NSArray arrayWithArray:fullRecipes];
+    self.arguments = [NSArray arrayWithArray:fullRecipes];
 
-    [task setRunStatusUpdate:^(NSString *message, double progressUpdate) {
+    [self setRunStatusUpdate:^(NSString *message, double progressUpdate) {
         progress(message);
     }];
 
-    [task launchInBackground:^(NSError *error) {
+    [self launchInBackground:^(NSError *error) {
+        reply(error);
+    }];
+}
+
+- (void)runRecipeList:(NSString *)recipeList
+             progress:(void (^)(NSString *, double))progress
+                reply:(void (^)(NSDictionary *, NSError *))reply
+{
+    self.arguments = @[ @"run", @"--recipe-list", recipeList, @"--report-plist" ];
+    
+    [self setRunStatusUpdate:^(NSString *message, double progressUpdate) {
+        progress(message, progressUpdate);
+    }];
+    
+    [self launchInBackground:^(NSError *error) {
+        reply(self.reportPlist, error);
+    }];
+}
+
+#pragma mark - Class Methods
+#pragma mark-- Recipe Methods
++ (void)runRecipes:(NSArray *)recipes
+          progress:(void (^)(NSString *))progress
+             reply:(void (^)(NSError *))reply
+{
+    LGAutoPkgTask *task = [[LGAutoPkgTask alloc] init];
+    [task runRecipes:recipes progress:^(NSString *message) {
+        progress(message);
+    } reply:^(NSError *error) {
         reply(error);
     }];
 }
@@ -337,14 +389,10 @@ NSString *autopkg()
                 reply:(void (^)(NSDictionary *, NSError *))reply
 {
     LGAutoPkgTask *task = [[LGAutoPkgTask alloc] init];
-    task.arguments = @[ @"run", @"--recipe-list", recipeList, @"--report-plist" ];
-
-    [task setRunStatusUpdate:^(NSString *message, double progressUpdate) {
-        progress(message,progressUpdate);
-    }];
-
-    [task launchInBackground:^(NSError *error) {
-        reply(task.reportPlist,error);
+    [task runRecipeList:recipeList progress:^(NSString *message, double prog) {
+        progress(message, prog);
+    } reply:^(NSDictionary *report, NSError *error) {
+        reply(report, error);
     }];
 }
 
@@ -354,10 +402,10 @@ NSString *autopkg()
     task.arguments = @[ @"search", recipe ];
     [task launchInBackground:^(NSError *error) {
         NSArray *results;
-        if(!error){
+        if (!error) {
             results = [task results];
         }
-        reply (results,error);
+        reply(results, error);
     }];
 }
 
@@ -376,10 +424,10 @@ NSString *autopkg()
     task.arguments = @[ @"list-recipes" ];
     [task launchInBackground:^(NSError *error) {
         NSArray *results;
-        if(!error){
+        if (!error) {
             results = [task results];
         }
-        reply (results,error);
+        reply(results, error);
     }];
 }
 
@@ -425,10 +473,10 @@ NSString *autopkg()
     task.arguments = @[ @"repo-list" ];
     [task launchInBackground:^(NSError *error) {
         NSArray *results;
-        if(!error){
+        if (!error) {
             results = [task results];
         }
-        reply (results,error);
+        reply(results, error);
     }];
 }
 

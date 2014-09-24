@@ -118,7 +118,7 @@
 
 - (void)tableView:(NSTableView *)tableView setObjectValue:(id)object forTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row
 {
-    if([[tableColumn identifier] isEqualToString:@"appCheckbox"]) {
+    if ([[tableColumn identifier] isEqualToString:@"appCheckbox"]) {
         NSMutableArray *workingArray = [NSMutableArray arrayWithArray:activeApps];
         if ([object isEqual:@YES]) {
             [workingArray addObject:[searchedApps objectAtIndex:row]];
@@ -127,7 +127,7 @@
             if (index != NSNotFound) {
                 [workingArray removeObjectAtIndex:index];
             } else {
-                NSLog(@"Cannot find item %@ in workingArray", [searchedApps objectAtIndex:row]);
+                NSLog(@"Cannot find item %@ in workingArray.", [searchedApps objectAtIndex:row]);
             }
         }
         activeApps = [NSArray arrayWithArray:workingArray];
@@ -161,7 +161,7 @@
 
     NSString *autoPkgrSupportDirectory = [self getAppSupportDirectory];
     if ([autoPkgrSupportDirectory isEqual:@""]) {
-        NSLog(@"Could not write recipe_list.txt");
+        NSLog(@"Could not write recipe_list.txt.");
         return;
     }
 
@@ -184,14 +184,14 @@
     [recipe_list writeToFile:recipeListFile atomically:YES encoding:NSUTF8StringEncoding error:&error];
 
     if (error) {
-        NSLog(@"Error while writing %@", recipeListFile);
+        NSLog(@"Error while writing %@.", recipeListFile);
     }
 }
 
 - (void)executeAppSearch:(id)sender
 {
     [applicationTableView beginUpdates];
-    [applicationTableView removeRowsAtIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0,searchedApps.count)] withAnimation:NSTableViewAnimationEffectNone];
+    [applicationTableView removeRowsAtIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, searchedApps.count)] withAnimation:NSTableViewAnimationEffectNone];
 
     if ([[_appSearch stringValue] isEqualToString:@""]) {
         searchedApps = apps;
@@ -209,7 +209,7 @@
         searchedApps = [NSArray arrayWithArray:workingSearchArray];
     }
 
-    [applicationTableView insertRowsAtIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0,searchedApps.count)] withAnimation:NSTableViewAnimationEffectNone];
+    [applicationTableView insertRowsAtIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, searchedApps.count)] withAnimation:NSTableViewAnimationEffectNone];
 
     [applicationTableView endUpdates];
 }

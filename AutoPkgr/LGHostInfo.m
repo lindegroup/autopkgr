@@ -22,6 +22,14 @@
 #import "LGHostInfo.h"
 #import "LGConstants.h"
 #import "LGAutoPkgr.h"
+#import "LGGitHubJSONLoader.h"
+#import "LGVersionComparator.h"
+
+NSString *const kLGOfficialGit = @"/usr/local/git/bin";
+NSString *const kLGCLIToolsGit =  @"/Library/Developer/CommandLineTools/usr/bin" ;
+NSString *const kLGXcodeGit = @"/Applications/Xcode.app/Contents/Developer/usr/bin/git";
+NSString *const kLGHomeBrewGit = @"/usr/local/bin";
+NSString *const kLGBoxenBrewGit = @"/opt/boxen/homebrew/bin";
 
 @implementation LGHostInfo
 
@@ -45,28 +53,48 @@
 - (BOOL)gitInstalled
 {
     NSFileManager *fm = [[NSFileManager alloc] init];
-    NSArray *knownGitPaths = [[self class] knownGitPaths];
-
-    for (NSString *path in knownGitPaths) {
-        if ([fm isExecutableFileAtPath:[path stringByAppendingPathComponent:@"git"]]) {
-            if ([path isEqualToString:knownGitPaths[0]]) {
-                DLog(@"Git was installed via Xcode command line tools.");
-            } else {
-                DLog(@"Found Git binary at %@", path);
+    LGDefaults *defaults = [[LGDefaults alloc] init];
+    NSString *foundGitPath;
+    
+    // First see if AutoPkg already has a GIT_PATH key set,
+    // and if the executable still exists.
+    BOOL success = NO;
+    BOOL isDir;
+    NSString *currentGit = [defaults gitPath];
+    if ([fm fileExistsAtPath:currentGit isDirectory:&isDir] && !isDir) {
+        if ([fm isExecutableFileAtPath:currentGit]) {
+            foundGitPath = currentGit;
+            success = YES;
+        }
+    } else {
+        // If nothing is set, then iterate through the list
+        // of known git paths trying to locate one.
+        for (NSString *path in [self knownGitPaths]) {
+            NSString *gitExec = [path stringByAppendingPathComponent:@"git"];
+            if ([fm isExecutableFileAtPath:gitExec]) {
+                // if we found a viable git binary write it into AutoPkg's preferences
+                foundGitPath = gitExec;
+                success = YES;
             }
-            return YES;
         }
     }
-
-    NSPredicate *gitInstallPredicate = [NSPredicate predicateWithFormat:@"SELF CONTAINS[cd] 'GitOSX.Installer'"];
-    NSArray *receipts = [fm contentsOfDirectoryAtPath:@"/var/db/receipts" error:nil];
-
-    if ([receipts filteredArrayUsingPredicate:gitInstallPredicate].count) {
-        DLog(@"Git was installed via the official Git installer.");
-        return YES;
+    
+    if ([foundGitPath isEqualToString:kLGOfficialGit]) {
+        DLog(@"Using Official Git");
+    } else if ([foundGitPath isEqualToString:kLGCLIToolsGit]) {
+        DLog(@"Using Git installed via Xcode command line tools.");
+    } else if ([foundGitPath isEqualToString:kLGXcodeGit]) {
+        DLog(@"Using Git from Xcode Application.");
+    } else if ( [foundGitPath isEqualToString:kLGHomeBrewGit]) {
+        DLog(@"Using Git from Homebrew.");
+    } else if ([foundGitPath isEqualToString:kLGBoxenBrewGit]) {
+        DLog(@"Using Git from boxen homebrew.");
+    } else {
+        DLog(@"Using Git binary at %@", foundGitPath);
     }
 
-    return NO;
+    defaults.gitPath = foundGitPath;
+    return success;
 }
 
 - (NSString *)getAutoPkgVersion
@@ -104,8 +132,36 @@
     return NO;
 }
 
-+ (NSArray *)knownGitPaths
+- (BOOL)autoPkgUpdateAvailable
 {
-    return @[ @"/Library/Developer/CommandLineTools/usr/bin/", @"/usr/local/bin/", @"/opt/boxen/homebrew/bin/" ];
+    // TODO: This check shouldn't block the main thread
+    
+    // Get the currently installed version of AutoPkg
+    NSString *installedAutoPkgVersionString = [self getAutoPkgVersion];
+    NSLog(@"Installed version of AutoPkg: %@", installedAutoPkgVersionString);
+    
+    // Get the latest version of AutoPkg available on GitHub
+    LGGitHubJSONLoader *jsonLoader = [[LGGitHubJSONLoader alloc] init];
+    NSString *latestAutoPkgVersionString = [jsonLoader getLatestAutoPkgReleaseVersionNumber];
+    
+    // Determine if AutoPkg is up-to-date by comparing the version strings
+    LGVersionComparator *vc = [[LGVersionComparator alloc] init];
+    BOOL newVersionAvailable = [vc isVersion:latestAutoPkgVersionString greaterThanVersion:installedAutoPkgVersionString];
+    if (newVersionAvailable) {
+        NSLog(@"A new version of AutoPkg is available. Version %@ is installed and version %@ is available.", installedAutoPkgVersionString, latestAutoPkgVersionString);
+        return YES;
+    }
+    return NO;
 }
+
+- (NSArray *)knownGitPaths
+{
+    return @[ kLGOfficialGit,
+              kLGBoxenBrewGit,
+              kLGHomeBrewGit,
+              kLGXcodeGit,
+              kLGCLIToolsGit,
+              ];
+}
+
 @end
