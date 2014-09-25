@@ -26,9 +26,9 @@
 
     IBOutlet NSTableView *applicationTableView;
 
-    NSArray *apps;
-    NSArray *activeApps;
-    NSArray *searchedApps;
+    NSArray *_apps;
+    NSArray *_activeApps;
+    NSArray *_searchedApps;
     __weak NSSearchField *_appSearch;
 }
 

@@ -26,7 +26,11 @@
 #import "LGAutoPkgSchedule.h"
 #import "LGConfigurationWindowController.h"
 
-@implementation LGAppDelegate
+@implementation LGAppDelegate {
+    @private
+    LGConfigurationWindowController *configurationWindowController;
+}
+
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {

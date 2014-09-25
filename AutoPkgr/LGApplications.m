@@ -27,15 +27,15 @@
 - (id)init
 {
     self = [super init];
-    activeApps = [self getActiveApps];
-    searchedApps = apps;
+    _activeApps = [self getActiveApps];
+    _searchedApps = _apps;
     return self;
 }
 
 
 - (void)reload
 {
-    apps = [LGAutoPkgTask listRecipes];
+    _apps = [LGAutoPkgTask listRecipes];
     [self executeAppSearch:self];
 }
 
@@ -102,15 +102,15 @@
 
 - (NSInteger)numberOfRowsInTableView:(NSTableView *)tableView
 {
-    return [searchedApps count];
+    return [_searchedApps count];
 }
 
 - (id)tableView:(NSTableView *)tableView objectValueForTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row
 {
     if ([[tableColumn identifier] isEqualToString:@"appCheckbox"]) {
-        return @([activeApps containsObject:[searchedApps objectAtIndex:row]]);
+        return @([_activeApps containsObject:[_searchedApps objectAtIndex:row]]);
     } else if ([[tableColumn identifier] isEqualToString:@"appName"]) {
-        return [searchedApps objectAtIndex:row];
+        return [_searchedApps objectAtIndex:row];
     }
 
     return nil;
@@ -119,18 +119,18 @@
 - (void)tableView:(NSTableView *)tableView setObjectValue:(id)object forTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row
 {
     if ([[tableColumn identifier] isEqualToString:@"appCheckbox"]) {
-        NSMutableArray *workingArray = [NSMutableArray arrayWithArray:activeApps];
+        NSMutableArray *workingArray = [NSMutableArray arrayWithArray:_activeApps];
         if ([object isEqual:@YES]) {
-            [workingArray addObject:[searchedApps objectAtIndex:row]];
+            [workingArray addObject:[_searchedApps objectAtIndex:row]];
         } else {
-            NSUInteger index = [workingArray indexOfObject:[searchedApps objectAtIndex:row]];
+            NSUInteger index = [workingArray indexOfObject:[_searchedApps objectAtIndex:row]];
             if (index != NSNotFound) {
                 [workingArray removeObjectAtIndex:index];
             } else {
-                NSLog(@"Cannot find item %@ in workingArray.", [searchedApps objectAtIndex:row]);
+                NSLog(@"Cannot find item %@ in workingArray.", [_searchedApps objectAtIndex:row]);
             }
         }
-        activeApps = [NSArray arrayWithArray:workingArray];
+        _activeApps = [NSArray arrayWithArray:workingArray];
         [self writeRecipeList];
     }
 
@@ -142,15 +142,15 @@
     // This runs through the updated recipes and removes any recipes from the
     // activeApps array that cannot be found in the new apps array.
 
-    NSMutableArray *workingArray = [NSMutableArray arrayWithArray:activeApps];
+    NSMutableArray *workingArray = [NSMutableArray arrayWithArray:_activeApps];
 
-    for (NSString *string in activeApps) {
-        if (![apps containsObject:string]) {
+    for (NSString *string in _activeApps) {
+        if (![_apps containsObject:string]) {
             [workingArray removeObject:string];
         }
     }
 
-    activeApps = [NSArray arrayWithArray:workingArray];
+    _activeApps = [NSArray arrayWithArray:workingArray];
 }
 
 - (void)writeRecipeList
@@ -171,7 +171,7 @@
     NSPredicate *munkiPredicate = [NSPredicate predicateWithFormat:@"SELF contains[cd] %@",@"munki"];
 
     // Make a working array filtering out any instances of MakeCatalogs.munki, so there will only be one occurence
-    NSMutableArray * workingArray = [NSMutableArray arrayWithArray:[activeApps filteredArrayUsingPredicate:makeCatalogPredicate]];
+    NSMutableArray * workingArray = [NSMutableArray arrayWithArray:[_activeApps filteredArrayUsingPredicate:makeCatalogPredicate]];
 
     // Check if any of the apps is a .munki run
     if ([workingArray filteredArrayUsingPredicate:munkiPredicate].count) {
@@ -191,14 +191,14 @@
 - (void)executeAppSearch:(id)sender
 {
     [applicationTableView beginUpdates];
-    [applicationTableView removeRowsAtIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, searchedApps.count)] withAnimation:NSTableViewAnimationEffectNone];
+    [applicationTableView removeRowsAtIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, _searchedApps.count)] withAnimation:NSTableViewAnimationEffectNone];
 
     if ([[_appSearch stringValue] isEqualToString:@""]) {
-        searchedApps = apps;
+        _searchedApps = _apps;
     } else {
         NSMutableArray *workingSearchArray = [[NSMutableArray alloc] init];
 
-        for (NSString *string in apps) {
+        for (NSString *string in _apps) {
             NSRange range = [string rangeOfString:[_appSearch stringValue] options:NSCaseInsensitiveSearch];
 
             if (!NSEqualRanges(range, NSMakeRange(NSNotFound, 0))) {
@@ -206,10 +206,10 @@
             }
         }
 
-        searchedApps = [NSArray arrayWithArray:workingSearchArray];
+        _searchedApps = [NSArray arrayWithArray:workingSearchArray];
     }
 
-    [applicationTableView insertRowsAtIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, searchedApps.count)] withAnimation:NSTableViewAnimationEffectNone];
+    [applicationTableView insertRowsAtIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, _searchedApps.count)] withAnimation:NSTableViewAnimationEffectNone];
 
     [applicationTableView endUpdates];
 }

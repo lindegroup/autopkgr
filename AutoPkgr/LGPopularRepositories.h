@@ -31,11 +31,11 @@
     __weak NSSearchField *_repoSearch;
     __weak LGApplications *_appObject;
 
-    NSArray *recipeRepos;
-    NSArray *popularRepos;
-    NSArray *activeRepos;
-    NSArray *searchedRepos;
-    LGGitHubJSONLoader *jsonLoader;
+    NSArray *_recipeRepos;
+    NSArray *_popularRepos;
+    NSArray *_activeRepos;
+    NSArray *_searchedRepos;
+    LGGitHubJSONLoader *_jsonLoader;
     BOOL awake;
 }
 
