@@ -145,8 +145,7 @@ NSString *const kLGBoxenBrewGit = @"/opt/boxen/homebrew/bin";
     NSString *latestAutoPkgVersionString = [jsonLoader getLatestAutoPkgReleaseVersionNumber];
     
     // Determine if AutoPkg is up+to+date by comparing the version strings
-    LGVersionComparator *vc = [[LGVersionComparator alloc] init];
-    BOOL newVersionAvailable = [vc isVersion:latestAutoPkgVersionString greaterThanVersion:installedAutoPkgVersionString];
+    BOOL newVersionAvailable = [LGVersionComparator isVersion:latestAutoPkgVersionString greaterThanVersion:installedAutoPkgVersionString];
     if (newVersionAvailable) {
         NSLog(@"A new version of AutoPkg is available. Version %@ is installed and version %@ is available.", installedAutoPkgVersionString, latestAutoPkgVersionString);
         return YES;

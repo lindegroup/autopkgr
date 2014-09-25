@@ -314,8 +314,7 @@ NSString *autopkg()
 
 - (BOOL)AUTOPKG_VERSION_0_4_0
 {
-    LGVersionComparator *vc = [[LGVersionComparator alloc] init];
-    return [vc isVersion:self.version greaterThanVersion:@"0.3.9"];
+    return [LGVersionComparator isVersion:self.version greaterThanVersion:@"0.3.9"];
 }
 
 #pragma mark - Specialized settings
