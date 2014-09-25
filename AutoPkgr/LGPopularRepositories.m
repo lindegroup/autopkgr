@@ -30,14 +30,14 @@
 
     awake = NO;
 
-    jsonLoader = [[LGGitHubJSONLoader alloc] init];
+    _jsonLoader = [[LGGitHubJSONLoader alloc] init];
 
-    recipeRepos = [jsonLoader getAutoPkgRecipeRepos];
+    _recipeRepos = [_jsonLoader getAutoPkgRecipeRepos];
 
-    if (recipeRepos != nil) {
-        popularRepos = recipeRepos;
+    if (_recipeRepos != nil) {
+        _popularRepos = _recipeRepos;
     } else {
-        popularRepos = [NSArray arrayWithObjects:@"https://github.com/autopkg/recipes.git",
+        _popularRepos = [NSArray arrayWithObjects:@"https://github.com/autopkg/recipes.git",
                                                  @"https://github.com/autopkg/keeleysam-recipes.git",
                                                  @"https://github.com/autopkg/hjuutilainen-recipes.git",
                                                  @"https://github.com/autopkg/timsutton-recipes.git",
@@ -91,12 +91,12 @@
 {
     [self getAndParseLocalAutoPkgRecipeRepos];
 
-    NSMutableArray *workingPopularRepos = [NSMutableArray arrayWithArray:popularRepos];
+    NSMutableArray *workingPopularRepos = [NSMutableArray arrayWithArray:_popularRepos];
 
     NSError *error = NULL;
     NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@"https?://(.+)" options:0 error:&error];
 
-    for (NSString *repo in activeRepos) {
+    for (NSString *repo in _activeRepos) {
         NSTextCheckingResult *result = [regex firstMatchInString:repo options:0 range:NSMakeRange(0,[repo length])];
         if ([result numberOfRanges] == 2) {
             NSString *workingString = [repo substringWithRange:[result rangeAtIndex:1]];
@@ -112,7 +112,7 @@
         }
     }
 
-    popularRepos = [NSArray arrayWithArray:workingPopularRepos];
+    _popularRepos = [NSArray arrayWithArray:workingPopularRepos];
     [self executeRepoSearch:nil];
 }
 
@@ -143,26 +143,26 @@
             }
         }
         
-        activeRepos =  [NSArray arrayWithArray:strippedRepos];
+        _activeRepos =  [NSArray arrayWithArray:strippedRepos];
     }];
 }
 
 - (NSInteger)numberOfRowsInTableView:(NSTableView *)tableView
 {
-    return [searchedRepos count];
+    return [_searchedRepos count];
 }
 
 - (id)tableView:(NSTableView *)tableView objectValueForTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row
 {
     if ([[tableColumn identifier] isEqualToString:@"repoCheckbox"]) {
-        NSString *repo = [searchedRepos objectAtIndex:row];
+        NSString *repo = [_searchedRepos objectAtIndex:row];
 
         NSError *error = NULL;
         NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@"https?://(.+)" options:0 error:&error];
         NSTextCheckingResult *result = [regex firstMatchInString:repo options:0 range:NSMakeRange(0, [repo length])];
 
         if ([result numberOfRanges] == 2) {
-            if ([self string:[repo substringWithRange:[result rangeAtIndex:1]] inArray:activeRepos] == NSNotFound) {
+            if ([self string:[repo substringWithRange:[result rangeAtIndex:1]] inArray:_activeRepos] == NSNotFound) {
                 return @NO;
             } else {
                 return @YES;
@@ -171,7 +171,7 @@
             return @NO;
         }
     } else if ([[tableColumn identifier] isEqualToString:@"repoURL"]) {
-        return [searchedRepos objectAtIndex:row];
+        return [_searchedRepos objectAtIndex:row];
     }
 
     return nil;
@@ -180,7 +180,7 @@
 - (void)tableView:(NSTableView *)tableView setObjectValue:(id)object forTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row
 {
     if ([[tableColumn identifier] isEqualToString:@"repoCheckbox"]) {
-        NSString *repo = [searchedRepos objectAtIndex:row];
+        NSString *repo = [_searchedRepos objectAtIndex:row];
         BOOL add = [object isEqual:@YES];
         NSString *message = [NSString stringWithFormat:@"%@ %@", add ? @"Adding":@"Removing", repo];
         NSLog(@"%@", message);
@@ -201,29 +201,29 @@
 - (void)executeRepoSearch:(id)sender
 {
     if (awake == NO) {
-        searchedRepos = [NSArray arrayWithArray:popularRepos];
+        _searchedRepos = [NSArray arrayWithArray:_popularRepos];
         return;
     }
 
     [popularRepositoriesTableView beginUpdates];
-    [popularRepositoriesTableView removeRowsAtIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, searchedRepos.count)] withAnimation:NSTableViewAnimationEffectNone];
+    [popularRepositoriesTableView removeRowsAtIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, _searchedRepos.count)] withAnimation:NSTableViewAnimationEffectNone];
 
     if ([[_repoSearch stringValue] isEqualToString:@""]) {
-        searchedRepos = popularRepos;
+        _searchedRepos = _popularRepos;
     } else {
         NSMutableArray *workingSearchArray = [[NSMutableArray alloc] init];
 
-        for (NSString *string in popularRepos) {
+        for (NSString *string in _popularRepos) {
             NSRange range = [string rangeOfString:[_repoSearch stringValue] options:NSCaseInsensitiveSearch];
             if (!NSEqualRanges(range, NSMakeRange(NSNotFound, 0))) {
                 [workingSearchArray addObject:string];
             }
         }
 
-        searchedRepos = [NSArray arrayWithArray:workingSearchArray];
+        _searchedRepos = [NSArray arrayWithArray:workingSearchArray];
     }
 
-    [popularRepositoriesTableView insertRowsAtIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, searchedRepos.count)] withAnimation:NSTableViewAnimationEffectNone];
+    [popularRepositoriesTableView insertRowsAtIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, _searchedRepos.count)] withAnimation:NSTableViewAnimationEffectNone];
     [popularRepositoriesTableView endUpdates];
 }
 

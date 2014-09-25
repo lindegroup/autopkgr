@@ -9,7 +9,7 @@
 #import "LGAutoPkgSchedule.h"
 #import "LGAutoPkgr.h"
 #import "LGAutoPkgTask.h"
-#import "LGApplications.h"
+#import "LGRecipes.h"
 #import "LGEmailer.h"
 
 @implementation LGAutoPkgSchedule {
@@ -66,7 +66,7 @@
     if (defaults.checkForNewVersionsOfAppsAutomaticallyEnabled) {
         NSLog(@"Beginning scheduled run of AutoPkg.");
         [_progressDelegate startProgressWithMessage:@"Starting scheduled run..."];
-        NSString *recipeList = [LGApplications recipeList];
+        NSString *recipeList = [LGRecipes recipeList];
 
         [LGAutoPkgTask runRecipeList:recipeList
             progress:^(NSString *message, double taskProgress) {

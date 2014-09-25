@@ -25,7 +25,7 @@
 
 static int maximumValuesInVersion = 4;
 
-- (BOOL)isVersion:(NSString *)a greaterThanVersion:(NSString *)b
++ (BOOL)isVersion:(NSString *)a greaterThanVersion:(NSString *)b
 {
     // Make sure neither a or b are nil
     if (a && b) {
@@ -45,7 +45,7 @@ static int maximumValuesInVersion = 4;
     return NO;
 }
 
-- (NSArray *)normalizeVersionFromArray:(NSArray *)versionArray
++ (NSArray *)normalizeVersionFromArray:(NSArray *)versionArray
 {
     if ([versionArray count] < maximumValuesInVersion) {
         NSMutableArray *mutableArray = [versionArray mutableCopy];
