@@ -722,7 +722,7 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
 
 - (IBAction)checkAppsNow:(id)sender
 {
-    NSString *recipeList = [LGApplications recipeList];
+    NSString *recipeList = [LGRecipes recipeList];
     [_cancelAutoPkgRunButton setHidden:NO];
     [self startProgressWithMessage:@"Running selected AutoPkg recipes."];
     _task = [[LGAutoPkgTask alloc] init];

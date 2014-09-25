@@ -33,7 +33,7 @@
 		1AC98427195DF6350071CAB3 /* autopkgr.png in Resources */ = {isa = PBXBuildFile; fileRef = 1AC98425195DF6350071CAB3 /* autopkgr.png */; };
 		1AC98429195DF6DE0071CAB3 /* autopkgr_alt.png in Resources */ = {isa = PBXBuildFile; fileRef = 1AC98428195DF6DE0071CAB3 /* autopkgr_alt.png */; };
 		4B8E6E4F9D8944C883A98423 /* libPods-AutoPkgr.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FF435269A548437DA5380201 /* libPods-AutoPkgr.a */; };
-		6A0ACE34196FB349002C7FE4 /* LGApplications.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A0ACE33196FB349002C7FE4 /* LGApplications.m */; };
+		6A0ACE34196FB349002C7FE4 /* LGRecipes.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A0ACE33196FB349002C7FE4 /* LGRecipes.m */; };
 		6A0BABE9196E560000A136BB /* LGPopularRepositories.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A0BABE8196E560000A136BB /* LGPopularRepositories.m */; };
 		6A53625D1988BE59008A949C /* LGTestPort.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A53625C1988BE59008A949C /* LGTestPort.m */; };
 		8BB217F619709A2C00EF8B93 /* AutoPkgrIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 8BB217F519709A2C00EF8B93 /* AutoPkgrIcon.png */; };
@@ -153,8 +153,8 @@
 		1AC98425195DF6350071CAB3 /* autopkgr.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = autopkgr.png; sourceTree = "<group>"; };
 		1AC98428195DF6DE0071CAB3 /* autopkgr_alt.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = autopkgr_alt.png; sourceTree = "<group>"; };
 		4B5656FD081E4B039BD005D4 /* Pods-AutoPkgr.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AutoPkgr.xcconfig"; path = "Pods/Pods-AutoPkgr.xcconfig"; sourceTree = "<group>"; };
-		6A0ACE32196FB349002C7FE4 /* LGApplications.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGApplications.h; sourceTree = "<group>"; };
-		6A0ACE33196FB349002C7FE4 /* LGApplications.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGApplications.m; sourceTree = "<group>"; };
+		6A0ACE32196FB349002C7FE4 /* LGRecipes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGRecipes.h; sourceTree = "<group>"; };
+		6A0ACE33196FB349002C7FE4 /* LGRecipes.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGRecipes.m; sourceTree = "<group>"; };
 		6A0BABE7196E560000A136BB /* LGPopularRepositories.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGPopularRepositories.h; sourceTree = "<group>"; };
 		6A0BABE8196E560000A136BB /* LGPopularRepositories.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGPopularRepositories.m; sourceTree = "<group>"; };
 		6A53625B1988BE59008A949C /* LGTestPort.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGTestPort.h; sourceTree = "<group>"; };
@@ -285,8 +285,8 @@
 				1A979FDF1960BCCC00EE9881 /* LGUnzipper.m */,
 				6A0BABE7196E560000A136BB /* LGPopularRepositories.h */,
 				6A0BABE8196E560000A136BB /* LGPopularRepositories.m */,
-				6A0ACE32196FB349002C7FE4 /* LGApplications.h */,
-				6A0ACE33196FB349002C7FE4 /* LGApplications.m */,
+				6A0ACE32196FB349002C7FE4 /* LGRecipes.h */,
+				6A0ACE33196FB349002C7FE4 /* LGRecipes.m */,
 				1A1BAD94197A0407008192A7 /* LGVersionComparator.h */,
 				1A1BAD95197A0407008192A7 /* LGVersionComparator.m */,
 				6A53625B1988BE59008A949C /* LGTestPort.h */,
@@ -577,7 +577,7 @@
 				1A1BAD96197A0407008192A7 /* LGVersionComparator.m in Sources */,
 				1AC98412195CE8520071CAB3 /* LGEmailer.m in Sources */,
 				BE025CFE19BAEF8800D36345 /* LGAutoPkgSchedule.m in Sources */,
-				6A0ACE34196FB349002C7FE4 /* LGApplications.m in Sources */,
+				6A0ACE34196FB349002C7FE4 /* LGRecipes.m in Sources */,
 				1AC9841F195CEC360071CAB3 /* LGConfigurationWindowController.m in Sources */,
 				1A1BAD9E197A4133008192A7 /* LGGitHubJSONLoader.m in Sources */,
 				1AC6955D195B59EE00D2BD81 /* main.m in Sources */,

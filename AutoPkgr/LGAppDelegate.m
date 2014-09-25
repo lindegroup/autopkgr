@@ -79,7 +79,7 @@
 - (void)checkNowFromMenu:(id)sender
 {
     [self startProgressWithMessage:@"Starting..."];
-    NSString *recipeList = [LGApplications recipeList];
+    NSString *recipeList = [LGRecipes recipeList];
     [LGAutoPkgTask runRecipeList:recipeList
                         progress:^(NSString *message, double taskProgress) {
                             [self updateProgress:message progress:taskProgress];

@@ -18,7 +18,7 @@
 //
 
 #import "LGAutoPkgTask.h"
-#import "LGApplications.h"
+#import "LGRecipes.h"
 #import "LGVersionComparator.h"
 #import <util.h>
 
