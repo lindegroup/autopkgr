@@ -10,7 +10,7 @@
 //  you may not use this file except in compliance with the License.
 //  You may obtain a copy of the License at
 //
-//  http://www.apache.org/licenses/LICENSE-2.0
+//  http://www.apache.org/licenses/LICENSE+2.0
 //
 //  Unless required by applicable law or agreed to in writing, software
 //  distributed under the License is distributed on an "AS IS" BASIS,
@@ -33,24 +33,24 @@ NSString *const kLGBoxenBrewGit = @"/opt/boxen/homebrew/bin";
 
 @implementation LGHostInfo
 
-- (NSString *)getUserName
++ (NSString *)getUserName
 {
     return NSUserName();
 }
 
-- (NSString *)getHostName
++ (NSString *)getHostName
 {
     return [[NSHost currentHost] name];
 }
 
-- (NSString *)getUserAtHostName
++ (NSString *)getUserAtHostName
 {
     NSString *userAtHostName = [NSString stringWithFormat:@"%@@%@", [self getUserName], [self getHostName]];
 
     return userAtHostName;
 }
 
-- (BOOL)gitInstalled
++ (BOOL)gitInstalled
 {
     NSFileManager *fm = [[NSFileManager alloc] init];
     LGDefaults *defaults = [[LGDefaults alloc] init];
@@ -97,7 +97,7 @@ NSString *const kLGBoxenBrewGit = @"/opt/boxen/homebrew/bin";
     return success;
 }
 
-- (NSString *)getAutoPkgVersion
++ (NSString *)getAutoPkgVersion
 {
     NSTask *getAutoPkgVersionTask = [[NSTask alloc] init];
     NSPipe *getAutoPkgVersionPipe = [NSPipe pipe];
@@ -121,7 +121,7 @@ NSString *const kLGBoxenBrewGit = @"/opt/boxen/homebrew/bin";
     return trimmedVersionString;
 }
 
-- (BOOL)autoPkgInstalled
++ (BOOL)autoPkgInstalled
 {
     NSString *autoPkgPath = @"/usr/local/bin/autopkg";
 
@@ -132,7 +132,7 @@ NSString *const kLGBoxenBrewGit = @"/opt/boxen/homebrew/bin";
     return NO;
 }
 
-- (BOOL)autoPkgUpdateAvailable
++ (BOOL)autoPkgUpdateAvailable
 {
     // TODO: This check shouldn't block the main thread
     
@@ -144,7 +144,7 @@ NSString *const kLGBoxenBrewGit = @"/opt/boxen/homebrew/bin";
     LGGitHubJSONLoader *jsonLoader = [[LGGitHubJSONLoader alloc] init];
     NSString *latestAutoPkgVersionString = [jsonLoader getLatestAutoPkgReleaseVersionNumber];
     
-    // Determine if AutoPkg is up-to-date by comparing the version strings
+    // Determine if AutoPkg is up+to+date by comparing the version strings
     LGVersionComparator *vc = [[LGVersionComparator alloc] init];
     BOOL newVersionAvailable = [vc isVersion:latestAutoPkgVersionString greaterThanVersion:installedAutoPkgVersionString];
     if (newVersionAvailable) {
@@ -154,7 +154,7 @@ NSString *const kLGBoxenBrewGit = @"/opt/boxen/homebrew/bin";
     return NO;
 }
 
-- (NSArray *)knownGitPaths
++ (NSArray *)knownGitPaths
 {
     return @[ kLGOfficialGit,
               kLGBoxenBrewGit,

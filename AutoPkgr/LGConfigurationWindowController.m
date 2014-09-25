@@ -237,9 +237,8 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
         }
     }
 
-    LGHostInfo *hostInfo = [[LGHostInfo alloc] init];
-    BOOL autoPkgInstalled = [hostInfo autoPkgInstalled];
-    BOOL gitInstalled = [hostInfo gitInstalled];
+    BOOL autoPkgInstalled = [LGHostInfo autoPkgInstalled];
+    BOOL gitInstalled = [LGHostInfo gitInstalled];
 
     if (gitInstalled) {
         [_installGitButton setEnabled:NO];
@@ -255,7 +254,7 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
     [bgQueue addOperationWithBlock:^{
         // Since checking for an update can take some time, run it in the background
         if (autoPkgInstalled) {
-            BOOL updateAvailable = [hostInfo autoPkgUpdateAvailable];
+            BOOL updateAvailable = [LGHostInfo autoPkgUpdateAvailable];
             if (updateAvailable) {
                 [_installAutoPkgButton setEnabled:YES];
                 [_installAutoPkgButton setTitle:@"Update AutoPkg"];
@@ -427,9 +426,8 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
     LGInstaller *installer = [[LGInstaller alloc] init];
     installer.progressDelegate = self;
     [installer installGit:^(NSError *error) {
-        LGHostInfo *hostInfo = [[LGHostInfo alloc] init];
         [self stopProgress:error];
-        if ([hostInfo gitInstalled]) {
+        if ([LGHostInfo gitInstalled]) {
             NSLog(@"Git installed successfully.");
             [_installGitButton setEnabled:NO];
             [_gitStatusLabel setStringValue:kLGGitInstalledLabel];
@@ -453,9 +451,8 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
     installer.progressDelegate = self;
     [installer installAutoPkg:^(NSError *error) {
         // Update the autoPkgStatus icon and label if it installed successfully
-        LGHostInfo *hostInfo = [[LGHostInfo alloc] init];
         [self stopProgress:error];
-        if ([hostInfo autoPkgInstalled]) {
+        if ([LGHostInfo autoPkgInstalled]) {
             NSLog(@"AutoPkg installed successfully.");
             [_autoPkgStatusLabel setStringValue:kLGAutoPkgInstalledLabel];
             [_autoPkgStatusIcon setImage:[NSImage imageNamed:NSImageNameStatusAvailable]];
