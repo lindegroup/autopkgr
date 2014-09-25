@@ -35,6 +35,7 @@ NSString *autopkg()
 }
 
 @interface LGAutoPkgTask ()
+
 @property (copy, nonatomic, readwrite) NSString *standardOutString;
 @property (copy, nonatomic, readwrite) NSString *standardErrString;
 @property (copy, nonatomic) NSString *reportPlistFile;
@@ -42,7 +43,6 @@ NSString *autopkg()
 @property (copy, nonatomic) NSString *version;
 @property (nonatomic) BOOL AUTOPKG_VERSION_0_4_0;
 @property (nonatomic, readwrite) BOOL complete;
-
 
 @end
 
@@ -113,7 +113,7 @@ NSString *autopkg()
 
 - (BOOL)cancel
 {
-    if(_task && _task.isRunning) {
+    if (_task && _task.isRunning) {
         [_task terminate];
         return ![_task isRunning];
     }

@@ -823,7 +823,7 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
 #pragma mark - Tab View Delegate
 - (void)tabView:(NSTabView *)tabView didSelectTabViewItem:(NSTabViewItem *)tabViewItem
 {
-    if([tabViewItem.identifier isEqualTo:@"localFolders"]){
+    if ([tabViewItem.identifier isEqualTo:@"localFolders"]) {
         [self enableOpenInFinderButtons];
     }
 }
