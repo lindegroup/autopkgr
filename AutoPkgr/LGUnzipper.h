@@ -23,6 +23,6 @@
 
 @interface LGUnzipper : NSObject
 
-- (BOOL)unzip:(NSString *)zipPath targetDir:(NSString *)targetDir;
++ (BOOL)unzip:(NSString *)zipPath targetDir:(NSString *)targetDir;
 
 @end
