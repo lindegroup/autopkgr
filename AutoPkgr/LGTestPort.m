@@ -9,7 +9,11 @@
 #import "LGTestPort.h"
 #import "LGAutoPkgr.h"
 
-@implementation LGTestPort
+@implementation LGTestPort {
+    NSInputStream *_inputStream;
+    NSOutputStream *_outputStream;
+    NSTimer *_streamTimeoutTimer;
+}
 
 - (void)dealloc
 {
@@ -19,11 +23,11 @@
 - (void)stream:(NSStream *)aStream handleEvent:(NSStreamEvent)eventCode
 {
     if (eventCode & (NSStreamEventOpenCompleted | NSStreamEventErrorOccurred)) {
-        if ([read streamStatus] == NSStreamStatusError ||
-            [write streamStatus] == NSStreamStatusError) {
+        if ([_inputStream streamStatus] == NSStreamStatusError ||
+            [_outputStream streamStatus] == NSStreamStatusError) {
             [self portTestDidCompletedWithSuccess:NO];
-        } else if ([read streamStatus] == NSStreamStatusOpen &&
-                   [write streamStatus] == NSStreamStatusOpen) {
+        } else if ([_inputStream streamStatus] == NSStreamStatusOpen &&
+                   [_outputStream streamStatus] == NSStreamStatusOpen) {
             [self portTestDidCompletedWithSuccess:YES];
         }
     }
@@ -31,19 +35,19 @@
 
 - (void)stopTest
 {
-    if (streamTimeoutTimer) {
-        [streamTimeoutTimer invalidate];
-        streamTimeoutTimer = nil;
+    if (_streamTimeoutTimer) {
+        [_streamTimeoutTimer invalidate];
+        _streamTimeoutTimer = nil;
     }
-    if (read) {
-        [read removeFromRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
-        [read close];
-        read = nil;
+    if (_inputStream) {
+        [_inputStream removeFromRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
+        [_inputStream close];
+        _inputStream = nil;
     }
-    if (write) {
-        [write removeFromRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
-        [write close];
-        write = nil;
+    if (_outputStream) {
+        [_outputStream removeFromRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
+        [_outputStream close];
+        _outputStream = nil;
     }
 }
 
@@ -58,15 +62,15 @@
 
     if (tempRead && tempWrite) {
         [self startStreamTimeoutTimer];
-        read = tempRead;
-        write = tempWrite;
-        [read setDelegate:self];
-        [write setDelegate:self];
-        [read open];
-        [write open];
+        _inputStream = tempRead;
+        _outputStream = tempWrite;
+        [_inputStream setDelegate:self];
+        [_outputStream setDelegate:self];
+        [_inputStream open];
+        [_outputStream open];
 
-        [read scheduleInRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
-        [write scheduleInRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
+        [_inputStream scheduleInRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
+        [_outputStream scheduleInRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
     } else {
         [self portTestDidCompletedWithSuccess:NO];
     }
@@ -74,7 +78,7 @@
 
 - (void)startStreamTimeoutTimer
 {
-    streamTimeoutTimer = [NSTimer scheduledTimerWithTimeInterval:3.0
+    _streamTimeoutTimer = [NSTimer scheduledTimerWithTimeInterval:3.0
                                                           target:self
                                                         selector:@selector(handleStreamTimeout)
                                                         userInfo:nil

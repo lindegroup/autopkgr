@@ -22,21 +22,20 @@
 #import <Foundation/Foundation.h>
 #import "LGAutoPkgTask.h"
 
-@interface LGApplications : NSObject <NSApplicationDelegate, NSTableViewDataSource, NSTableViewDelegate> {
+@interface LGRecipes : NSObject <NSApplicationDelegate, NSTableViewDataSource, NSTableViewDelegate> {
 
-    IBOutlet NSTableView *applicationTableView;
+    IBOutlet NSTableView *recipeTableView;
 
-    NSArray *apps;
-    NSArray *activeApps;
-    NSArray *searchedApps;
-    __weak NSSearchField *_appSearch;
+    NSArray *_recipes;
+    NSArray *_activeRecipes;
+    NSArray *_searchedRecipes;
 }
 
 - (void)reload;
 - (void)writeRecipeList;
 - (NSString *)getAppSupportDirectory;
 
-@property (weak) IBOutlet NSSearchField *appSearch;
+@property (weak) IBOutlet NSSearchField *recipeSearchField;
 
 + (NSString *)recipeList;
 

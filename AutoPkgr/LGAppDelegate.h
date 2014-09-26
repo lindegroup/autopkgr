@@ -25,10 +25,6 @@
 @class LGConfigurationWindowController;
 
 @interface LGAppDelegate : NSObject <NSApplicationDelegate, LGProgressDelegate>
-{
-    @private
-    LGConfigurationWindowController *configurationWindowController;
-}
 
 //@property (assign) IBOutlet NSWindow *window;
 @property (strong, nonatomic) IBOutlet NSMenu *statusMenu;
