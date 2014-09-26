@@ -161,7 +161,8 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
 {
     [super windowDidLoad];
 
-    // Populate the preference values from the user defaults if they exist
+    // Populate the preference values from the user defaults, if they exist
+    DLog(@"Populating configuration window settings based on user defaults, if they exist.");
 
     if ([_defaults autoPkgRunInterval]) {
         [_autoPkgRunInterval setIntegerValue:[_defaults autoPkgRunInterval]];
@@ -223,15 +224,15 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
                                                       error:&error];
 
         if ([error code] == errSecItemNotFound) {
-            NSLog(@"Keychain item not found for account %@.", _smtpUsernameString);
+            NSLog(@"Keychain entry not found for account %@.", _smtpUsernameString);
         } else if ([error code] == errSecNotAvailable) {
-            NSLog(@"Found the keychain item for %@ but no password value was returned.", _smtpUsernameString);
+            NSLog(@"Found the keychain entry for %@ but no password value was returned.", _smtpUsernameString);
         } else if (error != nil) {
             NSLog(@"An error occurred when attempting to retrieve the keychain entry for %@. Error: %@", _smtpUsernameString, [error localizedDescription]);
         } else {
             // Only populate the SMTP Password field if the username exists
             if (_smtpUsernameString && password && ![_smtpUsernameString isEqual:@""]) {
-                NSLog(@"Retrieved password from keychain for account %@.", _smtpUsernameString);
+                NSLog(@"Successfully retrieved keychain entry for account %@.", _smtpUsernameString);
                 [_smtpPassword setStringValue:password];
             }
         }
@@ -241,10 +242,12 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
     BOOL gitInstalled = [LGHostInfo gitInstalled];
 
     if (gitInstalled) {
+        DLog(@"Git is installed. Disabling 'Install Git' button and setting green indicator.");
         [_installGitButton setEnabled:NO];
         [_gitStatusLabel setStringValue:kLGGitInstalledLabel];
         [_gitStatusIcon setImage:[NSImage imageNamed:NSImageNameStatusAvailable]];
     } else {
+        DLog(@"Git is not installed. Enabling 'Install Git' button and setting red indicator.");
         [_installGitButton setEnabled:YES];
         [_gitStatusLabel setStringValue:kLGGitNotInstalledLabel];
         [_gitStatusIcon setImage:[NSImage imageNamed:NSImageNameStatusUnavailable]];
@@ -256,16 +259,19 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
         if (autoPkgInstalled) {
             BOOL updateAvailable = [LGHostInfo autoPkgUpdateAvailable];
             if (updateAvailable) {
+                DLog(@"AutoPkg is installed, but an update is available. Enabling 'Update AutoPkg' button and setting yellow indicator.");
                 [_installAutoPkgButton setEnabled:YES];
                 [_installAutoPkgButton setTitle:@"Update AutoPkg"];
                 [_autoPkgStatusLabel setStringValue:kLGAutoPkgUpdateAvailableLabel];
                 [_autoPkgStatusIcon setImage:[NSImage imageNamed:NSImageNameStatusPartiallyAvailable]];
             } else {
+                DLog(@"AutoPkg is installed and up to date. Disabling 'Update AutoPkg' button and setting green indicator.");
                 [_installAutoPkgButton setEnabled:NO];
                 [_autoPkgStatusLabel setStringValue:kLGAutoPkgInstalledLabel];
                 [_autoPkgStatusIcon setImage:[NSImage imageNamed:NSImageNameStatusAvailable]];
             }
         } else {
+            DLog(@"AutoPkg is not installed. Enabling 'Install AutoPkg' button and setting red indicator.");
             [_installAutoPkgButton setEnabled:YES];
             [_autoPkgStatusLabel setStringValue:kLGAutoPkgNotInstalledLabel];
             [_autoPkgStatusIcon setImage:[NSImage imageNamed:NSImageNameStatusUnavailable]];
@@ -277,11 +283,13 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
     if (_defaults.checkForRepoUpdatesAutomaticallyEnabled && gitInstalled && autoPkgInstalled) {
         [_updateRepoNowButton setEnabled:NO];
         [_checkAppsNowButton setEnabled:NO];
-        [_updateRepoNowButton setTitle:@"Update in Progress..."];
+        [_updateRepoNowButton setTitle:@"Repos Updating..."];
+        NSLog(@"Updating AutoPkg recipe repos...");
         [LGAutoPkgTask repoUpdate:^(NSError *error) {
             [_updateRepoNowButton setEnabled:YES];
             [_updateRepoNowButton setTitle:@"Update Repos Now"];
             [_checkAppsNowButton setEnabled:YES];
+            NSLog(@"AutoPkg recipe repos updated.");
         }];
     }
     
@@ -293,6 +301,7 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
 
 - (BOOL)windowShouldClose:(id)sender
 {
+    DLog(@"Close command received. Configuration window is saving and closing.");
     [self save];
     return YES;
 }
@@ -303,6 +312,7 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
 {
     // Send a test email notification when the user
     // clicks "Send Test Email"
+    DLog(@"'Send Test Email' button clicked.");
 
     // Handle UI
     [_sendTestEmailButton setEnabled:NO]; // disable button
@@ -328,7 +338,8 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
 - (void)testSmtpServerPort:(id)sender
 {
     if (![[_smtpServer stringValue] isEqualToString:@""] && [_smtpPort integerValue] > 0) {
-
+        
+        DLog(@"Testing SMTP server and port settings.");
         NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
 
         // Set up the UI
@@ -347,7 +358,7 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
                 withPort:[_smtpPort integerValue]];
 
     } else {
-        NSLog(@"Cannot test; either host is blank or port is unreadable.");
+        NSLog(@"Cannot test SMTP. Either host is blank or port is unreadable.");
     }
 }
 
@@ -391,7 +402,7 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
     if (error) {
         NSLog(@"Error while storing email password in keychain: %@", error);
     } else {
-        NSLog(@"Stored email password in keychain.");
+        NSLog(@"Successfully stored email password in keychain.");
     }
 
     // Synchronize with the defaults database
@@ -407,18 +418,16 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
     NSLog(@"AppleScript commands: %@", script);
     NSAppleScript *appleScript = [[NSAppleScript alloc] initWithSource:script];
     if ([appleScript executeAndReturnError:&error]) {
-        NSLog(@"Authorization successful.");
+        NSLog(@"Shell script authorization successful.");
     } else {
-        NSLog(@"Authorization failed. Error: %@.", error);
+        NSLog(@"Shell script authorization failed. Error: %@.", error);
     }
 }
 
-/*
- This should prompt for Xcode CLI tools
- installation on systems without Git.
- */
 - (IBAction)installGit:(id)sender
 {
+    NSLog(@"Installing Git...");
+    
     // Change the button label to "Installing..."
     // and disable the button to prevent multiple clicks
     [_installGitButton setEnabled:NO];
@@ -443,7 +452,9 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
 
 - (IBAction)installAutoPkg:(id)sender
 {
-    // and disable the button to prevent multiple clicks
+    NSLog(@"Installing AutoPkg...");
+    
+    // Disable the button to prevent multiple clicks
     [_installAutoPkgButton setEnabled:NO];
     [self startProgressWithMessage:@"Installing newest version of AutoPkg..."];
 
@@ -490,6 +501,7 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
 
 - (IBAction)openLocalMunkiRepoFolder:(id)sender
 {
+    DLog(@"Opening Munki repo folder...");
     BOOL isDir;
 
     if ([[NSFileManager defaultManager] fileExistsAtPath:_defaults.munkiRepo isDirectory:&isDir] && isDir) {
@@ -511,6 +523,7 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
 
 - (IBAction)openAutoPkgRecipeReposFolder:(id)sender
 {
+    DLog(@"Opening AutoPkg RecipeRepos folder...");
     BOOL isDir;
     NSString *autoPkgRecipeReposFolder = [_defaults autoPkgRecipeRepoDir];
     autoPkgRecipeReposFolder = autoPkgRecipeReposFolder ? autoPkgRecipeReposFolder : [@"~/Library/AutoPkg/RecipeRepos" stringByExpandingTildeInPath];
@@ -534,6 +547,7 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
 
 - (IBAction)openAutoPkgCacheFolder:(id)sender
 {
+    DLog(@"Opening AutoPkg Cache folder...");
     BOOL isDir;
     NSString *autoPkgCacheFolder = [_defaults autoPkgCacheDir];
     autoPkgCacheFolder = autoPkgCacheFolder ? autoPkgCacheFolder : [@"~/Library/AutoPkg/Cache" stringByExpandingTildeInPath];
@@ -557,6 +571,7 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
 
 - (IBAction)openAutoPkgRecipeOverridesFolder:(id)sender
 {
+    DLog(@"Opening AutoPkg RecipeOverrides folder...");
     BOOL isDir;
     NSString *autoPkgRecipeOverridesFolder = [_defaults autoPkgRecipeOverridesDir];
     autoPkgRecipeOverridesFolder = autoPkgRecipeOverridesFolder ? autoPkgRecipeOverridesFolder : [@"~/Library/AutoPkg/RecipeOverrides" stringByExpandingTildeInPath];
@@ -579,6 +594,7 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
 #pragma mark - Choose AutoPkg defaults
 - (IBAction)chooseLocalMunkiRepo:(id)sender
 {
+    DLog(@"Showing dialog for selecting Munki repo location.");
     NSOpenPanel *chooseDialog = [self setupOpenPanel];
 
     // Set the default directory to the current setting for munkiRepo, else /Users/Shared
@@ -594,6 +610,7 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
                 // Verify that the file exists and is a directory
                 if ([[NSFileManager defaultManager] fileExistsAtPath:[url path] isDirectory:&isDir] && isDir) {
                     // Here we can be certain the URL exists and it is a directory
+                    DLog(@"Munki repo location selected.");
                     NSString *urlPath = [url path];
                     [_localMunkiRepo setStringValue:urlPath];
                     [_openLocalMunkiRepoFolderButton setEnabled:YES];
@@ -607,6 +624,7 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
 
 - (IBAction)chooseAutoPkgReciepRepoDir:(id)sender
 {
+    DLog(@"Showing dialog for selecting AutoPkg RecipeRepos location.");
     NSOpenPanel *chooseDialog = [self setupOpenPanel];
 
     // Set the default directory to the current setting for autoPkgRecipeRepoDir, else ~/Library/AutoPkg
@@ -622,6 +640,7 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
                 // Verify that the file exists and is a directory
                 if ([[NSFileManager defaultManager] fileExistsAtPath:[url path] isDirectory:&isDir] && isDir) {
                     // Here we can be certain the URL exists and it is a directory
+                    DLog(@"AutoPkg RecipeRepos location selected.");
                     NSString *urlPath = [url path];
                     [_autoPkgRecipeRepoDir setStringValue:urlPath];
                     [_openAutoPkgRecipeReposFolderButton setEnabled:YES];
@@ -635,6 +654,7 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
 
 - (IBAction)chooseAutoPkgCacheDir:(id)sender
 {
+    DLog(@"Showing dialog for selecting AutoPkg Cache location.");
     NSOpenPanel *chooseDialog = [self setupOpenPanel];
 
     // Set the default directory to the current setting for autoPkgCacheDir, else ~/Library/AutoPkg
@@ -650,6 +670,7 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
                 // Verify that the file exists and is a directory
                 if ([[NSFileManager defaultManager] fileExistsAtPath:[url path] isDirectory:&isDir] && isDir) {
                     // Here we can be certain the URL exists and it is a directory
+                    DLog(@"AutoPkg Cache location selected.");
                     NSString *urlPath = [url path];
                     [_autoPkgCacheDir setStringValue:urlPath];
                     [_openAutoPkgCacheFolderButton setEnabled:YES];
@@ -663,6 +684,7 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
 
 - (IBAction)chooseAutoPkgRecipeOverridesDir:(id)sender
 {
+    DLog(@"Showing dialog for selecting AutoPkg RecipeOverrides location.");
     NSOpenPanel *chooseDialog = [self setupOpenPanel];
 
     // Set the default directory to the current setting for autoPkgRecipeOverridesDir, else ~/Library/AutoPkg
@@ -678,6 +700,7 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
                 // Verify that the file exists and is a directory
                 if ([[NSFileManager defaultManager] fileExistsAtPath:[url path] isDirectory:&isDir] && isDir) {
                     // Here we can be certain the URL exists and it is a directory
+                    DLog(@"AutoPkg RecipeOverrides location selected.");
                     NSString *urlPath = [url path];
                     [_autoPkgRecipeOverridesDir setStringValue:urlPath];
                     [_openAutoPkgRecipeOverridesFolderButton setEnabled:YES];
@@ -742,6 +765,7 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
 {
     if (_task) {
         [_task cancel];
+        NSLog(@"AutoPkg task cancelled.");
     }
 }
 
@@ -794,12 +818,12 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
         NSError *error;
         [SSKeychain setPassword:[_smtpPassword stringValue] forService:kLGApplicationName account:[_smtpUsername stringValue] error:&error];
         if (error) {
-            NSLog(@"Error while storing email password in keychain: %@", error);
+            NSLog(@"Error occurred while storing email password in keychain: %@", error);
         } else {
-            NSLog(@"Stored email password in keychain.");
+            NSLog(@"Successfully stored email password in keychain.");
         }
     } else {
-        NSLog(@"Uncaught controlTextDidEndEditing");
+        DLog(@"Uncaught controlTextDidEndEditing");
         return;
     }
 
@@ -1086,7 +1110,7 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
         if (neededFixing > 0) {
             NSAlert *alert = [NSAlert new];
             alert.messageText = [NSString stringWithFormat:@"%ld problems were found in the AutoPkg preference file", neededFixing];
-            alert.informativeText = rc ? @"AutoPkgr was able to repair the preference file. No further action is required." : @"AutoPkgr could not repair the preference file. If the problem persists open an issue on the AutoPkgr GitHub page.";
+            alert.informativeText = rc ? @"AutoPkgr was able to repair the AutoPkg preference file. No further action is required." : @"AutoPkgr could not repair the AutoPkg preference file. If the problem persists open an issue on the AutoPkgr GitHub page.";
             [alert beginSheetModalForWindow:self.window
                               modalDelegate:self
                              didEndSelector:nil
