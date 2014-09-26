@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="6245" systemVersion="13F34" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="5056" systemVersion="13E28" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment defaultVersion="1080" identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="6245"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="5056"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="LGConfigurationWindowController">
@@ -56,7 +56,7 @@
         <window title="AutoPkgr" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" oneShot="NO" releasedWhenClosed="NO" animationBehavior="default" id="F0z-JX-Cv5">
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
             <rect key="contentRect" x="196" y="240" width="657" height="478"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1440" height="878"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1280" height="778"/>
             <value key="minSize" type="size" width="657" height="478"/>
             <view key="contentView" id="se5-gp-TjO">
                 <rect key="frame" x="0.0" y="0.0" width="657" height="478"/>
@@ -177,7 +177,7 @@
                                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                         <subviews>
                                                             <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" columnSelection="YES" multipleSelection="NO" autosaveColumns="NO" id="n0R-ew-DOT">
-                                                                <rect key="frame" x="0.0" y="0.0" width="581" height="19"/>
+                                                                <rect key="frame" x="0.0" y="0.0" width="581" height="133"/>
                                                                 <autoresizingMask key="autoresizingMask"/>
                                                                 <size key="intercellSpacing" width="3" height="2"/>
                                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -295,7 +295,7 @@
                                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                         <subviews>
                                                             <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnSelection="YES" columnResizing="NO" multipleSelection="NO" autosaveColumns="NO" id="HAz-3M-Rgt">
-                                                                <rect key="frame" x="0.0" y="0.0" width="581" height="19"/>
+                                                                <rect key="frame" x="0.0" y="0.0" width="581" height="143"/>
                                                                 <autoresizingMask key="autoresizingMask"/>
                                                                 <size key="intercellSpacing" width="3" height="2"/>
                                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -984,6 +984,7 @@
                                                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                                 </textFieldCell>
                                                                 <connections>
+                                                                    <action selector="updateJSSUsername:" target="0iG-YL-fA3" id="qtF-po-wMg"/>
                                                                     <outlet property="delegate" destination="-2" id="jLp-3k-WkI"/>
                                                                 </connections>
                                                             </textField>
@@ -1016,6 +1017,9 @@
                                                                         <string>NSAllRomanInputSourcesLocaleIdentifier</string>
                                                                     </allowedInputSourceLocales>
                                                                 </secureTextFieldCell>
+                                                                <connections>
+                                                                    <action selector="updaetJSSPassword:" target="0iG-YL-fA3" id="zEI-nD-WPj"/>
+                                                                </connections>
                                                             </secureTextField>
                                                             <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="mbd-An-9Bi">
                                                                 <rect key="frame" x="87" y="142" width="474" height="22"/>
@@ -1025,6 +1029,7 @@
                                                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                                 </textFieldCell>
                                                                 <connections>
+                                                                    <action selector="updateJSSURL:" target="0iG-YL-fA3" id="DtW-bK-nTh"/>
                                                                     <outlet property="delegate" destination="-2" id="MiV-BM-N8v"/>
                                                                 </connections>
                                                             </textField>
@@ -1046,10 +1051,11 @@
                                                             <scrollView autohidesScrollers="YES" horizontalLineScroll="19" horizontalPageScroll="10" verticalLineScroll="19" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Vje-O5-ib4">
                                                                 <rect key="frame" x="18" y="14" width="567" height="85"/>
                                                                 <clipView key="contentView" copiesOnScroll="NO" id="ffE-tf-cf6">
-                                                                    <rect key="frame" x="1" y="17" width="238" height="117"/>
+                                                                    <rect key="frame" x="1" y="17" width="565" height="67"/>
                                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                                     <subviews>
                                                                         <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" columnSelection="YES" multipleSelection="NO" autosaveColumns="NO" rowSizeStyle="automatic" headerView="aoF-9H-VqW" viewBased="YES" id="aXN-bq-rWr">
+                                                                            <rect key="frame" x="0.0" y="0.0" width="565" height="67"/>
                                                                             <autoresizingMask key="autoresizingMask"/>
                                                                             <size key="intercellSpacing" width="3" height="2"/>
                                                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -1101,7 +1107,7 @@
                                                                                     <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                                                                     <prototypeCellViews>
                                                                                         <tableCellView id="sOE-Eo-ioU">
-                                                                                            <rect key="frame" x="374.5" y="1" width="188" height="17"/>
+                                                                                            <rect key="frame" x="374" y="1" width="189" height="17"/>
                                                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                                                             <subviews>
                                                                                                 <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="FLf-UM-e2V">
@@ -1133,7 +1139,7 @@
                                                                     <autoresizingMask key="autoresizingMask"/>
                                                                 </scroller>
                                                                 <tableHeaderView key="headerView" id="aoF-9H-VqW">
-                                                                    <rect key="frame" x="0.0" y="0.0" width="238" height="17"/>
+                                                                    <rect key="frame" x="0.0" y="0.0" width="565" height="17"/>
                                                                     <autoresizingMask key="autoresizingMask"/>
                                                                 </tableHeaderView>
                                                             </scrollView>
@@ -1223,7 +1229,7 @@
             <windowStyleMask key="styleMask" closable="YES" miniaturizable="YES" resizable="YES" utility="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="385" y="323" width="610" height="133"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1440" height="878"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1280" height="778"/>
             <view key="contentView" id="dCS-sn-B3a">
                 <rect key="frame" x="0.0" y="0.0" width="610" height="133"/>
                 <autoresizingMask key="autoresizingMask"/>
@@ -1279,6 +1285,16 @@ Gw
                 </constraints>
             </view>
         </window>
+        <customObject id="0iG-YL-fA3" userLabel="JSSAddon" customClass="LGJSSAddon">
+            <connections>
+                <outlet property="jssAPIPasswordTF" destination="9lJ-vz-FvC" id="dzX-o6-3Dq"/>
+                <outlet property="jssAPIUsernameTF" destination="6Ki-wr-8K2" id="UpI-wg-w0e"/>
+                <outlet property="jssDistributionPointTableView" destination="aXN-bq-rWr" id="KvU-ey-qrq"/>
+                <outlet property="jssStatusLight" destination="gcn-rW-umQ" id="M4V-gw-vzW"/>
+                <outlet property="jssStatusSpinner" destination="6MF-CB-ccc" id="PIn-UW-oN1"/>
+                <outlet property="jssURLTF" destination="mbd-An-9Bi" id="cMm-Xd-54D"/>
+            </connections>
+        </customObject>
     </objects>
     <resources>
         <image name="AutoPkgrIcon" width="512" height="512"/>
