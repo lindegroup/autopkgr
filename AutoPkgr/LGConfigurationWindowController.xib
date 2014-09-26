@@ -1050,7 +1050,6 @@
                                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                                     <subviews>
                                                                         <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" columnSelection="YES" multipleSelection="NO" autosaveColumns="NO" rowSizeStyle="automatic" headerView="aoF-9H-VqW" viewBased="YES" id="aXN-bq-rWr">
-                                                                            <rect key="frame" x="0.0" y="0.0" width="238" height="117"/>
                                                                             <autoresizingMask key="autoresizingMask"/>
                                                                             <size key="intercellSpacing" width="3" height="2"/>
                                                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -1070,7 +1069,7 @@
                                                                                     <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                                                                     <prototypeCellViews>
                                                                                         <tableCellView id="WwY-YP-4gr">
-                                                                                            <rect key="frame" x="1" y="1" width="370.5" height="17"/>
+                                                                                            <rect key="frame" x="1" y="1" width="370" height="17"/>
                                                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                                                             <subviews>
                                                                                                 <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="IKe-xl-RGi">
@@ -1102,7 +1101,7 @@
                                                                                     <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                                                                     <prototypeCellViews>
                                                                                         <tableCellView id="sOE-Eo-ioU">
-                                                                                            <rect key="frame" x="374.5" y="1" width="188.5" height="17"/>
+                                                                                            <rect key="frame" x="374.5" y="1" width="188" height="17"/>
                                                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                                                             <subviews>
                                                                                                 <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="FLf-UM-e2V">
@@ -1214,10 +1213,10 @@
                 <outlet property="repoSearch" destination="Su6-Sd-cOj" id="vzT-0g-kr8"/>
             </connections>
         </customObject>
-        <customObject id="oLk-Uk-whI" customClass="LGApplications">
+        <customObject id="oLk-Uk-whI" customClass="LGRecipes">
             <connections>
-                <outlet property="appSearch" destination="8hi-WA-S41" id="Eyf-9W-8Cs"/>
-                <outlet property="applicationTableView" destination="HAz-3M-Rgt" id="jPi-gx-bbh"/>
+                <outlet property="recipeSearchField" destination="8hi-WA-S41" id="SrY-AF-VSL"/>
+                <outlet property="recipeTableView" destination="HAz-3M-Rgt" id="G0r-0C-laK"/>
             </connections>
         </customObject>
         <window title="progressPanel" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" restorable="NO" hidesOnDeactivate="YES" oneShot="NO" showsToolbarButton="NO" visibleAtLaunch="NO" animationBehavior="default" id="043-gL-HLj" customClass="NSPanel">
