@@ -86,7 +86,7 @@
 
 // Objects
 @property (strong) IBOutlet LGPopularRepositories *popRepoTableViewHandler;
-@property (strong) IBOutlet LGRecipes *appTableViewHandler;
+@property (strong) IBOutlet LGRecipes *recipeTableViewHandler;
 
 // IBActions
 - (IBAction)sendTestEmail:(id)sender;

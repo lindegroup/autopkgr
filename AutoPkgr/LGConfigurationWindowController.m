@@ -700,7 +700,7 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
         [[NSOperationQueue mainQueue] addOperationWithBlock:^{
             [self stopProgress:error];
             [_popRepoTableViewHandler reload];
-            [_appTableViewHandler reload];
+            [_recipeTableViewHandler reload];
         }];
     }];
     [_repoURLToAdd setStringValue:@""];
@@ -714,6 +714,7 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
     [LGAutoPkgTask repoUpdate:^(NSError *error) {
         [self stopProgress:error];
         [self.updateRepoNowButton setEnabled:YES];
+        [self.recipeTableViewHandler reload];
     }];
 }
 
