@@ -23,7 +23,7 @@
 
 @implementation LGUnzipper
 
-- (BOOL)unzip:(NSString *)zipPath targetDir:(NSString *)targetDir
++ (BOOL)unzip:(NSString *)zipPath targetDir:(NSString *)targetDir
 {
     NSFileManager* fm = [NSFileManager defaultManager];
     NSError *error;

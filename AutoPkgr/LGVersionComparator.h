@@ -23,7 +23,7 @@
 
 @interface LGVersionComparator : NSObject
 
-- (BOOL)isVersion:(NSString *)a greaterThanVersion:(NSString *)b;
-- (NSArray *)normalizeVersionFromArray:(NSArray *)versionArray;
++ (BOOL)isVersion:(NSString *)a greaterThanVersion:(NSString *)b;
++ (NSArray *)normalizeVersionFromArray:(NSArray *)versionArray;
 
 @end

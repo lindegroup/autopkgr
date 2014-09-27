@@ -26,7 +26,11 @@
 #import "LGAutoPkgSchedule.h"
 #import "LGConfigurationWindowController.h"
 
-@implementation LGAppDelegate
+@implementation LGAppDelegate {
+    @private
+    LGConfigurationWindowController *configurationWindowController;
+}
+
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {
@@ -75,7 +79,7 @@
 - (void)checkNowFromMenu:(id)sender
 {
     [self startProgressWithMessage:@"Starting..."];
-    NSString *recipeList = [LGApplications recipeList];
+    NSString *recipeList = [LGRecipes recipeList];
     [LGAutoPkgTask runRecipeList:recipeList
                         progress:^(NSString *message, double taskProgress) {
                             [self updateProgress:message progress:taskProgress];

@@ -21,7 +21,7 @@
 
 #import <Cocoa/Cocoa.h>
 #import "LGPopularRepositories.h"
-#import "LGApplications.h"
+#import "LGRecipes.h"
 #import "LGTestPort.h"
 
 @interface LGConfigurationWindowController : NSWindowController <NSTextDelegate, NSTokenFieldDelegate, NSWindowDelegate, NSTabViewDelegate>
@@ -86,7 +86,7 @@
 
 // Objects
 @property (strong) IBOutlet LGPopularRepositories *popRepoTableViewHandler;
-@property (strong) IBOutlet LGApplications *appTableViewHandler;
+@property (strong) IBOutlet LGRecipes *recipeTableViewHandler;
 
 // IBActions
 - (IBAction)sendTestEmail:(id)sender;
