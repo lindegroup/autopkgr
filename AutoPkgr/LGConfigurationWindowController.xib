@@ -7,7 +7,6 @@
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="LGConfigurationWindowController">
             <connections>
-                <outlet property="appTableViewHandler" destination="oLk-Uk-whI" id="Y2j-Zo-ZLE"/>
                 <outlet property="autoPkgCacheDir" destination="fAS-2t-NJR" id="IWd-LX-9p0"/>
                 <outlet property="autoPkgRecipeOverridesDir" destination="KC4-Ks-uGR" id="ydL-sc-Gjg"/>
                 <outlet property="autoPkgRecipeRepoDir" destination="Tl2-iz-Ard" id="a6L-QG-NtU"/>
@@ -32,6 +31,7 @@
                 <outlet property="progressIndicator" destination="qol-Go-AJd" id="L2u-sJ-XVZ"/>
                 <outlet property="progressMessage" destination="u7l-Fz-3uc" id="bfC-89-DgO"/>
                 <outlet property="progressPanel" destination="043-gL-HLj" id="EfU-ER-kYK"/>
+                <outlet property="recipeTableViewHandler" destination="oLk-Uk-whI" id="Jfy-qC-lpZ"/>
                 <outlet property="repoURLToAdd" destination="PWu-1D-EW1" id="nyi-oP-8Yl"/>
                 <outlet property="sendEmailNotificationsWhenNewVersionsAreFoundButton" destination="TPC-Gd-b8O" id="F4h-2O-FcT"/>
                 <outlet property="sendTestEmailButton" destination="SZ2-Hj-GiD" id="yMv-1b-dWv"/>
