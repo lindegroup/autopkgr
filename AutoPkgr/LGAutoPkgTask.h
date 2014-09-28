@@ -199,11 +199,18 @@ extern NSString *const kLGAutoPkgRepoPathKey;
 + (void)repoUpdate:(void (^)(NSError *error))reply;
 
 /**
- *  Equivelant to /usr/bin/local/autopkg repo-list
+ *  Equivelant to /usr/bin/local/autopkg repo-list (Asynchronous)
  *
  *  @param reply  The block to be executed on upon task completion. This block has no return value and takes two arguments: NSArray, NSError
  */
 + (void)repoList:(void (^)(NSArray *repos, NSError *error))reply;
+
+/**
+ *  Equivelant to /usr/bin/local/autopkg repo-list (Synchronous)
+ *
+ *  @return list of installed autopkg repos
+ */
++ (NSArray *)repoList;
 
 #pragma mark-- Other
 /**
