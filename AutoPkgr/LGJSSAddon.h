@@ -8,16 +8,16 @@
 
 #import <Foundation/Foundation.h>
 
-@interface LGJSSAddon : NSObject
+@interface LGJSSAddon : NSObject <NSTableViewDataSource>
 
-@property (weak) IBOutlet NSTableView *jssDistributionPointTableView;
+@property (strong) IBOutlet NSTableView *jssDistributionPointTableView;
 @property (weak) IBOutlet NSTextField *jssURLTF;
 @property (weak) IBOutlet NSTextField *jssAPIUsernameTF;
 @property (weak) IBOutlet NSTextField *jssAPIPasswordTF;
 
+@property (weak) IBOutlet NSButton *jssReloadServerBT;
+
 @property (weak) IBOutlet NSProgressIndicator *jssStatusSpinner;
 @property (weak) IBOutlet NSImageView *jssStatusLight;
-
--(IBAction)checkCredentials:(id)sender;
 
 @end

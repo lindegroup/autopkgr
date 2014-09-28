@@ -8,7 +8,7 @@
 
 #import "LGJSSAddon.h"
 #import "LGAutopkgr.h"
-
+#import "LGHTTPRequest.h"
 
 #pragma mark - LGDefaults extensions for JSS Addon Interface
 @interface LGDefaults (JSSAddon)
@@ -19,9 +19,10 @@
 @end
 
 
-@implementation LGJSSAddon
+@implementation LGJSSAddon 
 {
     LGDefaults *_defaults;
+    LGHTTPRequest *_reachableTester;
 }
 
 -(void)awakeFromNib
@@ -31,14 +32,29 @@
     if (_defaults.JSSAPIUsername) _jssAPIUsernameTF.stringValue = _defaults.JSSAPIUsername;
     if (_defaults.JSSAPIPassword) _jssAPIPasswordTF.stringValue = _defaults.JSSAPIPassword;
     if (_defaults.JSSURL) _jssURLTF.stringValue = _defaults.JSSURL;
+    [_jssDistributionPointTableView reloadData];
+    _reachableTester = [[LGHTTPRequest alloc] init];
+    [self refreshReachability];
 }
 
+- (void)refreshReachability
+{
+    [_reachableTester checkReachabilityOfServer:_jssURLTF.stringValue reachable:^(BOOL reachable) {
+        if (reachable) {
+            [_jssStatusLight setImage:[NSImage imageNamed:@"NSStatusAvailable"]];
+        } else {
+            [_jssStatusLight setImage:[NSImage imageNamed:@"NSStatusUnavailable"]];
+        }
+    }];
+    
+}
 #pragma mark - IBActions
 - (IBAction)updateJSSUsername:(id)sender
 {
     if (![_jssAPIUsernameTF.stringValue isEqualToString:@""]) {
         _defaults.JSSAPIUsername = _jssAPIUsernameTF.stringValue;
     }
+    [_jssDistributionPointTableView reloadData];
 }
 
 -(IBAction)updaetJSSPassword:(id)sender
@@ -46,23 +62,35 @@
     if (![_jssAPIPasswordTF.stringValue isEqualToString:@""]) {
         _defaults.JSSAPIPassword = _jssAPIPasswordTF.stringValue;
     }
+    [_jssDistributionPointTableView reloadData];
 }
 
 -(IBAction)updateJSSURL:(id)sender
 {
     if (![_jssURLTF.stringValue isEqualToString:@""]) {
         _defaults.JSSURL = _jssURLTF.stringValue;
+        [self refreshReachability];
     }
+    [_jssDistributionPointTableView reloadData];
 }
 
--(void)checkCredentials:(id)sender
+-(IBAction)reloadJSSServerInformation:(id)sender
 {
     [self startStatusUpdate];
-    NSOperationQueue *bgQueue = [[NSOperationQueue alloc] init];
-    [bgQueue addOperationWithBlock:^{
-        sleep(2);
-        [self stopStatusUpdate:nil];
-    }];
+    [LGHTTPRequest retrieveDistributionPoints:_jssURLTF.stringValue
+                                  withUser:_jssAPIUsernameTF.stringValue
+                               andPassword:_jssAPIPasswordTF.stringValue reply:^(NSDictionary *distributionPoints, NSError *error) {
+                                   [self stopStatusUpdate:nil];
+                                   
+                                   NSArray *array = distributionPoints[@"distribution_point"];
+                                   if (array) {
+                                       NSArray *cleanedArray = [self evaluateJSSRepoDictionaries:array];
+                                       if ([cleanedArray count]) {
+                                           _defaults.JSSRepos = cleanedArray;
+                                           [_jssDistributionPointTableView reloadData];
+                                       }
+                                   }
+                               }];
 }
 
 #pragma mark - Progress
@@ -72,7 +100,6 @@
         [_jssStatusLight setHidden:YES];
         [_jssStatusSpinner setHidden:NO];
         [_jssStatusSpinner startAnimation:self];
-
     }];
 }
 
@@ -82,10 +109,66 @@
         [_jssStatusLight setHidden:NO];
         [_jssStatusSpinner setHidden:YES];
         [_jssStatusSpinner stopAnimation:self];
+        
     }];
 }
-@end
 
+#pragma mark - NSTableViewDataSource
+-(NSInteger)numberOfRowsInTableView:(NSTableView *)tableView
+{
+    return [_defaults.JSSRepos count];
+}
+
+- (id)tableView:(NSTableView *)tableView objectValueForTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row
+{
+    NSDictionary *distributionPoint;
+    if ([_defaults.JSSRepos count] >= row) {
+        distributionPoint = [_defaults.JSSRepos objectAtIndex:row];
+    };
+    NSString *identifier = [tableColumn identifier];
+    return distributionPoint[identifier];
+}
+
+#pragma mark - Utility
+- (NSArray *)evaluateJSSRepoDictionaries:(NSArray *)dictArray
+{
+    NSMutableArray *newRepos = [[NSMutableArray alloc] init];
+    for (NSDictionary *repo in dictArray) {
+        if (!repo[@"password"]) {
+            NSString *name = repo[@"name"];
+            NSString *password = [self promptForPasswordForShare:name];
+            if (password) {
+                [newRepos addObject:@{@"name": name, @"password":password}];
+            }
+        } else {
+            [newRepos addObject:repo];
+        }
+    }
+    
+    return [NSArray arrayWithArray:newRepos];
+}
+
+- (NSString *)promptForPasswordForShare:(NSString *)share
+{
+    NSString *alertString = [NSString stringWithFormat:@"Please enter password for %@",share];
+    NSAlert *alert = [NSAlert alertWithMessageText:alertString
+                                     defaultButton:@"OK"
+                                   alternateButton:@"Cancel"
+                                       otherButton:nil
+                         informativeTextWithFormat:@""];
+    
+    NSSecureTextField *input = [[NSSecureTextField alloc] initWithFrame:NSMakeRect(0, 0, 200, 24)];
+    [alert setAccessoryView:input];
+
+    NSInteger button = [alert runModal];
+    if (button == NSAlertDefaultReturn) {
+        [input validateEditing];
+        return [input stringValue];
+    }
+    return nil;
+}
+
+@end
 
 
 #pragma mark - LGDefaults catagory implementation for JSS Addon Interface
