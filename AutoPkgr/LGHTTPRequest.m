@@ -57,7 +57,7 @@
     }
 
     [operation setWillSendRequestForAuthenticationChallengeBlock:^(NSURLConnection *connection, NSURLAuthenticationChallenge *challenge) {
-        DLog(@"Got authenticaion challenge");
+        DLog(@"Got authentication challenge");
         if ([challenge.protectionSpace.authenticationMethod
              isEqualToString:NSURLAuthenticationMethodServerTrust]){
                 [[NSOperationQueue mainQueue] addOperationWithBlock:^{
@@ -77,11 +77,16 @@
             [[challenge sender] continueWithoutCredentialForAuthenticationChallenge:challenge];
         }
     }];
-    [operation setResponseSerializer:[AFXMLParserResponseSerializer serializer ]];
+    
+//    [operation setResponseSerializer:[AFXMLParserResponseSerializer serializer]];
     [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
-        NSError *error = nil;
-        NSDictionary *responseDictionary = [self jssDictioinaryRepresentation:responseObject error:&error];
 
+        NSError *error;
+        NSDictionary *responseDictionary = [self xmlToDictionary:responseObject];
+        if (!responseDictionary) {
+            error = [LGError errorWithCode:kLGErrorJSSXMLSerializerError];
+        }
+        
         reply(responseDictionary,error);
         [self resetCache];
         
@@ -91,6 +96,9 @@
 
     [operation start];
 }
+
+
+# pragma mark - Challenge Handlers
 
 - (BOOL)promptForCertTrust:(NSURLAuthenticationChallenge *)challenge
                 connection:(NSURLConnection *)connection
@@ -121,14 +129,25 @@
     return NO;
 }
 
-- (NSDictionary *)jssDictioinaryRepresentation:(NSXMLParser *)parser error:(NSError *__autoreleasing *)error
+#pragma mark - Object Conversion
+- (NSDictionary *)xmlToDictionary:(id)xmlObject;
 {
-    if (parser) {
+    NSDictionary *dictionary = nil;
+    if (xmlObject) {
         XMLDictionaryParser *xmlParser = [[XMLDictionaryParser alloc] init];
-        return [xmlParser dictionaryWithParser:parser];
+        if ([xmlObject isKindOfClass:[NSXMLParser class]]) {
+            dictionary = [xmlParser dictionaryWithParser:xmlObject];
+        } else if ([xmlObject isKindOfClass:[NSData class]]) {
+            dictionary = [xmlParser dictionaryWithData:xmlObject];
+        } else if ([xmlObject isKindOfClass:[NSString class]]) {
+            dictionary = [xmlParser dictionaryWithString:xmlObject];
+        }
     }
-    return nil;
+    return dictionary;
 }
+
+
+#pragma mark - Resets
 
 - (void)resetCache
 {

@@ -16,7 +16,6 @@
 @implementation LGJSSAddon 
 {
     LGDefaults *_defaults;
-    LGHTTPRequest *_reachableTester;
     LGTestPort *_portTester;
 }
 
@@ -26,10 +25,11 @@
     
     if (_defaults.JSSAPIUsername) _jssAPIUsernameTF.stringValue = _defaults.JSSAPIUsername;
     if (_defaults.JSSAPIPassword) _jssAPIPasswordTF.stringValue = _defaults.JSSAPIPassword;
-    if (_defaults.JSSURL) _jssURLTF.stringValue = _defaults.JSSURL;
+    if (_defaults.JSSURL) {
+        _jssURLTF.stringValue = _defaults.JSSURL;
+        [self checkReachability];
+    }
     [_jssDistributionPointTableView reloadData];
-    _reachableTester = [[LGHTTPRequest alloc] init];
-    [self checkReachability];
 }
 
 #pragma mark - IBActions
@@ -154,7 +154,7 @@
     for (NSDictionary *repo in dictArray) {
         if (!repo[@"password"]) {
             NSString *name = repo[@"name"];
-            NSString *password = [self promptForPasswordForShare:name];
+            NSString *password = [self promptForSharePassword:name];
             if (password) {
                 [newRepos addObject:@{@"name": name, @"password":password}];
             }
@@ -166,9 +166,9 @@
     return [NSArray arrayWithArray:newRepos];
 }
 
-- (NSString *)promptForPasswordForShare:(NSString *)share
+- (NSString *)promptForSharePassword:(NSString *)shareName
 {
-    NSString *alertString = [NSString stringWithFormat:@"Please enter read/write password for the %@ distribution point",share];
+    NSString *alertString = [NSString stringWithFormat:@"Please enter read/write password for the %@ distribution point",shareName];
     NSAlert *alert = [NSAlert alertWithMessageText:alertString
                                      defaultButton:@"OK"
                                    alternateButton:@"Cancel"
