@@ -61,7 +61,7 @@
         if ([challenge.protectionSpace.authenticationMethod
              isEqualToString:NSURLAuthenticationMethodServerTrust]){
                 [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-                    if([[self class] promptForCertTrust:challenge connection:connection]){
+                    if([self promptForCertTrust:challenge connection:connection]){
                         [challenge.sender useCredential:[NSURLCredential credentialForTrust:challenge.protectionSpace.serverTrust] forAuthenticationChallenge:challenge];
                     }else{
                         [[challenge sender] cancelAuthenticationChallenge:challenge];
@@ -77,10 +77,11 @@
             [[challenge sender] continueWithoutCredentialForAuthenticationChallenge:challenge];
         }
     }];
-
+    [operation setResponseSerializer:[AFXMLParserResponseSerializer serializer ]];
     [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSError *error = nil;
         NSDictionary *responseDictionary = [self jssDictioinaryRepresentation:responseObject error:&error];
+
         reply(responseDictionary,error);
         [self resetCache];
         
@@ -120,11 +121,11 @@
     return NO;
 }
 
-- (NSDictionary *)jssDictioinaryRepresentation:(NSData *)data error:(NSError *__autoreleasing *)error
+- (NSDictionary *)jssDictioinaryRepresentation:(NSXMLParser *)parser error:(NSError *__autoreleasing *)error
 {
-    if (data) {
-        XMLDictionaryParser *parser = [[XMLDictionaryParser alloc] init];
-        return [parser dictionaryWithData:data];
+    if (parser) {
+        XMLDictionaryParser *xmlParser = [[XMLDictionaryParser alloc] init];
+        return [xmlParser dictionaryWithParser:parser];
     }
     return nil;
 }

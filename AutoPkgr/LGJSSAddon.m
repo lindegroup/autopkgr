@@ -38,7 +38,6 @@
     if (![_jssAPIUsernameTF.stringValue isEqualToString:@""]) {
         _defaults.JSSAPIUsername = _jssAPIUsernameTF.stringValue;
     }
-    [_jssDistributionPointTableView reloadData];
 }
 
 -(IBAction)updaetJSSPassword:(id)sender
@@ -46,7 +45,6 @@
     if (![_jssAPIPasswordTF.stringValue isEqualToString:@""]) {
         _defaults.JSSAPIPassword = _jssAPIPasswordTF.stringValue;
     }
-    [_jssDistributionPointTableView reloadData];
 }
 
 -(IBAction)updateJSSURL:(id)sender
@@ -55,7 +53,6 @@
         _defaults.JSSURL = _jssURLTF.stringValue;
         [self checkReachability];
     }
-    [_jssDistributionPointTableView reloadData];
 }
 
 -(IBAction)reloadJSSServerInformation:(id)sender
@@ -67,9 +64,9 @@
                             andPassword:_jssAPIPasswordTF.stringValue reply:^(NSDictionary *distributionPoints, NSError *error) {
                                    [self stopStatusUpdate:error];
                                    
-                                   NSArray *array = distributionPoints[@"distribution_point"];
-                                   if (array) {
-                                       NSArray *cleanedArray = [self evaluateJSSRepoDictionaries:array];
+                                   id dispPoints = distributionPoints[@"distribution_point"];
+                                   if (dispPoints) {
+                                       NSArray *cleanedArray = [self evaluateJSSRepoDictionaries:dispPoints];
                                        if ([cleanedArray count]) {
                                            _defaults.JSSRepos = cleanedArray;
                                            [_jssDistributionPointTableView reloadData];
@@ -142,9 +139,18 @@
     }];
 }
 
-- (NSArray *)evaluateJSSRepoDictionaries:(NSArray *)dictArray
+- (NSArray *)evaluateJSSRepoDictionaries:(id)distPoints
 {
+    NSArray *dictArray;
+    
+    if ([distPoints isKindOfClass:[NSDictionary class]]) {
+        dictArray = @[distPoints];
+    } else if ([distPoints isKindOfClass:[NSArray class]]) {
+        dictArray = distPoints;
+    }
+    
     NSMutableArray *newRepos = [[NSMutableArray alloc] init];
+    
     for (NSDictionary *repo in dictArray) {
         if (!repo[@"password"]) {
             NSString *name = repo[@"name"];
