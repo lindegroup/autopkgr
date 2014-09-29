@@ -121,6 +121,7 @@
     if ([[tableColumn identifier] isEqualToString:@"appCheckbox"]) {
         NSMutableArray *workingArray = [NSMutableArray arrayWithArray:_activeRecipes];
         if ([object isEqual:@YES]) {
+            // TODO: check if JSS // and if jss-addon is installed
             [workingArray addObject:[_searchedRecipes objectAtIndex:row]];
         } else {
             NSUInteger index = [workingArray indexOfObject:[_searchedRecipes objectAtIndex:row]];

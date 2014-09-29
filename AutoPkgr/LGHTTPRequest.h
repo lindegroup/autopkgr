@@ -22,10 +22,7 @@
 
 @interface LGHTTPRequest : NSObject
 
-- (void)checkReachabilityOfServer:(NSString *)server
-                        reachable:(void (^)(BOOL))reachable;
-
-+ (void)retrieveDistributionPoints:(NSString *)server
+- (void)retrieveDistributionPoints:(NSString *)server
                           withUser:(NSString *)user
                        andPassword:(NSString *)password
                              reply:(void (^)(NSDictionary *distributionPoints, NSError *error))reply;

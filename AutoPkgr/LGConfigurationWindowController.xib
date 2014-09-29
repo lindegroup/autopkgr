@@ -1041,10 +1041,10 @@
                                                                     <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                                                 </textFieldCell>
                                                             </textField>
-                                                            <progressIndicator hidden="YES" horizontalHuggingPriority="750" verticalHuggingPriority="750" misplaced="YES" maxValue="100" bezeled="NO" indeterminate="YES" controlSize="small" style="spinning" translatesAutoresizingMaskIntoConstraints="NO" id="6MF-CB-ccc">
+                                                            <progressIndicator hidden="YES" horizontalHuggingPriority="750" verticalHuggingPriority="750" maxValue="100" bezeled="NO" indeterminate="YES" controlSize="small" style="spinning" translatesAutoresizingMaskIntoConstraints="NO" id="6MF-CB-ccc">
                                                                 <rect key="frame" x="570" y="143" width="16" height="16"/>
                                                             </progressIndicator>
-                                                            <imageView misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="gcn-rW-umQ">
+                                                            <imageView translatesAutoresizingMaskIntoConstraints="NO" id="gcn-rW-umQ">
                                                                 <rect key="frame" x="570" y="140" width="16" height="23"/>
                                                                 <imageCell key="cell" refusesFirstResponder="YES" alignment="left" animates="YES" imageScaling="proportionallyDown" image="NSStatusNone" id="Lly-om-wDy"/>
                                                             </imageView>
@@ -1062,7 +1062,7 @@
                                                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                                             <color key="gridColor" name="gridColor" catalog="System" colorSpace="catalog"/>
                                                                             <tableColumns>
-                                                                                <tableColumn identifier="name" width="386.62109375" minWidth="40" maxWidth="1000" id="SMC-15-lne">
+                                                                                <tableColumn identifier="name" editable="NO" width="386.62109375" minWidth="40" maxWidth="1000" id="SMC-15-lne">
                                                                                     <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left" title="Distribution Point">
                                                                                         <font key="font" metaFont="smallSystem"/>
                                                                                         <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
@@ -1100,7 +1100,7 @@
                                                                     <rect key="frame" x="1" y="1" width="0.0" height="16"/>
                                                                     <autoresizingMask key="autoresizingMask"/>
                                                                 </scroller>
-                                                                <scroller key="verticalScroller" hidden="YES" verticalHuggingPriority="750" doubleValue="37" horizontal="NO" id="6vq-sf-FCW">
+                                                                <scroller key="verticalScroller" hidden="YES" verticalHuggingPriority="750" doubleValue="1" horizontal="NO" id="6vq-sf-FCW">
                                                                     <rect key="frame" x="-15" y="17" width="16" height="0.0"/>
                                                                     <autoresizingMask key="autoresizingMask"/>
                                                                 </scroller>
@@ -1109,7 +1109,7 @@
                                                                     <autoresizingMask key="autoresizingMask"/>
                                                                 </tableHeaderView>
                                                             </scrollView>
-                                                            <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="LS6-bP-hJx">
+                                                            <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="LS6-bP-hJx">
                                                                 <rect key="frame" x="564" y="112" width="29" height="19"/>
                                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                                 <buttonCell key="cell" type="recessed" bezelStyle="recessed" image="NSRefreshFreestandingTemplate" imagePosition="overlaps" alignment="center" borderStyle="border" inset="2" id="4W3-PH-h0C">
@@ -1125,21 +1125,25 @@
                                                     <constraints>
                                                         <constraint firstItem="pyb-Pf-WKJ" firstAttribute="top" secondItem="QM0-hF-4j5" secondAttribute="top" constant="60" id="0jG-AI-6ZF"/>
                                                         <constraint firstItem="IMP-Hl-JTs" firstAttribute="leading" secondItem="QM0-hF-4j5" secondAttribute="leading" constant="26" id="2A8-mU-fdS"/>
-                                                        <constraint firstAttribute="trailing" secondItem="6MF-CB-ccc" secondAttribute="trailing" constant="16" id="5Q3-3y-ar4"/>
                                                         <constraint firstItem="9lJ-vz-FvC" firstAttribute="leading" secondItem="pyb-Pf-WKJ" secondAttribute="trailing" constant="8" id="7h1-aI-yoO"/>
-                                                        <constraint firstItem="6MF-CB-ccc" firstAttribute="top" secondItem="QM0-hF-4j5" secondAttribute="top" constant="29" id="7sw-Ni-CFS"/>
                                                         <constraint firstItem="IMP-Hl-JTs" firstAttribute="top" secondItem="QM0-hF-4j5" secondAttribute="top" constant="28" id="8rz-qn-7yK"/>
-                                                        <constraint firstItem="6MF-CB-ccc" firstAttribute="leading" secondItem="gcn-rW-umQ" secondAttribute="trailing" constant="-16" id="NRt-fg-lpB"/>
-                                                        <constraint firstItem="6MF-CB-ccc" firstAttribute="top" secondItem="gcn-rW-umQ" secondAttribute="bottom" constant="-16" id="PZU-6s-A8f"/>
+                                                        <constraint firstItem="LS6-bP-hJx" firstAttribute="leading" secondItem="9lJ-vz-FvC" secondAttribute="trailing" constant="3" id="9S7-Me-ucg"/>
+                                                        <constraint firstItem="LS6-bP-hJx" firstAttribute="centerX" secondItem="6MF-CB-ccc" secondAttribute="centerX" id="QaV-Jc-JQV"/>
+                                                        <constraint firstItem="LS6-bP-hJx" firstAttribute="baseline" secondItem="9lJ-vz-FvC" secondAttribute="baseline" id="SUV-OT-OW3"/>
+                                                        <constraint firstItem="6MF-CB-ccc" firstAttribute="leading" secondItem="mbd-An-9Bi" secondAttribute="trailing" constant="9" id="UNX-q3-i4X"/>
                                                         <constraint firstItem="6Ki-wr-8K2" firstAttribute="leading" secondItem="uZo-nq-Njx" secondAttribute="trailing" constant="8" id="VNX-lr-Qoo"/>
                                                         <constraint firstItem="9lJ-vz-FvC" firstAttribute="top" secondItem="QM0-hF-4j5" secondAttribute="top" constant="57" id="WOy-in-uw7"/>
                                                         <constraint firstItem="6Ki-wr-8K2" firstAttribute="top" secondItem="QM0-hF-4j5" secondAttribute="top" constant="57" id="X09-lu-Gft"/>
                                                         <constraint firstItem="pyb-Pf-WKJ" firstAttribute="leading" secondItem="6Ki-wr-8K2" secondAttribute="trailing" constant="13" id="Yca-Kc-O0c"/>
                                                         <constraint firstItem="uZo-nq-Njx" firstAttribute="top" secondItem="QM0-hF-4j5" secondAttribute="top" constant="60" id="Yjx-7L-oYO"/>
+                                                        <constraint firstItem="6MF-CB-ccc" firstAttribute="top" secondItem="QM0-hF-4j5" secondAttribute="top" constant="30" id="afz-nU-vV0"/>
                                                         <constraint firstItem="mbd-An-9Bi" firstAttribute="top" secondItem="QM0-hF-4j5" secondAttribute="top" constant="25" id="ewu-SR-ETx"/>
+                                                        <constraint firstItem="6MF-CB-ccc" firstAttribute="centerY" secondItem="gcn-rW-umQ" secondAttribute="centerY" id="fVY-vk-JCM"/>
+                                                        <constraint firstItem="LS6-bP-hJx" firstAttribute="top" secondItem="gcn-rW-umQ" secondAttribute="bottom" constant="9" id="hVg-lD-qMV"/>
                                                         <constraint firstAttribute="trailing" secondItem="mbd-An-9Bi" secondAttribute="trailing" constant="40" id="l5V-Wi-Ch5"/>
                                                         <constraint firstAttribute="centerX" secondItem="6Ki-wr-8K2" secondAttribute="centerX" constant="59.5" id="uCg-nK-7c4"/>
                                                         <constraint firstItem="mbd-An-9Bi" firstAttribute="leading" secondItem="QM0-hF-4j5" secondAttribute="leading" constant="85" id="xOg-1s-CnG"/>
+                                                        <constraint firstItem="6MF-CB-ccc" firstAttribute="leading" secondItem="gcn-rW-umQ" secondAttribute="leading" id="z8Y-VU-2mE"/>
                                                     </constraints>
                                                     <color key="borderColor" white="0.0" alpha="0.41999999999999998" colorSpace="calibratedWhite"/>
                                                     <color key="fillColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>

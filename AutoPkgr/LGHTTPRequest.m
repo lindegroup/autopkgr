@@ -24,30 +24,17 @@
 #import <SecurityInterface/SFCertificateTrustPanel.h>
 #import <XMLDictionary/XMLDictionary.h>
 
-@implementation LGHTTPRequest{
-    AFNetworkReachabilityManager *_serverReachable;
+@implementation LGHTTPRequest {
+    NSMutableArray *_protectionSpaces;
 }
 
-- (void)checkReachabilityOfServer:(NSString *)server
-                        reachable:(void (^)(BOOL))reachable
+- (void)dealloc
 {
-    NSURL *serverURL = [NSURL URLWithString:server];
-    DLog(@"Checking Reachability of %@",serverURL.host);
-    
-    if (_serverReachable) {
-        [_serverReachable stopMonitoring];
-        _serverReachable = nil;
-    }
-    
-    _serverReachable = [AFNetworkReachabilityManager managerForDomain:[serverURL host]];
-    [_serverReachable setReachabilityStatusChangeBlock:^(AFNetworkReachabilityStatus status) {
-        DLog(@"Reachability of %@: %@", serverURL.host,AFStringFromNetworkReachabilityStatus(status));
-        reachable((status > 0));
-    }];
-    [_serverReachable startMonitoring];
+    [self resetCache];
+    [self resetCredentials];
 }
 
-+ (void)retrieveDistributionPoints:(NSString *)server
+- (void)retrieveDistributionPoints:(NSString *)server
                           withUser:(NSString *)user
                        andPassword:(NSString *)password
                              reply:(void (^)(NSDictionary *, NSError *))reply
@@ -62,17 +49,17 @@
     AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
 
     // Add the credential if specified
-    if (user && password) {
-        NSURLCredential *credential = [NSURLCredential credentialWithUser:user password:password persistence:NSURLCredentialPersistenceNone];
-        [operation setCredential:credential];
+    NSURLCredential *credential;
+    if (![user isEqualToString:@""] && ![password isEqualToString:@""]) {
+        credential = [NSURLCredential credentialWithUser:user
+                                                password:password
+                                             persistence:NSURLCredentialPersistenceNone];
     }
 
     [operation setWillSendRequestForAuthenticationChallengeBlock:^(NSURLConnection *connection, NSURLAuthenticationChallenge *challenge) {
         DLog(@"Got authenticaion challenge");
         if ([challenge.protectionSpace.authenticationMethod
              isEqualToString:NSURLAuthenticationMethodServerTrust]){
-            {
-                
                 [[NSOperationQueue mainQueue] addOperationWithBlock:^{
                     if([[self class] promptForCertTrust:challenge connection:connection]){
                         [challenge.sender useCredential:[NSURLCredential credentialForTrust:challenge.protectionSpace.serverTrust] forAuthenticationChallenge:challenge];
@@ -80,15 +67,23 @@
                         [[challenge sender] cancelAuthenticationChallenge:challenge];
                     };
                 }];
+        } else if (credential && challenge.previousFailureCount < 1) {
+            [[challenge sender] useCredential:credential forAuthenticationChallenge:challenge];
+            if (!_protectionSpaces) {
+                _protectionSpaces = [[NSMutableArray alloc] init];
             }
+            [_protectionSpaces addObject:challenge.protectionSpace];
+        } else {
+            [[challenge sender] continueWithoutCredentialForAuthenticationChallenge:challenge];
         }
     }];
 
     [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSError *error = nil;
-        
         NSDictionary *responseDictionary = [self jssDictioinaryRepresentation:responseObject error:&error];
         reply(responseDictionary,error);
+        [self resetCache];
+        
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         reply(nil,error);
     }];
@@ -96,7 +91,7 @@
     [operation start];
 }
 
-+ (BOOL)promptForCertTrust:(NSURLAuthenticationChallenge *)challenge
+- (BOOL)promptForCertTrust:(NSURLAuthenticationChallenge *)challenge
                 connection:(NSURLConnection *)connection
 {
     NSString *serverURL = connection.currentRequest.URL.host;
@@ -125,13 +120,36 @@
     return NO;
 }
 
-+ (NSDictionary *)jssDictioinaryRepresentation:(NSData *)data error:(NSError *__autoreleasing *)error
+- (NSDictionary *)jssDictioinaryRepresentation:(NSData *)data error:(NSError *__autoreleasing *)error
 {
     if (data) {
         XMLDictionaryParser *parser = [[XMLDictionaryParser alloc] init];
         return [parser dictionaryWithData:data];
     }
     return nil;
+}
+
+- (void)resetCache
+{
+    NSURLCache *sharedCache = [NSURLCache sharedURLCache];
+    [sharedCache removeAllCachedResponses];
+}
+
+- (void)resetCredentials
+{
+    for (NSURLProtectionSpace *space in _protectionSpaces) {
+        NSDictionary *credentialsDict = [[NSURLCredentialStorage sharedCredentialStorage] credentialsForProtectionSpace:space];
+        if ([credentialsDict count] > 0)
+        {
+            id userName;
+            NSEnumerator *userNameEnumerator = [credentialsDict keyEnumerator];
+            while (userName = [userNameEnumerator nextObject]) {
+                NSURLCredential *cred = [credentialsDict objectForKey:userName];
+                [[NSURLCredentialStorage sharedCredentialStorage] removeCredential:cred
+                                                                forProtectionSpace:space];
+            }
+        }
+    }
 }
 
 @end

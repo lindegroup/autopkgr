@@ -153,6 +153,12 @@ NSString *const kLGBoxenBrewGit = @"/opt/boxen/homebrew/bin";
     return NO;
 }
 
++ (BOOL)jssAddonInstalled
+{
+    NSString *jssPath = @"/Library/Python/2.7/site-packages/jss/jss.py";
+    return [[NSFileManager defaultManager] isExecutableFileAtPath:jssPath];
+}
+
 + (NSArray *)knownGitPaths
 {
     return @[ kLGOfficialGit,

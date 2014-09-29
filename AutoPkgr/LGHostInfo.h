@@ -30,6 +30,7 @@
 + (BOOL)gitInstalled;
 + (BOOL)autoPkgInstalled;
 + (BOOL)autoPkgUpdateAvailable;
-
++ (BOOL)jssAddonInstalled;
+    
 + (NSArray *)knownGitPaths;
 @end

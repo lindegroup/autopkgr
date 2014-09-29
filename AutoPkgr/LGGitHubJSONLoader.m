@@ -138,35 +138,16 @@
     return latestVersionNumber;
 }
 
-- (NSString *)getLatestAutoPkgDownloadURL
+- (NSString *)latestReleaseDownload:(NSString *)githubURL
 {
-    // Get an NSDictionary of the latest release JSON
-    NSDictionary *latestVersionDict = [self getLatestReleaseDictionary:kLGAutoPkgReleasesJSONURL];
-
-    // Get the AutoPkg PKG download URL
-    NSString *browserDownloadURL = [[[latestVersionDict objectForKey:@"assets"] firstObject] objectForKey:@"browser_download_url"];
-    DLog(@"Using github download URL for AutoPkg: %@", browserDownloadURL);
-
-    return browserDownloadURL;
-}
-
-- (NSString *)getGitDownloadURL
-{
-
-    NSDictionary *latestVersionDict;
-    if (floor(NSAppKitVersionNumber) > NSAppKitVersionNumber10_8) {
-        // Mavericks and beyond
-        latestVersionDict = [self getLatestReleaseDictionary:kLGGitMAVReleasesJSONURL];
-    } else {
-        // Mountian Lion compatible
-        latestVersionDict = [self getLatestReleaseDictionary:kLGGitMLReleasesJSONURL];
-    }
+    LGGitHubJSONLoader *loader = [[LGGitHubJSONLoader alloc] init];
     
-    NSString *browserDownloadURL = [latestVersionDict[@"assets"] firstObject][@"browser_download_url"];
-
-    // Get the Git DMG download URL for the appropriate version
-    DLog(@"Using github download URL for Git: %@", browserDownloadURL);
-
+    // Get an NSDictionary of the latest release JSON
+    NSDictionary *latestVersionDict = [loader getLatestReleaseDictionary:githubURL];
+    
+    // Get the PKG / DMG download URL
+    NSString *browserDownloadURL = [[[latestVersionDict objectForKey:@"assets"] firstObject] objectForKey:@"browser_download_url"];
+    
     return browserDownloadURL;
 }
 @end

@@ -9,20 +9,15 @@
 #import "LGJSSAddon.h"
 #import "LGAutopkgr.h"
 #import "LGHTTPRequest.h"
-
-#pragma mark - LGDefaults extensions for JSS Addon Interface
-@interface LGDefaults (JSSAddon)
-@property (copy, nonatomic) NSString* JSSURL;
-@property (copy, nonatomic) NSString* JSSAPIUsername;
-@property (copy, nonatomic) NSString* JSSAPIPassword;
-@property (copy, nonatomic) NSArray* JSSRepos;
-@end
+#import "LGTestPort.h"
+#import "LGInstaller.h"
 
 
 @implementation LGJSSAddon 
 {
     LGDefaults *_defaults;
     LGHTTPRequest *_reachableTester;
+    LGTestPort *_portTester;
 }
 
 -(void)awakeFromNib
@@ -34,20 +29,9 @@
     if (_defaults.JSSURL) _jssURLTF.stringValue = _defaults.JSSURL;
     [_jssDistributionPointTableView reloadData];
     _reachableTester = [[LGHTTPRequest alloc] init];
-    [self refreshReachability];
+    [self checkReachability];
 }
 
-- (void)refreshReachability
-{
-    [_reachableTester checkReachabilityOfServer:_jssURLTF.stringValue reachable:^(BOOL reachable) {
-        if (reachable) {
-            [_jssStatusLight setImage:[NSImage imageNamed:@"NSStatusAvailable"]];
-        } else {
-            [_jssStatusLight setImage:[NSImage imageNamed:@"NSStatusUnavailable"]];
-        }
-    }];
-    
-}
 #pragma mark - IBActions
 - (IBAction)updateJSSUsername:(id)sender
 {
@@ -69,7 +53,7 @@
 {
     if (![_jssURLTF.stringValue isEqualToString:@""]) {
         _defaults.JSSURL = _jssURLTF.stringValue;
-        [self refreshReachability];
+        [self checkReachability];
     }
     [_jssDistributionPointTableView reloadData];
 }
@@ -77,10 +61,11 @@
 -(IBAction)reloadJSSServerInformation:(id)sender
 {
     [self startStatusUpdate];
-    [LGHTTPRequest retrieveDistributionPoints:_jssURLTF.stringValue
-                                  withUser:_jssAPIUsernameTF.stringValue
-                               andPassword:_jssAPIPasswordTF.stringValue reply:^(NSDictionary *distributionPoints, NSError *error) {
-                                   [self stopStatusUpdate:nil];
+    LGHTTPRequest *request = [[LGHTTPRequest alloc] init];
+    [request retrieveDistributionPoints:_jssURLTF.stringValue
+                               withUser:_jssAPIUsernameTF.stringValue
+                            andPassword:_jssAPIPasswordTF.stringValue reply:^(NSDictionary *distributionPoints, NSError *error) {
+                                   [self stopStatusUpdate:error];
                                    
                                    NSArray *array = distributionPoints[@"distribution_point"];
                                    if (array) {
@@ -109,7 +94,9 @@
         [_jssStatusLight setHidden:NO];
         [_jssStatusSpinner setHidden:YES];
         [_jssStatusSpinner stopAnimation:self];
-        
+        if (error) {
+            [NSApp presentError:error];
+        }
     }];
 }
 
@@ -123,13 +110,38 @@
 {
     NSDictionary *distributionPoint;
     if ([_defaults.JSSRepos count] >= row) {
-        distributionPoint = [_defaults.JSSRepos objectAtIndex:row];
+        distributionPoint = _defaults.JSSRepos[row];
     };
     NSString *identifier = [tableColumn identifier];
     return distributionPoint[identifier];
 }
 
+-(void)tableView:(NSTableView *)tableView setObjectValue:(id)object forTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row{
+
+    NSMutableArray *workingArray = [NSMutableArray arrayWithArray:_defaults.JSSRepos];
+    NSMutableDictionary *distributionPoint = [NSMutableDictionary dictionaryWithDictionary:workingArray[row]];
+    
+    [distributionPoint setValue:object forKey:[tableColumn identifier]];
+    [workingArray replaceObjectAtIndex:row withObject:distributionPoint];
+    
+    _defaults.JSSRepos = [NSArray arrayWithArray:workingArray];
+}
+
 #pragma mark - Utility
+- (void)checkReachability
+{
+    _portTester = [[LGTestPort alloc] init];
+    [self startStatusUpdate];
+    [_portTester testServerURL:_jssURLTF.stringValue reply:^(BOOL reachable) {
+        if (reachable) {
+            [_jssStatusLight setImage:[NSImage imageNamed:@"NSStatusAvailable"]];
+        } else {
+            [_jssStatusLight setImage:[NSImage imageNamed:@"NSStatusUnavailable"]];
+        }
+        [self stopStatusUpdate:nil];
+    }];
+}
+
 - (NSArray *)evaluateJSSRepoDictionaries:(NSArray *)dictArray
 {
     NSMutableArray *newRepos = [[NSMutableArray alloc] init];
@@ -150,14 +162,14 @@
 
 - (NSString *)promptForPasswordForShare:(NSString *)share
 {
-    NSString *alertString = [NSString stringWithFormat:@"Please enter password for %@",share];
+    NSString *alertString = [NSString stringWithFormat:@"Please enter read/write password for the %@ distribution point",share];
     NSAlert *alert = [NSAlert alertWithMessageText:alertString
                                      defaultButton:@"OK"
                                    alternateButton:@"Cancel"
                                        otherButton:nil
                          informativeTextWithFormat:@""];
     
-    NSSecureTextField *input = [[NSSecureTextField alloc] initWithFrame:NSMakeRect(0, 0, 200, 24)];
+    NSSecureTextField *input = [[NSSecureTextField alloc] initWithFrame:NSMakeRect(0, 0, 300, 24)];
     [alert setAccessoryView:input];
 
     NSInteger button = [alert runModal];

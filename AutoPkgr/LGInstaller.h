@@ -30,14 +30,14 @@
 - (void)installAutoPkg:(void (^)(NSError *error))reply;
 
 /**
- *  Update AutoPkgr
+ *  Install jss-addon
  *
  *  @param reply block that is executed upon completion that takes one argument NSError
  */
-// - (void)updateAutoPkgr:(void (^)(NSError* error))reply;
+ - (void)installJSSAddon:(void (^)(NSError* error))reply;
 
 #pragma mark - Blocking Methdos
 - (BOOL)runGitInstaller:(NSError **)error;
 - (BOOL)runAutoPkgInstaller:(NSError **)error;
-
+- (BOOL)runJSSAddonInstaller:(NSError **)error;
 @end

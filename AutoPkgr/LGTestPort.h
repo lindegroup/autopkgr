@@ -11,5 +11,6 @@
 @interface LGTestPort : NSObject <NSStreamDelegate>
 
 - (void)testHost:(NSHost *)host withPort:(NSInteger)port;
+- (void)testServerURL:(NSString *)url reply:(void (^)(BOOL reachable))reply;
 
 @end

@@ -13,6 +13,7 @@
     NSInputStream *_inputStream;
     NSOutputStream *_outputStream;
     NSTimer *_streamTimeoutTimer;
+    void (^_reachable)(BOOL);
 }
 
 - (void)dealloc
@@ -25,10 +26,10 @@
     if (eventCode & (NSStreamEventOpenCompleted | NSStreamEventErrorOccurred)) {
         if ([_inputStream streamStatus] == NSStreamStatusError ||
             [_outputStream streamStatus] == NSStreamStatusError) {
-            [self portTestDidCompletedWithSuccess:NO];
+                [self portTestDidCompletedWithSuccess:NO];
         } else if ([_inputStream streamStatus] == NSStreamStatusOpen &&
                    [_outputStream streamStatus] == NSStreamStatusOpen) {
-            [self portTestDidCompletedWithSuccess:YES];
+                [self portTestDidCompletedWithSuccess:YES];
         }
     }
 }
@@ -76,6 +77,28 @@
     }
 }
 
+-(void)testServerURL:(NSString *)url reply:(void (^)(BOOL))reply{
+    NSURL *serverURL = [NSURL URLWithString:url];
+    NSHost *host = [NSHost hostWithName:[serverURL host]];
+    NSNumber *port = [serverURL port];
+    
+    // if no port specified set to defaults
+    if (!port) {
+        if ([serverURL.scheme isEqualToString:@"http" ]) {
+            port = @(80);
+        } else if ([serverURL.scheme isEqualToString:@"https"]) {
+            port = @(443);
+        }
+    }
+    
+    if (host && port) {
+        _reachable = reply;
+        [self testHost:host withPort:[port integerValue]];
+    } else {
+        reply(NO);
+    }
+}
+
 - (void)startStreamTimeoutTimer
 {
     _streamTimeoutTimer = [NSTimer scheduledTimerWithTimeInterval:3.0
@@ -91,11 +114,17 @@
     [self stopTest];
 }
 
-- (void)portTestDidCompletedWithSuccess:(BOOL )success
+- (void)portTestDidCompletedWithSuccess:(BOOL)success
 {
+    if (_reachable) {
+        _reachable(success);
+    }
+    
     [[NSNotificationCenter defaultCenter] postNotificationName:kLGNotificationTestSmtpServerPort
                                                         object:nil
                                                       userInfo:@{ kLGNotificationUserInfoSuccess : @(success)}];
+    
+    [self stopTest];
 }
 
 @end
