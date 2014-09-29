@@ -123,4 +123,8 @@ typedef NS_ENUM(NSInteger, LGAutoPkgVerb) {
  */
 + (NSError *)errorWithTaskError:(NSTask *)task verb:(LGAutoPkgVerb)verb;
 
+#pragma mark - NSURLConnection response Error
++ (BOOL)errorWithResponse:(NSHTTPURLResponse *)response error:(NSError **)error;
++ (NSError *)errorWithResponse:(NSHTTPURLResponse *)response ;
+
 @end

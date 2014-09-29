@@ -82,7 +82,7 @@
     [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
         DLog(@"Response object class: %@",[responseObject class]);
         DLog(@"Response: %@",operation.response);
-        NSError *error;
+        NSError *error = nil;
         NSDictionary *responseDictionary = [self xmlToDictionary:responseObject];
         if (!responseDictionary) {
             error = [LGError errorWithCode:kLGErrorJSSXMLSerializerError];
@@ -93,6 +93,11 @@
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         DLog(@"Response: %@",operation.response);
+        NSLog(@"Error: %@",error);
+        if(operation.response){
+            error = nil;
+            error = [LGError errorWithResponse:operation.response];
+        }
         reply(nil,error);
     }];
 
@@ -133,6 +138,7 @@
 }
 
 #pragma mark - Object Conversion
+
 - (NSDictionary *)xmlToDictionary:(id)xmlObject;
 {
     NSDictionary *dictionary = nil;

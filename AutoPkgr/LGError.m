@@ -133,6 +133,53 @@ static NSString *errorMessageFromAutoPkgVerb(LGAutoPkgVerb verb)
     return message;
 }
 
+static NSDictionary *userInfoFromHTTPResponse(NSHTTPURLResponse *response)
+{
+    NSString *localizedBaseString;
+    NSString *message;
+    NSString *suggestion;
+
+    switch (response.statusCode) {
+        case 200:
+            // success
+            localizedBaseString = @"kLGHTTPErrorSuccess";
+            break;
+        case 400:
+            // Bad Request
+            localizedBaseString = @"kLGHTTPErrorBadRequest";
+            break;
+        case 401:
+            // Unauthorized
+            localizedBaseString = @"kLGHTTPErrorUnauthorized";
+            break;
+        case 403:
+            // Forbidden
+            localizedBaseString = @"kLGHTTPErrorForbidden";
+            break;
+        case 404:
+            // Not Found
+            localizedBaseString = @"kLGHTTPErrorNotFound";
+        case 408:
+            // Timeout
+            localizedBaseString = @"kLGHTTPErrorTimeout";
+        default:
+            // General failure
+            localizedBaseString = @"kLGHTTPErrorUnknown";
+            break;
+    }
+    
+    // Setup the localized descripton
+    message = NSLocalizedString([localizedBaseString stringByAppendingString:@"Description"],
+                                @"NSLocalizedDescriptionKey");
+    
+    // Setup the localized recovery suggestion
+    suggestion = NSLocalizedString([localizedBaseString stringByAppendingString:@"Suggestion"],
+                                   @"NSLocalizedRecoverySuggestionErrorKey");
+    
+    return @{NSLocalizedDescriptionKey:message,
+             NSLocalizedRecoverySuggestionErrorKey:suggestion,};
+}
+
 @implementation LGError
 #ifdef _APPKITDEFINES_H
 + (void)presentErrorWithCode:(LGErrorCodes)code window:(NSWindow *)window delegate:(id)sender didPresentSelector:(SEL)selector
@@ -147,6 +194,7 @@ static NSString *errorMessageFromAutoPkgVerb(LGAutoPkgVerb verb)
 }
 #endif
 
+#pragma mark - AutoPkgr Errors
 + (BOOL)errorWithCode:(LGErrorCodes)code error:(NSError *__autoreleasing *)error
 {
     NSError *err = [self errorWithCode:code];
@@ -166,6 +214,8 @@ static NSString *errorMessageFromAutoPkgVerb(LGAutoPkgVerb verb)
     }
     return error;
 }
+
+#pragma mark - AutoPkg Task Errors
 
 + (BOOL)errorWithTaskError:(NSTask *)task verb:(LGAutoPkgVerb)verb error:(NSError **)error
 {
@@ -225,4 +275,28 @@ static NSString *errorMessageFromAutoPkgVerb(LGAutoPkgVerb verb)
     }
     return error;
 }
+
+
+#pragma mark - NSURLResponse Error
+
++(NSError *)errorWithResponse:(NSHTTPURLResponse *)response
+{
+    NSError *error;
+    NSInteger code = response.statusCode;
+    if (code >= 400) {
+        NSDictionary *userInfo = userInfoFromHTTPResponse(response);
+        error = [NSError errorWithDomain:kLGApplicationName
+                                    code:response.statusCode
+                                userInfo:userInfo];
+        DLog(@"Error [%ld]: %@ \n %@", code, userInfo[NSLocalizedDescriptionKey], userInfo[NSLocalizedRecoverySuggestionErrorKey]);
+    }
+    return error;
+}
+
++(BOOL)errorWithResponse:(NSHTTPURLResponse *)response error:(NSError *__autoreleasing *)error{
+    NSError *err = [self errorWithResponse:response];
+    if (error)*error = err;
+    return (err.code == kLGErrorSuccess);
+}
+
 @end
