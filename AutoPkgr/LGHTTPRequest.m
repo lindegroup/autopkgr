@@ -40,9 +40,9 @@
                              reply:(void (^)(NSDictionary *, NSError *))reply
 {
     // Setup the request
-    server = [server stringByAppendingPathComponent:@"JSSResource/distributionpoints"];
-
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:server]];
+    NSURL *url = [NSURL URLWithString:@"/JSSResource/distributionpoints" relativeToURL: [NSURL URLWithString:server]];
+    
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
     request.timeoutInterval = 5.0;
     
     // Set up the operation
@@ -80,7 +80,8 @@
     
 //    [operation setResponseSerializer:[AFXMLParserResponseSerializer serializer]];
     [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
-
+        DLog(@"Response object class: %@",[responseObject class]);
+        DLog(@"Response: %@",operation.response);
         NSError *error;
         NSDictionary *responseDictionary = [self xmlToDictionary:responseObject];
         if (!responseDictionary) {
@@ -91,6 +92,7 @@
         [self resetCache];
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        DLog(@"Response: %@",operation.response);
         reply(nil,error);
     }];
 
@@ -104,6 +106,7 @@
                 connection:(NSURLConnection *)connection
 {
     NSString *serverURL = connection.currentRequest.URL.host;
+    
     SecTrustResultType secresult = kSecTrustResultInvalid;
     if (SecTrustEvaluate(challenge.protectionSpace.serverTrust, &secresult) == errSecSuccess) {
         switch (secresult) {
