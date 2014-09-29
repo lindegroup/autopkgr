@@ -68,10 +68,10 @@
     return nil;
 }
 
-- (NSArray *)getReleaseArray:(NSString *)githubURL
+- (NSArray *)getReleaseArray:(NSString *)gitHubURL
 {
     // Get the JSON data
-    NSData *data = [self getJSONFromURL:[NSURL URLWithString:githubURL]];
+    NSData *data = [self getJSONFromURL:[NSURL URLWithString:gitHubURL]];
     return [self getArrayFromJSONData:data];
 }
 
