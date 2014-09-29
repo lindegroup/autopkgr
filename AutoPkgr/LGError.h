@@ -41,6 +41,8 @@ typedef NS_ENUM(NSInteger, LGErrorCodes) {
     kLGErrorInstallAutoPkg,
     /** Error installing/updating AutoPkgr */
     kLGErrorInstallAutoPkgr,
+    /** Error serializing xml object */
+    kLGErrorJSSXMLSerializerError,
 };
 
 #pragma mark - AutoPkg specific Error codes
