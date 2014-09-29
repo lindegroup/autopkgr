@@ -479,6 +479,19 @@ NSString *autopkg()
     }];
 }
 
++(NSArray *)repoList
+{
+    LGAutoPkgTask *task = [[LGAutoPkgTask alloc] init];
+    task.arguments = @[ @"repo-list" ];
+    if ([task launch:nil]) {
+        id results = [task results];
+        if ([results isKindOfClass:[NSArray class]]) {
+            return results;
+        }
+    }
+    return nil;
+}
+
 #pragma mark-- Other Methods
 + (NSString *)version
 {
