@@ -74,8 +74,7 @@ typedef NS_ENUM(NSInteger, LGInstallType) {
     NSError *installError;
     BOOL success = [self runInstallerFor:@"AutoPkg" githubAPI:kLGAutoPkgReleasesJSONURL error:&installError];
     if (!success) {
-        if (installError)
-            DLog(@"%@", installError);
+        if (installError) DLog(@"%@", installError);
         return [LGError errorWithCode:kLGErrorInstallAutoPkg error:error];
     }
     return success;
@@ -99,9 +98,8 @@ typedef NS_ENUM(NSInteger, LGInstallType) {
     NSError *installError;
     BOOL success = [self runInstallerFor:@"jss-addon" githubAPI:kLGJSSAddonJSONURL error:error];
     if (!success) {
-        if (installError)
-            DLog(@"%@", installError);
-        return [LGError errorWithCode:kLGErrorInstallAutoPkg error:error];
+        if (installError) DLog(@"%@", installError);
+        success = [LGError errorWithCode:kLGErrorInstallAutoPkg error:error];
     }
     return success;
 }
@@ -118,7 +116,7 @@ typedef NS_ENUM(NSInteger, LGInstallType) {
     }];
 }
 
-#pragma mark - Util Methods
+#pragma mark - Main install method
 - (BOOL)runInstallerFor:(NSString *)installerName githubAPI:(NSString *)githubAPI error:(NSError *__autoreleasing *)error
 {
     NSString *progressMessage;
@@ -126,7 +124,7 @@ typedef NS_ENUM(NSInteger, LGInstallType) {
     progressMessage = [NSString stringWithFormat:@"Downloading %@...", installerName];
     [_progressDelegate updateProgress:progressMessage progress:5.0];
 
-    // Get the latest AutoPkg PKG download URL
+    // Get the latest download URL from the GitHub API URL
     LGGitHubJSONLoader *loader = [[LGGitHubJSONLoader alloc] init];
     _downloadURL = [loader latestReleaseDownload:githubAPI];
 
@@ -182,7 +180,7 @@ typedef NS_ENUM(NSInteger, LGInstallType) {
         // Set the `installer` command
         NSString *command = [NSString stringWithFormat:@"/usr/sbin/installer -pkg %@ -target /", pkgFile];
 
-        // Install the AutoPkg PKG as root
+        // Install the pkg as root
         progressMessage = [NSString stringWithFormat:@"Installing %@...", installerName];
         [_progressDelegate updateProgress:progressMessage progress:75.0];
         success = [self runCommandAsRoot:command error:error];
@@ -200,6 +198,7 @@ typedef NS_ENUM(NSInteger, LGInstallType) {
     return success;
 }
 
+#pragma mark - Util Methods
 - (LGInstallType)evaluateInstallerType
 {
     LGInstallType type = kLGInstallerTypeUnkown;

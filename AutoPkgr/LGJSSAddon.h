@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "LGDefaults.h"
+#import "LGProgressDelegate.h"
 
 @interface LGJSSAddon : NSObject <NSTableViewDataSource>
 
@@ -15,11 +16,11 @@
 @property (weak) IBOutlet NSTextField *jssURLTF;
 @property (weak) IBOutlet NSTextField *jssAPIUsernameTF;
 @property (weak) IBOutlet NSTextField *jssAPIPasswordTF;
-
 @property (weak) IBOutlet NSButton *jssReloadServerBT;
-
 @property (weak) IBOutlet NSProgressIndicator *jssStatusSpinner;
 @property (weak) IBOutlet NSImageView *jssStatusLight;
+
++ (BOOL)requiresInstall:(NSArray *)recipeList;
 
 @end
 

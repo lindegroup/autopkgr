@@ -58,46 +58,32 @@
 
     [operation setWillSendRequestForAuthenticationChallengeBlock:^(NSURLConnection *connection, NSURLAuthenticationChallenge *challenge) {
         DLog(@"Got authentication challenge");
-        if ([challenge.protectionSpace.authenticationMethod
-             isEqualToString:NSURLAuthenticationMethodServerTrust]){
-                [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-                    if([self promptForCertTrust:challenge connection:connection]){
-                        [challenge.sender useCredential:[NSURLCredential credentialForTrust:challenge.protectionSpace.serverTrust] forAuthenticationChallenge:challenge];
-                    }else{
-                        [[challenge sender] cancelAuthenticationChallenge:challenge];
-                    };
-                }];
+        if ([challenge.protectionSpace.authenticationMethod isEqualToString:NSURLAuthenticationMethodServerTrust]){
+            // Since this calls a SecurityInterface panel put it on the main queue
+            [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+                [self promptForCertTrust:challenge connection:connection];
+            }];
         } else if (credential && challenge.previousFailureCount < 1) {
             [[challenge sender] useCredential:credential forAuthenticationChallenge:challenge];
-            if (!_protectionSpaces) {
-                _protectionSpaces = [[NSMutableArray alloc] init];
-            }
+            if (!_protectionSpaces) _protectionSpaces = [[NSMutableArray alloc] init];
             [_protectionSpaces addObject:challenge.protectionSpace];
         } else {
             [[challenge sender] continueWithoutCredentialForAuthenticationChallenge:challenge];
         }
     }];
     
-//    [operation setResponseSerializer:[AFXMLParserResponseSerializer serializer]];
     [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
-        DLog(@"Response object class: %@",[responseObject class]);
         DLog(@"Response: %@",operation.response);
         NSError *error = nil;
         NSDictionary *responseDictionary = [self xmlToDictionary:responseObject];
-        if (!responseDictionary) {
-            error = [LGError errorWithCode:kLGErrorJSSXMLSerializerError];
-        }
-        
+        if (!responseDictionary) error = [LGError errorWithCode:kLGErrorJSSXMLSerializerError];
         reply(responseDictionary,error);
         [self resetCache];
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         DLog(@"Response: %@",operation.response);
-        NSLog(@"Error: %@",error);
-        if(operation.response){
-            error = nil;
-            error = [LGError errorWithResponse:operation.response];
-        }
+        NSLog(@"Error: %@",error.localizedDescription);
+        if (operation.response) error = [LGError errorWithResponse:operation.response];
         reply(nil,error);
     }];
 
@@ -107,18 +93,18 @@
 
 # pragma mark - Challenge Handlers
 
-- (BOOL)promptForCertTrust:(NSURLAuthenticationChallenge *)challenge
+- (void)promptForCertTrust:(NSURLAuthenticationChallenge *)challenge
                 connection:(NSURLConnection *)connection
 {
     NSString *serverURL = connection.currentRequest.URL.host;
-    
+    BOOL proceed = NO;
     SecTrustResultType secresult = kSecTrustResultInvalid;
     if (SecTrustEvaluate(challenge.protectionSpace.serverTrust, &secresult) == errSecSuccess) {
         switch (secresult) {
         case kSecTrustResultUnspecified: // The OS trusts this certificate implicitly.
         case kSecTrustResultProceed: // The user explicitly told the OS to trust it.
         {
-            return YES;
+            proceed = YES;
         }
         default: {
             SFCertificateTrustPanel *panel = [SFCertificateTrustPanel sharedCertificateTrustPanel];
@@ -127,14 +113,17 @@
 
             [panel setInformativeText:info];
 
-            BOOL button = [panel runModalForTrust:challenge.protectionSpace.serverTrust
+            proceed = [panel runModalForTrust:challenge.protectionSpace.serverTrust
                                           message:@"AutoPkgr can't verify the identity of the server"];
             panel = nil;
-            return button;
         }
         }
     }
-    return NO;
+    if(proceed){
+        [challenge.sender useCredential:[NSURLCredential credentialForTrust:challenge.protectionSpace.serverTrust] forAuthenticationChallenge:challenge];
+    }else{
+        [[challenge sender] cancelAuthenticationChallenge:challenge];
+    };
 }
 
 #pragma mark - Object Conversion

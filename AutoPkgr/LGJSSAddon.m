@@ -11,52 +11,69 @@
 #import "LGHTTPRequest.h"
 #import "LGTestPort.h"
 #import "LGInstaller.h"
+#import "LGHostInfo.h"
 
 
 @implementation LGJSSAddon 
 {
     LGDefaults *_defaults;
     LGTestPort *_portTester;
+    BOOL _serverReachable;
 }
 
 -(void)awakeFromNib
 {
     _defaults = [LGDefaults standardUserDefaults];
-    
+    [_jssStatusLight setImage:[NSImage imageNamed:@"NSStatusNone"]];
     if (_defaults.JSSAPIUsername) _jssAPIUsernameTF.stringValue = _defaults.JSSAPIUsername;
     if (_defaults.JSSAPIPassword) _jssAPIPasswordTF.stringValue = _defaults.JSSAPIPassword;
     if (_defaults.JSSURL) {
         _jssURLTF.stringValue = _defaults.JSSURL;
         [self checkReachability];
     }
+    [self evaluateRepoViability];
     [_jssDistributionPointTableView reloadData];
 }
 
 #pragma mark - IBActions
 - (IBAction)updateJSSUsername:(id)sender
 {
-    if (![_jssAPIUsernameTF.stringValue isEqualToString:@""]) {
+    if ([_jssAPIUsernameTF.stringValue isEqualToString:@""]) {
+        _defaults.JSSAPIUsername = nil;
+    } else {
         _defaults.JSSAPIUsername = _jssAPIUsernameTF.stringValue;
     }
+    [self evaluateRepoViability];
 }
 
--(IBAction)updaetJSSPassword:(id)sender
+-(IBAction)updateJSSPassword:(id)sender
 {
-    if (![_jssAPIPasswordTF.stringValue isEqualToString:@""]) {
+    if ([_jssAPIPasswordTF.stringValue isEqualToString:@""]) {
+        _defaults.JSSAPIPassword = nil;
+    } else {
         _defaults.JSSAPIPassword = _jssAPIPasswordTF.stringValue;
     }
+    [self evaluateRepoViability];
 }
 
 -(IBAction)updateJSSURL:(id)sender
 {
-    if (![_jssURLTF.stringValue isEqualToString:@""]) {
+    if ([_jssURLTF.stringValue isEqualToString:@""]) {
+        _defaults.JSSURL = nil;
+    } else {
         _defaults.JSSURL = _jssURLTF.stringValue;
         [self checkReachability];
     }
+    [self evaluateRepoViability];
 }
 
 -(IBAction)reloadJSSServerInformation:(id)sender
 {
+    if (!_serverReachable) {
+        [self stopStatusUpdate:[LGError errorWithCode:kLGErrorTestingPort]];
+        return;
+    }
+    
     [self startStatusUpdate];
     LGHTTPRequest *request = [[LGHTTPRequest alloc] init];
     [request retrieveDistributionPoints:_jssURLTF.stringValue
@@ -64,9 +81,9 @@
                             andPassword:_jssAPIPasswordTF.stringValue reply:^(NSDictionary *distributionPoints, NSError *error) {
                                    [self stopStatusUpdate:error];
                                    
-                                   id dispPoints = distributionPoints[@"distribution_point"];
-                                   if (dispPoints) {
-                                       NSArray *cleanedArray = [self evaluateJSSRepoDictionaries:dispPoints];
+                                   id distPoints = distributionPoints[@"distribution_point"];
+                                   if (distPoints) {
+                                       NSArray *cleanedArray = [self evaluateJSSRepoDictionaries:distPoints];
                                        if ([cleanedArray count]) {
                                            _defaults.JSSRepos = cleanedArray;
                                            [_jssDistributionPointTableView reloadData];
@@ -130,6 +147,7 @@
     _portTester = [[LGTestPort alloc] init];
     [self startStatusUpdate];
     [_portTester testServerURL:_jssURLTF.stringValue reply:^(BOOL reachable) {
+        _serverReachable = reachable;
         if (reachable) {
             [_jssStatusLight setImage:[NSImage imageNamed:@"NSStatusAvailable"]];
         } else {
@@ -142,32 +160,49 @@
 - (NSArray *)evaluateJSSRepoDictionaries:(id)distPoints
 {
     NSArray *dictArray;
+    NSMutableArray *newRepos;
     
+    // If there is just one ditribution point distPoint will be a dictionary entry
+    // and we need to normalize it here by wrapping it in an array.
     if ([distPoints isKindOfClass:[NSDictionary class]]) {
         dictArray = @[distPoints];
-    } else if ([distPoints isKindOfClass:[NSArray class]]) {
+    }
+    // If there are more then one entries distPoint will be an array, so pass it along.
+    else if ([distPoints isKindOfClass:[NSArray class]]) {
         dictArray = distPoints;
     }
     
-    NSMutableArray *newRepos = [[NSMutableArray alloc] init];
-    
-    for (NSDictionary *repo in dictArray) {
-        if (!repo[@"password"]) {
-            NSString *name = repo[@"name"];
-            NSString *password = [self promptForSharePassword:name];
-            if (password) {
-                [newRepos addObject:@{@"name": name, @"password":password}];
+    if (dictArray) {
+        newRepos = [[NSMutableArray alloc] init];
+        for (NSDictionary *repo in dictArray) {
+            if (!repo[@"password"]) {
+                NSString *name = repo[@"name"];
+                NSString *password = [self promptForSharePassword:name];
+                if (password) {
+                    [newRepos addObject:@{@"name": name, @"password":password}];
+                }
+            } else {
+                [newRepos addObject:repo];
             }
-        } else {
-            [newRepos addObject:repo];
         }
     }
     
     return [NSArray arrayWithArray:newRepos];
 }
 
+- (void)evaluateRepoViability
+{
+    if (!_defaults.JSSAPIPassword &&
+        !_defaults.JSSAPIUsername &&
+        !_defaults.JSSURL) {
+        _defaults.JSSRepos = nil;
+    }
+    [_jssDistributionPointTableView reloadData];
+}
+
 - (NSString *)promptForSharePassword:(NSString *)shareName
 {
+    NSString *password;
     NSString *alertString = [NSString stringWithFormat:@"Please enter read/write password for the %@ distribution point",shareName];
     NSAlert *alert = [NSAlert alertWithMessageText:alertString
                                      defaultButton:@"OK"
@@ -175,17 +210,39 @@
                                        otherButton:nil
                          informativeTextWithFormat:@""];
     
-    NSSecureTextField *input = [[NSSecureTextField alloc] initWithFrame:NSMakeRect(0, 0, 300, 24)];
+    
+    NSSecureTextField *input = [[NSSecureTextField alloc]init];
+    [input setFrame:NSMakeRect(0, 0, 300, 24)];
     [alert setAccessoryView:input];
 
     NSInteger button = [alert runModal];
     if (button == NSAlertDefaultReturn) {
         [input validateEditing];
-        return [input stringValue];
+        password = [input stringValue];
     }
-    return nil;
+    return password;
 }
 
+#pragma mark - Class Methods
++ (BOOL)requiresInstall:(NSArray *)recipeList
+{
+    BOOL required = NO;
+    
+    NSPredicate *jssAddonPredicate = [NSPredicate predicateWithFormat:@"SELF contains[cd] %@",@"jss"];
+    if ([[recipeList filteredArrayUsingPredicate:jssAddonPredicate] count] &&
+        ![LGHostInfo jssAddonInstalled]) {
+        NSAlert *alert = [NSAlert alertWithMessageText:@"Install autopkg-jss-addon?" defaultButton:@"Install" alternateButton:@"Cancel" otherButton:nil informativeTextWithFormat:@"You have selected a recipe that requres installation of the autopkg-jss-addon, would you like to install it now?"];
+        
+        NSInteger button = [alert runModal];
+        if (button == NSAlertDefaultReturn) {
+            LGInstaller *installer = [[LGInstaller alloc] init];
+            required = ![installer runJSSAddonInstaller:nil];
+        } else {
+            required = YES;
+        }
+    }
+    return required;
+}
 @end
 
 

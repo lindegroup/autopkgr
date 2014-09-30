@@ -18,7 +18,7 @@
 
 /** Error when sending email fails */
 "kLGErrorSendingEmailDescription" = "Error sending email";
-"kLGErrorSendingEmailSuggestion" = "Please verify the username, password, server and port are correct. (Localized)";
+"kLGErrorSendingEmailSuggestion" = "Please verify the username, password, server and port are correct.";
 
 /** Error when testing port failed */
 "kLGErrorTestingPortDescription" = "Error verifying server and port";
@@ -46,7 +46,7 @@
 
 /** Error Serializing JSS response */
 "kLGErrorJSSXMLSerializerErrorDescription" = "Error getting distribution points";
-"kLGErrorJSSXMLSerializerErrorSuggestion" = "The casper server's response could not be correctly interpereted";
+"kLGErrorJSSXMLSerializerErrorSuggestion" = "The Casper server's response could not be correctly interpereted";
 
 /**
  *  Errors relating specifically to AutoPkg
@@ -83,7 +83,7 @@
 
 // Bad Request
 "kLGHTTPErrorBadRequestDescription" = "Bad Request";
-"kLGHTTPErrorBadRequestSuggestion" = "The request to the server was not formatted correctly.  Please make sure all info is formatted properly";
+"kLGHTTPErrorBadRequestSuggestion" = "The request to the server was not formatted correctly.  Please check the infomation you supplied";
 
 // Unauthorized
 "kLGHTTPErrorUnauthorizedDescription" = "User authorization failed.";

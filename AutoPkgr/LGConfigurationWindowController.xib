@@ -984,7 +984,6 @@
                                                                 </textFieldCell>
                                                                 <connections>
                                                                     <action selector="updateJSSUsername:" target="0iG-YL-fA3" id="qtF-po-wMg"/>
-                                                                    <outlet property="delegate" destination="-2" id="jLp-3k-WkI"/>
                                                                 </connections>
                                                             </textField>
                                                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="uZo-nq-Njx">
@@ -1014,17 +1013,17 @@
                                                                 <constraints>
                                                                     <constraint firstAttribute="width" constant="150" id="UJu-xD-kXg"/>
                                                                 </constraints>
-                                                                <secureTextFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" drawsBackground="YES" usesSingleLineMode="YES" id="3cm-pI-orx">
+                                                                <secureTextFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" placeholderString="password" drawsBackground="YES" usesSingleLineMode="YES" id="3cm-pI-orx">
                                                                     <font key="font" metaFont="smallSystem"/>
                                                                     <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
                                                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                                     <allowedInputSourceLocales>
                                                                         <string>NSAllRomanInputSourcesLocaleIdentifier</string>
                                                                     </allowedInputSourceLocales>
+                                                                    <connections>
+                                                                        <action selector="updateJSSPassword:" target="0iG-YL-fA3" id="VyE-mN-93Z"/>
+                                                                    </connections>
                                                                 </secureTextFieldCell>
-                                                                <connections>
-                                                                    <action selector="updaetJSSPassword:" target="0iG-YL-fA3" id="zEI-nD-WPj"/>
-                                                                </connections>
                                                             </secureTextField>
                                                             <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="mbd-An-9Bi">
                                                                 <rect key="frame" x="87" y="142" width="474" height="22"/>
@@ -1035,7 +1034,6 @@
                                                                 </textFieldCell>
                                                                 <connections>
                                                                     <action selector="updateJSSURL:" target="0iG-YL-fA3" id="DtW-bK-nTh"/>
-                                                                    <outlet property="delegate" destination="-2" id="MiV-BM-N8v"/>
                                                                 </connections>
                                                             </textField>
                                                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="IMP-Hl-JTs">

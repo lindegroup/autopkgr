@@ -21,6 +21,7 @@
 
 #import "LGRecipes.h"
 #import "LGAutoPkgr.h"
+#import "LGJSSAddon.h"
 
 @implementation LGRecipes
 
@@ -144,14 +145,18 @@
     // activeApps array that cannot be found in the new apps array.
 
     NSMutableArray *workingArray = [NSMutableArray arrayWithArray:_activeRecipes];
-
+    
     for (NSString *string in _activeRecipes) {
         if (![_recipes containsObject:string]) {
             [workingArray removeObject:string];
         }
     }
-
-    _activeRecipes = [NSArray arrayWithArray:workingArray];
+    if ([LGJSSAddon requiresInstall:workingArray]) {
+        NSPredicate *cleanJSSAddonPredicate = [NSPredicate predicateWithFormat:@"not SELF CONTAINS[cd] '.jss'"];
+        _activeRecipes = [workingArray filteredArrayUsingPredicate:cleanJSSAddonPredicate];
+    } else {
+        _activeRecipes = [NSArray arrayWithArray:workingArray];
+    }
 }
 
 - (void)writeRecipeList
@@ -168,8 +173,8 @@
 
     NSString *recipeListFile = [autoPkgrSupportDirectory stringByAppendingString:@"/recipe_list.txt"];
 
-    NSPredicate *makeCatalogPredicate = [NSPredicate predicateWithFormat:@"not SELF contains[cd] %@",@"MakeCatalogs.munki"];
-    NSPredicate *munkiPredicate = [NSPredicate predicateWithFormat:@"SELF contains[cd] %@",@"munki"];
+    NSPredicate *makeCatalogPredicate = [NSPredicate predicateWithFormat:@"not SELF contains[cd] 'MakeCatalogs.munki'"];
+    NSPredicate *munkiPredicate = [NSPredicate predicateWithFormat:@"SELF contains[cd] 'munki'"];
 
     // Make a working array filtering out any instances of MakeCatalogs.munki, so there will only be one occurence
     NSMutableArray * workingArray = [NSMutableArray arrayWithArray:[_activeRecipes filteredArrayUsingPredicate:makeCatalogPredicate]];
