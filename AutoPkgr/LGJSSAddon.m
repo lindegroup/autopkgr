@@ -154,6 +154,7 @@
             [_jssStatusLight setImage:[NSImage imageNamed:@"NSStatusUnavailable"]];
         }
         [self stopStatusUpdate:nil];
+        _portTester = nil;
     }];
 }
 

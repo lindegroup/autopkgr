@@ -9,10 +9,14 @@
 #import "LGTestPort.h"
 #import "LGAutoPkgr.h"
 
+@interface LGTestPort ()
+@property (strong, nonatomic) NSInputStream *inputStream;
+@property (strong, nonatomic) NSOutputStream *outputStream;
+@property (strong, nonatomic) NSTimer *streamTimeoutTimer;
+
+@end
+
 @implementation LGTestPort {
-    NSInputStream *_inputStream;
-    NSOutputStream *_outputStream;
-    NSTimer *_streamTimeoutTimer;
     void (^_reachable)(BOOL);
 }
 
