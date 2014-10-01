@@ -21,7 +21,6 @@
 
 #import "LGRecipes.h"
 #import "LGAutoPkgr.h"
-#import "LGJSSAddon.h"
 
 @implementation LGRecipes
 
@@ -122,7 +121,6 @@
     if ([[tableColumn identifier] isEqualToString:@"appCheckbox"]) {
         NSMutableArray *workingArray = [NSMutableArray arrayWithArray:_activeRecipes];
         if ([object isEqual:@YES]) {
-            // TODO: check if JSS // and if jss-addon is installed
             [workingArray addObject:[_searchedRecipes objectAtIndex:row]];
         } else {
             NSUInteger index = [workingArray indexOfObject:[_searchedRecipes objectAtIndex:row]];
@@ -151,12 +149,7 @@
             [workingArray removeObject:string];
         }
     }
-    if ([LGJSSAddon requiresInstall:workingArray]) {
-        NSPredicate *cleanJSSAddonPredicate = [NSPredicate predicateWithFormat:@"not SELF CONTAINS[cd] '.jss'"];
-        _activeRecipes = [workingArray filteredArrayUsingPredicate:cleanJSSAddonPredicate];
-    } else {
-        _activeRecipes = [NSArray arrayWithArray:workingArray];
-    }
+    _activeRecipes = [NSArray arrayWithArray:workingArray];
 }
 
 - (void)writeRecipeList

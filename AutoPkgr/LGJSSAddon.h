@@ -20,8 +20,6 @@
 @property (weak) IBOutlet NSProgressIndicator *jssStatusSpinner;
 @property (weak) IBOutlet NSImageView *jssStatusLight;
 
-+ (BOOL)requiresInstall:(NSArray *)recipeList;
-
 @end
 
 

@@ -70,7 +70,7 @@ def deepSign(path, identity):
             log('ERROR: %s\n' % err)
 
         if not p1.returncode == 0:
-            log('ERROR: Problem signing item at %s [rc: %d]\n' % (path))
+            log('ERROR: Problem signing item at %s [rc: %s]\n' % (path,output))
 
 
 def checkSigning(path):

@@ -13,7 +13,6 @@
 #import "LGInstaller.h"
 #import "LGHostInfo.h"
 
-
 @implementation LGJSSAddon 
 {
     LGDefaults *_defaults;
@@ -74,6 +73,10 @@
         return;
     }
     
+    if ([self requiresInstall]) {
+        return;
+    }
+    
     [self startStatusUpdate];
     LGHTTPRequest *request = [[LGHTTPRequest alloc] init];
     [request retrieveDistributionPoints:_jssURLTF.stringValue
@@ -109,7 +112,7 @@
         [_jssStatusSpinner setHidden:YES];
         [_jssStatusSpinner stopAnimation:self];
         if (error) {
-            [NSApp presentError:error];
+            [[NSApp delegate] stopProgress:error];
         }
     }];
 }
@@ -225,22 +228,20 @@
 }
 
 #pragma mark - Class Methods
-+ (BOOL)requiresInstall:(NSArray *)recipeList
+- (BOOL)requiresInstall
 {
     BOOL required = NO;
     
-    NSPredicate *jssAddonPredicate = [NSPredicate predicateWithFormat:@"SELF contains[cd] %@",@"jss"];
-    if ([[recipeList filteredArrayUsingPredicate:jssAddonPredicate] count] &&
-        ![LGHostInfo jssAddonInstalled]) {
+    if (![LGHostInfo jssAddonInstalled]) {
         NSAlert *alert = [NSAlert alertWithMessageText:@"Install autopkg-jss-addon?" defaultButton:@"Install" alternateButton:@"Cancel" otherButton:nil informativeTextWithFormat:@"You have selected a recipe that requres installation of the autopkg-jss-addon, would you like to install it now?"];
         
         NSInteger button = [alert runModal];
         if (button == NSAlertDefaultReturn) {
             LGInstaller *installer = [[LGInstaller alloc] init];
-            required = ![installer runJSSAddonInstaller:nil];
-        } else {
-            required = YES;
+            installer.progressDelegate = [NSApp delegate];
+            [installer installJSSAddon:^(NSError *error) {}];
         }
+        return YES;
     }
     return required;
 }
