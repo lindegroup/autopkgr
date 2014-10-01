@@ -28,7 +28,7 @@
 
 @implementation LGAppDelegate {
     @private
-    LGConfigurationWindowController *configurationWindowController;
+    LGConfigurationWindowController *_configurationWindowController;
 }
 
 
@@ -101,12 +101,12 @@
 
 - (void)showConfigurationWindow:(id)sender
 {
-    if (!self->configurationWindowController) {
-        self->configurationWindowController = [[LGConfigurationWindowController alloc] initWithWindowNibName:@"LGConfigurationWindowController"];
+    if (!self->_configurationWindowController) {
+        self->_configurationWindowController = [[LGConfigurationWindowController alloc] initWithWindowNibName:@"LGConfigurationWindowController"];
     }
 
     [NSApp activateIgnoringOtherApps:YES];
-    [self->configurationWindowController.window makeKeyAndOrderFront:nil];
+    [self->_configurationWindowController.window makeKeyAndOrderFront:nil];
     DLog(@"Activated AutoPkgr configuration window.");
 }
 
@@ -137,6 +137,9 @@
 # pragma mark - Progress Protocol
 - (void)startProgressWithMessage:(NSString *)message
 {
+    if(_configurationWindowController && [_configurationWindowController.window isVisible]) {
+        [_configurationWindowController startProgressWithMessage:message];
+    }
     __block NSMenuItem *item = [self.statusMenu itemAtIndex:0];
     [item setAction:nil];
     [item setTitle:message];
@@ -144,6 +147,9 @@
 
 - (void)stopProgress:(NSError *)error
 {
+    if(_configurationWindowController && [_configurationWindowController.window isVisible]) {
+        [_configurationWindowController stopProgress:error];
+    }
     __block NSMenuItem *item = [self.statusMenu itemAtIndex:0];
     [[NSOperationQueue mainQueue] addOperationWithBlock:^{
         [item setTitle:@"Check Now"];
@@ -153,6 +159,9 @@
 
 - (void)updateProgress:(NSString *)message progress:(double)progress
 {
+    if(_configurationWindowController && [_configurationWindowController.window isVisible]) {
+        [_configurationWindowController updateProgress:message progress:progress];
+    }
     __block NSMenuItem *item = [self.statusMenu itemAtIndex:0];
     if (message.length < 50) {
         [[NSOperationQueue mainQueue] addOperationWithBlock:^{
