@@ -22,7 +22,6 @@
 #import "LGVersionComparator.h"
 
 NSString *const kLGAutoPkgTaskLock = @"com.lindegroup.autopkg.task.lock";
-NSString *const kLGAutoPkgCompletionLock = @"com.lindegroup.autopkg.completion.lock";
 
 NSString *const kLGAutoPkgRecipeKey = @"recipe";
 NSString *const kLGAutoPkgRecipePathKey = @"recipe_path";
@@ -52,7 +51,6 @@ NSString *autopkg()
 @property (strong, nonatomic) NSOperationQueue *taskQueue;
 @property (strong, nonatomic) NSOperationQueue *statusUpdateQueue;
 @property (readwrite, nonatomic, strong) NSRecursiveLock *taskLock;
-@property (readwrite, nonatomic, strong) NSRecursiveLock *completionLock;
 
 @end
 
@@ -75,14 +73,10 @@ NSString *autopkg()
     self = [super init];
     if (self) {
         self.complete = NO;
-        self.task = [[NSTask alloc] init];
-        self.task.launchPath = @"/usr/bin/python";
         self.internalArgs = [[NSMutableArray alloc] initWithArray:@[ autopkg() ]];
         self.statusUpdateQueue = [NSOperationQueue currentQueue];
         self.taskLock = [[NSRecursiveLock alloc] init];
         self.taskLock.name = kLGAutoPkgTaskLock;
-        self.completionLock = [[NSRecursiveLock alloc] init];
-        self.completionLock.name = kLGAutoPkgCompletionLock;
     }
     return self;
 }
@@ -90,8 +84,11 @@ NSString *autopkg()
 #pragma mark - Life Cycle
 - (BOOL)launch:(NSError *__autoreleasing *)error
 {
+    self.task = [[NSTask alloc] init];
+    self.task.launchPath = @"/usr/bin/python";
+
     [self.task setArguments:self.internalArgs];
-    
+
     // If an instance of autopkg is running,
     // and we're trying to do a run, exit
     if (_verb == kLGAutoPkgRun && [[self class] instanceIsRunning]) {
@@ -107,7 +104,11 @@ NSString *autopkg()
     }
 
     [self.task launch];
-    [self.task waitUntilExit];
+
+    while ([self.task isRunning]) {
+        [[NSRunLoop currentRunLoop] runMode:@"kLGAutoPkgTaskRunLoopMode"
+                                 beforeDate:[NSDate dateWithTimeIntervalSinceNow:1.0]];
+    }
 
     [self setComplete:YES];
     // make sure the out and error readability handlers get set to nil
@@ -120,9 +121,11 @@ NSString *autopkg()
         [self.task.standardError fileHandleForReading].readabilityHandler = nil;
     }
 
-    return [LGError errorWithTaskError:self.task
-                                  verb:_verb
-                                 error:error];
+    [self.taskLock lock];
+    BOOL success = [LGError errorWithTaskError:self.task verb:_verb error:error];
+    [self.taskLock unlock];
+
+    return success;
 }
 
 - (void)launchInBackground:(void (^)(NSError *))reply
@@ -137,18 +140,23 @@ NSString *autopkg()
 
 - (BOOL)cancel
 {
+    BOOL canceled = YES;
+    [self.taskLock lock];
     if (self.task && self.task.isRunning) {
         [self.task terminate];
-        return ![self.task isRunning];
+        canceled = ![self.task isRunning];
     }
-    return YES;
+    [self.taskLock unlock];
+    return canceled;
 }
 
--(BOOL)complete{
+- (BOOL)complete
+{
     if (!_complete) {
-        [self.completionLock lock];
-        _complete = ![self.task isRunning];
-        [self.completionLock unlock];
+        [self.taskLock lock];
+        if (self.task)
+            _complete = ![self.task isRunning];
+        [self.taskLock unlock];
     }
     return _complete;
 }
@@ -163,7 +171,7 @@ NSString *autopkg()
      */
     _arguments = arguments;
     [self.internalArgs addObjectsFromArray:arguments];
-    
+
     NSString *verbString = [_arguments firstObject];
     if ([verbString isEqualToString:@"run"]) {
         _verb = kLGAutoPkgRun;
@@ -187,7 +195,7 @@ NSString *autopkg()
     } else if ([verbString isEqualToString:@"version"]) {
         _verb = kLGAutoPkgVersion;
     }
-    
+
     [self.taskLock unlock];
 }
 
@@ -309,7 +317,7 @@ NSString *autopkg()
     if (self.AUTOPKG_VERSION_0_4_0) {
         NSFileManager *fm = [NSFileManager defaultManager];
         NSString *reportPlistFile = self.reportPlistFile;
-        
+
         if (self.reportPlistFile && [fm fileExistsAtPath:self.reportPlistFile]) {
             // Create dictionary from the tmp file
             _reportPlist = [NSDictionary dictionaryWithContentsOfFile:reportPlistFile];
@@ -394,7 +402,6 @@ NSString *autopkg()
     }
     return results;
 }
-
 
 #pragma mark - Utility
 
