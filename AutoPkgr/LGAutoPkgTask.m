@@ -91,7 +91,7 @@ NSString *autopkg()
 - (BOOL)launch:(NSError *__autoreleasing *)error
 {
     [self.task setArguments:self.internalArgs];
-    
+
     // If an instance of autopkg is running,
     // and we're trying to do a run, exit
     if (_verb == kLGAutoPkgRun && [[self class] instanceIsRunning]) {
@@ -159,7 +159,7 @@ NSString *autopkg()
     [self.taskLock lock];
     /** _arguments is the externally set values
      * _internalArguments is the mutable array that has
-     *  the path to autopkg set as the first object durint init
+     *  the path to autopkg set as the first object during init
      */
     _arguments = arguments;
     [self.internalArgs addObjectsFromArray:arguments];
@@ -225,7 +225,7 @@ NSString *autopkg()
                 
                 if (weakSelf.runStatusUpdate) {
                     [weakSelf.statusUpdateQueue addOperationWithBlock:^{
-                        weakSelf.runStatusUpdate(fullMessage,((count/total)*100));
+                        weakSelf.runStatusUpdate(fullMessage, ((count/total) * 100));
                     }];
                 }
                 if (count < total) {
@@ -257,7 +257,7 @@ NSString *autopkg()
     }
 
     if (_verb == kLGAutoPkgRun || _verb == kLGAutoPkgRepoUpdate) {
-        // To get status from autopkg set NSUnbufferedIO environment keyto YES
+        // To get status from autopkg set NSUnbufferedIO environment key to YES
         // Thanks to help from -- http://stackoverflow.com/questions/8251010
         [self addEnvironmentVariable:@"YES" forKey:@"NSUnbufferedIO"];
     }
