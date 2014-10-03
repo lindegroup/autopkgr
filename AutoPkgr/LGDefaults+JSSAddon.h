@@ -1,8 +1,8 @@
 //
-//  LGJSSAddon.h
+//  LGDefaults+JSSAddon.h
 //  AutoPkgr
 //
-//  Created by Eldon on 9/25/14.
+//  Created by Eldon on 10/3/14.
 //  Copyright 2014 The Linde Group, Inc.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,20 +18,14 @@
 //  limitations under the License.
 //
 
-#import <Foundation/Foundation.h>
 #import "LGDefaults.h"
-#import "LGProgressDelegate.h"
 
-@interface LGJSSAddon : NSObject <NSTableViewDataSource>
+#pragma mark - LGDefaults extensions for JSS Addon Interface
+@interface LGDefaults (JSSAddon)
 
-@property (strong) IBOutlet NSTableView *jssDistributionPointTableView;
-@property (weak) IBOutlet NSTextField *jssURLTF;
-@property (weak) IBOutlet NSTextField *jssAPIUsernameTF;
-@property (weak) IBOutlet NSTextField *jssAPIPasswordTF;
-@property (weak) IBOutlet NSButton *jssReloadServerBT;
-@property (weak) IBOutlet NSProgressIndicator *jssStatusSpinner;
-@property (weak) IBOutlet NSImageView *jssStatusLight;
-
+@property (copy, nonatomic) NSString* JSSURL;
+@property (copy, nonatomic) NSString* JSSAPIUsername;
+@property (copy, nonatomic) NSString* JSSAPIPassword;
+@property (copy, nonatomic) NSArray* JSSRepos;
+@property (assign, nonatomic) BOOL JSSVerifySSL;
 @end
-
-

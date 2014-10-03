@@ -55,7 +55,9 @@
                                                 password:password
                                              persistence:NSURLCredentialPersistenceNone];
     }
-
+    
+    [[LGDefaults standardUserDefaults] setJSSVerifySSL:NO];
+    
     [operation setWillSendRequestForAuthenticationChallengeBlock:^(NSURLConnection *connection, NSURLAuthenticationChallenge *challenge) {
         DLog(@"Got authentication challenge");
         if ([challenge.protectionSpace.authenticationMethod isEqualToString:NSURLAuthenticationMethodServerTrust]){
@@ -115,6 +117,9 @@
 
             proceed = [panel runModalForTrust:challenge.protectionSpace.serverTrust
                                           message:@"AutoPkgr can't verify the identity of the server"];
+            if (proceed) {
+                [[LGDefaults standardUserDefaults] setJSSVerifySSL:proceed];
+            }
             panel = nil;
         }
         }
