@@ -68,7 +68,11 @@
                             <tabView initialItem="P8W-IS-m5j" translatesAutoresizingMaskIntoConstraints="NO" id="Dvq-fn-q18">
                                 <rect key="frame" x="10" y="10" width="637" height="458"/>
                                 <constraints>
+                                    <constraint firstItem="uPW-I4-WKp" firstAttribute="centerX" secondItem="Dvq-fn-q18" secondAttribute="centerX" constant="-116.5" id="3Gm-eo-wKH"/>
+                                    <constraint firstItem="kGA-EW-Dsj" firstAttribute="centerY" secondItem="Dvq-fn-q18" secondAttribute="centerY" constant="95" id="Tmy-LO-LjX"/>
                                     <constraint firstAttribute="centerY" secondItem="x1S-bd-tl3" secondAttribute="centerY" constant="-53.5" id="UuI-kT-ubg"/>
+                                    <constraint firstAttribute="centerY" secondItem="0VQ-id-jlf" secondAttribute="centerY" constant="-94.5" id="Y9h-bo-flP"/>
+                                    <constraint firstItem="uPW-I4-WKp" firstAttribute="centerY" secondItem="Dvq-fn-q18" secondAttribute="centerY" constant="94.5" id="Zgg-gI-smU"/>
                                 </constraints>
                                 <font key="font" metaFont="system"/>
                                 <tabViewItems>
@@ -142,11 +146,35 @@
                                                         <font key="font" metaFont="system"/>
                                                     </buttonCell>
                                                 </button>
+                                                <button verticalHuggingPriority="750" placeholderIntrinsicWidth="194" placeholderIntrinsicHeight="21" translatesAutoresizingMaskIntoConstraints="NO" id="uPW-I4-WKp">
+                                                    <rect key="frame" x="89" y="106" width="206" height="32"/>
+                                                    <buttonCell key="cell" type="push" title="Update JSS AutoPkg Addon" bezelStyle="rounded" alignment="center" enabled="NO" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Hlu-sh-iQg">
+                                                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                                        <font key="font" metaFont="system"/>
+                                                    </buttonCell>
+                                                    <connections>
+                                                        <action selector="installAutoPkg:" target="-2" id="rA3-x7-yDO"/>
+                                                    </connections>
+                                                </button>
+                                                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="0VQ-id-jlf">
+                                                    <rect key="frame" x="319" y="115" width="212" height="17"/>
+                                                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="JSS AutoPkg Addon is up to date." id="Y67-Kv-gNs">
+                                                        <font key="font" metaFont="system"/>
+                                                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                                    </textFieldCell>
+                                                </textField>
+                                                <imageView translatesAutoresizingMaskIntoConstraints="NO" id="kGA-EW-Dsj">
+                                                    <rect key="frame" x="297" y="115" width="16" height="16"/>
+                                                    <imageCell key="cell" refusesFirstResponder="YES" alignment="left" animates="YES" imageScaling="proportionallyDown" image="NSStatusAvailable" id="R1Z-YS-Ixy"/>
+                                                </imageView>
                                             </subviews>
                                             <constraints>
                                                 <constraint firstItem="x1S-bd-tl3" firstAttribute="width" secondItem="ClY-1a-e2c" secondAttribute="width" id="0Rl-Lx-Jc3"/>
                                                 <constraint firstItem="x1S-bd-tl3" firstAttribute="top" secondItem="ClY-1a-e2c" secondAttribute="bottom" constant="20" id="EC2-mF-bn3"/>
                                                 <constraint firstAttribute="centerY" secondItem="OPb-IV-o9L" secondAttribute="centerY" constant="-0.5" id="HJB-aJ-VZc"/>
+                                                <constraint firstItem="0VQ-id-jlf" firstAttribute="leading" secondItem="kGA-EW-Dsj" secondAttribute="trailing" constant="8" id="Ilm-j4-FZk"/>
+                                                <constraint firstItem="kGA-EW-Dsj" firstAttribute="leading" secondItem="uPW-I4-WKp" secondAttribute="trailing" constant="8" id="Lth-EM-SPJ"/>
                                                 <constraint firstAttribute="centerY" secondItem="ClY-1a-e2c" secondAttribute="centerY" constant="-0.5" id="N8x-Zq-eZh"/>
                                                 <constraint firstItem="ClY-1a-e2c" firstAttribute="top" secondItem="geX-ws-F4Z" secondAttribute="bottom" constant="34" id="RQL-OF-L3T"/>
                                                 <constraint firstAttribute="centerX" secondItem="geX-ws-F4Z" secondAttribute="centerX" constant="3" id="Reb-Xt-jOv"/>
@@ -162,6 +190,7 @@
                                                 <constraint firstAttribute="centerY" secondItem="f8q-xY-QUg" secondAttribute="centerY" constant="-42" id="poa-PN-pTo"/>
                                                 <constraint firstAttribute="centerY" secondItem="Pbf-A7-T4b" secondAttribute="centerY" constant="-41.5" id="sK0-IT-bXJ"/>
                                                 <constraint firstAttribute="bottom" secondItem="KMe-Rd-d2t" secondAttribute="bottom" constant="23" id="yEb-cc-gm2"/>
+                                                <constraint firstItem="uPW-I4-WKp" firstAttribute="width" secondItem="x1S-bd-tl3" secondAttribute="width" id="yyb-LM-xIe"/>
                                             </constraints>
                                         </view>
                                     </tabViewItem>
@@ -1079,7 +1108,7 @@
                                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                                     <subviews>
                                                                         <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" columnSelection="YES" multipleSelection="NO" autosaveColumns="NO" headerView="Zpe-fe-sYa" id="HqO-hG-aCi">
-                                                                            <rect key="frame" x="0.0" y="0.0" width="531" height="19"/>
+                                                                            <rect key="frame" x="0.0" y="0.0" width="564.5" height="19"/>
                                                                             <autoresizingMask key="autoresizingMask"/>
                                                                             <size key="intercellSpacing" width="3" height="2"/>
                                                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -1098,7 +1127,7 @@
                                                                                     </textFieldCell>
                                                                                     <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                                                                 </tableColumn>
-                                                                                <tableColumn identifier="password" width="172" minWidth="40" maxWidth="1000" id="tCY-7z-6Xn">
+                                                                                <tableColumn identifier="password" width="172.5" minWidth="40" maxWidth="1000" id="tCY-7z-6Xn">
                                                                                     <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left" title="Password">
                                                                                         <font key="font" metaFont="smallSystem"/>
                                                                                         <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
@@ -1119,7 +1148,7 @@
                                                                     </subviews>
                                                                     <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                                 </clipView>
-                                                                <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="YES" id="rJa-Kc-WAC">
+                                                                <scroller key="horizontalScroller" verticalHuggingPriority="750" horizontal="YES" id="rJa-Kc-WAC">
                                                                     <autoresizingMask key="autoresizingMask"/>
                                                                 </scroller>
                                                                 <scroller key="verticalScroller" hidden="YES" verticalHuggingPriority="750" doubleValue="1" horizontal="NO" id="6vq-sf-FCW">
@@ -1289,6 +1318,7 @@ Gw
     <resources>
         <image name="AutoPkgrIcon" width="512" height="512"/>
         <image name="NSRefreshFreestandingTemplate" width="14" height="14"/>
+        <image name="NSStatusAvailable" width="16" height="16"/>
         <image name="NSStatusNone" width="16" height="16"/>
         <image name="NSStatusUnavailable" width="16" height="16"/>
     </resources>
