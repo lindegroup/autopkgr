@@ -24,4 +24,6 @@
 #import "LGConstants.h"
 #import "LGError.h"
 #import "LGDefaults+JSSAddon.h"
+#import "NSString+cleaned.h"
+#import "NSTextField+setSafeStringValue.h"
 #endif
