@@ -153,7 +153,7 @@
                                                         <font key="font" metaFont="system"/>
                                                     </buttonCell>
                                                     <connections>
-                                                        <action selector="installAutoPkg:" target="-2" id="rA3-x7-yDO"/>
+                                                        <action selector="installJSSAddon:" target="0iG-YL-fA3" id="xFI-Sg-Rir"/>
                                                     </connections>
                                                 </button>
                                                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="0VQ-id-jlf">
@@ -1308,6 +1308,9 @@ Gw
                 <outlet property="jssAPIPasswordTF" destination="9lJ-vz-FvC" id="dzX-o6-3Dq"/>
                 <outlet property="jssAPIUsernameTF" destination="6Ki-wr-8K2" id="UpI-wg-w0e"/>
                 <outlet property="jssDistributionPointTableView" destination="HqO-hG-aCi" id="3mF-yi-CXv"/>
+                <outlet property="jssInstallButton" destination="uPW-I4-WKp" id="dDe-Wh-AIm"/>
+                <outlet property="jssInstallStatusLight" destination="kGA-EW-Dsj" id="YzF-zC-BGP"/>
+                <outlet property="jssInstallStatusTF" destination="0VQ-id-jlf" id="jhm-uK-D8z"/>
                 <outlet property="jssReloadServerBT" destination="LS6-bP-hJx" id="brE-2M-lvQ"/>
                 <outlet property="jssStatusLight" destination="gcn-rW-umQ" id="M4V-gw-vzW"/>
                 <outlet property="jssStatusSpinner" destination="6MF-CB-ccc" id="PIn-UW-oN1"/>

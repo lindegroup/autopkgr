@@ -31,5 +31,6 @@
 - (NSString *)getLatestAutoPkgReleaseVersionNumber;
 
 - (NSString *)latestReleaseDownload:(NSString *)githubURL;
+- (NSString *)latestVersion:(NSString *)gitHubURL;
 
 @end

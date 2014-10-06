@@ -138,12 +138,22 @@
     return latestVersionNumber;
 }
 
-- (NSString *)latestReleaseDownload:(NSString *)githubURL
+- (NSString *)latestVersion:(NSString *)gitHubURL
 {
-    LGGitHubJSONLoader *loader = [[LGGitHubJSONLoader alloc] init];
-    
     // Get an NSDictionary of the latest release JSON
-    NSDictionary *latestVersionDict = [loader getLatestReleaseDictionary:githubURL];
+    NSDictionary *latestVersionDict = [self getLatestReleaseDictionary:gitHubURL];
+    
+    // AutoPkg version numbers are prepended with "v"
+    // Let's remove that from our version string
+    NSString *latestVersionNumber = [[latestVersionDict objectForKey:@"tag_name"] stringByReplacingOccurrencesOfString:@"v" withString:@""];
+    
+    return latestVersionNumber;
+}
+
+- (NSString *)latestReleaseDownload:(NSString *)gitHubURL
+{
+    // Get an NSDictionary of the latest release JSON
+    NSDictionary *latestVersionDict = [self getLatestReleaseDictionary:gitHubURL];
     
     // Get the PKG / DMG download URL
     NSString *browserDownloadURL = [[[latestVersionDict objectForKey:@"assets"] firstObject] objectForKey:@"browser_download_url"];

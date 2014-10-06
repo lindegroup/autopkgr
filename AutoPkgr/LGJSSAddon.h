@@ -32,6 +32,12 @@
 @property (weak) IBOutlet NSProgressIndicator *jssStatusSpinner;
 @property (weak) IBOutlet NSImageView *jssStatusLight;
 
+@property (weak) IBOutlet NSButton *jssInstallButton;
+@property (weak) IBOutlet NSImageView *jssInstallStatusLight;
+@property (weak) IBOutlet NSTextField *jssInstallStatusTF;
+
+- (IBAction)installJSSAddon:(id)sender;
+
 @end
 
 

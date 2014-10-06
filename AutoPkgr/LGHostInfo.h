@@ -27,10 +27,13 @@
 + (NSString *)getHostName;
 + (NSString *)getUserAtHostName;
 + (NSString *)getAutoPkgVersion;
++ (NSString *)getJSSAddonVersion;
+
 + (BOOL)gitInstalled;
 + (BOOL)autoPkgInstalled;
 + (BOOL)autoPkgUpdateAvailable;
 + (BOOL)jssAddonInstalled;
-    
++ (BOOL)jssAddonUpdateAvailable;
+
 + (NSArray *)knownGitPaths;
 @end
