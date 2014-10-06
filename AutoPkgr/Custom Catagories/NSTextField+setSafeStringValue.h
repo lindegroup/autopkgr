@@ -11,8 +11,20 @@
 @interface NSTextField (setSafeStringValue)
 
 /**
- *  setStringValue, but will not raise when nil sent
+ *  (Custom Catagory) populate the text field with a string, but do not raise if the string passed in is nil
+ *  @discussion this is useful when setting NSTextFileds from defaults or data sources that may not have any values yet.
+ *
+ *  @param aString stringValue to set
  */
-@property (copy,nonatomic) NSString *safeStringValue;
+- (void)setSafeStringValue:(NSString *)safeStringValue;
+
+/**
+ *  (Custom Catagory) return nil from string value if it's an blank string
+ *
+ *  @discussion this is useful for conditionally checking values in subsequent if statements, since the default value returned from a NSTextField is @"" which will will return True.
+ *
+ *  @return stringValue if not blank
+ */
+- (NSString *)safeStringValue;
 @end
 
