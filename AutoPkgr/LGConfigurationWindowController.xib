@@ -189,6 +189,7 @@
                                                 <constraint firstItem="KkE-qM-Hy6" firstAttribute="leading" secondItem="ClY-1a-e2c" secondAttribute="trailing" constant="8" id="oHr-K9-shF"/>
                                                 <constraint firstAttribute="centerY" secondItem="f8q-xY-QUg" secondAttribute="centerY" constant="-42" id="poa-PN-pTo"/>
                                                 <constraint firstAttribute="centerY" secondItem="Pbf-A7-T4b" secondAttribute="centerY" constant="-41.5" id="sK0-IT-bXJ"/>
+                                                <constraint firstItem="uPW-I4-WKp" firstAttribute="top" secondItem="x1S-bd-tl3" secondAttribute="bottom" constant="20" id="seP-3o-qoE"/>
                                                 <constraint firstAttribute="bottom" secondItem="KMe-Rd-d2t" secondAttribute="bottom" constant="23" id="yEb-cc-gm2"/>
                                                 <constraint firstItem="uPW-I4-WKp" firstAttribute="width" secondItem="x1S-bd-tl3" secondAttribute="width" id="yyb-LM-xIe"/>
                                             </constraints>
@@ -1108,7 +1109,7 @@
                                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                                     <subviews>
                                                                         <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" columnSelection="YES" multipleSelection="NO" autosaveColumns="NO" headerView="Zpe-fe-sYa" id="HqO-hG-aCi">
-                                                                            <rect key="frame" x="0.0" y="0.0" width="564.5" height="19"/>
+                                                                            <rect key="frame" x="0.0" y="0.0" width="565" height="19"/>
                                                                             <autoresizingMask key="autoresizingMask"/>
                                                                             <size key="intercellSpacing" width="3" height="2"/>
                                                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
