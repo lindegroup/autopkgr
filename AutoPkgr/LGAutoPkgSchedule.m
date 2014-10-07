@@ -61,7 +61,7 @@
 
 - (void)runAutoPkg
 {
-    
+
     LGDefaults *defaults = [[LGDefaults alloc] init];
     if (defaults.checkForNewVersionsOfAppsAutomaticallyEnabled) {
         NSLog(@"Beginning scheduled run of AutoPkg.");

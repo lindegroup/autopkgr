@@ -132,17 +132,17 @@
 - (void)getAndParseLocalAutoPkgRecipeRepos // Strips out the local path of the cloned git repository and returns an array with only the URLs
 {
     NSError *error;
-    
+
     NSMutableArray *strippedRepos = [[NSMutableArray alloc] init];
     NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@"\\((https?://.+)\\)" options:0 error:&error];
-    
+
     for (NSString *repo in [LGAutoPkgTask repoList]) {
         NSTextCheckingResult *result = [regex firstMatchInString:repo options:0 range:NSMakeRange(0,[repo length])];
         if ([result numberOfRanges] == 2) {
             [strippedRepos addObject:[repo substringWithRange:[result rangeAtIndex:1]]];
         }
     }
-    
+
     _activeRepos =  [NSArray arrayWithArray:strippedRepos];
 }
 
@@ -193,7 +193,7 @@
                 [self repoEditDidEndWithError:error withTableView:tableView];
             }];
         }
-        
+
     }
 }
 

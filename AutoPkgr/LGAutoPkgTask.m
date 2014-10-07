@@ -230,7 +230,7 @@ NSString *autopkg()
                 } else {
                     fullMessage = message;
                 }
-                
+
                 if (weakSelf.runStatusUpdate) {
                     [weakSelf.statusUpdateQueue addOperationWithBlock:^{
                         weakSelf.runStatusUpdate(fullMessage, ((count/total) * 100));
@@ -375,13 +375,13 @@ NSString *autopkg()
                 if (![nonRecipePredicate evaluateWithObject:line ]) {
                     NSScanner *scanner = [NSScanner scannerWithString:line];
                     [scanner setCharactersToBeSkipped:skippedCharacters];
-                    
+
                     NSString *recipe, *repo, *path;
-                    
+
                     [scanner scanCharactersFromSet:repoCharacters intoString:&recipe];
                     [scanner scanCharactersFromSet:repoCharacters intoString:&repo];
                     [scanner scanCharactersFromSet:repoCharacters intoString:&path];
-                    
+
                     if (recipe && repo && path) {
                         if (!searchResults) {
                             searchResults = [[NSMutableArray alloc] init];

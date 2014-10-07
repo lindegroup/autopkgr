@@ -63,7 +63,7 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
         // Initialization code here.
         _defaults = [LGDefaults new];
         _menuProgressDelegate = [NSApp delegate];
-        
+
         NSNotificationCenter *ndc = [NSNotificationCenter defaultCenter];
         [ndc addObserver:self selector:@selector(startProgressNotificationReceived:) name:kLGNotificationProgressStart object:nil];
         [ndc addObserver:self selector:@selector(stopProgressNotificationReceived:) name:kLGNotificationProgressStop object:nil];
@@ -284,7 +284,7 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
             [_checkAppsNowButton setEnabled:YES];
         }];
     }
-    
+
     _popRepoTableViewHandler.progressDelegate = self;
 
     // Synchronize with the defaults database
@@ -472,19 +472,19 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
     NSOpenPanel *openPanel = [NSOpenPanel openPanel];
     // Disable the selection of files in the dialog
     [openPanel setCanChooseFiles:NO];
-    
+
     // Enable the selection of directories in the dialog
     [openPanel setCanChooseDirectories:YES];
-    
+
     // Enable the creation of directories in the dialog
     [openPanel setCanCreateDirectories:YES];
-    
+
     // Set the prompt to "Choose" instead of "Open"
     [openPanel setPrompt:@"Choose"];
-    
+
     // Disable multiple selection
     [openPanel setAllowsMultipleSelection:NO];
-    
+
     return openPanel;
 }
 
@@ -883,14 +883,14 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
 {
     // Enable "Open in Finder" buttons if directories exist
     BOOL isDir;
-    
+
     NSString *autoPkgRecipeReposFolder = [_defaults autoPkgRecipeRepoDir];
     autoPkgRecipeReposFolder = autoPkgRecipeReposFolder ? autoPkgRecipeReposFolder : [@"~/Library/AutoPkg/RecipeRepos" stringByExpandingTildeInPath];
     NSString *autoPkgCacheFolder = [_defaults autoPkgCacheDir];
     autoPkgCacheFolder = autoPkgCacheFolder ? autoPkgCacheFolder : [@"~/Library/AutoPkg/Cache" stringByExpandingTildeInPath];
     NSString *autoPkgRecipeOverridesFolder = [_defaults autoPkgRecipeOverridesDir];
     autoPkgRecipeOverridesFolder = autoPkgRecipeOverridesFolder ? autoPkgRecipeOverridesFolder : [@"~/Library/AutoPkg/RecipeOverrides" stringByExpandingTildeInPath];
-    
+
     if ([[NSFileManager defaultManager] fileExistsAtPath:_defaults.munkiRepo isDirectory:&isDir] && isDir) {
         [_openLocalMunkiRepoFolderButton setEnabled:YES];
     } else {
@@ -919,7 +919,7 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
     [[NSNotificationCenter defaultCenter] removeObserver:self
                                                     name:kLGNotificationRunAutoPkgComplete
                                                   object:nil];
-    
+
     NSError *error = nil;
     if ([notification.userInfo[kLGNotificationUserInfoError] isKindOfClass:[NSError class]]) {
         error = notification.userInfo[kLGNotificationUserInfoError];
@@ -938,7 +938,7 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
     if ([notification.userInfo[kLGNotificationUserInfoError] isKindOfClass:[NSError class]]) {
         error = notification.userInfo[kLGNotificationUserInfoError];
     }
-    
+
     [self stopProgress:error];
     [self.updateRepoNowButton setEnabled:YES];
 }
@@ -982,16 +982,16 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
     [[NSNotificationCenter defaultCenter] removeObserver:self
                                                     name:kLGNotificationEmailSent
                                                   object:[notification object]];
-    
+
     [_sendTestEmailButton setEnabled:YES]; // enable button
-    
+
     // Handle Spinner
     [_sendTestEmailSpinner stopAnimation:self]; // stop animation
     [_sendTestEmailSpinner setHidden:YES]; // hide spinner
-    
+
     // pull the error out of the userInfo dictionary
     id error = [notification.userInfo objectForKey:kLGNotificationUserInfoError];
-    
+
     if ([error isKindOfClass:[NSError class]]) {
         [self stopProgress:error];
     }
@@ -1003,11 +1003,11 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
     [_testSmtpServerSpinner setHidden:YES];
     [_testSmtpServerSpinner stopAnimation:self];
     [_testSmtpServerStatus setHidden:NO];
-    
+
     [[NSNotificationCenter defaultCenter] removeObserver:self
                                                     name:kLGNotificationTestSmtpServerPort
                                                   object:nil];
-    
+
     NSString *status = notification.userInfo[kLGNotificationUserInfoSuccess];
     if ([status isEqualTo:@NO]) {
         [_testSmtpServerStatus setImage:[NSImage imageNamed:@"NSStatusUnavailable"]];
