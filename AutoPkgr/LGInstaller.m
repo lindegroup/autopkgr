@@ -31,15 +31,15 @@
 {
     LGGitHubJSONLoader *jsonLoader = [[LGGitHubJSONLoader alloc] init];
     NSString *downloadURL = [jsonLoader getGitDownloadURL];
-    
+
     NSString *tmpFile = [NSTemporaryDirectory() stringByAppendingPathComponent:[downloadURL lastPathComponent]];
     DLog(@"Setting download location to: %@", tmpFile);
-    
+
     // Download Git to the temporary directory
     if (![[NSFileManager defaultManager] fileExistsAtPath:tmpFile]) {
         [_progressDelegate updateProgress:@"Downloading Git..." progress:5.0];
         NSData *gitDMG = [[NSData alloc] initWithContentsOfURL:[NSURL URLWithString:downloadURL]];
-        
+
         [_progressDelegate updateProgress:@"Building Git installer package..." progress:25.0];
         // If we were unable to download the file, or write it to disk error out.
         if (!gitDMG || ![gitDMG writeToFile:tmpFile atomically:YES]) {
@@ -55,7 +55,7 @@
         // install Pkg
         NSArray *contents = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:_mountPoint error:nil];
         DLog(@"Contents of DMG %@ ", contents);
-        
+
         // The predicate here is contains so we get both .pkg and .mpkg files
         NSPredicate *predicate = [NSPredicate predicateWithFormat:@"pathExtension CONTAINS[cd] 'pkg'"];
 
@@ -67,14 +67,14 @@
         }
         // Since this is getting invoked as an AppleScript wrapping in sh -c  you need 4 backslashes to correctly escape the whitespace
         NSString *appleScriptEscapedPath = [[_mountPoint stringByAppendingPathComponent:pkg] stringByReplacingOccurrencesOfString:@" " withString:@"\\\\ "];
-        
+
         NSString *installCommand = [NSString stringWithFormat:@"/usr/sbin/installer -pkg %@ -target /", appleScriptEscapedPath];
         NSLog(@"Running package install command: %@", installCommand);
         [_progressDelegate updateProgress:@"Installing Git..." progress:75.0];
-        
+
         success = [self runCommandAsRoot:installCommand error:error];
     }
-    
+
     if (success) {
         LGDefaults *defaults = [[LGDefaults alloc] init];
 
@@ -180,7 +180,7 @@
     [task waitUntilExit];
 
     NSData *data = [[task.standardOutput fileHandleForReading] readDataToEndOfFile];
-    
+
     if (data) {
         NSString *errorStr;
         NSPropertyListFormat format;
@@ -188,13 +188,13 @@
                                                               mutabilityOption:NSPropertyListImmutable
                                                                         format:&format
                                                               errorDescription:&errorStr];
-        
+
         if (errorStr) {
             DLog(@"Error creating plist %@", errorStr);
         } else {
             DLog(@"hdiutil output dictionary: %@", dict);
         }
-        
+
         for (NSDictionary *d in dict[@"system-entities"]) {
             NSString *mountPoint = d[@"mount-point"];
             if (mountPoint) {
@@ -208,7 +208,7 @@
     } else {
         DLog(@"There was a problem retrieving the standard output of the hdiutil process");
     }
-    
+
     return task.terminationStatus == 0;
 }
 @end

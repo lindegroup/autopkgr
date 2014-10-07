@@ -71,16 +71,16 @@ static NSDictionary *userInfoFromCode(LGErrorCodes code)
             localizedBaseString = @"kLGErrorUnknown";
             break;
     }
-    
+
     // Setup the localized descripton
     message = NSLocalizedString([localizedBaseString stringByAppendingString:@"Description"],
                                 @"NSLocalizedDescriptionKey");
-    
+
     // Setup the localized recovery suggestion
     suggestion = NSLocalizedString([localizedBaseString stringByAppendingString:@"Suggestion"],
                                    @"NSLocalizedRecoverySuggestionErrorKey");
 
-    
+
     return @{NSLocalizedDescriptionKey:message,
               NSLocalizedRecoverySuggestionErrorKey:suggestion,};
 }
@@ -89,7 +89,7 @@ static NSString *errorMessageFromAutoPkgVerb(LGAutoPkgVerb verb)
 {
     NSString *localizedBaseString;
     NSString *message;
-    
+
     switch (verb) {
         case kLGAutoPkgUndefinedVerb:
             localizedBaseString = @"kLGAutoPkgUndefinedVerb";
@@ -125,7 +125,7 @@ static NSString *errorMessageFromAutoPkgVerb(LGAutoPkgVerb verb)
             localizedBaseString = @"kLGAutoPkgUndefinedVerb";
             break;
     }
-    
+
     message = NSLocalizedString([localizedBaseString stringByAppendingString:@"Description"],
                                 @"NSLocalizedDescriptionKey");
     return message;
@@ -181,17 +181,17 @@ static NSString *errorMessageFromAutoPkgVerb(LGAutoPkgVerb verb)
     if ([task isRunning]) {
         return nil;
     }
-    
+
     if (task.terminationReason == NSTaskTerminationReasonUncaughtSignal) {
         DLog(@"AutoPkg run canceled by user.");
         return nil;
     }
-    
+
     NSError *error;
     NSString *errorMsg = errorMessageFromAutoPkgVerb(verb);
     NSString *errorDetails;
     NSInteger taskError;
-    
+
     if ([task.standardError isKindOfClass:[NSPipe class]]) {
         NSData *errData = [[task.standardError fileHandleForReading] readDataToEndOfFile];
         if (errData) {
@@ -199,7 +199,7 @@ static NSString *errorMessageFromAutoPkgVerb(LGAutoPkgVerb verb)
         }
     }
 
-    taskError = task.terminationStatus;    
+    taskError = task.terminationStatus;
     // AutoPkg's rc on a failed repo-update / add / delete is 0, so check the stderr for "ERROR" string
     if (verb == kLGAutoPkgRepoUpdate || verb == kLGAutoPkgRepoDelete || verb == kLGAutoPkgRepoAdd) {
         if (errorDetails && ![errorDetails isEqualToString:@""]) {
@@ -210,14 +210,14 @@ static NSString *errorMessageFromAutoPkgVerb(LGAutoPkgVerb verb)
     else if (verb == kLGAutoPkgRun && task.terminationStatus == kLGErrorAutoPkgNoRecipes) {
         errorDetails = @"No recipes specified.";
     }
-    
+
     // Otherwise we can just use the termination status
     if (taskError != 0) {
         error = [NSError errorWithDomain:kLGApplicationName
                                     code:taskError
                                 userInfo:@{ NSLocalizedDescriptionKey : errorMsg,
                                             NSLocalizedRecoverySuggestionErrorKey : errorDetails ? errorDetails : @"" }];
-        
+
         // If Debugging is enabled, log the error message
         DLog(@"Error [%ld] %@ \n %@", (long)taskError, errorMsg, errorDetails);
     }

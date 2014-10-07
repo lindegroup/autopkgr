@@ -161,7 +161,7 @@
         // Mountian Lion compatible
         latestVersionDict = [self getLatestReleaseDictionary:kLGGitMLReleasesJSONURL];
     }
-    
+
     NSString *browserDownloadURL = [latestVersionDict[@"assets"] firstObject][@"browser_download_url"];
 
     // Get the Git DMG download URL for the appropriate version

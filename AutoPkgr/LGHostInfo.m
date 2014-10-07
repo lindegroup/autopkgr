@@ -55,7 +55,7 @@ NSString *const kLGBoxenBrewGit = @"/opt/boxen/homebrew/bin";
     NSFileManager *fm = [[NSFileManager alloc] init];
     LGDefaults *defaults = [[LGDefaults alloc] init];
     NSString *foundGitPath;
-    
+
     // First see if AutoPkg already has a GIT_PATH key set,
     // and if the executable still exists.
     BOOL success = NO;
@@ -78,7 +78,7 @@ NSString *const kLGBoxenBrewGit = @"/opt/boxen/homebrew/bin";
             }
         }
     }
-    
+
     if ([foundGitPath isEqualToString:kLGOfficialGit]) {
         DLog(@"Using Official Git");
     } else if ([foundGitPath isEqualToString:kLGCLIToolsGit]) {
@@ -135,15 +135,15 @@ NSString *const kLGBoxenBrewGit = @"/opt/boxen/homebrew/bin";
 + (BOOL)autoPkgUpdateAvailable
 {
     // TODO: This check shouldn't block the main thread
-    
+
     // Get the currently installed version of AutoPkg
     NSString *installedAutoPkgVersionString = [self getAutoPkgVersion];
     NSLog(@"Installed version of AutoPkg: %@", installedAutoPkgVersionString);
-    
+
     // Get the latest version of AutoPkg available on GitHub
     LGGitHubJSONLoader *jsonLoader = [[LGGitHubJSONLoader alloc] init];
     NSString *latestAutoPkgVersionString = [jsonLoader getLatestAutoPkgReleaseVersionNumber];
-    
+
     // Determine if AutoPkg is up-to-date by comparing the version strings
     BOOL newVersionAvailable = [LGVersionComparator isVersion:latestAutoPkgVersionString greaterThanVersion:installedAutoPkgVersionString];
     if (newVersionAvailable) {
