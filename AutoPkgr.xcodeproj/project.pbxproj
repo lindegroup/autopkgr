@@ -46,6 +46,7 @@
 		BE57733819D519E400D872A4 /* LGJSSAddon.m in Sources */ = {isa = PBXBuildFile; fileRef = BE57733719D519E400D872A4 /* LGJSSAddon.m */; };
 		BE57AC2A19BA3BBC00BB17B1 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = BE57AC2C19BA3BBC00BB17B1 /* Localizable.strings */; };
 		BE73CDC719E062AC00441443 /* NSString+cleaned.m in Sources */ = {isa = PBXBuildFile; fileRef = BE73CDC619E062AC00441443 /* NSString+cleaned.m */; };
+		BE77A80019E37C910022B6FB /* NSImage+statusLight.m in Sources */ = {isa = PBXBuildFile; fileRef = BE77A7FF19E37C910022B6FB /* NSImage+statusLight.m */; };
 		BE8526B219D5F641007DFA9E /* SecurityInterface.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BE8526B119D5F641007DFA9E /* SecurityInterface.framework */; };
 		BE87994B1995BA410082472B /* LGDefaults.m in Sources */ = {isa = PBXBuildFile; fileRef = BE87994A1995BA410082472B /* LGDefaults.m */; };
 		BEAA76CC19BFD635002D73EE /* LGInstaller.m in Sources */ = {isa = PBXBuildFile; fileRef = BEAA76CB19BFD635002D73EE /* LGInstaller.m */; };
@@ -180,6 +181,8 @@
 		BE57AC2B19BA3BBC00BB17B1 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		BE73CDC519E062AC00441443 /* NSString+cleaned.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSString+cleaned.h"; path = "Custom Catagories/NSString+cleaned.h"; sourceTree = "<group>"; };
 		BE73CDC619E062AC00441443 /* NSString+cleaned.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSString+cleaned.m"; path = "Custom Catagories/NSString+cleaned.m"; sourceTree = "<group>"; };
+		BE77A7FE19E37C910022B6FB /* NSImage+statusLight.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSImage+statusLight.h"; path = "Custom Catagories/NSImage+statusLight.h"; sourceTree = "<group>"; };
+		BE77A7FF19E37C910022B6FB /* NSImage+statusLight.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSImage+statusLight.m"; path = "Custom Catagories/NSImage+statusLight.m"; sourceTree = "<group>"; };
 		BE8526B119D5F641007DFA9E /* SecurityInterface.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SecurityInterface.framework; path = System/Library/Frameworks/SecurityInterface.framework; sourceTree = SDKROOT; };
 		BE8799491995BA410082472B /* LGDefaults.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGDefaults.h; sourceTree = "<group>"; };
 		BE87994A1995BA410082472B /* LGDefaults.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGDefaults.m; sourceTree = "<group>"; };
@@ -362,6 +365,8 @@
 		BE39FE5419DFBB2900C1B4A1 /* Custom Catagories */ = {
 			isa = PBXGroup;
 			children = (
+				BE77A7FE19E37C910022B6FB /* NSImage+statusLight.h */,
+				BE77A7FF19E37C910022B6FB /* NSImage+statusLight.m */,
 				BE73CDC519E062AC00441443 /* NSString+cleaned.h */,
 				BE73CDC619E062AC00441443 /* NSString+cleaned.m */,
 				BEE8CF1119E0E7F400981C4B /* NSTextField+setSafeStringValue.h */,
@@ -647,6 +652,7 @@
 				BEE8CF1319E0E7F400981C4B /* NSTextField+setSafeStringValue.m in Sources */,
 				BEAA76CC19BFD635002D73EE /* LGInstaller.m in Sources */,
 				BE025CF619BAE93400D36345 /* LGAutoPkgTask.m in Sources */,
+				BE77A80019E37C910022B6FB /* NSImage+statusLight.m in Sources */,
 				6A0BABE9196E560000A136BB /* LGPopularRepositories.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

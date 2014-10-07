@@ -24,6 +24,11 @@
 #import "LGTestPort.h"
 #import "LGInstaller.h"
 #import "LGHostInfo.h"
+#import "LGAutoPkgTask.h"
+
+#pragma mark - Class constants
+NSString *defaultJSSRepo = @"https://github.com/sheagcraig/jss-recipes.git";
+
 
 @implementation LGJSSAddon {
     LGDefaults *_defaults;
@@ -35,35 +40,33 @@
 {
     _defaults = [LGDefaults standardUserDefaults];
 
-    NSImage *notInstalled = [NSImage imageNamed:@"NSStatusNone"];
-    NSImage *updateAvaliable = [NSImage imageNamed:@"NSStatusPartiallyAvailable"];
-
-    [_jssStatusLight setImage:notInstalled];
+    [_jssInstallStatusLight setImage:[NSImage LGStatusNotInstalled]];
     [_jssInstallStatusLight setHidden:NO];
 
     if ([LGHostInfo jssAddonInstalled]) {
-        [_jssInstallStatusLight setImage:updateAvaliable];
         [_jssInstallStatusLight setHidden:NO];
         NSOperationQueue *bgQueue = [[NSOperationQueue alloc] init];
         [bgQueue addOperationWithBlock:^{
             BOOL updateAvaliable = [LGHostInfo jssAddonUpdateAvailable];
             [[NSOperationQueue mainQueue] addOperationWithBlock:^{
                 if (updateAvaliable) {
-                    _jssInstallStatusTF.stringValue = @"JSS AutoPkg update avaliable";
+                    _jssInstallStatusTF.stringValue = @"JSS AutoPkg update avaliable.";
                     [_jssInstallButton setEnabled:YES];
+                    _jssInstallButton.image = [NSImage LGStatusUpdateAvaliable];
                 } else {
                     NSString *version = [LGHostInfo getJSSAddonVersion];
-                    NSImage *image = [NSImage imageNamed:@"NSStatusAvailable"];
                     NSString *title = [NSString stringWithFormat:@"Version %@ installed",version];
                     
-                    _jssInstallStatusLight.image = image;
+                    _jssInstallStatusLight.image = [NSImage LGStatusUpToDate];
                     _jssInstallButton.title = title ;
 
                 }
             }];
         }];
     } else {
-        [_jssInstallStatusLight setImage:notInstalled];
+        [_jssInstallButton setEnabled:YES];
+        [_jssInstallButton setTitle:@"Install JSS AutoPkg Addon"];
+        [_jssInstallStatusTF setStringValue:@"JSS AutoPkg Addon not installed."];
     }
 
     _jssAPIUsernameTF.safeStringValue = _defaults.JSSAPIUsername;
@@ -128,18 +131,31 @@
                                   }];
 }
 
-- (void)installJSSAddon:(id)sender
+- (IBAction)installJSSAddon:(id)sender
 {
     LGInstaller *installer = [[LGInstaller alloc] init];
     installer.progressDelegate = [NSApp delegate];
+    [_jssInstallButton setEnabled:NO];
     [installer installJSSAddon:^(NSError *error) {
-        if (!error) {
-            [[NSOperationQueue mainQueue]addOperationWithBlock:^{
-                _jssInstallStatusTF.stringValue = @"JSS AutoPkg Addon is up to date.";
-                _jssInstallStatusLight.image = [NSImage imageNamed:@"NSStatusAvailable"];
-                [_jssReloadServerBT setEnabled:NO];
+        BOOL success = (error == nil);
+        if (success) {
+            [LGAutoPkgTask repoAdd:defaultJSSRepo reply:^(NSError *error) {
+                if (error) {
+                    NSLog(@"Problem adding the default jss-repo");
+                    DLog(@"%@",error);
+                }
             }];
         }
+        [[NSOperationQueue mainQueue]addOperationWithBlock:^{
+            if (success) {
+                NSString *version = [LGHostInfo getJSSAddonVersion];
+                NSString *title = [NSString stringWithFormat:@"Version %@ installed",version];
+                _jssInstallStatusTF.stringValue = @"JSS AutoPkg Addon is up to date.";
+                _jssInstallButton.title = title;
+                _jssInstallStatusLight.image = [NSImage LGStatusUpToDate];
+            }
+            [_jssInstallButton setEnabled:success ? NO:YES];
+        }];
     }];
 }
 
@@ -196,14 +212,19 @@
 #pragma mark - Utility
 - (void)checkReachability
 {
+    // If there's a currently processing _portTester nil it out
+    if (_portTester) {
+        _portTester = nil;
+    }
+
     _portTester = [[LGTestPort alloc] init];
     [self startStatusUpdate];
     [_portTester testServerURL:_jssURLTF.safeStringValue reply:^(BOOL reachable) {
         _serverReachable = reachable;
         if (reachable) {
-            [_jssStatusLight setImage:[NSImage imageNamed:@"NSStatusAvailable"]];
+            [_jssStatusLight setImage:[NSImage LGStatusAvaliable]];
         } else {
-            [_jssStatusLight setImage:[NSImage imageNamed:@"NSStatusUnavailable"]];
+            [_jssStatusLight setImage:[NSImage LGStatusUnavaliable]];
         }
         [self stopStatusUpdate:nil];
         _portTester = nil;
@@ -246,6 +267,7 @@
 
 - (void)evaluateRepoViability
 {
+    // if all settings have been removed clear out the JSS_REPOS key too
     if (!_defaults.JSSAPIPassword && !_defaults.JSSAPIUsername && !_defaults.JSSURL) {
         _defaults.JSSRepos = nil;
     }
@@ -280,14 +302,13 @@
     BOOL required = NO;
 
     if (![LGHostInfo jssAddonInstalled]) {
-        NSAlert *alert = [NSAlert alertWithMessageText:@"Install autopkg-jss-addon?" defaultButton:@"Install" alternateButton:@"Cancel" otherButton:nil informativeTextWithFormat:@"You have selected a recipe that requres installation of the autopkg-jss-addon, would you like to install it now?"];
+        NSAlert *alert = [NSAlert alertWithMessageText:@"Install autopkg-jss-addon?" defaultButton:@"Install" alternateButton:@"Cancel" otherButton:nil informativeTextWithFormat:@"The autopkg-jss-addon is not currently installed, would you like to install it now?"];
 
         NSInteger button = [alert runModal];
         if (button == NSAlertDefaultReturn) {
-            LGInstaller *installer = [[LGInstaller alloc] init];
-            installer.progressDelegate = [NSApp delegate];
-            [installer installJSSAddon:^(NSError *error) {}];
+            [self installJSSAddon:self];
         }
+
         return YES;
     }
     return required;
