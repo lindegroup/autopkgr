@@ -84,6 +84,7 @@ NSString *defaultJSSRepo = @"https://github.com/sheagcraig/jss-recipes.git";
 - (IBAction)updateJSSURL:(id)sender
 {
     [self evaluateRepoViability];
+    [self checkReachability];
 }
 
 - (IBAction)reloadJSSServerInformation:(id)sender
@@ -291,7 +292,7 @@ NSString *defaultJSSRepo = @"https://github.com/sheagcraig/jss-recipes.git";
                 [_jssInstallButton setEnabled:updateAvaliable];
                 if (updateAvaliable) {
                     _jssInstallStatusTF.stringValue = @"JSS AutoPkg update avaliable.";
-                    _jssInstallButton.image = [NSImage LGStatusUpdateAvaliable];
+                    _jssInstallStatusLight.image = [NSImage LGStatusUpdateAvaliable];
                 } else {
                     NSString *version = [LGHostInfo getJSSAddonVersion];
                     NSString *title = [NSString stringWithFormat:@"Version %@ installed",version];
