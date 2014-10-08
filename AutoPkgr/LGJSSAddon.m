@@ -37,11 +37,11 @@ NSString *defaultJSSRepo = @"https://github.com/sheagcraig/jss-recipes.git";
 
 - (void)awakeFromNib
 {
+    _defaults = [LGDefaults standardUserDefaults];
+
     [_jssInstallStatusLight setHidden:YES];
     [_jssInstallStatusTF setHidden:YES];
     [_jssInstallButton setHidden:YES];
-
-    _defaults = [LGDefaults standardUserDefaults];
 
     [_jssInstallStatusLight setImage:[NSImage LGStatusNotInstalled]];
     if ([LGHostInfo jssAddonInstalled]) {
@@ -78,10 +78,18 @@ NSString *defaultJSSRepo = @"https://github.com/sheagcraig/jss-recipes.git";
 
     if (_defaults.JSSURL) {
         _jssURLTF.safeStringValue = _defaults.JSSURL;
-        [self checkReachability];
     }
 
     [self evaluateRepoViability];
+
+    if (!_defaults.JSSRepos) {
+        [_jssStatusLight setHidden:YES];
+    } else {
+        if (_defaults.JSSAPIPassword && _defaults.JSSAPIUsername && _defaults.JSSURL) {
+            [self checkReachability];
+        }
+    }
+
     [_jssDistributionPointTableView reloadData];
 }
 
@@ -101,17 +109,11 @@ NSString *defaultJSSRepo = @"https://github.com/sheagcraig/jss-recipes.git";
 - (IBAction)updateJSSURL:(id)sender
 {
     _defaults.JSSURL = _jssURLTF.safeStringValue;
-    [self checkReachability];
     [self evaluateRepoViability];
 }
 
 - (IBAction)reloadJSSServerInformation:(id)sender
 {
-    if (!_serverReachable) {
-        [self stopStatusUpdate:[LGError errorWithCode:kLGErrorTestingPort]];
-        return;
-    }
-
     if ([self requiresInstall]) {
         return;
     }
@@ -129,6 +131,7 @@ NSString *defaultJSSRepo = @"https://github.com/sheagcraig/jss-recipes.git";
                                        NSArray *cleanedArray = [self evaluateJSSRepoDictionaries:distPoints];
                                        if ([cleanedArray count]) {
                                            _defaults.JSSRepos = cleanedArray;
+                                           [_jssStatusLight setImage:[NSImage LGStatusAvaliable]];
                                            [_jssDistributionPointTableView reloadData];
                                        }
                                    }
@@ -185,6 +188,7 @@ NSString *defaultJSSRepo = @"https://github.com/sheagcraig/jss-recipes.git";
         [_jssStatusSpinner stopAnimation:self];
         if (error) {
             [[NSApp delegate] stopProgress:error];
+            [_jssStatusLight setImage:[NSImage LGStatusUnavaliable]];
         }
     }];
 }
@@ -227,6 +231,8 @@ NSString *defaultJSSRepo = @"https://github.com/sheagcraig/jss-recipes.git";
 
     _portTester = [[LGTestPort alloc] init];
     [self startStatusUpdate];
+    [_jssStatusLight setHidden:NO];
+
     [_portTester testServerURL:_jssURLTF.safeStringValue reply:^(BOOL reachable) {
         _serverReachable = reachable;
         if (reachable) {
@@ -278,14 +284,25 @@ NSString *defaultJSSRepo = @"https://github.com/sheagcraig/jss-recipes.git";
     // if all settings have been removed clear out the JSS_REPOS key too
     if (!_defaults.JSSAPIPassword && !_defaults.JSSAPIUsername && !_defaults.JSSURL) {
         _defaults.JSSRepos = nil;
+        [_jssStatusLight setHidden:YES];
+    } else if (!_defaults.JSSAPIPassword || !_defaults.JSSAPIUsername || !_defaults.JSSURL) {
+        [_jssStatusLight setImage:[NSImage LGStatusPartiallyAvaliable]];
     }
+
     [_jssDistributionPointTableView reloadData];
+}
+
+- (void)saveDefaults
+{
+    _defaults.JSSURL = _jssURLTF.safeStringValue;
+    _defaults.JSSAPIUsername = _jssAPIUsernameTF.safeStringValue;
+    _defaults.JSSURL = _jssURLTF.safeStringValue;
 }
 
 - (NSString *)promptForSharePassword:(NSString *)shareName
 {
     NSString *password;
-    NSString *alertString = [NSString stringWithFormat:@"Please enter read/write password for the %@ distribution point", shareName];
+    NSString *alertString = [NSString stringWithFormat:@"Please enter read/write password for the %@ distribution point.", shareName];
     NSAlert *alert = [NSAlert alertWithMessageText:alertString
                                      defaultButton:@"OK"
                                    alternateButton:@"Cancel"
