@@ -96,7 +96,7 @@ typedef NS_ENUM(NSInteger, LGInstallType) {
 - (BOOL)runJSSAddonInstaller:(NSError *__autoreleasing *)error
 {
     NSError *installError;
-    BOOL success = [self runInstallerFor:@"jss-addon" githubAPI:kLGJSSAddonJSONURL error:error];
+    BOOL success = [self runInstallerFor:@"JSS AutoPkg Addon" githubAPI:kLGJSSAddonJSONURL error:error];
     if (!success) {
         if (installError) DLog(@"%@", installError);
         success = [LGError errorWithCode:kLGErrorInstallJSSAddon error:error];
@@ -109,7 +109,7 @@ typedef NS_ENUM(NSInteger, LGInstallType) {
     NSOperationQueue *bgQueue = [[NSOperationQueue alloc] init];
     [bgQueue addOperationWithBlock:^{
         NSError *error;
-        [_progressDelegate startProgressWithMessage:@"Installing jss-addon..."];
+        [_progressDelegate startProgressWithMessage:@"Installing JSS AutoPkg Addon..."];
         [self runJSSAddonInstaller:&error];
         [_progressDelegate stopProgress:error];
         reply(error);

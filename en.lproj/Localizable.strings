@@ -45,7 +45,7 @@
 "kLGErrorInstallAutoPkgrSuggestion" = "If the problem persists please try manually downloading and installing AutoPkgr: https://github.com/lindegroup/autopkgr/releases/latest";
 
 /** Error installing/updating JSSAddon */
-"kLGErrorInstallJSSAddonDescription" = "Error installing autopkg-jss-addon";
+"kLGErrorInstallJSSAddonDescription" = "Error installing JSS AutoPkg Addon";
 "kLGErrorInstallJSSAddonSuggestion" = "If the problem persists please try manually downloading and installing from: https://github.com/sheagcraig/jss-autopkg-addon/releases/latest";
 
 /** Error Serializing JSS response */

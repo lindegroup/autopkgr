@@ -302,7 +302,7 @@ NSString *defaultJSSRepo = @"https://github.com/sheagcraig/jss-recipes.git";
     BOOL required = NO;
 
     if (![LGHostInfo jssAddonInstalled]) {
-        NSAlert *alert = [NSAlert alertWithMessageText:@"Install autopkg-jss-addon?" defaultButton:@"Install" alternateButton:@"Cancel" otherButton:nil informativeTextWithFormat:@"The autopkg-jss-addon is not currently installed, would you like to install it now?"];
+        NSAlert *alert = [NSAlert alertWithMessageText:@"Install JSS AutoPkg Addon?" defaultButton:@"Install" alternateButton:@"Cancel" otherButton:nil informativeTextWithFormat:@"The JSS AutoPkg Addon is not currently installed, would you like to install it now?"];
 
         NSInteger button = [alert runModal];
         if (button == NSAlertDefaultReturn) {
