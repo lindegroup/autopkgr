@@ -40,11 +40,11 @@
                              reply:(void (^)(NSDictionary *, NSError *))reply
 {
     // Setup the request
-    NSURL *url = [NSURL URLWithString:@"/JSSResource/distributionpoints" relativeToURL: [NSURL URLWithString:server]];
-    
+    NSURL *url = [NSURL URLWithString:@"/JSSResource/distributionpoints" relativeToURL:[NSURL URLWithString:server]];
+
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
     request.timeoutInterval = 5.0;
-    
+
     // Set up the operation
     AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
 
@@ -55,9 +55,9 @@
                                                 password:password
                                              persistence:NSURLCredentialPersistenceNone];
     }
-    
+
     [[LGDefaults standardUserDefaults] setJSSVerifySSL:NO];
-    
+
     [operation setWillSendRequestForAuthenticationChallengeBlock:^(NSURLConnection *connection, NSURLAuthenticationChallenge *challenge) {
         DLog(@"Got authentication challenge");
         if ([challenge.protectionSpace.authenticationMethod isEqualToString:NSURLAuthenticationMethodServerTrust]){
@@ -73,15 +73,13 @@
             [[challenge sender] continueWithoutCredentialForAuthenticationChallenge:challenge];
         }
     }];
-    
+
     [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
-        DLog(@"Response: %@",operation.response);
         NSError *error = nil;
         NSDictionary *responseDictionary = [self xmlToDictionary:responseObject];
         if (!responseDictionary) error = [LGError errorWithCode:kLGErrorJSSXMLSerializerError];
         reply(responseDictionary,error);
         [self resetCache];
-        
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         DLog(@"Response: %@",operation.response);
         NSLog(@"Error: %@",error.localizedDescription);
@@ -92,8 +90,7 @@
     [operation start];
 }
 
-
-# pragma mark - Challenge Handlers
+#pragma mark - Challenge Handlers
 
 - (void)promptForCertTrust:(NSURLAuthenticationChallenge *)challenge
                 connection:(NSURLConnection *)connection
@@ -107,6 +104,7 @@
         case kSecTrustResultProceed: // The user explicitly told the OS to trust it.
         {
             proceed = YES;
+            break;
         }
         default: {
             SFCertificateTrustPanel *panel = [SFCertificateTrustPanel sharedCertificateTrustPanel];
@@ -116,7 +114,7 @@
             [panel setInformativeText:info];
 
             proceed = [panel runModalForTrust:challenge.protectionSpace.serverTrust
-                                          message:@"AutoPkgr can't verify the identity of the server"];
+                                      message:@"AutoPkgr can't verify the identity of the server"];
             if (proceed) {
                 [[LGDefaults standardUserDefaults] setJSSVerifySSL:proceed];
             }
@@ -124,9 +122,9 @@
         }
         }
     }
-    if(proceed){
+    if (proceed) {
         [challenge.sender useCredential:[NSURLCredential credentialForTrust:challenge.protectionSpace.serverTrust] forAuthenticationChallenge:challenge];
-    }else{
+    } else {
         [[challenge sender] cancelAuthenticationChallenge:challenge];
     };
 }
@@ -149,7 +147,6 @@
     return dictionary;
 }
 
-
 #pragma mark - Resets
 
 - (void)resetCache
@@ -162,8 +159,7 @@
 {
     for (NSURLProtectionSpace *space in _protectionSpaces) {
         NSDictionary *credentialsDict = [[NSURLCredentialStorage sharedCredentialStorage] credentialsForProtectionSpace:space];
-        if ([credentialsDict count] > 0)
-        {
+        if ([credentialsDict count] > 0) {
             id userName;
             NSEnumerator *userNameEnumerator = [credentialsDict keyEnumerator];
             while (userName = [userNameEnumerator nextObject]) {
