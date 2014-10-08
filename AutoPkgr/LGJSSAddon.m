@@ -39,34 +39,11 @@ NSString *defaultJSSRepo = @"https://github.com/sheagcraig/jss-recipes.git";
 {
     _defaults = [LGDefaults standardUserDefaults];
 
-    [_jssInstallStatusLight setHidden:YES];
-    [_jssInstallStatusTF setHidden:YES];
-    [_jssInstallButton setHidden:YES];
+    [self showInstallTabItems:NO];
 
     [_jssInstallStatusLight setImage:[NSImage LGStatusNotInstalled]];
-    if ([LGHostInfo jssAddonInstalled]) {
-        [_jssInstallStatusLight setHidden:NO];
-        [_jssInstallStatusTF setHidden:NO];
-        [_jssInstallButton setHidden:NO];
-
-        NSOperationQueue *bgQueue = [[NSOperationQueue alloc] init];
-        [bgQueue addOperationWithBlock:^{
-            BOOL updateAvaliable = [LGHostInfo jssAddonUpdateAvailable];
-            [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-                if (updateAvaliable) {
-                    _jssInstallStatusTF.stringValue = @"JSS AutoPkg update avaliable.";
-                    [_jssInstallButton setEnabled:YES];
-                    _jssInstallButton.image = [NSImage LGStatusUpdateAvaliable];
-                } else {
-                    NSString *version = [LGHostInfo getJSSAddonVersion];
-                    NSString *title = [NSString stringWithFormat:@"Version %@ installed",version];
-                    
-                    _jssInstallStatusLight.image = [NSImage LGStatusUpToDate];
-                    _jssInstallButton.title = title ;
-
-                }
-            }];
-        }];
+    if ([LGHostInfo jssAddonInstalled] && _defaults.JSSRepos) {
+        [self showInstallTabItems:YES];
     } else {
         [_jssInstallButton setEnabled:YES];
         [_jssInstallButton setTitle:@"Install JSS AutoPkg Addon"];
@@ -96,19 +73,16 @@ NSString *defaultJSSRepo = @"https://github.com/sheagcraig/jss-recipes.git";
 #pragma mark - IBActions
 - (IBAction)updateJSSUsername:(id)sender
 {
-    _defaults.JSSAPIUsername = _jssAPIUsernameTF.safeStringValue;
     [self evaluateRepoViability];
 }
 
 - (IBAction)updateJSSPassword:(id)sender
 {
-    _defaults.JSSAPIPassword = _jssAPIPasswordTF.safeStringValue;
     [self evaluateRepoViability];
 }
 
 - (IBAction)updateJSSURL:(id)sender
 {
-    _defaults.JSSURL = _jssURLTF.safeStringValue;
     [self evaluateRepoViability];
 }
 
@@ -132,6 +106,7 @@ NSString *defaultJSSRepo = @"https://github.com/sheagcraig/jss-recipes.git";
                                        if ([cleanedArray count]) {
                                            _defaults.JSSRepos = cleanedArray;
                                            [_jssStatusLight setImage:[NSImage LGStatusAvaliable]];
+                                           [self saveDefaults];
                                            [_jssDistributionPointTableView reloadData];
                                        }
                                    }
@@ -282,19 +257,55 @@ NSString *defaultJSSRepo = @"https://github.com/sheagcraig/jss-recipes.git";
 - (void)evaluateRepoViability
 {
     // if all settings have been removed clear out the JSS_REPOS key too
-    if (!_defaults.JSSAPIPassword && !_defaults.JSSAPIUsername && !_defaults.JSSURL) {
+    if (!_jssAPIPasswordTF.safeStringValue && !_jssAPIUsernameTF.safeStringValue && !_jssURLTF.safeStringValue) {
         _defaults.JSSRepos = nil;
+        [self saveDefaults];
         [_jssStatusLight setHidden:YES];
-    } else if (!_defaults.JSSAPIPassword || !_defaults.JSSAPIUsername || !_defaults.JSSURL) {
-        [_jssStatusLight setImage:[NSImage LGStatusPartiallyAvaliable]];
+        [self showInstallTabItems:NO];
+
+    } else if (![_defaults.JSSAPIPassword isEqualToString:_jssAPIPasswordTF.safeStringValue] || ![_defaults.JSSAPIUsername isEqualToString:_jssAPIUsernameTF.safeStringValue] || ![_defaults.JSSURL isEqualToString:_jssURLTF.safeStringValue]) {
+
+        // Update server status
+        if ([_jssStatusLight.image isEqualTo:[NSImage LGStatusAvaliable]]) {
+            [_jssStatusLight setImage:[NSImage LGStatusPartiallyAvaliable]];
+        }
+
+        // Show installer status
+        [self showInstallTabItems:YES];
     }
 
     [_jssDistributionPointTableView reloadData];
 }
 
+- (void)showInstallTabItems:(BOOL)show
+{
+    // Show installer status
+    [_jssInstallStatusLight setHidden:!show];
+    [_jssInstallStatusTF setHidden:!show];
+    [_jssInstallButton setHidden:!show];
+    if (show) {
+        NSOperationQueue *bgQueue = [[NSOperationQueue alloc] init];
+        [bgQueue addOperationWithBlock:^{
+            BOOL updateAvaliable = [LGHostInfo jssAddonUpdateAvailable];
+            [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+                [_jssInstallButton setEnabled:updateAvaliable];
+                if (updateAvaliable) {
+                    _jssInstallStatusTF.stringValue = @"JSS AutoPkg update avaliable.";
+                    _jssInstallButton.image = [NSImage LGStatusUpdateAvaliable];
+                } else {
+                    NSString *version = [LGHostInfo getJSSAddonVersion];
+                    NSString *title = [NSString stringWithFormat:@"Version %@ installed",version];
+                    
+                    _jssInstallStatusLight.image = [NSImage LGStatusUpToDate];
+                    _jssInstallButton.title = title ;
+                }
+            }];
+        }];
+    }
+}
 - (void)saveDefaults
 {
-    _defaults.JSSURL = _jssURLTF.safeStringValue;
+    _defaults.JSSAPIPassword = _jssAPIPasswordTF.safeStringValue;
     _defaults.JSSAPIUsername = _jssAPIUsernameTF.safeStringValue;
     _defaults.JSSURL = _jssURLTF.safeStringValue;
 }
@@ -318,6 +329,7 @@ NSString *defaultJSSRepo = @"https://github.com/sheagcraig/jss-recipes.git";
         [input validateEditing];
         password = [input stringValue];
     }
+
     return password;
 }
 
