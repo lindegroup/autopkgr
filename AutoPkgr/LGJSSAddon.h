@@ -39,5 +39,3 @@
 - (IBAction)installJSSAddon:(id)sender;
 
 @end
-
-

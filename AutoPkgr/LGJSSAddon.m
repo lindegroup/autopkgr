@@ -29,7 +29,6 @@
 #pragma mark - Class constants
 NSString *defaultJSSRepo = @"https://github.com/sheagcraig/jss-recipes.git";
 
-
 @implementation LGJSSAddon {
     LGDefaults *_defaults;
     LGTestPort *_portTester;
@@ -38,13 +37,18 @@ NSString *defaultJSSRepo = @"https://github.com/sheagcraig/jss-recipes.git";
 
 - (void)awakeFromNib
 {
+    [_jssInstallStatusLight setHidden:YES];
+    [_jssInstallStatusTF setHidden:YES];
+    [_jssInstallButton setHidden:YES];
+
     _defaults = [LGDefaults standardUserDefaults];
 
     [_jssInstallStatusLight setImage:[NSImage LGStatusNotInstalled]];
-    [_jssInstallStatusLight setHidden:NO];
-
     if ([LGHostInfo jssAddonInstalled]) {
         [_jssInstallStatusLight setHidden:NO];
+        [_jssInstallStatusTF setHidden:NO];
+        [_jssInstallButton setHidden:NO];
+
         NSOperationQueue *bgQueue = [[NSOperationQueue alloc] init];
         [bgQueue addOperationWithBlock:^{
             BOOL updateAvaliable = [LGHostInfo jssAddonUpdateAvailable];
@@ -150,6 +154,10 @@ NSString *defaultJSSRepo = @"https://github.com/sheagcraig/jss-recipes.git";
             if (success) {
                 NSString *version = [LGHostInfo getJSSAddonVersion];
                 NSString *title = [NSString stringWithFormat:@"Version %@ installed",version];
+                [_jssInstallStatusLight setHidden:NO];
+                [_jssInstallStatusTF setHidden:NO];
+                [_jssInstallButton setHidden:NO];
+                
                 _jssInstallStatusTF.stringValue = @"JSS AutoPkg Addon is up to date.";
                 _jssInstallButton.title = title;
                 _jssInstallStatusLight.image = [NSImage LGStatusUpToDate];
