@@ -251,7 +251,7 @@ NSString *defaultJSSRepo = @"https://github.com/sheagcraig/jss-recipes.git";
             if (!repo[@"password"]) {
                 NSString *name = repo[@"name"];
                 NSString *password = [self promptForSharePassword:name];
-                if (password) {
+                if (password && ![password isEqualToString:@""]) {
                     [newRepos addObject:@{ @"name" : name,
                                            @"password" : password }];
                 }
@@ -339,6 +339,9 @@ NSString *defaultJSSRepo = @"https://github.com/sheagcraig/jss-recipes.git";
     if (button == NSAlertDefaultReturn) {
         [input validateEditing];
         password = [input stringValue];
+        if (!password || [password isEqualToString:@""]) {
+            return [self promptForSharePassword:shareName];
+        }
     }
 
     return password;
@@ -354,7 +357,7 @@ NSString *defaultJSSRepo = @"https://github.com/sheagcraig/jss-recipes.git";
 
         NSInteger button = [alert runModal];
         if (button == NSAlertDefaultReturn) {
-            [self installJSSAddon:self];
+            [self installJSSAddon:nil];
         }
 
         return YES;
