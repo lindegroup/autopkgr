@@ -72,6 +72,7 @@ static NSDictionary *userInfoFromCode(LGErrorCodes code)
             break;
         case kLGErrorJSSXMLSerializerError:
             localizedBaseString = @"kLGErrorJSSXMLSerializerError";
+            break;
         default:
             localizedBaseString = @"kLGErrorUnknown";
             break;
@@ -162,9 +163,11 @@ static NSDictionary *userInfoFromHTTPResponse(NSHTTPURLResponse *response)
         case 404:
             // Not Found
             localizedBaseString = @"kLGHTTPErrorNotFound";
+            break;
         case 408:
             // Timeout
             localizedBaseString = @"kLGHTTPErrorTimeout";
+            break;
         default:
             // General failure
             localizedBaseString = @"kLGHTTPErrorUnknown";
