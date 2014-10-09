@@ -66,7 +66,6 @@ NSString *defaultJSSRepo = @"https://github.com/sheagcraig/jss-recipes.git";
             [self checkReachability];
         }
     }
-
     [_jssDistributionPointTableView reloadData];
 }
 
@@ -101,11 +100,9 @@ NSString *defaultJSSRepo = @"https://github.com/sheagcraig/jss-recipes.git";
                                   reply:^(NSDictionary *distributionPoints, NSError *error) {
                                       [self stopStatusUpdate:error];
                                       [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-
                                            id distPoints = distributionPoints[@"distribution_point"];
                                            if (distPoints) {
                                                NSArray *cleanedArray = [self evaluateJSSRepoDictionaries:distPoints];
-                                               
                                                if (cleanedArray) {
                                                    _defaults.JSSRepos = cleanedArray;
                                                    [self saveDefaults];
@@ -140,6 +137,7 @@ NSString *defaultJSSRepo = @"https://github.com/sheagcraig/jss-recipes.git";
                 [_jssInstallStatusLight setHidden:NO];
                 [_jssInstallStatusTF setHidden:NO];
                 [_jssInstallButton setHidden:NO];
+                
                 
                 _jssInstallStatusTF.stringValue = @"JSS AutoPkg Addon is up to date.";
                 _jssInstallButton.title = title;
@@ -191,7 +189,6 @@ NSString *defaultJSSRepo = @"https://github.com/sheagcraig/jss-recipes.git";
 
 - (void)tableView:(NSTableView *)tableView setObjectValue:(id)object forTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row
 {
-
     NSMutableArray *workingArray = [NSMutableArray arrayWithArray:_defaults.JSSRepos];
     NSMutableDictionary *distributionPoint = [NSMutableDictionary dictionaryWithDictionary:workingArray[row]];
 
@@ -272,9 +269,7 @@ NSString *defaultJSSRepo = @"https://github.com/sheagcraig/jss-recipes.git";
         [self saveDefaults];
         [_jssStatusLight setHidden:YES];
         [self showInstallTabItems:NO];
-
     } else if (![_defaults.JSSAPIPassword isEqualToString:_jssAPIPasswordTF.safeStringValue] || ![_defaults.JSSAPIUsername isEqualToString:_jssAPIUsernameTF.safeStringValue] || ![_defaults.JSSURL isEqualToString:_jssURLTF.safeStringValue]) {
-
         // Update server status
         if ([_jssStatusLight.image isEqualTo:[NSImage LGStatusAvaliable]]) {
             [_jssStatusLight setImage:[NSImage LGStatusPartiallyAvaliable]];
@@ -305,7 +300,7 @@ NSString *defaultJSSRepo = @"https://github.com/sheagcraig/jss-recipes.git";
                 } else {
                     NSString *version = [LGHostInfo getJSSAddonVersion];
                     NSString *title = [NSString stringWithFormat:@"Version %@ installed",version];
-                    
+
                     _jssInstallStatusLight.image = [NSImage LGStatusUpToDate];
                     _jssInstallButton.title = title ;
                 }
@@ -359,10 +354,8 @@ NSString *defaultJSSRepo = @"https://github.com/sheagcraig/jss-recipes.git";
         if (button == NSAlertDefaultReturn) {
             [self installJSSAddon:nil];
         }
-
         return YES;
     }
-
     return required;
 }
 @end
