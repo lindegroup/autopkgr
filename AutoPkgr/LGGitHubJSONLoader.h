@@ -26,9 +26,11 @@
 - (NSData *)getJSONFromURL:(NSURL *)url;
 - (NSArray *)getArrayFromJSONData:(NSData *)reqData;
 - (NSDictionary *)getLatestReleaseDictionary:(NSString *)githubURL;
+
 - (NSArray *)getAutoPkgRecipeRepos;
 - (NSString *)getLatestAutoPkgReleaseVersionNumber;
-- (NSString *)getLatestAutoPkgDownloadURL;
 
-- (NSString *)getGitDownloadURL;
+- (NSString *)latestReleaseDownload:(NSString *)githubURL;
+- (NSString *)latestVersion:(NSString *)gitHubURL;
+
 @end

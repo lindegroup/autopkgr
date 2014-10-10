@@ -1,10 +1,10 @@
 //
-//  LGTestPort.h
+//  NSString+cleaned.h
 //  AutoPkgr
 //
-//  Created by Josh Senick on 7/29/14.
+//  Created by Eldon on 10/4/14.
 //
-//  Copyright 2014 The Linde Group, Inc. All rights reserved.
+//  Copyright 2014 The Linde Group, Inc.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -21,9 +21,17 @@
 
 #import <Foundation/Foundation.h>
 
-@interface LGTestPort : NSObject <NSStreamDelegate>
+@interface NSString (cleaned)
 
-- (void)testHost:(NSHost *)host withPort:(NSInteger)port;
-- (void)testServerURL:(NSString *)url reply:(void (^)(BOOL reachable))reply;
+/**
+ *  (Custom Category) equivalent to stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]]
+ */
+@property (copy,nonatomic,readonly) NSString *trimmed;
+
+/**
+ * (Custom Category) convert @"" to nil
+ */
+@property (copy,nonatomic,readonly) NSString *blankIsNil;
 
 @end
+

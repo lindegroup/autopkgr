@@ -25,7 +25,6 @@
 @interface LGRecipes : NSObject <NSApplicationDelegate, NSTableViewDataSource, NSTableViewDelegate> {
 
     IBOutlet NSTableView *recipeTableView;
-
     NSArray *_recipes;
     NSArray *_activeRecipes;
     NSArray *_searchedRecipes;

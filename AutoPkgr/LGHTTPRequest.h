@@ -1,10 +1,10 @@
 //
-//  LGTestPort.h
+//  LGHTTPRequest.h
 //  AutoPkgr
 //
-//  Created by Josh Senick on 7/29/14.
+//  Created by Eldon on 8/9/14.
 //
-//  Copyright 2014 The Linde Group, Inc. All rights reserved.
+//  Copyright 2014 The Linde Group, Inc.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -16,14 +16,15 @@
 //  distributed under the License is distributed on an "AS IS" BASIS,
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 //  See the License for the specific language governing permissions and
-//  limitations under the License.
 //
 
 #import <Foundation/Foundation.h>
 
-@interface LGTestPort : NSObject <NSStreamDelegate>
+@interface LGHTTPRequest : NSObject
 
-- (void)testHost:(NSHost *)host withPort:(NSInteger)port;
-- (void)testServerURL:(NSString *)url reply:(void (^)(BOOL reachable))reply;
+- (void)retrieveDistributionPoints:(NSString *)server
+                          withUser:(NSString *)user
+                       andPassword:(NSString *)password
+                             reply:(void (^)(NSDictionary *distributionPoints, NSError *error))reply;
 
 @end

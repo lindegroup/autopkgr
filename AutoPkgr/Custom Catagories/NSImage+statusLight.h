@@ -1,10 +1,10 @@
 //
-//  LGTestPort.h
+//  LGStatusImage.h
 //  AutoPkgr
 //
-//  Created by Josh Senick on 7/29/14.
+//  Created by Eldon on 10/6/14.
 //
-//  Copyright 2014 The Linde Group, Inc. All rights reserved.
+//  Copyright 2014 The Linde Group, Inc.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -19,11 +19,18 @@
 //  limitations under the License.
 //
 
-#import <Foundation/Foundation.h>
+#import <Cocoa/Cocoa.h>
 
-@interface LGTestPort : NSObject <NSStreamDelegate>
+@interface NSImage (statusLight)
 
-- (void)testHost:(NSHost *)host withPort:(NSInteger)port;
-- (void)testServerURL:(NSString *)url reply:(void (^)(BOOL reachable))reply;
++(instancetype)LGStatusAvaliable;
++(instancetype)LGStatusPartiallyAvaliable;
++(instancetype)LGStatusUnavaliable;
++(instancetype)LGStatusNone;
+
++(instancetype)LGStatusNotInstalled;
++(instancetype)LGStatusUpToDate;
++(instancetype)LGStatusUpdateAvaliable;
++(instancetype)LGStatusUnknown;
 
 @end

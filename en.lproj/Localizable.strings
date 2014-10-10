@@ -18,7 +18,7 @@
 
 /** Error when sending email fails */
 "kLGErrorSendingEmailDescription" = "Error sending email";
-"kLGErrorSendingEmailSuggestion" = "Please verify the username, password, server and port are correct. (Localized)";
+"kLGErrorSendingEmailSuggestion" = "Please verify the username, password, server and port are correct.";
 
 /** Error when testing port failed */
 "kLGErrorTestingPortDescription" = "Error verifying server and port";
@@ -44,7 +44,13 @@
 "kLGErrorInstallAutoPkgrDescription" = "Error updating AutoPkgr";
 "kLGErrorInstallAutoPkgrSuggestion" = "If the problem persists please try manually downloading and installing AutoPkgr: https://github.com/lindegroup/autopkgr/releases/latest";
 
+/** Error installing/updating JSSAddon */
+"kLGErrorInstallJSSAddonDescription" = "Error installing JSS AutoPkg Addon";
+"kLGErrorInstallJSSAddonSuggestion" = "If the problem persists please try manually downloading and installing from: https://github.com/sheagcraig/jss-autopkg-addon/releases/latest";
 
+/** Error Serializing JSS response */
+"kLGErrorJSSXMLSerializerErrorDescription" = "Error getting distribution points";
+"kLGErrorJSSXMLSerializerErrorSuggestion" = "The Casper server's response could not be correctly interpereted";
 
 /**
  *  Errors relating specifically to AutoPkg
@@ -67,3 +73,38 @@
 
 // other verbs
 "kLGAutoPkgVersionDescription" = "Error getting AutoPkg version";
+
+
+/**
+ *  AutoPkgr related AutoPkgr HTTP requests
+ *  keys ending in Description are intended for NSLocalizedDescriptioncriptionKey
+ *  keys ending in Suggestion are intended for NSLocalizedRecoverySuggestiongestionErrorKey
+ */
+
+// Success
+"kLGHTTPErrorSuccessDescription" = "Connection Success!";
+"kLGHTTPErrorSuccessSuggestion" = "Nothing more needs to be done.";
+
+// Bad Request
+"kLGHTTPErrorBadRequestDescription" = "Bad Request";
+"kLGHTTPErrorBadRequestSuggestion" = "The request to the server was not formatted correctly.  Please check the infomation you supplied.";
+
+// Unauthorized
+"kLGHTTPErrorUnauthorizedDescription" = "User authorization failed.";
+"kLGHTTPErrorUnauthorizedSuggestion" = "Please make you have entered the correct user name and password for the connection.";
+
+// Forbidden
+"kLGHTTPErrorForbiddenDescription" = "Access forbidden";
+"kLGHTTPErrorForbiddenSuggestion" = "The specified user is not authorized to access this area on the server.  Please check that the user name you've entered is correct.";
+
+// Not Found
+"kLGHTTPErrorNotFoundDescription" = "Resource not found";
+"kLGHTTPErrorNotFoundSuggestion" = "The requested resource could not be found.  Please make sure you've entered the correct protocol, hostname, and port.";
+
+// Timeout
+"kLGHTTPErrorTimeoutDescription" = "Connection timed out";
+"kLGHTTPErrorTimeoutSuggestion" = "Please make sure you have an active network connection and the server you've entered is correct.";
+
+// General failure
+"kLGHTTPErrorUnknownDescription" = "There was a problem connecting to the server";
+"kLGHTTPErrorUnknownSuggestion" = "An unknow error occured.  If you get this message repeadly please create an issue on the AutoPkgr github page.  Thanks.";
