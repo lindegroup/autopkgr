@@ -33,11 +33,13 @@ NSString *defaultJSSRepo = @"https://github.com/sheagcraig/jss-recipes.git";
     LGDefaults *_defaults;
     LGTestPort *_portTester;
     BOOL _serverReachable;
+    BOOL _installRequestedDuringConnect;
 }
 
 - (void)awakeFromNib
 {
     _defaults = [LGDefaults standardUserDefaults];
+    _installRequestedDuringConnect = NO;
 
     [self showInstallTabItems:NO];
 
@@ -88,8 +90,11 @@ NSString *defaultJSSRepo = @"https://github.com/sheagcraig/jss-recipes.git";
 
 - (IBAction)reloadJSSServerInformation:(id)sender
 {
-    if ([self requiresInstall]) {
-        return;
+    if (![LGHostInfo jssAddonInstalled]) {
+        _installRequestedDuringConnect = YES;
+        if ([self requiresInstall]) {
+            return;
+        }
     }
 
     [self startStatusUpdate];
@@ -144,6 +149,11 @@ NSString *defaultJSSRepo = @"https://github.com/sheagcraig/jss-recipes.git";
                 _jssInstallStatusLight.image = [NSImage LGStatusUpToDate];
             }
             [_jssInstallButton setEnabled:success ? NO:YES];
+
+            if (success && _installRequestedDuringConnect) {
+                _installRequestedDuringConnect = NO;
+                [self reloadJSSServerInformation:self];
+            }
         }];
     }];
 }
@@ -342,17 +352,22 @@ NSString *defaultJSSRepo = @"https://github.com/sheagcraig/jss-recipes.git";
     return password;
 }
 
-#pragma mark - Class Methods
 - (BOOL)requiresInstall
 {
     BOOL required = NO;
 
     if (![LGHostInfo jssAddonInstalled]) {
-        NSAlert *alert = [NSAlert alertWithMessageText:@"Install JSS AutoPkg Addon?" defaultButton:@"Install" alternateButton:@"Cancel" otherButton:nil informativeTextWithFormat:@"The JSS AutoPkg Addon is not currently installed, would you like to install it now?"];
+        NSAlert *alert = [NSAlert alertWithMessageText:@"Install JSS AutoPkg Addon?"
+                                         defaultButton:@"Install"
+                                       alternateButton:@"Cancel"
+                                           otherButton:nil
+                             informativeTextWithFormat:@"The JSS AutoPkg Addon is not currently installed, would you like to install it now?"];
 
         NSInteger button = [alert runModal];
         if (button == NSAlertDefaultReturn) {
             [self installJSSAddon:nil];
+        } else {
+            _installRequestedDuringConnect = NO;
         }
         return YES;
     }
