@@ -72,7 +72,7 @@
 
 - (void)repoEditDidEndWithError:(NSError *)error withTableView:(NSTableView *)tableView
 {
-    [[NSOperationQueue mainQueue]addOperationWithBlock:^{
+    [[NSOperationQueue mainQueue] addOperationWithBlock:^{
         [self getAndParseLocalAutoPkgRecipeRepos];
         [_appObject reload];
         [tableView reloadData];
@@ -97,7 +97,7 @@
     NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@"https?://(.+)" options:0 error:&error];
 
     for (NSString *repo in _activeRepos) {
-        NSTextCheckingResult *result = [regex firstMatchInString:repo options:0 range:NSMakeRange(0,[repo length])];
+        NSTextCheckingResult *result = [regex firstMatchInString:repo options:0 range:NSMakeRange(0, [repo length])];
         if ([result numberOfRanges] == 2) {
             NSString *workingString = [repo substringWithRange:[result rangeAtIndex:1]];
 
@@ -132,18 +132,18 @@
 - (void)getAndParseLocalAutoPkgRecipeRepos // Strips out the local path of the cloned git repository and returns an array with only the URLs
 {
     NSError *error;
-    
+
     NSMutableArray *strippedRepos = [[NSMutableArray alloc] init];
     NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@"\\((https?://.+)\\)" options:0 error:&error];
-    
+
     for (NSString *repo in [LGAutoPkgTask repoList]) {
-        NSTextCheckingResult *result = [regex firstMatchInString:repo options:0 range:NSMakeRange(0,[repo length])];
+        NSTextCheckingResult *result = [regex firstMatchInString:repo options:0 range:NSMakeRange(0, [repo length])];
         if ([result numberOfRanges] == 2) {
             [strippedRepos addObject:[repo substringWithRange:[result rangeAtIndex:1]]];
         }
     }
-    
-    _activeRepos =  [NSArray arrayWithArray:strippedRepos];
+
+    _activeRepos = [NSArray arrayWithArray:strippedRepos];
 }
 
 - (NSInteger)numberOfRowsInTableView:(NSTableView *)tableView
@@ -181,7 +181,7 @@
     if ([[tableColumn identifier] isEqualToString:@"repoCheckbox"]) {
         NSString *repo = [_searchedRepos objectAtIndex:row];
         BOOL add = [object isEqual:@YES];
-        NSString *message = [NSString stringWithFormat:@"%@ %@", add ? @"Adding":@"Removing", repo];
+        NSString *message = [NSString stringWithFormat:@"%@ %@", add ? @"Adding" : @"Removing", repo];
         NSLog(@"%@", message);
         [_progressDelegate startProgressWithMessage:message];
         if (add) {
@@ -193,7 +193,6 @@
                 [self repoEditDidEndWithError:error withTableView:tableView];
             }];
         }
-        
     }
 }
 

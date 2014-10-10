@@ -25,56 +25,57 @@
 
 @implementation LGDefaults (JSSAddon)
 
--(NSString *)JSSURL
+- (NSString *)JSSURL
 {
     return [self autoPkgDomainObject:@"JSS_URL"];
 }
 
--(void)setJSSURL:(NSString *)JSSURL{
+- (void)setJSSURL:(NSString *)JSSURL
+{
     [self setAutoPkgDomainObject:JSSURL forKey:@"JSS_URL"];
 }
 
 #pragma mark -
--(NSString *)JSSAPIUsername
+- (NSString *)JSSAPIUsername
 {
     return [self autoPkgDomainObject:@"API_USERNAME"];
 }
 
--(void)setJSSAPIUsername:(NSString *)JSSAPIUsername
+- (void)setJSSAPIUsername:(NSString *)JSSAPIUsername
 {
     [self setAutoPkgDomainObject:JSSAPIUsername forKey:@"API_USERNAME"];
 }
 
 #pragma mark -
--(NSString *)JSSAPIPassword
+- (NSString *)JSSAPIPassword
 {
     return [self autoPkgDomainObject:@"API_PASSWORD"];
 }
 
--(void)setJSSAPIPassword:(NSString *)JSSAPIPassword
+- (void)setJSSAPIPassword:(NSString *)JSSAPIPassword
 {
     [self setAutoPkgDomainObject:JSSAPIPassword forKey:@"API_PASSWORD"];
 }
 
 #pragma mark -
--(NSArray *)JSSRepos
+- (NSArray *)JSSRepos
 {
     return [self autoPkgDomainObject:@"JSS_REPOS"];
 }
 
--(void)setJSSRepos:(NSArray *)JSSRepos
+- (void)setJSSRepos:(NSArray *)JSSRepos
 {
     [self setAutoPkgDomainObject:JSSRepos forKey:@"JSS_REPOS"];
 }
 
 #pragma mark -
--(BOOL)JSSVerifySSL
+- (BOOL)JSSVerifySSL
 {
     NSNumber *verifySSL = [self autoPkgDomainObject:@"JSS_VERIFY_SSL"];
     return [verifySSL boolValue];
 }
 
--(void)setJSSVerifySSL:(BOOL)JSSVerifySSL
+- (void)setJSSVerifySSL:(BOOL)JSSVerifySSL
 {
     [self setAutoPkgDomainObject:@(JSSVerifySSL) forKey:@"JSS_VERIFY_SSL"];
 }

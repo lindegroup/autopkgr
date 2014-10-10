@@ -24,7 +24,7 @@
 #import "LGRecipes.h"
 #import "LGTestPort.h"
 
-@interface LGConfigurationWindowController : NSWindowController <NSTextDelegate, NSTokenFieldDelegate, NSWindowDelegate, NSTabViewDelegate,LGProgressDelegate>
+@interface LGConfigurationWindowController : NSWindowController <NSTextDelegate, NSTokenFieldDelegate, NSWindowDelegate, NSTabViewDelegate, LGProgressDelegate>
 
 // Text/token fields
 @property (weak) IBOutlet NSTokenField *smtpTo;
@@ -82,7 +82,7 @@
 @property (weak) IBOutlet NSTextField *progressDetailsMessage;
 
 // Progress delegate (object used to send updates to status menu item)
-@property (weak) id<LGProgressDelegate>menuProgressDelegate;
+@property (weak) id<LGProgressDelegate> menuProgressDelegate;
 
 // Objects
 @property (strong) IBOutlet LGPopularRepositories *popRepoTableViewHandler;

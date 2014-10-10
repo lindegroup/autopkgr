@@ -43,10 +43,10 @@
     if (eventCode & (NSStreamEventOpenCompleted | NSStreamEventErrorOccurred)) {
         if ([_inputStream streamStatus] == NSStreamStatusError ||
             [_outputStream streamStatus] == NSStreamStatusError) {
-                [self portTestDidCompletedWithSuccess:NO];
+            [self portTestDidCompletedWithSuccess:NO];
         } else if ([_inputStream streamStatus] == NSStreamStatusOpen &&
                    [_outputStream streamStatus] == NSStreamStatusOpen) {
-                [self portTestDidCompletedWithSuccess:YES];
+            [self portTestDidCompletedWithSuccess:YES];
         }
     }
 }
@@ -94,20 +94,21 @@
     }
 }
 
--(void)testServerURL:(NSString *)url reply:(void (^)(BOOL))reply{
+- (void)testServerURL:(NSString *)url reply:(void (^)(BOOL))reply
+{
     NSURL *serverURL = [NSURL URLWithString:url];
     NSHost *host = [NSHost hostWithName:[serverURL host]];
     NSNumber *port = [serverURL port];
-    
+
     // if no port specified set to defaults
     if (!port) {
-        if ([serverURL.scheme isEqualToString:@"http" ]) {
+        if ([serverURL.scheme isEqualToString:@"http"]) {
             port = @(80);
         } else if ([serverURL.scheme isEqualToString:@"https"]) {
             port = @(443);
         }
     }
-    
+
     if (host && port) {
         _reachable = reply;
         [self testHost:host withPort:[port integerValue]];
@@ -119,10 +120,10 @@
 - (void)startStreamTimeoutTimer
 {
     _streamTimeoutTimer = [NSTimer scheduledTimerWithTimeInterval:3.0
-                                                          target:self
-                                                        selector:@selector(handleStreamTimeout)
-                                                        userInfo:nil
-                                                         repeats:NO];
+                                                           target:self
+                                                         selector:@selector(handleStreamTimeout)
+                                                         userInfo:nil
+                                                          repeats:NO];
 }
 
 - (void)handleStreamTimeout
@@ -136,11 +137,11 @@
     if (_reachable) {
         _reachable(success);
     }
-    
+
     [[NSNotificationCenter defaultCenter] postNotificationName:kLGNotificationTestSmtpServerPort
                                                         object:nil
-                                                      userInfo:@{ kLGNotificationUserInfoSuccess : @(success)}];
-    
+                                                      userInfo:@{ kLGNotificationUserInfoSuccess : @(success) }];
+
     [self stopTest];
 }
 

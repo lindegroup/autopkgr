@@ -32,7 +32,6 @@
     return self;
 }
 
-
 - (void)reload
 {
     _recipes = [LGAutoPkgTask listRecipes];
@@ -70,7 +69,6 @@
     }
 
     return autoPkgrSupportDirectory;
-
 }
 
 - (NSArray *)getActiveRecipes
@@ -143,7 +141,7 @@
     // activeApps array that cannot be found in the new apps array.
 
     NSMutableArray *workingArray = [NSMutableArray arrayWithArray:_activeRecipes];
-    
+
     for (NSString *string in _activeRecipes) {
         if (![_recipes containsObject:string]) {
             [workingArray removeObject:string];
@@ -170,7 +168,7 @@
     NSPredicate *munkiPredicate = [NSPredicate predicateWithFormat:@"SELF contains[cd] 'munki'"];
 
     // Make a working array filtering out any instances of MakeCatalogs.munki, so there will only be one occurence
-    NSMutableArray * workingArray = [NSMutableArray arrayWithArray:[_activeRecipes filteredArrayUsingPredicate:makeCatalogPredicate]];
+    NSMutableArray *workingArray = [NSMutableArray arrayWithArray:[_activeRecipes filteredArrayUsingPredicate:makeCatalogPredicate]];
 
     // Check if any of the apps is a .munki run
     if ([workingArray filteredArrayUsingPredicate:munkiPredicate].count) {

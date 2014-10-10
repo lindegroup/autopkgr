@@ -109,8 +109,8 @@
 
     if ([mutableArray count]) {
         NSSortDescriptor *stargazersCountDescriptor = [[NSSortDescriptor alloc]
-                                                       initWithKey:stargazersCount
-                                                       ascending:NO];
+            initWithKey:stargazersCount
+              ascending:NO];
         NSArray *descriptors = [NSArray arrayWithObjects:stargazersCountDescriptor, nil];
         NSArray *sortedArrayOfDictionaries = [mutableArray sortedArrayUsingDescriptors:descriptors];
 
@@ -142,11 +142,11 @@
 {
     // Get an NSDictionary of the latest release JSON
     NSDictionary *latestVersionDict = [self getLatestReleaseDictionary:gitHubURL];
-    
+
     // AutoPkg version numbers are prepended with "v"
     // Let's remove that from our version string
     NSString *latestVersionNumber = [[latestVersionDict objectForKey:@"tag_name"] stringByReplacingOccurrencesOfString:@"v" withString:@""];
-    
+
     return latestVersionNumber;
 }
 
@@ -154,10 +154,10 @@
 {
     // Get an NSDictionary of the latest release JSON
     NSDictionary *latestVersionDict = [self getLatestReleaseDictionary:gitHubURL];
-    
+
     // Get the PKG / DMG download URL
     NSString *browserDownloadURL = [[[latestVersionDict objectForKey:@"assets"] firstObject] objectForKey:@"browser_download_url"];
-    
+
     return browserDownloadURL;
 }
 @end

@@ -27,16 +27,15 @@
 #import "LGConfigurationWindowController.h"
 
 @implementation LGAppDelegate {
-    @private
+@private
     LGConfigurationWindowController *_configurationWindowController;
 }
-
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {
     NSLog(@"Welcome to AutoPkgr!");
     DLog(@"Verbose logging is active. To deactivate, option-click the AutoPkgr menu icon and uncheck Verbose Logs.");
-    
+
     LGDefaults *defaults = [LGDefaults new];
 
     // Set self as the delegate for the time so the menu item is updated
@@ -52,7 +51,6 @@
 
     // Start the AutoPkg run timer if the user enabled it
     [self startAutoPkgRunTimer];
-
 }
 
 - (void)startAutoPkgRunTimer
@@ -60,13 +58,12 @@
     [[LGAutoPkgSchedule sharedTimer] configure];
 }
 
-
 - (void)updateAutoPkgRecipeReposInBackgroundAtAppLaunch
 {
     NSLog(@"Updating AutoPkg repos...");
     [LGAutoPkgTask repoUpdate:^(NSError *error) {
        NSLog(@"%@", error ? error.localizedDescription:@"AutoPkg repos updated.");
-   }];
+    }];
 }
 
 - (void)setupStatusItem
@@ -88,16 +85,15 @@
     [self startProgressWithMessage:@"Starting..."];
     NSString *recipeList = [LGRecipes recipeList];
     [LGAutoPkgTask runRecipeList:recipeList
-                        progress:^(NSString *message, double taskProgress) {
+        progress:^(NSString *message, double taskProgress) {
                             [self updateProgress:message progress:taskProgress];
-                        }
-                           reply:^(NSDictionary *report, NSError *error) {
+        }
+        reply:^(NSDictionary *report, NSError *error) {
                                [self stopProgress:error];
                                LGEmailer *emailer = [LGEmailer new];
                                [emailer sendEmailForReport:report error:error];
-                        }];
+        }];
 }
-
 
 - (void)showConfigurationWindow:(id)sender
 {
@@ -134,10 +130,10 @@
     return NSTerminateNow;
 }
 
-# pragma mark - Progress Protocol
+#pragma mark - Progress Protocol
 - (void)startProgressWithMessage:(NSString *)message
 {
-    if(_configurationWindowController && [_configurationWindowController.window isVisible]) {
+    if (_configurationWindowController && [_configurationWindowController.window isVisible]) {
         [_configurationWindowController startProgressWithMessage:message];
     }
     __block NSMenuItem *item = [self.statusMenu itemAtIndex:0];
@@ -147,7 +143,7 @@
 
 - (void)stopProgress:(NSError *)error
 {
-    if(_configurationWindowController && [_configurationWindowController.window isVisible]) {
+    if (_configurationWindowController && [_configurationWindowController.window isVisible]) {
         [_configurationWindowController stopProgress:error];
     }
     __block NSMenuItem *item = [self.statusMenu itemAtIndex:0];
@@ -159,7 +155,7 @@
 
 - (void)updateProgress:(NSString *)message progress:(double)progress
 {
-    if(_configurationWindowController && [_configurationWindowController.window isVisible]) {
+    if (_configurationWindowController && [_configurationWindowController.window isVisible]) {
         [_configurationWindowController updateProgress:message progress:progress];
     }
     __block NSMenuItem *item = [self.statusMenu itemAtIndex:0];

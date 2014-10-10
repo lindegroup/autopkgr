@@ -43,6 +43,6 @@
 
 @property (weak) IBOutlet NSSearchField *repoSearch;
 @property (weak) IBOutlet LGRecipes *appObject;
-@property (weak) id<LGProgressDelegate>progressDelegate;
+@property (weak) id<LGProgressDelegate> progressDelegate;
 
 @end

@@ -26,12 +26,11 @@
 /**
  *  (Custom Category) equivalent to stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]]
  */
-@property (copy,nonatomic,readonly) NSString *trimmed;
+@property (copy, nonatomic, readonly) NSString *trimmed;
 
 /**
  * (Custom Category) convert @"" to nil
  */
-@property (copy,nonatomic,readonly) NSString *blankIsNil;
+@property (copy, nonatomic, readonly) NSString *blankIsNil;
 
 @end
-

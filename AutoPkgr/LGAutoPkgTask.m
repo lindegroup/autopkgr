@@ -84,16 +84,16 @@ NSString *autopkg()
     [self setFileHandles];
     [_task launch];
     [_task waitUntilExit];
-    
+
     // set the complete property to YES in case of an observer
     _complete = YES;
-    
+
     // make sure the out and error readability handlers get set to nil
     // so the filehandle will get closed
     if ([_task.standardOutput isKindOfClass:[NSPipe class]]) {
         [_task.standardOutput fileHandleForReading].readabilityHandler = nil;
     }
-    
+
     if ([_task.standardError isKindOfClass:[NSPipe class]]) {
         [_task.standardError fileHandleForReading].readabilityHandler = nil;
     }
@@ -136,11 +136,11 @@ NSString *autopkg()
             // To get status from autopkg set NSUnbufferedIO environment keyto YES
             // Thanks to help from -- http://stackoverflow.com/questions/8251010
             NSMutableDictionary *environment = [[NSMutableDictionary alloc] init];
-            
+
             NSDictionary *processEnvironment = [[NSProcessInfo processInfo] environment];
             [environment addEntriesFromDictionary:processEnvironment];
-            [environment addEntriesFromDictionary:@{ @"NSUnbufferedIO" : @"YES"}];
-            
+            [environment addEntriesFromDictionary:@{ @"NSUnbufferedIO" : @"YES" }];
+
             _task.environment = environment;
 
             NSPredicate *processingPredicate = [NSPredicate predicateWithFormat:@"SELF BEGINSWITH[cd] 'Processing'"];
@@ -199,7 +199,7 @@ NSString *autopkg()
 
 - (NSString *)standardErrString
 {
-    if ( !_standardErrString) {
+    if (!_standardErrString) {
         NSData *data;
         if ([_task.standardError isKindOfClass:[NSPipe class]]) {
             data = [[_task.standardError fileHandleForReading] readDataToEndOfFile];
@@ -361,11 +361,11 @@ NSString *autopkg()
                 reply:(void (^)(NSDictionary *, NSError *))reply
 {
     self.arguments = @[ @"run", @"--recipe-list", recipeList, @"--report-plist" ];
-    
+
     [self setRunStatusUpdate:^(NSString *message, double progressUpdate) {
         progress(message, progressUpdate);
     }];
-    
+
     [self launchInBackground:^(NSError *error) {
         reply(self.reportPlist, error);
     }];
@@ -481,7 +481,7 @@ NSString *autopkg()
     }];
 }
 
-+(NSArray *)repoList
++ (NSArray *)repoList
 {
     LGAutoPkgTask *task = [[LGAutoPkgTask alloc] init];
     task.arguments = @[ @"repo-list" ];

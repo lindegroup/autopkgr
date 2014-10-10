@@ -24,10 +24,10 @@
 #pragma mark - LGDefaults extensions for JSS Addon Interface
 @interface LGDefaults (JSSAddon)
 
-@property (copy, nonatomic) NSString* JSSURL;
-@property (copy, nonatomic) NSString* JSSAPIUsername;
-@property (copy, nonatomic) NSString* JSSAPIPassword;
-@property (copy, nonatomic) NSArray* JSSRepos;
+@property (copy, nonatomic) NSString *JSSURL;
+@property (copy, nonatomic) NSString *JSSAPIUsername;
+@property (copy, nonatomic) NSString *JSSAPIPassword;
+@property (copy, nonatomic) NSArray *JSSRepos;
 @property (assign, nonatomic) BOOL JSSVerifySSL;
 
 @end

@@ -34,7 +34,7 @@ NSString *const kLGAutoPkgNotInstalledLabel = @"AutoPkg is not installed.";
 NSString *const kLGAutoPkgUpdateAvailableLabel = @"An update is available for AutoPkg.";
 
 #pragma mark - Static URLs
-#pragma mark -- GitHub
+#pragma mark-- GitHub
 NSString *const kLGAutoPkgReleasesJSONURL = @"https://api.github.com/repos/autopkg/autopkg/releases";
 NSString *const kLGGitMAVReleasesJSONURL = @"https://api.github.com/repos/timcharper/git_osx_installer/releases";
 NSString *const kLGGitMLReleasesJSONURL = @"https://api.github.com/repos/eahrold/git-for-mountainlion/releases";
@@ -63,26 +63,23 @@ NSString *const kLGCheckForRepoUpdatesAutomaticallyEnabled = @"CheckForRepoUpdat
 NSString *const kLGWarnBeforeQuittingEnabled = @"WarnBeforeQuitting";
 
 #pragma mark - Notifications
-#pragma mark -- Progress
+#pragma mark-- Progress
 NSString *const kLGNotificationProgressStart = @"com.lindegroup.autopkgr.notification.progress.start";
 NSString *const kLGNotificationProgressStop = @"com.lindegroup.autopkgr.notification.progress.stop";
 NSString *const kLGNotificationProgressMessageUpdate = @"com.lindegroup.autopkgr.progress.message.notification";
 
-#pragma mark -- AutoPkg Task
+#pragma mark-- AutoPkg Task
 NSString *const kLGNotificationRunAutoPkgComplete = @"com.lindegroup.autopkgr.notification.autopkgrun.complete";
 NSString *const kLGNotificationUpdateReposComplete = @"com.lindegroup.autopkgr.notification.updaterepos.complete";
 NSString *const kLGNotificationOverrideFileCreated = @"com.lindegroup.autopkgr.notification.override.file.addorremoved";
 
-#pragma mark -- Email
+#pragma mark-- Email
 NSString *const kLGNotificationEmailSent = @"com.lindegroup.autopkgr.email.sent.notification";
 NSString *const kLGNotificationTestSmtpServerPort = @"com.lindegroup.autopkgr.test.smpt.port.notification";
 
-#pragma mark -- UserInfo dict keys
+#pragma mark-- UserInfo dict keys
 NSString *const kLGNotificationUserInfoError = @"com.lindegroup.autopkgr.notification.userinfo.error";
 NSString *const kLGNotificationUserInfoMessage = @"com.lindegroup.autopkgr.notification.userinfo.message";
-NSString *const kLGNotificationUserInfoTotalRecipeCount= @"com.lindegroup.autopkgr.notification.userinfo.total.recipe.count";
+NSString *const kLGNotificationUserInfoTotalRecipeCount = @"com.lindegroup.autopkgr.notification.userinfo.total.recipe.count";
 NSString *const kLGNotificationUserInfoSuccess = @"com.lindelgroup.autopkgr.notification.userinfo.success";
 NSString *const kLGNotificationUserInfoSubject = @"com.lindelgroup.autopkgr.notification.userinfo.subject";
-
-
-

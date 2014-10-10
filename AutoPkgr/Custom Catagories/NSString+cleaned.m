@@ -28,7 +28,7 @@
     return [self stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
 }
 
--(NSString *)blankIsNil
+- (NSString *)blankIsNil
 {
     NSString *aString = self;
     if (self && [self isEqualToString:@""]) {

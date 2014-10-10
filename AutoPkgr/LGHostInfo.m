@@ -179,7 +179,7 @@ NSString *const kLGBoxenBrewGit = @"/opt/boxen/homebrew/bin";
     NSString *avaliableVersion = [loader latestVersion:kLGJSSAddonJSONURL];
     NSString *installedVersion = [self getJSSAddonVersion];
     BOOL updateAvaliable = [LGVersionComparator isVersion:avaliableVersion
-                                  greaterThanVersion:installedVersion];
+                                       greaterThanVersion:installedVersion];
     if (updateAvaliable) {
         NSLog(@"Version %@ of the JSSAddon is avaliable.  Version %@ is installed", avaliableVersion, installedVersion);
     }

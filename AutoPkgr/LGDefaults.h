@@ -26,7 +26,6 @@
 #pragma mark - Singletons
 + (LGDefaults *)standardUserDefaults;
 
-
 #pragma mark - Settings
 @property (copy, nonatomic) NSString *SMTPServer;
 @property (nonatomic) NSInteger SMTPPort;

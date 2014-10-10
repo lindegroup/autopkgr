@@ -23,7 +23,7 @@
 
 @implementation NSTextField (setSafeStringValue)
 
--(NSString *)safeStringValue
+- (NSString *)safeStringValue
 {
     NSString *aString;
     if (![self.stringValue isEqualToString:@""]) {
@@ -32,7 +32,7 @@
     return aString;
 }
 
--(void)setSafeStringValue:(NSString *)aString
+- (void)setSafeStringValue:(NSString *)aString
 {
     if (aString && ![aString isEqualToString:@""]) {
         [self setStringValue:aString];

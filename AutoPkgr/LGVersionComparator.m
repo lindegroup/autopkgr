@@ -34,7 +34,7 @@ static int maximumValuesInVersion = 4;
 
         NSArray *versionB = [b componentsSeparatedByString:@"."];
         versionB = [self normalizeVersionFromArray:versionB];
-        for (NSInteger i=0; i < maximumValuesInVersion; i++) {
+        for (NSInteger i = 0; i < maximumValuesInVersion; i++) {
             if ([[versionA objectAtIndex:i] integerValue] > [[versionB objectAtIndex:i] integerValue]) {
                 return YES;
             } else if ([[versionA objectAtIndex:i] integerValue] < [[versionB objectAtIndex:i] integerValue]) {
@@ -51,7 +51,7 @@ static int maximumValuesInVersion = 4;
         NSMutableArray *mutableArray = [versionArray mutableCopy];
         NSInteger difference = maximumValuesInVersion - [mutableArray count];
 
-        for (NSInteger i=0; i < difference; i++) {
+        for (NSInteger i = 0; i < difference; i++) {
             [mutableArray addObject:@"0"];
         }
 

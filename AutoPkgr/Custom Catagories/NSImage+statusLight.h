@@ -23,14 +23,14 @@
 
 @interface NSImage (statusLight)
 
-+(instancetype)LGStatusAvaliable;
-+(instancetype)LGStatusPartiallyAvaliable;
-+(instancetype)LGStatusUnavaliable;
-+(instancetype)LGStatusNone;
++ (instancetype)LGStatusAvaliable;
++ (instancetype)LGStatusPartiallyAvaliable;
++ (instancetype)LGStatusUnavaliable;
++ (instancetype)LGStatusNone;
 
-+(instancetype)LGStatusNotInstalled;
-+(instancetype)LGStatusUpToDate;
-+(instancetype)LGStatusUpdateAvaliable;
-+(instancetype)LGStatusUnknown;
++ (instancetype)LGStatusNotInstalled;
++ (instancetype)LGStatusUpToDate;
++ (instancetype)LGStatusUpdateAvaliable;
++ (instancetype)LGStatusUnknown;
 
 @end

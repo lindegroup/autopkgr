@@ -23,42 +23,42 @@
 
 @implementation NSImage (installStatus)
 
-+(instancetype)LGStatusAvaliable
++ (instancetype)LGStatusAvaliable
 {
     return [self imageNamed:@"NSStatusAvailable"];
 }
 
-+(instancetype)LGStatusPartiallyAvaliable
++ (instancetype)LGStatusPartiallyAvaliable
 {
     return [self imageNamed:@"NSStatusPartiallyAvailable"];
 }
 
-+(instancetype)LGStatusUnavaliable
++ (instancetype)LGStatusUnavaliable
 {
     return [self imageNamed:@"NSStatusUnavailable"];
 }
 
-+(instancetype)LGStatusNone
++ (instancetype)LGStatusNone
 {
     return [self imageNamed:@"NSStatusNone"];
-
 }
 
-+(instancetype)LGStatusUpToDate
++ (instancetype)LGStatusUpToDate
 {
     return [self LGStatusAvaliable];
 }
 
-+(instancetype)LGStatusNotInstalled
++ (instancetype)LGStatusNotInstalled
 {
     return [self LGStatusUnavaliable];
 }
 
-+(instancetype)LGStatusUpdateAvaliable{
++ (instancetype)LGStatusUpdateAvaliable
+{
     return [self LGStatusPartiallyAvaliable];
 }
 
-+(instancetype)LGStatusUnknown
++ (instancetype)LGStatusUnknown
 {
     return [self LGStatusNone];
 }

@@ -87,7 +87,8 @@ typedef NS_ENUM(NSInteger, LGInstallType) {
     NSError *installError;
     BOOL success = [self runInstallerFor:@"AutoPkg" githubAPI:kLGAutoPkgReleasesJSONURL error:&installError];
     if (!success) {
-        if (installError) DLog(@"%@", installError);
+        if (installError)
+            DLog(@"%@", installError);
         return [LGError errorWithCode:kLGErrorInstallAutoPkg error:error];
     }
     return success;
@@ -111,7 +112,8 @@ typedef NS_ENUM(NSInteger, LGInstallType) {
     NSError *installError;
     BOOL success = [self runInstallerFor:@"JSS AutoPkg Addon" githubAPI:kLGJSSAddonJSONURL error:error];
     if (!success) {
-        if (installError) DLog(@"%@", installError);
+        if (installError)
+            DLog(@"%@", installError);
         success = [LGError errorWithCode:kLGErrorInstallJSSAddon error:error];
     }
     return success;
