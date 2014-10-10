@@ -28,4 +28,5 @@
 
 + (LGAutoPkgSchedule *)sharedTimer;
 - (void)configure;
+
 @end

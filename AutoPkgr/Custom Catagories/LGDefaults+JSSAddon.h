@@ -3,6 +3,7 @@
 //  AutoPkgr
 //
 //  Created by Eldon on 10/3/14.
+//
 //  Copyright 2014 The Linde Group, Inc.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
@@ -28,4 +29,5 @@
 @property (copy, nonatomic) NSString* JSSAPIPassword;
 @property (copy, nonatomic) NSArray* JSSRepos;
 @property (assign, nonatomic) BOOL JSSVerifySSL;
+
 @end

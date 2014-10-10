@@ -3,6 +3,7 @@
 //  AutoPkgr
 //
 //  Created by Eldon on 10/3/14.
+//
 //  Copyright 2014 The Linde Group, Inc.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
@@ -23,6 +24,7 @@
 #pragma mark - LGDefaults catagory implementation for JSS Addon Interface
 
 @implementation LGDefaults (JSSAddon)
+
 -(NSString *)JSSURL
 {
     return [self autoPkgDomainObject:@"JSS_URL"];
@@ -76,4 +78,5 @@
 {
     [self setAutoPkgDomainObject:@(JSSVerifySSL) forKey:@"JSS_VERIFY_SSL"];
 }
+
 @end
