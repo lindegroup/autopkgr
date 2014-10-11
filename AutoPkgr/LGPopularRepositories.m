@@ -28,53 +28,64 @@
 {
     self = [super init];
 
-    awake = NO;
+    if (self) {
+        _awake = NO;
 
-    _jsonLoader = [[LGGitHubJSONLoader alloc] init];
+        _jsonLoader = [[LGGitHubJSONLoader alloc] init];
 
-    _recipeRepos = [_jsonLoader getAutoPkgRecipeRepos];
+        _recipeRepos = [_jsonLoader getAutoPkgRecipeRepos];
 
-    if (_recipeRepos != nil) {
-        _popularRepos = _recipeRepos;
-    } else {
-        _popularRepos = [NSArray arrayWithObjects:@"https://github.com/autopkg/recipes.git",
-                                                  @"https://github.com/autopkg/keeleysam-recipes.git",
-                                                  @"https://github.com/autopkg/hjuutilainen-recipes.git",
-                                                  @"https://github.com/autopkg/timsutton-recipes.git",
-                                                  @"https://github.com/autopkg/nmcspadden-recipes.git",
-                                                  @"https://github.com/autopkg/jleggat-recipes.git",
-                                                  @"https://github.com/autopkg/jaharmi-recipes.git",
-                                                  @"https://github.com/autopkg/jessepeterson-recipes.git",
-                                                  @"https://github.com/autopkg/dankeller-recipes.git",
-                                                  @"https://github.com/autopkg/hansen-m-recipes.git",
-                                                  @"https://github.com/autopkg/scriptingosx-recipes.git",
-                                                  @"https://github.com/autopkg/derak-recipes.git",
-                                                  @"https://github.com/autopkg/sheagcraig-recipes.git",
-                                                  @"https://github.com/autopkg/arubdesu-recipes.git",
-                                                  @"https://github.com/autopkg/jps3-recipes.git",
-                                                  @"https://github.com/autopkg/joshua-d-miller-recipes.git",
-                                                  @"https://github.com/autopkg/gerardkok-recipes.git",
-                                                  @"https://github.com/autopkg/swy-recipes.git",
-                                                  @"https://github.com/autopkg/lashomb-recipes.git",
-                                                  @"https://github.com/autopkg/rustymyers-recipes.git",
-                                                  @"https://github.com/autopkg/luisgiraldo-recipes.git",
-                                                  @"https://github.com/autopkg/justinrummel-recipes.git",
-                                                  @"https://github.com/autopkg/n8felton-recipes.git",
-                                                  @"https://github.com/autopkg/groob-recipes.git",
-                                                  @"https://github.com/autopkg/jazzace-recipes.git",
-                                                  nil];
+        if (_recipeRepos != nil) {
+            _popularRepos = _recipeRepos;
+        } else {
+            _popularRepos = @[ @"https://github.com/autopkg/recipes.git",
+                               @"https://github.com/autopkg/keeleysam-recipes.git",
+                               @"https://github.com/autopkg/hjuutilainen-recipes.git",
+                               @"https://github.com/autopkg/timsutton-recipes.git",
+                               @"https://github.com/autopkg/nmcspadden-recipes.git",
+                               @"https://github.com/autopkg/jleggat-recipes.git",
+                               @"https://github.com/autopkg/jaharmi-recipes.git",
+                               @"https://github.com/autopkg/jessepeterson-recipes.git",
+                               @"https://github.com/autopkg/dankeller-recipes.git",
+                               @"https://github.com/autopkg/hansen-m-recipes.git",
+                               @"https://github.com/autopkg/scriptingosx-recipes.git",
+                               @"https://github.com/autopkg/derak-recipes.git",
+                               @"https://github.com/autopkg/sheagcraig-recipes.git",
+                               @"https://github.com/autopkg/arubdesu-recipes.git",
+                               @"https://github.com/autopkg/jps3-recipes.git",
+                               @"https://github.com/autopkg/joshua-d-miller-recipes.git",
+                               @"https://github.com/autopkg/gerardkok-recipes.git",
+                               @"https://github.com/autopkg/swy-recipes.git",
+                               @"https://github.com/autopkg/lashomb-recipes.git",
+                               @"https://github.com/autopkg/rustymyers-recipes.git",
+                               @"https://github.com/autopkg/luisgiraldo-recipes.git",
+                               @"https://github.com/autopkg/justinrummel-recipes.git",
+                               @"https://github.com/autopkg/n8felton-recipes.git",
+                               @"https://github.com/autopkg/groob-recipes.git",
+                               @"https://github.com/autopkg/jazzace-recipes.git" ];
+        }
+
+        [self assembleRepos];
+
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(reload)
+                                                     name:kLGNotificationReposModified
+                                                   object:nil];
     }
 
-    [self assembleRepos];
-
     return self;
+}
+
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (void)repoEditDidEndWithError:(NSError *)error withTableView:(NSTableView *)tableView
 {
     [[NSOperationQueue mainQueue] addOperationWithBlock:^{
         [self getAndParseLocalAutoPkgRecipeRepos];
-        [_appObject reload];
+        [_recipesObject reload];
         [tableView reloadData];
         [_progressDelegate stopProgress:error];
     }];
@@ -84,6 +95,7 @@
 {
     [[NSOperationQueue mainQueue] addOperationWithBlock:^{
         [self assembleRepos];
+        [_recipesObject reload];
     }];
 }
 
@@ -198,13 +210,13 @@
 
 - (void)executeRepoSearch:(id)sender
 {
-    if (awake == NO) {
+    if (_awake == NO) {
         _searchedRepos = [NSArray arrayWithArray:_popularRepos];
         return;
     }
 
-    [popularRepositoriesTableView beginUpdates];
-    [popularRepositoriesTableView removeRowsAtIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, _searchedRepos.count)] withAnimation:NSTableViewAnimationEffectNone];
+    [_popularRepositoriesTableView beginUpdates];
+    [_popularRepositoriesTableView removeRowsAtIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, _searchedRepos.count)] withAnimation:NSTableViewAnimationEffectNone];
 
     if ([[_repoSearch stringValue] isEqualToString:@""]) {
         _searchedRepos = _popularRepos;
@@ -221,13 +233,13 @@
         _searchedRepos = [NSArray arrayWithArray:workingSearchArray];
     }
 
-    [popularRepositoriesTableView insertRowsAtIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, _searchedRepos.count)] withAnimation:NSTableViewAnimationEffectNone];
-    [popularRepositoriesTableView endUpdates];
+    [_popularRepositoriesTableView insertRowsAtIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, _searchedRepos.count)] withAnimation:NSTableViewAnimationEffectNone];
+    [_popularRepositoriesTableView endUpdates];
 }
 
 - (void)awakeFromNib
 {
-    awake = YES;
+    _awake = YES;
     [_repoSearch setTarget:self];
     [_repoSearch setAction:@selector(executeRepoSearch:)];
 }

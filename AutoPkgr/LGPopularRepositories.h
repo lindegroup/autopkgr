@@ -27,22 +27,19 @@
 
 @interface LGPopularRepositories : NSObject <NSApplicationDelegate, NSTableViewDelegate, NSTableViewDataSource> {
 
-    IBOutlet NSTableView *popularRepositoriesTableView;
-    __weak NSSearchField *_repoSearch;
-    __weak LGRecipes *_appObject;
-
     NSArray *_recipeRepos;
     NSArray *_popularRepos;
     NSArray *_activeRepos;
     NSArray *_searchedRepos;
     LGGitHubJSONLoader *_jsonLoader;
-    BOOL awake;
+    BOOL _awake;
 }
 
 - (void)reload;
 
+@property (weak) IBOutlet NSTableView *popularRepositoriesTableView;
 @property (weak) IBOutlet NSSearchField *repoSearch;
-@property (weak) IBOutlet LGRecipes *appObject;
+@property (weak) IBOutlet LGRecipes *recipesObject;
 @property (weak) id<LGProgressDelegate> progressDelegate;
 
 @end

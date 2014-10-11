@@ -67,6 +67,7 @@ extern NSString *const kLGNotificationProgressMessageUpdate;
 extern NSString *const kLGNotificationRunAutoPkgComplete;
 extern NSString *const kLGNotificationUpdateReposComplete;
 extern NSString *const kLGNotificationOverrideFileCreated;
+extern NSString *const kLGNotificationReposModified;
 
 #pragma mark-- Email
 extern NSString *const kLGNotificationEmailSent;

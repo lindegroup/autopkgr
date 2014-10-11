@@ -72,6 +72,7 @@ NSString *const kLGNotificationProgressMessageUpdate = @"com.lindegroup.autopkgr
 NSString *const kLGNotificationRunAutoPkgComplete = @"com.lindegroup.autopkgr.notification.autopkgrun.complete";
 NSString *const kLGNotificationUpdateReposComplete = @"com.lindegroup.autopkgr.notification.updaterepos.complete";
 NSString *const kLGNotificationOverrideFileCreated = @"com.lindegroup.autopkgr.notification.override.file.addorremoved";
+NSString *const kLGNotificationReposModified = @"com.lindegroup.autopkgr.notification.repos.modified";
 
 #pragma mark-- Email
 NSString *const kLGNotificationEmailSent = @"com.lindegroup.autopkgr.email.sent.notification";

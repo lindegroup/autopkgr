@@ -1230,8 +1230,8 @@
         <userDefaultsController representsSharedInstance="YES" id="6hU-Zy-Fpz"/>
         <customObject id="mvj-kT-UYD" customClass="LGPopularRepositories">
             <connections>
-                <outlet property="appObject" destination="oLk-Uk-whI" id="Oj9-TV-iC7"/>
-                <outlet property="popularRepositoriesTableView" destination="n0R-ew-DOT" id="GpB-Ij-S0H"/>
+                <outlet property="popularRepositoriesTableView" destination="n0R-ew-DOT" id="JUt-j6-dab"/>
+                <outlet property="recipesObject" destination="oLk-Uk-whI" id="nau-VQ-HYc"/>
                 <outlet property="repoSearch" destination="Su6-Sd-cOj" id="vzT-0g-kr8"/>
             </connections>
         </customObject>

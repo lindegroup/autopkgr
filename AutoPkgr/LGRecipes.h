@@ -23,8 +23,6 @@
 #import "LGAutoPkgTask.h"
 
 @interface LGRecipes : NSObject <NSApplicationDelegate, NSTableViewDataSource, NSTableViewDelegate> {
-
-    IBOutlet NSTableView *recipeTableView;
     NSArray *_recipes;
     NSArray *_activeRecipes;
     NSArray *_searchedRecipes;
@@ -34,6 +32,7 @@
 - (void)writeRecipeList;
 - (NSString *)getAppSupportDirectory;
 
+@property (weak) IBOutlet NSTableView *recipeTableView;
 @property (weak) IBOutlet NSSearchField *recipeSearchField;
 
 + (NSString *)recipeList;

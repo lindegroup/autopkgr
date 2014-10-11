@@ -27,8 +27,12 @@
 - (id)init
 {
     self = [super init];
-    _activeRecipes = [self getActiveRecipes];
-    _searchedRecipes = _recipes;
+
+    if (self) {
+        _activeRecipes = [self getActiveRecipes];
+        _searchedRecipes = _recipes;
+    }
+
     return self;
 }
 
@@ -187,8 +191,8 @@
 
 - (void)executeAppSearch:(id)sender
 {
-    [recipeTableView beginUpdates];
-    [recipeTableView removeRowsAtIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, _searchedRecipes.count)] withAnimation:NSTableViewAnimationEffectNone];
+    [_recipeTableView beginUpdates];
+    [_recipeTableView removeRowsAtIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, _searchedRecipes.count)] withAnimation:NSTableViewAnimationEffectNone];
 
     if ([[_recipeSearchField stringValue] isEqualToString:@""]) {
         _searchedRecipes = _recipes;
@@ -206,9 +210,9 @@
         _searchedRecipes = [NSArray arrayWithArray:workingSearchArray];
     }
 
-    [recipeTableView insertRowsAtIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, _searchedRecipes.count)] withAnimation:NSTableViewAnimationEffectNone];
+    [_recipeTableView insertRowsAtIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, _searchedRecipes.count)] withAnimation:NSTableViewAnimationEffectNone];
 
-    [recipeTableView endUpdates];
+    [_recipeTableView endUpdates];
 }
 
 - (void)awakeFromNib
