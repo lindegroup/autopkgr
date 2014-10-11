@@ -129,10 +129,18 @@ NSString *defaultJSSRepo = @"https://github.com/sheagcraig/jss-recipes.git";
     [installer installJSSAddon:^(NSError *error) {
         BOOL success = (error == nil);
         if (success) {
+            NSString *message = [NSString stringWithFormat:@"Adding %@",defaultJSSRepo];
+            [[NSApp delegate] startProgressWithMessage:message];
             [LGAutoPkgTask repoAdd:defaultJSSRepo reply:^(NSError *error) {
-                if (error) {
-                    NSLog(@"Problem adding the default jss-repo");
-                    DLog(@"%@",error);
+                [[NSApp delegate]stopProgress:error];
+                [[NSNotificationCenter defaultCenter] postNotificationName:kLGNotificationReposModified
+                                                                    object:nil];
+
+                if (_installRequestedDuringConnect) {
+                    _installRequestedDuringConnect = NO;
+                    [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+                        [self reloadJSSServerInformation:self];
+                    }];
                 }
             }];
         }
@@ -150,11 +158,6 @@ NSString *defaultJSSRepo = @"https://github.com/sheagcraig/jss-recipes.git";
                 _jssInstallStatusLight.image = [NSImage LGStatusUpToDate];
             }
             [_jssInstallButton setEnabled:success ? NO:YES];
-
-            if (success && _installRequestedDuringConnect) {
-                _installRequestedDuringConnect = NO;
-                [self reloadJSSServerInformation:self];
-            }
         }];
     }];
 }
