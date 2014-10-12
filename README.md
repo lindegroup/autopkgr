@@ -78,10 +78,10 @@ You'll also find some useful shortcuts on the **Folders & Integration** tab, whi
 Integration with Munki
 ----------------------
 
-To configure AutoPkgr to pipe app updates directly into your Munki repository, follow these steps:
+To configure AutoPkgr to add updates directly into your Munki repository, follow these steps:
 
 1. Click on the **Folders & Integration** tab.
-1. In the **Munki Integration* section, click Choose.
+1. In the **Munki Integration** section, click Choose.
 1. Select your munki_repo folder.
 
 You'll also want to make sure you have a few `.munki` recipes selected. Once the new versions of apps appear in your Munki repo, you can add them to the appropriate catalogs and manifests to deploy them.
