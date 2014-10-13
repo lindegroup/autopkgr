@@ -3,13 +3,13 @@
   AutoPkgr
 
   Created by Eldon on 9/5/14.
-  Copyright (c) 2014 The Linde Group Inc. All rights reserved.
+  Copyright 2014 The Linde Group, Inc.
 */
 
 /**
  *  AutoPkgr related Error code strings
- *  keys ending in Description are intended for NSLocalizedDescriptioncriptionKey
- *  keys ending in Suggestion are intended for NSLocalizedRecoverySuggestiongestionErrorKey
+ *  keys ending in Description are intended for NSLocalizedDescriptionKey
+ *  keys ending in Suggestion are intended for NSLocalizedRecoverySuggestionErrorKey
  */
 
 /** Success */
@@ -50,11 +50,11 @@
 
 /** Error Serializing JSS response */
 "kLGErrorJSSXMLSerializerErrorDescription" = "Error getting distribution points";
-"kLGErrorJSSXMLSerializerErrorSuggestion" = "The Casper server's response could not be correctly interpereted";
+"kLGErrorJSSXMLSerializerErrorSuggestion" = "The Casper server's response could not be correctly interpreted";
 
 /**
  *  Errors relating specifically to AutoPkg
- *  Recovery Suggestiongestion string is created from the task.standardError so unnecissary here
+ *  Recovery Suggestion string is created from the task.standardError so unnecessary here
  */
 
 "kLGAutoPkgUndefinedVerbDescription" = "AutoPkgr encountered an error";
@@ -77,8 +77,8 @@
 
 /**
  *  AutoPkgr related AutoPkgr HTTP requests
- *  keys ending in Description are intended for NSLocalizedDescriptioncriptionKey
- *  keys ending in Suggestion are intended for NSLocalizedRecoverySuggestiongestionErrorKey
+ *  keys ending in Description are intended for NSLocalizedDescriptionKey
+ *  keys ending in Suggestion are intended for NSLocalizedRecoverySuggestionErrorKey
  */
 
 // Success
@@ -91,11 +91,11 @@
 
 // Unauthorized
 "kLGHTTPErrorUnauthorizedDescription" = "User authorization failed.";
-"kLGHTTPErrorUnauthorizedSuggestion" = "Please make you have entered the correct user name and password for the connection.";
+"kLGHTTPErrorUnauthorizedSuggestion" = "Please make you have entered the correct username and password for the connection.";
 
 // Forbidden
 "kLGHTTPErrorForbiddenDescription" = "Access forbidden";
-"kLGHTTPErrorForbiddenSuggestion" = "The specified user is not authorized to access this area on the server.  Please check that the user name you've entered is correct.";
+"kLGHTTPErrorForbiddenSuggestion" = "The specified user is not authorized to access this area on the server.  Please check that the username you've entered is correct.";
 
 // Not Found
 "kLGHTTPErrorNotFoundDescription" = "Resource not found";
@@ -107,4 +107,4 @@
 
 // General failure
 "kLGHTTPErrorUnknownDescription" = "There was a problem connecting to the server";
-"kLGHTTPErrorUnknownSuggestion" = "An unknow error occured.  If you get this message repeadly please create an issue on the AutoPkgr github page.  Thanks.";
+"kLGHTTPErrorUnknownSuggestion" = "An unknown error occured.  If you get this message repeatedly please create an issue on the AutoPkgr GitHub page.  Thanks.";
