@@ -21,7 +21,7 @@
 
 #import "LGDefaults+JSSAddon.h"
 
-#pragma mark - LGDefaults catagory implementation for JSS Addon Interface
+#pragma mark - LGDefaults category implementation for JSS Addon Interface
 
 @implementation LGDefaults (JSSAddon)
 
