@@ -226,18 +226,16 @@ NSString *autopkg()
                 NSString *message = [[NSString alloc]initWithData:[handle availableData] encoding:NSUTF8StringEncoding];
                 NSString *fullMessage;
                 if ([processingPredicate evaluateWithObject:message]) {
-                    fullMessage = [NSString stringWithFormat:@"(%d/%d) %@", cntStr, totStr, message];
-                } else {
-                    fullMessage = message;
-                }
-                
-                if (weakSelf.runStatusUpdate) {
-                    [weakSelf.statusUpdateQueue addOperationWithBlock:^{
-                        weakSelf.runStatusUpdate(fullMessage, ((count/total) * 100));
-                    }];
-                }
-                if (count < total) {
-                    count++;
+                    fullMessage = [[NSString stringWithFormat:@"(%d/%d) %@", cntStr, totStr, message] stringByTrimmingCharactersInSet:[NSCharacterSet newlineCharacterSet]];
+
+                    if (weakSelf.runStatusUpdate) {
+                        [weakSelf.statusUpdateQueue addOperationWithBlock:^{
+                            weakSelf.runStatusUpdate(fullMessage, ((count/total) * 100));
+                        }];
+                    }
+                    if (count < total) {
+                        count++;
+                    }
                 }
             }];
         }
@@ -429,7 +427,7 @@ NSString *autopkg()
         NSString *file = [_arguments objectAtIndex:2];
         if ([[NSFileManager defaultManager] fileExistsAtPath:file]) {
             NSString *fileContents = [NSString stringWithContentsOfFile:file encoding:NSASCIIStringEncoding error:nil];
-            count = [[fileContents componentsSeparatedByString:@"\n"] count];
+            count = [[fileContents componentsSeparatedByCharactersInSet:[NSCharacterSet newlineCharacterSet]] count];
         }
     }
     return count;
@@ -623,9 +621,9 @@ NSString *autopkg()
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"SELF CONTAINS %@", autopkg()];
     NSArray *runningProcs = [outputString componentsSeparatedByString:@"\n"];
 
-    if ([[runningProcs filteredArrayUsingPredicate:predicate] count])
+    if ([[runningProcs filteredArrayUsingPredicate:predicate] count]) {
         return YES;
-
+    }
     return NO;
 }
 
