@@ -60,15 +60,7 @@ NSString *defaultJSSRepo = @"https://github.com/sheagcraig/jss-recipes.git";
         _jssURLTF.safeStringValue = _defaults.JSSURL;
     }
 
-    [self evaluateRepoViability];
-
-    if (!_defaults.JSSRepos) {
-        [_jssStatusLight setHidden:YES];
-    } else {
-        if (_defaults.JSSAPIPassword && _defaults.JSSAPIUsername && _defaults.JSSURL) {
-            [self checkReachability];
-        }
-    }
+    [self updateJSSURL:nil];
     [_jssDistributionPointTableView reloadData];
 }
 
@@ -87,10 +79,16 @@ NSString *defaultJSSRepo = @"https://github.com/sheagcraig/jss-recipes.git";
 {
     [self evaluateRepoViability];
     [self checkReachability];
+
+    [_jssReloadServerBT setEnabled:_jssURLTF.safeStringValue ? YES:NO];
 }
 
 - (IBAction)reloadJSSServerInformation:(id)sender
 {
+    if(!_jssURLTF.safeStringValue){
+        return;
+    }
+
     if (![LGHostInfo jssAddonInstalled]) {
         _installRequestedDuringConnect = YES;
         if ([self requiresInstall]) {
@@ -215,6 +213,9 @@ NSString *defaultJSSRepo = @"https://github.com/sheagcraig/jss-recipes.git";
 #pragma mark - Utility
 - (void)checkReachability
 {
+    if(!_jssURLTF.safeStringValue){
+        return;
+    }
     // If there's a currently processing _portTester nil it out
     if (_portTester) {
         _portTester = nil;
@@ -222,7 +223,6 @@ NSString *defaultJSSRepo = @"https://github.com/sheagcraig/jss-recipes.git";
 
     _portTester = [[LGTestPort alloc] init];
     [self startStatusUpdate];
-    [_jssStatusLight setHidden:NO];
 
     [_portTester testServerURL:_jssURLTF.safeStringValue reply:^(BOOL reachable) {
         _serverReachable = reachable;
@@ -281,8 +281,8 @@ NSString *defaultJSSRepo = @"https://github.com/sheagcraig/jss-recipes.git";
     if (!_jssAPIPasswordTF.safeStringValue && !_jssAPIUsernameTF.safeStringValue && !_jssURLTF.safeStringValue) {
         _defaults.JSSRepos = nil;
         [self saveDefaults];
-        [_jssStatusLight setHidden:YES];
         [self showInstallTabItems:NO];
+        [_jssStatusLight setImage:[NSImage LGStatusNone]];
     } else if (![_defaults.JSSAPIPassword isEqualToString:_jssAPIPasswordTF.safeStringValue] || ![_defaults.JSSAPIUsername isEqualToString:_jssAPIUsernameTF.safeStringValue] || ![_defaults.JSSURL isEqualToString:_jssURLTF.safeStringValue]) {
         // Update server status
         if ([_jssStatusLight.image isEqualTo:[NSImage LGStatusAvaliable]]) {
