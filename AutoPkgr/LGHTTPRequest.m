@@ -56,7 +56,7 @@
                                              persistence:NSURLCredentialPersistenceNone];
     }
 
-    [[LGDefaults standardUserDefaults] setJSSVerifySSL:NO];
+    [[LGDefaults standardUserDefaults] setJSSVerifySSL:YES];
 
     [operation setWillSendRequestForAuthenticationChallengeBlock:^(NSURLConnection *connection, NSURLAuthenticationChallenge *challenge) {
         DLog(@"Got authentication challenge");

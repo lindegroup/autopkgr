@@ -44,17 +44,17 @@ extern NSString *const kLGAutoPkgRepoPathKey;
 /**
  *  Arguments passed into autopkg
  */
-@property (copy, nonatomic) NSArray *arguments;
+@property (strong, nonatomic) NSArray *arguments;
 
 /**
  *  stdout from autopkg
  */
-@property (copy, nonatomic, readonly) NSString *standardOutString;
+@property (strong, nonatomic, readonly) NSString *standardOutString;
 
 /**
  *  stderr from autopkg
  */
-@property (copy, nonatomic, readonly) NSString *standardErrString;
+@property (strong, nonatomic, readonly) NSString *standardErrString;
 
 /**
  * An array of dictionaries based on the autopkg verb

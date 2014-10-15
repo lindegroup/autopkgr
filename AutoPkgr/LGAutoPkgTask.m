@@ -4,8 +4,6 @@
 //
 //  Created by Eldon on 8/30/14.
 //
-//  Copyright 2014 The Linde Group, Inc.
-//
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
 //  You may obtain a copy of the License at
@@ -22,7 +20,8 @@
 #import "LGAutoPkgTask.h"
 #import "LGRecipes.h"
 #import "LGVersionComparator.h"
-#import <util.h>
+
+NSString *const kLGAutoPkgTaskLock = @"com.lindegroup.autopkg.task.lock";
 
 NSString *const kLGAutoPkgRecipeKey = @"recipe";
 NSString *const kLGAutoPkgRecipePathKey = @"recipe_path";
@@ -38,41 +37,57 @@ NSString *autopkg()
 
 @interface LGAutoPkgTask ()
 
-@property (copy, nonatomic, readwrite) NSString *standardOutString;
-@property (copy, nonatomic, readwrite) NSString *standardErrString;
+@property (strong, atomic) NSTask *task;
+@property (strong, atomic) NSMutableArray *internalArgs;
+@property (strong, atomic) NSMutableDictionary *internalEnvironment;
+@property (nonatomic, assign) LGAutoPkgVerb verb;
+@property (strong, nonatomic, readwrite) NSString *standardOutString;
+@property (strong, nonatomic, readwrite) NSString *standardErrString;
 @property (copy, nonatomic) NSString *reportPlistFile;
 @property (copy, nonatomic) NSDictionary *reportPlist;
 @property (copy, nonatomic) NSString *version;
-@property (nonatomic) BOOL AUTOPKG_VERSION_0_4_0;
-@property (nonatomic, readwrite) BOOL complete;
+@property (nonatomic, assign) BOOL AUTOPKG_VERSION_0_4_0;
+@property (nonatomic, readwrite, assign) BOOL complete;
+@property (strong, nonatomic) NSOperationQueue *taskQueue;
+@property (strong, nonatomic) NSOperationQueue *statusUpdateQueue;
+@property (readwrite, nonatomic, strong) NSRecursiveLock *taskLock;
 
 @end
 
-@implementation LGAutoPkgTask {
-    NSTask *_task;
-    NSMutableArray *_internalArgs;
-    LGAutoPkgVerb _verb;
+@implementation LGAutoPkgTask
+
+- (NSString *)taskDescription
+{
+    return [NSString stringWithFormat:@"%@ %@", self.task.launchPath, [self.task.arguments componentsJoinedByString:@" "]];
 }
 
 - (void)dealloc
 {
-    _task.terminationHandler = nil;
+    DLog(@"Completed AutoPkg Task:\n  %@\n", [self taskDescription]);
+    self.task.terminationHandler = nil;
+    self.runStatusUpdate = nil;
 }
 
 - (id)init
 {
     self = [super init];
     if (self) {
-        self->_task = [[NSTask alloc] init];
-        self->_task.launchPath = @"/usr/bin/python";
-        self->_internalArgs = [[NSMutableArray alloc] initWithArray:@[ autopkg() ]];
+        self.complete = NO;
+        self.internalArgs = [[NSMutableArray alloc] initWithArray:@[ autopkg() ]];
+        self.statusUpdateQueue = [NSOperationQueue currentQueue];
+        self.taskLock = [[NSRecursiveLock alloc] init];
+        self.taskLock.name = kLGAutoPkgTaskLock;
     }
     return self;
 }
 
+#pragma mark - Life Cycle
 - (BOOL)launch:(NSError *__autoreleasing *)error
 {
-    [_task setArguments:_internalArgs];
+    self.task = [[NSTask alloc] init];
+    self.task.launchPath = @"/usr/bin/python";
+
+    [self.task setArguments:self.internalArgs];
 
     // If an instance of autopkg is running,
     // and we're trying to do a run, exit
@@ -81,32 +96,42 @@ NSString *autopkg()
                                 error:error];
     }
 
-    [self setFileHandles];
-    [_task launch];
-    [_task waitUntilExit];
+    [self configureFileHandles];
+    [self configureEnvironment];
 
-    // set the complete property to YES in case of an observer
-    _complete = YES;
+    if (self.internalEnvironment) {
+        self.task.environment = self.internalEnvironment;
+    }
 
+    [self.task launch];
+
+    while ([self.task isRunning]) {
+        [[NSRunLoop currentRunLoop] runMode:@"kLGAutoPkgTaskRunLoopMode"
+                                 beforeDate:[NSDate dateWithTimeIntervalSinceNow:1.0]];
+    }
+
+    [self setComplete:YES];
     // make sure the out and error readability handlers get set to nil
     // so the filehandle will get closed
-    if ([_task.standardOutput isKindOfClass:[NSPipe class]]) {
-        [_task.standardOutput fileHandleForReading].readabilityHandler = nil;
+    if ([self.task.standardOutput isKindOfClass:[NSPipe class]]) {
+        [self.task.standardOutput fileHandleForReading].readabilityHandler = nil;
     }
 
-    if ([_task.standardError isKindOfClass:[NSPipe class]]) {
-        [_task.standardError fileHandleForReading].readabilityHandler = nil;
+    if ([self.task.standardError isKindOfClass:[NSPipe class]]) {
+        [self.task.standardError fileHandleForReading].readabilityHandler = nil;
     }
 
-    return [LGError errorWithTaskError:_task
-                                  verb:_verb
-                                 error:error];
+    [self.taskLock lock];
+    BOOL success = [LGError errorWithTaskError:self.task verb:_verb error:error];
+    [self.taskLock unlock];
+
+    return success;
 }
 
 - (void)launchInBackground:(void (^)(NSError *))reply
 {
-    NSOperationQueue *bgQueue = [NSOperationQueue new];
-    [bgQueue addOperationWithBlock:^{
+    self.taskQueue = [NSOperationQueue new];
+    [self.taskQueue addOperationWithBlock:^{
         NSError *error;
         [self launch:&error];
         reply(error);
@@ -115,68 +140,43 @@ NSString *autopkg()
 
 - (BOOL)cancel
 {
-    if (_task && _task.isRunning) {
-        [_task terminate];
-        return ![_task isRunning];
+    BOOL canceled = YES;
+    [self.taskLock lock];
+    if (self.task && self.task.isRunning) {
+        [self.task terminate];
+        canceled = ![self.task isRunning];
     }
-    return YES;
+    [self.taskLock unlock];
+    return canceled;
 }
 
-- (void)setFileHandles
+- (BOOL)complete
 {
-    _task.standardError = [NSPipe pipe];
-    _task.standardOutput = [NSPipe pipe];
-
-    if (_verb == kLGAutoPkgRun) {
-        if (self.AUTOPKG_VERSION_0_4_0) {
-            __block double count = 0.0;
-            __block double total = [self recipeListCount];
-            __weak LGAutoPkgTask *weakSelf = self;
-
-            // To get status from autopkg set NSUnbufferedIO environment keyto YES
-            // Thanks to help from -- http://stackoverflow.com/questions/8251010
-            NSMutableDictionary *environment = [[NSMutableDictionary alloc] init];
-
-            NSDictionary *processEnvironment = [[NSProcessInfo processInfo] environment];
-            [environment addEntriesFromDictionary:processEnvironment];
-            [environment addEntriesFromDictionary:@{ @"NSUnbufferedIO" : @"YES" }];
-
-            _task.environment = environment;
-
-            NSPredicate *processingPredicate = [NSPredicate predicateWithFormat:@"SELF BEGINSWITH[cd] 'Processing'"];
-            [[_task.standardOutput fileHandleForReading] setReadabilityHandler:^(NSFileHandle *handle) {
-                int cntStr = (int)round(count) + 1;
-                int totStr = (int)round(total);
-                NSString *message = [[NSString alloc]initWithData:[handle availableData] encoding:NSUTF8StringEncoding];
-                NSString *fullMessage;
-                if ([processingPredicate evaluateWithObject:message]) {
-                    fullMessage = [NSString stringWithFormat:@"(%d/%d) %@", cntStr, totStr, message];
-                } else {
-                    fullMessage = message;
-                }
-                
-                if (weakSelf.runStatusUpdate) {
-                    weakSelf.runStatusUpdate(fullMessage,((count/total)*100));
-                }
-                
-                if (count < total) {
-                    count++;
-                }
-            }];
-        }
+    if (!_complete) {
+        [self.taskLock lock];
+        if (self.task)
+            _complete = ![self.task isRunning];
+        [self.taskLock unlock];
     }
+    return _complete;
 }
 
+#pragma mark - Accessors
 - (void)setArguments:(NSArray *)arguments
 {
+    [self.taskLock lock];
+    /** _arguments is the externally set values
+     * _internalArguments is the mutable array that has
+     *  the path to autopkg set as the first object during init
+     */
     _arguments = arguments;
-    [_internalArgs addObjectsFromArray:arguments];
+    [self.internalArgs addObjectsFromArray:arguments];
 
-    NSString *verbString = _arguments[0];
+    NSString *verbString = [_arguments firstObject];
     if ([verbString isEqualToString:@"run"]) {
         _verb = kLGAutoPkgRun;
         if (self.AUTOPKG_VERSION_0_4_0) {
-            [_internalArgs addObject:self.reportPlistFile];
+            [self.internalArgs addObject:self.reportPlistFile];
         }
     } else if ([verbString isEqualToString:@"search"]) {
         _verb = kLGAutoPkgSearch;
@@ -195,43 +195,140 @@ NSString *autopkg()
     } else if ([verbString isEqualToString:@"version"]) {
         _verb = kLGAutoPkgVersion;
     }
+
+    [self.taskLock unlock];
 }
 
+- (NSString *)version
+{
+    if (!_version) {
+        _version = [[self class] version];
+    }
+    return _version;
+}
+
+#pragma mark - Task config helpers
+- (void)configureFileHandles
+{
+    self.task.standardError = [NSPipe pipe];
+    self.task.standardOutput = [NSPipe pipe];
+
+    if (_verb == kLGAutoPkgRun) {
+        if (self.AUTOPKG_VERSION_0_4_0) {
+            __block double count = 0.0;
+            __block double total = [self recipeListCount];
+            __weak LGAutoPkgTask *weakSelf = self;
+
+            NSPredicate *processingPredicate = [NSPredicate predicateWithFormat:@"SELF BEGINSWITH[cd] 'Processing'"];
+            [[self.task.standardOutput fileHandleForReading] setReadabilityHandler:^(NSFileHandle *handle) {
+                int cntStr = (int)round(count) + 1;
+                int totStr = (int)round(total);
+                NSString *message = [[NSString alloc]initWithData:[handle availableData] encoding:NSUTF8StringEncoding];
+                NSString *fullMessage;
+                if ([processingPredicate evaluateWithObject:message]) {
+                    fullMessage = [[NSString stringWithFormat:@"(%d/%d) %@", cntStr, totStr, message] stringByTrimmingCharactersInSet:[NSCharacterSet newlineCharacterSet]];
+
+                    if (weakSelf.runStatusUpdate) {
+                        [weakSelf.statusUpdateQueue addOperationWithBlock:^{
+                            weakSelf.runStatusUpdate(fullMessage, ((count/total) * 100));
+                        }];
+                    }
+                    if (count < total) {
+                        count++;
+                    }
+                }
+            }];
+        }
+    }
+}
+
+- (void)configureEnvironment
+{
+    // If the task is a network operation set proxies
+    if ([self isNetworkOperation]) {
+
+        LGDefaults *defaults = [[LGDefaults alloc] init];
+        NSString *httpProxy = [defaults objectForKey:@"HTTP_PROXY"];
+        NSString *httpsProxy = [defaults objectForKey:@"HTTPS_PROXY"];
+
+        if (httpProxy) {
+            [self addEnvironmentVariable:httpProxy forKey:@"HTTP_PROXY"];
+            DLog(@"Using HTTP_PROXY: %@", httpProxy);
+        }
+
+        if (httpsProxy) {
+            [self addEnvironmentVariable:httpsProxy forKey:@"HTTPS_PROXY"];
+            DLog(@"Using HTTPS_PROXY: %@", httpsProxy);
+        }
+    }
+
+    if (_verb == kLGAutoPkgRun || _verb == kLGAutoPkgRepoUpdate) {
+        // To get status from autopkg set NSUnbufferedIO environment key to YES
+        // Thanks to help from -- http://stackoverflow.com/questions/8251010
+        [self addEnvironmentVariable:@"YES" forKey:@"NSUnbufferedIO"];
+    }
+}
+
+- (void)addEnvironmentVariable:(NSString *)variable forKey:(NSString *)key
+{
+    if (!_internalEnvironment) {
+        _internalEnvironment = [NSMutableDictionary dictionaryWithDictionary:[[NSProcessInfo processInfo] environment]];
+    }
+    [_internalEnvironment setObject:variable forKey:key];
+}
+
+#pragma mark - Output / Results
 - (NSString *)standardErrString
 {
-    if (!_standardErrString) {
+    [self.taskLock lock];
+    if (!_standardErrString && self.complete) {
         NSData *data;
-        if ([_task.standardError isKindOfClass:[NSPipe class]]) {
-            data = [[_task.standardError fileHandleForReading] readDataToEndOfFile];
+        if ([self.task.standardError isKindOfClass:[NSPipe class]]) {
+            data = [[self.task.standardError fileHandleForReading] readDataToEndOfFile];
         }
         if (data) {
             _standardErrString = [[NSString alloc] initWithData:data encoding:NSASCIIStringEncoding];
         }
     }
+    [self.taskLock unlock];
     return _standardErrString;
 }
 
 - (NSString *)standardOutString
 {
-    if (!_standardOutString) {
+    [self.taskLock lock];
+    if (!_standardOutString && self.complete) {
         NSData *data;
-        if ([_task.standardOutput isKindOfClass:[NSPipe class]]) {
-            data = [[_task.standardOutput fileHandleForReading] readDataToEndOfFile];
+        if ([self.task.standardOutput isKindOfClass:[NSPipe class]]) {
+            data = [[self.task.standardOutput fileHandleForReading] readDataToEndOfFile];
         }
         if (data) {
             _standardOutString = [[NSString alloc] initWithData:data encoding:NSASCIIStringEncoding];
         }
     }
+    [self.taskLock unlock];
     return _standardOutString;
 }
 
 - (NSDictionary *)reportPlist
 {
     if (self.AUTOPKG_VERSION_0_4_0) {
-        _reportPlist = [NSDictionary dictionaryWithContentsOfFile:_reportPlistFile];
+        NSFileManager *fm = [NSFileManager defaultManager];
+        NSString *reportPlistFile = self.reportPlistFile;
+
+        if (self.reportPlistFile && [fm fileExistsAtPath:self.reportPlistFile]) {
+            // Create dictionary from the tmp file
+            _reportPlist = [NSDictionary dictionaryWithContentsOfFile:reportPlistFile];
+
+            // Cleanup the tmp file
+            NSError *error;
+            if (![fm removeItemAtPath:reportPlistFile error:&error]) {
+                DLog(@"Error removing autopkg run report-plist: %@", error.localizedDescription);
+            }
+        }
     } else {
         NSString *plistString = self.standardOutString;
-        if (![plistString isEqualToString:@""]) {
+        if (plistString && ![plistString isEqualToString:@""]) {
             // Convert string back to data for plist serialization
             NSData *plistData = [plistString dataUsingEncoding:NSUTF8StringEncoding];
             // Initialize plist format
@@ -268,10 +365,9 @@ NSString *autopkg()
             NSMutableCharacterSet *repoCharacters = [NSMutableCharacterSet alphanumericCharacterSet];
             [repoCharacters formUnionWithCharacterSet:[NSCharacterSet punctuationCharacterSet]];
 
-            NSPredicate *nonRecipePredicate = [NSPredicate predicateWithFormat:
-                                                               @"SELF BEGINSWITH 'To add' \
-                                               or SELF BEGINSWITH '----' \
-                                               or SELF BEGINSWITH 'Name'"];
+            NSPredicate *nonRecipePredicate = [NSPredicate predicateWithFormat:@"SELF BEGINSWITH 'To add' \
+                                                                                or SELF BEGINSWITH '----' \
+                                                                                or SELF BEGINSWITH 'Name'"];
 
             [resultString enumerateLinesUsingBlock:^(NSString *line, BOOL *stop) {
                 if (![nonRecipePredicate evaluateWithObject:line ]) {
@@ -305,18 +401,22 @@ NSString *autopkg()
     return results;
 }
 
-- (NSString *)version
-{
-    if (_version) {
-        return _version;
-    }
-    _version = [[self class] version];
-    return _version;
-}
+#pragma mark - Utility
 
 - (BOOL)AUTOPKG_VERSION_0_4_0
 {
     return [LGVersionComparator isVersion:self.version greaterThanVersion:@"0.3.9"];
+}
+
+- (BOOL)isNetworkOperation
+{
+    if (_verb == kLGAutoPkgRun ||
+        _verb == kLGAutoPkgSearch ||
+        _verb == kLGAutoPkgRepoAdd ||
+        _verb == kLGAutoPkgRepoUpdate) {
+        return YES;
+    }
+    return NO;
 }
 
 #pragma mark - Specialized settings
@@ -327,7 +427,7 @@ NSString *autopkg()
         NSString *file = [_arguments objectAtIndex:2];
         if ([[NSFileManager defaultManager] fileExistsAtPath:file]) {
             NSString *fileContents = [NSString stringWithContentsOfFile:file encoding:NSASCIIStringEncoding error:nil];
-            count = [[fileContents componentsSeparatedByString:@"\n"] count];
+            count = [[fileContents componentsSeparatedByCharactersInSet:[NSCharacterSet newlineCharacterSet]] count];
         }
     }
     return count;
@@ -521,9 +621,9 @@ NSString *autopkg()
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"SELF CONTAINS %@", autopkg()];
     NSArray *runningProcs = [outputString componentsSeparatedByString:@"\n"];
 
-    if ([[runningProcs filteredArrayUsingPredicate:predicate] count])
+    if ([[runningProcs filteredArrayUsingPredicate:predicate] count]) {
         return YES;
-
+    }
     return NO;
 }
 

@@ -4,7 +4,7 @@
 //
 //  Created by Eldon on 9/6/14.
 //
-//  Copyright 2014 The Linde Group, Inc. All rights reserved.
+//  Copyright 2014 The Linde Group, Inc.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -22,7 +22,9 @@
 #import <Foundation/Foundation.h>
 
 @protocol LGProgressDelegate <NSObject>
+
 - (void)startProgressWithMessage:(NSString *)message;
 - (void)stopProgress:(NSError *)error;
 - (void)updateProgress:(NSString *)message progress:(double)progress;
+
 @end
