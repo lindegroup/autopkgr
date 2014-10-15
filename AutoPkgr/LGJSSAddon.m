@@ -80,12 +80,12 @@ NSString *defaultJSSRepo = @"https://github.com/sheagcraig/jss-recipes.git";
     [self evaluateRepoViability];
     [self checkReachability];
 
-    [_jssReloadServerBT setEnabled:_jssURLTF.safeStringValue ? YES:NO];
+    [_jssReloadServerBT setEnabled:_jssURLTF.safeStringValue ? YES : NO];
 }
 
 - (IBAction)reloadJSSServerInformation:(id)sender
 {
-    if(!_jssURLTF.safeStringValue){
+    if (!_jssURLTF.safeStringValue) {
         return;
     }
 
@@ -213,7 +213,7 @@ NSString *defaultJSSRepo = @"https://github.com/sheagcraig/jss-recipes.git";
 #pragma mark - Utility
 - (void)checkReachability
 {
-    if(!_jssURLTF.safeStringValue){
+    if (!_jssURLTF.safeStringValue) {
         return;
     }
     // If there's a currently processing _portTester nil it out

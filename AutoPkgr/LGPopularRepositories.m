@@ -250,7 +250,7 @@
     return nil;
 
     // TODO: Eventually this could be setup for something
-    // The AutoPkgTask repo-list needs to be reworked to send back an array of dicts. 
+    // The AutoPkgTask repo-list needs to be reworked to send back an array of dicts.
     NSMenu *menu = [[NSMenu alloc] init];
     NSMenuItem *item = [[NSMenuItem alloc] initWithTitle:@"Reveal in Finder" action:nil keyEquivalent:@""];
     [menu addItem:item];

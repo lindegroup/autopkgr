@@ -1,5 +1,8 @@
 // LGRecipeTableView.m
-// 
+// AutoPkgr
+//
+// Created by Eldon on 8/14/14.
+//
 // Copyright 2014 The Linde Group, Inc.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,7 +17,6 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
 //
-
 
 #import "LGTableView.h"
 #import "LGRecipeOverrides.h"
