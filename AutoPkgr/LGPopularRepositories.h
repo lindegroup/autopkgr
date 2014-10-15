@@ -35,9 +35,10 @@
     BOOL _awake;
 }
 
++ (NSMenu *)contextualMenuForRepo:(NSString *)repo;
 - (void)reload;
 
-@property (weak) IBOutlet NSTableView *popularRepositoriesTableView;
+@property (weak) IBOutlet LGTableView *popularRepositoriesTableView;
 @property (weak) IBOutlet NSSearchField *repoSearch;
 @property (weak) IBOutlet LGRecipes *recipesObject;
 @property (weak) id<LGProgressDelegate> progressDelegate;
