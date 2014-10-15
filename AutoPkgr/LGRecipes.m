@@ -109,9 +109,9 @@
 
 - (id)tableView:(NSTableView *)tableView objectValueForTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row
 {
-    if ([[tableColumn identifier] isEqualToString:@"appCheckbox"]) {
+    if ([[tableColumn identifier] isEqualToString:@"recipeCheckbox"]) {
         return @([_activeRecipes containsObject:[_searchedRecipes objectAtIndex:row]]);
-    } else if ([[tableColumn identifier] isEqualToString:@"appName"]) {
+    } else if ([[tableColumn identifier] isEqualToString:@"recipeName"]) {
         return [_searchedRecipes objectAtIndex:row];
     }
 
@@ -120,7 +120,7 @@
 
 - (void)tableView:(NSTableView *)tableView setObjectValue:(id)object forTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row
 {
-    if ([[tableColumn identifier] isEqualToString:@"appCheckbox"]) {
+    if ([[tableColumn identifier] isEqualToString:@"recipeCheckbox"]) {
         NSMutableArray *workingArray = [NSMutableArray arrayWithArray:_activeRecipes];
         if ([object isEqual:@YES]) {
             [workingArray addObject:[_searchedRecipes objectAtIndex:row]];
