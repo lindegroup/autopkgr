@@ -170,6 +170,7 @@ NSString *autopkg()
      *  the path to autopkg set as the first object during init
      */
     _arguments = arguments;
+    BOOL verbose = [[NSUserDefaults standardUserDefaults] boolForKey:@"verboseAutoPkgRun"];
     [self.internalArgs addObjectsFromArray:arguments];
 
     NSString *verbString = [_arguments firstObject];
@@ -177,6 +178,9 @@ NSString *autopkg()
         _verb = kLGAutoPkgRun;
         if (self.AUTOPKG_VERSION_0_4_0) {
             [self.internalArgs addObject:self.reportPlistFile];
+        }
+        if (verbose) {
+            [self.internalArgs addObject:@"-v"];
         }
     } else if ([verbString isEqualToString:@"search"]) {
         _verb = kLGAutoPkgSearch;
@@ -236,6 +240,8 @@ NSString *autopkg()
                     if (count < total) {
                         count++;
                     }
+                } else {
+                    NSLog(@"%@",message);
                 }
             }];
         }
@@ -410,10 +416,7 @@ NSString *autopkg()
 
 - (BOOL)isNetworkOperation
 {
-    if (_verb == kLGAutoPkgRun ||
-        _verb == kLGAutoPkgSearch ||
-        _verb == kLGAutoPkgRepoAdd ||
-        _verb == kLGAutoPkgRepoUpdate) {
+    if (_verb == kLGAutoPkgRun || _verb == kLGAutoPkgSearch || _verb == kLGAutoPkgRepoAdd || _verb == kLGAutoPkgRepoUpdate) {
         return YES;
     }
     return NO;
