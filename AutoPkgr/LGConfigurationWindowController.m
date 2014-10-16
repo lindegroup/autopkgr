@@ -737,7 +737,8 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
 {
     NSString *recipeList = [LGRecipes recipeList];
     [_cancelAutoPkgRunButton setHidden:NO];
-    [self startProgressWithMessage:@"Running selected AutoPkg recipes."];
+    [_progressDetailsMessage setHidden:NO];
+    [[NSApp delegate] startProgressWithMessage:@"Running selected AutoPkg recipes."];
     _task = [[LGAutoPkgTask alloc] init];
     [_task runRecipeList:recipeList
         progress:^(NSString *message, double taskProgress) {
@@ -750,7 +751,6 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
                                 [emailer sendEmailForReport:report error:error];
                             }
                             _task = nil;
-                            [_cancelAutoPkgRunButton setHidden:YES];
         }];
 }
 
@@ -1055,9 +1055,12 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
         [self.progressPanel orderOut:self];
         [self.progressIndicator setDoubleValue:0.0];
         [self.progressIndicator setIndeterminate:YES];
+        [self.cancelAutoPkgRunButton setHidden:YES];
+
         [NSApp endSheet:self.progressPanel returnCode:0];
         [self.progressMessage setStringValue:@"Starting..."];
         [self.progressDetailsMessage setStringValue:@""];
+
         if (error) {
             SEL selector = nil;
             NSAlert *alert = [NSAlert alertWithError:error];

@@ -29,6 +29,7 @@
 @implementation LGAppDelegate {
 @private
     LGConfigurationWindowController *_configurationWindowController;
+    BOOL _configurationWindowInitiallyVisible;
 }
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
@@ -82,7 +83,8 @@
 - (void)checkNowFromMenu:(id)sender
 {
     DLog(@"Received 'Check Now' menulet command.");
-    [self startProgressWithMessage:@"Starting..."];
+
+    [self startProgressWithMessage:@"Running selected AutoPkg recipes."];
     NSString *recipeList = [LGRecipes recipeList];
     [LGAutoPkgTask runRecipeList:recipeList
         progress:^(NSString *message, double taskProgress) {
@@ -133,21 +135,26 @@
 #pragma mark - Progress Protocol
 - (void)startProgressWithMessage:(NSString *)message
 {
-    if (_configurationWindowController && [_configurationWindowController.window isVisible]) {
-        [_configurationWindowController startProgressWithMessage:message];
-    }
-    __block NSMenuItem *item = [self.statusMenu itemAtIndex:0];
-    [item setAction:nil];
-    [item setTitle:message];
+    [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+        _configurationWindowInitiallyVisible = [_configurationWindowController.window isVisible];
+
+        if (_configurationWindowController && _configurationWindowInitiallyVisible) {
+            [_configurationWindowController startProgressWithMessage:message];
+        }
+        NSMenuItem *item = [self.statusMenu itemAtIndex:0];
+        [item setAction:nil];
+        [item setTitle:message];
+    }];
 }
 
 - (void)stopProgress:(NSError *)error
 {
-    if (_configurationWindowController && [_configurationWindowController.window isVisible]) {
-        [_configurationWindowController stopProgress:error];
-    }
-    __block NSMenuItem *item = [self.statusMenu itemAtIndex:0];
     [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+        if (_configurationWindowController && _configurationWindowInitiallyVisible) {
+            [_configurationWindowController stopProgress:error];
+        }
+
+        NSMenuItem *item = [self.statusMenu itemAtIndex:0];
         [item setTitle:@"Check Now"];
         [item setAction:@selector(checkNowFromMenu:)];
     }];
@@ -155,16 +162,16 @@
 
 - (void)updateProgress:(NSString *)message progress:(double)progress
 {
-    if (_configurationWindowController && [_configurationWindowController.window isVisible]) {
-        [_configurationWindowController updateProgress:message progress:progress];
-    }
-    __block NSMenuItem *item = [self.statusMenu itemAtIndex:0];
-    if (message.length < 50) {
-        [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-            [item setTitle:message];
-        }];
-    }
-    NSLog(@"%@", message);
+    [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+        if (_configurationWindowController && _configurationWindowInitiallyVisible) {
+            [_configurationWindowController updateProgress:message progress:progress];
+        }
+
+        if (message.length < 50) {
+                [[self.statusMenu itemAtIndex:0] setTitle:message];
+        }
+        NSLog(@"%@", message);
+    }];
 }
 
 @end
