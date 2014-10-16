@@ -134,10 +134,12 @@
     NSString *subject;
     NSArray *newDownloads;
     NSArray *newPackages;
+    NSArray *newImports;
 
     if (report) {
         newDownloads = [report objectForKey:@"new_downloads"];
         newPackages = [report objectForKey:@"new_packages"];
+        newImports = [report objectForKey:@"new_imports"];
     }
 
     if ([newDownloads count]) {
@@ -151,22 +153,37 @@
         [message appendFormat:@"The following software is now available for testing:<br />"];
 
         for (NSString *path in newDownloads) {
+            NSCharacterSet *set = [NSCharacterSet punctuationCharacterSet];
+
             // Get just the application name from the path in the new_downloads dict
-            NSString *app = [[path lastPathComponent] stringByDeletingPathExtension];
+            NSString *downloadFile = [path lastPathComponent];
+            NSString *app = [[downloadFile componentsSeparatedByCharactersInSet:set] firstObject];
 
             // Write the app to the string
-            [message appendFormat:@"<br /><strong>%@</strong>: ", app];
+            [message appendFormat:@"<strong>%@</strong>: ", app];
 
-            // The default version is not detected, override later
-            NSString *version = @"Version not detected";
-            for (NSDictionary *dct in newPackages) {
-                NSString *pkgPath = [dct objectForKey:@"pkg_path"];
-                if ([pkgPath rangeOfString:app options:NSCaseInsensitiveSearch].location != NSNotFound && dct[@"version"]) {
-                    version = dct[@"version"];
+            // The default version is not detected, override later.
+            NSString *version;
+
+            NSPredicate *versionPredicate = [NSPredicate predicateWithFormat:@" %K CONTAINS[cd] %@", @"pkg_path", app];
+
+            for (NSDictionary *dict in newPackages) {
+                if ([versionPredicate evaluateWithObject:dict] && dict[@"version"]) {
+                    version = dict[@"version"];
                     break;
                 }
             }
-            [message appendFormat:@"%@", version];
+
+            if (!version) {
+                for (NSDictionary *dict in newImports) {
+                    if ([versionPredicate evaluateWithObject:dict] && dict[@"version"]) {
+                        version = dict[@"version"];
+                        break;
+                    }
+                }
+            }
+
+            [message appendFormat:@"%@<br/>", version ? version : @"Version not detected"];
         }
     } else {
         DLog(@"Nothing new was downloaded.");
@@ -175,6 +192,8 @@
     if (error) {
         if (!message) {
             message = [[NSMutableString alloc] init];
+        } else {
+            [message appendString:@"<br/>"];
         }
 
         if (!subject) {
