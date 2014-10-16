@@ -431,17 +431,19 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
     installer.progressDelegate = [NSApp delegate];
     [installer installGit:^(NSError *error) {
         [self stopProgress:error];
-        if ([LGHostInfo gitInstalled]) {
-            NSLog(@"Git installed successfully.");
-            [_installGitButton setEnabled:NO];
-            [_gitStatusLabel setStringValue:kLGGitInstalledLabel];
-            [_gitStatusIcon setImage:[NSImage imageNamed:NSImageNameStatusAvailable]];
-        } else {
-            NSLog(@"%@", error.localizedDescription);
-            [_installGitButton setEnabled:YES];
-            [_gitStatusLabel setStringValue:kLGGitNotInstalledLabel];
-            [_gitStatusIcon setImage:[NSImage imageNamed:NSImageNameStatusUnavailable]];
-        }
+        [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+            if ([LGHostInfo gitInstalled]) {
+                NSLog(@"Git installed successfully.");
+                [_installGitButton setEnabled:NO];
+                [_gitStatusLabel setStringValue:kLGGitInstalledLabel];
+                [_gitStatusIcon setImage:[NSImage imageNamed:NSImageNameStatusAvailable]];
+            } else {
+                NSLog(@"%@", error.localizedDescription);
+                [_installGitButton setEnabled:YES];
+                [_gitStatusLabel setStringValue:kLGGitNotInstalledLabel];
+                [_gitStatusIcon setImage:[NSImage imageNamed:NSImageNameStatusUnavailable]];
+            }
+        }];
     }];
 }
 
@@ -458,16 +460,19 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
     [installer installAutoPkg:^(NSError *error) {
         // Update the autoPkgStatus icon and label if it installed successfully
         [self stopProgress:error];
-        if ([LGHostInfo autoPkgInstalled]) {
-            NSLog(@"AutoPkg installed successfully.");
-            [_autoPkgStatusLabel setStringValue:kLGAutoPkgInstalledLabel];
-            [_autoPkgStatusIcon setImage:[NSImage imageNamed:NSImageNameStatusAvailable]];
-            [_installAutoPkgButton setEnabled:NO];
-        } else {
-            [_autoPkgStatusLabel setStringValue:kLGAutoPkgNotInstalledLabel];
-            [_autoPkgStatusIcon setImage:[NSImage imageNamed:NSImageNameStatusUnavailable]];
-            [_installAutoPkgButton setEnabled:YES];
-        }
+        [[NSOperationQueue  mainQueue] addOperationWithBlock:^{
+            if ([LGHostInfo autoPkgInstalled]) {
+                NSLog(@"AutoPkg installed successfully.");
+                [_autoPkgStatusLabel setStringValue:kLGAutoPkgInstalledLabel];
+                [_autoPkgStatusIcon setImage:[NSImage imageNamed:NSImageNameStatusAvailable]];
+                [_installAutoPkgButton setEnabled:NO];
+                [_installAutoPkgButton setTitle:@"Install AutoPkg"];
+            } else {
+                [_autoPkgStatusLabel setStringValue:kLGAutoPkgNotInstalledLabel];
+                [_autoPkgStatusIcon setImage:[NSImage imageNamed:NSImageNameStatusUnavailable]];
+                [_installAutoPkgButton setEnabled:YES];
+            }
+        }];
     }];
 }
 
