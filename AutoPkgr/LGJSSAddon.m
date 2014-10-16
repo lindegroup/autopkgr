@@ -49,7 +49,6 @@ NSString *defaultJSSRepo = @"https://github.com/sheagcraig/jss-recipes.git";
         [self showInstallTabItems:YES];
     } else {
         [_jssInstallButton setEnabled:YES];
-        [_jssInstallButton setTitle:@"Install JSS AutoPkg Addon"];
         [_jssInstallStatusTF setStringValue:@"JSS AutoPkg Addon not installed."];
     }
 
@@ -144,18 +143,8 @@ NSString *defaultJSSRepo = @"https://github.com/sheagcraig/jss-recipes.git";
         }
         [[NSOperationQueue mainQueue]addOperationWithBlock:^{
             if (success) {
-                NSString *version = [LGHostInfo getJSSAddonVersion];
-                NSString *title = [NSString stringWithFormat:@"Version %@ installed",version];
-                [_jssInstallStatusLight setHidden:NO];
-                [_jssInstallStatusTF setHidden:NO];
-                [_jssInstallButton setHidden:NO];
-                
-                
-                _jssInstallStatusTF.stringValue = @"JSS AutoPkg Addon is up to date.";
-                _jssInstallButton.title = title;
-                _jssInstallStatusLight.image = [NSImage LGStatusUpToDate];
+                [self showInstallTabItems:YES];
             }
-            [_jssInstallButton setEnabled:success ? NO:YES];
         }];
     }];
 }
@@ -309,14 +298,13 @@ NSString *defaultJSSRepo = @"https://github.com/sheagcraig/jss-recipes.git";
             [[NSOperationQueue mainQueue] addOperationWithBlock:^{
                 [_jssInstallButton setEnabled:updateAvaliable];
                 if (updateAvaliable) {
-                    _jssInstallStatusTF.stringValue = @"JSS AutoPkg update avaliable.";
+                    _jssInstallButton.title = @"Update JSS AutoPkg Addon";
+                    _jssInstallStatusTF.stringValue = kLGJSSAutoPkgAddonUpdateAvailableLabel;
                     _jssInstallStatusLight.image = [NSImage LGStatusUpdateAvaliable];
                 } else {
-                    NSString *version = [LGHostInfo getJSSAddonVersion];
-                    NSString *title = [NSString stringWithFormat:@"Version %@ installed",version];
-
+                    _jssInstallButton.title = @"Install JSS AutoPkg Addon";
+                    _jssInstallStatusTF.stringValue = kLGJSSAutoPkgAddonInstalledLabel;
                     _jssInstallStatusLight.image = [NSImage LGStatusUpToDate];
-                    _jssInstallButton.title = title ;
                 }
             }];
         }];
