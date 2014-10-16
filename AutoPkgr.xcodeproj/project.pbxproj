@@ -298,7 +298,7 @@
 				1AC86D36195E0972006FDD2B /* Feature Classes */,
 				BE40CB7719D4441600A1DABD /* UI Classes */,
 				BE40CB7819D4444D00A1DABD /* Utility Classes */,
-				BE39FE5419DFBB2900C1B4A1 /* Custom Catagories */,
+				BE39FE5419DFBB2900C1B4A1 /* Custom Categories */,
 				1AC9841E195CEC360071CAB3 /* LGConfigurationWindowController.xib */,
 				1AC69565195B59EE00D2BD81 /* MainMenu.xib */,
 				1AC69568195B59EE00D2BD81 /* Images.xcassets */,
@@ -378,7 +378,7 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
-		BE39FE5419DFBB2900C1B4A1 /* Custom Catagories */ = {
+		BE39FE5419DFBB2900C1B4A1 /* Custom Categories */ = {
 			isa = PBXGroup;
 			children = (
 				BE77A7FE19E37C910022B6FB /* NSImage+statusLight.h */,
@@ -390,7 +390,7 @@
 				BE39FE5119DFBB0100C1B4A1 /* LGDefaults+JSSAddon.h */,
 				BE39FE5219DFBB0100C1B4A1 /* LGDefaults+JSSAddon.m */,
 			);
-			name = "Custom Catagories";
+			name = "Custom Categories";
 			sourceTree = "<group>";
 		};
 		BE40CB7719D4441600A1DABD /* UI Classes */ = {
