@@ -351,7 +351,6 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
 
         [tester testHost:[NSHost hostWithName:[_smtpServer stringValue]]
                 withPort:[_smtpPort integerValue]];
-
     } else {
         NSLog(@"Cannot test SMTP. Either host is blank or port is unreadable.");
     }
@@ -1110,7 +1109,6 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
                               modalDelegate:self
                              didEndSelector:nil
                                 contextInfo:nil];
-
         } else {
             DLog(@"No problems were detected in the AutoPkg preference file.");
         }

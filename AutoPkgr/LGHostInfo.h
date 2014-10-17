@@ -36,4 +36,5 @@
 + (BOOL)jssAddonUpdateAvailable;
 
 + (NSArray *)knownGitPaths;
+
 @end
