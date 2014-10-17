@@ -28,4 +28,5 @@
 #import "NSString+cleaned.h"
 #import "NSTextField+setSafeStringValue.h"
 #import "NSImage+statusLight.h"
+
 #endif
