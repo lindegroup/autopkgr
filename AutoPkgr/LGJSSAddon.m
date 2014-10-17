@@ -353,7 +353,7 @@ NSString *defaultJSSRepo = @"https://github.com/sheagcraig/jss-recipes.git";
                                          defaultButton:@"Install"
                                        alternateButton:@"Cancel"
                                            otherButton:nil
-                             informativeTextWithFormat:@"The JSS AutoPkg Addon is not currently installed, would you like to install it now?"];
+                             informativeTextWithFormat:@"The JSS AutoPkg Addon is not currently installed. Would you like to install it now?"];
 
         NSInteger button = [alert runModal];
         if (button == NSAlertDefaultReturn) {

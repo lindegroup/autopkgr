@@ -87,7 +87,7 @@
 
 // Bad Request
 "kLGHTTPErrorBadRequestDescription" = "Bad Request";
-"kLGHTTPErrorBadRequestSuggestion" = "The request to the server was not formatted correctly.  Please check the infomation you supplied.";
+"kLGHTTPErrorBadRequestSuggestion" = "The request to the server was not formatted correctly. Please check the infomation you supplied.";
 
 // Unauthorized
 "kLGHTTPErrorUnauthorizedDescription" = "User authorization failed.";
@@ -95,11 +95,11 @@
 
 // Forbidden
 "kLGHTTPErrorForbiddenDescription" = "Access forbidden";
-"kLGHTTPErrorForbiddenSuggestion" = "The specified user is not authorized to access this area on the server.  Please check that the username you've entered is correct.";
+"kLGHTTPErrorForbiddenSuggestion" = "The specified user is not authorized to access this area on the server. Please check that the username you've entered is correct.";
 
 // Not Found
 "kLGHTTPErrorNotFoundDescription" = "Resource not found";
-"kLGHTTPErrorNotFoundSuggestion" = "The requested resource could not be found.  Please make sure you've entered the correct protocol, hostname, and port.";
+"kLGHTTPErrorNotFoundSuggestion" = "The requested resource could not be found. Please make sure you've entered the correct protocol, hostname, and port.";
 
 // Timeout
 "kLGHTTPErrorTimeoutDescription" = "Connection timed out";
@@ -107,4 +107,4 @@
 
 // General failure
 "kLGHTTPErrorUnknownDescription" = "There was a problem connecting to the server";
-"kLGHTTPErrorUnknownSuggestion" = "An unknown error occured.  If you get this message repeatedly please create an issue on the AutoPkgr GitHub page.  Thanks.";
+"kLGHTTPErrorUnknownSuggestion" = "An unknown error occured. If you get this message repeatedly please create an issue on the AutoPkgr GitHub page. Thanks.";

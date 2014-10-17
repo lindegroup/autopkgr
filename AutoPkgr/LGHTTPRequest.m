@@ -109,7 +109,7 @@
         default: {
             SFCertificateTrustPanel *panel = [SFCertificateTrustPanel sharedCertificateTrustPanel];
             [panel setAlternateButtonTitle:@"Cancel"];
-            NSString *info = [NSString stringWithFormat:@"The certificate for this server is invalid.  You might be connecting to a server pretending to be \"%@\" which could put your confidential information at risk.  Would you like to connect to the server anyway?", serverURL];
+            NSString *info = [NSString stringWithFormat:@"The certificate for this server is invalid. You might be connecting to a server pretending to be \"%@\" which could put your confidential information at risk. Would you like to connect to the server anyway?", serverURL];
 
             [panel setInformativeText:info];
 
