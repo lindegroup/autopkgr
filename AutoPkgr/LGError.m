@@ -260,16 +260,28 @@ static NSDictionary *userInfoFromHTTPResponse(NSHTTPURLResponse *response)
         }
     }
 
-    taskError = task.terminationStatus;
-    // AutoPkg's rc on a failed repo-update / add / delete is 0, so check the stderr for "ERROR" string
-    if (verb == kLGAutoPkgRepoUpdate || verb == kLGAutoPkgRepoDelete || verb == kLGAutoPkgRepoAdd) {
-        if (errorDetails && ![errorDetails isEqualToString:@""]) {
-            taskError = kLGErrorAutoPkgConfig;
+    NSPredicate *exceptionPredicate = [NSPredicate predicateWithFormat:@"SELF BEGINSWITH[CD] 'Traceback'"];
+
+    // If the error message looks like a Python exception log it, but trim it up for UI
+    if ([exceptionPredicate evaluateWithObject:errorDetails ]) {
+        DLog(@"(FULL AUTOPKG TRACEBACK) %@",errorDetails);
+        NSArray *array = [errorDetails componentsSeparatedByCharactersInSet:[NSCharacterSet newlineCharacterSet]];
+        NSPredicate *noEmptySpaces = [NSPredicate predicateWithFormat:@"not (SELF == '')"];
+        errorDetails =  [[array filteredArrayUsingPredicate:noEmptySpaces] lastObject];
+
+    // Otherwise continue
+    } else {
+        taskError = task.terminationStatus;
+        // AutoPkg's rc on a failed repo-update / add / delete is 0, so check the stderr for "ERROR" string
+        if (verb == kLGAutoPkgRepoUpdate || verb == kLGAutoPkgRepoDelete || verb == kLGAutoPkgRepoAdd) {
+            if (errorDetails && ![errorDetails isEqualToString:@""]) {
+                taskError = kLGErrorAutoPkgConfig;
+            }
         }
-    }
-    // autopkg run exits 255 if no recipe speciifed
-    else if (verb == kLGAutoPkgRun && task.terminationStatus == kLGErrorAutoPkgNoRecipes) {
-        errorDetails = @"No recipes specified.";
+        // autopkg run exits 255 if no recipe speciifed
+        else if (verb == kLGAutoPkgRun && task.terminationStatus == kLGErrorAutoPkgNoRecipes) {
+            errorDetails = @"No recipes specified.";
+        }
     }
 
     // Otherwise we can just use the termination status
