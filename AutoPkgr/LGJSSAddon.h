@@ -22,10 +22,10 @@
 #import <Foundation/Foundation.h>
 #import "LGDefaults.h"
 #import "LGProgressDelegate.h"
-
+#import "LGTableView.h"
 @interface LGJSSAddon : NSObject <NSTableViewDataSource>
 
-@property (strong) IBOutlet NSTableView *jssDistributionPointTableView;
+@property (strong) IBOutlet LGTableView *jssDistributionPointTableView;
 @property (weak) IBOutlet NSTextField *jssURLTF;
 @property (weak) IBOutlet NSTextField *jssAPIUsernameTF;
 @property (weak) IBOutlet NSTextField *jssAPIPasswordTF;
@@ -38,5 +38,5 @@
 @property (weak) IBOutlet NSTextField *jssInstallStatusTF;
 
 - (IBAction)installJSSAddon:(id)sender;
-
+- (NSMenu *)contextualMenuForDistributionPoint:(NSString *)distPoint;
 @end

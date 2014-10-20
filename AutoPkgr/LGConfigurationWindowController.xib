@@ -1091,8 +1091,8 @@
                                                                     <rect key="frame" x="1" y="17" width="531" height="57"/>
                                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                                     <subviews>
-                                                                        <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" columnSelection="YES" multipleSelection="NO" autosaveColumns="NO" headerView="Zpe-fe-sYa" id="HqO-hG-aCi">
-                                                                            <rect key="frame" x="0.0" y="0.0" width="564" height="19"/>
+                                                                        <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" columnSelection="YES" multipleSelection="NO" autosaveColumns="NO" headerView="Zpe-fe-sYa" id="HqO-hG-aCi" customClass="LGTableView">
+                                                                            <rect key="frame" x="0.0" y="0.0" width="566" height="19"/>
                                                                             <autoresizingMask key="autoresizingMask"/>
                                                                             <size key="intercellSpacing" width="3" height="2"/>
                                                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>

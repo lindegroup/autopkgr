@@ -21,6 +21,7 @@
 #import "LGTableView.h"
 #import "LGRecipeOverrides.h"
 #import "LGPopularRepositories.h"
+#import "LGJSSAddon.h"
 
 @implementation LGTableView
 
@@ -37,6 +38,9 @@
         } else if ([classString isEqualToString:@"LGPopularRepositories"]) {
             NSString *repo = [self repoFromRow:row];
             return [LGPopularRepositories contextualMenuForRepo:repo];
+        } else if ([classString isEqualToString:@"LGJSSAddon"]) {
+            NSString *distributionPoint = [self distributionPointFrom:row];
+            return [(LGJSSAddon *)[self dataSource] contextualMenuForDistributionPoint:distributionPoint];
         }
     }
     return nil;
@@ -54,5 +58,12 @@
     NSTableColumn *column = [[NSTableColumn alloc] initWithIdentifier:@"repoName"];
     NSString *repo = [[self dataSource] tableView:self objectValueForTableColumn:column row:row];
     return repo;
+}
+
+- (NSString *)distributionPointFrom:(NSInteger)row
+{
+    NSTableColumn *column = [[NSTableColumn alloc] initWithIdentifier:@"name"];
+    NSString *distPoint = [[self dataSource] tableView:self objectValueForTableColumn:column row:row];
+    return distPoint;
 }
 @end

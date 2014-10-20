@@ -365,4 +365,31 @@ NSString *defaultJSSRepo = @"https://github.com/sheagcraig/jss-recipes.git";
     }
     return required;
 }
+
+#pragma mark - Table View Contextual menu
+- (void)removeDistributionPoint:(NSMenuItem *)item
+{
+    NSString *distPoint = item.representedObject;
+    LGDefaults *defaults = [LGDefaults standardUserDefaults];
+    NSPredicate *removePredicate = [NSPredicate predicateWithFormat:@"NOT (name == %@)",distPoint];
+    NSArray *newArray = [defaults.JSSRepos filteredArrayUsingPredicate:removePredicate];
+    if (newArray.count) {
+        defaults.JSSRepos = newArray;
+    } else {
+        defaults.JSSRepos = nil;
+    }
+    [_jssDistributionPointTableView reloadData];
+}
+
+-(NSMenu *)contextualMenuForDistributionPoint:(NSString *)distPoint
+{
+    NSMenu *menu = [[NSMenu alloc] init];
+    NSString *removeString = [NSString stringWithFormat:@"Remove %@",distPoint];
+    NSMenuItem *item = [[NSMenuItem alloc] initWithTitle:removeString action:@selector(removeDistributionPoint:) keyEquivalent:@""];
+    item.target = self;
+    item.representedObject = distPoint;
+    [menu addItem:item];
+    return menu;
+}
+
 @end
