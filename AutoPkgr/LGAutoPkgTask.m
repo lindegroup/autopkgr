@@ -41,10 +41,11 @@ NSString *autopkg()
 @property (strong, atomic) NSMutableArray *internalArgs;
 @property (strong, atomic) NSMutableDictionary *internalEnvironment;
 @property (nonatomic, assign) LGAutoPkgVerb verb;
-@property (strong, nonatomic, readwrite) NSString *standardOutString;
-@property (strong, nonatomic, readwrite) NSString *standardErrString;
+@property (copy, nonatomic, readwrite) NSString *standardOutString;
+@property (copy, nonatomic, readwrite) NSString *standardErrString;
+@property (copy, nonatomic, readwrite) NSArray *results;
 @property (copy, nonatomic) NSString *reportPlistFile;
-@property (copy, nonatomic) NSDictionary *reportPlist;
+@property (copy, nonatomic) NSDictionary *report;
 @property (copy, nonatomic) NSString *version;
 @property (nonatomic, assign) BOOL AUTOPKG_VERSION_0_4_0;
 @property (nonatomic, readwrite, assign) BOOL complete;
@@ -74,7 +75,7 @@ NSString *autopkg()
     if (self) {
         self.complete = NO;
         self.internalArgs = [[NSMutableArray alloc] initWithArray:@[ autopkg() ]];
-        self.statusUpdateQueue = [NSOperationQueue currentQueue];
+        self.statusUpdateQueue = [NSOperationQueue mainQueue];
         self.taskLock = [[NSRecursiveLock alloc] init];
         self.taskLock.name = kLGAutoPkgTaskLock;
     }
@@ -104,11 +105,7 @@ NSString *autopkg()
     }
 
     [self.task launch];
-
-    while ([self.task isRunning]) {
-        [[NSRunLoop currentRunLoop] runMode:@"kLGAutoPkgTaskRunLoopMode"
-                                 beforeDate:[NSDate dateWithTimeIntervalSinceNow:1.0]];
-    }
+    [self.task waitUntilExit];
 
     [self setComplete:YES];
     // make sure the out and error readability handlers get set to nil
@@ -316,37 +313,39 @@ NSString *autopkg()
     return _standardOutString;
 }
 
-- (NSDictionary *)reportPlist
+- (NSDictionary *)report
 {
-    if (self.AUTOPKG_VERSION_0_4_0) {
-        NSFileManager *fm = [NSFileManager defaultManager];
-        NSString *reportPlistFile = self.reportPlistFile;
+    if (!_report) {
+        if (self.AUTOPKG_VERSION_0_4_0) {
+            NSFileManager *fm = [NSFileManager defaultManager];
+            NSString *reportPlistFile = self.reportPlistFile;
 
-        if (self.reportPlistFile && [fm fileExistsAtPath:self.reportPlistFile]) {
-            // Create dictionary from the tmp file
-            _reportPlist = [NSDictionary dictionaryWithContentsOfFile:reportPlistFile];
+            if (reportPlistFile && [fm fileExistsAtPath:self.reportPlistFile]) {
+                // Create dictionary from the tmp file
+                _report = [NSDictionary dictionaryWithContentsOfFile:reportPlistFile];
 
-            // Cleanup the tmp file
-            NSError *error;
-            if (![fm removeItemAtPath:reportPlistFile error:&error]) {
-                DLog(@"Error removing autopkg run report-plist: %@", error.localizedDescription);
+                // Cleanup the tmp file
+                NSError *error;
+                if (![fm removeItemAtPath:reportPlistFile error:&error]) {
+                    DLog(@"Error removing autopkg run report-plist: %@", error.localizedDescription);
+                }
+            }
+        } else {
+            NSString *plistString = self.standardOutString;
+            if (plistString && ![plistString isEqualToString:@""]) {
+                // Convert string back to data for plist serialization
+                NSData *plistData = [plistString dataUsingEncoding:NSUTF8StringEncoding];
+                // Initialize plist format
+                NSPropertyListFormat format;
+                // Initialize our dict
+                _report = [NSPropertyListSerialization propertyListWithData:plistData
+                                                                         options:NSPropertyListImmutable
+                                                                          format:&format
+                                                                           error:nil];
             }
         }
-    } else {
-        NSString *plistString = self.standardOutString;
-        if (plistString && ![plistString isEqualToString:@""]) {
-            // Convert string back to data for plist serialization
-            NSData *plistData = [plistString dataUsingEncoding:NSUTF8StringEncoding];
-            // Initialize plist format
-            NSPropertyListFormat format;
-            // Initialize our dict
-            _reportPlist = [NSPropertyListSerialization propertyListWithData:plistData
-                                                                     options:NSPropertyListImmutable
-                                                                      format:&format
-                                                                       error:nil];
-        }
     }
-    return _reportPlist;
+    return _report;
 }
 
 - (NSString *)reportPlistFile
@@ -359,52 +358,53 @@ NSString *autopkg()
 
 - (NSArray *)results
 {
-    NSString *resultString = self.standardOutString;
-    NSArray *results = nil;
+    if (!_results) {
+        NSString *resultString = self.standardOutString;
 
-    if (resultString) {
-        if (_verb == kLGAutoPkgSearch) {
-            __block NSMutableArray *searchResults;
+        if (resultString) {
+            if (_verb == kLGAutoPkgSearch) {
+                __block NSMutableArray *searchResults;
 
-            NSMutableCharacterSet *skippedCharacters = [NSMutableCharacterSet whitespaceCharacterSet];
+                NSMutableCharacterSet *skippedCharacters = [NSMutableCharacterSet whitespaceCharacterSet];
 
-            NSMutableCharacterSet *repoCharacters = [NSMutableCharacterSet alphanumericCharacterSet];
-            [repoCharacters formUnionWithCharacterSet:[NSCharacterSet punctuationCharacterSet]];
+                NSMutableCharacterSet *repoCharacters = [NSMutableCharacterSet alphanumericCharacterSet];
+                [repoCharacters formUnionWithCharacterSet:[NSCharacterSet punctuationCharacterSet]];
 
-            NSPredicate *nonRecipePredicate = [NSPredicate predicateWithFormat:@"SELF BEGINSWITH 'To add' \
-                                                                                or SELF BEGINSWITH '----' \
-                                                                                or SELF BEGINSWITH 'Name'"];
+                NSPredicate *nonRecipePredicate = [NSPredicate predicateWithFormat:@"SELF BEGINSWITH 'To add' \
+                                                                                    or SELF BEGINSWITH '----' \
+                                                                                    or SELF BEGINSWITH 'Name'"];
 
-            [resultString enumerateLinesUsingBlock:^(NSString *line, BOOL *stop) {
-                if (![nonRecipePredicate evaluateWithObject:line ]) {
-                    NSScanner *scanner = [NSScanner scannerWithString:line];
-                    [scanner setCharactersToBeSkipped:skippedCharacters];
-                    
-                    NSString *recipe, *repo, *path;
-                    
-                    [scanner scanCharactersFromSet:repoCharacters intoString:&recipe];
-                    [scanner scanCharactersFromSet:repoCharacters intoString:&repo];
-                    [scanner scanCharactersFromSet:repoCharacters intoString:&path];
-                    
-                    if (recipe && repo && path) {
-                        if (!searchResults) {
-                            searchResults = [[NSMutableArray alloc] init];
+                [resultString enumerateLinesUsingBlock:^(NSString *line, BOOL *stop) {
+                    if (![nonRecipePredicate evaluateWithObject:line ]) {
+                        NSScanner *scanner = [NSScanner scannerWithString:line];
+                        [scanner setCharactersToBeSkipped:skippedCharacters];
+                        
+                        NSString *recipe, *repo, *path;
+                        
+                        [scanner scanCharactersFromSet:repoCharacters intoString:&recipe];
+                        [scanner scanCharactersFromSet:repoCharacters intoString:&repo];
+                        [scanner scanCharactersFromSet:repoCharacters intoString:&path];
+                        
+                        if (recipe && repo && path) {
+                            if (!searchResults) {
+                                searchResults = [[NSMutableArray alloc] init];
+                            }
+                            [searchResults addObject:@{kLGAutoPkgRecipeKey:[recipe stringByDeletingPathExtension],
+                                                 kLGAutoPkgRepoKey:repo,
+                                                 kLGAutoPkgRepoPathKey:path,
+                                                 }];
                         }
-                        [searchResults addObject:@{kLGAutoPkgRecipeKey:[recipe stringByDeletingPathExtension],
-                                             kLGAutoPkgRepoKey:repo,
-                                             kLGAutoPkgRepoPathKey:path,
-                                             }];
                     }
-                }
-            }];
-            results = [NSArray arrayWithArray:searchResults];
-        } else if (_verb == kLGAutoPkgRepoList || _verb == kLGAutoPkgRecipeList) {
-            NSArray *listResults = [resultString componentsSeparatedByCharactersInSet:[NSCharacterSet newlineCharacterSet]];
-            NSPredicate *noEmptyStrings = [NSPredicate predicateWithFormat:@"not (SELF == '')"];
-            results = [listResults filteredArrayUsingPredicate:noEmptyStrings];
+                }];
+                _results = [NSArray arrayWithArray:searchResults];
+            } else if (_verb == kLGAutoPkgRepoList || _verb == kLGAutoPkgRecipeList) {
+                NSArray *listResults = [resultString componentsSeparatedByCharactersInSet:[NSCharacterSet newlineCharacterSet]];
+                NSPredicate *noEmptyStrings = [NSPredicate predicateWithFormat:@"not (SELF == '')"];
+                _results = [listResults filteredArrayUsingPredicate:noEmptyStrings];
+            }
         }
-    }
-    return results;
+}
+    return _results;
 }
 
 #pragma mark - Utility
@@ -470,7 +470,7 @@ NSString *autopkg()
     }];
 
     [self launchInBackground:^(NSError *error) {
-        reply(self.reportPlist, error);
+        reply(self.report, error);
     }];
 }
 
