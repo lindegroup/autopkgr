@@ -1,8 +1,8 @@
 //
-//  LGUnzipper.h
+//  LGDefaults+JSSAddon.h
 //  AutoPkgr
 //
-//  Created by James Barclay on 6/29/14.
+//  Created by Eldon on 10/3/14.
 //
 //  Copyright 2014 The Linde Group, Inc.
 //
@@ -19,10 +19,15 @@
 //  limitations under the License.
 //
 
-#import <Foundation/Foundation.h>
+#import "LGDefaults.h"
 
-@interface LGUnzipper : NSObject
+#pragma mark - LGDefaults extensions for JSS Addon Interface
+@interface LGDefaults (JSSAddon)
 
-+ (BOOL)unzip:(NSString *)zipPath targetDir:(NSString *)targetDir;
+@property (copy, nonatomic) NSString *JSSURL;
+@property (copy, nonatomic) NSString *JSSAPIUsername;
+@property (copy, nonatomic) NSString *JSSAPIPassword;
+@property (copy, nonatomic) NSArray *JSSRepos;
+@property (assign, nonatomic) BOOL JSSVerifySSL;
 
 @end

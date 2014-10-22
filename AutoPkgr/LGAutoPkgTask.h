@@ -4,6 +4,8 @@
 //
 //  Created by Eldon on 8/30/14.
 //
+//  Copyright 2014 The Linde Group, Inc.
+//
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
 //  You may obtain a copy of the License at
@@ -199,11 +201,18 @@ extern NSString *const kLGAutoPkgRepoPathKey;
 + (void)repoUpdate:(void (^)(NSError *error))reply;
 
 /**
- *  Equivelant to /usr/bin/local/autopkg repo-list
+ *  Equivelant to /usr/bin/local/autopkg repo-list (Asynchronous)
  *
  *  @param reply  The block to be executed on upon task completion. This block has no return value and takes two arguments: NSArray, NSError
  */
 + (void)repoList:(void (^)(NSArray *repos, NSError *error))reply;
+
+/**
+ *  Equivelant to /usr/bin/local/autopkg repo-list (Synchronous)
+ *
+ *  @return list of installed autopkg repos
+ */
++ (NSArray *)repoList;
 
 #pragma mark-- Other
 /**

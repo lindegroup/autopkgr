@@ -1,8 +1,8 @@
 //
-//  LGUnzipper.h
+//  LGHTTPRequest.h
 //  AutoPkgr
 //
-//  Created by James Barclay on 6/29/14.
+//  Created by Eldon on 8/9/14.
 //
 //  Copyright 2014 The Linde Group, Inc.
 //
@@ -16,13 +16,15 @@
 //  distributed under the License is distributed on an "AS IS" BASIS,
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 //  See the License for the specific language governing permissions and
-//  limitations under the License.
 //
 
 #import <Foundation/Foundation.h>
 
-@interface LGUnzipper : NSObject
+@interface LGHTTPRequest : NSObject
 
-+ (BOOL)unzip:(NSString *)zipPath targetDir:(NSString *)targetDir;
+- (void)retrieveDistributionPoints:(NSString *)server
+                          withUser:(NSString *)user
+                       andPassword:(NSString *)password
+                             reply:(void (^)(NSDictionary *distributionPoints, NSError *error))reply;
 
 @end

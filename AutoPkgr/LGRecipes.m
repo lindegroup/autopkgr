@@ -19,23 +19,26 @@
 //  limitations under the License.
 //
 
-#import "LGApplications.h"
+#import "LGRecipes.h"
 #import "LGAutoPkgr.h"
 
-@implementation LGApplications
+@implementation LGRecipes
 
 - (id)init
 {
     self = [super init];
-    activeApps = [self getActiveApps];
-    searchedApps = apps;
+
+    if (self) {
+        _activeRecipes = [self getActiveRecipes];
+        _searchedRecipes = _recipes;
+    }
+
     return self;
 }
 
-
 - (void)reload
 {
-    apps = [LGAutoPkgTask listRecipes];
+    _recipes = [LGAutoPkgTask listRecipes];
     [self executeAppSearch:self];
 }
 
@@ -70,10 +73,9 @@
     }
 
     return autoPkgrSupportDirectory;
-
 }
 
-- (NSArray *)getActiveApps
+- (NSArray *)getActiveRecipes
 {
     NSFileManager *fm = [NSFileManager defaultManager];
     NSError *error;
@@ -102,15 +104,15 @@
 
 - (NSInteger)numberOfRowsInTableView:(NSTableView *)tableView
 {
-    return [searchedApps count];
+    return [_searchedRecipes count];
 }
 
 - (id)tableView:(NSTableView *)tableView objectValueForTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row
 {
-    if ([[tableColumn identifier] isEqualToString:@"appCheckbox"]) {
-        return @([activeApps containsObject:[searchedApps objectAtIndex:row]]);
-    } else if ([[tableColumn identifier] isEqualToString:@"appName"]) {
-        return [searchedApps objectAtIndex:row];
+    if ([[tableColumn identifier] isEqualToString:@"recipeCheckbox"]) {
+        return @([_activeRecipes containsObject:[_searchedRecipes objectAtIndex:row]]);
+    } else if ([[tableColumn identifier] isEqualToString:@"recipeName"]) {
+        return [_searchedRecipes objectAtIndex:row];
     }
 
     return nil;
@@ -118,19 +120,19 @@
 
 - (void)tableView:(NSTableView *)tableView setObjectValue:(id)object forTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row
 {
-    if ([[tableColumn identifier] isEqualToString:@"appCheckbox"]) {
-        NSMutableArray *workingArray = [NSMutableArray arrayWithArray:activeApps];
+    if ([[tableColumn identifier] isEqualToString:@"recipeCheckbox"]) {
+        NSMutableArray *workingArray = [NSMutableArray arrayWithArray:_activeRecipes];
         if ([object isEqual:@YES]) {
-            [workingArray addObject:[searchedApps objectAtIndex:row]];
+            [workingArray addObject:[_searchedRecipes objectAtIndex:row]];
         } else {
-            NSUInteger index = [workingArray indexOfObject:[searchedApps objectAtIndex:row]];
+            NSUInteger index = [workingArray indexOfObject:[_searchedRecipes objectAtIndex:row]];
             if (index != NSNotFound) {
                 [workingArray removeObjectAtIndex:index];
             } else {
-                NSLog(@"Cannot find item %@ in workingArray.", [searchedApps objectAtIndex:row]);
+                NSLog(@"Cannot find item %@ in workingArray.", [_searchedRecipes objectAtIndex:row]);
             }
         }
-        activeApps = [NSArray arrayWithArray:workingArray];
+        _activeRecipes = [NSArray arrayWithArray:workingArray];
         [self writeRecipeList];
     }
 
@@ -142,15 +144,14 @@
     // This runs through the updated recipes and removes any recipes from the
     // activeApps array that cannot be found in the new apps array.
 
-    NSMutableArray *workingArray = [NSMutableArray arrayWithArray:activeApps];
+    NSMutableArray *workingArray = [NSMutableArray arrayWithArray:_activeRecipes];
 
-    for (NSString *string in activeApps) {
-        if (![apps containsObject:string]) {
+    for (NSString *string in _activeRecipes) {
+        if (![_recipes containsObject:string]) {
             [workingArray removeObject:string];
         }
     }
-
-    activeApps = [NSArray arrayWithArray:workingArray];
+    _activeRecipes = [NSArray arrayWithArray:workingArray];
 }
 
 - (void)writeRecipeList
@@ -167,11 +168,11 @@
 
     NSString *recipeListFile = [autoPkgrSupportDirectory stringByAppendingString:@"/recipe_list.txt"];
 
-    NSPredicate *makeCatalogPredicate = [NSPredicate predicateWithFormat:@"not SELF contains[cd] %@",@"MakeCatalogs.munki"];
-    NSPredicate *munkiPredicate = [NSPredicate predicateWithFormat:@"SELF contains[cd] %@",@"munki"];
+    NSPredicate *makeCatalogPredicate = [NSPredicate predicateWithFormat:@"not SELF contains[cd] 'MakeCatalogs.munki'"];
+    NSPredicate *munkiPredicate = [NSPredicate predicateWithFormat:@"SELF contains[cd] 'munki'"];
 
     // Make a working array filtering out any instances of MakeCatalogs.munki, so there will only be one occurence
-    NSMutableArray * workingArray = [NSMutableArray arrayWithArray:[activeApps filteredArrayUsingPredicate:makeCatalogPredicate]];
+    NSMutableArray *workingArray = [NSMutableArray arrayWithArray:[_activeRecipes filteredArrayUsingPredicate:makeCatalogPredicate]];
 
     // Check if any of the apps is a .munki run
     if ([workingArray filteredArrayUsingPredicate:munkiPredicate].count) {
@@ -190,40 +191,40 @@
 
 - (void)executeAppSearch:(id)sender
 {
-    [applicationTableView beginUpdates];
-    [applicationTableView removeRowsAtIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, searchedApps.count)] withAnimation:NSTableViewAnimationEffectNone];
+    [_recipeTableView beginUpdates];
+    [_recipeTableView removeRowsAtIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, _searchedRecipes.count)] withAnimation:NSTableViewAnimationEffectNone];
 
-    if ([[_appSearch stringValue] isEqualToString:@""]) {
-        searchedApps = apps;
+    if ([[_recipeSearchField stringValue] isEqualToString:@""]) {
+        _searchedRecipes = _recipes;
     } else {
         NSMutableArray *workingSearchArray = [[NSMutableArray alloc] init];
 
-        for (NSString *string in apps) {
-            NSRange range = [string rangeOfString:[_appSearch stringValue] options:NSCaseInsensitiveSearch];
+        for (NSString *string in _recipes) {
+            NSRange range = [string rangeOfString:[_recipeSearchField stringValue] options:NSCaseInsensitiveSearch];
 
             if (!NSEqualRanges(range, NSMakeRange(NSNotFound, 0))) {
                 [workingSearchArray addObject:string];
             }
         }
 
-        searchedApps = [NSArray arrayWithArray:workingSearchArray];
+        _searchedRecipes = [NSArray arrayWithArray:workingSearchArray];
     }
 
-    [applicationTableView insertRowsAtIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, searchedApps.count)] withAnimation:NSTableViewAnimationEffectNone];
+    [_recipeTableView insertRowsAtIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, _searchedRecipes.count)] withAnimation:NSTableViewAnimationEffectNone];
 
-    [applicationTableView endUpdates];
+    [_recipeTableView endUpdates];
 }
 
 - (void)awakeFromNib
 {
     [self reload];
-    [_appSearch setTarget:self];
-    [_appSearch setAction:@selector(executeAppSearch:)];
+    [_recipeSearchField setTarget:self];
+    [_recipeSearchField setAction:@selector(executeAppSearch:)];
 }
 
 + (NSString *)recipeList
 {
-    LGApplications *apps = [[LGApplications alloc] init];
+    LGRecipes *apps = [[LGRecipes alloc] init];
     NSString *applicationSupportDirectory = [apps getAppSupportDirectory];
     return [applicationSupportDirectory stringByAppendingString:@"/recipe_list.txt"];
 }

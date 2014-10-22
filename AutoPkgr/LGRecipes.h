@@ -1,8 +1,8 @@
 //
-//  LGUnzipper.h
+//  LGApplications.h
 //  AutoPkgr
 //
-//  Created by James Barclay on 6/29/14.
+//  Created by Josh Senick on 7/10/14.
 //
 //  Copyright 2014 The Linde Group, Inc.
 //
@@ -20,9 +20,22 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "LGAutoPkgTask.h"
+#import "LGTableView.h"
 
-@interface LGUnzipper : NSObject
+@interface LGRecipes : NSObject <NSApplicationDelegate, NSTableViewDataSource, NSTableViewDelegate> {
+    NSArray *_recipes;
+    NSArray *_activeRecipes;
+    NSArray *_searchedRecipes;
+}
 
-+ (BOOL)unzip:(NSString *)zipPath targetDir:(NSString *)targetDir;
+- (void)reload;
+- (void)writeRecipeList;
+- (NSString *)getAppSupportDirectory;
+
+@property (weak) IBOutlet LGTableView *recipeTableView;
+@property (weak) IBOutlet NSSearchField *recipeSearchField;
+
++ (NSString *)recipeList;
 
 @end

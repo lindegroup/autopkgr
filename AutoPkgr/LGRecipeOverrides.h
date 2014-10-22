@@ -1,10 +1,9 @@
+// LGRecipeOverrides.h
+// AutoPkgr
 //
-//  LGApplications.h
-//  AutoPkgr
+// Created by Eldon on 8/14/14.
 //
-//  Created by Josh Senick on 7/10/14.
-//
-//  Copyright 2014 The Linde Group, Inc.
+// Copyright 2014 The Linde Group, Inc.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -20,24 +19,9 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "LGAutoPkgTask.h"
 
-@interface LGApplications : NSObject <NSApplicationDelegate, NSTableViewDataSource, NSTableViewDelegate> {
+@interface LGRecipeOverrides : NSObject
 
-    IBOutlet NSTableView *applicationTableView;
-
-    NSArray *apps;
-    NSArray *activeApps;
-    NSArray *searchedApps;
-    __weak NSSearchField *_appSearch;
-}
-
-- (void)reload;
-- (void)writeRecipeList;
-- (NSString *)getAppSupportDirectory;
-
-@property (weak) IBOutlet NSSearchField *appSearch;
-
-+ (NSString *)recipeList;
++ (NSMenu *)contextualMenuForRecipe:(NSString *)recipe;
 
 @end

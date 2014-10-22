@@ -1,8 +1,8 @@
 //
-//  LGUnzipper.h
+//  LGStatusImage.h
 //  AutoPkgr
 //
-//  Created by James Barclay on 6/29/14.
+//  Created by Eldon on 10/6/14.
 //
 //  Copyright 2014 The Linde Group, Inc.
 //
@@ -19,10 +19,18 @@
 //  limitations under the License.
 //
 
-#import <Foundation/Foundation.h>
+#import <Cocoa/Cocoa.h>
 
-@interface LGUnzipper : NSObject
+@interface NSImage (statusLight)
 
-+ (BOOL)unzip:(NSString *)zipPath targetDir:(NSString *)targetDir;
++ (instancetype)LGStatusAvaliable;
++ (instancetype)LGStatusPartiallyAvaliable;
++ (instancetype)LGStatusUnavaliable;
++ (instancetype)LGStatusNone;
+
++ (instancetype)LGStatusNotInstalled;
++ (instancetype)LGStatusUpToDate;
++ (instancetype)LGStatusUpdateAvaliable;
++ (instancetype)LGStatusUnknown;
 
 @end

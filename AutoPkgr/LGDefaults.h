@@ -26,7 +26,6 @@
 #pragma mark - Singletons
 + (LGDefaults *)standardUserDefaults;
 
-
 #pragma mark - Settings
 @property (copy, nonatomic) NSString *SMTPServer;
 @property (nonatomic) NSInteger SMTPPort;
@@ -55,6 +54,10 @@
 
 #pragma mark - Utility Settings
 @property (nonatomic) BOOL debug;
+
+#pragma mark - AutoPkg Accessor methods
+- (id)autoPkgDomainObject:(NSString *)key;
+- (void)setAutoPkgDomainObject:(id)object forKey:(NSString *)key;
 
 #pragma Class Methods
 + (BOOL)fixRelativePathsInAutoPkgDefaults:(NSError **)error neededFixing:(NSInteger *)neededFixing;

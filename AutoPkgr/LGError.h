@@ -41,13 +41,17 @@ typedef NS_ENUM(NSInteger, LGErrorCodes) {
     kLGErrorInstallAutoPkg,
     /** Error installing/updating AutoPkgr */
     kLGErrorInstallAutoPkgr,
+    /** Error installing jss-autopkg-addon */
+    kLGErrorInstallJSSAddon,
+    /** Error serializing xml object */
+    kLGErrorJSSXMLSerializerError,
 };
 
 #pragma mark - AutoPkg specific Error codes
 typedef NS_ENUM(NSInteger, LGErrorAutoPkgCodes) {
     /** AutoPkg often returns -1 on when misconfigured */
     kLGErrorAutoPkgConfig = -1,
-    
+
     /** AutoPkg returns 255 if no recipe is specified */
     kLGErrorAutoPkgNoRecipes = 255,
 };
@@ -59,13 +63,13 @@ typedef NS_ENUM(NSInteger, LGAutoPkgVerb) {
     kLGAutoPkgRecipeList,
     kLGAutoPkgMakeOverride,
     kLGAutoPkgSearch,
-    
+
     // repo verbs
     kLGAutoPkgRepoAdd,
     kLGAutoPkgRepoDelete,
     kLGAutoPkgRepoUpdate,
     kLGAutoPkgRepoList,
-    
+
     // other verbs
     kLGAutoPkgVersion,
 };
@@ -120,5 +124,9 @@ typedef NS_ENUM(NSInteger, LGAutoPkgVerb) {
  *  @discussion If the returned object will be nil if the task has not complete;
  */
 + (NSError *)errorWithTaskError:(NSTask *)task verb:(LGAutoPkgVerb)verb;
+
+#pragma mark - NSURLConnection response Error
++ (BOOL)errorWithResponse:(NSHTTPURLResponse *)response error:(NSError **)error;
++ (NSError *)errorWithResponse:(NSHTTPURLResponse *)response;
 
 @end

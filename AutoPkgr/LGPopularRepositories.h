@@ -22,27 +22,25 @@
 #import <Foundation/Foundation.h>
 #import "LGAutoPkgTask.h"
 #import "LGGitHubJSONLoader.h"
-#import "LGApplications.h"
+#import "LGRecipes.h"
 #import "LGProgressDelegate.h"
 
 @interface LGPopularRepositories : NSObject <NSApplicationDelegate, NSTableViewDelegate, NSTableViewDataSource> {
 
-    IBOutlet NSTableView *popularRepositoriesTableView;
-    __weak NSSearchField *_repoSearch;
-    __weak LGApplications *_appObject;
-
-    NSArray *recipeRepos;
-    NSArray *popularRepos;
-    NSArray *activeRepos;
-    NSArray *searchedRepos;
-    LGGitHubJSONLoader *jsonLoader;
-    BOOL awake;
+    NSArray *_recipeRepos;
+    NSArray *_popularRepos;
+    NSArray *_activeRepos;
+    NSArray *_searchedRepos;
+    LGGitHubJSONLoader *_jsonLoader;
+    BOOL _awake;
 }
 
++ (NSMenu *)contextualMenuForRepo:(NSString *)repo;
 - (void)reload;
 
+@property (weak) IBOutlet LGTableView *popularRepositoriesTableView;
 @property (weak) IBOutlet NSSearchField *repoSearch;
-@property (weak) IBOutlet LGApplications *appObject;
-@property (weak) id<LGProgressDelegate>progressDelegate;
+@property (weak) IBOutlet LGRecipes *recipesObject;
+@property (weak) id<LGProgressDelegate> progressDelegate;
 
 @end

@@ -26,10 +26,17 @@
 #import "LGAutoPkgSchedule.h"
 #import "LGConfigurationWindowController.h"
 
-@implementation LGAppDelegate
+@implementation LGAppDelegate {
+@private
+    LGConfigurationWindowController *_configurationWindowController;
+    BOOL _configurationWindowInitiallyVisible;
+}
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {
+    NSLog(@"Welcome to AutoPkgr!");
+    DLog(@"Verbose logging is active. To deactivate, option-click the AutoPkgr menu icon and uncheck Verbose Logs.");
+
     LGDefaults *defaults = [LGDefaults new];
 
     // Set self as the delegate for the time so the menu item is updated
@@ -45,7 +52,6 @@
 
     // Start the AutoPkg run timer if the user enabled it
     [self startAutoPkgRunTimer];
-
 }
 
 - (void)startAutoPkgRunTimer
@@ -53,56 +59,62 @@
     [[LGAutoPkgSchedule sharedTimer] configure];
 }
 
-
 - (void)updateAutoPkgRecipeReposInBackgroundAtAppLaunch
 {
-   [LGAutoPkgTask repoUpdate:^(NSError *error) {
-       NSLog(@"%@", error ? error.localizedDescription:@"AutoPkg recipe repos updated.");
-   }];
+    NSLog(@"Updating AutoPkg repos...");
+    [LGAutoPkgTask repoUpdate:^(NSError *error) {
+       NSLog(@"%@", error ? error.localizedDescription:@"AutoPkg repos updated.");
+    }];
 }
 
 - (void)setupStatusItem
 {
     // Setup the systemStatusBar
+    DLog(@"Starting AutoPkgr menu bar icon...");
     self.statusItem = [[NSStatusBar systemStatusBar] statusItemWithLength:NSVariableStatusItemLength];
     [self.statusItem setMenu:self.statusMenu];
     [self.statusItem setImage:[NSImage imageNamed:@"autopkgr.png"]];
     [self.statusItem setAlternateImage:[NSImage imageNamed:@"autopkgr_alt.png"]];
     [self.statusItem setHighlightMode:YES];
     self.statusItem.menu = self.statusMenu;
+    DLog(@"AutoPkgr menu bar icon started.");
 }
 
 - (void)checkNowFromMenu:(id)sender
 {
-    [self startProgressWithMessage:@"Starting..."];
-    NSString *recipeList = [LGApplications recipeList];
+    DLog(@"Received 'Check Now' menulet command.");
+
+    [self startProgressWithMessage:@"Running selected AutoPkg recipes."];
+    NSString *recipeList = [LGRecipes recipeList];
     [LGAutoPkgTask runRecipeList:recipeList
-                        progress:^(NSString *message, double taskProgress) {
+        progress:^(NSString *message, double taskProgress) {
                             [self updateProgress:message progress:taskProgress];
-                        }
-                           reply:^(NSDictionary *report, NSError *error) {
+        }
+        reply:^(NSDictionary *report, NSError *error) {
                                [self stopProgress:error];
                                LGEmailer *emailer = [LGEmailer new];
                                [emailer sendEmailForReport:report error:error];
-                        }];
+        }];
 }
-
 
 - (void)showConfigurationWindow:(id)sender
 {
-    if (!self->configurationWindowController) {
-        self->configurationWindowController = [[LGConfigurationWindowController alloc] initWithWindowNibName:@"LGConfigurationWindowController"];
+    if (!self->_configurationWindowController) {
+        self->_configurationWindowController = [[LGConfigurationWindowController alloc] initWithWindowNibName:@"LGConfigurationWindowController"];
     }
 
     [NSApp activateIgnoringOtherApps:YES];
-    [self->configurationWindowController.window makeKeyAndOrderFront:nil];
+    [self->_configurationWindowController.window makeKeyAndOrderFront:nil];
+    DLog(@"Activated AutoPkgr configuration window.");
 }
 
 - (NSApplicationTerminateReply)applicationShouldTerminate:(NSApplication *)sender
 {
+    DLog(@"Quit command received.");
     LGDefaults *defaults = [LGDefaults new];
 
     if (defaults.warnBeforeQuittingEnabled) {
+        DLog(@"Warn before quitting is enabled. Displaying dialog box: 'Are you sure you want to quit AutoPkgr?'");
         NSAlert *alert = [[NSAlert alloc] init];
         [alert addButtonWithTitle:@"Quit"];
         [alert addButtonWithTitle:@"Cancel"];
@@ -111,26 +123,38 @@
         [alert setAlertStyle:NSWarningAlertStyle];
 
         if ([alert runModal] == NSAlertSecondButtonReturn) {
-            NSLog(@"User cancelled quit.");
+            DLog(@"Quit canceled.");
             return NSTerminateCancel;
         }
     }
 
+    NSLog(@"Now quitting AutoPkgr. Come back soon.");
     return NSTerminateNow;
 }
 
-# pragma mark - Progress Protocol
+#pragma mark - Progress Protocol
 - (void)startProgressWithMessage:(NSString *)message
 {
-    __block NSMenuItem *item = [self.statusMenu itemAtIndex:0];
-    [item setAction:nil];
-    [item setTitle:message];
+    [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+        _configurationWindowInitiallyVisible = [_configurationWindowController.window isVisible];
+
+        if (_configurationWindowController && _configurationWindowInitiallyVisible) {
+            [_configurationWindowController startProgressWithMessage:message];
+        }
+        NSMenuItem *item = [self.statusMenu itemAtIndex:0];
+        [item setAction:nil];
+        [item setTitle:message];
+    }];
 }
 
 - (void)stopProgress:(NSError *)error
 {
-    __block NSMenuItem *item = [self.statusMenu itemAtIndex:0];
     [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+        if (_configurationWindowController && _configurationWindowInitiallyVisible) {
+            [_configurationWindowController stopProgress:error];
+        }
+
+        NSMenuItem *item = [self.statusMenu itemAtIndex:0];
         [item setTitle:@"Check Now"];
         [item setAction:@selector(checkNowFromMenu:)];
     }];
@@ -138,13 +162,16 @@
 
 - (void)updateProgress:(NSString *)message progress:(double)progress
 {
-    __block NSMenuItem *item = [self.statusMenu itemAtIndex:0];
-    if (message.length < 50) {
-        [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-            [item setTitle:message];
-        }];
-    }
-    NSLog(@"%@", message);
+    [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+        if (_configurationWindowController && _configurationWindowInitiallyVisible) {
+            [_configurationWindowController updateProgress:message progress:progress];
+        }
+
+        if (message.length < 50) {
+                [[self.statusMenu itemAtIndex:0] setTitle:message];
+        }
+        NSLog(@"%@", message);
+    }];
 }
 
 @end

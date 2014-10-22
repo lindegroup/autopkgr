@@ -19,6 +19,7 @@ Here are the tasks that AutoPkgr makes easier:
 * Installation of Git, which AutoPkg requires.
 * Discovery of and subscription to popular AutoPkg recipe repositories.
 * Configuration of AutoPkg to use a local [Munki](https://code.google.com/p/munki/) repo.
+* Basic integration of AutoPkg with the JAMF Casper Suite.
 
 AutoPkgr also lets you do all of the following, which wouldn't be possible using AutoPkg alone:
 
@@ -70,8 +71,47 @@ That's it! AutoPkgr will now check for the latest app updates you specified, and
 
 Anytime you'd like to make changes to AutoPkgr's configuration, just click on the AutoPkgr icon in the menu bar (![Menu bar icon](doc-images/menulet.png)), and choose **Configure...**
 
-You'll also find some useful shortcuts on the **Local Folders** tab, which will take you directly to several convenient AutoPkg folders. On that tab, you can also configure the location of your local Munki repo, if you use Munki.
+You'll also find some useful shortcuts on the **Folders & Integration** tab, which will take you directly to several convenient AutoPkg folders. On that tab, you can also configure integration with Munki or Casper (see below).
     ![Local Folders](doc-images/config_tab4.png)
+
+
+Integration with Munki
+----------------------
+
+To configure AutoPkgr to add updates directly into your Munki repository, follow these steps:
+
+1. Click on the **Folders & Integration** tab.
+1. In the **Munki Integration** section, click Choose.
+1. Select your munki_repo folder.
+
+You'll also want to make sure you have a few `.munki` recipes selected. Once the new versions of apps appear in your Munki repo, you can add them to the appropriate catalogs and manifests to deploy them.
+
+
+Integration with Casper
+-----------------------
+
+To configure AutoPkgr to create Self Service policies in Casper for new app updates, follow these steps:
+
+1. Create a static computer group on your JSS called **Testing**. Add one or more test computers to the group.
+1. Create an account on your JSS with Create, Read, and Update access to the following objects:
+    - Categories
+    - Smart Computer Groups
+    - Static Computer Groups
+    - Computer Extension Attributes
+    - Packages
+    - Policies
+    - Scripts
+    - File Share Distribution Points (only needs Read access)
+1. Open AutoPkgr and go to the **Folders & Integration** tab.
+1. In the **Casper Suite integration** section, enter your JSS URL, API username, and API password. Then click **Connect**.
+1. When prompted, follow the instructions to install the jss-autopkg-addon.
+1. When prompted, enter the read/write password for each distribution point.
+
+You'll also want to make sure you have a few `.jss` recipes selected. AutoPkgr will automatically add Shea Craig's [jss-recipes](https://github.com/sheagcraig/jss-recipes) repo so you'll have a few to choose from.
+
+When a `.jss` recipe runs, the package is uploaded to your distribution points, a Self Service policy is created and scoped to a new smart group. As a result, computers in the Testing group with less than the latest version of the app should now be able to install the latest version through Self Service.
+
+<!-- Insert link to Elliot's presentation here, once it's online. -->
 
 
 Troubleshooting

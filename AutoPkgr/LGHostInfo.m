@@ -26,36 +26,36 @@
 #import "LGVersionComparator.h"
 
 NSString *const kLGOfficialGit = @"/usr/local/git/bin";
-NSString *const kLGCLIToolsGit =  @"/Library/Developer/CommandLineTools/usr/bin" ;
+NSString *const kLGCLIToolsGit = @"/Library/Developer/CommandLineTools/usr/bin";
 NSString *const kLGXcodeGit = @"/Applications/Xcode.app/Contents/Developer/usr/bin/git";
 NSString *const kLGHomeBrewGit = @"/usr/local/bin";
 NSString *const kLGBoxenBrewGit = @"/opt/boxen/homebrew/bin";
 
 @implementation LGHostInfo
 
-- (NSString *)getUserName
++ (NSString *)getUserName
 {
     return NSUserName();
 }
 
-- (NSString *)getHostName
++ (NSString *)getHostName
 {
     return [[NSHost currentHost] name];
 }
 
-- (NSString *)getUserAtHostName
++ (NSString *)getUserAtHostName
 {
     NSString *userAtHostName = [NSString stringWithFormat:@"%@@%@", [self getUserName], [self getHostName]];
 
     return userAtHostName;
 }
 
-- (BOOL)gitInstalled
++ (BOOL)gitInstalled
 {
     NSFileManager *fm = [[NSFileManager alloc] init];
     LGDefaults *defaults = [[LGDefaults alloc] init];
     NSString *foundGitPath;
-    
+
     // First see if AutoPkg already has a GIT_PATH key set,
     // and if the executable still exists.
     BOOL success = NO;
@@ -78,14 +78,14 @@ NSString *const kLGBoxenBrewGit = @"/opt/boxen/homebrew/bin";
             }
         }
     }
-    
+
     if ([foundGitPath isEqualToString:kLGOfficialGit]) {
         DLog(@"Using Official Git");
     } else if ([foundGitPath isEqualToString:kLGCLIToolsGit]) {
         DLog(@"Using Git installed via Xcode command line tools.");
     } else if ([foundGitPath isEqualToString:kLGXcodeGit]) {
         DLog(@"Using Git from Xcode Application.");
-    } else if ( [foundGitPath isEqualToString:kLGHomeBrewGit]) {
+    } else if ([foundGitPath isEqualToString:kLGHomeBrewGit]) {
         DLog(@"Using Git from Homebrew.");
     } else if ([foundGitPath isEqualToString:kLGBoxenBrewGit]) {
         DLog(@"Using Git from boxen homebrew.");
@@ -97,7 +97,7 @@ NSString *const kLGBoxenBrewGit = @"/opt/boxen/homebrew/bin";
     return success;
 }
 
-- (NSString *)getAutoPkgVersion
++ (NSString *)getAutoPkgVersion
 {
     NSTask *getAutoPkgVersionTask = [[NSTask alloc] init];
     NSPipe *getAutoPkgVersionPipe = [NSPipe pipe];
@@ -116,12 +116,23 @@ NSString *const kLGBoxenBrewGit = @"/opt/boxen/homebrew/bin";
 
     NSData *autoPkgVersionData = [fileHandle readDataToEndOfFile];
     NSString *autoPkgVersionString = [[NSString alloc] initWithData:autoPkgVersionData encoding:NSUTF8StringEncoding];
-    NSString *trimmedVersionString = [autoPkgVersionString stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
 
-    return trimmedVersionString;
+    return [autoPkgVersionString trimmed];
 }
 
-- (BOOL)autoPkgInstalled
++ (NSString *)getJSSAddonVersion
+{
+    NSString *version;
+    NSString *installReceipt = @"/private/var/db/receipts/com.github.sheagcraig.jss-autopkg-addon.plist";
+    if ([[NSFileManager defaultManager] fileExistsAtPath:installReceipt]) {
+        NSDictionary *receiptDict = [NSDictionary dictionaryWithContentsOfFile:installReceipt];
+        version = receiptDict[@"PackageVersion"];
+    }
+
+    return version;
+}
+
++ (BOOL)autoPkgInstalled
 {
     NSString *autoPkgPath = @"/usr/local/bin/autopkg";
 
@@ -132,21 +143,20 @@ NSString *const kLGBoxenBrewGit = @"/opt/boxen/homebrew/bin";
     return NO;
 }
 
-- (BOOL)autoPkgUpdateAvailable
++ (BOOL)autoPkgUpdateAvailable
 {
     // TODO: This check shouldn't block the main thread
-    
+
     // Get the currently installed version of AutoPkg
     NSString *installedAutoPkgVersionString = [self getAutoPkgVersion];
     NSLog(@"Installed version of AutoPkg: %@", installedAutoPkgVersionString);
-    
+
     // Get the latest version of AutoPkg available on GitHub
     LGGitHubJSONLoader *jsonLoader = [[LGGitHubJSONLoader alloc] init];
     NSString *latestAutoPkgVersionString = [jsonLoader getLatestAutoPkgReleaseVersionNumber];
-    
+
     // Determine if AutoPkg is up-to-date by comparing the version strings
-    LGVersionComparator *vc = [[LGVersionComparator alloc] init];
-    BOOL newVersionAvailable = [vc isVersion:latestAutoPkgVersionString greaterThanVersion:installedAutoPkgVersionString];
+    BOOL newVersionAvailable = [LGVersionComparator isVersion:latestAutoPkgVersionString greaterThanVersion:installedAutoPkgVersionString];
     if (newVersionAvailable) {
         NSLog(@"A new version of AutoPkg is available. Version %@ is installed and version %@ is available.", installedAutoPkgVersionString, latestAutoPkgVersionString);
         return YES;
@@ -154,14 +164,37 @@ NSString *const kLGBoxenBrewGit = @"/opt/boxen/homebrew/bin";
     return NO;
 }
 
-- (NSArray *)knownGitPaths
++ (BOOL)jssAddonInstalled
+{
+    NSString *jssReceipt = @"/private/var/db/receipts/com.github.sheagcraig.jss-autopkg-addon.plist";
+    NSString *jssExec = @"/Library/AutoPkg/autopkglib/JSSImporter.py";
+    BOOL check1 = [[NSFileManager defaultManager] fileExistsAtPath:jssReceipt];
+    BOOL check2 = [[NSFileManager defaultManager] fileExistsAtPath:jssExec];
+    return (check1 && check2);
+}
+
++ (BOOL)jssAddonUpdateAvailable;
+{
+    LGGitHubJSONLoader *loader = [[LGGitHubJSONLoader alloc] init];
+    NSString *avaliableVersion = [loader latestVersion:kLGJSSAddonJSONURL];
+    NSString *installedVersion = [self getJSSAddonVersion];
+    BOOL updateAvaliable = [LGVersionComparator isVersion:avaliableVersion
+                                       greaterThanVersion:installedVersion];
+    if (updateAvaliable) {
+        NSLog(@"Version %@ of the JSSAddon is avaliable. Version %@ is installed", avaliableVersion, installedVersion);
+    }
+
+    return updateAvaliable;
+}
+
++ (NSArray *)knownGitPaths
 {
     return @[ kLGOfficialGit,
               kLGBoxenBrewGit,
               kLGHomeBrewGit,
               kLGXcodeGit,
               kLGCLIToolsGit,
-              ];
+    ];
 }
 
 @end

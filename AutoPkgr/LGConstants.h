@@ -1,3 +1,4 @@
+//
 //  LGConstants.h
 //  AutoPkgr
 //
@@ -29,11 +30,15 @@ extern NSString *const kLGGitNotInstalledLabel;
 extern NSString *const kLGAutoPkgInstalledLabel;
 extern NSString *const kLGAutoPkgNotInstalledLabel;
 extern NSString *const kLGAutoPkgUpdateAvailableLabel;
+extern NSString *const kLGJSSAutoPkgAddonInstalledLabel;
+extern NSString *const kLGJSSAutoPkgAddonNotInstalledLabel;
+extern NSString *const kLGJSSAutoPkgAddonUpdateAvailableLabel;
 
 #pragma mark - Static URLs
 extern NSString *const kLGAutoPkgReleasesJSONURL;
 extern NSString *const kLGGitMAVReleasesJSONURL;
 extern NSString *const kLGGitMLReleasesJSONURL;
+extern NSString *const kLGJSSAddonJSONURL;
 extern NSString *const kLGAutoPkgDownloadURL;
 extern NSString *const kLGAutoPkgRepositoriesJSONURL;
 
@@ -56,21 +61,22 @@ extern NSString *const kLGSMTPAuthenticationEnabled;
 extern NSString *const kLGWarnBeforeQuittingEnabled;
 
 #pragma mark - Notifications
-#pragma mark -- Progress
+#pragma mark-- Progress
 extern NSString *const kLGNotificationProgressStart;
 extern NSString *const kLGNotificationProgressStop;
 extern NSString *const kLGNotificationProgressMessageUpdate;
 
-#pragma mark -- AutoPkg Task
+#pragma mark-- AutoPkg Task
 extern NSString *const kLGNotificationRunAutoPkgComplete;
 extern NSString *const kLGNotificationUpdateReposComplete;
 extern NSString *const kLGNotificationOverrideFileCreated;
+extern NSString *const kLGNotificationReposModified;
 
-#pragma mark -- Email
+#pragma mark-- Email
 extern NSString *const kLGNotificationEmailSent;
 extern NSString *const kLGNotificationTestSmtpServerPort;
 
-#pragma mark -- UserInfo dict keys
+#pragma mark-- UserInfo dict keys
 //* key corresponding to NSError object in Notification's userInfo dictionary */
 extern NSString *const kLGNotificationUserInfoError;
 //* key corresponding to a message string object in Notification's userInfo dictionary */

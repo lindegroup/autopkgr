@@ -1,8 +1,8 @@
 //
-//  LGUnzipper.h
+//  NSString+cleaned.m
 //  AutoPkgr
 //
-//  Created by James Barclay on 6/29/14.
+//  Created by Eldon on 10/4/14.
 //
 //  Copyright 2014 The Linde Group, Inc.
 //
@@ -19,10 +19,22 @@
 //  limitations under the License.
 //
 
-#import <Foundation/Foundation.h>
+#import "NSString+cleaned.h"
 
-@interface LGUnzipper : NSObject
+@implementation NSString (cleaned)
 
-+ (BOOL)unzip:(NSString *)zipPath targetDir:(NSString *)targetDir;
+- (NSString *)trimmed
+{
+    return [self stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+}
+
+- (NSString *)blankIsNil
+{
+    NSString *aString = self;
+    if (self && [self isEqualToString:@""]) {
+        aString = nil;
+    }
+    return aString;
+}
 
 @end

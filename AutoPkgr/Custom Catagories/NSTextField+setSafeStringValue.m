@@ -1,8 +1,8 @@
 //
-//  LGUnzipper.h
+//  NSTextField+setStringValueSafe.m
 //  AutoPkgr
 //
-//  Created by James Barclay on 6/29/14.
+//  Created by Eldon on 10/4/14.
 //
 //  Copyright 2014 The Linde Group, Inc.
 //
@@ -19,10 +19,24 @@
 //  limitations under the License.
 //
 
-#import <Foundation/Foundation.h>
+#import "NSTextField+setSafeStringValue.h"
 
-@interface LGUnzipper : NSObject
+@implementation NSTextField (setSafeStringValue)
 
-+ (BOOL)unzip:(NSString *)zipPath targetDir:(NSString *)targetDir;
+- (NSString *)safeStringValue
+{
+    NSString *aString;
+    if (![self.stringValue isEqualToString:@""]) {
+        aString = self.stringValue;
+    }
+    return aString;
+}
+
+- (void)setSafeStringValue:(NSString *)aString
+{
+    if (aString && ![aString isEqualToString:@""]) {
+        [self setStringValue:aString];
+    }
+}
 
 @end

@@ -25,7 +25,7 @@
 
 static int maximumValuesInVersion = 4;
 
-- (BOOL)isVersion:(NSString *)a greaterThanVersion:(NSString *)b
++ (BOOL)isVersion:(NSString *)a greaterThanVersion:(NSString *)b
 {
     // Make sure neither a or b are nil
     if (a && b) {
@@ -34,7 +34,7 @@ static int maximumValuesInVersion = 4;
 
         NSArray *versionB = [b componentsSeparatedByString:@"."];
         versionB = [self normalizeVersionFromArray:versionB];
-        for (NSInteger i=0; i < maximumValuesInVersion; i++) {
+        for (NSInteger i = 0; i < maximumValuesInVersion; i++) {
             if ([[versionA objectAtIndex:i] integerValue] > [[versionB objectAtIndex:i] integerValue]) {
                 return YES;
             } else if ([[versionA objectAtIndex:i] integerValue] < [[versionB objectAtIndex:i] integerValue]) {
@@ -45,13 +45,13 @@ static int maximumValuesInVersion = 4;
     return NO;
 }
 
-- (NSArray *)normalizeVersionFromArray:(NSArray *)versionArray
++ (NSArray *)normalizeVersionFromArray:(NSArray *)versionArray
 {
     if ([versionArray count] < maximumValuesInVersion) {
         NSMutableArray *mutableArray = [versionArray mutableCopy];
         NSInteger difference = maximumValuesInVersion - [mutableArray count];
 
-        for (NSInteger i=0; i < difference; i++) {
+        for (NSInteger i = 0; i < difference; i++) {
             [mutableArray addObject:@"0"];
         }
 

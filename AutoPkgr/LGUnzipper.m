@@ -23,9 +23,9 @@
 
 @implementation LGUnzipper
 
-- (BOOL)unzip:(NSString *)zipPath targetDir:(NSString *)targetDir
++ (BOOL)unzip:(NSString *)zipPath targetDir:(NSString *)targetDir
 {
-    NSFileManager* fm = [NSFileManager defaultManager];
+    NSFileManager *fm = [NSFileManager defaultManager];
     NSError *error;
 
     // Remove the targetDir if it already exists
@@ -41,7 +41,8 @@
 
     // Create the targetDir
     [fm createDirectoryAtPath:targetDir withIntermediateDirectories:NO
-                   attributes:nil error:&error];
+                         attributes:nil
+                              error:&error];
 
     if (error) {
         NSLog(@"An error occurred when attempting to create tmp dir %@. Error: %@.", targetDir, error);

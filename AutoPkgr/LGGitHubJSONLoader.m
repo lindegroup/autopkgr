@@ -68,10 +68,10 @@
     return nil;
 }
 
-- (NSArray *)getReleaseArray:(NSString *)githubURL
+- (NSArray *)getReleaseArray:(NSString *)gitHubURL
 {
     // Get the JSON data
-    NSData *data = [self getJSONFromURL:[NSURL URLWithString:githubURL]];
+    NSData *data = [self getJSONFromURL:[NSURL URLWithString:gitHubURL]];
     return [self getArrayFromJSONData:data];
 }
 
@@ -109,8 +109,8 @@
 
     if ([mutableArray count]) {
         NSSortDescriptor *stargazersCountDescriptor = [[NSSortDescriptor alloc]
-                                                       initWithKey:stargazersCount
-                                                       ascending:NO];
+            initWithKey:stargazersCount
+              ascending:NO];
         NSArray *descriptors = [NSArray arrayWithObjects:stargazersCountDescriptor, nil];
         NSArray *sortedArrayOfDictionaries = [mutableArray sortedArrayUsingDescriptors:descriptors];
 
@@ -138,34 +138,25 @@
     return latestVersionNumber;
 }
 
-- (NSString *)getLatestAutoPkgDownloadURL
+- (NSString *)latestVersion:(NSString *)gitHubURL
 {
     // Get an NSDictionary of the latest release JSON
-    NSDictionary *latestVersionDict = [self getLatestReleaseDictionary:kLGAutoPkgReleasesJSONURL];
+    NSDictionary *latestVersionDict = [self getLatestReleaseDictionary:gitHubURL];
 
-    // Get the AutoPkg PKG download URL
-    NSString *browserDownloadURL = [[[latestVersionDict objectForKey:@"assets"] firstObject] objectForKey:@"browser_download_url"];
-    DLog(@"Using github download URL for AutoPkg: %@", browserDownloadURL);
+    // AutoPkg version numbers are prepended with "v"
+    // Let's remove that from our version string
+    NSString *latestVersionNumber = [[latestVersionDict objectForKey:@"tag_name"] stringByReplacingOccurrencesOfString:@"v" withString:@""];
 
-    return browserDownloadURL;
+    return latestVersionNumber;
 }
 
-- (NSString *)getGitDownloadURL
+- (NSString *)latestReleaseDownload:(NSString *)gitHubURL
 {
+    // Get an NSDictionary of the latest release JSON
+    NSDictionary *latestVersionDict = [self getLatestReleaseDictionary:gitHubURL];
 
-    NSDictionary *latestVersionDict;
-    if (floor(NSAppKitVersionNumber) > NSAppKitVersionNumber10_8) {
-        // Mavericks and beyond
-        latestVersionDict = [self getLatestReleaseDictionary:kLGGitMAVReleasesJSONURL];
-    } else {
-        // Mountian Lion compatible
-        latestVersionDict = [self getLatestReleaseDictionary:kLGGitMLReleasesJSONURL];
-    }
-    
-    NSString *browserDownloadURL = [latestVersionDict[@"assets"] firstObject][@"browser_download_url"];
-
-    // Get the Git DMG download URL for the appropriate version
-    DLog(@"Using github download URL for Git: %@", browserDownloadURL);
+    // Get the PKG / DMG download URL
+    NSString *browserDownloadURL = [[[latestVersionDict objectForKey:@"assets"] firstObject] objectForKey:@"browser_download_url"];
 
     return browserDownloadURL;
 }
