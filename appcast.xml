@@ -6,6 +6,48 @@
     <description>Most recent changes with links to updates.</description>
     <language>en</language>
       <item>
+        <title>Version 1.1</title>
+        <description>
+          <![CDATA[
+          <h4>Added built-in support for integrating with JAMF's Casper Suite (#75):</h4>
+          <ul>
+            <li>The newly-renamed Folders & Integration tab provides easy access to JSS URL and API settings.</li>
+            <li>Upon entering valid JSS information, AutoPkgr automatically installs the latest version of @sheagcraig's jss-autopkg-addon and adds some ready-to-use .jss recipes.</li>
+            <li>The .jss recipes you subscribe to will automatically produce smart groups and Self Service policies scoped to a "Testing" group.</li>
+            <li>The policy creation behavior can be tweaked and customized with XML template files.</li>
+            <li>AutoPkgr keeps you up to date when new versions of the jss-autopkg-addon are released.</li>
+          </ul>
+          <h4>Added support for creating recipe overrides (#60):</h4>
+          <ul>
+            <li>Right-clicking / Control-clicking on a recipe will allow creation/editing of an override.</li>
+            <li>Ability to choose your preferred text editor for editing overrides.</li>
+          </ul>
+          <h4>Added environmental proxy support (#152 and #130):</h4>
+          <ul>
+            <li>Equivalent to this shell command: export HTTP_PROXY=http://proxy:8080</li>
+            <li>To use HTTP proxy: defaults write com.lindegroup.AutoPkgr HTTP_PROXY http://proxy:8080</li>
+            <li>To use HTTPS proxy: defaults write com.lindegroup.AutoPkgr HTTPS_PROXY https://proxy:8080</li>
+            <li>To stop using HTTP proxy: defaults remove com.lindegroup.AutoPkgr HTTP_PROXY</li>
+            <li>To stop using HTTPS proxy: defaults remove com.lindegroup.AutoPkgr HTTPS_PROXY</li>
+            <li>Note: This will not create or modify any system proxy settings; it will only add them to your shell env.</li>
+          </ul>
+          <h4>Improvements</h4>
+          <ul>
+            <li>Improved readme with detailed information on Munki and Casper integration, and some troubleshooting tips.</li>
+            <li>Additional detail added to logs.</li>
+            <li>Better version reporting in email messages (especially with .munki recipes).</li>
+            <li>More concise errors when Python exceptions occur.</li>
+          </ul>
+          <h4>Bug Fixes</h4>
+          <ul>
+            <li>Fixed bug that prevented certain repos from appearing automatically in the repos list (#148).</li>
+          </ul>
+          ]]>
+        </description>
+        <pubDate>Wed, 22 Oct 2014 18:17:45 +0000</pubDate>
+        <enclosure url="https://github.com/lindegroup/autopkgr/releases/download/v1.1/AutoPkgr-1.1.dmg" sparkle:version="490" sparkle:shortVersionString="1.1" type="application/octet-stream" />
+      </item>
+      <item>
         <title>Version 1.0.4</title>
         <description>
           <![CDATA[
