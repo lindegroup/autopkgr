@@ -251,7 +251,7 @@ static NSDictionary *userInfoFromHTTPResponse(NSHTTPURLResponse *response)
     NSError *error;
     NSString *errorMsg = errorMessageFromAutoPkgVerb(verb);
     NSString *errorDetails;
-    NSInteger taskError;
+    NSInteger taskError = task.terminationStatus;
 
     if ([task.standardError isKindOfClass:[NSPipe class]]) {
         NSData *errData = [[task.standardError fileHandleForReading] readDataToEndOfFile];
@@ -260,18 +260,16 @@ static NSDictionary *userInfoFromHTTPResponse(NSHTTPURLResponse *response)
         }
     }
 
-    NSPredicate *exceptionPredicate = [NSPredicate predicateWithFormat:@"SELF BEGINSWITH[CD] 'Traceback'"];
-
     // If the error message looks like a Python exception log it, but trim it up for UI
-    if ([exceptionPredicate evaluateWithObject:errorDetails ]) {
-        DLog(@"(FULL AUTOPKG TRACEBACK) %@",errorDetails);
+    NSPredicate *exceptionPredicate = [NSPredicate predicateWithFormat:@"SELF BEGINSWITH[CD] 'Traceback'"];
+    if ([exceptionPredicate evaluateWithObject:errorDetails]) {
+        NSLog(@"(FULL AUTOPKG TRACEBACK) %@", errorDetails);
         NSArray *array = [errorDetails componentsSeparatedByCharactersInSet:[NSCharacterSet newlineCharacterSet]];
         NSPredicate *noEmptySpaces = [NSPredicate predicateWithFormat:@"not (SELF == '')"];
-        errorDetails =  [[array filteredArrayUsingPredicate:noEmptySpaces] lastObject];
-
-    // Otherwise continue
+        NSString *exceptionDetails = [[array filteredArrayUsingPredicate:noEmptySpaces] lastObject];
+        errorDetails = [NSString stringWithFormat:@"A Python exception occured during the execution of autopkg, see the console log for more details.\n\n[ERROR] %@", exceptionDetails];
+        // Otherwise continue
     } else {
-        taskError = task.terminationStatus;
         // AutoPkg's rc on a failed repo-update / add / delete is 0, so check the stderr for "ERROR" string
         if (verb == kLGAutoPkgRepoUpdate || verb == kLGAutoPkgRepoDelete || verb == kLGAutoPkgRepoAdd) {
             if (errorDetails && ![errorDetails isEqualToString:@""]) {
