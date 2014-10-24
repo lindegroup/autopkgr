@@ -96,11 +96,13 @@ const CFStringRef kUTTypePropertyList = CFSTR("com.apple.property-list");
 + (void)deleteOverride:(NSMenuItem *)sender
 {
     NSString *recipePath = [self overridePathFromRecipe:sender.representedObject];
-    NSAlert *alert = [NSAlert alertWithMessageText:@"AutoPkgr is trying to remove override" defaultButton:@"Remove" alternateButton:@"Cancel" otherButton:nil informativeTextWithFormat:@"Are you sure you want to remove the %@ recipe override?  Any changes made to the file will be lost.", sender.representedObject];
+    NSAlert *alert = [NSAlert alertWithMessageText:@"AutoPkgr is trying to remove override" defaultButton:@"Remove" alternateButton:@"Cancel" otherButton:nil informativeTextWithFormat:@"Are you sure you want to remove the %@ recipe override? Any changes made to the file will be lost.", sender.representedObject];
+    NSLog(@"Displaying prompt to confirm deletion of override %@", sender.representedObject);
 
     NSInteger button = [alert runModal];
     if (button == NSAlertDefaultReturn) {
         [[NSFileManager defaultManager] removeItemAtPath:recipePath error:nil];
+        NSLog(@"Override %@ deleted.", sender.representedObject);
     }
 }
 
