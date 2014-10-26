@@ -40,9 +40,11 @@
                              reply:(void (^)(NSDictionary *, NSError *))reply
 {
     // Setup the request
-    NSURL *url = [NSURL URLWithString:@"/JSSResource/distributionpoints" relativeToURL:[NSURL URLWithString:server]];
+    NSURL *baseURL = [NSURL URLWithString:server];
 
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
+    NSURL *fullURL = [NSURL URLWithString:[baseURL.path stringByAppendingPathComponent:@"/JSSResource/distributionpoints"] relativeToURL:baseURL];
+
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:fullURL];
     request.timeoutInterval = 5.0;
 
     // Set up the operation
