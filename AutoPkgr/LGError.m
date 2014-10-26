@@ -77,7 +77,7 @@ static NSDictionary *userInfoFromCode(LGErrorCodes code)
         break;
     }
 
-    // Setup the localized descripton
+    // Setup the localized description
     message = NSLocalizedString([localizedBaseString stringByAppendingString:@"Description"],
                                 @"NSLocalizedDescriptionKey");
 
@@ -174,7 +174,7 @@ static NSDictionary *userInfoFromHTTPResponse(NSHTTPURLResponse *response)
         break;
     }
 
-    // Setup the localized descripton
+    // Setup the localized description
     message = NSLocalizedString([localizedBaseString stringByAppendingString:@"Description"],
                                 @"NSLocalizedDescriptionKey");
 
@@ -251,7 +251,7 @@ static NSDictionary *userInfoFromHTTPResponse(NSHTTPURLResponse *response)
     NSError *error;
     NSString *errorMsg = errorMessageFromAutoPkgVerb(verb);
     NSString *errorDetails;
-    NSInteger taskError;
+    NSInteger taskError = task.terminationStatus;
 
     if ([task.standardError isKindOfClass:[NSPipe class]]) {
         NSData *errData = [[task.standardError fileHandleForReading] readDataToEndOfFile];
@@ -260,28 +260,48 @@ static NSDictionary *userInfoFromHTTPResponse(NSHTTPURLResponse *response)
         }
     }
 
-    NSPredicate *exceptionPredicate = [NSPredicate predicateWithFormat:@"SELF BEGINSWITH[CD] 'Traceback'"];
+    // If the error message looks like a Python exception log it, but trim it up for UI.
+    NSPredicate *exceptionPredicate = [NSPredicate predicateWithFormat:@"SELF CONTAINS 'Traceback'"];
+    if ([exceptionPredicate evaluateWithObject:errorDetails]) {
+        NSArray *splitExceptionFromError = [errorDetails componentsSeparatedByString:@"Traceback (most recent call last):"];
 
-    // If the error message looks like a Python exception log it, but trim it up for UI
-    if ([exceptionPredicate evaluateWithObject:errorDetails ]) {
-        DLog(@"(FULL AUTOPKG TRACEBACK) %@",errorDetails);
-        NSArray *array = [errorDetails componentsSeparatedByCharactersInSet:[NSCharacterSet newlineCharacterSet]];
+        // The exception should in theory always be last.
+        NSString *fullExceptionMessage = [splitExceptionFromError lastObject];
+        NSLog(@"(FULL AUTOPKG TRACEBACK) %@", fullExceptionMessage);
+
+
+        NSArray *array = [fullExceptionMessage componentsSeparatedByCharactersInSet:[NSCharacterSet newlineCharacterSet]];
+
         NSPredicate *noEmptySpaces = [NSPredicate predicateWithFormat:@"not (SELF == '')"];
-        errorDetails =  [[array filteredArrayUsingPredicate:noEmptySpaces] lastObject];
+        NSString *exceptionDetails = [[array filteredArrayUsingPredicate:noEmptySpaces] lastObject];
 
-    // Otherwise continue
+        NSMutableString *recombinedErrorDetails = [[NSMutableString alloc] init];
+        if (splitExceptionFromError.count > 1) {
+            // If something came before, put that information back into the errorDetails.
+            [recombinedErrorDetails appendString:[splitExceptionFromError firstObject]];
+        }
+
+        [recombinedErrorDetails appendFormat:@"A Python exception occurred during the execution of autopkg, see the console log for more details.\n\n[ERROR] %@", exceptionDetails];
+
+        errorDetails = [NSString stringWithString:recombinedErrorDetails];
+
+        // Otherwise continue...
     } else {
-        taskError = task.terminationStatus;
-        // AutoPkg's rc on a failed repo-update / add / delete is 0, so check the stderr for "ERROR" string
+        // AutoPkg's rc on a failed repo-update / add / delete is 0, but we want it reported back to the UI so set it to -1.
         if (verb == kLGAutoPkgRepoUpdate || verb == kLGAutoPkgRepoDelete || verb == kLGAutoPkgRepoAdd) {
             if (errorDetails && ![errorDetails isEqualToString:@""]) {
                 taskError = kLGErrorAutoPkgConfig;
             }
         }
-        // autopkg run exits 255 if no recipe speciifed
+        // autopkg run exits 255 if no recipe specified
         else if (verb == kLGAutoPkgRun && task.terminationStatus == kLGErrorAutoPkgNoRecipes) {
             errorDetails = @"No recipes specified.";
         }
+    }
+
+    // A simple "Failed" message isn't very useful so take it out.
+    if (errorDetails) {
+        errorDetails = [errorDetails stringByReplacingOccurrencesOfString:@"Failed.\n" withString:@""];
     }
 
     // Otherwise we can just use the termination status
