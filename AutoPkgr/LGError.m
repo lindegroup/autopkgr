@@ -77,7 +77,7 @@ static NSDictionary *userInfoFromCode(LGErrorCodes code)
         break;
     }
 
-    // Setup the localized descripton
+    // Setup the localized description
     message = NSLocalizedString([localizedBaseString stringByAppendingString:@"Description"],
                                 @"NSLocalizedDescriptionKey");
 
@@ -174,7 +174,7 @@ static NSDictionary *userInfoFromHTTPResponse(NSHTTPURLResponse *response)
         break;
     }
 
-    // Setup the localized descripton
+    // Setup the localized description
     message = NSLocalizedString([localizedBaseString stringByAppendingString:@"Description"],
                                 @"NSLocalizedDescriptionKey");
 
@@ -260,13 +260,13 @@ static NSDictionary *userInfoFromHTTPResponse(NSHTTPURLResponse *response)
         }
     }
 
-    // If the error message looks like a Python exception log it, but trim it up for UI
+    // If the error message looks like a Python exception log it, but trim it up for UI.
     NSPredicate *exceptionPredicate = [NSPredicate predicateWithFormat:@"SELF CONTAINS 'Traceback'"];
     if ([exceptionPredicate evaluateWithObject:errorDetails]) {
-        NSArray *splitExceptioinFromError = [errorDetails componentsSeparatedByString:@"Traceback (most recent call last):"];
+        NSArray *splitExceptionFromError = [errorDetails componentsSeparatedByString:@"Traceback (most recent call last):"];
 
         // The exception should in theory always be last.
-        NSString *fullExceptionMessage = [splitExceptioinFromError lastObject];
+        NSString *fullExceptionMessage = [splitExceptionFromError lastObject];
         NSLog(@"(FULL AUTOPKG TRACEBACK) %@", fullExceptionMessage);
 
 
@@ -276,30 +276,30 @@ static NSDictionary *userInfoFromHTTPResponse(NSHTTPURLResponse *response)
         NSString *exceptionDetails = [[array filteredArrayUsingPredicate:noEmptySpaces] lastObject];
 
         NSMutableString *recombinedErrorDetails = [[NSMutableString alloc] init];
-        if (splitExceptioinFromError.count > 1) {
-            // If something came before, put that information back into the errorDescripton
-            [recombinedErrorDetails appendString:[splitExceptioinFromError firstObject]];
+        if (splitExceptionFromError.count > 1) {
+            // If something came before, put that information back into the errorDetails.
+            [recombinedErrorDetails appendString:[splitExceptionFromError firstObject]];
         }
 
-        [recombinedErrorDetails appendFormat:@"A Python exception occured during the execution of autopkg, see the console log for more details.\n\n[ERROR] %@", exceptionDetails];
+        [recombinedErrorDetails appendFormat:@"A Python exception occurred during the execution of autopkg, see the console log for more details.\n\n[ERROR] %@", exceptionDetails];
 
         errorDetails = [NSString stringWithString:recombinedErrorDetails];
 
-        // Otherwise continue
+        // Otherwise continue...
     } else {
-        // AutoPkg's rc on a failed repo-update / add / delete is 0, so check the stderr for "ERROR" string
+        // AutoPkg's rc on a failed repo-update / add / delete is 0, but we want it reported back to the UI so set it to -1.
         if (verb == kLGAutoPkgRepoUpdate || verb == kLGAutoPkgRepoDelete || verb == kLGAutoPkgRepoAdd) {
             if (errorDetails && ![errorDetails isEqualToString:@""]) {
                 taskError = kLGErrorAutoPkgConfig;
             }
         }
-        // autopkg run exits 255 if no recipe speciifed
+        // autopkg run exits 255 if no recipe specified
         else if (verb == kLGAutoPkgRun && task.terminationStatus == kLGErrorAutoPkgNoRecipes) {
             errorDetails = @"No recipes specified.";
         }
     }
 
-    // A simple "Failed" message isn't very usefull so take it out.
+    // A simple "Failed" message isn't very useful so take it out.
     if (errorDetails) {
         errorDetails = [errorDetails stringByReplacingOccurrencesOfString:@"Failed.\n" withString:@""];
     }
