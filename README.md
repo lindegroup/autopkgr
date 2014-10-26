@@ -18,6 +18,7 @@ Here are the tasks that AutoPkgr makes easier:
 * Installation of AutoPkg itself.
 * Installation of Git, which AutoPkg requires.
 * Discovery of and subscription to popular AutoPkg recipe repositories.
+* Ability to easily create AutoPkg recipe overrides.
 * Configuration of AutoPkg to use a local [Munki](https://code.google.com/p/munki/) repo.
 * Basic integration of AutoPkg with the JAMF Casper Suite.
 
@@ -111,7 +112,7 @@ You'll also want to make sure you have a few `.jss` recipes selected. AutoPkgr w
 
 When a `.jss` recipe runs, the package is uploaded to your distribution points, a Self Service policy is created and scoped to a new smart group. As a result, computers in the Testing group with less than the latest version of the app should now be able to install the latest version through Self Service.
 
-<!-- Insert link to Elliot's presentation here, once it's online. -->
+For detailed tips on integrating AutoPkgr with Casper, and to see some descriptions of example workflows, read [Auto Update Magic](https://github.com/homebysix/auto-update-magic).
 
 
 Troubleshooting
