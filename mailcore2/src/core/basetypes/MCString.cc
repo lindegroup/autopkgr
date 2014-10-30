@@ -1,10 +1,16 @@
 #include "MCString.h"
 
+#if __APPLE__
+#define DISABLE_ICU 1
+#endif
+
 #include <string.h>
 #include <stdlib.h>
+#if !DISABLE_ICU
 #include <unicode/ustring.h>
 #include <unicode/ucnv.h>
 #include <unicode/utypes.h>
+#endif
 #include <uuid/uuid.h>
 #include <pthread.h>
 #include <libetpan/libetpan.h>
@@ -27,12 +33,103 @@
 #include "MCHTMLCleaner.h"
 #include "MCBase64.h"
 #include "MCIterator.h"
+#include "ConvertUTF.h"
 
 using namespace mailcore;
 
+#if DISABLE_ICU
+static int32_t u_strlen(const UChar *s) {
+    if (s == NULL) {
+        return 0;
+    }
+    const UChar * p = s;
+    while (* p != 0) {
+        p ++;
+    }
+    return (int32_t) (p - s);
+}
+
+static UChar * u_memcpy(UChar * dest, const UChar * src, int32_t count) {
+    memcpy(dest, src, count * sizeof(* src));
+    return dest;
+}
+
+static UChar * u_strstr(const UChar * s, const UChar * substring)
+{
+    if (s == NULL) {
+        return NULL;
+    }
+    CFStringRef cfS = CFStringCreateWithCharactersNoCopy(NULL, (const UniChar *) s, u_strlen(s), kCFAllocatorNull);
+    CFStringRef cfSubstring = CFStringCreateWithCharactersNoCopy(NULL, (const UniChar *) substring, u_strlen(substring), kCFAllocatorNull);
+    
+    CFRange range = CFStringFind(cfS, cfSubstring, 0);
+    CFRelease(cfSubstring);
+    CFRelease(cfS);
+    if (range.length == 0) {
+        return NULL;
+    }
+    return (UChar *) (s + range.location);
+}
+
+static UChar * u_strrstr(const UChar * s, const UChar * substring)
+{
+    if (s == NULL) {
+        return NULL;
+    }
+    CFStringRef cfS = CFStringCreateWithCharactersNoCopy(NULL, (const UniChar *) s, u_strlen(s), kCFAllocatorNull);
+    CFStringRef cfSubstring = CFStringCreateWithCharactersNoCopy(NULL, (const UniChar *) substring, u_strlen(substring), kCFAllocatorNull);
+    
+    CFRange range = CFStringFind(cfS, cfSubstring, kCFCompareBackwards);
+    CFRelease(cfSubstring);
+    CFRelease(cfS);
+    if (range.length == 0) {
+        return NULL;
+    }
+    return (UChar *) (s + range.location);
+}
+
+static int32_t u_memcmp(const UChar * buf1, const UChar * buf2, int32_t count)
+{
+    return memcmp(buf1, buf2, count * sizeof(* buf1));
+}
+
+static UChar * u_strchr(const UChar *s, UChar c)
+{
+    if (s == NULL) {
+        return NULL;
+    }
+    const UChar * p = s;
+    while (* p != 0) {
+        if (* p == c) {
+            return (UChar *) p;
+        }
+        p ++;
+    }
+    return NULL;
+}
+
+static UChar * u_strrchr(const UChar *s, UChar c)
+{
+    if (s == NULL) {
+        return NULL;
+    }
+    const UChar * lastOccurrence = NULL;
+    const UChar * p = s;
+    while (* p != 0) {
+        if (* p == c) {
+            lastOccurrence = p;
+        }
+        p ++;
+    }
+    return (UChar *) lastOccurrence;
+}
+#endif
+
 void mailcore::setICUDataDirectory(String * directory)
 {
+#if !DISABLE_ICU
     u_setDataDirectory(directory->fileSystemRepresentation());
+#endif
 }
 
 #pragma mark quote headers string
@@ -690,6 +787,9 @@ String::String(const UChar * unicodeChars)
 {
     mUnicodeChars = NULL;
     reset();
+    if (unicodeChars != NULL) {
+        allocate(u_strlen(unicodeChars), true);
+    }
     appendCharacters(unicodeChars);
 }
 
@@ -697,6 +797,7 @@ String::String(const UChar * unicodeChars, unsigned int length)
 {
     mUnicodeChars = NULL;
     reset();
+    allocate(length, true);
     appendCharactersLength(unicodeChars, length);
 }
 
@@ -704,6 +805,7 @@ String::String(const char * UTF8Characters)
 {
     mUnicodeChars = NULL;
     reset();
+    allocate((unsigned int) strlen(UTF8Characters), true);
     appendUTF8Characters(UTF8Characters);
 }
 
@@ -725,6 +827,7 @@ String::String(const char * bytes, unsigned int length, const char * charset)
 {
     mUnicodeChars = NULL;
     reset();
+    allocate(length, true);
     if (charset == NULL) {
         appendUTF8CharactersLength(bytes, length);
     }
@@ -738,17 +841,30 @@ String::~String()
     reset();
 }
 
-void String::allocate(unsigned int length)
+static int isPowerOfTwo (unsigned int x)
+{
+    return ((x != 0) && !(x & (x - 1)));
+}
+
+void String::allocate(unsigned int length, bool force)
 {
     length ++;
-    if (length < mAllocated)
+    if (length <= mAllocated)
         return;
-    
-    if (mAllocated == 0) {
-        mAllocated = 4;
+
+    if (force) {
+        mAllocated = length;
     }
-    while (length > mAllocated) {
-        mAllocated *= 2;
+    else {
+        if (!isPowerOfTwo(mAllocated)) {
+            mAllocated = 0;
+        }
+        if (mAllocated == 0) {
+            mAllocated = 4;
+        }
+        while (length > mAllocated) {
+            mAllocated *= 2;
+        }
     }
     
     mUnicodeChars = (UChar *) realloc(mUnicodeChars, mAllocated * sizeof(* mUnicodeChars));
@@ -761,6 +877,9 @@ String * String::string()
 
 String * String::stringWithData(Data * data, const char * charset)
 {
+    if (data == NULL) {
+        return String::string();
+    }
     String * result = NULL;
     result = new String(data->bytes(), data->length(), charset);
     result->autorelease();
@@ -807,14 +926,20 @@ String * String::stringWithCharacters(const UChar * characters, unsigned int len
 
 void String::appendCharactersLength(const UChar * unicodeCharacters, unsigned int length)
 {
+    if (unicodeCharacters == NULL) {
+        return;
+    }
     allocate(mLength + length);
-    u_strncpy(&mUnicodeChars[mLength], unicodeCharacters, length);
+    memcpy(&mUnicodeChars[mLength], unicodeCharacters, length * sizeof(* mUnicodeChars));
     mLength += length;
     mUnicodeChars[mLength] = 0;
 }
 
 void String::appendString(String * otherString)
 {
+    if (otherString == NULL) {
+        return;
+    }
     appendCharactersLength(otherString->unicodeCharacters(), otherString->length());
 }
 
@@ -831,31 +956,17 @@ void String::appendUTF8Format(const char * format, ...)
 
 void String::appendUTF8CharactersLength(const char * UTF8Characters, unsigned int length)
 {
-    if (UTF8Characters == NULL)
+    if (UTF8Characters == NULL) {
         return;
-    
-    UChar * dest;
-    int32_t destLength;
-    int32_t destCapacity;
-    UErrorCode err;
-    
-    err = U_ZERO_ERROR;
-    u_strFromUTF8WithSub(NULL, 0, &destLength, UTF8Characters, length, 0xFFFD, NULL, &err);
-    destCapacity = destLength + 1;
-    dest = (UChar *) malloc(destCapacity * sizeof(* dest));
-    err = U_ZERO_ERROR;
-    u_strFromUTF8WithSub(dest, destCapacity, &destLength, UTF8Characters, length, 0xFFFD, NULL, &err);
-    dest[destLength] = 0;
-    // Fix in case of bad conversion.
-    for(int32_t i = 0 ; i < destLength ; i ++) {
-        if (dest[i] == 0) {
-            dest[i] = ' ';
-        }
     }
-    
-    appendCharactersLength(dest, destLength);
-    
-    free(dest);
+
+    const UTF8 * source = (const UTF8 *) UTF8Characters;
+    UTF16 * target = (UTF16 *) malloc(length * sizeof(* target));
+    UTF16 * targetStart = target;
+    ConvertUTF8toUTF16(&source, source + length,
+                       &targetStart, targetStart + length, lenientConversion);
+    appendCharactersLength((UChar *) target, (unsigned int ) (targetStart - target));
+    free(target);
 }
 
 void String::appendUTF8Characters(const char * UTF8Characters)
@@ -878,21 +989,15 @@ const UChar * String::unicodeCharacters()
 
 const char * String::UTF8Characters()
 {
-    char * dest;
-    int32_t destLength;
-    int32_t destCapacity;
-    UErrorCode err;
-    
-    err = U_ZERO_ERROR;
-    u_strToUTF8(NULL, 0, &destLength, mUnicodeChars, mLength, &err);
-    destCapacity = destLength + 1;
-    dest = (char *) malloc(destCapacity * sizeof(* dest));
-    err = U_ZERO_ERROR;
-    u_strToUTF8(dest, destCapacity, &destLength, mUnicodeChars, mLength, &err);
-    dest[destLength] = 0;
-    
-    Data * data = Data::dataWithBytes(dest, destLength + 1);
-    free(dest);
+    const UTF16 * source = (const UTF16 *) mUnicodeChars;
+    UTF8 * target = (UTF8 *) malloc(mLength * 6 + 1);
+    UTF8 * targetStart = target;
+    ConvertUTF16toUTF8(&source, source + mLength,
+                       &targetStart, targetStart + mLength * 6 + 1, lenientConversion);
+    unsigned int utf8length = (unsigned int) (targetStart - target);
+    target[utf8length] = 0;
+    Data * data = Data::dataWithBytes((const char *) target, utf8length + 1);
+    free(target);
     
     return data->bytes();
 }
@@ -1082,12 +1187,21 @@ int String::compareWithCaseSensitive(String * otherString, bool caseSensitive)
         return -1;
     }
     
+#if DISABLE_ICU
+    CFStringRef cfThis = CFStringCreateWithCharactersNoCopy(NULL, mUnicodeChars, mLength, kCFAllocatorNull);
+    CFStringRef cfOther = CFStringCreateWithCharactersNoCopy(NULL, otherString->mUnicodeChars, otherString->mLength, kCFAllocatorNull);
+    CFComparisonResult result = CFStringCompare(cfThis, cfOther, caseSensitive ? 0 : kCFCompareCaseInsensitive);
+    CFRelease(cfThis);
+    CFRelease(cfOther);
+    return result;
+#else
     if (caseSensitive) {
         return u_strcmp(unicodeCharacters(), otherString->unicodeCharacters());
     }
     else {
         return u_strcasecmp(unicodeCharacters(), otherString->unicodeCharacters(), 0);
     }
+#endif
 }
 
 int String::compare(String * otherString)
@@ -1100,8 +1214,20 @@ int String::caseInsensitiveCompare(String * otherString)
     return compareWithCaseSensitive(otherString, false);
 }
 
+//Any-Lower, Any-Upper
 String * String::lowercaseString()
 {
+#if DISABLE_ICU
+    CFMutableStringRef cfStr = CFStringCreateMutable(NULL, 0);
+    CFStringAppendCharacters(cfStr, (const UniChar *) mUnicodeChars, mLength);
+    CFStringLowercase(cfStr, NULL);
+    UniChar * characters = (UniChar *) malloc(sizeof(* characters) * mLength);
+    CFStringGetCharacters(cfStr, CFRangeMake(0, mLength), characters);
+    String * result = String::stringWithCharacters(characters, mLength);
+    free(characters);
+    CFRelease(cfStr);
+    return result;
+#else
     UErrorCode err;
     String * result = (String *) copy()->autorelease();
     err = U_ZERO_ERROR;
@@ -1109,10 +1235,22 @@ String * String::lowercaseString()
         result->mUnicodeChars, result->mLength,
         NULL, &err);
     return result;
+#endif
 }
 
 String * String::uppercaseString()
 {
+#if DISABLE_ICU
+    CFMutableStringRef cfStr = CFStringCreateMutable(NULL, 0);
+    CFStringAppendCharacters(cfStr, (const UniChar *) mUnicodeChars, mLength);
+    CFStringUppercase(cfStr, NULL);
+    UniChar * characters = (UniChar *) malloc(sizeof(* characters) * mLength);
+    CFStringGetCharacters(cfStr, CFRangeMake(0, mLength), characters);
+    String * result = String::stringWithCharacters(characters, mLength);
+    free(characters);
+    CFRelease(cfStr);
+    return result;
+#else
     UErrorCode err;
     String * result = (String *) copy()->autorelease();
     err = U_ZERO_ERROR;
@@ -1120,10 +1258,15 @@ String * String::uppercaseString()
         result->mUnicodeChars, result->mLength,
         NULL, &err);
     return result;
+#endif
 }
 
 void String::appendBytes(const char * bytes, unsigned int length, const char * charset)
 {
+    if (bytes == NULL) {
+        return;
+    }
+
 #if __APPLE__
     CFStringEncoding encoding;
     if (strcasecmp(charset, "mutf-7") == 0) {
@@ -1132,6 +1275,15 @@ void String::appendBytes(const char * bytes, unsigned int length, const char * c
     else {
         CFStringRef encodingName = CFStringCreateWithCString(NULL, charset, kCFStringEncodingUTF8);
         encoding = CFStringConvertIANACharSetNameToEncoding(encodingName);
+        if (encoding == kCFStringEncodingBig5) {
+            encoding = kCFStringEncodingBig5_HKSCS_1999;
+        }
+        if (encoding == kCFStringEncodingGBK_95) {
+            encoding = kCFStringEncodingGB_18030_2000;
+        }
+        if (encoding == kCFStringEncodingGB_2312_80) {
+            encoding = kCFStringEncodingGB_18030_2000;
+        }
         CFRelease(encodingName);
     }
     CFStringRef cfStr = CFStringCreateWithBytes(NULL, (const UInt8 *) bytes, (CFIndex) length, encoding, false);
@@ -1258,7 +1410,10 @@ unsigned int String::replaceOccurrencesOfString(String * occurrence, String * re
     }
     // copy remaining
     if(p) {
-        u_strcpy(dest_p, p);	
+        unsigned int remainingLength = mLength - (unsigned int) (p - mUnicodeChars);
+        memcpy(dest_p, p, remainingLength * sizeof(* p));
+        dest_p += remainingLength;
+        * dest_p = 0;
     }
     
     free(mUnicodeChars);
@@ -1286,7 +1441,7 @@ void String::deleteCharactersInRange(Range range)
     }
     
     int32_t count = mLength - (int32_t) (range.location + range.length);
-    u_memmove(&mUnicodeChars[range.location], &mUnicodeChars[range.location + range.length], count);
+    memmove(&mUnicodeChars[range.location], &mUnicodeChars[range.location + range.length], count * sizeof(* mUnicodeChars));
     mLength -= range.length;
     mUnicodeChars[mLength] = 0;
 }
@@ -1341,17 +1496,8 @@ static void charactersParsed(void * context,
     }
     String * modifiedString;
     modifiedString = new String((const char *) ch, len);
-    modifiedString->replaceOccurrencesOfString(MCSTR("\n"), MCSTR(" "));
-    modifiedString->replaceOccurrencesOfString(MCSTR("\r"), MCSTR(" "));
-    modifiedString->replaceOccurrencesOfString(MCSTR("\t"), MCSTR(" "));
-    
-    UChar specialCh[2];
-    specialCh[0] = 133;
-    specialCh[1] = 0;
-    modifiedString->replaceOccurrencesOfString(String::stringWithCharacters(specialCh), MCSTR(" "));
-
-    while (modifiedString->replaceOccurrencesOfString(MCSTR("  "), MCSTR(" ")) > 0) {
-    }
+    modifiedString->autorelease();
+    modifiedString = modifiedString->stripWhitespace();
 
     if (modifiedString->length() > 0) {
         if (state->lastCharIsWhitespace) {
@@ -1399,7 +1545,6 @@ static void charactersParsed(void * context,
             state->hasText = true;
         }
     }
-    modifiedString->release();
 }
 
 /* GCS: custom error function to ignore errors */
@@ -1816,11 +1961,19 @@ String * String::stripWhitespace()
     str->replaceOccurrencesOfString(MCSTR("\v"), MCSTR(" "));
     str->replaceOccurrencesOfString(MCSTR("\f"), MCSTR(" "));
     str->replaceOccurrencesOfString(MCSTR("\r"), MCSTR(" "));
+    UChar ch[2];
+    ch[0] = 160;
+    ch[1] = 0;
+    str->replaceOccurrencesOfString(String::stringWithCharacters(ch), MCSTR(" "));
+    ch[0] = 133;
+    ch[1] = 0;
+    str->replaceOccurrencesOfString(String::stringWithCharacters(ch), MCSTR(" "));
     
     while (str->replaceOccurrencesOfString(MCSTR("  "), MCSTR(" ")) > 0) {
         /* do nothing */
     }
     
+    str->autorelease();
     return str;
 }
 
@@ -1849,6 +2002,8 @@ bool String::hasPrefix(String * prefix)
 String * String::lastPathComponent()
 {
     // TODO: Improve Windows compatibility.
+    if (mUnicodeChars == NULL)
+        return MCSTR("");
     UChar * component = u_strrchr(mUnicodeChars, '/');
     if (component == NULL)
         return (String *) this->copy()->autorelease();

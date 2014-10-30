@@ -21,7 +21,7 @@
 #include "MCIMAPCopyMessagesOperation.h"
 #include "MCIMAPFetchMessagesOperation.h"
 #include "MCIMAPFetchContentOperation.h"
-#include "MCIMAPFetchContentOperation.h"
+#include "MCIMAPFetchParsedContentOperation.h"
 #include "MCIMAPStoreFlagsOperation.h"
 #include "MCIMAPStoreLabelsOperation.h"
 #include "MCIMAPSearchOperation.h"
@@ -43,51 +43,51 @@
 using namespace mailcore;
 
 namespace mailcore {
-    
+
     class IMAPOperationQueueCallback : public Object, public OperationQueueCallback {
     public:
         IMAPOperationQueueCallback(IMAPAsyncConnection * connection) {
             mConnection = connection;
         }
-        
+
         virtual ~IMAPOperationQueueCallback() {
         }
-        
+
         virtual void queueStartRunning() {
             mConnection->setQueueRunning(true);
             mConnection->owner()->operationRunningStateChanged();
             mConnection->queueStartRunning();
         }
-        
+
         virtual void queueStoppedRunning() {
             mConnection->setQueueRunning(false);
             mConnection->tryAutomaticDisconnect();
             mConnection->owner()->operationRunningStateChanged();
             mConnection->queueStoppedRunning();
         }
-        
+
     private:
         IMAPAsyncConnection * mConnection;
     };
-    
+
     class IMAPConnectionLogger : public Object, public ConnectionLogger {
     public:
         IMAPConnectionLogger(IMAPAsyncConnection * connection) {
             mConnection = connection;
         }
-        
+
         virtual ~IMAPConnectionLogger() {
         }
-        
+
         virtual void log(void * sender, ConnectionLogType logType, Data * buffer)
         {
             mConnection->logConnection(logType, buffer);
         }
-        
+
     private:
         IMAPAsyncConnection * mConnection;
     };
-    
+
 }
 
 IMAPAsyncConnection::IMAPAsyncConnection()
@@ -249,295 +249,6 @@ IMAPIdentity * IMAPAsyncConnection::clientIdentity()
     return mClientIdentity;
 }
 
-IMAPFolderInfoOperation * IMAPAsyncConnection::folderInfoOperation(String * folder)
-{
-    IMAPFolderInfoOperation * op = new IMAPFolderInfoOperation();
-    op->setSession(this);
-    op->setFolder(folder);
-    op->autorelease();
-    return op;
-}
-
-IMAPFolderStatusOperation * IMAPAsyncConnection::folderStatusOperation(String * folder)
-{
-    IMAPFolderStatusOperation * op = new IMAPFolderStatusOperation();
-    op->setSession(this);
-    op->setFolder(folder);
-    op->autorelease();
-    return op;
-}
-
-IMAPFetchFoldersOperation * IMAPAsyncConnection::fetchSubscribedFoldersOperation()
-{
-    IMAPFetchFoldersOperation * op = new IMAPFetchFoldersOperation();
-    op->setSession(this);
-    op->setFetchSubscribedEnabled(true);
-    op->autorelease();
-    return op;
-}
-
-IMAPFetchFoldersOperation * IMAPAsyncConnection::fetchAllFoldersOperation()
-{
-    IMAPFetchFoldersOperation * op = new IMAPFetchFoldersOperation();
-    op->setSession(this);
-    op->autorelease();
-    return op;
-}
-
-IMAPOperation * IMAPAsyncConnection::renameFolderOperation(String * folder, String * otherName)
-{
-    IMAPRenameFolderOperation * op = new IMAPRenameFolderOperation();
-    op->setSession(this);
-    op->setFolder(folder);
-    op->setOtherName(otherName);
-    op->autorelease();
-    return op;
-}
-
-IMAPOperation * IMAPAsyncConnection::deleteFolderOperation(String * folder)
-{
-    IMAPDeleteFolderOperation * op = new IMAPDeleteFolderOperation();
-    op->setSession(this);
-    op->setFolder(folder);
-    op->autorelease();
-    return op;
-}
-
-IMAPOperation * IMAPAsyncConnection::createFolderOperation(String * folder)
-{
-    IMAPCreateFolderOperation * op = new IMAPCreateFolderOperation();
-    op->setSession(this);
-    op->setFolder(folder);
-    op->autorelease();
-    return op;
-}
-
-IMAPOperation * IMAPAsyncConnection::subscribeFolderOperation(String * folder)
-{
-    IMAPSubscribeFolderOperation * op = new IMAPSubscribeFolderOperation();
-    op->setSession(this);
-    op->setFolder(folder);
-    op->autorelease();
-    return op;
-}
-
-IMAPOperation * IMAPAsyncConnection::unsubscribeFolderOperation(String * folder)
-{
-    IMAPSubscribeFolderOperation * op = new IMAPSubscribeFolderOperation();
-    op->setSession(this);
-    op->setUnsubscribeEnabled(true);
-    op->setFolder(folder);
-    op->autorelease();
-    return op;
-}
-
-IMAPAppendMessageOperation * IMAPAsyncConnection::appendMessageOperation(String * folder, Data * messageData, MessageFlag flags, Array * customFlags)
-{
-    IMAPAppendMessageOperation * op = new IMAPAppendMessageOperation();
-    op->setSession(this);
-    op->setFolder(folder);
-    op->setMessageData(messageData);
-    op->setFlags(flags);
-    op->setCustomFlags(customFlags);
-    op->autorelease();
-    return op;
-}
-
-IMAPCopyMessagesOperation * IMAPAsyncConnection::copyMessagesOperation(String * folder, IndexSet * uids, String * destFolder)
-{
-    IMAPCopyMessagesOperation * op = new IMAPCopyMessagesOperation();
-    op->setSession(this);
-    op->setFolder(folder);
-    op->setUids(uids);
-    op->setDestFolder(destFolder);
-    op->autorelease();
-    return op;
-}
-
-IMAPOperation * IMAPAsyncConnection::expungeOperation(String * folder)
-{
-    IMAPExpungeOperation * op = new IMAPExpungeOperation();
-    op->setSession(this);
-    op->setFolder(folder);
-    op->autorelease();
-    return op;
-}
-
-IMAPFetchMessagesOperation * IMAPAsyncConnection::fetchMessagesByUIDOperation(String * folder, IMAPMessagesRequestKind requestKind,
-                                                                              IndexSet * uids)
-{
-    IMAPFetchMessagesOperation * op = new IMAPFetchMessagesOperation();
-    op->setSession(this);
-    op->setFolder(folder);
-    op->setKind(requestKind);
-    op->setFetchByUidEnabled(true);
-    op->setIndexes(uids);
-    op->autorelease();
-    return op;
-}
-
-IMAPFetchMessagesOperation * IMAPAsyncConnection::fetchMessagesByNumberOperation(String * folder, IMAPMessagesRequestKind requestKind,
-                                                                                 IndexSet * numbers)
-{
-    IMAPFetchMessagesOperation * op = new IMAPFetchMessagesOperation();
-    op->setSession(this);
-    op->setFolder(folder);
-    op->setKind(requestKind);
-    op->setIndexes(numbers);
-    op->autorelease();
-    return op;
-}
-
-IMAPFetchMessagesOperation * IMAPAsyncConnection::syncMessagesByUID(String * folder, IMAPMessagesRequestKind requestKind,
-                                                                    IndexSet * uids, uint64_t modSeq)
-{
-    IMAPFetchMessagesOperation * op = new IMAPFetchMessagesOperation();
-    op->setSession(this);
-    op->setFolder(folder);
-    op->setKind(requestKind);
-    op->setFetchByUidEnabled(true);
-    op->setIndexes(uids);
-    op->setModSequenceValue(modSeq);
-    op->autorelease();
-    return op;
-}
-
-IMAPFetchContentOperation * IMAPAsyncConnection::fetchMessageByUIDOperation(String * folder, uint32_t uid)
-{
-    IMAPFetchContentOperation * op = new IMAPFetchContentOperation();
-    op->setSession(this);
-    op->setFolder(folder);
-    op->setUid(uid);
-    op->autorelease();
-    return op;
-}
-
-IMAPFetchContentOperation * IMAPAsyncConnection::fetchMessageAttachmentByUIDOperation(String * folder, uint32_t uid, String * partID,
-                                                                                   Encoding encoding)
-{
-    IMAPFetchContentOperation * op = new IMAPFetchContentOperation();
-    op->setSession(this);
-    op->setFolder(folder);
-    op->setUid(uid);
-    op->setPartID(partID);
-    op->setEncoding(encoding);
-    op->autorelease();
-    return op;
-}
-
-IMAPOperation * IMAPAsyncConnection::storeFlagsOperation(String * folder, IndexSet * uids, IMAPStoreFlagsRequestKind kind, MessageFlag flags, Array * customFlags)
-{
-    IMAPStoreFlagsOperation * op = new IMAPStoreFlagsOperation();
-    op->setSession(this);
-    op->setFolder(folder);
-    op->setUids(uids);
-    op->setKind(kind);
-    op->setFlags(flags);
-    op->setCustomFlags(customFlags);
-    op->autorelease();
-    return op;
-}
-
-IMAPOperation * IMAPAsyncConnection::storeLabelsOperation(String * folder, IndexSet * uids, IMAPStoreFlagsRequestKind kind, Array * labels)
-{
-    IMAPStoreLabelsOperation * op = new IMAPStoreLabelsOperation();
-    op->setSession(this);
-    op->setFolder(folder);
-    op->setUids(uids);
-    op->setKind(kind);
-    op->setLabels(labels);
-    op->autorelease();
-    return op;
-}
-
-IMAPSearchOperation * IMAPAsyncConnection::searchOperation(String * folder, IMAPSearchKind kind, String * searchString)
-{
-    IMAPSearchOperation * op = new IMAPSearchOperation();
-    op->setSession(this);
-    op->setFolder(folder);
-    op->setSearchKind(kind);
-    op->setSearchString(searchString);
-    op->autorelease();
-    return op;
-}
-
-IMAPSearchOperation * IMAPAsyncConnection::searchOperation(String * folder, IMAPSearchExpression * expression)
-{
-    IMAPSearchOperation * op = new IMAPSearchOperation();
-    op->setSession(this);
-    op->setFolder(folder);
-    op->setSearchExpression(expression);
-    op->autorelease();
-    return op;
-}
-
-IMAPIdleOperation * IMAPAsyncConnection::idleOperation(String * folder, uint32_t lastKnownUID)
-{
-    IMAPIdleOperation * op = new IMAPIdleOperation();
-    op->setSession(this);
-    op->setFolder(folder);
-    op->setLastKnownUID(lastKnownUID);
-    op->autorelease();
-    return op;
-}
-
-IMAPFetchNamespaceOperation * IMAPAsyncConnection::fetchNamespaceOperation()
-{
-    IMAPFetchNamespaceOperation * op = new IMAPFetchNamespaceOperation();
-    op->setSession(this);
-    op->autorelease();
-    return op;
-}
-
-IMAPIdentityOperation * IMAPAsyncConnection::identityOperation(IMAPIdentity * identity)
-{
-    IMAPIdentityOperation * op = new IMAPIdentityOperation();
-    op->setSession(this);
-    op->setClientIdentity(identity);
-    op->autorelease();
-    return op;
-}
-
-IMAPOperation * IMAPAsyncConnection::connectOperation()
-{
-    IMAPConnectOperation * op = new IMAPConnectOperation();
-    op->setSession(this);
-    op->autorelease();
-    return op;
-}
-
-IMAPOperation * IMAPAsyncConnection::checkAccountOperation()
-{
-    IMAPCheckAccountOperation * op = new IMAPCheckAccountOperation();
-    op->setSession(this);
-    op->autorelease();
-    return op;
-}
-
-IMAPOperation * IMAPAsyncConnection::noopOperation()
-{
-    IMAPNoopOperation * op = new IMAPNoopOperation();
-    op->setSession(this);
-    op->autorelease();
-    return op;
-}
-
-IMAPCapabilityOperation * IMAPAsyncConnection::capabilityOperation()
-{
-    IMAPCapabilityOperation * op = new IMAPCapabilityOperation();
-    op->setSession(this);
-    op->autorelease();
-    return op;
-}
-
-IMAPQuotaOperation * IMAPAsyncConnection::quotaOperation()
-{
-    IMAPQuotaOperation * op = new IMAPQuotaOperation();
-    op->setSession(this);
-    op->autorelease();
-    return op;
-}
-
 IMAPOperation * IMAPAsyncConnection::disconnectOperation()
 {
     IMAPDisconnectOperation * op = new IMAPDisconnectOperation();
@@ -581,7 +292,7 @@ void IMAPAsyncConnection::tryAutomaticDisconnect()
     if (mSession->isDisconnected()) {
         return;
     }
-    
+
     bool scheduledAutomaticDisconnect = mScheduledAutomaticDisconnect;
     if (scheduledAutomaticDisconnect) {
 #if __APPLE__
@@ -590,7 +301,7 @@ void IMAPAsyncConnection::tryAutomaticDisconnect()
         cancelDelayedPerformMethod((Object::Method) &IMAPAsyncConnection::tryAutomaticDisconnectAfterDelay, NULL);
 #endif
     }
-    
+
     mOwner->retain();
     mScheduledAutomaticDisconnect = true;
 #if __APPLE__
@@ -598,7 +309,7 @@ void IMAPAsyncConnection::tryAutomaticDisconnect()
 #else
     performMethodAfterDelay((Object::Method) &IMAPAsyncConnection::tryAutomaticDisconnectAfterDelay, NULL, 30);
 #endif
-    
+
     if (scheduledAutomaticDisconnect) {
         mOwner->release();
     }
@@ -607,10 +318,10 @@ void IMAPAsyncConnection::tryAutomaticDisconnect()
 void IMAPAsyncConnection::tryAutomaticDisconnectAfterDelay(void * context)
 {
     mScheduledAutomaticDisconnect = false;
-    
+
     IMAPOperation * op = disconnectOperation();
     op->start();
-    
+
     mOwner->release();
 }
 
@@ -662,11 +373,11 @@ void IMAPAsyncConnection::setConnectionLogger(ConnectionLogger * logger)
 ConnectionLogger * IMAPAsyncConnection::connectionLogger()
 {
     ConnectionLogger * result;
-    
+
     pthread_mutex_lock(&mConnectionLoggerLock);
     result = mConnectionLogger;
     pthread_mutex_unlock(&mConnectionLoggerLock);
-    
+
     return result;
 }
 
@@ -677,46 +388,6 @@ void IMAPAsyncConnection::logConnection(ConnectionLogType logType, Data * buffer
         mConnectionLogger->log(this, logType, buffer);
     }
     pthread_mutex_unlock(&mConnectionLoggerLock);
-}
-
-IMAPMessageRenderingOperation * IMAPAsyncConnection::renderingOperation(IMAPMessage * message,
-                                                                        String * folder,
-                                                                        IMAPMessageRenderingType type)
-{
-    IMAPMessageRenderingOperation * op = new IMAPMessageRenderingOperation();
-    op->setSession(this);
-    op->setMessage(message);
-    op->setFolder(folder);
-    op->setRenderingType(type);
-    op->autorelease();
-    return op;
-}
-
-IMAPMessageRenderingOperation * IMAPAsyncConnection::htmlRenderingOperation(IMAPMessage * message,
-                                                                            String * folder)
-{
-    return renderingOperation(message, folder, IMAPMessageRenderingTypeHTML);
-}
-
-IMAPMessageRenderingOperation * IMAPAsyncConnection::htmlBodyRenderingOperation(IMAPMessage * message,
-                                                                                String * folder)
-{
-    return renderingOperation(message, folder, IMAPMessageRenderingTypeHTMLBody);
-}
-
-IMAPMessageRenderingOperation * IMAPAsyncConnection::plainTextRenderingOperation(IMAPMessage * message,
-                                                                                 String * folder)
-{
-    return renderingOperation(message, folder, IMAPMessageRenderingTypePlainText);
-}
-
-IMAPMessageRenderingOperation * IMAPAsyncConnection::plainTextBodyRenderingOperation(IMAPMessage * message,
-                                                                                     String * folder,
-                                                                                     bool stripWhitespace)
-{
-    return renderingOperation(message, folder,
-                              stripWhitespace ? IMAPMessageRenderingTypePlainTextBodyAndStripWhitespace :
-                                                IMAPMessageRenderingTypePlainTextBody);
 }
 
 void IMAPAsyncConnection::setAutomaticConfigurationEnabled(bool enabled)

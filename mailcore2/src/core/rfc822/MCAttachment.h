@@ -46,6 +46,7 @@ namespace mailcore {
         static MessagePart * attachmentWithMessageMIME(struct mailmime * mime);
         static Encoding encodingForMIMEEncoding(struct mailmime_mechanism * mechanism, int defaultMimeEncoding);
         static HashMap * readMimeTypesFile(String * filename);
+        void setContentTypeParameters(HashMap * parameters);
     };
     
 }

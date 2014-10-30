@@ -27,6 +27,7 @@ AbstractPart::AbstractPart(AbstractPart * other)
     setContentDescription(other->mContentDescription);
     setInlineAttachment(other->mInlineAttachment);
     setPartType(other->mPartType);
+    setContentTypeParameters(other->mContentTypeParameters);
 }
 
 void AbstractPart::init()
@@ -40,6 +41,7 @@ void AbstractPart::init()
     mContentDescription = NULL;
     mInlineAttachment = false;
     mPartType = PartTypeSingle;
+    mContentTypeParameters = NULL;
 }
 
 AbstractPart::~AbstractPart()
@@ -51,6 +53,7 @@ AbstractPart::~AbstractPart()
     MC_SAFE_RELEASE(mContentID);
     MC_SAFE_RELEASE(mContentLocation);
     MC_SAFE_RELEASE(mContentDescription);
+    MC_SAFE_RELEASE(mContentTypeParameters);
 }
 
 String * AbstractPart::description()
@@ -76,6 +79,11 @@ String * AbstractPart::description()
         result->appendUTF8Format("content-description: %s\n", mContentDescription->UTF8Characters());
     }
     result->appendUTF8Format("inline: %i\n", mInlineAttachment);
+    if (mContentTypeParameters != NULL) {
+        mc_foreachhashmapKeyAndValue(String, key, String, value, mContentTypeParameters) {
+            result->appendUTF8Format("%s: %s\n", key->UTF8Characters(), value->UTF8Characters());
+        }
+    }
     result->appendUTF8Format(">");
     
     return result;
@@ -294,6 +302,7 @@ void AbstractPart::applyUniquePartID()
             case PartTypeMultipartMixed:
             case PartTypeMultipartRelated:
             case PartTypeMultipartAlternative:
+            case PartTypeMultipartSigned:
                 queue->addObjectsFromArray(((AbstractMultipart *) part)->parts());
                 break;
         }
@@ -348,6 +357,9 @@ HashMap * AbstractPart::serializable()
         case PartTypeMultipartAlternative:
             partTypeStr = MCSTR("multipart/alternative");
             break;
+        case PartTypeMultipartSigned:
+            partTypeStr = MCSTR("multipart/signed");
+            break;
     }
     result->setObjectForKey(MCSTR("partType"), partTypeStr);
     
@@ -386,5 +398,52 @@ void AbstractPart::importSerializable(HashMap * serializable)
         else if (value->isEqual(MCSTR("multipart/alternative"))) {
             setPartType(PartTypeMultipartAlternative);
         }
+        else if (value->isEqual(MCSTR("multipart/signed"))) {
+            setPartType(PartTypeMultipartSigned);
+        }
     }
+}
+
+void AbstractPart::setContentTypeParameters(HashMap * parameters)
+{
+    MC_SAFE_REPLACE_COPY(HashMap, mContentTypeParameters, parameters);
+}
+
+Array * AbstractPart::allContentTypeParametersNames()
+{
+    if (mContentTypeParameters == NULL)
+        return Array::array();
+    return mContentTypeParameters->allKeys();
+}
+
+void AbstractPart::setContentTypeParameter(String * name, String * object)
+{
+    if (mContentTypeParameters == NULL) {
+        mContentTypeParameters = new HashMap();
+    }
+    removeContentTypeParameter(name);
+    mContentTypeParameters->setObjectForKey(name, object);
+}
+
+void AbstractPart::removeContentTypeParameter(String * name)
+{
+    if (mContentTypeParameters == NULL)
+        return;
+    mc_foreachhashmapKey(String, key, mContentTypeParameters) {
+        if (key->isEqualCaseInsensitive(name)) {
+            mContentTypeParameters->removeObjectForKey(key);
+            break;
+        }
+    }
+}
+
+String * AbstractPart::contentTypeParameterValueForName(String * name)
+{
+    String * result = NULL;
+    mc_foreachhashmapKey(String, key, mContentTypeParameters) {
+        if (key->isEqualCaseInsensitive(name)) {
+            result = (String *) mContentTypeParameters->objectForKey(key);
+        }
+    }
+    return result;
 }
