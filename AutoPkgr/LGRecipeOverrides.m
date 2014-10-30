@@ -215,7 +215,7 @@ const CFStringRef kUTTypePropertyList = CFSTR("com.apple.property-list");
 
 + (NSArray *)editorForType:(CFStringRef)utType
 {
-    return (__bridge NSArray *)(LSCopyAllRoleHandlersForContentType(utType, kLSRolesAll));
+    return CFBridgingRelease(LSCopyAllRoleHandlersForContentType(utType, kLSRolesAll));
 }
 
 + (BOOL)setRecipeEditorApplication:(NSString *)application
