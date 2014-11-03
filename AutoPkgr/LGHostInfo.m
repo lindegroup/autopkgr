@@ -27,7 +27,7 @@
 
 NSString *const kLGOfficialGit = @"/usr/local/git/bin";
 NSString *const kLGCLIToolsGit = @"/Library/Developer/CommandLineTools/usr/bin";
-NSString *const kLGXcodeGit = @"/Applications/Xcode.app/Contents/Developer/usr/bin/git";
+NSString *const kLGXcodeGit = @"/Applications/Xcode.app/Contents/Developer/usr/bin";
 NSString *const kLGHomeBrewGit = @"/usr/local/bin";
 NSString *const kLGBoxenBrewGit = @"/opt/boxen/homebrew/bin";
 
