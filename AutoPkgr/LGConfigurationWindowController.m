@@ -160,6 +160,10 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
     // Populate the preference values from the user defaults, if they exist
     DLog(@"Populating configuration window settings based on user defaults, if they exist.");
 
+    if ([[[NSApplication sharedApplication] delegate] conformsToProtocol:@protocol(LGProgressDelegate) ]){
+        _progressDelegate = (id)[[NSApplication sharedApplication] delegate];
+    }
+
     if ([_defaults autoPkgRunInterval]) {
         [_autoPkgRunInterval setIntegerValue:[_defaults autoPkgRunInterval]];
     }
@@ -289,7 +293,7 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
         }];
     }
 
-    _popRepoTableViewHandler.progressDelegate = [NSApp delegate];
+    _popRepoTableViewHandler.progressDelegate = _progressDelegate;
 
     // Synchronize with the defaults database
     [_defaults synchronize];
@@ -427,7 +431,7 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
     [_installGitButton setEnabled:NO];
 
     LGInstaller *installer = [[LGInstaller alloc] init];
-    installer.progressDelegate = [NSApp delegate];
+    installer.progressDelegate = _progressDelegate;
     [installer installGit:^(NSError *error) {
         [self stopProgress:error];
         [[NSOperationQueue mainQueue] addOperationWithBlock:^{
@@ -455,7 +459,7 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
     [self startProgressWithMessage:@"Installing newest version of AutoPkg..."];
 
     LGInstaller *installer = [[LGInstaller alloc] init];
-    installer.progressDelegate = [NSApp delegate];
+    installer.progressDelegate = _progressDelegate;
     [installer installAutoPkg:^(NSError *error) {
         // Update the autoPkgStatus icon and label if it installed successfully
         [self stopProgress:error];
@@ -742,14 +746,14 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
     NSString *recipeList = [LGRecipes recipeList];
     [_cancelAutoPkgRunButton setHidden:NO];
     [_progressDetailsMessage setHidden:NO];
-    [[NSApp delegate] startProgressWithMessage:@"Running selected AutoPkg recipes."];
+    [_progressDelegate startProgressWithMessage:@"Running selected AutoPkg recipes."];
     _task = [[LGAutoPkgTask alloc] init];
     [_task runRecipeList:recipeList
         progress:^(NSString *message, double taskProgress) {
-                            [[NSApp delegate] updateProgress:message progress:taskProgress];
+                            [_progressDelegate updateProgress:message progress:taskProgress];
         }
         reply:^(NSDictionary *report, NSError *error) {
-                            [[NSApp delegate] stopProgress:error];
+                            [_progressDelegate stopProgress:error];
                             if (report.count || error) {
                                 LGEmailer *emailer = [LGEmailer new];
                                 [emailer sendEmailForReport:report error:error];

@@ -82,7 +82,7 @@
 @property (weak) IBOutlet NSTextField *progressDetailsMessage;
 
 // Progress delegate (object used to send updates to status menu item)
-@property (weak) id<LGProgressDelegate> menuProgressDelegate;
+@property (weak) id<LGProgressDelegate> progressDelegate;
 
 // Objects
 @property (strong) IBOutlet LGPopularRepositories *popRepoTableViewHandler;
