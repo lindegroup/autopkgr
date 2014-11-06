@@ -87,6 +87,9 @@ HashMap * Attachment::readMimeTypesFile(String * filename)
 
 String * Attachment::mimeTypeForFilename(String * filename)
 {
+    if (filename == NULL) {
+        return NULL;
+    }
     static HashMap * mimeTypes = NULL;
     static pthread_mutex_t lock = PTHREAD_MUTEX_INITIALIZER;
     pthread_mutex_lock(&lock);
@@ -127,13 +130,17 @@ String * Attachment::mimeTypeForFilename(String * filename)
 
 Attachment * Attachment::attachmentWithContentsOfFile(String * filename)
 {
+    if (filename == NULL) {
+        return attachmentWithData(NULL, Data::data());
+    }
+    
     const char * cPath = filename->fileSystemRepresentation();
     struct stat statinfo;
     int r;
     
     r = stat(cPath, &statinfo);
     if (r < 0) {
-        return NULL;
+        return attachmentWithData(filename, Data::data());
     }
     
     if (S_ISDIR(statinfo.st_mode)) {
@@ -286,7 +293,6 @@ String * Attachment::decodedString()
     }
 }
 
-
 AbstractPart * Attachment::attachmentsWithMIME(struct mailmime * mime)
 {
     return attachmentsWithMIMEWithMain(mime, true);
@@ -338,6 +344,14 @@ AbstractPart * Attachment::attachmentsWithMIMEWithMain(struct mailmime * mime, b
                 Multipart * attachment;
                 attachment = new Multipart();
                 attachment->setPartType(PartTypeMultipartRelated);
+                fillMultipartSubAttachments(attachment, mime);
+                return (Multipart *) attachment->autorelease();
+            }
+            else if ((mime->mm_content_type != NULL) && (mime->mm_content_type->ct_subtype != NULL) &&
+                     (strcasecmp(mime->mm_content_type->ct_subtype, "signed") == 0)) {
+                Multipart * attachment;
+                attachment = new Multipart();
+                attachment->setPartType(PartTypeMultipartSigned);
                 fillMultipartSubAttachments(attachment, mime);
                 return (Multipart *) attachment->autorelease();
             }
@@ -495,6 +509,7 @@ Attachment * Attachment::attachmentWithSingleMIME(struct mailmime * mime)
     char * description;
     char * loc;
     Encoding encoding;
+    clist * ct_parameters;
     
     MCAssert(mime->mm_type == MAILMIME_SINGLE);
     
@@ -523,6 +538,7 @@ Attachment * Attachment::attachmentWithSingleMIME(struct mailmime * mime)
     content_id = single_fields.fld_id;
     description = single_fields.fld_description;
     loc = single_fields.fld_location;
+    ct_parameters = single_fields.fld_content->ct_parameters;
     
     if (filename != NULL) {
         result->setFilename(String::stringByDecodingMIMEHeaderValue(filename));
@@ -543,6 +559,18 @@ Attachment * Attachment::attachmentWithSingleMIME(struct mailmime * mime)
         result->setContentLocation(String::stringWithUTF8Characters(loc));
     }
     
+    if (ct_parameters != NULL) {
+        clistiter * iter = clist_begin(ct_parameters);
+        struct mailmime_parameter * param;
+        while (iter != NULL) {
+            param = (struct mailmime_parameter *) clist_content(iter);
+            if (param != NULL) {
+                result->setContentTypeParameter(String::stringWithUTF8Characters(param->pa_name), String::stringWithUTF8Characters(param->pa_value));
+            }
+            iter = clist_next(iter);
+        }
+    }
+   
     if (single_fields.fld_disposition != NULL) {
         if (single_fields.fld_disposition->dsp_type != NULL) {
             if (single_fields.fld_disposition->dsp_type->dsp_type == MAILMIME_DISPOSITION_TYPE_INLINE) {

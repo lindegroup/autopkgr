@@ -16,6 +16,7 @@ set(objc_imap_files
   objc/imap/MCOIMAPCapabilityOperation.mm
   objc/imap/MCOIMAPCopyMessagesOperation.mm
   objc/imap/MCOIMAPFetchContentOperation.mm
+  objc/imap/MCOIMAPFetchParsedContentOperation.mm
   objc/imap/MCOIMAPFetchFoldersOperation.mm
   objc/imap/MCOIMAPFetchMessagesOperation.mm
   objc/imap/MCOIMAPFetchNamespaceOperation.mm
@@ -74,6 +75,19 @@ set(objc_smtp_files
   objc/smtp/MCOSMTPSession.mm
 )
 
+set(objc_nntp_files
+  objc/nntp/MCONNTPDisconnectOperation.mm
+  objc/nntp/MCONNTPFetchArticleOperation.mm
+  objc/nntp/MCONNTPFetchAllArticlesOperation.mm
+  objc/nntp/MCONNTPFetchHeaderOperation.mm
+  objc/nntp/MCONNTPGroupInfo.mm
+  objc/nntp/MCONNTPListNewsgroupsOperation.mm
+  objc/nntp/MCONNTPFetchOverviewOperation.mm
+  objc/nntp/MCONNTPFetchServerTimeOperation.mm
+  objc/nntp/MCONNTPOperation.mm
+  objc/nntp/MCONNTPSession.mm
+)
+
 set(objc_utils_files
   objc/utils/MCOIndexSet.mm
   objc/utils/MCOObjectWrapper.mm
@@ -94,6 +108,7 @@ set(objc_files
   ${objc_abstract_files}
   ${objc_imap_files}
   ${objc_pop_files}
+  ${objc_nntp_files}
   ${objc_rfc822_files}
   ${objc_smtp_files}
   ${objc_utils_files}
@@ -107,6 +122,7 @@ set(objc_includes
   "${CMAKE_CURRENT_SOURCE_DIR}/objc/abstract"
   "${CMAKE_CURRENT_SOURCE_DIR}/objc/imap"
   "${CMAKE_CURRENT_SOURCE_DIR}/objc/pop"
+  "${CMAKE_CURRENT_SOURCE_DIR}/objc/nntp"
   "${CMAKE_CURRENT_SOURCE_DIR}/objc/rfc822"
   "${CMAKE_CURRENT_SOURCE_DIR}/objc/smtp"
   "${CMAKE_CURRENT_SOURCE_DIR}/objc/utils"
