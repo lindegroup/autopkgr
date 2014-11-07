@@ -1156,6 +1156,16 @@
                                                                     <action selector="reloadJSSServerInformation:" target="0iG-YL-fA3" id="noi-g8-M3y"/>
                                                                 </connections>
                                                             </button>
+                                                            <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="bP2-yc-Y9I">
+                                                                <rect key="frame" x="560" y="95" width="39" height="19"/>
+                                                                <buttonCell key="cell" type="roundRect" title="Add" bezelStyle="roundedRect" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="c7k-eo-8gx">
+                                                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                                                    <font key="font" metaFont="cellTitle"/>
+                                                                </buttonCell>
+                                                                <connections>
+                                                                    <action selector="addDistributionPoint:" target="0iG-YL-fA3" id="EGd-ZN-eGB"/>
+                                                                </connections>
+                                                            </button>
                                                         </subviews>
                                                     </view>
                                                     <constraints>
@@ -1313,6 +1323,7 @@ Gw
                 <outlet property="jssStatusLight" destination="gcn-rW-umQ" id="M4V-gw-vzW"/>
                 <outlet property="jssStatusSpinner" destination="6MF-CB-ccc" id="PIn-UW-oN1"/>
                 <outlet property="jssURLTF" destination="mbd-An-9Bi" id="cMm-Xd-54D"/>
+                <outlet property="modalWindow" destination="F0z-JX-Cv5" id="dcE-Mx-cM8"/>
             </connections>
         </customObject>
     </objects>

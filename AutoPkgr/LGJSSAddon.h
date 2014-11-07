@@ -23,6 +23,7 @@
 #import "LGDefaults.h"
 #import "LGProgressDelegate.h"
 #import "LGTableView.h"
+
 @interface LGJSSAddon : NSObject <NSTableViewDataSource>
 
 @property (strong) IBOutlet LGTableView *jssDistributionPointTableView;
@@ -37,9 +38,13 @@
 @property (weak) IBOutlet NSImageView *jssInstallStatusLight;
 @property (weak) IBOutlet NSTextField *jssInstallStatusTF;
 
+@property (weak) IBOutlet NSWindow *modalWindow;
+
 // Progress delegate (object used to send updates to status menu item)
 @property (weak) id<LGProgressDelegate> progressDelegate;
 
 - (IBAction)installJSSAddon:(id)sender;
-- (NSMenu *)contextualMenuForDistributionPoint:(NSString *)distPoint;
+- (IBAction) addDistributionPoint:(id)sender;
+
+- (NSMenu *)contextualMenuForDistributionPoint:(NSDictionary *)distPoint;
 @end
