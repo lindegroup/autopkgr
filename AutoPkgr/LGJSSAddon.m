@@ -105,18 +105,20 @@ NSString *defaultJSSRepo = @"https://github.com/sheagcraig/jss-recipes.git";
                                withUser:_jssAPIUsernameTF.stringValue
                             andPassword:_jssAPIPasswordTF.stringValue
                                   reply:^(NSDictionary *distributionPoints, NSError *error) {
-                                      [self stopStatusUpdate:error];
+                                      if (!error) {
+                                          [self saveDefaults];
+                                          [_jssStatusLight setImage:[NSImage LGStatusAvaliable]];
+                                      }
+
                                       [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+                                          [self stopStatusUpdate:error];
                                            id distPoints = distributionPoints[@"distribution_point"];
                                            if (distPoints) {
                                                NSArray *cleanedArray = [self evaluateJSSRepoDictionaries:distPoints];
                                                if (cleanedArray) {
                                                    _defaults.JSSRepos = cleanedArray;
-                                                   [self saveDefaults];
-                                                   [_jssStatusLight setImage:[NSImage LGStatusAvaliable]];
                                                    [_jssDistributionPointTableView reloadData];
                                                }
-                                               
                                            }
                                       }];
                                   }];
