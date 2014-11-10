@@ -195,8 +195,8 @@ NSString *defaultJSSRepo = @"https://github.com/sheagcraig/jss-recipes.git";
     };
     NSString *identifier = [tableColumn identifier];
     NSString *setObject = distributionPoint[identifier];
-    if (!setObject && [identifier isEqualToString:@"name"]) {
-        setObject = distributionPoint[@"URL"];
+    if (!setObject && [identifier isEqualToString:kLGJSSDistPointNameKey]) {
+        setObject = distributionPoint[kLGJSSDistPointURLKey];
     }
     return setObject;
 }
@@ -206,11 +206,18 @@ NSString *defaultJSSRepo = @"https://github.com/sheagcraig/jss-recipes.git";
     NSMutableArray *workingArray = [NSMutableArray arrayWithArray:_defaults.JSSRepos];
     NSMutableDictionary *distributionPoint = [NSMutableDictionary dictionaryWithDictionary:workingArray[row]];
 
-    [distributionPoint setValue:object forKey:[tableColumn identifier]];
+    if (!distributionPoint[kLGJSSDistPointTypeKey]) {
+        if (![tableColumn.identifier isEqualToString:kLGJSSDistPointPasswordKey]) {
+            return;
+        }
+    }
+
+    [distributionPoint setValue:object forKey:tableColumn.identifier];
     [workingArray replaceObjectAtIndex:row withObject:distributionPoint];
 
     _defaults.JSSRepos = [NSArray arrayWithArray:workingArray];
 }
+
 
 #pragma mark - Utility
 - (void)checkReachability
@@ -264,18 +271,18 @@ NSString *defaultJSSRepo = @"https://github.com/sheagcraig/jss-recipes.git";
     // If the "type" key is not set for the DP then it's auto detected via the server
     // and we'll strip them out here.
     LGDefaults *defaults = [LGDefaults standardUserDefaults];
-    NSPredicate *customDistPointsPredicate = [NSPredicate predicateWithFormat:@"not %K == nil", @"type"];
+    NSPredicate *customDistPointsPredicate = [NSPredicate predicateWithFormat:@"not %K == nil", kLGJSSDistPointTypeKey];
     NSArray *customDistPoints = [defaults.JSSRepos filteredArrayUsingPredicate:customDistPointsPredicate];
     newRepos = [[NSMutableArray alloc] initWithArray:customDistPoints];
 
     if (dictArray) {
         for (NSDictionary *repo in dictArray) {
-            if (!repo[@"password"]) {
-                NSString *name = repo[@"name"];
+            if (!repo[kLGJSSDistPointPasswordKey]) {
+                NSString *name = repo[kLGJSSDistPointNameKey];
                 NSString *password = [self promptForSharePassword:name];
                 if (password && ![password isEqualToString:@""]) {
-                    [newRepos addObject:@{ @"name" : name,
-                                           @"password" : password }];
+                    [newRepos addObject:@{ kLGJSSDistPointNameKey : name,
+                                           kLGJSSDistPointPasswordKey : password }];
                 }
             } else {
                 [newRepos addObject:repo];
@@ -409,7 +416,7 @@ NSString *defaultJSSRepo = @"https://github.com/sheagcraig/jss-recipes.git";
 
     NSDictionary *repoDict = item.representedObject;
 
-    if (repoDict && repoDict[@"type"]) {
+    if (repoDict && repoDict[kLGJSSDistPointTypeKey]) {
         if (!_preferencePanel) {
             _preferencePanel = [[LGJSSDistributionPointsPrefPanel alloc] initWithDistPointDictionary:repoDict];
         }
@@ -421,20 +428,21 @@ NSString *defaultJSSRepo = @"https://github.com/sheagcraig/jss-recipes.git";
 - (NSMenu *)contextualMenuForDistributionPoint:(NSDictionary *)distPoint
 {
     NSMenu *menu = [[NSMenu alloc] init];
-    NSString *name = distPoint[@"name"] ? distPoint[@"name"] : distPoint[@"URL"];
-    NSString *removeString = [NSString stringWithFormat:@"Remove %@", name];
-    NSMenuItem *removeItem = [[NSMenuItem alloc] initWithTitle:removeString action:@selector(removeDistributionPoint:) keyEquivalent:@""];
-    removeItem.target = self;
-    removeItem.representedObject = distPoint;
-    [menu addItem:removeItem];
 
-    if (distPoint[@"type"]) {
+    if (distPoint[kLGJSSDistPointTypeKey]) {
         NSMenuItem *editItem = [[NSMenuItem alloc] initWithTitle:@"Edit" action:@selector(editDistributionPoint:) keyEquivalent:@""];
         editItem.target = self;
         editItem.representedObject = distPoint;
         editItem.representedObject = distPoint;
         [menu addItem:editItem];
     }
+
+    NSString *name = distPoint[kLGJSSDistPointNameKey] ? distPoint[kLGJSSDistPointNameKey] : distPoint[kLGJSSDistPointURLKey];
+    NSString *removeString = [NSString stringWithFormat:@"Remove %@", name];
+    NSMenuItem *removeItem = [[NSMenuItem alloc] initWithTitle:removeString action:@selector(removeDistributionPoint:) keyEquivalent:@""];
+    removeItem.target = self;
+    removeItem.representedObject = distPoint;
+    [menu addItem:removeItem];
 
     return menu;
 }

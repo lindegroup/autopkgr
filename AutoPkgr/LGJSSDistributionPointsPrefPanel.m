@@ -55,15 +55,14 @@
 
 - (void)populateWithDictionary
 {
-    _distPointDomain.safeStringValue = _editRepoDict[@"domain"];
-    _distPointName.safeStringValue = _editRepoDict[@"name"];
-    _distPointPassword.safeStringValue = _editRepoDict[@"password"];
-    _distPointPort.safeStringValue = _editRepoDict[@"port"];
-    _distPointShareName.safeStringValue = _editRepoDict[@"share_name"];
-    _distPointURL.safeStringValue = _editRepoDict[@"URL"];
-    _distPointUserName.safeStringValue = _editRepoDict[@"username"];
-    [_distPointTypePopupBT selectItemWithTitle:_editRepoDict[@"type"]];
-    
+    _distPointDomain.safeStringValue = _editRepoDict[kLGJSSDistPointWorkgroupDomainKey];
+    _distPointName.safeStringValue = _editRepoDict[kLGJSSDistPointNameKey];
+    _distPointPassword.safeStringValue = _editRepoDict[kLGJSSDistPointPasswordKey];
+    _distPointPort.safeStringValue = _editRepoDict[kLGJSSDistPointPortKey];
+    _distPointShareName.safeStringValue = _editRepoDict[kLGJSSDistPointSharePointKey];
+    _distPointURL.safeStringValue = _editRepoDict[kLGJSSDistPointURLKey];
+    _distPointUserName.safeStringValue = _editRepoDict[kLGJSSDistPointUserNameKey];
+    [_distPointTypePopupBT selectItemWithTitle:_editRepoDict[kLGJSSDistPointTypeKey]];
     [_cancelBT setHidden:YES];
     [_addBT setTitle:@"Done"];
     [_infoText setStringValue:@"Edit Distribution Point"];
@@ -88,26 +87,26 @@
     NSMutableDictionary *distPoint = [[NSMutableDictionary alloc] init];
 
     if ([self meetsRequirementsForType]) {
-        [distPoint setObject:type forKey:@"type"];
-        [distPoint setObject:password forKey:@"password"];
-        [distPoint setObject:url forKey:@"URL"];
-        [distPoint setObject:userName forKey:@"username"];
+        [distPoint setObject:type forKey:kLGJSSDistPointTypeKey];
+        [distPoint setObject:password forKey:kLGJSSDistPointPasswordKey];
+        [distPoint setObject:url forKey:kLGJSSDistPointURLKey];
+        [distPoint setObject:userName forKey:kLGJSSDistPointUserNameKey];
 
         if (name) {
-            [distPoint setObject:name forKey:@"name"];
+            [distPoint setObject:name forKey:kLGJSSDistPointNameKey];
         }
 
         if ([type isEqualToString:@"AFP"] || [type isEqualToString:@"SMB"]) {
             if (shareName) {
-                [distPoint setObject:shareName forKey:@"share_name"];
+                [distPoint setObject:shareName forKey:kLGJSSDistPointSharePointKey];
             }
 
             if (port) {
-                [distPoint setObject:port forKey:@"port"];
+                [distPoint setObject:port forKey:kLGJSSDistPointPortKey];
             }
 
             if (domain && [type isEqualToString:@"SMB"]) {
-                [distPoint setObject:domain forKey:@"domain"];
+                [distPoint setObject:domain forKey:kLGJSSDistPointWorkgroupDomainKey];
             }
         }
 
@@ -212,7 +211,7 @@
     }
 
     if ([type isEqualToString:@"SMB"]) {
-        [types addObject:_distPointDomain];
+//        [types addObject:_distPointDomain];
     }
 
     return [NSArray arrayWithArray:types];

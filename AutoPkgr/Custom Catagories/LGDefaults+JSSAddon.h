@@ -21,6 +21,16 @@
 
 #import "LGDefaults.h"
 
+extern NSString* const kLGJSSDistPointNameKey;
+extern NSString* const kLGJSSDistPointURLKey;
+extern NSString* const kLGJSSDistPointSharePointKey;
+extern NSString* const kLGJSSDistPointPortKey;
+extern NSString* const kLGJSSDistPointUserNameKey;
+extern NSString* const kLGJSSDistPointPasswordKey;
+extern NSString* const kLGJSSDistPointWorkgroupDomainKey;
+extern NSString* const kLGJSSDistPointTypeKey;
+
+
 #pragma mark - LGDefaults extensions for JSS Addon Interface
 @interface LGDefaults (JSSAddon)
 
