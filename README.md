@@ -115,6 +115,21 @@ When a `.jss` recipe runs, the package is uploaded to your distribution points, 
 For detailed tips on integrating AutoPkgr with Casper, and to see some descriptions of example workflows, read [Auto Update Magic](https://github.com/homebysix/auto-update-magic).
 
 
+Using a Proxy
+-------------
+
+If your network uses a proxy, you may need to run one or more of these commands to configure AutoPkg/AutoPkgr to use your proxy for internet access. Running these commands is equivalent to this shell command: `export HTTP_PROXY=http://proxy:8080`
+
+- To use HTTP proxy: `defaults write com.lindegroup.AutoPkgr HTTP_PROXY http://proxy:8080`
+- To use HTTPS proxy: `defaults write com.lindegroup.AutoPkgr HTTPS_PROXY https://proxy:8080`
+- To use HTTP proxy with authentication: `defaults write com.lindegroup.AutoPkgr HTTP_PROXY http://username:password@proxy:8080`
+- To use HTTPS proxy with authentication: `defaults write com.lindegroup.AutoPkgr HTTPS_PROXY https://username:password@proxy:8080`
+- To stop using HTTP proxy: `defaults remove com.lindegroup.AutoPkgr HTTP_PROXY`
+- To stop using HTTPS proxy: `defaults remove com.lindegroup.AutoPkgr HTTPS_PROXY`
+
+_Note: This will not create or modify any system proxy settings; it will only add them to your shell env._
+
+
 Troubleshooting
 ---------------
 
