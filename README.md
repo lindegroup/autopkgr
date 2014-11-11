@@ -122,6 +122,8 @@ If your network uses a proxy, you may need to run one or more of these commands 
 
 - To use HTTP proxy: `defaults write com.lindegroup.AutoPkgr HTTP_PROXY http://proxy:8080`
 - To use HTTPS proxy: `defaults write com.lindegroup.AutoPkgr HTTPS_PROXY https://proxy:8080`
+- To use HTTP proxy with authentication: `defaults write com.lindegroup.AutoPkgr HTTP_PROXY http://username:password@proxy:8080`
+- To use HTTPS proxy with authentication: `defaults write com.lindegroup.AutoPkgr HTTPS_PROXY https://username:password@proxy:8080`
 - To stop using HTTP proxy: `defaults remove com.lindegroup.AutoPkgr HTTP_PROXY`
 - To stop using HTTPS proxy: `defaults remove com.lindegroup.AutoPkgr HTTPS_PROXY`
 
