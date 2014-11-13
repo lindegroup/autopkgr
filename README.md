@@ -118,13 +118,38 @@ For detailed tips on integrating AutoPkgr with Casper, and to see some descripti
 Using a Proxy
 -------------
 
-If your network uses a proxy, you may need to run one or more of these commands to configure AutoPkg/AutoPkgr to use your proxy for internet access. Running these commands is equivalent to this shell command: `export HTTP_PROXY=http://proxy:8080`
+If your network uses a proxy, you may need to run one or more of these commands to configure AutoPkg/AutoPkgr to use your proxy for internet access.
+
+Note: Running these commands is equivalent to this shell command:
+```export HTTP_PROXY=http://proxy:8080```  
+It should not be compared to what you can access from a web browser.  If running autopkg in the shell won't work with the environmental variables set, neither will AutoPkgr.
+ 
+Note: Proxy support is still in early development and we would love feedback from the community as to it's functioning, both success and failure.
+
+
+1. Use proxies defined in System Preferences. 
+`defaults write com.lindegroup.AutoPkgr useSystemProxies -bool true`  
+
+	This should also pick up auto-detected WPAD/PAC proxies. Make sure you have the domains that should not use a proxy listed in the 
+`System Preferences -> Network -> Advanced -> Proxies -> "Bypass proxy settings for these Hosts & Domains"`
+ 
+2. If using the settings from system preferences doesn't work you can try to manually set the proxy environment yourself.
+
+	Note: when manually setting make sure to unset useSystemProxies `defaults write com.lindegroup.AutoPkgr useSystemProxies -bool false` 
 
 - To use HTTP proxy: `defaults write com.lindegroup.AutoPkgr HTTP_PROXY http://proxy:8080`
+
 - To use HTTPS proxy: `defaults write com.lindegroup.AutoPkgr HTTPS_PROXY https://proxy:8080`
+
 - To use HTTP proxy with authentication: `defaults write com.lindegroup.AutoPkgr HTTP_PROXY http://username:password@proxy:8080`
+
 - To use HTTPS proxy with authentication: `defaults write com.lindegroup.AutoPkgr HTTPS_PROXY https://username:password@proxy:8080`
+
+- To add a list of bypassed hosts: `defaults write com.lindegroup.AutoPkgr NO_PROXY ".local,10.0.0.0/24,.mylocaldomain.com"`
+(this is a list of comma separated items use .xxx.xxx to bypass an entire domain)
+
 - To stop using HTTP proxy: `defaults remove com.lindegroup.AutoPkgr HTTP_PROXY`
+
 - To stop using HTTPS proxy: `defaults remove com.lindegroup.AutoPkgr HTTPS_PROXY`
 
 _Note: This will not create or modify any system proxy settings; it will only add them to your shell env._

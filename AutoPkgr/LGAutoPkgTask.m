@@ -20,6 +20,7 @@
 #import "LGAutoPkgTask.h"
 #import "LGRecipes.h"
 #import "LGVersionComparator.h"
+#import "AHProxySettings.h"
 
 NSString *const kLGAutoPkgTaskLock = @"com.lindegroup.autopkg.task.lock";
 
@@ -251,17 +252,33 @@ NSString *autopkg()
     if ([self isNetworkOperation]) {
 
         LGDefaults *defaults = [[LGDefaults alloc] init];
-        NSString *httpProxy = [defaults objectForKey:@"HTTP_PROXY"];
-        NSString *httpsProxy = [defaults objectForKey:@"HTTPS_PROXY"];
 
-        if (httpProxy) {
-            [self addEnvironmentVariable:httpProxy forKey:@"HTTP_PROXY"];
-            DLog(@"Using HTTP_PROXY: %@", httpProxy);
-        }
+        if ([defaults objectForKey:@"useSystemProxies"]) {
+            AHProxySettings *settings = [[AHProxySettings alloc] initWithDestination:@"https://github.com"];
+            if (settings.taskDictionary) {
+                // This will just initialize the _internalEnvironment
+                [self addEnvironmentVariable:nil forKey:nil];
+                [_internalEnvironment addEntriesFromDictionary:settings.taskDictionary];
+            }
+        } else {
 
-        if (httpsProxy) {
-            [self addEnvironmentVariable:httpsProxy forKey:@"HTTPS_PROXY"];
-            DLog(@"Using HTTPS_PROXY: %@", httpsProxy);
+            NSString *httpProxy = [defaults objectForKey:@"HTTP_PROXY"];
+            NSString *httpsProxy = [defaults objectForKey:@"HTTPS_PROXY"];
+            NSString *noProxy = [defaults objectForKey:@"NO_PROXY"];
+
+            if (httpProxy) {
+                [self addEnvironmentVariable:httpProxy forKey:@"HTTP_PROXY"];
+                DLog(@"Using HTTP_PROXY: %@", httpProxy);
+            }
+
+            if (httpsProxy) {
+                [self addEnvironmentVariable:httpsProxy forKey:@"HTTPS_PROXY"];
+                DLog(@"Using HTTPS_PROXY: %@", httpsProxy);
+            }
+            if (noProxy) {
+                [self addEnvironmentVariable:noProxy forKey:@"NO_PROXY"];
+                DLog(@"Using NO_PROXY (Exception List): %@", noProxy);
+            }
         }
     }
 
@@ -277,7 +294,9 @@ NSString *autopkg()
     if (!_internalEnvironment) {
         _internalEnvironment = [NSMutableDictionary dictionaryWithDictionary:[[NSProcessInfo processInfo] environment]];
     }
-    [_internalEnvironment setObject:variable forKey:key];
+    if (variable && key) {
+        [_internalEnvironment setObject:variable forKey:key];
+    }
 }
 
 #pragma mark - Output / Results
