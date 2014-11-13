@@ -73,8 +73,15 @@
     DLog(@"Starting AutoPkgr menu bar icon...");
     self.statusItem = [[NSStatusBar systemStatusBar] statusItemWithLength:NSVariableStatusItemLength];
     [self.statusItem setMenu:self.statusMenu];
-    [self.statusItem setImage:[NSImage imageNamed:@"autopkgr.png"]];
-    [self.statusItem setAlternateImage:[NSImage imageNamed:@"autopkgr_alt.png"]];
+
+    NSImage *image = [NSImage imageNamed:@"autopkgr.png"];
+    [image setTemplate:YES];
+    [self.statusItem setImage:image];
+
+    NSImage *altImage = [NSImage imageNamed:@"autopkgr_alt.png"];
+    [altImage setTemplate:YES];
+    [self.statusItem setAlternateImage:altImage];
+
     [self.statusItem setHighlightMode:YES];
     self.statusItem.menu = self.statusMenu;
     DLog(@"AutoPkgr menu bar icon started.");
