@@ -102,12 +102,19 @@
     SecTrustResultType secresult = kSecTrustResultInvalid;
     if (SecTrustEvaluate(challenge.protectionSpace.serverTrust, &secresult) == errSecSuccess) {
         switch (secresult) {
-        case kSecTrustResultUnspecified: // The OS trusts this certificate implicitly.
-        case kSecTrustResultProceed: // The user explicitly told the OS to trust it.
-        {
+        case kSecTrustResultProceed: {
+            // The user told the OS to trust the cert but this is not
+            // picked up by the python-jss' request module so set verify to NO
+            [[LGDefaults standardUserDefaults] setJSSVerifySSL:NO];
             proceed = YES;
             break;
         }
+        case kSecTrustResultUnspecified: {
+            // The OS trusts this certificate implicitly.
+            proceed = YES;
+            break;
+        }
+
         default: {
             SFCertificateTrustPanel *panel = [SFCertificateTrustPanel sharedCertificateTrustPanel];
             [panel setAlternateButtonTitle:@"Cancel"];
