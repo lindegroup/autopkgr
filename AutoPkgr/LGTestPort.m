@@ -21,6 +21,7 @@
 
 #import "LGTestPort.h"
 #import "LGAutoPkgr.h"
+#import <AFNetworking/AFNetworking.h>
 
 @interface LGTestPort ()
 @property (strong, nonatomic) NSInputStream *inputStream;
@@ -94,27 +95,30 @@
     }
 }
 
-- (void)testServerURL:(NSString *)url reply:(void (^)(BOOL))reply
+- (void)testServerURL:(NSString *)url reply:(void (^)(BOOL, NSString *))reply
 {
     NSURL *serverURL = [NSURL URLWithString:url];
-    NSHost *host = [NSHost hostWithName:[serverURL host]];
-    NSNumber *port = [serverURL port];
+    __block NSString *redirectedURL = nil;
 
-    // if no port specified set to defaults
-    if (!port) {
-        if ([serverURL.scheme isEqualToString:@"http"]) {
-            port = @(80);
-        } else if ([serverURL.scheme isEqualToString:@"https"]) {
-            port = @(443);
-        }
-    }
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:serverURL];
+    request.timeoutInterval = 5.0;
 
-    if (host && port) {
-        _reachable = reply;
-        [self testHost:host withPort:[port integerValue]];
-    } else {
-        reply(NO);
-    }
+    // Set up the operation
+    AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
+
+    [operation setRedirectResponseBlock:^NSURLRequest * (NSURLConnection * connection, NSURLRequest * request, NSURLResponse * redirectResponse) {
+        NSLog(@"redirected %@",redirectResponse);
+        redirectedURL = [(NSHTTPURLResponse *)redirectResponse allHeaderFields][@"Location"];
+        return request;
+    }];
+
+    [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
+        reply(YES,redirectedURL);
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        reply(operation.response ? YES:NO,redirectedURL);
+    }];
+
+    [operation start];
 }
 
 - (void)startStreamTimeoutTimer

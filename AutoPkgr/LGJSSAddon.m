@@ -219,9 +219,13 @@ NSString *defaultJSSRepo = @"https://github.com/sheagcraig/jss-recipes.git";
     _portTester = [[LGTestPort alloc] init];
     [self startStatusUpdate];
 
-    [_portTester testServerURL:_jssURLTF.safeStringValue reply:^(BOOL reachable) {
+    [_portTester testServerURL:_jssURLTF.safeStringValue reply:^(BOOL reachable, NSString *redirectedURL) {
         _serverReachable = reachable;
         [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+            if (redirectedURL) {
+                _jssURLTF.safeStringValue = redirectedURL;
+            }
+            
             if (reachable && [_defaults.JSSURL isEqualToString:_jssURLTF.safeStringValue]) {
                 _jssStatusLight.image = [NSImage LGStatusAvaliable];
                 DLog(@"The JSS is responding and API user credentials seem valid.");
