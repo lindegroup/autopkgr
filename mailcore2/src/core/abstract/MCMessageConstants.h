@@ -178,6 +178,7 @@ namespace mailcore {
         IMAPSearchKindRecipient,   // Recipient is the combination of To, Cc and Bcc
         IMAPSearchKindSubject,
         IMAPSearchKindContent,
+        IMAPSearchKindBody,
         IMAPSearchKindUIDs,
         IMAPSearchKindHeader,
         IMAPSearchKindRead,
@@ -247,6 +248,8 @@ namespace mailcore {
         ErrorNoSender,
         ErrorNoRecipient,
         ErrorNoop,
+        ErrorGmailApplicationSpecificPasswordRequired,
+        ErrorServerDate,
     };
     
     enum PartType {
@@ -255,6 +258,7 @@ namespace mailcore {
         PartTypeMultipartMixed,
         PartTypeMultipartRelated,
         PartTypeMultipartAlternative,
+        PartTypeMultipartSigned,
     };
     
     // Private type - It should not be used directly.

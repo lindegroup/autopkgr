@@ -39,6 +39,10 @@ NSString *defaultJSSRepo = @"https://github.com/sheagcraig/jss-recipes.git";
 
 - (void)awakeFromNib
 {
+    if ([[[NSApplication sharedApplication] delegate] conformsToProtocol:@protocol(LGProgressDelegate)]) {
+        _progressDelegate = (id)[[NSApplication sharedApplication] delegate];
+    }
+
     _defaults = [LGDefaults standardUserDefaults];
     _installRequestedDuringConnect = NO;
 
@@ -120,16 +124,18 @@ NSString *defaultJSSRepo = @"https://github.com/sheagcraig/jss-recipes.git";
 
 - (IBAction)installJSSAddon:(id)sender
 {
+    NSLog(@"Installing the jss-autopkg-addon.");
     LGInstaller *installer = [[LGInstaller alloc] init];
-    installer.progressDelegate = [NSApp delegate];
+    installer.progressDelegate = _progressDelegate;
     [_jssInstallButton setEnabled:NO];
     [installer installJSSAddon:^(NSError *error) {
         BOOL success = (error == nil);
         if (success) {
             NSString *message = [NSString stringWithFormat:@"Adding %@",defaultJSSRepo];
-            [[NSApp delegate] startProgressWithMessage:message];
+            NSLog(@"Adding default JSS recipe repository: %@", defaultJSSRepo);
+            [_progressDelegate startProgressWithMessage:message];
             [LGAutoPkgTask repoAdd:defaultJSSRepo reply:^(NSError *error) {
-                [[NSApp delegate]stopProgress:error];
+                [_progressDelegate stopProgress:error];
                 [[NSNotificationCenter defaultCenter] postNotificationName:kLGNotificationReposModified
                                                                     object:nil];
 
@@ -166,7 +172,7 @@ NSString *defaultJSSRepo = @"https://github.com/sheagcraig/jss-recipes.git";
         [_jssStatusSpinner setHidden:YES];
         [_jssStatusSpinner stopAnimation:self];
         if (error) {
-            [[NSApp delegate] stopProgress:error];
+            [_progressDelegate stopProgress:error];
             [_jssStatusLight setImage:[NSImage LGStatusUnavaliable]];
         }
     }];
@@ -213,15 +219,22 @@ NSString *defaultJSSRepo = @"https://github.com/sheagcraig/jss-recipes.git";
     _portTester = [[LGTestPort alloc] init];
     [self startStatusUpdate];
 
-    [_portTester testServerURL:_jssURLTF.safeStringValue reply:^(BOOL reachable) {
+    [_portTester testServerURL:_jssURLTF.safeStringValue reply:^(BOOL reachable, NSString *redirectedURL) {
         _serverReachable = reachable;
         [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+            if (redirectedURL) {
+                _jssURLTF.safeStringValue = redirectedURL;
+            }
+            
             if (reachable && [_defaults.JSSURL isEqualToString:_jssURLTF.safeStringValue]) {
                 _jssStatusLight.image = [NSImage LGStatusAvaliable];
+                DLog(@"The JSS is responding and API user credentials seem valid.");
             } else if (reachable) {
                 _jssStatusLight.image = [NSImage LGStatusPartiallyAvaliable];
+                DLog(@"The JSS is responding, but API user credentials don't seem valid.");
             } else {
                 _jssStatusLight.image = [NSImage LGStatusUnavaliable];
+                DLog(@"The JSS is not reachable. Check your network connection and verify the JSS URL and port.");
             }
             // No need to keep this around so nil it out.
             _portTester = nil;
@@ -298,10 +311,12 @@ NSString *defaultJSSRepo = @"https://github.com/sheagcraig/jss-recipes.git";
             [[NSOperationQueue mainQueue] addOperationWithBlock:^{
                 [_jssInstallButton setEnabled:updateAvaliable];
                 if (updateAvaliable) {
+                    NSLog(@"An update is available for the jss-autopkg-addon.");
                     _jssInstallButton.title = @"Update JSS AutoPkg Addon";
                     _jssInstallStatusTF.stringValue = kLGJSSAutoPkgAddonUpdateAvailableLabel;
                     _jssInstallStatusLight.image = [NSImage LGStatusUpdateAvaliable];
                 } else {
+                    NSLog(@"The jss-autopkg-addon is up to date.");
                     _jssInstallButton.title = @"Install JSS AutoPkg Addon";
                     _jssInstallStatusTF.stringValue = kLGJSSAutoPkgAddonInstalledLabel;
                     _jssInstallStatusLight.image = [NSImage LGStatusUpToDate];
@@ -320,6 +335,7 @@ NSString *defaultJSSRepo = @"https://github.com/sheagcraig/jss-recipes.git";
 
 - (NSString *)promptForSharePassword:(NSString *)shareName
 {
+    NSLog(@"Prompting for password for distribution point: %@", shareName);
     NSString *password;
     NSString *alertString = [NSString stringWithFormat:@"Please enter read/write password for the %@ distribution point.", shareName];
     NSAlert *alert = [NSAlert alertWithMessageText:alertString
@@ -349,6 +365,7 @@ NSString *defaultJSSRepo = @"https://github.com/sheagcraig/jss-recipes.git";
     BOOL required = NO;
 
     if (![LGHostInfo jssAddonInstalled]) {
+        NSLog(@"Prompting for jss-autopkg-addon installation.");
         NSAlert *alert = [NSAlert alertWithMessageText:@"Install JSS AutoPkg Addon?"
                                          defaultButton:@"Install"
                                        alternateButton:@"Cancel"
@@ -360,6 +377,7 @@ NSString *defaultJSSRepo = @"https://github.com/sheagcraig/jss-recipes.git";
             [self installJSSAddon:nil];
         } else {
             _installRequestedDuringConnect = NO;
+            NSLog(@"Installation of jss-autopkg-addon was canceled.");
         }
         return YES;
     }
@@ -371,7 +389,8 @@ NSString *defaultJSSRepo = @"https://github.com/sheagcraig/jss-recipes.git";
 {
     NSString *distPoint = item.representedObject;
     LGDefaults *defaults = [LGDefaults standardUserDefaults];
-    NSPredicate *removePredicate = [NSPredicate predicateWithFormat:@"NOT (name == %@)",distPoint];
+    NSLog(@"Request received to remove distribution point: %@", distPoint);
+    NSPredicate *removePredicate = [NSPredicate predicateWithFormat:@"NOT (name == %@)", distPoint];
     NSArray *newArray = [defaults.JSSRepos filteredArrayUsingPredicate:removePredicate];
     if (newArray.count) {
         defaults.JSSRepos = newArray;
@@ -381,10 +400,10 @@ NSString *defaultJSSRepo = @"https://github.com/sheagcraig/jss-recipes.git";
     [_jssDistributionPointTableView reloadData];
 }
 
--(NSMenu *)contextualMenuForDistributionPoint:(NSString *)distPoint
+- (NSMenu *)contextualMenuForDistributionPoint:(NSString *)distPoint
 {
     NSMenu *menu = [[NSMenu alloc] init];
-    NSString *removeString = [NSString stringWithFormat:@"Remove %@",distPoint];
+    NSString *removeString = [NSString stringWithFormat:@"Remove %@", distPoint];
     NSMenuItem *item = [[NSMenuItem alloc] initWithTitle:removeString action:@selector(removeDistributionPoint:) keyEquivalent:@""];
     item.target = self;
     item.representedObject = distPoint;

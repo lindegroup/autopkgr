@@ -30,7 +30,7 @@
 /** This is the hostname of the SMTP server to connect to. */
 @property (nonatomic, copy) NSString * hostname;
 
-/** This is the port of the POP3 server to connect to. */
+/** This is the port of the SMTP server to connect to. */
 @property (nonatomic, assign) unsigned int port;
 
 /** This is the username of the account. */
@@ -80,7 +80,11 @@
  It will make MCOSMTPSession safe. It will also set all the callbacks of operations to run on this given queue.
  Defaults to the main queue.
  This property should be used only if there's performance issue using MCOSMTPSession in the main thread. */
+#if OS_OBJECT_USE_OBJC
 @property (nonatomic, retain) dispatch_queue_t dispatchQueue;
+#else
+@property (nonatomic, assign) dispatch_queue_t dispatchQueue;
+#endif
 
 /** @name Operations */
 
@@ -91,7 +95,7 @@
 
  Generate RFC 822 data using MCOMessageBuilder
 
-     MCOPOPOperation * op = [session sendOperationWithData:rfc822Data];
+     MCOSMTPOperation * op = [session sendOperationWithData:rfc822Data];
      [op start:^(NSError * error) {
           ...
      }];
@@ -105,7 +109,7 @@
  
  Generate RFC 822 data using MCOMessageBuilder
  
- MCOPOPOperation * op = [session sendOperationWithData:rfc822Data
+ MCOSMTPOperation * op = [session sendOperationWithData:rfc822Data
                                                   from:[MCOAddress addressWithMailbox:@"hoa@etpan.org"]
                                             recipients:[NSArray arrayWithObject:[MCOAddress addressWithMailbox:@"laura@etpan.org"]]];
  [op start:^(NSError * error) {
@@ -119,7 +123,7 @@
 /**
  Returns an operation that will check whether the SMTP account is valid.
 
-     MCOPOPOperation * op = [session checkAccountOperationWithFrom:[MCOAddress addressWithMailbox:@"hoa@etpan.org"]];
+     MCOSMTPOperation * op = [session checkAccountOperationWithFrom:[MCOAddress addressWithMailbox:@"hoa@etpan.org"]];
      [op start:^(NSError * error) {
           ...
      }];
@@ -129,7 +133,7 @@
 /**
  Returns an operation that will perform a No-Op.
  
- MCOPOPOperation * op = [session noopOperation];
+ MCOSMTPOperation * op = [session noopOperation];
  [op start:^(NSError * error) {
  ...
  }];

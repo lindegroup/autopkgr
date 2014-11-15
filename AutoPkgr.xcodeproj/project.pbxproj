@@ -106,6 +106,20 @@
 			remoteGlobalIDString = 1AC6954C195B59ED00D2BD81;
 			remoteInfo = AutoPkgr;
 		};
+		8B8AB7F01A16A26B00B03C00 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1A0A869D195CE5DB00A49434 /* mailcore2.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 27780C3A19CF9CD100C77E44;
+			remoteInfo = "mailcore ios";
+		};
+		8B8AB7F21A16A26B00B03C00 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1A0A869D195CE5DB00A49434 /* mailcore2.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = C6B5AE0219F630B3001352A6;
+			remoteInfo = unittest;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -236,6 +250,8 @@
 				1A0A86AA195CE5DC00A49434 /* tests */,
 				1A0A86AC195CE5DC00A49434 /* test-ios.app */,
 				1A0A86AE195CE5DC00A49434 /* MailCore.framework */,
+				8B8AB7F11A16A26B00B03C00 /* MailCore.framework */,
+				8B8AB7F31A16A26B00B03C00 /* unittest.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -555,6 +571,20 @@
 			fileType = wrapper.framework;
 			path = MailCore.framework;
 			remoteRef = 1A0A86AD195CE5DC00A49434 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		8B8AB7F11A16A26B00B03C00 /* MailCore.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = MailCore.framework;
+			remoteRef = 8B8AB7F01A16A26B00B03C00 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		8B8AB7F31A16A26B00B03C00 /* unittest.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = unittest.xctest;
+			remoteRef = 8B8AB7F21A16A26B00B03C00 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */

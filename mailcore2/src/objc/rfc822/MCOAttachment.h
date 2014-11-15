@@ -41,7 +41,7 @@
 
 /** Returns string representation according to charset*/
 - (NSString *) decodedString;
- 
+
 @end
 
 #endif

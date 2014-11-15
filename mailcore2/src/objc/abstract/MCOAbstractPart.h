@@ -14,7 +14,7 @@
 
 @class MCOAbstractMessage;
 
-typedef enum {
+typedef NS_ENUM(NSInteger, MCOPartType) {
     // Used for a single part.
     // The part will be a MCOAbstractPart.
     MCOPartTypeSingle,
@@ -35,7 +35,11 @@ typedef enum {
     // Used for a multipart, multipart/alternative.
     // The part will be a MCOAbstractMultipart.
     MCOPartTypeMultipartAlternative,
-} MCOPartType;
+    
+    // Used for a signed message, multipart/signed.
+    // The part will be a MCOAbstractMultipart.
+    MCOPartTypeMultipartSigned,
+};
 
 @interface MCOAbstractPart : NSObject <NSCopying>
 
@@ -77,6 +81,18 @@ typedef enum {
 
 /** Returns a string representation of the data according to charset.*/
 - (NSString *) decodedStringForData:(NSData *)data;
+
+/** Adds a content type parameter.*/
+- (void) setContentTypeParameterValue:(NSString *)value forName:(NSString *)name;
+
+/** Remove a given content type parameter.*/
+- (void) removeContentTypeParameterForName:(NSString *)name;
+
+/** Returns the value of a given content type parameter.*/
+- (NSString *) contentTypeParameterValueForName:(NSString *)name;
+
+/** Returns an array with the names of all content type parameters.*/
+- (NSArray * /* NSString */) allContentTypeParametersNames;
 
 @end
 

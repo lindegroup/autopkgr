@@ -18,6 +18,7 @@ Here are the tasks that AutoPkgr makes easier:
 * Installation of AutoPkg itself.
 * Installation of Git, which AutoPkg requires.
 * Discovery of and subscription to popular AutoPkg recipe repositories.
+* Ability to easily create AutoPkg recipe overrides.
 * Configuration of AutoPkg to use a local [Munki](https://code.google.com/p/munki/) repo.
 * Basic integration of AutoPkg with the JAMF Casper Suite.
 
@@ -111,7 +112,47 @@ You'll also want to make sure you have a few `.jss` recipes selected. AutoPkgr w
 
 When a `.jss` recipe runs, the package is uploaded to your distribution points, a Self Service policy is created and scoped to a new smart group. As a result, computers in the Testing group with less than the latest version of the app should now be able to install the latest version through Self Service.
 
-<!-- Insert link to Elliot's presentation here, once it's online. -->
+For detailed tips on integrating AutoPkgr with Casper, and to see some descriptions of example workflows, read [Auto Update Magic](https://github.com/homebysix/auto-update-magic).
+
+
+Using a Proxy
+-------------
+
+If your network uses a proxy, you may need to run one or more of these commands to configure AutoPkg/AutoPkgr to use your proxy for internet access.
+
+Note: Running these commands is equivalent to this shell command:
+```export HTTP_PROXY=http://proxy:8080```  
+It should not be compared to what you can access from a web browser.  If running autopkg in the shell won't work with the environmental variables set, neither will AutoPkgr.
+ 
+Note: Proxy support is still in early development and we would love feedback from the community as to it's functioning, both success and failure.
+
+
+1. Use proxies defined in System Preferences. 
+`defaults write com.lindegroup.AutoPkgr useSystemProxies -bool true`  
+
+	This should also pick up auto-detected WPAD/PAC proxies. Make sure you have the domains that should not use a proxy listed in the 
+`System Preferences -> Network -> Advanced -> Proxies -> "Bypass proxy settings for these Hosts & Domains"`
+ 
+2. If using the settings from system preferences doesn't work you can try to manually set the proxy environment yourself.
+
+	Note: when manually setting make sure to unset useSystemProxies `defaults write com.lindegroup.AutoPkgr useSystemProxies -bool false` 
+
+- To use HTTP proxy: `defaults write com.lindegroup.AutoPkgr HTTP_PROXY http://proxy:8080`
+
+- To use HTTPS proxy: `defaults write com.lindegroup.AutoPkgr HTTPS_PROXY https://proxy:8080`
+
+- To use HTTP proxy with authentication: `defaults write com.lindegroup.AutoPkgr HTTP_PROXY http://username:password@proxy:8080`
+
+- To use HTTPS proxy with authentication: `defaults write com.lindegroup.AutoPkgr HTTPS_PROXY https://username:password@proxy:8080`
+
+- To add a list of bypassed hosts: `defaults write com.lindegroup.AutoPkgr NO_PROXY ".local,10.0.0.0/24,.mylocaldomain.com"`
+(this is a list of comma separated items use .xxx.xxx to bypass an entire domain)
+
+- To stop using HTTP proxy: `defaults remove com.lindegroup.AutoPkgr HTTP_PROXY`
+
+- To stop using HTTPS proxy: `defaults remove com.lindegroup.AutoPkgr HTTPS_PROXY`
+
+_Note: This will not create or modify any system proxy settings; it will only add them to your shell env._
 
 
 Troubleshooting
