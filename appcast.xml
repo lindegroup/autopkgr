@@ -6,6 +6,29 @@
     <description>Most recent changes with links to updates.</description>
     <language>en</language>
       <item>
+        <title>Version 1.1.1</title>
+        <description>
+          <![CDATA[
+          <h4>Bug Fixes</h4>
+          <ul>
+            <li>Address issues with JSS integration:
+              <li>Better handling of URLs for Cloud hosted JSS.</li>
+              <li>More comprehensive logging relating to JSS operations.</li></li>
+            <li>Cleaner UI error messages.</li>
+            <li>Correctly detects Xcode git.</li>
+            <li>Compatibility with Yosemite's "dark mode."</li>
+            <li>Minor GUI adjustments.</li>
+          </ul>
+          <h4>Enhancements:</h4>
+          <ul>
+            <li>Better proxy support. AutoPkgr can now use proxies set in System Preferences, including WPAD/PAC. (See readme on GitHub for details.</li>
+          </ul>
+          ]]>
+        </description>
+        <pubDate>Sat, 15 Nov 2014 16:00:00 +0000</pubDate>
+        <enclosure url="https://github.com/lindegroup/autopkgr/releases/download/v1.1.1/AutoPkgr-1.1.1.dmg" sparkle:version="524" sparkle:shortVersionString="1.1.1" type="application/octet-stream" />
+      </item>
+      <item>
         <title>Version 1.1</title>
         <description>
           <![CDATA[
