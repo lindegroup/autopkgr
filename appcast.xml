@@ -22,7 +22,7 @@
           </ul>
           <h4>Enhancements:</h4>
           <ul>
-            <li>Better proxy support. AutoPkgr can now use proxies set in System Preferences, including WPAD/PAC. (See readme on GitHub for details.</li>
+            <li>Better proxy support. AutoPkgr can now use proxies set in System Preferences, including WPAD/PAC. (See readme on GitHub for details.)</li>
           </ul>
           ]]>
         </description>
