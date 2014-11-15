@@ -12,8 +12,9 @@
           <h4>Bug Fixes</h4>
           <ul>
             <li>Address issues with JSS integration:
-              <li>Better handling of URLs for Cloud hosted JSS.</li>
-              <li>More comprehensive logging relating to JSS operations.</li></li>
+              <ul><li>Better handling of URLs for Cloud hosted JSS.</li>
+              <li>More comprehensive logging relating to JSS operations.</li></ul>
+            </li>
             <li>Cleaner UI error messages.</li>
             <li>Correctly detects Xcode git.</li>
             <li>Compatibility with Yosemite's "dark mode."</li>
