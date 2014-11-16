@@ -58,16 +58,15 @@
                                              persistence:NSURLCredentialPersistenceNone];
     }
 
-    [[LGDefaults standardUserDefaults] setJSSVerifySSL:YES];
-
     [operation setWillSendRequestForAuthenticationChallengeBlock:^(NSURLConnection *connection, NSURLAuthenticationChallenge *challenge) {
-        DLog(@"Got authentication challenge");
         if ([challenge.protectionSpace.authenticationMethod isEqualToString:NSURLAuthenticationMethodServerTrust]){
+            DLog(@"Got certificate verification challenge");
             // Since this calls a SecurityInterface panel put it on the main queue
             [[NSOperationQueue mainQueue] addOperationWithBlock:^{
                 [self promptForCertTrust:challenge connection:connection];
             }];
         } else if (credential && challenge.previousFailureCount < 1) {
+            DLog(@"Got authentication challenge");
             [[challenge sender] useCredential:credential forAuthenticationChallenge:challenge];
             if (!_protectionSpaces) _protectionSpaces = [[NSMutableArray alloc] init];
             [_protectionSpaces addObject:challenge.protectionSpace];
@@ -99,18 +98,21 @@
 {
     NSString *serverURL = connection.currentRequest.URL.host;
     BOOL proceed = NO;
+    LGDefaults *defaults = [LGDefaults standardUserDefaults];
+
     SecTrustResultType secresult = kSecTrustResultInvalid;
     if (SecTrustEvaluate(challenge.protectionSpace.serverTrust, &secresult) == errSecSuccess) {
         switch (secresult) {
         case kSecTrustResultProceed: {
             // The user told the OS to trust the cert but this is not
             // picked up by the python-jss' request module so set verify to NO
-            [[LGDefaults standardUserDefaults] setJSSVerifySSL:NO];
+            defaults.JSSVerifySSL = NO;
             proceed = YES;
             break;
         }
         case kSecTrustResultUnspecified: {
             // The OS trusts this certificate implicitly.
+            defaults.JSSVerifySSL = YES;
             proceed = YES;
             break;
         }
@@ -124,9 +126,11 @@
 
             proceed = [panel runModalForTrust:challenge.protectionSpace.serverTrust
                                       message:@"AutoPkgr can't verify the identity of the server"];
-            if (proceed) {
-                [[LGDefaults standardUserDefaults] setJSSVerifySSL:NO];
-            }
+
+            // If elected to proceed here it is doing so with an unverified certificate so set JSS_VERIFY_SSL to NO
+            // However if "Cancel" is clicked we reset the JSS_VERIFY_SSL back to YES which will deliberately cause
+            // python-jss to fail.
+            defaults.JSSVerifySSL = proceed ? NO : YES;
             panel = nil;
         }
         }
