@@ -22,7 +22,8 @@
 #import "LGEmailer.h"
 #import "LGAutoPkgr.h"
 #import "LGHostInfo.h"
-#import "SSKeychain.h"
+#import "AHKeychain.h"
+#import "LGUserNotifications.h"
 
 @implementation LGEmailer
 
@@ -57,9 +58,15 @@
         NSError *error = nil;
 
         if (smtpSession.username) {
-            NSString *password = [SSKeychain passwordForService:kLGApplicationName
-                                                        account:smtpSession.username
-                                                          error:&error];
+            AHKeychain *keychain = [LGHostInfo appKeychain];
+            AHKeychainItem *item = [[AHKeychainItem alloc] init];
+            
+            item.label = kLGApplicationName;
+            item.service = kLGAutoPkgrPreferenceDomain;
+            item.account = smtpSession.username;
+
+            [keychain getItem:item error:&error];
+            NSString *password = item.password;
 
             if ([error code] == errSecItemNotFound) {
                 NSLog(@"Keychain item not found for account %@.", smtpSession.username);
@@ -99,6 +106,11 @@
 
         MCOSMTPSendOperation *sendOperation = [smtpSession sendOperationWithData:rfc822Data];
         [sendOperation start:^(NSError *error) {
+
+            if ([subject isEqualToString:@"Test notification from AutoPkgr"]) {
+                [LGUserNotifications sendNotificationOfTestEmailSuccess:error ? NO:YES error:error];
+            }
+            
             NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
             NSMutableDictionary *userInfo = [NSMutableDictionary dictionaryWithDictionary:@{kLGNotificationUserInfoSubject:subject,
                                                                                             kLGNotificationUserInfoMessage:message}];
@@ -109,10 +121,11 @@
             } else {
                 NSLog(@"Successfully sent email from %@.", from);
             }
-            
+
             [center postNotificationName:kLGNotificationEmailSent
                                   object:self
                                 userInfo:[NSDictionary dictionaryWithDictionary:userInfo]];
+            self.complete = YES;
         }];
     }
 }
@@ -204,6 +217,8 @@
 
     if (message) {
         [self sendEmailNotification:subject message:message];
+    } else {
+        self.complete = YES;
     }
 }
 

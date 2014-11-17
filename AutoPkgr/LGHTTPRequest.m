@@ -125,7 +125,7 @@
             proceed = [panel runModalForTrust:challenge.protectionSpace.serverTrust
                                       message:@"AutoPkgr can't verify the identity of the server"];
             if (proceed) {
-                [[LGDefaults standardUserDefaults] setJSSVerifySSL:NO];
+                [[LGDefaults standardUserDefaults] setJSSVerifySSL:proceed];
             }
             panel = nil;
         }

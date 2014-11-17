@@ -447,7 +447,7 @@
                                                             </button>
                                                             <button misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="K6Q-1C-fKu">
                                                                 <rect key="frame" x="16" y="26" width="308" height="18"/>
-                                                                <buttonCell key="cell" type="check" title="Check for repo updates when AutoPkgr starts" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="2Rc-4D-cra">
+                                                                <buttonCell key="cell" type="check" title="Check for repo updates before scheduled run" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="2Rc-4D-cra">
                                                                     <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                                                     <font key="font" metaFont="system"/>
                                                                 </buttonCell>

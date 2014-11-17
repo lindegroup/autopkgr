@@ -17,23 +17,29 @@ PODS:
   - AFNetworking/Reachability (2.4.1)
   - AFNetworking/Security (2.4.1)
   - AFNetworking/Serialization (2.4.1)
+  - AHCodesignVerifier (0.1)
+  - AHKeychain (0.2)
+  - AHLaunchCtl (0.2.2)
   - AHProxySettings (0.1)
   - Sparkle (1.8.0)
-  - SSKeychain (1.2.2)
   - XMLDictionary (1.4)
 
 DEPENDENCIES:
   - AFNetworking (~> 2.4.1)
+  - AHCodesignVerifier (~> 0.1)
+  - AHKeychain (~> 0.2)
+  - AHLaunchCtl (~> 0.2.2)
   - AHProxySettings
   - Sparkle (~> 1.8)
-  - SSKeychain (~> 1.2)
   - XMLDictionary (~> 1.4)
 
 SPEC CHECKSUMS:
   AFNetworking: 0aabc6fae66d6e5d039eeb21c315843c7aae51ab
+  AHCodesignVerifier: d85f1962a32cac1bf671f47f1ac015dcb45192f2
+  AHKeychain: 8d76073b87a7d355ded1f03529a3088de4a9acf6
+  AHLaunchCtl: 64ef6f7c2725193e586dac0fb8967462097f46c3
   AHProxySettings: c2c5a19614bd74d0aaa2ff0529330236cb54d2c3
   Sparkle: 5eb20bb37ca21e471dab8417dee880198d905327
-  SSKeychain: cc48bd3ad24fcd9125adb9e0d23dd50b8bbd08b9
   XMLDictionary: 735e81b9a043e220b0d24e9d4f16719606f2e0fc
 
 COCOAPODS: 0.34.4

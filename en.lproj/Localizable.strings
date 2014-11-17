@@ -52,6 +52,13 @@
 "kLGErrorJSSXMLSerializerErrorDescription" = "Error getting distribution points";
 "kLGErrorJSSXMLSerializerErrorSuggestion" = "The Casper server's response could not be correctly interpreted";
 
+/** Error with schedule interval */
+"kLGErrorIncorrectScheduleTimerIntervalDescription" = "Error setting timer";
+"kLGErrorIncorrectScheduleTimerIntervalSuggestion" = "The start timer interval for scheduled runs is not correct, it must be a number and not 0";
+
+/** Error authorization canceled by user*/
+"kLGErrorAuthChallenge" = "Error creating authorization";
+"kLGErrorAuthChallenge" = "You are not authorized to perform this action";
 /**
  *  Errors relating specifically to AutoPkg
  *  Recovery Suggestion string is created from the task.standardError so unnecessary here

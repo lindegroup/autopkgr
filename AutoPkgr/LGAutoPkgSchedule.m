@@ -21,80 +21,46 @@
 
 #import "LGAutoPkgSchedule.h"
 #import "LGAutoPkgr.h"
-#import "LGAutoPkgTask.h"
-#import "LGRecipes.h"
-#import "LGEmailer.h"
+#import <AHLaunchCtl/AHLaunchCtl.h>
+#import "LGAutoPkgrHelperConnection.h"
 
-@implementation LGAutoPkgSchedule {
-    NSTimer *_timer;
-}
+@implementation LGAutoPkgSchedule
 
-+ (LGAutoPkgSchedule *)sharedTimer
++ (void)startAutoPkgSchedule:(BOOL)start interval:(NSInteger)interval isForced:(BOOL)forced reply:(void (^)(NSError* error))reply;
 {
-    static dispatch_once_t onceToken;
-    static LGAutoPkgSchedule *shared;
-    dispatch_once(&onceToken, ^{
-        shared = [[LGAutoPkgSchedule alloc] init];
-    });
-    return shared;
-}
+    BOOL scheduleIsRunning = jobIsRunning(kLGAutoPkgrLaunchDaemonPlist, kAHGlobalLaunchDaemon);
+    if (start && interval == 0) {
+        reply([LGError errorWithCode:kLGErrorIncorrectScheduleTimerInterval]);
+        return;
+    }
+    
+    // Create the external form authorization data for the helper
+    NSData *authorization = [LGAutoPkgrAuthorizer authorizeHelper];
+    assert(authorization != nil);
+    
+    LGAutoPkgrHelperConnection *helper = [LGAutoPkgrHelperConnection new];
+    [helper connectToHelper];
+    
+    if (start && (!scheduleIsRunning || forced)) {
+        
+        // Convert seconds to hours for our time interval
+        NSTimeInterval runInterval = interval * 60 * 60;
+        NSString *program = [[NSProcessInfo processInfo] arguments].firstObject;
 
-- (void)configure
-{
-    LGDefaults *defaults = [[LGDefaults alloc] init];
-    if (defaults.checkForNewVersionsOfAppsAutomaticallyEnabled) {
-        DLog(@"Stopping countdown to next scheduled AutoPkg run.");
-        [self stopTimer];
-        if ([defaults integerForKey:kLGAutoPkgRunInterval]) {
-            double i = [defaults integerForKey:kLGAutoPkgRunInterval];
-            if (i != 0) {
-                NSTimeInterval ti = i * 60 * 60; // Convert hours to seconds for our time interval
-                _timer = [NSTimer scheduledTimerWithTimeInterval:ti target:self selector:@selector(runAutoPkg) userInfo:nil repeats:YES];
-                if ([_timer isValid]) {
-                    DLog(@"Starting countdown to next scheduled AutoPkg run.");
-                }
-            } else {
-                DLog(@"i is 0 because that's what the user entered or what they entered wasn't a digit.");
-            }
-        } else {
-            NSLog(@"The user enabled automatic checking for app updates, but didn't specify an interval.");
-        }
-    } else {
-        DLog(@"Stopping countdown to next scheduled AutoPkg run.");
-        [self stopTimer];
+        [[helper.connection remoteObjectProxy] scheduleRun:runInterval user:NSUserName() program:program authorization:authorization reply:^(NSError *error) {
+            NSDate *date = [NSDate dateWithTimeIntervalSinceNow:runInterval];
+            NSDateFormatter *fomatter = [NSDateFormatter new];
+            [fomatter setDateStyle:NSDateFormatterMediumStyle];
+            [fomatter setTimeStyle:NSDateFormatterMediumStyle];
+            NSLog(@"Next scheduled AutoPkg run will occur at %@",[fomatter stringFromDate:date]);
+            reply(error);
+        }];
+    } else if (scheduleIsRunning) {
+        [[helper.connection remoteObjectProxy] removeScheduleWithAuthorization:authorization reply:^(NSError *error) {
+            reply(error);
+        }];
     }
 }
 
-- (void)stopTimer
-{
-    if ([_timer isValid]) {
-        [_timer invalidate];
-    }
-    _timer = nil;
-}
-
-- (void)runAutoPkg
-{
-
-    LGDefaults *defaults = [[LGDefaults alloc] init];
-    if (defaults.checkForNewVersionsOfAppsAutomaticallyEnabled) {
-        NSLog(@"Beginning scheduled run of AutoPkg.");
-        [_progressDelegate startProgressWithMessage:@"Starting scheduled run..."];
-        NSString *recipeList = [LGRecipes recipeList];
-
-        [LGAutoPkgTask runRecipeList:recipeList
-            progress:^(NSString *message, double taskProgress) {
-                [_progressDelegate updateProgress:message progress:taskProgress];
-            }
-            reply:^(NSDictionary *report, NSError *error) {
-                NSLog(@"Scheduled run of AutoPkg complete.");
-                [_progressDelegate stopProgress:error];
-                LGEmailer *emailer = [LGEmailer new];
-                [emailer sendEmailForReport:report error:error];
-            }];
-    } else {
-        [self stopTimer];
-    }
-}
 
 @end

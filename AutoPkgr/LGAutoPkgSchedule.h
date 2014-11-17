@@ -24,9 +24,6 @@
 
 @interface LGAutoPkgSchedule : NSObject
 
-@property (weak) id<LGProgressDelegate> progressDelegate;
-
-+ (LGAutoPkgSchedule *)sharedTimer;
-- (void)configure;
++ (void)startAutoPkgSchedule:(BOOL)start interval:(NSInteger)interval isForced:(BOOL)forced reply:(void (^)(NSError* error))reply;
 
 @end

@@ -25,6 +25,8 @@
 NSString *const kLGApplicationName = @"AutoPkgr";
 NSString *const kLGAutoPkgPreferenceDomain = @"com.github.autopkg";
 NSString *const kLGAutoPkgrPreferenceDomain = @"com.lindegroup.AutoPkgr";
+NSString *const kLGAutoPkgrHelperToolName = @"com.lindegroup.AutoPkgr.helper";
+NSString *const kLGAutoPkgrLaunchDaemonPlist = @"com.lindegroup.AutoPkgr.schedule";
 
 #pragma mark - Message Strings / Labels
 NSString *const kLGGitInstalledLabel = @"Git has been installed.";

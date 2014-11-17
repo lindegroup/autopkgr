@@ -31,7 +31,6 @@
 
 - (void)reload;
 - (void)writeRecipeList;
-- (NSString *)getAppSupportDirectory;
 
 @property (weak) IBOutlet LGTableView *recipeTableView;
 @property (weak) IBOutlet NSSearchField *recipeSearchField;

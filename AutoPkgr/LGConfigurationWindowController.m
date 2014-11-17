@@ -30,11 +30,12 @@
 #import "LGProgressDelegate.h"
 #import "LGGitHubJSONLoader.h"
 #import "LGVersionComparator.h"
-#import "SSKeychain.h"
+#import "LGAutoPkgrHelperConnection.h"
+#import "AHKeychain.h"
 
 @interface LGConfigurationWindowController () {
     LGDefaults *_defaults;
-    LGAutoPkgTask *_task;
+    LGAutoPkgTaskManager *_taskManager;
 }
 
 @end
@@ -90,8 +91,6 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
     // Set up buttons to save their defaults
     [_smtpTLSEnabledButton setTarget:self];
     [_smtpTLSEnabledButton setAction:@selector(changeTLSButtonState)];
-    [_warnBeforeQuittingButton setTarget:self];
-    [_warnBeforeQuittingButton setAction:@selector(changeWarnBeforeQuittingButtonState)];
     [_smtpAuthenticationEnabledButton setTarget:self];
     [_smtpAuthenticationEnabledButton setAction:@selector(changeSmtpAuthenticationButtonState)];
     [_sendEmailNotificationsWhenNewVersionsAreFoundButton setTarget:self];
@@ -211,30 +210,17 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
 
     [_checkForRepoUpdatesAutomaticallyButton setState:[_defaults checkForRepoUpdatesAutomaticallyEnabled]];
 
-    [_warnBeforeQuittingButton setState:[_defaults warnBeforeQuittingEnabled]];
-
     // Read the SMTP password from the keychain and populate in
     // NSSecureTextField if it exists
-    NSError *error = nil;
     NSString *_smtpUsernameString = [_defaults SMTPUsername];
 
-    if (_smtpUsernameString) {
-        NSString *password = [SSKeychain passwordForService:kLGApplicationName
-                                                    account:_smtpUsernameString
-                                                      error:&error];
-
-        if ([error code] == errSecItemNotFound) {
-            NSLog(@"Keychain entry not found for account %@.", _smtpUsernameString);
-        } else if ([error code] == errSecNotAvailable) {
-            NSLog(@"Found the keychain entry for %@ but no password value was returned.", _smtpUsernameString);
-        } else if (error != nil) {
-            NSLog(@"An error occurred when attempting to retrieve the keychain entry for %@. Error: %@", _smtpUsernameString, [error localizedDescription]);
-        } else {
-            // Only populate the SMTP Password field if the username exists
-            if (_smtpUsernameString && password && ![_smtpUsernameString isEqual:@""]) {
-                NSLog(@"Successfully retrieved keychain entry for account %@.", _smtpUsernameString);
-                [_smtpPassword setStringValue:password];
-            }
+    if (_smtpUsernameString && ![_smtpUsernameString isEqual:@""]) {
+        NSString *password = [self getPassword];
+        
+        // Only populate the SMTP Password field if the username exists
+        if (password) {
+            NSLog(@"Successfully retrieved keychain entry for account %@.", _smtpUsernameString);
+            [_smtpPassword setStringValue:password];
         }
     }
 
@@ -277,21 +263,6 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
             [_autoPkgStatusIcon setImage:[NSImage imageNamed:NSImageNameStatusUnavailable]];
         }
     }];
-
-    // Update AutoPkg recipe repos when the application launches
-    // if the user has enabled automatic repo updates
-    if (_defaults.checkForRepoUpdatesAutomaticallyEnabled && gitInstalled && autoPkgInstalled) {
-        [_updateRepoNowButton setEnabled:NO];
-        [_checkAppsNowButton setEnabled:NO];
-        [_updateRepoNowButton setTitle:@"Repos Updating..."];
-        NSLog(@"Updating AutoPkg recipe repos...");
-        [LGAutoPkgTask repoUpdate:^(NSError *error) {
-            [_updateRepoNowButton setEnabled:YES];
-            [_updateRepoNowButton setTitle:@"Update Repos Now"];
-            [_checkAppsNowButton setEnabled:YES];
-            NSLog(@"AutoPkg recipe repos updated.");
-        }];
-    }
 
     _popRepoTableViewHandler.progressDelegate = _progressDelegate;
 
@@ -360,7 +331,56 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
     }
 }
 
-#pragma mark - AutoPkgr actions
+- (NSString *)getPassword
+{
+    NSString *password;
+    NSError *error;
+    
+    NSString *user = _smtpUsername.stringValue;
+
+    AHKeychain *keychain = [LGHostInfo appKeychain];
+    AHKeychainItem *item = [[AHKeychainItem alloc] init];
+    item.label = kLGApplicationName;
+    item.service = kLGAutoPkgrPreferenceDomain;
+    item.account = user;
+
+    [keychain getItem:item error:&error];
+
+    password = item.password;
+
+    if ([error code] == errSecItemNotFound) {
+        NSLog(@"Keychain entry not found for account %@.", user);
+    } else if ([error code] == errSecNotAvailable) {
+        NSLog(@"Found the keychain entry for %@ but no password value was returned.", user);
+    } else if (error) {
+        NSLog(@"An error occurred when attempting to retrieve the keychain entry for %@. Error: %@", user, [error localizedDescription]);
+    }
+    
+    return password;
+}
+
+- (IBAction)updateKeychainPassword:(id)sender
+{
+    NSString *user = _smtpUsername.stringValue;
+    NSString *password = _smtpPassword.stringValue;
+
+    NSError *error;
+
+    AHKeychain *keychain = [LGHostInfo appKeychain];
+    AHKeychainItem *item = [[AHKeychainItem alloc] init];
+
+    item.service = kLGAutoPkgrPreferenceDomain;
+    item.label = kLGApplicationName;
+    item.account = user;
+    item.password = password;
+
+    [keychain saveItem:item error:&error];
+    if (error) {
+        NSLog(@"%@",error);
+    }
+}
+
+# pragma mark - AutoPkgr actions
 - (void)save
 {
     _defaults.SMTPServer = [_smtpServer stringValue];
@@ -382,9 +402,6 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
     _defaults.SMTPTLSEnabled = [_smtpTLSEnabledButton state];
     NSLog(@"%@ TLS.", _defaults.SMTPTLSEnabled ? @"Enabling" : @"Disabling");
 
-    _defaults.warnBeforeQuittingEnabled = [_warnBeforeQuittingButton state];
-    NSLog(@"%@ warning before quitting.", _defaults.warnBeforeQuittingEnabled ? @"Enabling" : @"Disabling");
-
     _defaults.SMTPAuthenticationEnabled = [_smtpAuthenticationEnabledButton state];
     NSLog(@"%@ SMTP authentication.", _defaults.SMTPAuthenticationEnabled ? @"Enabling" : @"Disabling");
 
@@ -394,32 +411,11 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
     _defaults.checkForNewVersionsOfAppsAutomaticallyEnabled = [_checkForNewVersionsOfAppsAutomaticallyButton state];
     NSLog(@"%@ checking for new apps automatically.", _defaults.checkForNewVersionsOfAppsAutomaticallyEnabled ? @"Enabling" : @"Disabling");
 
-    NSError *error;
     // Store the password used for SMTP authentication in the default keychain
-    [SSKeychain setPassword:[_smtpPassword stringValue] forService:kLGApplicationName account:[_smtpUsername stringValue] error:&error];
-    if (error) {
-        NSLog(@"Error while storing email password in keychain: %@", error);
-    } else {
-        NSLog(@"Successfully stored email password in keychain.");
-    }
+    [self updateKeychainPassword:nil];
 
     // Synchronize with the defaults database
     [_defaults synchronize];
-}
-
-- (void)runCommandAsRoot:(NSString *)command
-{
-    // Super dirty hack, but way easier than
-    // using Authorization Services
-    NSDictionary *error = [[NSDictionary alloc] init];
-    NSString *script = [NSString stringWithFormat:@"do shell script \"sh -c '%@'\" with administrator privileges", command];
-    NSLog(@"AppleScript commands: %@", script);
-    NSAppleScript *appleScript = [[NSAppleScript alloc] initWithSource:script];
-    if ([appleScript executeAndReturnError:&error]) {
-        NSLog(@"Shell script authorization successful.");
-    } else {
-        NSLog(@"Shell script authorization failed. Error: %@.", error);
-    }
 }
 
 - (IBAction)installGit:(id)sender
@@ -476,6 +472,39 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
                 [_installAutoPkgButton setEnabled:YES];
             }
         }];
+    }];
+}
+
+// Passing YES to start will start the schedule, Passing NO will stop the launchD
+- (IBAction)startAutoPkgSchedule:(id)sender
+{
+    BOOL force = NO;
+    BOOL start = [_checkForNewVersionsOfAppsAutomaticallyButton state];;
+    NSInteger interval = _autoPkgRunInterval.integerValue;
+    
+    if ([sender isEqualTo:_checkForNewVersionsOfAppsAutomaticallyButton]) {
+        force = NO;
+    } else if ([sender isEqualTo:_autoPkgRunInterval]) {
+        if (!start || _defaults.autoPkgRunInterval == _autoPkgRunInterval.integerValue) {
+            return;
+        }
+        force = YES;
+    }
+    
+    [LGAutoPkgSchedule startAutoPkgSchedule:start interval:interval isForced:force reply:^(NSError *error) {
+        if (error) {
+            // If error, reset the state to modified status
+            _checkForNewVersionsOfAppsAutomaticallyButton.state = _defaults.checkForNewVersionsOfAppsAutomaticallyEnabled;
+            _autoPkgRunInterval.stringValue = [NSString stringWithFormat:@"%ld",_defaults.autoPkgRunInterval];
+            // If the authorization was canceled by user, don't present error.
+            if (error.code != kLGErrorAuthChallenge) {
+                [self stopProgress:error];
+            }
+        } else {
+            // Otherwise update our defaults
+            _defaults.checkForNewVersionsOfAppsAutomaticallyEnabled = start;
+            _defaults.autoPkgRunInterval = interval;
+        }
     }];
 }
 
@@ -648,7 +677,6 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
                     _defaults.autoPkgRecipeRepoDir = urlPath;
                 }
             }
-
         }
     }];
 }
@@ -731,44 +759,55 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
 
 - (IBAction)updateReposNow:(id)sender
 {
-    [self startProgressWithMessage:@"Updating AutoPkg recipe repos."];
-    [self.updateRepoNowButton setEnabled:NO];
+    [_cancelAutoPkgRunButton setHidden:NO];
+    [_progressDetailsMessage setHidden:NO];
+    [_progressDelegate startProgressWithMessage:@"Updating AutoPkg recipe repos."];
 
-    [LGAutoPkgTask repoUpdate:^(NSError *error) {
-        [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-            [self stopProgress:error];
-            [self.updateRepoNowButton setEnabled:YES];
-            [self.recipeTableViewHandler reload];
-        }];
+    [_updateRepoNowButton setEnabled:NO];
+    if (!_taskManager) {
+        _taskManager = [[LGAutoPkgTaskManager alloc] init];
+    }
+
+    _taskManager.progressDelegate = _progressDelegate;
+
+    [_taskManager repoUpdate:^(NSError *error) {
+        NSAssert([NSThread isMainThread], @"reply not on manin thread!!");
+        [_progressDelegate stopProgress:error];
+        [_updateRepoNowButton setEnabled:YES];
+        [_recipeTableViewHandler reload];
     }];
 }
 
 - (IBAction)checkAppsNow:(id)sender
 {
     NSString *recipeList = [LGRecipes recipeList];
+    if (!_taskManager) {
+        _taskManager = [[LGAutoPkgTaskManager alloc] init];
+    }
+
+    _taskManager.progressDelegate = _progressDelegate;
+
     [_cancelAutoPkgRunButton setHidden:NO];
     [_progressDetailsMessage setHidden:NO];
     [_progressDelegate startProgressWithMessage:@"Running selected AutoPkg recipes."];
-    _task = [[LGAutoPkgTask alloc] init];
-    [_task runRecipeList:recipeList
-        progress:^(NSString *message, double taskProgress) {
-                            [_progressDelegate updateProgress:message progress:taskProgress];
-        }
-        reply:^(NSDictionary *report, NSError *error) {
-                            [_progressDelegate stopProgress:error];
-                            if (report.count || error) {
-                                LGEmailer *emailer = [LGEmailer new];
-                                [emailer sendEmailForReport:report error:error];
-                            }
-                            _task = nil;
-        }];
+
+    [_taskManager runRecipeList:recipeList
+                     updateRepo:NO
+                          reply:^(NSDictionary *report, NSError *error) {
+                              NSAssert([NSThread isMainThread], @"reply not on manin thread!!");
+
+                                [_progressDelegate stopProgress:error];
+                                if (report.count || error) {
+                                    LGEmailer *emailer = [LGEmailer new];
+                                    [emailer sendEmailForReport:report error:error];
+                                }
+                          }];
 }
 
 - (IBAction)cancelAutoPkgRun:(id)sender
 {
-    if (_task) {
-        [_task cancel];
-        NSLog(@"AutoPkg task cancelled.");
+    if (_taskManager) {
+        [_taskManager cancel];
     }
 }
 
@@ -812,18 +851,9 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
         // array of strings if the field contains a series of strings
         _defaults.SMTPTo = [_smtpTo objectValue];
     } else if ([object isEqual:_autoPkgRunInterval]) {
-        if ([_autoPkgRunInterval integerValue] != 0) {
-            _defaults.autoPkgRunInterval = [_autoPkgRunInterval integerValue];
-            [[LGAutoPkgSchedule sharedTimer] configure];
-        }
+        [self startAutoPkgSchedule:_autoPkgRunInterval];
     } else if ([object isEqual:_smtpPassword]) {
-        NSError *error;
-        [SSKeychain setPassword:[_smtpPassword stringValue] forService:kLGApplicationName account:[_smtpUsername stringValue] error:&error];
-        if (error) {
-            NSLog(@"Error occurred while storing email password in keychain: %@", error);
-        } else {
-            NSLog(@"Successfully stored email password in keychain.");
-        }
+        [self updateKeychainPassword:self];
     } else {
         DLog(@"Uncaught controlTextDidEndEditing");
         return;
@@ -869,13 +899,6 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
     [_defaults synchronize];
 }
 
-- (void)changeWarnBeforeQuittingButtonState
-{
-    _defaults.warnBeforeQuittingEnabled = [_warnBeforeQuittingButton state];
-    NSLog(@"%@ warning before quitting.", _defaults.warnBeforeQuittingEnabled ? @"Enabling" : @"Disabling");
-    [_defaults synchronize];
-}
-
 - (void)changeSmtpAuthenticationButtonState
 {
     _defaults.SMTPAuthenticationEnabled = [_smtpAuthenticationEnabledButton state];
@@ -892,9 +915,9 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
 
 - (void)changeCheckForNewVersionsOfAppsAutomaticallyButtonState
 {
-    _defaults.checkForNewVersionsOfAppsAutomaticallyEnabled = [_checkForNewVersionsOfAppsAutomaticallyButton state];
-    NSLog(@"%@ checking for new apps automatically.", _defaults.checkForNewVersionsOfAppsAutomaticallyEnabled ? @"Enabling" : @"Disabling");
-    [[LGAutoPkgSchedule sharedTimer] configure];
+    BOOL state = [_checkForNewVersionsOfAppsAutomaticallyButton state];
+    NSLog(@"%@ checking for new apps automatically.", state ? @"Enabling" : @"Disabling");
+    [self startAutoPkgSchedule:_checkForNewVersionsOfAppsAutomaticallyButton];
 }
 
 - (void)changeCheckForRepoUpdatesAutomaticallyButtonState
@@ -1062,14 +1085,17 @@ static void *XXAuthenticationEnabledContext = &XXAuthenticationEnabledContext;
     // Stop the progress panel, and if and error was sent in
     // do a sheet modal
     [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-        [self.progressPanel orderOut:self];
-        [self.progressIndicator setDoubleValue:0.0];
-        [self.progressIndicator setIndeterminate:YES];
-        [self.cancelAutoPkgRunButton setHidden:YES];
+        // Give the progress panel a second to got to 100%
+        [self.progressIndicator setDoubleValue:100.0];
+        [[NSRunLoop currentRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:1]];
 
         [NSApp endSheet:self.progressPanel returnCode:0];
-        [self.progressMessage setStringValue:@"Starting..."];
+        [self.progressIndicator setIndeterminate:YES];
+        [self.progressPanel orderOut:self];
+        [self.cancelAutoPkgRunButton setHidden:YES];
         [self.progressDetailsMessage setStringValue:@""];
+        [self.progressMessage setStringValue:@"Starting..."];
+        [self.progressIndicator setDoubleValue:0.0];
 
         if (error) {
             SEL selector = nil;

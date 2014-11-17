@@ -42,39 +42,45 @@ static NSDictionary *userInfoFromCode(LGErrorCodes code)
     NSString *message;
     NSString *suggestion;
     switch (code) {
-    case kLGErrorSuccess:
-        localizedBaseString = @"kLGErrorSuccess";
-        break;
-    case kLGErrorSendingEmail:
-        localizedBaseString = @"kLGErrorSendingEmail";
-        break;
-    case kLGErrorTestingPort:
-        localizedBaseString = @"kLGErrorTestingPort";
-        break;
-    case kLGErrorReparingAutoPkgPrefs:
-        localizedBaseString = @"kLGErrorReparingAutoPkgPrefs";
-        break;
-    case kLGErrorMultipleRunsOfAutopkg:
-        localizedBaseString = @"kLGErrorMultipleRunsOfAutopkg";
-        break;
-    case kLGErrorInstallGit:
-        localizedBaseString = @"kLGErrorInstallGit";
-        break;
-    case kLGErrorInstallAutoPkg:
-        localizedBaseString = @"kLGErrorInstallAutoPkg";
-        break;
-    case kLGErrorInstallAutoPkgr:
-        localizedBaseString = @"kLGErrorInstallAutoPkgr";
-        break;
-    case kLGErrorInstallJSSAddon:
-        localizedBaseString = @"kLGErrorInstallJSSAddon";
-        break;
-    case kLGErrorJSSXMLSerializerError:
-        localizedBaseString = @"kLGErrorJSSXMLSerializerError";
-        break;
-    default:
-        localizedBaseString = @"kLGErrorUnknown";
-        break;
+        case kLGErrorSuccess:
+            localizedBaseString = @"kLGErrorSuccess";
+            break;
+        case kLGErrorSendingEmail:
+            localizedBaseString = @"kLGErrorSendingEmail";
+            break;
+        case kLGErrorTestingPort:
+            localizedBaseString = @"kLGErrorTestingPort";
+            break;
+        case kLGErrorReparingAutoPkgPrefs:
+            localizedBaseString = @"kLGErrorReparingAutoPkgPrefs";
+            break;
+        case kLGErrorMultipleRunsOfAutopkg:
+            localizedBaseString = @"kLGErrorMultipleRunsOfAutopkg";
+            break;
+        case kLGErrorInstallGit:
+            localizedBaseString = @"kLGErrorInstallGit";
+            break;
+        case kLGErrorInstallAutoPkg:
+            localizedBaseString = @"kLGErrorInstallAutoPkg";
+            break;
+        case kLGErrorInstallAutoPkgr:
+            localizedBaseString = @"kLGErrorInstallAutoPkgr";
+            break;
+        case kLGErrorInstallJSSAddon:
+            localizedBaseString = @"kLGErrorInstallJSSAddon";
+            break;
+        case kLGErrorJSSXMLSerializerError:
+            localizedBaseString = @"kLGErrorJSSXMLSerializerError";
+            break;
+        case kLGErrorIncorrectScheduleTimerInterval:
+            localizedBaseString = @"kLGErrorIncorrectScheduleTimerInterval";
+            break;
+        case kLGErrorAuthChallenge:
+            localizedBaseString = @"kLGErrorAuthChallenge";
+            break;
+        default:
+            localizedBaseString = @"kLGErrorUnknown";
+            break;
     }
 
     // Setup the localized description
