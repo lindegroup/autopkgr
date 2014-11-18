@@ -520,7 +520,7 @@ typedef void (^AutoPkgRepoyErrorBlock)(NSError *error);
         NSFileManager *fm = [NSFileManager defaultManager];
         NSString *reportPlistFile = self.reportPlistFile;
 
-        if (reportPlistFile && [fm fileExistsAtPath:self.reportPlistFile]) {
+        if (reportPlistFile && [fm fileExistsAtPath:reportPlistFile]) {
             // Create dictionary from the tmp file
             _report = [NSDictionary dictionaryWithContentsOfFile:reportPlistFile];
 
@@ -531,21 +531,10 @@ typedef void (^AutoPkgRepoyErrorBlock)(NSError *error);
                     DLog(@"Error removing autopkg run report-plist: %@", error.localizedDescription);
                 }
             }
-        } else {
-            NSString *plistString = self.standardOutString;
-            if (plistString && ![plistString isEqualToString:@""]) {
-                // Convert string back to data for plist serialization
-                NSData *plistData = [plistString dataUsingEncoding:NSUTF8StringEncoding];
-                // Initialize plist format
-                NSPropertyListFormat format;
-                // Initialize our dict
-                _report = [NSPropertyListSerialization propertyListWithData:plistData
-                                                                         options:NSPropertyListImmutable
-                                                                          format:&format
-                                                                           error:nil];
-            }
         }
     } else {
+        // For AutoPkg earlier than 0.4.0 the report plist was piped to stdout
+        // so convert that string to an NSDictionary
         NSString *plistString = self.standardOutString;
         if (plistString && ![plistString isEqualToString:@""]) {
             // Convert string back to data for plist serialization
@@ -910,7 +899,9 @@ typedef void (^AutoPkgRepoyErrorBlock)(NSError *error);
         self.progress = [[decoder decodeObjectOfClass:[NSNumber class]
                                                forKey:NSStringFromSelector(@selector(progress))] doubleValue];
 
-        self.results = [decoder decodeObjectOfClasses:[NSSet setWithObjects:[NSArray class], [NSDictionary class], nil]
+        self.results = [decoder decodeObjectOfClasses:[NSSet setWithArray:@[ [NSArray class],
+                                                                             [NSDictionary class],
+                                                                             [NSString class] ]]
                                                forKey:NSStringFromSelector(@selector(results))];
 
         self.report = [decoder decodeObjectOfClass:[NSDictionary class]
