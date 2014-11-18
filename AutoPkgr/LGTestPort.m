@@ -106,6 +106,13 @@
     // Set up the operation
     AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
 
+    // Since this is just a server test, we don't care about certificate validation here
+    // so set up a policy that will ignore certificate trust issues.
+    AFSecurityPolicy *policy = [[AFSecurityPolicy alloc] init];
+    policy.allowInvalidCertificates = YES;
+    policy.validatesCertificateChain = NO;
+
+    operation.securityPolicy = policy;
     [operation setRedirectResponseBlock:^NSURLRequest * (NSURLConnection * connection, NSURLRequest * request, NSURLResponse * redirectResponse) {
         NSLog(@"redirected %@",redirectResponse);
         redirectedURL = [(NSHTTPURLResponse *)redirectResponse allHeaderFields][@"Location"];
