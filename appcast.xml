@@ -20,7 +20,7 @@
             <li>Compatibility with Yosemite's "dark mode."</li>
             <li>Minor GUI adjustments.</li>
           </ul>
-          <h4>Enhancements:</h4>
+          <h4>Enhancements</h4>
           <ul>
             <li>Better proxy support. AutoPkgr can now use proxies set in System Preferences, including WPAD/PAC. (See readme on GitHub for details.)</li>
           </ul>
