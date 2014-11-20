@@ -28,7 +28,6 @@
 #import "LGAutoPkgTask.h"
 
 #pragma mark - Class constants
-NSString *defaultJSSRepo = @"https://github.com/sheagcraig/jss-recipes.git";
 
 @implementation LGJSSAddon {
     LGDefaults *_defaults;
@@ -131,10 +130,10 @@ NSString *defaultJSSRepo = @"https://github.com/sheagcraig/jss-recipes.git";
     [installer installJSSAddon:^(NSError *error) {
         BOOL success = (error == nil);
         if (success) {
-            NSString *message = [NSString stringWithFormat:@"Adding %@",defaultJSSRepo];
-            NSLog(@"Adding default JSS recipe repository: %@", defaultJSSRepo);
+            NSString *message = [NSString stringWithFormat:@"Adding %@",kLGJSSDefaultRepo];
+            NSLog(@"Adding default JSS recipe repository: %@", kLGJSSDefaultRepo);
             [_progressDelegate startProgressWithMessage:message];
-            [LGAutoPkgTask repoAdd:defaultJSSRepo reply:^(NSError *error) {
+            [LGAutoPkgTask repoAdd:kLGJSSDefaultRepo reply:^(NSError *error) {
                 [_progressDelegate stopProgress:error];
                 [[NSNotificationCenter defaultCenter] postNotificationName:kLGNotificationReposModified
                                                                     object:nil];

@@ -30,13 +30,12 @@
 
     if (self) {
         _awake = NO;
-
         _jsonLoader = [[LGGitHubJSONLoader alloc] init];
 
-        _recipeRepos = [_jsonLoader getAutoPkgRecipeRepos];
+        NSArray *recipeRepos = [_jsonLoader getAutoPkgRecipeRepos];
 
-        if (_recipeRepos != nil) {
-            _popularRepos = _recipeRepos;
+        if (recipeRepos != nil) {
+            _popularRepos = [recipeRepos arrayByAddingObject:kLGJSSDefaultRepo];
         } else {
             _popularRepos = @[ @"https://github.com/autopkg/recipes.git",
                                @"https://github.com/autopkg/keeleysam-recipes.git",
@@ -62,7 +61,8 @@
                                @"https://github.com/autopkg/justinrummel-recipes.git",
                                @"https://github.com/autopkg/n8felton-recipes.git",
                                @"https://github.com/autopkg/groob-recipes.git",
-                               @"https://github.com/autopkg/jazzace-recipes.git" ];
+                               @"https://github.com/autopkg/jazzace-recipes.git",
+                               kLGJSSDefaultRepo];
         }
 
         [self assembleRepos];
