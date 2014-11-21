@@ -232,7 +232,7 @@ NSString *const kLGBoxenBrewGit = @"/opt/boxen/homebrew/bin";
 
 + (AHKeychain *)appKeychain
 {
-    NSString *appKeychain = @"AutoPkg.keychain";
+    NSString *appKeychain = @"AutoPkgr.keychain";
 
     BOOL success = YES;
     AHKeychain *keychain;

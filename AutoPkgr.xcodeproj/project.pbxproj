@@ -66,6 +66,7 @@
 		BEC1258A19F04703006696C4 /* LGInstaller.m in Sources */ = {isa = PBXBuildFile; fileRef = BEAA76CB19BFD635002D73EE /* LGInstaller.m */; };
 		BEC1258B19F04703006696C4 /* LGPopularRepositories.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A0BABE8196E560000A136BB /* LGPopularRepositories.m */; };
 		BEC1258C19F049A1006696C4 /* LGTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = BE32178D19EDA15400A92E5A /* LGTableView.m */; };
+		BED02ADC1A194F9C00714CC2 /* NSArray+filtered.m in Sources */ = {isa = PBXBuildFile; fileRef = BED02ADB1A194F9C00714CC2 /* NSArray+filtered.m */; };
 		BEE05F061A05CDBE00EF80B3 /* libPods-AutoPkgr-AHCodesignVerifier.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BEE05F051A05CDBE00EF80B3 /* libPods-AutoPkgr-AHCodesignVerifier.a */; };
 		BEE8CF1319E0E7F400981C4B /* NSTextField+setSafeStringValue.m in Sources */ = {isa = PBXBuildFile; fileRef = BEE8CF1219E0E7F400981C4B /* NSTextField+setSafeStringValue.m */; };
 		BEFC931D1995F0710074C938 /* LGError.m in Sources */ = {isa = PBXBuildFile; fileRef = BEFC931C1995F0710074C938 /* LGError.m */; };
@@ -261,6 +262,8 @@
 		BE94AA7B19BB8A78001A00D0 /* LGProgressDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LGProgressDelegate.h; sourceTree = "<group>"; };
 		BEAA76CA19BFD635002D73EE /* LGInstaller.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGInstaller.h; sourceTree = "<group>"; };
 		BEAA76CB19BFD635002D73EE /* LGInstaller.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGInstaller.m; sourceTree = "<group>"; };
+		BED02ADA1A194F9C00714CC2 /* NSArray+filtered.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSArray+filtered.h"; path = "Custom Catagories/NSArray+filtered.h"; sourceTree = "<group>"; };
+		BED02ADB1A194F9C00714CC2 /* NSArray+filtered.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSArray+filtered.m"; path = "Custom Catagories/NSArray+filtered.m"; sourceTree = "<group>"; };
 		BEE05F051A05CDBE00EF80B3 /* libPods-AutoPkgr-AHCodesignVerifier.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libPods-AutoPkgr-AHCodesignVerifier.a"; path = "../../../../Library/Developer/Xcode/DerivedData/AutoPkgr-gvffmulnnaejibfmmwfptzyobmbb/Build/Products/Debug/libPods-AutoPkgr-AHCodesignVerifier.a"; sourceTree = "<group>"; };
 		BEE8CF1119E0E7F400981C4B /* NSTextField+setSafeStringValue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSTextField+setSafeStringValue.h"; path = "Custom Catagories/NSTextField+setSafeStringValue.h"; sourceTree = "<group>"; };
 		BEE8CF1219E0E7F400981C4B /* NSTextField+setSafeStringValue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSTextField+setSafeStringValue.m"; path = "Custom Catagories/NSTextField+setSafeStringValue.m"; sourceTree = "<group>"; };
@@ -512,6 +515,8 @@
 				BEE8CF1219E0E7F400981C4B /* NSTextField+setSafeStringValue.m */,
 				BE39FE5119DFBB0100C1B4A1 /* LGDefaults+JSSAddon.h */,
 				BE39FE5219DFBB0100C1B4A1 /* LGDefaults+JSSAddon.m */,
+				BED02ADA1A194F9C00714CC2 /* NSArray+filtered.h */,
+				BED02ADB1A194F9C00714CC2 /* NSArray+filtered.m */,
 			);
 			name = "Custom Categories";
 			sourceTree = "<group>";
@@ -856,6 +861,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				BEC1258919F046FA006696C4 /* main.m in Sources */,
+				BED02ADC1A194F9C00714CC2 /* NSArray+filtered.m in Sources */,
 				1AC69564195B59EE00D2BD81 /* LGAppDelegate.m in Sources */,
 				BEC1258619F0465C006696C4 /* LGConfigurationWindowController.m in Sources */,
 				1AC9840A195CE7D60071CAB3 /* LGConstants.m in Sources */,

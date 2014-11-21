@@ -26,4 +26,6 @@
 
 + (void)startAutoPkgSchedule:(BOOL)start interval:(NSInteger)interval isForced:(BOOL)forced reply:(void (^)(NSError* error))reply;
 
++ (BOOL)updateAppsIsScheduled;
+
 @end

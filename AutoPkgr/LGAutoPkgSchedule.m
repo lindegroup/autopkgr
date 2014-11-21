@@ -21,8 +21,8 @@
 
 #import "LGAutoPkgSchedule.h"
 #import "LGAutoPkgr.h"
-#import <AHLaunchCtl/AHLaunchCtl.h>
 #import "LGAutoPkgrHelperConnection.h"
+#import <AHLaunchCtl/AHLaunchCtl.h>
 
 @implementation LGAutoPkgSchedule
 
@@ -62,5 +62,9 @@
     }
 }
 
++ (BOOL)updateAppsIsScheduled
+{
+    return jobIsRunning(kLGAutoPkgrLaunchDaemonPlist, kAHGlobalLaunchDaemon);
+}
 
 @end
