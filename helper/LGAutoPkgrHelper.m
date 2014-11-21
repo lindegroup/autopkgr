@@ -104,40 +104,13 @@ static const NSTimeInterval kHelperCheckInterval = 1.0; // how often to check wh
 
 - (BOOL)userIsValid:(NSString *)user error:(NSError *__autoreleasing *)error;
 {
+    // TODO: decide what criteria qualifies a valid user.
+    // In future release we could potentially specify a user other
+    // than the current logged in user to run the shcedule as, but
+    // we would need to check a number of criteria
     return YES;
 }
 
-#pragma mark - Update Password
-- (void)addPassword:(NSString *)password forUser:(NSString *)user andAutoPkgr:(NSString *)autoPkgrLaunchPath reply:(void (^)(NSError *))reply
-{
-    NSError *error;
-
-    AHKeychain *keychain = [AHKeychain systemKeychain];
-    AHKeychainItem *item = [[AHKeychainItem alloc] init];
-    item.label = kLGApplicationName;
-    item.service = kLGApplicationName;
-    item.account = user;
-    item.password = password;
-    item.trustedApplications = @[ autoPkgrLaunchPath ];
-    [keychain saveItem:item error:&error];
-
-    reply(error);
-}
-
-- (void)removePassword:(NSString *)password
-               forUser:(NSString *)user
-                 reply:(void (^)(NSError *))reply
-{
-    NSError *error;
-    AHKeychain *keychain = [AHKeychain systemKeychain];
-    AHKeychainItem *item = [[AHKeychainItem alloc] init];
-    item.label = kLGApplicationName;
-    item.service = kLGApplicationName;
-    item.account = user;
-
-    [keychain deleteItem:item error:&error];
-    reply(error);
-}
 
 #pragma mark - Life Cycle
 - (void)quitHelper:(void (^)(BOOL success))reply
