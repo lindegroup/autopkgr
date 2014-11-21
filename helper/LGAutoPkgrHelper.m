@@ -1,9 +1,20 @@
 //
 //  LGAutoPkgrHelper.m
-//  AutoPkgr
+//  AutoPkgr - Priviledged Helper Tool
 //
-//  Created by Eldon on 7/28/14.
-//  Copyright (c) 2014 The Linde Group, Inc. All rights reserved.
+//  Created by Eldon Ahrold on 7/28/14.
+//
+//  Licensed under the Apache License, Version 2.0 (the "License");
+//  you may not use this file except in compliance with the License.
+//  You may obtain a copy of the License at
+//
+//  http://www.apache.org/licenses/LICENSE-2.0
+//
+//  Unless required by applicable law or agreed to in writing, software
+//  distributed under the License is distributed on an "AS IS" BASIS,
+//  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//  See the License for the specific language governing permissions and
+//  limitations under the License.
 //
 
 #import "LGAutoPkgrHelper.h"
@@ -60,7 +71,7 @@ static const NSTimeInterval kHelperCheckInterval = 1.0; // how often to check wh
             AHLaunchJob *job = [AHLaunchJob new];
             job.Program = program;
             job.Label = kLGAutoPkgrLaunchDaemonPlist;
-            job.ProgramArguments = @[ program, @"-runInBackground", @"YES"];
+            job.ProgramArguments = @[ program, @"-runInBackground", @"YES" ];
             job.StartInterval = timer;
             job.SessionCreate = YES;
             job.UserName = user;
@@ -87,8 +98,8 @@ static const NSTimeInterval kHelperCheckInterval = 1.0; // how often to check wh
 {
     NSString *helperExecPath = [[[NSProcessInfo processInfo] arguments] firstObject];
     return [AHCodesignVerifier codesignOfItemAtPath:path
-                                  isSameAsItemAtPath:helperExecPath
-                                               error:error];
+                                 isSameAsItemAtPath:helperExecPath
+                                              error:error];
 }
 
 - (BOOL)userIsValid:(NSString *)user error:(NSError *__autoreleasing *)error;
