@@ -43,6 +43,7 @@ extern NSString *const kLGGitMLReleasesJSONURL;
 extern NSString *const kLGJSSAddonJSONURL;
 extern NSString *const kLGAutoPkgDownloadURL;
 extern NSString *const kLGAutoPkgRepositoriesJSONURL;
+extern NSString *const kLGJSSDefaultRepo;
 
 #pragma mark - Defaults
 extern NSString *const kLGSMTPServer;
