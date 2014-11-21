@@ -253,9 +253,10 @@ NSString *autopkg()
 
         LGDefaults *defaults = [[LGDefaults alloc] init];
 
-        if ([defaults objectForKey:@"useSystemProxies"]) {
+        if ([defaults boolForKey:@"useSystemProxies"]) {
             AHProxySettings *settings = [[AHProxySettings alloc] initWithDestination:@"https://github.com"];
             if (settings.taskDictionary) {
+                DLog(@"Using System Proxies: %@",settings.taskDictionary);
                 // This will just initialize the _internalEnvironment
                 [self addEnvironmentVariable:nil forKey:nil];
                 [_internalEnvironment addEntriesFromDictionary:settings.taskDictionary];
