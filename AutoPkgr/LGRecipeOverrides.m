@@ -26,62 +26,6 @@ const CFStringRef kUTTypePropertyList = CFSTR("com.apple.property-list");
 
 @implementation LGRecipeOverrides
 
-+ (NSMenu *)contextualMenuForRecipe:(NSString *)recipe
-{
-    NSMenu *menu;
-    NSMenuItem *item;
-    NSMenuItem *item2;
-
-    NSString *currentEditor = [[LGDefaults standardUserDefaults] objectForKey:@"RecipeEditor"];
-
-    BOOL overrideExists = [self overrideExistsForRecipe:recipe];
-    menu = [[NSMenu alloc] init];
-
-    NSMenu *recipeEditorMenu = [[NSMenu alloc] init];
-    NSMenuItem *recipeEditorMenuItem = [[NSMenuItem alloc] initWithTitle:@"Set Recipe Editor" action:nil keyEquivalent:@""];
-
-    for (NSString *editor in [self recipeEditors]) {
-        NSMenuItem *editorItem = [[NSMenuItem alloc] initWithTitle:editor action:@selector(setRecipeEditor:) keyEquivalent:@""];
-        if ([editor isEqualToString:currentEditor]) {
-            [editorItem setState:NSOnState];
-        }
-        editorItem.target = [self class];
-        [recipeEditorMenu addItem:editorItem];
-    }
-
-    NSMenuItem *otherEditorItem = [[NSMenuItem alloc] initWithTitle:@"Other..." action:@selector(setRecipeEditor:) keyEquivalent:@""];
-    otherEditorItem.target = [self class];
-
-    [recipeEditorMenu addItem:otherEditorItem];
-
-    if (overrideExists) {
-        item = [[NSMenuItem alloc] initWithTitle:@"Open Recipe Override" action:@selector(openFile:) keyEquivalent:@""];
-
-        // Reveal in finder menu item
-        item2 = [[NSMenuItem alloc] initWithTitle:@"Show in Finder" action:@selector(revealInFinder:) keyEquivalent:@""];
-        item2.representedObject = recipe;
-        item2.target = [self class];
-
-    } else {
-        item = [[NSMenuItem alloc] initWithTitle:@"Create Override" action:@selector(createOverride:) keyEquivalent:@""];
-    }
-
-    item.representedObject = recipe;
-    item.target = [self class];
-
-    if (item) {
-        [menu addItem:item];
-    }
-
-    if (item2) {
-        [menu addItem:item2];
-    }
-
-    [menu addItem:recipeEditorMenuItem];
-    [menu setSubmenu:recipeEditorMenu forItem:recipeEditorMenuItem];
-    return menu;
-}
-
 #pragma mark - Override Actions
 + (void)createOverride:(NSMenuItem *)sender
 {

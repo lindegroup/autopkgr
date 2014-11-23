@@ -23,18 +23,18 @@
 #import "LGAutoPkgTask.h"
 #import "LGTableView.h"
 
-@interface LGRecipes : NSObject <NSApplicationDelegate, NSTableViewDataSource, NSTableViewDelegate> {
-    NSArray *_recipes;
-    NSArray *_activeRecipes;
-    NSArray *_searchedRecipes;
-}
+@interface LGRecipes : NSObject <NSApplicationDelegate, NSTableViewDataSource, NSTableViewDelegate>
 
-- (void)reload;
-- (void)writeRecipeList;
-
+@property (copy,nonatomic) NSArray *recipes;
+@property (copy,nonatomic) NSArray *activeRecipes;
+@property (copy,nonatomic) NSArray *searchedRecipes;
 @property (weak) IBOutlet LGTableView *recipeTableView;
 @property (weak) IBOutlet NSSearchField *recipeSearchField;
 
 + (NSString *)recipeList;
+
+- (void)reload;
+- (void)writeRecipeList;
+- (NSMenu *)contextualMenuForRecipeAtRow:(NSInteger)row;
 
 @end

@@ -22,6 +22,10 @@
 
 @interface LGRecipeOverrides : NSObject
 
-+ (NSMenu *)contextualMenuForRecipe:(NSString *)recipe;
++ (BOOL)overrideExistsForRecipe:(NSString *)recipe;
++ (NSArray *)recipeEditors;
++ (void)setRecipeEditor:(NSMenuItem *)item;
++ (void)createOverride:(NSMenuItem *)sender;
++ (void)revealInFinder:(NSMenuItem *)sender;
 
 @end

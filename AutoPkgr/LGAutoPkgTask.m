@@ -25,8 +25,9 @@
 
 NSString *const kLGAutoPkgTaskLock = @"com.lindegroup.autopkg.task.lock";
 
-NSString *const kLGAutoPkgRecipeNameKey = @"recipe_name";
-NSString *const kLGAutoPkgRecipePathKey = @"recipe_path";
+NSString *const kLGAutoPkgRecipeNameKey = @"name";
+NSString *const kLGAutoPkgRecipeIdentifierKey = @"identifier";
+NSString *const kLGAutoPkgRecipePathKey = @"path";
 NSString *const kLGAutoPkgRepoNameKey = @"repo_name";
 NSString *const kLGAutoPkgRepoPathKey = @"repo_path";
 NSString *const kLGAutoPkgRepoURLKey = @"repo_url";
@@ -564,18 +565,7 @@ typedef void (^AutoPkgReplyErrorBlock)(NSError *error);
     } else {
         // For AutoPkg earlier than 0.4.0 the report plist was piped to stdout
         // so convert that string to an NSDictionary
-        NSString *plistString = self.standardOutString;
-        if (plistString && ![plistString isEqualToString:@""]) {
-            // Convert string back to data for plist serialization
-            NSData *plistData = [plistString dataUsingEncoding:NSUTF8StringEncoding];
-            // Initialize plist format
-            NSPropertyListFormat format;
-            // Initialize our dict
-            _report = [NSPropertyListSerialization propertyListWithData:plistData
-                                                                options:NSPropertyListImmutable
-                                                                 format:&format
-                                                                  error:nil];
-        }
+        _report = [self serializePropertyListString:self.standardOutString];
     }
     return _report;
 }
@@ -640,6 +630,7 @@ typedef void (^AutoPkgReplyErrorBlock)(NSError *error);
                     }
                 }];
                 _results = [NSArray arrayWithArray:searchResults];
+
             } else if (_verb == kLGAutoPkgRepoList) {
                 NSArray *listResults = [resultString componentsSeparatedByCharactersInSet:[NSCharacterSet newlineCharacterSet]];
 
@@ -661,8 +652,29 @@ typedef void (^AutoPkgReplyErrorBlock)(NSError *error);
                 _results = strippedRepos.count ? [NSArray arrayWithArray:strippedRepos] : nil;
 
             } else if (_verb == kLGAutoPkgRecipeList) {
+                // Try to serialize the stdout, if that fails continue
+                if ((_results = [self serializePropertyListString:resultString])) {
+                    return _results;
+                }
+
                 NSArray *listResults = [resultString componentsSeparatedByCharactersInSet:[NSCharacterSet newlineCharacterSet]];
-                _results = [listResults removeEmptyStrings];
+
+                NSMutableArray *strippedRecipes = [NSMutableArray arrayWithCapacity:listResults.count];
+
+                for (NSString *rawString in [listResults removeEmptyStrings]) {
+                    NSArray *splitArray = [rawString componentsSeparatedByCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+
+                    NSMutableDictionary *resultsDict = [NSMutableDictionary new];
+                    if (splitArray.count > 1) {
+                        [resultsDict setObject:splitArray[1] forKey:kLGAutoPkgRecipeIdentifierKey];
+                    }
+
+                    if (splitArray.count) {
+                        [resultsDict setObject:splitArray[0] forKey:kLGAutoPkgRecipeNameKey];
+                        [strippedRecipes addObject:resultsDict];
+                    }
+                }
+                _results = strippedRecipes.count ? [NSArray arrayWithArray:strippedRecipes] : nil;
             }
         }
     }
@@ -695,6 +707,21 @@ typedef void (^AutoPkgReplyErrorBlock)(NSError *error);
         }
     }
     return count;
+}
+
+- (id)serializePropertyListString:(NSString *)string
+{
+    id results = nil;
+    if (string && ![string isEqualToString:@""]) {
+        NSData *plistData = [string dataUsingEncoding:NSUTF8StringEncoding];
+        NSPropertyListFormat format;
+        // Initialize our dict
+        results = [NSPropertyListSerialization propertyListWithData:plistData
+                                                            options:NSPropertyListImmutable
+                                                             format:&format
+                                                              error:nil];
+    }
+    return results;
 }
 
 #pragma mark - Class Methods
