@@ -1,6 +1,6 @@
 //
 //  LGAutoPkgrHelper.m
-//  AutoPkgr - Priviledged Helper Tool
+//  AutoPkgr - Privileged Helper Tool
 //
 //  Created by Eldon Ahrold on 7/28/14.
 //
@@ -63,9 +63,13 @@ static const NSTimeInterval kHelperCheckInterval = 1.0; // how often to check wh
               reply:(void (^)(NSError *error))reply
 {
 
+    // Display Authorization Prompt based on external form contained in
+    // authData. If user cancels the challenge, or any other problem occurs
+    // it will return a populated error object, with the details
     NSError *error = [LGAutoPkgrAuthorizer checkAuthorization:authData
                                                       command:_cmd];
 
+    // If authorization was successful continue,
     if (!error) {
         if ([self launchPathIsValid:program error:&error] && [self userIsValid:user error:&error]) {
             AHLaunchJob *job = [AHLaunchJob new];
@@ -76,7 +80,7 @@ static const NSTimeInterval kHelperCheckInterval = 1.0; // how often to check wh
             job.SessionCreate = YES;
             job.UserName = user;
 
-            [[AHLaunchCtl sharedControler] add:job toDomain:kAHGlobalLaunchDaemon error:&error];
+            [[AHLaunchCtl sharedController] add:job toDomain:kAHGlobalLaunchDaemon error:&error];
         }
     }
 
@@ -88,7 +92,7 @@ static const NSTimeInterval kHelperCheckInterval = 1.0; // how often to check wh
     NSError *error = [LGAutoPkgrAuthorizer checkAuthorization:authData
                                                       command:_cmd];
     if (!error) {
-        [[AHLaunchCtl sharedControler] remove:kLGAutoPkgrLaunchDaemonPlist fromDomain:kAHGlobalLaunchDaemon error:&error];
+        [[AHLaunchCtl sharedController] remove:kLGAutoPkgrLaunchDaemonPlist fromDomain:kAHGlobalLaunchDaemon error:&error];
     }
 
     reply(error);
@@ -96,6 +100,8 @@ static const NSTimeInterval kHelperCheckInterval = 1.0; // how often to check wh
 
 - (BOOL)launchPathIsValid:(NSString *)path error:(NSError *__autoreleasing *)error;
 {
+    // Get the executable path of the helper tool.  We use this to compare against
+    // the program the helper tool is asked add as the launchd.plist "Program" key
     NSString *helperExecPath = [[[NSProcessInfo processInfo] arguments] firstObject];
     return [AHCodesignVerifier codesignOfItemAtPath:path
                                  isSameAsItemAtPath:helperExecPath
@@ -106,7 +112,7 @@ static const NSTimeInterval kHelperCheckInterval = 1.0; // how often to check wh
 {
     // TODO: decide what criteria qualifies a valid user.
     // In future release we could potentially specify a user other
-    // than the current logged in user to run the shcedule as, but
+    // than the current logged in user to run the schedule as, but
     // we would need to check a number of criteria
     return YES;
 }
@@ -157,7 +163,7 @@ static const NSTimeInterval kHelperCheckInterval = 1.0; // how often to check wh
     }
 
     if (jobIsRunning(kLGAutoPkgrLaunchDaemonPlist, kAHGlobalLaunchDaemon)) {
-        [[AHLaunchCtl sharedControler] remove:kLGAutoPkgrLaunchDaemonPlist
+        [[AHLaunchCtl sharedController] remove:kLGAutoPkgrLaunchDaemonPlist
                                    fromDomain:kAHGlobalLaunchDaemon
                                         error:nil];
     }
@@ -168,7 +174,7 @@ static const NSTimeInterval kHelperCheckInterval = 1.0; // how often to check wh
 }
 
 //----------------------------------------
-// Set up the one method of NSXPClistener
+// Set up the one method of NSXPCListener
 //----------------------------------------
 - (BOOL)listener:(NSXPCListener *)listener shouldAcceptNewConnection:(NSXPCConnection *)newConnection
 {
