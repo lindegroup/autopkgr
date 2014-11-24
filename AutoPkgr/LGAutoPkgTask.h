@@ -105,7 +105,7 @@ extern NSString *const kLGAutoPkgRepoPathKey;
  *  Equivelant to /usr/bin/local/autopkg run --recipe-list=xxx --report-plist=xxx
  *
  *  @param recipeList Full path to the recipe list
- *  @param progress   block to be executed whenever new progress information is avaliable.  This block has no return value and takes two arguments: NSString, double
+ *  @param progress   block to be executed whenever new progress information is available.  This block has no return value and takes two arguments: NSString, double
  *  @param reply The block to be executed on upon task completion. This block has no return value and takes two arguments: NSDictionary (with ther report plist data), NSError
  */
 - (void)runRecipeList:(NSString *)recipeList
@@ -116,7 +116,7 @@ extern NSString *const kLGAutoPkgRepoPathKey;
  *  Equivelant to /usr/bin/local/autopkg run recipe1 recipe2 ... recipe(n) --report-plist=xxx
  *
  *  @param recipes  Array of recipes to run
- *  @param progress  Block to be executed whenever new progress information is avaliable.  This block has no return value and takes two arguments: NSString, double
+ *  @param progress  Block to be executed whenever new progress information is available.  This block has no return value and takes two arguments: NSString, double
  *  @param reply The block to be executed on upon task completion. This block has no return value and takes one argument: NSError
  */
 - (void)runRecipes:(NSArray *)recipes
