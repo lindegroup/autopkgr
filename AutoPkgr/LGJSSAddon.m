@@ -112,7 +112,7 @@
                                                if (cleanedArray) {
                                                    _defaults.JSSRepos = cleanedArray;
                                                    [self saveDefaults];
-                                                   [_jssStatusLight setImage:[NSImage LGStatusAvaliable]];
+                                                   [_jssStatusLight setImage:[NSImage LGStatusAvailable]];
                                                    [_jssDistributionPointTableView reloadData];
                                                }
                                                
@@ -172,7 +172,7 @@
         [_jssStatusSpinner stopAnimation:self];
         if (error) {
             [_progressDelegate stopProgress:error];
-            [_jssStatusLight setImage:[NSImage LGStatusUnavaliable]];
+            [_jssStatusLight setImage:[NSImage LGStatusUnavailable]];
         }
     }];
 }
@@ -226,13 +226,13 @@
             }
             
             if (reachable && [_defaults.JSSURL isEqualToString:_jssURLTF.safeStringValue]) {
-                _jssStatusLight.image = [NSImage LGStatusAvaliable];
+                _jssStatusLight.image = [NSImage LGStatusAvailable];
                 DLog(@"The JSS is responding and API user credentials seem valid.");
             } else if (reachable) {
-                _jssStatusLight.image = [NSImage LGStatusPartiallyAvaliable];
+                _jssStatusLight.image = [NSImage LGStatusPartiallyAvailable];
                 DLog(@"The JSS is responding, but API user credentials don't seem valid.");
             } else {
-                _jssStatusLight.image = [NSImage LGStatusUnavaliable];
+                _jssStatusLight.image = [NSImage LGStatusUnavailable];
                 DLog(@"The JSS is not reachable. Check your network connection and verify the JSS URL and port.");
             }
             // No need to keep this around so nil it out.
@@ -286,8 +286,8 @@
         [_jssStatusLight setImage:[NSImage LGStatusNone]];
     } else if (![_defaults.JSSAPIPassword isEqualToString:_jssAPIPasswordTF.safeStringValue] || ![_defaults.JSSAPIUsername isEqualToString:_jssAPIUsernameTF.safeStringValue] || ![_defaults.JSSURL isEqualToString:_jssURLTF.safeStringValue]) {
         // Update server status
-        if ([_jssStatusLight.image isEqualTo:[NSImage LGStatusAvaliable]]) {
-            [_jssStatusLight setImage:[NSImage LGStatusPartiallyAvaliable]];
+        if ([_jssStatusLight.image isEqualTo:[NSImage LGStatusAvailable]]) {
+            [_jssStatusLight setImage:[NSImage LGStatusPartiallyAvailable]];
         }
 
         // Show installer status
@@ -306,14 +306,14 @@
     if (show) {
         NSOperationQueue *bgQueue = [[NSOperationQueue alloc] init];
         [bgQueue addOperationWithBlock:^{
-            BOOL updateAvaliable = [LGHostInfo jssAddonUpdateAvailable];
+            BOOL updateAvailable = [LGHostInfo jssAddonUpdateAvailable];
             [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-                [_jssInstallButton setEnabled:updateAvaliable];
-                if (updateAvaliable) {
+                [_jssInstallButton setEnabled:updateAvailable];
+                if (updateAvailable) {
                     NSLog(@"An update is available for the jss-autopkg-addon.");
                     _jssInstallButton.title = @"Update JSS AutoPkg Addon";
                     _jssInstallStatusTF.stringValue = kLGJSSAutoPkgAddonUpdateAvailableLabel;
-                    _jssInstallStatusLight.image = [NSImage LGStatusUpdateAvaliable];
+                    _jssInstallStatusLight.image = [NSImage LGStatusUpdateAvailable];
                 } else {
                     NSLog(@"The jss-autopkg-addon is up to date.");
                     _jssInstallButton.title = @"Install JSS AutoPkg Addon";
