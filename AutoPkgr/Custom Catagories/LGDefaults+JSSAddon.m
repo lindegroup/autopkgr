@@ -25,10 +25,10 @@
 NSString *const kLGJSSDistPointNameKey = @"name";
 NSString *const kLGJSSDistPointURLKey = @"URL";
 NSString *const kLGJSSDistPointSharePointKey = @"share_name";
-NSString *const kLGJSSDistPointPortKey = @"share_port";
+NSString *const kLGJSSDistPointPortKey = @"port";
 NSString *const kLGJSSDistPointUserNameKey = @"username";
 NSString *const kLGJSSDistPointPasswordKey = @"password";
-NSString *const kLGJSSDistPointWorkgroupDomainKey = @"workgroup_or_domain";
+NSString *const kLGJSSDistPointWorkgroupDomainKey = @"domain";
 NSString *const kLGJSSDistPointTypeKey = @"type";
 
 #pragma mark - LGDefaults category implementation for JSS Addon Interface
