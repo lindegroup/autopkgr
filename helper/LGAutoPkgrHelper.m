@@ -26,12 +26,14 @@
 
 #import <pwd.h>
 #import <syslog.h>
+#import <SystemConfiguration/SystemConfiguration.h>
 
 static const NSTimeInterval kHelperCheckInterval = 1.0; // how often to check whether to quit
 
 @interface LGAutoPkgrHelper () <HelperAgent, NSXPCListenerDelegate>
 @property (atomic, strong, readwrite) NSXPCListener *listener;
 @property (weak) NSXPCConnection *connection;
+@property (strong, nonatomic) NSMutableSet *connections;
 @property (nonatomic, assign) BOOL helperToolShouldQuit;
 @end
 
@@ -71,7 +73,9 @@ static const NSTimeInterval kHelperCheckInterval = 1.0; // how often to check wh
 
     // If authorization was successful continue,
     if (!error) {
-        if ([self launchPathIsValid:program error:&error] && [self userIsValid:user error:&error]) {
+        // Check if the launch path and user are valid, and that the timer has a sensible mininum.
+        if ([self launchPathIsValid:program error:&error] &&
+            [self userIsValid:user error:&error] && timer >= 3600) {
             AHLaunchJob *job = [AHLaunchJob new];
             job.Program = program;
             job.Label = kLGAutoPkgrLaunchDaemonPlist;
@@ -113,10 +117,23 @@ static const NSTimeInterval kHelperCheckInterval = 1.0; // how often to check wh
     // TODO: decide what criteria qualifies a valid user.
     // In future release we could potentially specify a user other
     // than the current logged in user to run the schedule as, but
-    // we would need to check a number of criteria
-    return YES;
-}
+    // we would need to check a number of criteria. For now just check
+    // that the user matches the logged in (console) user.
+    BOOL success = YES;
+    NSString *loggedInUser = CFBridgingRelease(SCDynamicStoreCopyConsoleUser(NULL, NULL, NULL));
+    syslog(LOG_INFO, "Checking that logged in user is the same as the user to run the shcedule as: %s", loggedInUser.UTF8String);
 
+    if (!loggedInUser || !user || ![user isEqualToString:loggedInUser]) {
+        if (error) {
+            NSDictionary *errorDict = @{NSLocalizedDescriptionKey:@"Invalid user for scheduling autopkg run",
+                                        NSLocalizedRecoverySuggestionErrorKey:@"There was a problem either verifying the user, or with the user's configuration. The user must be have a home directory set, a shell environment, and valid com.github.autopkg preferences."};
+            *error = [NSError errorWithDomain:kLGApplicationName code:kLGErrorInvalidUser userInfo:errorDict];
+        }
+        success = NO;
+    }
+
+    return success;
+}
 
 #pragma mark - Life Cycle
 - (void)quitHelper:(void (^)(BOOL success))reply
@@ -164,8 +181,8 @@ static const NSTimeInterval kHelperCheckInterval = 1.0; // how often to check wh
 
     if (jobIsRunning(kLGAutoPkgrLaunchDaemonPlist, kAHGlobalLaunchDaemon)) {
         [[AHLaunchCtl sharedController] remove:kLGAutoPkgrLaunchDaemonPlist
-                                   fromDomain:kAHGlobalLaunchDaemon
-                                        error:nil];
+                                    fromDomain:kAHGlobalLaunchDaemon
+                                         error:nil];
     }
 
     [AHLaunchCtl removeFilesForHelperWithLabel:kLGAutoPkgrHelperToolName error:&error];
@@ -180,12 +197,33 @@ static const NSTimeInterval kHelperCheckInterval = 1.0; // how often to check wh
 {
 
     newConnection.exportedObject = self;
-    newConnection.exportedInterface = [NSXPCInterface interfaceWithProtocol:@protocol(HelperAgent)];
+
+    NSXPCInterface *exportedInterface = [NSXPCInterface interfaceWithProtocol:@protocol(HelperAgent)];
+    newConnection.exportedInterface = exportedInterface;
+
+    // Only accept the connection if the call is made by the console user.
+    uid_t loggedInUser;
+    SCDynamicStoreCopyConsoleUser(NULL, &loggedInUser, NULL);
+    if (loggedInUser != newConnection.effectiveUserIdentifier) {
+        return NO;
+    }
 
     self.connection = newConnection;
-    [self.connection auditSessionIdentifier];
+
+    __weak typeof(newConnection) weakConnection = newConnection;
+    // If all connections are invalidated on the remote side,
+    // shutdown the helper.
+    newConnection.invalidationHandler = ^() {
+        __weak typeof(newConnection) strongConnection = weakConnection;
+        [self.connections removeObject:strongConnection];
+        if (!self.connections.count) {
+            [self quitHelper:^(BOOL success) {}];
+        }
+    };
 
     [newConnection resume];
+    [self.connections addObject:newConnection];
+
     return YES;
 }
 @end
