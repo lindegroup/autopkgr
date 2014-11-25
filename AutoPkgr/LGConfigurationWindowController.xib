@@ -260,9 +260,9 @@
                                                     </scroller>
                                                 </scrollView>
                                                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="c6a-G7-vZU">
-                                                    <rect key="frame" x="15" y="384" width="81" height="17"/>
+                                                    <rect key="frame" x="15" y="384" width="100" height="17"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="width" constant="77" id="1hG-9y-QAz"/>
+                                                        <constraint firstAttribute="width" constant="96" id="1kg-Ou-ivT"/>
                                                     </constraints>
                                                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Repositories" id="vz5-Q8-aHi">
                                                         <font key="font" metaFont="system"/>
@@ -270,8 +270,11 @@
                                                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                                     </textFieldCell>
                                                 </textField>
-                                                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="OQZ-m7-NDG">
-                                                    <rect key="frame" x="15" y="173" width="52" height="17"/>
+                                                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="OQZ-m7-NDG">
+                                                    <rect key="frame" x="15" y="173" width="100" height="17"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="96" id="QCq-cH-AOz"/>
+                                                    </constraints>
                                                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Recipes" id="0cX-bB-x15">
                                                         <font key="font" metaFont="system"/>
                                                         <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
