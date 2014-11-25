@@ -29,7 +29,7 @@
 #import "LGJSSDistributionPointsPrefPanel.h"
 
 #pragma mark - Class constants
-NSString *defaultJSSRepo = @"https://github.com/sheagcraig/jss-recipes.git";
+NSString *kLGJSSDefaultRepo = @"https://github.com/sheagcraig/jss-recipes.git";
 
 @implementation LGJSSAddon {
     LGDefaults *_defaults;
@@ -138,10 +138,10 @@ NSString *defaultJSSRepo = @"https://github.com/sheagcraig/jss-recipes.git";
     [installer installJSSAddon:^(NSError *error) {
         BOOL success = (error == nil);
         if (success) {
-            NSString *message = [NSString stringWithFormat:@"Adding %@",defaultJSSRepo];
-            NSLog(@"Adding default JSS recipe repository: %@", defaultJSSRepo);
+            NSString *message = [NSString stringWithFormat:@"Adding %@",kLGJSSDefaultRepo];
+            NSLog(@"Adding default JSS recipe repository: %@", kLGJSSDefaultRepo);
             [_progressDelegate startProgressWithMessage:message];
-            [LGAutoPkgTask repoAdd:defaultJSSRepo reply:^(NSError *error) {
+            [LGAutoPkgTask repoAdd:kLGJSSDefaultRepo reply:^(NSError *error) {
                 [_progressDelegate stopProgress:error];
                 [[NSNotificationCenter defaultCenter] postNotificationName:kLGNotificationReposModified
                                                                     object:nil];
@@ -257,9 +257,13 @@ NSString *defaultJSSRepo = @"https://github.com/sheagcraig/jss-recipes.git";
     _portTester = [[LGTestPort alloc] init];
     [self startStatusUpdate];
 
-    [_portTester testServerURL:_jssURLTF.safeStringValue reply:^(BOOL reachable) {
+    [_portTester testServerURL:_jssURLTF.safeStringValue reply:^(BOOL reachable, NSString *redirectedURL) {
         _serverReachable = reachable;
         [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+            if (redirectedURL) {
+                _jssURLTF.safeStringValue = redirectedURL;
+            }
+            
             if (reachable && [_defaults.JSSURL isEqualToString:_jssURLTF.safeStringValue]) {
                 _jssStatusLight.image = [NSImage LGStatusAvailable];
                 DLog(@"The JSS is responding and API user credentials seem valid.");
@@ -300,6 +304,7 @@ NSString *defaultJSSRepo = @"https://github.com/sheagcraig/jss-recipes.git";
     newRepos = [[NSMutableArray alloc] initWithArray:customDistPoints];
 
     if (dictArray) {
+        newRepos = [[NSMutableArray alloc] init];
         for (NSDictionary *repo in dictArray) {
             if (!repo[kLGJSSDistPointPasswordKey]) {
                 NSString *name = repo[kLGJSSDistPointNameKey];
