@@ -49,7 +49,11 @@ NSString *defaultJSSRepo = @"https://github.com/sheagcraig/jss-recipes.git";
     _installRequestedDuringConnect = NO;
 
     [self showInstallTabItems:NO];
+
+    // Disable the Add / Remove distPoint buttons
+    // until a row is selected
     [_jssEditDistPointBT setEnabled:NO];
+    [_jssRemoveDistPointBT setEnabled:NO];
 
     [_jssInstallStatusLight setImage:[NSImage LGStatusNotInstalled]];
     if ([LGHostInfo jssAddonInstalled] && _defaults.JSSRepos) {
@@ -196,6 +200,8 @@ NSString *defaultJSSRepo = @"https://github.com/sheagcraig/jss-recipes.git";
     };
     NSString *identifier = [tableColumn identifier];
     NSString *setObject = distributionPoint[identifier];
+
+    // if the object is still nil, because the name is not set sub in the url key
     if (!setObject && [identifier isEqualToString:kLGJSSDistPointNameKey]) {
         setObject = distributionPoint[kLGJSSDistPointURLKey];
     }
@@ -223,6 +229,7 @@ NSString *defaultJSSRepo = @"https://github.com/sheagcraig/jss-recipes.git";
     NSInteger row = [_jssDistributionPointTableView selectedRow];
     // If nothing in the table is selected the row value is -1 so
     if (row > -1) {
+        [_jssRemoveDistPointBT setEnabled:YES];
         // If a type key is not set, then it's from a DP from
         // the jss server and not editable.
         if([[_defaults.JSSRepos objectAtIndex:row] objectForKey:@"type"]){
@@ -230,6 +237,9 @@ NSString *defaultJSSRepo = @"https://github.com/sheagcraig/jss-recipes.git";
         } else {
             [_jssEditDistPointBT setEnabled:NO];
         }
+    } else {
+        [_jssEditDistPointBT setEnabled:NO];
+        [_jssRemoveDistPointBT setEnabled:NO];
     }
 }
 
@@ -415,6 +425,44 @@ NSString *defaultJSSRepo = @"https://github.com/sheagcraig/jss-recipes.git";
 }
 
 #pragma mark - Table View Contextual menu
+- (NSMenu *)contextualMenuForDistributionPoint:(NSDictionary *)distPoint
+{
+    NSMenu *menu = [[NSMenu alloc] init];
+
+    if (distPoint) {
+        if (distPoint[kLGJSSDistPointTypeKey]) {
+            NSMenuItem *editItem = [[NSMenuItem alloc] initWithTitle:@"Edit Distribution Point" action:@selector(editDistributionPoint:) keyEquivalent:@""];
+            editItem.target = self;
+            editItem.representedObject = distPoint;
+            [menu addItem:editItem];
+        }
+
+        NSString *name = distPoint[kLGJSSDistPointNameKey] ?: distPoint[kLGJSSDistPointURLKey];
+        NSString *removeString = [NSString stringWithFormat:@"Remove %@", name];
+        NSMenuItem *removeItem = [[NSMenuItem alloc] initWithTitle:removeString action:@selector(removeDistributionPoint:) keyEquivalent:@""];
+        removeItem.target = self;
+        removeItem.representedObject = distPoint;
+        [menu addItem:removeItem];
+    } else {
+        NSMenuItem *addItem = [[NSMenuItem alloc] initWithTitle:@"Add New Distribution Point" action:@selector(addDistributionPoint:) keyEquivalent:@""];
+        addItem.target = self;
+        [menu addItem:addItem];
+    }
+
+    return menu;
+}
+
+#pragma mark - JSS Distribution Point Preference Panel
+- (void)addDistributionPoint:(id)sender
+{
+
+    if (!_preferencePanel) {
+        _preferencePanel = [[LGJSSDistributionPointsPrefPanel alloc] init];
+    }
+
+    [NSApp beginSheet:_preferencePanel.window modalForWindow:_modalWindow modalDelegate:self didEndSelector:@selector(didClosePreferencePanel) contextInfo:nil];
+}
+
 - (void)removeDistributionPoint:(id)sender
 {
     NSDictionary *distPoint = nil;
@@ -427,7 +475,6 @@ NSString *defaultJSSRepo = @"https://github.com/sheagcraig/jss-recipes.git";
         }
     }
 
-    NSLog(@"Request received to remove distribution point: %@", distPoint);
     NSMutableArray *workingArray = [[NSMutableArray alloc] initWithArray:_defaults.JSSRepos];
     [workingArray removeObject:distPoint];
     _defaults.JSSRepos = [NSArray arrayWithArray:workingArray];
@@ -454,39 +501,6 @@ NSString *defaultJSSRepo = @"https://github.com/sheagcraig/jss-recipes.git";
 
         [NSApp beginSheet:_preferencePanel.window modalForWindow:_modalWindow modalDelegate:self didEndSelector:@selector(didClosePreferencePanel) contextInfo:nil];
     }
-}
-
-- (NSMenu *)contextualMenuForDistributionPoint:(NSDictionary *)distPoint
-{
-    NSMenu *menu = [[NSMenu alloc] init];
-
-    if (distPoint[kLGJSSDistPointTypeKey]) {
-        NSMenuItem *editItem = [[NSMenuItem alloc] initWithTitle:@"Edit" action:@selector(editDistributionPoint:) keyEquivalent:@""];
-        editItem.target = self;
-        editItem.representedObject = distPoint;
-        editItem.representedObject = distPoint;
-        [menu addItem:editItem];
-    }
-
-    NSString *name = distPoint[kLGJSSDistPointNameKey] ? distPoint[kLGJSSDistPointNameKey] : distPoint[kLGJSSDistPointURLKey];
-    NSString *removeString = [NSString stringWithFormat:@"Remove %@", name];
-    NSMenuItem *removeItem = [[NSMenuItem alloc] initWithTitle:removeString action:@selector(removeDistributionPoint:) keyEquivalent:@""];
-    removeItem.target = self;
-    removeItem.representedObject = distPoint;
-    [menu addItem:removeItem];
-
-    return menu;
-}
-
-#pragma mark - JSS Distribution Point Preference Panel
-- (void)addDistributionPoint:(id)sender
-{
-
-    if (!_preferencePanel) {
-        _preferencePanel = [[LGJSSDistributionPointsPrefPanel alloc] init];
-    }
-
-    [NSApp beginSheet:_preferencePanel.window modalForWindow:_modalWindow modalDelegate:self didEndSelector:@selector(didClosePreferencePanel) contextInfo:nil];
 }
 
 - (void)didClosePreferencePanel

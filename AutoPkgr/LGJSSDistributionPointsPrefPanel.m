@@ -137,32 +137,43 @@
 
 - (IBAction)chooseDistPointType:(NSPopUpButton *)sender
 {
-    if ([sender.title isEqualToString:@"AFP"]) {
-        [_distPointPort setHidden:NO];
-        [_distPointShareName setHidden:NO];
-        [_distPointDomain setHidden:YES];
+    [_distPointName setEnabled:YES];
+    [_distPointPort setHidden:NO];
+    [_distPointShareName setHidden:NO];
+    [_distPointName.cell setPlaceholderString:@"Descriptive Name (optional)"];
 
-        // Hide Labels too
-        [_distPointPortLabel setHidden:NO];
-        [_distPointShareNameLabel setHidden:NO];
+    // Hide Labels too
+    [_distPointPortLabel setHidden:NO];
+    [_distPointShareNameLabel setHidden:NO];
+
+    if ([sender.title isEqualToString:@"AFP"]) {
+        [_distPointDomain setHidden:YES];
         [_distPointDomainLabel setHidden:YES];
 
-    } else if ([sender.title isEqualToString:@"SMB"]) {
-        [_distPointPort setHidden:NO];
-        [_distPointShareName setHidden:NO];
-        [_distPointDomain setHidden:NO];
+        [_distPointPort.cell setPlaceholderString:@"548 (optional)"];
+        [_distPointURL.cell setPlaceholderString:@"afp://casper.yourcompany.example"];
 
-        [_distPointPortLabel setHidden:NO];
-        [_distPointShareNameLabel setHidden:NO];
+    } else if ([sender.title isEqualToString:@"SMB"]) {
+        [_distPointDomain setHidden:NO];
+        [_distPointDomain.cell setPlaceholderString:@"WORKGROUP (optional)"];
+
         [_distPointDomainLabel setHidden:NO];
+        [_distPointPort.cell setPlaceholderString:@"139 or 445 (optional)"];
+        [_distPointURL.cell setPlaceholderString:@"smb://casper.yourcompany.example"];
 
     } else if ([sender.title isEqualToString:@"JDS"]) {
-        [_distPointPort setHidden:YES];
-        [_distPointShareName setHidden:YES];
-        [_distPointDomain setHidden:YES];
+        [_distPointName setEnabled:NO];
+        [_distPointName.cell setPlaceholderString:@"<N/A>"];
 
+        [_distPointURL.cell setPlaceholderString:@"http://casper.yourcompany.example"];
+
+        [_distPointPort setHidden:YES];
         [_distPointPortLabel setHidden:YES];
+
+        [_distPointShareName setHidden:YES];
         [_distPointShareNameLabel setHidden:YES];
+
+        [_distPointDomain setHidden:YES];
         [_distPointDomainLabel setHidden:YES];
     }
 }

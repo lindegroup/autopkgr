@@ -39,7 +39,10 @@
             NSString *repo = [self repoFromRow:row];
             return [LGPopularRepositories contextualMenuForRepo:repo];
         } else if ([classString isEqualToString:@"LGJSSAddon"]) {
-            NSDictionary *distributionPoint = [[LGDefaults standardUserDefaults] JSSRepos][row];
+            NSDictionary *distributionPoint;
+            if (row > -1) {
+                distributionPoint = [[LGDefaults standardUserDefaults] JSSRepos][row];
+            } 
             return [(LGJSSAddon *)[self dataSource] contextualMenuForDistributionPoint:distributionPoint];
         }
     }

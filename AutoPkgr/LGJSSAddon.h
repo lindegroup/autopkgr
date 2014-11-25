@@ -39,6 +39,8 @@
 @property (weak) IBOutlet NSTextField *jssInstallStatusTF;
 
 @property (weak) IBOutlet NSButton *jssEditDistPointBT;
+@property (weak) IBOutlet NSButton *jssRemoveDistPointBT;
+
 @property (weak) IBOutlet NSWindow *modalWindow;
 
 // Progress delegate (object used to send updates to status menu item)
