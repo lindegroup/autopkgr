@@ -6,6 +6,23 @@
     <description>Most recent changes with links to updates.</description>
     <language>en</language>
       <item>
+        <title>Version 1.1.2</title>
+        <description>
+          <![CDATA[
+          <h4>Bug Fixes</h4>
+          <ul>
+            <li>One</li>
+          </ul>
+          <h4>Enhancements</h4>
+          <ul>
+            <li>One</li>
+          </ul>
+          ]]>
+        </description>
+        <pubDate>Tue, 25 Nov 2014 23:00:00 +0000</pubDate>
+        <enclosure url="https://github.com/lindegroup/autopkgr/releases/download/v1.1.2/AutoPkgr-1.1.2.dmg" sparkle:version="TBD" sparkle:shortVersionString="1.1.2" type="application/octet-stream" />
+      </item>
+      <item>
         <title>Version 1.1.1</title>
         <description>
           <![CDATA[
