@@ -39,7 +39,10 @@
             NSString *repo = [self repoFromRow:row];
             return [LGPopularRepositories contextualMenuForRepo:repo];
         } else if ([classString isEqualToString:@"LGJSSAddon"]) {
-            NSString *distributionPoint = [self distributionPointFrom:row];
+            NSDictionary *distributionPoint;
+            if (row > -1) {
+                distributionPoint = [[LGDefaults standardUserDefaults] JSSRepos][row];
+            } 
             return [(LGJSSAddon *)[self dataSource] contextualMenuForDistributionPoint:distributionPoint];
         }
     }
@@ -60,10 +63,4 @@
     return repo;
 }
 
-- (NSString *)distributionPointFrom:(NSInteger)row
-{
-    NSTableColumn *column = [[NSTableColumn alloc] initWithIdentifier:@"name"];
-    NSString *distPoint = [[self dataSource] tableView:self objectValueForTableColumn:column row:row];
-    return distPoint;
-}
 @end
