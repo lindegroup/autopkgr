@@ -33,7 +33,7 @@ AutoPkgr also lets you do all of the following, which wouldn't be possible using
 Installation
 ------------
 
-AutoPkgr requires Mac OS X 10.8 or higher.
+AutoPkgr requires Mac OS X 10.8 or higher. If you plan on integrating with JAMF's Casper Suite, you'll need Casper 9 or newer.
 
 Download the [latest release](https://github.com/lindegroup/autopkgr/releases/latest), and drag the AutoPkgr app to your Applications folder. Then launch it.
 
