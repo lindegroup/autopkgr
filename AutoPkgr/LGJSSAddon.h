@@ -38,13 +38,16 @@
 @property (weak) IBOutlet NSImageView *jssInstallStatusLight;
 @property (weak) IBOutlet NSTextField *jssInstallStatusTF;
 
+@property (weak) IBOutlet NSButton *jssEditDistPointBT;
 @property (weak) IBOutlet NSWindow *modalWindow;
 
 // Progress delegate (object used to send updates to status menu item)
 @property (weak) id<LGProgressDelegate> progressDelegate;
 
 - (IBAction)installJSSAddon:(id)sender;
-- (IBAction) addDistributionPoint:(id)sender;
+- (IBAction)addDistributionPoint:(id)sender;
+- (IBAction)removeDistributionPoint:(id)sender;
+- (IBAction)editDistributionPoint:(id)sender;
 
 - (NSMenu *)contextualMenuForDistributionPoint:(NSDictionary *)distPoint;
 @end

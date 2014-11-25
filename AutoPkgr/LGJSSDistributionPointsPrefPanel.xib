@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="6250" systemVersion="14B25" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="6250" systemVersion="13E28" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="macosx"/>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="6250"/>
@@ -10,13 +10,21 @@
                 <outlet property="addBT" destination="XVi-jo-2Nc" id="mOn-vC-ZSJ"/>
                 <outlet property="cancelBT" destination="gSe-Ch-JEh" id="vj2-uD-mHU"/>
                 <outlet property="distPointDomain" destination="t1c-EM-erc" id="Mw4-ZF-0l1"/>
+                <outlet property="distPointDomainLabel" destination="mNv-VN-Vab" id="JoR-bw-o0k"/>
                 <outlet property="distPointName" destination="lBl-oO-G9N" id="Nwr-Aa-EWE"/>
+                <outlet property="distPointNameLabel" destination="KAW-8X-KI0" id="bNi-4V-lyh"/>
                 <outlet property="distPointPassword" destination="Et6-7P-Fcv" id="KOk-RP-qmU"/>
+                <outlet property="distPointPasswordLabel" destination="eo6-rS-bfG" id="lx7-Tm-Ia6"/>
                 <outlet property="distPointPort" destination="GoM-UZ-gec" id="y4N-dQ-S9g"/>
+                <outlet property="distPointPortLabel" destination="vTm-IV-qbB" id="bPP-cX-YHl"/>
                 <outlet property="distPointShareName" destination="ME1-yU-Ml3" id="YD3-dK-Ifz"/>
+                <outlet property="distPointShareNameLabel" destination="QIV-Sr-11v" id="TsL-1Z-2py"/>
                 <outlet property="distPointTypePopupBT" destination="GyS-vJ-4BH" id="GK0-gg-NZY"/>
                 <outlet property="distPointURL" destination="1ER-8h-W6H" id="7eG-n3-MOU"/>
+                <outlet property="distPointURLLabel" destination="uDD-20-wUL" id="rBR-9L-kLT"/>
                 <outlet property="distPointUserName" destination="6cA-jO-fVF" id="dWz-tQ-Cev"/>
+                <outlet property="distPointUserNameLabel" destination="m37-CA-3Oc" id="0WT-nX-cxi"/>
+                <outlet property="infoText" destination="zXh-aY-hlD" id="Frr-zL-khY"/>
                 <outlet property="window" destination="F0z-JX-Cv5" id="gIp-Ho-8D9"/>
             </connections>
         </customObject>
@@ -26,7 +34,7 @@
             <windowStyleMask key="styleMask" titled="YES" closable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="196" y="240" width="416" height="348"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1440" height="877"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1280" height="778"/>
             <view key="contentView" id="se5-gp-TjO">
                 <rect key="frame" x="0.0" y="0.0" width="416" height="348"/>
                 <autoresizingMask key="autoresizingMask"/>

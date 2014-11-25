@@ -49,6 +49,7 @@ NSString *defaultJSSRepo = @"https://github.com/sheagcraig/jss-recipes.git";
     _installRequestedDuringConnect = NO;
 
     [self showInstallTabItems:NO];
+    [_jssEditDistPointBT setEnabled:NO];
 
     [_jssInstallStatusLight setImage:[NSImage LGStatusNotInstalled]];
     if ([LGHostInfo jssAddonInstalled] && _defaults.JSSRepos) {
@@ -218,6 +219,19 @@ NSString *defaultJSSRepo = @"https://github.com/sheagcraig/jss-recipes.git";
     _defaults.JSSRepos = [NSArray arrayWithArray:workingArray];
 }
 
+-(void)tableViewSelectionDidChange:(NSNotification *)notification{
+    NSInteger row = [_jssDistributionPointTableView selectedRow];
+    // If nothing in the table is selected the row value is -1 so
+    if (row > -1) {
+        // If a type key is not set, then it's from a DP from
+        // the jss server and not editable.
+        if([[_defaults.JSSRepos objectAtIndex:row] objectForKey:@"type"]){
+            [_jssEditDistPointBT setEnabled:YES];
+        } else {
+            [_jssEditDistPointBT setEnabled:NO];
+        }
+    }
+}
 
 #pragma mark - Utility
 - (void)checkReachability
@@ -401,9 +415,18 @@ NSString *defaultJSSRepo = @"https://github.com/sheagcraig/jss-recipes.git";
 }
 
 #pragma mark - Table View Contextual menu
-- (void)removeDistributionPoint:(NSMenuItem *)item
+- (void)removeDistributionPoint:(id)sender
 {
-    NSDictionary *distPoint = item.representedObject;
+    NSDictionary *distPoint = nil;
+    if ([sender isKindOfClass:[NSMenuItem class]]) {
+        distPoint = [(NSMenuItem *)sender representedObject];
+    } else {
+        NSInteger row = _jssDistributionPointTableView.selectedRow;
+        if (row > -1) {
+            distPoint = _defaults.JSSRepos[row];
+        }
+    }
+
     NSLog(@"Request received to remove distribution point: %@", distPoint);
     NSMutableArray *workingArray = [[NSMutableArray alloc] initWithArray:_defaults.JSSRepos];
     [workingArray removeObject:distPoint];
@@ -411,14 +434,22 @@ NSString *defaultJSSRepo = @"https://github.com/sheagcraig/jss-recipes.git";
     [_jssDistributionPointTableView reloadData];
 }
 
-- (void)editDistributionPoint:(NSMenuItem *)item
+- (void)editDistributionPoint:(id)sender
 {
 
-    NSDictionary *repoDict = item.representedObject;
+    NSDictionary *distPoint = nil;
+    if ([sender isKindOfClass:[NSMenuItem class]]) {
+        distPoint = [(NSMenuItem *)sender representedObject];
+    } else {
+        NSInteger row = _jssDistributionPointTableView.selectedRow;
+        if (row > -1) {
+            distPoint = _defaults.JSSRepos[row];
+        }
+    }
 
-    if (repoDict && repoDict[kLGJSSDistPointTypeKey]) {
+    if (distPoint && distPoint[kLGJSSDistPointTypeKey]) {
         if (!_preferencePanel) {
-            _preferencePanel = [[LGJSSDistributionPointsPrefPanel alloc] initWithDistPointDictionary:repoDict];
+            _preferencePanel = [[LGJSSDistributionPointsPrefPanel alloc] initWithDistPointDictionary:distPoint];
         }
 
         [NSApp beginSheet:_preferencePanel.window modalForWindow:_modalWindow modalDelegate:self didEndSelector:@selector(didClosePreferencePanel) contextInfo:nil];

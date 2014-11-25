@@ -28,11 +28,13 @@
     NSDictionary *_editRepoDict;
 }
 
--(id)init {
-    return  [self initWithWindowNibName:@"LGJSSDistributionPointsPrefPanel"];
+- (id)init
+{
+    return [self initWithWindowNibName:@"LGJSSDistributionPointsPrefPanel"];
 }
 
--(instancetype)initWithDistPointDictionary:(NSDictionary *)dict {
+- (instancetype)initWithDistPointDictionary:(NSDictionary *)dict
+{
     self = [self init];
     if (self) {
         _editRepoDict = dict;
@@ -112,10 +114,9 @@
 
         if (_editRepoDict) {
             NSUInteger index = [workingSet indexOfObjectPassingTest:
-                                ^BOOL(NSDictionary *dict, NSUInteger idx, BOOL *stop)
-                                {
+                                               ^BOOL(NSDictionary *dict, NSUInteger idx, BOOL *stop) {
                                     return [dict isEqualToDictionary:_editRepoDict];
-                                }];
+                                               }];
 
             if (index != NSNotFound) {
                 [workingSet replaceObjectAtIndex:index withObject:distPoint];
@@ -141,15 +142,28 @@
         [_distPointShareName setHidden:NO];
         [_distPointDomain setHidden:YES];
 
+        // Hide Labels too
+        [_distPointPortLabel setHidden:NO];
+        [_distPointShareNameLabel setHidden:NO];
+        [_distPointDomainLabel setHidden:YES];
+
     } else if ([sender.title isEqualToString:@"SMB"]) {
         [_distPointPort setHidden:NO];
         [_distPointShareName setHidden:NO];
         [_distPointDomain setHidden:NO];
-        
+
+        [_distPointPortLabel setHidden:NO];
+        [_distPointShareNameLabel setHidden:NO];
+        [_distPointDomainLabel setHidden:NO];
+
     } else if ([sender.title isEqualToString:@"JDS"]) {
         [_distPointPort setHidden:YES];
         [_distPointShareName setHidden:YES];
         [_distPointDomain setHidden:YES];
+
+        [_distPointPortLabel setHidden:YES];
+        [_distPointShareNameLabel setHidden:YES];
+        [_distPointDomainLabel setHidden:YES];
     }
 }
 
@@ -161,13 +175,15 @@
 #pragma mark - Utility
 - (void)hilightRequiredTypes
 {
-    NSDictionary *redDict = @{NSForegroundColorAttributeName: [NSColor redColor],
-                          NSFontAttributeName:[NSFont systemFontOfSize:[NSFont systemFontSize]],
-                          };
+    NSDictionary *redDict = @{
+        NSForegroundColorAttributeName : [NSColor redColor],
+        NSFontAttributeName : [NSFont systemFontOfSize:[NSFont systemFontSize]],
+    };
 
-    NSDictionary *grayDict = @{NSForegroundColorAttributeName: [NSColor grayColor],
-                           NSFontAttributeName:[NSFont systemFontOfSize:[NSFont systemFontSize]],
-                           };
+    NSDictionary *grayDict = @{
+        NSForegroundColorAttributeName : [NSColor grayColor],
+        NSFontAttributeName : [NSFont systemFontOfSize:[NSFont systemFontSize]],
+    };
 
     for (NSTextField *type in [self allTextFields]) {
         NSString *string = [[type.cell placeholderAttributedString] string];
@@ -194,7 +210,7 @@
 
 - (BOOL)meetsRequirementsForType
 {
-    for (NSTextField* type in [self requiredForType]) {
+    for (NSTextField *type in [self requiredForType]) {
         if (!type.safeStringValue) {
             return NO;
         }
@@ -211,7 +227,7 @@
     }
 
     if ([type isEqualToString:@"SMB"]) {
-//        [types addObject:_distPointDomain];
+        //        [types addObject:_distPointDomain];
     }
 
     return [NSArray arrayWithArray:types];
@@ -219,6 +235,12 @@
 
 - (NSArray *)allTextFields
 {
-    return @[_distPointDomain,_distPointName,_distPointPassword,_distPointPort,_distPointShareName,_distPointURL,_distPointUserName];
+    return @[ _distPointDomain,
+              _distPointName,
+              _distPointPassword,
+              _distPointPort,
+              _distPointShareName,
+              _distPointURL,
+              _distPointUserName ];
 }
 @end
