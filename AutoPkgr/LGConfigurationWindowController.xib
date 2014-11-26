@@ -351,7 +351,7 @@
                                                                         </buttonCell>
                                                                         <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                                                     </tableColumn>
-                                                                    <tableColumn identifier="recipeName" width="555" minWidth="40" maxWidth="1000" id="BlP-un-SwO">
+                                                                    <tableColumn identifier="Name" width="205" minWidth="40" maxWidth="1000" id="BlP-un-SwO">
                                                                         <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left">
                                                                             <font key="font" metaFont="smallSystem"/>
                                                                             <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
@@ -364,6 +364,19 @@
                                                                         </textFieldCell>
                                                                         <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                                                     </tableColumn>
+                                                                    <tableColumn identifier="Identifier" width="414" minWidth="10" maxWidth="3.4028234663852886e+38" id="Uhk-Q9-hWI">
+                                                                        <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left">
+                                                                            <font key="font" metaFont="smallSystem"/>
+                                                                            <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
+                                                                            <color key="backgroundColor" name="headerColor" catalog="System" colorSpace="catalog"/>
+                                                                        </tableHeaderCell>
+                                                                        <textFieldCell key="dataCell" lineBreakMode="truncatingTail" selectable="YES" editable="YES" alignment="left" title="Text Cell" id="DUf-VS-jVi">
+                                                                            <font key="font" metaFont="system"/>
+                                                                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                                            <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                                        </textFieldCell>
+                                                                        <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
+                                                                    </tableColumn>
                                                                 </tableColumns>
                                                                 <connections>
                                                                     <outlet property="dataSource" destination="oLk-Uk-whI" id="JUq-o3-zfN"/>
@@ -373,7 +386,7 @@
                                                         </subviews>
                                                         <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                     </clipView>
-                                                    <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="YES" id="jol-Dg-6k1">
+                                                    <scroller key="horizontalScroller" verticalHuggingPriority="750" horizontal="YES" id="jol-Dg-6k1">
                                                         <rect key="frame" x="1" y="128" width="581" height="16"/>
                                                         <autoresizingMask key="autoresizingMask"/>
                                                     </scroller>

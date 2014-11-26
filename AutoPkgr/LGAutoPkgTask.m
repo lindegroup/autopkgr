@@ -25,10 +25,10 @@
 
 NSString *const kLGAutoPkgTaskLock = @"com.lindegroup.autopkg.task.lock";
 
-NSString *const kLGAutoPkgRecipeNameKey = @"name";
+NSString *const kLGAutoPkgRecipeNameKey = @"Name";
 NSString *const kLGAutoPkgRecipeIdentifierKey = @"Identifier";
 NSString *const kLGAutoPkgRecipeParentKey = @"ParentRecipe";
-NSString *const kLGAutoPkgRecipePathKey = @"path";
+NSString *const kLGAutoPkgRecipePathKey = @"Path";
 NSString *const kLGAutoPkgRepoNameKey = @"repo_name";
 NSString *const kLGAutoPkgRepoPathKey = @"repo_path";
 NSString *const kLGAutoPkgRepoURLKey = @"repo_url";
