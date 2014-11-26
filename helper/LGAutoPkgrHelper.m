@@ -127,7 +127,7 @@ static const NSTimeInterval kHelperCheckInterval = 1.0; // how often to check wh
         if (error) {
             NSDictionary *errorDict = @{NSLocalizedDescriptionKey:@"Invalid user for scheduling autopkg run",
                                         NSLocalizedRecoverySuggestionErrorKey:@"There was a problem either verifying the user, or with the user's configuration. The user must be have a home directory set, a shell environment, and valid com.github.autopkg preferences."};
-            *error = [NSError errorWithDomain:kLGApplicationName code:kLGErrorInvalidUser userInfo:errorDict];
+            *error = [NSError errorWithDomain:kLGApplicationName code:1 userInfo:errorDict];
         }
         success = NO;
     }

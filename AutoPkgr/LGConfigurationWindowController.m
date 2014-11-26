@@ -124,12 +124,12 @@
         DLog(@"Git is installed. Disabling 'Install Git' button and setting green indicator.");
         [_installGitButton setEnabled:NO];
         [_gitStatusLabel setStringValue:kLGGitInstalledLabel];
-        [_gitStatusIcon setImage:[NSImage LGStatusAvaliable]];
+        [_gitStatusIcon setImage:[NSImage LGStatusAvailable]];
     } else {
         DLog(@"Git is not installed. Enabling 'Install Git' button and setting red indicator.");
         [_installGitButton setEnabled:YES];
         [_gitStatusLabel setStringValue:kLGGitNotInstalledLabel];
-        [_gitStatusIcon setImage:[NSImage LGStatusUnavaliable]];
+        [_gitStatusIcon setImage:[NSImage LGStatusUnavailable]];
     }
     
     NSOperationQueue *bgQueue = [[NSOperationQueue alloc] init];
@@ -142,7 +142,7 @@
                 [_installAutoPkgButton setEnabled:YES];
                 [_installAutoPkgButton setTitle:@"Update AutoPkg"];
                 [_autoPkgStatusLabel setStringValue:kLGAutoPkgUpdateAvailableLabel];
-                [_autoPkgStatusIcon setImage:[NSImage LGStatusUpdateAvaliable]];
+                [_autoPkgStatusIcon setImage:[NSImage LGStatusUpdateAvailable]];
             } else {
                 DLog(@"AutoPkg is installed and up to date. Disabling 'Update AutoPkg' button and setting green indicator.");
                 [_installAutoPkgButton setEnabled:NO];
@@ -908,12 +908,12 @@
 
     NSString *status = notification.userInfo[kLGNotificationUserInfoSuccess];
     if ([status isEqualTo:@NO]) {
-        [_testSmtpServerStatus setImage:[NSImage LGStatusUnavaliable]];
+        [_testSmtpServerStatus setImage:[NSImage LGStatusUnavailable]];
     } else if ([status isEqualTo:@YES]) {
-        [_testSmtpServerStatus setImage:[NSImage LGStatusAvaliable]];
+        [_testSmtpServerStatus setImage:[NSImage LGStatusAvailable]];
     } else {
         NSLog(@"Unexpected result for recieved from port test.");
-        [_testSmtpServerStatus setImage:[NSImage LGStatusPartiallyAvaliable]];
+        [_testSmtpServerStatus setImage:[NSImage LGStatusPartiallyAvailable]];
     }
 }
 

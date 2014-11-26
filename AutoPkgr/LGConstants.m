@@ -36,7 +36,7 @@ NSString *const kLGAutoPkgNotInstalledLabel = @"AutoPkg is not installed.";
 NSString *const kLGAutoPkgUpdateAvailableLabel = @"An update is available for AutoPkg.";
 NSString *const kLGJSSAutoPkgAddonInstalledLabel = @"JSS AutoPkg Addon has been installed.";
 NSString *const kLGJSSAutoPkgAddonNotInstalledLabel = @"JSS AutoPkg Addon is not installed.";
-NSString *const kLGJSSAutoPkgAddonUpdateAvailableLabel = @"An update is avaliable for JSS AutoPkg Addon.";
+NSString *const kLGJSSAutoPkgAddonUpdateAvailableLabel = @"An update is available for JSS AutoPkg Addon.";
 
 #pragma mark - Static URLs
 #pragma mark-- GitHub

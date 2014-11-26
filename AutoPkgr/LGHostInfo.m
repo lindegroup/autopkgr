@@ -209,15 +209,15 @@ NSString *const kLGBoxenBrewGit = @"/opt/boxen/homebrew/bin";
 + (BOOL)jssAddonUpdateAvailable;
 {
     LGGitHubJSONLoader *loader = [[LGGitHubJSONLoader alloc] init];
-    NSString *avaliableVersion = [loader latestVersion:kLGJSSAddonJSONURL];
+    NSString *availableVersion = [loader latestVersion:kLGJSSAddonJSONURL];
     NSString *installedVersion = [self getJSSAddonVersion];
-    BOOL updateAvaliable = [LGVersionComparator isVersion:avaliableVersion
+    BOOL updateAvailable = [LGVersionComparator isVersion:availableVersion
                                        greaterThanVersion:installedVersion];
-    if (updateAvaliable) {
-        NSLog(@"Version %@ of the JSSAddon is avaliable. Version %@ is installed", avaliableVersion, installedVersion);
+    if (updateAvailable) {
+        NSLog(@"Version %@ of the JSSAddon is available. Version %@ is installed", availableVersion, installedVersion);
     }
 
-    return updateAvaliable;
+    return updateAvailable;
 }
 
 + (NSArray *)knownGitPaths
