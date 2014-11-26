@@ -33,7 +33,6 @@
 
     if (theEvent.type == NSLeftMouseDown || theEvent.type == NSRightMouseDown) {
         if ([classString isEqualToString:@"LGRecipes"]) {
-            NSString *recipe = [self recipeFromRow:row];
             return [(LGRecipes *)[self dataSource] contextualMenuForRecipeAtRow:row];
         } else if ([classString isEqualToString:@"LGPopularRepositories"]) {
             NSString *repo = [self repoFromRow:row];

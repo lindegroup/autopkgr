@@ -37,12 +37,63 @@
     return self;
 }
 
+- (void)awakeFromNib
+{
+    [self reload];
+    [_recipeSearchField setTarget:self];
+    [_recipeSearchField setAction:@selector(executeAppSearch:)];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didCreateOverride:) name:kLGNotificationOverrideCreated object:nil];
+
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didDeleteOverride:) name:kLGNotificationOverrideDeleted object:nil];
+}
+
 - (void)reload
 {
-    _recipes = [[LGAutoPkgTask listRecipes] removeEmptyStrings];
+    _recipes = [[self getAllRecipes] removeEmptyStrings];
     [self executeAppSearch:self];
 }
 
+#pragma mark - Table View
+- (NSInteger)numberOfRowsInTableView:(NSTableView *)tableView
+{
+    return [_searchedRecipes count];
+}
+
+- (id)tableView:(NSTableView *)tableView objectValueForTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row
+{
+    if ([[tableColumn identifier] isEqualToString:@"recipeCheckbox"]) {
+        return @([_activeRecipes containsObject:[_searchedRecipes objectAtIndex:row][kLGAutoPkgRecipeNameKey]]);
+    } else if ([[tableColumn identifier] isEqualToString:@"recipeName"]) {
+        return [_searchedRecipes objectAtIndex:row][kLGAutoPkgRecipeNameKey];
+    } else if ([[tableColumn identifier] isEqualToString:kLGAutoPkgRecipeIdentifierKey]) {
+        return [_searchedRecipes objectAtIndex:row][kLGAutoPkgRecipeIdentifierKey];
+    }
+
+    return nil;
+}
+
+- (void)tableView:(NSTableView *)tableView setObjectValue:(id)object forTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row
+{
+    if ([[tableColumn identifier] isEqualToString:@"recipeCheckbox"]) {
+        NSMutableArray *workingArray = [NSMutableArray arrayWithArray:_activeRecipes];
+        if ([object isEqual:@YES]) {
+            [workingArray addObject:[_searchedRecipes objectAtIndex:row][kLGAutoPkgRecipeNameKey]];
+        } else {
+            NSUInteger index = [workingArray indexOfObject:[_searchedRecipes objectAtIndex:row][kLGAutoPkgRecipeNameKey]];
+            if (index != NSNotFound) {
+                [workingArray removeObjectAtIndex:index];
+            } else {
+                NSLog(@"Cannot find item %@ in workingArray.", [_searchedRecipes objectAtIndex:row][kLGAutoPkgRecipeNameKey]);
+            }
+        }
+        _activeRecipes = [NSArray arrayWithArray:workingArray];
+        [self writeRecipeList];
+    }
+
+    return;
+}
+
+#pragma mark - Filtering
 - (NSArray *)getActiveRecipes
 {
     NSFileManager *fm = [NSFileManager defaultManager];
@@ -70,43 +121,6 @@
     return [[NSArray alloc] init];
 }
 
-- (NSInteger)numberOfRowsInTableView:(NSTableView *)tableView
-{
-    return [_searchedRecipes count];
-}
-
-- (id)tableView:(NSTableView *)tableView objectValueForTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row
-{
-    if ([[tableColumn identifier] isEqualToString:@"recipeCheckbox"]) {
-        return @([_activeRecipes containsObject:[_searchedRecipes objectAtIndex:row][kLGAutoPkgRecipeNameKey]]);
-    } else if ([[tableColumn identifier] isEqualToString:@"recipeName"]) {
-        return [_searchedRecipes objectAtIndex:row][kLGAutoPkgRecipeNameKey];
-    }
-
-    return nil;
-}
-
-- (void)tableView:(NSTableView *)tableView setObjectValue:(id)object forTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row
-{
-    if ([[tableColumn identifier] isEqualToString:@"recipeCheckbox"]) {
-        NSMutableArray *workingArray = [NSMutableArray arrayWithArray:_activeRecipes];
-        if ([object isEqual:@YES]) {
-            [workingArray addObject:[_searchedRecipes objectAtIndex:row][kLGAutoPkgRecipeNameKey]];
-        } else {
-            NSUInteger index = [workingArray indexOfObject:[_searchedRecipes objectAtIndex:row][kLGAutoPkgRecipeNameKey]];
-            if (index != NSNotFound) {
-                [workingArray removeObjectAtIndex:index];
-            } else {
-                NSLog(@"Cannot find item %@ in workingArray.", [_searchedRecipes objectAtIndex:row][kLGAutoPkgRecipeNameKey]);
-            }
-        }
-        _activeRecipes = [NSArray arrayWithArray:workingArray];
-        [self writeRecipeList];
-    }
-
-    return;
-}
-
 - (void)cleanActiveApps
 {
     // This runs through the updated recipes and removes any recipes from the
@@ -114,7 +128,7 @@
 
     NSMutableArray *workingArray = [NSMutableArray arrayWithArray:_activeRecipes];
     for (NSString *string in _activeRecipes) {
-        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"%K == %@",kLGAutoPkgRecipeNameKey, string];
+        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"%K == %@", kLGAutoPkgRecipeNameKey, string];
 
         if (![_recipes filteredArrayUsingPredicate:predicate]) {
             [workingArray removeObject:string];
@@ -123,6 +137,24 @@
     _activeRecipes = [NSArray arrayWithArray:workingArray];
 }
 
+- (void)executeAppSearch:(id)sender
+{
+    [_recipeTableView beginUpdates];
+    [_recipeTableView removeRowsAtIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, _searchedRecipes.count)] withAnimation:NSTableViewAnimationEffectNone];
+
+    if ([[_recipeSearchField stringValue] isEqualToString:@""]) {
+        _searchedRecipes = _recipes;
+    } else {
+        NSPredicate *recipeSearchPred = [NSPredicate predicateWithFormat:@"%K CONTAINS[cd] %@", kLGAutoPkgRecipeNameKey, [_recipeSearchField stringValue]];
+        _searchedRecipes = [_recipes filteredArrayUsingPredicate:recipeSearchPred];
+    }
+
+    [_recipeTableView insertRowsAtIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, _searchedRecipes.count)] withAnimation:NSTableViewAnimationEffectNone];
+
+    [_recipeTableView endUpdates];
+}
+
+#pragma mark - Recipe List
 - (void)writeRecipeList
 {
     [self cleanActiveApps];
@@ -158,56 +190,115 @@
     }
 }
 
-- (void)executeAppSearch:(id)sender
+- (NSArray *)getAllRecipes
 {
-    [_recipeTableView beginUpdates];
-    [_recipeTableView removeRowsAtIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, _searchedRecipes.count)] withAnimation:NSTableViewAnimationEffectNone];
+    LGDefaults *defaults = [LGDefaults standardUserDefaults];
+    NSMutableSet *recipeSet = [[NSMutableSet alloc] init];
 
-    if ([[_recipeSearchField stringValue] isEqualToString:@""]) {
-        _searchedRecipes = _recipes;
-    } else {
-        NSPredicate *recipeSearchPred = [NSPredicate predicateWithFormat:@"%K CONTAINS[cd] %@",kLGAutoPkgRecipeNameKey,[_recipeSearchField stringValue]];
-        _searchedRecipes = [_recipes filteredArrayUsingPredicate:recipeSearchPred];
+    NSString *recipeRepo = defaults.autoPkgRecipeRepoDir ?: @"~/Library/AutoPkg/RecipeRepos".stringByExpandingTildeInPath;
+    NSArray *recipeArray = [self findRecipesRecursivelyAtPath:recipeRepo isOverride:NO];
+    [recipeSet addObjectsFromArray:recipeArray];
+
+    NSString *recipeOverride = defaults.autoPkgRecipeOverridesDir ?: @"~/Library/AutoPkg/RecipeOverrides".stringByExpandingTildeInPath;
+    NSArray *overrideArray = [self findRecipesRecursivelyAtPath:recipeOverride isOverride:YES];
+
+    for (NSDictionary *override in overrideArray) {
+        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"not (%K == %@ AND %K == %@)",kLGAutoPkgRecipeNameKey,override[kLGAutoPkgRecipeNameKey],kLGAutoPkgRecipeIdentifierKey,override[kLGAutoPkgRecipeParentKey]];
+        [recipeSet filterUsingPredicate:predicate];
     }
 
-    [_recipeTableView insertRowsAtIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, _searchedRecipes.count)] withAnimation:NSTableViewAnimationEffectNone];
+    [recipeSet addObjectsFromArray:overrideArray];
 
-    [_recipeTableView endUpdates];
+    // Make a sorted array using the recipe name as the sort key.
+    NSSortDescriptor *descriptor = [[NSSortDescriptor alloc] initWithKey:kLGAutoPkgRecipeNameKey
+                                                               ascending:YES];
+
+    NSArray *sortedArray = [recipeSet sortedArrayUsingDescriptors:@[ descriptor ]];
+
+    return sortedArray.count ? sortedArray : nil;
 }
 
-- (void)awakeFromNib
+- (NSArray *)findRecipesRecursivelyAtPath:(NSString *)path isOverride:(BOOL)isOverride
 {
-    [self reload];
-    [_recipeSearchField setTarget:self];
-    [_recipeSearchField setAction:@selector(executeAppSearch:)];
+    NSFileManager *manager = [NSFileManager defaultManager];
+    NSMutableArray *array = [[NSMutableArray alloc] init];
+
+    NSDirectoryEnumerator *enumerator;
+    NSURL *searchDirURL = [NSURL fileURLWithPath:path.stringByExpandingTildeInPath];
+
+    if (searchDirURL && [manager fileExistsAtPath:path]) {
+        enumerator = [manager enumeratorAtURL:searchDirURL
+                   includingPropertiesForKeys:@[ NSURLNameKey, NSURLIsDirectoryKey ]
+                                      options:NSDirectoryEnumerationSkipsHiddenFiles
+                                 errorHandler:^BOOL(NSURL *url, NSError *error) {
+                                                   return YES;
+                                 }];
+
+        for (NSURL *fileURL in enumerator) {
+            NSString *filename;
+            [fileURL getResourceValue:&filename forKey:NSURLNameKey error:nil];
+
+            NSNumber *isDirectory;
+            [fileURL getResourceValue:&isDirectory forKey:NSURLIsDirectoryKey error:nil];
+
+            if (![isDirectory boolValue]) {
+                if ([filename.pathExtension isEqualToString:@"recipe"]) {
+                    NSDictionary *recipe = [self createRecipeDictFromURL:fileURL isOverrid:isOverride];
+                    if (recipe) {
+                        [array addObject:recipe];
+                    }
+                }
+            }
+        }
+    }
+    return [NSArray arrayWithArray:array];
 }
 
-#pragma mark - Class Methods
-+ (NSString *)recipeList
+- (NSDictionary *)createRecipeDictFromURL:(NSURL *)recipeURL isOverrid:(BOOL)isOverride
 {
-    NSString *applicationSupportDirectory = [LGHostInfo getAppSupportDirectory];
-    return [applicationSupportDirectory stringByAppendingString:@"/recipe_list.txt"];
+    // Do some basic checks against the file url first.
+    if (!recipeURL || !recipeURL.isFileURL) {
+        return nil;
+    }
+
+    NSMutableDictionary *dictionary = [NSMutableDictionary dictionaryWithContentsOfURL:recipeURL];
+    // If we can't serialize the file, or there are not valid enteries then it's not a recipe
+    if (dictionary.count) {
+        NSString *recipeName = recipeURL.lastPathComponent.stringByDeletingPathExtension;
+        [dictionary setObject:recipeName forKey:kLGAutoPkgRecipeNameKey];
+        [dictionary setObject:@(isOverride) forKey:@"isOverride"];
+
+        if (!dictionary[kLGAutoPkgRecipeIdentifierKey]) {
+            if (dictionary[@"Input"][@"IDENTIFIER"]) {
+                [dictionary setObject:dictionary[@"Input"][@"IDENTIFIER"] forKey:kLGAutoPkgRecipeIdentifierKey];
+            }
+        }
+    }
+
+    return dictionary.count ? [NSDictionary dictionaryWithDictionary:dictionary] : nil;
 }
 
+#pragma mark - Contextual Menu
 - (NSMenu *)contextualMenuForRecipeAtRow:(NSInteger)row
 {
     NSMenu *menu;
 
-    NSString *recipe = [_searchedRecipes objectAtIndex:row][kLGAutoPkgRecipeNameKey];
-    NSString *identifier = [_searchedRecipes objectAtIndex:row][kLGAutoPkgRecipeIdentifierKey];
+    NSDictionary *recipeDict = [_searchedRecipes objectAtIndex:row];
+    NSString *recipe = recipeDict[kLGAutoPkgRecipeNameKey];
+    NSString *identifier = recipeDict[kLGAutoPkgRecipeIdentifierKey];
 
     NSMenuItem *identifierItem = [[NSMenuItem alloc] initWithTitle:identifier action:nil keyEquivalent:@""];
 
-
-    NSMenuItem *item;
+    NSMenuItem *item1;
     NSMenuItem *item2;
+    NSMenuItem *item3;
 
     NSString *currentEditor = [[LGDefaults standardUserDefaults] objectForKey:@"RecipeEditor"];
 
-    BOOL overrideExists = [LGRecipeOverrides overrideExistsForRecipe:recipe];
+    BOOL overrideExists = [LGRecipeOverrides overrideExistsForRecipe:recipeDict];
     menu = [[NSMenu alloc] init];
     [menu addItem:identifierItem];
-    
+
     NSMenu *recipeEditorMenu = [[NSMenu alloc] init];
     NSMenuItem *recipeEditorMenuItem = [[NSMenuItem alloc] initWithTitle:@"Set Recipe Editor" action:nil keyEquivalent:@""];
 
@@ -226,26 +317,40 @@
     [recipeEditorMenu addItem:otherEditorItem];
 
     if (overrideExists) {
-        item = [[NSMenuItem alloc] initWithTitle:@"Open Recipe Override" action:@selector(openFile:) keyEquivalent:@""];
+        item1 = [[NSMenuItem alloc] initWithTitle:@"Open Recipe Override" action:@selector(openFile:) keyEquivalent:@""];
+        item1.representedObject = recipe;
 
         // Reveal in finder menu item
         item2 = [[NSMenuItem alloc] initWithTitle:@"Show in Finder" action:@selector(revealInFinder:) keyEquivalent:@""];
         item2.representedObject = recipe;
         item2.target = [LGRecipeOverrides class];
 
+        // "Delete Override" menu item
+        item3 = [[NSMenuItem alloc] initWithTitle:@"Remove Override" action:@selector(deleteOverride:) keyEquivalent:@""];
+        item3.representedObject = @{kLGAutoPkgRecipeNameKey:recipe,
+                                    kLGAutoPkgRecipeIdentifierKey:identifier};
+        
+        item3.target = [LGRecipeOverrides class];
+
     } else {
-        item = [[NSMenuItem alloc] initWithTitle:@"Create Override" action:@selector(createOverride:) keyEquivalent:@""];
+        item1 = [[NSMenuItem alloc] initWithTitle:@"Create Override" action:@selector(createOverride:) keyEquivalent:@""];
+        item1.representedObject = @{kLGAutoPkgRecipeNameKey:recipe,
+                                    kLGAutoPkgRecipeIdentifierKey:identifier};
+
     }
 
-    item.representedObject = recipe;
-    item.target = [LGRecipeOverrides class];
+    item1.target = [LGRecipeOverrides class];
 
-    if (item) {
-        [menu addItem:item];
+    if (item1) {
+        [menu addItem:item1];
     }
 
     if (item2) {
         [menu addItem:item2];
+    }
+
+    if (item3) {
+        [menu addItem:item3];
     }
 
     [menu addItem:recipeEditorMenuItem];
@@ -253,4 +358,25 @@
     return menu;
 }
 
+#pragma mark - Notifications
+- (void)didCreateOverride:(NSNotification *)aNotification
+{
+    [[NSOperationQueue mainQueue]addOperationWithBlock:^{
+        [self reload];
+    }];
+}
+
+- (void)didDeleteOverride:(NSNotification *)aNotification
+{
+    [[NSOperationQueue mainQueue]addOperationWithBlock:^{
+        [self reload];
+    }];
+}
+
+#pragma mark - Class Methods
++ (NSString *)recipeList
+{
+    NSString *applicationSupportDirectory = [LGHostInfo getAppSupportDirectory];
+    return [applicationSupportDirectory stringByAppendingString:@"/recipe_list.txt"];
+}
 @end

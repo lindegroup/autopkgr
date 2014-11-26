@@ -22,10 +22,14 @@
 
 @interface LGRecipeOverrides : NSObject
 
-+ (BOOL)overrideExistsForRecipe:(NSString *)recipe;
+extern NSString* const kLGNotificationOverrideCreated;
+extern NSString* const kLGNotificationOverrideDeleted;
+
++ (BOOL)overrideExistsForRecipe:(NSDictionary *)recipe;
 + (NSArray *)recipeEditors;
 + (void)setRecipeEditor:(NSMenuItem *)item;
 + (void)createOverride:(NSMenuItem *)sender;
++ (void)deleteOverride:(NSMenuItem *)sender;
 + (void)revealInFinder:(NSMenuItem *)sender;
 
 @end

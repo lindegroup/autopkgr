@@ -26,7 +26,8 @@
 NSString *const kLGAutoPkgTaskLock = @"com.lindegroup.autopkg.task.lock";
 
 NSString *const kLGAutoPkgRecipeNameKey = @"name";
-NSString *const kLGAutoPkgRecipeIdentifierKey = @"identifier";
+NSString *const kLGAutoPkgRecipeIdentifierKey = @"Identifier";
+NSString *const kLGAutoPkgRecipeParentKey = @"ParentRecipe";
 NSString *const kLGAutoPkgRecipePathKey = @"path";
 NSString *const kLGAutoPkgRepoNameKey = @"repo_name";
 NSString *const kLGAutoPkgRepoPathKey = @"repo_path";
@@ -658,7 +659,6 @@ typedef void (^AutoPkgReplyErrorBlock)(NSError *error);
                 }
 
                 NSArray *listResults = [resultString componentsSeparatedByCharactersInSet:[NSCharacterSet newlineCharacterSet]];
-
                 NSMutableArray *strippedRecipes = [NSMutableArray arrayWithCapacity:listResults.count];
 
                 for (NSString *rawString in [listResults removeEmptyStrings]) {
@@ -777,7 +777,7 @@ typedef void (^AutoPkgReplyErrorBlock)(NSError *error);
 
 + (NSArray *)listRecipes
 {
-    LGAutoPkgTask *task = [[LGAutoPkgTask alloc] initWithArguments:@[ @"list-recipes" ]];
+    LGAutoPkgTask *task = [[LGAutoPkgTask alloc] initWithArguments:@[ @"list-recipes"]];
     [task launch];
     id results = [task results];
     return [results isKindOfClass:[NSArray class]] ? results : nil;
