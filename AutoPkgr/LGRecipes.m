@@ -63,7 +63,7 @@
 {
     if ([[tableColumn identifier] isEqualToString:@"recipeCheckbox"]) {
         return @([_activeRecipes containsObject:[_searchedRecipes objectAtIndex:row][kLGAutoPkgRecipeNameKey]]);
-    } else if ([[tableColumn identifier] isEqualToString:@"recipeName"]) {
+    } else if ([[tableColumn identifier] isEqualToString:kLGAutoPkgRecipeNameKey]) {
         return [_searchedRecipes objectAtIndex:row][kLGAutoPkgRecipeNameKey];
     } else if ([[tableColumn identifier] isEqualToString:kLGAutoPkgRecipeIdentifierKey]) {
         return [_searchedRecipes objectAtIndex:row][kLGAutoPkgRecipeIdentifierKey];
@@ -284,10 +284,6 @@
     NSMenu *menu;
 
     NSDictionary *recipeDict = [_searchedRecipes objectAtIndex:row];
-    NSString *recipe = recipeDict[kLGAutoPkgRecipeNameKey];
-    NSString *identifier = recipeDict[kLGAutoPkgRecipeIdentifierKey];
-
-    NSMenuItem *identifierItem = [[NSMenuItem alloc] initWithTitle:identifier action:nil keyEquivalent:@""];
 
     NSMenuItem *item1;
     NSMenuItem *item2;
@@ -297,7 +293,6 @@
 
     BOOL overrideExists = [LGRecipeOverrides overrideExistsForRecipe:recipeDict];
     menu = [[NSMenu alloc] init];
-    [menu addItem:identifierItem];
 
     NSMenu *recipeEditorMenu = [[NSMenu alloc] init];
     NSMenuItem *recipeEditorMenuItem = [[NSMenuItem alloc] initWithTitle:@"Set Recipe Editor" action:nil keyEquivalent:@""];
@@ -318,24 +313,22 @@
 
     if (overrideExists) {
         item1 = [[NSMenuItem alloc] initWithTitle:@"Open Recipe Override" action:@selector(openFile:) keyEquivalent:@""];
-        item1.representedObject = recipe;
+        item1.representedObject = recipeDict;
 
         // Reveal in finder menu item
         item2 = [[NSMenuItem alloc] initWithTitle:@"Show in Finder" action:@selector(revealInFinder:) keyEquivalent:@""];
-        item2.representedObject = recipe;
+        item2.representedObject = recipeDict;
         item2.target = [LGRecipeOverrides class];
 
         // "Delete Override" menu item
         item3 = [[NSMenuItem alloc] initWithTitle:@"Remove Override" action:@selector(deleteOverride:) keyEquivalent:@""];
-        item3.representedObject = @{kLGAutoPkgRecipeNameKey:recipe,
-                                    kLGAutoPkgRecipeIdentifierKey:identifier};
+        item3.representedObject = recipeDict;
         
         item3.target = [LGRecipeOverrides class];
 
     } else {
         item1 = [[NSMenuItem alloc] initWithTitle:@"Create Override" action:@selector(createOverride:) keyEquivalent:@""];
-        item1.representedObject = @{kLGAutoPkgRecipeNameKey:recipe,
-                                    kLGAutoPkgRecipeIdentifierKey:identifier};
+        item1.representedObject = recipeDict;
 
     }
 
