@@ -195,11 +195,16 @@
     LGDefaults *defaults = [LGDefaults standardUserDefaults];
     NSMutableSet *recipeSet = [[NSMutableSet alloc] init];
 
-    NSString *recipeRepo = defaults.autoPkgRecipeRepoDir ?: @"~/Library/AutoPkg/RecipeRepos".stringByExpandingTildeInPath;
-    NSArray *recipeArray = [self findRecipesRecursivelyAtPath:recipeRepo isOverride:NO];
-    [recipeSet addObjectsFromArray:recipeArray];
+    NSArray *searchDirs = defaults.autoPkgRecipeSearchDirs;
+    for (NSString *searchDir in searchDirs) {
+        if (![searchDir isEqualToString:@"."]) {
+            NSArray *recipeArray = [self findRecipesRecursivelyAtPath:searchDir.stringByExpandingTildeInPath isOverride:NO];
+            [recipeSet addObjectsFromArray:recipeArray];
+        }
+    }
 
     NSString *recipeOverride = defaults.autoPkgRecipeOverridesDir ?: @"~/Library/AutoPkg/RecipeOverrides".stringByExpandingTildeInPath;
+
     NSArray *overrideArray = [self findRecipesRecursivelyAtPath:recipeOverride isOverride:YES];
 
     for (NSDictionary *override in overrideArray) {
