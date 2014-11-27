@@ -315,7 +315,7 @@ static NSDictionary *userInfoFromHTTPResponse(NSHTTPURLResponse *response)
         error = [NSError errorWithDomain:kLGApplicationName
                                     code:taskError
                                 userInfo:@{ NSLocalizedDescriptionKey : errorMsg,
-                                            NSLocalizedRecoverySuggestionErrorKey : errorDetails ? errorDetails : @"" }];
+                                            NSLocalizedRecoverySuggestionErrorKey : errorDetails ?: @"" }];
 
         // If Debugging is enabled, log the error message
         DLog(@"Error [%ld] %@ \n %@", (long)taskError, errorMsg, errorDetails);

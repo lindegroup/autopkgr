@@ -354,7 +354,7 @@
     NSString *repoFolder = [_defaults autoPkgRecipeRepoDir];
     BOOL isDir;
 
-    repoFolder = repoFolder ? repoFolder : [@"~/Library/AutoPkg/RecipeRepos" stringByExpandingTildeInPath];
+    repoFolder = repoFolder ?: [@"~/Library/AutoPkg/RecipeRepos" stringByExpandingTildeInPath];
 
     if ([[NSFileManager defaultManager] fileExistsAtPath:repoFolder isDirectory:&isDir] && isDir) {
         NSURL *autoPkgRecipeReposFolderURL = [NSURL fileURLWithPath:repoFolder];
@@ -380,7 +380,7 @@
     NSString *cacheFolder = [_defaults autoPkgCacheDir];
     BOOL isDir;
 
-    cacheFolder = cacheFolder ? cacheFolder : [@"~/Library/AutoPkg/Cache" stringByExpandingTildeInPath];
+    cacheFolder = cacheFolder ?: [@"~/Library/AutoPkg/Cache" stringByExpandingTildeInPath];
 
     if ([[NSFileManager defaultManager] fileExistsAtPath:cacheFolder isDirectory:&isDir] && isDir) {
         NSURL *autoPkgCacheFolderURL = [NSURL fileURLWithPath:cacheFolder];
@@ -406,7 +406,7 @@
     NSString *overridesFolder = _defaults.autoPkgRecipeOverridesDir;
     BOOL isDir;
 
-    overridesFolder = overridesFolder ? overridesFolder : [@"~/Library/AutoPkg/RecipeOverrides" stringByExpandingTildeInPath];
+    overridesFolder = overridesFolder ?: [@"~/Library/AutoPkg/RecipeOverrides" stringByExpandingTildeInPath];
 
     if ([[NSFileManager defaultManager] fileExistsAtPath:overridesFolder isDirectory:&isDir] && isDir) {
         NSURL *autoPkgRecipeOverridesFolderURL = [NSURL fileURLWithPath:overridesFolder];
@@ -429,7 +429,7 @@
     NSOpenPanel *chooseDialog = [self setupChoosePanel];
 
     // Set the default directory to the current setting for munkiRepo, else /Users/Shared
-    [chooseDialog setDirectoryURL:[NSURL URLWithString:_defaults.munkiRepo ? _defaults.munkiRepo : @"/Users/Shared"]];
+    [chooseDialog setDirectoryURL:[NSURL URLWithString:_defaults.munkiRepo ?: @"/Users/Shared"]];
 
     // Display the dialog. If the "Choose" button was
     // pressed, process the directory path.
@@ -459,7 +459,7 @@
     NSOpenPanel *chooseDialog = [self setupChoosePanel];
 
     // Set the default directory to the current setting for autoPkgRecipeRepoDir, else ~/Library/AutoPkg
-    [chooseDialog setDirectoryURL:[NSURL URLWithString:_defaults.autoPkgRecipeRepoDir ? _defaults.autoPkgRecipeRepoDir : [@"~/Library/AutoPkg" stringByExpandingTildeInPath]]];
+    [chooseDialog setDirectoryURL:[NSURL URLWithString:_defaults.autoPkgRecipeRepoDir ?: [@"~/Library/AutoPkg" stringByExpandingTildeInPath]]];
 
     // Display the dialog. If the "Choose" button was
     // pressed, process the directory path.
@@ -476,6 +476,9 @@
                     [_autoPkgRecipeRepoDir setStringValue:urlPath];
                     [_openAutoPkgRecipeReposFolderButton setEnabled:YES];
                     _defaults.autoPkgRecipeRepoDir = urlPath;
+
+                    // Since we changed the repo directory reload the table accordingly
+                    [_popRepoTableViewHandler reload];
                 }
             }
         }
@@ -488,7 +491,7 @@
     NSOpenPanel *chooseDialog = [self setupChoosePanel];
 
     // Set the default directory to the current setting for autoPkgCacheDir, else ~/Library/AutoPkg
-    [chooseDialog setDirectoryURL:[NSURL URLWithString:_defaults.autoPkgCacheDir ? _defaults.autoPkgCacheDir : [@"~/Library/AutoPkg" stringByExpandingTildeInPath]]];
+    [chooseDialog setDirectoryURL:[NSURL URLWithString:_defaults.autoPkgCacheDir ?: [@"~/Library/AutoPkg" stringByExpandingTildeInPath]]];
 
     // Display the dialog. If the "Choose" button was
     // pressed, process the directory path.
@@ -518,7 +521,7 @@
     NSOpenPanel *chooseDialog = [self setupChoosePanel];
 
     // Set the default directory to the current setting for autoPkgRecipeOverridesDir, else ~/Library/AutoPkg
-    [chooseDialog setDirectoryURL:[NSURL URLWithString:_defaults.autoPkgRecipeOverridesDir ? _defaults.autoPkgRecipeOverridesDir : [@"~/Library/AutoPkg" stringByExpandingTildeInPath]]];
+    [chooseDialog setDirectoryURL:[NSURL URLWithString:_defaults.autoPkgRecipeOverridesDir ?: [@"~/Library/AutoPkg" stringByExpandingTildeInPath]]];
 
     // Display the dialog. If the "Choose" button was
     // pressed, process the directory path.
@@ -782,7 +785,7 @@
 
     // AutoPkg Recipe Repos
     NSString *recipeReposFolder = [_defaults autoPkgRecipeRepoDir];
-    recipeReposFolder = recipeReposFolder ? recipeReposFolder : [@"~/Library/AutoPkg/RecipeRepos" stringByExpandingTildeInPath];
+    recipeReposFolder = recipeReposFolder ?: [@"~/Library/AutoPkg/RecipeRepos" stringByExpandingTildeInPath];
     if ([[NSFileManager defaultManager] fileExistsAtPath:recipeReposFolder isDirectory:&isDir] && isDir) {
         [_openAutoPkgRecipeReposFolderButton setEnabled:YES];
     } else {
@@ -791,7 +794,7 @@
 
     // AutoPkg Cache
     NSString *cacheFolder = [_defaults autoPkgCacheDir];
-    cacheFolder = cacheFolder ? cacheFolder : [@"~/Library/AutoPkg/Cache" stringByExpandingTildeInPath];
+    cacheFolder = cacheFolder ?: [@"~/Library/AutoPkg/Cache" stringByExpandingTildeInPath];
     if ([[NSFileManager defaultManager] fileExistsAtPath:cacheFolder isDirectory:&isDir] && isDir) {
         [_openAutoPkgCacheFolderButton setEnabled:YES];
     } else {
@@ -800,7 +803,7 @@
 
     // AutoPkg Overrides
     NSString *overridesFolder = [_defaults autoPkgRecipeOverridesDir];
-    overridesFolder = overridesFolder ? overridesFolder : [@"~/Library/AutoPkg/RecipeOverrides" stringByExpandingTildeInPath];
+    overridesFolder = overridesFolder ?: [@"~/Library/AutoPkg/RecipeOverrides" stringByExpandingTildeInPath];
     if ([[NSFileManager defaultManager] fileExistsAtPath:overridesFolder isDirectory:&isDir] && isDir) {
         [_openAutoPkgRecipeOverridesFolderButton setEnabled:YES];
     } else {
