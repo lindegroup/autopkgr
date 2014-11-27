@@ -32,14 +32,13 @@
     LGDefaults *defaults = [[LGDefaults alloc] init];
 
     if (defaults.sendEmailNotificationsWhenNewVersionsAreFoundEnabled) {
-        BOOL TLS = defaults.SMTPTLSEnabled;
 
         MCOSMTPSession *smtpSession = [[MCOSMTPSession alloc] init];
-        smtpSession.username = defaults.SMTPUsername ? defaults.SMTPUsername : @"";
-        smtpSession.hostname = defaults.SMTPServer ? defaults.SMTPServer : @"";
+        smtpSession.username = defaults.SMTPUsername ?: @"";
+        smtpSession.hostname = defaults.SMTPServer ?: @"";
         smtpSession.port = (int)defaults.SMTPPort;
 
-        if (TLS) {
+        if (defaults.SMTPTLSEnabled) {
             DLog(@"SSL/TLS is enabled for %@.", defaults.SMTPServer);
             // If the SMTP port is 465, use MCOConnectionTypeTLS.
             // Otherwise use MCOConnectionTypeStartTLS.
@@ -57,10 +56,11 @@
         // keychain if it exists
         NSError *error = nil;
 
-        if (smtpSession.username) {
+        // Only check for a password if username exists
+        if (defaults.SMTPAuthenticationEnabled && ![smtpSession.username isEqualToString:@""]) {
             AHKeychain *keychain = [LGHostInfo appKeychain];
             AHKeychainItem *item = [[AHKeychainItem alloc] init];
-            
+
             item.label = kLGApplicationName;
             item.service = kLGAutoPkgrPreferenceDomain;
             item.account = smtpSession.username;
@@ -75,15 +75,12 @@
             } else if (error != nil) {
                 NSLog(@"An error occurred when attempting to retrieve the keychain entry for %@. Error: %@", smtpSession.username, [error localizedDescription]);
             } else {
-                // Only set the SMTP session password if the username exists
-                if (smtpSession.username != nil && ![smtpSession.username isEqual:@""]) {
-                    DLog(@"Retrieved password from keychain for account %@.", smtpSession.username);
-                    smtpSession.password = password ? password : @"";
-                }
+                DLog(@"Retrieved password from keychain for account %@.", smtpSession.username);
+                smtpSession.password = password ?: @"";
             }
         }
 
-        NSString *from = defaults.SMTPFrom ? defaults.SMTPFrom : @"AutoPkgr";
+        NSString *from = defaults.SMTPFrom ?: @"AutoPkgr";
 
         MCOMessageBuilder *builder = [[MCOMessageBuilder alloc] init];
         [[builder header] setFrom:[MCOAddress addressWithDisplayName:@"AutoPkgr Notification"
@@ -198,7 +195,7 @@
                 }
             }
 
-            [message appendFormat:@"%@<br/>", version ? version : @"Version not detected"];
+            [message appendFormat:@"%@<br/>", version ?: @"Version not detected"];
         }
     } else {
         DLog(@"Nothing new was downloaded.");
