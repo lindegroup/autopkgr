@@ -251,7 +251,7 @@ typedef void (^AutoPkgReplyErrorBlock)(NSError *error);
         }
 
         [self.task setTerminationHandler:^(NSTask *task) {
-/* 
+        /* 
          * The task terminationHandler is set to nil in the
          * didCompleteTaskExecution method to break retain cycles.
          * so we can silence the retain warnings here.
@@ -766,12 +766,15 @@ typedef void (^AutoPkgReplyErrorBlock)(NSError *error);
     }];
 }
 
-+ (void)makeOverride:(NSString *)recipe reply:(void (^)(NSError *))reply
++ (void)makeOverride:(NSString *)recipe reply:(void (^)(NSString *,NSError *))reply
 {
     LGAutoPkgTask *task = [[LGAutoPkgTask alloc] init];
     task.arguments = @[ @"make-override", recipe ];
+    __weak typeof(task) weakTask = task;
     [task launchInBackground:^(NSError *error) {
-        reply(error);
+        typeof(task) strongTask = weakTask;
+        NSString *path = [[strongTask.standardOutString stringByReplacingOccurrencesOfString:@"Override file saved to " withString:@""] stringByDeletingPathExtension];
+        reply(path,error);
     }];
 }
 

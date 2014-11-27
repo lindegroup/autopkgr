@@ -23,6 +23,16 @@
 #import "LGAutoPkgr.h"
 #import "LGRecipeOverrides.h"
 
+@interface LGRecipes ()
+
+@property (copy, nonatomic) NSArray *recipes;
+@property (copy, nonatomic) NSMutableArray *activeRecipes;
+@property (copy, nonatomic) NSArray *searchedRecipes;
+@property (weak) IBOutlet LGTableView *recipeTableView;
+@property (weak) IBOutlet NSSearchField *recipeSearchField;
+
+@end
+
 @implementation LGRecipes
 
 - (id)init
@@ -62,31 +72,35 @@
 - (id)tableView:(NSTableView *)tableView objectValueForTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row
 {
     if ([[tableColumn identifier] isEqualToString:@"recipeCheckbox"]) {
-        return @([_activeRecipes containsObject:[_searchedRecipes objectAtIndex:row][kLGAutoPkgRecipeNameKey]]);
-    } else if ([[tableColumn identifier] isEqualToString:kLGAutoPkgRecipeNameKey]) {
-        return [_searchedRecipes objectAtIndex:row][kLGAutoPkgRecipeNameKey];
-    } else if ([[tableColumn identifier] isEqualToString:kLGAutoPkgRecipeIdentifierKey]) {
-        return [_searchedRecipes objectAtIndex:row][kLGAutoPkgRecipeIdentifierKey];
+        return @([_activeRecipes containsObject:[_searchedRecipes objectAtIndex:row][kLGAutoPkgRecipeIdentifierKey]]);
+    } else {
+        // For all other table columns, the identifiers are set to the key
+        // for the cooresponding _searchRecipes dictionary entry, so we can just
+        // use the column identifier to represent the appropriate value
+        return [_searchedRecipes objectAtIndex:row][tableColumn.identifier];
     }
-
-    return nil;
 }
 
 - (void)tableView:(NSTableView *)tableView setObjectValue:(id)object forTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row
 {
     if ([[tableColumn identifier] isEqualToString:@"recipeCheckbox"]) {
-        NSMutableArray *workingArray = [NSMutableArray arrayWithArray:_activeRecipes];
+        NSDictionary *recipe = [_searchedRecipes objectAtIndex:row];
         if ([object isEqual:@YES]) {
-            [workingArray addObject:[_searchedRecipes objectAtIndex:row][kLGAutoPkgRecipeNameKey]];
-        } else {
-            NSUInteger index = [workingArray indexOfObject:[_searchedRecipes objectAtIndex:row][kLGAutoPkgRecipeNameKey]];
-            if (index != NSNotFound) {
-                [workingArray removeObjectAtIndex:index];
+            if (recipe[@"isMissingParentRecipe"]) {
+                NSLog(@"Missing Parent Recipe %@", recipe[kLGAutoPkgRecipeParentKey]);
+                object = @NO;
+                [NSApp presentError:[LGError errorWithCode:kLGErrorMissingParentRecipe]];
             } else {
-                NSLog(@"Cannot find item %@ in workingArray.", [_searchedRecipes objectAtIndex:row][kLGAutoPkgRecipeNameKey]);
+                [_activeRecipes addObject:recipe[kLGAutoPkgRecipeIdentifierKey]];
+            }
+        } else {
+            NSUInteger index = [_activeRecipes indexOfObject:recipe[kLGAutoPkgRecipeIdentifierKey]];
+            if (index != NSNotFound) {
+                [_activeRecipes removeObjectAtIndex:index];
+            } else {
+                NSLog(@"Cannot find item %@ in workingArray.", recipe[kLGAutoPkgRecipeNameKey]);
             }
         }
-        _activeRecipes = [NSArray arrayWithArray:workingArray];
         [self writeRecipeList];
     }
 
@@ -94,14 +108,14 @@
 }
 
 #pragma mark - Filtering
-- (NSArray *)getActiveRecipes
+- (NSMutableArray *)getActiveRecipes
 {
     NSFileManager *fm = [NSFileManager defaultManager];
     NSError *error;
-
+    NSMutableArray *activeRecipes = [[NSMutableArray alloc] init];
     NSString *autoPkgrSupportDirectory = [LGHostInfo getAppSupportDirectory];
     if ([autoPkgrSupportDirectory isEqual:@""]) {
-        return [[NSArray alloc] init];
+        return activeRecipes;
     }
 
     NSString *autoPkgrRecipeListPath = [autoPkgrSupportDirectory stringByAppendingString:@"/recipe_list.txt"];
@@ -109,32 +123,24 @@
         NSString *autoPkgrRecipeList = [NSString stringWithContentsOfFile:autoPkgrRecipeListPath encoding:NSUTF8StringEncoding error:&error];
         if (error) {
             NSLog(@"Error reading %@.", autoPkgrRecipeList);
-            return [[NSArray alloc] init];
+        } else {
+            [activeRecipes addObjectsFromArray:[autoPkgrRecipeList componentsSeparatedByString:@"\n"]];
         }
-
-        return [autoPkgrRecipeList componentsSeparatedByString:@"\n"];
-
-    } else {
-        return [[NSArray alloc] init];
     }
-
-    return [[NSArray alloc] init];
+    return activeRecipes;
 }
 
 - (void)cleanActiveApps
 {
     // This runs through the updated recipes and removes any recipes from the
     // activeApps array that cannot be found in the new apps array.
+    for (NSString *string in [_activeRecipes copy]) {
+        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"%K == %@", kLGAutoPkgRecipeIdentifierKey, string];
 
-    NSMutableArray *workingArray = [NSMutableArray arrayWithArray:_activeRecipes];
-    for (NSString *string in _activeRecipes) {
-        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"%K == %@", kLGAutoPkgRecipeNameKey, string];
-
-        if (![_recipes filteredArrayUsingPredicate:predicate]) {
-            [workingArray removeObject:string];
+        if (![_recipes filteredArrayUsingPredicate:predicate].count) {
+            [_activeRecipes removeObject:string];
         }
     }
-    _activeRecipes = [NSArray arrayWithArray:workingArray];
 }
 
 - (void)executeAppSearch:(id)sender
@@ -145,8 +151,11 @@
     if ([[_recipeSearchField stringValue] isEqualToString:@""]) {
         _searchedRecipes = _recipes;
     } else {
-        NSPredicate *recipeSearchPred = [NSPredicate predicateWithFormat:@"%K CONTAINS[cd] %@", kLGAutoPkgRecipeNameKey, [_recipeSearchField stringValue]];
-        _searchedRecipes = [_recipes filteredArrayUsingPredicate:recipeSearchPred];
+        NSString *searchString = [_recipeSearchField stringValue];
+        // Execute search both on Name and Identifier keys
+        NSPredicate *recipeSearchPredicate = [NSPredicate predicateWithFormat:@"%K CONTAINS[cd] %@ OR %K CONTAINS[CD] %@", kLGAutoPkgRecipeNameKey, searchString, kLGAutoPkgRecipeIdentifierKey, searchString];
+
+        _searchedRecipes = [_recipes filteredArrayUsingPredicate:recipeSearchPredicate];
     }
 
     [_recipeTableView insertRowsAtIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, _searchedRecipes.count)] withAnimation:NSTableViewAnimationEffectNone];
@@ -167,21 +176,23 @@
         return;
     }
 
+    NSString *makeCatalogsIdentifier = @"com.github.autopkg.munki.makecatalogs";
+
     NSString *recipeListFile = [autoPkgrSupportDirectory stringByAppendingString:@"/recipe_list.txt"];
 
-    NSPredicate *makeCatalogPredicate = [NSPredicate predicateWithFormat:@"not SELF contains[cd] 'MakeCatalogs.munki'"];
+    NSPredicate *makeCatalogPredicate = [NSPredicate predicateWithFormat:@"not SELF contains[cd] %@", makeCatalogsIdentifier];
+
     NSPredicate *munkiPredicate = [NSPredicate predicateWithFormat:@"SELF contains[cd] 'munki'"];
 
-    // Make a working array filtering out any instances of MakeCatalogs.munki, so there will only be one occurence
-    NSMutableArray *workingArray = [NSMutableArray arrayWithArray:[_activeRecipes filteredArrayUsingPredicate:makeCatalogPredicate]];
-
+    // Make a working array filtering out any instances of MakeCatalogs.munki, so there will only be one occurrence
+    [_activeRecipes filterUsingPredicate:makeCatalogPredicate];
     // Check if any of the apps is a .munki run
-    if ([workingArray filteredArrayUsingPredicate:munkiPredicate].count) {
+    if ([_activeRecipes filteredArrayUsingPredicate:munkiPredicate].count) {
         // If so add MakeCatalogs.munki to the end of the list (so it runs last)
-        [workingArray addObject:@"MakeCatalogs.munki"];
+        [_activeRecipes addObject:makeCatalogsIdentifier];
     }
 
-    NSString *recipe_list = [[workingArray removeEmptyStrings] componentsJoinedByString:@"\n"];
+    NSString *recipe_list = [[_activeRecipes removeEmptyStrings] componentsJoinedByString:@"\n"];
 
     [recipe_list writeToFile:recipeListFile atomically:YES encoding:NSUTF8StringEncoding error:&error];
 
@@ -203,16 +214,40 @@
         }
     }
 
+    for (NSMutableDictionary *recipe in recipeSet) {
+        // Iterate over the now completed list and determine if parent recipes are missing
+        NSPredicate *parentExistsPredicate = [NSPredicate predicateWithFormat:@"%K contains %@", kLGAutoPkgRecipeIdentifierKey, recipe[kLGAutoPkgRecipeParentKey]];
+
+        if (recipe[kLGAutoPkgRecipeParentKey] && ![parentExistsPredicate evaluateWithObject:recipeSet]) {
+            recipe[@"isMissingParentRecipe"] = @YES;
+        }
+    }
+
     NSString *recipeOverride = defaults.autoPkgRecipeOverridesDir ?: @"~/Library/AutoPkg/RecipeOverrides".stringByExpandingTildeInPath;
 
     NSArray *overrideArray = [self findRecipesRecursivelyAtPath:recipeOverride isOverride:YES];
 
+    NSMutableArray *validOverrides = [[NSMutableArray alloc] init];
     for (NSDictionary *override in overrideArray) {
-        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"not (%K == %@ AND %K == %@)",kLGAutoPkgRecipeNameKey,override[kLGAutoPkgRecipeNameKey],kLGAutoPkgRecipeIdentifierKey,override[kLGAutoPkgRecipeParentKey]];
-        [recipeSet filterUsingPredicate:predicate];
+        // Only consider the recipe valid if the parent exists
+        NSPredicate *parentExistsPredicate = [NSPredicate predicateWithFormat:@"%K contains %@", kLGAutoPkgRecipeIdentifierKey, override[kLGAutoPkgRecipeParentKey]];
+
+        if ([parentExistsPredicate evaluateWithObject:recipeSet]) {
+            [validOverrides addObject:override];
+        }
     }
 
-    [recipeSet addObjectsFromArray:overrideArray];
+    for (NSDictionary *override in validOverrides) {
+        // Filter the set by removing the Parent recipe if an override is
+        // found that matches BOTH condition: the value for the "Name" key of the the
+        // override is same as the vlaue for the "Name" key of the Parent AND the value for
+        // the Parent Recipe's Identifier key is the same as the value for override's "ParentRecipe" key
+        NSPredicate *overridePreferedPredicate = [NSPredicate predicateWithFormat:@"not (%K == %@ AND %K == %@)", kLGAutoPkgRecipeNameKey, override[kLGAutoPkgRecipeNameKey], kLGAutoPkgRecipeIdentifierKey, override[kLGAutoPkgRecipeParentKey]];
+        [recipeSet filterUsingPredicate:overridePreferedPredicate];
+    }
+
+    // Now add the valid overrides into the recipeSet
+    [recipeSet addObjectsFromArray:validOverrides];
 
     // Make a sorted array using the recipe name as the sort key.
     NSSortDescriptor *descriptor = [[NSSortDescriptor alloc] initWithKey:kLGAutoPkgRecipeNameKey
@@ -248,7 +283,7 @@
 
             if (![isDirectory boolValue]) {
                 if ([filename.pathExtension isEqualToString:@"recipe"]) {
-                    NSDictionary *recipe = [self createRecipeDictFromURL:fileURL isOverrid:isOverride];
+                    NSMutableDictionary *recipe = [self createRecipeDictFromURL:fileURL isOverrid:isOverride];
                     if (recipe) {
                         [array addObject:recipe];
                     }
@@ -259,7 +294,7 @@
     return [NSArray arrayWithArray:array];
 }
 
-- (NSDictionary *)createRecipeDictFromURL:(NSURL *)recipeURL isOverrid:(BOOL)isOverride
+- (NSMutableDictionary *)createRecipeDictFromURL:(NSURL *)recipeURL isOverrid:(BOOL)isOverride
 {
     // Do some basic checks against the file url first.
     if (!recipeURL || !recipeURL.isFileURL) {
@@ -280,7 +315,7 @@
         }
     }
 
-    return dictionary.count ? [NSDictionary dictionaryWithDictionary:dictionary] : nil;
+    return dictionary.count ? dictionary : nil;
 }
 
 #pragma mark - Contextual Menu
@@ -289,6 +324,8 @@
     NSMenu *menu;
 
     NSDictionary *recipeDict = [_searchedRecipes objectAtIndex:row];
+
+    NSLog(@"Is Missing ParentRecipe: %@", recipeDict[@"isMissingParentRecipe"] ? @"YES" : @"NO");
 
     NSMenuItem *item1;
     NSMenuItem *item2;
@@ -328,13 +365,12 @@
         // "Delete Override" menu item
         item3 = [[NSMenuItem alloc] initWithTitle:@"Remove Override" action:@selector(deleteOverride:) keyEquivalent:@""];
         item3.representedObject = recipeDict;
-        
+
         item3.target = [LGRecipeOverrides class];
 
     } else {
         item1 = [[NSMenuItem alloc] initWithTitle:@"Create Override" action:@selector(createOverride:) keyEquivalent:@""];
         item1.representedObject = recipeDict;
-
     }
 
     item1.target = [LGRecipeOverrides class];
@@ -359,14 +395,29 @@
 #pragma mark - Notifications
 - (void)didCreateOverride:(NSNotification *)aNotification
 {
-    [[NSOperationQueue mainQueue]addOperationWithBlock:^{
+    [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+        NSDictionary *swap = aNotification.userInfo;
+        NSString *old = swap[@"old"][kLGAutoPkgRecipeIdentifierKey];
+        NSString *new = swap[@"new"][kLGAutoPkgRecipeIdentifierKey];
+        if ([_activeRecipes containsObject:old]) {
+            [_activeRecipes replaceObjectAtIndex: [_activeRecipes indexOfObject:old] withObject:new];
+        }
+
         [self reload];
     }];
 }
 
 - (void)didDeleteOverride:(NSNotification *)aNotification
 {
-    [[NSOperationQueue mainQueue]addOperationWithBlock:^{
+    [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+        NSDictionary *override = aNotification.userInfo;
+        NSString *name = override[kLGAutoPkgRecipeIdentifierKey];
+        NSString *parent = override[kLGAutoPkgRecipeParentKey];
+
+        if (name && parent && [_activeRecipes containsObject:name]) {
+            [_activeRecipes replaceObjectAtIndex: [_activeRecipes indexOfObject:name] withObject:parent];
+        }
+
         [self reload];
     }];
 }

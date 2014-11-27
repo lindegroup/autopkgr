@@ -220,7 +220,7 @@ extern NSString *const kLGAutoPkgRepoURLKey;
  *  @param reply The block to be executed on upon task completion. This block has no return value and takes two arguments: NSString representing the full path the the newly created override and NSError that is populated should an error occur.
  */
 + (void)makeOverride:(NSString *)recipe
-               reply:(void (^)(NSError *error))reply;
+               reply:(void (^)(NSString *newOverrideFile, NSError *error))reply;
 
 /**
  *  Equivalent to /usr/bin/local/autopkg list-recipes

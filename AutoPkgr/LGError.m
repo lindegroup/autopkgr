@@ -57,6 +57,9 @@ static NSDictionary *userInfoFromCode(LGErrorCodes code)
         case kLGErrorMultipleRunsOfAutopkg:
             localizedBaseString = @"kLGErrorMultipleRunsOfAutopkg";
             break;
+        case kLGErrorMissingParentRecipe:
+            localizedBaseString = @"kLGErrorMissingParentRecipe";
+            break;
         case kLGErrorInstallGit:
             localizedBaseString = @"kLGErrorInstallGit";
             break;

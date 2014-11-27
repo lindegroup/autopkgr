@@ -35,6 +35,8 @@ typedef NS_ENUM(NSInteger, LGErrorCodes) {
     kLGErrorReparingAutoPkgPrefs,
     /** Error when attempting to spawn multiple instances of `autopkg run` at a time */
     kLGErrorMultipleRunsOfAutopkg,
+    /** Error when trying to enable a recipe when the Parent Recipe is not avaliable */
+    kLGErrorMissingParentRecipe,
     /** Error installing Git */
     kLGErrorInstallGit,
     /** Error installing/updating AutoPkg */

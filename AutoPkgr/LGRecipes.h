@@ -25,12 +25,6 @@
 
 @interface LGRecipes : NSObject <NSApplicationDelegate, NSTableViewDataSource, NSTableViewDelegate>
 
-@property (copy,nonatomic) NSArray *recipes;
-@property (copy,nonatomic) NSArray *activeRecipes;
-@property (copy,nonatomic) NSArray *searchedRecipes;
-@property (weak) IBOutlet LGTableView *recipeTableView;
-@property (weak) IBOutlet NSSearchField *recipeSearchField;
-
 + (NSString *)recipeList;
 
 - (void)reload;

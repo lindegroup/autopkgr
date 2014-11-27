@@ -32,19 +32,22 @@ const CFStringRef kUTTypePropertyList = CFSTR("com.apple.property-list");
 #pragma mark - Override Actions
 + (void)createOverride:(NSMenuItem *)sender
 {
-    NSDictionary *recipeDict = sender.representedObject;
-    NSString *recipeName = recipeDict[kLGAutoPkgRecipeNameKey];
-    NSString *recipeIdentifier = recipeDict[kLGAutoPkgRecipeIdentifierKey];
+    NSDictionary *recipe = sender.representedObject;
+    NSString *recipeName = recipe[kLGAutoPkgRecipeNameKey];
+    NSString *recipeIdentifier = recipe[kLGAutoPkgRecipeIdentifierKey];
 
     NSLog(@"Creating override for %@", recipeName);
-    [LGAutoPkgTask makeOverride:recipeIdentifier reply:^(NSError *error) {
+    [LGAutoPkgTask makeOverride:recipeIdentifier reply:^(NSString *path, NSError *error) {
         if (error) {
             NSLog(@"%@",error.localizedDescription);
+            [NSApp presentError:error];
         } else {
+            NSDictionary *override = [NSDictionary dictionaryWithContentsOfFile:path] ?: @{};
             [[NSOperationQueue mainQueue] addOperationWithBlock:^{
                 [[NSNotificationCenter defaultCenter]postNotificationName:kLGNotificationOverrideCreated
                                                                    object:nil
-                                                                 userInfo:recipeDict];
+                                                                 userInfo:@{@"old":recipe,
+                                                                            @"new":override}];
             }];
         }
     }];
@@ -118,9 +121,7 @@ const CFStringRef kUTTypePropertyList = CFSTR("com.apple.property-list");
             return overridePath;
         }
     }
-
-    return [[overridesDir stringByAppendingPathComponent:recipe[kLGAutoPkgRecipeNameKey]]
-            stringByAppendingPathExtension:@"recipe"];
+    return nil;
 }
 
 #pragma mark - Recipe Editor

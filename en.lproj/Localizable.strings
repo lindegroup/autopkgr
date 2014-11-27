@@ -32,6 +32,10 @@
 "kLGErrorMultipleRunsOfAutopkgDescription" = "Only one instance of AutoPkg can be run at a time";
 "kLGErrorMultipleRunsOfAutopkgSuggestion" = "A scheduled AutoPkg run may be running in the background. Please wait for it to complete.";
 
+/** Error when trying to activate a recipe when the parent is not installed */
+"kLGErrorMissingParentRecipeDescription" = "Parent Recipe not available";
+"kLGErrorMissingParentRecipeSuggestion" = "The Parent Recipe for that recipe is not included in any of the active repos. You will need to determine which repo it's included with and enable that repo.";
+
 /** Error installing Git */
 "kLGErrorInstallGitDescription" = "Error installing/updating Git";
 "kLGErrorInstallGitSuggestion" = "If the problem persists please try manually downloading and installing Git.";
