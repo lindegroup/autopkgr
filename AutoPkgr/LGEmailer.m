@@ -127,6 +127,8 @@
                                 userInfo:[NSDictionary dictionaryWithDictionary:userInfo]];
             self.complete = YES;
         }];
+    } else {
+        self.complete = YES;
     }
 }
 
