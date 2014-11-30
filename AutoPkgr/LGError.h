@@ -83,6 +83,8 @@ typedef NS_ENUM(NSInteger, LGAutoPkgVerb) {
 @interface LGError : NSObject
 
 #ifdef _APPKITDEFINES_H
++ (void)presentErrorWithCode:(LGErrorCodes)code;
++ (void)presentErrorWithCode:(LGErrorCodes)code window:(NSWindow *)window;
 + (void)presentErrorWithCode:(LGErrorCodes)code
                       window:(NSWindow *)window
                     delegate:(id)sender

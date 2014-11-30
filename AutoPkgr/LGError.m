@@ -199,12 +199,22 @@ static NSDictionary *userInfoFromHTTPResponse(NSHTTPURLResponse *response)
 
 @implementation LGError
 #ifdef _APPKITDEFINES_H
++ (void)presentErrorWithCode:(LGErrorCodes)code
+{
+    [[self class] presentErrorWithCode:code window:nil];
+}
+
++ (void)presentErrorWithCode:(LGErrorCodes)code window:(NSWindow *)window;
+{
+    [[self class] presentErrorWithCode:code window:window delegate:NULL didPresentSelector:NULL];
+
+}
+
 + (void)presentErrorWithCode:(LGErrorCodes)code window:(NSWindow *)window delegate:(id)sender didPresentSelector:(SEL)selector
 {
-    NSError *error;
-    [[self class] errorWithCode:code error:&error];
+    NSError *error = [[self class] errorWithCode:code];
     [NSApp presentError:error
-            modalForWindow:NULL
+            modalForWindow:window
                   delegate:sender
         didPresentSelector:selector
                contextInfo:NULL];
