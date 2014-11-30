@@ -40,7 +40,7 @@ NSString *const autopkg()
 
 typedef void (^AutoPkgReplyResultsBlock)(NSArray *results, NSError *error);
 typedef void (^AutoPkgReplyReportBlock)(NSDictionary *report, NSError *error);
-typedef void (^AutoPkgRepoyErrorBlock)(NSError *error);
+typedef void (^AutoPkgReplyErrorBlock)(NSError *error);
 
 #pragma mark - AutoPkg Task (Internal Extensions)
 @interface LGAutoPkgTask ()
@@ -50,7 +50,8 @@ typedef void (^AutoPkgRepoyErrorBlock)(NSError *error);
 @property (strong, atomic) NSMutableArray *internalArgs;
 @property (strong, atomic) NSMutableDictionary *internalEnvironment;
 
-// Raw stdout/stderr strings
+// Raw stdout/stderr strings and data
+@property (copy, nonatomic, readwrite) NSMutableData *standardOutData;
 @property (copy, nonatomic, readwrite) NSString *standardOutString;
 @property (copy, nonatomic, readwrite) NSString *standardErrString;
 
@@ -69,7 +70,7 @@ typedef void (^AutoPkgRepoyErrorBlock)(NSError *error);
 // Reply blocks
 @property (copy, nonatomic, readwrite) AutoPkgReplyResultsBlock replyResultsBlock;
 @property (copy, nonatomic, readwrite) AutoPkgReplyReportBlock replyReportBlock;
-@property (copy, nonatomic, readwrite) AutoPkgRepoyErrorBlock replyErrorBlock;
+@property (copy, nonatomic, readwrite) AutoPkgReplyErrorBlock replyErrorBlock;
 
 - (NSString *)taskDescription;
 
@@ -377,10 +378,13 @@ typedef void (^AutoPkgRepoyErrorBlock)(NSError *error);
 }
 
 #pragma mark - Task config helpers
+#pragma mark - Task config helpers
 - (void)configureFileHandles
 {
+    NSPipe *standardOutput = [NSPipe pipe];
+    self.task.standardOutput = standardOutput;
+
     self.task.standardError = [NSPipe pipe];
-    self.task.standardOutput = [NSPipe pipe];
 
     if (_verb == kLGAutoPkgRun || _verb == kLGAutoPkgRepoUpdate) {
         if (self.AUTOPKG_VERSION_0_4_0) {
@@ -396,7 +400,7 @@ typedef void (^AutoPkgRepoyErrorBlock)(NSError *error);
                 total = [[[self class] repoList] count];
             }
 
-            [[self.task.standardOutput fileHandleForReading] setReadabilityHandler:^(NSFileHandle *handle) {
+            [[standardOutput fileHandleForReading] setReadabilityHandler:^(NSFileHandle *handle) {
                 NSString *message = [[NSString alloc]initWithData:[handle availableData] encoding:NSUTF8StringEncoding];
 
                 if ([progressPredicate evaluateWithObject:message]) {
@@ -408,6 +412,7 @@ typedef void (^AutoPkgRepoyErrorBlock)(NSError *error);
                         int totStr = (int)round(total);
                         fullMessage = [[NSString stringWithFormat:@"(%d/%d) %@", cntStr, totStr, message] stringByTrimmingCharactersInSet:[NSCharacterSet newlineCharacterSet]];
                     }
+
                     double progress = ((count/total) * 100);
 
                     LGAutoPkgTaskResponseObject *response = [[LGAutoPkgTaskResponseObject alloc] init];
@@ -421,6 +426,16 @@ typedef void (^AutoPkgRepoyErrorBlock)(NSError *error);
                 NSLog(@"%@",message);
             }];
         }
+    } else {
+        [[standardOutput fileHandleForReading] setReadabilityHandler:^(NSFileHandle *fh) {
+            NSData *data = [fh availableData];
+            if ([data length]) {
+                if (!_standardOutData) {
+                    _standardOutData = [[NSMutableData alloc] init ];
+                }
+                [_standardOutData appendData:data];
+            }
+        }];
     }
 }
 
@@ -434,7 +449,7 @@ typedef void (^AutoPkgRepoyErrorBlock)(NSError *error);
         if ([defaults boolForKey:@"useSystemProxies"]) {
             AHProxySettings *settings = [[AHProxySettings alloc] initWithDestination:@"https://github.com"];
             if (settings.taskDictionary) {
-                DLog(@"Using System Proxies: %@",settings.taskDictionary);
+                DLog(@"Using System Proxies: %@", settings.taskDictionary);
                 // This will just initialize the _internalEnvironment
                 [self addEnvironmentVariable:nil forKey:nil];
                 [_internalEnvironment addEntriesFromDictionary:settings.taskDictionary];
@@ -501,7 +516,12 @@ typedef void (^AutoPkgRepoyErrorBlock)(NSError *error);
     if (!_standardOutString && !self.task.isRunning) {
         NSData *data;
         if ([self.task.standardOutput isKindOfClass:[NSPipe class]]) {
-            data = [[self.task.standardOutput fileHandleForReading] readDataToEndOfFile];
+            // If standardOutData exists then the sdtout was gathered progressively
+            if (self.standardOutData) {
+                data = [[NSData alloc] initWithData:self.standardOutData];
+            } else {
+                data = [[self.task.standardOutput fileHandleForReading] readDataToEndOfFile];
+            }
             if (data) {
                 _standardOutString = [[NSString alloc] initWithData:data encoding:NSASCIIStringEncoding];
             }
