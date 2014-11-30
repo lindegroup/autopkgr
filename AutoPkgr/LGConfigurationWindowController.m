@@ -636,15 +636,18 @@
 
     [LGAutoPkgSchedule startAutoPkgSchedule:start interval:interval isForced:force reply:^(NSError *error) {
         if (error) {
-            // If error, reset the state to modified status
-            _checkForNewVersionsOfAppsAutomaticallyButton.state = !start;
-            NSInteger previousInterval = _defaults.autoPkgRunInterval ?: 24;
+            [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+                // If error, reset the state to modified status
+                _checkForNewVersionsOfAppsAutomaticallyButton.state = [LGAutoPkgSchedule updateAppsIsScheduled];
 
-            _autoPkgRunInterval.stringValue = [@(previousInterval) stringValue];
-            // If the authorization was canceled by user, don't present error.
-            if (error.code != kLGErrorAuthChallenge) {
-                [self stopProgress:error];
-            }
+                NSInteger previousInterval = _defaults.autoPkgRunInterval ?: 24;
+                _autoPkgRunInterval.stringValue = [@(previousInterval) stringValue];
+                
+                // If the authorization was canceled by user, don't present error.
+                if (error.code != kLGErrorAuthChallenge) {
+                    [self stopProgress:error];
+                }
+            }];
         } else {
             // Otherwise update our defaults
             _defaults.autoPkgRunInterval = interval;

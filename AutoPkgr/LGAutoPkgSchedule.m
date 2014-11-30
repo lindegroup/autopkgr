@@ -53,19 +53,21 @@
                   program:program
             authorization:authorization
                     reply:^(NSError *error) {
-            NSDate *date = [NSDate dateWithTimeIntervalSinceNow:runInterval];
-            NSDateFormatter *fomatter = [NSDateFormatter new];
-            [fomatter setDateStyle:NSDateFormatterMediumStyle];
-            [fomatter setTimeStyle:NSDateFormatterMediumStyle];
-            NSLog(@"Next scheduled AutoPkg run will occur at %@",[fomatter stringFromDate:date]);
-            reply(error);
+                        if (!error) {
+                            NSDate *date = [NSDate dateWithTimeIntervalSinceNow:runInterval];
+                            NSDateFormatter *fomatter = [NSDateFormatter new];
+                            [fomatter setDateStyle:NSDateFormatterMediumStyle];
+                            [fomatter setTimeStyle:NSDateFormatterMediumStyle];
+                            NSLog(@"Next scheduled AutoPkg run will occur at %@",[fomatter stringFromDate:date]);
+                        }
+                        reply(error);
                     }];
     } else if (scheduleIsRunning) {
         [[helper.connection remoteObjectProxyWithErrorHandler:^(NSError *error) {
             reply(error);
         }] removeScheduleWithAuthorization:authorization
                                       reply:^(NSError *error) {
-            reply(error);
+                                        reply(error);
                                       }];
     }
 }
