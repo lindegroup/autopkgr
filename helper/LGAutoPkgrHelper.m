@@ -196,34 +196,33 @@ static const NSTimeInterval kHelperCheckInterval = 1.0; // how often to check wh
 - (BOOL)listener:(NSXPCListener *)listener shouldAcceptNewConnection:(NSXPCConnection *)newConnection
 {
 
-    newConnection.exportedObject = self;
-
     NSXPCInterface *exportedInterface = [NSXPCInterface interfaceWithProtocol:@protocol(HelperAgent)];
     newConnection.exportedInterface = exportedInterface;
 
     // Only accept the connection if the call is made by the console user.
     uid_t loggedInUser;
-    SCDynamicStoreCopyConsoleUser(NULL, &loggedInUser, NULL);
-    if (loggedInUser != newConnection.effectiveUserIdentifier) {
+    CFBridgingRelease(SCDynamicStoreCopyConsoleUser(NULL, &loggedInUser, NULL));
+
+    if (loggedInUser == newConnection.effectiveUserIdentifier) {
+        newConnection.exportedObject = self;
+        self.connection = newConnection;
+
+        __weak typeof(newConnection) weakConnection = newConnection;
+        // If all connections are invalidated on the remote side,
+        // shutdown the helper.
+        newConnection.invalidationHandler = ^() {
+            __strong typeof(newConnection) strongConnection = weakConnection;
+            [self.connections removeObject:strongConnection];
+            if (!self.connections.count) {
+                [self quitHelper:^(BOOL success) {}];
+            }
+        };
+
+        [newConnection resume];
+        [self.connections addObject:newConnection];
+        return YES;
+    } else {
         return NO;
     }
-
-    self.connection = newConnection;
-
-    __weak typeof(newConnection) weakConnection = newConnection;
-    // If all connections are invalidated on the remote side,
-    // shutdown the helper.
-    newConnection.invalidationHandler = ^() {
-        __weak typeof(newConnection) strongConnection = weakConnection;
-        [self.connections removeObject:strongConnection];
-        if (!self.connections.count) {
-            [self quitHelper:^(BOOL success) {}];
-        }
-    };
-
-    [newConnection resume];
-    [self.connections addObject:newConnection];
-
-    return YES;
 }
 @end

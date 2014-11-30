@@ -121,10 +121,14 @@
     NSData *authData = [LGAutoPkgrAuthorizer authorizeHelper];
     
     [helper connectToHelper];
-    [[helper.connection remoteObjectProxy] uninstall:authData reply:^(NSError *error) {
+    [[helper.connection remoteObjectProxyWithErrorHandler:^(NSError *error) {
+        [NSApp presentError:error];
+    }]  uninstall:authData reply:^(NSError *error) {
         [[NSOperationQueue mainQueue]addOperationWithBlock:^{
             if(error){
+                [[NSOperationQueue mainQueue] addOperationWithBlock:^{
                     [NSApp presentError:error];
+                }];
             } else {
                 // if uninstalling turn off schedule in defaults so it's not automatically recreated
                 defaults.checkForNewVersionsOfAppsAutomaticallyEnabled = NO;
