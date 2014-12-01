@@ -6,6 +6,34 @@
     <description>Most recent changes with links to updates.</description>
     <language>en</language>
       <item>
+        <title>Version 1.1.2</title>
+        <description>
+          <![CDATA[
+          <p>Some small tweaks for 1.1.2, centered mostly around compatibility with the latest version of jss-autopkg-addon.</p>
+          <h4>Important Changes</h4>
+          <ul>
+            <li>If using JSS integration, python-jss now automatically "URL encodes" the distribution point passwords (#177). If you have a password with special characters, and have manually constructed it with proper URL encoding, <em>it will no longer work</em>. You should now just set it to the actual password.</li>
+          </ul>
+          <h4>Bug Fixes</h4>
+          <ul>
+            <li>Fixed a bug which would set `SSL_VERIFY` incorrectly for Casper environments with self-signed certificates.</li>
+            <li>Made GUI elements match more consistently between OS X Mavericks and OS X Yosemite.</li>
+            <li>Fixed a bug that caused errors in environments with a password-protected proxy.</li>
+            <li>Corrected spelling of "available" in email notifications and other places.</li>
+          </ul>
+          <h4>Enhancements</h4>
+          <ul>
+            <li>Made compatible with latest release of [jss-autopkg-addon](https://github.com/sheagcraig/jss-autopkg-addon).</li>
+            <li>Updated readme to clarify that Casper 9 or newer is required for JSS integration.</li>
+            <li>AutoPkgr now does not remove @sheagcraig's jss-recipes repository when the JSS settings have been cleared.</li>
+          </ul>
+          <p>As always, please open an <a href="https://github.com/lindegroup/autopkgr/issues" target="_blank">issue on GitHub</a> if you find a reproducible problem.</p>
+          ]]>
+        </description>
+        <pubDate>Mon, 1 Dec 2014 23:00:00 +0000</pubDate>
+        <enclosure url="https://github.com/lindegroup/autopkgr/releases/download/v1.1.2/AutoPkgr-1.1.2.dmg" sparkle:version="560" sparkle:shortVersionString="1.1.2" type="application/octet-stream" />
+      </item>
+      <item>
         <title>Version 1.1.1</title>
         <description>
           <![CDATA[
