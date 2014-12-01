@@ -27,7 +27,6 @@
 
 @interface LGPopularRepositories : NSObject <NSApplicationDelegate, NSTableViewDelegate, NSTableViewDataSource> {
 
-    NSArray *_recipeRepos;
     NSArray *_popularRepos;
     NSArray *_activeRepos;
     NSArray *_searchedRepos;

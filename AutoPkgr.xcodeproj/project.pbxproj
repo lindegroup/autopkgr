@@ -37,6 +37,7 @@
 		6A0BABE9196E560000A136BB /* LGPopularRepositories.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A0BABE8196E560000A136BB /* LGPopularRepositories.m */; };
 		6A53625D1988BE59008A949C /* LGTestPort.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A53625C1988BE59008A949C /* LGTestPort.m */; };
 		8BB217F619709A2C00EF8B93 /* AutoPkgrIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 8BB217F519709A2C00EF8B93 /* AutoPkgrIcon.png */; };
+		AEA9AB86157392A9DA04CF21 /* libPods-AutoPkgrTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E858FACD08F464CDA3125B4C /* libPods-AutoPkgrTests.a */; };
 		BE025CF619BAE93400D36345 /* LGAutoPkgTask.m in Sources */ = {isa = PBXBuildFile; fileRef = BE025CF519BAE93400D36345 /* LGAutoPkgTask.m */; };
 		BE025CF719BAE93400D36345 /* LGAutoPkgTask.m in Sources */ = {isa = PBXBuildFile; fileRef = BE025CF519BAE93400D36345 /* LGAutoPkgTask.m */; };
 		BE025CFE19BAEF8800D36345 /* LGAutoPkgSchedule.m in Sources */ = {isa = PBXBuildFile; fileRef = BE025CFD19BAEF8800D36345 /* LGAutoPkgSchedule.m */; };
@@ -47,6 +48,8 @@
 		BE39FE5319DFBB0100C1B4A1 /* LGDefaults+JSSAddon.m in Sources */ = {isa = PBXBuildFile; fileRef = BE39FE5219DFBB0100C1B4A1 /* LGDefaults+JSSAddon.m */; };
 		BE57733819D519E400D872A4 /* LGJSSAddon.m in Sources */ = {isa = PBXBuildFile; fileRef = BE57733719D519E400D872A4 /* LGJSSAddon.m */; };
 		BE57AC2A19BA3BBC00BB17B1 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = BE57AC2C19BA3BBC00BB17B1 /* Localizable.strings */; };
+		BE6815EC1A0B2BAB004AD310 /* LGJSSDistributionPointsPrefPanel.m in Sources */ = {isa = PBXBuildFile; fileRef = BE6815EA1A0B2BAB004AD310 /* LGJSSDistributionPointsPrefPanel.m */; };
+		BE6815ED1A0B2BAB004AD310 /* LGJSSDistributionPointsPrefPanel.xib in Resources */ = {isa = PBXBuildFile; fileRef = BE6815EB1A0B2BAB004AD310 /* LGJSSDistributionPointsPrefPanel.xib */; };
 		BE73CDC719E062AC00441443 /* NSString+cleaned.m in Sources */ = {isa = PBXBuildFile; fileRef = BE73CDC619E062AC00441443 /* NSString+cleaned.m */; };
 		BE77A80019E37C910022B6FB /* NSImage+statusLight.m in Sources */ = {isa = PBXBuildFile; fileRef = BE77A7FF19E37C910022B6FB /* NSImage+statusLight.m */; };
 		BE8526B219D5F641007DFA9E /* SecurityInterface.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BE8526B119D5F641007DFA9E /* SecurityInterface.framework */; };
@@ -106,14 +109,14 @@
 			remoteGlobalIDString = 1AC6954C195B59ED00D2BD81;
 			remoteInfo = AutoPkgr;
 		};
-		8B8AB7F01A16A26B00B03C00 /* PBXContainerItemProxy */ = {
+		8B19C7421A253D7800F468A0 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 1A0A869D195CE5DB00A49434 /* mailcore2.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = 27780C3A19CF9CD100C77E44;
 			remoteInfo = "mailcore ios";
 		};
-		8B8AB7F21A16A26B00B03C00 /* PBXContainerItemProxy */ = {
+		8B19C7441A253D7800F468A0 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 1A0A869D195CE5DB00A49434 /* mailcore2.xcodeproj */;
 			proxyType = 2;
@@ -200,6 +203,9 @@
 		BE57733619D519E400D872A4 /* LGJSSAddon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGJSSAddon.h; sourceTree = "<group>"; };
 		BE57733719D519E400D872A4 /* LGJSSAddon.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGJSSAddon.m; sourceTree = "<group>"; };
 		BE57AC2B19BA3BBC00BB17B1 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		BE6815E91A0B2BAB004AD310 /* LGJSSDistributionPointsPrefPanel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGJSSDistributionPointsPrefPanel.h; sourceTree = "<group>"; };
+		BE6815EA1A0B2BAB004AD310 /* LGJSSDistributionPointsPrefPanel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGJSSDistributionPointsPrefPanel.m; sourceTree = "<group>"; };
+		BE6815EB1A0B2BAB004AD310 /* LGJSSDistributionPointsPrefPanel.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LGJSSDistributionPointsPrefPanel.xib; sourceTree = "<group>"; };
 		BE73CDC519E062AC00441443 /* NSString+cleaned.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSString+cleaned.h"; path = "Custom Catagories/NSString+cleaned.h"; sourceTree = "<group>"; };
 		BE73CDC619E062AC00441443 /* NSString+cleaned.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSString+cleaned.m"; path = "Custom Catagories/NSString+cleaned.m"; sourceTree = "<group>"; };
 		BE77A7FE19E37C910022B6FB /* NSImage+statusLight.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSImage+statusLight.h"; path = "Custom Catagories/NSImage+statusLight.h"; sourceTree = "<group>"; };
@@ -214,6 +220,9 @@
 		BEE8CF1219E0E7F400981C4B /* NSTextField+setSafeStringValue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSTextField+setSafeStringValue.m"; path = "Custom Catagories/NSTextField+setSafeStringValue.m"; sourceTree = "<group>"; };
 		BEFC931B1995F0710074C938 /* LGError.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGError.h; sourceTree = "<group>"; };
 		BEFC931C1995F0710074C938 /* LGError.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGError.m; sourceTree = "<group>"; };
+		C15B862EAD3AB252A431E670 /* Pods-AutoPkgrTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AutoPkgrTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-AutoPkgrTests/Pods-AutoPkgrTests.release.xcconfig"; sourceTree = "<group>"; };
+		E858FACD08F464CDA3125B4C /* libPods-AutoPkgrTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-AutoPkgrTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		FDA38DE9467F06C7D86C83F6 /* Pods-AutoPkgrTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AutoPkgrTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-AutoPkgrTests/Pods-AutoPkgrTests.debug.xcconfig"; sourceTree = "<group>"; };
 		FF435269A548437DA5380201 /* libPods-AutoPkgr.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-AutoPkgr.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -236,6 +245,7 @@
 			files = (
 				1AC69571195B59EE00D2BD81 /* Cocoa.framework in Frameworks */,
 				1AC69570195B59EE00D2BD81 /* XCTest.framework in Frameworks */,
+				AEA9AB86157392A9DA04CF21 /* libPods-AutoPkgrTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -250,8 +260,8 @@
 				1A0A86AA195CE5DC00A49434 /* tests */,
 				1A0A86AC195CE5DC00A49434 /* test-ios.app */,
 				1A0A86AE195CE5DC00A49434 /* MailCore.framework */,
-				8B8AB7F11A16A26B00B03C00 /* MailCore.framework */,
-				8B8AB7F31A16A26B00B03C00 /* unittest.xctest */,
+				8B19C7431A253D7800F468A0 /* MailCore.framework */,
+				8B19C7451A253D7800F468A0 /* unittest.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -294,6 +304,7 @@
 				1AC6956F195B59EE00D2BD81 /* XCTest.framework */,
 				1AC69552195B59ED00D2BD81 /* Other Frameworks */,
 				FF435269A548437DA5380201 /* libPods-AutoPkgr.a */,
+				E858FACD08F464CDA3125B4C /* libPods-AutoPkgrTests.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -315,8 +326,9 @@
 				BE40CB7719D4441600A1DABD /* UI Classes */,
 				BE40CB7819D4444D00A1DABD /* Utility Classes */,
 				BE39FE5419DFBB2900C1B4A1 /* Custom Categories */,
-				1AC9841E195CEC360071CAB3 /* LGConfigurationWindowController.xib */,
 				1AC69565195B59EE00D2BD81 /* MainMenu.xib */,
+				1AC9841E195CEC360071CAB3 /* LGConfigurationWindowController.xib */,
+				BE6815EB1A0B2BAB004AD310 /* LGJSSDistributionPointsPrefPanel.xib */,
 				1AC69568195B59EE00D2BD81 /* Images.xcassets */,
 				1AC98423195DF6270071CAB3 /* Resources */,
 				1AC69557195B59ED00D2BD81 /* Supporting Files */,
@@ -390,6 +402,8 @@
 			children = (
 				04CA360328E704A8E80B244B /* Pods-AutoPkgr.debug.xcconfig */,
 				16E87146BB0135D03CB6ECA8 /* Pods-AutoPkgr.release.xcconfig */,
+				FDA38DE9467F06C7D86C83F6 /* Pods-AutoPkgrTests.debug.xcconfig */,
+				C15B862EAD3AB252A431E670 /* Pods-AutoPkgrTests.release.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
@@ -427,6 +441,8 @@
 				BE32178D19EDA15400A92E5A /* LGTableView.m */,
 				BE57733619D519E400D872A4 /* LGJSSAddon.h */,
 				BE57733719D519E400D872A4 /* LGJSSAddon.m */,
+				BE6815E91A0B2BAB004AD310 /* LGJSSDistributionPointsPrefPanel.h */,
+				BE6815EA1A0B2BAB004AD310 /* LGJSSDistributionPointsPrefPanel.m */,
 			);
 			name = "UI Classes";
 			sourceTree = "<group>";
@@ -483,9 +499,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 1AC69581195B59EE00D2BD81 /* Build configuration list for PBXNativeTarget "AutoPkgrTests" */;
 			buildPhases = (
+				2587FB0C2CE3A444B7986CE0 /* Check Pods Manifest.lock */,
 				1AC6956A195B59EE00D2BD81 /* Sources */,
 				1AC6956B195B59EE00D2BD81 /* Frameworks */,
 				1AC6956C195B59EE00D2BD81 /* Resources */,
+				8D68BE3326B0949FFFCB9D2C /* Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -573,18 +591,18 @@
 			remoteRef = 1A0A86AD195CE5DC00A49434 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		8B8AB7F11A16A26B00B03C00 /* MailCore.framework */ = {
+		8B19C7431A253D7800F468A0 /* MailCore.framework */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.framework;
 			path = MailCore.framework;
-			remoteRef = 8B8AB7F01A16A26B00B03C00 /* PBXContainerItemProxy */;
+			remoteRef = 8B19C7421A253D7800F468A0 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		8B8AB7F31A16A26B00B03C00 /* unittest.xctest */ = {
+		8B19C7451A253D7800F468A0 /* unittest.xctest */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.cfbundle;
 			path = unittest.xctest;
-			remoteRef = 8B8AB7F21A16A26B00B03C00 /* PBXContainerItemProxy */;
+			remoteRef = 8B19C7441A253D7800F468A0 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
@@ -600,6 +618,7 @@
 				1AC69569195B59EE00D2BD81 /* Images.xcassets in Resources */,
 				1A2C7FAE19CC9F8300CFF472 /* codesign.py in Resources */,
 				1AC98420195CEC360071CAB3 /* LGConfigurationWindowController.xib in Resources */,
+				BE6815ED1A0B2BAB004AD310 /* LGJSSDistributionPointsPrefPanel.xib in Resources */,
 				BE57AC2A19BA3BBC00BB17B1 /* Localizable.strings in Resources */,
 				1AC98427195DF6350071CAB3 /* autopkgr.png in Resources */,
 				1AC69561195B59EE00D2BD81 /* Credits.rtf in Resources */,
@@ -631,6 +650,21 @@
 			shellPath = /bin/sh;
 			shellScript = "\"${PROJECT_DIR}/scripts/codesign.py\"";
 		};
+		2587FB0C2CE3A444B7986CE0 /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
 		570AE652B42D4D4D86875A8A /* Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -644,6 +678,21 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		8D68BE3326B0949FFFCB9D2C /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-AutoPkgrTests/Pods-AutoPkgrTests-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		BECFF2B619CA9854004C2721 /* ShellScript */ = {
@@ -687,6 +736,7 @@
 				1AC9840A195CE7D60071CAB3 /* LGConstants.m in Sources */,
 				BE87994B1995BA410082472B /* LGDefaults.m in Sources */,
 				1AC86D3D195E0AC6006FDD2B /* LGHostInfo.m in Sources */,
+				BE6815EC1A0B2BAB004AD310 /* LGJSSDistributionPointsPrefPanel.m in Sources */,
 				BE025CF619BAE93400D36345 /* LGAutoPkgTask.m in Sources */,
 				BE025CFE19BAEF8800D36345 /* LGAutoPkgSchedule.m in Sources */,
 				1AC98412195CE8520071CAB3 /* LGEmailer.m in Sources */,
@@ -885,6 +935,7 @@
 		};
 		1AC69582195B59EE00D2BD81 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = FDA38DE9467F06C7D86C83F6 /* Pods-AutoPkgrTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/AutoPkgr.app/Contents/MacOS/AutoPkgr";
 				COMBINE_HIDPI_IMAGES = YES;
@@ -907,6 +958,7 @@
 		};
 		1AC69583195B59EE00D2BD81 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = C15B862EAD3AB252A431E670 /* Pods-AutoPkgrTests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/AutoPkgr.app/Contents/MacOS/AutoPkgr";
 				COMBINE_HIDPI_IMAGES = YES;
