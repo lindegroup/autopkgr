@@ -72,6 +72,11 @@ extern NSString *const kLGAutoPkgRepoURLKey;
  */
 @property (weak, nonatomic) id<LGProgressDelegate> progressDelegate;
 
+/**
+ *  Progress update block
+ */
+@property (copy) void (^progressUpdateBlock)(NSString *message, double progress);
+
 #pragma mark-- NSOperation Queue --
 /**
  *  Subclass override to produce warning if an incorrect operation is submitted

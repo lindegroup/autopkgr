@@ -85,6 +85,10 @@ typedef void (^AutoPkgReplyErrorBlock)(NSError *error);
     if (!op.progressDelegate && _progressDelegate) {
         op.progressDelegate = _progressDelegate;
     }
+
+    if (!op.progressUpdateBlock && _progressUpdateBlock) {
+        op.progressUpdateBlock = _progressUpdateBlock;
+    }
 }
 
 - (void)addOperationAndWait:(LGAutoPkgTask *)op
@@ -234,6 +238,7 @@ typedef void (^AutoPkgReplyErrorBlock)(NSError *error);
         if (_verb == kLGAutoPkgRun && [[self class] instanceIsRunning]) {
             self.error = [LGError errorWithCode:kLGErrorMultipleRunsOfAutopkg];
             [self didCompleteTaskExecution];
+            return;
         }
 
         [self configureFileHandles];
@@ -295,9 +300,12 @@ typedef void (^AutoPkgReplyErrorBlock)(NSError *error);
         [self.task.standardError fileHandleForReading].readabilityHandler = nil;
     }
 
-    [self.taskLock lock];
-    self.error = [LGError errorWithTaskError:self.task verb:_verb];
-    [self.taskLock unlock];
+    if (!_error) {
+        [self.taskLock lock];
+        self.error = [LGError errorWithTaskError:self.task verb:_verb];
+        [self.taskLock unlock];
+    }
+
 
     LGAutoPkgTaskResponseObject *response = [[LGAutoPkgTaskResponseObject alloc] init];
     response.results = self.results;
