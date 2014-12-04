@@ -222,6 +222,9 @@ extern NSString *const kLGAutoPkgRepoURLKey;
 + (void)makeOverride:(NSString *)recipe
                reply:(void (^)(NSString *newOverrideFile, NSError *error))reply;
 
+
++ (void)makeOverride:(NSString *)recipe name:(NSString *)name
+               reply:(void (^)(NSString *newOverrideFile, NSError *error))reply;
 /**
  *  Equivalent to /usr/bin/local/autopkg list-recipes
  *

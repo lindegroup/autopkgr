@@ -778,6 +778,18 @@ typedef void (^AutoPkgReplyErrorBlock)(NSError *error);
     }];
 }
 
++(void)makeOverride:(NSString *)recipe name:(NSString *)name reply:(void (^)(NSString *, NSError *))reply
+{
+    LGAutoPkgTask *task = [[LGAutoPkgTask alloc] init];
+    task.arguments = @[ @"make-override", recipe, @"-n" ,name ];
+    __weak typeof(task) weakTask = task;
+    [task launchInBackground:^(NSError *error) {
+        typeof(task) strongTask = weakTask;
+        NSString *path = [[strongTask.standardOutString stringByReplacingOccurrencesOfString:@"Override file saved to " withString:@""] stringByDeletingPathExtension];
+        reply(path,error);
+    }];
+}
+
 + (NSArray *)listRecipes
 {
     LGAutoPkgTask *task = [[LGAutoPkgTask alloc] initWithArguments:@[ @"list-recipes"]];

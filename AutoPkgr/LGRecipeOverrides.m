@@ -35,22 +35,26 @@ const CFStringRef kUTTypePropertyList = CFSTR("com.apple.property-list");
     NSDictionary *recipe = sender.representedObject;
     NSString *recipeName = recipe[kLGAutoPkgRecipeNameKey];
     NSString *recipeIdentifier = recipe[kLGAutoPkgRecipeIdentifierKey];
+    NSString *overrideName = [self promptForOverrideName:recipeName];
 
-    NSLog(@"Creating override for %@", recipeName);
-    [LGAutoPkgTask makeOverride:recipeIdentifier reply:^(NSString *path, NSError *error) {
-        if (error) {
-            NSLog(@"%@",error.localizedDescription);
-            [NSApp presentError:error];
-        } else {
-            NSDictionary *override = [NSDictionary dictionaryWithContentsOfFile:path] ?: @{};
-            [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-                [[NSNotificationCenter defaultCenter]postNotificationName:kLGNotificationOverrideCreated
-                                                                   object:nil
-                                                                 userInfo:@{@"old":recipe,
-                                                                            @"new":override}];
-            }];
-        }
-    }];
+    if (overrideName && recipeIdentifier) {
+        NSLog(@"Creating override for %@", recipeName);
+        [LGAutoPkgTask makeOverride:recipeIdentifier name:overrideName reply:^(NSString *path, NSError *error) {
+            if (error) {
+                NSLog(@"%@",error.localizedDescription);
+                [NSApp presentError:error];
+            } else {
+                NSDictionary *override = [NSDictionary dictionaryWithContentsOfFile:path] ?: @{};
+                [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+                    [[NSNotificationCenter defaultCenter]postNotificationName:kLGNotificationOverrideCreated
+                                                                       object:nil
+                                                                     userInfo:@{@"old":recipe,
+                                                                                @"new":override}];
+                }];
+            }
+        }];
+    }
+
 }
 
 + (void)deleteOverride:(NSMenuItem *)sender
@@ -83,6 +87,34 @@ const CFStringRef kUTTypePropertyList = CFSTR("com.apple.property-list");
             }];
         }
     }
+}
+
++ (NSString *)promptForOverrideName:(NSString*)parentName
+{
+    NSString *password;
+    NSString *promptString = @"Would you like to give the override a unique name?";
+    
+    NSAlert *alert = [NSAlert alertWithMessageText:promptString
+                                     defaultButton:@"OK"
+                                   alternateButton:@"Cancel"
+                                       otherButton:nil
+                         informativeTextWithFormat:@""];
+
+    NSTextField *input = [[NSTextField alloc] init];
+    [input setFrame:NSMakeRect(0, 0, 300, 24)];
+    [input setStringValue:parentName];
+    [alert setAccessoryView:input];
+
+    NSInteger button = [alert runModal];
+    if (button == NSAlertDefaultReturn) {
+        [input validateEditing];
+        password = [input stringValue];
+        if (!password || [password isEqualToString:@""]) {
+            return [self promptForOverrideName:parentName];
+        }
+    }
+
+    return password;
 }
 
 + (void)openFile:(NSMenuItem *)sender
