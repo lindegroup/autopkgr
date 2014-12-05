@@ -203,21 +203,21 @@
 - (NSArray *)getAllRecipes
 {
     LGDefaults *defaults = [LGDefaults standardUserDefaults];
-    NSMutableSet *recipeSet = [[NSMutableSet alloc] init];
+    NSMutableArray *recipeArray = [[NSMutableArray alloc] init];
 
     NSArray *searchDirs = defaults.autoPkgRecipeSearchDirs;
     for (NSString *searchDir in searchDirs) {
         if (![searchDir isEqualToString:@"."]) {
-            NSArray *recipeArray = [self findRecipesRecursivelyAtPath:searchDir.stringByExpandingTildeInPath isOverride:NO];
-            [recipeSet addObjectsFromArray:recipeArray];
+            NSArray *recipes = [self findRecipesRecursivelyAtPath:searchDir.stringByExpandingTildeInPath isOverride:NO];
+            [recipeArray addObjectsFromArray:recipes];
         }
     }
 
-    for (NSMutableDictionary *recipe in recipeSet) {
+    for (NSMutableDictionary *recipe in recipeArray) {
         // Iterate over the now completed list and determine if parent recipes are missing
         NSPredicate *parentExistsPredicate = [NSPredicate predicateWithFormat:@"%K contains %@", kLGAutoPkgRecipeIdentifierKey, recipe[kLGAutoPkgRecipeParentKey]];
 
-        if (recipe[kLGAutoPkgRecipeParentKey] && ![parentExistsPredicate evaluateWithObject:recipeSet]) {
+        if (recipe[kLGAutoPkgRecipeParentKey] && ![parentExistsPredicate evaluateWithObject:recipeArray]) {
             recipe[@"isMissingParentRecipe"] = @YES;
         }
     }
@@ -231,7 +231,7 @@
         // Only consider the recipe valid if the parent exists
         NSPredicate *parentExistsPredicate = [NSPredicate predicateWithFormat:@"%K contains %@", kLGAutoPkgRecipeIdentifierKey, override[kLGAutoPkgRecipeParentKey]];
 
-        if ([parentExistsPredicate evaluateWithObject:recipeSet]) {
+        if ([parentExistsPredicate evaluateWithObject:recipeArray]) {
             [validOverrides addObject:override];
         }
     }
@@ -242,17 +242,17 @@
         // override is same as the vlaue for the "Name" key of the Parent AND the value for
         // the Parent Recipe's Identifier key is the same as the value for override's "ParentRecipe" key
         NSPredicate *overridePreferedPredicate = [NSPredicate predicateWithFormat:@"not (%K == %@ AND %K == %@)", kLGAutoPkgRecipeNameKey, override[kLGAutoPkgRecipeNameKey], kLGAutoPkgRecipeIdentifierKey, override[kLGAutoPkgRecipeParentKey]];
-        [recipeSet filterUsingPredicate:overridePreferedPredicate];
+        [recipeArray filterUsingPredicate:overridePreferedPredicate];
     }
 
     // Now add the valid overrides into the recipeSet
-    [recipeSet addObjectsFromArray:validOverrides];
+    [recipeArray addObjectsFromArray:validOverrides];
 
     // Make a sorted array using the recipe name as the sort key.
     NSSortDescriptor *descriptor = [[NSSortDescriptor alloc] initWithKey:kLGAutoPkgRecipeNameKey
                                                                ascending:YES];
 
-    NSArray *sortedArray = [recipeSet sortedArrayUsingDescriptors:@[ descriptor ]];
+    NSArray *sortedArray = [recipeArray sortedArrayUsingDescriptors:@[ descriptor ]];
 
     return sortedArray.count ? sortedArray : nil;
 }
@@ -282,7 +282,7 @@
 
             if (![isDirectory boolValue]) {
                 if ([filename.pathExtension isEqualToString:@"recipe"]) {
-                    NSMutableDictionary *recipe = [self createRecipeDictFromURL:fileURL isOverrid:isOverride];
+                    NSMutableDictionary *recipe = [self createRecipeDictFromURL:fileURL isOverride:isOverride];
                     if (recipe) {
                         [array addObject:recipe];
                     }
@@ -293,7 +293,7 @@
     return [NSArray arrayWithArray:array];
 }
 
-- (NSMutableDictionary *)createRecipeDictFromURL:(NSURL *)recipeURL isOverrid:(BOOL)isOverride
+- (NSMutableDictionary *)createRecipeDictFromURL:(NSURL *)recipeURL isOverride:(BOOL)isOverride
 {
     // Do some basic checks against the file url first.
     if (!recipeURL || !recipeURL.isFileURL) {
