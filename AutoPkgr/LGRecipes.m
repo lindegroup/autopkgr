@@ -132,7 +132,7 @@
 - (void)cleanActiveApps
 {
     // This runs through the updated recipes and removes any recipes from the
-    // activeApps array that cannot be found in the new apps array.
+    // activeApps array that cannot be found in the _recipes array.
     for (NSString *string in [_activeRecipes copy]) {
         NSPredicate *predicate = [NSPredicate predicateWithFormat:@"%K == %@", kLGAutoPkgRecipeIdentifierKey, string];
 
@@ -237,7 +237,7 @@
     }
 
     for (NSDictionary *override in validOverrides) {
-        // Filter the set by removing the Parent recipe if an override is
+        // Filter the array by removing the parent recipe if an override is
         // found that matches BOTH condition: the value for the "Name" key of the the
         // override is same as the vlaue for the "Name" key of the Parent AND the value for
         // the Parent Recipe's Identifier key is the same as the value for override's "ParentRecipe" key
@@ -245,10 +245,10 @@
         [recipeArray filterUsingPredicate:overridePreferedPredicate];
     }
 
-    // Now add the valid overrides into the recipeSet
+    // Now add the valid overrides into the recipeArray
     [recipeArray addObjectsFromArray:validOverrides];
 
-    // Make a sorted array using the recipe name as the sort key.
+    // Make a sorted array using the recipe Name as the sort key.
     NSSortDescriptor *descriptor = [[NSSortDescriptor alloc] initWithKey:kLGAutoPkgRecipeNameKey
                                                                ascending:YES];
 
@@ -273,18 +273,23 @@
                                                    return YES;
                                  }];
 
-        for (NSURL *fileURL in enumerator) {
-            NSString *filename;
-            [fileURL getResourceValue:&filename forKey:NSURLNameKey error:nil];
+        NSURL *fileURL;
+        for (fileURL in enumerator) {
+            // As of autopkg 0.4.1 it only will find recipes
+            // 2 levels deep so mimic that behavior here.
+            if (enumerator.level <= 2) {
+                NSString *filename;
+                [fileURL getResourceValue:&filename forKey:NSURLNameKey error:nil];
 
-            NSNumber *isDirectory;
-            [fileURL getResourceValue:&isDirectory forKey:NSURLIsDirectoryKey error:nil];
+                NSNumber *isDirectory;
+                [fileURL getResourceValue:&isDirectory forKey:NSURLIsDirectoryKey error:nil];
 
-            if (![isDirectory boolValue]) {
-                if ([filename.pathExtension isEqualToString:@"recipe"]) {
-                    NSMutableDictionary *recipe = [self createRecipeDictFromURL:fileURL isOverride:isOverride];
-                    if (recipe) {
-                        [array addObject:recipe];
+                if (![isDirectory boolValue]) {
+                    if ([filename.pathExtension isEqualToString:@"recipe"]) {
+                        NSMutableDictionary *recipe = [self createRecipeDictFromURL:fileURL isOverride:isOverride];
+                        if (recipe) {
+                            [array addObject:recipe];
+                        }
                     }
                 }
             }
@@ -401,29 +406,51 @@
 - (void)didCreateOverride:(NSNotification *)aNotification
 {
     [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+        // The notification info of the didCreateOverride: note is a dictionary with two keys
+        // "old" : dictionary of the recipe (it's parent) used to create the override
+        // "new" : dictionary of the newly created override.
         NSDictionary *swap = aNotification.userInfo;
         NSString *old = swap[@"old"][kLGAutoPkgRecipeIdentifierKey];
         NSString *new = swap[@"new"][kLGAutoPkgRecipeIdentifierKey];
+        BOOL changed = NO;
+
+        // If the parent was active, and the override has the same name,
+        // make the newly created override active
         if ([_activeRecipes containsObject:old]) {
             [_activeRecipes replaceObjectAtIndex: [_activeRecipes indexOfObject:old] withObject:new];
+            changed = YES;
         }
 
         [self reload];
+
+        if (changed) {
+            [self writeRecipeList];
+        }
     }];
 }
 
 - (void)didDeleteOverride:(NSNotification *)aNotification
 {
     [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+        // The notification info of the didDeleteOverride: note is
+        // the dictionary representation of the deleted override
+
         NSDictionary *override = aNotification.userInfo;
         NSString *name = override[kLGAutoPkgRecipeIdentifierKey];
-        NSString *parent = override[kLGAutoPkgRecipeParentKey];
 
-        if (name && parent && [_activeRecipes containsObject:name]) {
-            [_activeRecipes replaceObjectAtIndex: [_activeRecipes indexOfObject:name] withObject:parent];
+        BOOL changed = NO;
+        // Once the override is deleted, if it was in the _activeRecipes
+        // list make sure to remove it there too.
+        if (name && [_activeRecipes containsObject:name]) {
+            [_activeRecipes removeObject:name];
+            changed = YES;
         }
 
         [self reload];
+
+        if (changed) {
+            [self writeRecipeList];
+        }
     }];
 }
 

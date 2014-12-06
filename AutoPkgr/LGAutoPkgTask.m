@@ -394,7 +394,8 @@ typedef void (^AutoPkgReplyErrorBlock)(NSError *error);
     NSPipe *standardOutput = [NSPipe pipe];
     self.task.standardOutput = standardOutput;
 
-    self.task.standardError = [NSPipe pipe];
+    NSPipe *standardError = [NSPipe pipe];
+    self.task.standardError = standardError;
 
     if (_verb == kLGAutoPkgRun || _verb == kLGAutoPkgRepoUpdate) {
         if (self.AUTOPKG_VERSION_0_4_0) {
