@@ -43,10 +43,8 @@ NSString *const kLGGitMAVReleasesJSONURL = @"https://api.github.com/repos/timcha
 NSString *const kLGGitMLReleasesJSONURL = @"https://api.github.com/repos/eahrold/git-for-mountainlion/releases";
 NSString *const kLGJSSAddonJSONURL = @"https://api.github.com/repos/sheagcraig/jss-autopkg-addon/releases";
 
-NSString *const kLGAutoPkgDownloadURL = @"https://github.com/autopkg/autopkg/zipball/master";
 NSString *const kLGAutoPkgRepositoriesJSONURL = @"https://api.github.com/orgs/autopkg/repos?per_page=100";
 NSString *const kLGJSSDefaultRepo = @"https://github.com/sheagcraig/jss-recipes.git";
-
 
 #pragma mark - Defaults
 NSString *const kLGSMTPServer = @"SMTPServer";
