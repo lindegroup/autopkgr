@@ -20,8 +20,31 @@
 //
 
 #import <Cocoa/Cocoa.h>
+#import "LGAutoPkgTask.h"
+#import "LGRecipes.h"
+#import "LGEmailer.h"
+#import "LGAutoPkgr.h"
 
-int main(int argc, const char * argv[])
+int main(int argc, const char *argv[])
 {
-    return NSApplicationMain(argc, argv);
+    NSUserDefaults *args = [NSUserDefaults standardUserDefaults];
+    if ([args boolForKey:@"runInBackground"]) {
+        NSLog(@"Running AutoPkgr in background...");
+
+        __block LGEmailer *emailer = [[LGEmailer alloc] init];
+        LGDefaults *defaults = [LGDefaults standardUserDefaults];
+        LGAutoPkgTaskManager *manager = [[LGAutoPkgTaskManager alloc] init];
+        [manager runRecipeList:[LGRecipes recipeList]
+                    updateRepo:defaults.checkForRepoUpdatesAutomaticallyEnabled
+                         reply:^(NSDictionary *report, NSError *error) {
+            [emailer sendEmailForReport:report error:error];
+                         }];
+
+        while (emailer && !emailer.complete) {
+            [[NSRunLoop currentRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:1.0]];
+        }
+    } else {
+        return NSApplicationMain(argc, argv);
+    }
 }
+

@@ -1,10 +1,8 @@
 //
-//  LGAutoPkgSchedule.h
+//  LGAutoPkgrHelperConnection.h
 //  AutoPkgr
 //
-//  Created by Eldon on 9/6/14.
-//
-//  Copyright 2014 The Linde Group, Inc.
+//  Created by Eldon Ahrold on 7/28/14.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -18,14 +16,11 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
 //
-
 #import <Foundation/Foundation.h>
-#import "LGProgressDelegate.h"
+#import "LGAutoPkgrProtocol.h"
 
-@interface LGAutoPkgSchedule : NSObject
+@interface LGAutoPkgrHelperConnection : NSObject
 
-+ (void)startAutoPkgSchedule:(BOOL)start interval:(NSInteger)interval isForced:(BOOL)forced reply:(void (^)(NSError* error))reply;
-
-+ (BOOL)updateAppsIsScheduled;
-
+@property (atomic, strong, readonly) NSXPCConnection *connection;
+- (void)connectToHelper;
 @end

@@ -36,7 +36,6 @@
 #pragma mark - BOOL
 @property (nonatomic) BOOL SMTPTLSEnabled;
 @property (nonatomic) BOOL SMTPAuthenticationEnabled;
-@property (nonatomic) BOOL warnBeforeQuittingEnabled;
 @property (nonatomic) BOOL hasCompletedInitialSetup;
 @property (nonatomic) BOOL sendEmailNotificationsWhenNewVersionsAreFoundEnabled;
 @property (nonatomic) BOOL checkForNewVersionsOfAppsAutomaticallyEnabled;

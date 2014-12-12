@@ -45,6 +45,10 @@ typedef NS_ENUM(NSInteger, LGErrorCodes) {
     kLGErrorInstallJSSAddon,
     /** Error serializing xml object */
     kLGErrorJSSXMLSerializerError,
+    /** Error Schedule timer incorrect */
+    kLGErrorIncorrectScheduleTimerInterval,
+    /** Error creating authorization*/
+    kLGErrorAuthChallenge,
 };
 
 #pragma mark - AutoPkg specific Error codes

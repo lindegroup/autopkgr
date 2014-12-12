@@ -1,10 +1,8 @@
 //
-//  LGAutoPkgSchedule.h
-//  AutoPkgr
+//  main.m
+//  AutoPkgr - Priviledged Helper Tool
 //
-//  Created by Eldon on 9/6/14.
-//
-//  Copyright 2014 The Linde Group, Inc.
+//  Created by Eldon Ahrold on 7/28/14.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -20,12 +18,14 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "LGProgressDelegate.h"
+#import "LGAutoPkgrHelper.h"
 
-@interface LGAutoPkgSchedule : NSObject
-
-+ (void)startAutoPkgSchedule:(BOOL)start interval:(NSInteger)interval isForced:(BOOL)forced reply:(void (^)(NSError* error))reply;
-
-+ (BOOL)updateAppsIsScheduled;
-
-@end
+int main(int argc, const char *argv[])
+{
+    @autoreleasepool
+    {
+        LGAutoPkgrHelper *helper = [LGAutoPkgrHelper new];
+        [helper run];
+    }
+    return 0;
+}

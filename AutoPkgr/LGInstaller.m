@@ -23,6 +23,7 @@
 #import "LGAutoPkgr.h"
 #import "LGHostInfo.h"
 #import "LGGitHubJSONLoader.h"
+#import "LGAutoPkgrHelperConnection.h"
 
 typedef NS_ENUM(NSInteger, LGInstallType) {
     kLGInstallerTypeUnkown = 0,
@@ -190,17 +191,38 @@ typedef NS_ENUM(NSInteger, LGInstallType) {
         break;
     }
 
-    BOOL success = NO;
+    __block BOOL success = NO;
+    __block BOOL complete = NO;
+    
     if (type != kLGInstallerTypeUnkown && pkgFile) {
         // Set the `installer` command
-        NSString *command = [NSString stringWithFormat:@"/usr/sbin/installer -pkg %@ -target /", pkgFile];
-
         // Install the pkg as root
         progressMessage = [NSString stringWithFormat:@"Installing %@...", installerName];
+        
         [_progressDelegate updateProgress:progressMessage progress:75.0];
-        success = [self runCommandAsRoot:command error:error];
+        
+        NSData *authorization = [LGAutoPkgrAuthorizer authorizeHelper];
+        assert(authorization != nil);
 
+        [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+            LGAutoPkgrHelperConnection *helper = [LGAutoPkgrHelperConnection new];
+            [helper connectToHelper];
+            [[helper.connection remoteObjectProxyWithErrorHandler:^(NSError *error) {
+                DLog(@"%@",error);
+                success = NO;
+                complete = YES;
+            }] installPackageFromPath:pkgFile authorization:authorization reply:^(NSError *error) {
+                success = error ? NO:YES;
+                complete = YES;
+            }];
+        }];
+        
+        while (!complete) {
+            [[NSRunLoop currentRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:1.0]];
+        }
+        
         progressMessage = [NSString stringWithFormat:@"%@ installation complete.", installerName];
+        
         [_progressDelegate updateProgress:progressMessage progress:100.0];
 
         if (type == kLGInstallerTypeDMG) {
@@ -209,7 +231,6 @@ typedef NS_ENUM(NSInteger, LGInstallType) {
             [self unmountVolume];
         }
     }
-
     return success;
 }
 
@@ -228,27 +249,6 @@ typedef NS_ENUM(NSInteger, LGInstallType) {
     }
 
     return type;
-}
-
-- (BOOL)runCommandAsRoot:(NSString *)command error:(NSError *__autoreleasing *)error;
-{
-    // Super dirty hack, but way easier than
-    // using Authorization Services
-    NSDictionary *errorDict = [[NSDictionary alloc] init];
-    NSString *script = [NSString stringWithFormat:@"do shell script \"sh -c '%@'\" with administrator privileges", command];
-    NSLog(@"AppleScript commands: %@", script);
-    NSAppleScript *appleScript = [[NSAppleScript alloc] initWithSource:script];
-    if ([appleScript executeAndReturnError:&errorDict]) {
-        return YES;
-    } else {
-        NSDictionary *userInfo = @{ NSLocalizedDescriptionKey : errorDict[NSAppleScriptErrorBriefMessage],
-                                    NSLocalizedRecoverySuggestionErrorKey : errorDict[NSAppleScriptErrorMessage] };
-        NSNumber *exitCode = errorDict[NSAppleScriptErrorNumber];
-
-        if (error)
-            *error = [NSError errorWithDomain:kLGApplicationName code:[exitCode intValue] userInfo:userInfo];
-        return NO;
-    }
 }
 
 - (BOOL)unmountVolume
