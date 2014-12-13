@@ -179,8 +179,6 @@
 		1A1BAD9C197A4133008192A7 /* LGGitHubJSONLoader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGGitHubJSONLoader.h; sourceTree = "<group>"; };
 		1A1BAD9D197A4133008192A7 /* LGGitHubJSONLoader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGGitHubJSONLoader.m; sourceTree = "<group>"; };
 		1A2C7FAD19CC9F8300CFF472 /* codesign.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = codesign.py; sourceTree = "<group>"; };
-		1A979FDE1960BCCC00EE9881 /* LGUnzipper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGUnzipper.h; sourceTree = "<group>"; };
-		1A979FDF1960BCCC00EE9881 /* LGUnzipper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGUnzipper.m; sourceTree = "<group>"; };
 		1AC6954D195B59ED00D2BD81 /* AutoPkgr.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AutoPkgr.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1AC69550195B59ED00D2BD81 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		1AC69553195B59ED00D2BD81 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
@@ -572,8 +570,6 @@
 				1AC86D3C195E0AC6006FDD2B /* LGHostInfo.m */,
 				BE0E857719D668F600B25B5E /* LGHTTPRequest.h */,
 				BE0E857819D668F600B25B5E /* LGHTTPRequest.m */,
-				1A979FDE1960BCCC00EE9881 /* LGUnzipper.h */,
-				1A979FDF1960BCCC00EE9881 /* LGUnzipper.m */,
 				1A1BAD94197A0407008192A7 /* LGVersionComparator.h */,
 				1A1BAD95197A0407008192A7 /* LGVersionComparator.m */,
 			);
