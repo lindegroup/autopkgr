@@ -114,7 +114,9 @@
 
     operation.securityPolicy = policy;
     [operation setRedirectResponseBlock:^NSURLRequest * (NSURLConnection * connection, NSURLRequest * request, NSURLResponse * redirectResponse) {
-        NSLog(@"redirected %@",redirectResponse);
+        if (redirectResponse) {
+            DLog(@"redirected %@",redirectResponse);
+        }
         redirectedURL = [(NSHTTPURLResponse *)redirectResponse allHeaderFields][@"Location"];
         return request;
     }];
