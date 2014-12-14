@@ -177,8 +177,7 @@ typedef NS_ENUM(NSInteger, LGInstallType) {
 
             if (pkg) {
                 DLog(@"Found installer package: %@", pkg);
-                // Since this is getting invoked as an AppleScript wrapping in sh -c  you need 4 backslashes to correctly escape the whitespace
-                pkgFile = [[_mountPoint stringByAppendingPathComponent:pkg] stringByReplacingOccurrencesOfString:@" " withString:@"\\\\ "];
+                pkgFile = [_mountPoint stringByAppendingPathComponent:pkg];
             } else {
                 DLog(@"Could not locate .pkg file.");
             }

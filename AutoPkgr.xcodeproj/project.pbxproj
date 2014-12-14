@@ -71,6 +71,26 @@
 		BED02ADC1A194F9C00714CC2 /* NSArray+filtered.m in Sources */ = {isa = PBXBuildFile; fileRef = BED02ADB1A194F9C00714CC2 /* NSArray+filtered.m */; };
 		BEE05F061A05CDBE00EF80B3 /* libPods-AutoPkgr-AHCodesignVerifier.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BEE05F051A05CDBE00EF80B3 /* libPods-AutoPkgr-AHCodesignVerifier.a */; };
 		BEE8CF1319E0E7F400981C4B /* NSTextField+setSafeStringValue.m in Sources */ = {isa = PBXBuildFile; fileRef = BEE8CF1219E0E7F400981C4B /* NSTextField+setSafeStringValue.m */; };
+		BEFC3C761A3DF16700C789E9 /* LGUserNotifications.m in Sources */ = {isa = PBXBuildFile; fileRef = BE6815D41A0B18DE004AD310 /* LGUserNotifications.m */; };
+		BEFC3C771A3DF16700C789E9 /* LGGitHubJSONLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A1BAD9D197A4133008192A7 /* LGGitHubJSONLoader.m */; };
+		BEFC3C781A3DF16700C789E9 /* LGInstaller.m in Sources */ = {isa = PBXBuildFile; fileRef = BEAA76CB19BFD635002D73EE /* LGInstaller.m */; };
+		BEFC3C791A3DF16700C789E9 /* LGTestPort.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A53625C1988BE59008A949C /* LGTestPort.m */; };
+		BEFC3C7C1A3DF16700C789E9 /* LGPopularRepositories.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A0BABE8196E560000A136BB /* LGPopularRepositories.m */; };
+		BEFC3C7D1A3DF16700C789E9 /* LGRecipes.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A0ACE33196FB349002C7FE4 /* LGRecipes.m */; };
+		BEFC3C7E1A3DF16700C789E9 /* LGRecipeOverrides.m in Sources */ = {isa = PBXBuildFile; fileRef = BE32178A19ED9ACA00A92E5A /* LGRecipeOverrides.m */; };
+		BEFC3C7F1A3DF16700C789E9 /* LGTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = BE32178D19EDA15400A92E5A /* LGTableView.m */; };
+		BEFC3C821A3DF16700C789E9 /* LGConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 1AC98409195CE7D60071CAB3 /* LGConstants.m */; };
+		BEFC3C831A3DF16700C789E9 /* LGDefaults.m in Sources */ = {isa = PBXBuildFile; fileRef = BE87994A1995BA410082472B /* LGDefaults.m */; };
+		BEFC3C841A3DF16700C789E9 /* LGError.m in Sources */ = {isa = PBXBuildFile; fileRef = BEFC931C1995F0710074C938 /* LGError.m */; };
+		BEFC3C851A3DF16700C789E9 /* LGHostInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 1AC86D3C195E0AC6006FDD2B /* LGHostInfo.m */; };
+		BEFC3C861A3DF16700C789E9 /* LGHTTPRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = BE0E857819D668F600B25B5E /* LGHTTPRequest.m */; };
+		BEFC3C871A3DF16700C789E9 /* LGVersionComparator.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A1BAD95197A0407008192A7 /* LGVersionComparator.m */; };
+		BEFC3C881A3DF16700C789E9 /* LGAutoPkgrAuthorizer.m in Sources */ = {isa = PBXBuildFile; fileRef = BE05CE7F19DAF6320089068B /* LGAutoPkgrAuthorizer.m */; };
+		BEFC3C891A3DF16700C789E9 /* LGAutoPkgrHelperConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = BE05CE8119DAF6320089068B /* LGAutoPkgrHelperConnection.m */; };
+		BEFC3C8A1A3DF16700C789E9 /* NSImage+statusLight.m in Sources */ = {isa = PBXBuildFile; fileRef = BE1C810219E8224000EF77F3 /* NSImage+statusLight.m */; };
+		BEFC3C8B1A3DF16700C789E9 /* NSString+cleaned.m in Sources */ = {isa = PBXBuildFile; fileRef = BE73CDC619E062AC00441443 /* NSString+cleaned.m */; };
+		BEFC3C8C1A3DF16700C789E9 /* NSTextField+setSafeStringValue.m in Sources */ = {isa = PBXBuildFile; fileRef = BEE8CF1219E0E7F400981C4B /* NSTextField+setSafeStringValue.m */; };
+		BEFC3C8E1A3DF16700C789E9 /* NSArray+filtered.m in Sources */ = {isa = PBXBuildFile; fileRef = BED02ADB1A194F9C00714CC2 /* NSArray+filtered.m */; };
 		BEFC931D1995F0710074C938 /* LGError.m in Sources */ = {isa = PBXBuildFile; fileRef = BEFC931C1995F0710074C938 /* LGError.m */; };
 /* End PBXBuildFile section */
 
@@ -653,9 +673,6 @@
 				LastUpgradeCheck = 0600;
 				ORGANIZATIONNAME = "The Linde Group, Inc.";
 				TargetAttributes = {
-					1AC6956D195B59EE00D2BD81 = {
-						TestTargetID = 1AC6954C195B59ED00D2BD81;
-					};
 					BE05CE6619DAF26B0089068B = {
 						CreatedOnToolsVersion = 6.0.1;
 					};
@@ -940,6 +957,26 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BEFC3C761A3DF16700C789E9 /* LGUserNotifications.m in Sources */,
+				BEFC3C771A3DF16700C789E9 /* LGGitHubJSONLoader.m in Sources */,
+				BEFC3C781A3DF16700C789E9 /* LGInstaller.m in Sources */,
+				BEFC3C791A3DF16700C789E9 /* LGTestPort.m in Sources */,
+				BEFC3C7C1A3DF16700C789E9 /* LGPopularRepositories.m in Sources */,
+				BEFC3C7D1A3DF16700C789E9 /* LGRecipes.m in Sources */,
+				BEFC3C7E1A3DF16700C789E9 /* LGRecipeOverrides.m in Sources */,
+				BEFC3C7F1A3DF16700C789E9 /* LGTableView.m in Sources */,
+				BEFC3C821A3DF16700C789E9 /* LGConstants.m in Sources */,
+				BEFC3C831A3DF16700C789E9 /* LGDefaults.m in Sources */,
+				BEFC3C841A3DF16700C789E9 /* LGError.m in Sources */,
+				BEFC3C851A3DF16700C789E9 /* LGHostInfo.m in Sources */,
+				BEFC3C861A3DF16700C789E9 /* LGHTTPRequest.m in Sources */,
+				BEFC3C871A3DF16700C789E9 /* LGVersionComparator.m in Sources */,
+				BEFC3C881A3DF16700C789E9 /* LGAutoPkgrAuthorizer.m in Sources */,
+				BEFC3C891A3DF16700C789E9 /* LGAutoPkgrHelperConnection.m in Sources */,
+				BEFC3C8A1A3DF16700C789E9 /* NSImage+statusLight.m in Sources */,
+				BEFC3C8B1A3DF16700C789E9 /* NSString+cleaned.m in Sources */,
+				BEFC3C8C1A3DF16700C789E9 /* NSTextField+setSafeStringValue.m in Sources */,
+				BEFC3C8E1A3DF16700C789E9 /* NSArray+filtered.m in Sources */,
 				BE025CFF19BAEF8800D36345 /* LGAutoPkgSchedule.m in Sources */,
 				1AC6957B195B59EE00D2BD81 /* AutoPkgrTests.m in Sources */,
 				BE025CF719BAE93400D36345 /* LGAutoPkgTask.m in Sources */,
@@ -1134,7 +1171,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 5F030AE32F891FB6D46E1F34 /* Pods-AutoPkgrTests.debug.xcconfig */;
 			buildSettings = {
-				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/AutoPkgr.app/Contents/MacOS/AutoPkgr";
 				COMBINE_HIDPI_IMAGES = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(DEVELOPER_FRAMEWORKS_DIR)",
@@ -1148,7 +1184,6 @@
 				);
 				INFOPLIST_FILE = "AutoPkgrTests/AutoPkgrTests-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUNDLE_LOADER)";
 				WRAPPER_EXTENSION = xctest;
 			};
 			name = Debug;
@@ -1157,7 +1192,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 78FF6F632570F6CB7453F9D7 /* Pods-AutoPkgrTests.release.xcconfig */;
 			buildSettings = {
-				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/AutoPkgr.app/Contents/MacOS/AutoPkgr";
 				COMBINE_HIDPI_IMAGES = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(DEVELOPER_FRAMEWORKS_DIR)",
@@ -1167,7 +1201,6 @@
 				GCC_PREFIX_HEADER = "AutoPkgr/AutoPkgr-Prefix.pch";
 				INFOPLIST_FILE = "AutoPkgrTests/AutoPkgrTests-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUNDLE_LOADER)";
 				WRAPPER_EXTENSION = xctest;
 			};
 			name = Release;
