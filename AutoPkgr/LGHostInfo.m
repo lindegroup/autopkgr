@@ -171,11 +171,12 @@ NSString *const kLGBoxenBrewGit = @"/opt/boxen/homebrew/bin";
     NSString *jssExec = @"/Library/AutoPkg/autopkglib/JSSImporter.py";
 
     BOOL check1 = [[NSFileManager defaultManager] fileExistsAtPath:jssAddonReceipt];
-    BOOL check3 = [[NSFileManager defaultManager] fileExistsAtPath:jssImporterReceipt];
-    BOOL check2 = [[NSFileManager defaultManager] fileExistsAtPath:jssExec];
+    BOOL check2 = [[NSFileManager defaultManager] fileExistsAtPath:jssImporterReceipt];
+    BOOL check3 = [[NSFileManager defaultManager] fileExistsAtPath:jssExec];
 
     BOOL isInstalled = (check1 && check3) || (check2 && check3);
 
+    NSLog(@"JSSImporter installed: %hhd", isInstalled);
     return isInstalled;
 }
 
