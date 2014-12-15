@@ -173,7 +173,7 @@ NSString *const kLGBoxenBrewGit = @"/opt/boxen/homebrew/bin";
     return (check1 && check2);
 }
 
-+ (BOOL)jssAddonUpdateAvailable;
++ (BOOL)jssImporterUpdateAvailable;
 {
     LGGitHubJSONLoader *loader = [[LGGitHubJSONLoader alloc] init];
     NSString *availableVersion = [loader latestVersion:kLGJSSImporterJSONURL];

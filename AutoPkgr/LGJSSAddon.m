@@ -350,7 +350,7 @@
     if (show) {
         NSOperationQueue *bgQueue = [[NSOperationQueue alloc] init];
         [bgQueue addOperationWithBlock:^{
-            BOOL updateAvailable = [LGHostInfo jssAddonUpdateAvailable];
+            BOOL updateAvailable = [LGHostInfo jssImporterUpdateAvailable];
             [[NSOperationQueue mainQueue] addOperationWithBlock:^{
                 [_jssInstallButton setEnabled:updateAvailable];
                 if (updateAvailable) {

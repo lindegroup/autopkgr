@@ -33,7 +33,7 @@
 + (BOOL)autoPkgInstalled;
 + (BOOL)autoPkgUpdateAvailable;
 + (BOOL)jssAddonInstalled;
-+ (BOOL)jssAddonUpdateAvailable;
++ (BOOL)jssImporterUpdateAvailable;
 
 + (NSArray *)knownGitPaths;
 
