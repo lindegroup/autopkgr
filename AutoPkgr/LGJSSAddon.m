@@ -55,7 +55,7 @@
     [_jssRemoveDistPointBT setEnabled:NO];
 
     [_jssInstallStatusLight setImage:[NSImage LGStatusNotInstalled]];
-    if ([LGHostInfo jssAddonInstalled] && _defaults.JSSRepos) {
+    if ([LGHostInfo jssImporterInstalled] && _defaults.JSSRepos) {
         [self showInstallTabItems:YES];
     } else {
         [_jssInstallButton setEnabled:YES];
@@ -96,7 +96,7 @@
         return;
     }
 
-    if (![LGHostInfo jssAddonInstalled]) {
+    if (![LGHostInfo jssImporterInstalled]) {
         _installRequestedDuringConnect = YES;
         if ([self requiresInstall]) {
             return;
@@ -407,7 +407,7 @@
 {
     BOOL required = NO;
 
-    if (![LGHostInfo jssAddonInstalled]) {
+    if (![LGHostInfo jssImporterInstalled]) {
         NSLog(@"Prompting for JSSImporter installation.");
         NSAlert *alert = [NSAlert alertWithMessageText:@"Install JSSImporter?"
                                          defaultButton:@"Install"

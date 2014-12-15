@@ -164,7 +164,7 @@ NSString *const kLGBoxenBrewGit = @"/opt/boxen/homebrew/bin";
     return NO;
 }
 
-+ (BOOL)jssAddonInstalled
++ (BOOL)jssImporterInstalled
 {
     NSString *jssReceipt = @"/private/var/db/receipts/com.github.sheagcraig.jssimporter.plist";
     NSString *jssExec = @"/Library/AutoPkg/autopkglib/JSSImporter.py";
