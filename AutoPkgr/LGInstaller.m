@@ -107,7 +107,7 @@ typedef NS_ENUM(NSInteger, LGInstallType) {
 }
 
 #pragma mark - JSSImporter Installer
-- (BOOL)runJSSAddonInstaller:(NSError *__autoreleasing *)error
+- (BOOL)runJSSImporterInstaller:(NSError *__autoreleasing *)error
 {
     NSError *installError;
     BOOL success = [self runInstallerFor:@"JSSImporter" githubAPI:kLGJSSImporterJSONURL error:error];
@@ -125,7 +125,7 @@ typedef NS_ENUM(NSInteger, LGInstallType) {
     [bgQueue addOperationWithBlock:^{
         NSError *error;
         [_progressDelegate startProgressWithMessage:@"Installing JSSImporter..."];
-        [self runJSSAddonInstaller:&error];
+        [self runJSSImporterInstaller:&error];
         [_progressDelegate stopProgress:error];
         reply(error);
     }];

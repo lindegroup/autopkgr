@@ -52,5 +52,5 @@
 #pragma mark - Blocking Methdos
 - (BOOL)runGitInstaller:(NSError **)error;
 - (BOOL)runAutoPkgInstaller:(NSError **)error;
-- (BOOL)runJSSAddonInstaller:(NSError **)error;
+- (BOOL)runJSSImporterInstaller:(NSError **)error;
 @end
