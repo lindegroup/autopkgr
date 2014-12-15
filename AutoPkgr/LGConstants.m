@@ -41,7 +41,7 @@ NSString *const kLGJSSAutoPkgAddonUpdateAvailableLabel = @"An update is availabl
 NSString *const kLGAutoPkgReleasesJSONURL = @"https://api.github.com/repos/autopkg/autopkg/releases";
 NSString *const kLGGitMAVReleasesJSONURL = @"https://api.github.com/repos/timcharper/git_osx_installer/releases";
 NSString *const kLGGitMLReleasesJSONURL = @"https://api.github.com/repos/eahrold/git-for-mountainlion/releases";
-NSString *const kLGJSSAddonJSONURL = @"https://api.github.com/repos/sheagcraig/jss-autopkg-addon/releases";
+NSString *const kLGJSSImporterJSONURL = @"https://api.github.com/repos/sheagcraig/JSSImporter/releases";
 
 NSString *const kLGAutoPkgRepositoriesJSONURL = @"https://api.github.com/orgs/autopkg/repos?per_page=100";
 NSString *const kLGJSSDefaultRepo = @"https://github.com/sheagcraig/jss-recipes.git";

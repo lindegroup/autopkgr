@@ -38,7 +38,7 @@ extern NSString *const kLGJSSAutoPkgAddonUpdateAvailableLabel;
 extern NSString *const kLGAutoPkgReleasesJSONURL;
 extern NSString *const kLGGitMAVReleasesJSONURL;
 extern NSString *const kLGGitMLReleasesJSONURL;
-extern NSString *const kLGJSSAddonJSONURL;
+extern NSString *const kLGJSSImporterJSONURL;
 extern NSString *const kLGAutoPkgRepositoriesJSONURL;
 extern NSString *const kLGJSSDefaultRepo;
 

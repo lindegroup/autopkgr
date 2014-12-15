@@ -123,7 +123,7 @@ NSString *const kLGBoxenBrewGit = @"/opt/boxen/homebrew/bin";
 + (NSString *)getJSSAddonVersion
 {
     NSString *version;
-    NSString *installReceipt = @"/private/var/db/receipts/com.github.sheagcraig.jss-autopkg-addon.plist";
+    NSString *installReceipt = @"/private/var/db/receipts/com.github.sheagcraig.jssimporter.plist";
     if ([[NSFileManager defaultManager] fileExistsAtPath:installReceipt]) {
         NSDictionary *receiptDict = [NSDictionary dictionaryWithContentsOfFile:installReceipt];
         version = receiptDict[@"PackageVersion"];
@@ -166,7 +166,7 @@ NSString *const kLGBoxenBrewGit = @"/opt/boxen/homebrew/bin";
 
 + (BOOL)jssAddonInstalled
 {
-    NSString *jssReceipt = @"/private/var/db/receipts/com.github.sheagcraig.jss-autopkg-addon.plist";
+    NSString *jssReceipt = @"/private/var/db/receipts/com.github.sheagcraig.jssimporter.plist";
     NSString *jssExec = @"/Library/AutoPkg/autopkglib/JSSImporter.py";
     BOOL check1 = [[NSFileManager defaultManager] fileExistsAtPath:jssReceipt];
     BOOL check2 = [[NSFileManager defaultManager] fileExistsAtPath:jssExec];
@@ -176,7 +176,7 @@ NSString *const kLGBoxenBrewGit = @"/opt/boxen/homebrew/bin";
 + (BOOL)jssAddonUpdateAvailable;
 {
     LGGitHubJSONLoader *loader = [[LGGitHubJSONLoader alloc] init];
-    NSString *availableVersion = [loader latestVersion:kLGJSSAddonJSONURL];
+    NSString *availableVersion = [loader latestVersion:kLGJSSImporterJSONURL];
     NSString *installedVersion = [self getJSSAddonVersion];
     BOOL updateAvailable = [LGVersionComparator isVersion:availableVersion
                                        greaterThanVersion:installedVersion];
