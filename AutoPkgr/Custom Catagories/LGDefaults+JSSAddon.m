@@ -33,7 +33,7 @@ NSString *const kLGJSSDistPointTypeKey = @"type";
 
 #pragma mark - LGDefaults category implementation for JSSImporter Interface
 
-@implementation LGDefaults (JSSAddon)
+@implementation LGDefaults (JSSImporter)
 
 - (NSString *)JSSURL
 {

@@ -32,7 +32,7 @@ extern NSString* const kLGJSSDistPointTypeKey;
 
 
 #pragma mark - LGDefaults extensions for JSSImporter Interface
-@interface LGDefaults (JSSAddon)
+@interface LGDefaults (JSSImporter)
 
 @property (copy, nonatomic) NSString *JSSURL;
 @property (copy, nonatomic) NSString *JSSAPIUsername;
