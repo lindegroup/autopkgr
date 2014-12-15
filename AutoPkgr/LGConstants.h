@@ -32,7 +32,7 @@ extern NSString *const kLGAutoPkgNotInstalledLabel;
 extern NSString *const kLGAutoPkgUpdateAvailableLabel;
 extern NSString *const kLGJSSImporterInstalledLabel;
 extern NSString *const kLGJSSImporterNotInstalledLabel;
-extern NSString *const kLGJSSAutoPkgAddonUpdateAvailableLabel;
+extern NSString *const kLGJSSImporterUpdateAvailableLabel;
 
 #pragma mark - Static URLs
 extern NSString *const kLGAutoPkgReleasesJSONURL;

@@ -356,7 +356,7 @@
                 if (updateAvailable) {
                     NSLog(@"An update is available for JSSImporter.");
                     _jssInstallButton.title = @"Update JSSImporter";
-                    _jssInstallStatusTF.stringValue = kLGJSSAutoPkgAddonUpdateAvailableLabel;
+                    _jssInstallStatusTF.stringValue = kLGJSSImporterUpdateAvailableLabel;
                     _jssInstallStatusLight.image = [NSImage LGStatusUpdateAvailable];
                 } else {
                     NSLog(@"JSSImporter is up to date.");
