@@ -47,7 +47,7 @@
  *
  *  @param reply block that is executed upon completion that takes one argument NSError
  */
-- (void)installJSSAddon:(void (^)(NSError *error))reply;
+- (void)installJSSImporter:(void (^)(NSError *error))reply;
 
 #pragma mark - Blocking Methdos
 - (BOOL)runGitInstaller:(NSError **)error;

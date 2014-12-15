@@ -134,7 +134,7 @@
     LGInstaller *installer = [[LGInstaller alloc] init];
     installer.progressDelegate = _progressDelegate;
     [_jssInstallButton setEnabled:NO];
-    [installer installJSSAddon:^(NSError *error) {
+    [installer installJSSImporter:^(NSError *error) {
         BOOL success = (error == nil);
         if (success) {
             NSString *message = [NSString stringWithFormat:@"Adding %@",kLGJSSDefaultRepo];

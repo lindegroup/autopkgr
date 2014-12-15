@@ -119,7 +119,7 @@ typedef NS_ENUM(NSInteger, LGInstallType) {
     return success;
 }
 
-- (void)installJSSAddon:(void (^)(NSError *))reply
+- (void)installJSSImporter:(void (^)(NSError *))reply
 {
     NSOperationQueue *bgQueue = [[NSOperationQueue alloc] init];
     [bgQueue addOperationWithBlock:^{
