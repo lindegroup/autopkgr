@@ -128,7 +128,7 @@
                                   }];
 }
 
-- (IBAction)installJSSAddon:(id)sender
+- (IBAction)installJSSImporter:(id)sender
 {
     NSLog(@"Installing JSSImporter.");
     LGInstaller *installer = [[LGInstaller alloc] init];
@@ -417,7 +417,7 @@
 
         NSInteger button = [alert runModal];
         if (button == NSAlertDefaultReturn) {
-            [self installJSSAddon:nil];
+            [self installJSSImporter:nil];
         } else {
             _installRequestedDuringConnect = NO;
             NSLog(@"Installation of JSSImporter was canceled.");

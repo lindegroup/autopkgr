@@ -46,7 +46,7 @@
 // Progress delegate (object used to send updates to status menu item)
 @property (weak) id<LGProgressDelegate> progressDelegate;
 
-- (IBAction)installJSSAddon:(id)sender;
+- (IBAction)installJSSImporter:(id)sender;
 - (IBAction)addDistributionPoint:(id)sender;
 - (IBAction)removeDistributionPoint:(id)sender;
 - (IBAction)editDistributionPoint:(id)sender;

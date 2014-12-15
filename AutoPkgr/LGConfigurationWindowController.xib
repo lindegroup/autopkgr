@@ -111,7 +111,7 @@
                                                         <font key="font" metaFont="system"/>
                                                     </buttonCell>
                                                     <connections>
-                                                        <action selector="installJSSAddon:" target="0iG-YL-fA3" id="xFI-Sg-Rir"/>
+                                                        <action selector="installJSSImporter:" target="0iG-YL-fA3" id="B6q-MQ-aWL"/>
                                                     </connections>
                                                 </button>
                                                 <imageView translatesAutoresizingMaskIntoConstraints="NO" id="KkE-qM-Hy6">
