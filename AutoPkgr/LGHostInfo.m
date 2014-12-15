@@ -120,7 +120,7 @@ NSString *const kLGBoxenBrewGit = @"/opt/boxen/homebrew/bin";
     return [autoPkgVersionString trimmed];
 }
 
-+ (NSString *)getJSSAddonVersion
++ (NSString *)getJSSImporterVersion
 {
     NSString *version;
     NSString *installReceipt = @"/private/var/db/receipts/com.github.sheagcraig.jssimporter.plist";
@@ -177,7 +177,7 @@ NSString *const kLGBoxenBrewGit = @"/opt/boxen/homebrew/bin";
 {
     LGGitHubJSONLoader *loader = [[LGGitHubJSONLoader alloc] init];
     NSString *availableVersion = [loader latestVersion:kLGJSSImporterJSONURL];
-    NSString *installedVersion = [self getJSSAddonVersion];
+    NSString *installedVersion = [self getJSSImporterVersion];
     BOOL updateAvailable = [LGVersionComparator isVersion:availableVersion
                                        greaterThanVersion:installedVersion];
     if (updateAvailable) {
