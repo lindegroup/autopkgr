@@ -24,7 +24,7 @@
 #import "LGProgressDelegate.h"
 #import "LGTableView.h"
 
-@interface LGJSSAddon : NSObject <NSTableViewDataSource, NSTableViewDelegate>
+@interface LGJSSImporter : NSObject <NSTableViewDataSource, NSTableViewDelegate>
 
 @property (strong) IBOutlet LGTableView *jssDistributionPointTableView;
 @property (weak) IBOutlet NSTextField *jssURLTF;

@@ -45,7 +45,7 @@
 		BE32178B19ED9ACA00A92E5A /* LGRecipeOverrides.m in Sources */ = {isa = PBXBuildFile; fileRef = BE32178A19ED9ACA00A92E5A /* LGRecipeOverrides.m */; };
 		BE32178E19EDA15400A92E5A /* LGTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = BE32178D19EDA15400A92E5A /* LGTableView.m */; };
 		BE39FE5319DFBB0100C1B4A1 /* LGDefaults+JSSAddon.m in Sources */ = {isa = PBXBuildFile; fileRef = BE39FE5219DFBB0100C1B4A1 /* LGDefaults+JSSAddon.m */; };
-		BE57733819D519E400D872A4 /* LGJSSAddon.m in Sources */ = {isa = PBXBuildFile; fileRef = BE57733719D519E400D872A4 /* LGJSSAddon.m */; };
+		BE57733819D519E400D872A4 /* LGJSSImporter.m in Sources */ = {isa = PBXBuildFile; fileRef = BE57733719D519E400D872A4 /* LGJSSImporter.m */; };
 		BE57AC2A19BA3BBC00BB17B1 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = BE57AC2C19BA3BBC00BB17B1 /* Localizable.strings */; };
 		BE6815EC1A0B2BAB004AD310 /* LGJSSDistributionPointsPrefPanel.m in Sources */ = {isa = PBXBuildFile; fileRef = BE6815EA1A0B2BAB004AD310 /* LGJSSDistributionPointsPrefPanel.m */; };
 		BE6815ED1A0B2BAB004AD310 /* LGJSSDistributionPointsPrefPanel.xib in Resources */ = {isa = PBXBuildFile; fileRef = BE6815EB1A0B2BAB004AD310 /* LGJSSDistributionPointsPrefPanel.xib */; };
@@ -197,8 +197,8 @@
 		BE34DF2B19AA21E200DC2FAF /* LGAutoPkgr.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LGAutoPkgr.h; sourceTree = "<group>"; };
 		BE39FE5119DFBB0100C1B4A1 /* LGDefaults+JSSAddon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "LGDefaults+JSSAddon.h"; path = "Custom Catagories/LGDefaults+JSSAddon.h"; sourceTree = "<group>"; };
 		BE39FE5219DFBB0100C1B4A1 /* LGDefaults+JSSAddon.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "LGDefaults+JSSAddon.m"; path = "Custom Catagories/LGDefaults+JSSAddon.m"; sourceTree = "<group>"; };
-		BE57733619D519E400D872A4 /* LGJSSAddon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGJSSAddon.h; sourceTree = "<group>"; };
-		BE57733719D519E400D872A4 /* LGJSSAddon.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGJSSAddon.m; sourceTree = "<group>"; };
+		BE57733619D519E400D872A4 /* LGJSSImporter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGJSSImporter.h; sourceTree = "<group>"; };
+		BE57733719D519E400D872A4 /* LGJSSImporter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGJSSImporter.m; sourceTree = "<group>"; };
 		BE57AC2B19BA3BBC00BB17B1 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		BE6815E91A0B2BAB004AD310 /* LGJSSDistributionPointsPrefPanel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGJSSDistributionPointsPrefPanel.h; sourceTree = "<group>"; };
 		BE6815EA1A0B2BAB004AD310 /* LGJSSDistributionPointsPrefPanel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGJSSDistributionPointsPrefPanel.m; sourceTree = "<group>"; };
@@ -436,8 +436,8 @@
 				BE32178A19ED9ACA00A92E5A /* LGRecipeOverrides.m */,
 				BE32178C19EDA15400A92E5A /* LGTableView.h */,
 				BE32178D19EDA15400A92E5A /* LGTableView.m */,
-				BE57733619D519E400D872A4 /* LGJSSAddon.h */,
-				BE57733719D519E400D872A4 /* LGJSSAddon.m */,
+				BE57733619D519E400D872A4 /* LGJSSImporter.h */,
+				BE57733719D519E400D872A4 /* LGJSSImporter.m */,
 				BE6815E91A0B2BAB004AD310 /* LGJSSDistributionPointsPrefPanel.h */,
 				BE6815EA1A0B2BAB004AD310 /* LGJSSDistributionPointsPrefPanel.m */,
 			);
@@ -739,7 +739,7 @@
 				6A0ACE34196FB349002C7FE4 /* LGRecipes.m in Sources */,
 				BE32178B19ED9ACA00A92E5A /* LGRecipeOverrides.m in Sources */,
 				6A0BABE9196E560000A136BB /* LGPopularRepositories.m in Sources */,
-				BE57733819D519E400D872A4 /* LGJSSAddon.m in Sources */,
+				BE57733819D519E400D872A4 /* LGJSSImporter.m in Sources */,
 				BE0E857919D668F600B25B5E /* LGHTTPRequest.m in Sources */,
 				1A1BAD9E197A4133008192A7 /* LGGitHubJSONLoader.m in Sources */,
 				BE32178E19EDA15400A92E5A /* LGTableView.m in Sources */,

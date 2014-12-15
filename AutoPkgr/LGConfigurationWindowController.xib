@@ -1436,7 +1436,7 @@ Gw
                 </constraints>
             </view>
         </window>
-        <customObject id="0iG-YL-fA3" userLabel="JSSAddon" customClass="LGJSSAddon">
+        <customObject id="0iG-YL-fA3" userLabel="JSSAddon" customClass="LGJSSImporter">
             <connections>
                 <outlet property="jssAPIPasswordTF" destination="9lJ-vz-FvC" id="dzX-o6-3Dq"/>
                 <outlet property="jssAPIUsernameTF" destination="6Ki-wr-8K2" id="UpI-wg-w0e"/>

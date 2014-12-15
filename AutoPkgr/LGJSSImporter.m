@@ -19,7 +19,7 @@
 //  limitations under the License.
 //
 
-#import "LGJSSAddon.h"
+#import "LGJSSImporter.h"
 #import "LGAutopkgr.h"
 #import "LGHTTPRequest.h"
 #import "LGTestPort.h"
@@ -30,7 +30,7 @@
 
 #pragma mark - Class constants
 
-@implementation LGJSSAddon {
+@implementation LGJSSImporter {
     LGDefaults *_defaults;
     LGTestPort *_portTester;
     BOOL _serverReachable;
