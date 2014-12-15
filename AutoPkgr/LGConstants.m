@@ -32,7 +32,7 @@ NSString *const kLGGitNotInstalledLabel = @"Git is not installed.";
 NSString *const kLGAutoPkgInstalledLabel = @"AutoPkg has been installed.";
 NSString *const kLGAutoPkgNotInstalledLabel = @"AutoPkg is not installed.";
 NSString *const kLGAutoPkgUpdateAvailableLabel = @"An update is available for AutoPkg.";
-NSString *const kLGJSSAutoPkgAddonInstalledLabel = @"JSSImporter has been installed.";
+NSString *const kLGJSSImporterInstalledLabel = @"JSSImporter has been installed.";
 NSString *const kLGJSSAutoPkgAddonNotInstalledLabel = @"JSSImporter is not installed.";
 NSString *const kLGJSSAutoPkgAddonUpdateAvailableLabel = @"An update is available for JSSImporter.";
 

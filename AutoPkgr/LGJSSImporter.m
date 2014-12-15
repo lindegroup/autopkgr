@@ -361,7 +361,7 @@
                 } else {
                     NSLog(@"JSSImporter is up to date.");
                     _jssInstallButton.title = @"Install JSSImporter";
-                    _jssInstallStatusTF.stringValue = kLGJSSAutoPkgAddonInstalledLabel;
+                    _jssInstallStatusTF.stringValue = kLGJSSImporterInstalledLabel;
                     _jssInstallStatusLight.image = [NSImage LGStatusUpToDate];
                 }
             }];

@@ -30,7 +30,7 @@ extern NSString *const kLGGitNotInstalledLabel;
 extern NSString *const kLGAutoPkgInstalledLabel;
 extern NSString *const kLGAutoPkgNotInstalledLabel;
 extern NSString *const kLGAutoPkgUpdateAvailableLabel;
-extern NSString *const kLGJSSAutoPkgAddonInstalledLabel;
+extern NSString *const kLGJSSImporterInstalledLabel;
 extern NSString *const kLGJSSAutoPkgAddonNotInstalledLabel;
 extern NSString *const kLGJSSAutoPkgAddonUpdateAvailableLabel;
 
