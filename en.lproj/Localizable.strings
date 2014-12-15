@@ -45,8 +45,8 @@
 "kLGErrorInstallAutoPkgrSuggestion" = "If the problem persists please try manually downloading and installing AutoPkgr: https://github.com/lindegroup/autopkgr/releases/latest";
 
 /** Error installing/updating JSSImporter */
-"kLGErrorInstallJSSAddonDescription" = "Error installing JSSImporter";
-"kLGErrorInstallJSSAddonSuggestion" = "If the problem persists please try manually downloading and installing from: https://github.com/sheagcraig/JSSImporter/releases/latest";
+"kLGErrorInstallJSSImporterDescription" = "Error installing JSSImporter";
+"kLGErrorInstallJSSImporterSuggestion" = "If the problem persists please try manually downloading and installing from: https://github.com/sheagcraig/JSSImporter/releases/latest";
 
 /** Error Serializing JSS response */
 "kLGErrorJSSXMLSerializerErrorDescription" = "Error getting distribution points";

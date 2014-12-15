@@ -44,7 +44,7 @@
 		BE0E857919D668F600B25B5E /* LGHTTPRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = BE0E857819D668F600B25B5E /* LGHTTPRequest.m */; };
 		BE32178B19ED9ACA00A92E5A /* LGRecipeOverrides.m in Sources */ = {isa = PBXBuildFile; fileRef = BE32178A19ED9ACA00A92E5A /* LGRecipeOverrides.m */; };
 		BE32178E19EDA15400A92E5A /* LGTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = BE32178D19EDA15400A92E5A /* LGTableView.m */; };
-		BE39FE5319DFBB0100C1B4A1 /* LGDefaults+JSSAddon.m in Sources */ = {isa = PBXBuildFile; fileRef = BE39FE5219DFBB0100C1B4A1 /* LGDefaults+JSSAddon.m */; };
+		BE39FE5319DFBB0100C1B4A1 /* LGDefaults+JSSImporter.m in Sources */ = {isa = PBXBuildFile; fileRef = BE39FE5219DFBB0100C1B4A1 /* LGDefaults+JSSImporter.m */; };
 		BE57733819D519E400D872A4 /* LGJSSImporter.m in Sources */ = {isa = PBXBuildFile; fileRef = BE57733719D519E400D872A4 /* LGJSSImporter.m */; };
 		BE57AC2A19BA3BBC00BB17B1 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = BE57AC2C19BA3BBC00BB17B1 /* Localizable.strings */; };
 		BE6815EC1A0B2BAB004AD310 /* LGJSSDistributionPointsPrefPanel.m in Sources */ = {isa = PBXBuildFile; fileRef = BE6815EA1A0B2BAB004AD310 /* LGJSSDistributionPointsPrefPanel.m */; };
@@ -195,8 +195,8 @@
 		BE32178C19EDA15400A92E5A /* LGTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGTableView.h; sourceTree = "<group>"; };
 		BE32178D19EDA15400A92E5A /* LGTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = LGTableView.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		BE34DF2B19AA21E200DC2FAF /* LGAutoPkgr.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = LGAutoPkgr.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
-		BE39FE5119DFBB0100C1B4A1 /* LGDefaults+JSSAddon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; name = "LGDefaults+JSSAddon.h"; path = "Custom Catagories/LGDefaults+JSSAddon.h"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
-		BE39FE5219DFBB0100C1B4A1 /* LGDefaults+JSSAddon.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; name = "LGDefaults+JSSAddon.m"; path = "Custom Catagories/LGDefaults+JSSAddon.m"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
+		BE39FE5119DFBB0100C1B4A1 /* LGDefaults+JSSImporter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; name = "LGDefaults+JSSImporter.h"; path = "Custom Catagories/LGDefaults+JSSImporter.h"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
+		BE39FE5219DFBB0100C1B4A1 /* LGDefaults+JSSImporter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; name = "LGDefaults+JSSImporter.m"; path = "Custom Catagories/LGDefaults+JSSImporter.m"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		BE57733619D519E400D872A4 /* LGJSSImporter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = LGJSSImporter.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		BE57733719D519E400D872A4 /* LGJSSImporter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = LGJSSImporter.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		BE57AC2B19BA3BBC00BB17B1 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; lineEnding = 0; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.simpleColoring; };
@@ -414,8 +414,8 @@
 				BE73CDC619E062AC00441443 /* NSString+cleaned.m */,
 				BEE8CF1119E0E7F400981C4B /* NSTextField+setSafeStringValue.h */,
 				BEE8CF1219E0E7F400981C4B /* NSTextField+setSafeStringValue.m */,
-				BE39FE5119DFBB0100C1B4A1 /* LGDefaults+JSSAddon.h */,
-				BE39FE5219DFBB0100C1B4A1 /* LGDefaults+JSSAddon.m */,
+				BE39FE5119DFBB0100C1B4A1 /* LGDefaults+JSSImporter.h */,
+				BE39FE5219DFBB0100C1B4A1 /* LGDefaults+JSSImporter.m */,
 			);
 			name = "Custom Categories";
 			sourceTree = "<group>";
@@ -747,7 +747,7 @@
 				BEFC931D1995F0710074C938 /* LGError.m in Sources */,
 				1A1BAD96197A0407008192A7 /* LGVersionComparator.m in Sources */,
 				BE73CDC719E062AC00441443 /* NSString+cleaned.m in Sources */,
-				BE39FE5319DFBB0100C1B4A1 /* LGDefaults+JSSAddon.m in Sources */,
+				BE39FE5319DFBB0100C1B4A1 /* LGDefaults+JSSImporter.m in Sources */,
 				BEE8CF1319E0E7F400981C4B /* NSTextField+setSafeStringValue.m in Sources */,
 				BE77A80019E37C910022B6FB /* NSImage+statusLight.m in Sources */,
 			);

@@ -1,5 +1,5 @@
 //
-//  LGDefaults+JSSAddon.h
+//  LGDefaults+JSSImporter.h
 //  AutoPkgr
 //
 //  Created by Eldon on 10/3/14.

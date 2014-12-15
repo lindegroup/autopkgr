@@ -38,7 +38,7 @@
         } else if ([classString isEqualToString:@"LGPopularRepositories"]) {
             NSString *repo = [self repoFromRow:row];
             return [LGPopularRepositories contextualMenuForRepo:repo];
-        } else if ([classString isEqualToString:@"LGJSSAddon"]) {
+        } else if ([classString isEqualToString:@"LGJSSImporter"]) {
             NSDictionary *distributionPoint;
             if (row > -1) {
                 distributionPoint = [[LGDefaults standardUserDefaults] JSSRepos][row];
