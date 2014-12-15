@@ -1,5 +1,5 @@
 //
-//  LGJSSAddon.m
+//  LGJSSImporter.m
 //  AutoPkgr
 //
 //  Created by Eldon on 9/25/14.
