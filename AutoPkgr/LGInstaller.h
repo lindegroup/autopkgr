@@ -43,14 +43,14 @@
 - (void)installAutoPkg:(void (^)(NSError *error))reply;
 
 /**
- *  Install jss-autopkg-addon
+ *  Install JSSImporter
  *
  *  @param reply block that is executed upon completion that takes one argument NSError
  */
-- (void)installJSSAddon:(void (^)(NSError *error))reply;
+- (void)installJSSImporter:(void (^)(NSError *error))reply;
 
 #pragma mark - Blocking Methdos
 - (BOOL)runGitInstaller:(NSError **)error;
 - (BOOL)runAutoPkgInstaller:(NSError **)error;
-- (BOOL)runJSSAddonInstaller:(NSError **)error;
+- (BOOL)runJSSImporterInstaller:(NSError **)error;
 @end

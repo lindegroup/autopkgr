@@ -1,5 +1,5 @@
 //
-//  LGDefaults+JSSAddon.h
+//  LGDefaults+JSSImporter.h
 //  AutoPkgr
 //
 //  Created by Eldon on 10/3/14.
@@ -31,8 +31,8 @@ extern NSString* const kLGJSSDistPointWorkgroupDomainKey;
 extern NSString* const kLGJSSDistPointTypeKey;
 
 
-#pragma mark - LGDefaults extensions for JSS Addon Interface
-@interface LGDefaults (JSSAddon)
+#pragma mark - LGDefaults extensions for JSSImporter Interface
+@interface LGDefaults (JSSImporter)
 
 @property (copy, nonatomic) NSString *JSSURL;
 @property (copy, nonatomic) NSString *JSSAPIUsername;

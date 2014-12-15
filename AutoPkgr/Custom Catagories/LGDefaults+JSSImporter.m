@@ -1,5 +1,5 @@
 //
-//  LGDefaults+JSSAddon.m
+//  LGDefaults+JSSImporter.m
 //  AutoPkgr
 //
 //  Created by Eldon on 10/3/14.
@@ -19,7 +19,7 @@
 //  limitations under the License.
 //
 
-#import "LGDefaults+JSSAddon.h"
+#import "LGDefaults+JSSImporter.h"
 
 # pragma mark - Repo Keys
 NSString *const kLGJSSDistPointNameKey = @"name";
@@ -31,9 +31,9 @@ NSString *const kLGJSSDistPointPasswordKey = @"password";
 NSString *const kLGJSSDistPointWorkgroupDomainKey = @"domain";
 NSString *const kLGJSSDistPointTypeKey = @"type";
 
-#pragma mark - LGDefaults category implementation for JSS Addon Interface
+#pragma mark - LGDefaults category implementation for JSSImporter Interface
 
-@implementation LGDefaults (JSSAddon)
+@implementation LGDefaults (JSSImporter)
 
 - (NSString *)JSSURL
 {

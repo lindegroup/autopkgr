@@ -101,9 +101,6 @@
                                                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                                         <font key="font" metaFont="system"/>
                                                     </buttonCell>
-                                                    <connections>
-                                                        <action selector="installAutoPkg:" target="-2" id="SZ8-Xu-HTQ"/>
-                                                    </connections>
                                                 </button>
                                                 <button verticalHuggingPriority="750" placeholderIntrinsicWidth="194" placeholderIntrinsicHeight="21" translatesAutoresizingMaskIntoConstraints="NO" id="uPW-I4-WKp">
                                                     <rect key="frame" x="89" y="106" width="206" height="32"/>
@@ -112,7 +109,7 @@
                                                         <font key="font" metaFont="system"/>
                                                     </buttonCell>
                                                     <connections>
-                                                        <action selector="installJSSAddon:" target="0iG-YL-fA3" id="xFI-Sg-Rir"/>
+                                                        <action selector="installJSSImporter:" target="0iG-YL-fA3" id="Yq5-1m-HcT"/>
                                                     </connections>
                                                 </button>
                                                 <imageView translatesAutoresizingMaskIntoConstraints="NO" id="KkE-qM-Hy6">
@@ -1453,7 +1450,7 @@ Gw
                 </constraints>
             </view>
         </window>
-        <customObject id="0iG-YL-fA3" userLabel="JSSAddon" customClass="LGJSSAddon">
+        <customObject id="0iG-YL-fA3" userLabel="JSSImporter" customClass="LGJSSImporter">
             <connections>
                 <outlet property="jssAPIPasswordTF" destination="9lJ-vz-FvC" id="dzX-o6-3Dq"/>
                 <outlet property="jssAPIUsernameTF" destination="6Ki-wr-8K2" id="UpI-wg-w0e"/>

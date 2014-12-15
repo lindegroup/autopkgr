@@ -28,14 +28,14 @@
 + (NSString *)getHostName;
 + (NSString *)getUserAtHostName;
 + (NSString *)getAutoPkgVersion;
-+ (NSString *)getJSSAddonVersion;
 + (NSString *)getAppSupportDirectory;
++ (NSString *)getJSSImporterVersion;
 
 + (BOOL)gitInstalled;
 + (BOOL)autoPkgInstalled;
 + (BOOL)autoPkgUpdateAvailable;
-+ (BOOL)jssAddonInstalled;
-+ (BOOL)jssAddonUpdateAvailable;
++ (BOOL)jssImporterInstalled;
++ (BOOL)jssImporterUpdateAvailable;
 
 + (NSArray *)knownGitPaths;
 + (AHKeychain *)appKeychain;
