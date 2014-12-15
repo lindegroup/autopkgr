@@ -181,7 +181,6 @@ NSString *const kLGBoxenBrewGit = @"/opt/boxen/homebrew/bin";
 
     BOOL isInstalled = (check1 && check3) || (check2 && check3);
 
-    NSLog(@"JSSImporter installed: %hhd", isInstalled);
     return isInstalled;
 }
 
