@@ -114,7 +114,7 @@ typedef NS_ENUM(NSInteger, LGInstallType) {
     if (!success) {
         if (installError)
             DLog(@"%@", installError);
-        success = [LGError errorWithCode:kLGErrorInstallJSSAddon error:error];
+        success = [LGError errorWithCode:kLGErrorInstallJSSImporter error:error];
     }
     return success;
 }
