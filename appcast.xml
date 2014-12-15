@@ -6,6 +6,29 @@
     <description>Most recent changes with links to updates.</description>
     <language>en</language>
       <item>
+        <title>Version 1.1.3</title>
+        <description>
+          <![CDATA[
+          <p>Our cousin project jss-autopkg-addon is now <a href="https://github.com/sheagcraig/JSSImporter">JSSImporter</a>, so we had to make some changes to the guts of AutoPkgr in order to remain compatible.</p>
+          <p>This update is recommended for anybody who is using AutoPkgr to integrate with their JSS.</p>
+          <h4>Bug Fixes</h4>
+          <ul>
+            <li>Updated all references from jss-autopkg-addon to JSSImporter. This should resolve a problem that prevented AutoPkgr from properly installing or upgrading JSSImporter on many systems.</li>
+          </ul>
+          <h4>Enhancements</h4>
+          <ul>
+            <li>Removed parts of the code that we no longer use, like an unzipper class.</li>
+            <li>Typo fixes, mostly internal.</li>
+          </ul>
+          <p>As always, please open an <a href="https://github.com/lindegroup/autopkgr/issues" target="_blank">issue on GitHub</a> if you find a reproducible problem. We're happy to help troubleshoot!</p>
+          <p>Thank you!</p>
+          ]]>
+        </description>
+        <pubDate>Mon, 15 Dec 2014 23:00:00 +0000</pubDate>
+        <enclosure url="https://github.com/lindegroup/autopkgr/releases/download/v1.1.3/AutoPkgr-1.1.3.dmg" sparkle:version="589" sparkle:shortVersionString="1.1.3" type="application/octet-stream" />
+      </item>
+      <item>
+      <item>
         <title>Version 1.1.2</title>
         <description>
           <![CDATA[
