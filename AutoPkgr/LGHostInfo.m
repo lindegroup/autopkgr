@@ -166,11 +166,17 @@ NSString *const kLGBoxenBrewGit = @"/opt/boxen/homebrew/bin";
 
 + (BOOL)jssImporterInstalled
 {
-    NSString *jssReceipt = @"/private/var/db/receipts/com.github.sheagcraig.jssimporter.plist";
+    NSString *jssAddonReceipt = @"/private/var/db/receipts/com.github.sheagcraig.jss-autopkg-addon.plist";
+    NSString *jssImporterReceipt = @"/private/var/db/receipts/com.github.sheagcraig.jssimporter.plist";
     NSString *jssExec = @"/Library/AutoPkg/autopkglib/JSSImporter.py";
-    BOOL check1 = [[NSFileManager defaultManager] fileExistsAtPath:jssReceipt];
+
+    BOOL check1 = [[NSFileManager defaultManager] fileExistsAtPath:jssAddonReceipt];
+    BOOL check3 = [[NSFileManager defaultManager] fileExistsAtPath:jssImporterReceipt];
     BOOL check2 = [[NSFileManager defaultManager] fileExistsAtPath:jssExec];
-    return (check1 && check2);
+
+    BOOL isInstalled = (check1 && check3) || (check2 && check3);
+
+    return isInstalled;
 }
 
 + (BOOL)jssImporterUpdateAvailable;
