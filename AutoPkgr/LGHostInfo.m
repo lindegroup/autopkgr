@@ -123,9 +123,14 @@ NSString *const kLGBoxenBrewGit = @"/opt/boxen/homebrew/bin";
 + (NSString *)getJSSImporterVersion
 {
     NSString *version;
-    NSString *installReceipt = @"/private/var/db/receipts/com.github.sheagcraig.jssimporter.plist";
-    if ([[NSFileManager defaultManager] fileExistsAtPath:installReceipt]) {
-        NSDictionary *receiptDict = [NSDictionary dictionaryWithContentsOfFile:installReceipt];
+    NSString *jssImporterInstallReceipt = @"/private/var/db/receipts/com.github.sheagcraig.jssimporter.plist";
+    NSString *jssAddonInstallReceipt = @"/private/var/db/receipts/com.github.sheagcraig.jss-autopkg-addon.plist";
+
+    if ([[NSFileManager defaultManager] fileExistsAtPath:jssImporterInstallReceipt]) {
+        NSDictionary *receiptDict = [NSDictionary dictionaryWithContentsOfFile:jssImporterInstallReceipt];
+        version = receiptDict[@"PackageVersion"];
+    } else if ([[NSFileManager defaultManager] fileExistsAtPath:jssAddonInstallReceipt]) {
+        NSDictionary *receiptDict = [NSDictionary dictionaryWithContentsOfFile:jssAddonInstallReceipt];
         version = receiptDict[@"PackageVersion"];
     }
 
