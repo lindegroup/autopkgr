@@ -1,5 +1,5 @@
 //
-//  LGJSSAddon.m
+//  LGJSSImporter.m
 //  AutoPkgr
 //
 //  Created by Eldon on 9/25/14.
@@ -19,7 +19,7 @@
 //  limitations under the License.
 //
 
-#import "LGJSSAddon.h"
+#import "LGJSSImporter.h"
 #import "LGAutopkgr.h"
 #import "LGHTTPRequest.h"
 #import "LGTestPort.h"
@@ -30,7 +30,7 @@
 
 #pragma mark - Class constants
 
-@implementation LGJSSAddon {
+@implementation LGJSSImporter {
     LGDefaults *_defaults;
     LGTestPort *_portTester;
     BOOL _serverReachable;
@@ -55,11 +55,11 @@
     [_jssRemoveDistPointBT setEnabled:NO];
 
     [_jssInstallStatusLight setImage:[NSImage LGStatusNotInstalled]];
-    if ([LGHostInfo jssAddonInstalled] && _defaults.JSSRepos) {
+    if ([LGHostInfo jssImporterInstalled] && _defaults.JSSRepos) {
         [self showInstallTabItems:YES];
     } else {
         [_jssInstallButton setEnabled:YES];
-        [_jssInstallStatusTF setStringValue:@"JSS AutoPkg Addon not installed."];
+        [_jssInstallStatusTF setStringValue:@"JSSImporter not installed."];
     }
 
     // .safeStringValue is a NSTextField category that you can pass a nil value into.
@@ -96,7 +96,7 @@
         return;
     }
 
-    if (![LGHostInfo jssAddonInstalled]) {
+    if (![LGHostInfo jssImporterInstalled]) {
         _installRequestedDuringConnect = YES;
         if ([self requiresInstall]) {
             return;
@@ -128,13 +128,13 @@
                                   }];
 }
 
-- (IBAction)installJSSAddon:(id)sender
+- (IBAction)installJSSImporter:(id)sender
 {
-    NSLog(@"Installing the jss-autopkg-addon.");
+    NSLog(@"Installing JSSImporter.");
     LGInstaller *installer = [[LGInstaller alloc] init];
     installer.progressDelegate = _progressDelegate;
     [_jssInstallButton setEnabled:NO];
-    [installer installJSSAddon:^(NSError *error) {
+    [installer installJSSImporter:^(NSError *error) {
         BOOL success = (error == nil);
         if (success) {
             NSString *message = [NSString stringWithFormat:@"Adding %@",kLGJSSDefaultRepo];
@@ -350,18 +350,18 @@
     if (show) {
         NSOperationQueue *bgQueue = [[NSOperationQueue alloc] init];
         [bgQueue addOperationWithBlock:^{
-            BOOL updateAvailable = [LGHostInfo jssAddonUpdateAvailable];
+            BOOL updateAvailable = [LGHostInfo jssImporterUpdateAvailable];
             [[NSOperationQueue mainQueue] addOperationWithBlock:^{
                 [_jssInstallButton setEnabled:updateAvailable];
                 if (updateAvailable) {
-                    NSLog(@"An update is available for the jss-autopkg-addon.");
-                    _jssInstallButton.title = @"Update JSS AutoPkg Addon";
-                    _jssInstallStatusTF.stringValue = kLGJSSAutoPkgAddonUpdateAvailableLabel;
+                    NSLog(@"An update is available for JSSImporter.");
+                    _jssInstallButton.title = @"Update JSSImporter";
+                    _jssInstallStatusTF.stringValue = kLGJSSImporterUpdateAvailableLabel;
                     _jssInstallStatusLight.image = [NSImage LGStatusUpdateAvailable];
                 } else {
-                    NSLog(@"The jss-autopkg-addon is up to date.");
-                    _jssInstallButton.title = @"Install JSS AutoPkg Addon";
-                    _jssInstallStatusTF.stringValue = kLGJSSAutoPkgAddonInstalledLabel;
+                    NSLog(@"JSSImporter is up to date.");
+                    _jssInstallButton.title = @"Install JSSImporter";
+                    _jssInstallStatusTF.stringValue = kLGJSSImporterInstalledLabel;
                     _jssInstallStatusLight.image = [NSImage LGStatusUpToDate];
                 }
             }];
@@ -407,20 +407,20 @@
 {
     BOOL required = NO;
 
-    if (![LGHostInfo jssAddonInstalled]) {
-        NSLog(@"Prompting for jss-autopkg-addon installation.");
-        NSAlert *alert = [NSAlert alertWithMessageText:@"Install JSS AutoPkg Addon?"
+    if (![LGHostInfo jssImporterInstalled]) {
+        NSLog(@"Prompting for JSSImporter installation.");
+        NSAlert *alert = [NSAlert alertWithMessageText:@"Install JSSImporter?"
                                          defaultButton:@"Install"
                                        alternateButton:@"Cancel"
                                            otherButton:nil
-                             informativeTextWithFormat:@"The JSS AutoPkg Addon is not currently installed. Would you like to install it now?"];
+                             informativeTextWithFormat:@"JSSImporter is not currently installed. Would you like to install it now?"];
 
         NSInteger button = [alert runModal];
         if (button == NSAlertDefaultReturn) {
-            [self installJSSAddon:nil];
+            [self installJSSImporter:nil];
         } else {
             _installRequestedDuringConnect = NO;
-            NSLog(@"Installation of jss-autopkg-addon was canceled.");
+            NSLog(@"Installation of JSSImporter was canceled.");
         }
         return YES;
     }

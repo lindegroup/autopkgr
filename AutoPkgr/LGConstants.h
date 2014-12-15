@@ -30,15 +30,15 @@ extern NSString *const kLGGitNotInstalledLabel;
 extern NSString *const kLGAutoPkgInstalledLabel;
 extern NSString *const kLGAutoPkgNotInstalledLabel;
 extern NSString *const kLGAutoPkgUpdateAvailableLabel;
-extern NSString *const kLGJSSAutoPkgAddonInstalledLabel;
-extern NSString *const kLGJSSAutoPkgAddonNotInstalledLabel;
-extern NSString *const kLGJSSAutoPkgAddonUpdateAvailableLabel;
+extern NSString *const kLGJSSImporterInstalledLabel;
+extern NSString *const kLGJSSImporterNotInstalledLabel;
+extern NSString *const kLGJSSImporterUpdateAvailableLabel;
 
 #pragma mark - Static URLs
 extern NSString *const kLGAutoPkgReleasesJSONURL;
 extern NSString *const kLGGitMAVReleasesJSONURL;
 extern NSString *const kLGGitMLReleasesJSONURL;
-extern NSString *const kLGJSSAddonJSONURL;
+extern NSString *const kLGJSSImporterJSONURL;
 extern NSString *const kLGAutoPkgRepositoriesJSONURL;
 extern NSString *const kLGJSSDefaultRepo;
 

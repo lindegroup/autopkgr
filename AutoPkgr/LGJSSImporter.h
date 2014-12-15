@@ -1,5 +1,5 @@
 //
-//  LGJSSAddon.h
+//  LGJSSImporter.h
 //  AutoPkgr
 //
 //  Created by Eldon on 9/25/14.
@@ -24,7 +24,7 @@
 #import "LGProgressDelegate.h"
 #import "LGTableView.h"
 
-@interface LGJSSAddon : NSObject <NSTableViewDataSource, NSTableViewDelegate>
+@interface LGJSSImporter : NSObject <NSTableViewDataSource, NSTableViewDelegate>
 
 @property (strong) IBOutlet LGTableView *jssDistributionPointTableView;
 @property (weak) IBOutlet NSTextField *jssURLTF;
@@ -46,7 +46,7 @@
 // Progress delegate (object used to send updates to status menu item)
 @property (weak) id<LGProgressDelegate> progressDelegate;
 
-- (IBAction)installJSSAddon:(id)sender;
+- (IBAction)installJSSImporter:(id)sender;
 - (IBAction)addDistributionPoint:(id)sender;
 - (IBAction)removeDistributionPoint:(id)sender;
 - (IBAction)editDistributionPoint:(id)sender;

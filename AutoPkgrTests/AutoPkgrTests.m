@@ -54,11 +54,11 @@
     XCTAssertTrue([installer runAutoPkgInstaller:&error], @"%@",error);
 }
 
-- (void)testInstallJSSAddon
+- (void)testInstallJSSImporter
 {
     NSError *error;
     LGInstaller *installer = [[LGInstaller alloc] init];
-    XCTAssertTrue([installer runJSSAddonInstaller:&error], @"%@",error);
+    XCTAssertTrue([installer runJSSImporterInstaller:&error], @"%@",error);
 }
 
 @end

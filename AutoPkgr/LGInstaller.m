@@ -106,26 +106,26 @@ typedef NS_ENUM(NSInteger, LGInstallType) {
     }];
 }
 
-#pragma mark - JSS Addon Instller
-- (BOOL)runJSSAddonInstaller:(NSError *__autoreleasing *)error
+#pragma mark - JSSImporter Installer
+- (BOOL)runJSSImporterInstaller:(NSError *__autoreleasing *)error
 {
     NSError *installError;
-    BOOL success = [self runInstallerFor:@"JSS AutoPkg Addon" githubAPI:kLGJSSAddonJSONURL error:error];
+    BOOL success = [self runInstallerFor:@"JSSImporter" githubAPI:kLGJSSImporterJSONURL error:error];
     if (!success) {
         if (installError)
             DLog(@"%@", installError);
-        success = [LGError errorWithCode:kLGErrorInstallJSSAddon error:error];
+        success = [LGError errorWithCode:kLGErrorInstallJSSImporter error:error];
     }
     return success;
 }
 
-- (void)installJSSAddon:(void (^)(NSError *))reply
+- (void)installJSSImporter:(void (^)(NSError *))reply
 {
     NSOperationQueue *bgQueue = [[NSOperationQueue alloc] init];
     [bgQueue addOperationWithBlock:^{
         NSError *error;
-        [_progressDelegate startProgressWithMessage:@"Installing JSS AutoPkg Addon..."];
-        [self runJSSAddonInstaller:&error];
+        [_progressDelegate startProgressWithMessage:@"Installing JSSImporter..."];
+        [self runJSSImporterInstaller:&error];
         [_progressDelegate stopProgress:error];
         reply(error);
     }];

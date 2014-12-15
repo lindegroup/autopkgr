@@ -32,16 +32,16 @@ NSString *const kLGGitNotInstalledLabel = @"Git is not installed.";
 NSString *const kLGAutoPkgInstalledLabel = @"AutoPkg has been installed.";
 NSString *const kLGAutoPkgNotInstalledLabel = @"AutoPkg is not installed.";
 NSString *const kLGAutoPkgUpdateAvailableLabel = @"An update is available for AutoPkg.";
-NSString *const kLGJSSAutoPkgAddonInstalledLabel = @"JSS AutoPkg Addon has been installed.";
-NSString *const kLGJSSAutoPkgAddonNotInstalledLabel = @"JSS AutoPkg Addon is not installed.";
-NSString *const kLGJSSAutoPkgAddonUpdateAvailableLabel = @"An update is available for JSS AutoPkg Addon.";
+NSString *const kLGJSSImporterInstalledLabel = @"JSSImporter has been installed.";
+NSString *const kLGJSSImporterNotInstalledLabel = @"JSSImporter is not installed.";
+NSString *const kLGJSSImporterUpdateAvailableLabel = @"An update is available for JSSImporter.";
 
 #pragma mark - Static URLs
 #pragma mark-- GitHub
 NSString *const kLGAutoPkgReleasesJSONURL = @"https://api.github.com/repos/autopkg/autopkg/releases";
 NSString *const kLGGitMAVReleasesJSONURL = @"https://api.github.com/repos/timcharper/git_osx_installer/releases";
 NSString *const kLGGitMLReleasesJSONURL = @"https://api.github.com/repos/eahrold/git-for-mountainlion/releases";
-NSString *const kLGJSSAddonJSONURL = @"https://api.github.com/repos/sheagcraig/jss-autopkg-addon/releases";
+NSString *const kLGJSSImporterJSONURL = @"https://api.github.com/repos/sheagcraig/JSSImporter/releases";
 
 NSString *const kLGAutoPkgRepositoriesJSONURL = @"https://api.github.com/orgs/autopkg/repos?per_page=100";
 NSString *const kLGJSSDefaultRepo = @"https://github.com/sheagcraig/jss-recipes.git";
