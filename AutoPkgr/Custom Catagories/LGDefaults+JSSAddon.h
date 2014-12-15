@@ -31,7 +31,7 @@ extern NSString* const kLGJSSDistPointWorkgroupDomainKey;
 extern NSString* const kLGJSSDistPointTypeKey;
 
 
-#pragma mark - LGDefaults extensions for JSS Addon Interface
+#pragma mark - LGDefaults extensions for JSSImporter Interface
 @interface LGDefaults (JSSAddon)
 
 @property (copy, nonatomic) NSString *JSSURL;

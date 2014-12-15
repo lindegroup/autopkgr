@@ -31,7 +31,7 @@ NSString *const kLGJSSDistPointPasswordKey = @"password";
 NSString *const kLGJSSDistPointWorkgroupDomainKey = @"domain";
 NSString *const kLGJSSDistPointTypeKey = @"type";
 
-#pragma mark - LGDefaults category implementation for JSS Addon Interface
+#pragma mark - LGDefaults category implementation for JSSImporter Interface
 
 @implementation LGDefaults (JSSAddon)
 

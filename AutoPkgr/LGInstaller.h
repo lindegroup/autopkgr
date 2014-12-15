@@ -43,7 +43,7 @@
 - (void)installAutoPkg:(void (^)(NSError *error))reply;
 
 /**
- *  Install jss-autopkg-addon
+ *  Install JSSImporter
  *
  *  @param reply block that is executed upon completion that takes one argument NSError
  */

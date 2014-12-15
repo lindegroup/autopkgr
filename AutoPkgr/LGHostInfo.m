@@ -181,7 +181,7 @@ NSString *const kLGBoxenBrewGit = @"/opt/boxen/homebrew/bin";
     BOOL updateAvailable = [LGVersionComparator isVersion:availableVersion
                                        greaterThanVersion:installedVersion];
     if (updateAvailable) {
-        NSLog(@"Version %@ of the JSSAddon is available. Version %@ is installed", availableVersion, installedVersion);
+        NSLog(@"Version %@ of JSSImporter is available. Version %@ is installed", availableVersion, installedVersion);
     }
 
     return updateAvailable;

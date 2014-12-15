@@ -41,7 +41,7 @@ typedef NS_ENUM(NSInteger, LGErrorCodes) {
     kLGErrorInstallAutoPkg,
     /** Error installing/updating AutoPkgr */
     kLGErrorInstallAutoPkgr,
-    /** Error installing jss-autopkg-addon */
+    /** Error installing JSSImporter */
     kLGErrorInstallJSSAddon,
     /** Error serializing xml object */
     kLGErrorJSSXMLSerializerError,
