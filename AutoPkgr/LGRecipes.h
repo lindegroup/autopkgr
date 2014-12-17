@@ -31,4 +31,6 @@
 - (void)writeRecipeList;
 - (NSMenu *)contextualMenuForRecipeAtRow:(NSInteger)row;
 
++ (BOOL)migrateToIdentifiers:(NSError**)error;
+
 @end

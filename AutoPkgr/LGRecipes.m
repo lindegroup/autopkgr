@@ -40,6 +40,7 @@
     self = [super init];
 
     if (self) {
+        _recipes = [[self getAllRecipes] removeEmptyStrings];
         _activeRecipes = [self getActiveRecipes];
         _searchedRecipes = _recipes;
     }
@@ -49,7 +50,7 @@
 
 - (void)awakeFromNib
 {
-    [self reload];
+    [self executeAppSearch:self];
     [_recipeSearchField setTarget:self];
     [_recipeSearchField setAction:@selector(executeAppSearch:)];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didCreateOverride:) name:kLGNotificationOverrideCreated object:nil];
@@ -460,4 +461,66 @@
     NSString *applicationSupportDirectory = [LGHostInfo getAppSupportDirectory];
     return [applicationSupportDirectory stringByAppendingString:@"/recipe_list.txt"];
 }
+
++ (BOOL)migrateToIdentifiers:(NSError *__autoreleasing *)error
+{
+    NSFileManager *manager = [[NSFileManager alloc] init];
+    NSString *orig = [LGRecipes recipeList];
+    LGDefaults *defaults = [LGDefaults new];
+    BOOL check1 = [defaults boolForKey:@"MigratedToIdentifiers"];
+    BOOL check2 = [manager fileExistsAtPath:orig];
+
+    if (check1 || !check2){
+        [defaults setBool:YES forKey:@"MigratedToIdentifiers"];
+        return YES;
+    }
+
+    NSString *infoText = @"As of version 1.2 AutoPkgr uses recipe Identifiers rather than short names to specify recipes, this makes it possible to schedule and run recipes from seperate repos that happen to have the same short name, such as Firefox.recipe.\n\nWe do our best to get this conversion right, but there's no guarentee, so double check what's enabled after this process.\n\nJust to be safe your current recipe_list.txt has been backed up as \"~/Library/Application Support/AutoPkgr/recipe_list.txt.v1.bak\".\n\nIf you choose to not continue you will need to roll back to an older v1.1.x version.";
+
+    NSAlert *alert = [NSAlert alertWithMessageText:@"AutoPkgr v1.2 needs to migrate your current recipe list."
+                                     defaultButton:@"Continue"
+                                   alternateButton:@"Cancel"
+                                       otherButton:nil
+                         informativeTextWithFormat:@"%@",infoText];
+
+    if([alert runModal] == NSAlertDefaultReturn){
+
+        NSString *bak = [orig stringByAppendingPathExtension:@"v1.bak"];
+        if ([manager fileExistsAtPath:orig] && ![manager fileExistsAtPath:bak]) {
+            [manager copyItemAtPath:orig toPath:bak error:nil];
+        }
+
+        // Migrate Preferences
+        int i = 0; // number of changed recipes
+        LGRecipes *recipes = [[LGRecipes alloc] init];
+        if (recipes.activeRecipes.count) {
+            for (NSString *recipe in [recipes.activeRecipes copy]){
+                NSUInteger index = [recipes.recipes indexOfObjectPassingTest:
+                                    ^BOOL(NSDictionary *dict, NSUInteger idx, BOOL *stop) {
+                                        return [dict[@"Name"] isEqualToString:recipe];
+                                    }];
+                if (index != NSNotFound) {
+                    NSInteger replaceIndex = [recipes.activeRecipes indexOfObjectIdenticalTo:recipe];
+                    [recipes.activeRecipes replaceObjectAtIndex:replaceIndex withObject:[recipes.recipes objectAtIndex:index][kLGAutoPkgRecipeIdentifierKey]];
+                    i++;
+                }
+            }
+
+            if (i > 0) {
+                [recipes writeRecipeList];
+            }
+        }
+
+        BOOL success = (i == recipes.activeRecipes.count);
+        [defaults setBool:YES forKey:@"MigratedToIdentifiers"];
+        // return NO if any were unable to be converted
+        if (!success) {
+            NSLog(@"A possible error occured while converting the recipe list. We successfully converted %d out of %lu recipes. However it's also possible your recipe list was already converted. Please double check your enabled recipes.",i,(unsigned long)recipes.activeRecipes.count);
+
+        }
+        return  YES;
+    }
+    return NO;
+}
+
 @end
