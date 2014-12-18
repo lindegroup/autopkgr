@@ -23,9 +23,10 @@
 #import "LGAutoPkgr.h"
 #import "LGHostInfo.h"
 #import "LGGitHubJSONLoader.h"
+#import "LGAutoPkgrHelperConnection.h"
 
 typedef NS_ENUM(NSInteger, LGInstallType) {
-    kLGInstallerTypeUnkown = 0,
+    kLGInstallerTypeUnknown = 0,
     kLGInstallerTypeDMG,
     kLGInstallerTypePKG,
 };
@@ -132,21 +133,32 @@ typedef NS_ENUM(NSInteger, LGInstallType) {
 }
 
 #pragma mark - Main install method
+/**
+ *  Run the installer
+ *
+ *  @param installerName Name of the application, can be anything and is only used to provide messages to the progress delegate
+ *  @param githubAPI     GitHub api url used to determine the current release's installer download url. Pass in NULL if a full path for the  _downloadURL was set previously using another method.
+ *  @param error         populated error object should error occur.
+ *
+ *  @return YES on success, NO on failure
+ */
 - (BOOL)runInstallerFor:(NSString *)installerName githubAPI:(NSString *)githubAPI error:(NSError *__autoreleasing *)error
 {
     NSString *progressMessage;
 
-    progressMessage = [NSString stringWithFormat:@"Downloading %@...", installerName];
-    [_progressDelegate updateProgress:progressMessage progress:5.0];
+    if (!_downloadURL && githubAPI){
+        progressMessage = [NSString stringWithFormat:@"Getting latest release info from GitHub..."];
+        [_progressDelegate updateProgress:progressMessage progress:5.0];
 
-    // Get the latest download URL from the GitHub API URL
-    LGGitHubJSONLoader *loader = [[LGGitHubJSONLoader alloc] init];
-    _downloadURL = [loader latestReleaseDownload:githubAPI];
+        // Get the latest download URL from the GitHub API URL
+        LGGitHubJSONLoader *loader = [[LGGitHubJSONLoader alloc] init];
+        _downloadURL = [loader latestReleaseDownload:githubAPI];
+    }
 
     // Get tmp file path for downloaded file
     NSString *tmpFileLocation = [NSTemporaryDirectory() stringByAppendingPathComponent:[_downloadURL lastPathComponent]];
 
-    progressMessage = [NSString stringWithFormat:@"Building %@ installer package...", installerName];
+    progressMessage = [NSString stringWithFormat:@"Downloading %@ installer...", installerName];
     [_progressDelegate updateProgress:progressMessage progress:25.0];
 
     // Download to the temporary directory
@@ -161,7 +173,7 @@ typedef NS_ENUM(NSInteger, LGInstallType) {
     NSString *pkgFile = nil;
     LGInstallType type = [self evaluateInstallerType];
     switch (type) {
-    case kLGInstallerTypeUnkown:
+    case kLGInstallerTypeUnknown:
         return NO;
         break;
     case kLGInstallerTypeDMG:
@@ -176,8 +188,7 @@ typedef NS_ENUM(NSInteger, LGInstallType) {
 
             if (pkg) {
                 DLog(@"Found installer package: %@", pkg);
-                // Since this is getting invoked as an AppleScript wrapping in sh -c  you need 4 backslashes to correctly escape the whitespace
-                pkgFile = [[_mountPoint stringByAppendingPathComponent:pkg] stringByReplacingOccurrencesOfString:@" " withString:@"\\\\ "];
+                pkgFile = [_mountPoint stringByAppendingPathComponent:pkg];
             } else {
                 DLog(@"Could not locate .pkg file.");
             }
@@ -190,17 +201,38 @@ typedef NS_ENUM(NSInteger, LGInstallType) {
         break;
     }
 
-    BOOL success = NO;
-    if (type != kLGInstallerTypeUnkown && pkgFile) {
+    __block BOOL success = NO;
+    __block BOOL complete = NO;
+    
+    if (type != kLGInstallerTypeUnknown && pkgFile) {
         // Set the `installer` command
-        NSString *command = [NSString stringWithFormat:@"/usr/sbin/installer -pkg %@ -target /", pkgFile];
-
         // Install the pkg as root
-        progressMessage = [NSString stringWithFormat:@"Installing %@...", installerName];
+        progressMessage = [NSString stringWithFormat:@"Running %@ Installer...", installerName];
+        
         [_progressDelegate updateProgress:progressMessage progress:75.0];
-        success = [self runCommandAsRoot:command error:error];
+        
+        NSData *authorization = [LGAutoPkgrAuthorizer authorizeHelper];
+        assert(authorization != nil);
 
+        [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+            LGAutoPkgrHelperConnection *helper = [LGAutoPkgrHelperConnection new];
+            [helper connectToHelper];
+            [[helper.connection remoteObjectProxyWithErrorHandler:^(NSError *error) {
+                DLog(@"%@",error);
+                success = NO;
+                complete = YES;
+            }] installPackageFromPath:pkgFile authorization:authorization reply:^(NSError *error) {
+                success = error ? NO:YES;
+                complete = YES;
+            }];
+        }];
+        
+        while (!complete) {
+            [[NSRunLoop currentRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:1.0]];
+        }
+        
         progressMessage = [NSString stringWithFormat:@"%@ installation complete.", installerName];
+        
         [_progressDelegate updateProgress:progressMessage progress:100.0];
 
         if (type == kLGInstallerTypeDMG) {
@@ -209,14 +241,13 @@ typedef NS_ENUM(NSInteger, LGInstallType) {
             [self unmountVolume];
         }
     }
-
     return success;
 }
 
 #pragma mark - Util Methods
 - (LGInstallType)evaluateInstallerType
 {
-    LGInstallType type = kLGInstallerTypeUnkown;
+    LGInstallType type = kLGInstallerTypeUnknown;
 
     NSPredicate *dmgPredicate = [NSPredicate predicateWithFormat:@"pathExtension CONTAINS[cd] 'dmg'"];
     NSPredicate *pkgPredicate = [NSPredicate predicateWithFormat:@"pathExtension CONTAINS[cd] 'pkg'"];
@@ -228,27 +259,6 @@ typedef NS_ENUM(NSInteger, LGInstallType) {
     }
 
     return type;
-}
-
-- (BOOL)runCommandAsRoot:(NSString *)command error:(NSError *__autoreleasing *)error;
-{
-    // Super dirty hack, but way easier than
-    // using Authorization Services
-    NSDictionary *errorDict = [[NSDictionary alloc] init];
-    NSString *script = [NSString stringWithFormat:@"do shell script \"sh -c '%@'\" with administrator privileges", command];
-    NSLog(@"AppleScript commands: %@", script);
-    NSAppleScript *appleScript = [[NSAppleScript alloc] initWithSource:script];
-    if ([appleScript executeAndReturnError:&errorDict]) {
-        return YES;
-    } else {
-        NSDictionary *userInfo = @{ NSLocalizedDescriptionKey : errorDict[NSAppleScriptErrorBriefMessage],
-                                    NSLocalizedRecoverySuggestionErrorKey : errorDict[NSAppleScriptErrorMessage] };
-        NSNumber *exitCode = errorDict[NSAppleScriptErrorNumber];
-
-        if (error)
-            *error = [NSError errorWithDomain:kLGApplicationName code:[exitCode intValue] userInfo:userInfo];
-        return NO;
-    }
 }
 
 - (BOOL)unmountVolume

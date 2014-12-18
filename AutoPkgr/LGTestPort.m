@@ -78,7 +78,7 @@
                           port:port
                    inputStream:&tempRead
                   outputStream:&tempWrite];
-
+    
     if (tempRead && tempWrite) {
         [self startStreamTimeoutTimer];
         _inputStream = tempRead;
@@ -87,7 +87,7 @@
         [_outputStream setDelegate:self];
         [_inputStream open];
         [_outputStream open];
-
+        
         [_inputStream scheduleInRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
         [_outputStream scheduleInRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
     } else {
@@ -114,7 +114,9 @@
 
     operation.securityPolicy = policy;
     [operation setRedirectResponseBlock:^NSURLRequest * (NSURLConnection * connection, NSURLRequest * request, NSURLResponse * redirectResponse) {
-        NSLog(@"redirected %@",redirectResponse);
+        if (redirectResponse) {
+            DLog(@"redirected %@",redirectResponse);
+        }
         redirectedURL = [(NSHTTPURLResponse *)redirectResponse allHeaderFields][@"Location"];
         return request;
     }];

@@ -107,6 +107,4 @@
 - (IBAction)checkAppsNow:(id)sender;
 - (IBAction)cancelAutoPkgRun:(id)sender;
 
-- (void)runCommandAsRoot:(NSString *)command;
-
 @end

@@ -105,7 +105,7 @@ To configure AutoPkgr to create Self Service policies in Casper for new app upda
     - File Share Distribution Points (only needs Read access)
 1. Open AutoPkgr and go to the **Folders & Integration** tab.
 1. In the **Casper Suite integration** section, enter your JSS URL, API username, and API password. Then click **Connect**.
-1. When prompted, follow the instructions to install the jss-autopkg-addon.
+1. When prompted, follow the instructions to install JSSImporter.
 1. When prompted, enter the read/write password for each distribution point.
 
 You'll also want to make sure you have a few `.jss` recipes selected. AutoPkgr will automatically add Shea Craig's [jss-recipes](https://github.com/sheagcraig/jss-recipes) repo so you'll have a few to choose from.

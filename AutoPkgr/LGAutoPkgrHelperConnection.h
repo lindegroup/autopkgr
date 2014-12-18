@@ -1,9 +1,8 @@
-// LGRecipeOverrides.h
-// AutoPkgr
 //
-// Created by Eldon on 8/14/14.
+//  LGAutoPkgrHelperConnection.h
+//  AutoPkgr
 //
-// Copyright 2014 The Linde Group, Inc.
+//  Created by Eldon Ahrold on 7/28/14.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -17,19 +16,11 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
 //
-
 #import <Foundation/Foundation.h>
+#import "LGAutoPkgrProtocol.h"
 
-@interface LGRecipeOverrides : NSObject
+@interface LGAutoPkgrHelperConnection : NSObject
 
-extern NSString* const kLGNotificationOverrideCreated;
-extern NSString* const kLGNotificationOverrideDeleted;
-
-+ (BOOL)overrideExistsForRecipe:(NSDictionary *)recipe;
-+ (NSArray *)recipeEditors;
-+ (void)setRecipeEditor:(NSMenuItem *)item;
-+ (void)createOverride:(NSMenuItem *)sender;
-+ (void)deleteOverride:(NSMenuItem *)sender;
-+ (void)revealInFinder:(NSMenuItem *)sender;
-
+@property (atomic, strong, readonly) NSXPCConnection *connection;
+- (void)connectToHelper;
 @end

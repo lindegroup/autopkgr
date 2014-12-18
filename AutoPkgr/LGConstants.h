@@ -23,6 +23,8 @@
 extern NSString *const kLGApplicationName;
 extern NSString *const kLGAutoPkgPreferenceDomain;
 extern NSString *const kLGAutoPkgrPreferenceDomain;
+extern NSString *const kLGAutoPkgrHelperToolName;
+extern NSString *const kLGAutoPkgrLaunchDaemonPlist;
 
 #pragma mark - Message Strings / Labels
 extern NSString *const kLGGitInstalledLabel;

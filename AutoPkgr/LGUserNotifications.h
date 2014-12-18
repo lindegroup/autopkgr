@@ -1,8 +1,5 @@
-// LGRecipeOverrides.h
-// AutoPkgr
-//
-// Created by Eldon on 8/14/14.
-//
+// LGUserNotifications.h
+// 
 // Copyright 2014 The Linde Group, Inc.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
@@ -20,16 +17,8 @@
 
 #import <Foundation/Foundation.h>
 
-@interface LGRecipeOverrides : NSObject
+@interface LGUserNotifications : NSObject <NSUserNotificationCenterDelegate>
 
-extern NSString* const kLGNotificationOverrideCreated;
-extern NSString* const kLGNotificationOverrideDeleted;
-
-+ (BOOL)overrideExistsForRecipe:(NSDictionary *)recipe;
-+ (NSArray *)recipeEditors;
-+ (void)setRecipeEditor:(NSMenuItem *)item;
-+ (void)createOverride:(NSMenuItem *)sender;
-+ (void)deleteOverride:(NSMenuItem *)sender;
-+ (void)revealInFinder:(NSMenuItem *)sender;
++ (void)sendNotificationOfTestEmailSuccess:(BOOL)success error:(NSError *)error;
 
 @end

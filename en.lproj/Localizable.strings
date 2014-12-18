@@ -32,6 +32,10 @@
 "kLGErrorMultipleRunsOfAutopkgDescription" = "Only one instance of AutoPkg can be run at a time";
 "kLGErrorMultipleRunsOfAutopkgSuggestion" = "A scheduled AutoPkg run may be running in the background. Please wait for it to complete.";
 
+/** Error when trying to activate a recipe when the parent is not installed */
+"kLGErrorMissingParentRecipeDescription" = "Parent Recipe not available";
+"kLGErrorMissingParentRecipeSuggestion" = "The Parent Recipe for that recipe is not included in any of the active repos. You will need to determine which repo it's included with and enable that repo.";
+
 /** Error installing Git */
 "kLGErrorInstallGitDescription" = "Error installing/updating Git";
 "kLGErrorInstallGitSuggestion" = "If the problem persists please try manually downloading and installing Git.";
@@ -52,6 +56,13 @@
 "kLGErrorJSSXMLSerializerErrorDescription" = "Error getting distribution points";
 "kLGErrorJSSXMLSerializerErrorSuggestion" = "The Casper server's response could not be correctly interpreted";
 
+/** Error with schedule interval */
+"kLGErrorIncorrectScheduleTimerIntervalDescription" = "Error setting timer";
+"kLGErrorIncorrectScheduleTimerIntervalSuggestion" = "The start timer interval for scheduled runs is not correct, it must be a number and not 0";
+
+/** Error authorization canceled by user*/
+"kLGErrorAuthChallenge" = "Error creating authorization";
+"kLGErrorAuthChallenge" = "You are not authorized to perform this action";
 /**
  *  Errors relating specifically to AutoPkg
  *  Recovery Suggestion string is created from the task.standardError so unnecessary here

@@ -22,7 +22,8 @@
 #import "LGEmailer.h"
 #import "LGAutoPkgr.h"
 #import "LGHostInfo.h"
-#import "SSKeychain.h"
+#import "AHKeychain.h"
+#import "LGUserNotifications.h"
 
 @implementation LGEmailer
 
@@ -31,14 +32,13 @@
     LGDefaults *defaults = [[LGDefaults alloc] init];
 
     if (defaults.sendEmailNotificationsWhenNewVersionsAreFoundEnabled) {
-        BOOL TLS = defaults.SMTPTLSEnabled;
 
         MCOSMTPSession *smtpSession = [[MCOSMTPSession alloc] init];
-        smtpSession.username = defaults.SMTPUsername ? defaults.SMTPUsername : @"";
-        smtpSession.hostname = defaults.SMTPServer ? defaults.SMTPServer : @"";
+        smtpSession.username = defaults.SMTPUsername ?: @"";
+        smtpSession.hostname = defaults.SMTPServer ?: @"";
         smtpSession.port = (int)defaults.SMTPPort;
 
-        if (TLS) {
+        if (defaults.SMTPTLSEnabled) {
             DLog(@"SSL/TLS is enabled for %@.", defaults.SMTPServer);
             // If the SMTP port is 465, use MCOConnectionTypeTLS.
             // Otherwise use MCOConnectionTypeStartTLS.
@@ -56,10 +56,17 @@
         // keychain if it exists
         NSError *error = nil;
 
-        if (smtpSession.username) {
-            NSString *password = [SSKeychain passwordForService:kLGApplicationName
-                                                        account:smtpSession.username
-                                                          error:&error];
+        // Only check for a password if username exists
+        if (defaults.SMTPAuthenticationEnabled && ![smtpSession.username isEqualToString:@""]) {
+            AHKeychain *keychain = [LGHostInfo appKeychain];
+            AHKeychainItem *item = [[AHKeychainItem alloc] init];
+
+            item.label = kLGApplicationName;
+            item.service = kLGAutoPkgrPreferenceDomain;
+            item.account = smtpSession.username;
+
+            [keychain getItem:item error:&error];
+            NSString *password = item.password;
 
             if ([error code] == errSecItemNotFound) {
                 NSLog(@"Keychain item not found for account %@.", smtpSession.username);
@@ -68,15 +75,12 @@
             } else if (error != nil) {
                 NSLog(@"An error occurred when attempting to retrieve the keychain entry for %@. Error: %@", smtpSession.username, [error localizedDescription]);
             } else {
-                // Only set the SMTP session password if the username exists
-                if (smtpSession.username != nil && ![smtpSession.username isEqual:@""]) {
-                    DLog(@"Retrieved password from keychain for account %@.", smtpSession.username);
-                    smtpSession.password = password ? password : @"";
-                }
+                DLog(@"Retrieved password from keychain for account %@.", smtpSession.username);
+                smtpSession.password = password ?: @"";
             }
         }
 
-        NSString *from = defaults.SMTPFrom ? defaults.SMTPFrom : @"AutoPkgr";
+        NSString *from = defaults.SMTPFrom ?: @"AutoPkgr";
 
         MCOMessageBuilder *builder = [[MCOMessageBuilder alloc] init];
         [[builder header] setFrom:[MCOAddress addressWithDisplayName:@"AutoPkgr Notification"
@@ -99,6 +103,11 @@
 
         MCOSMTPSendOperation *sendOperation = [smtpSession sendOperationWithData:rfc822Data];
         [sendOperation start:^(NSError *error) {
+
+            if ([subject isEqualToString:@"Test notification from AutoPkgr"]) {
+                [LGUserNotifications sendNotificationOfTestEmailSuccess:error ? NO:YES error:error];
+            }
+            
             NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
             NSMutableDictionary *userInfo = [NSMutableDictionary dictionaryWithDictionary:@{kLGNotificationUserInfoSubject:subject,
                                                                                             kLGNotificationUserInfoMessage:message}];
@@ -109,11 +118,14 @@
             } else {
                 NSLog(@"Successfully sent email from %@.", from);
             }
-            
+
             [center postNotificationName:kLGNotificationEmailSent
                                   object:self
                                 userInfo:[NSDictionary dictionaryWithDictionary:userInfo]];
+            self.complete = YES;
         }];
+    } else {
+        self.complete = YES;
     }
 }
 
@@ -183,7 +195,7 @@
                 }
             }
 
-            [message appendFormat:@"%@<br/>", version ? version : @"Version not detected"];
+            [message appendFormat:@"%@<br/>", version ?: @"Version not detected"];
         }
     } else {
         DLog(@"Nothing new was downloaded.");
@@ -204,6 +216,8 @@
 
     if (message) {
         [self sendEmailNotification:subject message:message];
+    } else {
+        self.complete = YES;
     }
 }
 

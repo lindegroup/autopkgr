@@ -22,7 +22,7 @@
 #import <Foundation/Foundation.h>
 
 @protocol LGProgressDelegate <NSObject>
-
+@optional
 - (void)startProgressWithMessage:(NSString *)message;
 - (void)stopProgress:(NSError *)error;
 - (void)updateProgress:(NSString *)message progress:(double)progress;
