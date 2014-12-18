@@ -117,6 +117,9 @@
         [helper connectToHelper];
         [[helper.connection remoteObjectProxy] quitHelper:^(BOOL success) {}];
     }
+
+    // Stop Observing...
+    [[NSDistributedNotificationCenter defaultCenter] removeObserver:self name:kLGNotificationProgressMessageUpdate object:nil];
 }
 
 - (BOOL)applicationShouldHandleReopen:(NSApplication *)theApplication hasVisibleWindows:(BOOL)flag
