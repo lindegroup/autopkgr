@@ -72,9 +72,15 @@
     }
 }
 
-+ (BOOL)updateAppsIsScheduled
++ (BOOL)updateAppsIsScheduled:(NSInteger *)scheduleInterval
 {
-    return jobIsRunning(kLGAutoPkgrLaunchDaemonPlist, kAHGlobalLaunchDaemon);
+    AHLaunchJob *job = [AHLaunchCtl jobFromFileNamed:kLGAutoPkgrLaunchDaemonPlist inDomain:kAHGlobalLaunchDaemon];
+
+    NSInteger interval = (job.StartInterval == 0) ? 24 : job.StartInterval / 60 / 60;
+    if (scheduleInterval) {
+        *scheduleInterval = interval;
+    }
+    return job ? YES : NO;
 }
 
 @end

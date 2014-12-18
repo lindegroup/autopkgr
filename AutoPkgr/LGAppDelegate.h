@@ -30,6 +30,11 @@
 @property (strong, nonatomic) IBOutlet NSMenu *statusMenu;
 @property (strong, nonatomic) NSStatusItem *statusItem;
 
+// Links to status menu items
+@property (weak, nonatomic) IBOutlet NSMenuItem *progressMenuItem;
+@property (weak, nonatomic) IBOutlet NSMenuItem *runUpdatesNowMenuItem;
+@property (weak, nonatomic) IBOutlet NSMenuItem *autoCheckForUpdatesMenuItem;
+
 - (IBAction)checkNowFromMenu:(id)sender;
 - (IBAction)showConfigurationWindow:(id)sender;
 

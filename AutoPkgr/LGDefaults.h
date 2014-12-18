@@ -33,6 +33,12 @@
 @property (copy, nonatomic) NSString *SMTPFrom;
 @property (copy, nonatomic) NSArray *SMTPTo;
 
+#pragma mark - Info
+/**
+ *  You can pass in either an NSDate object, or NSString and it will return a formatted date string
+ */
+@property (copy, nonatomic) id LastAutoPkgRun;
+
 #pragma mark - BOOL
 @property (nonatomic) BOOL SMTPTLSEnabled;
 @property (nonatomic) BOOL SMTPAuthenticationEnabled;

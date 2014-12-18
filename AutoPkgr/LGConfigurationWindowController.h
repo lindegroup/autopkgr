@@ -106,5 +106,4 @@
 - (IBAction)updateReposNow:(id)sender;
 - (IBAction)checkAppsNow:(id)sender;
 - (IBAction)cancelAutoPkgRun:(id)sender;
-
 @end

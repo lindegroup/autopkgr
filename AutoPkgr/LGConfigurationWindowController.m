@@ -90,7 +90,15 @@
 
     _smtpTLSEnabledButton.state = _defaults.SMTPTLSEnabled;
 
-    _checkForNewVersionsOfAppsAutomaticallyButton.state = [LGAutoPkgSchedule updateAppsIsScheduled];
+    // Set up schedule settings
+    NSInteger timer;
+    _checkForNewVersionsOfAppsAutomaticallyButton.state = [LGAutoPkgSchedule updateAppsIsScheduled:&timer];
+    [_autoPkgRunInterval setIntegerValue:timer];
+
+
+    [_checkForNewVersionsOfAppsAutomaticallyButton setTarget:_progressDelegate];
+    [_checkForNewVersionsOfAppsAutomaticallyButton setAction:@selector(changeCheckForNewVersionsOfAppsAutomatically:)];
+
     _checkForRepoUpdatesAutomaticallyButton.state = _defaults.checkForRepoUpdatesAutomaticallyEnabled;
 
     NSString *userName = _defaults.SMTPUsername;
@@ -112,10 +120,6 @@
         [_smtpPort setIntegerValue:_defaults.SMTPPort];
     }
 
-    if (_defaults.autoPkgRunInterval) {
-        [_autoPkgRunInterval setIntegerValue:_defaults.autoPkgRunInterval];
-    }
-
     // Check to see what's installed, and what needs updating
     BOOL autoPkgInstalled = [LGHostInfo autoPkgInstalled];
     BOOL gitInstalled = [LGHostInfo gitInstalled];
@@ -131,7 +135,7 @@
         [_gitStatusLabel setStringValue:kLGGitNotInstalledLabel];
         [_gitStatusIcon setImage:[NSImage LGStatusUnavailable]];
     }
-    
+
     NSOperationQueue *bgQueue = [[NSOperationQueue alloc] init];
     [bgQueue addOperationWithBlock:^{
         // Since checking for an update can take some time, run it in the background
@@ -618,41 +622,7 @@
 #pragma mark - State Actions
 - (IBAction)changeCheckForNewVersionsOfAppsAutomatically:(id)sender
 {
-    NSLog(@"%@ autopkg run schedule.", _defaults.checkForRepoUpdatesAutomaticallyEnabled ? @"Enabling" : @"Disabling");
-
-    BOOL force = NO;
-
-    BOOL start = _checkForNewVersionsOfAppsAutomaticallyButton.state;
-    NSInteger interval = _autoPkgRunInterval.integerValue;
-
-    if ([sender isEqualTo:_checkForNewVersionsOfAppsAutomaticallyButton]) {
-        force = NO;
-    } else if ([sender isEqualTo:_autoPkgRunInterval]) {
-        if (!start || _defaults.autoPkgRunInterval == _autoPkgRunInterval.integerValue) {
-            return;
-        }
-        force = YES;
-    }
-
-    [LGAutoPkgSchedule startAutoPkgSchedule:start interval:interval isForced:force reply:^(NSError *error) {
-        if (error) {
-            [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-                // If error, reset the state to modified status
-                _checkForNewVersionsOfAppsAutomaticallyButton.state = [LGAutoPkgSchedule updateAppsIsScheduled];
-
-                NSInteger previousInterval = _defaults.autoPkgRunInterval ?: 24;
-                _autoPkgRunInterval.stringValue = [@(previousInterval) stringValue];
-                
-                // If the authorization was canceled by user, don't present error.
-                if (error.code != kLGErrorAuthChallenge) {
-                    [self stopProgress:error];
-                }
-            }];
-        } else {
-            // Otherwise update our defaults
-            _defaults.autoPkgRunInterval = interval;
-        }
-    }];
+    [_progressDelegate changeCheckForNewVersionsOfAppsAutomatically:sender];
 }
 
 - (IBAction)changeCheckForRepoUpdatesAutomatically:(NSButton *)sender
@@ -758,7 +728,7 @@
         // array of strings if the field contains a series of strings
         _defaults.SMTPTo = [_smtpTo objectValue];
     } else if ([object isEqual:_autoPkgRunInterval]) {
-        [self changeCheckForNewVersionsOfAppsAutomatically:_autoPkgRunInterval];
+        [_progressDelegate changeCheckForNewVersionsOfAppsAutomatically:_autoPkgRunInterval];
     } else if ([object isEqual:_smtpPassword]) {
         // This is now handled with an IBAction
     }
