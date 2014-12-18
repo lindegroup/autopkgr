@@ -25,6 +25,7 @@
 #import "LGAutoPkgTask.h"
 #import "LGEmailer.h"
 #import "LGAutoPkgSchedule.h"
+#import "LGRecipes.h"
 #import "LGConfigurationWindowController.h"
 #import "LGAutoPkgrHelperConnection.h"
 #import "LGUserNotifications.h"
@@ -54,6 +55,12 @@
             [NSApp presentError:[NSError errorWithDomain:kLGApplicationName code:-1 userInfo:@{ NSLocalizedDescriptionKey : @"The associated helper tool could not be installed, we must now quit" }]];
             [[NSApplication sharedApplication] terminate:self];
         }
+    }
+
+    if(![LGRecipes migrateToIdentifiers:nil]){
+        [NSApp presentError:[NSError errorWithDomain:kLGApplicationName code:-1 userInfo:@{ NSLocalizedDescriptionKey : @"AutoPkgr will now quit.",
+            NSLocalizedRecoverySuggestionErrorKey:@"You've chosen to not upgrade your recipe list. Either relaunch AutoPkgr to restart the migration process, or downgrade to an older 1.1.x AutoPkgr release." }]];
+        [[NSApplication sharedApplication] terminate:self];
     }
 
     // Setup User Notification Delegate
