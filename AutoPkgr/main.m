@@ -25,6 +25,16 @@
 #import "LGEmailer.h"
 #import "LGAutoPkgr.h"
 
+void postUpdateMessage(NSString *message, double progress, BOOL complete)
+{
+    [[NSDistributedNotificationCenter defaultCenter]
+        postNotificationName:kLGNotificationProgressMessageUpdate
+                      object:nil
+                    userInfo:@{ kLGNotificationUserInfoMessage : message ?: @"",
+                                kLGNotificationUserInfoProgress : @(progress),
+                                kLGNotificationUserInfoSuccess : @(complete) }];
+}
+
 int main(int argc, const char *argv[])
 {
     NSUserDefaults *args = [NSUserDefaults standardUserDefaults];
@@ -34,9 +44,15 @@ int main(int argc, const char *argv[])
         __block LGEmailer *emailer = [[LGEmailer alloc] init];
         LGDefaults *defaults = [LGDefaults standardUserDefaults];
         LGAutoPkgTaskManager *manager = [[LGAutoPkgTaskManager alloc] init];
+
+        [manager setProgressUpdateBlock:^(NSString *message, double progress) {
+            postUpdateMessage(message, progress, NO);
+        }];
+
         [manager runRecipeList:[LGRecipes recipeList]
                     updateRepo:defaults.checkForRepoUpdatesAutomaticallyEnabled
                          reply:^(NSDictionary *report, NSError *error) {
+                             postUpdateMessage(nil, 0, YES);
             [emailer sendEmailForReport:report error:error];
                          }];
 
@@ -47,4 +63,3 @@ int main(int argc, const char *argv[])
         return NSApplicationMain(argc, argv);
     }
 }
-

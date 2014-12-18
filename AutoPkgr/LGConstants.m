@@ -89,3 +89,4 @@ NSString *const kLGNotificationUserInfoMessage = @"com.lindegroup.autopkgr.notif
 NSString *const kLGNotificationUserInfoTotalRecipeCount = @"com.lindegroup.autopkgr.notification.userinfo.total.recipe.count";
 NSString *const kLGNotificationUserInfoSuccess = @"com.lindelgroup.autopkgr.notification.userinfo.success";
 NSString *const kLGNotificationUserInfoSubject = @"com.lindelgroup.autopkgr.notification.userinfo.subject";
+NSString *const kLGNotificationUserInfoProgress = @"com.lindegroup.autopkgr.notification.userinfo.progress";

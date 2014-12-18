@@ -87,5 +87,7 @@ extern NSString *const kLGNotificationUserInfoMessage;
 extern NSString *const kLGNotificationUserInfoTotalRecipeCount;
 //* key corresponding to NSNumber BOOL object in Notification's userInfo dictionary, indicating success/failure */
 extern NSString *const kLGNotificationUserInfoSuccess;
-//* key corresponding to NSError object in Notification's userInfo dictionary */
+//* key corresponding to Subject object in Notification's userInfo dictionary */
 extern NSString *const kLGNotificationUserInfoSubject;
+//* key corresponding to Progress object in Notification's userInfo dictionary */
+extern NSString *const kLGNotificationUserInfoProgress;

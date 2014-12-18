@@ -31,19 +31,48 @@
 #import "LGUserNotifications.h"
 #import <AHLaunchCtl/AHLaunchCtl.h>
 
+@interface LGAppDelegate ()
+@property (strong) LGConfigurationWindowController *configurationWindowController;
+@property (strong) LGUserNotifications *notificationDelegate;
+@property (strong) LGAutoPkgTaskManager *taskManager;
+@end
+
 @implementation LGAppDelegate {
 @private
-    LGConfigurationWindowController *_configurationWindowController;
     BOOL _configurationWindowInitiallyVisible;
-    LGUserNotifications *notificationDelegate;
-    LGAutoPkgTaskManager *_taskManager;
+    BOOL _initialMessageFromBackgroundRunProcessed;
+}
+
+#pragma mark - NSApplication Delegate
+- (void)applicationWillFinishLaunching:(NSNotification *)notification
+{
+    // Setup activation policy
+    if ([[LGDefaults standardUserDefaults] boolForKey:@"MenuBarOnly"]) {
+        [NSApp setActivationPolicy:NSApplicationActivationPolicyAccessory];
+    }
+}
+
+- (BOOL)applicationShouldTerminateAfterLastWindowClosed:(NSApplication *)sender
+{
+    // If this set to run as a stand alone app with no menu item,
+    // quit it after the last window is closed.
+    if ([NSApp activationPolicy] != NSApplicationActivationPolicyAccessory) {
+        return YES;
+    }
+    return NO;
 }
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {
+
     NSLog(@"Welcome to AutoPkgr!");
     DLog(@"Verbose logging is active. To deactivate, option-click the AutoPkgr menu icon and uncheck Verbose Logs.");
 
+    // Start observing distributed notifications for background runs
+    [[NSDistributedNotificationCenter defaultCenter] addObserver:self
+                                                        selector:@selector(didReceiveStatusUpdate:)
+                                                            name:kLGNotificationProgressMessageUpdate
+                                                          object:nil];
     // Setup the status item
     [self setupStatusItem];
 
@@ -65,8 +94,8 @@
     }
 
     // Setup User Notification Delegate
-    notificationDelegate = [[LGUserNotifications alloc] init];
-    [NSUserNotificationCenter defaultUserNotificationCenter].delegate = notificationDelegate;
+    _notificationDelegate = [[LGUserNotifications alloc] init];
+    [NSUserNotificationCenter defaultUserNotificationCenter].delegate = _notificationDelegate;
 
     NSInteger timer;
     [_autoCheckForUpdatesMenuItem setState:[LGAutoPkgSchedule updateAppsIsScheduled:&timer]];
@@ -81,8 +110,29 @@
     [self showConfigurationWindow:self];
 }
 
+- (void)applicationWillTerminate:(NSNotification *)notification
+{
+    if (jobIsRunning(kLGAutoPkgrHelperToolName, kAHGlobalLaunchDaemon)) {
+        LGAutoPkgrHelperConnection *helper = [LGAutoPkgrHelperConnection new];
+        [helper connectToHelper];
+        [[helper.connection remoteObjectProxy] quitHelper:^(BOOL success) {}];
+    }
+}
+
+- (BOOL)applicationShouldHandleReopen:(NSApplication *)theApplication hasVisibleWindows:(BOOL)flag
+{
+    [self showConfigurationWindow:self];
+    return YES;
+}
+
+#pragma mark - Setup
 - (void)setupStatusItem
 {
+    LGDefaults *defaults = [LGDefaults standardUserDefaults];
+    if (![defaults boolForKey:@"MenuBarOnly"] && [defaults boolForKey:@"DockOnly"]) {
+        return;
+    }
+
     // Setup the systemStatusBar
     DLog(@"Starting AutoPkgr menu bar icon...");
     self.statusItem = [[NSStatusBar systemStatusBar] statusItemWithLength:NSVariableStatusItemLength];
@@ -101,6 +151,7 @@
     DLog(@"AutoPkgr menu bar icon started.");
 }
 
+#pragma mark - IBActions
 - (void)checkNowFromMenu:(id)sender
 {
     DLog(@"Received 'Check Now' menulet command.");
@@ -170,16 +221,28 @@
             }];
 }
 
-- (void)applicationWillTerminate:(NSNotification *)notification
+#pragma mark - Progress Protocol
+- (void)didReceiveStatusUpdate:(NSNotification *)aNotification
 {
-    if (jobIsRunning(kLGAutoPkgrHelperToolName, kAHGlobalLaunchDaemon)) {
-        LGAutoPkgrHelperConnection *helper = [LGAutoPkgrHelperConnection new];
-        [helper connectToHelper];
-        [[helper.connection remoteObjectProxy] quitHelper:^(BOOL success) {}];
+    NSDictionary *info = aNotification.userInfo;
+    NSString *message = info[kLGNotificationUserInfoMessage];
+
+    if (!_initialMessageFromBackgroundRunProcessed) {
+        _configurationWindowInitiallyVisible = [_configurationWindowController.window isVisible];
+        if (_configurationWindowController && _configurationWindowInitiallyVisible) {
+            [_configurationWindowController startProgressWithMessage:@"Performing AutoPkg background run."];
+        }
+        _initialMessageFromBackgroundRunProcessed = YES;
+    }
+
+    if ([info[kLGNotificationUserInfoSuccess] boolValue]) {
+        [self stopProgress:nil];
+    } else {
+        double progress = [info[kLGNotificationUserInfoProgress] doubleValue];
+        [self updateProgress:message progress:progress];
     }
 }
 
-#pragma mark - Progress Protocol
 - (void)startProgressWithMessage:(NSString *)message
 {
     [[NSOperationQueue mainQueue] addOperationWithBlock:^{
