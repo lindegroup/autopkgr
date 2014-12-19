@@ -147,11 +147,13 @@
     NSArray *newDownloads;
     NSArray *newPackages;
     NSArray *newImports;
+    NSArray *detectedVersions;
 
     if (report) {
-        newDownloads = [report objectForKey:@"new_downloads"];
-        newPackages = [report objectForKey:@"new_packages"];
-        newImports = [report objectForKey:@"new_imports"];
+        detectedVersions = [report objectForKey:@"detected_versions"] ?: @[];
+        newDownloads = [report objectForKey:@"new_downloads"] ?: @[];
+        newPackages = [report objectForKey:@"new_packages"] ?: @[];
+        newImports = [report objectForKey:@"new_imports"] ?: @[];
     }
 
     if ([newDownloads count]) {
@@ -179,19 +181,17 @@
 
             NSPredicate *versionPredicate = [NSPredicate predicateWithFormat:@" %K CONTAINS[cd] %@", @"pkg_path", app];
 
-            for (NSDictionary *dict in newPackages) {
-                if ([versionPredicate evaluateWithObject:dict] && dict[@"version"]) {
-                    version = dict[@"version"];
-                    break;
-                }
-            }
-
-            if (!version) {
-                for (NSDictionary *dict in newImports) {
+            BOOL version_found = NO;
+            for (NSArray *arr in @[ newPackages, newImports, detectedVersions ]) {
+                for (NSDictionary *dict in arr) {
                     if ([versionPredicate evaluateWithObject:dict] && dict[@"version"]) {
                         version = dict[@"version"];
+                        version_found = YES;
                         break;
                     }
+                }
+                if (version_found){
+                    break;
                 }
             }
 
