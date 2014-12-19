@@ -114,6 +114,7 @@ typedef void (^AutoPkgReplyErrorBlock)(NSError *error);
 - (void)cancel
 {
     [self cancelAllOperations];
+    ;
 }
 
 #pragma mark - Convenience Instance Methods
@@ -221,6 +222,8 @@ typedef void (^AutoPkgReplyErrorBlock)(NSError *error);
     if (self.task && self.task.isRunning) {
         DLog(@"Canceling %@", self.taskDescription);
         [self.task terminate];
+    } else if (_taskStatusDelegate) {
+        [(NSObject *)_taskStatusDelegate performSelectorOnMainThread:@selector(didCompleteOperation:) withObject:nil waitUntilDone:NO];
     }
     [self.taskLock unlock];
     [super cancel];
@@ -230,9 +233,10 @@ typedef void (^AutoPkgReplyErrorBlock)(NSError *error);
 {
     @autoreleasepool
     {
-        self.task = [[NSTask alloc] init];
-        self.task.launchPath = @"/usr/bin/python";
+        NSTask *task = [[NSTask alloc] init];
 
+        self.task = task;
+        self.task.launchPath = @"/usr/bin/python";
         self.task.arguments = [NSArray arrayWithArray:self.internalArgs];
 
         // If an instance of autopkg is running,
@@ -250,19 +254,27 @@ typedef void (^AutoPkgReplyErrorBlock)(NSError *error);
             self.task.environment = [NSDictionary dictionaryWithDictionary:self.internalEnvironment];
         }
 
-        [self.task setTerminationHandler:^(NSTask *task) {
-        /* 
-         * The task terminationHandler is set to nil in the
-         * didCompleteTaskExecution method to break retain cycles.
-         * so we can silence the retain warnings here.
-         */
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Warc-retain-cycles"
+        // This is the one place we refer back to the allocated task
+        // to avoid retain cycles
+        [task setTerminationHandler:^(NSTask *task) {
             [self didCompleteTaskExecution];
-#pragma clang diagnostic pop
         }];
 
-        [self.task launch];
+        // Since NSTask can raise for unexpected reasons,
+        // put it in a try-catch block
+        @try {
+            [self.task launch];
+        }
+        @catch (NSException *exception)
+        {
+            NSDictionary *userInfo = @{ NSLocalizedDescriptionKey : @"A fatal error occured when trying to run AutoPkg",
+                                        NSLocalizedRecoverySuggestionErrorKey : @"If you repeatedly see this message please report it. The full scope of the error is in the system.log, make sure to include that in the report"
+            };
+
+            NSLog(@"[AutoPkgr EXCEPTION] %@ %@", exception.reason, exception.userInfo);
+            self.error = [NSError errorWithDomain:kLGApplicationName code:-9 userInfo:userInfo];
+            [self didCompleteTaskExecution];
+        }
     }
 }
 
@@ -307,7 +319,6 @@ typedef void (^AutoPkgReplyErrorBlock)(NSError *error);
         self.error = [LGError errorWithTaskError:self.task verb:_verb];
         [self.taskLock unlock];
     }
-
 
     LGAutoPkgTaskResponseObject *response = [[LGAutoPkgTaskResponseObject alloc] init];
     response.results = self.results;
@@ -548,6 +559,8 @@ typedef void (^AutoPkgReplyErrorBlock)(NSError *error);
         return _report;
     }
 
+    [[LGDefaults standardUserDefaults] setLastAutoPkgRun:[NSDate date]];
+
     if (self.AUTOPKG_VERSION_0_4_0) {
         NSFileManager *fm = [NSFileManager defaultManager];
         NSString *reportPlistFile = self.reportPlistFile;
@@ -767,7 +780,7 @@ typedef void (^AutoPkgReplyErrorBlock)(NSError *error);
     }];
 }
 
-+ (void)makeOverride:(NSString *)recipe reply:(void (^)(NSString *,NSError *))reply
++ (void)makeOverride:(NSString *)recipe reply:(void (^)(NSString *, NSError *))reply
 {
     LGAutoPkgTask *task = [[LGAutoPkgTask alloc] init];
     task.arguments = @[ @"make-override", recipe ];
@@ -779,10 +792,10 @@ typedef void (^AutoPkgReplyErrorBlock)(NSError *error);
     }];
 }
 
-+(void)makeOverride:(NSString *)recipe name:(NSString *)name reply:(void (^)(NSString *, NSError *))reply
++ (void)makeOverride:(NSString *)recipe name:(NSString *)name reply:(void (^)(NSString *, NSError *))reply
 {
     LGAutoPkgTask *task = [[LGAutoPkgTask alloc] init];
-    task.arguments = @[ @"make-override", recipe, @"-n" ,name ];
+    task.arguments = @[ @"make-override", recipe, @"-n", name ];
     __weak typeof(task) weakTask = task;
     [task launchInBackground:^(NSError *error) {
         typeof(task) strongTask = weakTask;
@@ -793,7 +806,7 @@ typedef void (^AutoPkgReplyErrorBlock)(NSError *error);
 
 + (NSArray *)listRecipes
 {
-    LGAutoPkgTask *task = [[LGAutoPkgTask alloc] initWithArguments:@[ @"list-recipes"]];
+    LGAutoPkgTask *task = [[LGAutoPkgTask alloc] initWithArguments:@[ @"list-recipes" ]];
     [task launch];
     id results = [task results];
     return [results isKindOfClass:[NSArray class]] ? results : nil;
