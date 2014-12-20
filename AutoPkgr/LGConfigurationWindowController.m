@@ -68,6 +68,9 @@
 
     // -- Set up the IBOutlets -- //
 
+    // Modal Windows
+    _popRepoTableViewHandler.modalWindow = self.window;
+
     // AutoPkg settings
     _localMunkiRepo.safeStringValue = _defaults.munkiRepo;
     _autoPkgCacheDir.safeStringValue = _defaults.autoPkgCacheDir;

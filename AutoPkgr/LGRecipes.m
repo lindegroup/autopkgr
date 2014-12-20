@@ -41,7 +41,7 @@
 
     if (self) {
         _recipes = [[self getAllRecipes] removeEmptyStrings];
-        _activeRecipes = [self getActiveRecipes];
+        _activeRecipes = [[[self class] getActiveRecipes] mutableCopy];
         _searchedRecipes = _recipes;
     }
 
@@ -108,41 +108,6 @@
 }
 
 #pragma mark - Filtering
-- (NSMutableArray *)getActiveRecipes
-{
-    NSFileManager *fm = [NSFileManager defaultManager];
-    NSError *error;
-    NSMutableArray *activeRecipes = [[NSMutableArray alloc] init];
-    NSString *autoPkgrSupportDirectory = [LGHostInfo getAppSupportDirectory];
-    if ([autoPkgrSupportDirectory isEqual:@""]) {
-        return activeRecipes;
-    }
-
-    NSString *autoPkgrRecipeListPath = [autoPkgrSupportDirectory stringByAppendingString:@"/recipe_list.txt"];
-    if ([fm fileExistsAtPath:autoPkgrRecipeListPath]) {
-        NSString *autoPkgrRecipeList = [NSString stringWithContentsOfFile:autoPkgrRecipeListPath encoding:NSUTF8StringEncoding error:&error];
-        if (error) {
-            NSLog(@"Error reading %@.", autoPkgrRecipeList);
-        } else {
-            [activeRecipes addObjectsFromArray:[autoPkgrRecipeList componentsSeparatedByString:@"\n"]];
-        }
-    }
-    return activeRecipes;
-}
-
-- (void)cleanActiveApps
-{
-    // This runs through the updated recipes and removes any recipes from the
-    // activeApps array that cannot be found in the _recipes array.
-    for (NSString *string in [_activeRecipes copy]) {
-        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"%K == %@", kLGAutoPkgRecipeIdentifierKey, string];
-
-        if (![_recipes filteredArrayUsingPredicate:predicate].count) {
-            [_activeRecipes removeObject:string];
-        }
-    }
-}
-
 - (void)executeAppSearch:(id)sender
 {
     [_recipeTableView beginUpdates];
@@ -166,9 +131,17 @@
 #pragma mark - Recipe List
 - (void)writeRecipeList
 {
-    [self cleanActiveApps];
-
     NSError *error;
+
+    // This runs through the updated recipes and removes any recipes from the
+    // activeApps array that cannot be found in the _recipes array.
+    for (NSString *string in [_activeRecipes copy]) {
+        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"%K == %@", kLGAutoPkgRecipeIdentifierKey, string];
+
+        if (![_recipes filteredArrayUsingPredicate:predicate].count) {
+            [_activeRecipes removeObject:string];
+        }
+    }
 
     NSString *autoPkgrSupportDirectory = [LGHostInfo getAppSupportDirectory];
     if ([autoPkgrSupportDirectory isEqual:@""]) {
@@ -460,6 +433,28 @@
 {
     NSString *applicationSupportDirectory = [LGHostInfo getAppSupportDirectory];
     return [applicationSupportDirectory stringByAppendingString:@"/recipe_list.txt"];
+}
+
++ (NSArray *)getActiveRecipes
+{
+    NSFileManager *fm = [NSFileManager defaultManager];
+    NSError *error;
+    NSMutableArray *activeRecipes = [[NSMutableArray alloc] init];
+    NSString *autoPkgrSupportDirectory = [LGHostInfo getAppSupportDirectory];
+    if ([autoPkgrSupportDirectory isEqual:@""]) {
+        return activeRecipes;
+    }
+
+    NSString *autoPkgrRecipeListPath = [autoPkgrSupportDirectory stringByAppendingString:@"/recipe_list.txt"];
+    if ([fm fileExistsAtPath:autoPkgrRecipeListPath]) {
+        NSString *autoPkgrRecipeList = [NSString stringWithContentsOfFile:autoPkgrRecipeListPath encoding:NSUTF8StringEncoding error:&error];
+        if (error) {
+            NSLog(@"Error reading %@.", autoPkgrRecipeList);
+        } else {
+            [activeRecipes addObjectsFromArray:[autoPkgrRecipeList componentsSeparatedByString:@"\n"]];
+        }
+    }
+    return activeRecipes;
 }
 
 + (BOOL)migrateToIdentifiers:(NSError *__autoreleasing *)error

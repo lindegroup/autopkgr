@@ -55,6 +55,9 @@
 		BE1C810419E8224000EF77F3 /* NSImage+statusLight.m in Sources */ = {isa = PBXBuildFile; fileRef = BE1C810219E8224000EF77F3 /* NSImage+statusLight.m */; };
 		BE32178B19ED9ACA00A92E5A /* LGRecipeOverrides.m in Sources */ = {isa = PBXBuildFile; fileRef = BE32178A19ED9ACA00A92E5A /* LGRecipeOverrides.m */; };
 		BE57AC2A19BA3BBC00BB17B1 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = BE57AC2C19BA3BBC00BB17B1 /* Localizable.strings */; };
+		BE67E8751A44E10500484151 /* LGRecipeSearch.m in Sources */ = {isa = PBXBuildFile; fileRef = BE67E8731A44E10500484151 /* LGRecipeSearch.m */; };
+		BE67E8761A44E10500484151 /* LGRecipeSearchPanel.xib in Resources */ = {isa = PBXBuildFile; fileRef = BE67E8741A44E10500484151 /* LGRecipeSearchPanel.xib */; };
+		BE67E8771A44F02B00484151 /* LGRecipeSearch.m in Sources */ = {isa = PBXBuildFile; fileRef = BE67E8731A44E10500484151 /* LGRecipeSearch.m */; };
 		BE6815D51A0B18DE004AD310 /* LGUserNotifications.m in Sources */ = {isa = PBXBuildFile; fileRef = BE6815D41A0B18DE004AD310 /* LGUserNotifications.m */; };
 		BE73CDC719E062AC00441443 /* NSString+cleaned.m in Sources */ = {isa = PBXBuildFile; fileRef = BE73CDC619E062AC00441443 /* NSString+cleaned.m */; };
 		BE8526B219D5F641007DFA9E /* SecurityInterface.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BE8526B119D5F641007DFA9E /* SecurityInterface.framework */; };
@@ -278,6 +281,9 @@
 		BE57733619D519E400D872A4 /* LGJSSImporter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGJSSImporter.h; sourceTree = "<group>"; };
 		BE57733719D519E400D872A4 /* LGJSSImporter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGJSSImporter.m; sourceTree = "<group>"; };
 		BE57AC2B19BA3BBC00BB17B1 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		BE67E8721A44E10500484151 /* LGRecipeSearch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGRecipeSearch.h; sourceTree = "<group>"; };
+		BE67E8731A44E10500484151 /* LGRecipeSearch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGRecipeSearch.m; sourceTree = "<group>"; };
+		BE67E8741A44E10500484151 /* LGRecipeSearchPanel.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LGRecipeSearchPanel.xib; sourceTree = "<group>"; };
 		BE6815D31A0B18DE004AD310 /* LGUserNotifications.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGUserNotifications.h; sourceTree = "<group>"; };
 		BE6815D41A0B18DE004AD310 /* LGUserNotifications.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGUserNotifications.m; sourceTree = "<group>"; };
 		BE73CDC519E062AC00441443 /* NSString+cleaned.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSString+cleaned.h"; path = "Custom Catagories/NSString+cleaned.h"; sourceTree = "<group>"; };
@@ -425,6 +431,7 @@
 				1AC69565195B59EE00D2BD81 /* MainMenu.xib */,
 				1AC9841E195CEC360071CAB3 /* LGConfigurationWindowController.xib */,
 				BE0BACD01A2560AE00554989 /* LGJSSDistributionPointsPrefPanel.xib */,
+				BE67E8741A44E10500484151 /* LGRecipeSearchPanel.xib */,
 				1AC69568195B59EE00D2BD81 /* Images.xcassets */,
 				1AC98423195DF6270071CAB3 /* Resources */,
 				1AC69557195B59ED00D2BD81 /* Supporting Files */,
@@ -572,6 +579,8 @@
 				BE32178A19ED9ACA00A92E5A /* LGRecipeOverrides.m */,
 				BE32178C19EDA15400A92E5A /* LGTableView.h */,
 				BE32178D19EDA15400A92E5A /* LGTableView.m */,
+				BE67E8721A44E10500484151 /* LGRecipeSearch.h */,
+				BE67E8731A44E10500484151 /* LGRecipeSearch.m */,
 				BE57733619D519E400D872A4 /* LGJSSImporter.h */,
 				BE57733719D519E400D872A4 /* LGJSSImporter.m */,
 				BE0BACCE1A2560AE00554989 /* LGJSSDistributionPointsPrefPanel.h */,
@@ -774,6 +783,7 @@
 				1A2C7FAE19CC9F8300CFF472 /* codesign.py in Resources */,
 				1AC98420195CEC360071CAB3 /* LGConfigurationWindowController.xib in Resources */,
 				BE0BACD21A2560AE00554989 /* LGJSSDistributionPointsPrefPanel.xib in Resources */,
+				BE67E8761A44E10500484151 /* LGRecipeSearchPanel.xib in Resources */,
 				BE57AC2A19BA3BBC00BB17B1 /* Localizable.strings in Resources */,
 				1AC98427195DF6350071CAB3 /* autopkgr.png in Resources */,
 				1AC69561195B59EE00D2BD81 /* Credits.rtf in Resources */,
@@ -954,6 +964,7 @@
 				BE05CE8219DAF6320089068B /* LGAutoPkgrAuthorizer.m in Sources */,
 				BE05CE8319DAF6320089068B /* LGAutoPkgrHelperConnection.m in Sources */,
 				BE73CDC719E062AC00441443 /* NSString+cleaned.m in Sources */,
+				BE67E8751A44E10500484151 /* LGRecipeSearch.m in Sources */,
 				BED297611A3F975000511CD7 /* LGDefaults+JSSImporter.m in Sources */,
 				BEE8CF1319E0E7F400981C4B /* NSTextField+setSafeStringValue.m in Sources */,
 				BE1C810319E8224000EF77F3 /* NSImage+statusLight.m in Sources */,
@@ -970,6 +981,7 @@
 				BEFC3C791A3DF16700C789E9 /* LGTestPort.m in Sources */,
 				BEFC3C7C1A3DF16700C789E9 /* LGPopularRepositories.m in Sources */,
 				BEFC3C7D1A3DF16700C789E9 /* LGRecipes.m in Sources */,
+				BE67E8771A44F02B00484151 /* LGRecipeSearch.m in Sources */,
 				BEFC3C7E1A3DF16700C789E9 /* LGRecipeOverrides.m in Sources */,
 				BEFC3C7F1A3DF16700C789E9 /* LGTableView.m in Sources */,
 				BEFC3C821A3DF16700C789E9 /* LGConstants.m in Sources */,

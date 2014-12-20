@@ -1,10 +1,8 @@
 //
-//  LGApplications.h
+//  LGRecipeSearch.h
 //  AutoPkgr
 //
-//  Created by Josh Senick on 7/10/14.
-//
-//  Copyright 2014 The Linde Group, Inc.
+//  Created by Eldon Ahrold on 12/19/14.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -17,20 +15,8 @@
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
-//
 
-#import <Foundation/Foundation.h>
-#import "LGAutoPkgTask.h"
-#import "LGTableView.h"
+#import <Cocoa/Cocoa.h>
 
-@interface LGRecipes : NSObject <NSApplicationDelegate, NSTableViewDataSource, NSTableViewDelegate>
-
-+ (NSString *)recipeList;
-+ (NSArray *)getActiveRecipes;
-
-- (void)reload;
-- (NSMenu *)contextualMenuForRecipeAtRow:(NSInteger)row;
-
-+ (BOOL)migrateToIdentifiers:(NSError**)error;
-
+@interface LGRecipeSearch : NSWindowController <NSTableViewDataSource, NSTableViewDelegate>
 @end
