@@ -56,7 +56,7 @@
 {
     // If this set to run as a stand alone app with no menu item,
     // quit it after the last window is closed.
-    if ([NSApp activationPolicy] != NSApplicationActivationPolicyAccessory) {
+    if ([[LGDefaults standardUserDefaults] boolForKey:@"DockOnly"]) {
         return YES;
     }
     return NO;
