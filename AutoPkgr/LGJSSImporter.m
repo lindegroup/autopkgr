@@ -278,7 +278,7 @@
                 DLog(@"The JSS is responding and API user credentials seem valid.");
             } else if (reachable) {
                 _jssStatusLight.image = [NSImage LGStatusPartiallyAvailable];
-                DLog(@"The JSS is responding, but API user credentials don't seem valid.");
+                DLog(@"The JSS is responding at that url, but API user credentials have not been verified. Click the connect button to complete the verification process.");
             } else {
                 _jssStatusLight.image = [NSImage LGStatusUnavailable];
                 DLog(@"The JSS is not reachable. Check your network connection and verify the JSS URL and port.");
@@ -390,12 +390,15 @@
 {
     NSLog(@"Prompting for password for distribution point: %@", shareName);
     NSString *password;
-    NSString *alertString = [NSString stringWithFormat:@"Please enter read/write password for the %@ distribution point.", shareName];
-    NSAlert *alert = [NSAlert alertWithMessageText:alertString
+    NSString *messageText = @"Distribution Point Password Required";
+
+    NSString * const infoText = @"Please enter read/write password for the \"%@\" distribution point. If you intend to configure manually just click \"Cancel\".";
+
+    NSAlert *alert = [NSAlert alertWithMessageText:messageText
                                      defaultButton:@"OK"
                                    alternateButton:@"Cancel"
                                        otherButton:nil
-                         informativeTextWithFormat:@""];
+                         informativeTextWithFormat:infoText, shareName];
 
     NSSecureTextField *input = [[NSSecureTextField alloc] init];
     [input setFrame:NSMakeRect(0, 0, 300, 24)];
