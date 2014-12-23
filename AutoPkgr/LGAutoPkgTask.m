@@ -182,7 +182,7 @@ typedef void (^AutoPkgReplyErrorBlock)(NSError *error);
 {
     self = [super init];
     if (self) {
-        self.internalArgs = [[NSMutableArray alloc] initWithArray:@[ autopkg() ]];
+        self.internalArgs = [@[ autopkg() ] mutableCopy];
         _taskLock = [[NSRecursiveLock alloc] init];
         _taskLock.name = kLGAutoPkgTaskLock;
         _taskStatusDelegate = self;
@@ -238,7 +238,7 @@ typedef void (^AutoPkgReplyErrorBlock)(NSError *error);
 
         self.task = task;
         self.task.launchPath = @"/usr/bin/python";
-        self.task.arguments = [NSArray arrayWithArray:self.internalArgs];
+        self.task.arguments = [self.internalArgs copy];
 
         // If an instance of autopkg is running,
         // and we're trying to do a run, exit
@@ -252,7 +252,7 @@ typedef void (^AutoPkgReplyErrorBlock)(NSError *error);
         [self configureEnvironment];
 
         if (self.internalEnvironment) {
-            self.task.environment = [NSDictionary dictionaryWithDictionary:self.internalEnvironment];
+            self.task.environment = [self.internalEnvironment copy];
         }
 
         // This is the one place we refer back to the allocated task
@@ -516,7 +516,7 @@ typedef void (^AutoPkgReplyErrorBlock)(NSError *error);
 - (void)addEnvironmentVariable:(NSString *)variable forKey:(NSString *)key
 {
     if (!_internalEnvironment) {
-        _internalEnvironment = [NSMutableDictionary dictionaryWithDictionary:[[NSProcessInfo processInfo] environment]];
+        _internalEnvironment = [[[NSProcessInfo processInfo] environment] mutableCopy];
     }
     if (variable && key) {
         [_internalEnvironment setObject:variable forKey:key];
@@ -548,7 +548,7 @@ typedef void (^AutoPkgReplyErrorBlock)(NSError *error);
         if ([self.task.standardOutput isKindOfClass:[NSPipe class]]) {
             // If standardOutData exists then the sdtout was gathered progressively
             if (self.standardOutData) {
-                data = [[NSData alloc] initWithData:self.standardOutData];
+                data = [self.standardOutData copy];
             } else {
                 data = [[self.task.standardOutput fileHandleForReading] readDataToEndOfFile];
             }
@@ -661,7 +661,7 @@ typedef void (^AutoPkgReplyErrorBlock)(NSError *error);
                         }
                     }
                 }];
-                _results = [NSArray arrayWithArray:searchResults];
+                _results = [searchResults copy];
 
             } else if (_verb == kLGAutoPkgRepoList) {
                 NSArray *listResults = [resultString componentsSeparatedByCharactersInSet:[NSCharacterSet newlineCharacterSet]];
@@ -669,10 +669,9 @@ typedef void (^AutoPkgReplyErrorBlock)(NSError *error);
                 NSMutableArray *strippedRepos = [[NSMutableArray alloc] init];
 
                 for (NSString *repo in [listResults removeEmptyStrings]) {
-                    NSArray *splitArray = [repo componentsSeparatedByString:@"(http"];
-
-                    NSString *repoURL = [[@"http" stringByAppendingString:[splitArray lastObject]] stringByReplacingOccurrencesOfString:@")" withString:@""];
-
+                    NSArray *splitArray = [repo componentsSeparatedByString:@"("];
+                    
+                    NSString *repoURL = [[splitArray lastObject] stringByReplacingOccurrencesOfString:@")" withString:@""];
                     NSString *repoPath = [[splitArray firstObject] stringByStandardizingPath];
 
                     NSDictionary *resultDict = @{
@@ -681,7 +680,7 @@ typedef void (^AutoPkgReplyErrorBlock)(NSError *error);
                     };
                     [strippedRepos addObject:resultDict];
                 }
-                _results = strippedRepos.count ? [NSArray arrayWithArray:strippedRepos] : nil;
+                _results = strippedRepos.count ? [strippedRepos copy] : nil;
 
             } else if (_verb == kLGAutoPkgRecipeList) {
                 // Try to serialize the stdout, if that fails continue
@@ -705,7 +704,7 @@ typedef void (^AutoPkgReplyErrorBlock)(NSError *error);
                         [strippedRecipes addObject:resultsDict];
                     }
                 }
-                _results = strippedRecipes.count ? [NSArray arrayWithArray:strippedRecipes] : nil;
+                _results = strippedRecipes.count ? [strippedRecipes copy] : nil;
             }
         }
     }
@@ -745,11 +744,10 @@ typedef void (^AutoPkgReplyErrorBlock)(NSError *error);
     id results = nil;
     if (string && ![string isEqualToString:@""]) {
         NSData *plistData = [string dataUsingEncoding:NSUTF8StringEncoding];
-        NSPropertyListFormat format;
         // Initialize our dict
         results = [NSPropertyListSerialization propertyListWithData:plistData
                                                             options:NSPropertyListImmutable
-                                                             format:&format
+                                                             format:nil
                                                               error:nil];
     }
     return results;
