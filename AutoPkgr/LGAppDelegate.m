@@ -290,7 +290,6 @@
             NSMenuItem *runStatus = [self.statusMenu itemAtIndex:0];
             runStatus.title = message;
         }
-        NSLog(@"%@", message);
     }];
 }
 
