@@ -207,7 +207,7 @@ typedef NS_ENUM(NSInteger, LGInstallType) {
     if (type != kLGInstallerTypeUnknown && pkgFile) {
         // Set the `installer` command
         // Install the pkg as root
-        progressMessage = [NSString stringWithFormat:@"Running %@ Installer...", installerName];
+        progressMessage = [NSString stringWithFormat:@"Running %@ installer...", installerName];
         
         [_progressDelegate updateProgress:progressMessage progress:75.0];
         

@@ -27,7 +27,7 @@
     NSUserNotification *notification = [[NSUserNotification alloc] init];
     notification.title = @"Email test completed.";
 
-    notification.informativeText = success ? @"Successfully sent test email. Check your inbox to confirm" : @"There was a problem sending test email. Check your settings.";
+    notification.informativeText = success ? @"Successfully sent test email." : @"There was a problem sending test email. Double-check the SMTP settings you specified in AutoPkgr.";
 
     if (success) {
         [notification setHasActionButton:NO];

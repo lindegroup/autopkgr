@@ -103,8 +103,8 @@
     NSString *menuItemTitle = [NSString stringWithFormat:@"Run AutoPkg Every %ld Hours", timer];
 
     [_autoCheckForUpdatesMenuItem setTitle:menuItemTitle];
-    // calling stopProgress: here is a easy to get the
-    //menu reset to it's default configuration
+    // calling stopProgress: here is an easy way to get the
+    // menu reset to its default configuration
     [self stopProgress:nil];
 
     [self showConfigurationWindow:self];
@@ -118,7 +118,7 @@
         [[helper.connection remoteObjectProxy] quitHelper:^(BOOL success) {}];
     }
 
-    // Stop Observing...
+    // Stop observing...
     [[NSDistributedNotificationCenter defaultCenter] removeObserver:self name:kLGNotificationProgressMessageUpdate object:nil];
 }
 
@@ -168,7 +168,7 @@
     [_taskManager runRecipeList:recipeList
                      updateRepo:updateRepos
                           reply:^(NSDictionary *report, NSError *error) {
-                              NSAssert([NSThread isMainThread], @"reply not on main thread!!");
+                              NSAssert([NSThread isMainThread], @"Reply not on main thread!");
 
                               [self stopProgress:error];
                               if (report.count || error) {
@@ -216,7 +216,7 @@
             } else {
                 // if uninstalling turn off schedule in defaults so it's not automatically recreated
                 defaults.checkForNewVersionsOfAppsAutomaticallyEnabled = NO;
-                NSAlert *alert = [NSAlert alertWithMessageText:@"Removed AutoPkgr Associated files" defaultButton:@"Thanks for using AutoPkgr" alternateButton:nil otherButton:nil informativeTextWithFormat: @"including the helper tool, launchd schedule, and other launchd plist.  You can safely remove it from your Application Folder"];
+                NSAlert *alert = [NSAlert alertWithMessageText:@"Removed AutoPkgr associated files" defaultButton:@"Thanks for using AutoPkgr" alternateButton:nil otherButton:nil informativeTextWithFormat: @"including the helper tool, launchd schedule, and other launchd plist. You can safely remove it from your Applications folder."];
                 [alert runModal];
                 [[NSApplication sharedApplication]terminate:self];
             }

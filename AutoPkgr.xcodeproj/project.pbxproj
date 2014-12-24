@@ -54,7 +54,6 @@
 		BE1C810319E8224000EF77F3 /* NSImage+statusLight.m in Sources */ = {isa = PBXBuildFile; fileRef = BE1C810219E8224000EF77F3 /* NSImage+statusLight.m */; };
 		BE1C810419E8224000EF77F3 /* NSImage+statusLight.m in Sources */ = {isa = PBXBuildFile; fileRef = BE1C810219E8224000EF77F3 /* NSImage+statusLight.m */; };
 		BE32178B19ED9ACA00A92E5A /* LGRecipeOverrides.m in Sources */ = {isa = PBXBuildFile; fileRef = BE32178A19ED9ACA00A92E5A /* LGRecipeOverrides.m */; };
-		BED297611A3F975000511CD7 /* LGDefaults+JSSImporter.m in Sources */ = {isa = PBXBuildFile; fileRef = BED297601A3F975000511CD7 /* LGDefaults+JSSImporter.m */; };
 		BE57AC2A19BA3BBC00BB17B1 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = BE57AC2C19BA3BBC00BB17B1 /* Localizable.strings */; };
 		BE6815D51A0B18DE004AD310 /* LGUserNotifications.m in Sources */ = {isa = PBXBuildFile; fileRef = BE6815D41A0B18DE004AD310 /* LGUserNotifications.m */; };
 		BE73CDC719E062AC00441443 /* NSString+cleaned.m in Sources */ = {isa = PBXBuildFile; fileRef = BE73CDC619E062AC00441443 /* NSString+cleaned.m */; };
@@ -71,6 +70,7 @@
 		BEC1258B19F04703006696C4 /* LGPopularRepositories.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A0BABE8196E560000A136BB /* LGPopularRepositories.m */; };
 		BEC1258C19F049A1006696C4 /* LGTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = BE32178D19EDA15400A92E5A /* LGTableView.m */; };
 		BED02ADC1A194F9C00714CC2 /* NSArray+filtered.m in Sources */ = {isa = PBXBuildFile; fileRef = BED02ADB1A194F9C00714CC2 /* NSArray+filtered.m */; };
+		BED297611A3F975000511CD7 /* LGDefaults+JSSImporter.m in Sources */ = {isa = PBXBuildFile; fileRef = BED297601A3F975000511CD7 /* LGDefaults+JSSImporter.m */; };
 		BEE05F061A05CDBE00EF80B3 /* libPods-AutoPkgr-AHCodesignVerifier.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BEE05F051A05CDBE00EF80B3 /* libPods-AutoPkgr-AHCodesignVerifier.a */; };
 		BEE8CF1319E0E7F400981C4B /* NSTextField+setSafeStringValue.m in Sources */ = {isa = PBXBuildFile; fileRef = BEE8CF1219E0E7F400981C4B /* NSTextField+setSafeStringValue.m */; };
 		BEFC3C761A3DF16700C789E9 /* LGUserNotifications.m in Sources */ = {isa = PBXBuildFile; fileRef = BE6815D41A0B18DE004AD310 /* LGUserNotifications.m */; };
@@ -267,7 +267,7 @@
 		BE0BACD01A2560AE00554989 /* LGJSSDistributionPointsPrefPanel.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LGJSSDistributionPointsPrefPanel.xib; sourceTree = "<group>"; };
 		BE0E857719D668F600B25B5E /* LGHTTPRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGHTTPRequest.h; sourceTree = "<group>"; };
 		BE0E857819D668F600B25B5E /* LGHTTPRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGHTTPRequest.m; sourceTree = "<group>"; };
-		BE13A88919E2568D008A49A1 /* helper-tool-codesing-config.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = "helper-tool-codesing-config.py"; sourceTree = "<group>"; };
+		BE13A88919E2568D008A49A1 /* helper-tool-codesign-config.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = "helper-tool-codesign-config.py"; sourceTree = "<group>"; };
 		BE1C810119E8224000EF77F3 /* NSImage+statusLight.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSImage+statusLight.h"; path = "Custom Catagories/NSImage+statusLight.h"; sourceTree = "<group>"; };
 		BE1C810219E8224000EF77F3 /* NSImage+statusLight.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSImage+statusLight.m"; path = "Custom Catagories/NSImage+statusLight.m"; sourceTree = "<group>"; };
 		BE32178919ED9ACA00A92E5A /* LGRecipeOverrides.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGRecipeOverrides.h; sourceTree = "<group>"; };
@@ -275,8 +275,6 @@
 		BE32178C19EDA15400A92E5A /* LGTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGTableView.h; sourceTree = "<group>"; };
 		BE32178D19EDA15400A92E5A /* LGTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGTableView.m; sourceTree = "<group>"; };
 		BE34DF2B19AA21E200DC2FAF /* LGAutoPkgr.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LGAutoPkgr.h; sourceTree = "<group>"; };
-		BED2975F1A3F975000511CD7 /* LGDefaults+JSSImporter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "LGDefaults+JSSImporter.h"; path = "Custom Catagories/LGDefaults+JSSImporter.h"; sourceTree = "<group>"; };
-		BED297601A3F975000511CD7 /* LGDefaults+JSSImporter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "LGDefaults+JSSImporter.m"; path = "Custom Catagories/LGDefaults+JSSImporter.m"; sourceTree = "<group>"; };
 		BE57733619D519E400D872A4 /* LGJSSImporter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGJSSImporter.h; sourceTree = "<group>"; };
 		BE57733719D519E400D872A4 /* LGJSSImporter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGJSSImporter.m; sourceTree = "<group>"; };
 		BE57AC2B19BA3BBC00BB17B1 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -294,6 +292,8 @@
 		BEBF7B161A4894AC00E9967F /* LGVersioner.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGVersioner.m; sourceTree = "<group>"; };
 		BED02ADA1A194F9C00714CC2 /* NSArray+filtered.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSArray+filtered.h"; path = "Custom Catagories/NSArray+filtered.h"; sourceTree = "<group>"; };
 		BED02ADB1A194F9C00714CC2 /* NSArray+filtered.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSArray+filtered.m"; path = "Custom Catagories/NSArray+filtered.m"; sourceTree = "<group>"; };
+		BED2975F1A3F975000511CD7 /* LGDefaults+JSSImporter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "LGDefaults+JSSImporter.h"; path = "Custom Catagories/LGDefaults+JSSImporter.h"; sourceTree = "<group>"; };
+		BED297601A3F975000511CD7 /* LGDefaults+JSSImporter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "LGDefaults+JSSImporter.m"; path = "Custom Catagories/LGDefaults+JSSImporter.m"; sourceTree = "<group>"; };
 		BEE05F051A05CDBE00EF80B3 /* libPods-AutoPkgr-AHCodesignVerifier.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libPods-AutoPkgr-AHCodesignVerifier.a"; path = "../../../../Library/Developer/Xcode/DerivedData/AutoPkgr-gvffmulnnaejibfmmwfptzyobmbb/Build/Products/Debug/libPods-AutoPkgr-AHCodesignVerifier.a"; sourceTree = "<group>"; };
 		BEE8CF1119E0E7F400981C4B /* NSTextField+setSafeStringValue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSTextField+setSafeStringValue.h"; path = "Custom Catagories/NSTextField+setSafeStringValue.h"; sourceTree = "<group>"; };
 		BEE8CF1219E0E7F400981C4B /* NSTextField+setSafeStringValue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSTextField+setSafeStringValue.m"; path = "Custom Catagories/NSTextField+setSafeStringValue.m"; sourceTree = "<group>"; };
@@ -358,7 +358,7 @@
 			isa = PBXGroup;
 			children = (
 				1A2C7FAD19CC9F8300CFF472 /* codesign.py */,
-				BE13A88919E2568D008A49A1 /* helper-tool-codesing-config.py */,
+				BE13A88919E2568D008A49A1 /* helper-tool-codesign-config.py */,
 			);
 			path = scripts;
 			sourceTree = SOURCE_ROOT;
@@ -889,7 +889,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PROJECT_DIR}/scripts/helper-tool-codesing-config.py\"";
+			shellScript = "\"${PROJECT_DIR}/scripts/helper-tool-codesign-config.py\"";
 		};
 		BECFF2B619CA9854004C2721 /* Run Script */ = {
 			isa = PBXShellScriptBuildPhase;

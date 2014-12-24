@@ -579,7 +579,7 @@
     _taskManager.progressDelegate = _progressDelegate;
 
     [_taskManager repoUpdate:^(NSError *error) {
-        NSAssert([NSThread isMainThread], @"reply not on manin thread!!");
+        NSAssert([NSThread isMainThread], @"Reply not on main thread!");
         [_progressDelegate stopProgress:error];
         [_updateRepoNowButton setEnabled:YES];
         [_recipeTableViewHandler reload];
@@ -602,7 +602,7 @@
     [_taskManager runRecipeList:recipeList
                      updateRepo:NO
                           reply:^(NSDictionary *report, NSError *error) {
-                              NSAssert([NSThread isMainThread], @"reply not on manin thread!!");
+                              NSAssert([NSThread isMainThread], @"Reply not on main thread!");
 
                                 [_progressDelegate stopProgress:error];
                                 if (report.count || error) {

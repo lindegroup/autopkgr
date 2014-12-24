@@ -121,7 +121,7 @@ static const NSTimeInterval kHelperCheckInterval = 1.0; // how often to check wh
     // that the user matches the logged in (console) user.
     BOOL success = YES;
     NSString *loggedInUser = CFBridgingRelease(SCDynamicStoreCopyConsoleUser(NULL, NULL, NULL));
-    syslog(LOG_INFO, "Checking that logged in user is the same as the user to run the shcedule as: %s", loggedInUser.UTF8String);
+    syslog(LOG_INFO, "Checking that logged in user is the same as the user to run the schedule as: %s", loggedInUser.UTF8String);
 
     if (!loggedInUser || !user || ![user isEqualToString:loggedInUser]) {
         if (error) {

@@ -88,7 +88,7 @@
         NSDictionary *recipe = [_searchedRecipes objectAtIndex:row];
         if ([object isEqual:@YES]) {
             if (recipe[@"isMissingParentRecipe"]) {
-                NSLog(@"Missing Parent Recipe %@", recipe[kLGAutoPkgRecipeParentKey]);
+                NSLog(@"Missing parent recipe: %@", recipe[kLGAutoPkgRecipeParentKey]);
                 [LGError presentErrorWithCode:kLGErrorMissingParentRecipe];
             } else {
                 [_activeRecipes addObject:recipe[kLGAutoPkgRecipeIdentifierKey]];
@@ -332,7 +332,7 @@
     NSDictionary *recipe = [_searchedRecipes objectAtIndex:row];
 
     if (recipe[@"isMissingParentRecipe"]){
-        NSLog(@"Missing Parent Recipe");
+        NSLog(@"Missing parent recipe.");
     }
 
     menu = [[NSMenu alloc] init];
@@ -475,9 +475,9 @@
         return YES;
     }
 
-    NSString *infoText = @"As of version 1.2 AutoPkgr uses recipe Identifiers rather than short names to specify recipes, this makes it possible to schedule and run recipes from seperate repos that happen to have the same short name, such as Firefox.recipe.\n\nWe do our best to get this conversion right, but there's no guarentee, so double check what's enabled after this process.\n\nJust to be safe your current recipe_list.txt has been backed up as \"~/Library/Application Support/AutoPkgr/recipe_list.txt.v1.bak\".\n\nIf you choose to not continue you will need to roll back to an older v1.1.x version.";
+    NSString *infoText = @"As of version 1.2, AutoPkgr uses recipe identifiers rather than short names to specify recipes. This makes it possible to schedule and run recipes from seperate repos that happen to have the same short name.\n\nWe do our best to get this conversion right, but please double check that the recipes that are enabled after this process are the ones you intend.\n\nJust to be safe, your current recipe list has been backed up as \"~/Library/Application Support/AutoPkgr/recipe_list.txt.v1.bak\".\n\nIf you choose to cancel this upgrade, you will need to roll back to a version of AutoPkgr prior to 1.2.";
 
-    NSAlert *alert = [NSAlert alertWithMessageText:@"AutoPkgr v1.2 needs to migrate your current recipe list."
+    NSAlert *alert = [NSAlert alertWithMessageText:@"AutoPkgr needs to convert your recipe list."
                                      defaultButton:@"Continue"
                                    alternateButton:@"Cancel"
                                        otherButton:nil
@@ -515,7 +515,7 @@
         [defaults setBool:YES forKey:@"MigratedToIdentifiers"];
         // return NO if any were unable to be converted
         if (!success) {
-            NSLog(@"A possible error occured while converting the recipe list. We successfully converted %d out of %lu recipes. However it's also possible your recipe list was already converted. Please double check your enabled recipes.",i,(unsigned long)recipes.activeRecipes.count);
+            NSLog(@"An error may have occured while converting the recipe list. We successfully converted %d out of %lu recipes. However it's also possible your recipe list was already converted. Please double check your enabled recipes now.",i,(unsigned long)recipes.activeRecipes.count);
 
         }
         return  YES;

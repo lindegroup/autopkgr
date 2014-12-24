@@ -6,7 +6,7 @@ the root of your project.
 Add this next line (including quotes) as a "Run Script"
 right after Target Dependencies
 
-"${PROJECT_DIR}/scripts/helper-tool-codesing-config.py"
+"${PROJECT_DIR}/scripts/helper-tool-codesign-config.py"
 '''
 
 import os
@@ -26,7 +26,7 @@ HELPER_NAME_OVERRIDE = ''
 
 TMP_FILENAME = 'code_sign_tmp_file'
 
-def get_code_sing_ident(build_dir):
+def get_code_sign_ident(build_dir):
     '''Get code signing identity'''
     identity = os.getenv('CODE_SIGN_IDENTITY')
     check_var(identity)
@@ -64,7 +64,7 @@ def edit_app_info_plist(cert_id, app_name):
         csstring = cert_id.replace(TMP_FILENAME, helper_id)
         plist['SMPrivilegedExecutables'] = {helper_id:csstring}
     except Exception:
-        print "There is No Info.plist for them main app, somethings really wrong"
+        print "There is no Info.plist for them main app. Something's really wrong."
         exit(1)
 
     plistlib.writePlist(plist, app_info_plist)
@@ -83,7 +83,7 @@ def edit_helper_info_plist(cert_id, project_path, bundle_id, app_name):
         plist = plistlib.readPlist(helper_info_plist)
         plist['SMAuthorizedClients'] = [csstring]
     except Exception:
-        print "There is No Info.plist for helper tool, somethings really wrong"
+        print "There is no Info.plist for them main app. Something's really wrong."
         exit(1)
 
 
@@ -118,7 +118,7 @@ def main():
     app_name = os.getenv('PRODUCT_NAME')
 
     # Get the existing cert values
-    cs_ident = get_code_sing_ident(build_dir)
+    cs_ident = get_code_sign_ident(build_dir)
 
     # write out to the helper tool
     bundle_id, helper_id = edit_app_info_plist(cs_ident, app_name)

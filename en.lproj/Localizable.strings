@@ -34,7 +34,7 @@
 
 /** Error when trying to activate a recipe when the parent is not installed */
 "kLGErrorMissingParentRecipeDescription" = "Parent Recipe not available";
-"kLGErrorMissingParentRecipeSuggestion" = "The Parent Recipe for that recipe is not included in any of the active repos. You will need to determine which repo it's included with and enable that repo.";
+"kLGErrorMissingParentRecipeSuggestion" = "The parent recipe for that recipe is not included in any of the active repos. You will need to determine which repo it's included with and enable that repo.";
 
 /** Error installing Git */
 "kLGErrorInstallGitDescription" = "Error installing/updating Git";
@@ -54,11 +54,11 @@
 
 /** Error Serializing JSS response */
 "kLGErrorJSSXMLSerializerErrorDescription" = "Error getting distribution points";
-"kLGErrorJSSXMLSerializerErrorSuggestion" = "The Casper server's response could not be correctly interpreted";
+"kLGErrorJSSXMLSerializerErrorSuggestion" = "The Casper server's response could not be correctly interpreted.";
 
 /** Error with schedule interval */
 "kLGErrorIncorrectScheduleTimerIntervalDescription" = "Error setting timer";
-"kLGErrorIncorrectScheduleTimerIntervalSuggestion" = "The start timer interval for scheduled runs is not correct, it must be a number and not 0";
+"kLGErrorIncorrectScheduleTimerIntervalSuggestion" = "The start timer interval for scheduled runs is not correct, it must be a number and not 0.";
 
 /** Error authorization canceled by user*/
 "kLGErrorAuthChallenge" = "Error creating authorization";
