@@ -89,9 +89,13 @@
     // it doesn't make sense, it's an easy enough fix to apply here by looking
     // for a trailing slash and simply removing that.
     NSMutableString *url = [NSMutableString stringWithString:_jssURLTF.stringValue];
-    while ([[url substringFromIndex:url.length - 1] isEqualToString:@"/"]) {
-        [url deleteCharactersInRange:NSMakeRange(url.length - 1, 1)];
+
+    if (url.length > 2) {
+        while ([[url substringFromIndex:url.length - 1] isEqualToString:@"/"]) {
+            [url deleteCharactersInRange:NSMakeRange(url.length - 1, 1)];
+        }
     }
+
     _jssURLTF.safeStringValue = url;
 
     [self evaluateRepoViability];
