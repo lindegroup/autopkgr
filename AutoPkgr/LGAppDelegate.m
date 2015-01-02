@@ -295,14 +295,12 @@
 
 - (IBAction)changeCheckForNewVersionsOfAppsAutomatically:(id)sender
 {
-    LGDefaults *_defaults = [LGDefaults standardUserDefaults];
     if ([sender isEqualTo:_autoCheckForUpdatesMenuItem]) {
         _autoCheckForUpdatesMenuItem.state = !_autoCheckForUpdatesMenuItem.state;
     }
 
-    BOOL currentlyScheduled = [LGAutoPkgSchedule updateAppsIsScheduled:nil];
-
-    NSLog(@"%@ autopkg run schedule.", currentlyScheduled ? @"Enabling" : @"Disabling");
+    NSInteger scheduledInterval;
+    BOOL currentlyScheduled = [LGAutoPkgSchedule updateAppsIsScheduled:&scheduledInterval];
 
     BOOL start = currentlyScheduled;
     if (![sender isEqualTo:_configurationWindowController.autoPkgRunInterval]) {
@@ -310,11 +308,10 @@
     }
 
     BOOL force = NO;
-
     NSInteger interval = _configurationWindowController.autoPkgRunInterval.integerValue;
 
     if ([sender isEqualTo:_configurationWindowController.autoPkgRunInterval]) {
-        if (!start || _defaults.autoPkgRunInterval == _configurationWindowController.autoPkgRunInterval.integerValue) {
+        if (!start || scheduledInterval == _configurationWindowController.autoPkgRunInterval.integerValue) {
             return;
         }
         // We set force here so it will reload the schedule
@@ -322,6 +319,7 @@
         force = YES;
     }
 
+    NSLog(@"%@ autopkg run schedule.", currentlyScheduled ? @"Enabling" : @"Disabling");
     [LGAutoPkgSchedule startAutoPkgSchedule:start interval:interval isForced:force reply:^(NSError *error) {
         [[NSOperationQueue mainQueue] addOperationWithBlock:^{
             NSInteger timer;
