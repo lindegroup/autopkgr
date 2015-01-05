@@ -41,8 +41,7 @@ NSString *const kLGJSSImporterUpdateAvailableLabel = @"An update is available fo
 #pragma mark - Static URLs
 #pragma mark-- GitHub
 NSString *const kLGAutoPkgReleasesJSONURL = @"https://api.github.com/repos/autopkg/autopkg/releases";
-NSString *const kLGGitMAVReleasesJSONURL = @"https://api.github.com/repos/timcharper/git_osx_installer/releases";
-NSString *const kLGGitMLReleasesJSONURL = @"https://api.github.com/repos/eahrold/git-for-mountainlion/releases";
+NSString *const kLGGitReleasesJSONURL = @"https://api.github.com/repos/timcharper/git_osx_installer/releases";
 NSString *const kLGJSSImporterJSONURL = @"https://api.github.com/repos/sheagcraig/JSSImporter/releases";
 
 NSString *const kLGAutoPkgRepositoriesJSONURL = @"https://api.github.com/orgs/autopkg/repos?per_page=100";

@@ -21,6 +21,8 @@
 
 #import <XCTest/XCTest.h>
 #import "LGInstaller.h"
+#import "LGGitHubJSONLoader.h"
+#import "LGAutoPkgr.h"
 
 @interface AutoPkgrTests : XCTestCase
 
@@ -42,23 +44,63 @@
 
 - (void)testInstallGit
 {
-    NSError *error;
+    XCTestExpectation *expectation = [self expectationWithDescription:@"Git Install Async"];
+
     LGInstaller *installer = [[LGInstaller alloc] init];
-    XCTAssertTrue([installer runGitInstaller:&error], @"%@",error);
+    [installer installGit:^(NSError *error) {
+        XCTAssertNil(error, @"Error installing Git: %@",error);
+        [expectation fulfill];
+    }];
+
+    [self waitForExpectationsWithTimeout:300 handler:^(NSError *error) {
+        if(error)
+        {
+            XCTFail(@"Expectation Failed with error: %@", error);
+        }
+    }];
 }
 
 - (void)testInstallAutoPkg
 {
-    NSError *error;
+    XCTestExpectation *expectation = [self expectationWithDescription:@"AutoPkg Install Async"];
+
     LGInstaller *installer = [[LGInstaller alloc] init];
-    XCTAssertTrue([installer runAutoPkgInstaller:&error], @"%@",error);
+    [installer installAutoPkg:^(NSError *error) {
+        XCTAssertNil(error, @"Error installing AutoPkgr: %@",error);
+        [expectation fulfill];
+    }];
+
+    [self waitForExpectationsWithTimeout:300 handler:^(NSError *error) {
+        if(error)
+        {
+            XCTFail(@"Expectation Failed with error: %@", error);
+        }
+    }];
 }
 
 - (void)testInstallJSSImporter
 {
-    NSError *error;
+    XCTestExpectation *expectation = [self expectationWithDescription:@"JSSImporter Install Async"];
+
     LGInstaller *installer = [[LGInstaller alloc] init];
-    XCTAssertTrue([installer runJSSImporterInstaller:&error], @"%@",error);
+    [installer installJSSImporter:^(NSError *error) {
+        XCTAssertNil(error, @"Error installing JSSImporter: %@",error);
+        [expectation fulfill];
+    }];
+
+    [self waitForExpectationsWithTimeout:300 handler:^(NSError *error) {
+        if(error)
+        {
+            XCTFail(@"Expectation Failed with error: %@", error);
+        }
+    }];
+}
+
+- (void)testLatestReleases
+{
+    LGGitHubJSONLoader *loader = [[LGGitHubJSONLoader alloc] init];
+    NSArray *array = [loader latestReleaseDownloads:kLGGitReleasesJSONURL];
+    NSLog(@"%@",array);
 }
 
 @end

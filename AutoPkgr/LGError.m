@@ -72,6 +72,9 @@ static NSDictionary *userInfoFromCode(LGErrorCodes code)
         case kLGErrorInstallJSSImporter:
             localizedBaseString = @"kLGErrorInstallJSSImporter";
             break;
+        case kLGErrorInstallingGeneric:
+            localizedBaseString = @"kLGErrorInstallingGeneric";
+            break;
         case kLGErrorJSSXMLSerializerError:
             localizedBaseString = @"kLGErrorJSSXMLSerializerError";
             break;

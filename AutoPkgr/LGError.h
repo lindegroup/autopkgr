@@ -45,6 +45,8 @@ typedef NS_ENUM(NSInteger, LGErrorCodes) {
     kLGErrorInstallAutoPkgr,
     /** Error installing JSSImporter */
     kLGErrorInstallJSSImporter,
+    /** Generic error installing */
+    kLGErrorInstallingGeneric,
     /** Error serializing xml object */
     kLGErrorJSSXMLSerializerError,
     /** Error Schedule timer incorrect */
