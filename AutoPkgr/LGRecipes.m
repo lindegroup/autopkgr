@@ -62,6 +62,7 @@
 {
     _recipes = [[self getAllRecipes] removeEmptyStrings];
     [self executeAppSearch:self];
+    [self writeRecipeList];
 }
 
 #pragma mark - Table View
@@ -131,8 +132,6 @@
 #pragma mark - Recipe List
 - (void)writeRecipeList
 {
-    NSError *error;
-
     // This runs through the updated recipes and removes any recipes from the
     // activeApps array that cannot be found in the _recipes array.
     for (NSString *string in [_activeRecipes copy]) {
@@ -143,35 +142,7 @@
         }
     }
 
-    NSString *autoPkgrSupportDirectory = [LGHostInfo getAppSupportDirectory];
-    if ([autoPkgrSupportDirectory isEqual:@""]) {
-        NSLog(@"Could not write recipe_list.txt.");
-        return;
-    }
-
-    NSString *makeCatalogsIdentifier = @"com.github.autopkg.munki.makecatalogs";
-
-    NSString *recipeListFile = [autoPkgrSupportDirectory stringByAppendingString:@"/recipe_list.txt"];
-
-    NSPredicate *makeCatalogPredicate = [NSPredicate predicateWithFormat:@"not SELF contains[cd] %@", makeCatalogsIdentifier];
-
-    NSPredicate *munkiPredicate = [NSPredicate predicateWithFormat:@"SELF contains[cd] 'munki'"];
-
-    // Make a working array filtering out any instances of MakeCatalogs.munki, so there will only be one occurrence
-    [_activeRecipes filterUsingPredicate:makeCatalogPredicate];
-    // Check if any of the apps is a .munki run
-    if ([_activeRecipes filteredArrayUsingPredicate:munkiPredicate].count) {
-        // If so add MakeCatalogs.munki to the end of the list (so it runs last)
-        [_activeRecipes addObject:makeCatalogsIdentifier];
-    }
-
-    NSString *recipe_list = [[_activeRecipes removeEmptyStrings] componentsJoinedByString:@"\n"];
-
-    [recipe_list writeToFile:recipeListFile atomically:YES encoding:NSUTF8StringEncoding error:&error];
-
-    if (error) {
-        NSLog(@"Error while writing %@.", recipeListFile);
-    }
+    [[self class] writeRecipeList:_activeRecipes];
 }
 
 - (NSArray *)getAllRecipes
@@ -433,6 +404,48 @@
 {
     NSString *applicationSupportDirectory = [LGHostInfo getAppSupportDirectory];
     return [applicationSupportDirectory stringByAppendingString:@"/recipe_list.txt"];
+}
+
++ (void)removeRecipeFromRecipeList:(NSString *)recipe
+{
+    NSMutableArray *recipes = [[[self class] getActiveRecipes] mutableCopy];
+    [recipes removeObject:recipe];
+    [[self class] writeRecipeList:recipes];
+}
+
++ (void)writeRecipeList:(NSMutableArray *)recipes
+{
+    NSError *error;
+
+    NSString *autoPkgrSupportDirectory = [LGHostInfo getAppSupportDirectory];
+    if ([autoPkgrSupportDirectory isEqual:@""]) {
+        NSLog(@"Could not write recipe_list.txt.");
+        return;
+    }
+
+    NSString *makeCatalogsIdentifier = @"com.github.autopkg.munki.makecatalogs";
+
+    NSString *recipeListFile = [autoPkgrSupportDirectory stringByAppendingString:@"/recipe_list.txt"];
+
+    NSPredicate *makeCatalogPredicate = [NSPredicate predicateWithFormat:@"not SELF contains[cd] %@", makeCatalogsIdentifier];
+
+    NSPredicate *munkiPredicate = [NSPredicate predicateWithFormat:@"SELF contains[cd] 'munki'"];
+
+    // Make a working array filtering out any instances of MakeCatalogs.munki, so there will only be one occurrence
+    [recipes filterUsingPredicate:makeCatalogPredicate];
+    // Check if any of the apps is a .munki run
+    if ([recipes filteredArrayUsingPredicate:munkiPredicate].count) {
+        // If so add MakeCatalogs.munki to the end of the list (so it runs last)
+        [recipes addObject:makeCatalogsIdentifier];
+    }
+
+    NSString *recipe_list = [[recipes removeEmptyStrings] componentsJoinedByString:@"\n"];
+    [recipe_list writeToFile:recipeListFile atomically:YES encoding:NSUTF8StringEncoding error:&error];
+
+    if (error) {
+        NSLog(@"Error while writing %@.", recipeListFile);
+    }
+
 }
 
 + (NSArray *)getActiveRecipes

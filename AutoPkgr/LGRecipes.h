@@ -25,12 +25,49 @@
 
 @interface LGRecipes : NSObject <NSApplicationDelegate, NSTableViewDataSource, NSTableViewDelegate>
 
+/**
+ *  Path to the recipe_list.txt file.
+ *
+ *  @return Path to the recipe_list.txt file
+ */
 + (NSString *)recipeList;
+
+/**
+ *  Remove a recipe from the recipe list by name.
+ *
+ *  @param recipe Name of the recipe to remove
+ */
++ (void)removeRecipeFromRecipeList:(NSString *)recipe;
+
+/**
+ *  Write an array to the recipe list file.
+ *
+ *  @param recipes array of recipes
+ */
++ (void)writeRecipeList:(NSMutableArray *)recipes;
+
+/**
+ *  Array of the recipes currently in the recipe_list.txt.
+ *
+ *  @return NSArray of recipes.
+ */
 + (NSArray *)getActiveRecipes;
 
+/**
+ *  Migrate a recipe_list.txt file from recipe shortnames to recipe identifiers.
+ *
+ *  @param error populated error object if any error occurs during migration.
+ *
+ *  @return YES if conversion was successful, NO if any error occured, even minor errors.
+ */
++ (BOOL)migrateToIdentifiers:(NSError**)error;
+
+/**
+ *  reload the Recipe TableView
+ */
 - (void)reload;
+
 - (NSMenu *)contextualMenuForRecipeAtRow:(NSInteger)row;
 
-+ (BOOL)migrateToIdentifiers:(NSError**)error;
 
 @end

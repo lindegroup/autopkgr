@@ -20,6 +20,7 @@
 //
 
 #import "LGEmailer.h"
+#import "LGRecipes.h"
 #import "LGAutoPkgr.h"
 #import "LGHostInfo.h"
 #import "AHKeychain.h"
@@ -201,6 +202,7 @@
         DLog(@"Nothing new was downloaded.");
     }
 
+    // Process error
     if (error) {
         if (!message) {
             message = [[NSMutableString alloc] init];
@@ -208,10 +210,31 @@
             [message appendString:@"<br/>"];
         }
 
+        // Set up a few CSS styles
+        [message appendString:@"<style>.tabbed {margin-left: 1em;} .tabbed2 {margin-left: 2em;}</style>"];
+
         if (!subject) {
             subject = [NSString stringWithFormat:@"[%@] Error occured while running AutoPkg", kLGApplicationName];
         }
-        [message appendFormat:@"<strong>The following error occured:</strong><br /><br />%@<br />%@", error.localizedDescription, error.localizedRecoverySuggestion];
+
+        NSArray *recoverySuggestions = [error.localizedRecoverySuggestion
+                                        componentsSeparatedByCharactersInSet:[NSCharacterSet newlineCharacterSet]];
+
+        [message appendFormat:@"<strong>The following error%@ occured:</strong><br/>",recoverySuggestions.count > 1 ? @"s":@""];
+
+        NSString *noValidRecipe = @"No valid recipe found for ";
+        NSPredicate *noValidRecipePredicate = [NSPredicate predicateWithFormat:@"SELF BEGINSWITH %@", noValidRecipe];
+
+        for (NSString *string in [recoverySuggestions removeEmptyStrings]) {
+            if ([noValidRecipePredicate evaluateWithObject:string]) {
+                // Remove Recipe from Recipe.txt
+
+                [LGRecipes removeRecipeFromRecipeList:[[string componentsSeparatedByString:noValidRecipe] lastObject]];
+                [message appendFormat:@"<p class =\"tabbed\">%@. It has been automatically removed from your recipe list in order to prevent recurring errors.</p>", string];
+            } else {
+                [message appendFormat:@"<p class =\"tabbed\">%@</p>", string];
+            }
+        }
     }
 
     if (message) {
