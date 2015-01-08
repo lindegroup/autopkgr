@@ -37,6 +37,8 @@
 + (NSMenu *)contextualMenuForRepo:(NSString *)repo;
 - (void)reload;
 
+@property (weak) IBOutlet NSWindow *modalWindow;
+
 @property (weak) IBOutlet LGTableView *popularRepositoriesTableView;
 @property (weak) IBOutlet NSSearchField *repoSearch;
 @property (weak) IBOutlet LGRecipes *recipesObject;

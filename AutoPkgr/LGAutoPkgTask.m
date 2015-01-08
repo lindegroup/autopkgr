@@ -30,9 +30,9 @@ NSString *const kLGAutoPkgRecipeNameKey = @"Name";
 NSString *const kLGAutoPkgRecipeIdentifierKey = @"Identifier";
 NSString *const kLGAutoPkgRecipeParentKey = @"ParentRecipe";
 NSString *const kLGAutoPkgRecipePathKey = @"Path";
-NSString *const kLGAutoPkgRepoNameKey = @"repo_name";
-NSString *const kLGAutoPkgRepoPathKey = @"repo_path";
-NSString *const kLGAutoPkgRepoURLKey = @"repo_url";
+NSString *const kLGAutoPkgRepoNameKey = @"RepoName";
+NSString *const kLGAutoPkgRepoPathKey = @"RepoPath";
+NSString *const kLGAutoPkgRepoURLKey = @"RepoURL";
 
 // This is a function so in the future this could be configured to
 // determine autopkg path in a more robust way.
@@ -656,7 +656,7 @@ typedef void (^AutoPkgReplyErrorBlock)(NSError *error);
                             }
                             [searchResults addObject:@{kLGAutoPkgRecipeNameKey:[recipe stringByDeletingPathExtension],
                                                        kLGAutoPkgRepoNameKey:repo,
-                                                       kLGAutoPkgRepoPathKey:path,
+                                                       kLGAutoPkgRecipePathKey:path,
                                                        }];
                         }
                     }

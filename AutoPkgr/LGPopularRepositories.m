@@ -21,8 +21,11 @@
 
 #import "LGPopularRepositories.h"
 #import "LGAutoPkgr.h"
+#import "LGRecipeSearch.h"
 
-@implementation LGPopularRepositories
+@implementation LGPopularRepositories{
+    LGRecipeSearch *_searchPanel;
+}
 
 - (id)init
 {
@@ -102,14 +105,14 @@
 - (void)assembleRepos
 {
     _activeRepos = [LGAutoPkgTask repoList];
-    NSMutableArray *workingPR = [NSMutableArray arrayWithArray:_popularRepos];
+    NSMutableArray *workingPR = [_popularRepos mutableCopy];
     for (NSDictionary *dict in _activeRepos) {
         if (![workingPR containsObject:dict[kLGAutoPkgRepoURLKey]]) {
             [workingPR addObject:dict[kLGAutoPkgRepoURLKey]];
         }
     }
 
-    _popularRepos = [NSArray arrayWithArray:workingPR];
+    _popularRepos = [workingPR copy];
     [self executeRepoSearch:nil];
 }
 
@@ -186,9 +189,32 @@
     // TODO: Eventually this could be setup for something
     // The AutoPkgTask repo-list needs to be reworked to send back an array of dicts.
     NSMenu *menu = [[NSMenu alloc] init];
-    NSMenuItem *item = [[NSMenuItem alloc] initWithTitle:@"Reveal in Finder" action:nil keyEquivalent:@""];
+    NSMenuItem *item = [[NSMenuItem alloc] initWithTitle:@"Reveal in Finder"
+                                                  action:nil keyEquivalent:@""];
     [menu addItem:item];
     return menu;
+}
+
+#pragma mark - Search Panel
+- (IBAction)openSearchPanel:(id)sender
+{
+    if (!_searchPanel) {
+        _searchPanel = [[LGRecipeSearch alloc] init];
+    }
+    
+    [NSApp beginSheet:_searchPanel.window
+       modalForWindow:self.modalWindow
+        modalDelegate:self
+       didEndSelector:@selector(didCloseSearchPanel)
+          contextInfo:NULL];
+}
+
+- (void)didCloseSearchPanel{
+    [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+        [_searchPanel.window close];
+        _searchPanel = nil;
+        [self reload];
+    }];
 }
 
 @end
