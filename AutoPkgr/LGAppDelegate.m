@@ -199,8 +199,6 @@
 - (IBAction)uninstallHelper:(id)sender
 {
     LGAutoPkgrHelperConnection *helper = [LGAutoPkgrHelperConnection new];
-    LGDefaults *defaults = [[LGDefaults alloc] init];
-
     NSData *authData = [LGAutoPkgrAuthorizer authorizeHelper];
 
     [helper connectToHelper];
@@ -215,7 +213,6 @@
                 }];
             } else {
                 // if uninstalling turn off schedule in defaults so it's not automatically recreated
-                defaults.checkForNewVersionsOfAppsAutomaticallyEnabled = NO;
                 NSAlert *alert = [NSAlert alertWithMessageText:@"Removed AutoPkgr associated files" defaultButton:@"Thanks for using AutoPkgr" alternateButton:nil otherButton:nil informativeTextWithFormat: @"including the helper tool, launchd schedule, and other launchd plist. You can safely remove it from your Applications folder."];
                 [alert runModal];
                 [[NSApplication sharedApplication]terminate:self];

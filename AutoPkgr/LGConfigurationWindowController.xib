@@ -47,7 +47,6 @@
                 <outlet property="testSmtpServerSpinner" destination="6ha-Zn-VKa" id="gnY-fl-miO"/>
                 <outlet property="testSmtpServerStatus" destination="VDb-hs-bB1" id="jIN-1C-wZW"/>
                 <outlet property="updateRepoNowButton" destination="X02-En-nic" id="yZU-6m-VPk"/>
-                <outlet property="warnBeforeQuittingButton" destination="KMe-Rd-d2t" id="28W-Xr-e8Z"/>
                 <outlet property="window" destination="F0z-JX-Cv5" id="gIp-Ho-8D9"/>
             </connections>
         </customObject>
@@ -160,16 +159,6 @@
                                                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                                     </textFieldCell>
                                                 </textField>
-                                                <button translatesAutoresizingMaskIntoConstraints="NO" id="KMe-Rd-d2t">
-                                                    <rect key="frame" x="198" y="21" width="215" height="18"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="width" constant="211" id="ily-V7-o6E"/>
-                                                    </constraints>
-                                                    <buttonCell key="cell" type="check" title="Warn before quitting AutoPkgr" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="SHW-TF-Y2L">
-                                                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
-                                                        <font key="font" metaFont="system"/>
-                                                    </buttonCell>
-                                                </button>
                                             </subviews>
                                             <constraints>
                                                 <constraint firstItem="x1S-bd-tl3" firstAttribute="width" secondItem="ClY-1a-e2c" secondAttribute="width" id="0Rl-Lx-Jc3"/>
@@ -190,12 +179,10 @@
                                                 <constraint firstItem="f8q-xY-QUg" firstAttribute="leading" secondItem="x1S-bd-tl3" secondAttribute="trailing" constant="8" id="cra-8T-RjN"/>
                                                 <constraint firstAttribute="centerX" secondItem="ClY-1a-e2c" secondAttribute="centerX" constant="116.5" id="g7p-PG-fiZ"/>
                                                 <constraint firstItem="Pbf-A7-T4b" firstAttribute="leading" secondItem="f8q-xY-QUg" secondAttribute="trailing" constant="8" id="jqJ-1g-M7m"/>
-                                                <constraint firstAttribute="centerX" secondItem="KMe-Rd-d2t" secondAttribute="centerX" constant="3" id="kEh-Sa-lcW"/>
                                                 <constraint firstAttribute="centerY" secondItem="kGA-EW-Dsj" secondAttribute="centerY" constant="-83" id="keY-ao-C57"/>
                                                 <constraint firstItem="KkE-qM-Hy6" firstAttribute="leading" secondItem="ClY-1a-e2c" secondAttribute="trailing" constant="8" id="oHr-K9-shF"/>
                                                 <constraint firstAttribute="centerY" secondItem="f8q-xY-QUg" secondAttribute="centerY" constant="-42" id="poa-PN-pTo"/>
                                                 <constraint firstAttribute="centerY" secondItem="Pbf-A7-T4b" secondAttribute="centerY" constant="-41.5" id="sK0-IT-bXJ"/>
-                                                <constraint firstAttribute="bottom" secondItem="KMe-Rd-d2t" secondAttribute="bottom" constant="23" id="yEb-cc-gm2"/>
                                                 <constraint firstItem="uPW-I4-WKp" firstAttribute="width" secondItem="x1S-bd-tl3" secondAttribute="width" id="yyb-LM-xIe"/>
                                             </constraints>
                                         </view>
@@ -1289,10 +1276,7 @@
                                                                 </tableHeaderView>
                                                             </scrollView>
                                                             <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="bP2-yc-Y9I">
-                                                                <rect key="frame" x="66" y="8" width="158" height="28"/>
-                                                                <constraints>
-                                                                    <constraint firstAttribute="width" constant="148" id="DkS-c1-cKo"/>
-                                                                </constraints>
+                                                                <rect key="frame" x="23" y="8" width="145" height="28"/>
                                                                 <buttonCell key="cell" type="push" title="Add Distribution Point" bezelStyle="rounded" alignment="center" controlSize="small" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="c7k-eo-8gx">
                                                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                                                     <font key="font" metaFont="smallSystem"/>
@@ -1302,9 +1286,9 @@
                                                                 </connections>
                                                             </button>
                                                             <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="7Lj-Se-MNx">
-                                                                <rect key="frame" x="222" y="8" width="158" height="28"/>
+                                                                <rect key="frame" x="173" y="8" width="140" height="28"/>
                                                                 <constraints>
-                                                                    <constraint firstAttribute="width" constant="148" id="waM-NM-J3j"/>
+                                                                    <constraint firstAttribute="width" constant="130" id="Kvr-9c-xzX"/>
                                                                 </constraints>
                                                                 <buttonCell key="cell" type="push" title="Edit Selected" bezelStyle="rounded" alignment="center" controlSize="small" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="so1-eQ-Gsw">
                                                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
@@ -1315,9 +1299,9 @@
                                                                 </connections>
                                                             </button>
                                                             <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="3nm-a0-5bT">
-                                                                <rect key="frame" x="378" y="8" width="158" height="28"/>
+                                                                <rect key="frame" x="316" y="8" width="141" height="28"/>
                                                                 <constraints>
-                                                                    <constraint firstAttribute="width" constant="148" id="vJx-4Y-tX3"/>
+                                                                    <constraint firstAttribute="width" constant="131" id="btF-3n-m0p"/>
                                                                 </constraints>
                                                                 <buttonCell key="cell" type="push" title="Remove Selected" bezelStyle="rounded" alignment="center" controlSize="small" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="z6x-VY-deB">
                                                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
@@ -1327,37 +1311,49 @@
                                                                     <action selector="removeDistributionPoint:" target="0iG-YL-fA3" id="y8h-Vq-nDx"/>
                                                                 </connections>
                                                             </button>
+                                                            <button translatesAutoresizingMaskIntoConstraints="NO" id="lpc-x9-S3q">
+                                                                <rect key="frame" x="469" y="14" width="116" height="18"/>
+                                                                <buttonCell key="cell" type="check" title="Use Master JDS" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="x9m-4x-ZIz">
+                                                                    <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                                                    <font key="font" metaFont="system"/>
+                                                                </buttonCell>
+                                                                <connections>
+                                                                    <action selector="enableMasterJDS:" target="0iG-YL-fA3" id="LJm-Xd-XfA"/>
+                                                                </connections>
+                                                            </button>
                                                         </subviews>
                                                     </view>
                                                     <constraints>
                                                         <constraint firstItem="pyb-Pf-WKJ" firstAttribute="top" secondItem="QM0-hF-4j5" secondAttribute="top" constant="60" id="0jG-AI-6ZF"/>
+                                                        <constraint firstItem="bP2-yc-Y9I" firstAttribute="baseline" secondItem="7Lj-Se-MNx" secondAttribute="baseline" id="1Kz-gL-fD9"/>
                                                         <constraint firstItem="TfY-fp-ztg" firstAttribute="leading" secondItem="QM0-hF-4j5" secondAttribute="leading" constant="16" id="4ku-ve-NVr"/>
                                                         <constraint firstItem="6MF-CB-ccc" firstAttribute="centerY" secondItem="gcn-rW-umQ" secondAttribute="centerY" constant="0.5" id="503-vV-Cyg"/>
-                                                        <constraint firstAttribute="bottom" secondItem="7Lj-Se-MNx" secondAttribute="bottom" constant="11" id="5Vt-D0-fFr"/>
                                                         <constraint firstItem="9lJ-vz-FvC" firstAttribute="leading" secondItem="pyb-Pf-WKJ" secondAttribute="trailing" constant="8" id="7h1-aI-yoO"/>
                                                         <constraint firstItem="IMP-Hl-JTs" firstAttribute="top" secondItem="QM0-hF-4j5" secondAttribute="top" constant="28" id="8rz-qn-7yK"/>
                                                         <constraint firstItem="6MF-CB-ccc" firstAttribute="centerX" secondItem="gcn-rW-umQ" secondAttribute="centerX" id="9L9-PL-qgo"/>
+                                                        <constraint firstItem="3nm-a0-5bT" firstAttribute="leading" secondItem="7Lj-Se-MNx" secondAttribute="trailing" constant="13" id="FLY-hA-eqb"/>
+                                                        <constraint firstItem="lpc-x9-S3q" firstAttribute="leading" secondItem="3nm-a0-5bT" secondAttribute="trailing" constant="19" id="Gdl-GQ-qgV"/>
                                                         <constraint firstAttribute="trailing" secondItem="TfY-fp-ztg" secondAttribute="trailing" constant="16" id="HPS-IG-9Ox"/>
                                                         <constraint firstItem="LS6-bP-hJx" firstAttribute="leading" secondItem="9lJ-vz-FvC" secondAttribute="trailing" constant="8" id="J46-UT-wQe"/>
-                                                        <constraint firstAttribute="bottom" secondItem="bP2-yc-Y9I" secondAttribute="bottom" constant="11" id="Lbe-jN-IPU"/>
+                                                        <constraint firstItem="7Lj-Se-MNx" firstAttribute="baseline" secondItem="3nm-a0-5bT" secondAttribute="baseline" id="Kvj-cI-GJC"/>
                                                         <constraint firstItem="6MF-CB-ccc" firstAttribute="top" secondItem="QM0-hF-4j5" secondAttribute="top" constant="30" id="P1I-fY-SbK"/>
+                                                        <constraint firstItem="3nm-a0-5bT" firstAttribute="top" secondItem="TfY-fp-ztg" secondAttribute="bottom" constant="8" symbolic="YES" id="PxJ-Hn-7zQ"/>
                                                         <constraint firstAttribute="trailing" secondItem="6MF-CB-ccc" secondAttribute="trailing" constant="15" id="QTU-cf-dMe"/>
                                                         <constraint firstItem="6Ki-wr-8K2" firstAttribute="leading" secondItem="uZo-nq-Njx" secondAttribute="trailing" constant="8" id="VNX-lr-Qoo"/>
+                                                        <constraint firstAttribute="trailing" secondItem="3nm-a0-5bT" secondAttribute="trailing" constant="149" id="VtO-oA-eEx"/>
                                                         <constraint firstItem="9lJ-vz-FvC" firstAttribute="top" secondItem="QM0-hF-4j5" secondAttribute="top" constant="57" id="WOy-in-uw7"/>
                                                         <constraint firstItem="6Ki-wr-8K2" firstAttribute="top" secondItem="QM0-hF-4j5" secondAttribute="top" constant="57" id="X09-lu-Gft"/>
-                                                        <constraint firstItem="7Lj-Se-MNx" firstAttribute="centerX" secondItem="TfY-fp-ztg" secondAttribute="centerX" constant="-0.5" id="Y6L-EN-I30"/>
                                                         <constraint firstItem="pyb-Pf-WKJ" firstAttribute="leading" secondItem="6Ki-wr-8K2" secondAttribute="trailing" constant="13" id="Yca-Kc-O0c"/>
+                                                        <constraint firstAttribute="bottom" secondItem="TfY-fp-ztg" secondAttribute="bottom" constant="37" id="YeR-ig-ezZ"/>
                                                         <constraint firstItem="uZo-nq-Njx" firstAttribute="top" secondItem="QM0-hF-4j5" secondAttribute="top" constant="60" id="Yjx-7L-oYO"/>
                                                         <constraint firstItem="IMP-Hl-JTs" firstAttribute="leading" secondItem="QM0-hF-4j5" secondAttribute="leading" constant="10" id="a2A-bm-qdl"/>
-                                                        <constraint firstAttribute="bottom" secondItem="3nm-a0-5bT" secondAttribute="bottom" constant="11" id="aOs-wR-cqi"/>
-                                                        <constraint firstItem="3nm-a0-5bT" firstAttribute="leading" secondItem="7Lj-Se-MNx" secondAttribute="trailing" constant="8" id="buK-Xh-QCy"/>
                                                         <constraint firstItem="mbd-An-9Bi" firstAttribute="top" secondItem="QM0-hF-4j5" secondAttribute="top" constant="25" id="ewu-SR-ETx"/>
-                                                        <constraint firstItem="7Lj-Se-MNx" firstAttribute="leading" secondItem="bP2-yc-Y9I" secondAttribute="trailing" constant="8" id="jdu-mL-7sz"/>
+                                                        <constraint firstItem="3nm-a0-5bT" firstAttribute="centerY" secondItem="lpc-x9-S3q" secondAttribute="centerY" id="gmz-5K-3gS"/>
                                                         <constraint firstAttribute="trailing" secondItem="mbd-An-9Bi" secondAttribute="trailing" constant="40" id="l5V-Wi-Ch5"/>
+                                                        <constraint firstItem="7Lj-Se-MNx" firstAttribute="leading" secondItem="bP2-yc-Y9I" secondAttribute="trailing" constant="15" id="lGj-td-2os"/>
                                                         <constraint firstItem="TfY-fp-ztg" firstAttribute="top" secondItem="QM0-hF-4j5" secondAttribute="top" constant="86" id="ngH-zT-yHH"/>
                                                         <constraint firstItem="9lJ-vz-FvC" firstAttribute="baseline" secondItem="LS6-bP-hJx" secondAttribute="baseline" id="nzy-ZL-Sa1"/>
                                                         <constraint firstItem="LS6-bP-hJx" firstAttribute="top" secondItem="QM0-hF-4j5" secondAttribute="top" constant="58" id="rya-Wt-38t"/>
-                                                        <constraint firstItem="7Lj-Se-MNx" firstAttribute="top" secondItem="TfY-fp-ztg" secondAttribute="bottom" constant="8" id="wex-ck-TG0"/>
                                                         <constraint firstItem="mbd-An-9Bi" firstAttribute="leading" secondItem="QM0-hF-4j5" secondAttribute="leading" constant="85" id="xOg-1s-CnG"/>
                                                         <constraint firstAttribute="centerX" secondItem="6Ki-wr-8K2" secondAttribute="centerX" constant="114.5" id="y73-f2-Vqn"/>
                                                     </constraints>
@@ -1403,6 +1399,7 @@
             <connections>
                 <outlet property="delegate" destination="-2" id="0bl-1N-AYu"/>
             </connections>
+            <point key="canvasLocation" x="142.5" y="147"/>
         </window>
         <userDefaultsController representsSharedInstance="YES" id="6hU-Zy-Fpz"/>
         <customObject id="mvj-kT-UYD" customClass="LGPopularRepositories">
@@ -1492,6 +1489,7 @@ Gw
                 <outlet property="jssStatusLight" destination="gcn-rW-umQ" id="M4V-gw-vzW"/>
                 <outlet property="jssStatusSpinner" destination="6MF-CB-ccc" id="PIn-UW-oN1"/>
                 <outlet property="jssURLTF" destination="mbd-An-9Bi" id="cMm-Xd-54D"/>
+                <outlet property="jssUseMasterJDS" destination="lpc-x9-S3q" id="r4I-Dh-8WT"/>
                 <outlet property="modalWindow" destination="F0z-JX-Cv5" id="dcE-Mx-cM8"/>
             </connections>
         </customObject>

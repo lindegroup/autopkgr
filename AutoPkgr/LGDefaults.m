@@ -142,16 +142,6 @@
     [self setBool:SMTPAuthenticationEnabled forKey:kLGSMTPAuthenticationEnabled];
 }
 #pragma mark
-- (BOOL)warnBeforeQuittingEnabled
-{
-    return [self boolForKey:kLGWarnBeforeQuittingEnabled];
-}
-
-- (void)setWarnBeforeQuittingEnabled:(BOOL)WarnBeforeQuittingEnabled
-{
-    [self setBool:WarnBeforeQuittingEnabled forKey:kLGWarnBeforeQuittingEnabled];
-}
-#pragma mark
 - (BOOL)hasCompletedInitialSetup
 {
     return [self boolForKey:kLGHasCompletedInitialSetup];
@@ -171,16 +161,7 @@
 {
     [self setBool:SendEmailNotificationsWhenNewVersionsAreFoundEnabled forKey:kLGSendEmailNotificationsWhenNewVersionsAreFoundEnabled];
 }
-#pragma mark
-- (BOOL)checkForNewVersionsOfAppsAutomaticallyEnabled
-{
-    return [self boolForKey:kLGCheckForNewVersionsOfAppsAutomaticallyEnabled];
-}
 
-- (void)setCheckForNewVersionsOfAppsAutomaticallyEnabled:(BOOL)CheckForNewVersionsOfAppsAutomaticallyEnabled
-{
-    [self setBool:CheckForNewVersionsOfAppsAutomaticallyEnabled forKey:kLGCheckForNewVersionsOfAppsAutomaticallyEnabled];
-}
 #pragma mark
 - (BOOL)checkForRepoUpdatesAutomaticallyEnabled
 {

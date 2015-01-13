@@ -40,6 +40,7 @@
 
 @property (weak) IBOutlet NSButton *jssEditDistPointBT;
 @property (weak) IBOutlet NSButton *jssRemoveDistPointBT;
+@property (weak) IBOutlet NSButton *jssUseMasterJDS;
 
 @property (weak) IBOutlet NSWindow *modalWindow;
 
@@ -50,6 +51,7 @@
 - (IBAction)addDistributionPoint:(id)sender;
 - (IBAction)removeDistributionPoint:(id)sender;
 - (IBAction)editDistributionPoint:(id)sender;
+- (IBAction)enableMasterJDS:(NSButton *)sender;
 
 - (NSMenu *)contextualMenuForDistributionPoint:(NSDictionary *)distPoint;
 @end

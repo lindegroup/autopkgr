@@ -120,14 +120,13 @@ Gw
                         <constraints>
                             <constraint firstAttribute="width" constant="235" id="RZ0-Jb-xx7"/>
                         </constraints>
-                        <popUpButtonCell key="cell" type="push" bezelStyle="rounded" alignment="center" lineBreakMode="truncatingTail" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" id="Tm4-J4-erg">
+                        <popUpButtonCell key="cell" type="push" title="SMB" bezelStyle="rounded" alignment="center" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="3qb-HP-cZN" id="Tm4-J4-erg">
                             <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
                             <font key="font" metaFont="menu"/>
                             <menu key="menu" id="2Hx-Ld-mHD">
                                 <items>
                                     <menuItem title="AFP" id="fZx-9Q-VwR"/>
-                                    <menuItem title="SMB" id="3qb-HP-cZN"/>
-                                    <menuItem title="JDS" id="Jjc-q4-79l"/>
+                                    <menuItem title="SMB" state="on" id="3qb-HP-cZN"/>
                                 </items>
                             </menu>
                         </popUpButtonCell>

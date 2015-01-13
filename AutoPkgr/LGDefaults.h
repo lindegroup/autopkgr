@@ -44,7 +44,6 @@
 @property (nonatomic) BOOL SMTPAuthenticationEnabled;
 @property (nonatomic) BOOL hasCompletedInitialSetup;
 @property (nonatomic) BOOL sendEmailNotificationsWhenNewVersionsAreFoundEnabled;
-@property (nonatomic) BOOL checkForNewVersionsOfAppsAutomaticallyEnabled;
 @property (nonatomic) BOOL checkForRepoUpdatesAutomaticallyEnabled;
 
 #pragma mark - AutoPkg Defaults

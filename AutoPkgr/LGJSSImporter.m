@@ -30,6 +30,10 @@
 
 #pragma mark - Class constants
 
+NSPredicate * jdsFilterPredicate(){
+    return [NSPredicate predicateWithFormat:@"not (type == 'JDS')"];
+}
+
 @implementation LGJSSImporter {
     LGDefaults *_defaults;
     LGTestPort *_portTester;
@@ -199,18 +203,23 @@
 }
 
 #pragma mark - NSTableViewDataSource
+- (NSArray *)filteredData {
+    return [_defaults.JSSRepos filteredArrayUsingPredicate:jdsFilterPredicate()];
+}
+
 - (NSInteger)numberOfRowsInTableView:(NSTableView *)tableView
 {
-    return [_defaults.JSSRepos count];
+    return [[self filteredData] count];
 }
 
 - (id)tableView:(NSTableView *)tableView objectValueForTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row
 {
     NSDictionary *distributionPoint;
 
-    if ([_defaults.JSSRepos count] >= row) {
-        distributionPoint = _defaults.JSSRepos[row];
+    if ([[self filteredData] count] >= row) {
+        distributionPoint = [self filteredData][row];
     };
+
     NSString *identifier = [tableColumn identifier];
     NSString *setObject = distributionPoint[identifier];
 
@@ -223,7 +232,7 @@
 
 - (void)tableView:(NSTableView *)tableView setObjectValue:(id)object forTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row
 {
-    NSMutableArray *workingArray = [NSMutableArray arrayWithArray:_defaults.JSSRepos];
+    NSMutableArray *workingArray = [[self filteredData] mutableCopy];
     NSMutableDictionary *distributionPoint = [NSMutableDictionary dictionaryWithDictionary:workingArray[row]];
 
     if (!distributionPoint[kLGJSSDistPointTypeKey]) {
@@ -235,7 +244,10 @@
     [distributionPoint setValue:object forKey:tableColumn.identifier];
     [workingArray replaceObjectAtIndex:row withObject:distributionPoint];
 
-    _defaults.JSSRepos = [NSArray arrayWithArray:workingArray];
+    if (_jssUseMasterJDS.state) {
+        [workingArray addObject:@{@"type":@"JDS"}];
+    }
+    _defaults.JSSRepos = [workingArray copy];
 }
 
 -(void)tableViewSelectionDidChange:(NSNotification *)notification{
@@ -473,6 +485,33 @@
 }
 
 #pragma mark - JSS Distribution Point Preference Panel
+- (void)enableMasterJDS:(NSButton *)sender
+{
+    LGDefaults *defaults = [LGDefaults standardUserDefaults];
+    NSMutableArray *workingArray = [defaults.JSSRepos mutableCopy];
+    NSDictionary *JDSDict = @{@"type":@"JDS"};
+
+    NSUInteger index = [workingArray indexOfObjectPassingTest:
+                        ^BOOL(NSDictionary *dict, NSUInteger idx, BOOL *stop) {
+                            return [dict[@"type"] isEqualToString:@"JDS"];
+                        }];
+
+    if (sender.state) {
+        // Add JDS
+        if (index != NSNotFound) {
+            [workingArray replaceObjectAtIndex:index withObject:JDSDict];
+        } else {
+            [workingArray addObject:JDSDict];
+        }
+    } else {
+        if (index != NSNotFound) {
+            [workingArray removeObjectAtIndex:index];
+        }
+    }
+
+    defaults.JSSRepos = [workingArray copy];
+}
+
 - (void)addDistributionPoint:(id)sender
 {
 
@@ -491,7 +530,7 @@
     } else {
         NSInteger row = _jssDistributionPointTableView.selectedRow;
         if (row > -1) {
-            distPoint = _defaults.JSSRepos[row];
+            distPoint = [self filteredData][row];
         }
     }
 
@@ -503,14 +542,13 @@
 
 - (void)editDistributionPoint:(id)sender
 {
-
     NSDictionary *distPoint = nil;
     if ([sender isKindOfClass:[NSMenuItem class]]) {
         distPoint = [(NSMenuItem *)sender representedObject];
     } else {
         NSInteger row = _jssDistributionPointTableView.selectedRow;
         if (row > -1) {
-            distPoint = _defaults.JSSRepos[row];
+            distPoint = [self filteredData][row];
         }
     }
 
@@ -523,6 +561,7 @@
     }
 }
 
+#pragma mark - Panel didEnd Selectors
 - (void)didClosePreferencePanel
 {
     if (![NSThread isMainThread]) {

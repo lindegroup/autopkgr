@@ -43,7 +43,6 @@
 // Checkboxes
 @property (weak) IBOutlet NSButton *smtpAuthenticationEnabledButton;
 @property (weak) IBOutlet NSButton *smtpTLSEnabledButton;
-@property (weak) IBOutlet NSButton *warnBeforeQuittingButton;
 @property (weak) IBOutlet NSButton *checkForNewVersionsOfAppsAutomaticallyButton;
 @property (weak) IBOutlet NSButton *checkForRepoUpdatesAutomaticallyButton;
 @property (weak) IBOutlet NSButton *sendEmailNotificationsWhenNewVersionsAreFoundButton;
