@@ -160,4 +160,19 @@
 
     return browserDownloadURL;
 }
+
+- (NSArray *)latestReleaseDownloads:(NSString *)gitHubURL
+{
+    // Get an NSDictionary of the latest release JSON
+    NSDictionary *latestVersionDict = [self getLatestReleaseDictionary:gitHubURL];
+    NSMutableArray *array = [[NSMutableArray alloc] init];
+
+    for (NSDictionary *asset in latestVersionDict[@"assets"])
+        if (asset[@"browser_download_url"]) {
+            [array addObject:asset[@"browser_download_url"]];
+        }
+
+    return [array copy];
+}
+
 @end
