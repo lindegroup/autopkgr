@@ -21,6 +21,7 @@ PODS:
   - AHKeychain (0.2)
   - AHLaunchCtl (0.3)
   - AHProxySettings (0.1.1)
+  - mailcore2-osx (0.5.0)
   - Sparkle (1.8.0)
   - XMLDictionary (1.4)
 
@@ -30,6 +31,7 @@ DEPENDENCIES:
   - AHKeychain (~> 0.2)
   - AHLaunchCtl (~> 0.3)
   - AHProxySettings (~> 0.1.1)
+  - mailcore2-osx (~> 0.5.0)
   - Sparkle (~> 1.8)
   - XMLDictionary (~> 1.4)
 
@@ -39,6 +41,7 @@ SPEC CHECKSUMS:
   AHKeychain: 8d76073b87a7d355ded1f03529a3088de4a9acf6
   AHLaunchCtl: c0d55ba401602dd38e43edfcb757ff3919d71914
   AHProxySettings: 9237c332cf97cdd5c916b0203bbe19866ad4a615
+  mailcore2-osx: 91139d7e08fa55fc2b48036af0dcdde06216839f
   Sparkle: 5eb20bb37ca21e471dab8417dee880198d905327
   XMLDictionary: 735e81b9a043e220b0d24e9d4f16719606f2e0fc
 
