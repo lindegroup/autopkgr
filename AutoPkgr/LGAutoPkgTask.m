@@ -268,7 +268,7 @@ typedef void (^AutoPkgReplyErrorBlock)(NSError *error);
         }
         @catch (NSException *exception)
         {
-            NSDictionary *userInfo = @{ NSLocalizedDescriptionKey : @"A fatal error occured when trying to run AutoPkg",
+            NSDictionary *userInfo = @{ NSLocalizedDescriptionKey : @"A fatal error occurred when trying to run AutoPkg",
                                         NSLocalizedRecoverySuggestionErrorKey : @"If you repeatedly see this message please report it. The full scope of the error is in the system.log, make sure to include that in the report"
             };
 

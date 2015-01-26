@@ -58,7 +58,7 @@
  *
  *  @param error populated error object if any error occurs during migration.
  *
- *  @return YES if conversion was successful, NO if any error occured, even minor errors.
+ *  @return YES if conversion was successful, NO if any error occurred, even minor errors.
  */
 + (BOOL)migrateToIdentifiers:(NSError**)error;
 

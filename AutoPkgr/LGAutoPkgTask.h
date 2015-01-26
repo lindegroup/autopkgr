@@ -97,7 +97,7 @@ extern NSString *const kLGAutoPkgRepoURLKey;
  *  Equivalent to /usr/bin/local/autopkg run --recipe-list=xxx --report-plist=xxx
  *
  *  @param recipeList Full path to the recipe list
- *  @param updateRepo wether the repos should be updated prior to run
+ *  @param updateRepo whether the repos should be updated prior to run
  *  @param reply The block to be executed on upon task completion. This block has no return value and takes two arguments: NSDictionary (with the report plist data), NSError
  *  @note to receive progress messages from this operation the LGProgressDelegate protocol needs to be implemented and the task manager's progressDelegate property set.
  */

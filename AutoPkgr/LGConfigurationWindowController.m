@@ -891,7 +891,7 @@
     } else if ([status isEqualTo:@YES]) {
         [_testSmtpServerStatus setImage:[NSImage LGStatusAvailable]];
     } else {
-        NSLog(@"Unexpected result for recieved from port test.");
+        NSLog(@"Unexpected result for received from port test.");
         [_testSmtpServerStatus setImage:[NSImage LGStatusPartiallyAvailable]];
     }
 }

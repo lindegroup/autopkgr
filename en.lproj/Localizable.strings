@@ -118,4 +118,4 @@
 
 // General failure
 "kLGHTTPErrorUnknownDescription" = "There was a problem connecting to the server";
-"kLGHTTPErrorUnknownSuggestion" = "An unknown error occured. If you get this message repeatedly please create an issue on the AutoPkgr GitHub page. Thanks.";
+"kLGHTTPErrorUnknownSuggestion" = "An unknown error occurred. If you get this message repeatedly please create an issue on the AutoPkgr GitHub page. Thanks.";

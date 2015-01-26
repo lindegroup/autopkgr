@@ -483,7 +483,7 @@
         return YES;
     }
 
-    NSString *infoText = @"As of version 1.2, AutoPkgr uses recipe identifiers rather than short names to specify recipes. This makes it possible to schedule and run recipes from seperate repos that happen to have the same short name.\n\nWe do our best to get this conversion right, but please double check that the recipes that are enabled after this process are the ones you intend.\n\nJust to be safe, your current recipe list has been backed up as \"~/Library/Application Support/AutoPkgr/recipe_list.txt.v1.bak\".\n\nIf you choose to cancel this upgrade, you will need to roll back to a version of AutoPkgr prior to 1.2.";
+    NSString *infoText = @"As of version 1.2, AutoPkgr uses recipe identifiers rather than short names to specify recipes. This makes it possible to schedule and run recipes from separate repos that happen to have the same short name.\n\nWe do our best to get this conversion right, but please double check that the recipes that are enabled after this process are the ones you intend.\n\nJust to be safe, your current recipe list has been backed up as \"~/Library/Application Support/AutoPkgr/recipe_list.txt.v1.bak\".\n\nIf you choose to cancel this upgrade, you will need to roll back to a version of AutoPkgr prior to 1.2.";
 
     NSAlert *alert = [NSAlert alertWithMessageText:@"AutoPkgr needs to convert your recipe list."
                                      defaultButton:@"Continue"
@@ -523,7 +523,7 @@
         [defaults setBool:YES forKey:@"MigratedToIdentifiers"];
         // return NO if any were unable to be converted
         if (!success) {
-            NSLog(@"An error may have occured while converting the recipe list. We successfully converted %d out of %lu recipes. However it's also possible your recipe list was already converted. Please double check your enabled recipes now.",i,(unsigned long)recipes.activeRecipes.count);
+            NSLog(@"An error may have occurred while converting the recipe list. We successfully converted %d out of %lu recipes. However it's also possible your recipe list was already converted. Please double check your enabled recipes now.",i,(unsigned long)recipes.activeRecipes.count);
 
         }
         return  YES;

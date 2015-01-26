@@ -214,13 +214,13 @@
         [message appendString:@"<style>.tabbed {margin-left: 1em;} .tabbed2 {margin-left: 2em;}</style>"];
 
         if (!subject) {
-            subject = [NSString stringWithFormat:@"[%@] Error occured while running AutoPkg", kLGApplicationName];
+            subject = [NSString stringWithFormat:@"[%@] Error occurred while running AutoPkg", kLGApplicationName];
         }
 
         NSArray *recoverySuggestions = [error.localizedRecoverySuggestion
                                         componentsSeparatedByCharactersInSet:[NSCharacterSet newlineCharacterSet]];
 
-        [message appendFormat:@"<strong>The following error%@ occured:</strong><br/>",recoverySuggestions.count > 1 ? @"s":@""];
+        [message appendFormat:@"<strong>The following error%@ occurred:</strong><br/>",recoverySuggestions.count > 1 ? @"s":@""];
 
         NSString *noValidRecipe = @"No valid recipe found for ";
         NSPredicate *noValidRecipePredicate = [NSPredicate predicateWithFormat:@"SELF BEGINSWITH %@", noValidRecipe];
