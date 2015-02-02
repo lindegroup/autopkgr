@@ -80,7 +80,7 @@ NSString *const kLGNotificationReposModified = @"com.lindegroup.autopkgr.notific
 
 #pragma mark-- Email
 NSString *const kLGNotificationEmailSent = @"com.lindegroup.autopkgr.email.sent.notification";
-NSString *const kLGNotificationTestSmtpServerPort = @"com.lindegroup.autopkgr.test.smpt.port.notification";
+NSString *const kLGNotificationTestSmtpServerPort = @"com.lindegroup.autopkgr.test.smtp.port.notification";
 
 #pragma mark-- UserInfo dict keys
 NSString *const kLGNotificationUserInfoError = @"com.lindegroup.autopkgr.notification.userinfo.error";
