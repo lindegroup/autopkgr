@@ -23,7 +23,7 @@
 #import "LGAutoPkgr.h"
 #import "LGRecipeSearch.h"
 
-@implementation LGPopularRepositories{
+@implementation LGPopularRepositories {
     LGRecipeSearch *_searchPanel;
 }
 
@@ -65,7 +65,7 @@
                                @"https://github.com/autopkg/n8felton-recipes.git",
                                @"https://github.com/autopkg/groob-recipes.git",
                                @"https://github.com/autopkg/jazzace-recipes.git",
-                               kLGJSSDefaultRepo];
+                               kLGJSSDefaultRepo ];
         }
 
         [self assembleRepos];
@@ -125,7 +125,7 @@
 {
     if ([[tableColumn identifier] isEqualToString:@"repoCheckbox"]) {
         NSString *repo = [_searchedRepos objectAtIndex:row];
-        NSPredicate *repoPred = [NSPredicate predicateWithFormat:@"%K == %@",kLGAutoPkgRepoURLKey, repo];
+        NSPredicate *repoPred = [NSPredicate predicateWithFormat:@"%K == %@", kLGAutoPkgRepoURLKey, repo];
         return @([[_activeRepos filteredArrayUsingPredicate:repoPred] count] != 0);
     } else if ([[tableColumn identifier] isEqualToString:@"repoURL"]) {
         return [_searchedRepos objectAtIndex:row];
@@ -166,7 +166,7 @@
     if ([[_repoSearch stringValue] isEqualToString:@""]) {
         _searchedRepos = _popularRepos;
     } else {
-        NSPredicate *searchPredicate = [NSPredicate predicateWithFormat:@"SELF CONTAINS[CD] %@",[_repoSearch stringValue]];
+        NSPredicate *searchPredicate = [NSPredicate predicateWithFormat:@"SELF CONTAINS[CD] %@", [_repoSearch stringValue]];
         _searchedRepos = [_popularRepos filteredArrayUsingPredicate:searchPredicate];
     }
 
@@ -190,7 +190,8 @@
     // The AutoPkgTask repo-list needs to be reworked to send back an array of dicts.
     NSMenu *menu = [[NSMenu alloc] init];
     NSMenuItem *item = [[NSMenuItem alloc] initWithTitle:@"Reveal in Finder"
-                                                  action:nil keyEquivalent:@""];
+                                                  action:nil
+                                           keyEquivalent:@""];
     [menu addItem:item];
     return menu;
 }
@@ -201,15 +202,16 @@
     if (!_searchPanel) {
         _searchPanel = [[LGRecipeSearch alloc] init];
     }
-    
+
     [NSApp beginSheet:_searchPanel.window
-       modalForWindow:self.modalWindow
-        modalDelegate:self
-       didEndSelector:@selector(didCloseSearchPanel)
-          contextInfo:NULL];
+        modalForWindow:self.modalWindow
+         modalDelegate:self
+        didEndSelector:@selector(didCloseSearchPanel)
+           contextInfo:NULL];
 }
 
-- (void)didCloseSearchPanel{
+- (void)didCloseSearchPanel
+{
     [[NSOperationQueue mainQueue] addOperationWithBlock:^{
         [_searchPanel.window close];
         _searchPanel = nil;

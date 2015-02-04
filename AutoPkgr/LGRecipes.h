@@ -60,7 +60,7 @@
  *
  *  @return YES if conversion was successful, NO if any error occurred, even minor errors.
  */
-+ (BOOL)migrateToIdentifiers:(NSError**)error;
++ (BOOL)migrateToIdentifiers:(NSError **)error;
 
 /**
  *  reload the Recipe TableView
@@ -68,6 +68,5 @@
 - (void)reload;
 
 - (NSMenu *)contextualMenuForRecipeAtRow:(NSInteger)row;
-
 
 @end

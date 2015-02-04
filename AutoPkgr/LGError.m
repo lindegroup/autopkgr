@@ -42,51 +42,51 @@ static NSDictionary *userInfoFromCode(LGErrorCodes code)
     NSString *message;
     NSString *suggestion;
     switch (code) {
-        case kLGErrorSuccess:
-            localizedBaseString = @"kLGErrorSuccess";
-            break;
-        case kLGErrorSendingEmail:
-            localizedBaseString = @"kLGErrorSendingEmail";
-            break;
-        case kLGErrorTestingPort:
-            localizedBaseString = @"kLGErrorTestingPort";
-            break;
-        case kLGErrorReparingAutoPkgPrefs:
-            localizedBaseString = @"kLGErrorReparingAutoPkgPrefs";
-            break;
-        case kLGErrorMultipleRunsOfAutopkg:
-            localizedBaseString = @"kLGErrorMultipleRunsOfAutopkg";
-            break;
-        case kLGErrorMissingParentRecipe:
-            localizedBaseString = @"kLGErrorMissingParentRecipe";
-            break;
-        case kLGErrorInstallGit:
-            localizedBaseString = @"kLGErrorInstallGit";
-            break;
-        case kLGErrorInstallAutoPkg:
-            localizedBaseString = @"kLGErrorInstallAutoPkg";
-            break;
-        case kLGErrorInstallAutoPkgr:
-            localizedBaseString = @"kLGErrorInstallAutoPkgr";
-            break;
-        case kLGErrorInstallJSSImporter:
-            localizedBaseString = @"kLGErrorInstallJSSImporter";
-            break;
-        case kLGErrorInstallingGeneric:
-            localizedBaseString = @"kLGErrorInstallingGeneric";
-            break;
-        case kLGErrorJSSXMLSerializerError:
-            localizedBaseString = @"kLGErrorJSSXMLSerializerError";
-            break;
-        case kLGErrorIncorrectScheduleTimerInterval:
-            localizedBaseString = @"kLGErrorIncorrectScheduleTimerInterval";
-            break;
-        case kLGErrorAuthChallenge:
-            localizedBaseString = @"kLGErrorAuthChallenge";
-            break;
-        default:
-            localizedBaseString = @"kLGErrorUnknown";
-            break;
+    case kLGErrorSuccess:
+        localizedBaseString = @"kLGErrorSuccess";
+        break;
+    case kLGErrorSendingEmail:
+        localizedBaseString = @"kLGErrorSendingEmail";
+        break;
+    case kLGErrorTestingPort:
+        localizedBaseString = @"kLGErrorTestingPort";
+        break;
+    case kLGErrorReparingAutoPkgPrefs:
+        localizedBaseString = @"kLGErrorReparingAutoPkgPrefs";
+        break;
+    case kLGErrorMultipleRunsOfAutopkg:
+        localizedBaseString = @"kLGErrorMultipleRunsOfAutopkg";
+        break;
+    case kLGErrorMissingParentRecipe:
+        localizedBaseString = @"kLGErrorMissingParentRecipe";
+        break;
+    case kLGErrorInstallGit:
+        localizedBaseString = @"kLGErrorInstallGit";
+        break;
+    case kLGErrorInstallAutoPkg:
+        localizedBaseString = @"kLGErrorInstallAutoPkg";
+        break;
+    case kLGErrorInstallAutoPkgr:
+        localizedBaseString = @"kLGErrorInstallAutoPkgr";
+        break;
+    case kLGErrorInstallJSSImporter:
+        localizedBaseString = @"kLGErrorInstallJSSImporter";
+        break;
+    case kLGErrorInstallingGeneric:
+        localizedBaseString = @"kLGErrorInstallingGeneric";
+        break;
+    case kLGErrorJSSXMLSerializerError:
+        localizedBaseString = @"kLGErrorJSSXMLSerializerError";
+        break;
+    case kLGErrorIncorrectScheduleTimerInterval:
+        localizedBaseString = @"kLGErrorIncorrectScheduleTimerInterval";
+        break;
+    case kLGErrorAuthChallenge:
+        localizedBaseString = @"kLGErrorAuthChallenge";
+        break;
+    default:
+        localizedBaseString = @"kLGErrorUnknown";
+        break;
     }
 
     // Setup the localized description
@@ -210,7 +210,6 @@ static NSDictionary *userInfoFromHTTPResponse(NSHTTPURLResponse *response)
 + (void)presentErrorWithCode:(LGErrorCodes)code window:(NSWindow *)window;
 {
     [[self class] presentErrorWithCode:code window:window delegate:NULL didPresentSelector:NULL];
-
 }
 
 + (void)presentErrorWithCode:(LGErrorCodes)code window:(NSWindow *)window delegate:(id)sender didPresentSelector:(SEL)selector
@@ -290,7 +289,6 @@ static NSDictionary *userInfoFromHTTPResponse(NSHTTPURLResponse *response)
         // The exception should in theory always be last.
         NSString *fullExceptionMessage = [splitExceptionFromError lastObject];
         NSLog(@"(FULL AUTOPKG TRACEBACK) %@", fullExceptionMessage);
-
 
         NSArray *array = [fullExceptionMessage componentsSeparatedByCharactersInSet:[NSCharacterSet newlineCharacterSet]];
 

@@ -22,8 +22,8 @@
 
 @interface LGRecipeOverrides : NSObject
 
-extern NSString* const kLGNotificationOverrideCreated;
-extern NSString* const kLGNotificationOverrideDeleted;
+extern NSString *const kLGNotificationOverrideCreated;
+extern NSString *const kLGNotificationOverrideDeleted;
 
 + (BOOL)overrideExistsForRecipe:(NSDictionary *)recipe;
 + (NSArray *)recipeEditors;

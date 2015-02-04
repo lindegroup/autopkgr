@@ -24,8 +24,8 @@
 
 @interface LGAutoPkgSchedule : NSObject
 
-+ (void)startAutoPkgSchedule:(BOOL)start interval:(NSInteger)interval isForced:(BOOL)forced reply:(void (^)(NSError* error))reply;
++ (void)startAutoPkgSchedule:(BOOL)start interval:(NSInteger)interval isForced:(BOOL)forced reply:(void (^)(NSError *error))reply;
 
-+ (BOOL)updateAppsIsScheduled:(NSInteger*)scheduleInterval;
++ (BOOL)updateAppsIsScheduled:(NSInteger *)scheduleInterval;
 
 @end

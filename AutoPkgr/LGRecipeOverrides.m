@@ -54,7 +54,6 @@ const CFStringRef kUTTypePropertyList = CFSTR("com.apple.property-list");
             }
         }];
     }
-
 }
 
 + (void)deleteOverride:(NSMenuItem *)sender
@@ -64,7 +63,7 @@ const CFStringRef kUTTypePropertyList = CFSTR("com.apple.property-list");
     NSString *recipeIdentifier = recipeToRemoveDict[kLGAutoPkgRecipeIdentifierKey];
 
     NSString *recipePath = [self overridePathFromRecipe:recipeToRemoveDict];
-    
+
     NSDictionary *overrideDict = [NSDictionary dictionaryWithContentsOfFile:recipePath];
 
     // If these don't match then we're trying to remove the wrong override, abort...
@@ -89,11 +88,11 @@ const CFStringRef kUTTypePropertyList = CFSTR("com.apple.property-list");
     }
 }
 
-+ (NSString *)promptForOverrideName:(NSString*)parentName
++ (NSString *)promptForOverrideName:(NSString *)parentName
 {
     NSString *password;
     NSString *promptString = @"Would you like to give the override a unique name?";
-    
+
     NSAlert *alert = [NSAlert alertWithMessageText:promptString
                                      defaultButton:@"OK"
                                    alternateButton:@"Cancel"
@@ -141,11 +140,10 @@ const CFStringRef kUTTypePropertyList = CFSTR("com.apple.property-list");
 
 + (NSString *)overridePathFromRecipe:(NSDictionary *)recipe
 {
-    NSString *overridesDir = [[LGDefaults standardUserDefaults] autoPkgRecipeOverridesDir]?:
-                                        @"~/Library/AutoPkg/RecipeOverrides".stringByExpandingTildeInPath;
+    NSString *overridesDir = [[LGDefaults standardUserDefaults] autoPkgRecipeOverridesDir] ?: @"~/Library/AutoPkg/RecipeOverrides".stringByExpandingTildeInPath;
 
     NSArray *overrides = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:overridesDir error:nil];
-    
+
     for (NSString *item in overrides) {
         NSString *overridePath = [overridesDir stringByAppendingPathComponent:item];
         NSDictionary *override = [NSDictionary dictionaryWithContentsOfFile:overridePath];

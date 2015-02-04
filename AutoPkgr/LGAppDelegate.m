@@ -115,7 +115,7 @@
     if (jobIsRunning(kLGAutoPkgrHelperToolName, kAHGlobalLaunchDaemon)) {
         LGAutoPkgrHelperConnection *helper = [LGAutoPkgrHelperConnection new];
         [helper connectToHelper];
-        [[helper.connection remoteObjectProxy] quitHelper:^(BOOL success) {}];
+        [[helper.connection remoteObjectProxy] quitHelper:^(BOOL success){}];
     }
 
     // Stop observing...
