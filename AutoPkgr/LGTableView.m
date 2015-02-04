@@ -41,7 +41,7 @@
             NSDictionary *distributionPoint;
             if (row > -1) {
                 distributionPoint = [[LGDefaults standardUserDefaults] JSSRepos][row];
-            } 
+            }
             return [(LGJSSImporter *)[self dataSource] contextualMenuForDistributionPoint:distributionPoint];
         }
     }

@@ -28,7 +28,7 @@
  * complete observable property of current LGEmailer status
  * returns NO while in the process of sending and email, YES on complete or error 
  */
-@property (nonatomic,assign) BOOL complete;
+@property (nonatomic, assign) BOOL complete;
 
 - (void)sendEmailNotification:(NSString *)subject message:(NSString *)message;
 - (void)sendEmailForReport:(NSDictionary *)report error:(NSError *)error;

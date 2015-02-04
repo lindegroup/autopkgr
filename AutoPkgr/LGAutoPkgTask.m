@@ -670,7 +670,7 @@ typedef void (^AutoPkgReplyErrorBlock)(NSError *error);
 
                 for (NSString *repo in [listResults removeEmptyStrings]) {
                     NSArray *splitArray = [repo componentsSeparatedByString:@"("];
-                    
+
                     NSString *repoURL = [[splitArray lastObject] stringByReplacingOccurrencesOfString:@")" withString:@""];
                     NSString *repoPath = [[splitArray firstObject] stringByStandardizingPath];
 

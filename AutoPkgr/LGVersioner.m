@@ -89,16 +89,16 @@ NSString *const kLGVersionerVersionKey = @"version";
 - (void)evaluateApplication:(NSString *)rawString
 {
 
-    NSArray *validPathExtensions = @[@"dmg",@"zip",@"tar",@"gz"];
-    NSArray *possibleProcessors = @[@"URLDownloader",];
+    NSArray *validPathExtensions = @[ @"dmg", @"zip", @"tar", @"gz" ];
+    NSArray *possibleProcessors = @[ @"URLDownloader", ];
 
     // Construct a predicate string from the above values.
     // This will make it easy to adjust in the future, as more processors are
     // used to retreive apps
     NSMutableString *predicateString = [[NSMutableString alloc] initWithString:@"("];
     for (int i = 0; i < validPathExtensions.count; i++) {
-        [predicateString appendFormat:@"SELF CONTAINS[CD] '.%@' ",validPathExtensions[i]];
-        if (i < validPathExtensions.count-1){
+        [predicateString appendFormat:@"SELF CONTAINS[CD] '.%@' ", validPathExtensions[i]];
+        if (i < validPathExtensions.count - 1) {
             [predicateString appendString:@" OR "];
         }
     }
@@ -106,15 +106,13 @@ NSString *const kLGVersionerVersionKey = @"version";
 
     for (int i = 0; i < possibleProcessors.count; i++) {
         [predicateString appendFormat:@"SELF CONTAINS[CD] '%@' ", possibleProcessors[i]];
-        if (i < possibleProcessors.count -1) {
+        if (i < possibleProcessors.count - 1) {
             [predicateString appendString:@" OR "];
         }
     }
     [predicateString appendString:@")"];
 
-
     NSPredicate *predicate = [NSPredicate predicateWithFormat:[predicateString copy]];
-
 
     // Look for .dmg or .zip or,
     if ([predicate evaluateWithObject:rawString]) {

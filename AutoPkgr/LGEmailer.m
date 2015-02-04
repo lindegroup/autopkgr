@@ -191,7 +191,7 @@
                         break;
                     }
                 }
-                if (version_found){
+                if (version_found) {
                     break;
                 }
             }
@@ -218,9 +218,9 @@
         }
 
         NSArray *recoverySuggestions = [error.localizedRecoverySuggestion
-                                        componentsSeparatedByCharactersInSet:[NSCharacterSet newlineCharacterSet]];
+            componentsSeparatedByCharactersInSet:[NSCharacterSet newlineCharacterSet]];
 
-        [message appendFormat:@"<strong>The following error%@ occurred:</strong><br/>",recoverySuggestions.count > 1 ? @"s":@""];
+        [message appendFormat:@"<strong>The following error%@ occurred:</strong><br/>", recoverySuggestions.count > 1 ? @"s" : @""];
 
         NSString *noValidRecipe = @"No valid recipe found for ";
         NSPredicate *noValidRecipePredicate = [NSPredicate predicateWithFormat:@"SELF BEGINSWITH %@", noValidRecipe];

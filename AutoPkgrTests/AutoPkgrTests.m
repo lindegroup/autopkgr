@@ -100,7 +100,7 @@
 {
     LGGitHubJSONLoader *loader = [[LGGitHubJSONLoader alloc] init];
     NSArray *array = [loader latestReleaseDownloads:kLGGitReleasesJSONURL];
-    NSLog(@"%@",array);
+    NSLog(@"%@", array);
 }
 
 @end

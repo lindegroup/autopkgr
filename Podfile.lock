@@ -31,7 +31,7 @@ DEPENDENCIES:
   - AHKeychain (~> 0.2)
   - AHLaunchCtl (~> 0.3)
   - AHProxySettings (~> 0.1.1)
-  - mailcore2-osx (~> 0.5.0)
+  - mailcore2-osx (~> 0.5)
   - Sparkle (~> 1.8)
   - XMLDictionary (~> 1.4)
 

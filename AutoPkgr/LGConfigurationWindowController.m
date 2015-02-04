@@ -98,7 +98,6 @@
     _checkForNewVersionsOfAppsAutomaticallyButton.state = [LGAutoPkgSchedule updateAppsIsScheduled:&timer];
     [_autoPkgRunInterval setIntegerValue:timer];
 
-
     [_checkForNewVersionsOfAppsAutomaticallyButton setTarget:_progressDelegate];
     [_checkForNewVersionsOfAppsAutomaticallyButton setAction:@selector(changeCheckForNewVersionsOfAppsAutomatically:)];
 

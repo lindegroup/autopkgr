@@ -30,7 +30,8 @@
 
 #pragma mark - Class constants
 
-NSPredicate * jdsFilterPredicate(){
+NSPredicate *jdsFilterPredicate()
+{
     return [NSPredicate predicateWithFormat:@"not (type == 'JDS')"];
 }
 
@@ -203,7 +204,8 @@ NSPredicate * jdsFilterPredicate(){
 }
 
 #pragma mark - NSTableViewDataSource
-- (NSArray *)filteredData {
+- (NSArray *)filteredData
+{
     return [_defaults.JSSRepos filteredArrayUsingPredicate:jdsFilterPredicate()];
 }
 
@@ -245,19 +247,20 @@ NSPredicate * jdsFilterPredicate(){
     [workingArray replaceObjectAtIndex:row withObject:distributionPoint];
 
     if (_jssUseMasterJDS.state) {
-        [workingArray addObject:@{@"type":@"JDS"}];
+        [workingArray addObject:@{ @"type" : @"JDS" }];
     }
     _defaults.JSSRepos = [workingArray copy];
 }
 
--(void)tableViewSelectionDidChange:(NSNotification *)notification{
+- (void)tableViewSelectionDidChange:(NSNotification *)notification
+{
     NSInteger row = [_jssDistributionPointTableView selectedRow];
     // If nothing in the table is selected the row value is -1 so
     if (row > -1) {
         [_jssRemoveDistPointBT setEnabled:YES];
         // If a type key is not set, then it's from a DP from
         // the jss server and not editable.
-        if([[_defaults.JSSRepos objectAtIndex:row] objectForKey:@"type"]){
+        if ([[_defaults.JSSRepos objectAtIndex:row] objectForKey:@"type"]) {
             [_jssEditDistPointBT setEnabled:YES];
         } else {
             [_jssEditDistPointBT setEnabled:NO];
@@ -408,7 +411,7 @@ NSPredicate * jdsFilterPredicate(){
     NSString *password;
     NSString *messageText = @"Distribution Point Password Required";
 
-    NSString * const infoText = @"Please enter read/write password for the \"%@\" distribution point. If you intend to configure manually just click \"Cancel\".";
+    NSString *const infoText = @"Please enter read/write password for the \"%@\" distribution point. If you intend to configure manually just click \"Cancel\".";
 
     NSAlert *alert = [NSAlert alertWithMessageText:messageText
                                      defaultButton:@"OK"
@@ -489,12 +492,12 @@ NSPredicate * jdsFilterPredicate(){
 {
     LGDefaults *defaults = [LGDefaults standardUserDefaults];
     NSMutableArray *workingArray = [defaults.JSSRepos mutableCopy];
-    NSDictionary *JDSDict = @{@"type":@"JDS"};
+    NSDictionary *JDSDict = @{ @"type" : @"JDS" };
 
     NSUInteger index = [workingArray indexOfObjectPassingTest:
-                        ^BOOL(NSDictionary *dict, NSUInteger idx, BOOL *stop) {
+                                         ^BOOL(NSDictionary *dict, NSUInteger idx, BOOL *stop) {
                             return [dict[@"type"] isEqualToString:@"JDS"];
-                        }];
+                                         }];
 
     if (sender.state) {
         // Add JDS

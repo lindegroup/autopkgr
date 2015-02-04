@@ -29,7 +29,7 @@ extern NSString *const kLGVersionerVersionKey;
  *  kLGVersionerAppKey representing the Application Name
  *  kLGVersionerVersionKey represesenting the best guess at a version string
  */
-@property (copy,nonatomic,readonly) NSArray *currentResults;
+@property (copy, nonatomic, readonly) NSArray *currentResults;
 
 /**
  *  Determine if string has information relevant to determining the version of a particular app

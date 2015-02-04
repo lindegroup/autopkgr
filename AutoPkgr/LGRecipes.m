@@ -267,7 +267,6 @@
     return dictionary.count ? dictionary : nil;
 }
 
-
 #pragma mark - Contextual Menu
 - (NSMenu *)contextualMenuForRecipeAtRow:(NSInteger)row
 {
@@ -275,7 +274,7 @@
 
     NSDictionary *recipe = [_searchedRecipes objectAtIndex:row];
 
-    if (recipe[@"isMissingParentRecipe"]){
+    if (recipe[@"isMissingParentRecipe"]) {
         NSLog(@"Missing parent recipe.");
     }
 
@@ -445,7 +444,6 @@
     if (error) {
         NSLog(@"Error while writing %@.", recipeListFile);
     }
-
 }
 
 + (NSArray *)getActiveRecipes
@@ -478,7 +476,7 @@
     BOOL check1 = [defaults boolForKey:@"MigratedToIdentifiers"];
     BOOL check2 = [manager fileExistsAtPath:orig];
 
-    if (check1 || !check2){
+    if (check1 || !check2) {
         [defaults setBool:YES forKey:@"MigratedToIdentifiers"];
         return YES;
     }
@@ -489,9 +487,9 @@
                                      defaultButton:@"Continue"
                                    alternateButton:@"Cancel"
                                        otherButton:nil
-                         informativeTextWithFormat:@"%@",infoText];
+                         informativeTextWithFormat:@"%@", infoText];
 
-    if([alert runModal] == NSAlertDefaultReturn){
+    if ([alert runModal] == NSAlertDefaultReturn) {
 
         NSString *bak = [orig stringByAppendingPathExtension:@"v1.bak"];
         if ([manager fileExistsAtPath:orig] && ![manager fileExistsAtPath:bak]) {
@@ -502,11 +500,11 @@
         int i = 0; // number of changed recipes
         LGRecipes *recipes = [[LGRecipes alloc] init];
         if (recipes.activeRecipes.count) {
-            for (NSString *recipe in [recipes.activeRecipes copy]){
+            for (NSString *recipe in [recipes.activeRecipes copy]) {
                 NSUInteger index = [recipes.recipes indexOfObjectPassingTest:
-                                    ^BOOL(NSDictionary *dict, NSUInteger idx, BOOL *stop) {
+                                                        ^BOOL(NSDictionary *dict, NSUInteger idx, BOOL *stop) {
                                         return [dict[@"Name"] isEqualToString:recipe];
-                                    }];
+                                                        }];
                 if (index != NSNotFound) {
                     NSInteger replaceIndex = [recipes.activeRecipes indexOfObjectIdenticalTo:recipe];
                     [recipes.activeRecipes replaceObjectAtIndex:replaceIndex withObject:[recipes.recipes objectAtIndex:index][kLGAutoPkgRecipeIdentifierKey]];
@@ -523,10 +521,9 @@
         [defaults setBool:YES forKey:@"MigratedToIdentifiers"];
         // return NO if any were unable to be converted
         if (!success) {
-            NSLog(@"An error may have occurred while converting the recipe list. We successfully converted %d out of %lu recipes. However it's also possible your recipe list was already converted. Please double check your enabled recipes now.",i,(unsigned long)recipes.activeRecipes.count);
-
+            NSLog(@"An error may have occurred while converting the recipe list. We successfully converted %d out of %lu recipes. However it's also possible your recipe list was already converted. Please double check your enabled recipes now.", i, (unsigned long)recipes.activeRecipes.count);
         }
-        return  YES;
+        return YES;
     }
     return NO;
 }

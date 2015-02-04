@@ -18,7 +18,7 @@
 #import "LGUserNotifications.h"
 #import "LGAutoPkgr.h"
 
-@implementation LGUserNotifications{
+@implementation LGUserNotifications {
     NSError *_currentError;
 }
 
@@ -58,7 +58,7 @@
             [NSApp presentError:[NSError errorWithDomain:kLGApplicationName code:-1 userInfo:notification.userInfo]];
         }
     }
-    
+
     [center removeDeliveredNotification:notification];
 }
 

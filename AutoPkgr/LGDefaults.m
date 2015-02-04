@@ -100,21 +100,23 @@
 }
 
 #pragma mark - Info
-- (NSString *)LastAutoPkgRun {
+- (NSString *)LastAutoPkgRun
+{
     return [self objectForKey:NSStringFromSelector(@selector(LastAutoPkgRun))];
 }
 
-- (void)setLastAutoPkgRun:(id)LastAutoPkgRun{
+- (void)setLastAutoPkgRun:(id)LastAutoPkgRun
+{
     NSString *setValue = nil;
 
-    if ([LastAutoPkgRun isKindOfClass:[NSDate class]]){
+    if ([LastAutoPkgRun isKindOfClass:[NSDate class]]) {
         // If the object passed in is an NSDate object convert it
         // to a nice formatted string.
         NSDateFormatter *fomatter = [NSDateFormatter new];
         [fomatter setDateStyle:NSDateFormatterMediumStyle];
         [fomatter setTimeStyle:NSDateFormatterMediumStyle];
         setValue = [fomatter stringFromDate:LastAutoPkgRun];
-    } else if ([LastAutoPkgRun isKindOfClass:[NSString class]]){
+    } else if ([LastAutoPkgRun isKindOfClass:[NSString class]]) {
         // If a string is passed in assume it's been formatted
         setValue = LastAutoPkgRun;
     }

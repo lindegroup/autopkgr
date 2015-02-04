@@ -23,7 +23,7 @@
 
 @interface LGJSSDistributionPointsPrefPanel : NSWindowController
 
--(instancetype)initWithDistPointDictionary:(NSDictionary *)dict;
+- (instancetype)initWithDistPointDictionary:(NSDictionary *)dict;
 
 @property (weak) IBOutlet NSTextField *distPointName;
 @property (weak) IBOutlet NSTextField *distPointNameLabel;
