@@ -165,7 +165,7 @@
         subject = [NSString stringWithFormat:@"[%@] New software available for testing", kLGApplicationName];
 
         // Append the the message string with report
-        [message appendFormat:@"The following software is now available for testing:<br />"];
+        [message appendFormat:@"The following software is now available for testing:<br /><br />"];
 
         for (NSString *path in newDownloads) {
             NSCharacterSet *set = [NSCharacterSet punctuationCharacterSet];

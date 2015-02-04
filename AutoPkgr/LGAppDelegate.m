@@ -79,17 +79,17 @@
     // Check if we're authorized to install helper tool,
     // if not just quit
     NSError *error;
-    if (![AHLaunchCtl installHelper:kLGAutoPkgrHelperToolName prompt:@"To schedule" error:&error]) {
+    if (![AHLaunchCtl installHelper:kLGAutoPkgrHelperToolName prompt:@"" error:&error]) {
         if (error) {
             NSLog(@"%@", error.localizedDescription);
-            [NSApp presentError:[NSError errorWithDomain:kLGApplicationName code:-1 userInfo:@{ NSLocalizedDescriptionKey : @"The associated helper tool could not be installed, we must now quit" }]];
+            [NSApp presentError:[NSError errorWithDomain:kLGApplicationName code:-1 userInfo:@{ NSLocalizedDescriptionKey : @"The associated helper tool could not be installed, we must quit now." }]];
             [[NSApplication sharedApplication] terminate:self];
         }
     }
 
     if (![LGRecipes migrateToIdentifiers:nil]) {
         [NSApp presentError:[NSError errorWithDomain:kLGApplicationName code:-1 userInfo:@{ NSLocalizedDescriptionKey : @"AutoPkgr will now quit.",
-                                                                                            NSLocalizedRecoverySuggestionErrorKey : @"You've chosen to not upgrade your recipe list. Either relaunch AutoPkgr to restart the migration process, or downgrade to an older 1.1.x AutoPkgr release." }]];
+                                                                                            NSLocalizedRecoverySuggestionErrorKey : @"You've chosen not to upgrade your recipe list. Either relaunch AutoPkgr to restart the migration process, or downgrade to an older 1.1.x AutoPkgr release." }]];
         [[NSApplication sharedApplication] terminate:self];
     }
 
