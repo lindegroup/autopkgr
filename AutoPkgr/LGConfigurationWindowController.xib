@@ -1275,20 +1275,10 @@
                                                                     <autoresizingMask key="autoresizingMask"/>
                                                                 </tableHeaderView>
                                                             </scrollView>
-                                                            <button verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="bP2-yc-Y9I">
-                                                                <rect key="frame" x="23" y="8" width="145" height="28"/>
-                                                                <buttonCell key="cell" type="push" title="Add Distribution Point" bezelStyle="rounded" alignment="center" controlSize="small" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="c7k-eo-8gx">
-                                                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                                                    <font key="font" metaFont="smallSystem"/>
-                                                                </buttonCell>
-                                                                <connections>
-                                                                    <action selector="addDistributionPoint:" target="0iG-YL-fA3" id="EGd-ZN-eGB"/>
-                                                                </connections>
-                                                            </button>
                                                             <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="7Lj-Se-MNx">
-                                                                <rect key="frame" x="173" y="8" width="140" height="28"/>
+                                                                <rect key="frame" x="152" y="8" width="145" height="28"/>
                                                                 <constraints>
-                                                                    <constraint firstAttribute="width" constant="130" id="Kvr-9c-xzX"/>
+                                                                    <constraint firstAttribute="width" constant="135" id="kRw-wI-pVn"/>
                                                                 </constraints>
                                                                 <buttonCell key="cell" type="push" title="Edit Selected" bezelStyle="rounded" alignment="center" controlSize="small" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="so1-eQ-Gsw">
                                                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
@@ -1299,9 +1289,9 @@
                                                                 </connections>
                                                             </button>
                                                             <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="3nm-a0-5bT">
-                                                                <rect key="frame" x="316" y="8" width="141" height="28"/>
+                                                                <rect key="frame" x="291" y="8" width="145" height="28"/>
                                                                 <constraints>
-                                                                    <constraint firstAttribute="width" constant="131" id="btF-3n-m0p"/>
+                                                                    <constraint firstAttribute="width" constant="135" id="7sg-X7-Ft4"/>
                                                                 </constraints>
                                                                 <buttonCell key="cell" type="push" title="Remove Selected" bezelStyle="rounded" alignment="center" controlSize="small" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="z6x-VY-deB">
                                                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
@@ -1311,48 +1301,65 @@
                                                                     <action selector="removeDistributionPoint:" target="0iG-YL-fA3" id="y8h-Vq-nDx"/>
                                                                 </connections>
                                                             </button>
-                                                            <button misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="lpc-x9-S3q">
-                                                                <rect key="frame" x="469" y="14" width="116" height="18"/>
-                                                                <buttonCell key="cell" type="check" title="Use Master JDS" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="x9m-4x-ZIz">
+                                                            <button translatesAutoresizingMaskIntoConstraints="NO" id="lpc-x9-S3q">
+                                                                <rect key="frame" x="470" y="13" width="117" height="20"/>
+                                                                <constraints>
+                                                                    <constraint firstAttribute="width" constant="112" id="hCE-94-Ahn"/>
+                                                                    <constraint firstAttribute="height" constant="14" id="mpT-dA-Viz"/>
+                                                                </constraints>
+                                                                <buttonCell key="cell" type="check" title="Use Master JDS" bezelStyle="regularSquare" imagePosition="left" alignment="right" controlSize="small" state="on" inset="2" id="x9m-4x-ZIz">
                                                                     <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
-                                                                    <font key="font" metaFont="system"/>
+                                                                    <font key="font" metaFont="smallSystem"/>
                                                                 </buttonCell>
                                                                 <connections>
                                                                     <action selector="enableMasterJDS:" target="0iG-YL-fA3" id="LJm-Xd-XfA"/>
+                                                                </connections>
+                                                            </button>
+                                                            <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="bP2-yc-Y9I">
+                                                                <rect key="frame" x="13" y="8" width="145" height="28"/>
+                                                                <constraints>
+                                                                    <constraint firstAttribute="width" constant="135" id="PSr-Na-zeB"/>
+                                                                </constraints>
+                                                                <buttonCell key="cell" type="push" title="Add Distribution Point" bezelStyle="rounded" alignment="center" controlSize="small" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="c7k-eo-8gx">
+                                                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                                                    <font key="font" metaFont="smallSystem"/>
+                                                                </buttonCell>
+                                                                <connections>
+                                                                    <action selector="addDistributionPoint:" target="0iG-YL-fA3" id="EGd-ZN-eGB"/>
                                                                 </connections>
                                                             </button>
                                                         </subviews>
                                                     </view>
                                                     <constraints>
                                                         <constraint firstItem="pyb-Pf-WKJ" firstAttribute="top" secondItem="QM0-hF-4j5" secondAttribute="top" constant="60" id="0jG-AI-6ZF"/>
-                                                        <constraint firstItem="bP2-yc-Y9I" firstAttribute="baseline" secondItem="7Lj-Se-MNx" secondAttribute="baseline" id="1Kz-gL-fD9"/>
                                                         <constraint firstItem="TfY-fp-ztg" firstAttribute="leading" secondItem="QM0-hF-4j5" secondAttribute="leading" constant="16" id="4ku-ve-NVr"/>
                                                         <constraint firstItem="6MF-CB-ccc" firstAttribute="centerY" secondItem="gcn-rW-umQ" secondAttribute="centerY" constant="0.5" id="503-vV-Cyg"/>
+                                                        <constraint firstItem="7Lj-Se-MNx" firstAttribute="leading" secondItem="QM0-hF-4j5" secondAttribute="leading" constant="155" id="7T9-7o-rm8"/>
                                                         <constraint firstItem="9lJ-vz-FvC" firstAttribute="leading" secondItem="pyb-Pf-WKJ" secondAttribute="trailing" constant="8" id="7h1-aI-yoO"/>
                                                         <constraint firstItem="IMP-Hl-JTs" firstAttribute="top" secondItem="QM0-hF-4j5" secondAttribute="top" constant="28" id="8rz-qn-7yK"/>
                                                         <constraint firstItem="6MF-CB-ccc" firstAttribute="centerX" secondItem="gcn-rW-umQ" secondAttribute="centerX" id="9L9-PL-qgo"/>
-                                                        <constraint firstItem="3nm-a0-5bT" firstAttribute="leading" secondItem="7Lj-Se-MNx" secondAttribute="trailing" constant="13" id="FLY-hA-eqb"/>
-                                                        <constraint firstItem="lpc-x9-S3q" firstAttribute="leading" secondItem="3nm-a0-5bT" secondAttribute="trailing" constant="19" id="Gdl-GQ-qgV"/>
+                                                        <constraint firstItem="bP2-yc-Y9I" firstAttribute="leading" secondItem="QM0-hF-4j5" secondAttribute="leading" constant="16" id="B2Q-E9-9U0"/>
                                                         <constraint firstAttribute="trailing" secondItem="TfY-fp-ztg" secondAttribute="trailing" constant="16" id="HPS-IG-9Ox"/>
+                                                        <constraint firstAttribute="bottom" secondItem="3nm-a0-5bT" secondAttribute="bottom" constant="11" id="Imb-0h-bIc"/>
                                                         <constraint firstItem="LS6-bP-hJx" firstAttribute="leading" secondItem="9lJ-vz-FvC" secondAttribute="trailing" constant="8" id="J46-UT-wQe"/>
-                                                        <constraint firstItem="7Lj-Se-MNx" firstAttribute="baseline" secondItem="3nm-a0-5bT" secondAttribute="baseline" id="Kvj-cI-GJC"/>
                                                         <constraint firstItem="6MF-CB-ccc" firstAttribute="top" secondItem="QM0-hF-4j5" secondAttribute="top" constant="30" id="P1I-fY-SbK"/>
-                                                        <constraint firstItem="3nm-a0-5bT" firstAttribute="top" secondItem="TfY-fp-ztg" secondAttribute="bottom" constant="8" symbolic="YES" id="PxJ-Hn-7zQ"/>
                                                         <constraint firstAttribute="trailing" secondItem="6MF-CB-ccc" secondAttribute="trailing" constant="15" id="QTU-cf-dMe"/>
+                                                        <constraint firstAttribute="bottom" secondItem="7Lj-Se-MNx" secondAttribute="bottom" constant="11" id="SZZ-U3-Ezr"/>
                                                         <constraint firstItem="6Ki-wr-8K2" firstAttribute="leading" secondItem="uZo-nq-Njx" secondAttribute="trailing" constant="8" id="VNX-lr-Qoo"/>
-                                                        <constraint firstAttribute="trailing" secondItem="3nm-a0-5bT" secondAttribute="trailing" constant="149" id="VtO-oA-eEx"/>
                                                         <constraint firstItem="9lJ-vz-FvC" firstAttribute="top" secondItem="QM0-hF-4j5" secondAttribute="top" constant="57" id="WOy-in-uw7"/>
                                                         <constraint firstItem="6Ki-wr-8K2" firstAttribute="top" secondItem="QM0-hF-4j5" secondAttribute="top" constant="57" id="X09-lu-Gft"/>
                                                         <constraint firstItem="pyb-Pf-WKJ" firstAttribute="leading" secondItem="6Ki-wr-8K2" secondAttribute="trailing" constant="13" id="Yca-Kc-O0c"/>
                                                         <constraint firstAttribute="bottom" secondItem="TfY-fp-ztg" secondAttribute="bottom" constant="37" id="YeR-ig-ezZ"/>
                                                         <constraint firstItem="uZo-nq-Njx" firstAttribute="top" secondItem="QM0-hF-4j5" secondAttribute="top" constant="60" id="Yjx-7L-oYO"/>
                                                         <constraint firstItem="IMP-Hl-JTs" firstAttribute="leading" secondItem="QM0-hF-4j5" secondAttribute="leading" constant="10" id="a2A-bm-qdl"/>
+                                                        <constraint firstAttribute="bottom" secondItem="lpc-x9-S3q" secondAttribute="bottom" constant="13" id="cDT-7s-6NX"/>
+                                                        <constraint firstAttribute="trailing" secondItem="lpc-x9-S3q" secondAttribute="trailing" constant="16" id="cK1-jg-RAl"/>
                                                         <constraint firstItem="mbd-An-9Bi" firstAttribute="top" secondItem="QM0-hF-4j5" secondAttribute="top" constant="25" id="ewu-SR-ETx"/>
-                                                        <constraint firstItem="3nm-a0-5bT" firstAttribute="centerY" secondItem="lpc-x9-S3q" secondAttribute="centerY" id="gmz-5K-3gS"/>
+                                                        <constraint firstAttribute="bottom" secondItem="bP2-yc-Y9I" secondAttribute="bottom" constant="11" id="hKt-tZ-Okb"/>
                                                         <constraint firstAttribute="trailing" secondItem="mbd-An-9Bi" secondAttribute="trailing" constant="40" id="l5V-Wi-Ch5"/>
-                                                        <constraint firstItem="7Lj-Se-MNx" firstAttribute="leading" secondItem="bP2-yc-Y9I" secondAttribute="trailing" constant="15" id="lGj-td-2os"/>
                                                         <constraint firstItem="TfY-fp-ztg" firstAttribute="top" secondItem="QM0-hF-4j5" secondAttribute="top" constant="86" id="ngH-zT-yHH"/>
                                                         <constraint firstItem="9lJ-vz-FvC" firstAttribute="baseline" secondItem="LS6-bP-hJx" secondAttribute="baseline" id="nzy-ZL-Sa1"/>
+                                                        <constraint firstItem="3nm-a0-5bT" firstAttribute="leading" secondItem="QM0-hF-4j5" secondAttribute="leading" constant="294" id="p5R-Ni-CjP"/>
                                                         <constraint firstItem="LS6-bP-hJx" firstAttribute="top" secondItem="QM0-hF-4j5" secondAttribute="top" constant="58" id="rya-Wt-38t"/>
                                                         <constraint firstItem="mbd-An-9Bi" firstAttribute="leading" secondItem="QM0-hF-4j5" secondAttribute="leading" constant="85" id="xOg-1s-CnG"/>
                                                         <constraint firstAttribute="centerX" secondItem="6Ki-wr-8K2" secondAttribute="centerX" constant="114.5" id="y73-f2-Vqn"/>
