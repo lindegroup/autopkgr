@@ -64,7 +64,7 @@ def edit_app_info_plist(cert_id, app_name):
         csstring = cert_id.replace(TMP_FILENAME, helper_id)
         plist['SMPrivilegedExecutables'] = {helper_id:csstring}
     except Exception:
-        print "There is no Info.plist for them main app. Something's really wrong."
+        print "There is no Info.plist for the main app. Something's really wrong."
         exit(1)
 
     plistlib.writePlist(plist, app_info_plist)
@@ -83,7 +83,7 @@ def edit_helper_info_plist(cert_id, project_path, bundle_id, app_name):
         plist = plistlib.readPlist(helper_info_plist)
         plist['SMAuthorizedClients'] = [csstring]
     except Exception:
-        print "There is no Info.plist for them main app. Something's really wrong."
+        print "There is no Info.plist for the main app. Something's really wrong."
         exit(1)
 
 
