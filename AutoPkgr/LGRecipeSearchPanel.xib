@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="6250" systemVersion="13E28" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="6254" systemVersion="14C109" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="6250"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="6254"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="LGRecipeSearch">
@@ -22,14 +22,14 @@
             <windowStyleMask key="styleMask" titled="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="196" y="240" width="600" height="300"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1280" height="778"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="2560" height="1417"/>
             <view key="contentView" wantsLayer="YES" id="se5-gp-TjO">
                 <rect key="frame" x="0.0" y="0.0" width="600" height="300"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <scrollView autohidesScrollers="YES" horizontalLineScroll="19" horizontalPageScroll="10" verticalLineScroll="19" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jQo-0g-7xF">
+                    <scrollView ambiguous="YES" misplaced="YES" autohidesScrollers="YES" horizontalLineScroll="19" horizontalPageScroll="10" verticalLineScroll="19" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jQo-0g-7xF">
                         <rect key="frame" x="20" y="72" width="556" height="184"/>
-                        <clipView key="contentView" id="R4N-zl-cdH">
+                        <clipView key="contentView" ambiguous="YES" misplaced="YES" id="R4N-zl-cdH">
                             <rect key="frame" x="1" y="17" width="238" height="117"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             <subviews>
@@ -98,9 +98,9 @@
                         </tableHeaderView>
                     </scrollView>
                     <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="gEj-8x-XrO">
-                        <rect key="frame" x="500" y="12" width="82" height="32"/>
+                        <rect key="frame" x="490" y="12" width="92" height="32"/>
                         <constraints>
-                            <constraint firstAttribute="width" constant="70" id="djw-UA-UKI"/>
+                            <constraint firstAttribute="width" constant="80" id="RNq-mb-Y21"/>
                         </constraints>
                         <buttonCell key="cell" type="push" title="Add" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="E0Y-sn-caq">
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
@@ -110,25 +110,12 @@
                             <action selector="addRecipeAndRepo:" target="-2" id="PgA-xn-FHs"/>
                         </connections>
                     </button>
-                    <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Eht-cl-LtU">
-                        <rect key="frame" x="426" y="12" width="74" height="32"/>
-                        <buttonCell key="cell" type="push" title="Done" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="V3k-V9-S34">
-                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                            <font key="font" metaFont="system"/>
-                            <string key="keyEquivalent" base64-UTF8="YES">
-Gw
-</string>
-                        </buttonCell>
-                        <connections>
-                            <action selector="closePanel:" target="-2" id="fy0-T7-wOc"/>
-                        </connections>
-                    </button>
-                    <searchField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="0FY-e4-SV7">
+                    <searchField wantsLayer="YES" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="0FY-e4-SV7">
                         <rect key="frame" x="20" y="264" width="216" height="22"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="216" id="Xmc-l0-sEi"/>
                         </constraints>
-                        <searchFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" borderStyle="bezel" usesSingleLineMode="YES" bezelStyle="round" id="GgT-uP-FJN">
+                        <searchFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" borderStyle="bezel" placeholderString="Search by name" usesSingleLineMode="YES" bezelStyle="round" id="GgT-uP-FJN">
                             <font key="font" metaFont="system"/>
                             <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -140,7 +127,7 @@ Gw
                     <progressIndicator horizontalHuggingPriority="750" verticalHuggingPriority="750" maxValue="100" bezeled="NO" indeterminate="YES" controlSize="small" style="spinning" translatesAutoresizingMaskIntoConstraints="NO" id="llE-7y-lSY">
                         <rect key="frame" x="244" y="267" width="16" height="16"/>
                     </progressIndicator>
-                    <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="TLS-hE-fLt">
+                    <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" ambiguous="YES" misplaced="YES" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="TLS-hE-fLt">
                         <rect key="frame" x="18" y="53" width="560" height="16"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="16" id="Ii0-v3-jVt"/>
@@ -162,23 +149,38 @@ Gw
                             <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                         </textFieldCell>
                     </textField>
+                    <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Eht-cl-LtU">
+                        <rect key="frame" x="398" y="12" width="92" height="32"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="80" id="IKe-N5-g0X"/>
+                        </constraints>
+                        <buttonCell key="cell" type="push" title="Done" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="V3k-V9-S34">
+                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" metaFont="system"/>
+                            <string key="keyEquivalent" base64-UTF8="YES">
+Gw
+</string>
+                        </buttonCell>
+                        <connections>
+                            <action selector="closePanel:" target="-2" id="fy0-T7-wOc"/>
+                        </connections>
+                    </button>
                 </subviews>
                 <constraints>
                     <constraint firstItem="0FY-e4-SV7" firstAttribute="top" secondItem="se5-gp-TjO" secondAttribute="top" constant="14" id="0U6-35-YdR"/>
+                    <constraint firstAttribute="trailing" secondItem="Eht-cl-LtU" secondAttribute="trailing" constant="116" id="1hR-6J-fXc"/>
                     <constraint firstItem="0FY-e4-SV7" firstAttribute="leading" secondItem="se5-gp-TjO" secondAttribute="leading" constant="20" symbolic="YES" id="40a-Dk-6bT"/>
                     <constraint firstItem="TLS-hE-fLt" firstAttribute="trailing" secondItem="jQo-0g-7xF" secondAttribute="trailing" id="9Oh-A1-xiN"/>
-                    <constraint firstItem="gEj-8x-XrO" firstAttribute="baseline" secondItem="Eht-cl-LtU" secondAttribute="baseline" id="AkG-zv-X6o"/>
-                    <constraint firstAttribute="bottom" secondItem="Eht-cl-LtU" secondAttribute="bottom" constant="19" id="Gdg-ir-2eh"/>
-                    <constraint firstItem="Eht-cl-LtU" firstAttribute="top" secondItem="TLS-hE-fLt" secondAttribute="bottom" constant="13" id="Jlt-6V-sM8"/>
+                    <constraint firstAttribute="trailing" secondItem="gEj-8x-XrO" secondAttribute="trailing" constant="24" id="Bf6-ed-bTO"/>
+                    <constraint firstAttribute="bottom" secondItem="gEj-8x-XrO" secondAttribute="bottom" constant="19" id="NW1-NB-9pg"/>
                     <constraint firstItem="TLS-hE-fLt" firstAttribute="top" secondItem="jQo-0g-7xF" secondAttribute="bottom" constant="3" id="OGe-d6-GTK"/>
                     <constraint firstItem="ORW-oU-9em" firstAttribute="top" secondItem="llE-7y-lSY" secondAttribute="top" id="TYt-AW-68S"/>
-                    <constraint firstItem="gEj-8x-XrO" firstAttribute="trailing" secondItem="TLS-hE-fLt" secondAttribute="trailing" id="TZi-hO-U5z"/>
                     <constraint firstItem="llE-7y-lSY" firstAttribute="leading" secondItem="0FY-e4-SV7" secondAttribute="trailing" constant="8" symbolic="YES" id="aTs-xA-Vs3"/>
+                    <constraint firstAttribute="bottom" secondItem="Eht-cl-LtU" secondAttribute="bottom" constant="19" id="fSV-QS-Qn6"/>
                     <constraint firstItem="0FY-e4-SV7" firstAttribute="centerY" secondItem="llE-7y-lSY" secondAttribute="centerY" id="hSc-xW-nuk"/>
                     <constraint firstItem="jQo-0g-7xF" firstAttribute="top" secondItem="0FY-e4-SV7" secondAttribute="bottom" constant="8" symbolic="YES" id="iHa-Mp-SFA"/>
                     <constraint firstItem="ORW-oU-9em" firstAttribute="baseline" secondItem="0FY-e4-SV7" secondAttribute="baseline" id="jTx-wG-bdd"/>
                     <constraint firstItem="ORW-oU-9em" firstAttribute="trailing" secondItem="jQo-0g-7xF" secondAttribute="trailing" id="ldp-3I-NGB"/>
-                    <constraint firstItem="gEj-8x-XrO" firstAttribute="leading" secondItem="Eht-cl-LtU" secondAttribute="trailing" constant="12" symbolic="YES" id="rJ3-lj-IxC"/>
                     <constraint firstItem="TLS-hE-fLt" firstAttribute="leading" secondItem="jQo-0g-7xF" secondAttribute="leading" id="vvb-WY-iw0"/>
                     <constraint firstAttribute="trailing" secondItem="jQo-0g-7xF" secondAttribute="trailing" constant="24" id="wg4-VD-4cO"/>
                     <constraint firstItem="jQo-0g-7xF" firstAttribute="leading" secondItem="0FY-e4-SV7" secondAttribute="leading" id="y8L-o8-aVf"/>
