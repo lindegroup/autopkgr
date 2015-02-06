@@ -160,7 +160,9 @@ static NSString *kCommandKeyAuthRightDesc = @"authRightDescription";
                 NULL);
         }
         if (err != errAuthorizationSuccess) {
-            error = [LGError errorWithCode:kLGErrorAuthChallenge];
+            NSString *message = CFBridgingRelease(SecCopyErrorMessageString(err, NULL));
+
+            error = [NSError errorWithDomain:[[NSProcessInfo processInfo] processName] code:err userInfo:@{ NSLocalizedDescriptionKey : message }];
         }
     }
 
