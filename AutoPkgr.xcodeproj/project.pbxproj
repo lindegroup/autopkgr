@@ -35,7 +35,7 @@
 		BE025CFE19BAEF8800D36345 /* LGAutoPkgSchedule.m in Sources */ = {isa = PBXBuildFile; fileRef = BE025CFD19BAEF8800D36345 /* LGAutoPkgSchedule.m */; };
 		BE025CFF19BAEF8800D36345 /* LGAutoPkgSchedule.m in Sources */ = {isa = PBXBuildFile; fileRef = BE025CFD19BAEF8800D36345 /* LGAutoPkgSchedule.m */; };
 		BE05CE6A19DAF26B0089068B /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = BE05CE6919DAF26B0089068B /* main.m */; };
-		BE05CE7519DAF4DA0089068B /* com.lindegroup.AutoPkgr.helper in CopyFiles */ = {isa = PBXBuildFile; fileRef = BE05CE6719DAF26B0089068B /* com.lindegroup.AutoPkgr.helper */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		BE05CE7519DAF4DA0089068B /* com.lindegroup.AutoPkgr.helper in Copy Files: Helper Tool */ = {isa = PBXBuildFile; fileRef = BE05CE6719DAF26B0089068B /* com.lindegroup.AutoPkgr.helper */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		BE05CE7C19DAF5A30089068B /* LGAutoPkgrHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = BE05CE7A19DAF5A30089068B /* LGAutoPkgrHelper.m */; };
 		BE05CE8219DAF6320089068B /* LGAutoPkgrAuthorizer.m in Sources */ = {isa = PBXBuildFile; fileRef = BE05CE7F19DAF6320089068B /* LGAutoPkgrAuthorizer.m */; };
 		BE05CE8319DAF6320089068B /* LGAutoPkgrHelperConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = BE05CE8119DAF6320089068B /* LGAutoPkgrHelperConnection.m */; };
@@ -113,24 +113,15 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		1A0A86B4195CE6BF00A49434 /* Copy Files */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-			);
-			name = "Copy Files";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		BE05CE7419DAF4C30089068B /* CopyFiles */ = {
+		BE05CE7419DAF4C30089068B /* Copy Files: Helper Tool */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = Contents/Library/LaunchServices;
 			dstSubfolderSpec = 1;
 			files = (
-				BE05CE7519DAF4DA0089068B /* com.lindegroup.AutoPkgr.helper in CopyFiles */,
+				BE05CE7519DAF4DA0089068B /* com.lindegroup.AutoPkgr.helper in Copy Files: Helper Tool */,
 			);
+			name = "Copy Files: Helper Tool";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
@@ -544,16 +535,15 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 1AC6957E195B59EE00D2BD81 /* Build configuration list for PBXNativeTarget "AutoPkgr" */;
 			buildPhases = (
-				BE13A88A19E256A0008A49A1 /* ShellScript */,
+				BE13A88A19E256A0008A49A1 /* Run script: Helper tool codsign config */,
 				570AE652B42D4D4D86875A8A /* Check Pods Manifest.lock */,
-				BECFF2B619CA9854004C2721 /* Run Script */,
+				BECFF2B619CA9854004C2721 /* Run Script: Set build number to commit count */,
 				1AC69549195B59ED00D2BD81 /* Sources */,
 				1AC6954A195B59ED00D2BD81 /* Frameworks */,
 				1AC6954B195B59ED00D2BD81 /* Resources */,
-				1A0A86B4195CE6BF00A49434 /* Copy Files */,
-				BE05CE7419DAF4C30089068B /* CopyFiles */,
+				BE05CE7419DAF4C30089068B /* Copy Files: Helper Tool */,
 				C97E222596F14727B875BF98 /* Copy Pods Resources */,
-				1A56282C19CC01D600980AB9 /* ShellScript */,
+				1A56282C19CC01D600980AB9 /* Run Script: Deeper sign */,
 			);
 			buildRules = (
 			);
@@ -670,13 +660,14 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		1A56282C19CC01D600980AB9 /* ShellScript */ = {
+		1A56282C19CC01D600980AB9 /* Run Script: Deeper sign */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
+			name = "Run Script: Deeper sign";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -771,27 +762,28 @@
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-AutoPkgr/Pods-AutoPkgr-resources.sh\"\n";
 		};
-		BE13A88A19E256A0008A49A1 /* ShellScript */ = {
+		BE13A88A19E256A0008A49A1 /* Run script: Helper tool codsign config */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
+			name = "Run script: Helper tool codsign config";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${PROJECT_DIR}/scripts/helper-tool-codesign-config.py\"";
 		};
-		BECFF2B619CA9854004C2721 /* Run Script */ = {
+		BECFF2B619CA9854004C2721 /* Run Script: Set build number to commit count */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Run Script";
+			name = "Run Script: Set build number to commit count";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
