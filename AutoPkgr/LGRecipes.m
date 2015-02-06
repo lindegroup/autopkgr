@@ -481,6 +481,8 @@
         return YES;
     }
 
+    NSLog(@"Prompting user to upgrade recipe list to new identifier format...");
+
     NSString *infoText = @"AutoPkgr now uses recipe identifiers instead of short names to specify recipes. This makes it possible to schedule and run identically-named recipes from separate repos.";
 
     NSAlert *alert = [NSAlert alertWithMessageText:@"AutoPkgr needs to convert your recipe list."
@@ -491,6 +493,7 @@
 
     if ([alert runModal] == NSAlertDefaultReturn) {
 
+        NSLog(@"Permission granted. Upgrading recipe list...");
         NSString *bak = [orig stringByAppendingPathExtension:@"v1.bak"];
         if ([manager fileExistsAtPath:orig] && ![manager fileExistsAtPath:bak]) {
             [manager copyItemAtPath:orig toPath:bak error:nil];
@@ -522,9 +525,12 @@
         // return NO if any were unable to be converted
         if (!success) {
             NSLog(@"An error may have occurred while converting the recipe list. We successfully converted %d out of %lu recipes. However it's also possible your recipe list was already converted. Please double check your enabled recipes now.", i, (unsigned long)recipes.activeRecipes.count);
+        } else {
+            NSLog(@"The recipe list was upgraded successfully.");
         }
         return YES;
     }
+    NSLog(@"User chose not to upgrade recipe list.");
     return NO;
 }
 
