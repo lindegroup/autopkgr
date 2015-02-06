@@ -115,7 +115,7 @@
     if (jobIsRunning(kLGAutoPkgrHelperToolName, kAHGlobalLaunchDaemon)) {
         LGAutoPkgrHelperConnection *helper = [LGAutoPkgrHelperConnection new];
         [helper connectToHelper];
-        [[helper.connection remoteObjectProxy] quitHelper:^(BOOL success){}];
+        [[helper.connection remoteObjectProxy] quitHelper:^(BOOL success) {}];
     }
 
     // Stop observing...
@@ -207,10 +207,12 @@
     }] uninstall:authData
             reply:^(NSError *error) {
         [[NSOperationQueue mainQueue]addOperationWithBlock:^{
-            if(error){
-                [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-                    [NSApp presentError:error];
-                }];
+            if (error) {
+                if (error.code != errAuthorizationCanceled) {
+                    [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+                        [NSApp presentError:error];
+                    }];
+                }
             } else {
                 // if uninstalling turn off schedule in defaults so it's not automatically recreated
                 NSAlert *alert = [NSAlert alertWithMessageText:@"Removed AutoPkgr associated files" defaultButton:@"Thanks for using AutoPkgr" alternateButton:nil otherButton:nil informativeTextWithFormat: @"including the helper tool, launchd schedule, and other launchd plist. You can safely remove it from your Applications folder."];
