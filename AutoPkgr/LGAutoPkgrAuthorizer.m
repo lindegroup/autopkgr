@@ -38,15 +38,15 @@ static NSString *kCommandKeyAuthRightDesc = @"authRightDescription";
                 kCommandKeyAuthRightName    : @"com.lindegroup.autopkgr.pkg.installer",
                 kCommandKeyAuthRightDefault : @kAuthorizationRuleAuthenticateAsAdmin, 
                 kCommandKeyAuthRightDesc    : NSLocalizedString(
-                                                                @"AutoPkgr needs to run a package installer.  ",
-                                                                @"prompt shown when user is required to authorize to insatll a package"
+                                                                @"AutoPkgr needs to run a package installer. ",
+                                                                @"prompt shown when user is required to authorize to install a package"
                                                                 )
                 },
             NSStringFromSelector(@selector(scheduleRun:user:program:authorization:reply:)) : @{
                 kCommandKeyAuthRightName    : @"com.lindegroup.autopkgr.add.scheduled.run",
                 kCommandKeyAuthRightDefault : @kAuthorizationRuleAuthenticateAsAdmin,
                 kCommandKeyAuthRightDesc    : NSLocalizedString(
-                                                                @"AutoPkgr is trying to add an autopkg run schedule.  ",
+                                                                @"AutoPkgr is trying to add an autopkg run schedule. ",
                                                                 @"Prompt shown when user is required to authorize adding schedule"
                                                                 )
                 },
@@ -54,7 +54,7 @@ static NSString *kCommandKeyAuthRightDesc = @"authRightDescription";
                 kCommandKeyAuthRightName    : @"com.lindegroup.autopkgr.remove.schedule.run",
                 kCommandKeyAuthRightDefault : @kAuthorizationRuleAuthenticateAsAdmin,
                 kCommandKeyAuthRightDesc    : NSLocalizedString(
-                                                                @"AutoPkgr is trying to remove the autopkg run schedule.  ",
+                                                                @"AutoPkgr is trying to remove the autopkg run schedule. ",
                                                                 @"Prompt shown when user is required to authorize removing schedule"
                                                                 )
                 },
@@ -62,7 +62,7 @@ static NSString *kCommandKeyAuthRightDesc = @"authRightDescription";
                     kCommandKeyAuthRightName    : @"com.lindegroup.autopkgr.uninstall.helper.tool",
                     kCommandKeyAuthRightDefault : @kAuthorizationRuleAuthenticateAsAdmin,
                     kCommandKeyAuthRightDesc    : NSLocalizedString(
-                                                                    @"AutoPkgr wants to remove the helper tool and associated files.  ",
+                                                                    @"AutoPkgr wants to remove the helper tool and associated files. ",
                                                                     @"Prompt shown when user is required to authorize removing schedule"
                                                                     )
                     },
