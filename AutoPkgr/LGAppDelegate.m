@@ -52,8 +52,8 @@
     // Setup activation policy. By default set as menubar only.
     [[LGDefaults standardUserDefaults] registerDefaults:@{ kLGApplicationDisplayStyle : @(kLGDisplayStyleMenuBarOnly) }];
 
-    if ([[LGDefaults standardUserDefaults] applicationDisplayStyle] == kLGDisplayStyleMenuBarOnly) {
-        [NSApp setActivationPolicy:NSApplicationActivationPolicyAccessory];
+    if ([[LGDefaults standardUserDefaults] applicationDisplayStyle] != kLGDisplayStyleMenuBarOnly) {
+        [NSApp setActivationPolicy:NSApplicationActivationPolicyRegular];
     }
 }
 
