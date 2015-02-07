@@ -60,6 +60,7 @@ extern NSString *const kLGCheckForRepoUpdatesAutomaticallyEnabled;
 extern NSString *const kLGSMTPTLSEnabled;
 extern NSString *const kLGSMTPAuthenticationEnabled;
 extern NSString *const kLGWarnBeforeQuittingEnabled;
+extern NSString *const kLGApplicationDisplayStyle;
 
 #pragma mark - Notifications
 #pragma mark-- Progress

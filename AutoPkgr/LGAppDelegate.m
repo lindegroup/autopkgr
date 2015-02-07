@@ -29,6 +29,7 @@
 #import "LGConfigurationWindowController.h"
 #import "LGAutoPkgrHelperConnection.h"
 #import "LGUserNotifications.h"
+
 #import <AHLaunchCtl/AHLaunchCtl.h>
 
 @interface LGAppDelegate () <NSMenuDelegate>
@@ -40,23 +41,26 @@
 @implementation LGAppDelegate {
 @private
     BOOL _configurationWindowInitiallyVisible;
+    BOOL _configurationWindowDeferred;
     BOOL _initialMessageFromBackgroundRunProcessed;
 }
 
 #pragma mark - NSApplication Delegate
+
 - (void)applicationWillFinishLaunching:(NSNotification *)notification
 {
-    // Setup activation policy
-    if ([[LGDefaults standardUserDefaults] boolForKey:@"MenuBarOnly"]) {
+    // Setup activation policy. By default set as menubar only.
+    [[LGDefaults standardUserDefaults] registerDefaults:@{ kLGApplicationDisplayStyle : @(kLGDisplayStyleMenuBarOnly) }];
+
+    if ([[LGDefaults standardUserDefaults] applicationDisplayStyle] == kLGDisplayStyleMenuBarOnly) {
         [NSApp setActivationPolicy:NSApplicationActivationPolicyAccessory];
     }
 }
 
 - (BOOL)applicationShouldTerminateAfterLastWindowClosed:(NSApplication *)sender
 {
-    // If this set to run as a stand alone app with no menu item,
-    // quit it after the last window is closed.
-    if ([[LGDefaults standardUserDefaults] boolForKey:@"DockOnly"]) {
+    // If this set to run as dock only with no menu item, quit it after the last window is closed.
+    if ([[LGDefaults standardUserDefaults] applicationDisplayStyle] == kLGDisplayStyleDockOnly) {
         return YES;
     }
     return NO;
@@ -131,8 +135,8 @@
 #pragma mark - Setup
 - (void)setupStatusItem
 {
-    LGDefaults *defaults = [LGDefaults standardUserDefaults];
-    if (![defaults boolForKey:@"MenuBarOnly"] && [defaults boolForKey:@"DockOnly"]) {
+    if (self.statusItem ||
+        [[LGDefaults standardUserDefaults] applicationDisplayStyle] == kLGDisplayStyleDockOnly) {
         return;
     }
 
@@ -189,6 +193,14 @@
 
 - (void)showConfigurationWindow:(id)sender
 {
+    // If the application was launched at login, defer loading the configuration window once.
+    if ([[[NSProcessInfo processInfo] arguments] containsObject:kLGLaunchedAtLogin]) {
+        if (!_configurationWindowDeferred) {
+            _configurationWindowDeferred = YES;
+            return;
+        }
+    }
+
     if (!self->_configurationWindowController) {
         self->_configurationWindowController = [[LGConfigurationWindowController alloc] initWithWindowNibName:@"LGConfigurationWindowController"];
     }

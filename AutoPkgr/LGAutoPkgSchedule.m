@@ -24,6 +24,8 @@
 #import "LGAutoPkgrHelperConnection.h"
 #import <AHLaunchCtl/AHLaunchCtl.h>
 
+NSString *const kLGLaunchedAtLogin = @"LaunchedAtLogin";
+
 @implementation LGAutoPkgSchedule
 
 + (void)startAutoPkgSchedule:(BOOL)start interval:(NSInteger)interval isForced:(BOOL)forced reply:(void (^)(NSError *error))reply;
@@ -81,6 +83,33 @@
         *scheduleInterval = interval;
     }
     return job ? YES : NO;
+}
+
++ (BOOL)launchAtLogin:(BOOL)launch
+{
+    NSBundle *appBundle = [NSBundle mainBundle];
+    NSString *launchAgentFileName = [appBundle.bundleIdentifier stringByAppendingPathExtension:@"launcher.plist"];
+
+    NSString *launchAgentPath = [[@"~/Library/LaunchAgents" stringByAppendingPathComponent:launchAgentFileName] stringByExpandingTildeInPath];
+
+    AHLaunchJob *job = [AHLaunchJob new];
+    job.Label = [launchAgentFileName stringByDeletingPathExtension];
+
+    // Set an extra argument here to when launched at login, so the app delegate
+    // knows to defer launching the configuration window once.
+    job.ProgramArguments = @[ appBundle.executablePath, kLGLaunchedAtLogin ];
+    job.RunAtLoad = YES;
+
+    if (launch) {
+        return [job.dictionary writeToFile:launchAgentPath atomically:YES];
+    } else {
+        return [[NSFileManager defaultManager] removeItemAtPath:launchAgentPath error:nil];
+    }
+}
+
++ (BOOL)willLaunchAtLogin
+{
+    return ([AHLaunchCtl jobFromFileNamed:@"com.lindegroup.AutoPkgr.launcher.plist" inDomain:kAHUserLaunchAgent] == nil) ? NO : YES;
 }
 
 @end

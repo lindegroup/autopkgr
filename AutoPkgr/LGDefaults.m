@@ -153,6 +153,18 @@
 {
     [self setBool:HasCompletedInitialSetup forKey:kLGHasCompletedInitialSetup];
 }
+
+#pragma mark
+- (NSInteger)applicationDisplayStyle
+{
+    return [self integerForKey:kLGApplicationDisplayStyle];
+}
+
+- (void)setApplicationDisplayStyle:(NSInteger)applicationDisplayStyle
+{
+    [self setInteger:applicationDisplayStyle forKey:kLGApplicationDisplayStyle];
+}
+
 #pragma mark
 - (BOOL)sendEmailNotificationsWhenNewVersionsAreFoundEnabled
 {

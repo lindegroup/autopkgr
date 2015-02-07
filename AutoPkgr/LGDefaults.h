@@ -21,6 +21,12 @@
 
 #import <Foundation/Foundation.h>
 
+typedef NS_ENUM(NSInteger, LGApplicationDisplayStyle) {
+    kLGDisplayStyleMenuBarOnly,
+    kLGDisplayStyleDockOnly,
+    kLGDisplayStyleBoth,
+};
+
 @interface LGDefaults : NSUserDefaults
 
 #pragma mark - Singletons
@@ -43,6 +49,8 @@
 @property (nonatomic) BOOL SMTPTLSEnabled;
 @property (nonatomic) BOOL SMTPAuthenticationEnabled;
 @property (nonatomic) BOOL hasCompletedInitialSetup;
+@property (nonatomic) NSInteger applicationDisplayStyle;
+
 @property (nonatomic) BOOL sendEmailNotificationsWhenNewVersionsAreFoundEnabled;
 @property (nonatomic) BOOL checkForRepoUpdatesAutomaticallyEnabled;
 

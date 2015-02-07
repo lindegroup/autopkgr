@@ -28,6 +28,7 @@
 #import "LGInstaller.h"
 #import "LGAutoPkgSchedule.h"
 #import "LGProgressDelegate.h"
+
 #import "AHKeychain.h"
 
 @interface LGConfigurationWindowController () {
@@ -70,6 +71,15 @@
 
     // Modal Windows
     _popRepoTableViewHandler.modalWindow = self.window;
+
+    // Set launch at login button
+    _launchAtLoginButton.state = [LGAutoPkgSchedule willLaunchAtLogin];
+
+    // Set display mode button
+    LGApplicationDisplayStyle displayStyle = _defaults.applicationDisplayStyle;
+    if (displayStyle < _applicationDisplayModeButton.numberOfItems) {
+        [_applicationDisplayModeButton selectItemAtIndex:displayStyle];
+    }
 
     // AutoPkg settings
     _localMunkiRepo.safeStringValue = _defaults.munkiRepo;
@@ -168,6 +178,34 @@
 {
     DLog(@"Close command received. Configuration window is saving and closing.");
     return YES;
+}
+
+#pragma mark - Display Mode
+- (IBAction)changeDisplayMode:(NSPopUpButton *)sender
+{
+    NSInteger tag = sender.selectedTag;
+    NSInteger style = [[LGDefaults standardUserDefaults] applicationDisplayStyle];
+
+    // Only set and relaunch if the selection actually changed.
+    if (tag != style) {
+        [[LGDefaults standardUserDefaults] setApplicationDisplayStyle:tag];
+
+        NSString *processIdentifier = @([[NSProcessInfo processInfo] processIdentifier]).stringValue;
+        NSString *launchPath = [[NSBundle mainBundle] executablePath];
+
+        [NSTask launchedTaskWithLaunchPath:launchPath
+                                 arguments:@[ processIdentifier ]];
+
+        [[NSApplication sharedApplication] terminate:self];
+    }
+}
+
+#pragma mark - Launch At Login
+- (IBAction)launchAtLogin:(NSButton *)sender
+{
+    if (![LGAutoPkgSchedule launchAtLogin:sender.state]) {
+        sender.state = !sender.state;
+    }
 }
 
 #pragma mark - Email
