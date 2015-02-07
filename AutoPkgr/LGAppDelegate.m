@@ -31,7 +31,7 @@
 #import "LGUserNotifications.h"
 #import <AHLaunchCtl/AHLaunchCtl.h>
 
-@interface LGAppDelegate ()
+@interface LGAppDelegate () <NSMenuDelegate>
 @property (strong) LGConfigurationWindowController *configurationWindowController;
 @property (strong) LGUserNotifications *notificationDelegate;
 @property (strong) LGAutoPkgTaskManager *taskManager;
@@ -115,8 +115,7 @@
     if (jobIsRunning(kLGAutoPkgrHelperToolName, kAHGlobalLaunchDaemon)) {
         LGAutoPkgrHelperConnection *helper = [LGAutoPkgrHelperConnection new];
         [helper connectToHelper];
-        [[helper.connection remoteObjectProxy] quitHelper:^(BOOL success){
-        }];
+        [[helper.connection remoteObjectProxy] quitHelper:^(BOOL success) {}];
     }
 
     // Stop observing...
@@ -153,6 +152,8 @@
     [self.statusItem setHighlightMode:YES];
     self.statusItem.menu = self.statusMenu;
     DLog(@"AutoPkgr menu bar icon started.");
+
+    self.statusMenu.delegate = self;
 }
 
 #pragma mark - IBActions
@@ -273,7 +274,15 @@
 
         // Set the last run date of the menu item.
         NSString *lastRunDate = [[LGDefaults standardUserDefaults] LastAutoPkgRun];
-        NSString *status = [NSString stringWithFormat:@"Last AutoPkg Run: %@",lastRunDate ?: @"Never by AutoPkgr"];
+        NSString *status;
+
+        if (error) {
+            self.statusItem.image = [NSImage imageNamed:@"autopkgr_error.png"];
+            status = [NSString stringWithFormat:@"AutoPkg Run Error on: %@",lastRunDate ?: @"Never by AutoPkgr"];
+        } else {
+            self.statusItem.image = [NSImage imageNamed:@"autopkgr.png"];
+            status = [NSString stringWithFormat:@"Last AutoPkg Run: %@",lastRunDate ?: @"Never by AutoPkgr"];
+        }
 
         [_progressMenuItem setTitle:status];
     }];
@@ -342,6 +351,11 @@
             }
         }];
     }];
+}
+
+#pragma mark - Menu Delegate
+-(void)menuDidClose:(NSMenu *)menu {
+    self.statusItem.image = [NSImage imageNamed:@"autopkgr.png"];
 }
 
 @end
