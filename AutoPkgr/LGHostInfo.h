@@ -20,6 +20,7 @@
 //
 
 #import <Foundation/Foundation.h>
+
 @class AHKeychain;
 
 @interface LGHostInfo : NSObject
@@ -27,17 +28,8 @@
 + (NSString *)getUserName;
 + (NSString *)getHostName;
 + (NSString *)getUserAtHostName;
-+ (NSString *)getAutoPkgVersion;
 + (NSString *)getAppSupportDirectory;
-+ (NSString *)getJSSImporterVersion;
 
-+ (BOOL)gitInstalled;
-+ (BOOL)autoPkgInstalled;
-+ (BOOL)autoPkgUpdateAvailable;
-+ (BOOL)jssImporterInstalled;
-+ (BOOL)jssImporterUpdateAvailable;
-
-+ (NSArray *)knownGitPaths;
 + (AHKeychain *)appKeychain;
 
 @end

@@ -30,6 +30,8 @@
 #import "LGProgressDelegate.h"
 #import "LGDisplayStatusDelegate.h"
 
+#import "LGTools.h"
+
 #import "AHKeychain.h"
 
 @interface LGConfigurationWindowController () {
@@ -134,45 +136,22 @@
     }
 
     // Check to see what's installed, and what needs updating
-    BOOL autoPkgInstalled = [LGHostInfo autoPkgInstalled];
-    BOOL gitInstalled = [LGHostInfo gitInstalled];
 
-    if (gitInstalled) {
-        DLog(@"Git is installed. Disabling 'Install Git' button and setting green indicator.");
-        [_installGitButton setEnabled:NO];
-        [_gitStatusLabel setStringValue:kLGGitInstalledLabel];
-        [_gitStatusIcon setImage:[NSImage LGStatusAvailable]];
-    } else {
-        DLog(@"Git is not installed. Enabling 'Install Git' button and setting red indicator.");
-        [_installGitButton setEnabled:YES];
-        [_gitStatusLabel setStringValue:kLGGitNotInstalledLabel];
-        [_gitStatusIcon setImage:[NSImage LGStatusUnavailable]];
-    }
-
-    NSOperationQueue *bgQueue = [[NSOperationQueue alloc] init];
-    [bgQueue addOperationWithBlock:^{
-        // Since checking for an update can take some time, run it in the background
-        if (autoPkgInstalled) {
-            BOOL updateAvailable = [LGHostInfo autoPkgUpdateAvailable];
-            if (updateAvailable) {
-                DLog(@"AutoPkg is installed, but an update is available. Enabling 'Update AutoPkg' button and setting yellow indicator.");
-                [_installAutoPkgButton setEnabled:YES];
-                [_installAutoPkgButton setTitle:@"Update AutoPkg"];
-                [_autoPkgStatusLabel setStringValue:kLGAutoPkgUpdateAvailableLabel];
-                [_autoPkgStatusIcon setImage:[NSImage LGStatusUpdateAvailable]];
-            } else {
-                DLog(@"AutoPkg is installed and up to date. Disabling 'Update AutoPkg' button and setting green indicator.");
-                [_installAutoPkgButton setEnabled:NO];
-                [_autoPkgStatusLabel setStringValue:kLGAutoPkgInstalledLabel];
-                [_autoPkgStatusIcon setImage:[NSImage LGStatusUpToDate]];
-            }
-        } else {
-            DLog(@"AutoPkg is not installed. Enabling 'Install AutoPkg' button and setting red indicator.");
-            [_installAutoPkgButton setEnabled:YES];
-            [_autoPkgStatusLabel setStringValue:kLGAutoPkgNotInstalledLabel];
-            [_autoPkgStatusIcon setImage:[NSImage LGStatusNotInstalled]];
-        }
+    LGToolStatus *toolStatus = [[LGToolStatus alloc] init];
+    [toolStatus autoPkgStatus:^(LGTool *tool) {
+        _installAutoPkgButton.enabled = tool.needsInstall;
+        _installAutoPkgButton.title = tool.installButtonTitle;
+        _autoPkgStatusIcon.image = tool.statusImage;
+        _autoPkgStatusLabel.stringValue = tool.statusString;
     }];
+
+    [toolStatus gitStatus:^(LGTool *tool) {
+        _installGitButton.enabled = tool.needsInstall;
+        _installGitButton.title = tool.installButtonTitle;
+        _gitStatusLabel.stringValue = tool.statusString;
+        _gitStatusIcon.image = tool.statusImage;
+    }];
+
 }
 
 - (BOOL)windowShouldClose:(id)sender
@@ -333,18 +312,12 @@
     installer.progressDelegate = _progressDelegate;
     [installer installGit:^(NSError *error) {
         [self stopProgress:error];
-        [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-            if ([LGHostInfo gitInstalled]) {
-                NSLog(@"Git installed successfully.");
-                [_installGitButton setEnabled:NO];
-                [_gitStatusLabel setStringValue:kLGGitInstalledLabel];
-                [_gitStatusIcon setImage:[NSImage imageNamed:NSImageNameStatusAvailable]];
-            } else {
-                NSLog(@"%@", error.localizedDescription);
-                [_installGitButton setEnabled:YES];
-                [_gitStatusLabel setStringValue:kLGGitNotInstalledLabel];
-                [_gitStatusIcon setImage:[NSImage imageNamed:NSImageNameStatusUnavailable]];
-            }
+        LGToolStatus *toolStatus = [[LGToolStatus alloc] init];
+        [toolStatus autoPkgStatus:^(LGTool *tool) {
+            _installGitButton.enabled = tool.needsInstall;
+            _installGitButton.title = tool.installButtonTitle;
+            _gitStatusIcon.image = tool.statusImage;
+            _gitStatusLabel.stringValue = tool.statusString;
         }];
     }];
 }
@@ -362,18 +335,12 @@
     [installer installAutoPkg:^(NSError *error) {
         // Update the autoPkgStatus icon and label if it installed successfully
         [self stopProgress:error];
-        [[NSOperationQueue  mainQueue] addOperationWithBlock:^{
-            if ([LGHostInfo autoPkgInstalled]) {
-                NSLog(@"AutoPkg installed successfully.");
-                [_autoPkgStatusLabel setStringValue:kLGAutoPkgInstalledLabel];
-                [_autoPkgStatusIcon setImage:[NSImage imageNamed:NSImageNameStatusAvailable]];
-                [_installAutoPkgButton setEnabled:NO];
-                [_installAutoPkgButton setTitle:@"Install AutoPkg"];
-            } else {
-                [_autoPkgStatusLabel setStringValue:kLGAutoPkgNotInstalledLabel];
-                [_autoPkgStatusIcon setImage:[NSImage imageNamed:NSImageNameStatusUnavailable]];
-                [_installAutoPkgButton setEnabled:YES];
-            }
+        LGToolStatus *toolStatus = [[LGToolStatus alloc] init];
+        [toolStatus autoPkgStatus:^(LGTool *tool) {
+            _installAutoPkgButton.enabled = tool.needsInstall;
+            _installAutoPkgButton.title = tool.installButtonTitle;
+            _autoPkgStatusIcon.image = tool.statusImage;
+            _autoPkgStatusLabel.stringValue = tool.statusString;
         }];
     }];
 }

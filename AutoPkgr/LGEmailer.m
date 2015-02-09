@@ -24,6 +24,7 @@
 #import "LGAutoPkgr.h"
 #import "LGHostInfo.h"
 #import "AHKeychain.h"
+#import "LGTools.h"
 #import "LGUserNotifications.h"
 
 @implementation LGEmailer
@@ -143,8 +144,8 @@
 - (void)sendEmailForReport:(NSDictionary *)report error:(NSError *)error
 {
     // Get arrays of new downloads/packages from the plist
-    NSMutableString *message;
-    NSString *subject;
+    __block NSMutableString *message;
+    __block NSString *subject;
     NSArray *newDownloads;
     NSArray *newPackages;
     NSArray *newImports;
@@ -165,7 +166,7 @@
         subject = [NSString stringWithFormat:@"[%@] New software available for testing", kLGApplicationName];
 
         // Append the the message string with report
-        [message appendFormat:@"The following software is now available for testing:<br /><br />"];
+        [message appendFormat:@"<strong>The following software is now available for testing:<br /></strong><br />"];
 
         for (NSString *path in newDownloads) {
             NSCharacterSet *set = [NSCharacterSet punctuationCharacterSet];
@@ -237,11 +238,32 @@
         }
     }
 
-    if (message) {
-        [self sendEmailNotification:subject message:message];
-    } else {
-        self.complete = YES;
-    }
+    LGToolStatus *toolStatus = [LGToolStatus new];
+    [toolStatus allToolsStatus:^(NSArray *tools) {
+        BOOL setUpdateMessage = NO;
+        for (LGTool *tool in tools) {
+            if (tool.status == kLGToolUpdateAvaliable) {
+                if (!message) {
+                    message = [[NSMutableString alloc] init];
+                }
+
+                if (!subject) {
+                    subject = [NSString stringWithFormat:@"Update to helper components available"];
+                }
+
+                if (!setUpdateMessage) {
+                    [message appendString:@"<p><strong>Updates for helper tools:</strong></p>"];
+                    setUpdateMessage = YES;
+                }
+                [message appendFormat:@"%@<br />", tool.statusString];
+            }
+        }
+        if (message) {
+            [self sendEmailNotification:subject message:message];
+        } else {
+            self.complete = YES;
+        }
+    }];
 }
 
 @end

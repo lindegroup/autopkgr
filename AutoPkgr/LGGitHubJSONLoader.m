@@ -29,7 +29,7 @@
 {
     // Create the NSURLRequest object with the given URL
     NSURLRequest *req = [NSURLRequest requestWithURL:url
-                                         cachePolicy:NSURLRequestReloadIgnoringLocalAndRemoteCacheData
+                                         cachePolicy:NSURLRequestUseProtocolCachePolicy
                                      timeoutInterval:15.0];
 
     // Initialize our response and error objects
