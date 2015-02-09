@@ -65,6 +65,7 @@ NSString *const kLGSendEmailNotificationsWhenNewVersionsAreFoundEnabled = @"Send
 NSString *const kLGCheckForNewVersionsOfAppsAutomaticallyEnabled = @"CheckForNewVersionsOfAppsAutomaticallyEnabled";
 NSString *const kLGCheckForRepoUpdatesAutomaticallyEnabled = @"CheckForRepoUpdatesAutomaticallyEnabled";
 NSString *const kLGWarnBeforeQuittingEnabled = @"WarnBeforeQuitting";
+NSString *const kLGApplicationDisplayStyle = @"ApplicationDisplayStyle";
 
 #pragma mark - Notifications
 #pragma mark-- Progress

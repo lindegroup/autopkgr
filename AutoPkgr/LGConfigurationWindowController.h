@@ -46,12 +46,14 @@
 @property (weak) IBOutlet NSButton *checkForNewVersionsOfAppsAutomaticallyButton;
 @property (weak) IBOutlet NSButton *checkForRepoUpdatesAutomaticallyButton;
 @property (weak) IBOutlet NSButton *sendEmailNotificationsWhenNewVersionsAreFoundButton;
+@property (weak) IBOutlet NSButton *launchAtLoginButton;
 
 // Buttons
 @property (weak) IBOutlet NSButton *openLocalMunkiRepoFolderButton;
 @property (weak) IBOutlet NSButton *openAutoPkgRecipeReposFolderButton;
 @property (weak) IBOutlet NSButton *openAutoPkgCacheFolderButton;
 @property (weak) IBOutlet NSButton *openAutoPkgRecipeOverridesFolderButton;
+@property (weak) IBOutlet NSPopUpButton *applicationDisplayModeButton;
 
 @property (weak) IBOutlet NSButton *sendTestEmailButton;
 @property (weak) IBOutlet NSButton *installGitButton;

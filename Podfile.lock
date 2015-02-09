@@ -29,7 +29,7 @@ DEPENDENCIES:
   - AFNetworking (~> 2.4.1)
   - AHCodesignVerifier (~> 0.1)
   - AHKeychain (~> 0.2)
-  - AHLaunchCtl (~> 0.3)
+  - AHLaunchCtl (~> 0.3.1)
   - AHProxySettings (~> 0.1.1)
   - mailcore2-osx (~> 0.5)
   - Sparkle (= 1.8)
