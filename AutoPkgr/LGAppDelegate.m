@@ -52,7 +52,7 @@
     // Setup activation policy. By default set as menubar only.
     [[LGDefaults standardUserDefaults] registerDefaults:@{ kLGApplicationDisplayStyle : @(kLGDisplayStyleMenuBarOnly) }];
 
-    if ([[LGDefaults standardUserDefaults] applicationDisplayStyle] != kLGDisplayStyleMenuBarOnly) {
+    if ([[LGDefaults standardUserDefaults] applicationDisplayStyle] > kLGDisplayStyleMenuBarOnly) {
         [NSApp setActivationPolicy:NSApplicationActivationPolicyRegular];
     }
 }
@@ -60,15 +60,20 @@
 - (BOOL)applicationShouldTerminateAfterLastWindowClosed:(NSApplication *)sender
 {
     // If this set to run as dock only with no menu item, quit it after the last window is closed.
-    if ([[LGDefaults standardUserDefaults] applicationDisplayStyle] == kLGDisplayStyleDockOnly) {
-        return YES;
+    BOOL quitOnClose = NO;
+    switch ([[LGDefaults standardUserDefaults] applicationDisplayStyle]) {
+        case kLGDisplayStyleBackground:
+        case kLGDisplayStyleDockOnly:
+            quitOnClose = YES;
+        default:
+            quitOnClose = NO;
+            break;
     }
-    return NO;
+    return quitOnClose;
 }
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {
-
     NSLog(@"Welcome to AutoPkgr!");
     DLog(@"Verbose logging is active. To deactivate, option-click the AutoPkgr menu icon and uncheck Verbose Logs.");
 
@@ -135,8 +140,8 @@
 #pragma mark - Setup
 - (void)setupStatusItem
 {
-    if (self.statusItem ||
-        [[LGDefaults standardUserDefaults] applicationDisplayStyle] == kLGDisplayStyleDockOnly) {
+    LGApplicationDisplayStyle style = [[LGDefaults standardUserDefaults] applicationDisplayStyle];
+    if (self.statusItem || style == kLGDisplayStyleDockOnly || style == kLGDisplayStyleBackground) {
         return;
     }
 
@@ -366,7 +371,8 @@
 }
 
 #pragma mark - Menu Delegate
--(void)menuDidClose:(NSMenu *)menu {
+- (void)menuDidClose:(NSMenu *)menu
+{
     self.statusItem.image = [NSImage imageNamed:@"autopkgr.png"];
 }
 

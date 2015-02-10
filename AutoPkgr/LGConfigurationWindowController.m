@@ -77,8 +77,24 @@
 
     // Set display mode button
     LGApplicationDisplayStyle displayStyle = _defaults.applicationDisplayStyle;
-    if (displayStyle < _applicationDisplayModeButton.numberOfItems) {
-        [_applicationDisplayModeButton selectItemAtIndex:displayStyle];
+    switch (displayStyle) {
+    case kLGDisplayStyleBackground:
+        _hideInDock.state = YES;
+        _showInMenuButton.state = NO;
+        break;
+    case kLGDisplayStyleBoth:
+        _hideInDock.state = NO;
+        _showInMenuButton.state = YES;
+        break;
+    case kLGDisplayStyleDockOnly:
+        _hideInDock.state = NO;
+        _showInMenuButton.state = NO;
+        break;
+    case kLGDisplayStyleMenuBarOnly:
+    default:
+        _hideInDock.state = YES;
+        _showInMenuButton.state = YES;
+        break;
     }
 
     // AutoPkg settings
@@ -181,14 +197,27 @@
 }
 
 #pragma mark - Display Mode
-- (IBAction)changeDisplayMode:(NSPopUpButton *)sender
+- (IBAction)changeDisplayMode:(NSButton *)sender
 {
-    NSInteger tag = sender.selectedTag;
-    NSInteger style = [[LGDefaults standardUserDefaults] applicationDisplayStyle];
+    LGApplicationDisplayStyle newStyle;
+    if (_showInMenuButton.state && !_hideInDock.state) {
+        newStyle = kLGDisplayStyleBoth;
+    } else if (!_hideInDock.state && !_showInMenuButton.state) {
+        newStyle = kLGDisplayStyleDockOnly;
+    } else if (_showInMenuButton.state && _hideInDock.state) {
+        newStyle = kLGDisplayStyleMenuBarOnly;
+    } else if (!_showInMenuButton.state && _hideInDock.state) {
+        newStyle = kLGDisplayStyleBackground;
+    } else {
+        NSLog(@"An unknown display style was chosen...");
+        sender.state = !sender.state;
+        return;
+    }
 
+    NSInteger style = [[LGDefaults standardUserDefaults] applicationDisplayStyle];
     // Only set and relaunch if the selection actually changed.
-    if (tag != style) {
-        [[LGDefaults standardUserDefaults] setApplicationDisplayStyle:tag];
+    if (newStyle != style) {
+        [[LGDefaults standardUserDefaults] setApplicationDisplayStyle:newStyle];
 
         NSString *processIdentifier = @([[NSProcessInfo processInfo] processIdentifier]).stringValue;
         NSString *launchPath = [[NSBundle mainBundle] executablePath];

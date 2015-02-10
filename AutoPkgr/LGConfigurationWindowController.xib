@@ -19,6 +19,7 @@
                 <outlet property="checkForRepoUpdatesAutomaticallyButton" destination="K6Q-1C-fKu" id="enB-L8-gVQ"/>
                 <outlet property="gitStatusIcon" destination="KkE-qM-Hy6" id="wI4-eW-8JZ"/>
                 <outlet property="gitStatusLabel" destination="OPb-IV-o9L" id="iUI-9q-yU4"/>
+                <outlet property="hideInDock" destination="2vH-Ks-iBq" id="nqK-4D-hHp"/>
                 <outlet property="installAutoPkgButton" destination="x1S-bd-tl3" id="4PM-4V-zR4"/>
                 <outlet property="installGitButton" destination="ClY-1a-e2c" id="FKm-rN-CAw"/>
                 <outlet property="launchAtLoginButton" destination="gCc-Bk-Xo8" id="0dU-nm-AKI"/>
@@ -37,6 +38,7 @@
                 <outlet property="sendEmailNotificationsWhenNewVersionsAreFoundButton" destination="TPC-Gd-b8O" id="F4h-2O-FcT"/>
                 <outlet property="sendTestEmailButton" destination="SZ2-Hj-GiD" id="yMv-1b-dWv"/>
                 <outlet property="sendTestEmailSpinner" destination="T27-XK-VY4" id="fCv-Vz-MUd"/>
+                <outlet property="showInMenuButton" destination="D8f-jS-Mfo" id="hct-Ue-m8H"/>
                 <outlet property="smtpAuthenticationEnabledButton" destination="6N3-g1-fHC" id="yy0-0M-C5o"/>
                 <outlet property="smtpFrom" destination="0uY-tb-AXy" id="kWY-fq-D6a"/>
                 <outlet property="smtpPassword" destination="aRk-NU-9Jl" id="vwv-jT-FoD"/>
@@ -184,6 +186,9 @@
                                                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                                         <font key="font" metaFont="system"/>
                                                     </buttonCell>
+                                                    <connections>
+                                                        <action selector="changeDisplayMode:" target="-2" id="KIz-gx-u83"/>
+                                                    </connections>
                                                 </button>
                                                 <button translatesAutoresizingMaskIntoConstraints="NO" id="2vH-Ks-iBq">
                                                     <rect key="frame" x="222" y="15" width="203" height="16"/>
@@ -195,6 +200,9 @@
                                                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                                         <font key="font" metaFont="system"/>
                                                     </buttonCell>
+                                                    <connections>
+                                                        <action selector="changeDisplayMode:" target="-2" id="6Zm-Vl-dXP"/>
+                                                    </connections>
                                                 </button>
                                             </subviews>
                                             <constraints>

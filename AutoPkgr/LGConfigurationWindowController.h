@@ -53,7 +53,8 @@
 @property (weak) IBOutlet NSButton *openAutoPkgRecipeReposFolderButton;
 @property (weak) IBOutlet NSButton *openAutoPkgCacheFolderButton;
 @property (weak) IBOutlet NSButton *openAutoPkgRecipeOverridesFolderButton;
-@property (weak) IBOutlet NSPopUpButton *applicationDisplayModeButton;
+@property (weak) IBOutlet NSButton *hideInDock;
+@property (weak) IBOutlet NSButton *showInMenuButton;
 
 @property (weak) IBOutlet NSButton *sendTestEmailButton;
 @property (weak) IBOutlet NSButton *installGitButton;
