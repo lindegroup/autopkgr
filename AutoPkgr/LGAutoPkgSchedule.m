@@ -109,7 +109,8 @@ NSString *const kLGLaunchedAtLogin = @"LaunchedAtLogin";
 
 + (BOOL)willLaunchAtLogin
 {
-    return ([AHLaunchCtl jobFromFileNamed:@"com.lindegroup.AutoPkgr.launcher.plist" inDomain:kAHUserLaunchAgent] == nil) ? NO : YES;
+    AHLaunchJob* job = [AHLaunchCtl jobFromFileNamed:@"com.lindegroup.AutoPkgr.launcher.plist" inDomain:kAHUserLaunchAgent];
+    return ([job.ProgramArguments.firstObject isEqualToString:[[NSBundle mainBundle] executablePath]]);
 }
 
 @end
