@@ -94,7 +94,7 @@ NSString *const kLGVersionerVersionKey = @"version";
 
     // Construct a predicate string from the above values.
     // This will make it easy to adjust in the future, as more processors are
-    // used to retreive apps
+    // used to retrieved apps
     NSMutableString *predicateString = [[NSMutableString alloc] initWithString:@"("];
     for (int i = 0; i < validPathExtensions.count; i++) {
         [predicateString appendFormat:@"SELF CONTAINS[CD] '.%@' ", validPathExtensions[i]];

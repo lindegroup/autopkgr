@@ -59,6 +59,8 @@ NSPredicate *jdsFilterPredicate()
     [_jssEditDistPointBT setEnabled:NO];
     [_jssRemoveDistPointBT setEnabled:NO];
 
+    _jssUseMasterJDS.state = [_defaults.JSSRepos containsObject:@{@"type":@"JDS"}];
+
     [_jssInstallStatusLight setImage:[NSImage LGStatusNotInstalled]];
     if ([LGHostInfo jssImporterInstalled] && _defaults.JSSRepos) {
         [self showInstallTabItems:YES];

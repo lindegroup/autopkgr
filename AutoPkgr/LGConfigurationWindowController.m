@@ -28,6 +28,7 @@
 #import "LGInstaller.h"
 #import "LGAutoPkgSchedule.h"
 #import "LGProgressDelegate.h"
+#import "LGDisplayStatusDelegate.h"
 
 #import "AHKeychain.h"
 
@@ -199,6 +200,8 @@
 #pragma mark - Display Mode
 - (IBAction)changeDisplayMode:(NSButton *)sender
 {
+    NSApplication *app = [NSApplication sharedApplication];
+
     LGApplicationDisplayStyle newStyle;
     if (_showInMenuButton.state && !_hideInDock.state) {
         newStyle = kLGDisplayStyleBoth;
@@ -214,18 +217,19 @@
         return;
     }
 
-    NSInteger style = [[LGDefaults standardUserDefaults] applicationDisplayStyle];
-    // Only set and relaunch if the selection actually changed.
-    if (newStyle != style) {
-        [[LGDefaults standardUserDefaults] setApplicationDisplayStyle:newStyle];
+    [[LGDefaults standardUserDefaults] setApplicationDisplayStyle:newStyle];
 
-        NSString *processIdentifier = @([[NSProcessInfo processInfo] processIdentifier]).stringValue;
-        NSString *launchPath = [[NSBundle mainBundle] executablePath];
+    if ([sender isEqualTo:_hideInDock]){
+        _restartRequiredLabel.hidden = !sender.state;
+        if (!sender.state) {
+            [NSApp setActivationPolicy:NSApplicationActivationPolicyRegular];
+        }
+    }
 
-        [NSTask launchedTaskWithLaunchPath:launchPath
-                                 arguments:@[ processIdentifier ]];
-
-        [[NSApplication sharedApplication] terminate:self];
+    if ([sender isEqualTo:_showInMenuButton]) {
+        if ([app.delegate respondsToSelector:@selector(showStatusMenu:)]) {
+            [app.delegate performSelector:@selector(showStatusMenu:) withObject:@(_showInMenuButton.state)];
+        }
     }
 }
 

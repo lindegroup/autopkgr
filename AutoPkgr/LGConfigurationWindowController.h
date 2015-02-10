@@ -53,15 +53,17 @@
 @property (weak) IBOutlet NSButton *openAutoPkgRecipeReposFolderButton;
 @property (weak) IBOutlet NSButton *openAutoPkgCacheFolderButton;
 @property (weak) IBOutlet NSButton *openAutoPkgRecipeOverridesFolderButton;
-@property (weak) IBOutlet NSButton *hideInDock;
-@property (weak) IBOutlet NSButton *showInMenuButton;
-
 @property (weak) IBOutlet NSButton *sendTestEmailButton;
 @property (weak) IBOutlet NSButton *installGitButton;
 @property (weak) IBOutlet NSButton *installAutoPkgButton;
 @property (weak) IBOutlet NSButton *checkAppsNowButton;
 @property (weak) IBOutlet NSButton *cancelAutoPkgRunButton;
 @property (weak) IBOutlet NSButton *updateRepoNowButton;
+
+// Display Mode settings
+@property (weak) IBOutlet NSButton *hideInDock;
+@property (weak) IBOutlet NSButton *showInMenuButton;
+@property (weak) IBOutlet NSTextField *restartRequiredLabel;
 
 // Labels
 @property (weak) IBOutlet NSTextField *gitStatusLabel;

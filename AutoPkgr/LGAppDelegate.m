@@ -29,10 +29,11 @@
 #import "LGConfigurationWindowController.h"
 #import "LGAutoPkgrHelperConnection.h"
 #import "LGUserNotifications.h"
+#import "LGDisplayStatusDelegate.h"
 
 #import <AHLaunchCtl/AHLaunchCtl.h>
 
-@interface LGAppDelegate () <NSMenuDelegate>
+@interface LGAppDelegate () <NSMenuDelegate, LGDisplayStatusDelegate>
 @property (strong) LGConfigurationWindowController *configurationWindowController;
 @property (strong) LGUserNotifications *notificationDelegate;
 @property (strong) LGAutoPkgTaskManager *taskManager;
@@ -163,6 +164,14 @@
     DLog(@"AutoPkgr menu bar icon started.");
 
     self.statusMenu.delegate = self;
+}
+
+- (void)showStatusMenu:(id)sender{
+    if ([sender boolValue]) {
+        [self setupStatusItem];
+    } else {
+        self.statusItem = nil;
+    }
 }
 
 #pragma mark - IBActions
