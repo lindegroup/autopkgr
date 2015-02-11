@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="6250" systemVersion="13F34" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="6254" systemVersion="14C109" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="6250"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="6254"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="LGConfigurationWindowController">
@@ -59,7 +59,7 @@
         <window title="AutoPkgr" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" oneShot="NO" releasedWhenClosed="NO" animationBehavior="default" id="F0z-JX-Cv5">
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
             <rect key="contentRect" x="196" y="240" width="657" height="478"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1280" height="778"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="2560" height="1417"/>
             <value key="minSize" type="size" width="657" height="478"/>
             <view key="contentView" id="se5-gp-TjO">
                 <rect key="frame" x="0.0" y="0.0" width="657" height="478"/>
@@ -163,11 +163,11 @@
                                                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                                     </textFieldCell>
                                                 </textField>
-                                                <button autoresizesSubviews="NO" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="gCc-Bk-Xo8">
+                                                <button autoresizesSubviews="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gCc-Bk-Xo8">
                                                     <rect key="frame" x="222" y="55" width="203" height="18"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="height" constant="12" id="2Bj-gR-Y4L"/>
-                                                        <constraint firstAttribute="width" constant="199" id="L65-jR-iuj"/>
+                                                        <constraint firstAttribute="width" constant="199" id="66I-uZ-Byq"/>
+                                                        <constraint firstAttribute="height" constant="14" id="YfE-gV-yqn"/>
                                                     </constraints>
                                                     <buttonCell key="cell" type="check" title="Launch AutoPkgr at login" bezelStyle="regularSquare" imagePosition="left" alignment="left" state="on" inset="2" id="FsQ-sy-cGX">
                                                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
@@ -205,10 +205,14 @@
                                                         <action selector="changeDisplayMode:" target="-2" id="6Zm-Vl-dXP"/>
                                                     </connections>
                                                 </button>
-                                                <textField hidden="YES" horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Esk-cg-7GW">
-                                                    <rect key="frame" x="394" y="15" width="174" height="17"/>
-                                                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="(Relaunch required)" id="TzN-FL-hol">
-                                                        <font key="font" metaFont="system"/>
+                                                <textField hidden="YES" horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Esk-cg-7GW">
+                                                    <rect key="frame" x="389" y="15" width="194" height="14"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="190" id="1FQ-lu-PYR"/>
+                                                        <constraint firstAttribute="height" constant="14" id="f5j-QL-Ttv"/>
+                                                    </constraints>
+                                                    <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Relaunch required to take effect." id="TzN-FL-hol">
+                                                        <font key="font" metaFont="smallSystem"/>
                                                         <color key="textColor" red="1" green="0.0" blue="0.01176470588" alpha="1" colorSpace="calibratedRGB"/>
                                                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                                     </textFieldCell>
@@ -216,7 +220,9 @@
                                             </subviews>
                                             <constraints>
                                                 <constraint firstItem="x1S-bd-tl3" firstAttribute="width" secondItem="ClY-1a-e2c" secondAttribute="width" id="0Rl-Lx-Jc3"/>
-                                                <constraint firstItem="2vH-Ks-iBq" firstAttribute="top" secondItem="pCK-5F-Geg" secondAttribute="top" constant="383" id="CO4-NH-ubR"/>
+                                                <constraint firstAttribute="centerX" secondItem="Esk-cg-7GW" secondAttribute="centerX" constant="-177.5" id="5zs-Kd-WAQ"/>
+                                                <constraint firstAttribute="centerY" secondItem="D8f-jS-Mfo" secondAttribute="centerY" constant="-162" id="8mH-mY-p6g"/>
+                                                <constraint firstAttribute="centerY" secondItem="gCc-Bk-Xo8" secondAttribute="centerY" constant="-142" id="9kM-Dh-8oR"/>
                                                 <constraint firstAttribute="centerY" secondItem="0VQ-id-jlf" secondAttribute="centerY" constant="-82.5" id="ETF-Ck-fcB"/>
                                                 <constraint firstAttribute="centerX" secondItem="gCc-Bk-Xo8" secondAttribute="centerX" constant="-15" id="Gdz-7G-7Ff"/>
                                                 <constraint firstAttribute="centerY" secondItem="OPb-IV-o9L" secondAttribute="centerY" constant="-0.5" id="HJB-aJ-VZc"/>
@@ -227,7 +233,6 @@
                                                 <constraint firstAttribute="centerY" secondItem="ClY-1a-e2c" secondAttribute="centerY" constant="-0.5" id="N8x-Zq-eZh"/>
                                                 <constraint firstItem="ClY-1a-e2c" firstAttribute="top" secondItem="geX-ws-F4Z" secondAttribute="bottom" constant="34" id="RQL-OF-L3T"/>
                                                 <constraint firstAttribute="centerX" secondItem="geX-ws-F4Z" secondAttribute="centerX" constant="3" id="Reb-Xt-jOv"/>
-                                                <constraint firstItem="gCc-Bk-Xo8" firstAttribute="top" secondItem="pCK-5F-Geg" secondAttribute="top" constant="341" id="Rmc-BA-TNB"/>
                                                 <constraint firstAttribute="centerX" secondItem="2vH-Ks-iBq" secondAttribute="centerX" constant="-15" id="TA3-CW-F4Y"/>
                                                 <constraint firstAttribute="centerX" secondItem="D8f-jS-Mfo" secondAttribute="centerX" constant="-15" id="TQX-ts-XGs"/>
                                                 <constraint firstItem="OPb-IV-o9L" firstAttribute="leading" secondItem="KkE-qM-Hy6" secondAttribute="trailing" constant="8" id="UnX-zf-qdl"/>
@@ -235,14 +240,15 @@
                                                 <constraint firstAttribute="centerY" secondItem="geX-ws-F4Z" secondAttribute="centerY" constant="112.5" id="Z08-sL-Osx"/>
                                                 <constraint firstAttribute="centerY" secondItem="x1S-bd-tl3" secondAttribute="centerY" constant="-41.5" id="ZOr-1h-lJO"/>
                                                 <constraint firstAttribute="centerY" secondItem="KkE-qM-Hy6" secondAttribute="centerY" constant="-1" id="ZYd-MU-r2r"/>
+                                                <constraint firstAttribute="centerY" secondItem="Esk-cg-7GW" secondAttribute="centerY" constant="-184" id="cpo-id-6aH"/>
                                                 <constraint firstItem="f8q-xY-QUg" firstAttribute="leading" secondItem="x1S-bd-tl3" secondAttribute="trailing" constant="8" id="cra-8T-RjN"/>
                                                 <constraint firstAttribute="centerX" secondItem="ClY-1a-e2c" secondAttribute="centerX" constant="116.5" id="g7p-PG-fiZ"/>
                                                 <constraint firstItem="Pbf-A7-T4b" firstAttribute="leading" secondItem="f8q-xY-QUg" secondAttribute="trailing" constant="8" id="jqJ-1g-M7m"/>
                                                 <constraint firstAttribute="centerY" secondItem="kGA-EW-Dsj" secondAttribute="centerY" constant="-83" id="keY-ao-C57"/>
                                                 <constraint firstItem="KkE-qM-Hy6" firstAttribute="leading" secondItem="ClY-1a-e2c" secondAttribute="trailing" constant="8" id="oHr-K9-shF"/>
                                                 <constraint firstAttribute="centerY" secondItem="f8q-xY-QUg" secondAttribute="centerY" constant="-42" id="poa-PN-pTo"/>
-                                                <constraint firstItem="D8f-jS-Mfo" firstAttribute="top" secondItem="pCK-5F-Geg" secondAttribute="top" constant="362" id="s2v-sh-hcn"/>
                                                 <constraint firstAttribute="centerY" secondItem="Pbf-A7-T4b" secondAttribute="centerY" constant="-41.5" id="sK0-IT-bXJ"/>
+                                                <constraint firstAttribute="centerY" secondItem="2vH-Ks-iBq" secondAttribute="centerY" constant="-183" id="vkM-fW-c1w"/>
                                                 <constraint firstItem="uPW-I4-WKp" firstAttribute="width" secondItem="x1S-bd-tl3" secondAttribute="width" id="yyb-LM-xIe"/>
                                             </constraints>
                                         </view>
@@ -328,7 +334,7 @@
                                                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                                     </textFieldCell>
                                                 </textField>
-                                                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="6E4-OJ-BCm">
+                                                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="6E4-OJ-BCm">
                                                     <rect key="frame" x="15" y="212" width="167" height="17"/>
                                                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Add a repo URL manually:" id="1IN-jG-Kev">
                                                         <font key="font" metaFont="system"/>
@@ -336,7 +342,7 @@
                                                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                                     </textFieldCell>
                                                 </textField>
-                                                <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="PWu-1D-EW1">
+                                                <textField verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="PWu-1D-EW1">
                                                     <rect key="frame" x="188" y="210" width="350" height="22"/>
                                                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" placeholderString="https://github.com/autopkg/recipes.git" drawsBackground="YES" id="hVj-tR-yVr">
                                                         <font key="font" metaFont="system"/>
@@ -1239,7 +1245,7 @@
                                                             </button>
                                                             <scrollView autohidesScrollers="YES" horizontalLineScroll="19" horizontalPageScroll="10" verticalLineScroll="19" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TfY-fp-ztg">
                                                                 <rect key="frame" x="18" y="40" width="567" height="63"/>
-                                                                <clipView key="contentView" copiesOnScroll="NO" id="5gb-a9-yN0">
+                                                                <clipView key="contentView" misplaced="YES" copiesOnScroll="NO" id="5gb-a9-yN0">
                                                                     <rect key="frame" x="1" y="17" width="531" height="57"/>
                                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                                     <subviews>
@@ -1269,7 +1275,7 @@
                                                                                         <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
                                                                                         <color key="backgroundColor" name="headerColor" catalog="System" colorSpace="catalog"/>
                                                                                     </tableHeaderCell>
-                                                                                    <textFieldCell key="dataCell" lineBreakMode="truncatingTail" selectable="YES" editable="YES" alignment="center" title="Text Cell" placeholderString="&lt;From JSS>" id="gE4-uk-wy9">
+                                                                                    <textFieldCell key="dataCell" lineBreakMode="truncatingTail" selectable="YES" editable="YES" alignment="center" title="Text Cell" placeholderString="&lt;From JSS&gt;" id="gE4-uk-wy9">
                                                                                         <font key="font" metaFont="system"/>
                                                                                         <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                                                                         <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -1295,7 +1301,7 @@
                                                                                         <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
                                                                                         <color key="backgroundColor" name="headerColor" catalog="System" colorSpace="catalog"/>
                                                                                     </tableHeaderCell>
-                                                                                    <textFieldCell key="dataCell" lineBreakMode="truncatingTail" selectable="YES" editable="YES" alignment="center" title="Text Cell" placeholderString="&lt;Auto>" id="zpI-Gi-czw">
+                                                                                    <textFieldCell key="dataCell" lineBreakMode="truncatingTail" selectable="YES" editable="YES" alignment="center" title="Text Cell" placeholderString="&lt;Auto&gt;" id="zpI-Gi-czw">
                                                                                         <font key="font" metaFont="system"/>
                                                                                         <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                                                                         <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -1308,7 +1314,7 @@
                                                                                         <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
                                                                                         <color key="backgroundColor" name="headerColor" catalog="System" colorSpace="catalog"/>
                                                                                     </tableHeaderCell>
-                                                                                    <textFieldCell key="dataCell" lineBreakMode="truncatingTail" alignment="center" title="Text Cell" placeholderString="&lt;Auto>" id="JFs-SL-g7N">
+                                                                                    <textFieldCell key="dataCell" lineBreakMode="truncatingTail" alignment="center" title="Text Cell" placeholderString="&lt;Auto&gt;" id="JFs-SL-g7N">
                                                                                         <font key="font" metaFont="system"/>
                                                                                         <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                                                                         <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -1486,7 +1492,7 @@
             <windowStyleMask key="styleMask" closable="YES" miniaturizable="YES" resizable="YES" utility="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="385" y="323" width="610" height="133"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1280" height="778"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="2560" height="1417"/>
             <view key="contentView" id="dCS-sn-B3a">
                 <rect key="frame" x="0.0" y="0.0" width="610" height="133"/>
                 <autoresizingMask key="autoresizingMask"/>
