@@ -51,9 +51,9 @@
 - (void)applicationWillFinishLaunching:(NSNotification *)notification
 {
     // Setup activation policy. By default set as menubar only.
-    [[LGDefaults standardUserDefaults] registerDefaults:@{ kLGApplicationDisplayStyle : @(kLGDisplayStyleMenuBarOnly) }];
+    [[LGDefaults standardUserDefaults] registerDefaults:@{ kLGApplicationDisplayStyle : @(kLGDisplayStyleShowMenu) }];
 
-    if ([[LGDefaults standardUserDefaults] applicationDisplayStyle] > kLGDisplayStyleMenuBarOnly) {
+    if (!([[LGDefaults standardUserDefaults] applicationDisplayStyle] & kLGDisplayStyleHideDock)) {
         [NSApp setActivationPolicy:NSApplicationActivationPolicyRegular];
     }
 }
@@ -61,15 +61,12 @@
 - (BOOL)applicationShouldTerminateAfterLastWindowClosed:(NSApplication *)sender
 {
     // If this set to run as dock only with no menu item, quit it after the last window is closed.
-    BOOL quitOnClose = NO;
-    switch ([[LGDefaults standardUserDefaults] applicationDisplayStyle]) {
-        case kLGDisplayStyleBackground:
-        case kLGDisplayStyleDockOnly:
-            quitOnClose = YES;
-        default:
-            quitOnClose = NO;
-            break;
+    BOOL quitOnClose = YES;
+
+    if ([[LGDefaults standardUserDefaults] applicationDisplayStyle] & kLGDisplayStyleShowMenu) {
+        quitOnClose = NO;
     }
+
     return quitOnClose;
 }
 
@@ -142,28 +139,29 @@
 - (void)setupStatusItem
 {
     LGApplicationDisplayStyle style = [[LGDefaults standardUserDefaults] applicationDisplayStyle];
-    if (self.statusItem || style == kLGDisplayStyleDockOnly || style == kLGDisplayStyleBackground) {
-        return;
+
+    if (!self.statusItem && (style & kLGDisplayStyleShowMenu)) {
+        // Setup the systemStatusBar
+        DLog(@"Starting AutoPkgr menu bar icon...");
+        self.statusItem = [[NSStatusBar systemStatusBar] statusItemWithLength:NSVariableStatusItemLength];
+        [self.statusItem setMenu:self.statusMenu];
+
+        NSImage *image = [NSImage imageNamed:@"autopkgr.png"];
+        [image setTemplate:YES];
+        [self.statusItem setImage:image];
+
+        NSImage *altImage = [NSImage imageNamed:@"autopkgr_alt.png"];
+        [altImage setTemplate:YES];
+        [self.statusItem setAlternateImage:altImage];
+
+        [self.statusItem setHighlightMode:YES];
+        self.statusItem.menu = self.statusMenu;
+        DLog(@"AutoPkgr menu bar icon started.");
+        
+        self.statusMenu.delegate = self;
     }
 
-    // Setup the systemStatusBar
-    DLog(@"Starting AutoPkgr menu bar icon...");
-    self.statusItem = [[NSStatusBar systemStatusBar] statusItemWithLength:NSVariableStatusItemLength];
-    [self.statusItem setMenu:self.statusMenu];
 
-    NSImage *image = [NSImage imageNamed:@"autopkgr.png"];
-    [image setTemplate:YES];
-    [self.statusItem setImage:image];
-
-    NSImage *altImage = [NSImage imageNamed:@"autopkgr_alt.png"];
-    [altImage setTemplate:YES];
-    [self.statusItem setAlternateImage:altImage];
-
-    [self.statusItem setHighlightMode:YES];
-    self.statusItem.menu = self.statusMenu;
-    DLog(@"AutoPkgr menu bar icon started.");
-
-    self.statusMenu.delegate = self;
 }
 
 - (void)showStatusMenu:(id)sender{

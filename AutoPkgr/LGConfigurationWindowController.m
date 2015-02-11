@@ -78,25 +78,10 @@
 
     // Set display mode button
     LGApplicationDisplayStyle displayStyle = _defaults.applicationDisplayStyle;
-    switch (displayStyle) {
-    case kLGDisplayStyleBackground:
-        _hideInDock.state = YES;
-        _showInMenuButton.state = NO;
-        break;
-    case kLGDisplayStyleBoth:
-        _hideInDock.state = NO;
-        _showInMenuButton.state = YES;
-        break;
-    case kLGDisplayStyleDockOnly:
-        _hideInDock.state = NO;
-        _showInMenuButton.state = NO;
-        break;
-    case kLGDisplayStyleMenuBarOnly:
-    default:
-        _hideInDock.state = YES;
-        _showInMenuButton.state = YES;
-        break;
-    }
+
+    _hideInDock.state = (displayStyle & kLGDisplayStyleHideDock);
+    _showInMenuButton.state = (displayStyle & kLGDisplayStyleShowMenu);
+
 
     // AutoPkg settings
     _localMunkiRepo.safeStringValue = _defaults.munkiRepo;
@@ -202,19 +187,14 @@
 {
     NSApplication *app = [NSApplication sharedApplication];
 
-    LGApplicationDisplayStyle newStyle;
-    if (_showInMenuButton.state && !_hideInDock.state) {
-        newStyle = kLGDisplayStyleBoth;
-    } else if (!_hideInDock.state && !_showInMenuButton.state) {
-        newStyle = kLGDisplayStyleDockOnly;
-    } else if (_showInMenuButton.state && _hideInDock.state) {
-        newStyle = kLGDisplayStyleMenuBarOnly;
-    } else if (!_showInMenuButton.state && _hideInDock.state) {
-        newStyle = kLGDisplayStyleBackground;
-    } else {
-        NSLog(@"An unknown display style was chosen...");
-        sender.state = !sender.state;
-        return;
+    LGApplicationDisplayStyle newStyle = kLGDisplayStyleUnset;
+
+    if (_hideInDock.state) {
+        newStyle = kLGDisplayStyleHideDock;
+    }
+
+    if (_showInMenuButton.state) {
+        newStyle = newStyle | kLGDisplayStyleShowMenu;
     }
 
     [[LGDefaults standardUserDefaults] setApplicationDisplayStyle:newStyle];

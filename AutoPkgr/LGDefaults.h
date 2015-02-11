@@ -22,10 +22,9 @@
 #import <Foundation/Foundation.h>
 
 typedef NS_ENUM(NSInteger, LGApplicationDisplayStyle) {
-    kLGDisplayStyleBackground = -1,
-    kLGDisplayStyleMenuBarOnly,
-    kLGDisplayStyleDockOnly,
-    kLGDisplayStyleBoth,
+    kLGDisplayStyleUnset,
+    kLGDisplayStyleShowMenu = 1 << 0,
+    kLGDisplayStyleHideDock = 1 << 1,
 };
 
 @interface LGDefaults : NSUserDefaults
