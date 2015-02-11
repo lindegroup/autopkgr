@@ -79,9 +79,8 @@
     // Set display mode button
     LGApplicationDisplayStyle displayStyle = _defaults.applicationDisplayStyle;
 
-    _hideInDock.state = (displayStyle & kLGDisplayStyleHideDock);
+    _hideInDock.state = !(displayStyle & kLGDisplayStyleShowDock);
     _showInMenuButton.state = (displayStyle & kLGDisplayStyleShowMenu);
-
 
     // AutoPkg settings
     _localMunkiRepo.safeStringValue = _defaults.munkiRepo;
@@ -187,10 +186,10 @@
 {
     NSApplication *app = [NSApplication sharedApplication];
 
-    LGApplicationDisplayStyle newStyle = kLGDisplayStyleUnset;
+    LGApplicationDisplayStyle newStyle = kLGDisplayStyleShowNone;
 
-    if (_hideInDock.state) {
-        newStyle = kLGDisplayStyleHideDock;
+    if (!_hideInDock.state) {
+        newStyle = kLGDisplayStyleShowDock;
     }
 
     if (_showInMenuButton.state) {
