@@ -1,9 +1,9 @@
-// LGRecipeOverrides.m
-// AutoPkgr
+//  LGRecipeOverrides.m
+//  AutoPkgr
 //
-// Created by Eldon on 8/14/14.
+//  Created by Eldon on 8/14/14.
 //
-// Copyright 2014 The Linde Group, Inc.
+//  Copyright 2014-2015 The Linde Group, Inc.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -22,88 +22,98 @@
 #import "LGDefaults.h"
 #import "LGAutoPkgTask.h"
 
+NSString *const kLGNotificationOverrideCreated = @"com.lindegroup.AutoPkgr.notification.override.created";
+NSString *const kLGNotificationOverrideDeleted = @"com.lindegroup.AutoPkgr.notification.override.deleted";
+
 const CFStringRef kUTTypePropertyList = CFSTR("com.apple.property-list");
 
 @implementation LGRecipeOverrides
 
-+ (NSMenu *)contextualMenuForRecipe:(NSString *)recipe
-{
-    NSMenu *menu;
-    NSMenuItem *item;
-    NSMenuItem *item2;
-
-    NSString *currentEditor = [[LGDefaults standardUserDefaults] objectForKey:@"RecipeEditor"];
-
-    BOOL overrideExists = [self overrideExistsForRecipe:recipe];
-    menu = [[NSMenu alloc] init];
-
-    NSMenu *recipeEditorMenu = [[NSMenu alloc] init];
-    NSMenuItem *recipeEditorMenuItem = [[NSMenuItem alloc] initWithTitle:@"Set Recipe Editor" action:nil keyEquivalent:@""];
-
-    for (NSString *editor in [self recipeEditors]) {
-        NSMenuItem *editorItem = [[NSMenuItem alloc] initWithTitle:editor action:@selector(setRecipeEditor:) keyEquivalent:@""];
-        if ([editor isEqualToString:currentEditor]) {
-            [editorItem setState:NSOnState];
-        }
-        editorItem.target = [self class];
-        [recipeEditorMenu addItem:editorItem];
-    }
-
-    NSMenuItem *otherEditorItem = [[NSMenuItem alloc] initWithTitle:@"Other..." action:@selector(setRecipeEditor:) keyEquivalent:@""];
-    otherEditorItem.target = [self class];
-
-    [recipeEditorMenu addItem:otherEditorItem];
-
-    if (overrideExists) {
-        item = [[NSMenuItem alloc] initWithTitle:@"Open Recipe Override" action:@selector(openFile:) keyEquivalent:@""];
-
-        // Reveal in finder menu item
-        item2 = [[NSMenuItem alloc] initWithTitle:@"Show in Finder" action:@selector(revealInFinder:) keyEquivalent:@""];
-        item2.representedObject = recipe;
-        item2.target = [self class];
-
-    } else {
-        item = [[NSMenuItem alloc] initWithTitle:@"Create Override" action:@selector(createOverride:) keyEquivalent:@""];
-    }
-
-    item.representedObject = recipe;
-    item.target = [self class];
-
-    if (item) {
-        [menu addItem:item];
-    }
-
-    if (item2) {
-        [menu addItem:item2];
-    }
-
-    [menu addItem:recipeEditorMenuItem];
-    [menu setSubmenu:recipeEditorMenu forItem:recipeEditorMenuItem];
-    return menu;
-}
-
 #pragma mark - Override Actions
 + (void)createOverride:(NSMenuItem *)sender
 {
-    NSLog(@"Creating override for %@", sender.representedObject);
-    [LGAutoPkgTask makeOverride:sender.representedObject reply:^(NSError *error) {
-        if (error) {
-            NSLog(@"%@",error.localizedDescription);
-        }
-    }];
+    NSDictionary *recipe = sender.representedObject;
+    NSString *recipeName = recipe[kLGAutoPkgRecipeNameKey];
+    NSString *recipeIdentifier = recipe[kLGAutoPkgRecipeIdentifierKey];
+    NSString *overrideName = [self promptForOverrideName:recipeName];
+
+    if (overrideName && recipeIdentifier) {
+        NSLog(@"Creating override for %@", recipeName);
+        [LGAutoPkgTask makeOverride:recipeIdentifier name:overrideName reply:^(NSString *path, NSError *error) {
+            if (error) {
+                NSLog(@"%@",error.localizedDescription);
+                [NSApp presentError:error];
+            } else {
+                NSDictionary *override = [NSDictionary dictionaryWithContentsOfFile:path] ?: @{};
+                [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+                    [[NSNotificationCenter defaultCenter]postNotificationName:kLGNotificationOverrideCreated
+                                                                       object:nil
+                                                                     userInfo:@{@"old":recipe,
+                                                                                @"new":override}];
+                }];
+            }
+        }];
+    }
 }
 
 + (void)deleteOverride:(NSMenuItem *)sender
 {
-    NSString *recipePath = [self overridePathFromRecipe:sender.representedObject];
-    NSAlert *alert = [NSAlert alertWithMessageText:@"AutoPkgr is trying to remove override" defaultButton:@"Remove" alternateButton:@"Cancel" otherButton:nil informativeTextWithFormat:@"Are you sure you want to remove the %@ recipe override? Any changes made to the file will be lost.", sender.representedObject];
-    NSLog(@"Displaying prompt to confirm deletion of override %@", sender.representedObject);
+    NSDictionary *recipeToRemoveDict = sender.representedObject;
+    NSString *recipeName = recipeToRemoveDict[kLGAutoPkgRecipeNameKey];
+    NSString *recipeIdentifier = recipeToRemoveDict[kLGAutoPkgRecipeIdentifierKey];
+
+    NSString *recipePath = [self overridePathFromRecipe:recipeToRemoveDict];
+
+    NSDictionary *overrideDict = [NSDictionary dictionaryWithContentsOfFile:recipePath];
+
+    // If these don't match then we're trying to remove the wrong override, abort...
+    if (![recipeIdentifier isEqualToString:overrideDict[kLGAutoPkgRecipeIdentifierKey]]) {
+        return;
+    }
+
+    NSAlert *alert = [NSAlert alertWithMessageText:@"AutoPkgr is trying to remove a recipe override." defaultButton:@"Remove" alternateButton:@"Cancel" otherButton:nil informativeTextWithFormat:@"Are you sure you want to remove the %@ recipe override? Any changes made to the file will be lost.", recipeName];
+    NSLog(@"Displaying prompt to confirm deletion of override %@", recipeName);
 
     NSInteger button = [alert runModal];
     if (button == NSAlertDefaultReturn) {
-        [[NSFileManager defaultManager] removeItemAtPath:recipePath error:nil];
-        NSLog(@"Override %@ deleted.", sender.representedObject);
+        if ([[NSFileManager defaultManager] removeItemAtPath:recipePath error:nil]) {
+            NSLog(@"Override %@ deleted.", recipeName);
+
+            [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+            [[NSNotificationCenter defaultCenter]postNotificationName:kLGNotificationOverrideDeleted
+                                                               object:nil
+                                                             userInfo:recipeToRemoveDict];
+            }];
+        }
     }
+}
+
++ (NSString *)promptForOverrideName:(NSString *)parentName
+{
+    NSString *password;
+    NSString *promptString = @"Would you like to give the override a unique name?";
+
+    NSAlert *alert = [NSAlert alertWithMessageText:promptString
+                                     defaultButton:@"OK"
+                                   alternateButton:@"Cancel"
+                                       otherButton:nil
+                         informativeTextWithFormat:@""];
+
+    NSTextField *input = [[NSTextField alloc] init];
+    [input setFrame:NSMakeRect(0, 0, 300, 24)];
+    [input setStringValue:parentName];
+    [alert setAccessoryView:input];
+
+    NSInteger button = [alert runModal];
+    if (button == NSAlertDefaultReturn) {
+        [input validateEditing];
+        password = [input stringValue];
+        if (!password || [password isEqualToString:@""]) {
+            return [self promptForOverrideName:parentName];
+        }
+    }
+
+    return password;
 }
 
 + (void)openFile:(NSMenuItem *)sender
@@ -122,21 +132,26 @@ const CFStringRef kUTTypePropertyList = CFSTR("com.apple.property-list");
     [[NSWorkspace sharedWorkspace] selectFile:recipePath inFileViewerRootedAtPath:nil];
 }
 
-+ (BOOL)overrideExistsForRecipe:(NSString *)recipe
++ (BOOL)overrideExistsForRecipe:(NSDictionary *)recipe
 {
     NSString *recipePath = [self overridePathFromRecipe:recipe];
     return [[NSFileManager defaultManager] fileExistsAtPath:recipePath];
 }
 
-+ (NSString *)overridePathFromRecipe:(NSString *)recipe
++ (NSString *)overridePathFromRecipe:(NSDictionary *)recipe
 {
-    NSString *overrideDir = [[LGDefaults standardUserDefaults] autoPkgRecipeOverridesDir];
-    if (!overrideDir) {
-        overrideDir = [@"~/Library/AutoPkg/RecipeOverrides" stringByExpandingTildeInPath];
-    }
+    NSString *overridesDir = [[LGDefaults standardUserDefaults] autoPkgRecipeOverridesDir] ?: @"~/Library/AutoPkg/RecipeOverrides".stringByExpandingTildeInPath;
 
-    return [[overrideDir stringByAppendingPathComponent:recipe]
-        stringByAppendingPathExtension:@"recipe"];
+    NSArray *overrides = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:overridesDir error:nil];
+
+    for (NSString *item in overrides) {
+        NSString *overridePath = [overridesDir stringByAppendingPathComponent:item];
+        NSDictionary *override = [NSDictionary dictionaryWithContentsOfFile:overridePath];
+        if (override && [override[kLGAutoPkgRecipeIdentifierKey] isEqualTo:recipe[kLGAutoPkgRecipeIdentifierKey]]) {
+            return overridePath;
+        }
+    }
+    return nil;
 }
 
 #pragma mark - Recipe Editor

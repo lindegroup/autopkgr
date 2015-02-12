@@ -4,7 +4,7 @@
 //
 //  Created by Eldon on 9/9/14.
 //
-//  Copyright 2014 The Linde Group, Inc.
+//  Copyright 2014-2015 The Linde Group, Inc.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -49,8 +49,4 @@
  */
 - (void)installJSSImporter:(void (^)(NSError *error))reply;
 
-#pragma mark - Blocking Methdos
-- (BOOL)runGitInstaller:(NSError **)error;
-- (BOOL)runAutoPkgInstaller:(NSError **)error;
-- (BOOL)runJSSImporterInstaller:(NSError **)error;
 @end

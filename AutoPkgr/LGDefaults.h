@@ -4,7 +4,7 @@
 //
 //  Created by Eldon on 8/5/14.
 //
-//  Copyright 2014 The Linde Group, Inc.
+//  Copyright 2014-2015 The Linde Group, Inc.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -21,6 +21,12 @@
 
 #import <Foundation/Foundation.h>
 
+typedef NS_ENUM(NSInteger, LGApplicationDisplayStyle) {
+    kLGDisplayStyleShowNone,
+    kLGDisplayStyleShowMenu = 1 << 0,
+    kLGDisplayStyleShowDock = 1 << 1,
+};
+
 @interface LGDefaults : NSUserDefaults
 
 #pragma mark - Singletons
@@ -33,13 +39,19 @@
 @property (copy, nonatomic) NSString *SMTPFrom;
 @property (copy, nonatomic) NSArray *SMTPTo;
 
+#pragma mark - Info
+/**
+ *  You can pass in either an NSDate object, or NSString and it will return a formatted date string
+ */
+@property (copy, nonatomic) id LastAutoPkgRun;
+
 #pragma mark - BOOL
 @property (nonatomic) BOOL SMTPTLSEnabled;
 @property (nonatomic) BOOL SMTPAuthenticationEnabled;
-@property (nonatomic) BOOL warnBeforeQuittingEnabled;
 @property (nonatomic) BOOL hasCompletedInitialSetup;
+@property (nonatomic) NSInteger applicationDisplayStyle;
+
 @property (nonatomic) BOOL sendEmailNotificationsWhenNewVersionsAreFoundEnabled;
-@property (nonatomic) BOOL checkForNewVersionsOfAppsAutomaticallyEnabled;
 @property (nonatomic) BOOL checkForRepoUpdatesAutomaticallyEnabled;
 
 #pragma mark - AutoPkg Defaults

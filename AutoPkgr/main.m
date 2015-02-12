@@ -4,7 +4,7 @@
 //
 //  Created by James Barclay on 6/25/14.
 //
-//  Copyright 2014 The Linde Group, Inc.
+//  Copyright 2014-2015 The Linde Group, Inc.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -20,8 +20,46 @@
 //
 
 #import <Cocoa/Cocoa.h>
+#import "LGAutoPkgTask.h"
+#import "LGRecipes.h"
+#import "LGEmailer.h"
+#import "LGAutoPkgr.h"
 
-int main(int argc, const char * argv[])
+void postUpdateMessage(NSString *message, double progress, BOOL complete)
 {
-    return NSApplicationMain(argc, argv);
+    [[NSDistributedNotificationCenter defaultCenter]
+        postNotificationName:kLGNotificationProgressMessageUpdate
+                      object:nil
+                    userInfo:@{ kLGNotificationUserInfoMessage : message ?: @"",
+                                kLGNotificationUserInfoProgress : @(progress),
+                                kLGNotificationUserInfoSuccess : @(complete) }];
+}
+
+int main(int argc, const char *argv[])
+{
+    NSUserDefaults *args = [NSUserDefaults standardUserDefaults];
+    if ([args boolForKey:@"runInBackground"]) {
+        NSLog(@"Running AutoPkgr in background...");
+
+        __block LGEmailer *emailer = [[LGEmailer alloc] init];
+        LGDefaults *defaults = [LGDefaults standardUserDefaults];
+        LGAutoPkgTaskManager *manager = [[LGAutoPkgTaskManager alloc] init];
+
+        [manager setProgressUpdateBlock:^(NSString *message, double progress) {
+            postUpdateMessage(message, progress, NO);
+        }];
+
+        [manager runRecipeList:[LGRecipes recipeList]
+                    updateRepo:defaults.checkForRepoUpdatesAutomaticallyEnabled
+                         reply:^(NSDictionary *report, NSError *error) {
+                             postUpdateMessage(nil, 0, YES);
+            [emailer sendEmailForReport:report error:error];
+                         }];
+
+        while (emailer && !emailer.complete) {
+            [[NSRunLoop currentRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:1.0]];
+        }
+    } else {
+        return NSApplicationMain(argc, argv);
+    }
 }

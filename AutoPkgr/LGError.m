@@ -4,7 +4,7 @@
 //
 //  Created by Eldon on 8/9/14.
 //
-//  Copyright 2014 The Linde Group, Inc.
+//  Copyright 2014-2015 The Linde Group, Inc.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -57,6 +57,9 @@ static NSDictionary *userInfoFromCode(LGErrorCodes code)
     case kLGErrorMultipleRunsOfAutopkg:
         localizedBaseString = @"kLGErrorMultipleRunsOfAutopkg";
         break;
+    case kLGErrorMissingParentRecipe:
+        localizedBaseString = @"kLGErrorMissingParentRecipe";
+        break;
     case kLGErrorInstallGit:
         localizedBaseString = @"kLGErrorInstallGit";
         break;
@@ -69,8 +72,17 @@ static NSDictionary *userInfoFromCode(LGErrorCodes code)
     case kLGErrorInstallJSSImporter:
         localizedBaseString = @"kLGErrorInstallJSSImporter";
         break;
+    case kLGErrorInstallingGeneric:
+        localizedBaseString = @"kLGErrorInstallingGeneric";
+        break;
     case kLGErrorJSSXMLSerializerError:
         localizedBaseString = @"kLGErrorJSSXMLSerializerError";
+        break;
+    case kLGErrorIncorrectScheduleTimerInterval:
+        localizedBaseString = @"kLGErrorIncorrectScheduleTimerInterval";
+        break;
+    case kLGErrorAuthChallenge:
+        localizedBaseString = @"kLGErrorAuthChallenge";
         break;
     default:
         localizedBaseString = @"kLGErrorUnknown";
@@ -190,12 +202,21 @@ static NSDictionary *userInfoFromHTTPResponse(NSHTTPURLResponse *response)
 
 @implementation LGError
 #ifdef _APPKITDEFINES_H
++ (void)presentErrorWithCode:(LGErrorCodes)code
+{
+    [[self class] presentErrorWithCode:code window:nil];
+}
+
++ (void)presentErrorWithCode:(LGErrorCodes)code window:(NSWindow *)window;
+{
+    [[self class] presentErrorWithCode:code window:window delegate:NULL didPresentSelector:NULL];
+}
+
 + (void)presentErrorWithCode:(LGErrorCodes)code window:(NSWindow *)window delegate:(id)sender didPresentSelector:(SEL)selector
 {
-    NSError *error;
-    [[self class] errorWithCode:code error:&error];
+    NSError *error = [[self class] errorWithCode:code];
     [NSApp presentError:error
-            modalForWindow:NULL
+            modalForWindow:window
                   delegate:sender
         didPresentSelector:selector
                contextInfo:NULL];
@@ -268,7 +289,6 @@ static NSDictionary *userInfoFromHTTPResponse(NSHTTPURLResponse *response)
         // The exception should in theory always be last.
         NSString *fullExceptionMessage = [splitExceptionFromError lastObject];
         NSLog(@"(FULL AUTOPKG TRACEBACK) %@", fullExceptionMessage);
-
 
         NSArray *array = [fullExceptionMessage componentsSeparatedByCharactersInSet:[NSCharacterSet newlineCharacterSet]];
 

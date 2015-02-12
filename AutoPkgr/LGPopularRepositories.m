@@ -4,7 +4,7 @@
 //
 //  Created by Josh Senick on 7/9/14.
 //
-//  Copyright 2014 The Linde Group, Inc.
+//  Copyright 2014-2015 The Linde Group, Inc.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -21,8 +21,11 @@
 
 #import "LGPopularRepositories.h"
 #import "LGAutoPkgr.h"
+#import "LGRecipeSearch.h"
 
-@implementation LGPopularRepositories
+@implementation LGPopularRepositories {
+    LGRecipeSearch *_searchPanel;
+}
 
 - (id)init
 {
@@ -62,7 +65,7 @@
                                @"https://github.com/autopkg/n8felton-recipes.git",
                                @"https://github.com/autopkg/groob-recipes.git",
                                @"https://github.com/autopkg/jazzace-recipes.git",
-                               kLGJSSDefaultRepo];
+                               kLGJSSDefaultRepo ];
         }
 
         [self assembleRepos];
@@ -84,7 +87,7 @@
 - (void)repoEditDidEndWithError:(NSError *)error withTableView:(NSTableView *)tableView
 {
     [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-        [self getAndParseLocalAutoPkgRecipeRepos];
+        _activeRepos = [LGAutoPkgTask repoList];
         [_recipesObject reload];
         [tableView reloadData];
         [_progressDelegate stopProgress:error];
@@ -101,61 +104,16 @@
 
 - (void)assembleRepos
 {
-    [self getAndParseLocalAutoPkgRecipeRepos];
-
-    NSMutableArray *workingPopularRepos = [NSMutableArray arrayWithArray:_popularRepos];
-
-    NSError *error = NULL;
-    NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@"https?://(.+)" options:0 error:&error];
-
-    for (NSString *repo in _activeRepos) {
-        NSTextCheckingResult *result = [regex firstMatchInString:repo options:0 range:NSMakeRange(0, [repo length])];
-        if ([result numberOfRanges] == 2) {
-            NSString *workingString = [repo substringWithRange:[result rangeAtIndex:1]];
-
-            NSUInteger searchResult = [self string:workingString inArray:workingPopularRepos];
-
-            if (searchResult == NSNotFound) {
-                [workingPopularRepos addObject:[repo substringWithRange:[result rangeAtIndex:0]]];
-            } else {
-                // This line is necessary to resolve http / https conflicts
-                [workingPopularRepos replaceObjectAtIndex:searchResult withObject:repo];
-            }
+    _activeRepos = [LGAutoPkgTask repoList];
+    NSMutableArray *workingPR = [_popularRepos mutableCopy];
+    for (NSDictionary *dict in _activeRepos) {
+        if (![workingPR containsObject:dict[kLGAutoPkgRepoURLKey]]) {
+            [workingPR addObject:dict[kLGAutoPkgRepoURLKey]];
         }
     }
 
-    _popularRepos = [NSArray arrayWithArray:workingPopularRepos];
+    _popularRepos = [workingPR copy];
     [self executeRepoSearch:nil];
-}
-
-- (NSUInteger)string:(NSString *)s inArray:(NSArray *)a
-{
-    NSUInteger match = NSNotFound;
-    for (NSString *ws in a) {
-        NSRange range = [ws rangeOfString:s];
-        if (!NSEqualRanges(range, NSMakeRange(NSNotFound, 0))) {
-            match = [a indexOfObject:ws];
-            break;
-        }
-    }
-    return match;
-}
-
-- (void)getAndParseLocalAutoPkgRecipeRepos // Strips out the local path of the cloned git repository and returns an array with only the URLs
-{
-    NSError *error;
-
-    NSMutableArray *strippedRepos = [[NSMutableArray alloc] init];
-    NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@"\\((https?://.+)\\)" options:0 error:&error];
-
-    for (NSString *repo in [LGAutoPkgTask repoList]) {
-        NSTextCheckingResult *result = [regex firstMatchInString:repo options:0 range:NSMakeRange(0, [repo length])];
-        if ([result numberOfRanges] == 2) {
-            [strippedRepos addObject:[repo substringWithRange:[result rangeAtIndex:1]]];
-        }
-    }
-
-    _activeRepos = [NSArray arrayWithArray:strippedRepos];
 }
 
 - (NSInteger)numberOfRowsInTableView:(NSTableView *)tableView
@@ -167,24 +125,11 @@
 {
     if ([[tableColumn identifier] isEqualToString:@"repoCheckbox"]) {
         NSString *repo = [_searchedRepos objectAtIndex:row];
-
-        NSError *error = NULL;
-        NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@"https?://(.+)" options:0 error:&error];
-        NSTextCheckingResult *result = [regex firstMatchInString:repo options:0 range:NSMakeRange(0, [repo length])];
-
-        if ([result numberOfRanges] == 2) {
-            if ([self string:[repo substringWithRange:[result rangeAtIndex:1]] inArray:_activeRepos] == NSNotFound) {
-                return @NO;
-            } else {
-                return @YES;
-            }
-        } else {
-            return @NO;
-        }
+        NSPredicate *repoPred = [NSPredicate predicateWithFormat:@"%K == %@", kLGAutoPkgRepoURLKey, repo];
+        return @([[_activeRepos filteredArrayUsingPredicate:repoPred] count] != 0);
     } else if ([[tableColumn identifier] isEqualToString:@"repoURL"]) {
         return [_searchedRepos objectAtIndex:row];
     }
-
     return nil;
 }
 
@@ -221,16 +166,8 @@
     if ([[_repoSearch stringValue] isEqualToString:@""]) {
         _searchedRepos = _popularRepos;
     } else {
-        NSMutableArray *workingSearchArray = [[NSMutableArray alloc] init];
-
-        for (NSString *string in _popularRepos) {
-            NSRange range = [string rangeOfString:[_repoSearch stringValue] options:NSCaseInsensitiveSearch];
-            if (!NSEqualRanges(range, NSMakeRange(NSNotFound, 0))) {
-                [workingSearchArray addObject:string];
-            }
-        }
-
-        _searchedRepos = [NSArray arrayWithArray:workingSearchArray];
+        NSPredicate *searchPredicate = [NSPredicate predicateWithFormat:@"SELF CONTAINS[CD] %@", [_repoSearch stringValue]];
+        _searchedRepos = [_popularRepos filteredArrayUsingPredicate:searchPredicate];
     }
 
     [_popularRepositoriesTableView insertRowsAtIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, _searchedRepos.count)] withAnimation:NSTableViewAnimationEffectNone];
@@ -252,9 +189,34 @@
     // TODO: Eventually this could be setup for something
     // The AutoPkgTask repo-list needs to be reworked to send back an array of dicts.
     NSMenu *menu = [[NSMenu alloc] init];
-    NSMenuItem *item = [[NSMenuItem alloc] initWithTitle:@"Reveal in Finder" action:nil keyEquivalent:@""];
+    NSMenuItem *item = [[NSMenuItem alloc] initWithTitle:@"Reveal in Finder"
+                                                  action:nil
+                                           keyEquivalent:@""];
     [menu addItem:item];
     return menu;
+}
+
+#pragma mark - Search Panel
+- (IBAction)openSearchPanel:(id)sender
+{
+    if (!_searchPanel) {
+        _searchPanel = [[LGRecipeSearch alloc] init];
+    }
+
+    [NSApp beginSheet:_searchPanel.window
+        modalForWindow:self.modalWindow
+         modalDelegate:self
+        didEndSelector:@selector(didCloseSearchPanel)
+           contextInfo:NULL];
+}
+
+- (void)didCloseSearchPanel
+{
+    [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+        [_searchPanel.window close];
+        _searchPanel = nil;
+        [self reload];
+    }];
 }
 
 @end

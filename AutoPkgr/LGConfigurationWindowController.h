@@ -4,7 +4,7 @@
 //
 //  Created by James Barclay on 6/26/14.
 //
-//  Copyright 2014 The Linde Group, Inc.
+//  Copyright 2014-2015 The Linde Group, Inc.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -43,23 +43,27 @@
 // Checkboxes
 @property (weak) IBOutlet NSButton *smtpAuthenticationEnabledButton;
 @property (weak) IBOutlet NSButton *smtpTLSEnabledButton;
-@property (weak) IBOutlet NSButton *warnBeforeQuittingButton;
 @property (weak) IBOutlet NSButton *checkForNewVersionsOfAppsAutomaticallyButton;
 @property (weak) IBOutlet NSButton *checkForRepoUpdatesAutomaticallyButton;
 @property (weak) IBOutlet NSButton *sendEmailNotificationsWhenNewVersionsAreFoundButton;
+@property (weak) IBOutlet NSButton *launchAtLoginButton;
 
 // Buttons
 @property (weak) IBOutlet NSButton *openLocalMunkiRepoFolderButton;
 @property (weak) IBOutlet NSButton *openAutoPkgRecipeReposFolderButton;
 @property (weak) IBOutlet NSButton *openAutoPkgCacheFolderButton;
 @property (weak) IBOutlet NSButton *openAutoPkgRecipeOverridesFolderButton;
-
 @property (weak) IBOutlet NSButton *sendTestEmailButton;
 @property (weak) IBOutlet NSButton *installGitButton;
 @property (weak) IBOutlet NSButton *installAutoPkgButton;
 @property (weak) IBOutlet NSButton *checkAppsNowButton;
 @property (weak) IBOutlet NSButton *cancelAutoPkgRunButton;
 @property (weak) IBOutlet NSButton *updateRepoNowButton;
+
+// Display Mode settings
+@property (weak) IBOutlet NSButton *hideInDock;
+@property (weak) IBOutlet NSButton *showInMenuButton;
+@property (weak) IBOutlet NSTextField *restartRequiredLabel;
 
 // Labels
 @property (weak) IBOutlet NSTextField *gitStatusLabel;
@@ -106,7 +110,4 @@
 - (IBAction)updateReposNow:(id)sender;
 - (IBAction)checkAppsNow:(id)sender;
 - (IBAction)cancelAutoPkgRun:(id)sender;
-
-- (void)runCommandAsRoot:(NSString *)command;
-
 @end

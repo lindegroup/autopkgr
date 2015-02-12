@@ -4,7 +4,7 @@
 //
 //  Created by Eldon on 8/9/14.
 //
-//  Copyright 2014 The Linde Group, Inc.
+//  Copyright 2014-2015 The Linde Group, Inc.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -35,6 +35,8 @@ typedef NS_ENUM(NSInteger, LGErrorCodes) {
     kLGErrorReparingAutoPkgPrefs,
     /** Error when attempting to spawn multiple instances of `autopkg run` at a time */
     kLGErrorMultipleRunsOfAutopkg,
+    /** Error when trying to enable a recipe when the Parent Recipe is not avaliable */
+    kLGErrorMissingParentRecipe,
     /** Error installing Git */
     kLGErrorInstallGit,
     /** Error installing/updating AutoPkg */
@@ -43,8 +45,14 @@ typedef NS_ENUM(NSInteger, LGErrorCodes) {
     kLGErrorInstallAutoPkgr,
     /** Error installing JSSImporter */
     kLGErrorInstallJSSImporter,
+    /** Generic error installing */
+    kLGErrorInstallingGeneric,
     /** Error serializing xml object */
     kLGErrorJSSXMLSerializerError,
+    /** Error Schedule timer incorrect */
+    kLGErrorIncorrectScheduleTimerInterval,
+    /** Error creating authorization*/
+    kLGErrorAuthChallenge,
 };
 
 #pragma mark - AutoPkg specific Error codes
@@ -77,6 +85,8 @@ typedef NS_ENUM(NSInteger, LGAutoPkgVerb) {
 @interface LGError : NSObject
 
 #ifdef _APPKITDEFINES_H
++ (void)presentErrorWithCode:(LGErrorCodes)code;
++ (void)presentErrorWithCode:(LGErrorCodes)code window:(NSWindow *)window;
 + (void)presentErrorWithCode:(LGErrorCodes)code
                       window:(NSWindow *)window
                     delegate:(id)sender
@@ -90,7 +100,7 @@ typedef NS_ENUM(NSInteger, LGAutoPkgVerb) {
  *  @param code  cooresponging LGErrorCodes
  *  @param error __autoreleasing NSError object
  *
- *  @return NO if error occured and error.code is not 0, otherwise YES;
+ *  @return NO if error occurred and error.code is not 0, otherwise YES;
  */
 + (BOOL)errorWithCode:(LGErrorCodes)code error:(NSError **)error;
 /**
@@ -110,7 +120,7 @@ typedef NS_ENUM(NSInteger, LGAutoPkgVerb) {
  *  @param verb  Cooresponding Action Word Describing the AutoPkgr task process
  *  @param error __autoreleasing NSError object
  *
- *  @return NO if error occured and the exit code is not 0, otherwise YES;
+ *  @return NO if error occurred and the exit code is not 0, otherwise YES;
  *  @discussion If the task is not complete this will return YES;
  */
 + (BOOL)errorWithTaskError:(NSTask *)task verb:(LGAutoPkgVerb)verb error:(NSError **)error;

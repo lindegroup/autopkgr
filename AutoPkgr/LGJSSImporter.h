@@ -4,7 +4,7 @@
 //
 //  Created by Eldon on 9/25/14.
 //
-//  Copyright 2014 The Linde Group, Inc.
+//  Copyright 2014-2015 The Linde Group, Inc.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -40,6 +40,7 @@
 
 @property (weak) IBOutlet NSButton *jssEditDistPointBT;
 @property (weak) IBOutlet NSButton *jssRemoveDistPointBT;
+@property (weak) IBOutlet NSButton *jssUseMasterJDS;
 
 @property (weak) IBOutlet NSWindow *modalWindow;
 
@@ -50,6 +51,7 @@
 - (IBAction)addDistributionPoint:(id)sender;
 - (IBAction)removeDistributionPoint:(id)sender;
 - (IBAction)editDistributionPoint:(id)sender;
+- (IBAction)enableMasterJDS:(NSButton *)sender;
 
 - (NSMenu *)contextualMenuForDistributionPoint:(NSDictionary *)distPoint;
 @end

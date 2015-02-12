@@ -4,7 +4,7 @@
 //
 //  Created by James Barclay on 6/26/14.
 //
-//  Copyright 2014 The Linde Group, Inc.
+//  Copyright 2014-2015 The Linde Group, Inc.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -23,6 +23,8 @@
 extern NSString *const kLGApplicationName;
 extern NSString *const kLGAutoPkgPreferenceDomain;
 extern NSString *const kLGAutoPkgrPreferenceDomain;
+extern NSString *const kLGAutoPkgrHelperToolName;
+extern NSString *const kLGAutoPkgrLaunchDaemonPlist;
 
 #pragma mark - Message Strings / Labels
 extern NSString *const kLGGitInstalledLabel;
@@ -36,8 +38,7 @@ extern NSString *const kLGJSSImporterUpdateAvailableLabel;
 
 #pragma mark - Static URLs
 extern NSString *const kLGAutoPkgReleasesJSONURL;
-extern NSString *const kLGGitMAVReleasesJSONURL;
-extern NSString *const kLGGitMLReleasesJSONURL;
+extern NSString *const kLGGitReleasesJSONURL;
 extern NSString *const kLGJSSImporterJSONURL;
 extern NSString *const kLGAutoPkgRepositoriesJSONURL;
 extern NSString *const kLGJSSDefaultRepo;
@@ -59,6 +60,7 @@ extern NSString *const kLGCheckForRepoUpdatesAutomaticallyEnabled;
 extern NSString *const kLGSMTPTLSEnabled;
 extern NSString *const kLGSMTPAuthenticationEnabled;
 extern NSString *const kLGWarnBeforeQuittingEnabled;
+extern NSString *const kLGApplicationDisplayStyle;
 
 #pragma mark - Notifications
 #pragma mark-- Progress
@@ -85,5 +87,7 @@ extern NSString *const kLGNotificationUserInfoMessage;
 extern NSString *const kLGNotificationUserInfoTotalRecipeCount;
 //* key corresponding to NSNumber BOOL object in Notification's userInfo dictionary, indicating success/failure */
 extern NSString *const kLGNotificationUserInfoSuccess;
-//* key corresponding to NSError object in Notification's userInfo dictionary */
+//* key corresponding to Subject object in Notification's userInfo dictionary */
 extern NSString *const kLGNotificationUserInfoSubject;
+//* key corresponding to Progress object in Notification's userInfo dictionary */
+extern NSString *const kLGNotificationUserInfoProgress;

@@ -4,7 +4,7 @@
 //
 //  Created by James Barclay on 6/26/14.
 //
-//  Copyright 2014 The Linde Group, Inc.
+//  Copyright 2014-2015 The Linde Group, Inc.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -25,6 +25,8 @@
 NSString *const kLGApplicationName = @"AutoPkgr";
 NSString *const kLGAutoPkgPreferenceDomain = @"com.github.autopkg";
 NSString *const kLGAutoPkgrPreferenceDomain = @"com.lindegroup.AutoPkgr";
+NSString *const kLGAutoPkgrHelperToolName = @"com.lindegroup.AutoPkgr.helper";
+NSString *const kLGAutoPkgrLaunchDaemonPlist = @"com.lindegroup.AutoPkgr.schedule";
 
 #pragma mark - Message Strings / Labels
 NSString *const kLGGitInstalledLabel = @"Git has been installed.";
@@ -39,8 +41,7 @@ NSString *const kLGJSSImporterUpdateAvailableLabel = @"An update is available fo
 #pragma mark - Static URLs
 #pragma mark-- GitHub
 NSString *const kLGAutoPkgReleasesJSONURL = @"https://api.github.com/repos/autopkg/autopkg/releases";
-NSString *const kLGGitMAVReleasesJSONURL = @"https://api.github.com/repos/timcharper/git_osx_installer/releases";
-NSString *const kLGGitMLReleasesJSONURL = @"https://api.github.com/repos/eahrold/git-for-mountainlion/releases";
+NSString *const kLGGitReleasesJSONURL = @"https://api.github.com/repos/timcharper/git_osx_installer/releases";
 NSString *const kLGJSSImporterJSONURL = @"https://api.github.com/repos/sheagcraig/JSSImporter/releases";
 
 NSString *const kLGAutoPkgRepositoriesJSONURL = @"https://api.github.com/orgs/autopkg/repos?per_page=100";
@@ -64,6 +65,7 @@ NSString *const kLGSendEmailNotificationsWhenNewVersionsAreFoundEnabled = @"Send
 NSString *const kLGCheckForNewVersionsOfAppsAutomaticallyEnabled = @"CheckForNewVersionsOfAppsAutomaticallyEnabled";
 NSString *const kLGCheckForRepoUpdatesAutomaticallyEnabled = @"CheckForRepoUpdatesAutomaticallyEnabled";
 NSString *const kLGWarnBeforeQuittingEnabled = @"WarnBeforeQuitting";
+NSString *const kLGApplicationDisplayStyle = @"ApplicationDisplayStyle";
 
 #pragma mark - Notifications
 #pragma mark-- Progress
@@ -79,7 +81,7 @@ NSString *const kLGNotificationReposModified = @"com.lindegroup.autopkgr.notific
 
 #pragma mark-- Email
 NSString *const kLGNotificationEmailSent = @"com.lindegroup.autopkgr.email.sent.notification";
-NSString *const kLGNotificationTestSmtpServerPort = @"com.lindegroup.autopkgr.test.smpt.port.notification";
+NSString *const kLGNotificationTestSmtpServerPort = @"com.lindegroup.autopkgr.test.smtp.port.notification";
 
 #pragma mark-- UserInfo dict keys
 NSString *const kLGNotificationUserInfoError = @"com.lindegroup.autopkgr.notification.userinfo.error";
@@ -87,3 +89,4 @@ NSString *const kLGNotificationUserInfoMessage = @"com.lindegroup.autopkgr.notif
 NSString *const kLGNotificationUserInfoTotalRecipeCount = @"com.lindegroup.autopkgr.notification.userinfo.total.recipe.count";
 NSString *const kLGNotificationUserInfoSuccess = @"com.lindelgroup.autopkgr.notification.userinfo.success";
 NSString *const kLGNotificationUserInfoSubject = @"com.lindelgroup.autopkgr.notification.userinfo.subject";
+NSString *const kLGNotificationUserInfoProgress = @"com.lindegroup.autopkgr.notification.userinfo.progress";

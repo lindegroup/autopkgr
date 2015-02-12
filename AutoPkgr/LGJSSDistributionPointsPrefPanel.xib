@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="6250" systemVersion="13E28" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="6254" systemVersion="14C109" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="6250"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="6254"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="LGJSSDistributionPointsPrefPanel">
@@ -34,7 +34,7 @@
             <windowStyleMask key="styleMask" titled="YES" closable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="196" y="240" width="368" height="348"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1280" height="778"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="2560" height="1417"/>
             <view key="contentView" id="se5-gp-TjO">
                 <rect key="frame" x="0.0" y="0.0" width="368" height="348"/>
                 <autoresizingMask key="autoresizingMask"/>
@@ -116,9 +116,9 @@ Gw
                         </connections>
                     </button>
                     <popUpButton verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="GyS-vJ-4BH">
-                        <rect key="frame" x="104" y="279" width="240" height="26"/>
+                        <rect key="frame" x="104" y="279" width="125" height="26"/>
                         <constraints>
-                            <constraint firstAttribute="width" constant="235" id="RZ0-Jb-xx7"/>
+                            <constraint firstAttribute="width" constant="120" id="V0A-D4-Wal"/>
                         </constraints>
                         <popUpButtonCell key="cell" type="push" bezelStyle="rounded" alignment="center" lineBreakMode="truncatingTail" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" id="Tm4-J4-erg">
                             <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
@@ -127,7 +127,6 @@ Gw
                                 <items>
                                     <menuItem title="AFP" id="fZx-9Q-VwR"/>
                                     <menuItem title="SMB" id="3qb-HP-cZN"/>
-                                    <menuItem title="JDS" id="Jjc-q4-79l"/>
                                 </items>
                             </menu>
                         </popUpButtonCell>
@@ -298,7 +297,6 @@ Gw
                     <constraint firstAttribute="trailing" secondItem="lBl-oO-G9N" secondAttribute="trailing" constant="22" id="TiX-Gk-xOr"/>
                     <constraint firstItem="uDD-20-wUL" firstAttribute="top" secondItem="se5-gp-TjO" secondAttribute="top" constant="111" id="WXU-eh-xLw"/>
                     <constraint firstItem="6cA-jO-fVF" firstAttribute="leading" secondItem="m37-CA-3Oc" secondAttribute="trailing" constant="8" id="YU6-XH-Cbu"/>
-                    <constraint firstAttribute="trailing" secondItem="GyS-vJ-4BH" secondAttribute="trailing" constant="27" id="Z87-3u-Vor"/>
                     <constraint firstAttribute="trailing" secondItem="XVi-jo-2Nc" secondAttribute="trailing" constant="22" id="aQN-Jd-3CS"/>
                     <constraint firstItem="GyS-vJ-4BH" firstAttribute="top" secondItem="se5-gp-TjO" secondAttribute="top" constant="45" id="bOJ-f6-sOx"/>
                     <constraint firstItem="lgz-QM-68R" firstAttribute="top" secondItem="se5-gp-TjO" secondAttribute="top" constant="47" id="bat-Rf-wEs"/>

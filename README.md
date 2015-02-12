@@ -76,6 +76,15 @@ You'll also find some useful shortcuts on the **Folders & Integration** tab, whi
     ![Local Folders](doc-images/config_tab4.png)
 
 
+Searching for Recipes
+---------------------
+
+AutoPkgr can help you find recipes for the apps you want. In the **Recipes & Repos** tab, click the **Search for more recipes** button. Enter the name of the app you're looking for in the search box, and type **Return** to search.
+
+Search results (and their corresponding repos) will be displayed below. Click the **Add** button to add the repo, then click Done and add the recipe in the **Recipes & Repos** tab.
+![Search Results](doc-images/search_results.png)
+
+
 Integration with Munki
 ----------------------
 
@@ -105,7 +114,7 @@ To configure AutoPkgr to create Self Service policies in Casper for new app upda
     - File Share Distribution Points (only needs Read access)
 1. Open AutoPkgr and go to the **Folders & Integration** tab.
 1. In the **Casper Suite integration** section, enter your JSS URL, API username, and API password. Then click **Connect**.
-1. When prompted, follow the instructions to install the jss-autopkg-addon.
+1. When prompted, follow the instructions to install JSSImporter.
 1. When prompted, enter the read/write password for each distribution point.
 
 You'll also want to make sure you have a few `.jss` recipes selected. AutoPkgr will automatically add Shea Craig's [jss-recipes](https://github.com/sheagcraig/jss-recipes) repo so you'll have a few to choose from.
@@ -121,21 +130,21 @@ Using a Proxy
 If your network uses a proxy, you may need to run one or more of these commands to configure AutoPkg/AutoPkgr to use your proxy for internet access.
 
 Note: Running these commands is equivalent to this shell command:
-```export HTTP_PROXY=http://proxy:8080```  
+```export HTTP_PROXY=http://proxy:8080```
 It should not be compared to what you can access from a web browser.  If running autopkg in the shell won't work with the environmental variables set, neither will AutoPkgr.
- 
+
 Note: Proxy support is still in early development and we would love feedback from the community as to it's functioning, both success and failure.
 
 
-1. Use proxies defined in System Preferences. 
-`defaults write com.lindegroup.AutoPkgr useSystemProxies -bool true`  
+1. Use proxies defined in System Preferences.
+`defaults write com.lindegroup.AutoPkgr useSystemProxies -bool true`
 
-	This should also pick up auto-detected WPAD/PAC proxies. Make sure you have the domains that should not use a proxy listed in the 
+    This should also pick up auto-detected WPAD/PAC proxies. Make sure you have the domains that should not use a proxy listed in the
 `System Preferences -> Network -> Advanced -> Proxies -> "Bypass proxy settings for these Hosts & Domains"`
- 
+
 2. If using the settings from system preferences doesn't work you can try to manually set the proxy environment yourself.
 
-	Note: when manually setting make sure to unset useSystemProxies `defaults write com.lindegroup.AutoPkgr useSystemProxies -bool false` 
+    Note: when manually setting make sure to unset useSystemProxies `defaults write com.lindegroup.AutoPkgr useSystemProxies -bool false`
 
 - To use HTTP proxy: `defaults write com.lindegroup.AutoPkgr HTTP_PROXY http://proxy:8080`
 

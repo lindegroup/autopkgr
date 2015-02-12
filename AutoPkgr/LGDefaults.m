@@ -4,7 +4,7 @@
 //
 //  Created by Eldon on 8/5/14.
 //
-//  Copyright 2014 The Linde Group, Inc.
+//  Copyright 2014-2015 The Linde Group, Inc.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -99,6 +99,30 @@
     [self setObject:SMTPTo forKey:kLGSMTPTo];
 }
 
+#pragma mark - Info
+- (NSString *)LastAutoPkgRun
+{
+    return [self objectForKey:NSStringFromSelector(@selector(LastAutoPkgRun))];
+}
+
+- (void)setLastAutoPkgRun:(id)LastAutoPkgRun
+{
+    NSString *setValue = nil;
+
+    if ([LastAutoPkgRun isKindOfClass:[NSDate class]]) {
+        // If the object passed in is an NSDate object convert it
+        // to a nice formatted string.
+        NSDateFormatter *fomatter = [NSDateFormatter new];
+        [fomatter setDateStyle:NSDateFormatterMediumStyle];
+        [fomatter setTimeStyle:NSDateFormatterMediumStyle];
+        setValue = [fomatter stringFromDate:LastAutoPkgRun];
+    } else if ([LastAutoPkgRun isKindOfClass:[NSString class]]) {
+        // If a string is passed in assume it's been formatted
+        setValue = LastAutoPkgRun;
+    }
+    [self setObject:setValue forKey:NSStringFromSelector(@selector(LastAutoPkgRun))];
+}
+
 #pragma mark - BOOL
 - (BOOL)SMTPTLSEnabled
 {
@@ -120,16 +144,6 @@
     [self setBool:SMTPAuthenticationEnabled forKey:kLGSMTPAuthenticationEnabled];
 }
 #pragma mark
-- (BOOL)warnBeforeQuittingEnabled
-{
-    return [self boolForKey:kLGWarnBeforeQuittingEnabled];
-}
-
-- (void)setWarnBeforeQuittingEnabled:(BOOL)WarnBeforeQuittingEnabled
-{
-    [self setBool:WarnBeforeQuittingEnabled forKey:kLGWarnBeforeQuittingEnabled];
-}
-#pragma mark
 - (BOOL)hasCompletedInitialSetup
 {
     return [self boolForKey:kLGHasCompletedInitialSetup];
@@ -139,6 +153,18 @@
 {
     [self setBool:HasCompletedInitialSetup forKey:kLGHasCompletedInitialSetup];
 }
+
+#pragma mark
+- (NSInteger)applicationDisplayStyle
+{
+    return [self integerForKey:kLGApplicationDisplayStyle];
+}
+
+- (void)setApplicationDisplayStyle:(NSInteger)applicationDisplayStyle
+{
+    [self setInteger:applicationDisplayStyle forKey:kLGApplicationDisplayStyle];
+}
+
 #pragma mark
 - (BOOL)sendEmailNotificationsWhenNewVersionsAreFoundEnabled
 {
@@ -149,16 +175,7 @@
 {
     [self setBool:SendEmailNotificationsWhenNewVersionsAreFoundEnabled forKey:kLGSendEmailNotificationsWhenNewVersionsAreFoundEnabled];
 }
-#pragma mark
-- (BOOL)checkForNewVersionsOfAppsAutomaticallyEnabled
-{
-    return [self boolForKey:kLGCheckForNewVersionsOfAppsAutomaticallyEnabled];
-}
 
-- (void)setCheckForNewVersionsOfAppsAutomaticallyEnabled:(BOOL)CheckForNewVersionsOfAppsAutomaticallyEnabled
-{
-    [self setBool:CheckForNewVersionsOfAppsAutomaticallyEnabled forKey:kLGCheckForNewVersionsOfAppsAutomaticallyEnabled];
-}
 #pragma mark
 - (BOOL)checkForRepoUpdatesAutomaticallyEnabled
 {

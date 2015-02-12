@@ -4,7 +4,7 @@
 //
 //  Created by Eldon on 8/24/14.
 //
-//  Copyright 2014 The Linde Group, Inc.
+//  Copyright 2014-2015 The Linde Group, Inc.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -24,9 +24,11 @@
 
 #import "LGConstants.h"
 #import "LGError.h"
+#import "LGHostInfo.h"
 #import "LGDefaults+JSSImporter.h"
 #import "NSString+cleaned.h"
 #import "NSTextField+setSafeStringValue.h"
 #import "NSImage+statusLight.h"
+#import "NSArray+filtered.h"
 
 #endif

@@ -4,7 +4,7 @@
 //
 //  Created by Eldon on 9/6/14.
 //
-//  Copyright 2014 The Linde Group, Inc.
+//  Copyright 2014-2015 The Linde Group, Inc.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -22,11 +22,14 @@
 #import <Foundation/Foundation.h>
 #import "LGProgressDelegate.h"
 
+extern NSString *const kLGLaunchedAtLogin;
+
 @interface LGAutoPkgSchedule : NSObject
 
-@property (weak) id<LGProgressDelegate> progressDelegate;
++ (void)startAutoPkgSchedule:(BOOL)start interval:(NSInteger)interval isForced:(BOOL)forced reply:(void (^)(NSError *error))reply;
 
-+ (LGAutoPkgSchedule *)sharedTimer;
-- (void)configure;
++ (BOOL)updateAppsIsScheduled:(NSInteger *)scheduleInterval;
 
++ (BOOL)launchAtLogin:(BOOL)launch;
++ (BOOL)willLaunchAtLogin;
 @end

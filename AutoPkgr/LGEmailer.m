@@ -4,7 +4,7 @@
 //
 //  Created by James Barclay on 6/26/14.
 //
-//  Copyright 2014 The Linde Group, Inc.
+//  Copyright 2014-2015 The Linde Group, Inc.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -20,9 +20,11 @@
 //
 
 #import "LGEmailer.h"
+#import "LGRecipes.h"
 #import "LGAutoPkgr.h"
 #import "LGHostInfo.h"
-#import "SSKeychain.h"
+#import "AHKeychain.h"
+#import "LGUserNotifications.h"
 
 @implementation LGEmailer
 
@@ -31,14 +33,13 @@
     LGDefaults *defaults = [[LGDefaults alloc] init];
 
     if (defaults.sendEmailNotificationsWhenNewVersionsAreFoundEnabled) {
-        BOOL TLS = defaults.SMTPTLSEnabled;
 
         MCOSMTPSession *smtpSession = [[MCOSMTPSession alloc] init];
-        smtpSession.username = defaults.SMTPUsername ? defaults.SMTPUsername : @"";
-        smtpSession.hostname = defaults.SMTPServer ? defaults.SMTPServer : @"";
+        smtpSession.username = defaults.SMTPUsername ?: @"";
+        smtpSession.hostname = defaults.SMTPServer ?: @"";
         smtpSession.port = (int)defaults.SMTPPort;
 
-        if (TLS) {
+        if (defaults.SMTPTLSEnabled) {
             DLog(@"SSL/TLS is enabled for %@.", defaults.SMTPServer);
             // If the SMTP port is 465, use MCOConnectionTypeTLS.
             // Otherwise use MCOConnectionTypeStartTLS.
@@ -56,10 +57,17 @@
         // keychain if it exists
         NSError *error = nil;
 
-        if (smtpSession.username) {
-            NSString *password = [SSKeychain passwordForService:kLGApplicationName
-                                                        account:smtpSession.username
-                                                          error:&error];
+        // Only check for a password if username exists
+        if (defaults.SMTPAuthenticationEnabled && ![smtpSession.username isEqualToString:@""]) {
+            AHKeychain *keychain = [LGHostInfo appKeychain];
+            AHKeychainItem *item = [[AHKeychainItem alloc] init];
+
+            item.label = kLGApplicationName;
+            item.service = kLGAutoPkgrPreferenceDomain;
+            item.account = smtpSession.username;
+
+            [keychain getItem:item error:&error];
+            NSString *password = item.password;
 
             if ([error code] == errSecItemNotFound) {
                 NSLog(@"Keychain item not found for account %@.", smtpSession.username);
@@ -68,15 +76,12 @@
             } else if (error != nil) {
                 NSLog(@"An error occurred when attempting to retrieve the keychain entry for %@. Error: %@", smtpSession.username, [error localizedDescription]);
             } else {
-                // Only set the SMTP session password if the username exists
-                if (smtpSession.username != nil && ![smtpSession.username isEqual:@""]) {
-                    DLog(@"Retrieved password from keychain for account %@.", smtpSession.username);
-                    smtpSession.password = password ? password : @"";
-                }
+                DLog(@"Retrieved password from keychain for account %@.", smtpSession.username);
+                smtpSession.password = password ?: @"";
             }
         }
 
-        NSString *from = defaults.SMTPFrom ? defaults.SMTPFrom : @"AutoPkgr";
+        NSString *from = defaults.SMTPFrom ?: @"AutoPkgr";
 
         MCOMessageBuilder *builder = [[MCOMessageBuilder alloc] init];
         [[builder header] setFrom:[MCOAddress addressWithDisplayName:@"AutoPkgr Notification"
@@ -99,6 +104,11 @@
 
         MCOSMTPSendOperation *sendOperation = [smtpSession sendOperationWithData:rfc822Data];
         [sendOperation start:^(NSError *error) {
+
+            if ([subject isEqualToString:@"Test notification from AutoPkgr"]) {
+                [LGUserNotifications sendNotificationOfTestEmailSuccess:error ? NO:YES error:error];
+            }
+            
             NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
             NSMutableDictionary *userInfo = [NSMutableDictionary dictionaryWithDictionary:@{kLGNotificationUserInfoSubject:subject,
                                                                                             kLGNotificationUserInfoMessage:message}];
@@ -109,11 +119,14 @@
             } else {
                 NSLog(@"Successfully sent email from %@.", from);
             }
-            
+
             [center postNotificationName:kLGNotificationEmailSent
                                   object:self
                                 userInfo:[NSDictionary dictionaryWithDictionary:userInfo]];
+            self.complete = YES;
         }];
+    } else {
+        self.complete = YES;
     }
 }
 
@@ -135,11 +148,13 @@
     NSArray *newDownloads;
     NSArray *newPackages;
     NSArray *newImports;
+    NSArray *detectedVersions;
 
     if (report) {
-        newDownloads = [report objectForKey:@"new_downloads"];
-        newPackages = [report objectForKey:@"new_packages"];
-        newImports = [report objectForKey:@"new_imports"];
+        detectedVersions = [report objectForKey:@"detected_versions"] ?: @[];
+        newDownloads = [report objectForKey:@"new_downloads"] ?: @[];
+        newPackages = [report objectForKey:@"new_packages"] ?: @[];
+        newImports = [report objectForKey:@"new_imports"] ?: @[];
     }
 
     if ([newDownloads count]) {
@@ -150,7 +165,7 @@
         subject = [NSString stringWithFormat:@"[%@] New software available for testing", kLGApplicationName];
 
         // Append the the message string with report
-        [message appendFormat:@"The following software is now available for testing:<br />"];
+        [message appendFormat:@"The following software is now available for testing:<br /><br />"];
 
         for (NSString *path in newDownloads) {
             NSCharacterSet *set = [NSCharacterSet punctuationCharacterSet];
@@ -167,28 +182,27 @@
 
             NSPredicate *versionPredicate = [NSPredicate predicateWithFormat:@" %K CONTAINS[cd] %@", @"pkg_path", app];
 
-            for (NSDictionary *dict in newPackages) {
-                if ([versionPredicate evaluateWithObject:dict] && dict[@"version"]) {
-                    version = dict[@"version"];
+            BOOL version_found = NO;
+            for (NSArray *arr in @[ newPackages, newImports, detectedVersions ]) {
+                for (NSDictionary *dict in arr) {
+                    if ([versionPredicate evaluateWithObject:dict] && dict[@"version"]) {
+                        version = dict[@"version"];
+                        version_found = YES;
+                        break;
+                    }
+                }
+                if (version_found) {
                     break;
                 }
             }
 
-            if (!version) {
-                for (NSDictionary *dict in newImports) {
-                    if ([versionPredicate evaluateWithObject:dict] && dict[@"version"]) {
-                        version = dict[@"version"];
-                        break;
-                    }
-                }
-            }
-
-            [message appendFormat:@"%@<br/>", version ? version : @"Version not detected"];
+            [message appendFormat:@"%@<br/>", version ?: @"Version not detected"];
         }
     } else {
         DLog(@"Nothing new was downloaded.");
     }
 
+    // Process error
     if (error) {
         if (!message) {
             message = [[NSMutableString alloc] init];
@@ -196,14 +210,37 @@
             [message appendString:@"<br/>"];
         }
 
+        // Set up a few CSS styles
+        [message appendString:@"<style>.tabbed {margin-left: 1em;} .tabbed2 {margin-left: 2em;}</style>"];
+
         if (!subject) {
-            subject = [NSString stringWithFormat:@"[%@] Error occured while running AutoPkg", kLGApplicationName];
+            subject = [NSString stringWithFormat:@"[%@] Error occurred while running AutoPkg", kLGApplicationName];
         }
-        [message appendFormat:@"<strong>The following error occured:</strong><br /><br />%@<br />%@", error.localizedDescription, error.localizedRecoverySuggestion];
+
+        NSArray *recoverySuggestions = [error.localizedRecoverySuggestion
+            componentsSeparatedByCharactersInSet:[NSCharacterSet newlineCharacterSet]];
+
+        [message appendFormat:@"<strong>The following error%@ occurred:</strong><br/>", recoverySuggestions.count > 1 ? @"s" : @""];
+
+        NSString *noValidRecipe = @"No valid recipe found for ";
+        NSPredicate *noValidRecipePredicate = [NSPredicate predicateWithFormat:@"SELF BEGINSWITH %@", noValidRecipe];
+
+        for (NSString *string in [recoverySuggestions removeEmptyStrings]) {
+            if ([noValidRecipePredicate evaluateWithObject:string]) {
+                // Remove Recipe from Recipe.txt
+
+                [LGRecipes removeRecipeFromRecipeList:[[string componentsSeparatedByString:noValidRecipe] lastObject]];
+                [message appendFormat:@"<p class =\"tabbed\">%@. It has been automatically removed from your recipe list in order to prevent recurring errors.</p>", string];
+            } else {
+                [message appendFormat:@"<p class =\"tabbed\">%@</p>", string];
+            }
+        }
     }
 
     if (message) {
         [self sendEmailNotification:subject message:message];
+    } else {
+        self.complete = YES;
     }
 }
 

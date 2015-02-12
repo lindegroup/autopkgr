@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="6254" systemVersion="14C109" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+    <dependencies>
+        <deployment identifier="macosx"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="6254"/>
+    </dependencies>
+    <objects>
+        <customObject id="-2" userLabel="File's Owner" customClass="LGRecipeSearch">
+            <connections>
+                <outlet property="addBT" destination="gEj-8x-XrO" id="QQF-br-hNF"/>
+                <outlet property="cancelBT" destination="Eht-cl-LtU" id="W6Q-T8-m8N"/>
+                <outlet property="limitMessage" destination="ORW-oU-9em" id="c0f-w3-CwW"/>
+                <outlet property="progressIndicator" destination="llE-7y-lSY" id="Mer-5a-6Q2"/>
+                <outlet property="searchField" destination="0FY-e4-SV7" id="p16-CB-Zn4"/>
+                <outlet property="searchTable" destination="f7k-cu-1LO" id="STi-Qj-5Lm"/>
+                <outlet property="window" destination="F0z-JX-Cv5" id="gIp-Ho-8D9"/>
+            </connections>
+        </customObject>
+        <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
+        <customObject id="-3" userLabel="Application" customClass="NSObject"/>
+        <window title="Window" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" oneShot="NO" visibleAtLaunch="NO" animationBehavior="default" id="F0z-JX-Cv5">
+            <windowStyleMask key="styleMask" titled="YES"/>
+            <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
+            <rect key="contentRect" x="196" y="240" width="600" height="300"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="2560" height="1417"/>
+            <view key="contentView" wantsLayer="YES" id="se5-gp-TjO">
+                <rect key="frame" x="0.0" y="0.0" width="600" height="300"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <scrollView ambiguous="YES" misplaced="YES" autohidesScrollers="YES" horizontalLineScroll="19" horizontalPageScroll="10" verticalLineScroll="19" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jQo-0g-7xF">
+                        <rect key="frame" x="20" y="72" width="556" height="184"/>
+                        <clipView key="contentView" ambiguous="YES" misplaced="YES" id="R4N-zl-cdH">
+                            <rect key="frame" x="1" y="17" width="238" height="117"/>
+                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                            <subviews>
+                                <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" columnSelection="YES" multipleSelection="NO" autosaveColumns="NO" headerView="uoi-8d-oaY" id="f7k-cu-1LO">
+                                    <rect key="frame" x="0.0" y="0.0" width="554" height="19"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <size key="intercellSpacing" width="3" height="2"/>
+                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    <color key="gridColor" name="gridColor" catalog="System" colorSpace="catalog"/>
+                                    <tableColumns>
+                                        <tableColumn identifier="Name" width="208.078125" minWidth="40" maxWidth="1000" id="R6H-6k-fdA">
+                                            <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left">
+                                                <font key="font" metaFont="smallSystem"/>
+                                                <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
+                                                <color key="backgroundColor" name="headerColor" catalog="System" colorSpace="catalog"/>
+                                            </tableHeaderCell>
+                                            <textFieldCell key="dataCell" lineBreakMode="truncatingTail" alignment="left" title="Text Cell" id="GU5-No-Y7U">
+                                                <font key="font" metaFont="system"/>
+                                                <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                            </textFieldCell>
+                                            <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
+                                        </tableColumn>
+                                        <tableColumn identifier="RepoName" width="244.1484375" minWidth="40" maxWidth="1000" id="7xK-H0-SVX">
+                                            <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left">
+                                                <font key="font" metaFont="smallSystem"/>
+                                                <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
+                                                <color key="backgroundColor" name="headerColor" catalog="System" colorSpace="catalog"/>
+                                            </tableHeaderCell>
+                                            <textFieldCell key="dataCell" lineBreakMode="truncatingTail" alignment="left" title="Text Cell" id="ec3-q2-68c">
+                                                <font key="font" metaFont="system"/>
+                                                <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                            </textFieldCell>
+                                            <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
+                                        </tableColumn>
+                                        <tableColumn identifier="installed" width="93" minWidth="10" maxWidth="3.4028234663852886e+38" id="Te5-R7-pY1">
+                                            <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="center" title="Repo Installed">
+                                                <font key="font" metaFont="smallSystem"/>
+                                                <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
+                                                <color key="backgroundColor" name="headerColor" catalog="System" colorSpace="catalog"/>
+                                            </tableHeaderCell>
+                                            <imageCell key="dataCell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" id="Lep-UN-DpD"/>
+                                            <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
+                                        </tableColumn>
+                                    </tableColumns>
+                                    <connections>
+                                        <outlet property="dataSource" destination="-2" id="pr2-oq-DsK"/>
+                                        <outlet property="delegate" destination="-2" id="URA-ns-e3A"/>
+                                    </connections>
+                                </tableView>
+                            </subviews>
+                            <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
+                        </clipView>
+                        <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="YES" id="CS2-fe-iN9">
+                            <rect key="frame" x="1" y="119" width="223" height="15"/>
+                            <autoresizingMask key="autoresizingMask"/>
+                        </scroller>
+                        <scroller key="verticalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="NO" id="u6W-bg-JRG">
+                            <rect key="frame" x="224" y="17" width="15" height="102"/>
+                            <autoresizingMask key="autoresizingMask"/>
+                        </scroller>
+                        <tableHeaderView key="headerView" id="uoi-8d-oaY">
+                            <rect key="frame" x="0.0" y="0.0" width="238" height="17"/>
+                            <autoresizingMask key="autoresizingMask"/>
+                        </tableHeaderView>
+                    </scrollView>
+                    <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="gEj-8x-XrO">
+                        <rect key="frame" x="490" y="12" width="92" height="32"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="80" id="RNq-mb-Y21"/>
+                        </constraints>
+                        <buttonCell key="cell" type="push" title="Add" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="E0Y-sn-caq">
+                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" metaFont="system"/>
+                        </buttonCell>
+                        <connections>
+                            <action selector="addRecipeAndRepo:" target="-2" id="PgA-xn-FHs"/>
+                        </connections>
+                    </button>
+                    <searchField wantsLayer="YES" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="0FY-e4-SV7">
+                        <rect key="frame" x="20" y="264" width="216" height="22"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="216" id="Xmc-l0-sEi"/>
+                        </constraints>
+                        <searchFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" borderStyle="bezel" placeholderString="Search by name" usesSingleLineMode="YES" bezelStyle="round" id="GgT-uP-FJN">
+                            <font key="font" metaFont="system"/>
+                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                        </searchFieldCell>
+                        <connections>
+                            <outlet property="delegate" destination="-2" id="G1O-Lb-VVI"/>
+                        </connections>
+                    </searchField>
+                    <progressIndicator horizontalHuggingPriority="750" verticalHuggingPriority="750" maxValue="100" bezeled="NO" indeterminate="YES" controlSize="small" style="spinning" translatesAutoresizingMaskIntoConstraints="NO" id="llE-7y-lSY">
+                        <rect key="frame" x="244" y="267" width="16" height="16"/>
+                    </progressIndicator>
+                    <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" ambiguous="YES" misplaced="YES" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="TLS-hE-fLt">
+                        <rect key="frame" x="18" y="53" width="560" height="16"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="16" id="Ii0-v3-jVt"/>
+                        </constraints>
+                        <textFieldCell key="cell" controlSize="small" sendsActionOnEndEditing="YES" title="This panel will only add the recipe repo. Enable individual recipes back in the main window." id="oZH-U7-Wko">
+                            <font key="font" metaFont="smallSystem"/>
+                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                    </textField>
+                    <textField hidden="YES" verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ORW-oU-9em">
+                        <rect key="frame" x="201" y="267" width="377" height="16"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="373" id="40M-ey-sSY"/>
+                        </constraints>
+                        <textFieldCell key="cell" controlSize="small" sendsActionOnEndEditing="YES" alignment="right" title="The GitHub API has a limit of 5 searches per minute." id="lZX-La-Pof">
+                            <font key="font" metaFont="smallSystem"/>
+                            <color key="textColor" red="0.712890625" green="0.024089717045036027" blue="0.0059326041652718875" alpha="1" colorSpace="calibratedRGB"/>
+                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                    </textField>
+                    <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Eht-cl-LtU">
+                        <rect key="frame" x="398" y="12" width="92" height="32"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="80" id="IKe-N5-g0X"/>
+                        </constraints>
+                        <buttonCell key="cell" type="push" title="Done" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="V3k-V9-S34">
+                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" metaFont="system"/>
+                            <string key="keyEquivalent" base64-UTF8="YES">
+Gw
+</string>
+                        </buttonCell>
+                        <connections>
+                            <action selector="closePanel:" target="-2" id="fy0-T7-wOc"/>
+                        </connections>
+                    </button>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="0FY-e4-SV7" firstAttribute="top" secondItem="se5-gp-TjO" secondAttribute="top" constant="14" id="0U6-35-YdR"/>
+                    <constraint firstAttribute="trailing" secondItem="Eht-cl-LtU" secondAttribute="trailing" constant="116" id="1hR-6J-fXc"/>
+                    <constraint firstItem="0FY-e4-SV7" firstAttribute="leading" secondItem="se5-gp-TjO" secondAttribute="leading" constant="20" symbolic="YES" id="40a-Dk-6bT"/>
+                    <constraint firstItem="TLS-hE-fLt" firstAttribute="trailing" secondItem="jQo-0g-7xF" secondAttribute="trailing" id="9Oh-A1-xiN"/>
+                    <constraint firstAttribute="trailing" secondItem="gEj-8x-XrO" secondAttribute="trailing" constant="24" id="Bf6-ed-bTO"/>
+                    <constraint firstAttribute="bottom" secondItem="gEj-8x-XrO" secondAttribute="bottom" constant="19" id="NW1-NB-9pg"/>
+                    <constraint firstItem="TLS-hE-fLt" firstAttribute="top" secondItem="jQo-0g-7xF" secondAttribute="bottom" constant="3" id="OGe-d6-GTK"/>
+                    <constraint firstItem="ORW-oU-9em" firstAttribute="top" secondItem="llE-7y-lSY" secondAttribute="top" id="TYt-AW-68S"/>
+                    <constraint firstItem="llE-7y-lSY" firstAttribute="leading" secondItem="0FY-e4-SV7" secondAttribute="trailing" constant="8" symbolic="YES" id="aTs-xA-Vs3"/>
+                    <constraint firstAttribute="bottom" secondItem="Eht-cl-LtU" secondAttribute="bottom" constant="19" id="fSV-QS-Qn6"/>
+                    <constraint firstItem="0FY-e4-SV7" firstAttribute="centerY" secondItem="llE-7y-lSY" secondAttribute="centerY" id="hSc-xW-nuk"/>
+                    <constraint firstItem="jQo-0g-7xF" firstAttribute="top" secondItem="0FY-e4-SV7" secondAttribute="bottom" constant="8" symbolic="YES" id="iHa-Mp-SFA"/>
+                    <constraint firstItem="ORW-oU-9em" firstAttribute="baseline" secondItem="0FY-e4-SV7" secondAttribute="baseline" id="jTx-wG-bdd"/>
+                    <constraint firstItem="ORW-oU-9em" firstAttribute="trailing" secondItem="jQo-0g-7xF" secondAttribute="trailing" id="ldp-3I-NGB"/>
+                    <constraint firstItem="TLS-hE-fLt" firstAttribute="leading" secondItem="jQo-0g-7xF" secondAttribute="leading" id="vvb-WY-iw0"/>
+                    <constraint firstAttribute="trailing" secondItem="jQo-0g-7xF" secondAttribute="trailing" constant="24" id="wg4-VD-4cO"/>
+                    <constraint firstItem="jQo-0g-7xF" firstAttribute="leading" secondItem="0FY-e4-SV7" secondAttribute="leading" id="y8L-o8-aVf"/>
+                </constraints>
+            </view>
+            <connections>
+                <outlet property="delegate" destination="-2" id="0bl-1N-AYu"/>
+            </connections>
+            <point key="canvasLocation" x="198" y="158"/>
+        </window>
+    </objects>
+</document>

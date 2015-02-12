@@ -4,7 +4,7 @@
 //
 //  Created by Josh Senick on 7/29/14.
 //
-//  Copyright 2014 The Linde Group, Inc.
+//  Copyright 2014-2015 The Linde Group, Inc.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -114,7 +114,9 @@
 
     operation.securityPolicy = policy;
     [operation setRedirectResponseBlock:^NSURLRequest * (NSURLConnection * connection, NSURLRequest * request, NSURLResponse * redirectResponse) {
-        NSLog(@"redirected %@",redirectResponse);
+        if (redirectResponse) {
+            DLog(@"redirected %@",redirectResponse);
+        }
         redirectedURL = [(NSHTTPURLResponse *)redirectResponse allHeaderFields][@"Location"];
         return request;
     }];

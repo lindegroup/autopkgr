@@ -7,15 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		1A0A86AF195CE63900A49434 /* MailCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1A0A86AE195CE5DC00A49434 /* MailCore.framework */; };
 		1A0A86B1195CE69300A49434 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1A0A86B0195CE69300A49434 /* Security.framework */; };
-		1A0A86B5195CE6D800A49434 /* MailCore.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 1A0A86AE195CE5DC00A49434 /* MailCore.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		1A1BAD96197A0407008192A7 /* LGVersionComparator.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A1BAD95197A0407008192A7 /* LGVersionComparator.m */; };
 		1A1BAD9E197A4133008192A7 /* LGGitHubJSONLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A1BAD9D197A4133008192A7 /* LGGitHubJSONLoader.m */; };
 		1A2C7FAE19CC9F8300CFF472 /* codesign.py in Resources */ = {isa = PBXBuildFile; fileRef = 1A2C7FAD19CC9F8300CFF472 /* codesign.py */; };
 		1AC69551195B59ED00D2BD81 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1AC69550195B59ED00D2BD81 /* Cocoa.framework */; };
 		1AC6955B195B59ED00D2BD81 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 1AC69559195B59ED00D2BD81 /* InfoPlist.strings */; };
-		1AC6955D195B59EE00D2BD81 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 1AC6955C195B59ED00D2BD81 /* main.m */; };
 		1AC69561195B59EE00D2BD81 /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 1AC6955F195B59EE00D2BD81 /* Credits.rtf */; };
 		1AC69564195B59EE00D2BD81 /* LGAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 1AC69563195B59EE00D2BD81 /* LGAppDelegate.m */; };
 		1AC69567195B59EE00D2BD81 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1AC69565195B59EE00D2BD81 /* MainMenu.xib */; };
@@ -27,80 +24,79 @@
 		1AC86D3D195E0AC6006FDD2B /* LGHostInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 1AC86D3C195E0AC6006FDD2B /* LGHostInfo.m */; };
 		1AC9840A195CE7D60071CAB3 /* LGConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 1AC98409195CE7D60071CAB3 /* LGConstants.m */; };
 		1AC98412195CE8520071CAB3 /* LGEmailer.m in Sources */ = {isa = PBXBuildFile; fileRef = 1AC98411195CE8520071CAB3 /* LGEmailer.m */; };
-		1AC9841F195CEC360071CAB3 /* LGConfigurationWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1AC9841D195CEC350071CAB3 /* LGConfigurationWindowController.m */; };
 		1AC98420195CEC360071CAB3 /* LGConfigurationWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1AC9841E195CEC360071CAB3 /* LGConfigurationWindowController.xib */; };
 		1AC98427195DF6350071CAB3 /* autopkgr.png in Resources */ = {isa = PBXBuildFile; fileRef = 1AC98425195DF6350071CAB3 /* autopkgr.png */; };
 		1AC98429195DF6DE0071CAB3 /* autopkgr_alt.png in Resources */ = {isa = PBXBuildFile; fileRef = 1AC98428195DF6DE0071CAB3 /* autopkgr_alt.png */; };
 		4B8E6E4F9D8944C883A98423 /* libPods-AutoPkgr.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FF435269A548437DA5380201 /* libPods-AutoPkgr.a */; };
-		6A0ACE34196FB349002C7FE4 /* LGRecipes.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A0ACE33196FB349002C7FE4 /* LGRecipes.m */; };
-		6A0BABE9196E560000A136BB /* LGPopularRepositories.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A0BABE8196E560000A136BB /* LGPopularRepositories.m */; };
 		6A53625D1988BE59008A949C /* LGTestPort.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A53625C1988BE59008A949C /* LGTestPort.m */; };
+		8B32152D89506869029955FC /* libPods-AutoPkgrTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7EF915ABFCFD78F7257B58CD /* libPods-AutoPkgrTests.a */; };
 		8BB217F619709A2C00EF8B93 /* AutoPkgrIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 8BB217F519709A2C00EF8B93 /* AutoPkgrIcon.png */; };
-		AEA9AB86157392A9DA04CF21 /* libPods-AutoPkgrTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E858FACD08F464CDA3125B4C /* libPods-AutoPkgrTests.a */; };
-		BE025CF619BAE93400D36345 /* LGAutoPkgTask.m in Sources */ = {isa = PBXBuildFile; fileRef = BE025CF519BAE93400D36345 /* LGAutoPkgTask.m */; };
 		BE025CF719BAE93400D36345 /* LGAutoPkgTask.m in Sources */ = {isa = PBXBuildFile; fileRef = BE025CF519BAE93400D36345 /* LGAutoPkgTask.m */; };
 		BE025CFE19BAEF8800D36345 /* LGAutoPkgSchedule.m in Sources */ = {isa = PBXBuildFile; fileRef = BE025CFD19BAEF8800D36345 /* LGAutoPkgSchedule.m */; };
 		BE025CFF19BAEF8800D36345 /* LGAutoPkgSchedule.m in Sources */ = {isa = PBXBuildFile; fileRef = BE025CFD19BAEF8800D36345 /* LGAutoPkgSchedule.m */; };
+		BE05CE6A19DAF26B0089068B /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = BE05CE6919DAF26B0089068B /* main.m */; };
+		BE05CE7519DAF4DA0089068B /* com.lindegroup.AutoPkgr.helper in Copy Files: Helper Tool */ = {isa = PBXBuildFile; fileRef = BE05CE6719DAF26B0089068B /* com.lindegroup.AutoPkgr.helper */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		BE05CE7C19DAF5A30089068B /* LGAutoPkgrHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = BE05CE7A19DAF5A30089068B /* LGAutoPkgrHelper.m */; };
+		BE05CE8219DAF6320089068B /* LGAutoPkgrAuthorizer.m in Sources */ = {isa = PBXBuildFile; fileRef = BE05CE7F19DAF6320089068B /* LGAutoPkgrAuthorizer.m */; };
+		BE05CE8319DAF6320089068B /* LGAutoPkgrHelperConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = BE05CE8119DAF6320089068B /* LGAutoPkgrHelperConnection.m */; };
+		BE05CE8D19DB379C0089068B /* LGAutoPkgrAuthorizer.m in Sources */ = {isa = PBXBuildFile; fileRef = BE05CE7F19DAF6320089068B /* LGAutoPkgrAuthorizer.m */; };
+		BE05CE8E19DB37DF0089068B /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1A0A86B0195CE69300A49434 /* Security.framework */; };
+		BE05CE9019DB37E50089068B /* ServiceManagement.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BE05CE8F19DB37E50089068B /* ServiceManagement.framework */; };
+		BE05CE9119DB380F0089068B /* LGConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 1AC98409195CE7D60071CAB3 /* LGConstants.m */; };
+		BE05CE9219DB38180089068B /* LGError.m in Sources */ = {isa = PBXBuildFile; fileRef = BEFC931C1995F0710074C938 /* LGError.m */; };
+		BE0BACD11A2560AE00554989 /* LGJSSDistributionPointsPrefPanel.m in Sources */ = {isa = PBXBuildFile; fileRef = BE0BACCF1A2560AE00554989 /* LGJSSDistributionPointsPrefPanel.m */; };
+		BE0BACD21A2560AE00554989 /* LGJSSDistributionPointsPrefPanel.xib in Resources */ = {isa = PBXBuildFile; fileRef = BE0BACD01A2560AE00554989 /* LGJSSDistributionPointsPrefPanel.xib */; };
 		BE0E857919D668F600B25B5E /* LGHTTPRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = BE0E857819D668F600B25B5E /* LGHTTPRequest.m */; };
+		BE1C810319E8224000EF77F3 /* NSImage+statusLight.m in Sources */ = {isa = PBXBuildFile; fileRef = BE1C810219E8224000EF77F3 /* NSImage+statusLight.m */; };
+		BE1C810419E8224000EF77F3 /* NSImage+statusLight.m in Sources */ = {isa = PBXBuildFile; fileRef = BE1C810219E8224000EF77F3 /* NSImage+statusLight.m */; };
 		BE32178B19ED9ACA00A92E5A /* LGRecipeOverrides.m in Sources */ = {isa = PBXBuildFile; fileRef = BE32178A19ED9ACA00A92E5A /* LGRecipeOverrides.m */; };
-		BE32178E19EDA15400A92E5A /* LGTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = BE32178D19EDA15400A92E5A /* LGTableView.m */; };
-		BE39FE5319DFBB0100C1B4A1 /* LGDefaults+JSSImporter.m in Sources */ = {isa = PBXBuildFile; fileRef = BE39FE5219DFBB0100C1B4A1 /* LGDefaults+JSSImporter.m */; };
-		BE57733819D519E400D872A4 /* LGJSSImporter.m in Sources */ = {isa = PBXBuildFile; fileRef = BE57733719D519E400D872A4 /* LGJSSImporter.m */; };
 		BE57AC2A19BA3BBC00BB17B1 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = BE57AC2C19BA3BBC00BB17B1 /* Localizable.strings */; };
-		BE6815EC1A0B2BAB004AD310 /* LGJSSDistributionPointsPrefPanel.m in Sources */ = {isa = PBXBuildFile; fileRef = BE6815EA1A0B2BAB004AD310 /* LGJSSDistributionPointsPrefPanel.m */; };
-		BE6815ED1A0B2BAB004AD310 /* LGJSSDistributionPointsPrefPanel.xib in Resources */ = {isa = PBXBuildFile; fileRef = BE6815EB1A0B2BAB004AD310 /* LGJSSDistributionPointsPrefPanel.xib */; };
+		BE67E8751A44E10500484151 /* LGRecipeSearch.m in Sources */ = {isa = PBXBuildFile; fileRef = BE67E8731A44E10500484151 /* LGRecipeSearch.m */; };
+		BE67E8761A44E10500484151 /* LGRecipeSearchPanel.xib in Resources */ = {isa = PBXBuildFile; fileRef = BE67E8741A44E10500484151 /* LGRecipeSearchPanel.xib */; };
+		BE67E8771A44F02B00484151 /* LGRecipeSearch.m in Sources */ = {isa = PBXBuildFile; fileRef = BE67E8731A44E10500484151 /* LGRecipeSearch.m */; };
+		BE6815D51A0B18DE004AD310 /* LGUserNotifications.m in Sources */ = {isa = PBXBuildFile; fileRef = BE6815D41A0B18DE004AD310 /* LGUserNotifications.m */; };
 		BE73CDC719E062AC00441443 /* NSString+cleaned.m in Sources */ = {isa = PBXBuildFile; fileRef = BE73CDC619E062AC00441443 /* NSString+cleaned.m */; };
-		BE77A80019E37C910022B6FB /* NSImage+statusLight.m in Sources */ = {isa = PBXBuildFile; fileRef = BE77A7FF19E37C910022B6FB /* NSImage+statusLight.m */; };
 		BE8526B219D5F641007DFA9E /* SecurityInterface.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BE8526B119D5F641007DFA9E /* SecurityInterface.framework */; };
 		BE87994B1995BA410082472B /* LGDefaults.m in Sources */ = {isa = PBXBuildFile; fileRef = BE87994A1995BA410082472B /* LGDefaults.m */; };
-		BEAA76CC19BFD635002D73EE /* LGInstaller.m in Sources */ = {isa = PBXBuildFile; fileRef = BEAA76CB19BFD635002D73EE /* LGInstaller.m */; };
+		BEBF7B171A4894AC00E9967F /* LGVersioner.m in Sources */ = {isa = PBXBuildFile; fileRef = BEBF7B161A4894AC00E9967F /* LGVersioner.m */; };
+		BEBF7B1F1A48955C00E9967F /* LGVersioner.m in Sources */ = {isa = PBXBuildFile; fileRef = BEBF7B161A4894AC00E9967F /* LGVersioner.m */; };
+		BEC1258519F045EB006696C4 /* LGRecipes.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A0ACE33196FB349002C7FE4 /* LGRecipes.m */; };
+		BEC1258619F0465C006696C4 /* LGConfigurationWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1AC9841D195CEC350071CAB3 /* LGConfigurationWindowController.m */; };
+		BEC1258719F0465F006696C4 /* LGAutoPkgTask.m in Sources */ = {isa = PBXBuildFile; fileRef = BE025CF519BAE93400D36345 /* LGAutoPkgTask.m */; };
+		BEC1258819F046C5006696C4 /* LGJSSImporter.m in Sources */ = {isa = PBXBuildFile; fileRef = BE57733719D519E400D872A4 /* LGJSSImporter.m */; };
+		BEC1258919F046FA006696C4 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 1AC6955C195B59ED00D2BD81 /* main.m */; };
+		BEC1258A19F04703006696C4 /* LGInstaller.m in Sources */ = {isa = PBXBuildFile; fileRef = BEAA76CB19BFD635002D73EE /* LGInstaller.m */; };
+		BEC1258B19F04703006696C4 /* LGPopularRepositories.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A0BABE8196E560000A136BB /* LGPopularRepositories.m */; };
+		BEC1258C19F049A1006696C4 /* LGTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = BE32178D19EDA15400A92E5A /* LGTableView.m */; };
+		BED02ADC1A194F9C00714CC2 /* NSArray+filtered.m in Sources */ = {isa = PBXBuildFile; fileRef = BED02ADB1A194F9C00714CC2 /* NSArray+filtered.m */; };
+		BED297611A3F975000511CD7 /* LGDefaults+JSSImporter.m in Sources */ = {isa = PBXBuildFile; fileRef = BED297601A3F975000511CD7 /* LGDefaults+JSSImporter.m */; };
+		BED3882A1A85E2C100DA8970 /* autopkgr_error.png in Resources */ = {isa = PBXBuildFile; fileRef = BED388291A85E2C100DA8970 /* autopkgr_error.png */; };
 		BEE8CF1319E0E7F400981C4B /* NSTextField+setSafeStringValue.m in Sources */ = {isa = PBXBuildFile; fileRef = BEE8CF1219E0E7F400981C4B /* NSTextField+setSafeStringValue.m */; };
+		BEFC3C761A3DF16700C789E9 /* LGUserNotifications.m in Sources */ = {isa = PBXBuildFile; fileRef = BE6815D41A0B18DE004AD310 /* LGUserNotifications.m */; };
+		BEFC3C771A3DF16700C789E9 /* LGGitHubJSONLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A1BAD9D197A4133008192A7 /* LGGitHubJSONLoader.m */; };
+		BEFC3C781A3DF16700C789E9 /* LGInstaller.m in Sources */ = {isa = PBXBuildFile; fileRef = BEAA76CB19BFD635002D73EE /* LGInstaller.m */; };
+		BEFC3C791A3DF16700C789E9 /* LGTestPort.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A53625C1988BE59008A949C /* LGTestPort.m */; };
+		BEFC3C7C1A3DF16700C789E9 /* LGPopularRepositories.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A0BABE8196E560000A136BB /* LGPopularRepositories.m */; };
+		BEFC3C7D1A3DF16700C789E9 /* LGRecipes.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A0ACE33196FB349002C7FE4 /* LGRecipes.m */; };
+		BEFC3C7E1A3DF16700C789E9 /* LGRecipeOverrides.m in Sources */ = {isa = PBXBuildFile; fileRef = BE32178A19ED9ACA00A92E5A /* LGRecipeOverrides.m */; };
+		BEFC3C7F1A3DF16700C789E9 /* LGTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = BE32178D19EDA15400A92E5A /* LGTableView.m */; };
+		BEFC3C821A3DF16700C789E9 /* LGConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 1AC98409195CE7D60071CAB3 /* LGConstants.m */; };
+		BEFC3C831A3DF16700C789E9 /* LGDefaults.m in Sources */ = {isa = PBXBuildFile; fileRef = BE87994A1995BA410082472B /* LGDefaults.m */; };
+		BEFC3C841A3DF16700C789E9 /* LGError.m in Sources */ = {isa = PBXBuildFile; fileRef = BEFC931C1995F0710074C938 /* LGError.m */; };
+		BEFC3C851A3DF16700C789E9 /* LGHostInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 1AC86D3C195E0AC6006FDD2B /* LGHostInfo.m */; };
+		BEFC3C861A3DF16700C789E9 /* LGHTTPRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = BE0E857819D668F600B25B5E /* LGHTTPRequest.m */; };
+		BEFC3C871A3DF16700C789E9 /* LGVersionComparator.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A1BAD95197A0407008192A7 /* LGVersionComparator.m */; };
+		BEFC3C881A3DF16700C789E9 /* LGAutoPkgrAuthorizer.m in Sources */ = {isa = PBXBuildFile; fileRef = BE05CE7F19DAF6320089068B /* LGAutoPkgrAuthorizer.m */; };
+		BEFC3C891A3DF16700C789E9 /* LGAutoPkgrHelperConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = BE05CE8119DAF6320089068B /* LGAutoPkgrHelperConnection.m */; };
+		BEFC3C8A1A3DF16700C789E9 /* NSImage+statusLight.m in Sources */ = {isa = PBXBuildFile; fileRef = BE1C810219E8224000EF77F3 /* NSImage+statusLight.m */; };
+		BEFC3C8B1A3DF16700C789E9 /* NSString+cleaned.m in Sources */ = {isa = PBXBuildFile; fileRef = BE73CDC619E062AC00441443 /* NSString+cleaned.m */; };
+		BEFC3C8C1A3DF16700C789E9 /* NSTextField+setSafeStringValue.m in Sources */ = {isa = PBXBuildFile; fileRef = BEE8CF1219E0E7F400981C4B /* NSTextField+setSafeStringValue.m */; };
+		BEFC3C8E1A3DF16700C789E9 /* NSArray+filtered.m in Sources */ = {isa = PBXBuildFile; fileRef = BED02ADB1A194F9C00714CC2 /* NSArray+filtered.m */; };
 		BEFC931D1995F0710074C938 /* LGError.m in Sources */ = {isa = PBXBuildFile; fileRef = BEFC931C1995F0710074C938 /* LGError.m */; };
+		CAF173A0D3EC0C495067D9FF /* libPods-com.lindegroup.AutoPkgr.helper.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00A11C97CD6260BB5679DA1A /* libPods-com.lindegroup.AutoPkgr.helper.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		1A0A86A5195CE5DC00A49434 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 1A0A869D195CE5DB00A49434 /* mailcore2.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = C64EA537169E772200778456;
-			remoteInfo = "static mailcore2 osx";
-		};
-		1A0A86A7195CE5DC00A49434 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 1A0A869D195CE5DB00A49434 /* mailcore2.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = C6BA2C191705F4E6003F0E9E;
-			remoteInfo = "static mailcore2 ios";
-		};
-		1A0A86A9195CE5DC00A49434 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 1A0A869D195CE5DB00A49434 /* mailcore2.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = C64EA78C169F259200778456;
-			remoteInfo = tests;
-		};
-		1A0A86AB195CE5DC00A49434 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 1A0A869D195CE5DB00A49434 /* mailcore2.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = C6A81B911706840C00882C15;
-			remoteInfo = "test-ios";
-		};
-		1A0A86AD195CE5DC00A49434 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 1A0A869D195CE5DB00A49434 /* mailcore2.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = C6BD288D170BD71100A91AC1;
-			remoteInfo = "mailcore osx";
-		};
-		1A0A86B2195CE6B500A49434 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 1A0A869D195CE5DB00A49434 /* mailcore2.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = C6BD288C170BD71100A91AC1;
-			remoteInfo = "mailcore osx";
-		};
 		1AC69572195B59EE00D2BD81 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 1AC69545195B59ED00D2BD81 /* Project object */;
@@ -108,45 +104,38 @@
 			remoteGlobalIDString = 1AC6954C195B59ED00D2BD81;
 			remoteInfo = AutoPkgr;
 		};
-		8B19C7421A253D7800F468A0 /* PBXContainerItemProxy */ = {
+		BE05CE8919DB35460089068B /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 1A0A869D195CE5DB00A49434 /* mailcore2.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 27780C3A19CF9CD100C77E44;
-			remoteInfo = "mailcore ios";
-		};
-		8B19C7441A253D7800F468A0 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 1A0A869D195CE5DB00A49434 /* mailcore2.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = C6B5AE0219F630B3001352A6;
-			remoteInfo = unittest;
+			containerPortal = 1AC69545195B59ED00D2BD81 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = BE05CE6619DAF26B0089068B;
+			remoteInfo = com.lindegroup.AutoPkgr.helper;
 		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		1A0A86B4195CE6BF00A49434 /* CopyFiles */ = {
+		BE05CE7419DAF4C30089068B /* Copy Files: Helper Tool */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
+			dstPath = Contents/Library/LaunchServices;
+			dstSubfolderSpec = 1;
 			files = (
-				1A0A86B5195CE6D800A49434 /* MailCore.framework in CopyFiles */,
+				BE05CE7519DAF4DA0089068B /* com.lindegroup.AutoPkgr.helper in Copy Files: Helper Tool */,
 			);
+			name = "Copy Files: Helper Tool";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		04CA360328E704A8E80B244B /* Pods-AutoPkgr.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AutoPkgr.debug.xcconfig"; path = "Pods/Target Support Files/Pods-AutoPkgr/Pods-AutoPkgr.debug.xcconfig"; sourceTree = "<group>"; };
-		16E87146BB0135D03CB6ECA8 /* Pods-AutoPkgr.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AutoPkgr.release.xcconfig"; path = "Pods/Target Support Files/Pods-AutoPkgr/Pods-AutoPkgr.release.xcconfig"; sourceTree = "<group>"; };
-		1A0A869D195CE5DB00A49434 /* mailcore2.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = mailcore2.xcodeproj; path = "mailcore2/build-mac/mailcore2.xcodeproj"; sourceTree = SOURCE_ROOT; };
+		00A11C97CD6260BB5679DA1A /* libPods-com.lindegroup.AutoPkgr.helper.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-com.lindegroup.AutoPkgr.helper.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		1A0A86B0195CE69300A49434 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		1A1BAD94197A0407008192A7 /* LGVersionComparator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGVersionComparator.h; sourceTree = "<group>"; };
 		1A1BAD95197A0407008192A7 /* LGVersionComparator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGVersionComparator.m; sourceTree = "<group>"; };
 		1A1BAD9C197A4133008192A7 /* LGGitHubJSONLoader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGGitHubJSONLoader.h; sourceTree = "<group>"; };
 		1A1BAD9D197A4133008192A7 /* LGGitHubJSONLoader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGGitHubJSONLoader.m; sourceTree = "<group>"; };
 		1A2C7FAD19CC9F8300CFF472 /* codesign.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = codesign.py; sourceTree = "<group>"; };
+		1A7ADB1D1E710AEEEB0754C1 /* Pods-com.lindegroup.AutoPkgr.helper.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-com.lindegroup.AutoPkgr.helper.debug.xcconfig"; path = "Pods/Target Support Files/Pods-com.lindegroup.AutoPkgr.helper/Pods-com.lindegroup.AutoPkgr.helper.debug.xcconfig"; sourceTree = "<group>"; };
 		1AC6954D195B59ED00D2BD81 /* AutoPkgr.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AutoPkgr.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1AC69550195B59ED00D2BD81 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		1AC69553195B59ED00D2BD81 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
@@ -168,8 +157,8 @@
 		1AC6957A195B59EE00D2BD81 /* AutoPkgrTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AutoPkgrTests.m; sourceTree = "<group>"; };
 		1AC86D3B195E0AC6006FDD2B /* LGHostInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGHostInfo.h; sourceTree = "<group>"; };
 		1AC86D3C195E0AC6006FDD2B /* LGHostInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGHostInfo.m; sourceTree = "<group>"; };
-		1AC98408195CE7D60071CAB3 /* LGConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = LGConstants.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
-		1AC98409195CE7D60071CAB3 /* LGConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = LGConstants.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
+		1AC98408195CE7D60071CAB3 /* LGConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGConstants.h; sourceTree = "<group>"; };
+		1AC98409195CE7D60071CAB3 /* LGConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGConstants.m; sourceTree = "<group>"; };
 		1AC98410195CE8510071CAB3 /* LGEmailer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGEmailer.h; sourceTree = "<group>"; };
 		1AC98411195CE8520071CAB3 /* LGEmailer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGEmailer.m; sourceTree = "<group>"; };
 		1AC9841C195CEC350071CAB3 /* LGConfigurationWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGConfigurationWindowController.h; sourceTree = "<group>"; };
@@ -177,49 +166,80 @@
 		1AC9841E195CEC360071CAB3 /* LGConfigurationWindowController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LGConfigurationWindowController.xib; sourceTree = "<group>"; };
 		1AC98425195DF6350071CAB3 /* autopkgr.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = autopkgr.png; sourceTree = "<group>"; };
 		1AC98428195DF6DE0071CAB3 /* autopkgr_alt.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = autopkgr_alt.png; sourceTree = "<group>"; };
+		52A518D9E8BA16BC7F523996 /* Pods-com.lindegroup.AutoPkgr.helper.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-com.lindegroup.AutoPkgr.helper.release.xcconfig"; path = "Pods/Target Support Files/Pods-com.lindegroup.AutoPkgr.helper/Pods-com.lindegroup.AutoPkgr.helper.release.xcconfig"; sourceTree = "<group>"; };
+		5F030AE32F891FB6D46E1F34 /* Pods-AutoPkgrTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AutoPkgrTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-AutoPkgrTests/Pods-AutoPkgrTests.debug.xcconfig"; sourceTree = "<group>"; };
+		5F5D515706D5DA01E7256573 /* Pods-AutoPkgr.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AutoPkgr.debug.xcconfig"; path = "Pods/Target Support Files/Pods-AutoPkgr/Pods-AutoPkgr.debug.xcconfig"; sourceTree = "<group>"; };
 		6A0ACE32196FB349002C7FE4 /* LGRecipes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGRecipes.h; sourceTree = "<group>"; };
 		6A0ACE33196FB349002C7FE4 /* LGRecipes.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGRecipes.m; sourceTree = "<group>"; };
 		6A0BABE7196E560000A136BB /* LGPopularRepositories.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGPopularRepositories.h; sourceTree = "<group>"; };
 		6A0BABE8196E560000A136BB /* LGPopularRepositories.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGPopularRepositories.m; sourceTree = "<group>"; };
 		6A53625B1988BE59008A949C /* LGTestPort.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGTestPort.h; sourceTree = "<group>"; };
 		6A53625C1988BE59008A949C /* LGTestPort.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGTestPort.m; sourceTree = "<group>"; };
+		78FF6F632570F6CB7453F9D7 /* Pods-AutoPkgrTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AutoPkgrTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-AutoPkgrTests/Pods-AutoPkgrTests.release.xcconfig"; sourceTree = "<group>"; };
+		7EF915ABFCFD78F7257B58CD /* libPods-AutoPkgrTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-AutoPkgrTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		8BB217F519709A2C00EF8B93 /* AutoPkgrIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = AutoPkgrIcon.png; sourceTree = "<group>"; };
+		906DD048439B1EC0FBD74F69 /* Pods-AutoPkgr.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AutoPkgr.release.xcconfig"; path = "Pods/Target Support Files/Pods-AutoPkgr/Pods-AutoPkgr.release.xcconfig"; sourceTree = "<group>"; };
 		BE025CF419BAE93400D36345 /* LGAutoPkgTask.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGAutoPkgTask.h; sourceTree = "<group>"; };
 		BE025CF519BAE93400D36345 /* LGAutoPkgTask.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGAutoPkgTask.m; sourceTree = "<group>"; };
 		BE025CFC19BAEF8800D36345 /* LGAutoPkgSchedule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGAutoPkgSchedule.h; sourceTree = "<group>"; };
 		BE025CFD19BAEF8800D36345 /* LGAutoPkgSchedule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGAutoPkgSchedule.m; sourceTree = "<group>"; };
+		BE05CE6719DAF26B0089068B /* com.lindegroup.AutoPkgr.helper */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = com.lindegroup.AutoPkgr.helper; sourceTree = BUILT_PRODUCTS_DIR; };
+		BE05CE6919DAF26B0089068B /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		BE05CE7619DAF5A30089068B /* helper-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "helper-Info.plist"; sourceTree = "<group>"; };
+		BE05CE7719DAF5A30089068B /* helper-Launchd.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "helper-Launchd.plist"; sourceTree = "<group>"; };
+		BE05CE7819DAF5A30089068B /* helper-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "helper-Prefix.pch"; sourceTree = "<group>"; };
+		BE05CE7919DAF5A30089068B /* LGAutoPkgrHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGAutoPkgrHelper.h; sourceTree = "<group>"; };
+		BE05CE7A19DAF5A30089068B /* LGAutoPkgrHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGAutoPkgrHelper.m; sourceTree = "<group>"; };
+		BE05CE7B19DAF5A30089068B /* LGAutoPkgrProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGAutoPkgrProtocol.h; sourceTree = "<group>"; };
+		BE05CE7E19DAF6320089068B /* LGAutoPkgrAuthorizer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGAutoPkgrAuthorizer.h; sourceTree = "<group>"; };
+		BE05CE7F19DAF6320089068B /* LGAutoPkgrAuthorizer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGAutoPkgrAuthorizer.m; sourceTree = "<group>"; };
+		BE05CE8019DAF6320089068B /* LGAutoPkgrHelperConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGAutoPkgrHelperConnection.h; sourceTree = "<group>"; };
+		BE05CE8119DAF6320089068B /* LGAutoPkgrHelperConnection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGAutoPkgrHelperConnection.m; sourceTree = "<group>"; };
+		BE05CE8519DB35380089068B /* libPods-AutoPkgr-AHKeychain.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libPods-AutoPkgr-AHKeychain.a"; path = "../../../../Library/Developer/Xcode/DerivedData/AutoPkgr-gvffmulnnaejibfmmwfptzyobmbb/Build/Products/Debug/libPods-AutoPkgr-AHKeychain.a"; sourceTree = "<group>"; };
+		BE05CE8619DB35380089068B /* libPods-AutoPkgr-AHLaunchCtl.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libPods-AutoPkgr-AHLaunchCtl.a"; path = "../../../../Library/Developer/Xcode/DerivedData/AutoPkgr-gvffmulnnaejibfmmwfptzyobmbb/Build/Products/Debug/libPods-AutoPkgr-AHLaunchCtl.a"; sourceTree = "<group>"; };
+		BE05CE8F19DB37E50089068B /* ServiceManagement.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ServiceManagement.framework; path = System/Library/Frameworks/ServiceManagement.framework; sourceTree = SDKROOT; };
+		BE0BACCE1A2560AE00554989 /* LGJSSDistributionPointsPrefPanel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGJSSDistributionPointsPrefPanel.h; sourceTree = "<group>"; };
+		BE0BACCF1A2560AE00554989 /* LGJSSDistributionPointsPrefPanel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGJSSDistributionPointsPrefPanel.m; sourceTree = "<group>"; };
+		BE0BACD01A2560AE00554989 /* LGJSSDistributionPointsPrefPanel.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LGJSSDistributionPointsPrefPanel.xib; sourceTree = "<group>"; };
 		BE0E857719D668F600B25B5E /* LGHTTPRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGHTTPRequest.h; sourceTree = "<group>"; };
 		BE0E857819D668F600B25B5E /* LGHTTPRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGHTTPRequest.m; sourceTree = "<group>"; };
+		BE13A88919E2568D008A49A1 /* helper-tool-codesign-config.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = "helper-tool-codesign-config.py"; sourceTree = "<group>"; };
+		BE1C810119E8224000EF77F3 /* NSImage+statusLight.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSImage+statusLight.h"; path = "Custom Catagories/NSImage+statusLight.h"; sourceTree = "<group>"; };
+		BE1C810219E8224000EF77F3 /* NSImage+statusLight.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSImage+statusLight.m"; path = "Custom Catagories/NSImage+statusLight.m"; sourceTree = "<group>"; };
 		BE32178919ED9ACA00A92E5A /* LGRecipeOverrides.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGRecipeOverrides.h; sourceTree = "<group>"; };
 		BE32178A19ED9ACA00A92E5A /* LGRecipeOverrides.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGRecipeOverrides.m; sourceTree = "<group>"; };
 		BE32178C19EDA15400A92E5A /* LGTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGTableView.h; sourceTree = "<group>"; };
-		BE32178D19EDA15400A92E5A /* LGTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = LGTableView.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
-		BE34DF2B19AA21E200DC2FAF /* LGAutoPkgr.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = LGAutoPkgr.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
-		BE39FE5119DFBB0100C1B4A1 /* LGDefaults+JSSImporter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; name = "LGDefaults+JSSImporter.h"; path = "Custom Catagories/LGDefaults+JSSImporter.h"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
-		BE39FE5219DFBB0100C1B4A1 /* LGDefaults+JSSImporter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; name = "LGDefaults+JSSImporter.m"; path = "Custom Catagories/LGDefaults+JSSImporter.m"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
-		BE57733619D519E400D872A4 /* LGJSSImporter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = LGJSSImporter.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
-		BE57733719D519E400D872A4 /* LGJSSImporter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = LGJSSImporter.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
-		BE57AC2B19BA3BBC00BB17B1 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; lineEnding = 0; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.simpleColoring; };
-		BE6815E91A0B2BAB004AD310 /* LGJSSDistributionPointsPrefPanel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGJSSDistributionPointsPrefPanel.h; sourceTree = "<group>"; };
-		BE6815EA1A0B2BAB004AD310 /* LGJSSDistributionPointsPrefPanel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGJSSDistributionPointsPrefPanel.m; sourceTree = "<group>"; };
-		BE6815EB1A0B2BAB004AD310 /* LGJSSDistributionPointsPrefPanel.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LGJSSDistributionPointsPrefPanel.xib; sourceTree = "<group>"; };
+		BE32178D19EDA15400A92E5A /* LGTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGTableView.m; sourceTree = "<group>"; };
+		BE34DF2B19AA21E200DC2FAF /* LGAutoPkgr.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LGAutoPkgr.h; sourceTree = "<group>"; };
+		BE3FF3281A8A93EE00F7385B /* LGDisplayStatusDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LGDisplayStatusDelegate.h; sourceTree = "<group>"; };
+		BE57733619D519E400D872A4 /* LGJSSImporter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGJSSImporter.h; sourceTree = "<group>"; };
+		BE57733719D519E400D872A4 /* LGJSSImporter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGJSSImporter.m; sourceTree = "<group>"; };
+		BE57AC2B19BA3BBC00BB17B1 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		BE67E8721A44E10500484151 /* LGRecipeSearch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGRecipeSearch.h; sourceTree = "<group>"; };
+		BE67E8731A44E10500484151 /* LGRecipeSearch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGRecipeSearch.m; sourceTree = "<group>"; };
+		BE67E8741A44E10500484151 /* LGRecipeSearchPanel.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LGRecipeSearchPanel.xib; sourceTree = "<group>"; };
+		BE6815D31A0B18DE004AD310 /* LGUserNotifications.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGUserNotifications.h; sourceTree = "<group>"; };
+		BE6815D41A0B18DE004AD310 /* LGUserNotifications.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGUserNotifications.m; sourceTree = "<group>"; };
 		BE73CDC519E062AC00441443 /* NSString+cleaned.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSString+cleaned.h"; path = "Custom Catagories/NSString+cleaned.h"; sourceTree = "<group>"; };
 		BE73CDC619E062AC00441443 /* NSString+cleaned.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSString+cleaned.m"; path = "Custom Catagories/NSString+cleaned.m"; sourceTree = "<group>"; };
-		BE77A7FE19E37C910022B6FB /* NSImage+statusLight.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSImage+statusLight.h"; path = "Custom Catagories/NSImage+statusLight.h"; sourceTree = "<group>"; };
-		BE77A7FF19E37C910022B6FB /* NSImage+statusLight.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSImage+statusLight.m"; path = "Custom Catagories/NSImage+statusLight.m"; sourceTree = "<group>"; };
 		BE8526B119D5F641007DFA9E /* SecurityInterface.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SecurityInterface.framework; path = System/Library/Frameworks/SecurityInterface.framework; sourceTree = SDKROOT; };
 		BE8799491995BA410082472B /* LGDefaults.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGDefaults.h; sourceTree = "<group>"; };
 		BE87994A1995BA410082472B /* LGDefaults.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGDefaults.m; sourceTree = "<group>"; };
 		BE94AA7B19BB8A78001A00D0 /* LGProgressDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LGProgressDelegate.h; sourceTree = "<group>"; };
 		BEAA76CA19BFD635002D73EE /* LGInstaller.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGInstaller.h; sourceTree = "<group>"; };
-		BEAA76CB19BFD635002D73EE /* LGInstaller.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = LGInstaller.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
+		BEAA76CB19BFD635002D73EE /* LGInstaller.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGInstaller.m; sourceTree = "<group>"; };
+		BEBF7B151A4894AC00E9967F /* LGVersioner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGVersioner.h; sourceTree = "<group>"; };
+		BEBF7B161A4894AC00E9967F /* LGVersioner.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGVersioner.m; sourceTree = "<group>"; };
+		BED02ADA1A194F9C00714CC2 /* NSArray+filtered.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSArray+filtered.h"; path = "Custom Catagories/NSArray+filtered.h"; sourceTree = "<group>"; };
+		BED02ADB1A194F9C00714CC2 /* NSArray+filtered.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSArray+filtered.m"; path = "Custom Catagories/NSArray+filtered.m"; sourceTree = "<group>"; };
+		BED2975F1A3F975000511CD7 /* LGDefaults+JSSImporter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "LGDefaults+JSSImporter.h"; path = "Custom Catagories/LGDefaults+JSSImporter.h"; sourceTree = "<group>"; };
+		BED297601A3F975000511CD7 /* LGDefaults+JSSImporter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "LGDefaults+JSSImporter.m"; path = "Custom Catagories/LGDefaults+JSSImporter.m"; sourceTree = "<group>"; };
+		BED388291A85E2C100DA8970 /* autopkgr_error.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = autopkgr_error.png; sourceTree = "<group>"; };
+		BEE05F051A05CDBE00EF80B3 /* libPods-AutoPkgr-AHCodesignVerifier.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libPods-AutoPkgr-AHCodesignVerifier.a"; path = "../../../../Library/Developer/Xcode/DerivedData/AutoPkgr-gvffmulnnaejibfmmwfptzyobmbb/Build/Products/Debug/libPods-AutoPkgr-AHCodesignVerifier.a"; sourceTree = "<group>"; };
 		BEE8CF1119E0E7F400981C4B /* NSTextField+setSafeStringValue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSTextField+setSafeStringValue.h"; path = "Custom Catagories/NSTextField+setSafeStringValue.h"; sourceTree = "<group>"; };
 		BEE8CF1219E0E7F400981C4B /* NSTextField+setSafeStringValue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSTextField+setSafeStringValue.m"; path = "Custom Catagories/NSTextField+setSafeStringValue.m"; sourceTree = "<group>"; };
-		BEFC931B1995F0710074C938 /* LGError.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = LGError.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
-		BEFC931C1995F0710074C938 /* LGError.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = LGError.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
-		C15B862EAD3AB252A431E670 /* Pods-AutoPkgrTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AutoPkgrTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-AutoPkgrTests/Pods-AutoPkgrTests.release.xcconfig"; sourceTree = "<group>"; };
-		E858FACD08F464CDA3125B4C /* libPods-AutoPkgrTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-AutoPkgrTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		FDA38DE9467F06C7D86C83F6 /* Pods-AutoPkgrTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AutoPkgrTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-AutoPkgrTests/Pods-AutoPkgrTests.debug.xcconfig"; sourceTree = "<group>"; };
+		BEFC931B1995F0710074C938 /* LGError.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGError.h; sourceTree = "<group>"; };
+		BEFC931C1995F0710074C938 /* LGError.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGError.m; sourceTree = "<group>"; };
 		FF435269A548437DA5380201 /* libPods-AutoPkgr.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-AutoPkgr.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -230,7 +250,6 @@
 			files = (
 				BE8526B219D5F641007DFA9E /* SecurityInterface.framework in Frameworks */,
 				1A0A86B1195CE69300A49434 /* Security.framework in Frameworks */,
-				1A0A86AF195CE63900A49434 /* MailCore.framework in Frameworks */,
 				1AC69551195B59ED00D2BD81 /* Cocoa.framework in Frameworks */,
 				4B8E6E4F9D8944C883A98423 /* libPods-AutoPkgr.a in Frameworks */,
 			);
@@ -242,31 +261,28 @@
 			files = (
 				1AC69571195B59EE00D2BD81 /* Cocoa.framework in Frameworks */,
 				1AC69570195B59EE00D2BD81 /* XCTest.framework in Frameworks */,
-				AEA9AB86157392A9DA04CF21 /* libPods-AutoPkgrTests.a in Frameworks */,
+				8B32152D89506869029955FC /* libPods-AutoPkgrTests.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		BE05CE6419DAF26B0089068B /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BE05CE9019DB37E50089068B /* ServiceManagement.framework in Frameworks */,
+				BE05CE8E19DB37DF0089068B /* Security.framework in Frameworks */,
+				CAF173A0D3EC0C495067D9FF /* libPods-com.lindegroup.AutoPkgr.helper.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		1A0A869E195CE5DB00A49434 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				1A0A86A6195CE5DC00A49434 /* libMailCore.a */,
-				1A0A86A8195CE5DC00A49434 /* libMailCore-ios.a */,
-				1A0A86AA195CE5DC00A49434 /* tests */,
-				1A0A86AC195CE5DC00A49434 /* test-ios.app */,
-				1A0A86AE195CE5DC00A49434 /* MailCore.framework */,
-				8B19C7431A253D7800F468A0 /* MailCore.framework */,
-				8B19C7451A253D7800F468A0 /* unittest.xctest */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
 		1A2C7FAC19CC9F8300CFF472 /* scripts */ = {
 			isa = PBXGroup;
 			children = (
 				1A2C7FAD19CC9F8300CFF472 /* codesign.py */,
+				BE13A88919E2568D008A49A1 /* helper-tool-codesign-config.py */,
 			);
 			path = scripts;
 			sourceTree = SOURCE_ROOT;
@@ -275,11 +291,11 @@
 			isa = PBXGroup;
 			children = (
 				1AC69556195B59ED00D2BD81 /* AutoPkgr */,
+				BE05CE6819DAF26B0089068B /* helper */,
 				1AC6954F195B59ED00D2BD81 /* Frameworks */,
 				1AC6954E195B59ED00D2BD81 /* Products */,
 				1AC69574195B59EE00D2BD81 /* AutoPkgrTests */,
-				1A0A869D195CE5DB00A49434 /* mailcore2.xcodeproj */,
-				90C60AB0B9E4D774CB4EA44A /* Pods */,
+				51AB14E0BF99455BB01C0946 /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -288,6 +304,7 @@
 			children = (
 				1AC6954D195B59ED00D2BD81 /* AutoPkgr.app */,
 				1AC6956E195B59EE00D2BD81 /* AutoPkgrTests.xctest */,
+				BE05CE6719DAF26B0089068B /* com.lindegroup.AutoPkgr.helper */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -295,13 +312,17 @@
 		1AC6954F195B59ED00D2BD81 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				FF435269A548437DA5380201 /* libPods-AutoPkgr.a */,
+				BEE05F051A05CDBE00EF80B3 /* libPods-AutoPkgr-AHCodesignVerifier.a */,
+				BE05CE8519DB35380089068B /* libPods-AutoPkgr-AHKeychain.a */,
+				BE05CE8619DB35380089068B /* libPods-AutoPkgr-AHLaunchCtl.a */,
+				BE05CE8F19DB37E50089068B /* ServiceManagement.framework */,
 				BE8526B119D5F641007DFA9E /* SecurityInterface.framework */,
 				1A0A86B0195CE69300A49434 /* Security.framework */,
 				1AC69550195B59ED00D2BD81 /* Cocoa.framework */,
-				1AC6956F195B59EE00D2BD81 /* XCTest.framework */,
 				1AC69552195B59ED00D2BD81 /* Other Frameworks */,
-				FF435269A548437DA5380201 /* libPods-AutoPkgr.a */,
-				E858FACD08F464CDA3125B4C /* libPods-AutoPkgrTests.a */,
+				7EF915ABFCFD78F7257B58CD /* libPods-AutoPkgrTests.a */,
+				00A11C97CD6260BB5679DA1A /* libPods-com.lindegroup.AutoPkgr.helper.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -309,6 +330,7 @@
 		1AC69552195B59ED00D2BD81 /* Other Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				1AC6956F195B59EE00D2BD81 /* XCTest.framework */,
 				1AC69553195B59ED00D2BD81 /* AppKit.framework */,
 				1AC69554195B59ED00D2BD81 /* CoreData.framework */,
 				1AC69555195B59ED00D2BD81 /* Foundation.framework */,
@@ -322,10 +344,12 @@
 				1AC86D36195E0972006FDD2B /* Feature Classes */,
 				BE40CB7719D4441600A1DABD /* UI Classes */,
 				BE40CB7819D4444D00A1DABD /* Utility Classes */,
+				BE05CE8419DAF63D0089068B /* Helper Tool Communication */,
 				BE39FE5419DFBB2900C1B4A1 /* Custom Categories */,
 				1AC69565195B59EE00D2BD81 /* MainMenu.xib */,
 				1AC9841E195CEC360071CAB3 /* LGConfigurationWindowController.xib */,
-				BE6815EB1A0B2BAB004AD310 /* LGJSSDistributionPointsPrefPanel.xib */,
+				BE0BACD01A2560AE00554989 /* LGJSSDistributionPointsPrefPanel.xib */,
+				BE67E8741A44E10500484151 /* LGRecipeSearchPanel.xib */,
 				1AC69568195B59EE00D2BD81 /* Images.xcassets */,
 				1AC98423195DF6270071CAB3 /* Resources */,
 				1AC69557195B59ED00D2BD81 /* Supporting Files */,
@@ -373,6 +397,8 @@
 				BE025CF519BAE93400D36345 /* LGAutoPkgTask.m */,
 				1AC98410195CE8510071CAB3 /* LGEmailer.h */,
 				1AC98411195CE8520071CAB3 /* LGEmailer.m */,
+				BE6815D31A0B18DE004AD310 /* LGUserNotifications.h */,
+				BE6815D41A0B18DE004AD310 /* LGUserNotifications.m */,
 				1A1BAD9C197A4133008192A7 /* LGGitHubJSONLoader.h */,
 				1A1BAD9D197A4133008192A7 /* LGGitHubJSONLoader.m */,
 				BEAA76CA19BFD635002D73EE /* LGInstaller.h */,
@@ -390,32 +416,70 @@
 				8BB217F519709A2C00EF8B93 /* AutoPkgrIcon.png */,
 				1AC98425195DF6350071CAB3 /* autopkgr.png */,
 				1AC98428195DF6DE0071CAB3 /* autopkgr_alt.png */,
+				BED388291A85E2C100DA8970 /* autopkgr_error.png */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
 		};
-		90C60AB0B9E4D774CB4EA44A /* Pods */ = {
+		51AB14E0BF99455BB01C0946 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				04CA360328E704A8E80B244B /* Pods-AutoPkgr.debug.xcconfig */,
-				16E87146BB0135D03CB6ECA8 /* Pods-AutoPkgr.release.xcconfig */,
-				FDA38DE9467F06C7D86C83F6 /* Pods-AutoPkgrTests.debug.xcconfig */,
-				C15B862EAD3AB252A431E670 /* Pods-AutoPkgrTests.release.xcconfig */,
+				5F5D515706D5DA01E7256573 /* Pods-AutoPkgr.debug.xcconfig */,
+				906DD048439B1EC0FBD74F69 /* Pods-AutoPkgr.release.xcconfig */,
+				5F030AE32F891FB6D46E1F34 /* Pods-AutoPkgrTests.debug.xcconfig */,
+				78FF6F632570F6CB7453F9D7 /* Pods-AutoPkgrTests.release.xcconfig */,
+				1A7ADB1D1E710AEEEB0754C1 /* Pods-com.lindegroup.AutoPkgr.helper.debug.xcconfig */,
+				52A518D9E8BA16BC7F523996 /* Pods-com.lindegroup.AutoPkgr.helper.release.xcconfig */,
 			);
 			name = Pods;
+			sourceTree = "<group>";
+		};
+		BE05CE6819DAF26B0089068B /* helper */ = {
+			isa = PBXGroup;
+			children = (
+				BE05CE6919DAF26B0089068B /* main.m */,
+				BE05CE7919DAF5A30089068B /* LGAutoPkgrHelper.h */,
+				BE05CE7A19DAF5A30089068B /* LGAutoPkgrHelper.m */,
+				BE05CE7B19DAF5A30089068B /* LGAutoPkgrProtocol.h */,
+				BE05CE7D19DAF5B80089068B /* Supporting Files */,
+			);
+			path = helper;
+			sourceTree = "<group>";
+		};
+		BE05CE7D19DAF5B80089068B /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				BE05CE7619DAF5A30089068B /* helper-Info.plist */,
+				BE05CE7719DAF5A30089068B /* helper-Launchd.plist */,
+				BE05CE7819DAF5A30089068B /* helper-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		BE05CE8419DAF63D0089068B /* Helper Tool Communication */ = {
+			isa = PBXGroup;
+			children = (
+				BE05CE7E19DAF6320089068B /* LGAutoPkgrAuthorizer.h */,
+				BE05CE7F19DAF6320089068B /* LGAutoPkgrAuthorizer.m */,
+				BE05CE8019DAF6320089068B /* LGAutoPkgrHelperConnection.h */,
+				BE05CE8119DAF6320089068B /* LGAutoPkgrHelperConnection.m */,
+			);
+			name = "Helper Tool Communication";
 			sourceTree = "<group>";
 		};
 		BE39FE5419DFBB2900C1B4A1 /* Custom Categories */ = {
 			isa = PBXGroup;
 			children = (
-				BE77A7FE19E37C910022B6FB /* NSImage+statusLight.h */,
-				BE77A7FF19E37C910022B6FB /* NSImage+statusLight.m */,
+				BE1C810119E8224000EF77F3 /* NSImage+statusLight.h */,
+				BE1C810219E8224000EF77F3 /* NSImage+statusLight.m */,
 				BE73CDC519E062AC00441443 /* NSString+cleaned.h */,
 				BE73CDC619E062AC00441443 /* NSString+cleaned.m */,
 				BEE8CF1119E0E7F400981C4B /* NSTextField+setSafeStringValue.h */,
 				BEE8CF1219E0E7F400981C4B /* NSTextField+setSafeStringValue.m */,
-				BE39FE5119DFBB0100C1B4A1 /* LGDefaults+JSSImporter.h */,
-				BE39FE5219DFBB0100C1B4A1 /* LGDefaults+JSSImporter.m */,
+				BED2975F1A3F975000511CD7 /* LGDefaults+JSSImporter.h */,
+				BED297601A3F975000511CD7 /* LGDefaults+JSSImporter.m */,
+				BED02ADA1A194F9C00714CC2 /* NSArray+filtered.h */,
+				BED02ADB1A194F9C00714CC2 /* NSArray+filtered.m */,
 			);
 			name = "Custom Categories";
 			sourceTree = "<group>";
@@ -424,6 +488,7 @@
 			isa = PBXGroup;
 			children = (
 				BE94AA7B19BB8A78001A00D0 /* LGProgressDelegate.h */,
+				BE3FF3281A8A93EE00F7385B /* LGDisplayStatusDelegate.h */,
 				1AC69562195B59EE00D2BD81 /* LGAppDelegate.h */,
 				1AC69563195B59EE00D2BD81 /* LGAppDelegate.m */,
 				1AC9841C195CEC350071CAB3 /* LGConfigurationWindowController.h */,
@@ -436,10 +501,12 @@
 				BE32178A19ED9ACA00A92E5A /* LGRecipeOverrides.m */,
 				BE32178C19EDA15400A92E5A /* LGTableView.h */,
 				BE32178D19EDA15400A92E5A /* LGTableView.m */,
+				BE67E8721A44E10500484151 /* LGRecipeSearch.h */,
+				BE67E8731A44E10500484151 /* LGRecipeSearch.m */,
 				BE57733619D519E400D872A4 /* LGJSSImporter.h */,
 				BE57733719D519E400D872A4 /* LGJSSImporter.m */,
-				BE6815E91A0B2BAB004AD310 /* LGJSSDistributionPointsPrefPanel.h */,
-				BE6815EA1A0B2BAB004AD310 /* LGJSSDistributionPointsPrefPanel.m */,
+				BE0BACCE1A2560AE00554989 /* LGJSSDistributionPointsPrefPanel.h */,
+				BE0BACCF1A2560AE00554989 /* LGJSSDistributionPointsPrefPanel.m */,
 			);
 			name = "UI Classes";
 			sourceTree = "<group>";
@@ -460,6 +527,8 @@
 				BE0E857819D668F600B25B5E /* LGHTTPRequest.m */,
 				1A1BAD94197A0407008192A7 /* LGVersionComparator.h */,
 				1A1BAD95197A0407008192A7 /* LGVersionComparator.m */,
+				BEBF7B151A4894AC00E9967F /* LGVersioner.h */,
+				BEBF7B161A4894AC00E9967F /* LGVersioner.m */,
 			);
 			name = "Utility Classes";
 			sourceTree = "<group>";
@@ -471,19 +540,20 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 1AC6957E195B59EE00D2BD81 /* Build configuration list for PBXNativeTarget "AutoPkgr" */;
 			buildPhases = (
+				BE13A88A19E256A0008A49A1 /* Run script: Helper tool codsign config */,
 				570AE652B42D4D4D86875A8A /* Check Pods Manifest.lock */,
-				BECFF2B619CA9854004C2721 /* ShellScript */,
+				BECFF2B619CA9854004C2721 /* Run Script: Set build number to commit count */,
 				1AC69549195B59ED00D2BD81 /* Sources */,
 				1AC6954A195B59ED00D2BD81 /* Frameworks */,
 				1AC6954B195B59ED00D2BD81 /* Resources */,
-				1A0A86B4195CE6BF00A49434 /* CopyFiles */,
+				BE05CE7419DAF4C30089068B /* Copy Files: Helper Tool */,
 				C97E222596F14727B875BF98 /* Copy Pods Resources */,
-				1A56282C19CC01D600980AB9 /* ShellScript */,
+				1A56282C19CC01D600980AB9 /* Run Script: Deeper sign */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				1A0A86B3195CE6B500A49434 /* PBXTargetDependency */,
+				BE05CE8A19DB35460089068B /* PBXTargetDependency */,
 			);
 			name = AutoPkgr;
 			productName = AutoPkgr;
@@ -494,11 +564,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 1AC69581195B59EE00D2BD81 /* Build configuration list for PBXNativeTarget "AutoPkgrTests" */;
 			buildPhases = (
-				2587FB0C2CE3A444B7986CE0 /* Check Pods Manifest.lock */,
+				302B000EF4285817248A7673 /* Check Pods Manifest.lock */,
 				1AC6956A195B59EE00D2BD81 /* Sources */,
 				1AC6956B195B59EE00D2BD81 /* Frameworks */,
 				1AC6956C195B59EE00D2BD81 /* Resources */,
-				8D68BE3326B0949FFFCB9D2C /* Copy Pods Resources */,
+				26170D597736193FA7397F5E /* Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -510,6 +580,25 @@
 			productReference = 1AC6956E195B59EE00D2BD81 /* AutoPkgrTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
+		BE05CE6619DAF26B0089068B /* com.lindegroup.AutoPkgr.helper */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = BE05CE7119DAF26B0089068B /* Build configuration list for PBXNativeTarget "com.lindegroup.AutoPkgr.helper" */;
+			buildPhases = (
+				BE05CE6319DAF26B0089068B /* Sources */,
+				BE05CE6419DAF26B0089068B /* Frameworks */,
+				BE05CE8B19DB35530089068B /* Check Pods Manifest.lock */,
+				BE05CE8C19DB35A50089068B /* Copy POD Resources */,
+				615CDD8CD06A6F3B3D9F6A5E /* Copy Pods Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = com.lindegroup.AutoPkgr.helper;
+			productName = helper;
+			productReference = BE05CE6719DAF26B0089068B /* com.lindegroup.AutoPkgr.helper */;
+			productType = "com.apple.product-type.tool";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -520,8 +609,8 @@
 				LastUpgradeCheck = 0600;
 				ORGANIZATIONNAME = "The Linde Group, Inc.";
 				TargetAttributes = {
-					1AC6956D195B59EE00D2BD81 = {
-						TestTargetID = 1AC6954C195B59ED00D2BD81;
+					BE05CE6619DAF26B0089068B = {
+						CreatedOnToolsVersion = 6.0.1;
 					};
 				};
 			};
@@ -536,71 +625,14 @@
 			mainGroup = 1AC69544195B59ED00D2BD81;
 			productRefGroup = 1AC6954E195B59ED00D2BD81 /* Products */;
 			projectDirPath = "";
-			projectReferences = (
-				{
-					ProductGroup = 1A0A869E195CE5DB00A49434 /* Products */;
-					ProjectRef = 1A0A869D195CE5DB00A49434 /* mailcore2.xcodeproj */;
-				},
-			);
 			projectRoot = "";
 			targets = (
 				1AC6954C195B59ED00D2BD81 /* AutoPkgr */,
+				BE05CE6619DAF26B0089068B /* com.lindegroup.AutoPkgr.helper */,
 				1AC6956D195B59EE00D2BD81 /* AutoPkgrTests */,
 			);
 		};
 /* End PBXProject section */
-
-/* Begin PBXReferenceProxy section */
-		1A0A86A6195CE5DC00A49434 /* libMailCore.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libMailCore.a;
-			remoteRef = 1A0A86A5195CE5DC00A49434 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		1A0A86A8195CE5DC00A49434 /* libMailCore-ios.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = "libMailCore-ios.a";
-			remoteRef = 1A0A86A7195CE5DC00A49434 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		1A0A86AA195CE5DC00A49434 /* tests */ = {
-			isa = PBXReferenceProxy;
-			fileType = "compiled.mach-o.executable";
-			path = tests;
-			remoteRef = 1A0A86A9195CE5DC00A49434 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		1A0A86AC195CE5DC00A49434 /* test-ios.app */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.application;
-			path = "test-ios.app";
-			remoteRef = 1A0A86AB195CE5DC00A49434 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		1A0A86AE195CE5DC00A49434 /* MailCore.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = MailCore.framework;
-			remoteRef = 1A0A86AD195CE5DC00A49434 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		8B19C7431A253D7800F468A0 /* MailCore.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = MailCore.framework;
-			remoteRef = 8B19C7421A253D7800F468A0 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		8B19C7451A253D7800F468A0 /* unittest.xctest */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = unittest.xctest;
-			remoteRef = 8B19C7441A253D7800F468A0 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		1AC6954B195B59ED00D2BD81 /* Resources */ = {
@@ -611,9 +643,11 @@
 				8BB217F619709A2C00EF8B93 /* AutoPkgrIcon.png in Resources */,
 				1AC6955B195B59ED00D2BD81 /* InfoPlist.strings in Resources */,
 				1AC69569195B59EE00D2BD81 /* Images.xcassets in Resources */,
+				BED3882A1A85E2C100DA8970 /* autopkgr_error.png in Resources */,
 				1A2C7FAE19CC9F8300CFF472 /* codesign.py in Resources */,
 				1AC98420195CEC360071CAB3 /* LGConfigurationWindowController.xib in Resources */,
-				BE6815ED1A0B2BAB004AD310 /* LGJSSDistributionPointsPrefPanel.xib in Resources */,
+				BE0BACD21A2560AE00554989 /* LGJSSDistributionPointsPrefPanel.xib in Resources */,
+				BE67E8761A44E10500484151 /* LGRecipeSearchPanel.xib in Resources */,
 				BE57AC2A19BA3BBC00BB17B1 /* Localizable.strings in Resources */,
 				1AC98427195DF6350071CAB3 /* autopkgr.png in Resources */,
 				1AC69561195B59EE00D2BD81 /* Credits.rtf in Resources */,
@@ -632,20 +666,36 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		1A56282C19CC01D600980AB9 /* ShellScript */ = {
+		1A56282C19CC01D600980AB9 /* Run Script: Deeper sign */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
+			name = "Run Script: Deeper sign";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${PROJECT_DIR}/scripts/codesign.py\"";
 		};
-		2587FB0C2CE3A444B7986CE0 /* Check Pods Manifest.lock */ = {
+		26170D597736193FA7397F5E /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-AutoPkgrTests/Pods-AutoPkgrTests-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		302B000EF4285817248A7673 /* Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -675,7 +725,7 @@
 			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
-		8D68BE3326B0949FFFCB9D2C /* Copy Pods Resources */ = {
+		615CDD8CD06A6F3B3D9F6A5E /* Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -687,16 +737,59 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-AutoPkgrTests/Pods-AutoPkgrTests-resources.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-com.lindegroup.AutoPkgr.helper/Pods-com.lindegroup.AutoPkgr.helper-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		BECFF2B619CA9854004C2721 /* ShellScript */ = {
+		BE05CE8B19DB35530089068B /* Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\ncat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\nexit 1\nfi\n";
+		};
+		BE05CE8C19DB35A50089068B /* Copy POD Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy POD Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-AutoPkgr/Pods-AutoPkgr-resources.sh\"\n";
+		};
+		BE13A88A19E256A0008A49A1 /* Run script: Helper tool codsign config */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Run script: Helper tool codsign config";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PROJECT_DIR}/scripts/helper-tool-codesign-config.py\"";
+		};
+		BECFF2B619CA9854004C2721 /* Run Script: Set build number to commit count */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Run Script: Set build number to commit count";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -725,31 +818,37 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1AC6955D195B59EE00D2BD81 /* main.m in Sources */,
+				BE0BACD11A2560AE00554989 /* LGJSSDistributionPointsPrefPanel.m in Sources */,
+				BEC1258919F046FA006696C4 /* main.m in Sources */,
+				BED02ADC1A194F9C00714CC2 /* NSArray+filtered.m in Sources */,
 				1AC69564195B59EE00D2BD81 /* LGAppDelegate.m in Sources */,
-				1AC9841F195CEC360071CAB3 /* LGConfigurationWindowController.m in Sources */,
+				BEC1258619F0465C006696C4 /* LGConfigurationWindowController.m in Sources */,
 				1AC9840A195CE7D60071CAB3 /* LGConstants.m in Sources */,
 				BE87994B1995BA410082472B /* LGDefaults.m in Sources */,
 				1AC86D3D195E0AC6006FDD2B /* LGHostInfo.m in Sources */,
-				BE6815EC1A0B2BAB004AD310 /* LGJSSDistributionPointsPrefPanel.m in Sources */,
-				BE025CF619BAE93400D36345 /* LGAutoPkgTask.m in Sources */,
+				BEC1258719F0465F006696C4 /* LGAutoPkgTask.m in Sources */,
 				BE025CFE19BAEF8800D36345 /* LGAutoPkgSchedule.m in Sources */,
 				1AC98412195CE8520071CAB3 /* LGEmailer.m in Sources */,
-				BEAA76CC19BFD635002D73EE /* LGInstaller.m in Sources */,
-				6A0ACE34196FB349002C7FE4 /* LGRecipes.m in Sources */,
+				BE6815D51A0B18DE004AD310 /* LGUserNotifications.m in Sources */,
+				BEC1258A19F04703006696C4 /* LGInstaller.m in Sources */,
+				BEC1258519F045EB006696C4 /* LGRecipes.m in Sources */,
 				BE32178B19ED9ACA00A92E5A /* LGRecipeOverrides.m in Sources */,
-				6A0BABE9196E560000A136BB /* LGPopularRepositories.m in Sources */,
-				BE57733819D519E400D872A4 /* LGJSSImporter.m in Sources */,
+				BEC1258B19F04703006696C4 /* LGPopularRepositories.m in Sources */,
+				BEBF7B171A4894AC00E9967F /* LGVersioner.m in Sources */,
+				BEC1258819F046C5006696C4 /* LGJSSImporter.m in Sources */,
 				BE0E857919D668F600B25B5E /* LGHTTPRequest.m in Sources */,
 				1A1BAD9E197A4133008192A7 /* LGGitHubJSONLoader.m in Sources */,
-				BE32178E19EDA15400A92E5A /* LGTableView.m in Sources */,
+				BEC1258C19F049A1006696C4 /* LGTableView.m in Sources */,
 				6A53625D1988BE59008A949C /* LGTestPort.m in Sources */,
 				BEFC931D1995F0710074C938 /* LGError.m in Sources */,
 				1A1BAD96197A0407008192A7 /* LGVersionComparator.m in Sources */,
+				BE05CE8219DAF6320089068B /* LGAutoPkgrAuthorizer.m in Sources */,
+				BE05CE8319DAF6320089068B /* LGAutoPkgrHelperConnection.m in Sources */,
 				BE73CDC719E062AC00441443 /* NSString+cleaned.m in Sources */,
-				BE39FE5319DFBB0100C1B4A1 /* LGDefaults+JSSImporter.m in Sources */,
+				BE67E8751A44E10500484151 /* LGRecipeSearch.m in Sources */,
+				BED297611A3F975000511CD7 /* LGDefaults+JSSImporter.m in Sources */,
 				BEE8CF1319E0E7F400981C4B /* NSTextField+setSafeStringValue.m in Sources */,
-				BE77A80019E37C910022B6FB /* NSImage+statusLight.m in Sources */,
+				BE1C810319E8224000EF77F3 /* NSImage+statusLight.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -757,24 +856,59 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BEFC3C761A3DF16700C789E9 /* LGUserNotifications.m in Sources */,
+				BEFC3C771A3DF16700C789E9 /* LGGitHubJSONLoader.m in Sources */,
+				BEFC3C781A3DF16700C789E9 /* LGInstaller.m in Sources */,
+				BEFC3C791A3DF16700C789E9 /* LGTestPort.m in Sources */,
+				BEFC3C7C1A3DF16700C789E9 /* LGPopularRepositories.m in Sources */,
+				BEFC3C7D1A3DF16700C789E9 /* LGRecipes.m in Sources */,
+				BE67E8771A44F02B00484151 /* LGRecipeSearch.m in Sources */,
+				BEFC3C7E1A3DF16700C789E9 /* LGRecipeOverrides.m in Sources */,
+				BEFC3C7F1A3DF16700C789E9 /* LGTableView.m in Sources */,
+				BEFC3C821A3DF16700C789E9 /* LGConstants.m in Sources */,
+				BEFC3C831A3DF16700C789E9 /* LGDefaults.m in Sources */,
+				BEFC3C841A3DF16700C789E9 /* LGError.m in Sources */,
+				BEFC3C851A3DF16700C789E9 /* LGHostInfo.m in Sources */,
+				BEFC3C861A3DF16700C789E9 /* LGHTTPRequest.m in Sources */,
+				BEFC3C871A3DF16700C789E9 /* LGVersionComparator.m in Sources */,
+				BEFC3C881A3DF16700C789E9 /* LGAutoPkgrAuthorizer.m in Sources */,
+				BEFC3C891A3DF16700C789E9 /* LGAutoPkgrHelperConnection.m in Sources */,
+				BEFC3C8A1A3DF16700C789E9 /* NSImage+statusLight.m in Sources */,
+				BEFC3C8B1A3DF16700C789E9 /* NSString+cleaned.m in Sources */,
+				BEFC3C8C1A3DF16700C789E9 /* NSTextField+setSafeStringValue.m in Sources */,
+				BEFC3C8E1A3DF16700C789E9 /* NSArray+filtered.m in Sources */,
+				BEBF7B1F1A48955C00E9967F /* LGVersioner.m in Sources */,
 				BE025CFF19BAEF8800D36345 /* LGAutoPkgSchedule.m in Sources */,
 				1AC6957B195B59EE00D2BD81 /* AutoPkgrTests.m in Sources */,
 				BE025CF719BAE93400D36345 /* LGAutoPkgTask.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		BE05CE6319DAF26B0089068B /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BE05CE9119DB380F0089068B /* LGConstants.m in Sources */,
+				BE1C810419E8224000EF77F3 /* NSImage+statusLight.m in Sources */,
+				BE05CE6A19DAF26B0089068B /* main.m in Sources */,
+				BE05CE7C19DAF5A30089068B /* LGAutoPkgrHelper.m in Sources */,
+				BE05CE8D19DB379C0089068B /* LGAutoPkgrAuthorizer.m in Sources */,
+				BE05CE9219DB38180089068B /* LGError.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		1A0A86B3195CE6B500A49434 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = "mailcore osx";
-			targetProxy = 1A0A86B2195CE6B500A49434 /* PBXContainerItemProxy */;
-		};
 		1AC69573195B59EE00D2BD81 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 1AC6954C195B59ED00D2BD81 /* AutoPkgr */;
 			targetProxy = 1AC69572195B59EE00D2BD81 /* PBXContainerItemProxy */;
+		};
+		BE05CE8A19DB35460089068B /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = BE05CE6619DAF26B0089068B /* com.lindegroup.AutoPkgr.helper */;
+			targetProxy = BE05CE8919DB35460089068B /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -825,6 +959,7 @@
 /* Begin XCBuildConfiguration section */
 		1AC6957C195B59EE00D2BD81 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 5F5D515706D5DA01E7256573 /* Pods-AutoPkgr.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
@@ -855,7 +990,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				MACOSX_DEPLOYMENT_TARGET = 10.8;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = macosx;
 			};
@@ -863,6 +998,7 @@
 		};
 		1AC6957D195B59EE00D2BD81 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 906DD048439B1EC0FBD74F69 /* Pods-AutoPkgr.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
@@ -888,14 +1024,14 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				MACOSX_DEPLOYMENT_TARGET = 10.8;
 				SDKROOT = macosx;
 			};
 			name = Release;
 		};
 		1AC6957F195B59EE00D2BD81 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 04CA360328E704A8E80B244B /* Pods-AutoPkgr.debug.xcconfig */;
+			baseConfigurationReference = 5F5D515706D5DA01E7256573 /* Pods-AutoPkgr.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "Developer ID Application: The Linde Group Computer Support Inc (JVY2ZR6SEF)";
@@ -912,7 +1048,7 @@
 		};
 		1AC69580195B59EE00D2BD81 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 16E87146BB0135D03CB6ECA8 /* Pods-AutoPkgr.release.xcconfig */;
+			baseConfigurationReference = 906DD048439B1EC0FBD74F69 /* Pods-AutoPkgr.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "Developer ID Application: The Linde Group Computer Support Inc (JVY2ZR6SEF)";
@@ -929,9 +1065,8 @@
 		};
 		1AC69582195B59EE00D2BD81 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = FDA38DE9467F06C7D86C83F6 /* Pods-AutoPkgrTests.debug.xcconfig */;
+			baseConfigurationReference = 5F030AE32F891FB6D46E1F34 /* Pods-AutoPkgrTests.debug.xcconfig */;
 			buildSettings = {
-				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/AutoPkgr.app/Contents/MacOS/AutoPkgr";
 				COMBINE_HIDPI_IMAGES = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(DEVELOPER_FRAMEWORKS_DIR)",
@@ -945,16 +1080,14 @@
 				);
 				INFOPLIST_FILE = "AutoPkgrTests/AutoPkgrTests-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUNDLE_LOADER)";
 				WRAPPER_EXTENSION = xctest;
 			};
 			name = Debug;
 		};
 		1AC69583195B59EE00D2BD81 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = C15B862EAD3AB252A431E670 /* Pods-AutoPkgrTests.release.xcconfig */;
+			baseConfigurationReference = 78FF6F632570F6CB7453F9D7 /* Pods-AutoPkgrTests.release.xcconfig */;
 			buildSettings = {
-				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/AutoPkgr.app/Contents/MacOS/AutoPkgr";
 				COMBINE_HIDPI_IMAGES = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(DEVELOPER_FRAMEWORKS_DIR)",
@@ -964,8 +1097,105 @@
 				GCC_PREFIX_HEADER = "AutoPkgr/AutoPkgr-Prefix.pch";
 				INFOPLIST_FILE = "AutoPkgrTests/AutoPkgrTests-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUNDLE_LOADER)";
 				WRAPPER_EXTENSION = xctest;
+			};
+			name = Release;
+		};
+		BE05CE6B19DAF26B0089068B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 1A7ADB1D1E710AEEEB0754C1 /* Pods-com.lindegroup.AutoPkgr.helper.debug.xcconfig */;
+			buildSettings = {
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CODE_SIGN_IDENTITY = "Developer ID Application: The Linde Group Computer Support Inc (JVY2ZR6SEF)";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				FRAMEWORK_SEARCH_PATHS = "";
+				GCC_PREFIX_HEADER = "helper/helper-Prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"COCOAPODS=1",
+				);
+				HEADER_SEARCH_PATHS = "$(inherited)";
+				INSTALL_PATH = "";
+				LIBRARY_SEARCH_PATHS = "$(USER_LIBRARY_DIR)/Developer/Xcode/DerivedData/AutoPkgr-gvffmulnnaejibfmmwfptzyobmbb/Build/Products/Debug";
+				MTL_ENABLE_DEBUG_INFO = YES;
+				OTHER_CFLAGS = (
+					"$(inherited)",
+					"-isystem",
+					"\"${PODS_ROOT}/Headers\"",
+					"-isystem",
+					"\"${PODS_ROOT}/Headers/AFNetworking\"",
+					"-isystem",
+					"\"${PODS_ROOT}/Headers/AHKeychain\"",
+					"-isystem",
+					"\"${PODS_ROOT}/Headers/AHLaunchCtl\"",
+					"-isystem",
+					"\"${PODS_ROOT}/Headers/Sparkle\"",
+					"-isystem",
+					"\"${PODS_ROOT}/Headers/XMLDictionary\"",
+				);
+				OTHER_LDFLAGS = (
+					"-sectcreate",
+					__TEXT,
+					__info_plist,
+					"helper/helper-Info.plist",
+					"-sectcreate",
+					__TEXT,
+					__launchd_plist,
+					"helper/helper-Launchd.plist",
+					"-ObjC",
+					"$(inherited)",
+				);
+				OTHER_LIBTOOLFLAGS = "$(inherited)";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		BE05CE6C19DAF26B0089068B /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 52A518D9E8BA16BC7F523996 /* Pods-com.lindegroup.AutoPkgr.helper.release.xcconfig */;
+			buildSettings = {
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CODE_SIGN_IDENTITY = "Developer ID Application: The Linde Group Computer Support Inc (JVY2ZR6SEF)";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				FRAMEWORK_SEARCH_PATHS = "";
+				GCC_PREFIX_HEADER = "helper/helper-Prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"COCOAPODS=1",
+				);
+				HEADER_SEARCH_PATHS = "$(inherited)";
+				INSTALL_PATH = "";
+				LIBRARY_SEARCH_PATHS = "$(USER_LIBRARY_DIR)/Developer/Xcode/DerivedData/AutoPkgr-gvffmulnnaejibfmmwfptzyobmbb/Build/Products/Debug";
+				MTL_ENABLE_DEBUG_INFO = NO;
+				OTHER_CFLAGS = (
+					"$(inherited)",
+					"-isystem",
+					"\"${PODS_ROOT}/Headers\"",
+					"-isystem",
+					"\"${PODS_ROOT}/Headers/AFNetworking\"",
+					"-isystem",
+					"\"${PODS_ROOT}/Headers/AHKeychain\"",
+					"-isystem",
+					"\"${PODS_ROOT}/Headers/AHLaunchCtl\"",
+					"-isystem",
+					"\"${PODS_ROOT}/Headers/Sparkle\"",
+					"-isystem",
+					"\"${PODS_ROOT}/Headers/XMLDictionary\"",
+				);
+				OTHER_LDFLAGS = (
+					"-sectcreate",
+					__TEXT,
+					__info_plist,
+					"helper/helper-Info.plist",
+					"-sectcreate",
+					__TEXT,
+					__launchd_plist,
+					"helper/helper-Launchd.plist",
+					"-ObjC",
+					"$(inherited)",
+				);
+				OTHER_LIBTOOLFLAGS = "$(inherited)";
+				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
 		};
@@ -995,6 +1225,15 @@
 			buildConfigurations = (
 				1AC69582195B59EE00D2BD81 /* Debug */,
 				1AC69583195B59EE00D2BD81 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		BE05CE7119DAF26B0089068B /* Build configuration list for PBXNativeTarget "com.lindegroup.AutoPkgr.helper" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BE05CE6B19DAF26B0089068B /* Debug */,
+				BE05CE6C19DAF26B0089068B /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

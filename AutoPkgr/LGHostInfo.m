@@ -4,7 +4,7 @@
 //
 //  Created by James Barclay on 6/27/14.
 //
-//  Copyright 2014 The Linde Group, Inc.
+//  Copyright 2014-2015 The Linde Group, Inc.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -24,6 +24,7 @@
 #import "LGAutoPkgr.h"
 #import "LGGitHubJSONLoader.h"
 #import "LGVersionComparator.h"
+#import "AHKeychain.h"
 
 NSString *const kLGOfficialGit = @"/usr/local/git/bin";
 NSString *const kLGCLIToolsGit = @"/Library/Developer/CommandLineTools/usr/bin";
@@ -46,7 +47,6 @@ NSString *const kLGBoxenBrewGit = @"/opt/boxen/homebrew/bin";
 + (NSString *)getUserAtHostName
 {
     NSString *userAtHostName = [NSString stringWithFormat:@"%@@%@", [self getUserName], [self getHostName]];
-
     return userAtHostName;
 }
 
@@ -137,6 +137,39 @@ NSString *const kLGBoxenBrewGit = @"/opt/boxen/homebrew/bin";
     return version;
 }
 
++ (NSString *)getAppSupportDirectory
+{
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory, NSUserDomainMask, YES);
+    NSString *applicationSupportDirectory = [paths firstObject];
+    NSString *autoPkgrSupportDirectory = [applicationSupportDirectory stringByAppendingString:@"/AutoPkgr"];
+    NSFileManager *fm = [NSFileManager defaultManager];
+    BOOL isDir;
+    NSError *error;
+
+    if ([fm fileExistsAtPath:autoPkgrSupportDirectory isDirectory:&isDir]) {
+        if (!isDir) {
+            [fm removeItemAtPath:autoPkgrSupportDirectory error:&error];
+            if (error) {
+                NSLog(@"%@ is a file, and it cannot be deleted.", autoPkgrSupportDirectory);
+                return @"";
+            }
+            [fm createDirectoryAtPath:autoPkgrSupportDirectory withIntermediateDirectories:NO attributes:nil error:&error];
+            if (error) {
+                NSLog(@"Error when creating directory %@", autoPkgrSupportDirectory);
+                return @"";
+            }
+        }
+    } else {
+        [fm createDirectoryAtPath:autoPkgrSupportDirectory withIntermediateDirectories:NO attributes:nil error:&error];
+        if (error) {
+            NSLog(@"Error when creating directory %@", autoPkgrSupportDirectory);
+            return @"";
+        }
+    }
+
+    return autoPkgrSupportDirectory;
+}
+
 + (BOOL)autoPkgInstalled
 {
     NSString *autoPkgPath = @"/usr/local/bin/autopkg";
@@ -206,6 +239,50 @@ NSString *const kLGBoxenBrewGit = @"/opt/boxen/homebrew/bin";
               kLGXcodeGit,
               kLGCLIToolsGit,
     ];
+}
+
++ (AHKeychain *)appKeychain
+{
+    NSString *appKeychain = @"AutoPkgr.keychain";
+
+    BOOL success = YES;
+    AHKeychain *keychain;
+
+    NSString *fullPath = [NSString stringWithFormat:@"%@/Library/Keychains/%@", NSHomeDirectory(), appKeychain];
+    NSString *password = [[self class] macSerialNumber];
+
+    if (![[NSFileManager defaultManager] fileExistsAtPath:fullPath]) {
+        keychain = [[AHKeychain alloc] initCreatingNewKeychain:appKeychain password:password];
+        if (!keychain) {
+            success = NO;
+        }
+    } else {
+        keychain = [[AHKeychain alloc] initWithKeychain:appKeychain];
+        success = [keychain unlockWithPassword:password];
+    }
+
+    return success ? keychain : nil;
+}
+
++ (NSString *)macSerialNumber
+{
+    io_service_t platformExpert = IOServiceGetMatchingService(kIOMasterPortDefault,
+                                                              IOServiceMatching("IOPlatformExpertDevice"));
+    CFStringRef cfSerialNumber = NULL;
+    NSString *serialNumber = nil;
+
+    if (platformExpert) {
+        cfSerialNumber = IORegistryEntryCreateCFProperty(platformExpert,
+                                                         CFSTR(kIOPlatformSerialNumberKey),
+                                                         kCFAllocatorDefault, 0);
+        IOObjectRelease(platformExpert);
+    }
+
+    if (cfSerialNumber) {
+        serialNumber = [NSString stringWithString:CFBridgingRelease(cfSerialNumber)];
+    }
+
+    return serialNumber;
 }
 
 @end

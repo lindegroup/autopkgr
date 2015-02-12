@@ -4,7 +4,7 @@
 //
 //  Created by Eldon on 9/6/14.
 //
-//  Copyright 2014 The Linde Group, Inc.
+//  Copyright 2014-2015 The Linde Group, Inc.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -21,80 +21,96 @@
 
 #import "LGAutoPkgSchedule.h"
 #import "LGAutoPkgr.h"
-#import "LGAutoPkgTask.h"
-#import "LGRecipes.h"
-#import "LGEmailer.h"
+#import "LGAutoPkgrHelperConnection.h"
+#import <AHLaunchCtl/AHLaunchCtl.h>
 
-@implementation LGAutoPkgSchedule {
-    NSTimer *_timer;
+NSString *const kLGLaunchedAtLogin = @"LaunchedAtLogin";
+
+@implementation LGAutoPkgSchedule
+
++ (void)startAutoPkgSchedule:(BOOL)start interval:(NSInteger)interval isForced:(BOOL)forced reply:(void (^)(NSError *error))reply;
+{
+    BOOL scheduleIsRunning = jobIsRunning(kLGAutoPkgrLaunchDaemonPlist, kAHGlobalLaunchDaemon);
+    if (start && interval == 0) {
+        reply([LGError errorWithCode:kLGErrorIncorrectScheduleTimerInterval]);
+        return;
+    }
+
+    // Create the external form authorization data for the helper
+    NSData *authorization = [LGAutoPkgrAuthorizer authorizeHelper];
+    assert(authorization != nil);
+
+    LGAutoPkgrHelperConnection *helper = [LGAutoPkgrHelperConnection new];
+    [helper connectToHelper];
+
+    if (start && (!scheduleIsRunning || forced)) {
+        // Convert seconds to hours for our time interval
+        NSTimeInterval runInterval = interval * 60 * 60;
+        NSString *program = [[NSProcessInfo processInfo] arguments].firstObject;
+
+        [[helper.connection remoteObjectProxyWithErrorHandler:^(NSError *error) {
+            reply(error);
+        }] scheduleRun:runInterval
+                     user:NSUserName()
+                  program:program
+            authorization:authorization
+                    reply:^(NSError *error) {
+                        if (!error) {
+                            NSDate *date = [NSDate dateWithTimeIntervalSinceNow:runInterval];
+                            NSDateFormatter *fomatter = [NSDateFormatter new];
+                            [fomatter setDateStyle:NSDateFormatterMediumStyle];
+                            [fomatter setTimeStyle:NSDateFormatterMediumStyle];
+                            NSLog(@"Next scheduled AutoPkg run will occur at %@",[fomatter stringFromDate:date]);
+                        }
+                        reply(error);
+                    }];
+    } else if (scheduleIsRunning) {
+        [[helper.connection remoteObjectProxyWithErrorHandler:^(NSError *error) {
+            reply(error);
+        }] removeScheduleWithAuthorization:authorization
+                                      reply:^(NSError *error) {
+                                        reply(error);
+                                      }];
+    }
 }
 
-+ (LGAutoPkgSchedule *)sharedTimer
++ (BOOL)updateAppsIsScheduled:(NSInteger *)scheduleInterval
 {
-    static dispatch_once_t onceToken;
-    static LGAutoPkgSchedule *shared;
-    dispatch_once(&onceToken, ^{
-        shared = [[LGAutoPkgSchedule alloc] init];
-    });
-    return shared;
+    AHLaunchJob *job = [AHLaunchCtl jobFromFileNamed:kLGAutoPkgrLaunchDaemonPlist inDomain:kAHGlobalLaunchDaemon];
+
+    NSInteger interval = (job.StartInterval == 0) ? 24 : job.StartInterval / 60 / 60;
+    if (scheduleInterval) {
+        *scheduleInterval = interval;
+    }
+    return job ? YES : NO;
 }
 
-- (void)configure
++ (BOOL)launchAtLogin:(BOOL)launch
 {
-    LGDefaults *defaults = [[LGDefaults alloc] init];
-    if (defaults.checkForNewVersionsOfAppsAutomaticallyEnabled) {
-        DLog(@"Stopping countdown to next scheduled AutoPkg run.");
-        [self stopTimer];
-        if ([defaults integerForKey:kLGAutoPkgRunInterval]) {
-            double i = [defaults integerForKey:kLGAutoPkgRunInterval];
-            if (i != 0) {
-                NSTimeInterval ti = i * 60 * 60; // Convert hours to seconds for our time interval
-                _timer = [NSTimer scheduledTimerWithTimeInterval:ti target:self selector:@selector(runAutoPkg) userInfo:nil repeats:YES];
-                if ([_timer isValid]) {
-                    DLog(@"Starting countdown to next scheduled AutoPkg run.");
-                }
-            } else {
-                DLog(@"i is 0 because that's what the user entered or what they entered wasn't a digit.");
-            }
-        } else {
-            NSLog(@"The user enabled automatic checking for app updates, but didn't specify an interval.");
-        }
+    NSBundle *appBundle = [NSBundle mainBundle];
+    NSString *launchAgentFileName = [appBundle.bundleIdentifier stringByAppendingPathExtension:@"launcher.plist"];
+
+    NSString *launchAgentPath = [[@"~/Library/LaunchAgents" stringByAppendingPathComponent:launchAgentFileName] stringByExpandingTildeInPath];
+
+    AHLaunchJob *job = [AHLaunchJob new];
+    job.Label = [launchAgentFileName stringByDeletingPathExtension];
+
+    // Set an extra argument here to when launched at login, so the app delegate
+    // knows to defer launching the configuration window once.
+    job.ProgramArguments = @[ appBundle.executablePath, kLGLaunchedAtLogin ];
+    job.RunAtLoad = YES;
+
+    if (launch) {
+        return [job.dictionary writeToFile:launchAgentPath atomically:YES];
     } else {
-        DLog(@"Stopping countdown to next scheduled AutoPkg run.");
-        [self stopTimer];
+        return [[NSFileManager defaultManager] removeItemAtPath:launchAgentPath error:nil];
     }
 }
 
-- (void)stopTimer
++ (BOOL)willLaunchAtLogin
 {
-    if ([_timer isValid]) {
-        [_timer invalidate];
-    }
-    _timer = nil;
-}
-
-- (void)runAutoPkg
-{
-
-    LGDefaults *defaults = [[LGDefaults alloc] init];
-    if (defaults.checkForNewVersionsOfAppsAutomaticallyEnabled) {
-        NSLog(@"Beginning scheduled run of AutoPkg.");
-        [_progressDelegate startProgressWithMessage:@"Starting scheduled run..."];
-        NSString *recipeList = [LGRecipes recipeList];
-
-        [LGAutoPkgTask runRecipeList:recipeList
-            progress:^(NSString *message, double taskProgress) {
-                [_progressDelegate updateProgress:message progress:taskProgress];
-            }
-            reply:^(NSDictionary *report, NSError *error) {
-                NSLog(@"Scheduled run of AutoPkg complete.");
-                [_progressDelegate stopProgress:error];
-                LGEmailer *emailer = [LGEmailer new];
-                [emailer sendEmailForReport:report error:error];
-            }];
-    } else {
-        [self stopTimer];
-    }
+    AHLaunchJob* job = [AHLaunchCtl jobFromFileNamed:@"com.lindegroup.AutoPkgr.launcher.plist" inDomain:kAHUserLaunchAgent];
+    return ([job.ProgramArguments.firstObject isEqualToString:[[NSBundle mainBundle] executablePath]]);
 }
 
 @end

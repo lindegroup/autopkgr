@@ -1,9 +1,9 @@
-// LGRecipeTableView.m
-// AutoPkgr
+//  LGRecipeTableView.m
+//  AutoPkgr
 //
-// Created by Eldon on 8/14/14.
+//  Created by Eldon on 8/14/14.
 //
-// Copyright 2014 The Linde Group, Inc.
+//  Copyright 2014-2015 The Linde Group, Inc.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -33,8 +33,7 @@
 
     if (theEvent.type == NSLeftMouseDown || theEvent.type == NSRightMouseDown) {
         if ([classString isEqualToString:@"LGRecipes"]) {
-            NSString *recipe = [self recipeFromRow:row];
-            return [LGRecipeOverrides contextualMenuForRecipe:recipe];
+            return [(LGRecipes *)[self dataSource] contextualMenuForRecipeAtRow:row];
         } else if ([classString isEqualToString:@"LGPopularRepositories"]) {
             NSString *repo = [self repoFromRow:row];
             return [LGPopularRepositories contextualMenuForRepo:repo];
@@ -42,7 +41,7 @@
             NSDictionary *distributionPoint;
             if (row > -1) {
                 distributionPoint = [[LGDefaults standardUserDefaults] JSSRepos][row];
-            } 
+            }
             return [(LGJSSImporter *)[self dataSource] contextualMenuForDistributionPoint:distributionPoint];
         }
     }

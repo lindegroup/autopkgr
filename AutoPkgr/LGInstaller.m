@@ -4,7 +4,7 @@
 //
 //  Created by Eldon on 9/9/14.
 //
-//  Copyright 2014 The Linde Group, Inc.
+//  Copyright 2014-2015 The Linde Group, Inc.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -23,9 +23,12 @@
 #import "LGAutoPkgr.h"
 #import "LGHostInfo.h"
 #import "LGGitHubJSONLoader.h"
+#import "LGAutoPkgrHelperConnection.h"
+
+#import <AFNetworking/AFNetworking.h>
 
 typedef NS_ENUM(NSInteger, LGInstallType) {
-    kLGInstallerTypeUnkown = 0,
+    kLGInstallerTypeUnknown = 0,
     kLGInstallerTypeDMG,
     kLGInstallerTypePKG,
 };
@@ -38,185 +41,184 @@ typedef NS_ENUM(NSInteger, LGInstallType) {
 #pragma mark - Git installer
 - (void)installGit:(void (^)(NSError *error))reply
 {
-    NSOperationQueue *bgQueue = [[NSOperationQueue alloc] init];
-    [bgQueue addOperationWithBlock:^{
-        NSError *error;
-        [_progressDelegate startProgressWithMessage:@"Installing Git"];
-        [self runGitInstaller:&error];
+    BOOL mavericks = floor(NSAppKitVersionNumber) > NSAppKitVersionNumber10_8;
+
+    NSPredicate *match = [NSPredicate predicateWithFormat:@"SELF ENDSWITH[CD] %@",
+                                                          mavericks ? @"-mavericks.dmg" : @"-snow-leopard.dmg"];
+
+    LGGitHubJSONLoader *loader = [[LGGitHubJSONLoader alloc] init];
+    NSArray *downloadURLs = [loader latestReleaseDownloads:kLGGitReleasesJSONURL];
+
+    _downloadURL = [[downloadURLs filteredArrayUsingPredicate:match] firstObject];
+    DLog(@"Using git installer: %@", _downloadURL);
+
+    [_progressDelegate startProgressWithMessage:@"Installing Git"];
+
+    [self runInstallerFor:@"Git" githubAPI:nil reply:^(NSError *error) {
+        if(!error) {
+            LGDefaults *defaults = [[LGDefaults alloc] init];
+            defaults.gitPath = @"/usr/local/git/bin/git";
+
+            NSLog(@"Setting the Git path for AutoPkg to %@", defaults.gitPath);
+        } else {
+            error = [LGError errorWithCode:kLGErrorInstallGit];
+        }
+
         [_progressDelegate stopProgress:error];
         reply(error);
     }];
 }
 
-- (BOOL)runGitInstaller:(NSError *__autoreleasing *)error
-{
-    BOOL success;
-    NSString *githubAPI;
-    NSError *installError;
-
-    BOOL mavericks = floor(NSAppKitVersionNumber) > NSAppKitVersionNumber10_8;
-
-    if (mavericks)
-        githubAPI = kLGGitMAVReleasesJSONURL;
-    else
-        githubAPI = kLGGitMLReleasesJSONURL;
-
-    success = [self runInstallerFor:@"Git" githubAPI:githubAPI error:&installError];
-
-    if (success) {
-        LGDefaults *defaults = [[LGDefaults alloc] init];
-
-        // If the installer was successful here set the AutoPkg GIT_PATH key
-        if (mavericks)
-            defaults.gitPath = @"/usr/local/git/bin/git";
-        else
-            defaults.gitPath = @"/usr/bin/git";
-
-        NSLog(@"Setting the Git path for AutoPkg to %@", defaults.gitPath);
-    } else {
-        if (installError)
-            DLog(@"%@", installError);
-        return [LGError errorWithCode:kLGErrorInstallGit error:error];
-    }
-    return success;
-}
-
 #pragma mark - AutoPkg Installer
-- (BOOL)runAutoPkgInstaller:(NSError *__autoreleasing *)error
-{
-    NSError *installError;
-    BOOL success = [self runInstallerFor:@"AutoPkg" githubAPI:kLGAutoPkgReleasesJSONURL error:&installError];
-    if (!success) {
-        if (installError)
-            DLog(@"%@", installError);
-        return [LGError errorWithCode:kLGErrorInstallAutoPkg error:error];
-    }
-    return success;
-}
-
 - (void)installAutoPkg:(void (^)(NSError *error))reply
 {
-    NSOperationQueue *bgQueue = [[NSOperationQueue alloc] init];
-    [bgQueue addOperationWithBlock:^{
-        NSError *error;
-        [_progressDelegate startProgressWithMessage:@"Installing AutoPkg..."];
-        [self runAutoPkgInstaller:&error];
-        [_progressDelegate stopProgress:error];
+    [_progressDelegate startProgressWithMessage:@"Installing AutoPkg"];
+    [self runInstallerFor:@"AutoPkg" githubAPI:kLGAutoPkgReleasesJSONURL reply:^(NSError *error) {
+        if (error) {
+            // Log the specific error, but send a general one back to the UI.
+            NSLog(@"%@",error.localizedDescription);
+            error = [LGError errorWithCode:kLGErrorInstallAutoPkg];
+        }
         reply(error);
     }];
 }
 
 #pragma mark - JSSImporter Installer
-- (BOOL)runJSSImporterInstaller:(NSError *__autoreleasing *)error
-{
-    NSError *installError;
-    BOOL success = [self runInstallerFor:@"JSSImporter" githubAPI:kLGJSSImporterJSONURL error:error];
-    if (!success) {
-        if (installError)
-            DLog(@"%@", installError);
-        success = [LGError errorWithCode:kLGErrorInstallJSSImporter error:error];
-    }
-    return success;
-}
-
 - (void)installJSSImporter:(void (^)(NSError *))reply
 {
-    NSOperationQueue *bgQueue = [[NSOperationQueue alloc] init];
-    [bgQueue addOperationWithBlock:^{
-        NSError *error;
-        [_progressDelegate startProgressWithMessage:@"Installing JSSImporter..."];
-        [self runJSSImporterInstaller:&error];
-        [_progressDelegate stopProgress:error];
+    [_progressDelegate startProgressWithMessage:@"Installing JSSImporter..."];
+    [self runInstallerFor:@"JSSImporter" githubAPI:kLGJSSImporterJSONURL reply:^(NSError *error) {
+        if (error) {
+            // Log the specific error, but send a general one back to the UI.
+            NSLog(@"%@",error.localizedDescription);
+            error = [LGError errorWithCode:kLGErrorInstallJSSImporter];
+        }
         reply(error);
     }];
 }
 
-#pragma mark - Main install method
-- (BOOL)runInstallerFor:(NSString *)installerName githubAPI:(NSString *)githubAPI error:(NSError *__autoreleasing *)error
+#pragma mark - Main install methods
+- (void)runInstallerFor:(NSString *)installerName
+              githubAPI:(NSString *)githubAPI
+                  reply:(void (^)(NSError *error))reply
 {
-    NSString *progressMessage;
+    __block NSString *progressMessage;
 
-    progressMessage = [NSString stringWithFormat:@"Downloading %@...", installerName];
-    [_progressDelegate updateProgress:progressMessage progress:5.0];
+    if (!_downloadURL && githubAPI) {
+        progressMessage = [NSString stringWithFormat:@"Getting latest release info from GitHub..."];
+        [_progressDelegate updateProgress:progressMessage progress:5.0];
 
-    // Get the latest download URL from the GitHub API URL
-    LGGitHubJSONLoader *loader = [[LGGitHubJSONLoader alloc] init];
-    _downloadURL = [loader latestReleaseDownload:githubAPI];
+        // Get the latest download URL from the GitHub API URL
+        LGGitHubJSONLoader *loader = [[LGGitHubJSONLoader alloc] init];
+        _downloadURL = [loader latestReleaseDownload:githubAPI];
+    }
 
     // Get tmp file path for downloaded file
     NSString *tmpFileLocation = [NSTemporaryDirectory() stringByAppendingPathComponent:[_downloadURL lastPathComponent]];
 
-    progressMessage = [NSString stringWithFormat:@"Building %@ installer package...", installerName];
+    progressMessage = [NSString stringWithFormat:@"Downloading %@ installer...", installerName];
     [_progressDelegate updateProgress:progressMessage progress:25.0];
 
     // Download to the temporary directory
-    NSData *fileData = [[NSData alloc] initWithContentsOfURL:[NSURL URLWithString:_downloadURL]];
-    if (fileData) {
-        [fileData writeToFile:tmpFileLocation atomically:YES];
-    } else {
-        DLog(@"Could not download %@", _downloadURL);
-        return NO;
-    }
+    // Create the NSURLRequest object with the given URL
+    NSURL *url = [NSURL URLWithString:_downloadURL];
+    NSURLRequest *request = [NSURLRequest requestWithURL:url
+                                             cachePolicy:NSURLRequestReloadIgnoringLocalAndRemoteCacheData
+                                         timeoutInterval:15.0];
 
-    NSString *pkgFile = nil;
-    LGInstallType type = [self evaluateInstallerType];
-    switch (type) {
-    case kLGInstallerTypeUnkown:
-        return NO;
-        break;
-    case kLGInstallerTypeDMG:
-        if ([self mountDMG:tmpFileLocation] && _mountPoint) {
-            // install Pkg
-            NSArray *contents = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:_mountPoint error:nil];
-            DLog(@"Contents of DMG %@ ", contents);
+    AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
 
-            // The predicate here is "CONTAINS" so we get both .pkg and .mpkg files
-            NSPredicate *predicate = [NSPredicate predicateWithFormat:@"pathExtension CONTAINS[cd] 'pkg'"];
-            NSString *pkg = [[contents filteredArrayUsingPredicate:predicate] firstObject];
+    operation.outputStream = [NSOutputStream outputStreamToFileAtPath:tmpFileLocation append:NO];
 
-            if (pkg) {
-                DLog(@"Found installer package: %@", pkg);
-                // Since this is getting invoked as an AppleScript wrapping in sh -c  you need 4 backslashes to correctly escape the whitespace
-                pkgFile = [[_mountPoint stringByAppendingPathComponent:pkg] stringByReplacingOccurrencesOfString:@" " withString:@"\\\\ "];
-            } else {
-                DLog(@"Could not locate .pkg file.");
-            }
+    [operation.outputStream open];
+
+    [operation setDownloadProgressBlock:^(NSUInteger bytesRead, long long totalBytesRead, long long totalBytesExpectedToRead) {
+        double progress  = ((double)totalBytesRead / (double)totalBytesExpectedToRead) * 100;
+
+        NSString *message = [NSString stringWithFormat:@"Downloading %@: %.02f/%.02f MB",
+                             installerName,
+                             (float)totalBytesRead/1024/1024,
+                             (float)totalBytesExpectedToRead/1024/1024];
+
+        [_progressDelegate updateProgress:message progress:progress];
+    }];
+
+    [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSString *pkgFile = nil;
+
+        LGInstallType type = [self evaluateInstallerType];
+        switch (type) {
+            case kLGInstallerTypeUnknown:
+                reply([LGError errorWithCode:kLGErrorInstallingGeneric]);
+                return ;
+            case kLGInstallerTypeDMG:
+                if ([self mountDMG:tmpFileLocation] && _mountPoint) {
+                    // install Pkg
+                    NSArray *contents = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:_mountPoint error:nil];
+                    DLog(@"Contents of DMG %@ ", contents);
+
+                    // The predicate here is "CONTAINS" so we get both .pkg and .mpkg files
+                    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"pathExtension CONTAINS[cd] 'pkg'"];
+                    NSString *pkg = [[contents filteredArrayUsingPredicate:predicate] firstObject];
+
+                    if (pkg) {
+                        DLog(@"Found installer package: %@", pkg);
+                        pkgFile = [_mountPoint stringByAppendingPathComponent:pkg];
+                    } else {
+                        DLog(@"Could not locate .pkg file.");
+                    }
+                }
+                break;
+            case kLGInstallerTypePKG:
+                pkgFile = tmpFileLocation;
+                break;
+            default:
+                break;
         }
-        break;
-    case kLGInstallerTypePKG:
-        pkgFile = tmpFileLocation;
-        break;
-    default:
-        break;
-    }
 
-    BOOL success = NO;
-    if (type != kLGInstallerTypeUnkown && pkgFile) {
-        // Set the `installer` command
-        NSString *command = [NSString stringWithFormat:@"/usr/sbin/installer -pkg %@ -target /", pkgFile];
+        if (type != kLGInstallerTypeUnknown && pkgFile) {
+            // Set the `installer` command
+            // Install the pkg as root
+            progressMessage = [NSString stringWithFormat:@"Running %@ installer...", installerName];
 
-        // Install the pkg as root
-        progressMessage = [NSString stringWithFormat:@"Installing %@...", installerName];
-        [_progressDelegate updateProgress:progressMessage progress:75.0];
-        success = [self runCommandAsRoot:command error:error];
+            [_progressDelegate updateProgress:progressMessage progress:75.0];
 
-        progressMessage = [NSString stringWithFormat:@"%@ installation complete.", installerName];
-        [_progressDelegate updateProgress:progressMessage progress:100.0];
+            NSData *authorization = [LGAutoPkgrAuthorizer authorizeHelper];
+            assert(authorization != nil);
 
-        if (type == kLGInstallerTypeDMG) {
-            progressMessage = [NSString stringWithFormat:@"Unmounting %@ disk image...", installerName];
-            [_progressDelegate updateProgress:progressMessage progress:100.0];
-            [self unmountVolume];
+            [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+                LGAutoPkgrHelperConnection *helper = [LGAutoPkgrHelperConnection new];
+                [helper connectToHelper];
+                [[helper.connection remoteObjectProxyWithErrorHandler:^(NSError *error) {
+                    DLog(@"%@",error);
+                    reply(error);
+                }] installPackageFromPath:pkgFile authorization:authorization reply:^(NSError *error) {
+                    progressMessage = [NSString stringWithFormat:@"%@ installation complete.", installerName];
+
+                    [_progressDelegate updateProgress:progressMessage progress:100.0];
+
+                    if (type == kLGInstallerTypeDMG) {
+                        progressMessage = [NSString stringWithFormat:@"Unmounting %@ disk image...", installerName];
+                        [_progressDelegate updateProgress:progressMessage progress:100.0];
+                        [self unmountVolume];
+                    }
+                    reply(error);
+                }];
+            }];
+        } else {
+            reply([LGError errorWithCode:kLGErrorInstallingGeneric]);
         }
-    }
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        reply(error);
+    }];
 
-    return success;
+    [operation start];
 }
 
 #pragma mark - Util Methods
 - (LGInstallType)evaluateInstallerType
 {
-    LGInstallType type = kLGInstallerTypeUnkown;
+    LGInstallType type = kLGInstallerTypeUnknown;
 
     NSPredicate *dmgPredicate = [NSPredicate predicateWithFormat:@"pathExtension CONTAINS[cd] 'dmg'"];
     NSPredicate *pkgPredicate = [NSPredicate predicateWithFormat:@"pathExtension CONTAINS[cd] 'pkg'"];
@@ -228,27 +230,6 @@ typedef NS_ENUM(NSInteger, LGInstallType) {
     }
 
     return type;
-}
-
-- (BOOL)runCommandAsRoot:(NSString *)command error:(NSError *__autoreleasing *)error;
-{
-    // Super dirty hack, but way easier than
-    // using Authorization Services
-    NSDictionary *errorDict = [[NSDictionary alloc] init];
-    NSString *script = [NSString stringWithFormat:@"do shell script \"sh -c '%@'\" with administrator privileges", command];
-    NSLog(@"AppleScript commands: %@", script);
-    NSAppleScript *appleScript = [[NSAppleScript alloc] initWithSource:script];
-    if ([appleScript executeAndReturnError:&errorDict]) {
-        return YES;
-    } else {
-        NSDictionary *userInfo = @{ NSLocalizedDescriptionKey : errorDict[NSAppleScriptErrorBriefMessage],
-                                    NSLocalizedRecoverySuggestionErrorKey : errorDict[NSAppleScriptErrorMessage] };
-        NSNumber *exitCode = errorDict[NSAppleScriptErrorNumber];
-
-        if (error)
-            *error = [NSError errorWithDomain:kLGApplicationName code:[exitCode intValue] userInfo:userInfo];
-        return NO;
-    }
 }
 
 - (BOOL)unmountVolume

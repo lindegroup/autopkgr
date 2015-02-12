@@ -4,7 +4,7 @@
 //
 //  Created by Eldon on 9/25/14.
 //
-//  Copyright 2014 The Linde Group, Inc.
+//  Copyright 2014-2015 The Linde Group, Inc.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -30,6 +30,11 @@
 
 #pragma mark - Class constants
 
+NSPredicate *jdsFilterPredicate()
+{
+    return [NSPredicate predicateWithFormat:@"not (type == 'JDS')"];
+}
+
 @implementation LGJSSImporter {
     LGDefaults *_defaults;
     LGTestPort *_portTester;
@@ -53,6 +58,8 @@
     // until a row is selected
     [_jssEditDistPointBT setEnabled:NO];
     [_jssRemoveDistPointBT setEnabled:NO];
+
+    _jssUseMasterJDS.state = [_defaults.JSSRepos containsObject:@{@"type":@"JDS"}];
 
     [_jssInstallStatusLight setImage:[NSImage LGStatusNotInstalled]];
     if ([LGHostInfo jssImporterInstalled] && _defaults.JSSRepos) {
@@ -84,6 +91,20 @@
 
 - (IBAction)updateJSSURL:(id)sender
 {
+    // There have been reports that old style cloud hosted JSS
+    // have an issue when the base url is double slashed. Though theoritically
+    // it doesn't make sense, it's an easy enough fix to apply here by looking
+    // for a trailing slash and simply removing that.
+    NSMutableString *url = [NSMutableString stringWithString:_jssURLTF.stringValue];
+
+    if (url.length > 2) {
+        while ([[url substringFromIndex:url.length - 1] isEqualToString:@"/"]) {
+            [url deleteCharactersInRange:NSMakeRange(url.length - 1, 1)];
+        }
+    }
+
+    _jssURLTF.safeStringValue = url;
+
     [self evaluateRepoViability];
     [self checkReachability];
 
@@ -185,18 +206,24 @@
 }
 
 #pragma mark - NSTableViewDataSource
+- (NSArray *)filteredData
+{
+    return [_defaults.JSSRepos filteredArrayUsingPredicate:jdsFilterPredicate()];
+}
+
 - (NSInteger)numberOfRowsInTableView:(NSTableView *)tableView
 {
-    return [_defaults.JSSRepos count];
+    return [[self filteredData] count];
 }
 
 - (id)tableView:(NSTableView *)tableView objectValueForTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row
 {
     NSDictionary *distributionPoint;
 
-    if ([_defaults.JSSRepos count] >= row) {
-        distributionPoint = _defaults.JSSRepos[row];
+    if ([[self filteredData] count] >= row) {
+        distributionPoint = [self filteredData][row];
     };
+
     NSString *identifier = [tableColumn identifier];
     NSString *setObject = distributionPoint[identifier];
 
@@ -209,7 +236,7 @@
 
 - (void)tableView:(NSTableView *)tableView setObjectValue:(id)object forTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row
 {
-    NSMutableArray *workingArray = [NSMutableArray arrayWithArray:_defaults.JSSRepos];
+    NSMutableArray *workingArray = [[self filteredData] mutableCopy];
     NSMutableDictionary *distributionPoint = [NSMutableDictionary dictionaryWithDictionary:workingArray[row]];
 
     if (!distributionPoint[kLGJSSDistPointTypeKey]) {
@@ -221,17 +248,21 @@
     [distributionPoint setValue:object forKey:tableColumn.identifier];
     [workingArray replaceObjectAtIndex:row withObject:distributionPoint];
 
-    _defaults.JSSRepos = [NSArray arrayWithArray:workingArray];
+    if (_jssUseMasterJDS.state) {
+        [workingArray addObject:@{ @"type" : @"JDS" }];
+    }
+    _defaults.JSSRepos = [workingArray copy];
 }
 
--(void)tableViewSelectionDidChange:(NSNotification *)notification{
+- (void)tableViewSelectionDidChange:(NSNotification *)notification
+{
     NSInteger row = [_jssDistributionPointTableView selectedRow];
     // If nothing in the table is selected the row value is -1 so
     if (row > -1) {
         [_jssRemoveDistPointBT setEnabled:YES];
         // If a type key is not set, then it's from a DP from
         // the jss server and not editable.
-        if([[_defaults.JSSRepos objectAtIndex:row] objectForKey:@"type"]){
+        if ([[_defaults.JSSRepos objectAtIndex:row] objectForKey:@"type"]) {
             [_jssEditDistPointBT setEnabled:YES];
         } else {
             [_jssEditDistPointBT setEnabled:NO];
@@ -268,7 +299,7 @@
                 DLog(@"The JSS is responding and API user credentials seem valid.");
             } else if (reachable) {
                 _jssStatusLight.image = [NSImage LGStatusPartiallyAvailable];
-                DLog(@"The JSS is responding, but API user credentials don't seem valid.");
+                DLog(@"The JSS is responding at that url, but API user credentials have not been verified. Click the connect button to complete the verification process.");
             } else {
                 _jssStatusLight.image = [NSImage LGStatusUnavailable];
                 DLog(@"The JSS is not reachable. Check your network connection and verify the JSS URL and port.");
@@ -380,12 +411,15 @@
 {
     NSLog(@"Prompting for password for distribution point: %@", shareName);
     NSString *password;
-    NSString *alertString = [NSString stringWithFormat:@"Please enter read/write password for the %@ distribution point.", shareName];
-    NSAlert *alert = [NSAlert alertWithMessageText:alertString
+    NSString *messageText = @"Distribution Point Password Required";
+
+    NSString *const infoText = @"Please enter read/write password for the \"%@\" distribution point. If you intend to configure manually just click \"Cancel\".";
+
+    NSAlert *alert = [NSAlert alertWithMessageText:messageText
                                      defaultButton:@"OK"
                                    alternateButton:@"Cancel"
                                        otherButton:nil
-                         informativeTextWithFormat:@""];
+                         informativeTextWithFormat:infoText, shareName];
 
     NSSecureTextField *input = [[NSSecureTextField alloc] init];
     [input setFrame:NSMakeRect(0, 0, 300, 24)];
@@ -456,6 +490,33 @@
 }
 
 #pragma mark - JSS Distribution Point Preference Panel
+- (void)enableMasterJDS:(NSButton *)sender
+{
+    LGDefaults *defaults = [LGDefaults standardUserDefaults];
+    NSMutableArray *workingArray = [defaults.JSSRepos mutableCopy];
+    NSDictionary *JDSDict = @{ @"type" : @"JDS" };
+
+    NSUInteger index = [workingArray indexOfObjectPassingTest:
+                                         ^BOOL(NSDictionary *dict, NSUInteger idx, BOOL *stop) {
+                            return [dict[@"type"] isEqualToString:@"JDS"];
+                                         }];
+
+    if (sender.state) {
+        // Add JDS
+        if (index != NSNotFound) {
+            [workingArray replaceObjectAtIndex:index withObject:JDSDict];
+        } else {
+            [workingArray addObject:JDSDict];
+        }
+    } else {
+        if (index != NSNotFound) {
+            [workingArray removeObjectAtIndex:index];
+        }
+    }
+
+    defaults.JSSRepos = [workingArray copy];
+}
+
 - (void)addDistributionPoint:(id)sender
 {
 
@@ -474,7 +535,7 @@
     } else {
         NSInteger row = _jssDistributionPointTableView.selectedRow;
         if (row > -1) {
-            distPoint = _defaults.JSSRepos[row];
+            distPoint = [self filteredData][row];
         }
     }
 
@@ -486,14 +547,13 @@
 
 - (void)editDistributionPoint:(id)sender
 {
-
     NSDictionary *distPoint = nil;
     if ([sender isKindOfClass:[NSMenuItem class]]) {
         distPoint = [(NSMenuItem *)sender representedObject];
     } else {
         NSInteger row = _jssDistributionPointTableView.selectedRow;
         if (row > -1) {
-            distPoint = _defaults.JSSRepos[row];
+            distPoint = [self filteredData][row];
         }
     }
 
@@ -506,6 +566,7 @@
     }
 }
 
+#pragma mark - Panel didEnd Selectors
 - (void)didClosePreferencePanel
 {
     if (![NSThread isMainThread]) {

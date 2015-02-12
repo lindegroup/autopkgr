@@ -3,7 +3,7 @@
   AutoPkgr
 
   Created by Eldon on 9/5/14.
-  Copyright 2014 The Linde Group, Inc.
+  Copyright 2014-2015 The Linde Group, Inc.
 */
 
 /**
@@ -32,6 +32,10 @@
 "kLGErrorMultipleRunsOfAutopkgDescription" = "Only one instance of AutoPkg can be run at a time";
 "kLGErrorMultipleRunsOfAutopkgSuggestion" = "A scheduled AutoPkg run may be running in the background. Please wait for it to complete.";
 
+/** Error when trying to activate a recipe when the parent is not installed */
+"kLGErrorMissingParentRecipeDescription" = "Parent Recipe not available";
+"kLGErrorMissingParentRecipeSuggestion" = "The parent recipe for that recipe is not included in any of the active repos. You will need to determine which repo it's included with and enable that repo.";
+
 /** Error installing Git */
 "kLGErrorInstallGitDescription" = "Error installing/updating Git";
 "kLGErrorInstallGitSuggestion" = "If the problem persists please try manually downloading and installing Git.";
@@ -50,8 +54,15 @@
 
 /** Error Serializing JSS response */
 "kLGErrorJSSXMLSerializerErrorDescription" = "Error getting distribution points";
-"kLGErrorJSSXMLSerializerErrorSuggestion" = "The Casper server's response could not be correctly interpreted";
+"kLGErrorJSSXMLSerializerErrorSuggestion" = "The Casper server's response could not be correctly interpreted.";
 
+/** Error with schedule interval */
+"kLGErrorIncorrectScheduleTimerIntervalDescription" = "Error setting timer";
+"kLGErrorIncorrectScheduleTimerIntervalSuggestion" = "The start timer interval for scheduled runs is not correct, it must be a number and not 0.";
+
+/** Error authorization canceled by user*/
+"kLGErrorAuthChallenge" = "Error creating authorization";
+"kLGErrorAuthChallenge" = "You are not authorized to perform this action";
 /**
  *  Errors relating specifically to AutoPkg
  *  Recovery Suggestion string is created from the task.standardError so unnecessary here
@@ -107,4 +118,4 @@
 
 // General failure
 "kLGHTTPErrorUnknownDescription" = "There was a problem connecting to the server";
-"kLGHTTPErrorUnknownSuggestion" = "An unknown error occured. If you get this message repeatedly please create an issue on the AutoPkgr GitHub page. Thanks.";
+"kLGHTTPErrorUnknownSuggestion" = "An unknown error occurred. If you get this message repeatedly please create an issue on the AutoPkgr GitHub page. Thanks.";
