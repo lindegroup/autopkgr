@@ -62,6 +62,7 @@ NSString *const kLGLaunchedAtLogin = @"LaunchedAtLogin";
                             [fomatter setTimeStyle:NSDateFormatterMediumStyle];
                             NSLog(@"Next scheduled AutoPkg run will occur at %@",[fomatter stringFromDate:date]);
                         }
+                        [[NSApplication sharedApplication] activateIgnoringOtherApps:YES];
                         reply(error);
                     }];
     } else if (scheduleIsRunning) {
@@ -69,6 +70,7 @@ NSString *const kLGLaunchedAtLogin = @"LaunchedAtLogin";
             reply(error);
         }] removeScheduleWithAuthorization:authorization
                                       reply:^(NSError *error) {
+                                          [[NSApplication sharedApplication] activateIgnoringOtherApps:YES];
                                         reply(error);
                                       }];
     }
@@ -109,7 +111,7 @@ NSString *const kLGLaunchedAtLogin = @"LaunchedAtLogin";
 
 + (BOOL)willLaunchAtLogin
 {
-    AHLaunchJob* job = [AHLaunchCtl jobFromFileNamed:@"com.lindegroup.AutoPkgr.launcher.plist" inDomain:kAHUserLaunchAgent];
+    AHLaunchJob *job = [AHLaunchCtl jobFromFileNamed:@"com.lindegroup.AutoPkgr.launcher.plist" inDomain:kAHUserLaunchAgent];
     return ([job.ProgramArguments.firstObject isEqualToString:[[NSBundle mainBundle] executablePath]]);
 }
 

@@ -23,6 +23,7 @@
 #import <AHLaunchCtl/AHLaunchCtl.h>
 #import "AHCodesignVerifier.h"
 #import "AHKeychain.h"
+#import "LGProgressDelegate.h"
 
 #import <pwd.h>
 #import <syslog.h>
@@ -54,6 +55,43 @@ static const NSTimeInterval kHelperCheckInterval = 1.0; // how often to check wh
     [self.listener resume];
     while (!self.helperToolShouldQuit) {
         [[NSRunLoop currentRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:kHelperCheckInterval]];
+    }
+}
+
+#pragma mark - NSXPCListenerDelegate
+//----------------------------------------
+// Set up the one method of NSXPCListener
+//----------------------------------------
+- (BOOL)listener:(NSXPCListener *)listener shouldAcceptNewConnection:(NSXPCConnection *)newConnection
+{
+
+    NSXPCInterface *exportedInterface = [NSXPCInterface interfaceWithProtocol:@protocol(HelperAgent)];
+    newConnection.exportedInterface = exportedInterface;
+
+    // Only accept the connection if the call is made by the console user.
+    uid_t loggedInUser;
+    CFBridgingRelease(SCDynamicStoreCopyConsoleUser(NULL, &loggedInUser, NULL));
+
+    if (loggedInUser == newConnection.effectiveUserIdentifier) {
+        newConnection.exportedObject = self;
+        self.connection = newConnection;
+
+        __weak typeof(newConnection) weakConnection = newConnection;
+        // If all connections are invalidated on the remote side,
+        // shutdown the helper.
+        newConnection.invalidationHandler = ^() {
+            __strong typeof(newConnection) strongConnection = weakConnection;
+            [self.connections removeObject:strongConnection];
+            if (!self.connections.count) {
+                [self quitHelper:^(BOOL success) {}];
+            }
+        };
+
+        [newConnection resume];
+        [self.connections addObject:newConnection];
+        return YES;
+    } else {
+        return NO;
     }
 }
 
@@ -102,6 +140,89 @@ static const NSTimeInterval kHelperCheckInterval = 1.0; // how often to check wh
     reply(error);
 }
 
+#pragma mark - Installer
+- (void)installPackageFromPath:(NSString *)path
+                 authorization:(NSData *)authData
+                         reply:(void (^)(NSError *error))reply;
+{
+    NSError *error;
+    error = [LGAutoPkgrAuthorizer checkAuthorization:authData command:_cmd];
+    if (error != nil) {
+        if (error.code == errAuthorizationCanceled) {
+            reply(nil);
+        } else {
+            reply(error);
+        }
+        return;
+    }
+
+    self.connection.remoteObjectInterface = [NSXPCInterface interfaceWithProtocol:@protocol(LGProgressDelegate)];
+
+    [self.connection.remoteObjectProxy bringAutoPkgrToFront];
+
+    __block double progress = 75.00;
+
+    NSTask *task = [NSTask new];
+    task.launchPath = @"/usr/sbin/installer";
+    task.arguments = @[ @"-verbose", @"-pkg", path, @"-target", @"/" ];
+
+    task.standardError = [NSPipe pipe];
+    task.standardOutput = [NSPipe pipe];
+
+    [[task.standardOutput fileHandleForReading] setReadabilityHandler:^(NSFileHandle *fh) {
+        if (fh.availableData) {
+            progress ++;
+            NSString *rawMessage = [[NSString alloc] initWithData:fh.availableData encoding:NSUTF8StringEncoding];
+            NSArray *allMessages = [ rawMessage componentsSeparatedByCharactersInSet:[NSCharacterSet newlineCharacterSet]];
+
+            for (NSString *message in allMessages) {
+                if (message.length && ![message isEqualToString:@"#"]) {
+                    [self.connection.remoteObjectProxy updateProgress:message
+                                                             progress:progress];
+                }
+            }
+        }
+    }];
+
+    [task setTerminationHandler:^(NSTask *endTask) {
+        NSError *error = [LGError errorWithTaskError:endTask verb:kLGAutoPkgUndefinedVerb];
+        reply(error);
+    }];
+
+    [task launch];
+}
+
+#pragma mark - Life Cycle
+- (void)quitHelper:(void (^)(BOOL success))reply
+{
+    // this will cause the run-loop to exit;
+    // you should call it via NSXPCConnection
+    // during the applicationShouldTerminate routine
+    self.helperToolShouldQuit = YES;
+    reply(YES);
+}
+
+- (void)uninstall:(NSData *)authData reply:(void (^)(NSError *))reply;
+{
+    NSError *error;
+    error = [LGAutoPkgrAuthorizer checkAuthorization:authData command:_cmd];
+
+    if (error) {
+        return reply(error);
+    }
+
+    if (jobIsRunning(kLGAutoPkgrLaunchDaemonPlist, kAHGlobalLaunchDaemon)) {
+        [[AHLaunchCtl sharedController] remove:kLGAutoPkgrLaunchDaemonPlist
+                                    fromDomain:kAHGlobalLaunchDaemon
+                                         error:nil];
+    }
+
+    [AHLaunchCtl removeFilesForHelperWithLabel:kLGAutoPkgrHelperToolName error:&error];
+    reply(error);
+    [AHLaunchCtl uninstallHelper:kLGAutoPkgrHelperToolName prompt:@"" error:nil];
+}
+
+#pragma mark - Private
 - (BOOL)launchPathIsValid:(NSString *)path error:(NSError *__autoreleasing *)error;
 {
     // Get the executable path of the helper tool.  We use this to compare against
@@ -135,94 +256,4 @@ static const NSTimeInterval kHelperCheckInterval = 1.0; // how often to check wh
     return success;
 }
 
-#pragma mark - Life Cycle
-- (void)quitHelper:(void (^)(BOOL success))reply
-{
-    // this will cause the run-loop to exit;
-    // you should call it via NSXPCConnection
-    // during the applicationShouldTerminate routine
-    self.helperToolShouldQuit = YES;
-    reply(YES);
-}
-
-- (void)installPackageFromPath:(NSString *)path
-                 authorization:(NSData *)authData
-                         reply:(void (^)(NSError *error))reply;
-{
-    NSError *error;
-
-    error = [LGAutoPkgrAuthorizer checkAuthorization:authData command:_cmd];
-    if (error != nil) {
-        reply(error);
-        return;
-    }
-
-    NSTask *task = [NSTask new];
-    task.launchPath = @"/usr/sbin/installer";
-    task.arguments = @[ @"-pkg", path, @"-target", @"/" ];
-    task.standardError = [NSPipe pipe];
-
-    [task launch];
-    [task waitUntilExit];
-
-    error = [LGError errorWithTaskError:task verb:kLGAutoPkgUndefinedVerb];
-
-    reply(error);
-}
-
-- (void)uninstall:(NSData *)authData reply:(void (^)(NSError *))reply;
-{
-    NSError *error;
-    error = [LGAutoPkgrAuthorizer checkAuthorization:authData command:_cmd];
-
-    if (error) {
-        return reply(error);
-    }
-
-    if (jobIsRunning(kLGAutoPkgrLaunchDaemonPlist, kAHGlobalLaunchDaemon)) {
-        [[AHLaunchCtl sharedController] remove:kLGAutoPkgrLaunchDaemonPlist
-                                    fromDomain:kAHGlobalLaunchDaemon
-                                         error:nil];
-    }
-
-    [AHLaunchCtl removeFilesForHelperWithLabel:kLGAutoPkgrHelperToolName error:&error];
-    reply(error);
-    [AHLaunchCtl uninstallHelper:kLGAutoPkgrHelperToolName prompt:@"" error:nil];
-}
-
-//----------------------------------------
-// Set up the one method of NSXPCListener
-//----------------------------------------
-- (BOOL)listener:(NSXPCListener *)listener shouldAcceptNewConnection:(NSXPCConnection *)newConnection
-{
-
-    NSXPCInterface *exportedInterface = [NSXPCInterface interfaceWithProtocol:@protocol(HelperAgent)];
-    newConnection.exportedInterface = exportedInterface;
-
-    // Only accept the connection if the call is made by the console user.
-    uid_t loggedInUser;
-    CFBridgingRelease(SCDynamicStoreCopyConsoleUser(NULL, &loggedInUser, NULL));
-
-    if (loggedInUser == newConnection.effectiveUserIdentifier) {
-        newConnection.exportedObject = self;
-        self.connection = newConnection;
-
-        __weak typeof(newConnection) weakConnection = newConnection;
-        // If all connections are invalidated on the remote side,
-        // shutdown the helper.
-        newConnection.invalidationHandler = ^() {
-            __strong typeof(newConnection) strongConnection = weakConnection;
-            [self.connections removeObject:strongConnection];
-            if (!self.connections.count) {
-                [self quitHelper:^(BOOL success) {}];
-            }
-        };
-
-        [newConnection resume];
-        [self.connections addObject:newConnection];
-        return YES;
-    } else {
-        return NO;
-    }
-}
 @end

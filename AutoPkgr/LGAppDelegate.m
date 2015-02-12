@@ -157,14 +157,13 @@
         [self.statusItem setHighlightMode:YES];
         self.statusItem.menu = self.statusMenu;
         DLog(@"AutoPkgr menu bar icon started.");
-        
+
         self.statusMenu.delegate = self;
     }
-
-
 }
 
-- (void)showStatusMenu:(id)sender{
+- (void)showStatusMenu:(id)sender
+{
     if ([sender boolValue]) {
         [self setupStatusItem];
     } else {
@@ -324,6 +323,13 @@
             runStatus.title = message;
         }
     }];
+}
+
+- (void)bringAutoPkgrToFront
+{
+    if (!([[LGDefaults standardUserDefaults] applicationDisplayStyle] & kLGDisplayStyleShowDock)) {
+        [[NSRunningApplication currentApplication] activateWithOptions:NSApplicationActivateAllWindows | NSApplicationActivateIgnoringOtherApps];
+    }
 }
 
 - (IBAction)changeCheckForNewVersionsOfAppsAutomatically:(id)sender

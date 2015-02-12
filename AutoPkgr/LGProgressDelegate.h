@@ -26,5 +26,6 @@
 - (void)startProgressWithMessage:(NSString *)message;
 - (void)stopProgress:(NSError *)error;
 - (void)updateProgress:(NSString *)message progress:(double)progress;
+- (void)bringAutoPkgrToFront;
 - (IBAction)changeCheckForNewVersionsOfAppsAutomatically:(id)sender;
 @end

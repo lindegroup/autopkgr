@@ -189,6 +189,9 @@ typedef NS_ENUM(NSInteger, LGInstallType) {
             [[NSOperationQueue mainQueue] addOperationWithBlock:^{
                 LGAutoPkgrHelperConnection *helper = [LGAutoPkgrHelperConnection new];
                 [helper connectToHelper];
+                helper.connection.exportedObject = _progressDelegate;
+                helper.connection.exportedInterface = [NSXPCInterface interfaceWithProtocol:@protocol(LGProgressDelegate)];
+
                 [[helper.connection remoteObjectProxyWithErrorHandler:^(NSError *error) {
                     DLog(@"%@",error);
                     reply(error);

@@ -198,7 +198,7 @@
 
     [[LGDefaults standardUserDefaults] setApplicationDisplayStyle:newStyle];
 
-    if ([sender isEqualTo:_hideInDock]){
+    if ([sender isEqualTo:_hideInDock]) {
         _restartRequiredLabel.hidden = !sender.state;
         if (!sender.state) {
             [NSApp setActivationPolicy:NSApplicationActivationPolicyRegular];
