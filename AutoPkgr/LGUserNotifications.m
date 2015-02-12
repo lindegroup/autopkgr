@@ -31,7 +31,6 @@
 
     if (success) {
         [notification setHasActionButton:NO];
-        [notification setHasReplyButton:NO];
         [[NSUserNotificationCenter defaultUserNotificationCenter] deliverNotification:notification];
     } else {
         // Currently there's a modal window displayed for errors, in th future we could

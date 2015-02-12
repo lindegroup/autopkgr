@@ -37,16 +37,17 @@
 - (void)dealloc
 {
     [self stopTest];
+    NSLog(@"Stopping Port Test.");
 }
 
 - (void)stream:(NSStream *)aStream handleEvent:(NSStreamEvent)eventCode
 {
     if (eventCode & (NSStreamEventOpenCompleted | NSStreamEventErrorOccurred)) {
-        if ([_inputStream streamStatus] == NSStreamStatusError ||
-            [_outputStream streamStatus] == NSStreamStatusError) {
+        if ([self.inputStream streamStatus] == NSStreamStatusError ||
+            [self.outputStream streamStatus] == NSStreamStatusError) {
             [self portTestDidCompletedWithSuccess:NO];
-        } else if ([_inputStream streamStatus] == NSStreamStatusOpen &&
-                   [_outputStream streamStatus] == NSStreamStatusOpen) {
+        } else if ([self.inputStream streamStatus] == NSStreamStatusOpen &&
+                   [self.outputStream streamStatus] == NSStreamStatusOpen) {
             [self portTestDidCompletedWithSuccess:YES];
         }
     }
@@ -58,15 +59,17 @@
         [_streamTimeoutTimer invalidate];
         _streamTimeoutTimer = nil;
     }
-    if (_inputStream) {
-        [_inputStream removeFromRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
-        [_inputStream close];
-        _inputStream = nil;
+
+    if (self.inputStream) {
+
+        [self.inputStream removeFromRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
+        [self.inputStream close];
+        self.inputStream = nil;
     }
-    if (_outputStream) {
-        [_outputStream removeFromRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
-        [_outputStream close];
-        _outputStream = nil;
+    if (self.outputStream) {
+        [self.outputStream removeFromRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
+        [self.outputStream close];
+        self.outputStream = nil;
     }
 }
 
@@ -74,6 +77,7 @@
 {
     NSInputStream *tempRead;
     NSOutputStream *tempWrite;
+
     [NSStream getStreamsToHost:host
                           port:port
                    inputStream:&tempRead
@@ -81,15 +85,16 @@
 
     if (tempRead && tempWrite) {
         [self startStreamTimeoutTimer];
-        _inputStream = tempRead;
-        _outputStream = tempWrite;
-        [_inputStream setDelegate:self];
-        [_outputStream setDelegate:self];
-        [_inputStream open];
-        [_outputStream open];
 
-        [_inputStream scheduleInRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
-        [_outputStream scheduleInRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
+        self.inputStream = tempRead;
+        self.outputStream = tempWrite;
+        [self.inputStream setDelegate:self];
+        [self.outputStream setDelegate:self];
+        [self.inputStream open];
+        [self.outputStream open];
+
+        [self.inputStream scheduleInRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
+        [self.outputStream scheduleInRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
     } else {
         [self portTestDidCompletedWithSuccess:NO];
     }
@@ -142,7 +147,6 @@
 - (void)handleStreamTimeout
 {
     [self portTestDidCompletedWithSuccess:NO];
-    [self stopTest];
 }
 
 - (void)portTestDidCompletedWithSuccess:(BOOL)success
@@ -154,8 +158,6 @@
     [[NSNotificationCenter defaultCenter] postNotificationName:kLGNotificationTestSmtpServerPort
                                                         object:nil
                                                       userInfo:@{ kLGNotificationUserInfoSuccess : @(success) }];
-
-    [self stopTest];
 }
 
 @end
