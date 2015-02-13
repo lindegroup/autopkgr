@@ -815,6 +815,8 @@
 {
     [[NSOperationQueue mainQueue] addOperationWithBlock:^{
         [self.progressMessage setStringValue:message];
+        [self.progressDetailsMessage setStringValue:@""];
+
         [self.progressIndicator setHidden:NO];
         [self.progressIndicator setIndeterminate:YES];
         [self.progressIndicator displayIfNeeded];
@@ -836,6 +838,7 @@
         [self.progressIndicator setIndeterminate:YES];
         [self.progressPanel orderOut:self];
         [self.cancelAutoPkgRunButton setHidden:YES];
+
         [self.progressDetailsMessage setStringValue:@""];
         [self.progressMessage setStringValue:@"Starting..."];
         [self.progressIndicator setDoubleValue:0.0];
