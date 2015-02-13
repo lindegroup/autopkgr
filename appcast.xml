@@ -6,6 +6,64 @@
     <description>Most recent changes with links to updates.</description>
     <language>en</language>
       <item>
+        <title>Version 1.2</title>
+        <description>
+          <![CDATA[
+          <p>
+              We're delighted to introduce you to version 1.2 of AutoPkgr. There are a few major new features in this release, as well as numerous bug fixes.</p>
+
+          <p><strong>Important: After upgrading to version 1.2, you will need to reenter your email password in the AutoPkgr Schedule tab to continue getting email notifications.</strong>
+          </p>
+
+          <h4>New Features and Enhancements:</h4>
+
+          <ul class="task-list">
+              <li>By popular request, scheduling will now be handled by a LaunchDaemon. This allows AutoPkgr to continue running after a restart, even if nobody is logged in. (<a href="https://github.com/lindegroup/autopkgr/issues/72" class="issue-link" title="Add option to run AutoPkgr as a LaunchDaemon">#72</a>)</li>
+              <li>You can now set how AutoPgkr is displayed, either as a menu item, Dock item, or both. (<a href="https://github.com/lindegroup/autopkgr/issues/10" class="issue-link" title="Option to hide AutoPkgr icon in dock.">#10</a>)</li>
+              <li>You can now set AutoPkgr to launch at login. (<a href="https://github.com/lindegroup/autopkgr/issues/11" class="issue-link" title="&quot;Start AutoPkgr at login&quot; option.">#11</a>)</li>
+              <li>If the "check for repo updates" option is enabled, it will now perform the repo update prior to each <code>autopkg run</code>, rather than just when AutoPkgr is launched. This should help next time the AdobeFlashPlayer recipe changes rapidly.</li>
+              <li>AutoPkgr now passes the recipe and override identifier into AutoPkg to avoid naming clashes when multiple repos have recipes with the same name. Thanks to <a href="https://github.com/rtrouton" class="user-mention">@rtrouton</a> for the suggestion. (<a href="https://github.com/lindegroup/autopkgr/issues/208" class="issue-link" title="Searching for recipes only displays the filename of the recipe">#208</a>)</li>
+              <li>The AutoPkgr menu has been redesigned and enhanced with new menu options.</li>
+              <li>Progress is now displayed during repo-update.</li>
+              <li>We now use OS X's Notifications feature to display test email success. More notifications coming soon!</li>
+              <li>Creating an override will now prompt for override name, allowing for the creation of multiple overrides with the same parent. (For example, <code>FirefoxSelfService.jss</code> and <code>FirefoxAutoUpdate.jss</code>.)</li>
+              <li>When enabling a recipe, if the parent recipe is not installed, an alert will be displayed.</li>
+              <li>Scheduled recipes will automatically be removed from the recipe list if their repo is removed, or if a repo update no longer contains the recipe.</li>
+              <li>You can now search GitHub for AutoPkg recipes, equivalent to <code>autopkg search [recipe]</code>.</li>
+              <li>Easy uninstall! If you ever want to uninstall AutoPkgr and its components, hold the <strong>Option</strong> key and choose <strong>Uninstall</strong> from the AutoPkgr menu icon.</li>
+          </ul>
+
+          <h4>Changes:</h4>
+
+          <ul class="task-list">
+              <li>New keychain item for AutoPkgr located at <code>~/Library/Keychains/AutoPkgr.keychain</code>. It can be unlocked and examined using the computer's serial number as the password.</li>
+              <li>Using master JDS is now set with a checkbox. Thanks to <a href="https://github.com/everetteallen" class="user-mention">@everetteallen</a> for this suggestion. (<a href="https://github.com/lindegroup/autopkgr/issues/174#issuecomment-64712310">#174</a>)</li>
+          </ul>
+
+          <h4>Bug-Fixes:</h4>
+
+          <ul class="task-list">
+              <li>Fixed a condition that could cause preferences to be erased if an error occurs during launch.</li>
+              <li>Fixed a condition that could cause AutoPkg to hang due to Python stdout buffer not getting flushed.</li>
+              <li>Fixed a condition where keychain was queried for email password even when authentication was not enabled.</li>
+              <li>Automatically removes trailing slash from JSS_URL which could cause 404 errors. Thanks to <a href="https://github.com/acodega" class="user-mention">@acodega</a> for getting to the bottom of this! (<a href="https://github.com/lindegroup/autopkgr/issues/221#issuecomment-66159456">#221</a>)</li>
+              <li>Minor typo fixes and additional log entries, as always.</li>
+          </ul>
+
+          <h4>Note for proxy users:</h4>
+
+          <ul class="task-list">
+              <li>If using proxies that require authentication <strong>you will not</strong> be able to use the system proxies configured in the system preferences via the <code>defaults write com.lindegroup.AutoPkgr useSystemProxies -bool true</code>. Specify the the proxy setting manually using defaults using the instructions in the <a href="https://github.com/lindegroup/autopkgr">readme</a>. We'll hopefully be adding a UI element to a future release. <em>This only applies to proxies that require authentication.</em>
+              </li>
+          </ul>
+
+          <p>As always, if you find any bugs or encounter problems, please <a href="https://github.com/lindegroup/autopkgr/issues">open a new issue on GitHub</a> and we'll do our best to help troubleshoot. Thank you!</p>
+          ]]>
+        </description>
+        <pubDate>Thu, 12 Feb 2015 12:00:00 -0800</pubDate>
+        <enclosure url="https://github.com/lindegroup/autopkgr/releases/download/v1.2/AutoPkgr-1.2.dmg" sparkle:version="679" sparkle:shortVersionString="1.2" type="application/octet-stream" />
+      </item>
+      <item>
         <title>Version 1.1.3</title>
         <description>
           <![CDATA[
