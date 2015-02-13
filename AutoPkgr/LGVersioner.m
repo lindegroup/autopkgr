@@ -68,16 +68,17 @@ NSString *const kLGVersionerVersionKey = @"version";
     }
 }
 
-- (void)evaluateVersion:(NSString *)string
+- (void)evaluateVersion:(NSString *)rawString
 {
     NSError *error;
     NSString *pattern = @"((\\d+)\\.(\\d+)(\\.(\\d+))?(\\.(\\d+))?)(?:(?:-(alpha\\d*|beta\\d*|rc\\d*))?)";
 
+    NSString *string = [rawString stringByRemovingPercentEncoding];
+
     NSRegularExpression *exp = [NSRegularExpression regularExpressionWithPattern:pattern options:0 error:&error];
 
-    NSRange range = NSMakeRange(0, string.length);
-
-    if (!error) {
+    if (string && !error) {
+        NSRange range = NSMakeRange(0, string.length);
         NSArray *matches = [exp matchesInString:string options:0 range:range];
         for (NSTextCheckingResult *match in matches) {
             _currentVersion = [string substringWithRange:match.range];
