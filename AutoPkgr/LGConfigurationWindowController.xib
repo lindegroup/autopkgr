@@ -533,17 +533,17 @@
                                                                 <constraints>
                                                                     <constraint firstAttribute="width" constant="262" id="eVh-AZ-owA"/>
                                                                 </constraints>
-                                                                <buttonCell key="cell" type="check" title="Check for new versions of apps every" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="7rF-ef-zEP">
+                                                                <buttonCell key="cell" type="check" title="Check for new versions of apps every" bezelStyle="regularSquare" imagePosition="left" alignment="left" state="on" inset="2" id="7rF-ef-zEP">
                                                                     <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                                                     <font key="font" metaFont="system"/>
                                                                 </buttonCell>
                                                             </button>
                                                             <button translatesAutoresizingMaskIntoConstraints="NO" id="K6Q-1C-fKu">
-                                                                <rect key="frame" x="16" y="26" width="320" height="18"/>
+                                                                <rect key="frame" x="16" y="26" width="364" height="18"/>
                                                                 <constraints>
-                                                                    <constraint firstAttribute="width" constant="316" id="3gc-Sz-Ehm"/>
+                                                                    <constraint firstAttribute="width" constant="360" id="Lwn-mM-kHH"/>
                                                                 </constraints>
-                                                                <buttonCell key="cell" type="check" title="Check for repo updates when AutoPkgr starts" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="2Rc-4D-cra">
+                                                                <buttonCell key="cell" type="check" title="Check for repo updates before each AutoPkg run" bezelStyle="regularSquare" imagePosition="left" alignment="left" state="on" inset="2" id="2Rc-4D-cra">
                                                                     <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                                                     <font key="font" metaFont="system"/>
                                                                 </buttonCell>
@@ -588,12 +588,12 @@
                                                         <constraint firstAttribute="centerX" secondItem="7vx-nK-KRd" secondAttribute="centerX" constant="-175.5" id="Men-25-NpO"/>
                                                         <constraint firstItem="K6Q-1C-fKu" firstAttribute="top" secondItem="J8d-qW-trQ" secondAttribute="bottom" constant="14" id="N04-Cg-Gcu"/>
                                                         <constraint firstAttribute="centerX" secondItem="J8d-qW-trQ" secondAttribute="centerX" constant="152.5" id="NT6-d9-dfq"/>
-                                                        <constraint firstAttribute="centerX" secondItem="K6Q-1C-fKu" secondAttribute="centerX" constant="125.5" id="PcX-bx-QkQ"/>
                                                         <constraint firstItem="X02-En-nic" firstAttribute="width" secondItem="7vx-nK-KRd" secondAttribute="width" id="Qug-H3-Tzl"/>
                                                         <constraint firstItem="oZ2-P7-4IE" firstAttribute="baseline" secondItem="cHq-LH-gnB" secondAttribute="baseline" constant="2" id="SRo-dN-d5C"/>
                                                         <constraint firstItem="7vx-nK-KRd" firstAttribute="leading" secondItem="cHq-LH-gnB" secondAttribute="trailing" constant="57" id="gQ7-7z-Jg8"/>
                                                         <constraint firstAttribute="centerY" secondItem="7vx-nK-KRd" secondAttribute="centerY" constant="6.5" id="iB8-QZ-D0M"/>
                                                         <constraint firstItem="cHq-LH-gnB" firstAttribute="leading" secondItem="oZ2-P7-4IE" secondAttribute="trailing" constant="3" id="nqL-2N-Ndj"/>
+                                                        <constraint firstAttribute="centerX" secondItem="K6Q-1C-fKu" secondAttribute="centerX" constant="103.5" id="pVX-zX-vEV"/>
                                                         <constraint firstItem="J8d-qW-trQ" firstAttribute="baseline" secondItem="oZ2-P7-4IE" secondAttribute="baseline" constant="-2" id="teX-PK-b2v"/>
                                                         <constraint firstAttribute="centerY" secondItem="X02-En-nic" secondAttribute="centerY" constant="-22.5" id="z4E-uU-vgi"/>
                                                     </constraints>
