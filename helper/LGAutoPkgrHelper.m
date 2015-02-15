@@ -20,10 +20,11 @@
 #import "LGAutoPkgrHelper.h"
 #import "LGAutoPkgrProtocol.h"
 #import "LGAutoPkgr.h"
-#import <AHLaunchCtl/AHLaunchCtl.h>
-#import "AHCodesignVerifier.h"
-#import "AHKeychain.h"
 #import "LGProgressDelegate.h"
+
+#import "AHKeychain.h"
+#import "SNTCodesignChecker.h"
+#import <AHLaunchCtl/AHLaunchCtl.h>
 
 #import <pwd.h>
 #import <syslog.h>
@@ -56,6 +57,7 @@ static const NSTimeInterval kHelperCheckInterval = 1.0; // how often to check wh
     while (!self.helperToolShouldQuit) {
         [[NSRunLoop currentRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:kHelperCheckInterval]];
     }
+    syslog(LOG_ALERT, "Quiting AutoPkgr helper application.");
 }
 
 #pragma mark - NSXPCListenerDelegate
@@ -65,14 +67,10 @@ static const NSTimeInterval kHelperCheckInterval = 1.0; // how often to check wh
 - (BOOL)listener:(NSXPCListener *)listener shouldAcceptNewConnection:(NSXPCConnection *)newConnection
 {
 
-    NSXPCInterface *exportedInterface = [NSXPCInterface interfaceWithProtocol:@protocol(HelperAgent)];
-    newConnection.exportedInterface = exportedInterface;
+    if ([self newConnectionIsValid:newConnection]) {
+        NSXPCInterface *exportedInterface = [NSXPCInterface interfaceWithProtocol:@protocol(HelperAgent)];
+        newConnection.exportedInterface = exportedInterface;
 
-    // Only accept the connection if the call is made by the console user.
-    uid_t loggedInUser;
-    CFBridgingRelease(SCDynamicStoreCopyConsoleUser(NULL, &loggedInUser, NULL));
-
-    if (loggedInUser == newConnection.effectiveUserIdentifier) {
         newConnection.exportedObject = self;
         self.connection = newConnection;
 
@@ -89,10 +87,49 @@ static const NSTimeInterval kHelperCheckInterval = 1.0; // how often to check wh
 
         [newConnection resume];
         [self.connections addObject:newConnection];
+        syslog(LOG_INFO, "Connection Success...");
         return YES;
-    } else {
-        return NO;
     }
+
+    syslog(LOG_ERR, "Error creating xpc connection...");
+    return NO;
+}
+
+#pragma mark - Password
+- (void)getPasswordForAccount:(NSString *)account reply:(void (^)(NSString *, NSError *))reply
+{
+    NSError *error;
+
+    uid_t uid;
+    NSString *loggedInUser = CFBridgingRelease(SCDynamicStoreCopyConsoleUser(NULL, &uid, NULL));
+
+    // If a user is logged in check that the connection has the same
+    // effective user. This should prevent some potential exploit
+    // If it's running at the login window we can't do the same check
+    if (loggedInUser && (uid != self.connection.effectiveUserIdentifier)) {
+        [self.connection invalidate];
+        return;
+    }
+
+    AHKeychainItem *item = [self setupKeychainItemForAccount:account];
+    [[AHKeychain systemKeychain] getItem:item error:&error];
+
+    reply(item.password, error);
+}
+
+- (void)savePassword:(NSString *)password forAccount:(NSString *)account reply:(void (^)(NSError *))reply
+{
+    NSError *error;
+    if ((account && account.length) && (password && password.length)) {
+        AHKeychainItem *item = [self setupKeychainItemForAccount:account];
+        item.password = password;
+
+        [[AHKeychain systemKeychain] saveItem:item error:&error];
+    } else {
+        error = [NSError errorWithDomain:kLGApplicationName code:12
+                                userInfo:@{ NSLocalizedDescriptionKey : @"Could not save password, either username or password is blank" }];
+    }
+    reply(error);
 }
 
 #pragma mark - AutoPkgr Schedule
@@ -198,6 +235,11 @@ static const NSTimeInterval kHelperCheckInterval = 1.0; // how often to check wh
     // this will cause the run-loop to exit;
     // you should call it via NSXPCConnection
     // during the applicationShouldTerminate routine
+    for (NSXPCConnection *connection in self.connections) {
+        [connection invalidate];
+    }
+    [self.connections removeAllObjects];
+
     self.helperToolShouldQuit = YES;
     reply(YES);
 }
@@ -219,6 +261,7 @@ static const NSTimeInterval kHelperCheckInterval = 1.0; // how often to check wh
 
     [AHLaunchCtl removeFilesForHelperWithLabel:kLGAutoPkgrHelperToolName error:&error];
     reply(error);
+
     [AHLaunchCtl uninstallHelper:kLGAutoPkgrHelperToolName prompt:@"" error:nil];
 }
 
@@ -227,10 +270,11 @@ static const NSTimeInterval kHelperCheckInterval = 1.0; // how often to check wh
 {
     // Get the executable path of the helper tool.  We use this to compare against
     // the program the helper tool is asked add as the launchd.plist "Program" key
-    NSString *helperExecPath = [[[NSProcessInfo processInfo] arguments] firstObject];
-    return [AHCodesignVerifier codesignOfItemAtPath:path
-                                 isSameAsItemAtPath:helperExecPath
-                                              error:error];
+
+    SNTCodesignChecker *selfCS = [[SNTCodesignChecker alloc] initWithSelf];
+    SNTCodesignChecker *remoteCS = [[SNTCodesignChecker alloc] initWithBinaryPath:path];
+
+    return [selfCS signingInformationMatches:remoteCS];
 }
 
 - (BOOL)userIsValid:(NSString *)user error:(NSError *__autoreleasing *)error;
@@ -256,4 +300,38 @@ static const NSTimeInterval kHelperCheckInterval = 1.0; // how often to check wh
     return success;
 }
 
+- (BOOL)newConnectionIsValid:(NSXPCConnection *)newConnection
+{
+    BOOL success = NO;
+    pid_t pid = newConnection.processIdentifier;
+
+    SNTCodesignChecker *selfCS = [[SNTCodesignChecker alloc] initWithSelf];
+    SNTCodesignChecker *remoteCS = [[SNTCodesignChecker alloc] initWithPID:pid];
+
+    if (!(success = [remoteCS signingInformationMatches:selfCS])) {
+        // If there is an problem log the error.
+        syslog(LOG_ALERT, "[ERROR] The codesigning signature of one of the following items could not be verified. If either of the following messages displays NULL, please quit AutoPkgr, and manually remove the helper tool binary at %s.", selfCS.binaryPath.UTF8String);
+        syslog(LOG_ALERT, "[ERROR] AutoPkgr codesign stats: %s", remoteCS.description.UTF8String);
+        syslog(LOG_ALERT, "[ERROR] Helper Tool codesign stats: %s", selfCS.description.UTF8String);
+    } else {
+#if DEBUG
+        syslog(LOG_ALERT, "[DEBUG] AutoPkgr codesign stats: %s", remoteCS.description.UTF8String);
+        syslog(LOG_ALERT, "[DEBUG] Helper Tool codesign stats: %s", selfCS.description.UTF8String);
+#endif
+    }
+
+    return success;
+}
+
+- (AHKeychainItem *)setupKeychainItemForAccount:(NSString *)account
+{
+    AHKeychainItem *item = [[AHKeychainItem alloc] init];
+    item.account = account;
+    item.label = kLGApplicationName;
+
+    // Append the EUID to the service string to limit access
+    // to only items created by the same user.
+    item.service = [kLGAutoPkgrPreferenceDomain stringByAppendingFormat:@"_%d", self.connection.effectiveUserIdentifier];
+    return item;
+}
 @end

@@ -29,10 +29,8 @@
 #import "LGAutoPkgSchedule.h"
 #import "LGProgressDelegate.h"
 #import "LGDisplayStatusDelegate.h"
-
 #import "LGTools.h"
-
-#import "AHKeychain.h"
+#import "LGPasswords.h"
 
 @interface LGConfigurationWindowController () {
     LGDefaults *_defaults;
@@ -59,6 +57,12 @@
 - (void)windowDidLoad
 {
     [super windowDidLoad];
+
+//    [LGPasswords migrateKeychainIfNeeded:^(NSString *password) {
+//        if (password) {
+//            _smtpPassword.stringValue = password;
+//        }
+//    }];
 
     // Populate the preference values from the user defaults, if they exist
     DLog(@"Populating configuration window settings based on user defaults, if they exist.");
@@ -119,13 +123,7 @@
     NSString *userName = _defaults.SMTPUsername;
     if (userName) {
         _smtpUsername.safeStringValue = userName;
-        NSString *password = [self getKeychainPassword];
-
-        // Only populate the SMTP Password field if the username exists
-        if (password) {
-            NSLog(@"Successfully retrieved keychain entry for account %@.", userName);
-            [_smtpPassword setStringValue:password];
-        }
+        [self getKeychainPassword:_smtpPassword];
     }
 
     // removeEmptyStrings is an NSArray category extension
@@ -252,50 +250,31 @@
 }
 
 #pragma mark - Keychain Actions
-- (NSString *)getKeychainPassword
+- (void)getKeychainPassword:(NSTextField *)sender
 {
-    NSError *error;
-    NSString *user = _smtpUsername.stringValue;
-
-    AHKeychain *keychain = [LGHostInfo appKeychain];
-    AHKeychainItem *item = [[AHKeychainItem alloc] init];
-    item.label = kLGApplicationName;
-    item.service = kLGAutoPkgrPreferenceDomain;
-    item.account = user;
-
-    [keychain getItem:item error:&error];
-
-    if ([error code] == errSecItemNotFound) {
-        NSLog(@"Keychain entry not found for account %@.", user);
-    } else if ([error code] == errSecNotAvailable) {
-        NSLog(@"Found the keychain entry for %@ but no password value was returned.", user);
-    } else if (error) {
-        NSLog(@"An error occurred when attempting to retrieve the keychain entry for %@. Error: %@", user, [error localizedDescription]);
+    NSString *account = _smtpUsername.stringValue;
+    if (account.length) {
+        [LGPasswords getPasswordForAccount:account reply:^(NSString *password, NSError *error) {
+            if (error) {
+                NSLog(@"Error getting password for %@ [%ld]: %@", account, error.code, error.localizedDescription);
+            } else {
+                sender.safeStringValue = password;
+            }
+        }];
     }
-
-    return item.password;
 }
 
 - (IBAction)updateKeychainPassword:(id)sender
 {
-    NSString *user = _smtpUsername.safeStringValue;
+    NSString *account = _smtpUsername.safeStringValue;
     NSString *password = _smtpPassword.safeStringValue;
 
-    if (user && password) {
-        NSError *error;
-
-        AHKeychain *keychain = [LGHostInfo appKeychain];
-        AHKeychainItem *item = [[AHKeychainItem alloc] init];
-
-        item.service = kLGAutoPkgrPreferenceDomain;
-        item.label = kLGApplicationName;
-        item.account = user;
-        item.password = password;
-
-        [keychain saveItem:item error:&error];
-        if (error) {
-            NSLog(@"Error setting password [%ld]: %@", error.code, error.localizedDescription);
-        }
+    if (account && password) {
+        [LGPasswords savePassword:password forAccount:account reply:^(NSError *error) {
+            if (error) {
+                NSLog(@"Error setting password [%ld]: %@", error.code, error.localizedDescription);
+            }
+        }];
     }
 }
 
@@ -719,7 +698,7 @@
         [self testSmtpServerPort:self];
     } else if ([object isEqual:_smtpUsername]) {
         _defaults.SMTPUsername = [_smtpUsername stringValue];
-        _smtpPassword.safeStringValue = [self getKeychainPassword];
+        [self getKeychainPassword:_smtpPassword];
     } else if ([object isEqual:_smtpFrom]) {
         _defaults.SMTPFrom = [_smtpFrom stringValue];
     } else if ([object isEqual:_localMunkiRepo]) {

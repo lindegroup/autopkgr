@@ -23,7 +23,7 @@
 #import "LGRecipes.h"
 #import "LGAutoPkgr.h"
 #import "LGHostInfo.h"
-#import "AHKeychain.h"
+#import "LGPasswords.h"
 #import "LGTools.h"
 #import "LGUserNotifications.h"
 
@@ -56,29 +56,25 @@
 
         // Retrieve the SMTP password from the default
         // keychain if it exists
-        NSError *error = nil;
-
         // Only check for a password if username exists
         if (defaults.SMTPAuthenticationEnabled && ![smtpSession.username isEqualToString:@""]) {
-            AHKeychain *keychain = [LGHostInfo appKeychain];
-            AHKeychainItem *item = [[AHKeychainItem alloc] init];
+            __block BOOL complete = NO;
+            [LGPasswords getPasswordForAccount:smtpSession.username reply:^(NSString *password, NSError *error) {
+                if ([error code] == errSecItemNotFound) {
+                    NSLog(@"Keychain item not found for account %@.", smtpSession.username);
+                } else if ([error code] == errSecNotAvailable) {
+                    NSLog(@"Found the keychain item for %@ but no password value was returned.", smtpSession.username);
+                } else if (error != nil) {
+                    NSLog(@"An error occurred when attempting to retrieve the keychain entry for %@. Error: %@", smtpSession.username, [error localizedDescription]);
+                } else {
+                    DLog(@"Retrieved password from keychain for account %@.", smtpSession.username);
+                    smtpSession.password = password ?: @"";
+                }
+                complete = YES;
+            }];
 
-            item.label = kLGApplicationName;
-            item.service = kLGAutoPkgrPreferenceDomain;
-            item.account = smtpSession.username;
-
-            [keychain getItem:item error:&error];
-            NSString *password = item.password;
-
-            if ([error code] == errSecItemNotFound) {
-                NSLog(@"Keychain item not found for account %@.", smtpSession.username);
-            } else if ([error code] == errSecNotAvailable) {
-                NSLog(@"Found the keychain item for %@ but no password value was returned.", smtpSession.username);
-            } else if (error != nil) {
-                NSLog(@"An error occurred when attempting to retrieve the keychain entry for %@. Error: %@", smtpSession.username, [error localizedDescription]);
-            } else {
-                DLog(@"Retrieved password from keychain for account %@.", smtpSession.username);
-                smtpSession.password = password ?: @"";
+            while (!complete) {
+                [[NSRunLoop currentRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:1.0]];
             }
         }
 
