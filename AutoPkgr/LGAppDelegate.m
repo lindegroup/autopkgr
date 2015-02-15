@@ -119,12 +119,6 @@
 
 - (void)applicationWillTerminate:(NSNotification *)notification
 {
-    if (jobIsRunning(kLGAutoPkgrHelperToolName, kAHGlobalLaunchDaemon)) {
-        LGAutoPkgrHelperConnection *helper = [LGAutoPkgrHelperConnection new];
-        [helper connectToHelper];
-        [[helper.connection remoteObjectProxy] quitHelper:^(BOOL success) {}];
-    }
-
     // Stop observing...
     [[NSDistributedNotificationCenter defaultCenter] removeObserver:self name:kLGNotificationProgressMessageUpdate object:nil];
 }
@@ -133,6 +127,23 @@
 {
     [self showConfigurationWindow:self];
     return YES;
+}
+
+- (NSApplicationTerminateReply)applicationShouldTerminate:(NSApplication *)sender{
+    if (jobIsRunning(kLGAutoPkgrHelperToolName, kAHGlobalLaunchDaemon)) {
+        LGAutoPkgrHelperConnection *helper = [LGAutoPkgrHelperConnection new];
+        [helper connectToHelper];
+
+        DLog(@"Sending quit signal to helper tool...");
+        [[helper.connection remoteObjectProxyWithErrorHandler:^(NSError *error) {
+            [[NSApplication sharedApplication] replyToApplicationShouldTerminate:YES];
+        }]quitHelper:^(BOOL success) {
+            [[NSApplication sharedApplication] replyToApplicationShouldTerminate:YES];
+        }];
+
+        return NSTerminateLater;
+    }
+    return NSTerminateNow;
 }
 
 #pragma mark - Setup
@@ -242,7 +253,7 @@
                 // if uninstalling turn off schedule in defaults so it's not automatically recreated
                 NSAlert *alert = [NSAlert alertWithMessageText:@"Removed AutoPkgr associated files" defaultButton:@"Thanks for using AutoPkgr" alternateButton:nil otherButton:nil informativeTextWithFormat: @"including the helper tool, launchd schedule, and other launchd plist. You can safely remove it from your Applications folder."];
                 [alert runModal];
-                [[NSApplication sharedApplication]terminate:self];
+                [[NSApplication sharedApplication] terminate:self];
             }
         }];
             }];

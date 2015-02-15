@@ -85,10 +85,10 @@
     BOOL success = YES;
     AHKeychain *keychain;
 
-    NSString *fullPath = [NSString stringWithFormat:@"%@/Library/Keychains/%@", NSHomeDirectory(), appKeychain];
+    NSString *keychainPath = [NSString stringWithFormat:@"%@/Library/Keychains/%@", NSHomeDirectory(), appKeychain];
     NSString *password = [[self class] macSerialNumber];
 
-    if (![[NSFileManager defaultManager] fileExistsAtPath:fullPath]) {
+    if (![[NSFileManager defaultManager] fileExistsAtPath:keychainPath]) {
         keychain = [[AHKeychain alloc] initCreatingNewKeychain:appKeychain password:password];
         if (!keychain) {
             success = NO;

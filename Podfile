@@ -14,7 +14,7 @@ end
 
 target "com.lindegroup.AutoPkgr.helper" do
 pod 'AHLaunchCtl', '~> 0.3.1'
-pod 'AHCodesignVerifier', '~> 0.1'
+pod 'AHKeychain', '~> 0.2'
 end
 
 target "AutoPkgrTests" do
@@ -25,5 +25,4 @@ pod 'mailcore2-osx', '~> 0.5'
 pod 'AHProxySettings', '~> 0.1.1'
 pod 'AHKeychain', '~> 0.2.1'
 pod 'AHLaunchCtl', '~> 0.3.1'
-pod 'AHCodesignVerifier', '~> 0.1'
 end
