@@ -318,10 +318,8 @@
             [_configurationWindowController updateProgress:message progress:progress];
         }
 
-        if (message.length < 50) {
-            NSMenuItem *runStatus = [self.statusMenu itemAtIndex:0];
-            runStatus.title = message;
-        }
+        NSMenuItem *runStatus = [self.statusMenu itemAtIndex:0];
+        runStatus.title = [message truncateToLength:50];
     }];
 }
 

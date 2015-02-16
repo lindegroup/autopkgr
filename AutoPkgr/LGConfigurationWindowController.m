@@ -863,13 +863,11 @@
 
 - (void)updateProgress:(NSString *)message progress:(double)progress
 {
-    if (message.length < 100) {
         [[NSOperationQueue mainQueue] addOperationWithBlock:^{
             [self.progressIndicator setIndeterminate:NO];
-            [self.progressDetailsMessage setStringValue:message];
+            [self.progressDetailsMessage setStringValue:[message truncateToLength:100]];
             [self.progressIndicator setDoubleValue:progress > 5.0 ? progress:5.0 ];
         }];
-    }
 }
 
 #pragma mark - Notifications
