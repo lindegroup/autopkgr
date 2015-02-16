@@ -34,6 +34,9 @@
 		BE025CF719BAE93400D36345 /* LGAutoPkgTask.m in Sources */ = {isa = PBXBuildFile; fileRef = BE025CF519BAE93400D36345 /* LGAutoPkgTask.m */; };
 		BE025CFE19BAEF8800D36345 /* LGAutoPkgSchedule.m in Sources */ = {isa = PBXBuildFile; fileRef = BE025CFD19BAEF8800D36345 /* LGAutoPkgSchedule.m */; };
 		BE025CFF19BAEF8800D36345 /* LGAutoPkgSchedule.m in Sources */ = {isa = PBXBuildFile; fileRef = BE025CFD19BAEF8800D36345 /* LGAutoPkgSchedule.m */; };
+		BE053D151A8F90920021D97B /* LGPasswords.m in Sources */ = {isa = PBXBuildFile; fileRef = BE053D141A8F90920021D97B /* LGPasswords.m */; };
+		BE053D181A8F9DAA0021D97B /* SNTCodesignChecker.m in Sources */ = {isa = PBXBuildFile; fileRef = BE053D171A8F9DAA0021D97B /* SNTCodesignChecker.m */; };
+		BE053D1B1A8F9DC00021D97B /* SNTCertificate.m in Sources */ = {isa = PBXBuildFile; fileRef = BE053D1A1A8F9DC00021D97B /* SNTCertificate.m */; };
 		BE05CE6A19DAF26B0089068B /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = BE05CE6919DAF26B0089068B /* main.m */; };
 		BE05CE7519DAF4DA0089068B /* com.lindegroup.AutoPkgr.helper in Copy Files: Helper Tool */ = {isa = PBXBuildFile; fileRef = BE05CE6719DAF26B0089068B /* com.lindegroup.AutoPkgr.helper */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		BE05CE7C19DAF5A30089068B /* LGAutoPkgrHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = BE05CE7A19DAF5A30089068B /* LGAutoPkgrHelper.m */; };
@@ -185,6 +188,12 @@
 		BE025CF519BAE93400D36345 /* LGAutoPkgTask.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGAutoPkgTask.m; sourceTree = "<group>"; };
 		BE025CFC19BAEF8800D36345 /* LGAutoPkgSchedule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGAutoPkgSchedule.h; sourceTree = "<group>"; };
 		BE025CFD19BAEF8800D36345 /* LGAutoPkgSchedule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGAutoPkgSchedule.m; sourceTree = "<group>"; };
+		BE053D131A8F90920021D97B /* LGPasswords.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGPasswords.h; sourceTree = "<group>"; };
+		BE053D141A8F90920021D97B /* LGPasswords.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGPasswords.m; sourceTree = "<group>"; };
+		BE053D161A8F9DAA0021D97B /* SNTCodesignChecker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SNTCodesignChecker.h; sourceTree = "<group>"; };
+		BE053D171A8F9DAA0021D97B /* SNTCodesignChecker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SNTCodesignChecker.m; sourceTree = "<group>"; };
+		BE053D191A8F9DC00021D97B /* SNTCertificate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SNTCertificate.h; sourceTree = "<group>"; };
+		BE053D1A1A8F9DC00021D97B /* SNTCertificate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SNTCertificate.m; sourceTree = "<group>"; };
 		BE05CE6719DAF26B0089068B /* com.lindegroup.AutoPkgr.helper */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = com.lindegroup.AutoPkgr.helper; sourceTree = BUILT_PRODUCTS_DIR; };
 		BE05CE6919DAF26B0089068B /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		BE05CE7619DAF5A30089068B /* helper-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "helper-Info.plist"; sourceTree = "<group>"; };
@@ -453,6 +462,10 @@
 		BE05CE7D19DAF5B80089068B /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				BE053D191A8F9DC00021D97B /* SNTCertificate.h */,
+				BE053D1A1A8F9DC00021D97B /* SNTCertificate.m */,
+				BE053D161A8F9DAA0021D97B /* SNTCodesignChecker.h */,
+				BE053D171A8F9DAA0021D97B /* SNTCodesignChecker.m */,
 				BE05CE7619DAF5A30089068B /* helper-Info.plist */,
 				BE05CE7719DAF5A30089068B /* helper-Launchd.plist */,
 				BE05CE7819DAF5A30089068B /* helper-Prefix.pch */,
@@ -531,6 +544,8 @@
 				BE8C7D6D1A86CEF600EBD32A /* LGTools.m */,
 				BE0E857719D668F600B25B5E /* LGHTTPRequest.h */,
 				BE0E857819D668F600B25B5E /* LGHTTPRequest.m */,
+				BE053D131A8F90920021D97B /* LGPasswords.h */,
+				BE053D141A8F90920021D97B /* LGPasswords.m */,
 				1A1BAD94197A0407008192A7 /* LGVersionComparator.h */,
 				1A1BAD95197A0407008192A7 /* LGVersionComparator.m */,
 				BEBF7B151A4894AC00E9967F /* LGVersioner.h */,
@@ -824,6 +839,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BE053D151A8F90920021D97B /* LGPasswords.m in Sources */,
 				BE0BACD11A2560AE00554989 /* LGJSSDistributionPointsPrefPanel.m in Sources */,
 				BEC1258919F046FA006696C4 /* main.m in Sources */,
 				BED02ADC1A194F9C00714CC2 /* NSArray+filtered.m in Sources */,
@@ -899,6 +915,8 @@
 				BE05CE9119DB380F0089068B /* LGConstants.m in Sources */,
 				BE1C810419E8224000EF77F3 /* NSImage+statusLight.m in Sources */,
 				BE05CE6A19DAF26B0089068B /* main.m in Sources */,
+				BE053D1B1A8F9DC00021D97B /* SNTCertificate.m in Sources */,
+				BE053D181A8F9DAA0021D97B /* SNTCodesignChecker.m in Sources */,
 				BE05CE7C19DAF5A30089068B /* LGAutoPkgrHelper.m in Sources */,
 				BE05CE8D19DB379C0089068B /* LGAutoPkgrAuthorizer.m in Sources */,
 				BE05CE9219DB38180089068B /* LGError.m in Sources */,
