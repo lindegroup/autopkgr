@@ -73,7 +73,7 @@ NSString *const kLGVersionerVersionKey = @"version";
     NSError *error;
     NSString *pattern = @"((\\d+)\\.(\\d+)(\\.(\\d+))?(\\.(\\d+))?)(?:(?:-(alpha\\d*|beta\\d*|rc\\d*))?)";
 
-    NSString *string = [rawString stringByRemovingPercentEncoding];
+    NSString *string = CFBridgingRelease(CFURLCreateStringByReplacingPercentEscapesUsingEncoding(NULL, (__bridge CFStringRef)rawString, CFSTR(""), kCFStringEncodingUTF8));
 
     NSRegularExpression *exp = [NSRegularExpression regularExpressionWithPattern:pattern options:0 error:&error];
 
