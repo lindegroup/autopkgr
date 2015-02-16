@@ -327,11 +327,11 @@ static const NSTimeInterval kHelperCheckInterval = 1.0; // how often to check wh
 {
     AHKeychainItem *item = [[AHKeychainItem alloc] init];
     item.account = account;
-    item.label = kLGApplicationName;
+    item.label = [kLGApplicationName stringByAppendingString:@" Email Password"];
 
     // Append the EUID to the service string to limit access
     // to only items created by the same user.
-    item.service = [kLGAutoPkgrPreferenceDomain stringByAppendingFormat:@"_%d", self.connection.effectiveUserIdentifier];
+    item.service = [item.label stringByAppendingFormat:@" UID: %d", self.connection.effectiveUserIdentifier];
     return item;
 }
 @end
