@@ -29,7 +29,6 @@
 + (NSString *)getHostName;
 + (NSString *)getUserAtHostName;
 + (NSString *)getAppSupportDirectory;
-
-+ (AHKeychain *)appKeychain;
++ (NSString *)macSerialNumber;
 
 @end

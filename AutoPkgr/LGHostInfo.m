@@ -24,6 +24,8 @@
 #import "LGAutoPkgr.h"
 #import "LGGitHubJSONLoader.h"
 #import "LGVersionComparator.h"
+#import "LGAutoPkgrHelperConnection.h"
+
 #import "AHKeychain.h"
 
 
@@ -78,28 +80,7 @@
     return autoPkgrSupportDirectory;
 }
 
-+ (AHKeychain *)appKeychain
-{
-    NSString *appKeychain = @"AutoPkgr.keychain";
 
-    BOOL success = YES;
-    AHKeychain *keychain;
-
-    NSString *keychainPath = [NSString stringWithFormat:@"%@/Library/Keychains/%@", NSHomeDirectory(), appKeychain];
-    NSString *password = [[self class] macSerialNumber];
-
-    if (![[NSFileManager defaultManager] fileExistsAtPath:keychainPath]) {
-        keychain = [[AHKeychain alloc] initCreatingNewKeychain:appKeychain password:password];
-        if (!keychain) {
-            success = NO;
-        }
-    } else {
-        keychain = [[AHKeychain alloc] initWithKeychain:appKeychain];
-        success = [keychain unlockWithPassword:password];
-    }
-
-    return success ? keychain : nil;
-}
 
 + (NSString *)macSerialNumber
 {

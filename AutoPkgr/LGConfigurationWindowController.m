@@ -58,11 +58,11 @@
 {
     [super windowDidLoad];
 
-//    [LGPasswords migrateKeychainIfNeeded:^(NSString *password) {
-//        if (password) {
-//            _smtpPassword.stringValue = password;
-//        }
-//    }];
+    [LGPasswords migrateKeychainIfNeeded:^(NSString *password) {
+        if (password) {
+            _smtpPassword.stringValue = password;
+        }
+    }];
 
     // Populate the preference values from the user defaults, if they exist
     DLog(@"Populating configuration window settings based on user defaults, if they exist.");
@@ -149,7 +149,6 @@
         _gitStatusLabel.stringValue = tool.statusString;
         _gitStatusIcon.image = tool.statusImage;
     }];
-
 }
 
 - (BOOL)windowShouldClose:(id)sender
@@ -272,7 +271,17 @@
     if (account && password) {
         [LGPasswords savePassword:password forAccount:account reply:^(NSError *error) {
             if (error) {
-                NSLog(@"Error setting password [%ld]: %@", error.code, error.localizedDescription);
+                if (error.code == errSecAuthFailed) {
+                    [LGPasswords resetKeychainPrompt:^(NSError *error) {
+                        if (!error) {
+                            [self updateKeychainPassword:nil];
+                        } else {
+                            NSLog(@"%@", error.localizedDescription);
+                        }
+                    }];
+                } else {
+                    NSLog(@"Error setting password [%ld]: %@", error.code, error.localizedDescription);
+                }
             }
         }];
     }
@@ -842,11 +851,11 @@
 
 - (void)updateProgress:(NSString *)message progress:(double)progress
 {
-        [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+    [[NSOperationQueue mainQueue] addOperationWithBlock:^{
             [self.progressIndicator setIndeterminate:NO];
             [self.progressDetailsMessage setStringValue:[message truncateToLength:100]];
             [self.progressIndicator setDoubleValue:progress > 5.0 ? progress:5.0 ];
-        }];
+    }];
 }
 
 #pragma mark - Notifications

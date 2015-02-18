@@ -18,11 +18,10 @@
 //
 
 #import "LGAutoPkgrHelper.h"
-#import "LGAutoPkgrProtocol.h"
 #import "LGAutoPkgr.h"
+#import "LGAutoPkgrProtocol.h"
 #import "LGProgressDelegate.h"
 
-#import "AHKeychain.h"
 #import "SNTCodesignChecker.h"
 #import <AHLaunchCtl/AHLaunchCtl.h>
 
@@ -96,40 +95,63 @@ static const NSTimeInterval kHelperCheckInterval = 1.0; // how often to check wh
 }
 
 #pragma mark - Password
-- (void)getPasswordForAccount:(NSString *)account reply:(void (^)(NSString *, NSError *))reply
+- (void)getKeychainKey:(void (^)(NSString *, NSError *))reply
 {
-    NSError *error;
+    NSError *error = nil;
+    NSString *key = nil;
 
-    uid_t uid;
-    NSString *loggedInUser = CFBridgingRelease(SCDynamicStoreCopyConsoleUser(NULL, &uid, NULL));
+    struct passwd *pw = getpwuid(self.connection.effectiveUserIdentifier);
 
-    // If a user is logged in check that the connection has the same
-    // effective user. This should prevent some potential exploit
-    // If it's running at the login window we can't do the same check
-    if (loggedInUser && (uid != self.connection.effectiveUserIdentifier)) {
-        [self.connection invalidate];
-        return;
+    NSString *keychainPath = [NSString stringWithFormat:@"%s/Library/Keychains/AutoPkgr.keychain", pw->pw_dir];
+
+    NSString *parentDirectory = @"/var/db/.AutoPkgrKeys/";
+    NSString *keyPath = [parentDirectory stringByAppendingFormat:@"/UID_%d", self.connection.effectiveUserIdentifier];
+
+    NSFileManager *manager = [NSFileManager defaultManager];
+
+    // Lock down the file, every time!
+    NSDictionary *attributes = @{
+                                 NSFilePosixPermissions : [NSNumber numberWithShort:0700],
+                                 NSFileOwnerAccountID : @(0),
+                                 NSFileGroupOwnerAccountID : @(0),
+                                 };
+
+    // First check for an old version of the keychainKey.
+    // If the keychain item has been deleted, try to remove the keychainKey and start fresh.
+    if (![manager fileExistsAtPath:keychainPath] && [manager fileExistsAtPath:keyPath]) {
+        syslog(LOG_ALERT, "%s does not exist, removing old keyFile", keychainPath.UTF8String);
+        [manager removeItemAtPath:keyPath error:nil];
     }
 
-    AHKeychainItem *item = [self setupKeychainItemForAccount:account];
-    [[AHKeychain systemKeychain] getItem:item error:&error];
+    if (![manager fileExistsAtPath:keyPath]) {
+        // first make keyDirectory
+        BOOL isDir;
+        if (![manager fileExistsAtPath:parentDirectory isDirectory:&isDir]) {
+            [manager createDirectoryAtPath:parentDirectory withIntermediateDirectories:NO attributes:attributes error:nil];
+        }
+        // Generate the key file.
+        syslog(LOG_ALERT, "Generating AutoPkgr keychain keyFile.");
 
-    reply(item.password, error);
-}
+        // create 48 bytes of random data this is consistant with the
+        // number of bytes in the /var/db/SystemKey used by the System.keychain.
+        int bytes = 48;
+        NSMutableData *data = [NSMutableData dataWithCapacity:bytes];
+        for (unsigned int i = 0; i < bytes / 4; ++i) {
+            u_int32_t randomBits = arc4random();
+            [data appendBytes:&randomBits length:4];
+        }
 
-- (void)savePassword:(NSString *)password forAccount:(NSString *)account reply:(void (^)(NSError *))reply
-{
-    NSError *error;
-    if ((account && account.length) && (password && password.length)) {
-        AHKeychainItem *item = [self setupKeychainItemForAccount:account];
-        item.password = password;
-
-        [[AHKeychain systemKeychain] saveItem:item error:&error];
+        if ([data writeToFile:keyPath atomically:YES]) {
+            key = data.description;
+        }
     } else {
-        error = [NSError errorWithDomain:kLGApplicationName code:12
-                                userInfo:@{ NSLocalizedDescriptionKey : @"Could not save password, either username or password is blank" }];
+        NSData *data = [NSData dataWithContentsOfFile:keyPath];
+        key = data.description;
     }
-    reply(error);
+
+    [manager setAttributes:attributes ofItemAtPath:keyPath error:&error];
+
+    reply(key, error);
 }
 
 #pragma mark - AutoPkgr Schedule
@@ -323,15 +345,4 @@ static const NSTimeInterval kHelperCheckInterval = 1.0; // how often to check wh
     return success;
 }
 
-- (AHKeychainItem *)setupKeychainItemForAccount:(NSString *)account
-{
-    AHKeychainItem *item = [[AHKeychainItem alloc] init];
-    item.account = account;
-    item.label = [kLGApplicationName stringByAppendingString:@" Email Password"];
-
-    // Append the EUID to the service string to limit access
-    // to only items created by the same user.
-    item.service = [item.label stringByAppendingFormat:@" UID: %d", self.connection.effectiveUserIdentifier];
-    return item;
-}
 @end

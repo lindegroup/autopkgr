@@ -25,39 +25,147 @@
 
 @implementation LGPasswords
 
-+ (void)migrateKeychainIfNeeded:(void (^)(NSString *password))reply;
+NSString *appKeychainPath()
 {
-    NSError *error;
-
-    NSString *account = [[LGDefaults standardUserDefaults] SMTPUsername];
-    NSString *keychainPath = [@"~/Library/Keychains/AutoPkgr.keychain" stringByExpandingTildeInPath];
-    
-    NSFileManager *fm = [NSFileManager defaultManager];
-
-    if ([fm fileExistsAtPath:keychainPath]){
-        AHKeychain *keychain = [LGHostInfo appKeychain];
-
-        if (account) {
-            AHKeychainItem *item = [[AHKeychainItem alloc] init];
-            item.account = account;
-            item.service = kLGAutoPkgrPreferenceDomain;
-            item.label = kLGApplicationName;
-
-            if([keychain getItem:item error:&error]){
-                [[self class] savePassword:item.password forAccount:account reply:^(NSError *error) {
-                    if (error) {
-                        [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-                            [self resetPasswordForAccount:account reply:reply];
-                        }];
-                    };
-                }];
-            }
-        }
-        [keychain deleteKeychain:&error];
-    }
+    return [@"~/Library/Keychains/AutoPkgr.keychain" stringByExpandingTildeInPath];
 }
 
 + (void)getPasswordForAccount:(NSString *)account reply:(void (^)(NSString *, NSError *))reply
+{
+    [[self class] getKeychain:^(AHKeychain *keychain) {
+        if (keychain.keychainStatus == errSecSuccess) {
+            NSError *error = nil;
+            AHKeychainItem *item = [self keychainItemForAccount:account];
+            [keychain getItem:item error:&error];
+            [keychain lock];
+            [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+                reply(item.password, error);
+            }];
+        }
+    }];
+};
+
++ (void)savePassword:(NSString *)password forAccount:(NSString *)account reply:(void (^)(NSError *))reply
+{
+    [[self class] getKeychain:^(AHKeychain *keychain) {
+        if (keychain.keychainStatus == errSecSuccess) {
+            NSError *error = nil;
+            AHKeychainItem *item = [self keychainItemForAccount:account];
+            item.password = password;
+            [keychain saveItem:item error:&error];
+            [keychain lock];
+            [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+                reply(error);
+            }];
+        } else {
+            reply([NSError errorWithDomain:kLGApplicationName code:keychain.keychainStatus userInfo:@{NSLocalizedDescriptionKey : keychain.statusDescription}]);
+        }
+    }];
+}
+
+#pragma mark - Migration method
++ (void)migrateKeychainIfNeeded:(void (^)(NSString *password))reply;
+{
+
+    NSString *keyFilePath = [@"/var/db/.AutoPkgrKey_" stringByAppendingString:@(getuid()).stringValue];
+
+    NSFileManager *manager = [NSFileManager defaultManager];
+
+    if (![manager fileExistsAtPath:keyFilePath]) {
+        // no keyFile exists, so try and update the keychain
+
+        NSString *oldPass = [LGHostInfo macSerialNumber];
+        AHKeychain *keychain = [AHKeychain keychainAtPath:appKeychainPath()];
+
+        if ([keychain unlockWithPassword:oldPass]) {
+            // If we successfully unlock the keychain we need to migrate the keychian
+
+            [self getKeychainKey:^(NSString *key, NSError *error) {
+                if(!error){
+                    if([keychain changeKeychainPassword:oldPass to:key error:&error]){
+                        NSString *account = [[LGDefaults standardUserDefaults] SMTPUsername];
+                        DLog(@"Successfully updated keychain.");
+                        AHKeychainItem *item = [self keychainItemForAccount:account];
+                        if ([keychain getItem:item error:&error]) {
+                            reply(item.password);
+                        }
+                    }
+                }
+            }];
+        }
+    }
+}
+
++ (void)resetKeychainPrompt:(void (^)(NSError *))reply
+{
+    [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+        NSString *messageText = @"Error accessing the AutoPkgr keychain";
+        NSString *infoText = @"There was a problem accessing the application's keychain and it needs to be recreated.\n\nThis only relates to AutoPkgr's keychain and will not modify or alter any other keychains.";
+
+        NSAlert *alert = [NSAlert alertWithMessageText:messageText
+                                         defaultButton:@"Continue"
+                                       alternateButton:@"Cancel"
+                                           otherButton:nil
+                             informativeTextWithFormat:@"%@", infoText];
+
+        NSInteger button = [alert runModal];
+        if (button == NSAlertDefaultReturn) {
+            NSError *error = nil;
+            if ([[AHKeychain keychainAtPath:appKeychainPath()] deleteKeychain:&error]) {
+                DLog(@"Removed old keychain...");
+            } else {
+                NSLog(@"There was a problem removing your old keychain.");
+            }
+            reply(error);
+        }
+    }];
+}
+
+#pragma mark - Private
++ (AHKeychain *)appKeychain:(NSString *)key
+{
+    AHKeychain *keychain = nil;
+
+    NSString *appKeychain = @"AutoPkgr.keychain";
+
+    if (![[NSFileManager defaultManager] fileExistsAtPath:appKeychainPath()]) {
+        keychain = [[AHKeychain alloc] initCreatingNewKeychain:appKeychain password:key];
+    } else {
+        keychain = [[AHKeychain alloc] initWithKeychain:appKeychain];
+        if (![keychain unlockWithPassword:key]) {
+            DLog(@"[%d] %@", keychain.keychainStatus, keychain.statusDescription);
+        }
+    }
+    return keychain;
+}
+
++ (AHKeychainItem *)keychainItemForAccount:(NSString *)account
+{
+    AHKeychainItem *item = [[AHKeychainItem alloc] init];
+    item.account = account;
+    item.label = [kLGApplicationName stringByAppendingString:@" Email Password"];
+    item.service = kLGAutoPkgrPreferenceDomain;
+    return item;
+}
+
++ (void)getKeychain:(void (^)(AHKeychain *))reply
+{
+    [[self class] getKeychainKey:^(NSString *key, NSError *error) {
+        if (!error && key) {
+            AHKeychain *keychain = [self appKeychain:key];
+            if(keychain){
+                reply(keychain);
+            } else {
+                reply(nil);
+            }
+        } else {
+            DLog(@"%@", error.localizedDescription);
+            reply(nil);
+        }
+    }];
+}
+
++ (void)getKeychainKey:(void (^)(NSString *, NSError *))reply
 {
     [[NSOperationQueue mainQueue] addOperationWithBlock:^{
         LGAutoPkgrHelperConnection *helper = [LGAutoPkgrHelperConnection new];
@@ -65,54 +173,10 @@
 
         [[helper.connection remoteObjectProxyWithErrorHandler:^(NSError *error) {
             reply(nil, error);
-            NSLog(@"%@", error.localizedDescription);
-        }] getPasswordForAccount:account
-         reply:reply];
-    }];
-};
-
-+ (void)savePassword:(NSString *)password forAccount:(NSString *)account reply:(void (^)(NSError *))reply
-{
-    [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-        LGAutoPkgrHelperConnection *helper = [LGAutoPkgrHelperConnection new];
-        [helper connectToHelper];
-
-        [[helper.connection remoteObjectProxyWithErrorHandler:^(NSError *error) {
-            reply(error);
-            NSLog(@"%@", error.localizedDescription);
-        }] savePassword:password
-         forAccount:account
-         reply:reply];
+        }] getKeychainKey:^(NSString *key, NSError *error) {
+            reply(key, error);
+        }];
     }];
 }
 
-#pragma mark - Private
-+ (void)resetPasswordForAccount:(NSString *)account reply:(void (^)(NSString *password))reply
-{
-    NSString *messageText = @"Error migrating password";
-    NSString *infoText = @"There was a problem migrating the password for %@, enter it here to update. You can also update it later in the preference window";
-
-    NSAlert *alert = [NSAlert alertWithMessageText:messageText
-                                     defaultButton:@"OK"
-                                   alternateButton:@"Cancel"
-                                       otherButton:nil
-                         informativeTextWithFormat:infoText, account];
-
-    NSSecureTextField *input = [[NSSecureTextField alloc] init];
-    [input setFrame:NSMakeRect(0, 0, 300, 24)];
-    [alert setAccessoryView:input];
-
-    NSInteger button = [alert runModal];
-    if (button == NSAlertDefaultReturn) {
-        [input validateEditing];
-        NSString *password = [input stringValue];
-        if (!password || [password isEqualToString:@""]) {
-            return [self resetPasswordForAccount:account reply:reply];
-        } else {
-            [[self class] savePassword:password forAccount:account reply:^(NSError *error) {
-                reply(password);
-            }];
-        }
-    }
-}
 @end

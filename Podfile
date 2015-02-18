@@ -14,7 +14,6 @@ end
 
 target "com.lindegroup.AutoPkgr.helper" do
 pod 'AHLaunchCtl', '~> 0.3.1'
-pod 'AHKeychain', '~> 0.2'
 end
 
 target "AutoPkgrTests" do

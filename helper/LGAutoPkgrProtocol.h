@@ -23,10 +23,8 @@
 
 @protocol HelperAgent <NSObject>
 
-# pragma mark - Password
-- (void)getPasswordForAccount:(NSString *)account reply:(void (^)(NSString *password, NSError *error))reply;
-
-- (void)savePassword:(NSString *)password forAccount:(NSString *)account reply:(void (^)(NSError *error))reply;
+# pragma mark - Password / KeyFile
+- (void)getKeychainKey:(void (^)(NSString *key, NSError *error))reply;
 
 #pragma mark - Schedule
 #pragma mark-- Add
