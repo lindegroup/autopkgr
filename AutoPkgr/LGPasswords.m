@@ -33,52 +33,55 @@ NSString *appKeychainPath()
 + (void)getPasswordForAccount:(NSString *)account reply:(void (^)(NSString *, NSError *))reply
 {
     [[self class] getKeychain:^(AHKeychain *keychain) {
-        if (keychain.keychainStatus == errSecSuccess) {
-            NSError *error = nil;
-            AHKeychainItem *item = [self keychainItemForAccount:account];
-            [keychain getItem:item error:&error];
-            [keychain lock];
-            [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-                reply(item.password, error);
-            }];
-        }
+        [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+            if (keychain.keychainStatus == errSecSuccess) {
+                NSError *error = nil;
+                AHKeychainItem *item = [self keychainItemForAccount:account];
+                [keychain getItem:item error:&error];
+                [keychain lock];
+                    reply(item.password, error);
+            } else {
+                reply(nil, [NSError errorWithDomain:kLGApplicationName code:keychain.keychainStatus userInfo:@{NSLocalizedDescriptionKey : keychain.statusDescription}]);
+            }
+        }];
     }];
 };
 
 + (void)savePassword:(NSString *)password forAccount:(NSString *)account reply:(void (^)(NSError *))reply
 {
     [[self class] getKeychain:^(AHKeychain *keychain) {
+        [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+
         if (keychain.keychainStatus == errSecSuccess) {
             NSError *error = nil;
             AHKeychainItem *item = [self keychainItemForAccount:account];
             item.password = password;
             [keychain saveItem:item error:&error];
             [keychain lock];
-            [[NSOperationQueue mainQueue] addOperationWithBlock:^{
                 reply(error);
-            }];
         } else {
             reply([NSError errorWithDomain:kLGApplicationName code:keychain.keychainStatus userInfo:@{NSLocalizedDescriptionKey : keychain.statusDescription}]);
         }
+        }];
     }];
 }
 
 #pragma mark - Migration method
 + (void)migrateKeychainIfNeeded:(void (^)(NSString *password))reply;
 {
+    NSString *upgradeTriedKey = @"KeychainUpgrade_1_2_1_Tried";
+    BOOL upgradeTried = [[LGDefaults standardUserDefaults] boolForKey:upgradeTriedKey];
 
-    NSString *keyFilePath = [@"/var/db/.AutoPkgrKey_" stringByAppendingString:@(getuid()).stringValue];
-
-    NSFileManager *manager = [NSFileManager defaultManager];
-
-    if (![manager fileExistsAtPath:keyFilePath]) {
-        // no keyFile exists, so try and update the keychain
+    if (!upgradeTried) {
+        // Only try to upgrade once.
+        [[LGDefaults standardUserDefaults] setObject:@YES forKey:upgradeTriedKey];
 
         NSString *oldPass = [LGHostInfo macSerialNumber];
         AHKeychain *keychain = [AHKeychain keychainAtPath:appKeychainPath()];
 
         if ([keychain unlockWithPassword:oldPass]) {
-            // If we successfully unlock the keychain we need to migrate the keychian
+            // If we successfully unlock the keychain with the old password
+            // it needs migration.
 
             [self getKeychainKey:^(NSString *key, NSError *error) {
                 if(!error){
