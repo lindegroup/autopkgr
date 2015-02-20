@@ -45,7 +45,7 @@ NSString *const kLGJSSDistPointTypeKey = @"type";
     [self setAutoPkgDomainObject:JSSURL forKey:@"JSS_URL"];
 }
 
-#pragma mark -
+#pragma mark
 - (NSString *)JSSAPIUsername
 {
     return [self autoPkgDomainObject:@"API_USERNAME"];
@@ -56,7 +56,7 @@ NSString *const kLGJSSDistPointTypeKey = @"type";
     [self setAutoPkgDomainObject:JSSAPIUsername forKey:@"API_USERNAME"];
 }
 
-#pragma mark -
+#pragma mark
 - (NSString *)JSSAPIPassword
 {
     return [self autoPkgDomainObject:@"API_PASSWORD"];
@@ -67,7 +67,7 @@ NSString *const kLGJSSDistPointTypeKey = @"type";
     [self setAutoPkgDomainObject:JSSAPIPassword forKey:@"API_PASSWORD"];
 }
 
-#pragma mark -
+#pragma mark
 - (NSArray *)JSSRepos
 {
     return [self autoPkgDomainObject:@"JSS_REPOS"];
@@ -78,7 +78,7 @@ NSString *const kLGJSSDistPointTypeKey = @"type";
     [self setAutoPkgDomainObject:JSSRepos forKey:@"JSS_REPOS"];
 }
 
-#pragma mark -
+#pragma mark
 - (BOOL)JSSVerifySSL
 {
     NSNumber *verifySSL = [self autoPkgDomainObject:@"JSS_VERIFY_SSL"];

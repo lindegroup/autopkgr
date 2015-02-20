@@ -35,13 +35,13 @@
             interfaceWithProtocol:@protocol(HelperAgent)];
 
         self.connection.invalidationHandler = ^{
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Warc-retain-cycles"
+#pragma mark - clang diagnostic push
+#pragma mark - clang diagnostic ignored "-Warc-retain-cycles"
             self.connection.invalidationHandler = nil;
             [[NSOperationQueue mainQueue] addOperationWithBlock:^{
                 self.connection = nil;
             }];
-#pragma clang diagnostic pop
+#pragma mark - clang diagnostic pop
         };
         self.connection.exportedObject = self;
 

@@ -755,7 +755,7 @@ typedef void (^AutoPkgReplyErrorBlock)(NSError *error);
 
 #pragma mark - Class Methods
 
-#pragma mark-- Recipe Methods --
+#pragma mark - Recipe Methods
 + (void)runRecipes:(NSArray *)recipes
           progress:(void (^)(NSString *, double))progress
              reply:(void (^)(NSDictionary *, NSError *))reply
@@ -827,7 +827,7 @@ typedef void (^AutoPkgReplyErrorBlock)(NSError *error);
     return [results isKindOfClass:[NSArray class]] ? results : nil;
 }
 
-#pragma mark-- Repo Methods
+#pragma mark - Repo Methods
 + (void)repoAdd:(NSString *)repo reply:(void (^)(NSError *))reply
 {
     LGAutoPkgTask *task = [[LGAutoPkgTask alloc] init];
@@ -871,7 +871,7 @@ typedef void (^AutoPkgReplyErrorBlock)(NSError *error);
     return [task standardOutString];
 }
 
-#pragma mark-- Convenience Initializers --
+#pragma mark - Convenience Initializers
 + (LGAutoPkgTask *)runRecipeTask:(NSArray *)recipes
 {
     LGAutoPkgTask *task = nil;
@@ -913,7 +913,7 @@ typedef void (^AutoPkgReplyErrorBlock)(NSError *error);
     return task;
 }
 
-#pragma mark-- Other Methods --
+#pragma mark - Other Methods
 + (BOOL)instanceIsRunning
 {
     NSTask *task = [NSTask new];
@@ -979,7 +979,7 @@ typedef void (^AutoPkgReplyErrorBlock)(NSError *error);
 @end
 
 #pragma mark - Task Response Object
-#pragma mark-- Secure Coding --
+#pragma mark - Secure Coding
 // Currently there is no need for this, but if we ever move the task over to an XPC bundle,
 // we'll be able to pass this back and forth.
 @implementation LGAutoPkgTaskResponseObject

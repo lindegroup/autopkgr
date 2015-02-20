@@ -55,7 +55,7 @@ extern NSString *const kLGAutoPkgRepoPathKey;
  */
 extern NSString *const kLGAutoPkgRepoURLKey;
 
-#pragma mark Task Status Delegate
+#pragma mark - Task Status Delegate
 @protocol LGTaskStatusDelegate <NSObject>
 - (void)didReceiveStatusUpdate:(LGAutoPkgTaskResponseObject *)object;
 - (void)didCompleteOperation:(LGAutoPkgTaskResponseObject *)object;
@@ -77,7 +77,7 @@ extern NSString *const kLGAutoPkgRepoURLKey;
  */
 @property (copy) void (^progressUpdateBlock)(NSString *message, double progress);
 
-#pragma mark-- NSOperation Queue --
+#pragma mark - NSOperation Queue
 /**
  *  Subclass override to produce warning if an incorrect operation is submitted
  *
@@ -92,7 +92,7 @@ extern NSString *const kLGAutoPkgRepoURLKey;
  */
 - (void)cancel;
 
-#pragma mark-- Convenience Methods --
+#pragma mark - Convenience Methods
 /**
  *  Equivalent to /usr/bin/local/autopkg run --recipe-list=xxx --report-plist=xxx
  *
@@ -187,7 +187,7 @@ extern NSString *const kLGAutoPkgRepoURLKey;
 
 #pragma mark - Class Methods
 
-#pragma mark-- Recipe methods --
+#pragma mark - Recipe methods
 /**
  *  Convenience Accessor to autopkg run: see runRecipeList:progress:reply for details
  *
@@ -231,7 +231,7 @@ extern NSString *const kLGAutoPkgRepoURLKey;
  */
 + (NSArray *)listRecipes;
 
-#pragma mark-- Repo methods --
+#pragma mark - Repo methods
 /**
  *  Equivalent to /usr/bin/local/autopkg repo-add [recipe_repo_url]
  *
@@ -265,14 +265,14 @@ extern NSString *const kLGAutoPkgRepoURLKey;
  */
 + (NSArray *)repoList;
 
-#pragma mark-- Convenience Initializers --
+#pragma mark - Convenience Initializers
 + (LGAutoPkgTask *)runRecipeTask:(NSArray *)recipes;
 + (LGAutoPkgTask *)runRecipeListTask;
 + (LGAutoPkgTask *)searchTask:(NSString *)recipe;
 + (LGAutoPkgTask *)repoUpdateTask;
 + (LGAutoPkgTask *)addRepoTask:(NSString *)repo;
 
-#pragma mark-- Other --
+#pragma mark - Other
 /**
  *  Equivalent to /usr/bin/local/autopkg version
  *
@@ -284,12 +284,12 @@ extern NSString *const kLGAutoPkgRepoURLKey;
 
 #pragma mark - AutoPkg Response / Progress message Object
 @interface LGAutoPkgTaskResponseObject : NSObject <NSSecureCoding>
-#pragma mark-- Completion Items --
+#pragma mark - Completion Items
 @property (copy, nonatomic) NSError *error;
 @property (copy, nonatomic) NSDictionary *report;
 @property (copy, nonatomic) NSArray *results;
 
-#pragma mark-- Progress Items --
+#pragma mark - Progress Items
 @property (copy, nonatomic) NSString *progressMessage;
 @property (assign, nonatomic) double progress;
 @end

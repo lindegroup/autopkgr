@@ -39,7 +39,7 @@ NSString *const kLGJSSImporterNotInstalledLabel = @"JSSImporter is not installed
 NSString *const kLGJSSImporterUpdateAvailableLabel = @"An update is available for JSSImporter.";
 
 #pragma mark - Static URLs
-#pragma mark-- GitHub
+#pragma mark - GitHub
 NSString *const kLGAutoPkgReleasesJSONURL = @"https://api.github.com/repos/autopkg/autopkg/releases";
 NSString *const kLGGitReleasesJSONURL = @"https://api.github.com/repos/timcharper/git_osx_installer/releases";
 NSString *const kLGJSSImporterJSONURL = @"https://api.github.com/repos/sheagcraig/JSSImporter/releases";
@@ -68,22 +68,22 @@ NSString *const kLGWarnBeforeQuittingEnabled = @"WarnBeforeQuitting";
 NSString *const kLGApplicationDisplayStyle = @"ApplicationDisplayStyle";
 
 #pragma mark - Notifications
-#pragma mark-- Progress
+#pragma mark - Progress
 NSString *const kLGNotificationProgressStart = @"com.lindegroup.autopkgr.notification.progress.start";
 NSString *const kLGNotificationProgressStop = @"com.lindegroup.autopkgr.notification.progress.stop";
 NSString *const kLGNotificationProgressMessageUpdate = @"com.lindegroup.autopkgr.progress.message.notification";
 
-#pragma mark-- AutoPkg Task
+#pragma mark - AutoPkg Task
 NSString *const kLGNotificationRunAutoPkgComplete = @"com.lindegroup.autopkgr.notification.autopkgrun.complete";
 NSString *const kLGNotificationUpdateReposComplete = @"com.lindegroup.autopkgr.notification.updaterepos.complete";
 NSString *const kLGNotificationOverrideFileCreated = @"com.lindegroup.autopkgr.notification.override.file.addorremoved";
 NSString *const kLGNotificationReposModified = @"com.lindegroup.autopkgr.notification.repos.modified";
 
-#pragma mark-- Email
+#pragma mark - Email
 NSString *const kLGNotificationEmailSent = @"com.lindegroup.autopkgr.email.sent.notification";
 NSString *const kLGNotificationTestSmtpServerPort = @"com.lindegroup.autopkgr.test.smtp.port.notification";
 
-#pragma mark-- UserInfo dict keys
+#pragma mark - UserInfo dict keys
 NSString *const kLGNotificationUserInfoError = @"com.lindegroup.autopkgr.notification.userinfo.error";
 NSString *const kLGNotificationUserInfoMessage = @"com.lindegroup.autopkgr.notification.userinfo.message";
 NSString *const kLGNotificationUserInfoTotalRecipeCount = @"com.lindegroup.autopkgr.notification.userinfo.total.recipe.count";

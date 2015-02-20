@@ -55,7 +55,7 @@ const SecCSFlags kSigningFlags = kSecCSDefaultFlags;
 
 @implementation SNTCodesignChecker
 
-#pragma mark Init/dealloc
+#pragma mark - Init/dealloc
 
 - (instancetype)initWithSecStaticCodeRef:(SecStaticCodeRef)codeRef {
   self = [super init];
@@ -159,7 +159,7 @@ const SecCSFlags kSigningFlags = kSecCSDefaultFlags;
   }
 }
 
-#pragma mark Description
+#pragma mark - Description
 
 - (NSString *)description {
   NSString *binarySource;
@@ -175,7 +175,7 @@ const SecCSFlags kSigningFlags = kSecCSDefaultFlags;
              self.binaryPath];
 }
 
-#pragma mark Public accessors
+#pragma mark - Public accessors
 
 - (SNTCertificate *)leafCertificate {
   return [self.certificates firstObject];

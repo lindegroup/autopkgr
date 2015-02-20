@@ -63,22 +63,22 @@ extern NSString *const kLGWarnBeforeQuittingEnabled;
 extern NSString *const kLGApplicationDisplayStyle;
 
 #pragma mark - Notifications
-#pragma mark-- Progress
+#pragma mark - Progress
 extern NSString *const kLGNotificationProgressStart;
 extern NSString *const kLGNotificationProgressStop;
 extern NSString *const kLGNotificationProgressMessageUpdate;
 
-#pragma mark-- AutoPkg Task
+#pragma mark - AutoPkg Task
 extern NSString *const kLGNotificationRunAutoPkgComplete;
 extern NSString *const kLGNotificationUpdateReposComplete;
 extern NSString *const kLGNotificationOverrideFileCreated;
 extern NSString *const kLGNotificationReposModified;
 
-#pragma mark-- Email
+#pragma mark - Email
 extern NSString *const kLGNotificationEmailSent;
 extern NSString *const kLGNotificationTestSmtpServerPort;
 
-#pragma mark-- UserInfo dict keys
+#pragma mark - UserInfo dict keys
 //* key corresponding to NSError object in Notification's userInfo dictionary */
 extern NSString *const kLGNotificationUserInfoError;
 //* key corresponding to a message string object in Notification's userInfo dictionary */
