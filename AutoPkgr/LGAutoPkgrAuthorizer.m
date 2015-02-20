@@ -79,8 +79,8 @@ static NSString *kCommandKeyAuthRightDesc = @"authRightDescription";
 + (void)enumerateRightsUsingBlock:(void (^)(NSString *authRightName, id authRightDefault, NSString *authRightDesc))block
 {
     [self.commandInfo enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
-#pragma unused(key)
-#pragma unused(stop)
+#pragma mark - unused(key)
+#pragma mark - unused(stop)
         NSDictionary *commandDict;
         NSString     *authRightName;
         id           authRightDefault;
@@ -127,7 +127,7 @@ static NSString *kCommandKeyAuthRightDesc = @"authRightDescription";
 #pragma mark - Authorization
 + (NSError *)checkAuthorization:(NSData *)authData command:(SEL)command
 {
-#pragma unused(authData)
+#pragma mark - unused(authData)
     NSError *error;
     OSStatus err;
     OSStatus junk;

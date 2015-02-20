@@ -28,7 +28,7 @@
 
 static NSString *const kCertDataKey = @"certData";
 
-#pragma mark Init/Dealloc
+#pragma mark - Init/Dealloc
 
 - (instancetype)initWithSecCertificateRef:(SecCertificateRef)certRef {
   self = [super init];
@@ -125,7 +125,7 @@ static NSString *const kCertDataKey = @"certData";
   if (_certRef) CFRelease(_certRef);
 }
 
-#pragma mark Equality & description
+#pragma mark - Equality & description
 
 - (BOOL)isEqual:(SNTCertificate *)other {
   if (self == other) return YES;
@@ -145,7 +145,7 @@ static NSString *const kCertDataKey = @"certData";
           self.commonName];
 }
 
-#pragma mark NSSecureCoding
+#pragma mark - NSSecureCoding
 
 + (BOOL)supportsSecureCoding {
   return YES;
@@ -164,7 +164,7 @@ static NSString *const kCertDataKey = @"certData";
   return self;
 }
 
-#pragma mark Private Accessors
+#pragma mark - Private Accessors
 
 ///
 /// For a given selector, caches the value that selector would return on subsequent invocations,
@@ -252,7 +252,7 @@ static NSString *const kCertDataKey = @"certData";
   return nil;
 }
 
-#pragma mark Public Accessors
+#pragma mark - Public Accessors
 
 - (NSString *)SHA1 {
   return [self memoizedSelector:_cmd forBlock:^id{

@@ -42,7 +42,7 @@ typedef NS_ENUM(OSStatus, LGToolInstallStatus) {
     kLGToolUpToDate,
 };
 
-#pragma mark Tool
+#pragma mark - Tool
 /**
  *  Helper tool
  */
@@ -75,7 +75,7 @@ typedef NS_ENUM(OSStatus, LGToolInstallStatus) {
 
 @end
 
-#pragma mark Tool Status
+#pragma mark - Tool Status
 /**
  *  Get populated tool objects.
  */
