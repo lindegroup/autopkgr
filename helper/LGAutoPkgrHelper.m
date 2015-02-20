@@ -23,7 +23,11 @@
 #import "LGProgressDelegate.h"
 
 #import "SNTCodesignChecker.h"
+
 #import <AHLaunchCtl/AHLaunchCtl.h>
+#import <AHKeychain/AHKeychain.h>
+#import <RNCryptor/RNEncryptor.h>
+#import <RNCryptor/RNDecryptor.h>
 
 #import <pwd.h>
 #import <syslog.h>
@@ -97,61 +101,163 @@ static const NSTimeInterval kHelperCheckInterval = 1.0; // how often to check wh
 #pragma mark - Password
 - (void)getKeychainKey:(void (^)(NSString *, NSError *))reply
 {
+    // The password for the user's keychain
+    NSString *password = nil;
+
+    // raw data representing the password for the user's keychain
+    NSData *passwordData = nil;
+
+    // keyFile encoded with AES256 using the encryption password
+    NSString *keyFile = nil;
+
+    // data representing the keyFile
+    NSData *encryptedKeyFileData = nil;
+
+    // Password to decrypt the keyFile stored in the System.keychain
+    NSString *encryptionPassword = nil;
+
+    // Path to the ~/Library/Keychain/AutoPkgr.keychain
+    NSString *appKeychainPath = nil;
+
+    // parent directory for the keyfile
+    NSString *encryptionKeyParentDir = nil;
+
+    // Error
     NSError *error = nil;
-    NSString *key = nil;
 
-    struct passwd *pw = getpwuid(self.connection.effectiveUserIdentifier);
+    // Effective user id used to determine location of the user's AutoPkgr keychain.
+    uid_t euid = self.connection.effectiveUserIdentifier;
+    struct passwd *pw = getpwuid(euid);
+    NSAssert(euid != 0, @"The euid of the connection should never be 0!");
 
-    NSString *keychainPath = [NSString stringWithFormat:@"%s/Library/Keychains/AutoPkgr.keychain", pw->pw_dir];
-
-    NSString *parentDirectory = @"/var/db/.AutoPkgrKeys/";
-    NSString *keyPath = [parentDirectory stringByAppendingFormat:@"/UID_%d", self.connection.effectiveUserIdentifier];
+    // Attributes used to set permissions on the keyFile and it's parent directory.
+    NSDictionary *const attributes = @{
+        NSFilePosixPermissions : [NSNumber numberWithShort:0700],
+        NSFileOwnerAccountID : @(0),
+        NSFileGroupOwnerAccountID : @(0),
+    };
 
     NSFileManager *manager = [NSFileManager defaultManager];
 
-    // Lock down the file, every time!
-    NSDictionary *attributes = @{
-                                 NSFilePosixPermissions : [NSNumber numberWithShort:0700],
-                                 NSFileOwnerAccountID : @(0),
-                                 NSFileGroupOwnerAccountID : @(0),
-                                 };
+    keyFile = [NSString stringWithFormat:@"/var/db/.AutoPkgrKeys/UID_%d", euid];
+    encryptionKeyParentDir = @"/var/db/.AutoPkgrKeys";
 
-    // First check for an old version of the keychainKey.
-    // If the keychain item has been deleted, try to remove the keychainKey and start fresh.
-    if (![manager fileExistsAtPath:keychainPath] && [manager fileExistsAtPath:keyPath]) {
-        syslog(LOG_ALERT, "%s does not exist, removing old keyFile", keychainPath.UTF8String);
-        [manager removeItemAtPath:keyPath error:nil];
-    }
+    /*///////////////////////////////////////////////////////////////
+    //  Encryption password in the System.keychain                 //
+    ///////////////////////////////////////////////////////////////*/
 
-    if (![manager fileExistsAtPath:keyPath]) {
-        // first make keyDirectory
-        BOOL isDir;
-        if (![manager fileExistsAtPath:parentDirectory isDirectory:&isDir]) {
-            [manager createDirectoryAtPath:parentDirectory withIntermediateDirectories:NO attributes:attributes error:nil];
-        }
-        // Generate the key file.
-        syslog(LOG_ALERT, "Generating AutoPkgr keychain keyFile.");
+    AHKeychainItem *item = [[AHKeychainItem alloc] init];
+    item.service = @"AutoPkgr Common Decryption";
+    item.account = @"com.lindegroup.AutoPkgr.decryption.key";
+    BOOL newEncryptionPassword = NO;
 
-        // create 48 bytes of random data this is consistant with the
-        // number of bytes in the /var/db/SystemKey used by the System.keychain.
-        int bytes = 48;
-        NSMutableData *data = [NSMutableData dataWithCapacity:bytes];
-        for (unsigned int i = 0; i < bytes / 4; ++i) {
-            u_int32_t randomBits = arc4random();
-            [data appendBytes:&randomBits length:4];
-        }
+    if ([[AHKeychain systemKeychain] getItem:item error:&error]) {
+        // We found the password
+        encryptionPassword = item.password;
+    } else if (error.code == errSecItemNotFound) {
+        // reset the error so it doesn't inadvertantly pass
+        // back the wrong value
+        error = nil;
 
-        if ([data writeToFile:keyPath atomically:YES]) {
-            key = data.description;
+        // Generate a new pass
+        encryptionPassword = [[NSProcessInfo processInfo] globallyUniqueString];
+        item.password = encryptionPassword;
+
+        if ([[AHKeychain systemKeychain] saveItem:item error:&error]) {
+            // Success, a new common encryption was generated.
+            newEncryptionPassword = YES;
+        } else {
+            // If we can't create the keychain exit out here.
+            // There's nothing more to be done.
+            goto helper_reply;
         }
     } else {
-        NSData *data = [NSData dataWithContentsOfFile:keyPath];
-        key = data.description;
+        // some other error occurred when trying to find the item ???
+        goto helper_reply;
     }
 
-    [manager setAttributes:attributes ofItemAtPath:keyPath error:&error];
+    // Get info on the current user
+    // We use this as a safety valve. If a user has removed
+    // their AutoPkgr.keychain delete the keyFile and start fresh.
+    appKeychainPath = [NSString stringWithFormat:@"%s/Library/Keychains/AutoPkgr.keychain", pw->pw_dir];
 
-    reply(key, error);
+    // Check for an old version of the keychainKey.
+    BOOL keyFileExists = [manager fileExistsAtPath:keyFile];
+
+    // If the keychain item has been deleted, try to remove the keyFile and start fresh.
+    BOOL check1 = ![manager fileExistsAtPath:appKeychainPath] && keyFileExists;
+
+    // If a new encryption key was generated, but an old keyFile exists.
+    BOOL check2 = keyFileExists && newEncryptionPassword;
+
+    // If either condition is true, remove the old keyFile
+    if (check1 || check2) {
+        syslog(LOG_ALERT, "Removing unusable keyFile...");
+        if (![manager removeItemAtPath:keyFile error:nil]) {
+            syslog(LOG_ALERT, "There was a problem removing the encrypted key file");
+        }
+    }
+
+    /*////////////////////////////////////////////////////////////////////
+     //   Encrypted keyFile into a root protected space                  //
+     ////////////////////////////////////////////////////////////////////*/
+
+    if (![manager fileExistsAtPath:keyFile]) {
+        // keyFile does not exist.
+
+        BOOL isDir;
+        BOOL directoryExists = [manager fileExistsAtPath:encryptionKeyParentDir isDirectory:&isDir];
+
+        if (!directoryExists) {
+            if (![manager createDirectoryAtPath:encryptionKeyParentDir withIntermediateDirectories:NO attributes:attributes error:&error]) {
+                // If we can't create this directory something is wrong, goto.
+                syslog(LOG_ALERT, "[ERROR] Could not create the parent directory for the encrypted key files.");
+                goto helper_reply;
+            }
+        } else if (directoryExists && !isDir) {
+            // The path exists but is not a directory get, escape!.
+            syslog(LOG_ALERT, "[ERROR] The %s exists, but it is not a directory, needs repair.", encryptionKeyParentDir.UTF8String);
+            goto helper_reply;
+        }
+
+        // Generate some random data to use as the password for the user's keychain.
+        passwordData = [RNCryptor randomDataOfLength:48];
+
+        // Encrypt the random data into AES256.
+        encryptedKeyFileData = [RNEncryptor encryptData:passwordData
+                                           withSettings:kRNCryptorAES256Settings
+                                               password:encryptionPassword
+                                                  error:&error];
+
+        // Write the encrypted data to the keyFile.
+        [encryptedKeyFileData writeToFile:keyFile atomically:YES];
+
+    } else {
+        // The keyFile is there.
+
+        // Read in the encrypted data of the keyFile.
+        encryptedKeyFileData = [NSData dataWithContentsOfFile:keyFile];
+
+        // Decrypt the data.
+        passwordData = [RNDecryptor decryptData:encryptedKeyFileData
+                                   withSettings:kRNCryptorAES256Settings
+                                       password:encryptionPassword
+                                          error:&error];
+    }
+
+    // Re set the attributes of the file to root only access.
+    if (![manager setAttributes:attributes ofItemAtPath:keyFile error:nil]) {
+        syslog(LOG_ALERT, "[ERROR] A problem was encountered updating keyFile's permissions.");
+    }
+
+    if (passwordData) {
+        // set the password as the NSObject data descripton.
+        password = passwordData.description;
+    }
+
+helper_reply:
+
+    reply(password, error);
 }
 
 #pragma mark - AutoPkgr Schedule
