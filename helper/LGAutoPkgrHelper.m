@@ -60,7 +60,7 @@ static const NSTimeInterval kHelperCheckInterval = 1.0; // how often to check wh
     while (!self.helperToolShouldQuit) {
         [[NSRunLoop currentRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:kHelperCheckInterval]];
     }
-    syslog(LOG_ALERT, "Quiting AutoPkgr helper application.");
+    syslog(LOG_ALERT, "Quitting AutoPkgr helper application.");
 }
 
 #pragma mark - NSXPCListenerDelegate
@@ -78,8 +78,7 @@ static const NSTimeInterval kHelperCheckInterval = 1.0; // how often to check wh
         self.connection = newConnection;
 
         __weak typeof(newConnection) weakConnection = newConnection;
-        // If all connections are invalidated on the remote side,
-        // shutdown the helper.
+        // If all connections are invalidated on the remote side, shutdown the helper.
         newConnection.invalidationHandler = ^() {
             __strong typeof(newConnection) strongConnection = weakConnection;
             [self.connections removeObject:strongConnection];
@@ -101,34 +100,38 @@ static const NSTimeInterval kHelperCheckInterval = 1.0; // how often to check wh
 #pragma mark - Password
 - (void)getKeychainKey:(void (^)(NSString *, NSError *))reply
 {
-    // The password for the user's keychain
-    NSString *password = nil;
-
-    // raw data representing the password for the user's keychain
-    NSData *passwordData = nil;
-
-    // keyFile encoded with AES256 using the encryption password
-    NSString *keyFile = nil;
-
-    // data representing the keyFile
-    NSData *encryptedKeyFileData = nil;
-
-    // Password to decrypt the keyFile stored in the System.keychain
+    // Password used to decrypt the keyFile. This password is stored in the System.keychain.
     NSString *encryptionPassword = nil;
 
-    // Path to the ~/Library/Keychain/AutoPkgr.keychain
+    // Parent directory for all of the keyFiles. Each AutoPkgr user has a unique file.
+    NSString *encryptedKeyParentDirectory = nil;
+
+    // Path to current user's keyFile. Encoded with AES256 using the encryption password.
+    NSString *encryptedKeyFile = nil;
+
+    // Data representing the keyFile. This data is encoded
+    NSData *encryptedKeyFileData = nil;
+
+    // The decoded raw data from the keyFile representing the password for the user's keychain.
+    NSData *passwordData = nil;
+
+    // The password for the user's keychain (in string form).
+    NSString *password = nil;
+
+    // Path to the user's AutoPkgr keychain. Located at ~/Library/Keychain/AutoPkgr.keychain.
     NSString *appKeychainPath = nil;
 
-    // parent directory for the keyfile
-    NSString *encryptionKeyParentDir = nil;
-
-    // Error
+    // Error.
     NSError *error = nil;
 
     // Effective user id used to determine location of the user's AutoPkgr keychain.
     uid_t euid = self.connection.effectiveUserIdentifier;
     struct passwd *pw = getpwuid(euid);
     NSAssert(euid != 0, @"The euid of the connection should never be 0!");
+    if (euid == 0) {
+        [self.connection invalidate];
+        return;
+    }
 
     // Attributes used to set permissions on the keyFile and it's parent directory.
     NSDictionary *const attributes = @{
@@ -139,27 +142,27 @@ static const NSTimeInterval kHelperCheckInterval = 1.0; // how often to check wh
 
     NSFileManager *manager = [NSFileManager defaultManager];
 
-    keyFile = [NSString stringWithFormat:@"/var/db/.AutoPkgrKeys/UID_%d", euid];
-    encryptionKeyParentDir = @"/var/db/.AutoPkgrKeys";
+    encryptedKeyFile = [NSString stringWithFormat:@"/var/db/.AutoPkgrKeys/UID_%d", euid];
+    encryptedKeyParentDirectory = @"/var/db/.AutoPkgrKeys";
 
     /*///////////////////////////////////////////////////////////////
-    //  Encryption password in the System.keychain                 //
+    //  Get the encryption password from the System.keychain       //
     ///////////////////////////////////////////////////////////////*/
-
     AHKeychainItem *item = [[AHKeychainItem alloc] init];
     item.service = @"AutoPkgr Common Decryption";
     item.account = @"com.lindegroup.AutoPkgr.decryption.key";
     BOOL newEncryptionPassword = NO;
 
     if ([[AHKeychain systemKeychain] getItem:item error:&error]) {
-        // We found the password
+        // We found the encryption password.
         encryptionPassword = item.password;
     } else if (error.code == errSecItemNotFound) {
-        // reset the error so it doesn't inadvertantly pass
-        // back the wrong value
+        // The item was not found in the keychain. Create it now.
+
+        // Reset the error so it doesn't inadvertently pass back the wrong message.
         error = nil;
 
-        // Generate a new pass
+        // Generate a new encryption password.
         encryptionPassword = [[NSProcessInfo processInfo] globallyUniqueString];
         item.password = encryptionPassword;
 
@@ -167,8 +170,7 @@ static const NSTimeInterval kHelperCheckInterval = 1.0; // how often to check wh
             // Success, a new common encryption was generated.
             newEncryptionPassword = YES;
         } else {
-            // If we can't create the keychain exit out here.
-            // There's nothing more to be done.
+            // If we can't create the keychain return now. There's nothing more to be done.
             goto helper_reply;
         }
     } else {
@@ -176,47 +178,46 @@ static const NSTimeInterval kHelperCheckInterval = 1.0; // how often to check wh
         goto helper_reply;
     }
 
-    // Get info on the current user
-    // We use this as a safety valve. If a user has removed
-    // their AutoPkgr.keychain delete the keyFile and start fresh.
     appKeychainPath = [NSString stringWithFormat:@"%s/Library/Keychains/AutoPkgr.keychain", pw->pw_dir];
 
     // Check for an old version of the keychainKey.
-    BOOL keyFileExists = [manager fileExistsAtPath:keyFile];
+    BOOL keyFileExists = [manager fileExistsAtPath:encryptedKeyFile];
 
-    // If the keychain item has been deleted, try to remove the keyFile and start fresh.
-    BOOL check1 = ![manager fileExistsAtPath:appKeychainPath] && keyFileExists;
+    // Check to see if user's AutoPkgr keychain exists.
+    BOOL usersKeychainExists = [manager fileExistsAtPath:appKeychainPath];
+
+    // If the user's AutoPkgr keychain has been deleted, try to remove the keyFile and start fresh.
+    BOOL check1 = !usersKeychainExists && keyFileExists;
 
     // If a new encryption key was generated, but an old keyFile exists.
     BOOL check2 = keyFileExists && newEncryptionPassword;
 
-    // If either condition is true, remove the old keyFile
+    // If either condition is true, remove the old keyFile.
     if (check1 || check2) {
         syslog(LOG_ALERT, "Removing unusable keyFile...");
-        if (![manager removeItemAtPath:keyFile error:nil]) {
+        if (![manager removeItemAtPath:encryptedKeyFile error:nil]) {
             syslog(LOG_ALERT, "There was a problem removing the encrypted key file");
         }
     }
 
     /*////////////////////////////////////////////////////////////////////
-     //   Encrypted keyFile into a root protected space                  //
-     ////////////////////////////////////////////////////////////////////*/
-
-    if (![manager fileExistsAtPath:keyFile]) {
-        // keyFile does not exist.
+    //   Decrypt the keyFile in a root protected space                  //
+    ////////////////////////////////////////////////////////////////////*/
+    if (![manager fileExistsAtPath:encryptedKeyFile]) {
+        // The keyFile does not exist, create one now.
 
         BOOL isDir;
-        BOOL directoryExists = [manager fileExistsAtPath:encryptionKeyParentDir isDirectory:&isDir];
+        BOOL directoryExists = [manager fileExistsAtPath:encryptedKeyParentDirectory isDirectory:&isDir];
 
         if (!directoryExists) {
-            if (![manager createDirectoryAtPath:encryptionKeyParentDir withIntermediateDirectories:NO attributes:attributes error:&error]) {
-                // If we can't create this directory something is wrong, goto.
+            if (![manager createDirectoryAtPath:encryptedKeyParentDirectory withIntermediateDirectories:NO attributes:attributes error:&error]) {
+                // If we can't create this directory something is wrong, return now.
                 syslog(LOG_ALERT, "[ERROR] Could not create the parent directory for the encrypted key files.");
                 goto helper_reply;
             }
         } else if (directoryExists && !isDir) {
-            // The path exists but is not a directory get, escape!.
-            syslog(LOG_ALERT, "[ERROR] The %s exists, but it is not a directory, needs repair.", encryptionKeyParentDir.UTF8String);
+            // The path exists but is not a directory, escape!.
+            syslog(LOG_ALERT, "[ERROR] The %s exists, but it is not a directory, it needs to be repaired.", encryptedKeyParentDirectory.UTF8String);
             goto helper_reply;
         }
 
@@ -230,13 +231,13 @@ static const NSTimeInterval kHelperCheckInterval = 1.0; // how often to check wh
                                                   error:&error];
 
         // Write the encrypted data to the keyFile.
-        [encryptedKeyFileData writeToFile:keyFile atomically:YES];
+        [encryptedKeyFileData writeToFile:encryptedKeyFile atomically:YES];
 
     } else {
         // The keyFile is there.
 
         // Read in the encrypted data of the keyFile.
-        encryptedKeyFileData = [NSData dataWithContentsOfFile:keyFile];
+        encryptedKeyFileData = [NSData dataWithContentsOfFile:encryptedKeyFile];
 
         // Decrypt the data.
         passwordData = [RNDecryptor decryptData:encryptedKeyFileData
@@ -245,13 +246,13 @@ static const NSTimeInterval kHelperCheckInterval = 1.0; // how often to check wh
                                           error:&error];
     }
 
-    // Re set the attributes of the file to root only access.
-    if (![manager setAttributes:attributes ofItemAtPath:keyFile error:nil]) {
+    // Reset the attributes of the file to root only access.
+    if (![manager setAttributes:attributes ofItemAtPath:encryptedKeyFile error:nil]) {
         syslog(LOG_ALERT, "[ERROR] A problem was encountered updating keyFile's permissions.");
     }
 
     if (passwordData) {
-        // set the password as the NSObject data descripton.
+        // set the password as the data description.
         password = passwordData.description;
     }
 
@@ -268,15 +269,14 @@ helper_reply:
               reply:(void (^)(NSError *error))reply
 {
 
-    // Display Authorization Prompt based on external form contained in
-    // authData. If user cancels the challenge, or any other problem occurs
-    // it will return a populated error object, with the details
+    // Display Authorization Prompt based on external form contained in authData.
+    // If user cancels the challenge, or any other problem occurs it will return a populated error object, with the details
     NSError *error = [LGAutoPkgrAuthorizer checkAuthorization:authData
                                                       command:_cmd];
 
     // If authorization was successful continue,
     if (!error) {
-        // Check if the launch path and user are valid, and that the timer has a sensible mininum.
+        // Check if the launch path and user are valid, and that the timer has a sensible minimum.
         if ([self launchPathIsValid:program error:&error] &&
             [self userIsValid:user error:&error] && timer >= 3600) {
             AHLaunchJob *job = [AHLaunchJob new];
@@ -331,8 +331,8 @@ helper_reply:
     task.launchPath = @"/usr/sbin/installer";
     task.arguments = @[ @"-verbose", @"-pkg", path, @"-target", @"/" ];
 
-    task.standardError = [NSPipe pipe];
     task.standardOutput = [NSPipe pipe];
+    task.standardError = task.standardOutput;
 
     [[task.standardOutput fileHandleForReading] setReadabilityHandler:^(NSFileHandle *fh) {
         if (fh.availableData) {
@@ -360,9 +360,8 @@ helper_reply:
 #pragma mark - Life Cycle
 - (void)quitHelper:(void (^)(BOOL success))reply
 {
-    // this will cause the run-loop to exit;
-    // you should call it via NSXPCConnection
-    // during the applicationShouldTerminate routine
+    // This will cause the run-loop to exit. You should call it
+    // from the main app during applicationShouldTerminate:.
     for (NSXPCConnection *connection in self.connections) {
         [connection invalidate];
     }
@@ -414,8 +413,8 @@ helper_reply:
     // that the user matches the logged in (console) user.
     BOOL success = YES;
     NSString *loggedInUser = CFBridgingRelease(SCDynamicStoreCopyConsoleUser(NULL, NULL, NULL));
-    syslog(LOG_INFO, "Checking that logged in user is the same as the user to run the schedule as: %s", loggedInUser.UTF8String);
 
+    syslog(LOG_INFO, "Checking that logged in user is the same as the user to run the schedule as: %s", loggedInUser.UTF8String);
     if (!loggedInUser || !user || ![user isEqualToString:loggedInUser]) {
         if (error) {
             NSDictionary *errorDict = @{ NSLocalizedDescriptionKey : @"Invalid user for scheduling autopkg run",
@@ -447,7 +446,6 @@ helper_reply:
         syslog(LOG_ALERT, "[DEBUG] Helper Tool codesign stats: %s", selfCS.description.UTF8String);
 #endif
     }
-
     return success;
 }
 
