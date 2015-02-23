@@ -69,8 +69,9 @@ static const NSTimeInterval kHelperCheckInterval = 1.0; // how often to check wh
 //----------------------------------------
 - (BOOL)listener:(NSXPCListener *)listener shouldAcceptNewConnection:(NSXPCConnection *)newConnection
 {
+    BOOL valid = [self newConnectionIsValid:newConnection];
 
-    if ([self newConnectionIsValid:newConnection]) {
+    if (valid) {
         NSXPCInterface *exportedInterface = [NSXPCInterface interfaceWithProtocol:@protocol(HelperAgent)];
         newConnection.exportedInterface = exportedInterface;
 
@@ -374,22 +375,13 @@ helper_reply:
 - (void)uninstall:(NSData *)authData reply:(void (^)(NSError *))reply;
 {
     NSError *error;
-    error = [LGAutoPkgrAuthorizer checkAuthorization:authData command:_cmd];
-
-    if (error) {
-        return reply(error);
-    }
-
     if (jobIsRunning(kLGAutoPkgrLaunchDaemonPlist, kAHGlobalLaunchDaemon)) {
         [[AHLaunchCtl sharedController] remove:kLGAutoPkgrLaunchDaemonPlist
                                     fromDomain:kAHGlobalLaunchDaemon
-                                         error:nil];
+                                         error:&error];
     }
 
-    [AHLaunchCtl removeFilesForHelperWithLabel:kLGAutoPkgrHelperToolName error:&error];
     reply(error);
-
-    [AHLaunchCtl uninstallHelper:kLGAutoPkgrHelperToolName prompt:@"" error:nil];
 }
 
 #pragma mark - Private
@@ -399,6 +391,7 @@ helper_reply:
     // the program the helper tool is asked add as the launchd.plist "Program" key
 
     SNTCodesignChecker *selfCS = [[SNTCodesignChecker alloc] initWithSelf];
+
     SNTCodesignChecker *remoteCS = [[SNTCodesignChecker alloc] initWithBinaryPath:path];
 
     return [selfCS signingInformationMatches:remoteCS];

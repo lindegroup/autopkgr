@@ -67,17 +67,16 @@ NSString *appKeychainPath()
 }
 
 #pragma mark - Migration method
-+ (void)migrateKeychainIfNeeded:(void (^)(NSString *password))reply;
++ (void)migrateKeychainIfNeeded:(void (^)(NSString *password, NSError *error))reply;
 {
     NSString *upgradeTriedKey = @"KeychainUpgrade_1_2_1_Tried";
     BOOL upgradeTried = [[LGDefaults standardUserDefaults] boolForKey:upgradeTriedKey];
 
     if (!upgradeTried) {
         // Only try to upgrade once.
-        [[LGDefaults standardUserDefaults] setObject:@YES forKey:upgradeTriedKey];
-
         NSString *oldPass = [LGHostInfo macSerialNumber];
         AHKeychain *keychain = [AHKeychain keychainAtPath:appKeychainPath()];
+        [keychain lock];
 
         if ([keychain unlockWithPassword:oldPass]) {
             // If we successfully unlock the keychain with the old password
@@ -90,11 +89,16 @@ NSString *appKeychainPath()
                         DLog(@"Successfully updated keychain.");
                         AHKeychainItem *item = [self keychainItemForAccount:account];
                         if ([keychain getItem:item error:&error]) {
-                            reply(item.password);
+                            reply(item.password, error);
                         }
                     }
+                    [[LGDefaults standardUserDefaults] setObject:@YES forKey:upgradeTriedKey];
+                } else {
+                    reply(nil, error);
                 }
             }];
+        } else {
+            [[LGDefaults standardUserDefaults] setObject:@YES forKey:upgradeTriedKey];
         }
     }
 }

@@ -58,7 +58,11 @@
 {
     [super windowDidLoad];
 
-    [LGPasswords migrateKeychainIfNeeded:^(NSString *password) {
+    [LGPasswords migrateKeychainIfNeeded:^(NSString *password, NSError *error) {
+        if (error) {
+            [NSApp presentError:error];
+        }
+
         if (password) {
             _smtpPassword.stringValue = password;
         }

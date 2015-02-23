@@ -23,8 +23,9 @@
 @interface LGPasswords : NSObject
 
 + (void)getPasswordForAccount:(NSString *)account reply:(void (^)(NSString *password, NSError *error))reply;
+
 + (void)savePassword:(NSString *)password forAccount:(NSString *)account reply:(void (^)(NSError *error))reply;
 
-+ (void)migrateKeychainIfNeeded:(void (^)(NSString *password))reply;
++ (void)migrateKeychainIfNeeded:(void (^)(NSString *password, NSError *error))reply;
 + (void)resetKeychainPrompt:(void (^)(NSError *))reply;
 @end
