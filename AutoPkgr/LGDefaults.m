@@ -41,6 +41,11 @@
     return shared;
 }
 
+- (void)dealloc
+{
+    [self synchronize];
+}
+
 - (BOOL)synchronize
 {
     BOOL success = [super synchronize] && CFPreferencesAppSynchronize((__bridge CFStringRef)(kLGAutoPkgPreferenceDomain));
@@ -100,27 +105,26 @@
 }
 
 #pragma mark - Info
-- (NSString *)LastAutoPkgRun
+- (id)LastAutoPkgRun
 {
-    return [self objectForKey:NSStringFromSelector(@selector(LastAutoPkgRun))];
+    id date = [self objectForKey:NSStringFromSelector(@selector(LastAutoPkgRun))];
+    NSString *retVal = @"";
+    if ([date isKindOfClass:[NSDate class]]) {
+        NSDateFormatter *fomatter = [NSDateFormatter new];
+        [fomatter setDateStyle:NSDateFormatterMediumStyle];
+        [fomatter setTimeStyle:NSDateFormatterMediumStyle];
+        retVal = [fomatter stringFromDate:date];
+    } else if ([date isKindOfClass:[NSString class]]){
+        retVal = date;
+    }
+    return retVal;
 }
 
 - (void)setLastAutoPkgRun:(id)LastAutoPkgRun
 {
-    NSString *setValue = nil;
-
-    if ([LastAutoPkgRun isKindOfClass:[NSDate class]]) {
-        // If the object passed in is an NSDate object convert it
-        // to a nice formatted string.
-        NSDateFormatter *fomatter = [NSDateFormatter new];
-        [fomatter setDateStyle:NSDateFormatterMediumStyle];
-        [fomatter setTimeStyle:NSDateFormatterMediumStyle];
-        setValue = [fomatter stringFromDate:LastAutoPkgRun];
-    } else if ([LastAutoPkgRun isKindOfClass:[NSString class]]) {
-        // If a string is passed in assume it's been formatted
-        setValue = LastAutoPkgRun;
+    if ([LastAutoPkgRun isKindOfClass:[NSDate class]] || [LastAutoPkgRun isKindOfClass:[NSString class]] ) {
+        [self setObject:LastAutoPkgRun forKey:NSStringFromSelector(@selector(LastAutoPkgRun))];
     }
-    [self setObject:setValue forKey:NSStringFromSelector(@selector(LastAutoPkgRun))];
 }
 
 #pragma mark - BOOL

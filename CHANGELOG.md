@@ -5,7 +5,8 @@ All notable changes to this project will be documented in this file. This projec
 
 
 ## [Unreleased][unreleased]
-### Fixed
+### Fixed 
+* Background run not updating date in status menu. (#286)
 
 
 ## [1.2] - 2015-02-13
