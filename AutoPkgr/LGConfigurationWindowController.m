@@ -299,13 +299,14 @@
     // Change the button label to "Installing..."
     // and disable the button to prevent multiple clicks
     [_installGitButton setEnabled:NO];
+    [self startProgressWithMessage:@"Installing newest version of Git..."];
 
     LGInstaller *installer = [[LGInstaller alloc] init];
     installer.progressDelegate = _progressDelegate;
     [installer installGit:^(NSError *error) {
         [self stopProgress:error];
         LGToolStatus *toolStatus = [[LGToolStatus alloc] init];
-        [toolStatus autoPkgStatus:^(LGTool *tool) {
+        [toolStatus gitStatus:^(LGTool *tool) {
             _installGitButton.enabled = tool.needsInstall;
             _installGitButton.title = tool.installButtonTitle;
             _gitStatusIcon.image = tool.statusImage;
