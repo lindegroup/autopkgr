@@ -9,11 +9,12 @@ All notable changes to this project will be documented in this file. This projec
 ### Added
 - Created changelog.
 - AutoPkgr now displays the version number of Git and AutoPkg in the Install tab.
-- Now you'll receive an email when new versions of Git, AutoPkg, or AutoPkgr are available.
+- Now you'll receive an email when new versions of Git, AutoPkg, or AutoPkgr are available. (#137)
 
 ### Security
-- Now using three-way encryption to store SMTP password more securely.
+- Now using three-way encryption to store SMTP password more securely. (#271)
 - Improved security of the helper tool AutoPkgr uses to run in the background.
+- AutoPkgr now tries to obfuscate sharepoint usernames and passwords in email notifications. (#227)
 
 ### Fixed
 - Background run not updating date in status menu. (#286)
@@ -24,6 +25,7 @@ All notable changes to this project will be documented in this file. This projec
 - Fixed a bug that prevented status messages over 50 characters from being displayed in the menu.
 - Fixed a bug that prevented autopkg run status from appearing in the menu.
 - Made configuration options for "Run AutoPkg Now" consistent with menu items.
+- Fixed a situation that prevented launchd from reading current defaults values. (#296)
 
 ### Changed
 - Uninstall is now handled by the main app, not the helper tool.
