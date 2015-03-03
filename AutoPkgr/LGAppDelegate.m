@@ -86,6 +86,7 @@
     // Check if we're authorized to install helper tool,
     // if not just quit
     NSError *error;
+
     if (![AHLaunchCtl installHelper:kLGAutoPkgrHelperToolName prompt:@"" error:&error]) {
         if (error) {
             NSLog(@"%@", error.localizedDescription);
@@ -119,12 +120,6 @@
 
 - (void)applicationWillTerminate:(NSNotification *)notification
 {
-    if (jobIsRunning(kLGAutoPkgrHelperToolName, kAHGlobalLaunchDaemon)) {
-        LGAutoPkgrHelperConnection *helper = [LGAutoPkgrHelperConnection new];
-        [helper connectToHelper];
-        [[helper.connection remoteObjectProxy] quitHelper:^(BOOL success) {}];
-    }
-
     // Stop observing...
     [[NSDistributedNotificationCenter defaultCenter] removeObserver:self name:kLGNotificationProgressMessageUpdate object:nil];
 }
@@ -133,6 +128,24 @@
 {
     [self showConfigurationWindow:self];
     return YES;
+}
+
+- (NSApplicationTerminateReply)applicationShouldTerminate:(NSApplication *)sender
+{
+    if (jobIsRunning(kLGAutoPkgrHelperToolName, kAHGlobalLaunchDaemon)) {
+        LGAutoPkgrHelperConnection *helper = [LGAutoPkgrHelperConnection new];
+        [helper connectToHelper];
+
+        DLog(@"Sending quit signal to helper tool...");
+        [[helper.connection remoteObjectProxyWithErrorHandler:^(NSError *error) {
+            [[NSApplication sharedApplication] replyToApplicationShouldTerminate:YES];
+        }] quitHelper:^(BOOL success) {
+            [[NSApplication sharedApplication] replyToApplicationShouldTerminate:YES];
+        }];
+
+        return NSTerminateLater;
+    }
+    return NSTerminateNow;
 }
 
 #pragma mark - Setup
@@ -223,29 +236,28 @@
 
 - (IBAction)uninstallHelper:(id)sender
 {
-    LGAutoPkgrHelperConnection *helper = [LGAutoPkgrHelperConnection new];
-    NSData *authData = [LGAutoPkgrAuthorizer authorizeHelper];
+    NSError *error;
 
-    [helper connectToHelper];
-    [[helper.connection remoteObjectProxyWithErrorHandler:^(NSError *error) {
-        [NSApp presentError:error];
-    }] uninstall:authData
-            reply:^(NSError *error) {
-        [[NSOperationQueue mainQueue]addOperationWithBlock:^{
-            if (error) {
-                if (error.code != errAuthorizationCanceled) {
-                    [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-                        [NSApp presentError:error];
-                    }];
-                }
-            } else {
-                // if uninstalling turn off schedule in defaults so it's not automatically recreated
-                NSAlert *alert = [NSAlert alertWithMessageText:@"Removed AutoPkgr associated files" defaultButton:@"Thanks for using AutoPkgr" alternateButton:nil otherButton:nil informativeTextWithFormat: @"including the helper tool, launchd schedule, and other launchd plist. You can safely remove it from your Applications folder."];
-                [alert runModal];
-                [[NSApplication sharedApplication]terminate:self];
-            }
-        }];
+    if (jobIsRunning(kLGAutoPkgrLaunchDaemonPlist, kAHGlobalLaunchDaemon)) {
+        [[AHLaunchCtl sharedController] remove:kLGAutoPkgrLaunchDaemonPlist fromDomain:kAHGlobalLaunchDaemon error:&error];
+        if (error) {
+            NSLog(@"%@", error.localizedDescription);
+        } else {
+            NSLog(@"Disabled schedule.");
+        }
+    }
+
+    if (![AHLaunchCtl uninstallHelper:kLGAutoPkgrHelperToolName prompt:@"Remove AutoPkgr's components." error:&error]) {
+        if (error.code != errAuthorizationCanceled) {
+            [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+                [NSApp presentError:error];
             }];
+        }
+    } else {
+        NSAlert *alert = [NSAlert alertWithMessageText:@"Removed AutoPkgr associated files." defaultButton:@"Thanks for using AutoPkgr" alternateButton:nil otherButton:nil informativeTextWithFormat:@"This includes the helper tool, launchd schedule, and other launchd plist. You can safely remove it from your Applications folder."];
+        [alert runModal];
+        [[NSApplication sharedApplication] terminate:self];
+    }
 }
 
 #pragma mark - Progress Protocol

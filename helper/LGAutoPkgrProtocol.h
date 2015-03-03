@@ -22,6 +22,10 @@
 #import "LGAutoPkgrAuthorizer.h"
 
 @protocol HelperAgent <NSObject>
+
+# pragma mark - Password / KeyFile
+- (void)getKeychainKey:(void (^)(NSString *key, NSError *error))reply;
+
 #pragma mark - Schedule
 #pragma mark-- Add
 - (void)scheduleRun:(NSInteger)interval
@@ -30,7 +34,8 @@
       authorization:(NSData *)authData
               reply:(void (^)(NSError *error))reply;
 
-#pragma mark-- Remove
+
+#pragma mark -- Remove
 - (void)removeScheduleWithAuthorization:(NSData *)authData
                                   reply:(void (^)(NSError *error))reply;
 
