@@ -6,24 +6,27 @@ All notable changes to this project will be documented in this file. This projec
 
 ## [Unreleased][unreleased]
 
+### Added
+- Created changelog.
+- AutoPkgr now displays the version number of Git and AutoPkg in the Install tab.
+- Now you'll receive an email when new versions of Git, AutoPkg, or AutoPkgr are available.
+
 ### Security
 - Now using three-way encryption to store SMTP password more securely.
 - Improved security of the helper tool AutoPkgr uses to run in the background.
 
 ### Fixed
 - Background run not updating date in status menu. (#286)
-- Resolved an issue that prevented "Launch at Login" button from working. (#272)
+- Resolved an issue that prevented "Launch at Login" button from working in 10.8 and 10.9. (#272)
 - Prevented displaying progress detail messages unnecessarily.
-- Correctly parse `%20` in version strings. (#270)
+- Properly processes `%20` in URLs when parsing versions. (#270)
 - Fixed the "Check for repo updates before each recipe run" checkbox wording.
 - Fixed a bug that prevented status messages over 50 characters from being displayed in the menu.
 - Fixed a bug that prevented autopkg run status from appearing in the menu.
+- Made configuration options for "Run AutoPkg Now" consistent with menu items.
 
 ### Changed
 - Uninstall is now handled by the main app, not the helper tool.
-
-### Added
-- Created changelog.
 
 ## [1.2] - 2015-02-13
 
