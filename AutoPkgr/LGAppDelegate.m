@@ -148,6 +148,12 @@
     return NSTerminateNow;
 }
 
+-(void)applicationWillResignActive:(NSNotification *)notification
+{
+    // Write out preferences to disk to ensure the background run picks up any changes.
+    [[LGDefaults standardUserDefaults] synchronize];
+}
+
 #pragma mark - Setup
 - (void)setupStatusItem
 {
