@@ -41,9 +41,21 @@
     return shared;
 }
 
+- (void)dealloc
+{
+    [self synchronize];
+}
+
 - (BOOL)synchronize
 {
-    BOOL success = [super synchronize] && CFPreferencesAppSynchronize((__bridge CFStringRef)(kLGAutoPkgPreferenceDomain));
+    BOOL success =
+        (CFPreferencesSynchronize(kCFPreferencesCurrentApplication,
+                                  kCFPreferencesCurrentUser,
+                                  kCFPreferencesAnyHost) &&
+
+         CFPreferencesSynchronize((__bridge CFStringRef)(kLGAutoPkgPreferenceDomain),
+                                  kCFPreferencesCurrentUser,
+                                  kCFPreferencesAnyHost));
     return success;
 }
 
