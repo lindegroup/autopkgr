@@ -200,6 +200,28 @@ static NSDictionary *userInfoFromHTTPResponse(NSHTTPURLResponse *response)
     };
 }
 
+NSString *maskPasswordInString(NSString * string)
+{
+    NSError *error;
+    NSMutableString *retractedString = [string mutableCopy];
+
+    NSString *pattern = @"(?<=://).+?.+?(?=@)";
+    NSRegularExpression *exp = [NSRegularExpression regularExpressionWithPattern:pattern options:0 error:&error];
+
+    NSRange range = NSMakeRange(0, string.length);
+    NSArray *matches = [exp matchesInString:string options:0 range:range];
+    for (NSTextCheckingResult *match in matches) {
+        NSString *ms = [string substringWithRange:match.range];
+        NSArray *array = [ms componentsSeparatedByString:@":"];
+
+        // Make sure to re-range the retracted string each loop, since it gets modified.
+        NSRange r_range = NSMakeRange(0, retractedString.length);
+        [retractedString replaceOccurrencesOfString:[array lastObject] withString:@"*******" options:NSCaseInsensitiveSearch range:r_range];
+    }
+
+    return [retractedString copy];
+}
+
 @implementation LGError
 #ifdef _APPKITDEFINES_H
 + (void)presentErrorWithCode:(LGErrorCodes)code
@@ -276,8 +298,10 @@ static NSDictionary *userInfoFromHTTPResponse(NSHTTPURLResponse *response)
 
     if ([task.standardError isKindOfClass:[NSPipe class]]) {
         NSData *errData = [[task.standardError fileHandleForReading] readDataToEndOfFile];
-        if (errData) {
-            errorDetails = [[NSString alloc] initWithData:errData encoding:NSASCIIStringEncoding];
+        NSString *rawDetails;
+
+        if (errData && (rawDetails = [[NSString alloc] initWithData:errData encoding:NSASCIIStringEncoding])) {
+            errorDetails = maskPasswordInString(rawDetails);
         }
     }
 
