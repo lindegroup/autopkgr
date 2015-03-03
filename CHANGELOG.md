@@ -26,6 +26,7 @@ All notable changes to this project will be documented in this file. This projec
 - Fixed a bug that prevented autopkg run status from appearing in the menu.
 - Made configuration options for "Run AutoPkg Now" consistent with menu items.
 - Fixed a situation that prevented launchd from reading current defaults values. (#296)
+- Fixes a condition where there are duplicate environment keys set in Yosemite (#284, #291)
 
 ### Changed
 - Uninstall is now handled by the main app, not the helper tool.
