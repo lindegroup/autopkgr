@@ -400,6 +400,21 @@
 }
 
 #pragma mark - Menu Delegate
+- (void)menuWillOpen:(NSMenu *)menu
+{
+    // The preferences set via the background run are not picked up
+    // despite aggressive synchronization, so we need to pull the value from
+    // the actual preference file until a better work around is found...
+
+    NSDictionary *dict = [NSDictionary dictionaryWithContentsOfFile:[@"~/Library/Preferences/com.lindegroup.AutoPkgr.plist" stringByExpandingTildeInPath]];
+
+    NSString *date = dict[@"LastAutoPkgRun"];
+    if (date) {
+        NSString *status = [NSString stringWithFormat:@"Last AutoPkg Run: %@", date ?: @"Never by AutoPkgr"];
+        [_progressMenuItem setTitle:status];
+    }
+}
+
 - (void)menuDidClose:(NSMenu *)menu
 {
     self.statusItem.image = [NSImage imageNamed:@"autopkgr.png"];

@@ -114,24 +114,23 @@
 #pragma mark - Info
 - (id)LastAutoPkgRun
 {
-    id date = [self objectForKey:NSStringFromSelector(@selector(LastAutoPkgRun))];
-    NSString *retVal = @"";
-    if ([date isKindOfClass:[NSDate class]]) {
-        NSDateFormatter *fomatter = [NSDateFormatter new];
-        [fomatter setDateStyle:NSDateFormatterMediumStyle];
-        [fomatter setTimeStyle:NSDateFormatterMediumStyle];
-        retVal = [fomatter stringFromDate:date];
-    } else if ([date isKindOfClass:[NSString class]]){
-        retVal = date;
-    }
-    return retVal;
+    return [self objectForKey:NSStringFromSelector(@selector(LastAutoPkgRun))];
 }
 
 - (void)setLastAutoPkgRun:(id)LastAutoPkgRun
 {
-    if ([LastAutoPkgRun isKindOfClass:[NSDate class]] || [LastAutoPkgRun isKindOfClass:[NSString class]] ) {
-        [self setObject:LastAutoPkgRun forKey:NSStringFromSelector(@selector(LastAutoPkgRun))];
+    NSString *setVal;
+    if ([LastAutoPkgRun isKindOfClass:[NSDate class]]){
+        NSDateFormatter *fomatter = [NSDateFormatter new];
+        [fomatter setDateStyle:NSDateFormatterMediumStyle];
+        [fomatter setTimeStyle:NSDateFormatterMediumStyle];
+        setVal = [fomatter stringFromDate:LastAutoPkgRun];
+    } else if ([LastAutoPkgRun isKindOfClass:[NSString class]] ) {
+        setVal = LastAutoPkgRun;
+        NSLog(@"Setting date as string");
     }
+    
+    [self setObject:setVal forKey:NSStringFromSelector(@selector(LastAutoPkgRun))];
 }
 
 #pragma mark - BOOL
