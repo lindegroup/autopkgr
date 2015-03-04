@@ -24,17 +24,8 @@
 #import "LGRecipes.h"
 #import "LGEmailer.h"
 #import "LGAutoPkgr.h"
+#import "LGAutoPkgrHelperConnection.h"
 
-void postUpdateMessage(NSString *message, double progress, BOOL complete)
-{
-    [[NSDistributedNotificationCenter defaultCenter]
-        postNotificationName:kLGNotificationProgressMessageUpdate
-                      object:nil
-                    userInfo:@{ kLGNotificationUserInfoMessage : message ?: @"",
-                                kLGNotificationUserInfoProgress : @(progress),
-                                kLGNotificationUserInfoSuccess : @(complete) }
-          deliverImmediately:complete];
-}
 
 int main(int argc, const char *argv[])
 {
@@ -49,15 +40,30 @@ int main(int argc, const char *argv[])
 
         LGAutoPkgTaskManager *manager = [[LGAutoPkgTaskManager alloc] init];
 
+        LGAutoPkgrHelperConnection *helper = [LGAutoPkgrHelperConnection new];
+        [helper connectToHelper];
+
+        [[helper.connection remoteObjectProxy] sendMessageToMainApplication:@"Running AutoPkg in background..."
+                                                                   progress:0
+                                                                      error:nil
+                                                                      state:kLGAutoPkgProgressStart];
+
         [manager setProgressUpdateBlock:^(NSString *message, double progress) {
-            postUpdateMessage(message, progress, NO);
+            [[helper.connection remoteObjectProxy] sendMessageToMainApplication:message
+                                                                       progress:progress
+                                                                          error:nil
+                                                                       state:kLGAutoPkgProgressProcessing];
         }];
 
         [manager runRecipeList:[LGRecipes recipeList]
                     updateRepo:update
                          reply:^(NSDictionary *report, NSError *error) {
-                             postUpdateMessage(nil, 0, YES);
-            [emailer sendEmailForReport:report error:error];
+                             [[helper.connection remoteObjectProxy] sendMessageToMainApplication:nil
+                                                                                        progress:100
+                                                                                           error:error
+                                                                                        state:kLGAutoPkgProgressComplete];
+
+                             [emailer sendEmailForReport:report error:error];
                          }];
 
         while (emailer && !emailer.complete) {
