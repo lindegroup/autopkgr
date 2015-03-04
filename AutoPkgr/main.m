@@ -32,48 +32,20 @@ void postUpdateMessage(NSString *message, double progress, BOOL complete)
                       object:nil
                     userInfo:@{ kLGNotificationUserInfoMessage : message ?: @"",
                                 kLGNotificationUserInfoProgress : @(progress),
-                                kLGNotificationUserInfoSuccess : @(complete) }];
+                                kLGNotificationUserInfoSuccess : @(complete) }
+          deliverImmediately:complete];
 }
-
-void hardSyncPreferences()
-{
-    // This is an extremely ugly hack, but for some reason, cfprefsd is not
-    // reliably picking up changes when the background run is executed by launchd.
-    // We're stuck syncing directly from the file.
-    //
-    // Only ever run this for the background run!!!
-
-    // Hard sync AutoPkgr
-    NSDictionary *autoPkgrDict = [NSDictionary dictionaryWithContentsOfFile:[@"~/Library/Preferences/com.lindegroup.AutoPkgr.plist" stringByExpandingTildeInPath]];
-
-    CFPreferencesSetMultiple((__bridge CFDictionaryRef)autoPkgrDict,
-                             NULL,
-                             kCFPreferencesCurrentApplication,
-                             kCFPreferencesCurrentUser,
-                             kCFPreferencesAnyHost);
-
-    // Hard sync AutoPkg
-    NSDictionary *autoPkgDict = [NSDictionary dictionaryWithContentsOfFile:[@"~/Library/Preferences/com.github.autopkg.plist" stringByExpandingTildeInPath]];
-
-    CFPreferencesSetMultiple((__bridge CFDictionaryRef)autoPkgDict,
-                             NULL,
-                             (__bridge CFStringRef)(kLGAutoPkgPreferenceDomain),
-                             kCFPreferencesCurrentUser,
-                             kCFPreferencesAnyHost);
-}
-
 
 int main(int argc, const char *argv[])
 {
     NSUserDefaults *args = [NSUserDefaults standardUserDefaults];
 
     if ([args boolForKey:@"runInBackground"]) {
-        hardSyncPreferences();
         NSLog(@"Running AutoPkgr in background...");
 
         __block LGEmailer *emailer = [[LGEmailer alloc] init];
 
-        BOOL update =  [args boolForKey:kLGCheckForRepoUpdatesAutomaticallyEnabled];
+        BOOL update = [args boolForKey:kLGCheckForRepoUpdatesAutomaticallyEnabled];
 
         LGAutoPkgTaskManager *manager = [[LGAutoPkgTaskManager alloc] init];
 
@@ -94,7 +66,7 @@ int main(int argc, const char *argv[])
 
         NSLog(@"AutoPkg background run complete.");
         return 0;
-        
+
     } else {
         return NSApplicationMain(argc, argv);
     }

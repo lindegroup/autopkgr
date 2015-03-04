@@ -287,6 +287,7 @@ helper_reply:
             job.StartInterval = timer;
             job.SessionCreate = YES;
             job.UserName = user;
+            job.EnvironmentVariables = @{@"__CFPREFERENCES_AVOID_DAEMON" : @"1"};
 
             [[AHLaunchCtl sharedController] add:job toDomain:kAHGlobalLaunchDaemon error:&error];
         }
