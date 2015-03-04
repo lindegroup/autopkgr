@@ -21,6 +21,12 @@
 #import "LGConstants.h"
 #import "LGAutoPkgrAuthorizer.h"
 
+typedef NS_ENUM(NSInteger, LGBackgroundTaskProgressState) {
+    kLGAutoPkgProgressStart = -1,
+    kLGAutoPkgProgressProcessing = 0,
+    kLGAutoPkgProgressComplete = 1
+};
+
 @protocol HelperAgent <NSObject>
 
 # pragma mark - Password / KeyFile
@@ -47,5 +53,13 @@
 #pragma mark - Life Cycle
 - (void)quitHelper:(void (^)(BOOL success))reply;
 - (void)uninstall:(NSData *)authData reply:(void (^)(NSError *))reply;
+
+#pragma mark - IPC messaging
+- (void)registerMainApplication:(void (^)(BOOL resign))resign;
+
+- (void)sendMessageToMainApplication:(NSString *)message
+                            progress:(double)progress
+                               error:(NSError *)error
+                            state:(LGBackgroundTaskProgressState)state;
 
 @end

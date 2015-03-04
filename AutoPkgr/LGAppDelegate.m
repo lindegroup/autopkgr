@@ -75,11 +75,6 @@
     NSLog(@"Welcome to AutoPkgr!");
     DLog(@"Verbose logging is active. To deactivate, option-click the AutoPkgr menu icon and uncheck Verbose Logs.");
 
-    // Start observing distributed notifications for background runs
-    [[NSDistributedNotificationCenter defaultCenter] addObserver:self
-                                                        selector:@selector(didReceiveStatusUpdate:)
-                                                            name:kLGNotificationProgressMessageUpdate
-                                                          object:nil];
     // Setup the status item
     [self setupStatusItem];
 
@@ -94,6 +89,18 @@
             [[NSApplication sharedApplication] terminate:self];
         }
     }
+
+    // Register to get background progress updates...
+    LGAutoPkgrHelperConnection *backgroundMonitor = [LGAutoPkgrHelperConnection new];
+
+    [backgroundMonitor connectToHelper];
+    backgroundMonitor.connection.exportedObject = self;
+    backgroundMonitor.connection.exportedInterface = [NSXPCInterface interfaceWithProtocol:@protocol(LGProgressDelegate)];
+
+    [[backgroundMonitor.connection remoteObjectProxy] registerMainApplication:^(BOOL resign) {
+        DLog(@"No longer monitoring scheduled autopkg run");
+    }];
+
 
     if (![LGRecipes migrateToIdentifiers:nil]) {
         [NSApp presentError:[NSError errorWithDomain:kLGApplicationName code:-1 userInfo:@{ NSLocalizedDescriptionKey : @"AutoPkgr will now quit.",
@@ -267,27 +274,6 @@
 }
 
 #pragma mark - Progress Protocol
-- (void)didReceiveStatusUpdate:(NSNotification *)aNotification
-{
-    NSDictionary *info = aNotification.userInfo;
-    NSString *message = info[kLGNotificationUserInfoMessage];
-
-    if (!_initialMessageFromBackgroundRunProcessed) {
-        _configurationWindowInitiallyVisible = [_configurationWindowController.window isVisible];
-        if (_configurationWindowController && _configurationWindowInitiallyVisible) {
-            [_configurationWindowController startProgressWithMessage:@"Performing AutoPkg background run."];
-        }
-        _initialMessageFromBackgroundRunProcessed = YES;
-    }
-
-    if ([info[kLGNotificationUserInfoSuccess] boolValue]) {
-        [self stopProgress:nil];
-    } else {
-        double progress = [info[kLGNotificationUserInfoProgress] doubleValue];
-        [self updateProgress:message progress:progress];
-    }
-}
-
 - (void)startProgressWithMessage:(NSString *)message
 {
     [[NSOperationQueue mainQueue] addOperationWithBlock:^{
@@ -400,6 +386,21 @@
 }
 
 #pragma mark - Menu Delegate
+- (void)menuWillOpen:(NSMenu *)menu
+{
+    // The preferences set via the background run are not picked up
+    // despite aggressive synchronization, so we need to pull the value from
+    // the actual preference file until a better work around is found...
+
+    NSDictionary *dict = [NSDictionary dictionaryWithContentsOfFile:[@"~/Library/Preferences/com.lindegroup.AutoPkgr.plist" stringByExpandingTildeInPath]];
+
+    NSString *date = dict[@"LastAutoPkgRun"];
+    if (date) {
+        NSString *status = [NSString stringWithFormat:@"Last AutoPkg Run: %@", date ?: @"Never by AutoPkgr"];
+        [_progressMenuItem setTitle:status];
+    }
+}
+
 - (void)menuDidClose:(NSMenu *)menu
 {
     self.statusItem.image = [NSImage imageNamed:@"autopkgr.png"];

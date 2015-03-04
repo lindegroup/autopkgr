@@ -37,12 +37,16 @@ static const NSTimeInterval kHelperCheckInterval = 1.0; // how often to check wh
 
 @interface LGAutoPkgrHelper () <HelperAgent, NSXPCListenerDelegate>
 @property (atomic, strong, readwrite) NSXPCListener *listener;
-@property (weak) NSXPCConnection *connection;
-@property (strong, nonatomic) NSMutableSet *connections;
+@property (readonly) NSXPCConnection *connection;
+@property (weak) NSXPCConnection *relayConnection;
+
+@property (strong, nonatomic) NSMutableArray *connections;
 @property (nonatomic, assign) BOOL helperToolShouldQuit;
 @end
 
-@implementation LGAutoPkgrHelper
+@implementation LGAutoPkgrHelper {
+    void (^_resign)(BOOL);
+}
 
 - (id)init
 {
@@ -50,6 +54,7 @@ static const NSTimeInterval kHelperCheckInterval = 1.0; // how often to check wh
     if (self) {
         self->_listener = [[NSXPCListener alloc] initWithMachServiceName:kLGAutoPkgrHelperToolName];
         self->_listener.delegate = self;
+        self->_connections = [NSMutableArray new];
     }
     return self;
 }
@@ -76,12 +81,15 @@ static const NSTimeInterval kHelperCheckInterval = 1.0; // how often to check wh
         newConnection.exportedInterface = exportedInterface;
 
         newConnection.exportedObject = self;
-        self.connection = newConnection;
 
         __weak typeof(newConnection) weakConnection = newConnection;
         // If all connections are invalidated on the remote side, shutdown the helper.
         newConnection.invalidationHandler = ^() {
             __strong typeof(newConnection) strongConnection = weakConnection;
+            if ([strongConnection isEqualTo:self.relayConnection] && _resign) {
+                _resign(YES);
+            }
+
             [self.connections removeObject:strongConnection];
             if (!self.connections.count) {
                 [self quitHelper:^(BOOL success) {}];
@@ -96,6 +104,11 @@ static const NSTimeInterval kHelperCheckInterval = 1.0; // how often to check wh
 
     syslog(LOG_ERR, "Error creating xpc connection...");
     return NO;
+}
+
+- (NSXPCConnection *)connection
+{
+    return [self.connections lastObject];
 }
 
 #pragma mark - Password
@@ -287,6 +300,7 @@ helper_reply:
             job.StartInterval = timer;
             job.SessionCreate = YES;
             job.UserName = user;
+            job.EnvironmentVariables = @{@"__CFPREFERENCES_AVOID_DAEMON" : @"1"};
 
             [[AHLaunchCtl sharedController] add:job toDomain:kAHGlobalLaunchDaemon error:&error];
         }
@@ -366,6 +380,11 @@ helper_reply:
     for (NSXPCConnection *connection in self.connections) {
         [connection invalidate];
     }
+
+    if (_resign) {
+        _resign(YES);
+    }
+
     [self.connections removeAllObjects];
 
     self.helperToolShouldQuit = YES;
@@ -382,6 +401,37 @@ helper_reply:
     }
 
     reply(error);
+}
+
+#pragma mark - IPC communication from background run
+- (void)registerMainApplication:(void (^)(BOOL resign))resign;
+{
+    if(!self.relayConnection){
+        self.relayConnection = self.connection;
+        self.relayConnection.remoteObjectInterface = [NSXPCInterface interfaceWithProtocol:@protocol(LGProgressDelegate)];
+        _resign = resign;
+    } else {
+        resign(YES);
+    }
+}
+
+- (void)sendMessageToMainApplication:(NSString *)message progress:(double)progress error:(NSError *)error                             state:(LGBackgroundTaskProgressState)state;
+{
+    if (self.relayConnection) {
+        switch (state) {
+            case kLGAutoPkgProgressStart:
+                [self.relayConnection.remoteObjectProxy startProgressWithMessage:message];
+                break;
+            case kLGAutoPkgProgressProcessing:
+                [self.relayConnection.remoteObjectProxy updateProgress:message progress:progress];
+                break;
+            case kLGAutoPkgProgressComplete:
+                [self.relayConnection.remoteObjectProxy stopProgress:error];
+                break;
+            default:
+                break;
+        }
+    }
 }
 
 #pragma mark - Private
