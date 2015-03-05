@@ -17,31 +17,31 @@ PODS:
   - AFNetworking/Reachability (2.4.1)
   - AFNetworking/Security (2.4.1)
   - AFNetworking/Serialization (2.4.1)
-  - AHCodesignVerifier (0.1)
-  - AHKeychain (0.2)
-  - AHLaunchCtl (0.3.1)
+  - AHKeychain (0.2.1)
+  - AHLaunchCtl (0.4.1)
   - AHProxySettings (0.1.1)
   - mailcore2-osx (0.5.0)
+  - RNCryptor (2.2)
   - Sparkle (1.8.0)
   - XMLDictionary (1.4)
 
 DEPENDENCIES:
   - AFNetworking (~> 2.4.1)
-  - AHCodesignVerifier (~> 0.1)
-  - AHKeychain (~> 0.2)
-  - AHLaunchCtl (~> 0.3.1)
+  - AHKeychain (~> 0.2.1)
+  - AHLaunchCtl (~> 0.4.1)
   - AHProxySettings (~> 0.1.1)
   - mailcore2-osx (~> 0.5)
+  - RNCryptor (~> 2.2)
   - Sparkle (= 1.8)
   - XMLDictionary (~> 1.4)
 
 SPEC CHECKSUMS:
   AFNetworking: 0aabc6fae66d6e5d039eeb21c315843c7aae51ab
-  AHCodesignVerifier: d85f1962a32cac1bf671f47f1ac015dcb45192f2
-  AHKeychain: 8d76073b87a7d355ded1f03529a3088de4a9acf6
-  AHLaunchCtl: cf2990d295737c020fa5cc890c65a8d414a33158
+  AHKeychain: fe179683214f77f34146f49cbad27eb48f7a6172
+  AHLaunchCtl: 740cdee6fc26c9007e60650086093d310d76f201
   AHProxySettings: 9237c332cf97cdd5c916b0203bbe19866ad4a615
   mailcore2-osx: 025234b503a5cbe61ccd5f465c22ed63c13e8736
+  RNCryptor: 4f562062c39f288b99601674f2c50dd44b68d58a
   Sparkle: 5eb20bb37ca21e471dab8417dee880198d905327
   XMLDictionary: 735e81b9a043e220b0d24e9d4f16719606f2e0fc
 

@@ -26,6 +26,21 @@
 
 NSString *const kLGLaunchedAtLogin = @"LaunchedAtLogin";
 
+NSString *launchAgentFolderPath()
+{
+    return [@"~/Library/LaunchAgents" stringByExpandingTildeInPath];
+}
+
+NSString *launchAgentFilePath()
+{
+    NSBundle *appBundle = [NSBundle mainBundle];
+
+    NSString *launchAgentFileName = [appBundle.bundleIdentifier stringByAppendingPathExtension:@"launcher.plist"];
+
+    return [launchAgentFolderPath() stringByAppendingPathComponent:launchAgentFileName];
+}
+
+
 @implementation LGAutoPkgSchedule
 
 + (void)startAutoPkgSchedule:(BOOL)start interval:(NSInteger)interval isForced:(BOOL)forced reply:(void (^)(NSError *error))reply;
@@ -89,30 +104,39 @@ NSString *const kLGLaunchedAtLogin = @"LaunchedAtLogin";
 
 + (BOOL)launchAtLogin:(BOOL)launch
 {
-    NSBundle *appBundle = [NSBundle mainBundle];
-    NSString *launchAgentFileName = [appBundle.bundleIdentifier stringByAppendingPathExtension:@"launcher.plist"];
-
-    NSString *launchAgentPath = [[@"~/Library/LaunchAgents" stringByAppendingPathComponent:launchAgentFileName] stringByExpandingTildeInPath];
 
     AHLaunchJob *job = [AHLaunchJob new];
-    job.Label = [launchAgentFileName stringByDeletingPathExtension];
+    job.Label = [[launchAgentFilePath() lastPathComponent] stringByDeletingPathExtension];
 
     // Set an extra argument here to when launched at login, so the app delegate
     // knows to defer launching the configuration window once.
-    job.ProgramArguments = @[ appBundle.executablePath, kLGLaunchedAtLogin ];
+    job.ProgramArguments = @[ [[NSBundle mainBundle] executablePath], kLGLaunchedAtLogin ];
     job.RunAtLoad = YES;
 
-    if (launch) {
-        return [job.dictionary writeToFile:launchAgentPath atomically:YES];
-    } else {
-        return [[NSFileManager defaultManager] removeItemAtPath:launchAgentPath error:nil];
+    NSString *launchAgentFolder = launchAgentFolderPath();
+    NSString *launchAgentFile = launchAgentFilePath();
+
+    NSFileManager *fm = [NSFileManager defaultManager];
+    if (![fm fileExistsAtPath:launchAgentFolder]) {
+        [fm createDirectoryAtPath:launchAgentFolder withIntermediateDirectories:YES attributes:nil error:nil];
     }
+
+    BOOL success = YES;
+    BOOL exists = [fm fileExistsAtPath:launchAgentFile];
+    if (exists) {
+        success = [fm removeItemAtPath:launchAgentFile error:nil];
+    }
+
+    if (launch) {
+        success = [job.dictionary writeToFile:launchAgentFile atomically:YES];
+    }
+
+    return success;
 }
 
 + (BOOL)willLaunchAtLogin
 {
-    AHLaunchJob *job = [AHLaunchCtl jobFromFileNamed:@"com.lindegroup.AutoPkgr.launcher.plist" inDomain:kAHUserLaunchAgent];
-    return ([job.ProgramArguments.firstObject isEqualToString:[[NSBundle mainBundle] executablePath]]);
+    return [[NSFileManager defaultManager] fileExistsAtPath:launchAgentFilePath()];
 }
 
 @end

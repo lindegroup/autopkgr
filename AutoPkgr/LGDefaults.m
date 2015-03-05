@@ -41,9 +41,21 @@
     return shared;
 }
 
+- (void)dealloc
+{
+    [self synchronize];
+}
+
 - (BOOL)synchronize
 {
-    BOOL success = [super synchronize] && CFPreferencesAppSynchronize((__bridge CFStringRef)(kLGAutoPkgPreferenceDomain));
+    BOOL success =
+        (CFPreferencesSynchronize(kCFPreferencesCurrentApplication,
+                                  kCFPreferencesCurrentUser,
+                                  kCFPreferencesAnyHost) &&
+
+         CFPreferencesSynchronize((__bridge CFStringRef)(kLGAutoPkgPreferenceDomain),
+                                  kCFPreferencesCurrentUser,
+                                  kCFPreferencesAnyHost));
     return success;
 }
 
@@ -100,27 +112,25 @@
 }
 
 #pragma mark - Info
-- (NSString *)LastAutoPkgRun
+- (id)LastAutoPkgRun
 {
     return [self objectForKey:NSStringFromSelector(@selector(LastAutoPkgRun))];
 }
 
 - (void)setLastAutoPkgRun:(id)LastAutoPkgRun
 {
-    NSString *setValue = nil;
-
-    if ([LastAutoPkgRun isKindOfClass:[NSDate class]]) {
-        // If the object passed in is an NSDate object convert it
-        // to a nice formatted string.
+    NSString *setVal;
+    if ([LastAutoPkgRun isKindOfClass:[NSDate class]]){
         NSDateFormatter *fomatter = [NSDateFormatter new];
         [fomatter setDateStyle:NSDateFormatterMediumStyle];
         [fomatter setTimeStyle:NSDateFormatterMediumStyle];
-        setValue = [fomatter stringFromDate:LastAutoPkgRun];
-    } else if ([LastAutoPkgRun isKindOfClass:[NSString class]]) {
-        // If a string is passed in assume it's been formatted
-        setValue = LastAutoPkgRun;
+        setVal = [fomatter stringFromDate:LastAutoPkgRun];
+    } else if ([LastAutoPkgRun isKindOfClass:[NSString class]] ) {
+        setVal = LastAutoPkgRun;
+        NSLog(@"Setting date as string");
     }
-    [self setObject:setValue forKey:NSStringFromSelector(@selector(LastAutoPkgRun))];
+    
+    [self setObject:setVal forKey:NSStringFromSelector(@selector(LastAutoPkgRun))];
 }
 
 #pragma mark - BOOL
