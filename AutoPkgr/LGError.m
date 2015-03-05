@@ -200,12 +200,14 @@ static NSDictionary *userInfoFromHTTPResponse(NSHTTPURLResponse *response)
     };
 }
 
-NSString *maskPasswordInString(NSString * string)
+NSString *maskPasswordInString(NSString *string)
 {
     NSError *error;
     NSMutableString *retractedString = [string mutableCopy];
 
-    NSString *pattern = @"(?<=://).+?.+?(?=@)";
+    NSString *baseAll = @"a-zA-Z0-9~`!#.,$%^&*()-_{}<>?";
+    NSString *pattern = [NSString stringWithFormat:@"([%@]+:[%@]+(?=@))", baseAll, baseAll];
+
     NSRegularExpression *exp = [NSRegularExpression regularExpressionWithPattern:pattern options:0 error:&error];
 
     NSRange range = NSMakeRange(0, string.length);
@@ -216,7 +218,10 @@ NSString *maskPasswordInString(NSString * string)
 
         // Make sure to re-range the retracted string each loop, since it gets modified.
         NSRange r_range = NSMakeRange(0, retractedString.length);
-        [retractedString replaceOccurrencesOfString:[array lastObject] withString:@"*******" options:NSCaseInsensitiveSearch range:r_range];
+        [retractedString replaceOccurrencesOfString:[array lastObject]
+                                         withString:@"*******"
+                                            options:NSCaseInsensitiveSearch
+                                              range:r_range];
     }
 
     return [retractedString copy];
