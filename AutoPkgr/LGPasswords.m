@@ -70,10 +70,12 @@ NSString *appKeychainPath()
 + (void)migrateKeychainIfNeeded:(void (^)(NSString *password, NSError *error))reply;
 {
     NSString *upgradeTriedKey = @"KeychainUpgrade_1_2_1_Tried";
-    BOOL upgradeTried = [[LGDefaults standardUserDefaults] boolForKey:upgradeTriedKey];
 
-    if (!upgradeTried) {
-        // Only try to upgrade once.
+    BOOL upgradeTried = [[LGDefaults standardUserDefaults] boolForKey:upgradeTriedKey];
+    BOOL keychainExists = [[NSFileManager defaultManager] fileExistsAtPath:appKeychainPath()];
+
+    // Only try to upgrade once if the keychain exists.
+    if (!upgradeTried && keychainExists) {
         NSString *oldPass = [LGHostInfo macSerialNumber];
         AHKeychain *keychain = [AHKeychain keychainAtPath:appKeychainPath()];
         [keychain lock];
@@ -86,21 +88,19 @@ NSString *appKeychainPath()
                 if(!error){
                     if([keychain changeKeychainPassword:oldPass to:key error:&error]){
                         NSString *account = [[LGDefaults standardUserDefaults] SMTPUsername];
-                        DLog(@"Successfully updated keychain.");
+                        NSLog(@"Successfully migrated keychain.");
                         AHKeychainItem *item = [self keychainItemForAccount:account];
                         if ([keychain getItem:item error:&error]) {
                             reply(item.password, error);
                         }
                     }
-                    [[LGDefaults standardUserDefaults] setObject:@YES forKey:upgradeTriedKey];
                 } else {
                     reply(nil, error);
                 }
             }];
-        } else {
-            [[LGDefaults standardUserDefaults] setObject:@YES forKey:upgradeTriedKey];
         }
     }
+    [[LGDefaults standardUserDefaults] setBool:YES forKey:upgradeTriedKey];
 }
 
 + (void)resetKeychainPrompt:(void (^)(NSError *))reply

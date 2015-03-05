@@ -275,7 +275,7 @@
     if (account && password) {
         [LGPasswords savePassword:password forAccount:account reply:^(NSError *error) {
             if (error) {
-                if (error.code == errSecAuthFailed) {
+                if (error.code == errSecAuthFailed || error.code == errSecDuplicateKeychain) {
                     [LGPasswords resetKeychainPrompt:^(NSError *error) {
                         if (!error) {
                             [self updateKeychainPassword:nil];
