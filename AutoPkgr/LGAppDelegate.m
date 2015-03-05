@@ -51,7 +51,7 @@
 - (void)applicationWillFinishLaunching:(NSNotification *)notification
 {
     // Setup activation policy. By default set as menubar only.
-    [[LGDefaults standardUserDefaults] registerDefaults:@{ kLGApplicationDisplayStyle : @(kLGDisplayStyleShowMenu) }];
+    [[LGDefaults standardUserDefaults] registerDefaults:@{ kLGApplicationDisplayStyle : @(kLGDisplayStyleShowMenu | kLGDisplayStyleShowDock) }];
 
     if (([[LGDefaults standardUserDefaults] applicationDisplayStyle] & kLGDisplayStyleShowDock)) {
         [NSApp setActivationPolicy:NSApplicationActivationPolicyRegular];
@@ -100,7 +100,6 @@
     [[backgroundMonitor.connection remoteObjectProxy] registerMainApplication:^(BOOL resign) {
         DLog(@"No longer monitoring scheduled autopkg run");
     }];
-
 
     if (![LGRecipes migrateToIdentifiers:nil]) {
         [NSApp presentError:[NSError errorWithDomain:kLGApplicationName code:-1 userInfo:@{ NSLocalizedDescriptionKey : @"AutoPkgr will now quit.",
@@ -155,7 +154,7 @@
     return NSTerminateNow;
 }
 
--(void)applicationWillResignActive:(NSNotification *)notification
+- (void)applicationWillResignActive:(NSNotification *)notification
 {
     // Write out preferences to disk to ensure the background run picks up any changes.
     [[LGDefaults standardUserDefaults] synchronize];
