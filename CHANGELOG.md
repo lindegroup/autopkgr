@@ -6,9 +6,14 @@ All notable changes to this project will be documented in this file. This projec
 
 ## [Unreleased][unreleased]
 
+- (nothing yet)
+
+
+## [1.2.1] - 2015-03-08
+
 ### Added
 - Created changelog.
-- AutoPkgr now displays the version number of Git and AutoPkg in the Install tab.
+- AutoPkgr now displays the version number of Git and AutoPkg in the Install tab. (#244)
 - Now you'll receive an email when new versions of Git, AutoPkg, or AutoPkgr are available. (#137)
 
 ### Security
@@ -26,9 +31,12 @@ All notable changes to this project will be documented in this file. This projec
 - Fixed a bug that prevented autopkg run status from appearing in the menu.
 - Made configuration options for "Run AutoPkg Now" consistent with menu items.
 - Fixed a situation that prevented launchd from reading current defaults values. (#296)
+- Now showing AutoPkgr icon in both the Dock and the menu bar by default.
+- Small improvements to keychain migration method.
 
 ### Changed
 - Uninstall is now handled by the main app, not the helper tool.
+
 
 ## [1.2] - 2015-02-13
 
@@ -213,7 +221,8 @@ All notable changes to this project will be documented in this file. This projec
 - Initial public release of AutoPkgr.
 
 
-[unreleased]: https://github.com/lindegroup/autopkgr/compare/v1.2...HEAD
+[unreleased]: https://github.com/lindegroup/autopkgr/compare/v1.2.1...HEAD
+[1.2.1]: https://github.com/lindegroup/autopkgr/compare/v1.2...v1.2.1
 [1.2]: https://github.com/lindegroup/autopkgr/compare/v1.1.3...v1.2
 [1.1.3]: https://github.com/lindegroup/autopkgr/compare/v1.1.2...v1.1.3
 [1.1.2]: https://github.com/lindegroup/autopkgr/compare/v1.1.1...v1.1.2
