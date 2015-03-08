@@ -33,4 +33,6 @@
  */
 @property (copy, nonatomic, readonly) NSString *blankIsNil;
 
+- (NSString *)truncateToLength:(NSInteger)length;
+
 @end

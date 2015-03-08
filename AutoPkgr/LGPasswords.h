@@ -1,10 +1,8 @@
 //
-//  LGHostInfo.h
+//  LGPasswords.m
 //  AutoPkgr
 //
-//  Created by James Barclay on 6/27/14.
-//
-//  Copyright 2014-2015 The Linde Group, Inc.
+//  Created by Eldon Ahrold on 2/14/15.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -18,17 +16,16 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
 //
+//
 
 #import <Foundation/Foundation.h>
 
-@class AHKeychain;
+@interface LGPasswords : NSObject
 
-@interface LGHostInfo : NSObject
++ (void)getPasswordForAccount:(NSString *)account reply:(void (^)(NSString *password, NSError *error))reply;
 
-+ (NSString *)getUserName;
-+ (NSString *)getHostName;
-+ (NSString *)getUserAtHostName;
-+ (NSString *)getAppSupportDirectory;
-+ (NSString *)macSerialNumber;
++ (void)savePassword:(NSString *)password forAccount:(NSString *)account reply:(void (^)(NSError *error))reply;
 
++ (void)migrateKeychainIfNeeded:(void (^)(NSString *password, NSError *error))reply;
++ (void)resetKeychainPrompt:(void (^)(NSError *))reply;
 @end

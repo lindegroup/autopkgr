@@ -37,4 +37,14 @@
     return aString;
 }
 
+- (NSString *)truncateToLength:(NSInteger)length
+{
+    if ((self.length > length) && (length > 0)) {
+        NSRange stringRange = { 0, length };
+
+        return [[self substringWithRange:stringRange] stringByAppendingString:@"..."];
+    }
+    return self;
+}
+
 @end

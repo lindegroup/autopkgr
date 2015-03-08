@@ -25,6 +25,7 @@
 #import "LGTestPort.h"
 #import "LGInstaller.h"
 #import "LGHostInfo.h"
+#import "LGTools.h"
 #import "LGAutoPkgTask.h"
 #import "LGJSSDistributionPointsPrefPanel.h"
 
@@ -52,7 +53,7 @@ NSPredicate *jdsFilterPredicate()
     _defaults = [LGDefaults standardUserDefaults];
     _installRequestedDuringConnect = NO;
 
-    [self showInstallTabItems:NO];
+    [self showInstallTabItems];
 
     // Disable the Add / Remove distPoint buttons
     // until a row is selected
@@ -60,14 +61,6 @@ NSPredicate *jdsFilterPredicate()
     [_jssRemoveDistPointBT setEnabled:NO];
 
     _jssUseMasterJDS.state = [_defaults.JSSRepos containsObject:@{@"type":@"JDS"}];
-
-    [_jssInstallStatusLight setImage:[NSImage LGStatusNotInstalled]];
-    if ([LGHostInfo jssImporterInstalled] && _defaults.JSSRepos) {
-        [self showInstallTabItems:YES];
-    } else {
-        [_jssInstallButton setEnabled:YES];
-        [_jssInstallStatusTF setStringValue:@"JSSImporter not installed."];
-    }
 
     // .safeStringValue is a NSTextField category that you can pass a nil value into.
     _jssAPIUsernameTF.safeStringValue = _defaults.JSSAPIUsername;
@@ -117,7 +110,7 @@ NSPredicate *jdsFilterPredicate()
         return;
     }
 
-    if (![LGHostInfo jssImporterInstalled]) {
+    if (![LGToolStatus jssImporterInstalled]) {
         _installRequestedDuringConnect = YES;
         if ([self requiresInstall]) {
             return;
@@ -174,11 +167,7 @@ NSPredicate *jdsFilterPredicate()
                 }
             }];
         }
-        [[NSOperationQueue mainQueue]addOperationWithBlock:^{
-            if (success) {
-                [self showInstallTabItems:YES];
-            }
-        }];
+        [self showInstallTabItems];
     }];
 }
 
@@ -357,45 +346,33 @@ NSPredicate *jdsFilterPredicate()
     if (!_jssAPIPasswordTF.safeStringValue && !_jssAPIUsernameTF.safeStringValue && !_jssURLTF.safeStringValue) {
         _defaults.JSSRepos = nil;
         [self saveDefaults];
-        [self showInstallTabItems:NO];
         [_jssStatusLight setImage:[NSImage LGStatusNone]];
     } else if (![_defaults.JSSAPIPassword isEqualToString:_jssAPIPasswordTF.safeStringValue] || ![_defaults.JSSAPIUsername isEqualToString:_jssAPIUsernameTF.safeStringValue] || ![_defaults.JSSURL isEqualToString:_jssURLTF.safeStringValue]) {
         // Update server status
         if ([_jssStatusLight.image isEqualTo:[NSImage LGStatusAvailable]]) {
             [_jssStatusLight setImage:[NSImage LGStatusPartiallyAvailable]];
         }
-
-        // Show installer status
-        [self showInstallTabItems:YES];
     }
-
+    [self showInstallTabItems];
     [_jssDistributionPointTableView reloadData];
 }
 
-- (void)showInstallTabItems:(BOOL)show
+- (void)showInstallTabItems
 {
+    BOOL show = ([LGToolStatus jssImporterInstalled]) && (_defaults.JSSRepos != nil);
+
     // Show installer status
     [_jssInstallStatusLight setHidden:!show];
     [_jssInstallStatusTF setHidden:!show];
     [_jssInstallButton setHidden:!show];
+
     if (show) {
-        NSOperationQueue *bgQueue = [[NSOperationQueue alloc] init];
-        [bgQueue addOperationWithBlock:^{
-            BOOL updateAvailable = [LGHostInfo jssImporterUpdateAvailable];
-            [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-                [_jssInstallButton setEnabled:updateAvailable];
-                if (updateAvailable) {
-                    NSLog(@"An update is available for JSSImporter.");
-                    _jssInstallButton.title = @"Update JSSImporter";
-                    _jssInstallStatusTF.stringValue = kLGJSSImporterUpdateAvailableLabel;
-                    _jssInstallStatusLight.image = [NSImage LGStatusUpdateAvailable];
-                } else {
-                    NSLog(@"JSSImporter is up to date.");
-                    _jssInstallButton.title = @"Install JSSImporter";
-                    _jssInstallStatusTF.stringValue = kLGJSSImporterInstalledLabel;
-                    _jssInstallStatusLight.image = [NSImage LGStatusUpToDate];
-                }
-            }];
+        LGToolStatus *toolStatus = [[LGToolStatus alloc] init];
+        [toolStatus jssImporterStatus:^(LGTool *tool) {
+            _jssInstallButton.enabled = tool.needsInstall;
+            _jssInstallStatusLight.image = tool.statusImage;
+            _jssInstallStatusTF.stringValue = tool.statusString;
+            _jssInstallButton.title = tool.installButtonTitle;
         }];
     }
 }
@@ -441,7 +418,7 @@ NSPredicate *jdsFilterPredicate()
 {
     BOOL required = NO;
 
-    if (![LGHostInfo jssImporterInstalled]) {
+    if (![LGToolStatus jssImporterInstalled]) {
         NSLog(@"Prompting for JSSImporter installation.");
         NSAlert *alert = [NSAlert alertWithMessageText:@"Install JSSImporter?"
                                          defaultButton:@"Install"

@@ -51,7 +51,7 @@
 - (void)applicationWillFinishLaunching:(NSNotification *)notification
 {
     // Setup activation policy. By default set as menubar only.
-    [[LGDefaults standardUserDefaults] registerDefaults:@{ kLGApplicationDisplayStyle : @(kLGDisplayStyleShowMenu) }];
+    [[LGDefaults standardUserDefaults] registerDefaults:@{ kLGApplicationDisplayStyle : @(kLGDisplayStyleShowMenu | kLGDisplayStyleShowDock) }];
 
     if (([[LGDefaults standardUserDefaults] applicationDisplayStyle] & kLGDisplayStyleShowDock)) {
         [NSApp setActivationPolicy:NSApplicationActivationPolicyRegular];
@@ -75,17 +75,13 @@
     NSLog(@"Welcome to AutoPkgr!");
     DLog(@"Verbose logging is active. To deactivate, option-click the AutoPkgr menu icon and uncheck Verbose Logs.");
 
-    // Start observing distributed notifications for background runs
-    [[NSDistributedNotificationCenter defaultCenter] addObserver:self
-                                                        selector:@selector(didReceiveStatusUpdate:)
-                                                            name:kLGNotificationProgressMessageUpdate
-                                                          object:nil];
     // Setup the status item
     [self setupStatusItem];
 
     // Check if we're authorized to install helper tool,
     // if not just quit
     NSError *error;
+
     if (![AHLaunchCtl installHelper:kLGAutoPkgrHelperToolName prompt:@"" error:&error]) {
         if (error) {
             NSLog(@"%@", error.localizedDescription);
@@ -93,6 +89,17 @@
             [[NSApplication sharedApplication] terminate:self];
         }
     }
+
+    // Register to get background progress updates...
+    LGAutoPkgrHelperConnection *backgroundMonitor = [LGAutoPkgrHelperConnection new];
+
+    [backgroundMonitor connectToHelper];
+    backgroundMonitor.connection.exportedObject = self;
+    backgroundMonitor.connection.exportedInterface = [NSXPCInterface interfaceWithProtocol:@protocol(LGProgressDelegate)];
+
+    [[backgroundMonitor.connection remoteObjectProxy] registerMainApplication:^(BOOL resign) {
+        DLog(@"No longer monitoring scheduled autopkg run");
+    }];
 
     if (![LGRecipes migrateToIdentifiers:nil]) {
         [NSApp presentError:[NSError errorWithDomain:kLGApplicationName code:-1 userInfo:@{ NSLocalizedDescriptionKey : @"AutoPkgr will now quit.",
@@ -119,12 +126,6 @@
 
 - (void)applicationWillTerminate:(NSNotification *)notification
 {
-    if (jobIsRunning(kLGAutoPkgrHelperToolName, kAHGlobalLaunchDaemon)) {
-        LGAutoPkgrHelperConnection *helper = [LGAutoPkgrHelperConnection new];
-        [helper connectToHelper];
-        [[helper.connection remoteObjectProxy] quitHelper:^(BOOL success) {}];
-    }
-
     // Stop observing...
     [[NSDistributedNotificationCenter defaultCenter] removeObserver:self name:kLGNotificationProgressMessageUpdate object:nil];
 }
@@ -133,6 +134,30 @@
 {
     [self showConfigurationWindow:self];
     return YES;
+}
+
+- (NSApplicationTerminateReply)applicationShouldTerminate:(NSApplication *)sender
+{
+    if (jobIsRunning(kLGAutoPkgrHelperToolName, kAHGlobalLaunchDaemon)) {
+        LGAutoPkgrHelperConnection *helper = [LGAutoPkgrHelperConnection new];
+        [helper connectToHelper];
+
+        DLog(@"Sending quit signal to helper tool...");
+        [[helper.connection remoteObjectProxyWithErrorHandler:^(NSError *error) {
+            [[NSApplication sharedApplication] replyToApplicationShouldTerminate:YES];
+        }] quitHelper:^(BOOL success) {
+            [[NSApplication sharedApplication] replyToApplicationShouldTerminate:YES];
+        }];
+
+        return NSTerminateLater;
+    }
+    return NSTerminateNow;
+}
+
+- (void)applicationWillResignActive:(NSNotification *)notification
+{
+    // Write out preferences to disk to ensure the background run picks up any changes.
+    [[LGDefaults standardUserDefaults] synchronize];
 }
 
 #pragma mark - Setup
@@ -223,53 +248,31 @@
 
 - (IBAction)uninstallHelper:(id)sender
 {
-    LGAutoPkgrHelperConnection *helper = [LGAutoPkgrHelperConnection new];
-    NSData *authData = [LGAutoPkgrAuthorizer authorizeHelper];
+    NSError *error;
 
-    [helper connectToHelper];
-    [[helper.connection remoteObjectProxyWithErrorHandler:^(NSError *error) {
-        [NSApp presentError:error];
-    }] uninstall:authData
-            reply:^(NSError *error) {
-        [[NSOperationQueue mainQueue]addOperationWithBlock:^{
-            if (error) {
-                if (error.code != errAuthorizationCanceled) {
-                    [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-                        [NSApp presentError:error];
-                    }];
-                }
-            } else {
-                // if uninstalling turn off schedule in defaults so it's not automatically recreated
-                NSAlert *alert = [NSAlert alertWithMessageText:@"Removed AutoPkgr associated files" defaultButton:@"Thanks for using AutoPkgr" alternateButton:nil otherButton:nil informativeTextWithFormat: @"including the helper tool, launchd schedule, and other launchd plist. You can safely remove it from your Applications folder."];
-                [alert runModal];
-                [[NSApplication sharedApplication]terminate:self];
-            }
-        }];
+    if (jobIsRunning(kLGAutoPkgrLaunchDaemonPlist, kAHGlobalLaunchDaemon)) {
+        [[AHLaunchCtl sharedController] remove:kLGAutoPkgrLaunchDaemonPlist fromDomain:kAHGlobalLaunchDaemon error:&error];
+        if (error) {
+            NSLog(@"%@", error.localizedDescription);
+        } else {
+            NSLog(@"Disabled schedule.");
+        }
+    }
+
+    if (![AHLaunchCtl uninstallHelper:kLGAutoPkgrHelperToolName prompt:@"Remove AutoPkgr's components." error:&error]) {
+        if (error.code != errAuthorizationCanceled) {
+            [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+                [NSApp presentError:error];
             }];
+        }
+    } else {
+        NSAlert *alert = [NSAlert alertWithMessageText:@"Removed AutoPkgr associated files." defaultButton:@"Thanks for using AutoPkgr" alternateButton:nil otherButton:nil informativeTextWithFormat:@"This includes the helper tool, launchd schedule, and other launchd plist. You can safely remove it from your Applications folder."];
+        [alert runModal];
+        [[NSApplication sharedApplication] terminate:self];
+    }
 }
 
 #pragma mark - Progress Protocol
-- (void)didReceiveStatusUpdate:(NSNotification *)aNotification
-{
-    NSDictionary *info = aNotification.userInfo;
-    NSString *message = info[kLGNotificationUserInfoMessage];
-
-    if (!_initialMessageFromBackgroundRunProcessed) {
-        _configurationWindowInitiallyVisible = [_configurationWindowController.window isVisible];
-        if (_configurationWindowController && _configurationWindowInitiallyVisible) {
-            [_configurationWindowController startProgressWithMessage:@"Performing AutoPkg background run."];
-        }
-        _initialMessageFromBackgroundRunProcessed = YES;
-    }
-
-    if ([info[kLGNotificationUserInfoSuccess] boolValue]) {
-        [self stopProgress:nil];
-    } else {
-        double progress = [info[kLGNotificationUserInfoProgress] doubleValue];
-        [self updateProgress:message progress:progress];
-    }
-}
-
 - (void)startProgressWithMessage:(NSString *)message
 {
     [[NSOperationQueue mainQueue] addOperationWithBlock:^{
@@ -318,10 +321,8 @@
             [_configurationWindowController updateProgress:message progress:progress];
         }
 
-        if (message.length < 50) {
-            NSMenuItem *runStatus = [self.statusMenu itemAtIndex:0];
-            runStatus.title = message;
-        }
+        NSMenuItem *runStatus = [self.statusMenu itemAtIndex:0];
+        runStatus.title = [message truncateToLength:50];
     }];
 }
 
@@ -384,6 +385,21 @@
 }
 
 #pragma mark - Menu Delegate
+- (void)menuWillOpen:(NSMenu *)menu
+{
+    // The preferences set via the background run are not picked up
+    // despite aggressive synchronization, so we need to pull the value from
+    // the actual preference file until a better work around is found...
+
+    NSDictionary *dict = [NSDictionary dictionaryWithContentsOfFile:[@"~/Library/Preferences/com.lindegroup.AutoPkgr.plist" stringByExpandingTildeInPath]];
+
+    NSString *date = dict[@"LastAutoPkgRun"];
+    if (date) {
+        NSString *status = [NSString stringWithFormat:@"Last AutoPkg Run: %@", date ?: @"Never by AutoPkgr"];
+        [_progressMenuItem setTitle:status];
+    }
+}
+
 - (void)menuDidClose:(NSMenu *)menu
 {
     self.statusItem.image = [NSImage imageNamed:@"autopkgr.png"];

@@ -29,8 +29,8 @@
 #import "LGAutoPkgSchedule.h"
 #import "LGProgressDelegate.h"
 #import "LGDisplayStatusDelegate.h"
-
-#import "AHKeychain.h"
+#import "LGTools.h"
+#import "LGPasswords.h"
 
 @interface LGConfigurationWindowController () {
     LGDefaults *_defaults;
@@ -57,6 +57,16 @@
 - (void)windowDidLoad
 {
     [super windowDidLoad];
+
+    [LGPasswords migrateKeychainIfNeeded:^(NSString *password, NSError *error) {
+        if (error) {
+            [NSApp presentError:error];
+        }
+
+        if (password) {
+            _smtpPassword.stringValue = password;
+        }
+    }];
 
     // Populate the preference values from the user defaults, if they exist
     DLog(@"Populating configuration window settings based on user defaults, if they exist.");
@@ -117,13 +127,7 @@
     NSString *userName = _defaults.SMTPUsername;
     if (userName) {
         _smtpUsername.safeStringValue = userName;
-        NSString *password = [self getKeychainPassword];
-
-        // Only populate the SMTP Password field if the username exists
-        if (password) {
-            NSLog(@"Successfully retrieved keychain entry for account %@.", userName);
-            [_smtpPassword setStringValue:password];
-        }
+        [self getKeychainPassword:_smtpPassword];
     }
 
     // removeEmptyStrings is an NSArray category extension
@@ -134,44 +138,20 @@
     }
 
     // Check to see what's installed, and what needs updating
-    BOOL autoPkgInstalled = [LGHostInfo autoPkgInstalled];
-    BOOL gitInstalled = [LGHostInfo gitInstalled];
 
-    if (gitInstalled) {
-        DLog(@"Git is installed. Disabling 'Install Git' button and setting green indicator.");
-        [_installGitButton setEnabled:NO];
-        [_gitStatusLabel setStringValue:kLGGitInstalledLabel];
-        [_gitStatusIcon setImage:[NSImage LGStatusAvailable]];
-    } else {
-        DLog(@"Git is not installed. Enabling 'Install Git' button and setting red indicator.");
-        [_installGitButton setEnabled:YES];
-        [_gitStatusLabel setStringValue:kLGGitNotInstalledLabel];
-        [_gitStatusIcon setImage:[NSImage LGStatusUnavailable]];
-    }
+    LGToolStatus *toolStatus = [[LGToolStatus alloc] init];
+    [toolStatus autoPkgStatus:^(LGTool *tool) {
+        _installAutoPkgButton.enabled = tool.needsInstall;
+        _installAutoPkgButton.title = tool.installButtonTitle;
+        _autoPkgStatusIcon.image = tool.statusImage;
+        _autoPkgStatusLabel.stringValue = tool.statusString;
+    }];
 
-    NSOperationQueue *bgQueue = [[NSOperationQueue alloc] init];
-    [bgQueue addOperationWithBlock:^{
-        // Since checking for an update can take some time, run it in the background
-        if (autoPkgInstalled) {
-            BOOL updateAvailable = [LGHostInfo autoPkgUpdateAvailable];
-            if (updateAvailable) {
-                DLog(@"AutoPkg is installed, but an update is available. Enabling 'Update AutoPkg' button and setting yellow indicator.");
-                [_installAutoPkgButton setEnabled:YES];
-                [_installAutoPkgButton setTitle:@"Update AutoPkg"];
-                [_autoPkgStatusLabel setStringValue:kLGAutoPkgUpdateAvailableLabel];
-                [_autoPkgStatusIcon setImage:[NSImage LGStatusUpdateAvailable]];
-            } else {
-                DLog(@"AutoPkg is installed and up to date. Disabling 'Update AutoPkg' button and setting green indicator.");
-                [_installAutoPkgButton setEnabled:NO];
-                [_autoPkgStatusLabel setStringValue:kLGAutoPkgInstalledLabel];
-                [_autoPkgStatusIcon setImage:[NSImage LGStatusUpToDate]];
-            }
-        } else {
-            DLog(@"AutoPkg is not installed. Enabling 'Install AutoPkg' button and setting red indicator.");
-            [_installAutoPkgButton setEnabled:YES];
-            [_autoPkgStatusLabel setStringValue:kLGAutoPkgNotInstalledLabel];
-            [_autoPkgStatusIcon setImage:[NSImage LGStatusNotInstalled]];
-        }
+    [toolStatus gitStatus:^(LGTool *tool) {
+        _installGitButton.enabled = tool.needsInstall;
+        _installGitButton.title = tool.installButtonTitle;
+        _gitStatusLabel.stringValue = tool.statusString;
+        _gitStatusIcon.image = tool.statusImage;
     }];
 }
 
@@ -273,50 +253,41 @@
 }
 
 #pragma mark - Keychain Actions
-- (NSString *)getKeychainPassword
+- (void)getKeychainPassword:(NSTextField *)sender
 {
-    NSError *error;
-    NSString *user = _smtpUsername.stringValue;
-
-    AHKeychain *keychain = [LGHostInfo appKeychain];
-    AHKeychainItem *item = [[AHKeychainItem alloc] init];
-    item.label = kLGApplicationName;
-    item.service = kLGAutoPkgrPreferenceDomain;
-    item.account = user;
-
-    [keychain getItem:item error:&error];
-
-    if ([error code] == errSecItemNotFound) {
-        NSLog(@"Keychain entry not found for account %@.", user);
-    } else if ([error code] == errSecNotAvailable) {
-        NSLog(@"Found the keychain entry for %@ but no password value was returned.", user);
-    } else if (error) {
-        NSLog(@"An error occurred when attempting to retrieve the keychain entry for %@. Error: %@", user, [error localizedDescription]);
+    NSString *account = _smtpUsername.stringValue;
+    if (account.length) {
+        [LGPasswords getPasswordForAccount:account reply:^(NSString *password, NSError *error) {
+            if (error) {
+                NSLog(@"Error getting password for %@ [%ld]: %@", account, error.code, error.localizedDescription);
+            } else {
+                sender.safeStringValue = password;
+            }
+        }];
     }
-
-    return item.password;
 }
 
 - (IBAction)updateKeychainPassword:(id)sender
 {
-    NSString *user = _smtpUsername.safeStringValue;
+    NSString *account = _smtpUsername.safeStringValue;
     NSString *password = _smtpPassword.safeStringValue;
 
-    if (user && password) {
-        NSError *error;
-
-        AHKeychain *keychain = [LGHostInfo appKeychain];
-        AHKeychainItem *item = [[AHKeychainItem alloc] init];
-
-        item.service = kLGAutoPkgrPreferenceDomain;
-        item.label = kLGApplicationName;
-        item.account = user;
-        item.password = password;
-
-        [keychain saveItem:item error:&error];
-        if (error) {
-            NSLog(@"Error setting password [%ld]: %@", error.code, error.localizedDescription);
-        }
+    if (account && password) {
+        [LGPasswords savePassword:password forAccount:account reply:^(NSError *error) {
+            if (error) {
+                if (error.code == errSecAuthFailed || error.code == errSecDuplicateKeychain) {
+                    [LGPasswords resetKeychainPrompt:^(NSError *error) {
+                        if (!error) {
+                            [self updateKeychainPassword:nil];
+                        } else {
+                            NSLog(@"%@", error.localizedDescription);
+                        }
+                    }];
+                } else {
+                    NSLog(@"Error setting password [%ld]: %@", error.code, error.localizedDescription);
+                }
+            }
+        }];
     }
 }
 
@@ -328,23 +299,18 @@
     // Change the button label to "Installing..."
     // and disable the button to prevent multiple clicks
     [_installGitButton setEnabled:NO];
+    [self startProgressWithMessage:@"Installing newest version of Git..."];
 
     LGInstaller *installer = [[LGInstaller alloc] init];
     installer.progressDelegate = _progressDelegate;
     [installer installGit:^(NSError *error) {
         [self stopProgress:error];
-        [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-            if ([LGHostInfo gitInstalled]) {
-                NSLog(@"Git installed successfully.");
-                [_installGitButton setEnabled:NO];
-                [_gitStatusLabel setStringValue:kLGGitInstalledLabel];
-                [_gitStatusIcon setImage:[NSImage imageNamed:NSImageNameStatusAvailable]];
-            } else {
-                NSLog(@"%@", error.localizedDescription);
-                [_installGitButton setEnabled:YES];
-                [_gitStatusLabel setStringValue:kLGGitNotInstalledLabel];
-                [_gitStatusIcon setImage:[NSImage imageNamed:NSImageNameStatusUnavailable]];
-            }
+        LGToolStatus *toolStatus = [[LGToolStatus alloc] init];
+        [toolStatus gitStatus:^(LGTool *tool) {
+            _installGitButton.enabled = tool.needsInstall;
+            _installGitButton.title = tool.installButtonTitle;
+            _gitStatusIcon.image = tool.statusImage;
+            _gitStatusLabel.stringValue = tool.statusString;
         }];
     }];
 }
@@ -362,18 +328,12 @@
     [installer installAutoPkg:^(NSError *error) {
         // Update the autoPkgStatus icon and label if it installed successfully
         [self stopProgress:error];
-        [[NSOperationQueue  mainQueue] addOperationWithBlock:^{
-            if ([LGHostInfo autoPkgInstalled]) {
-                NSLog(@"AutoPkg installed successfully.");
-                [_autoPkgStatusLabel setStringValue:kLGAutoPkgInstalledLabel];
-                [_autoPkgStatusIcon setImage:[NSImage imageNamed:NSImageNameStatusAvailable]];
-                [_installAutoPkgButton setEnabled:NO];
-                [_installAutoPkgButton setTitle:@"Install AutoPkg"];
-            } else {
-                [_autoPkgStatusLabel setStringValue:kLGAutoPkgNotInstalledLabel];
-                [_autoPkgStatusIcon setImage:[NSImage imageNamed:NSImageNameStatusUnavailable]];
-                [_installAutoPkgButton setEnabled:YES];
-            }
+        LGToolStatus *toolStatus = [[LGToolStatus alloc] init];
+        [toolStatus autoPkgStatus:^(LGTool *tool) {
+            _installAutoPkgButton.enabled = tool.needsInstall;
+            _installAutoPkgButton.title = tool.installButtonTitle;
+            _autoPkgStatusIcon.image = tool.statusImage;
+            _autoPkgStatusLabel.stringValue = tool.statusString;
         }];
     }];
 }
@@ -752,7 +712,7 @@
         [self testSmtpServerPort:self];
     } else if ([object isEqual:_smtpUsername]) {
         _defaults.SMTPUsername = [_smtpUsername stringValue];
-        _smtpPassword.safeStringValue = [self getKeychainPassword];
+        [self getKeychainPassword:_smtpPassword];
     } else if ([object isEqual:_smtpFrom]) {
         _defaults.SMTPFrom = [_smtpFrom stringValue];
     } else if ([object isEqual:_localMunkiRepo]) {
@@ -848,6 +808,8 @@
 {
     [[NSOperationQueue mainQueue] addOperationWithBlock:^{
         [self.progressMessage setStringValue:message];
+        [self.progressDetailsMessage setStringValue:@""];
+
         [self.progressIndicator setHidden:NO];
         [self.progressIndicator setIndeterminate:YES];
         [self.progressIndicator displayIfNeeded];
@@ -869,6 +831,7 @@
         [self.progressIndicator setIndeterminate:YES];
         [self.progressPanel orderOut:self];
         [self.cancelAutoPkgRunButton setHidden:YES];
+
         [self.progressDetailsMessage setStringValue:@""];
         [self.progressMessage setStringValue:@"Starting..."];
         [self.progressIndicator setDoubleValue:0.0];
@@ -893,13 +856,11 @@
 
 - (void)updateProgress:(NSString *)message progress:(double)progress
 {
-    if (message.length < 100) {
-        [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+    [[NSOperationQueue mainQueue] addOperationWithBlock:^{
             [self.progressIndicator setIndeterminate:NO];
-            [self.progressDetailsMessage setStringValue:message];
+            [self.progressDetailsMessage setStringValue:[message truncateToLength:100]];
             [self.progressIndicator setDoubleValue:progress > 5.0 ? progress:5.0 ];
-        }];
-    }
+    }];
 }
 
 #pragma mark - Notifications

@@ -23,6 +23,7 @@
 #import "LGInstaller.h"
 #import "LGGitHubJSONLoader.h"
 #import "LGAutoPkgr.h"
+#import "LGTools.h"
 
 @interface AutoPkgrTests : XCTestCase
 
@@ -42,6 +43,23 @@
     [super tearDown];
 }
 
+- (void)testTools
+{
+    XCTestExpectation *expectation = [self expectationWithDescription:@"Tools Test"];
+
+    LGToolStatus *tool = [LGToolStatus new];
+    [tool allToolsStatus:^(NSArray *tools) {
+        [expectation fulfill];
+    }];
+
+    [self waitForExpectationsWithTimeout:300 handler:^(NSError *error) {
+        if(error)
+        {
+            XCTFail(@"Expectation Failed with error: %@", error);
+        }
+    }];
+
+}
 - (void)testInstallGit
 {
     XCTestExpectation *expectation = [self expectationWithDescription:@"Git Install Async"];
