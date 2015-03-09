@@ -1,204 +1,254 @@
 <?xml version="1.0" encoding="utf-8"?>
 <rss version="2.0" xmlns:sparkle="http://www.andymatuschak.org/xml-namespaces/sparkle"  xmlns:dc="http://purl.org/dc/elements/1.1/">
-  <channel>
-    <title>AutoPkgr Changelog</title>
-    <link>https://raw.githubusercontent.com/lindegroup/autopkgr/appcast/appcast.xml</link>
-    <description>Most recent changes with links to updates.</description>
-    <language>en</language>
-      <item>
-        <title>Version 1.2</title>
-        <description>
-          <![CDATA[
-          <p>
-              We're delighted to introduce you to version 1.2 of AutoPkgr. There are a few major new features in this release, as well as numerous bug fixes.</p>
+    <channel>
+        <title>AutoPkgr Changelog</title>
+        <link>https://raw.githubusercontent.com/lindegroup/autopkgr/appcast/appcast.xml</link>
+        <description>Most recent changes with links to updates.</description>
+        <language>en</language>
+        <item>
+            <title>Version 1.2.1</title>
+            <description>
+                <![CDATA[
+                    <p>Following up on our big 1.2 release, we've released 1.2.1 with a few bug fixes and enhancements:</p>
 
-          <p><strong>Important: After upgrading to version 1.2, you will need to reenter your email password in the AutoPkgr Schedule tab to continue getting email notifications.</strong>
-          </p>
+                    <h3>Added</h3>
 
-          <h4>New Features and Enhancements:</h4>
+                    <ul class="task-list">
+                    <li>Created changelog.</li>
+                    <li>AutoPkgr now displays the version number of Git and AutoPkg in the Install tab. (<a href="https://github.com/lindegroup/autopkgr/issues/244" class="issue-link" title="Version info on install tab">#244</a>)</li>
+                    <li>Now you'll receive an email when new versions of Git, AutoPkg, or AutoPkgr are available. (<a href="https://github.com/lindegroup/autopkgr/issues/137" class="issue-link" title="AutoPkgr self-updating">#137</a>)</li>
+                    </ul>
 
-          <ul class="task-list">
-              <li>By popular request, scheduling will now be handled by a LaunchDaemon. This allows AutoPkgr to continue running after a restart, even if nobody is logged in. (<a href="https://github.com/lindegroup/autopkgr/issues/72" class="issue-link" title="Add option to run AutoPkgr as a LaunchDaemon">#72</a>)</li>
-              <li>You can now set how AutoPgkr is displayed, either as a menu item, Dock item, or both. (<a href="https://github.com/lindegroup/autopkgr/issues/10" class="issue-link" title="Option to hide AutoPkgr icon in dock.">#10</a>)</li>
-              <li>You can now set AutoPkgr to launch at login. (<a href="https://github.com/lindegroup/autopkgr/issues/11" class="issue-link" title="&quot;Start AutoPkgr at login&quot; option.">#11</a>)</li>
-              <li>If the "check for repo updates" option is enabled, it will now perform the repo update prior to each <code>autopkg run</code>, rather than just when AutoPkgr is launched. This should help next time the AdobeFlashPlayer recipe changes rapidly.</li>
-              <li>AutoPkgr now passes the recipe and override identifier into AutoPkg to avoid naming clashes when multiple repos have recipes with the same name. Thanks to <a href="https://github.com/rtrouton" class="user-mention">@rtrouton</a> for the suggestion. (<a href="https://github.com/lindegroup/autopkgr/issues/208" class="issue-link" title="Searching for recipes only displays the filename of the recipe">#208</a>)</li>
-              <li>The AutoPkgr menu has been redesigned and enhanced with new menu options.</li>
-              <li>Progress is now displayed during repo-update.</li>
-              <li>We now use OS X's Notifications feature to display test email success. More notifications coming soon!</li>
-              <li>Creating an override will now prompt for override name, allowing for the creation of multiple overrides with the same parent. (For example, <code>FirefoxSelfService.jss</code> and <code>FirefoxAutoUpdate.jss</code>.)</li>
-              <li>When enabling a recipe, if the parent recipe is not installed, an alert will be displayed.</li>
-              <li>Scheduled recipes will automatically be removed from the recipe list if their repo is removed, or if a repo update no longer contains the recipe.</li>
-              <li>You can now search GitHub for AutoPkg recipes, equivalent to <code>autopkg search [recipe]</code>.</li>
-              <li>Easy uninstall! If you ever want to uninstall AutoPkgr and its components, hold the <strong>Option</strong> key and choose <strong>Uninstall</strong> from the AutoPkgr menu icon.</li>
-          </ul>
+                    <h3>Security</h3>
 
-          <h4>Changes:</h4>
+                    <ul class="task-list">
+                    <li>Now using three-way encryption to store SMTP password more securely. (<a href="https://github.com/lindegroup/autopkgr/issues/271" class="issue-link" title="Potential security issue using the Mac's serial number as the AutoPkgr.keychain password">#271</a>)</li>
+                    <li>Improved security of the helper tool AutoPkgr uses to run in the background.</li>
+                    <li>AutoPkgr now tries to obfuscate sharepoint usernames and passwords in email notifications. (<a href="https://github.com/lindegroup/autopkgr/issues/227" class="issue-link" title="Passwords to file distribution points sent in plain text in error emails">#227</a>)</li>
+                    </ul>
 
-          <ul class="task-list">
-              <li>New keychain item for AutoPkgr located at <code>~/Library/Keychains/AutoPkgr.keychain</code>. It can be unlocked and examined using the computer's serial number as the password.</li>
-              <li>Using master JDS is now set with a checkbox. Thanks to <a href="https://github.com/everetteallen" class="user-mention">@everetteallen</a> for this suggestion. (<a href="https://github.com/lindegroup/autopkgr/issues/174#issuecomment-64712310">#174</a>)</li>
-          </ul>
+                    <h3>Fixed</h3>
 
-          <h4>Bug-Fixes:</h4>
+                    <ul class="task-list">
+                    <li>Background run not updating date in status menu. (<a href="https://github.com/lindegroup/autopkgr/issues/286" class="issue-link" title="Menu Doesn't Show the Most Recent Date and Time of AutoPkg(r) Run">#286</a>)</li>
+                    <li>Resolved an issue that prevented "Launch at Login" button from working in 10.8 and 10.9. (<a href="https://github.com/lindegroup/autopkgr/issues/272" class="issue-link" title="&quot;Launch AutoPkgr at login&quot; checkbox is not working on some 10.8 and 10.9 Macs">#272</a>)</li>
+                    <li>Prevented displaying progress detail messages unnecessarily.</li>
+                    <li>Properly processes <code>%20</code> in URLs when parsing versions. (<a href="https://github.com/lindegroup/autopkgr/issues/270" class="issue-link" title="Firefox version not being parsed correctly in debug log.">#270</a>)</li>
+                    <li>Fixed the "Check for repo updates before each recipe run" checkbox wording.</li>
+                    <li>Fixed a bug that prevented status messages over 50 characters from being displayed in the menu.</li>
+                    <li>Fixed a bug that prevented autopkg run status from appearing in the menu.</li>
+                    <li>Made configuration options for "Run AutoPkg Now" consistent with menu items.</li>
+                    <li>Fixed a situation that prevented launchd from reading current defaults values. (<a href="https://github.com/lindegroup/autopkgr/issues/296" class="issue-link" title="No valid recipe found">#296</a>)</li>
+                    <li>Now showing AutoPkgr icon in both the Dock and the menu bar by default.</li>
+                    <li>Small improvements to keychain migration method.</li>
+                    </ul>
 
-          <ul class="task-list">
-              <li>Fixed a condition that could cause preferences to be erased if an error occurs during launch.</li>
-              <li>Fixed a condition that could cause AutoPkg to hang due to Python stdout buffer not getting flushed.</li>
-              <li>Fixed a condition where keychain was queried for email password even when authentication was not enabled.</li>
-              <li>Automatically removes trailing slash from JSS_URL which could cause 404 errors. Thanks to <a href="https://github.com/acodega" class="user-mention">@acodega</a> for getting to the bottom of this! (<a href="https://github.com/lindegroup/autopkgr/issues/221#issuecomment-66159456">#221</a>)</li>
-              <li>Minor typo fixes and additional log entries, as always.</li>
-          </ul>
+                    <h3>Changed</h3>
 
-          <h4>Note for proxy users:</h4>
+                    <ul class="task-list">
+                    <li>Uninstall is now handled by the main app, not the helper tool.</li>
+                    </ul>
 
-          <ul class="task-list">
-              <li>If using proxies that require authentication <strong>you will not</strong> be able to use the system proxies configured in the system preferences via the <code>defaults write com.lindegroup.AutoPkgr useSystemProxies -bool true</code>. Specify the the proxy setting manually using defaults using the instructions in the <a href="https://github.com/lindegroup/autopkgr">readme</a>. We'll hopefully be adding a UI element to a future release. <em>This only applies to proxies that require authentication.</em>
-              </li>
-          </ul>
+                    <p>As always, if you find any bugs or encounter problems, we welcome you to <a href="https://github.com/lindegroup/autopkgr/issues">open a new issue on GitHub</a>. Thank you!</p>
+                ]]>
+            </description>
+            <pubDate>Sun, 8 Mar 2015 17:00:00 -0800</pubDate>
+            <enclosure url="https://github.com/lindegroup/autopkgr/releases/download/v1.2.1/AutoPkgr-1.2.1.dmg" sparkle:version="726" sparkle:shortVersionString="1.2.1" type="application/octet-stream" />
+        </item>
+        <item>
+            <title>Version 1.2</title>
+            <description>
+                <![CDATA[
+                <p>
+                        We're delighted to introduce you to version 1.2 of AutoPkgr. There are a few major new features in this release, as well as numerous bug fixes.</p>
 
-          <p>As always, if you find any bugs or encounter problems, please <a href="https://github.com/lindegroup/autopkgr/issues">open a new issue on GitHub</a> and we'll do our best to help troubleshoot. Thank you!</p>
-          ]]>
-        </description>
-        <pubDate>Thu, 12 Feb 2015 12:00:00 -0800</pubDate>
-        <enclosure url="https://github.com/lindegroup/autopkgr/releases/download/v1.2/AutoPkgr-1.2.dmg" sparkle:version="679" sparkle:shortVersionString="1.2" type="application/octet-stream" />
-      </item>
-      <item>
-        <title>Version 1.1.3</title>
-        <description>
-          <![CDATA[
-          <p>Our cousin project jss-autopkg-addon is now <a href="https://github.com/sheagcraig/JSSImporter">JSSImporter</a>, so we had to make some changes to the guts of AutoPkgr in order to remain compatible.</p>
-          <p>This update is recommended for anybody who is using AutoPkgr to integrate with their JSS.</p>
-          <h4>Bug Fixes</h4>
-          <ul>
-            <li>Updated all references from jss-autopkg-addon to JSSImporter. This should resolve a problem that prevented AutoPkgr from properly installing or upgrading JSSImporter on many systems.</li>
-          </ul>
-          <h4>Enhancements</h4>
-          <ul>
-            <li>Removed parts of the code that we no longer use, like an unzipper class.</li>
-            <li>Typo fixes, mostly internal.</li>
-          </ul>
-          <p>As always, please open an <a href="https://github.com/lindegroup/autopkgr/issues" target="_blank">issue on GitHub</a> if you find a reproducible problem. We're happy to help troubleshoot!</p>
-          <p>Thank you!</p>
-          ]]>
-        </description>
-        <pubDate>Mon, 15 Dec 2014 17:00:00 +0000</pubDate>
-        <enclosure url="https://github.com/lindegroup/autopkgr/releases/download/v1.1.3/AutoPkgr-1.1.3.dmg" sparkle:version="589" sparkle:shortVersionString="1.1.3" type="application/octet-stream" />
-      </item>
-      <item>
-        <title>Version 1.1.2</title>
-        <description>
-          <![CDATA[
-          <p>Some small tweaks for 1.1.2, centered mostly around compatibility with the latest version of jss-autopkg-addon.</p>
-          <h4>Important Changes</h4>
-          <ul>
-            <li>If using JSS integration, python-jss now automatically "URL encodes" the distribution point passwords (#177). If you have a password with special characters, and have manually constructed it with proper URL encoding, <em>it will no longer work</em>. You should now just set it to the actual password.</li>
-          </ul>
-          <h4>Bug Fixes</h4>
-          <ul>
-            <li>Fixed a bug which would set `SSL_VERIFY` incorrectly for Casper environments with self-signed certificates.</li>
-            <li>Made GUI elements match more consistently between OS X Mavericks and OS X Yosemite.</li>
-            <li>Fixed a bug that caused errors in environments with a password-protected proxy.</li>
-            <li>Corrected spelling of "available" in email notifications and other places.</li>
-          </ul>
-          <h4>Enhancements</h4>
-          <ul>
-            <li>Made compatible with latest release of [jss-autopkg-addon](https://github.com/sheagcraig/jss-autopkg-addon).</li>
-            <li>Updated readme to clarify that Casper 9 or newer is required for JSS integration.</li>
-            <li>AutoPkgr now does not remove @sheagcraig's jss-recipes repository when the JSS settings have been cleared.</li>
-          </ul>
-          <p>As always, please open an <a href="https://github.com/lindegroup/autopkgr/issues" target="_blank">issue on GitHub</a> if you find a reproducible problem.</p>
-          ]]>
-        </description>
-        <pubDate>Mon, 1 Dec 2014 23:00:00 +0000</pubDate>
-        <enclosure url="https://github.com/lindegroup/autopkgr/releases/download/v1.1.2/AutoPkgr-1.1.2.dmg" sparkle:version="560" sparkle:shortVersionString="1.1.2" type="application/octet-stream" />
-      </item>
-      <item>
-        <title>Version 1.1.1</title>
-        <description>
-          <![CDATA[
-          <h4>Bug Fixes</h4>
-          <ul>
-            <li>Address issues with JSS integration:
-              <ul><li>Better handling of URLs for Cloud hosted JSS.</li>
-              <li>More comprehensive logging relating to JSS operations.</li></ul>
-            </li>
-            <li>Cleaner UI error messages.</li>
-            <li>Correctly detects Xcode git.</li>
-            <li>Compatibility with Yosemite's "dark mode."</li>
-            <li>Minor GUI adjustments.</li>
-          </ul>
-          <h4>Enhancements</h4>
-          <ul>
-            <li>Better proxy support. AutoPkgr can now use proxies set in System Preferences, including WPAD/PAC. (See readme on GitHub for details.)</li>
-          </ul>
-          ]]>
-        </description>
-        <pubDate>Sat, 15 Nov 2014 16:00:00 +0000</pubDate>
-        <enclosure url="https://github.com/lindegroup/autopkgr/releases/download/v1.1.1/AutoPkgr-1.1.1.dmg" sparkle:version="524" sparkle:shortVersionString="1.1.1" type="application/octet-stream" />
-      </item>
-      <item>
-        <title>Version 1.1</title>
-        <description>
-          <![CDATA[
-          <h4>Added built-in support for integrating with JAMF's Casper Suite (#75):</h4>
-          <ul>
-            <li>The newly-renamed Folders & Integration tab provides easy access to JSS URL and API settings.</li>
-            <li>Upon entering valid JSS information, AutoPkgr automatically installs the latest version of @sheagcraig's jss-autopkg-addon and adds some ready-to-use .jss recipes.</li>
-            <li>The .jss recipes you subscribe to will automatically produce smart groups and Self Service policies scoped to a "Testing" group.</li>
-            <li>The policy creation behavior can be tweaked and customized with XML template files.</li>
-            <li>AutoPkgr keeps you up to date when new versions of the jss-autopkg-addon are released.</li>
-          </ul>
-          <h4>Added support for creating recipe overrides (#60):</h4>
-          <ul>
-            <li>Right-clicking / Control-clicking on a recipe will allow creation/editing of an override.</li>
-            <li>Ability to choose your preferred text editor for editing overrides.</li>
-          </ul>
-          <h4>Added environmental proxy support (#152 and #130):</h4>
-          <ul>
-            <li>Equivalent to this shell command: export HTTP_PROXY=http://proxy:8080</li>
-            <li>To use HTTP proxy: defaults write com.lindegroup.AutoPkgr HTTP_PROXY http://proxy:8080</li>
-            <li>To use HTTPS proxy: defaults write com.lindegroup.AutoPkgr HTTPS_PROXY https://proxy:8080</li>
-            <li>To stop using HTTP proxy: defaults remove com.lindegroup.AutoPkgr HTTP_PROXY</li>
-            <li>To stop using HTTPS proxy: defaults remove com.lindegroup.AutoPkgr HTTPS_PROXY</li>
-            <li>Note: This will not create or modify any system proxy settings; it will only add them to your shell env.</li>
-          </ul>
-          <h4>Improvements</h4>
-          <ul>
-            <li>Improved readme with detailed information on Munki and Casper integration, and some troubleshooting tips.</li>
-            <li>Additional detail added to logs.</li>
-            <li>Better version reporting in email messages (especially with .munki recipes).</li>
-            <li>More concise errors when Python exceptions occur.</li>
-          </ul>
-          <h4>Bug Fixes</h4>
-          <ul>
-            <li>Fixed bug that prevented certain repos from appearing automatically in the repos list (#148).</li>
-          </ul>
-          ]]>
-        </description>
-        <pubDate>Wed, 22 Oct 2014 18:17:45 +0000</pubDate>
-        <enclosure url="https://github.com/lindegroup/autopkgr/releases/download/v1.1/AutoPkgr-1.1.dmg" sparkle:version="490" sparkle:shortVersionString="1.1" type="application/octet-stream" />
-      </item>
-      <item>
-        <title>Version 1.0.4</title>
-        <description>
-          <![CDATA[
-          <h4>Numerous changes and bug fixes this time around, including:</h4>
-          <ul>
-            <li>The ability to cancel installations, recipe checks, and other tasks in progress.</li>
-            <li>More detail in logs, including the ability to enable a verbose log mode for troubleshooting.</li>
-            <li>Improved behavior of the "Open in Finder" buttons.</li>
-            <li>Resolved bug that would cause an incorrect hostname to be reported in notification emails.</li>
-            <li>Resolved bug that would prevent "from" address from appearing in log output.</li>
-            <li>Implemented code signing to avoid "unidentified developer" error upon first launch.</li>
-            <li>Now using the Sparkle framework, so AutoPkgr can keep itself up to date.</li>
-            <li>Git install feature is now available for Macs running 10.8.</li>
-            <li>Git installer for 10.9 no longer relies on the Xcode command line tools. No need to leave AutoPkgr to get Git!</li>
-          </ul>
-          ]]>
-        </description>
-        <pubDate>Mon, 24 Sep 2014 09:40:00 +0000</pubDate>
-        <enclosure url="https://github.com/lindegroup/autopkgr/releases/download/v1.0.4/AutoPkgr-1.0.4.dmg" sparkle:version="386" sparkle:shortVersionString="1.0.4" type="application/octet-stream" />
-      </item>
-  </channel>
+                <p><strong>Important: After upgrading to version 1.2, you will need to reenter your email password in the AutoPkgr Schedule tab to continue getting email notifications.</strong>
+                </p>
+
+                <h4>New Features and Enhancements:</h4>
+
+                <ul class="task-list">
+                        <li>By popular request, scheduling will now be handled by a LaunchDaemon. This allows AutoPkgr to continue running after a restart, even if nobody is logged in. (<a href="https://github.com/lindegroup/autopkgr/issues/72" class="issue-link" title="Add option to run AutoPkgr as a LaunchDaemon">#72</a>)</li>
+                        <li>You can now set how AutoPgkr is displayed, either as a menu item, Dock item, or both. (<a href="https://github.com/lindegroup/autopkgr/issues/10" class="issue-link" title="Option to hide AutoPkgr icon in dock.">#10</a>)</li>
+                        <li>You can now set AutoPkgr to launch at login. (<a href="https://github.com/lindegroup/autopkgr/issues/11" class="issue-link" title="&quot;Start AutoPkgr at login&quot; option.">#11</a>)</li>
+                        <li>If the "check for repo updates" option is enabled, it will now perform the repo update prior to each <code>autopkg run</code>, rather than just when AutoPkgr is launched. This should help next time the AdobeFlashPlayer recipe changes rapidly.</li>
+                        <li>AutoPkgr now passes the recipe and override identifier into AutoPkg to avoid naming clashes when multiple repos have recipes with the same name. Thanks to <a href="https://github.com/rtrouton" class="user-mention">@rtrouton</a> for the suggestion. (<a href="https://github.com/lindegroup/autopkgr/issues/208" class="issue-link" title="Searching for recipes only displays the filename of the recipe">#208</a>)</li>
+                        <li>The AutoPkgr menu has been redesigned and enhanced with new menu options.</li>
+                        <li>Progress is now displayed during repo-update.</li>
+                        <li>We now use OS X's Notifications feature to display test email success. More notifications coming soon!</li>
+                        <li>Creating an override will now prompt for override name, allowing for the creation of multiple overrides with the same parent. (For example, <code>FirefoxSelfService.jss</code> and <code>FirefoxAutoUpdate.jss</code>.)</li>
+                        <li>When enabling a recipe, if the parent recipe is not installed, an alert will be displayed.</li>
+                        <li>Scheduled recipes will automatically be removed from the recipe list if their repo is removed, or if a repo update no longer contains the recipe.</li>
+                        <li>You can now search GitHub for AutoPkg recipes, equivalent to <code>autopkg search [recipe]</code>.</li>
+                        <li>Easy uninstall! If you ever want to uninstall AutoPkgr and its components, hold the <strong>Option</strong> key and choose <strong>Uninstall</strong> from the AutoPkgr menu icon.</li>
+                </ul>
+
+                <h4>Changes:</h4>
+
+                <ul class="task-list">
+                        <li>New keychain item for AutoPkgr located at <code>~/Library/Keychains/AutoPkgr.keychain</code>. It can be unlocked and examined using the computer's serial number as the password.</li>
+                        <li>Using master JDS is now set with a checkbox. Thanks to <a href="https://github.com/everetteallen" class="user-mention">@everetteallen</a> for this suggestion. (<a href="https://github.com/lindegroup/autopkgr/issues/174#issuecomment-64712310">#174</a>)</li>
+                </ul>
+
+                <h4>Bug-Fixes:</h4>
+
+                <ul class="task-list">
+                        <li>Fixed a condition that could cause preferences to be erased if an error occurs during launch.</li>
+                        <li>Fixed a condition that could cause AutoPkg to hang due to Python stdout buffer not getting flushed.</li>
+                        <li>Fixed a condition where keychain was queried for email password even when authentication was not enabled.</li>
+                        <li>Automatically removes trailing slash from JSS_URL which could cause 404 errors. Thanks to <a href="https://github.com/acodega" class="user-mention">@acodega</a> for getting to the bottom of this! (<a href="https://github.com/lindegroup/autopkgr/issues/221#issuecomment-66159456">#221</a>)</li>
+                        <li>Minor typo fixes and additional log entries, as always.</li>
+                </ul>
+
+                <h4>Note for proxy users:</h4>
+
+                <ul class="task-list">
+                        <li>If using proxies that require authentication <strong>you will not</strong> be able to use the system proxies configured in the system preferences via the <code>defaults write com.lindegroup.AutoPkgr useSystemProxies -bool true</code>. Specify the the proxy setting manually using defaults using the instructions in the <a href="https://github.com/lindegroup/autopkgr">readme</a>. We'll hopefully be adding a UI element to a future release. <em>This only applies to proxies that require authentication.</em>
+                        </li>
+                </ul>
+
+                <p>As always, if you find any bugs or encounter problems, please <a href="https://github.com/lindegroup/autopkgr/issues">open a new issue on GitHub</a> and we'll do our best to help troubleshoot. Thank you!</p>
+                ]]>
+            </description>
+            <pubDate>Thu, 12 Feb 2015 12:00:00 -0800</pubDate>
+            <enclosure url="https://github.com/lindegroup/autopkgr/releases/download/v1.2/AutoPkgr-1.2.dmg" sparkle:version="679" sparkle:shortVersionString="1.2" type="application/octet-stream" />
+        </item>
+        <item>
+            <title>Version 1.1.3</title>
+            <description>
+                <![CDATA[
+                <p>Our cousin project jss-autopkg-addon is now <a href="https://github.com/sheagcraig/JSSImporter">JSSImporter</a>, so we had to make some changes to the guts of AutoPkgr in order to remain compatible.</p>
+                <p>This update is recommended for anybody who is using AutoPkgr to integrate with their JSS.</p>
+                <h4>Bug Fixes</h4>
+                <ul>
+                    <li>Updated all references from jss-autopkg-addon to JSSImporter. This should resolve a problem that prevented AutoPkgr from properly installing or upgrading JSSImporter on many systems.</li>
+                </ul>
+                <h4>Enhancements</h4>
+                <ul>
+                    <li>Removed parts of the code that we no longer use, like an unzipper class.</li>
+                    <li>Typo fixes, mostly internal.</li>
+                </ul>
+                <p>As always, please open an <a href="https://github.com/lindegroup/autopkgr/issues" target="_blank">issue on GitHub</a> if you find a reproducible problem. We're happy to help troubleshoot!</p>
+                <p>Thank you!</p>
+                ]]>
+            </description>
+            <pubDate>Mon, 15 Dec 2014 17:00:00 +0000</pubDate>
+            <enclosure url="https://github.com/lindegroup/autopkgr/releases/download/v1.1.3/AutoPkgr-1.1.3.dmg" sparkle:version="589" sparkle:shortVersionString="1.1.3" type="application/octet-stream" />
+        </item>
+        <item>
+            <title>Version 1.1.2</title>
+            <description>
+                <![CDATA[
+                <p>Some small tweaks for 1.1.2, centered mostly around compatibility with the latest version of jss-autopkg-addon.</p>
+                <h4>Important Changes</h4>
+                <ul>
+                    <li>If using JSS integration, python-jss now automatically "URL encodes" the distribution point passwords (#177). If you have a password with special characters, and have manually constructed it with proper URL encoding, <em>it will no longer work</em>. You should now just set it to the actual password.</li>
+                </ul>
+                <h4>Bug Fixes</h4>
+                <ul>
+                    <li>Fixed a bug which would set `SSL_VERIFY` incorrectly for Casper environments with self-signed certificates.</li>
+                    <li>Made GUI elements match more consistently between OS X Mavericks and OS X Yosemite.</li>
+                    <li>Fixed a bug that caused errors in environments with a password-protected proxy.</li>
+                    <li>Corrected spelling of "available" in email notifications and other places.</li>
+                </ul>
+                <h4>Enhancements</h4>
+                <ul>
+                    <li>Made compatible with latest release of [jss-autopkg-addon](https://github.com/sheagcraig/jss-autopkg-addon).</li>
+                    <li>Updated readme to clarify that Casper 9 or newer is required for JSS integration.</li>
+                    <li>AutoPkgr now does not remove @sheagcraig's jss-recipes repository when the JSS settings have been cleared.</li>
+                </ul>
+                <p>As always, please open an <a href="https://github.com/lindegroup/autopkgr/issues" target="_blank">issue on GitHub</a> if you find a reproducible problem.</p>
+                ]]>
+            </description>
+            <pubDate>Mon, 1 Dec 2014 23:00:00 +0000</pubDate>
+            <enclosure url="https://github.com/lindegroup/autopkgr/releases/download/v1.1.2/AutoPkgr-1.1.2.dmg" sparkle:version="560" sparkle:shortVersionString="1.1.2" type="application/octet-stream" />
+        </item>
+        <item>
+            <title>Version 1.1.1</title>
+            <description>
+                <![CDATA[
+                <h4>Bug Fixes</h4>
+                <ul>
+                    <li>Address issues with JSS integration:
+                        <ul><li>Better handling of URLs for Cloud hosted JSS.</li>
+                        <li>More comprehensive logging relating to JSS operations.</li></ul>
+                    </li>
+                    <li>Cleaner UI error messages.</li>
+                    <li>Correctly detects Xcode git.</li>
+                    <li>Compatibility with Yosemite's "dark mode."</li>
+                    <li>Minor GUI adjustments.</li>
+                </ul>
+                <h4>Enhancements</h4>
+                <ul>
+                    <li>Better proxy support. AutoPkgr can now use proxies set in System Preferences, including WPAD/PAC. (See readme on GitHub for details.)</li>
+                </ul>
+                ]]>
+            </description>
+            <pubDate>Sat, 15 Nov 2014 16:00:00 +0000</pubDate>
+            <enclosure url="https://github.com/lindegroup/autopkgr/releases/download/v1.1.1/AutoPkgr-1.1.1.dmg" sparkle:version="524" sparkle:shortVersionString="1.1.1" type="application/octet-stream" />
+        </item>
+        <item>
+            <title>Version 1.1</title>
+            <description>
+                <![CDATA[
+                <h4>Added built-in support for integrating with JAMF's Casper Suite (#75):</h4>
+                <ul>
+                    <li>The newly-renamed Folders & Integration tab provides easy access to JSS URL and API settings.</li>
+                    <li>Upon entering valid JSS information, AutoPkgr automatically installs the latest version of @sheagcraig's jss-autopkg-addon and adds some ready-to-use .jss recipes.</li>
+                    <li>The .jss recipes you subscribe to will automatically produce smart groups and Self Service policies scoped to a "Testing" group.</li>
+                    <li>The policy creation behavior can be tweaked and customized with XML template files.</li>
+                    <li>AutoPkgr keeps you up to date when new versions of the jss-autopkg-addon are released.</li>
+                </ul>
+                <h4>Added support for creating recipe overrides (#60):</h4>
+                <ul>
+                    <li>Right-clicking / Control-clicking on a recipe will allow creation/editing of an override.</li>
+                    <li>Ability to choose your preferred text editor for editing overrides.</li>
+                </ul>
+                <h4>Added environmental proxy support (#152 and #130):</h4>
+                <ul>
+                    <li>Equivalent to this shell command: export HTTP_PROXY=http://proxy:8080</li>
+                    <li>To use HTTP proxy: defaults write com.lindegroup.AutoPkgr HTTP_PROXY http://proxy:8080</li>
+                    <li>To use HTTPS proxy: defaults write com.lindegroup.AutoPkgr HTTPS_PROXY https://proxy:8080</li>
+                    <li>To stop using HTTP proxy: defaults remove com.lindegroup.AutoPkgr HTTP_PROXY</li>
+                    <li>To stop using HTTPS proxy: defaults remove com.lindegroup.AutoPkgr HTTPS_PROXY</li>
+                    <li>Note: This will not create or modify any system proxy settings; it will only add them to your shell env.</li>
+                </ul>
+                <h4>Improvements</h4>
+                <ul>
+                    <li>Improved readme with detailed information on Munki and Casper integration, and some troubleshooting tips.</li>
+                    <li>Additional detail added to logs.</li>
+                    <li>Better version reporting in email messages (especially with .munki recipes).</li>
+                    <li>More concise errors when Python exceptions occur.</li>
+                </ul>
+                <h4>Bug Fixes</h4>
+                <ul>
+                    <li>Fixed bug that prevented certain repos from appearing automatically in the repos list (#148).</li>
+                </ul>
+                ]]>
+            </description>
+            <pubDate>Wed, 22 Oct 2014 18:17:45 +0000</pubDate>
+            <enclosure url="https://github.com/lindegroup/autopkgr/releases/download/v1.1/AutoPkgr-1.1.dmg" sparkle:version="490" sparkle:shortVersionString="1.1" type="application/octet-stream" />
+        </item>
+        <item>
+            <title>Version 1.0.4</title>
+            <description>
+                <![CDATA[
+                <h4>Numerous changes and bug fixes this time around, including:</h4>
+                <ul>
+                    <li>The ability to cancel installations, recipe checks, and other tasks in progress.</li>
+                    <li>More detail in logs, including the ability to enable a verbose log mode for troubleshooting.</li>
+                    <li>Improved behavior of the "Open in Finder" buttons.</li>
+                    <li>Resolved bug that would cause an incorrect hostname to be reported in notification emails.</li>
+                    <li>Resolved bug that would prevent "from" address from appearing in log output.</li>
+                    <li>Implemented code signing to avoid "unidentified developer" error upon first launch.</li>
+                    <li>Now using the Sparkle framework, so AutoPkgr can keep itself up to date.</li>
+                    <li>Git install feature is now available for Macs running 10.8.</li>
+                    <li>Git installer for 10.9 no longer relies on the Xcode command line tools. No need to leave AutoPkgr to get Git!</li>
+                </ul>
+                ]]>
+            </description>
+            <pubDate>Mon, 24 Sep 2014 09:40:00 +0000</pubDate>
+            <enclosure url="https://github.com/lindegroup/autopkgr/releases/download/v1.0.4/AutoPkgr-1.0.4.dmg" sparkle:version="386" sparkle:shortVersionString="1.0.4" type="application/octet-stream" />
+        </item>
+    </channel>
 </rss>
