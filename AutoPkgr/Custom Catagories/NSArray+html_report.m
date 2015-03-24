@@ -1,0 +1,46 @@
+//
+//  NSArray+report_html.m
+//  AutoPkgr
+//
+//  Created by Eldon Ahrold on 3/25/15.
+//
+//  Licensed under the Apache License, Version 2.0 (the "License");
+//  you may not use this file except in compliance with the License.
+//  You may obtain a copy of the License at
+//
+//  http://www.apache.org/licenses/LICENSE-2.0
+//
+//  Unless required by applicable law or agreed to in writing, software
+//  distributed under the License is distributed on an "AS IS" BASIS,
+//  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//  See the License for the specific language governing permissions and
+//  limitations under the License.
+//
+
+#import "NSArray+html_report.h"
+
+@implementation NSArray (report_html)
+- (NSString *)html_list_unordered
+{
+    return [self listWithType:@"ul"];
+}
+
+- (NSString *)html_list_ordered
+{
+    return [self listWithType:@"ol"];
+}
+
+#pragma - Private
+- (NSString *)listWithType:(NSString *)type
+{
+    NSMutableString *string = nil;
+    if (self.count) {
+        string = [NSMutableString stringWithFormat:@"<%@>", type];
+        for (NSString *s in self) {
+            [string appendFormat:@"<li>%@</li>", s];
+        }
+        [string appendFormat:@"</%@>", type];
+    }
+    return [string copy];
+}
+@end

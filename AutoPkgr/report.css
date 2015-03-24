@@ -1,0 +1,30 @@
+/* Used to set indentation in Div tag when constructing _summary_results */
+.tabbed {margin-left: 1em;}
+
+/* Used for the Overview heading */
+H1 {
+    color: #376D3E;
+    font-size: 18pt;
+    text-decoration: underline;
+    font-weight: bold;
+    padding:0;
+    margin: 0;
+}
+
+/* Used for the Details heading */
+H2 {
+    color: #376D3E;
+    font-size: 14pt;
+    text-decoration: underline;
+    font-weight: bold;
+    padding:0;
+    margin: 0;
+}
+
+/* Override for unordered list tag to remove bullets and other formatting */
+ul {
+    list-style-type: none;
+    padding:0;
+    margin: 0;
+    margin-left: 1em;
+}

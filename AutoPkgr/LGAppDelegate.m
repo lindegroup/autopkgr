@@ -51,8 +51,9 @@
 - (void)applicationWillFinishLaunching:(NSNotification *)notification
 {
     // Setup activation policy. By default set as menubar only.
-    [[LGDefaults standardUserDefaults] registerDefaults:@{ kLGApplicationDisplayStyle : @(kLGDisplayStyleShowMenu | kLGDisplayStyleShowDock) }];
-
+    [[LGDefaults standardUserDefaults] registerDefaults:@{ kLGApplicationDisplayStyle : @(kLGDisplayStyleShowMenu | kLGDisplayStyleShowDock) ,
+                                                           NSStringFromSelector(@selector(reportedItemFlags)): @(kLGReportItemsAll)}];
+    
     if (([[LGDefaults standardUserDefaults] applicationDisplayStyle] & kLGDisplayStyleShowDock)) {
         [NSApp setActivationPolicy:NSApplicationActivationPolicyRegular];
     }

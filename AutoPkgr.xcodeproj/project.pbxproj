@@ -53,6 +53,7 @@
 		BE1C810319E8224000EF77F3 /* NSImage+statusLight.m in Sources */ = {isa = PBXBuildFile; fileRef = BE1C810219E8224000EF77F3 /* NSImage+statusLight.m */; };
 		BE1C810419E8224000EF77F3 /* NSImage+statusLight.m in Sources */ = {isa = PBXBuildFile; fileRef = BE1C810219E8224000EF77F3 /* NSImage+statusLight.m */; };
 		BE32178B19ED9ACA00A92E5A /* LGRecipeOverrides.m in Sources */ = {isa = PBXBuildFile; fileRef = BE32178A19ED9ACA00A92E5A /* LGRecipeOverrides.m */; };
+		BE344F551ABFBEAB00500AAE /* LGAutoPkgReport.m in Sources */ = {isa = PBXBuildFile; fileRef = BE344F541ABFBEAB00500AAE /* LGAutoPkgReport.m */; };
 		BE57AC2A19BA3BBC00BB17B1 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = BE57AC2C19BA3BBC00BB17B1 /* Localizable.strings */; };
 		BE67E8751A44E10500484151 /* LGRecipeSearch.m in Sources */ = {isa = PBXBuildFile; fileRef = BE67E8731A44E10500484151 /* LGRecipeSearch.m */; };
 		BE67E8761A44E10500484151 /* LGRecipeSearchPanel.xib in Resources */ = {isa = PBXBuildFile; fileRef = BE67E8741A44E10500484151 /* LGRecipeSearchPanel.xib */; };
@@ -74,6 +75,18 @@
 		BEC1258B19F04703006696C4 /* LGPopularRepositories.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A0BABE8196E560000A136BB /* LGPopularRepositories.m */; };
 		BEC1258C19F049A1006696C4 /* LGTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = BE32178D19EDA15400A92E5A /* LGTableView.m */; };
 		BED02ADC1A194F9C00714CC2 /* NSArray+filtered.m in Sources */ = {isa = PBXBuildFile; fileRef = BED02ADB1A194F9C00714CC2 /* NSArray+filtered.m */; };
+		BED136AA1AC0593A003EBF0F /* report_0.4.3.plist in Resources */ = {isa = PBXBuildFile; fileRef = BED136A91AC058F8003EBF0F /* report_0.4.3.plist */; };
+		BED136AB1AC05B1D003EBF0F /* LGAutoPkgReport.m in Sources */ = {isa = PBXBuildFile; fileRef = BE344F541ABFBEAB00500AAE /* LGAutoPkgReport.m */; };
+		BED136AC1AC05B4C003EBF0F /* LGEmailer.m in Sources */ = {isa = PBXBuildFile; fileRef = 1AC98411195CE8520071CAB3 /* LGEmailer.m */; };
+		BED136AD1AC0F993003EBF0F /* LGPasswords.m in Sources */ = {isa = PBXBuildFile; fileRef = BE053D141A8F90920021D97B /* LGPasswords.m */; };
+		BED136AE1AC0FFC5003EBF0F /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = BE57AC2C19BA3BBC00BB17B1 /* Localizable.strings */; };
+		BED136B11AC262CB003EBF0F /* NSString+html_report.m in Sources */ = {isa = PBXBuildFile; fileRef = BED136B01AC262CB003EBF0F /* NSString+html_report.m */; };
+		BED136B21AC26B7C003EBF0F /* NSString+html_report.m in Sources */ = {isa = PBXBuildFile; fileRef = BED136B01AC262CB003EBF0F /* NSString+html_report.m */; };
+		BED136B41AC35650003EBF0F /* report_0.4.2.plist in Resources */ = {isa = PBXBuildFile; fileRef = BED136B31AC35650003EBF0F /* report_0.4.2.plist */; };
+		BED136B71AC3BE04003EBF0F /* NSArray+html_report.m in Sources */ = {isa = PBXBuildFile; fileRef = BED136B61AC3BE04003EBF0F /* NSArray+html_report.m */; };
+		BED136B81AC3BE04003EBF0F /* NSArray+html_report.m in Sources */ = {isa = PBXBuildFile; fileRef = BED136B61AC3BE04003EBF0F /* NSArray+html_report.m */; };
+		BED136BC1AC3C15E003EBF0F /* report.css in Resources */ = {isa = PBXBuildFile; fileRef = BED136BB1AC3C15E003EBF0F /* report.css */; };
+		BED136BD1AC3C15E003EBF0F /* report.css in Resources */ = {isa = PBXBuildFile; fileRef = BED136BB1AC3C15E003EBF0F /* report.css */; };
 		BED297611A3F975000511CD7 /* LGDefaults+JSSImporter.m in Sources */ = {isa = PBXBuildFile; fileRef = BED297601A3F975000511CD7 /* LGDefaults+JSSImporter.m */; };
 		BED3882A1A85E2C100DA8970 /* autopkgr_error.png in Resources */ = {isa = PBXBuildFile; fileRef = BED388291A85E2C100DA8970 /* autopkgr_error.png */; };
 		BEE8CF1319E0E7F400981C4B /* NSTextField+setSafeStringValue.m in Sources */ = {isa = PBXBuildFile; fileRef = BEE8CF1219E0E7F400981C4B /* NSTextField+setSafeStringValue.m */; };
@@ -221,6 +234,8 @@
 		BE32178A19ED9ACA00A92E5A /* LGRecipeOverrides.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGRecipeOverrides.m; sourceTree = "<group>"; };
 		BE32178C19EDA15400A92E5A /* LGTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGTableView.h; sourceTree = "<group>"; };
 		BE32178D19EDA15400A92E5A /* LGTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGTableView.m; sourceTree = "<group>"; };
+		BE344F531ABFBEAB00500AAE /* LGAutoPkgReport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGAutoPkgReport.h; sourceTree = "<group>"; };
+		BE344F541ABFBEAB00500AAE /* LGAutoPkgReport.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGAutoPkgReport.m; sourceTree = "<group>"; };
 		BE34DF2B19AA21E200DC2FAF /* LGAutoPkgr.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LGAutoPkgr.h; sourceTree = "<group>"; };
 		BE3FF3281A8A93EE00F7385B /* LGDisplayStatusDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LGDisplayStatusDelegate.h; sourceTree = "<group>"; };
 		BE57733619D519E400D872A4 /* LGJSSImporter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGJSSImporter.h; sourceTree = "<group>"; };
@@ -245,6 +260,14 @@
 		BEBF7B161A4894AC00E9967F /* LGVersioner.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGVersioner.m; sourceTree = "<group>"; };
 		BED02ADA1A194F9C00714CC2 /* NSArray+filtered.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSArray+filtered.h"; path = "Custom Catagories/NSArray+filtered.h"; sourceTree = "<group>"; };
 		BED02ADB1A194F9C00714CC2 /* NSArray+filtered.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSArray+filtered.m"; path = "Custom Catagories/NSArray+filtered.m"; sourceTree = "<group>"; };
+		BED136A91AC058F8003EBF0F /* report_0.4.3.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = report_0.4.3.plist; sourceTree = "<group>"; };
+		BED136AF1AC262CB003EBF0F /* NSString+html_report.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSString+html_report.h"; path = "Custom Catagories/NSString+html_report.h"; sourceTree = "<group>"; };
+		BED136B01AC262CB003EBF0F /* NSString+html_report.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSString+html_report.m"; path = "Custom Catagories/NSString+html_report.m"; sourceTree = "<group>"; };
+		BED136B31AC35650003EBF0F /* report_0.4.2.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = report_0.4.2.plist; sourceTree = "<group>"; };
+		BED136B51AC3BE04003EBF0F /* NSArray+html_report.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSArray+html_report.h"; path = "AutoPkgr/Custom Catagories/NSArray+html_report.h"; sourceTree = SOURCE_ROOT; };
+		BED136B61AC3BE04003EBF0F /* NSArray+html_report.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSArray+html_report.m"; path = "AutoPkgr/Custom Catagories/NSArray+html_report.m"; sourceTree = SOURCE_ROOT; };
+		BED136B91AC3BEE1003EBF0F /* HTMLCategories.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = HTMLCategories.h; path = "Custom Catagories/HTMLCategories.h"; sourceTree = "<group>"; };
+		BED136BB1AC3C15E003EBF0F /* report.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; path = report.css; sourceTree = "<group>"; };
 		BED2975F1A3F975000511CD7 /* LGDefaults+JSSImporter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "LGDefaults+JSSImporter.h"; path = "Custom Catagories/LGDefaults+JSSImporter.h"; sourceTree = "<group>"; };
 		BED297601A3F975000511CD7 /* LGDefaults+JSSImporter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "LGDefaults+JSSImporter.m"; path = "Custom Catagories/LGDefaults+JSSImporter.m"; sourceTree = "<group>"; };
 		BED388291A85E2C100DA8970 /* autopkgr_error.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = autopkgr_error.png; sourceTree = "<group>"; };
@@ -373,6 +396,7 @@
 		1AC69557195B59ED00D2BD81 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				BED136BB1AC3C15E003EBF0F /* report.css */,
 				1AC69558195B59ED00D2BD81 /* AutoPkgr-Info.plist */,
 				1AC69559195B59ED00D2BD81 /* InfoPlist.strings */,
 				BE57AC2C19BA3BBC00BB17B1 /* Localizable.strings */,
@@ -395,6 +419,8 @@
 		1AC69575195B59EE00D2BD81 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				BED136A91AC058F8003EBF0F /* report_0.4.3.plist */,
+				BED136B31AC35650003EBF0F /* report_0.4.2.plist */,
 				1AC69576195B59EE00D2BD81 /* AutoPkgrTests-Info.plist */,
 				1AC69577195B59EE00D2BD81 /* InfoPlist.strings */,
 			);
@@ -497,6 +523,7 @@
 				BED297601A3F975000511CD7 /* LGDefaults+JSSImporter.m */,
 				BED02ADA1A194F9C00714CC2 /* NSArray+filtered.h */,
 				BED02ADB1A194F9C00714CC2 /* NSArray+filtered.m */,
+				BED136BA1AC3BF2E003EBF0F /* Html Categories */,
 			);
 			name = "Custom Categories";
 			sourceTree = "<group>";
@@ -550,8 +577,22 @@
 				1A1BAD95197A0407008192A7 /* LGVersionComparator.m */,
 				BEBF7B151A4894AC00E9967F /* LGVersioner.h */,
 				BEBF7B161A4894AC00E9967F /* LGVersioner.m */,
+				BE344F531ABFBEAB00500AAE /* LGAutoPkgReport.h */,
+				BE344F541ABFBEAB00500AAE /* LGAutoPkgReport.m */,
 			);
 			name = "Utility Classes";
+			sourceTree = "<group>";
+		};
+		BED136BA1AC3BF2E003EBF0F /* Html Categories */ = {
+			isa = PBXGroup;
+			children = (
+				BED136B91AC3BEE1003EBF0F /* HTMLCategories.h */,
+				BED136AF1AC262CB003EBF0F /* NSString+html_report.h */,
+				BED136B01AC262CB003EBF0F /* NSString+html_report.m */,
+				BED136B51AC3BE04003EBF0F /* NSArray+html_report.h */,
+				BED136B61AC3BE04003EBF0F /* NSArray+html_report.m */,
+			);
+			name = "Html Categories";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -663,6 +704,7 @@
 				1AC98429195DF6DE0071CAB3 /* autopkgr_alt.png in Resources */,
 				8BB217F619709A2C00EF8B93 /* AutoPkgrIcon.png in Resources */,
 				1AC6955B195B59ED00D2BD81 /* InfoPlist.strings in Resources */,
+				BED136BC1AC3C15E003EBF0F /* report.css in Resources */,
 				1AC69569195B59EE00D2BD81 /* Images.xcassets in Resources */,
 				BED3882A1A85E2C100DA8970 /* autopkgr_error.png in Resources */,
 				1A2C7FAE19CC9F8300CFF472 /* codesign.py in Resources */,
@@ -680,7 +722,11 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BED136AA1AC0593A003EBF0F /* report_0.4.3.plist in Resources */,
+				BED136B41AC35650003EBF0F /* report_0.4.2.plist in Resources */,
+				BED136AE1AC0FFC5003EBF0F /* Localizable.strings in Resources */,
 				1AC69579195B59EE00D2BD81 /* InfoPlist.strings in Resources */,
+				BED136BD1AC3C15E003EBF0F /* report.css in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -842,11 +888,13 @@
 				BE053D151A8F90920021D97B /* LGPasswords.m in Sources */,
 				BE0BACD11A2560AE00554989 /* LGJSSDistributionPointsPrefPanel.m in Sources */,
 				BEC1258919F046FA006696C4 /* main.m in Sources */,
+				BED136B71AC3BE04003EBF0F /* NSArray+html_report.m in Sources */,
 				BED02ADC1A194F9C00714CC2 /* NSArray+filtered.m in Sources */,
 				1AC69564195B59EE00D2BD81 /* LGAppDelegate.m in Sources */,
 				BEC1258619F0465C006696C4 /* LGConfigurationWindowController.m in Sources */,
 				1AC9840A195CE7D60071CAB3 /* LGConstants.m in Sources */,
 				BE87994B1995BA410082472B /* LGDefaults.m in Sources */,
+				BE344F551ABFBEAB00500AAE /* LGAutoPkgReport.m in Sources */,
 				1AC86D3D195E0AC6006FDD2B /* LGHostInfo.m in Sources */,
 				BEC1258719F0465F006696C4 /* LGAutoPkgTask.m in Sources */,
 				BE025CFE19BAEF8800D36345 /* LGAutoPkgSchedule.m in Sources */,
@@ -860,6 +908,7 @@
 				BEBF7B171A4894AC00E9967F /* LGVersioner.m in Sources */,
 				BEC1258819F046C5006696C4 /* LGJSSImporter.m in Sources */,
 				BE0E857919D668F600B25B5E /* LGHTTPRequest.m in Sources */,
+				BED136B11AC262CB003EBF0F /* NSString+html_report.m in Sources */,
 				1A1BAD9E197A4133008192A7 /* LGGitHubJSONLoader.m in Sources */,
 				BEC1258C19F049A1006696C4 /* LGTableView.m in Sources */,
 				6A53625D1988BE59008A949C /* LGTestPort.m in Sources */,
@@ -880,14 +929,19 @@
 			buildActionMask = 2147483647;
 			files = (
 				BEFC3C761A3DF16700C789E9 /* LGUserNotifications.m in Sources */,
+				BED136B81AC3BE04003EBF0F /* NSArray+html_report.m in Sources */,
 				BEFC3C771A3DF16700C789E9 /* LGGitHubJSONLoader.m in Sources */,
+				BED136AD1AC0F993003EBF0F /* LGPasswords.m in Sources */,
+				BED136AB1AC05B1D003EBF0F /* LGAutoPkgReport.m in Sources */,
 				BEFC3C781A3DF16700C789E9 /* LGInstaller.m in Sources */,
 				BEFC3C791A3DF16700C789E9 /* LGTestPort.m in Sources */,
 				BEFC3C7C1A3DF16700C789E9 /* LGPopularRepositories.m in Sources */,
 				BEFC3C7D1A3DF16700C789E9 /* LGRecipes.m in Sources */,
 				BE67E8771A44F02B00484151 /* LGRecipeSearch.m in Sources */,
+				BED136AC1AC05B4C003EBF0F /* LGEmailer.m in Sources */,
 				BEFC3C7E1A3DF16700C789E9 /* LGRecipeOverrides.m in Sources */,
 				BEFC3C7F1A3DF16700C789E9 /* LGTableView.m in Sources */,
+				BED136B21AC26B7C003EBF0F /* NSString+html_report.m in Sources */,
 				BEFC3C821A3DF16700C789E9 /* LGConstants.m in Sources */,
 				BE8C7D6F1A86D32B00EBD32A /* LGTools.m in Sources */,
 				BEFC3C831A3DF16700C789E9 /* LGDefaults.m in Sources */,

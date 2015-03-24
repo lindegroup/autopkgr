@@ -35,7 +35,7 @@ typedef NS_ENUM(OSStatus, LGToolInstallStatus) {
     /**
      *  Tool is installed, but an update is available for the tool.
      */
-    kLGToolUpdateAvaliable,
+    kLGToolUpdateAvailable,
     /**
      *  Tool is installed.
      */
