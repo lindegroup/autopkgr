@@ -21,6 +21,16 @@
 
 extern NSString *const html_openDivTabbed;
 extern NSString *const html_closingDiv;
+
+extern NSString *const html_openParagraph;
+extern NSString *const html_closeParagraph;
+
+extern NSString *const html_openListUL;
+extern NSString *const html_closeListUL;
+
+extern NSString *const html_openListOL;
+extern NSString *const html_closeListOL;
+
 extern NSString *const html_break;
 extern NSString *const html_breakTwice;
 extern NSString *const html_reportCSS;
@@ -38,7 +48,16 @@ extern NSString *const html_reportCSS;
 @property (copy, nonatomic, readonly) NSString *html_italicStyle;
 @property (copy, nonatomic, readonly) NSString *html_italicStyleWithBreak;
 
+@property (copy, nonatomic, readonly) NSString *html_paragraph;
+
+@property (copy, nonatomic, readonly) NSString *html_listItem;
+
 @property (copy, nonatomic, readonly) NSString *html_withBreak;
 @property (copy, nonatomic, readonly) NSString *html_withDoubleBreak;
+
+- (NSString *)html_divWithCSSClass:(NSString *)cssClass;
+- (NSString *)html_spanWithCSSClass:(NSString *)cssClass;
+- (NSString *)html_paragraphWithCSSClass:(NSString *)cssClass;
+- (NSString *)html_tag:(NSString *)tag withCSSClass:(NSString *)cssClass;
 
 @end

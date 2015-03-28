@@ -35,12 +35,55 @@
 {
     NSMutableString *string = nil;
     if (self.count) {
-        string = [NSMutableString stringWithFormat:@"<%@>", type];
+        string = [NSMutableString stringWithFormat:@"<%@>\n", type];
         for (NSString *s in self) {
-            [string appendFormat:@"<li>%@</li>", s];
+            [string appendFormat:@"<li>%@</li>\n", s];
         }
-        [string appendFormat:@"</%@>", type];
+        [string appendFormat:@"</%@>\n", type];
     }
     return [string copy];
 }
+
+- (NSString *)html_table
+{
+    if (self.count) {
+        id firstObject = [self firstObject];
+        if ([firstObject isKindOfClass:[NSDictionary class]]) {
+            return [self html_tableWithHeaders:[(NSDictionary *)firstObject allKeys]];
+        }
+    }
+    return nil;
+}
+
+- (NSString *)html_tableWithHeaders:(NSArray *)headers
+{
+    NSMutableString *string;
+    if (self.count && [self.firstObject isKindOfClass:[NSDictionary class]]) {
+        string = [@"<table>\n" mutableCopy];
+        [string appendString:@"    <tr>"];
+
+        if (headers) {
+            for (NSString *header in headers) {
+                [string appendFormat:@"<th>%@</th>", header];
+            }
+        } else {
+            headers = [self.firstObject allKeys];
+        }
+
+        [string appendString:@"</tr>\n"];
+
+        for (NSDictionary *dict in self) {
+            [string appendString:@"    <tr>"];
+            for (NSString *header in headers) {
+                if (dict[header]) {
+                    [string appendFormat:@"<td>%@</td>", dict[header]];
+                }
+            }
+            [string appendString:@"</tr>\n"];
+        }
+    }
+    [string appendString:@"</table>\n"];
+    return [string copy];
+}
+
 @end

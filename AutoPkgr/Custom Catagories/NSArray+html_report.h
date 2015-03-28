@@ -22,4 +22,8 @@
 @interface NSArray (report_html)
 @property (copy, nonatomic, readonly) NSString *html_list_unordered;
 @property (copy, nonatomic, readonly) NSString *html_list_ordered;
+
+@property (copy, nonatomic, readonly) NSString *html_table;
+- (NSString *)html_tableWithHeaders:(NSArray *)array;
+
 @end

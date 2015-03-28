@@ -19,14 +19,22 @@
 
 #import "NSString+html_report.h"
 
-NSString *const html_openDivTabbed = @"<div class='tabbed'>";
+NSString *const html_openDivTabbed = @"<div class='tabbed'>\n";
+NSString *const html_closingDiv = @"</div>\n";
 
-NSString *const html_closingDiv = @"</div>";
+NSString *const html_openParagraph = @"<p>\n";
+NSString *const html_closeParagraph = @"</p>\n";
 
-NSString *const html_break = @"<br/>";
-NSString *const html_breakTwice = @"<br/><br/>";
+NSString *const html_openListUL = @"<ul>\n";
+NSString *const html_closeListUL = @"</ul>\n";
 
-NSString *const html_reportCSS = @"<style> .tabbed {margin-left: 1em;}H1 {color: #376D3E;font-size: 18pt;text-decoration: underline;font-weight: bold;padding:0;margin: 0;}H2 {color: #376D3E;font-size: 14pt;text-decoration: underline;font-weight: bold;padding:0;margin: 0;}ul {list-style-type: none;padding:0;margin: 0;margin-left: 1em;}</style>";
+NSString *const html_openListOL = @"<ol>\n";
+NSString *const html_closeListOL = @"</ol>\n";
+
+NSString *const html_break = @"<br/>\n";
+NSString *const html_breakTwice = @"<br/><br/>\n";
+
+NSString *const html_reportCSS = @"<style type='text/css'> .tabbed {margin-left: 1em;}H1 {color: #376D3E;font-size: 18pt;text-decoration: underline;font-weight: bold;padding:0;margin: 0;}H2 {color: #376D3E;font-size: 14pt;text-decoration: underline;font-weight: bold;padding:0;margin: 0;}ul {list-style-type: none;padding:0;margin: 0;margin-left: 1em;}</style>";
 
 @implementation NSString (html_report)
 
@@ -35,49 +43,95 @@ NSString *const html_reportCSS = @"<style> .tabbed {margin-left: 1em;}H1 {color:
     NSString *file = [bundle pathForResource:cssFile ofType:@"css"];
     if (file) {
         NSString *base = [self stringWithContentsOfFile:file encoding:NSUTF8StringEncoding error:nil];
-        return [NSString stringWithFormat:@"<style>%@</style>", base];
+        return [NSString stringWithFormat:@"<style type='text/css'>\n%@\n</style>\n", base];
     }
     return nil;
 }
 
 - (NSString *)html_H1
 {
-    return [NSString stringWithFormat:@"<H1>%@</br></H1>", self];
+    return [self stringWrappedByTag:@"H1"];
 }
 
 - (NSString *)html_H2
 {
-    return [NSString stringWithFormat:@"<H2>%@</br></H2>", self];
+    return [self stringWrappedByTag:@"H2"];
 }
 
 - (NSString *)html_strongStyle
 {
-    return [NSString stringWithFormat:@"<strong>%@</strong>", self];
+    return [self stringWithCSSClass:@"strong"];
 }
 
 - (NSString *)html_strongStyleWithBreak
 {
-    return [NSString stringWithFormat:@"<strong>%@</strong>%@", self, html_break];
+    return self.html_strongStyle.html_withBreak;
 }
 
 - (NSString *)html_italicStyle
 {
-    return [NSString stringWithFormat:@"<i>%@</i>", self];
+    return [self stringWrappedByTag:@"i"];
 }
 
 - (NSString *)html_italicStyleWithBreak
 {
-    return [NSString stringWithFormat:@"<i>%@</i>%@", self, html_break];
+    return self.html_italicStyle.html_withBreak;
+}
+
+- (NSString *)html_paragraph
+{
+    return [self stringWrappedByTag:@"p"];
+}
+
+- (NSString *)html_listItem
+{
+    return [NSString stringWithFormat:@"    %@", [self stringWrappedByTag:@"li"]];
 }
 
 - (NSString *)html_withBreak
 {
-    return [NSString stringWithFormat:@"%@<br/>", self];
+    return [NSString stringWithFormat:@"%@<br/>\n", self];
 }
 
 - (NSString *)html_withDoubleBreak
 {
-    return [NSString stringWithFormat:@"%@<br/><br/>", self];
+    return [NSString stringWithFormat:@"%@<br/><br/>\n", self];
+}
+
+- (NSString *)html_divWithCSSClass:(NSString *)cssClass
+{
+    return [self html_tag:@"div" withCSSClass:cssClass];
+}
+
+- (NSString *)html_spanWithCSSClass:(NSString *)cssClass
+{
+    return [self html_tag:@"span" withCSSClass:cssClass];
+}
+
+- (NSString *)html_paragraphWithCSSClass:(NSString *)cssClass {
+    return [self html_tag:@"p" withCSSClass:cssClass];
+}
+
+- (NSString *)html_tag:(NSString *)tag withCSSClass:(NSString *)cssClass
+{
+    return [NSString stringWithFormat:@"<%@ class='%@'>%@</%@>\n", tag, cssClass, self, tag];
+}
+
+#pragma Private
+
+- (NSString *)stringWrappedByTag:(NSString *)tag
+{
+    return [NSString stringWithFormat:@"<%@>%@</%@>\n", tag, self, tag];
+}
+
+- (NSString *)stringWithCSSClass:(NSString *)class
+{
+    return [NSString stringWithFormat:@"<span class='%@'>%@</span>\n", class, self];
+}
+
+- (NSString *)stringWithID:(NSString *)html_id
+{
+    return [NSString stringWithFormat:@"<div id='%@'>%@</div>\n", html_id, self];
 }
 
 @end
