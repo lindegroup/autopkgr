@@ -34,8 +34,6 @@ NSString *const html_closeListOL = @"</ol>\n";
 NSString *const html_break = @"<br/>\n";
 NSString *const html_breakTwice = @"<br/><br/>\n";
 
-NSString *const html_reportCSS = @"<style type='text/css'> .tabbed {margin-left: 1em;}H1 {color: #376D3E;font-size: 18pt;text-decoration: underline;font-weight: bold;padding:0;margin: 0;}H2 {color: #376D3E;font-size: 14pt;text-decoration: underline;font-weight: bold;padding:0;margin: 0;}ul {list-style-type: none;padding:0;margin: 0;margin-left: 1em;}</style>";
-
 @implementation NSString (html_report)
 
 + (instancetype)html_cssStringFromResourceNamed:(NSString *)cssFile bundle:(NSBundle *)bundle
@@ -96,6 +94,12 @@ NSString *const html_reportCSS = @"<style type='text/css'> .tabbed {margin-left:
 - (NSString *)html_withDoubleBreak
 {
     return [NSString stringWithFormat:@"%@<br/><br/>\n", self];
+}
+
+#pragma mark - Methods
+- (NSString *)html_link:(NSString *)link
+{
+    return [NSString stringWithFormat:@"<a href='%@'>%@</a>", link, self];
 }
 
 - (NSString *)html_divWithCSSClass:(NSString *)cssClass

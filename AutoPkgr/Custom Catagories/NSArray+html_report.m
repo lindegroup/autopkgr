@@ -31,15 +31,15 @@
 }
 
 #pragma - Private
-- (NSString *)listWithType:(NSString *)type
+- (NSString *)listWithType:(NSString *)listType
 {
     NSMutableString *string = nil;
     if (self.count) {
-        string = [NSMutableString stringWithFormat:@"<%@>\n", type];
+        string = [NSMutableString stringWithFormat:@"<%@>\n", listType];
         for (NSString *s in self) {
             [string appendFormat:@"<li>%@</li>\n", s];
         }
-        [string appendFormat:@"</%@>\n", type];
+        [string appendFormat:@"</%@>\n", listType];
     }
     return [string copy];
 }
@@ -52,12 +52,12 @@
             return [self html_tableWithHeaders:[(NSDictionary *)firstObject allKeys]];
         }
     }
-    return nil;
+    return @"";
 }
 
 - (NSString *)html_tableWithHeaders:(NSArray *)headers
 {
-    NSMutableString *string;
+    NSMutableString *string = nil;
     if (self.count && [self.firstObject isKindOfClass:[NSDictionary class]]) {
         string = [@"<table>\n" mutableCopy];
         [string appendString:@"    <tr>"];
@@ -81,9 +81,9 @@
             }
             [string appendString:@"</tr>\n"];
         }
+        [string appendString:@"</table>\n"];
     }
-    [string appendString:@"</table>\n"];
-    return [string copy];
+    return string ? [string copy] : @"";
 }
 
 @end

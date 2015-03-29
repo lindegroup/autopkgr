@@ -89,6 +89,8 @@
 		BED136BD1AC3C15E003EBF0F /* report.css in Resources */ = {isa = PBXBuildFile; fileRef = BED136BB1AC3C15E003EBF0F /* report.css */; };
 		BED297611A3F975000511CD7 /* LGDefaults+JSSImporter.m in Sources */ = {isa = PBXBuildFile; fileRef = BED297601A3F975000511CD7 /* LGDefaults+JSSImporter.m */; };
 		BED3882A1A85E2C100DA8970 /* autopkgr_error.png in Resources */ = {isa = PBXBuildFile; fileRef = BED388291A85E2C100DA8970 /* autopkgr_error.png */; };
+		BEE42DAD1AC6E2D100599238 /* report_malformed.plist in Resources */ = {isa = PBXBuildFile; fileRef = BEE42DAB1AC6E2D100599238 /* report_malformed.plist */; };
+		BEE42DAE1AC6E2D100599238 /* report_none.plist in Resources */ = {isa = PBXBuildFile; fileRef = BEE42DAC1AC6E2D100599238 /* report_none.plist */; };
 		BEE8CF1319E0E7F400981C4B /* NSTextField+setSafeStringValue.m in Sources */ = {isa = PBXBuildFile; fileRef = BEE8CF1219E0E7F400981C4B /* NSTextField+setSafeStringValue.m */; };
 		BEFC3C761A3DF16700C789E9 /* LGUserNotifications.m in Sources */ = {isa = PBXBuildFile; fileRef = BE6815D41A0B18DE004AD310 /* LGUserNotifications.m */; };
 		BEFC3C771A3DF16700C789E9 /* LGGitHubJSONLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A1BAD9D197A4133008192A7 /* LGGitHubJSONLoader.m */; };
@@ -272,6 +274,8 @@
 		BED297601A3F975000511CD7 /* LGDefaults+JSSImporter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "LGDefaults+JSSImporter.m"; path = "Custom Catagories/LGDefaults+JSSImporter.m"; sourceTree = "<group>"; };
 		BED388291A85E2C100DA8970 /* autopkgr_error.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = autopkgr_error.png; sourceTree = "<group>"; };
 		BEE05F051A05CDBE00EF80B3 /* libPods-AutoPkgr-AHCodesignVerifier.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libPods-AutoPkgr-AHCodesignVerifier.a"; path = "../../../../Library/Developer/Xcode/DerivedData/AutoPkgr-gvffmulnnaejibfmmwfptzyobmbb/Build/Products/Debug/libPods-AutoPkgr-AHCodesignVerifier.a"; sourceTree = "<group>"; };
+		BEE42DAB1AC6E2D100599238 /* report_malformed.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = report_malformed.plist; sourceTree = "<group>"; };
+		BEE42DAC1AC6E2D100599238 /* report_none.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = report_none.plist; sourceTree = "<group>"; };
 		BEE8CF1119E0E7F400981C4B /* NSTextField+setSafeStringValue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSTextField+setSafeStringValue.h"; path = "Custom Catagories/NSTextField+setSafeStringValue.h"; sourceTree = "<group>"; };
 		BEE8CF1219E0E7F400981C4B /* NSTextField+setSafeStringValue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSTextField+setSafeStringValue.m"; path = "Custom Catagories/NSTextField+setSafeStringValue.m"; sourceTree = "<group>"; };
 		BEFC931B1995F0710074C938 /* LGError.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGError.h; sourceTree = "<group>"; };
@@ -421,6 +425,8 @@
 			children = (
 				BED136A91AC058F8003EBF0F /* report_0.4.3.plist */,
 				BED136B31AC35650003EBF0F /* report_0.4.2.plist */,
+				BEE42DAB1AC6E2D100599238 /* report_malformed.plist */,
+				BEE42DAC1AC6E2D100599238 /* report_none.plist */,
 				1AC69576195B59EE00D2BD81 /* AutoPkgrTests-Info.plist */,
 				1AC69577195B59EE00D2BD81 /* InfoPlist.strings */,
 			);
@@ -724,7 +730,9 @@
 			files = (
 				BED136AA1AC0593A003EBF0F /* report_0.4.3.plist in Resources */,
 				BED136B41AC35650003EBF0F /* report_0.4.2.plist in Resources */,
+				BEE42DAD1AC6E2D100599238 /* report_malformed.plist in Resources */,
 				BED136AE1AC0FFC5003EBF0F /* Localizable.strings in Resources */,
+				BEE42DAE1AC6E2D100599238 /* report_none.plist in Resources */,
 				1AC69579195B59EE00D2BD81 /* InfoPlist.strings in Resources */,
 				BED136BD1AC3C15E003EBF0F /* report.css in Resources */,
 			);

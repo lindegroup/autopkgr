@@ -33,7 +33,6 @@ extern NSString *const html_closeListOL;
 
 extern NSString *const html_break;
 extern NSString *const html_breakTwice;
-extern NSString *const html_reportCSS;
 
 @interface NSString (html_report)
 
@@ -54,6 +53,8 @@ extern NSString *const html_reportCSS;
 
 @property (copy, nonatomic, readonly) NSString *html_withBreak;
 @property (copy, nonatomic, readonly) NSString *html_withDoubleBreak;
+
+- (NSString *)html_link:(NSString *)link;
 
 - (NSString *)html_divWithCSSClass:(NSString *)cssClass;
 - (NSString *)html_spanWithCSSClass:(NSString *)cssClass;

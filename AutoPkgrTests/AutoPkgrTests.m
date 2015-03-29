@@ -141,6 +141,14 @@
     [self runReportTestWithResourceNamed:@"report_0.4.3" flags:kLGReportItemsJSSImports | kLGReportItemsNewInstalls];
 }
 
+- (void)test_report_none {
+    [self runReportTestWithResourceNamed:@"report_none" flags:kLGReportItemsAll];
+}
+
+- (void)test_report_malformed {
+    [self runReportTestWithResourceNamed:@"report_malformed" flags:kLGReportItemsAll];
+}
+
 - (void)runReportTestWithResourceNamed:(NSString *)resource flags:(LGReportItems)flags
 {
     NSBundle *bundle = [NSBundle bundleForClass:[self class]];
@@ -158,8 +166,11 @@
         [[NSFileManager defaultManager] removeItemAtPath:htmlFile error:nil];
     }
 
-    NSError *error = [NSError errorWithDomain:@"AutoPkgr" code:1 userInfo:@{ NSLocalizedDescriptionKey : @"Error running recipes",
-                                                                             NSLocalizedRecoverySuggestionErrorKey : @"Code signature verification failed. Note that all verifications can be disabled by setting the variable DISABLE_CODE_SIGNATURE_VERIFICATION to a non-empty value.\nThere was an unknown exception which causes autopkg to fail." }];
+    NSError *error = nil;
+//    error = [NSError errorWithDomain:@"AutoPkgr"
+//                                code:1
+//                            userInfo:@{ NSLocalizedDescriptionKey : @"Error running recipes",
+//                                        NSLocalizedRecoverySuggestionErrorKey : @"Code signature verification failed. Note that all verifications can be disabled by setting the variable DISABLE_CODE_SIGNATURE_VERIFICATION to a non-empty value.\nThere was an unknown exception which causes autopkg to fail." }];
 
     LGAutoPkgReport *report = [[LGAutoPkgReport alloc] initWithReportDictionary:dict];
     report.error = error;
