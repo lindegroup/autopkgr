@@ -1,5 +1,5 @@
 //
-//  NSArray+report_html.h
+//  NSArray+html_report.h
 //  AutoPkgr
 //
 //  Created by Eldon Ahrold on 3/25/15.
@@ -19,11 +19,34 @@
 
 #import <Foundation/Foundation.h>
 
-@interface NSArray (report_html)
+@interface NSArray (html_report)
 @property (copy, nonatomic, readonly) NSString *html_list_unordered;
 @property (copy, nonatomic, readonly) NSString *html_list_ordered;
 
+/**
+ *  Generate a table from an array of dictionaries.
+ *  @note Column order is not guarenteed, and determined by key order of the first dictionary.
+ */
 @property (copy, nonatomic, readonly) NSString *html_table;
-- (NSString *)html_tableWithHeaders:(NSArray *)array;
+
+/**
+ *  Generate a table from an array of dictionaries and the cooresponding headers.
+ *
+ *  @param headers Array of dictionaries
+ *
+ *  @return HTML Table string
+ */
+- (NSString *)html_tableWithHeaders:(NSArray *)headers;
+
+/**
+ *  Generate a table from an array of dictionaries and set the class of a column using the cooresponding header key.
+ *
+ *  @param headers Array of dictionaries
+ *
+ *  @param cssClassForColumn dictionary with the collumn class for the cooresponding header key
+ *
+ *  @return HTML Table string
+ */
+- (NSString *)html_tableWithHeaders:(NSArray *)headers cssClassForColumns:(NSDictionary *)cssClassForColumn;
 
 @end

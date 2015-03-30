@@ -1,5 +1,5 @@
 //
-//  NSArray+report_html.m
+//  NSArray+html_report.m
 //  AutoPkgr
 //
 //  Created by Eldon Ahrold on 3/25/15.
@@ -19,7 +19,7 @@
 
 #import "NSArray+html_report.h"
 
-@implementation NSArray (report_html)
+@implementation NSArray (html_report)
 - (NSString *)html_list_unordered
 {
     return [self listWithType:@"ul"];
@@ -57,6 +57,11 @@
 
 - (NSString *)html_tableWithHeaders:(NSArray *)headers
 {
+    return [self html_tableWithHeaders:headers cssClassForColumns:nil];
+}
+
+- (NSString *)html_tableWithHeaders:(NSArray *)headers cssClassForColumns:(NSDictionary *)cssClassForColumn
+{
     NSMutableString *string = nil;
     if (self.count && [self.firstObject isKindOfClass:[NSDictionary class]]) {
         string = [@"<table>\n" mutableCopy];
@@ -75,8 +80,15 @@
         for (NSDictionary *dict in self) {
             [string appendString:@"    <tr>"];
             for (NSString *header in headers) {
-                if (dict[header]) {
-                    [string appendFormat:@"<td>%@</td>", dict[header]];
+                NSString *td = dict[header];
+                NSString *cssClass = cssClassForColumn[header];
+                if (td) {
+                    if (cssClass.length) {
+                        [string appendFormat:@"<td class='%@'>", cssClass];
+                    } else {
+                        [string appendFormat:@"<td>"];
+                    }
+                    [string appendFormat:@"%@</td>", td];
                 }
             }
             [string appendString:@"</tr>\n"];
@@ -85,5 +97,4 @@
     }
     return string ? [string copy] : @"";
 }
-
 @end

@@ -128,6 +128,13 @@
 }
 
 #pragma mark - LGAutoPkgReports
+- (void)test_reports {
+    [self test_report_malformed];
+    [self test_report_none];
+    [self test0_4_2_report];
+    [self test0_4_3_report];
+}
+
 - (void)test0_4_2_report
 {
     [self runReportTestWithResourceNamed:@"report_0.4.2" flags:kLGReportItemsAll];
