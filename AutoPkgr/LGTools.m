@@ -61,7 +61,7 @@ NSArray * knownGitPaths()
     case kLGToolNotInstalled:
         stausImage = [NSImage LGStatusNotInstalled];
         break;
-    case kLGToolUpdateAvaliable:
+    case kLGToolUpdateAvailable:
         stausImage = [NSImage LGStatusUpdateAvailable];
         break;
     case kLGToolUpToDate:
@@ -79,7 +79,7 @@ NSArray * knownGitPaths()
     case kLGToolNotInstalled:
         statusString = [NSString stringWithFormat:@"%@ not installed.", self.name];
         break;
-    case kLGToolUpdateAvaliable:
+    case kLGToolUpdateAvailable:
         statusString = [NSString stringWithFormat:@"%@ %@ update now available.", self.name, self.remoteVersion];
         break;
     case kLGToolUpToDate:
@@ -92,14 +92,14 @@ NSArray * knownGitPaths()
 
 - (NSString *)installButtonTitle
 {
-    return [NSString stringWithFormat:@"%@ %@", (self.status == kLGToolUpdateAvaliable) ? @"Update" : @"Install", self.name];
+    return [NSString stringWithFormat:@"%@ %@", (self.status == kLGToolUpdateAvailable) ? @"Update" : @"Install", self.name];
 }
 
 - (BOOL)needsInstall
 {
     switch (self.status) {
     case kLGToolNotInstalled:
-    case kLGToolUpdateAvaliable:
+    case kLGToolUpdateAvailable:
         return YES;
     case kLGToolUpToDate:
     default:
@@ -154,7 +154,7 @@ NSArray * knownGitPaths()
         tool.status = kLGToolNotInstalled;
     } else if (installedVersion && remoteVersion) {
         if ([LGVersionComparator isVersion:remoteVersion greaterThanVersion:installedVersion]){
-            tool.status = kLGToolUpdateAvaliable;
+            tool.status = kLGToolUpdateAvailable;
         }
     }
     return tool;
@@ -193,7 +193,7 @@ NSArray * knownGitPaths()
         tool.status = kLGToolNotInstalled;
     } else if (installedVersion && remoteVersion) {
         if ([LGVersionComparator isVersion:remoteVersion greaterThanVersion:installedVersion]) {
-            tool.status = kLGToolUpdateAvaliable;
+            tool.status = kLGToolUpdateAvailable;
         }
     }
     return tool;
@@ -231,7 +231,7 @@ NSArray * knownGitPaths()
         tool.status = kLGToolNotInstalled;
     } else if (installedVersion && remoteVersion) {
         if ([LGVersionComparator isVersion:remoteVersion greaterThanVersion:installedVersion]) {
-            tool.status = kLGToolUpdateAvaliable;
+            tool.status = kLGToolUpdateAvailable;
         }
     }
 

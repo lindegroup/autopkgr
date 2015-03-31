@@ -593,6 +593,8 @@ typedef void (^AutoPkgReplyErrorBlock)(NSError *error);
         workingReport = [[self serializePropertyListString:self.standardOutString] mutableCopy];
     }
 
+    [workingReport setObject:self.version forKey:@"report_version"];
+
     NSArray *versionerResults = _versioner.currentResults;
     if (versionerResults) {
         [workingReport setObject:versionerResults forKey:@"detected_versions"];
@@ -868,7 +870,7 @@ typedef void (^AutoPkgReplyErrorBlock)(NSError *error);
 {
     LGAutoPkgTask *task = [[LGAutoPkgTask alloc] initWithArguments:@[ @"version" ]];
     [task launch];
-    return [task standardOutString];
+    return [[task standardOutString] stringByTrimmingCharactersInSet:[NSCharacterSet newlineCharacterSet]];
 }
 
 #pragma mark-- Convenience Initializers --

@@ -1,0 +1,56 @@
+* {
+    font-family: "Helvetica Neue", Helvetica, sans-serif;
+    font-size: 11pt;
+}
+
+a {
+    color: #157463;
+    text-decoration: underline;
+}
+
+a:hover {
+    color: #0d332a;
+}
+
+h1 {
+    background-color: #eaf6f4;
+    color: #157463;
+    font-weight: bold;
+    font-size: 14pt;
+    margin: 30px 0 0 0;
+    padding: 5px;
+    text-transform: uppercase;
+    text-align: center;
+}
+
+ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    margin-left: 1em;
+}
+
+p {
+    padding: 5px;
+}
+
+td, th {
+    padding: 5px 15px;
+    text-align: left;
+}
+th {
+    background-color: #eaf6f4;
+    color: #157463;
+    font-weight: normal;
+    text-transform: uppercase;
+}
+
+.status, .pkgname {
+    font-weight: bold;
+}
+
+.footer {
+    font-size: 10pt;
+    text-align: center;
+    margin: 30px 0 10px 0;
+}
