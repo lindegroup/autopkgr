@@ -85,6 +85,13 @@ Search results (and their corresponding repos) will be displayed below. Click th
 ![Search Results](doc-images/search_results.png)
 
 
+Creating/Editing Recipe Overrides
+---------------------------------
+
+We've tried to simplify the process of creating and editing AutoPkg recipe overrides for you. Just right-click on a recipe in the list, and you'll see options for creating an override, editing an existing override, and choosing which text editor you prefer to use.
+![Override creation and editing](doc-images/overrides.png)
+
+
 Integration with Munki
 ----------------------
 
