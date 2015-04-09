@@ -4,7 +4,7 @@ platform :osx, "10.8"
 
 target "AutoPkgr" do
 pod 'Sparkle', '1.8'
-pod 'AFNetworking', '~> 2.4.1'
+pod 'AFNetworking', '~> 2.5.2'
 pod 'XMLDictionary', '~> 1.4'
 pod 'mailcore2-osx', '~> 0.5'
 pod 'AHProxySettings', '~> 0.1.1'
@@ -20,7 +20,7 @@ end
 
 target "AutoPkgrTests" do
 pod 'Sparkle', '1.8'
-pod 'AFNetworking', '~> 2.4.1'
+pod 'AFNetworking', '~> 2.5.2'
 pod 'XMLDictionary', '~> 1.4'
 pod 'mailcore2-osx', '~> 0.5'
 pod 'AHProxySettings', '~> 0.1.1'

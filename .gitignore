@@ -27,3 +27,5 @@ DerivedData
 mailcore2/unittest/data
 *.orig
 
+
+*.lock
