@@ -38,4 +38,8 @@
 - (IBAction)checkNowFromMenu:(id)sender;
 - (IBAction)showConfigurationWindow:(id)sender;
 
+// Links to AutoPkgr Website and support site.
+- (IBAction)openHelpSite:(id)sender;
+- (IBAction)openHomeSite:(id)sender;
+
 @end

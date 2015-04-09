@@ -198,6 +198,16 @@
 }
 
 #pragma mark - IBActions
+- (IBAction)openHelpSite:(id)sender
+{
+    [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:kLGAutoPkgrHelpWebsite]];
+}
+
+- (IBAction)openHomeSite:(id)sender
+{
+    [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:kLGAutoPkgrWebsite]];
+}
+
 - (void)checkNowFromMenu:(id)sender
 {
     DLog(@"Received 'Check Now' menulet command.");
