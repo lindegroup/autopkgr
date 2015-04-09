@@ -6,7 +6,13 @@ All notable changes to this project will be documented in this file. This projec
 
 ## [Unreleased][unreleased]
 
-- (nothing yet)
+### Added
+- Compatibility with AutoPkg 0.4.3's new reporting style.
+- Updated documentation to include information about creating/editing overrides.
+- Items in Help menu now link to useful URLs.
+
+### Security
+- AFNetworking framework updated to 2.5.2.
 
 
 ## [1.2.1] - 2015-03-08
