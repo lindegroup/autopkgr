@@ -239,6 +239,23 @@ NSArray * knownGitPaths()
 }
 
 #pragma mark - Class Methods
++ (BOOL)requiredItemsInstalled {
+    return ([[self class] gitInstalled] &&
+            [[self class] autoPkgInstalled]);
+}
+
++ (void)displayRequirementsAlertOnWindow:(NSWindow *)window
+{
+
+    NSAlert *alert =[NSAlert alertWithMessageText:@"Required components not installed."
+                                    defaultButton:@"OK"
+                                  alternateButton:nil
+                                      otherButton:nil
+                        informativeTextWithFormat:@"AutoPkgr requires both AutoPkg and Git. Please install both before proceeding."];
+
+    [alert beginSheetModalForWindow:window modalDelegate:nil didEndSelector:nil contextInfo:nil];
+}
+
 + (BOOL)gitInstalled
 {
     return [self gitInstalled:nil];

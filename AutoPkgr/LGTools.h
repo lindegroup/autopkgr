@@ -105,6 +105,20 @@ typedef NS_ENUM(OSStatus, LGToolInstallStatus) {
 - (void)jssImporterStatus:(void (^)(LGTool *))status;
 
 /**
+ *  Check if required items are installed
+ *
+ *  @return YES if all required tools are installed.
+ */
++ (BOOL)requiredItemsInstalled;
+
+/**
+ *  Display NSAlert indicating requirements
+ *
+ *  @param window Modal window used for the alert. Can be nil.
+ */
++ (void)displayRequirementsAlertOnWindow:(NSWindow *)window;
+
+/**
  *  Check if AutoPkg is installed.
  *
  *  @return YES if AutoPkg is installed, NO otherwise
