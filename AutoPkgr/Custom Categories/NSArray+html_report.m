@@ -60,11 +60,27 @@
     return [self html_tableWithHeaders:headers cssClassForColumns:nil];
 }
 
+- (NSString *)html_tableWithHeaders:(NSArray *)headers cssClass:(NSString *)cssClass
+{
+    return [self html_tableWithHeaders:headers cssClass:cssClass cssClassForColumns:nil];
+}
+
 - (NSString *)html_tableWithHeaders:(NSArray *)headers cssClassForColumns:(NSDictionary *)cssClassForColumn
+{
+    return [self html_tableWithHeaders:headers cssClass:nil cssClassForColumns:cssClassForColumn];
+}
+
+- (NSString *)html_tableWithHeaders:(NSArray *)headers cssClass:(NSString *)cssClass cssClassForColumns:(NSDictionary *)cssClassForColumn
 {
     NSMutableString *string = nil;
     if (self.count && [self.firstObject isKindOfClass:[NSDictionary class]]) {
-        string = [@"<table>\n" mutableCopy];
+        string = [@"<table" mutableCopy];
+        if (cssClass) {
+            [string appendFormat:@" class='%@'", cssClass];
+        }
+        
+        [string appendString:@">\n"];
+
         [string appendString:@"    <tr>"];
 
         if (headers) {

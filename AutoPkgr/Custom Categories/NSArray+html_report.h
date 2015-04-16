@@ -37,6 +37,7 @@
  *  @return HTML Table string
  */
 - (NSString *)html_tableWithHeaders:(NSArray *)headers;
+- (NSString *)html_tableWithHeaders:(NSArray *)headers cssClass:(NSString *)cssClass;
 
 /**
  *  Generate a table from an array of dictionaries and set the class of a column using the cooresponding header key.
@@ -48,5 +49,7 @@
  *  @return HTML Table string
  */
 - (NSString *)html_tableWithHeaders:(NSArray *)headers cssClassForColumns:(NSDictionary *)cssClassForColumn;
+
+- (NSString *)html_tableWithHeaders:(NSArray *)headers cssClass:(NSString *)cssClass cssClassForColumns:(NSDictionary *)cssClassForColumn;
 
 @end

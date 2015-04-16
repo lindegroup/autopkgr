@@ -135,7 +135,7 @@ NSString *const fallback_reportCSS = @"<style type='text/css'>*{font-family:'Hel
 #pragma mark - Private
 - (NSString *)overviewString
 {
-    NSMutableString *overview = [[@"Overview" html_tag:@"H1" withCSSClass:@"overview"] mutableCopy];
+    NSMutableString *overview = [[NSMutableString alloc] init];
     NSInteger initialLength = overview.length;
 
     NSString *newSoftware;
@@ -232,7 +232,7 @@ NSString *const fallback_reportCSS = @"<style type='text/css'>*{font-family:'Hel
     // yet exist, or do not currently provide _summary_results
     if ((!includedProcessors || includedProcessors.count) && summaryResults.count) {
 
-        string = [[@"Details" html_tag:@"H1" withCSSClass:@"details"] mutableCopy];
+        string = [[NSMutableString alloc] init];
         [summaryResults enumerateKeysAndObjectsUsingBlock:^(NSString *key, NSDictionary *summary, BOOL *stop) {
             // If the included processor is nil show everything.
             if (!includedProcessors || [includedProcessors containsObject:key]) {
