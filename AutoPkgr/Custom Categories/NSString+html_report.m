@@ -56,6 +56,16 @@ NSString *const html_breakTwice = @"<br/><br/>\n";
     return [self stringWrappedByTag:@"H2"];
 }
 
+- (NSString *)html_H3
+{
+    return [self stringWrappedByTag:@"H3"];
+}
+
+- (NSString *)html_H4
+{
+    return [self stringWrappedByTag:@"H4"];
+}
+
 - (NSString *)html_strongStyle
 {
     return [self stringWithCSSClass:@"strong"];

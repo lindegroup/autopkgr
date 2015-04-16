@@ -40,6 +40,8 @@ extern NSString *const html_breakTwice;
 
 @property (copy, nonatomic, readonly) NSString *html_H1;
 @property (copy, nonatomic, readonly) NSString *html_H2;
+@property (copy, nonatomic, readonly) NSString *html_H3;
+@property (copy, nonatomic, readonly) NSString *html_H4;
 
 @property (copy, nonatomic, readonly) NSString *html_strongStyle;
 @property (copy, nonatomic, readonly) NSString *html_strongStyleWithBreak;
