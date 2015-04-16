@@ -6,6 +6,34 @@
         <description>Most recent changes with links to updates.</description>
         <language>en</language>
         <item>
+            <title>Version 1.2.2</title>
+            <description>
+                <![CDATA[
+                    <p>Welcome to AutoPkgr 1.2.2! This is a minor update focused on supporting upcoming changes in how AutoPkg reports its actions.</p>
+
+                    <h3>Added</h3>
+
+                    <ul class="task-list">
+                    <li>Compatibility with upcoming changes to AutoPkg reporting format.</li>
+                    <li>Updated documentation to include information about creating/editing overrides.</li>
+                    <li>Items in Help menu now link to useful URLs. (<a href="https://github.com/lindegroup/autopkgr/issues/12" class="issue-link" title="Link Help menu to the readme file.">#12</a>)</li>
+                    </ul>
+
+                    <h3>Changed</h3>
+
+                    <ul class="task-list">
+                    <li>AutoPkgr now prevents you from proceeding beyond the Install tab if you don't have AutoPkg and Git installed. (<a href="https://github.com/lindegroup/autopkgr/issues/325" class="issue-link" title="More informative errors if git or autopkg aren't installed">#325</a>)</li>
+                    </ul>
+
+                    <p>If you have any issues with AutoPkgr, please submit an issue on GitHub. We always welcome your feedback.</p>
+
+                    <p>Thank you!</p>
+                ]]>
+            </description>
+            <pubDate>Thu, 16 Apr 2015 12:00:00 -0700</pubDate>
+            <enclosure url="https://github.com/lindegroup/autopkgr/releases/download/v1.2.2/AutoPkgr-1.2.2.dmg" sparkle:version="751" sparkle:shortVersionString="1.2.2" type="application/octet-stream" />
+        </item>
+        <item>
             <title>Version 1.2.1</title>
             <description>
                 <![CDATA[
