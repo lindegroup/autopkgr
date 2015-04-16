@@ -6,7 +6,16 @@ All notable changes to this project will be documented in this file. This projec
 
 ## [Unreleased][unreleased]
 
-- (nothing yet)
+
+## [1.2.2] - 2015-04-16
+
+### Added
+- Compatibility with upcoming changes to AutoPkg reporting format.
+- Updated documentation to include information about creating/editing overrides.
+- Items in Help menu now link to useful URLs.
+
+### Changed
+- AutoPkgr now prevents you from proceeding beyond the Install tab if you don't have AutoPkg and Git installed.
 
 
 ## [1.2.1] - 2015-03-08

@@ -24,6 +24,9 @@
 #import "LGGitHubJSONLoader.h"
 #import "LGAutoPkgr.h"
 #import "LGTools.h"
+#import "LGAutoPkgReport.h"
+#import "LGEmailer.h"
+#import "LGPasswords.h"
 
 @interface AutoPkgrTests : XCTestCase
 
@@ -43,6 +46,7 @@
     [super tearDown];
 }
 
+#pragma mark - LGTools
 - (void)testTools
 {
     XCTestExpectation *expectation = [self expectationWithDescription:@"Tools Test"];
@@ -58,8 +62,9 @@
             XCTFail(@"Expectation Failed with error: %@", error);
         }
     }];
-
 }
+
+#pragma mark - Installers
 - (void)testInstallGit
 {
     XCTestExpectation *expectation = [self expectationWithDescription:@"Git Install Async"];
@@ -114,11 +119,112 @@
     }];
 }
 
+#pragma mark - LGGitHubJSONLoader
 - (void)testLatestReleases
 {
     LGGitHubJSONLoader *loader = [[LGGitHubJSONLoader alloc] init];
     NSArray *array = [loader latestReleaseDownloads:kLGGitReleasesJSONURL];
     NSLog(@"%@", array);
+}
+
+#pragma mark - LGAutoPkgReports
+- (void)test_reports {
+    [self test_report_malformed];
+    [self test_report_none];
+    [self test0_4_2_report];
+    [self test0_4_3_report];
+}
+
+- (void)test0_4_2_report
+{
+    [self runReportTestWithResourceNamed:@"report_0.4.2" flags:kLGReportItemsAll];
+}
+
+- (void)test0_4_3_report {
+    [self runReportTestWithResourceNamed:@"report_0.4.3" flags:kLGReportItemsAll];
+}
+
+- (void)test0_4_3_reportLimited {
+    [self runReportTestWithResourceNamed:@"report_0.4.3" flags:kLGReportItemsJSSImports | kLGReportItemsNewInstalls];
+}
+
+- (void)test_report_none {
+    [self runReportTestWithResourceNamed:@"report_none" flags:kLGReportItemsAll];
+}
+
+- (void)test_report_malformed {
+    [self runReportTestWithResourceNamed:@"report_malformed" flags:kLGReportItemsAll];
+}
+
+- (void)runReportTestWithResourceNamed:(NSString *)resource flags:(LGReportItems)flags
+{
+    NSBundle *bundle = [NSBundle bundleForClass:[self class]];
+    NSString *reportFile = [bundle pathForResource:resource ofType:@"plist"];
+    NSDictionary *reportDict = [NSDictionary dictionaryWithContentsOfFile:reportFile];
+
+    [self runReportTestWithDict:reportDict flags:flags];
+
+}
+
+- (void)runReportTestWithDict:(NSDictionary *)dict flags:(LGReportItems)flags
+{
+    NSString *htmlFile = @"/tmp/report.html";
+    if ([[NSFileManager defaultManager] fileExistsAtPath:htmlFile]) {
+        [[NSFileManager defaultManager] removeItemAtPath:htmlFile error:nil];
+    }
+
+    NSError *error = nil;
+//    error = [NSError errorWithDomain:@"AutoPkgr"
+//                                code:1
+//                            userInfo:@{ NSLocalizedDescriptionKey : @"Error running recipes",
+//                                        NSLocalizedRecoverySuggestionErrorKey : @"Code signature verification failed. Note that all verifications can be disabled by setting the variable DISABLE_CODE_SIGNATURE_VERIFICATION to a non-empty value.\nThere was an unknown exception which causes autopkg to fail." }];
+
+    LGAutoPkgReport *report = [[LGAutoPkgReport alloc] initWithReportDictionary:dict];
+    report.error = error;
+
+    report.reportedItemFlags = flags;
+
+    [report.emailMessageString writeToFile:htmlFile atomically:YES encoding:NSUTF8StringEncoding error:nil];
+
+    [[NSWorkspace sharedWorkspace] openFile:htmlFile];
+}
+
+
+
+- (void)testReportEmail
+{
+    XCTestExpectation *expectation = [self expectationWithDescription:@"Report Format"];
+
+    [[[LGToolStatus alloc] init] allToolsStatus:^(NSArray *tools) {
+        NSString *htmlFile = @"/tmp/report.html";
+        NSBundle *bundle = [NSBundle bundleForClass:[self class]];
+        
+        NSString *reportFile = [bundle pathForResource:@"report_0.4.2" ofType:@"plist"];
+//        NSString *reportFile = [bundle pathForResource:@"report_0.4.3" ofType:@"plist"];
+
+        NSDictionary *reportDict = [NSDictionary dictionaryWithContentsOfFile:reportFile];
+
+        NSError *error = [NSError errorWithDomain:@"AutoPkgr" code:1 userInfo:@{ NSLocalizedDescriptionKey : @"Error running recipes",
+                                                                                 NSLocalizedRecoverySuggestionErrorKey : @"Code signature verification failed. Note that all verifications can be disabled by setting the variable DISABLE_CODE_SIGNATURE_VERIFICATION to a non-empty value.\nThere was an unknown exception which causes autopkg to fail." }];
+
+        LGAutoPkgReport *report = [[LGAutoPkgReport alloc] initWithReportDictionary:reportDict];
+        report.error = error;
+        report.tools = tools;
+        
+        report.reportedItemFlags = kLGReportItemsAll;
+
+        [report.emailMessageString writeToFile:htmlFile atomically:YES encoding:NSUTF8StringEncoding error:nil];
+        
+        [[NSWorkspace sharedWorkspace] openFile:htmlFile];
+        [expectation fulfill];
+    }];
+
+    [self waitForExpectationsWithTimeout:300 handler:^(NSError *error) {
+        if(error)
+        {
+            XCTFail(@"Expectation Failed with error: %@", error);
+        }
+    }];
 }
 
 @end

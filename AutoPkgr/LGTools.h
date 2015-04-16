@@ -35,7 +35,7 @@ typedef NS_ENUM(OSStatus, LGToolInstallStatus) {
     /**
      *  Tool is installed, but an update is available for the tool.
      */
-    kLGToolUpdateAvaliable,
+    kLGToolUpdateAvailable,
     /**
      *  Tool is installed.
      */
@@ -103,6 +103,20 @@ typedef NS_ENUM(OSStatus, LGToolInstallStatus) {
  *  @param status block executed upon completion, it takes a single argument LGTool representing JSSImporter
  */
 - (void)jssImporterStatus:(void (^)(LGTool *))status;
+
+/**
+ *  Check if required items are installed
+ *
+ *  @return YES if all required tools are installed.
+ */
++ (BOOL)requiredItemsInstalled;
+
+/**
+ *  Display NSAlert indicating requirements
+ *
+ *  @param window Modal window used for the alert. Can be nil.
+ */
++ (void)displayRequirementsAlertOnWindow:(NSWindow *)window;
 
 /**
  *  Check if AutoPkg is installed.

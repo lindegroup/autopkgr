@@ -133,6 +133,14 @@
     [self setObject:setVal forKey:NSStringFromSelector(@selector(LastAutoPkgRun))];
 }
 
+- (LGReportItems)reportedItemFlags {
+    return [self integerForKey:NSStringFromSelector(@selector(reportedItemFlags))];
+}
+
+- (void)setReportedItemFlags:(LGReportItems)reportedItemFlags {
+    [self setInteger:reportedItemFlags forKey:NSStringFromSelector(@selector(reportedItemFlags))];
+}
+
 #pragma mark - BOOL
 - (BOOL)SMTPTLSEnabled
 {

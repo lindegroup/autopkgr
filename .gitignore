@@ -1,5 +1,6 @@
 # CocoaPods
 Pods/
+Podfile.lock
 
 # Finder
 .DS_Store
@@ -26,4 +27,3 @@ DerivedData
 *.xcuserstate
 mailcore2/unittest/data
 *.orig
-

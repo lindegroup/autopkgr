@@ -26,6 +26,7 @@
 #import "LGPasswords.h"
 #import "LGTools.h"
 #import "LGUserNotifications.h"
+#import "LGAutoPkgReport.h"
 
 @implementation LGEmailer
 
@@ -139,123 +140,16 @@
 
 - (void)sendEmailForReport:(NSDictionary *)report error:(NSError *)error
 {
-    // Get arrays of new downloads/packages from the plist
-    __block NSMutableString *message;
-    __block NSString *subject;
-    NSArray *newDownloads;
-    NSArray *newPackages;
-    NSArray *newImports;
-    NSArray *detectedVersions;
-
-    if (report) {
-        detectedVersions = [report objectForKey:@"detected_versions"] ?: @[];
-        newDownloads = [report objectForKey:@"new_downloads"] ?: @[];
-        newPackages = [report objectForKey:@"new_packages"] ?: @[];
-        newImports = [report objectForKey:@"new_imports"] ?: @[];
-    }
-
-    if ([newDownloads count]) {
-        message = [[NSMutableString alloc] init];
-        NSLog(@"New stuff was downloaded.");
-
-        // Create the subject string
-        subject = [NSString stringWithFormat:@"[%@] New software available for testing", kLGApplicationName];
-
-        // Append the the message string with report
-        [message appendFormat:@"<strong>The following software is now available for testing:<br /></strong><br />"];
-
-        for (NSString *path in newDownloads) {
-            NSCharacterSet *set = [NSCharacterSet punctuationCharacterSet];
-
-            // Get just the application name from the path in the new_downloads dict
-            NSString *downloadFile = [path lastPathComponent];
-            NSString *app = [[downloadFile componentsSeparatedByCharactersInSet:set] firstObject];
-
-            // Write the app to the string
-            [message appendFormat:@"<strong>%@</strong>: ", app];
-
-            // The default version is not detected, override later.
-            NSString *version;
-
-            NSPredicate *versionPredicate = [NSPredicate predicateWithFormat:@" %K CONTAINS[cd] %@", @"pkg_path", app];
-
-            BOOL version_found = NO;
-            for (NSArray *arr in @[ newPackages, newImports, detectedVersions ]) {
-                for (NSDictionary *dict in arr) {
-                    if ([versionPredicate evaluateWithObject:dict] && dict[@"version"]) {
-                        version = dict[@"version"];
-                        version_found = YES;
-                        break;
-                    }
-                }
-                if (version_found) {
-                    break;
-                }
-            }
-
-            [message appendFormat:@"%@<br/>", version ?: @"Version not detected"];
-        }
-    } else {
-        DLog(@"Nothing new was downloaded.");
-    }
-
-    // Process error
-    if (error) {
-        if (!message) {
-            message = [[NSMutableString alloc] init];
-        } else {
-            [message appendString:@"<br/>"];
-        }
-
-        // Set up a few CSS styles
-        [message appendString:@"<style>.tabbed {margin-left: 1em;} .tabbed2 {margin-left: 2em;}</style>"];
-
-        if (!subject) {
-            subject = [NSString stringWithFormat:@"[%@] Error occurred while running AutoPkg", kLGApplicationName];
-        }
-
-        NSArray *recoverySuggestions = [error.localizedRecoverySuggestion
-            componentsSeparatedByCharactersInSet:[NSCharacterSet newlineCharacterSet]];
-
-        [message appendFormat:@"<strong>The following error%@ occurred:</strong><br/>", recoverySuggestions.count > 1 ? @"s" : @""];
-
-        NSString *noValidRecipe = @"No valid recipe found for ";
-        NSPredicate *noValidRecipePredicate = [NSPredicate predicateWithFormat:@"SELF BEGINSWITH %@", noValidRecipe];
-
-        for (NSString *string in [recoverySuggestions removeEmptyStrings]) {
-            if ([noValidRecipePredicate evaluateWithObject:string]) {
-                // Remove Recipe from Recipe.txt
-
-                [LGRecipes removeRecipeFromRecipeList:[[string componentsSeparatedByString:noValidRecipe] lastObject]];
-                [message appendFormat:@"<p class =\"tabbed\">%@. It has been automatically removed from your recipe list in order to prevent recurring errors.</p>", string];
-            } else {
-                [message appendFormat:@"<p class =\"tabbed\">%@</p>", string];
-            }
-        }
-    }
 
     LGToolStatus *toolStatus = [LGToolStatus new];
     [toolStatus allToolsStatus:^(NSArray *tools) {
-        BOOL setUpdateMessage = NO;
-        for (LGTool *tool in tools) {
-            if (tool.status == kLGToolUpdateAvaliable) {
-                if (!message) {
-                    message = [[NSMutableString alloc] init];
-                }
 
-                if (!subject) {
-                    subject = [NSString stringWithFormat:@"Update to helper components available"];
-                }
+        LGAutoPkgReport *a_report = [[LGAutoPkgReport alloc] initWithReportDictionary:report];
+        a_report.error = error;
+        a_report.tools = tools;
 
-                if (!setUpdateMessage) {
-                    [message appendString:@"<p><strong>Updates for helper tools:</strong></p>"];
-                    setUpdateMessage = YES;
-                }
-                [message appendFormat:@"%@<br />", tool.statusString];
-            }
-        }
-        if (message) {
-            [self sendEmailNotification:subject message:message];
+        if (a_report.updatesToReport) {
+            [self sendEmailNotification:a_report.emailSubjectString message:a_report.emailMessageString];
         } else {
             self.complete = YES;
         }

@@ -51,8 +51,9 @@
 - (void)applicationWillFinishLaunching:(NSNotification *)notification
 {
     // Setup activation policy. By default set as menubar only.
-    [[LGDefaults standardUserDefaults] registerDefaults:@{ kLGApplicationDisplayStyle : @(kLGDisplayStyleShowMenu | kLGDisplayStyleShowDock) }];
-
+    [[LGDefaults standardUserDefaults] registerDefaults:@{ kLGApplicationDisplayStyle : @(kLGDisplayStyleShowMenu | kLGDisplayStyleShowDock) ,
+                                                           NSStringFromSelector(@selector(reportedItemFlags)): @(kLGReportItemsAll)}];
+    
     if (([[LGDefaults standardUserDefaults] applicationDisplayStyle] & kLGDisplayStyleShowDock)) {
         [NSApp setActivationPolicy:NSApplicationActivationPolicyRegular];
     }
@@ -197,6 +198,16 @@
 }
 
 #pragma mark - IBActions
+- (IBAction)openHelpSite:(id)sender
+{
+    [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:kLGAutoPkgrHelpWebsite]];
+}
+
+- (IBAction)openHomeSite:(id)sender
+{
+    [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:kLGAutoPkgrWebsite]];
+}
+
 - (void)checkNowFromMenu:(id)sender
 {
     DLog(@"Received 'Check Now' menulet command.");
