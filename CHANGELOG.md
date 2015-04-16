@@ -6,8 +6,11 @@ All notable changes to this project will be documented in this file. This projec
 
 ## [Unreleased][unreleased]
 
+
+## [1.2.2] - 2015-04-16
+
 ### Added
-- Compatibility with AutoPkg 0.4.3's new reporting style.
+- Compatibility with upcoming changes to AutoPkg reporting format.
 - Updated documentation to include information about creating/editing overrides.
 - Items in Help menu now link to useful URLs.
 
