@@ -138,22 +138,10 @@
     }
 
     // Check to see what's installed, and what needs updating
+    [self refreshToolsStatus:self];
 
-    LGToolStatus *toolStatus = [[LGToolStatus alloc] init];
-    [toolStatus autoPkgStatus:^(LGTool *tool) {
-        _installAutoPkgButton.enabled = tool.needsInstall;
-        _installAutoPkgButton.title = tool.installButtonTitle;
-        _autoPkgStatusIcon.image = tool.statusImage;
-        _autoPkgStatusLabel.stringValue = tool.statusString;
-    }];
-
-    [toolStatus gitStatus:^(LGTool *tool) {
-        _installGitButton.enabled = tool.needsInstall;
-        _installGitButton.title = tool.installButtonTitle;
-        _gitStatusLabel.stringValue = tool.statusString;
-        _gitStatusIcon.image = tool.statusImage;
-    }];
 }
+
 
 - (BOOL)windowShouldClose:(id)sender
 {
@@ -291,7 +279,25 @@
     }
 }
 
-#pragma mark - AutoPkgr actions
+#pragma mark - Tools
+- (void)refreshToolsStatus:(id)sender
+{
+    LGToolStatus *toolStatus = [[LGToolStatus alloc] init];
+    [toolStatus autoPkgStatus:^(LGTool *tool) {
+        _installAutoPkgButton.enabled = tool.needsInstall;
+        _installAutoPkgButton.title = tool.installButtonTitle;
+        _autoPkgStatusIcon.image = tool.statusImage;
+        _autoPkgStatusLabel.stringValue = tool.statusString;
+    }];
+
+    [toolStatus gitStatus:^(LGTool *tool) {
+        _installGitButton.enabled = tool.needsInstall;
+        _installGitButton.title = tool.installButtonTitle;
+        _gitStatusLabel.stringValue = tool.statusString;
+        _gitStatusIcon.image = tool.statusImage;
+    }];
+}
+
 - (IBAction)installGit:(id)sender
 {
     NSLog(@"Installing Git...");
@@ -758,6 +764,14 @@
 #pragma mark - Tab View Delegate
 - (void)tabView:(NSTabView *)tabView didSelectTabViewItem:(NSTabViewItem *)tabViewItem
 {
+    if (![LGToolStatus requiredItemsInstalled]) {
+        // Reset the tab view back to the install Tab.
+        [tabView selectFirstTabViewItem:self];
+        [LGToolStatus displayRequirementsAlertOnWindow:self.window];
+        return;
+    }
+
+
     if ([tabViewItem.identifier isEqualTo:@"localFolders"]) {
         [self enableOpenInFinderButtons];
     }
