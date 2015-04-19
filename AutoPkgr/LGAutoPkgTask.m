@@ -414,7 +414,8 @@ typedef void (^AutoPkgReplyErrorBlock)(NSError *error);
 
             if (_verb == kLGAutoPkgRun) {
                 _versioner = [[LGVersioner alloc] init];
-                progressPredicate = [NSPredicate predicateWithFormat:@"SELF CONTAINS[cd] 'Processing'"];
+                progressPredicate = [NSPredicate predicateWithFormat:@"SELF MATCHES '^Processing.*\\.\\.\\.'"];
+
                 total = [self recipeListCount];
             } else if (_verb == kLGAutoPkgRepoUpdate) {
                 progressPredicate = [NSPredicate predicateWithFormat:@"SELF CONTAINS[cd] '.git'"];
