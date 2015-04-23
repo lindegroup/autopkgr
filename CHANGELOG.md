@@ -6,6 +6,9 @@ All notable changes to this project will be documented in this file. This projec
 
 ## [Unreleased][unreleased]
 
+### Changed
+- Now you can check the SSL box even if you're not using SMTP authentication. (#335)
+
 
 ## [1.2.2] - 2015-04-16
 
