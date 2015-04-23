@@ -671,7 +671,6 @@
 
     BOOL authEnabled = _defaults.SMTPAuthenticationEnabled && enabled;
 
-    [_smtpTLSEnabledButton setEnabled:authEnabled];
     [_smtpUsername setEnabled:authEnabled];
     [_smtpPassword setEnabled:authEnabled];
 }
@@ -689,7 +688,6 @@
 
     [_smtpUsername setEnabled:enabled];
     [_smtpPassword setEnabled:enabled];
-    [_smtpTLSEnabledButton setEnabled:enabled];
 }
 
 - (IBAction)changeTLSButtonState:(NSButton *)sender;
