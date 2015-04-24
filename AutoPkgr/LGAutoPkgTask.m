@@ -167,6 +167,7 @@ typedef void (^AutoPkgReplyErrorBlock)(NSError *error);
 @implementation LGAutoPkgTask {
     BOOL _isExecuting;
     BOOL _isFinished;
+    BOOL _userCanceled;
 }
 
 - (NSString *)taskDescription
@@ -224,6 +225,8 @@ typedef void (^AutoPkgReplyErrorBlock)(NSError *error);
 - (void)cancel
 {
     [self.taskLock lock];
+
+    _userCanceled = YES;
     if (self.task && self.task.isRunning) {
         DLog(@"Canceling %@", self.taskDescription);
         [self.task terminate];
@@ -319,7 +322,7 @@ typedef void (^AutoPkgReplyErrorBlock)(NSError *error);
         [self.task.standardError fileHandleForReading].readabilityHandler = nil;
     }
 
-    if (!_error) {
+    if (!_error && !_userCanceled) {
         [self.taskLock lock];
         self.error = [_errorHandler errorWithExitCode:self.task.terminationStatus];
         [self.taskLock unlock];
