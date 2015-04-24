@@ -365,7 +365,7 @@ helper_reply:
     }];
 
     [task setTerminationHandler:^(NSTask *endTask) {
-        NSError *error = [LGError errorWithTaskError:endTask verb:kLGAutoPkgUndefinedVerb];
+        NSError *error = [LGError errorFromTask:endTask];
         reply(error);
     }];
 

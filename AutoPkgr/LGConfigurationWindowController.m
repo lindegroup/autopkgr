@@ -850,8 +850,14 @@
 
         if (error) {
             SEL selector = nil;
-            NSAlert *alert = [NSAlert alertWithError:error];
-            [alert addButtonWithTitle:@"OK"];
+            NSString *truncatedString = [error.localizedRecoverySuggestion truncateToNumberOfLines:25];
+            if (![truncatedString isEqualToString:error.localizedRecoverySuggestion]) {
+                truncatedString = [NSString stringWithFormat:@"%@\nMore details have been logged to the system.log", truncatedString];
+                NSLog(@"%@", error.localizedRecoverySuggestion);
+            }
+
+            NSAlert *alert = [NSAlert alertWithMessageText:error.localizedDescription defaultButton:@"OK" alternateButton:nil otherButton:nil informativeTextWithFormat:@"%@", truncatedString ];
+
             // If AutoPkg exits -1 it may be misconfigured
             if (error.code == kLGErrorAutoPkgConfig) {
                 [alert addButtonWithTitle:@"Try to repair settings"];

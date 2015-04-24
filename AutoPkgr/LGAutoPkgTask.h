@@ -20,12 +20,14 @@
 //
 
 #import <Foundation/Foundation.h>
+
 #import "LGAutoPkgr.h"
 #import "LGProgressDelegate.h"
 
 @class LGAutoPkgTaskManager;
 @class LGAutoPkgTask;
 @class LGAutoPkgTaskResponseObject;
+
 /**
  *  Constant to access recipe key in autopkg search or recipe-list
  */
@@ -154,6 +156,11 @@ extern NSString *const kLGAutoPkgRepoURLKey;
  *  stderr from autopkg
  */
 @property (copy, nonatomic, readonly) NSString *standardErrString;
+
+/**
+ *  Exit code from autopkg
+ */
+@property (nonatomic, assign) int exitCode;
 
 /**
  * An array of dictionaries based on the autopkg verb
