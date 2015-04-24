@@ -11,6 +11,10 @@ All notable changes to this project will be documented in this file. This projec
 
 ### Fixed
 - Fixed a bug that caused progress indicators to show inaccurate counts when the `StopProcessingIf` processor is present in a recipe. (#333)
+- Reduced the odds of error messages exceeding the capacity of the on-screen alert dialog boxes.
+
+### Security
+- Updated to the most recent version of the AFNetworking components.
 
 
 ## [1.2.2] - 2015-04-16
