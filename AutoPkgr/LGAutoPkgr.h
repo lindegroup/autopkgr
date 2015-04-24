@@ -24,6 +24,7 @@
 
 #import "LGConstants.h"
 #import "LGError.h"
+#import "LGLogger.h"
 #import "LGHostInfo.h"
 #import "LGDefaults+JSSImporter.h"
 #import "NSString+cleaned.h"
