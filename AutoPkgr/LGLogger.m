@@ -27,7 +27,7 @@ void DevLog(NSString *format, ...)
     if (format) {
         va_list args;
         va_start(args, format);
-        NSLogv([@"[DEVELOPER] " stringByAppendingString:format], args);
+        NSLogv([@"[DEVEL] " stringByAppendingString:format], args);
         va_end(args);
     }
 #endif
