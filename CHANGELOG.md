@@ -9,6 +9,9 @@ All notable changes to this project will be documented in this file. This projec
 ### Changed
 - Now you can check the SSL box even if you're not using SMTP authentication. (#335)
 
+### Fixed
+- Fixed a bug that caused progress indicators to show inaccurate counts when the `StopProcessingIf` processor is present in a recipe. (#333)
+
 
 ## [1.2.2] - 2015-04-16
 
