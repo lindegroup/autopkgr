@@ -41,7 +41,7 @@ typedef NS_ENUM(NSInteger, LGReportItems) {
 @interface LGDefaults : NSUserDefaults
 
 #pragma mark - Singletons
-+ (LGDefaults *)standardUserDefaults;
++ (instancetype)standardUserDefaults;
 
 #pragma mark - Settings
 @property (copy, nonatomic) NSString *SMTPServer;

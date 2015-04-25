@@ -104,7 +104,6 @@ NSString *launchAgentFilePath()
 
 + (BOOL)launchAtLogin:(BOOL)launch
 {
-
     AHLaunchJob *job = [AHLaunchJob new];
     job.Label = [[launchAgentFilePath() lastPathComponent] stringByDeletingPathExtension];
 

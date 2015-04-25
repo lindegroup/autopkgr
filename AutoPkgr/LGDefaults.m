@@ -31,14 +31,17 @@
 
 @implementation LGDefaults
 
-+ (LGDefaults *)standardUserDefaults
++ (instancetype)standardUserDefaults
 {
     static dispatch_once_t onceToken;
-    static LGDefaults *shared;
+    __strong static id _sharedObject = nil;
+
     dispatch_once(&onceToken, ^{
-        shared = [[LGDefaults alloc] init];
+        _sharedObject = [[self alloc] init];
     });
-    return shared;
+
+    return _sharedObject;
+
 }
 
 - (void)dealloc

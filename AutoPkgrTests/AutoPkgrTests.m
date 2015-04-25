@@ -23,12 +23,13 @@
 #import "LGInstaller.h"
 #import "LGGitHubJSONLoader.h"
 #import "LGAutoPkgr.h"
-#import "LGTools.h"
+#import "LGToolStatus.h"
+
 #import "LGAutoPkgReport.h"
 #import "LGEmailer.h"
 #import "LGPasswords.h"
 
-@interface AutoPkgrTests : XCTestCase
+@interface AutoPkgrTests : XCTestCase <LGProgressDelegate>
 
 @end
 
@@ -70,10 +71,12 @@
     XCTestExpectation *expectation = [self expectationWithDescription:@"Git Install Async"];
 
     LGInstaller *installer = [[LGInstaller alloc] init];
-    [installer installGit:^(NSError *error) {
-        XCTAssertNil(error, @"Error installing Git: %@",error);
-        [expectation fulfill];
-    }];
+    installer.progressDelegate = self;
+
+   [installer runInstallerFor:@"Git" githubAPI:kLGGitReleasesJSONURL reply:^(NSError *error) {
+       XCTAssertNil(error, @"%@", error.localizedDescription);
+       [expectation fulfill];
+   }];
 
     [self waitForExpectationsWithTimeout:300 handler:^(NSError *error) {
         if(error)
@@ -88,10 +91,13 @@
     XCTestExpectation *expectation = [self expectationWithDescription:@"AutoPkg Install Async"];
 
     LGInstaller *installer = [[LGInstaller alloc] init];
-    [installer installAutoPkg:^(NSError *error) {
-        XCTAssertNil(error, @"Error installing AutoPkgr: %@",error);
+    installer.progressDelegate = self;
+
+    [installer runInstallerFor:@"AutoPkg" githubAPI:kLGAutoPkgReleasesJSONURL reply:^(NSError *error) {
+        XCTAssertNil(error, @"%@", error.localizedDescription);
         [expectation fulfill];
     }];
+
 
     [self waitForExpectationsWithTimeout:300 handler:^(NSError *error) {
         if(error)
@@ -106,8 +112,10 @@
     XCTestExpectation *expectation = [self expectationWithDescription:@"JSSImporter Install Async"];
 
     LGInstaller *installer = [[LGInstaller alloc] init];
-    [installer installJSSImporter:^(NSError *error) {
-        XCTAssertNil(error, @"Error installing JSSImporter: %@",error);
+//    installer.progressDelegate = self;
+
+    [installer runInstallerFor:@"JSSImporter" githubAPI:kLGJSSImporterJSONURL reply:^(NSError *error) {
+        XCTAssertNil(error, @"%@", error.localizedDescription);
         [expectation fulfill];
     }];
 
@@ -122,13 +130,137 @@
 #pragma mark - LGGitHubJSONLoader
 - (void)testLatestReleases
 {
-    LGGitHubJSONLoader *loader = [[LGGitHubJSONLoader alloc] init];
-    NSArray *array = [loader latestReleaseDownloads:kLGGitReleasesJSONURL];
-    NSLog(@"%@", array);
+    XCTestExpectation *expectation = [self expectationWithDescription:@"Github Release Async"];
+
+    LGGitHubJSONLoader *loader = [[LGGitHubJSONLoader alloc] initWithGitHubURL:kLGAutoPkgReleasesJSONURL];
+
+    [loader getReleaseInfo:^(LGGitHubReleaseInfo *info, NSError *error) {
+        NSLog(@"%@, %@", info.description, error.localizedDescription);
+        [expectation fulfill];
+    }];
+
+    [self waitForExpectationsWithTimeout:300 handler:^(NSError *error) {
+        if(error)
+        {
+            XCTFail(@"Expectation Failed with error: %@", error);
+        }
+    }];
+}
+
+- (void)testToolAndInstall
+{
+    XCTestExpectation *expectation1 = [self expectationWithDescription:@"Tool Test"];
+
+    XCTestExpectation *expectation2 = [self expectationWithDescription:@"Tool Install Async"];
+
+    __block BOOL fufillExpectation1 = NO;
+    __block LGAutoPkgTool *tool = [[LGAutoPkgTool alloc] init];
+
+    [tool getInfo:^(LGToolInfo *info) {
+        XCTAssert(info.remoteVersion, @"Could not get remote version");
+        XCTAssert(info.installedVersion, @"Could not get installed version");
+
+        if (!fufillExpectation1) {
+            [expectation1 fulfill];
+            fufillExpectation1 = YES;
+        } else {
+            [expectation2 fulfill];
+        };
+    }];
+
+    [tool install:nil];
+
+    [self waitForExpectationsWithTimeout:300 handler:^(NSError *error) {
+        if(error)
+        {
+            XCTFail(@"Expectation Failed with error: %@", error);
+        }
+    }];
+}
+
+- (void)testToolAndInstallWithBlock
+{
+
+    XCTestExpectation *autoPkgExpectation = [self expectationWithDescription:@"AutoPkg Tool Test"];
+    XCTestExpectation *jssImporterExpectation = [self expectationWithDescription:@"JSS Tool Test"];
+    XCTestExpectation *gitExpectation = [self expectationWithDescription:@"Git Tool Test"];
+
+    LGAutoPkgTool *apkg = [LGAutoPkgTool new];
+    [apkg install:^(NSString *message, double progress) {
+        XCTAssert([NSThread isMainThread], @"Not main thread");
+    } reply:^(NSError *error) {
+        XCTAssert([NSThread isMainThread], @"Not main thread");
+        XCTAssertNil(error, @"Not main thread");
+        [autoPkgExpectation fulfill];
+    }];
+
+    LGJSSImporterTool *jss = [LGJSSImporterTool new];
+    [jss install:^(NSString *message, double progress) {
+        XCTAssert([NSThread isMainThread], @"Not main thread");
+    } reply:^(NSError *error) {
+        XCTAssert([NSThread isMainThread], @"Not main thread");
+        XCTAssertNil(error, @"Not main thread");
+        [jssImporterExpectation fulfill];
+    }];
+
+    LGGitTool *git = [LGGitTool new];
+    [git install:^(NSString *message, double progress) {
+        XCTAssert([NSThread isMainThread], @"Not main thread");
+    } reply:^(NSError *error) {
+        XCTAssert([NSThread isMainThread], @"Not main thread");
+        XCTAssertNil(error, @"Not main thread");
+        [gitExpectation fulfill];
+    }];
+
+
+    [self waitForExpectationsWithTimeout:300 handler:^(NSError *error) {
+        if(error)
+        {
+            XCTFail(@"Expectation Failed with error: %@", error);
+        }
+    }];
+}
+
+- (void)testTool2
+{
+    LGAutoPkgTool *tool = [[LGAutoPkgTool alloc] init];
+    NSLog(@"%@", tool.info.remoteVersion);
+}
+
+- (void)testTool3
+{
+    LGAutoPkgTool *tool = [[LGAutoPkgTool alloc] init];
+    [tool refresh];
+    NSLog(@"%@", tool.info.remoteVersion);
+}
+
+- (void)testLoader
+{
+    XCTestExpectation *expectation = [self expectationWithDescription:@"Github Release Async"];
+
+    LGGitHubJSONLoader *loader = [[LGGitHubJSONLoader alloc] initWithGitHubURL:kLGAutoPkgReleasesJSONURL];
+    [loader getReleaseInfo:^(LGGitHubReleaseInfo *info, NSError *error) {
+        NSLog(@"%@", info.latestVersion);
+        [expectation fulfill];
+    }];
+
+    [self waitForExpectationsWithTimeout:300 handler:^(NSError *error) {
+        if(error)
+        {
+            XCTFail(@"Expectation Failed with error: %@", error);
+        }
+    }];
+}
+
+- (void)testGitHubInfo
+{
+    LGGitHubReleaseInfo *info = [[LGGitHubReleaseInfo alloc] initWithURL:kLGAutoPkgReleasesJSONURL];
+    NSLog(@"%@", info.latestVersion);
 }
 
 #pragma mark - LGAutoPkgReports
-- (void)test_reports {
+- (void)test_reports
+{
     [self test_report_malformed];
     [self test_report_none];
     [self test0_4_2_report];
@@ -140,19 +272,23 @@
     [self runReportTestWithResourceNamed:@"report_0.4.2" flags:kLGReportItemsAll];
 }
 
-- (void)test0_4_3_report {
+- (void)test0_4_3_report
+{
     [self runReportTestWithResourceNamed:@"report_0.4.3" flags:kLGReportItemsAll];
 }
 
-- (void)test0_4_3_reportLimited {
+- (void)test0_4_3_reportLimited
+{
     [self runReportTestWithResourceNamed:@"report_0.4.3" flags:kLGReportItemsJSSImports | kLGReportItemsNewInstalls];
 }
 
-- (void)test_report_none {
+- (void)test_report_none
+{
     [self runReportTestWithResourceNamed:@"report_none" flags:kLGReportItemsAll];
 }
 
-- (void)test_report_malformed {
+- (void)test_report_malformed
+{
     [self runReportTestWithResourceNamed:@"report_malformed" flags:kLGReportItemsAll];
 }
 
@@ -163,7 +299,6 @@
     NSDictionary *reportDict = [NSDictionary dictionaryWithContentsOfFile:reportFile];
 
     [self runReportTestWithDict:reportDict flags:flags];
-
 }
 
 - (void)runReportTestWithDict:(NSDictionary *)dict flags:(LGReportItems)flags
@@ -174,10 +309,10 @@
     }
 
     NSError *error = nil;
-//    error = [NSError errorWithDomain:@"AutoPkgr"
-//                                code:1
-//                            userInfo:@{ NSLocalizedDescriptionKey : @"Error running recipes",
-//                                        NSLocalizedRecoverySuggestionErrorKey : @"Code signature verification failed. Note that all verifications can be disabled by setting the variable DISABLE_CODE_SIGNATURE_VERIFICATION to a non-empty value.\nThere was an unknown exception which causes autopkg to fail." }];
+    //    error = [NSError errorWithDomain:@"AutoPkgr"
+    //                                code:1
+    //                            userInfo:@{ NSLocalizedDescriptionKey : @"Error running recipes",
+    //                                        NSLocalizedRecoverySuggestionErrorKey : @"Code signature verification failed. Note that all verifications can be disabled by setting the variable DISABLE_CODE_SIGNATURE_VERIFICATION to a non-empty value.\nThere was an unknown exception which causes autopkg to fail." }];
 
     LGAutoPkgReport *report = [[LGAutoPkgReport alloc] initWithReportDictionary:dict];
     report.error = error;
@@ -188,8 +323,6 @@
 
     [[NSWorkspace sharedWorkspace] openFile:htmlFile];
 }
-
-
 
 - (void)testReportEmail
 {
@@ -227,4 +360,9 @@
     }];
 }
 
+#pragma mark - Progress delegate
+- (void)startProgressWithMessage:(NSString *)message{}
+- (void)stopProgress:(NSError *)error{}
+- (void)bringAutoPkgrToFront{}
+- (void)updateProgress:(NSString *)message progress:(double)progress{}
 @end

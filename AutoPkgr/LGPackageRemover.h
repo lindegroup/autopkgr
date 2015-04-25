@@ -1,10 +1,6 @@
+// LGPackageRemover.h
 //
-//  LGInstaller.h
-//  AutoPkgr
-//
-//  Created by Eldon on 9/9/14.
-//
-//  Copyright 2014-2015 The Linde Group, Inc.
+// Copyright 2015 Eldon Ahrold
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -20,21 +16,13 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "LGProgressDelegate.h"
 
-@interface LGInstaller : NSObject
+@interface LGPackageRemover : NSObject
 
-@property (weak) id<LGProgressDelegate> progressDelegate;
-@property (copy, nonatomic) NSString *downloadURL;
+@property (nonatomic, assign) BOOL dryRun;
+@property (copy, nonatomic, readonly) NSArray *installedPackages;
 
-#pragma mark - Installer Methods
-- (void)runInstallerFor:(NSString *)installerName
-              githubAPI:(NSString *)githubAPI
-                  reply:(void (^)(NSError *error))reply;
+- (void)removePackageWithIdentifier:(NSString *)identifier progress:(void (^)(NSString *, double))progress reply:(void (^)(NSArray *removed, NSArray *failed, NSError *error))reply;
 
-
-- (void)runInstaller:(NSString *)installerName
-                  reply:(void (^)(NSError *error))reply;
-
-
+- (void)removePackagesWithIdentifiers:(NSArray *)identifiers progress:(void (^)(NSString *, double))progress reply:(void (^)(NSArray *removed, NSArray *failed, NSError *error))reply;
 @end

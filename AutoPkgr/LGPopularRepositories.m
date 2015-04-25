@@ -33,9 +33,8 @@
 
     if (self) {
         _awake = NO;
-        _jsonLoader = [[LGGitHubJSONLoader alloc] init];
 
-        NSArray *recipeRepos = [_jsonLoader getAutoPkgRecipeRepos];
+        NSArray *recipeRepos = [LGGitHubJSONLoader getAutoPkgRecipeRepos];
 
         if (recipeRepos != nil) {
             _popularRepos = [recipeRepos arrayByAddingObject:kLGJSSDefaultRepo];

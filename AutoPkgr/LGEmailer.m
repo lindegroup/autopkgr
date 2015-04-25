@@ -24,7 +24,7 @@
 #import "LGAutoPkgr.h"
 #import "LGHostInfo.h"
 #import "LGPasswords.h"
-#import "LGTools.h"
+#import "LGToolStatus.h"
 #import "LGUserNotifications.h"
 #import "LGAutoPkgReport.h"
 
@@ -140,7 +140,6 @@
 
 - (void)sendEmailForReport:(NSDictionary *)report error:(NSError *)error
 {
-
     LGToolStatus *toolStatus = [LGToolStatus new];
     [toolStatus allToolsStatus:^(NSArray *tools) {
 

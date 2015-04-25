@@ -21,18 +21,23 @@
 
 #import <Foundation/Foundation.h>
 
+@interface LGGitHubReleaseInfo : NSObject
+
+- (instancetype)initWithURL:(NSString *)gitHubURL;
+
+@property (copy, nonatomic, readonly) NSString *latestVersion;
+@property (copy, nonatomic, readonly) NSString *latestReleaseDownload;
+@property (copy, nonatomic, readonly) NSArray *latestReleaseDownloads;
+
+
+@end
+
 @interface LGGitHubJSONLoader : NSObject
+- (instancetype)initWithGitHubURL:(NSString *)gitHubURL;
+- (void)getReleaseInfo:(void (^)(LGGitHubReleaseInfo *info, NSError *error))info;
 
-- (NSData *)getJSONFromURL:(NSURL *)url;
-- (NSArray *)getArrayFromJSONData:(NSData *)reqData;
-- (NSDictionary *)getLatestReleaseDictionary:(NSString *)gitHubURL;
-
-- (NSArray *)getAutoPkgRecipeRepos;
-- (NSString *)getLatestAutoPkgReleaseVersionNumber;
-
-- (NSString *)latestReleaseDownload:(NSString *)gitHubURL;
-- (NSArray *)latestReleaseDownloads:(NSString *)gitHubURL;
-
-- (NSString *)latestVersion:(NSString *)gitHubURL;
+// Synchronously get raw data from GitHub URL
++ (NSArray *)getJSONFromURL:(NSString *)url;
++ (NSArray *)getAutoPkgRecipeRepos;
 
 @end

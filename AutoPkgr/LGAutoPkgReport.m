@@ -19,7 +19,7 @@
 
 #import "LGAutoPkgReport.h"
 #import "LGRecipes.h"
-#import "LGTools.h"
+#import "LGToolStatus.h"
 #import "LGVersionComparator.h"
 
 #import "HTMLCategories.h"
@@ -93,7 +93,7 @@ NSString *const fallback_reportCSS = @"<style type='text/css'>*{font-family:'Hel
         return [NSString stringWithFormat:@"[%@] Error occurred while running AutoPkg", kLGApplicationName];
     } else if (_tools) {
         for (LGTool *tool in _tools) {
-            if (tool.status == kLGToolUpdateAvailable) {
+            if (tool.info.status == kLGToolUpdateAvailable) {
                 return [NSString stringWithFormat:@"Update to helper components available"];
             }
         }
@@ -309,12 +309,12 @@ NSString *const fallback_reportCSS = @"<style type='text/css'>*{font-family:'Hel
     NSMutableString *string = nil;
 
     for (LGTool *tool in _tools) {
-        if (tool.status == kLGToolUpdateAvailable) {
+        if (tool.isInstalled && tool.info.status == kLGToolUpdateAvailable) {
             if (!string) {
                 string = [@"Updates for helper tools:".html_H3 mutableCopy];
                 [string appendString:html_openListUL];
             }
-            [string appendString:tool.statusString.html_listItem];
+            [string appendString:tool.info.statusString.html_listItem];
         }
     }
     if (string) {
@@ -404,7 +404,7 @@ NSString *const fallback_reportCSS = @"<style type='text/css'>*{font-family:'Hel
 - (BOOL)toolsUpdateAvailable
 {
     for (LGTool *tool in _tools) {
-        if (tool.status == kLGToolUpdateAvailable) {
+        if (tool.info.status == kLGToolUpdateAvailable) {
             return YES;
         }
     }

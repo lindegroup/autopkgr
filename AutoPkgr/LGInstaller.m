@@ -35,67 +35,8 @@ typedef NS_ENUM(NSInteger, LGInstallType) {
 
 @implementation LGInstaller {
     NSString *_mountPoint;
-    NSString *_downloadURL;
 }
 
-#pragma mark - Git installer
-- (void)installGit:(void (^)(NSError *error))reply
-{
-    BOOL mavericks = floor(NSAppKitVersionNumber) > NSAppKitVersionNumber10_8;
-
-    NSPredicate *match = [NSPredicate predicateWithFormat:@"SELF ENDSWITH[CD] %@",
-                                                          mavericks ? @"-mavericks.dmg" : @"-snow-leopard.dmg"];
-
-    LGGitHubJSONLoader *loader = [[LGGitHubJSONLoader alloc] init];
-    NSArray *downloadURLs = [loader latestReleaseDownloads:kLGGitReleasesJSONURL];
-
-    _downloadURL = [[downloadURLs filteredArrayUsingPredicate:match] firstObject];
-    DLog(@"Using git installer: %@", _downloadURL);
-
-    [_progressDelegate startProgressWithMessage:@"Installing Git"];
-
-    [self runInstallerFor:@"Git" githubAPI:nil reply:^(NSError *error) {
-        if(!error) {
-            LGDefaults *defaults = [[LGDefaults alloc] init];
-            defaults.gitPath = @"/usr/local/git/bin/git";
-
-            NSLog(@"Setting the Git path for AutoPkg to %@", defaults.gitPath);
-        } else {
-            error = [LGError errorWithCode:kLGErrorInstallGit];
-        }
-
-        [_progressDelegate stopProgress:error];
-        reply(error);
-    }];
-}
-
-#pragma mark - AutoPkg Installer
-- (void)installAutoPkg:(void (^)(NSError *error))reply
-{
-    [_progressDelegate startProgressWithMessage:@"Installing AutoPkg"];
-    [self runInstallerFor:@"AutoPkg" githubAPI:kLGAutoPkgReleasesJSONURL reply:^(NSError *error) {
-        if (error) {
-            // Log the specific error, but send a general one back to the UI.
-            NSLog(@"%@",error.localizedDescription);
-            error = [LGError errorWithCode:kLGErrorInstallAutoPkg];
-        }
-        reply(error);
-    }];
-}
-
-#pragma mark - JSSImporter Installer
-- (void)installJSSImporter:(void (^)(NSError *))reply
-{
-    [_progressDelegate startProgressWithMessage:@"Installing JSSImporter..."];
-    [self runInstallerFor:@"JSSImporter" githubAPI:kLGJSSImporterJSONURL reply:^(NSError *error) {
-        if (error) {
-            // Log the specific error, but send a general one back to the UI.
-            NSLog(@"%@",error.localizedDescription);
-            error = [LGError errorWithCode:kLGErrorInstallJSSImporter];
-        }
-        reply(error);
-    }];
-}
 
 #pragma mark - Main install methods
 - (void)runInstallerFor:(NSString *)installerName
@@ -109,9 +50,19 @@ typedef NS_ENUM(NSInteger, LGInstallType) {
         [_progressDelegate updateProgress:progressMessage progress:5.0];
 
         // Get the latest download URL from the GitHub API URL
-        LGGitHubJSONLoader *loader = [[LGGitHubJSONLoader alloc] init];
-        _downloadURL = [loader latestReleaseDownload:githubAPI];
+        LGGitHubReleaseInfo *info = [[LGGitHubReleaseInfo alloc] initWithURL:githubAPI];
+        _downloadURL = info.latestReleaseDownload;
     }
+
+    [self runInstaller:installerName reply:reply];
+}
+
+- (void)runInstaller:(NSString *)installerName
+               reply:(void (^)(NSError *error))reply
+{
+    NSAssert([_progressDelegate conformsToProtocol:@protocol(LGProgressDelegate)], @"And approperiate progress delegate is not set for installer");
+    
+    __block NSString *progressMessage;
 
     // Get tmp file path for downloaded file
     NSString *tmpFileLocation = [NSTemporaryDirectory() stringByAppendingPathComponent:[_downloadURL lastPathComponent]];
@@ -189,8 +140,11 @@ typedef NS_ENUM(NSInteger, LGInstallType) {
             [[NSOperationQueue mainQueue] addOperationWithBlock:^{
                 LGAutoPkgrHelperConnection *helper = [LGAutoPkgrHelperConnection new];
                 [helper connectToHelper];
+
+
                 helper.connection.exportedObject = _progressDelegate;
                 helper.connection.exportedInterface = [NSXPCInterface interfaceWithProtocol:@protocol(LGProgressDelegate)];
+
 
                 [[helper.connection remoteObjectProxyWithErrorHandler:^(NSError *error) {
                     DLog(@"%@",error);
@@ -214,7 +168,7 @@ typedef NS_ENUM(NSInteger, LGInstallType) {
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         reply(error);
     }];
-
+    
     [operation start];
 }
 

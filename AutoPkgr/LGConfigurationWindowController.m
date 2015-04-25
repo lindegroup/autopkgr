@@ -29,12 +29,15 @@
 #import "LGAutoPkgSchedule.h"
 #import "LGProgressDelegate.h"
 #import "LGDisplayStatusDelegate.h"
-#import "LGTools.h"
 #import "LGPasswords.h"
+
+#import "LGToolStatus.h"
 
 @interface LGConfigurationWindowController () {
     LGDefaults *_defaults;
     LGAutoPkgTaskManager *_taskManager;
+    LGAutoPkgTool *_autoPkgTool;
+    LGGitTool *_gitTool;
 }
 
 @end
@@ -139,9 +142,7 @@
 
     // Check to see what's installed, and what needs updating
     [self refreshToolsStatus:self];
-
 }
-
 
 - (BOOL)windowShouldClose:(id)sender
 {
@@ -282,66 +283,41 @@
 #pragma mark - Tools
 - (void)refreshToolsStatus:(id)sender
 {
-    LGToolStatus *toolStatus = [[LGToolStatus alloc] init];
-    [toolStatus autoPkgStatus:^(LGTool *tool) {
-        _installAutoPkgButton.enabled = tool.needsInstall;
-        _installAutoPkgButton.title = tool.installButtonTitle;
-        _autoPkgStatusIcon.image = tool.statusImage;
-        _autoPkgStatusLabel.stringValue = tool.statusString;
+    if (!_autoPkgTool) {
+        _autoPkgTool = [[LGAutoPkgTool alloc] init];
+        _autoPkgTool.progressDelegate = _progressDelegate;
+        _installAutoPkgButton.target = _autoPkgTool;
+        _installAutoPkgButton.action = @selector(install:);
+    }
+
+    [_autoPkgTool getInfo:^(LGToolInfo *info) {
+        _installAutoPkgButton.enabled = info.needsInstalled;
+        _installAutoPkgButton.title = info.installButtonTitle;
+        _autoPkgStatusIcon.image = info.statusImage;
+        _autoPkgStatusLabel.stringValue = info.statusString;
     }];
 
-    [toolStatus gitStatus:^(LGTool *tool) {
-        _installGitButton.enabled = tool.needsInstall;
-        _installGitButton.title = tool.installButtonTitle;
-        _gitStatusLabel.stringValue = tool.statusString;
-        _gitStatusIcon.image = tool.statusImage;
+    if (!_gitTool) {
+        _gitTool = [[LGGitTool alloc] init];
+        _gitTool.progressDelegate = _progressDelegate;
+        _installGitButton.target = _gitTool;
+        _installGitButton.action = @selector(install:);
+    }
+
+    [_gitTool getInfo:^(LGToolInfo *info) {
+        _installGitButton.enabled = info.needsInstalled;
+        _installGitButton.title = info.installButtonTitle;
+        _gitStatusLabel.stringValue = info.statusString;
+        _gitStatusIcon.image = info.statusImage;
     }];
 }
 
 - (IBAction)installGit:(id)sender
 {
-    NSLog(@"Installing Git...");
-
-    // Change the button label to "Installing..."
-    // and disable the button to prevent multiple clicks
-    [_installGitButton setEnabled:NO];
-    [self startProgressWithMessage:@"Installing newest version of Git..."];
-
-    LGInstaller *installer = [[LGInstaller alloc] init];
-    installer.progressDelegate = _progressDelegate;
-    [installer installGit:^(NSError *error) {
-        [self stopProgress:error];
-        LGToolStatus *toolStatus = [[LGToolStatus alloc] init];
-        [toolStatus gitStatus:^(LGTool *tool) {
-            _installGitButton.enabled = tool.needsInstall;
-            _installGitButton.title = tool.installButtonTitle;
-            _gitStatusIcon.image = tool.statusImage;
-            _gitStatusLabel.stringValue = tool.statusString;
-        }];
-    }];
 }
 
 - (IBAction)installAutoPkg:(id)sender
 {
-    NSLog(@"Installing AutoPkg...");
-
-    // Disable the button to prevent multiple clicks
-    [_installAutoPkgButton setEnabled:NO];
-    [self startProgressWithMessage:@"Installing newest version of AutoPkg..."];
-
-    LGInstaller *installer = [[LGInstaller alloc] init];
-    installer.progressDelegate = _progressDelegate;
-    [installer installAutoPkg:^(NSError *error) {
-        // Update the autoPkgStatus icon and label if it installed successfully
-        [self stopProgress:error];
-        LGToolStatus *toolStatus = [[LGToolStatus alloc] init];
-        [toolStatus autoPkgStatus:^(LGTool *tool) {
-            _installAutoPkgButton.enabled = tool.needsInstall;
-            _installAutoPkgButton.title = tool.installButtonTitle;
-            _autoPkgStatusIcon.image = tool.statusImage;
-            _autoPkgStatusLabel.stringValue = tool.statusString;
-        }];
-    }];
 }
 
 #pragma mark - Open Folder Actions
@@ -768,7 +744,6 @@
         [LGToolStatus displayRequirementsAlertOnWindow:self.window];
         return;
     }
-
 
     if ([tabViewItem.identifier isEqualTo:@"localFolders"]) {
         [self enableOpenInFinderButtons];

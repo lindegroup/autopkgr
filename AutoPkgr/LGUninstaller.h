@@ -1,10 +1,6 @@
-//
-//  LGInstaller.h
-//  AutoPkgr
-//
-//  Created by Eldon on 9/9/14.
-//
-//  Copyright 2014-2015 The Linde Group, Inc.
+// LGUninstaller.h
+// 
+//  Copyright 2015 Eldon Ahrold
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -20,21 +16,15 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "LGProgressDelegate.h"
 
-@interface LGInstaller : NSObject
+@interface LGUninstaller : NSObject
 
-@property (weak) id<LGProgressDelegate> progressDelegate;
-@property (copy, nonatomic) NSString *downloadURL;
+- (void)uninstallPackageWithIdentifier:(NSString *)packageIdentifier
+                                 reply:(void (^)(NSError *error))reply;
 
-#pragma mark - Installer Methods
-- (void)runInstallerFor:(NSString *)installerName
-              githubAPI:(NSString *)githubAPI
-                  reply:(void (^)(NSError *error))reply;
+- (void)removeFilesAtPaths:(NSArray *)fileList
+                     reply:(void (^)(NSError *error))reply;
 
-
-- (void)runInstaller:(NSString *)installerName
-                  reply:(void (^)(NSError *error))reply;
-
-
+- (void)removePriviledgedFilesAtPaths:(NSArray *)fileList
+                                reply:(void (^)(NSError *error))reply;
 @end

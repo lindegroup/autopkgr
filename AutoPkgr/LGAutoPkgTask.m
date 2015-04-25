@@ -25,6 +25,7 @@
 #import "AHProxySettings.h"
 #import "LGHostInfo.h"
 #import "LGVersioner.h"
+#import "NSData+taskData.h"
 
 NSString *const kLGAutoPkgTaskLock = @"com.lindegroup.autopkg.task.lock";
 
