@@ -216,8 +216,11 @@
     NSString *recipeList = [LGRecipes recipeList];
     BOOL updateRepos = [[LGDefaults standardUserDefaults] checkForRepoUpdatesAutomaticallyEnabled];
 
-    _taskManager = [[LGAutoPkgTaskManager alloc] init];
-    _taskManager.progressDelegate = self;
+    if (!_taskManager) {
+        _taskManager = [[LGAutoPkgTaskManager alloc] init];
+        _taskManager.progressDelegate = self;
+    }
+
     [_taskManager runRecipeList:recipeList
                      updateRepo:updateRepos
                           reply:^(NSDictionary *report, NSError *error) {
@@ -295,6 +298,9 @@
 
         [_runUpdatesNowMenuItem setTitle:@"Cancel AutoPkg Run"];
         [_runUpdatesNowMenuItem setAction:@selector(cancelRunFromMenu:)];
+
+        NSMenuItem *runStatus = [self.statusMenu itemAtIndex:0];
+        runStatus.title = [message truncateToLength:50];
     }];
 }
 
@@ -402,12 +408,14 @@
     // despite aggressive synchronization, so we need to pull the value from
     // the actual preference file until a better work around is found...
 
-    NSDictionary *dict = [NSDictionary dictionaryWithContentsOfFile:[@"~/Library/Preferences/com.lindegroup.AutoPkgr.plist" stringByExpandingTildeInPath]];
+    if (!_taskManager || _taskManager.operationCount == 0 ) {
+        NSDictionary *dict = [NSDictionary dictionaryWithContentsOfFile:[@"~/Library/Preferences/com.lindegroup.AutoPkgr.plist" stringByExpandingTildeInPath]];
 
-    NSString *date = dict[@"LastAutoPkgRun"];
-    if (date) {
-        NSString *status = [NSString stringWithFormat:@"Last AutoPkg Run: %@", date ?: @"Never by AutoPkgr"];
-        [_progressMenuItem setTitle:status];
+        NSString *date = dict[@"LastAutoPkgRun"];
+        if (date) {
+            NSString *status = [NSString stringWithFormat:@"Last AutoPkg Run: %@", date ?: @"Never by AutoPkgr"];
+            _progressMenuItem.title = status;
+        }
     }
 }
 

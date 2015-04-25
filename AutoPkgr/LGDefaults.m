@@ -121,10 +121,12 @@
 {
     NSString *setVal;
     if ([LastAutoPkgRun isKindOfClass:[NSDate class]]){
-        NSDateFormatter *fomatter = [NSDateFormatter new];
-        [fomatter setDateStyle:NSDateFormatterMediumStyle];
-        [fomatter setTimeStyle:NSDateFormatterMediumStyle];
-        setVal = [fomatter stringFromDate:LastAutoPkgRun];
+        NSDateFormatter *formatter = [NSDateFormatter new];
+        [formatter setDateStyle:NSDateFormatterMediumStyle];
+        [formatter setTimeStyle:NSDateFormatterMediumStyle];
+        [formatter setDoesRelativeDateFormatting:YES];
+
+        setVal = [formatter stringFromDate:LastAutoPkgRun];
     } else if ([LastAutoPkgRun isKindOfClass:[NSString class]] ) {
         setVal = LastAutoPkgRun;
         NSLog(@"Setting date as string");
