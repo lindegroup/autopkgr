@@ -122,8 +122,8 @@
     NSString *setVal;
     if ([LastAutoPkgRun isKindOfClass:[NSDate class]]){
         NSDateFormatter *formatter = [NSDateFormatter new];
-        [formatter setDateStyle:NSDateFormatterMediumStyle];
-        [formatter setTimeStyle:NSDateFormatterMediumStyle];
+        [formatter setDateStyle:NSDateFormatterShortStyle];
+        [formatter setTimeStyle:NSDateFormatterShortStyle];
         [formatter setDoesRelativeDateFormatting:YES];
 
         setVal = [formatter stringFromDate:LastAutoPkgRun];

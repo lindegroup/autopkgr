@@ -73,8 +73,8 @@ NSString *launchAgentFilePath()
                         if (!error) {
                             NSDate *date = [NSDate dateWithTimeIntervalSinceNow:runInterval];
                             NSDateFormatter *fomatter = [NSDateFormatter new];
-                            [fomatter setDateStyle:NSDateFormatterMediumStyle];
-                            [fomatter setTimeStyle:NSDateFormatterMediumStyle];
+                            [fomatter setDateStyle:NSDateFormatterShortStyle];
+                            [fomatter setTimeStyle:NSDateFormatterShortStyle];
                             NSLog(@"Next scheduled AutoPkg run will occur at %@",[fomatter stringFromDate:date]);
                         }
                         [[NSApplication sharedApplication] activateIgnoringOtherApps:YES];
