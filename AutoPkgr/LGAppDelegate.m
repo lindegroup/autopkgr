@@ -411,7 +411,7 @@
     if (!_taskManager || _taskManager.operationCount == 0 ) {
         NSDictionary *dict = [NSDictionary dictionaryWithContentsOfFile:[@"~/Library/Preferences/com.lindegroup.AutoPkgr.plist" stringByExpandingTildeInPath]];
 
-        NSString *date = dict[@"LastAutoPkgRun"];
+        NSString *date = [LGDefaults formattedDate:dict[@"LastAutoPkgRun"]];
         if (date) {
             NSString *status = [NSString stringWithFormat:@"Last AutoPkg Run: %@", date ?: @"Never by AutoPkgr"];
             _progressMenuItem.title = status;
