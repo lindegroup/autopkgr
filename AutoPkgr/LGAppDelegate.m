@@ -212,7 +212,7 @@
 {
     DLog(@"Received 'Check Now' menulet command.");
 
-    [self startProgressWithMessage:@"Running selected AutoPkg recipes."];
+    [self startProgressWithMessage:@"Running selected AutoPkg recipes..."];
     NSString *recipeList = [LGRecipes recipeList];
     BOOL updateRepos = [[LGDefaults standardUserDefaults] checkForRepoUpdatesAutomaticallyEnabled];
 

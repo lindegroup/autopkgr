@@ -615,7 +615,7 @@
 
     [_cancelAutoPkgRunButton setHidden:NO];
     [_progressDetailsMessage setHidden:NO];
-    [_progressDelegate startProgressWithMessage:@"Running selected AutoPkg recipes."];
+    [_progressDelegate startProgressWithMessage:@"Running selected AutoPkg recipes..."];
 
     [_taskManager runRecipeList:recipeList
                      updateRepo:NO
