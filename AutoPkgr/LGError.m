@@ -21,20 +21,7 @@
 
 #import "LGError.h"
 #import "LGConstants.h"
-#import <syslog.h>
-
-// Debug Logging Method
-void DLog(NSString *format, ...)
-{
-    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"debug"]) {
-        if (format) {
-            va_list args;
-            va_start(args, format);
-            NSLogv([@"[DEBUG] " stringByAppendingString:format], args);
-            va_end(args);
-        }
-    }
-}
+#import "LGLogger.h"
 
 static NSDictionary *userInfoFromCode(LGErrorCodes code)
 {
@@ -103,52 +90,6 @@ static NSDictionary *userInfoFromCode(LGErrorCodes code)
     };
 }
 
-static NSString *errorMessageFromAutoPkgVerb(LGAutoPkgVerb verb)
-{
-    NSString *localizedBaseString;
-    NSString *message;
-
-    switch (verb) {
-    case kLGAutoPkgUndefinedVerb:
-        localizedBaseString = @"kLGAutoPkgUndefinedVerb";
-        break;
-    case kLGAutoPkgRun:
-        localizedBaseString = @"kLGAutoPkgRun";
-        break;
-    case kLGAutoPkgRecipeList:
-        localizedBaseString = @"kLGAutoPkgRecipeList";
-        break;
-    case kLGAutoPkgMakeOverride:
-        localizedBaseString = @"kLGAutoPkgMakeOverride";
-        break;
-    case kLGAutoPkgSearch:
-        localizedBaseString = @"kLGAutoPkgSearch";
-        break;
-    case kLGAutoPkgRepoAdd:
-        localizedBaseString = @"kLGAutoPkgRepoAdd";
-        break;
-    case kLGAutoPkgRepoDelete:
-        localizedBaseString = @"kLGAutoPkgRepoDelete";
-        break;
-    case kLGAutoPkgRepoUpdate:
-        localizedBaseString = @"kLGAutoPkgRepoUpdate";
-        break;
-    case kLGAutoPkgRepoList:
-        localizedBaseString = @"kLGAutoPkgRepoList";
-        break;
-    case kLGAutoPkgVersion:
-        localizedBaseString = @"kLGAutoPkgVersion";
-        break;
-    default:
-        localizedBaseString = @"kLGAutoPkgUndefinedVerb";
-        break;
-    }
-
-    message = NSLocalizedString([localizedBaseString stringByAppendingString:@"Description"],
-                                @"NSLocalizedDescriptionKey");
-    return message;
-}
-
 static NSDictionary *userInfoFromHTTPResponse(NSHTTPURLResponse *response)
 {
     NSString *localizedBaseString;
@@ -200,33 +141,6 @@ static NSDictionary *userInfoFromHTTPResponse(NSHTTPURLResponse *response)
     };
 }
 
-NSString *maskPasswordInString(NSString *string)
-{
-    NSError *error;
-    NSMutableString *retractedString = [string mutableCopy];
-
-    NSString *baseAll = @"a-zA-Z0-9~`!#.,$%^&*()-_{}<>?";
-    NSString *pattern = [NSString stringWithFormat:@"([%@]+:[%@]+(?=@))", baseAll, baseAll];
-
-    NSRegularExpression *exp = [NSRegularExpression regularExpressionWithPattern:pattern options:0 error:&error];
-
-    NSRange range = NSMakeRange(0, string.length);
-    NSArray *matches = [exp matchesInString:string options:0 range:range];
-    for (NSTextCheckingResult *match in matches) {
-        NSString *ms = [string substringWithRange:match.range];
-        NSArray *array = [ms componentsSeparatedByString:@":"];
-
-        // Make sure to re-range the retracted string each loop, since it gets modified.
-        NSRange r_range = NSMakeRange(0, retractedString.length);
-        [retractedString replaceOccurrencesOfString:[array lastObject]
-                                         withString:@"*******"
-                                            options:NSCaseInsensitiveSearch
-                                              range:r_range];
-    }
-
-    return [retractedString copy];
-}
-
 @implementation LGError
 #ifdef _APPKITDEFINES_H
 + (void)presentErrorWithCode:(LGErrorCodes)code
@@ -274,17 +188,7 @@ NSString *maskPasswordInString(NSString *string)
 
 #pragma mark - AutoPkg Task Errors
 
-+ (BOOL)errorWithTaskError:(NSTask *)task verb:(LGAutoPkgVerb)verb error:(NSError **)error
-{
-    NSError *taskError = [self errorWithTaskError:task verb:verb];
-    if (error && taskError) {
-        *error = taskError;
-    }
-    // If no error object was created, or the error code is 0 return YES, otherwise NO.
-    return taskError ? taskError.code == kLGErrorSuccess : YES;
-}
-
-+ (NSError *)errorWithTaskError:(NSTask *)task verb:(LGAutoPkgVerb)verb
++ (NSError *)errorFromTask:(NSTask *)task
 {
     // if task is running
     if ([task isRunning]) {
@@ -292,59 +196,19 @@ NSString *maskPasswordInString(NSString *string)
     }
 
     if (task.terminationReason == NSTaskTerminationReasonUncaughtSignal) {
-        DLog(@"AutoPkg run canceled by user.");
         return nil;
     }
 
     NSError *error;
-    NSString *errorMsg = errorMessageFromAutoPkgVerb(verb);
     NSString *errorDetails;
+
     NSInteger taskError = task.terminationStatus;
+    NSString *errorMsg = @"An error occurred.";
 
     if ([task.standardError isKindOfClass:[NSPipe class]]) {
         NSData *errData = [[task.standardError fileHandleForReading] readDataToEndOfFile];
-        NSString *rawDetails;
-
-        if (errData && (rawDetails = [[NSString alloc] initWithData:errData encoding:NSASCIIStringEncoding])) {
-            errorDetails = maskPasswordInString(rawDetails);
-        }
-    }
-
-    // If the error message looks like a Python exception log it, but trim it up for UI.
-    NSPredicate *exceptionPredicate = [NSPredicate predicateWithFormat:@"SELF CONTAINS 'Traceback'"];
-    if ([exceptionPredicate evaluateWithObject:errorDetails]) {
-        NSArray *splitExceptionFromError = [errorDetails componentsSeparatedByString:@"Traceback (most recent call last):"];
-
-        // The exception should in theory always be last.
-        NSString *fullExceptionMessage = [splitExceptionFromError lastObject];
-        NSLog(@"(FULL AUTOPKG TRACEBACK) %@", fullExceptionMessage);
-
-        NSArray *array = [fullExceptionMessage componentsSeparatedByCharactersInSet:[NSCharacterSet newlineCharacterSet]];
-
-        NSPredicate *noEmptySpaces = [NSPredicate predicateWithFormat:@"not (SELF == '')"];
-        NSString *exceptionDetails = [[array filteredArrayUsingPredicate:noEmptySpaces] lastObject];
-
-        NSMutableString *recombinedErrorDetails = [[NSMutableString alloc] init];
-        if (splitExceptionFromError.count > 1) {
-            // If something came before, put that information back into the errorDetails.
-            [recombinedErrorDetails appendString:[splitExceptionFromError firstObject]];
-        }
-
-        [recombinedErrorDetails appendFormat:@"A Python exception occurred during the execution of autopkg, see the console log for more details.\n\n[ERROR] %@", exceptionDetails];
-
-        errorDetails = [NSString stringWithString:recombinedErrorDetails];
-
-        // Otherwise continue...
-    } else {
-        // AutoPkg's rc on a failed repo-update / add / delete is 0, but we want it reported back to the UI so set it to -1.
-        if (verb == kLGAutoPkgRepoUpdate || verb == kLGAutoPkgRepoDelete || verb == kLGAutoPkgRepoAdd) {
-            if (errorDetails && ![errorDetails isEqualToString:@""]) {
-                taskError = kLGErrorAutoPkgConfig;
-            }
-        }
-        // autopkg run exits 255 if no recipe specified
-        else if (verb == kLGAutoPkgRun && task.terminationStatus == kLGErrorAutoPkgNoRecipes) {
-            errorDetails = @"No recipes specified.";
+        if (errData) {
+            errorDetails = [[NSString alloc] initWithData:errData encoding:NSASCIIStringEncoding];
         }
     }
 

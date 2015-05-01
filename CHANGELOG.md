@@ -6,6 +6,18 @@ All notable changes to this project will be documented in this file. This projec
 
 ## [Unreleased][unreleased]
 
+### Changed
+- Now you can check the SSL box even if you're not using SMTP authentication. (#335)
+- Relative date/time now shown in AutoPkgr menu status (e.g. "Today at 8:00 AM"). (#340)
+
+### Fixed
+- Fixed a bug that caused progress indicators to show inaccurate counts when the `StopProcessingIf` processor is present in a recipe. (#333)
+- Reduced the odds of error messages exceeding the capacity of the on-screen alert dialog boxes.
+- AutoPkgr menu status should now be up to date upon first click, not just upon status change. (#340)
+
+### Security
+- Updated to the most recent version of the AFNetworking components.
+
 
 ## [1.2.2] - 2015-04-16
 

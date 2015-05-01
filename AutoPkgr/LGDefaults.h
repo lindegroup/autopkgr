@@ -89,4 +89,7 @@ typedef NS_ENUM(NSInteger, LGReportItems) {
 
 #pragma Class Methods
 + (BOOL)fixRelativePathsInAutoPkgDefaults:(NSError **)error neededFixing:(NSInteger *)neededFixing;
+
++ (NSString *)formattedDate:(NSDate *)date;
+
 @end

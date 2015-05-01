@@ -21,7 +21,6 @@
 
 #import <Foundation/Foundation.h>
 
-void DLog(NSString *format, ...) NS_FORMAT_FUNCTION(1, 2);
 
 #pragma mark - AutoPkgr specific Error codes
 typedef NS_ENUM(NSInteger, LGErrorCodes) {
@@ -64,24 +63,6 @@ typedef NS_ENUM(NSInteger, LGErrorAutoPkgCodes) {
     kLGErrorAutoPkgNoRecipes = 255,
 };
 
-typedef NS_ENUM(NSInteger, LGAutoPkgVerb) {
-    kLGAutoPkgUndefinedVerb,
-    // recipe verbs
-    kLGAutoPkgRun,
-    kLGAutoPkgRecipeList,
-    kLGAutoPkgMakeOverride,
-    kLGAutoPkgSearch,
-
-    // repo verbs
-    kLGAutoPkgRepoAdd,
-    kLGAutoPkgRepoDelete,
-    kLGAutoPkgRepoUpdate,
-    kLGAutoPkgRepoList,
-
-    // other verbs
-    kLGAutoPkgVersion,
-};
-
 @interface LGError : NSObject
 
 #ifdef _APPKITDEFINES_H
@@ -112,28 +93,8 @@ typedef NS_ENUM(NSInteger, LGAutoPkgVerb) {
  */
 + (NSError *)errorWithCode:(LGErrorCodes)code;
 
-#pragma mark - NSTask Error
-/**
- *  Populate an NSError using a completed NSTask
- *
- *  @param task  Completed NSTask Object
- *  @param verb  Cooresponding Action Word Describing the AutoPkgr task process
- *  @param error __autoreleasing NSError object
- *
- *  @return NO if error occurred and the exit code is not 0, otherwise YES;
- *  @discussion If the task is not complete this will return YES;
- */
-+ (BOOL)errorWithTaskError:(NSTask *)task verb:(LGAutoPkgVerb)verb error:(NSError **)error;
-/**
- *  Generated NSError Object from and AutoPkgr NSTask
- *
- *  @param task  Completed NSTask Object
- *  @param verb  Cooresponding Action Word Describing the AutoPkgr task process
- *
- *  @return Populated NSError Object if exit status is != kLGErrorSuccess, nil otherwise;
- *  @discussion If the returned object will be nil if the task has not complete;
- */
-+ (NSError *)errorWithTaskError:(NSTask *)task verb:(LGAutoPkgVerb)verb;
++ (NSError *)errorFromTask:(NSTask *)task;
+
 
 #pragma mark - NSURLConnection response Error
 + (BOOL)errorWithResponse:(NSHTTPURLResponse *)response error:(NSError **)error;

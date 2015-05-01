@@ -615,7 +615,7 @@
 
     [_cancelAutoPkgRunButton setHidden:NO];
     [_progressDetailsMessage setHidden:NO];
-    [_progressDelegate startProgressWithMessage:@"Running selected AutoPkg recipes."];
+    [_progressDelegate startProgressWithMessage:@"Running selected AutoPkg recipes..."];
 
     [_taskManager runRecipeList:recipeList
                      updateRepo:NO
@@ -671,7 +671,6 @@
 
     BOOL authEnabled = _defaults.SMTPAuthenticationEnabled && enabled;
 
-    [_smtpTLSEnabledButton setEnabled:authEnabled];
     [_smtpUsername setEnabled:authEnabled];
     [_smtpPassword setEnabled:authEnabled];
 }
@@ -689,7 +688,6 @@
 
     [_smtpUsername setEnabled:enabled];
     [_smtpPassword setEnabled:enabled];
-    [_smtpTLSEnabledButton setEnabled:enabled];
 }
 
 - (IBAction)changeTLSButtonState:(NSButton *)sender;
@@ -852,8 +850,14 @@
 
         if (error) {
             SEL selector = nil;
-            NSAlert *alert = [NSAlert alertWithError:error];
-            [alert addButtonWithTitle:@"OK"];
+            NSString *truncatedString = [error.localizedRecoverySuggestion truncateToNumberOfLines:25];
+            if (![truncatedString isEqualToString:error.localizedRecoverySuggestion]) {
+                truncatedString = [NSString stringWithFormat:@"%@\nMore details have been logged to the system.log", truncatedString];
+                NSLog(@"%@", error.localizedRecoverySuggestion);
+            }
+
+            NSAlert *alert = [NSAlert alertWithMessageText:error.localizedDescription defaultButton:@"OK" alternateButton:nil otherButton:nil informativeTextWithFormat:@"%@", truncatedString ];
+
             // If AutoPkg exits -1 it may be misconfigured
             if (error.code == kLGErrorAutoPkgConfig) {
                 [alert addButtonWithTitle:@"Try to repair settings"];

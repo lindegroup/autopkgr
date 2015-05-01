@@ -47,4 +47,16 @@
     return self;
 }
 
+- (NSString *)truncateToNumberOfLines:(NSInteger)count
+{
+    if (self.length) {
+        NSArray *lines = [self componentsSeparatedByCharactersInSet:[NSCharacterSet newlineCharacterSet]];
+        // If the count is less, we don't need to do anything just send self back
+        if (lines.count > count) {
+            NSIndexSet *idxSet = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, count)];
+            return [[lines objectsAtIndexes:idxSet] componentsJoinedByString:@"\n"];
+        }
+    }
+    return self;
+}
 @end

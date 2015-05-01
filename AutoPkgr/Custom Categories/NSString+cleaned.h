@@ -35,4 +35,6 @@
 
 - (NSString *)truncateToLength:(NSInteger)length;
 
+- (NSString *)truncateToNumberOfLines:(NSInteger)count;
+
 @end
