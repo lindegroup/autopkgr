@@ -35,7 +35,7 @@ int main(int argc, const char *argv[])
         NSLog(@"Running AutoPkgr in background...");
 
         __block LGEmailer *emailer = [[LGEmailer alloc] init];
-
+        __block BOOL completionMessageSent = NO;
         BOOL update = [args boolForKey:kLGCheckForRepoUpdatesAutomaticallyEnabled];
 
         LGAutoPkgTaskManager *manager = [[LGAutoPkgTaskManager alloc] init];
@@ -63,6 +63,7 @@ int main(int argc, const char *argv[])
                                                                                            error:error
                                                                                         state:kLGAutoPkgProgressComplete];
 
+                             completionMessageSent = YES;
                              [emailer sendEmailForReport:report error:error];
                          }];
 
@@ -70,6 +71,13 @@ int main(int argc, const char *argv[])
             [[NSRunLoop currentRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:1.0]];
         }
 
+        if (!completionMessageSent) {
+            [[helper.connection remoteObjectProxy] sendMessageToMainApplication:nil
+                                                                       progress:100
+                                                                          error:nil
+                                                                          state:kLGAutoPkgProgressComplete];
+        }
+        
         NSLog(@"AutoPkg background run complete.");
         return 0;
 

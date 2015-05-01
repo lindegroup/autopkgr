@@ -938,23 +938,36 @@ typedef void (^AutoPkgReplyErrorBlock)(NSError *error);
 + (BOOL)instanceIsRunning
 {
     NSTask *task = [NSTask new];
+    NSMutableData *data = [[NSMutableData alloc] init];
 
     task.launchPath = @"/bin/ps";
     task.arguments = @[ @"-e", @"-o", @"command=" ];
     task.standardOutput = [NSPipe pipe];
-    task.standardError = task.standardOutput;
+
+    [[task.standardOutput fileHandleForReading] setReadabilityHandler:^(NSFileHandle *fh) {
+        NSData *newData;
+        if ((newData = fh.availableData)) {
+            [data appendData:newData];
+        }
+    }];
 
     [task launch];
-    [task waitUntilExit];
 
-    NSData *outputData = [[task.standardOutput fileHandleForReading] readDataToEndOfFile];
-    NSString *outputString = [[NSString alloc] initWithData:outputData encoding:NSUTF8StringEncoding];
+    do {
+        [NSThread sleepUntilDate:[NSDate dateWithTimeIntervalSinceNow:0.05]];
+    } while([task isRunning]);
 
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"SELF CONTAINS %@", autopkg()];
-    NSArray *runningProcs = [outputString componentsSeparatedByString:@"\n"];
 
-    if ([[runningProcs filteredArrayUsingPredicate:predicate] count]) {
-        return YES;
+    if (data.length) {
+        NSString *outputString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+
+        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"SELF CONTAINS %@", autopkg()];
+
+        NSArray *runningProcs = [outputString componentsSeparatedByString:@"\n"];
+
+        if ([[runningProcs filteredArrayUsingPredicate:predicate] count]) {
+            return YES;
+        }
     }
     return NO;
 }
