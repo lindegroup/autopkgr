@@ -25,21 +25,42 @@ typedef NS_ENUM(NSInteger, LGToolTypeFlags) {
 
 @interface LGTool () <LGProgressDelegate>
 
+#pragma mark - Class Methods to override
 /**
  *  LGTool type
  */
-@property (assign, nonatomic, readonly) LGToolTypeFlags typeFlags;
++ (LGToolTypeFlags)typeFlags;
 
 /**
  *  Path to the main executable file for the tool
  *  @note this is checked for executable status
  */
-@property (copy, nonatomic, readonly) NSString *binary;
++ (NSString *)binary;
 
 /**
- *  The GitHub API address for the repo release. This is typically similar to this https://api.github.com/repos/myrepo/releases
+ *  The GitHub API address for the repo release. This is only necissary for tools with the packagedInstaller flags set This is typically similar to this https://api.github.com/repos/myrepo/releases
  */
-@property (copy, nonatomic, readonly) NSString *gitHubURL;
++ (NSString *)gitHubURL;
+
+/**
+ *  Default repository if the tool is an autopkg shared processor.
+ */
++ (NSString *)defaultRepository;
+
+/**
+ *  Components of the tool that indicate the tool is successful installed.
+ *  @note This is only required when the tool has the SharedProcessor flag set. 
+ *  @note it is unnecessary to list every item of the installer. If you have a tool that installs components in separate file system locations you should list one from each. For example JSSImporter.py exists in /Library/AutoPkg/autopkglib, but requires the python-jss library in /Library/Python/2.7/site-packages/python_jss-0.5.9-py2.7.egg/jss so each should be checked to determine if successfully installed
+ */
++ (NSArray *)components;
+
+/**
+ *  The package identifier for the tool. Primarily used to determine items during uninstall:
+ */
++ (NSString *)packageIdentifier;
+
+
+#pragma mark - Instance methods to override
 
 /**
  *  GitHubInfo object
@@ -50,22 +71,6 @@ typedef NS_ENUM(NSInteger, LGToolTypeFlags) {
  *  An optionally dedicated download URL location. By default this is the browser_download_url of the first asset of the first array retrieved from the gitHubURL
  */
 @property (copy, nonatomic, readonly) NSString *downloadURL;
-
-/**
- *  Default repository if the tool is an autopkg shared processor. 
- */
-@property (copy, nonatomic, readonly) NSString *defaultRepository;
-
-/**
- *  The package identifier for the tool. Primarily used to determine items during uninstall:
- */
-@property (copy, nonatomic, readonly) NSString *packageIdentifier;
-
-/**
- *  Components of the tool that indicate the tool is successful installed.
- *  @note it is unnecessary to list every item of the installer. If you have a tool that installs components in separate file system locations you should list one from each. For example JSSImporter.py exists in /Library/AutoPkg/autopkglib, but requires the python-jss library in /Library/Python/2.7/site-packages/python_jss-0.5.9-py2.7.egg/jss so each should be checked to determine if successfully installed
- */
-@property (copy, nonatomic, readonly) NSArray *components;
 
 /**
  *  By default this looks for the version in the receipt for an installed package with the name specified in packageIdentifier. Override this to customize the technique.

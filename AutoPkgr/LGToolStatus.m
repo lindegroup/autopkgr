@@ -65,8 +65,8 @@ NSString *const kLGToolJSSImporter = @"JSSImporter";
 
 #pragma mark - Class Methods
 + (BOOL)requiredItemsInstalled {
-    return ([[LGAutoPkgTool new] isInstalled] &&
-            [[LGGitTool new] isInstalled]);
+    return ([LGAutoPkgTool isInstalled] &&
+            [LGGitTool isInstalled]);
 }
 
 + (void)displayRequirementsAlertOnWindow:(NSWindow *)window

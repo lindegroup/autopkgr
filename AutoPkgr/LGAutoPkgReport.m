@@ -309,7 +309,7 @@ NSString *const fallback_reportCSS = @"<style type='text/css'>*{font-family:'Hel
     NSMutableString *string = nil;
 
     for (LGTool *tool in _tools) {
-        if (tool.isInstalled && tool.info.status == kLGToolUpdateAvailable) {
+        if ([[tool class] isInstalled] && tool.info.status == kLGToolUpdateAvailable) {
             if (!string) {
                 string = [@"Updates for helper tools:".html_H3 mutableCopy];
                 [string appendString:html_openListUL];

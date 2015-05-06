@@ -42,28 +42,24 @@ NSArray *knownGitPaths()
 @synthesize remoteVersion = _remoteVersion;
 @synthesize downloadURL = _downloadURL;
 
-- (NSString *)name
+#pragma mark - Class overrides
++ (NSString *)name
 {
     return @"Git";
 }
 
-- (LGToolTypeFlags)typeFlags
++ (LGToolTypeFlags)typeFlags
 {
     return kLGToolTypeInstalledPackage;
 }
 
-- (NSString *)gitHubURL
-{
-    return @"https://api.github.com/repos/timcharper/git_osx_installer/releases";
-}
-
-- (NSArray *)components
++ (NSArray *)components
 {
     return @[ [self binary],
-    ];
+              ];
 }
 
-- (NSString *)binary
++ (NSString *)binary
 {
     NSString *binary = nil;
 
@@ -94,14 +90,21 @@ NSArray *knownGitPaths()
     return binary;
 }
 
-- (NSString *)packageIdentifier
++ (NSString *)gitHubURL
+{
+    return @"https://api.github.com/repos/timcharper/git_osx_installer/releases";
+}
+
++ (NSString *)packageIdentifier
 {
     return @"GitOSX.Installer.git221Universal.git.pkg";
 }
 
+#pragma mark - Instance overrides.
+
 - (NSString *)installedVersion
 {
-    NSString *rawVersion = [self versionTaskWithExec:self.binary
+    NSString *rawVersion = [self versionTaskWithExec:[[self class] binary]
                                            arguments:@[ @"--version" ]];
 
     NSString *cleanVersion = [[rawVersion stringByReplacingOccurrencesOfString:@"git version " withString:@""] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
@@ -114,7 +117,7 @@ NSArray *knownGitPaths()
 - (NSString *)remoteVersion
 {
     // Only return a remote version if currently using the official Git.
-    if (!_remoteVersion && [self.binary isEqualToString:kLGOfficialGit]) {
+    if (!_remoteVersion && [[[self class] binary] isEqualToString:kLGOfficialGit]) {
         _remoteVersion = [super remoteVersion];
     }
     return _remoteVersion;
@@ -130,7 +133,7 @@ NSArray *knownGitPaths()
 
         _downloadURL = [[self.gitHubInfo.latestReleaseDownloads filteredArrayUsingPredicate:match] firstObject];
 #if DEBUG
-        NSLog(@"Using download url for %@: %@", self.name, _downloadURL);
+        NSLog(@"Using download url for %@: %@", [[self class] name], _downloadURL);
 #endif
     }
     return _downloadURL;

@@ -16,7 +16,12 @@
 //
 
 #import "LGTool.h"
+#import "LGDefaults.h"
 
 @interface LGToolTemplate : LGTool
+@end
 
+// This is also a good place to add custom defaults
+@interface LGDefaults (exampleTool)
+@property (copy, nonatomic) NSString *theKey;
 @end

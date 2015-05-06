@@ -112,7 +112,7 @@ NSPredicate *jdsFilterPredicate()
         return;
     }
 
-    if (!_jssImporterTool.isInstalled) {
+    if (![[_jssImporterTool class] isInstalled]) {
         _installRequestedDuringConnect = YES;
         if ([self promptForInstall]) {
             return;
@@ -379,7 +379,7 @@ NSPredicate *jdsFilterPredicate()
         }];
     }
 
-    BOOL show = (_jssImporterTool.isInstalled && (_defaults.JSSRepos != nil));
+    BOOL show = ([[_jssImporterTool class] isInstalled] && (_defaults.JSSRepos != nil));
 
     // Show installer status
     _jssInstallStatusLight.hidden = !show;
@@ -433,7 +433,7 @@ NSPredicate *jdsFilterPredicate()
 {
     BOOL required = NO;
 
-    if (!_jssImporterTool.isInstalled) {
+    if (![[_jssImporterTool class] isInstalled]) {
         NSLog(@"Prompting for JSSImporter installation.");
         NSAlert *alert = [NSAlert alertWithMessageText:@"Install JSSImporter?"
                                          defaultButton:@"Install"

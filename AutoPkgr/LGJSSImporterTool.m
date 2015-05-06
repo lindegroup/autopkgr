@@ -21,40 +21,42 @@
 @implementation LGJSSImporterTool
 @synthesize installedVersion = _installedVersion;
 
-- (NSString *)name
+#pragma mark - Class overrides
++ (NSString *)name
 {
     return @"JSSImporter";
 }
 
-- (LGToolTypeFlags)typeFlags
++ (LGToolTypeFlags)typeFlags
 {
     return kLGToolTypeAutoPkgSharedProcessor | kLGToolTypeInstalledPackage;
 }
 
-- (NSString *)gitHubURL
++ (NSString *)gitHubURL
 {
     return @"https://api.github.com/repos/sheagcraig/JSSImporter/releases";
 }
 
-- (NSString *)defaultRepository {
++ (NSString *)defaultRepository {
    return @"https://github.com/sheagcraig/jss-recipes.git";
 }
 
-- (NSString *)binary
++ (NSString *)binary
 {
     return @"/Library/AutoPkg/autopkglib/JSSImporter.py";
 }
 
-- (NSArray *)components
++ (NSArray *)components
 {
     return @[ self.binary ];
 }
 
-- (NSString *)packageIdentifier
++ (NSString *)packageIdentifier
 {
     return @"com.github.sheagcraig.jssimporter";
 }
 
+# pragma mark - Instance overrides.
 - (NSString *)installedVersion
 {
     NSFileManager *fm = [NSFileManager defaultManager];
@@ -63,7 +65,7 @@
 
     NSString *jssImporterReceipt = @"/private/var/db/receipts/com.github.sheagcraig.jssimporter.plist";
 
-    if (self.isInstalled) {
+    if ([[self class] isInstalled]) {
         NSDictionary *receiptDict;
         if ([fm fileExistsAtPath:jssImporterReceipt]) {
             receiptDict = [NSDictionary dictionaryWithContentsOfFile:jssImporterReceipt];

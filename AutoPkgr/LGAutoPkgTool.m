@@ -20,44 +20,46 @@
 
 @implementation LGAutoPkgTool
 
-- (NSString *)name
+#pragma mark - Class overrides
++ (NSString *)name
 {
     return @"AutoPkg";
 }
 
-- (LGToolTypeFlags)typeFlags
++ (LGToolTypeFlags)typeFlags
 {
     return kLGToolTypeInstalledPackage | kLGToolTypeAutoPkgSharedProcessor;
 }
 
-- (NSString *)gitHubURL
-{
-    return @"https://api.github.com/repos/autopkg/autopkg/releases";
-}
-
-- (NSString *)defaultRepository
++ (NSString *)defaultRepository
 {
     return @"https://github.com/autopkg/recipes.git";
 }
 
-- (NSArray *)components
++ (NSArray *)components
 {
     return @[ self.binary ];
 }
 
-- (NSString *)binary
++ (NSString *)binary
 {
     return @"/usr/local/bin/autopkg";
 }
 
-- (NSString *)packageIdentifier
++ (NSString *)gitHubURL
+{
+    return @"https://api.github.com/repos/autopkg/autopkg/releases";
+}
+
++ (NSString *)packageIdentifier
 {
     return @"com.github.autopkg.autopkg";
 }
 
+#pragma mark - Instance overrides
 - (NSString *)installedVersion
 {
-    return [[self versionTaskWithExec:self.binary arguments:@[ @"version" ]] stringByTrimmingCharactersInSet:[NSCharacterSet newlineCharacterSet]];
+    return [[self versionTaskWithExec:[[self class] binary] arguments:@[ @"version" ]] stringByTrimmingCharactersInSet:[NSCharacterSet newlineCharacterSet]];
 }
 
 @end

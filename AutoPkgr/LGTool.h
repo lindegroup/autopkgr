@@ -62,21 +62,40 @@ typedef NS_ENUM(OSStatus, LGToolInstallStatus) {
  }];
     @endcode
  *  @discussion There a a number of properties / methods that a subclass is required to override @code
+ // These are required by all.
  - (NSString *)name
  - (LGToolTypeFlags)typeFlags;
+ 
+ // These are only required for installer package flag set.
  - (NSString *)binary
  - (NSArray *)components
  - (NSString *)gitHubURL
  - (NSString *)packageIdentifier
+
  @endcode Many other methods may need to get overridden for proper functioning. See LGTool.h adn LGTool+Private.h for a comperhensive list.
  */
 @interface LGTool : NSObject
 
-#pragma mark - These properties are the responsibility of the subclass
+/**
+ * Check if the tool meets system requirements to proceed with installation.
+ *
+ *  @param error Populated error object if requirements are not met.
+ *
+ *  @return YES if requirements are met, no otherwise.
+ */
++ (BOOL)meetsRequirements:(NSError **)error;
+
+// If the tool is installed.
++ (BOOL)isInstalled;
+
+#pragma mark - These class methods are the responsibility of the subclass
 /**
  *  Name of the Tool
  */
-@property (copy, nonatomic, readonly) NSString *name;
++ (NSString *)name;
+
+
+
 
 /**
  *  Progress Delegate used to send update to the UI during install / uninstall
@@ -92,17 +111,6 @@ typedef NS_ENUM(OSStatus, LGToolInstallStatus) {
  */
 - (void)getInfo:(void (^)(LGToolInfo *toolInfo))complete;
 
-/**
- * Check if the tool meets system requirements to proceed with installation.
- *
- *  @param error Populated error object if requirements are not met.
- *
- *  @return YES if requirements are met, no otherwise.
- */
-- (BOOL)meetsRequirements:(NSError **)error;
-
-// If the tool is installed.
-@property (assign, readonly) BOOL isInstalled;
 
 // LGToolInfo object with local and remote status information and useful UI mappings.
 @property (copy, nonatomic, readonly) LGToolInfo *info;

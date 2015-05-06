@@ -18,28 +18,30 @@
 #import "LGToolTemplate.h"
 #import "LGTool+Private.h"
 
+#pragma mark - Tool overrides
 @implementation LGToolTemplate
 
-- (NSString *)name
+#pragma mark - Class overrides
++ (NSString *)name
 {
     return @"ToolName";
 }
 
-- (LGToolTypeFlags)typeFlags
++ (LGToolTypeFlags)typeFlags
 {
     return kLGToolTypeInstalledPackage | kLGToolTypeAutoPkgSharedProcessor;
 }
 
-- (NSString *)gitHubURL
++ (NSString *)gitHubURL
 {
     return @"https://api.github.com/repos/reponame/releases";
 }
 
-- (NSString *)defaultRepository {
-    return @"https://github.com/sheagcraig/jss-recipes.git";
++ (NSString *)defaultRepository {
+    return @"https://github.com/yourusername/project.git";
 }
 
-- (NSArray *)components
++ (NSArray *)components
 {
     // If there's not a binary don't include it here!!
     return @[ [self binary],
@@ -47,25 +49,42 @@
               ];
 }
 
-- (NSString *)binary
++ (NSString *)binary
 {
     return @"/path/to/binary/if/there/is/one";
 }
 
-- (NSString *)packageIdentifier
++ (NSString *)packageIdentifier
 {
     return @"com.github.package.identifier";
 }
 
+#pragma mark - Instance overrides
 - (NSString *)installedVersion
 {
     // Don't do if(_installedVersion)here because the installedVersion will be different after it's installed or updated.
 
-    return [[self versionTaskWithExec:self.binary arguments:@[ @"version" ]] stringByTrimmingCharactersInSet:[NSCharacterSet newlineCharacterSet]];
+    return [[self versionTaskWithExec:[[self class] binary] arguments:@[ @"version" ]] stringByTrimmingCharactersInSet:[NSCharacterSet newlineCharacterSet]];
 
     // or
 
     return [NSDictionary dictionaryWithContentsOfFile:@"/path/to/some/plist.plist"][@"version"];
 }
+@end
+
+
+#pragma mark - Defaults
+@implementation LGDefaults (exampleTool)
+
+- (void)setTheKey:(NSString *)theKey{
+    [self setAutoPkgDomainObject:theKey
+                          forKey:NSStringFromSelector(@selector(theKey))];
+}
+
+- (NSString *)theKey
+{
+    return [self autoPkgDomainObject:NSStringFromSelector(@selector(theKey))];
+}
+
 
 @end
