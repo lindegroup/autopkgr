@@ -92,7 +92,6 @@
 		BED136B81AC3BE04003EBF0F /* NSArray+html_report.m in Sources */ = {isa = PBXBuildFile; fileRef = BED136B61AC3BE04003EBF0F /* NSArray+html_report.m */; };
 		BED136BC1AC3C15E003EBF0F /* report.css in Resources */ = {isa = PBXBuildFile; fileRef = BED136BB1AC3C15E003EBF0F /* report.css */; };
 		BED136BD1AC3C15E003EBF0F /* report.css in Resources */ = {isa = PBXBuildFile; fileRef = BED136BB1AC3C15E003EBF0F /* report.css */; };
-		BED297611A3F975000511CD7 /* LGDefaults+JSSImporter.m in Sources */ = {isa = PBXBuildFile; fileRef = BED297601A3F975000511CD7 /* LGDefaults+JSSImporter.m */; };
 		BED3882A1A85E2C100DA8970 /* autopkgr_error.png in Resources */ = {isa = PBXBuildFile; fileRef = BED388291A85E2C100DA8970 /* autopkgr_error.png */; };
 		BEE211231AF9D6E500A3C2E1 /* LGToolTemplate.m in Sources */ = {isa = PBXBuildFile; fileRef = BEA2F0B41AF1672600781274 /* LGToolTemplate.m */; };
 		BEE211261AF9DCBB00A3C2E1 /* LGUninstaller.m in Sources */ = {isa = PBXBuildFile; fileRef = BEE211251AF9DCBB00A3C2E1 /* LGUninstaller.m */; };
@@ -297,8 +296,6 @@
 		BED136B61AC3BE04003EBF0F /* NSArray+html_report.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSArray+html_report.m"; path = "Custom Categories/NSArray+html_report.m"; sourceTree = "<group>"; };
 		BED136B91AC3BEE1003EBF0F /* HTMLCategories.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = HTMLCategories.h; path = "Custom Categories/HTMLCategories.h"; sourceTree = "<group>"; };
 		BED136BB1AC3C15E003EBF0F /* report.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; path = report.css; sourceTree = "<group>"; };
-		BED2975F1A3F975000511CD7 /* LGDefaults+JSSImporter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "LGDefaults+JSSImporter.h"; path = "Custom Categories/LGDefaults+JSSImporter.h"; sourceTree = "<group>"; };
-		BED297601A3F975000511CD7 /* LGDefaults+JSSImporter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "LGDefaults+JSSImporter.m"; path = "Custom Categories/LGDefaults+JSSImporter.m"; sourceTree = "<group>"; };
 		BED388291A85E2C100DA8970 /* autopkgr_error.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = autopkgr_error.png; sourceTree = "<group>"; };
 		BEE05F051A05CDBE00EF80B3 /* libPods-AutoPkgr-AHCodesignVerifier.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libPods-AutoPkgr-AHCodesignVerifier.a"; path = "../../../../Library/Developer/Xcode/DerivedData/AutoPkgr-gvffmulnnaejibfmmwfptzyobmbb/Build/Products/Debug/libPods-AutoPkgr-AHCodesignVerifier.a"; sourceTree = "<group>"; };
 		BEE211241AF9DCBB00A3C2E1 /* LGUninstaller.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGUninstaller.h; sourceTree = "<group>"; };
@@ -575,8 +572,6 @@
 				BE8A06BB1AF8FAFD006C2571 /* NSData+taskData.m */,
 				BEE8CF1119E0E7F400981C4B /* NSTextField+setSafeStringValue.h */,
 				BEE8CF1219E0E7F400981C4B /* NSTextField+setSafeStringValue.m */,
-				BED2975F1A3F975000511CD7 /* LGDefaults+JSSImporter.h */,
-				BED297601A3F975000511CD7 /* LGDefaults+JSSImporter.m */,
 				BED02ADA1A194F9C00714CC2 /* NSArray+filtered.h */,
 				BED02ADB1A194F9C00714CC2 /* NSArray+filtered.m */,
 				BED136BA1AC3BF2E003EBF0F /* Html Categories */,
@@ -1030,7 +1025,6 @@
 				BEEFE6C71AEBEB1000882C89 /* LGGitTool.m in Sources */,
 				BE67E8751A44E10500484151 /* LGRecipeSearch.m in Sources */,
 				BE8A06BC1AF8FAFD006C2571 /* NSData+taskData.m in Sources */,
-				BED297611A3F975000511CD7 /* LGDefaults+JSSImporter.m in Sources */,
 				BEE8CF1319E0E7F400981C4B /* NSTextField+setSafeStringValue.m in Sources */,
 				BE1C810319E8224000EF77F3 /* NSImage+statusLight.m in Sources */,
 			);

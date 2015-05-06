@@ -16,7 +16,30 @@
 //
 
 #import "LGTool.h"
+#import "LGDefaults.h"
 
 @interface LGJSSImporterTool : LGTool
+
+@end
+
+
+extern NSString* const kLGJSSDistPointNameKey;
+extern NSString* const kLGJSSDistPointURLKey;
+extern NSString* const kLGJSSDistPointSharePointKey;
+extern NSString* const kLGJSSDistPointPortKey;
+extern NSString* const kLGJSSDistPointUserNameKey;
+extern NSString* const kLGJSSDistPointPasswordKey;
+extern NSString* const kLGJSSDistPointWorkgroupDomainKey;
+extern NSString* const kLGJSSDistPointTypeKey;
+
+
+#pragma mark - LGDefaults extensions for JSSImporter Interface
+@interface LGDefaults (JSSImporter)
+
+@property (copy, nonatomic) NSString *JSSURL;
+@property (copy, nonatomic) NSString *JSSAPIUsername;
+@property (copy, nonatomic) NSString *JSSAPIPassword;
+@property (copy, nonatomic) NSArray *JSSRepos;
+@property (assign, nonatomic) BOOL JSSVerifySSL;
 
 @end

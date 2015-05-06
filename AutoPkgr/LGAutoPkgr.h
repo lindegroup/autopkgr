@@ -23,10 +23,10 @@
 #define AutoPkgr_AutoPkgr_h
 
 #import "LGConstants.h"
+#import "LGDefaults.h"
 #import "LGError.h"
 #import "LGLogger.h"
 #import "LGHostInfo.h"
-#import "LGDefaults+JSSImporter.h"
 #import "NSString+cleaned.h"
 #import "NSTextField+setSafeStringValue.h"
 #import "NSImage+statusLight.h"

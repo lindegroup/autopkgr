@@ -20,6 +20,8 @@
 
 #import "LGHTTPRequest.h"
 #import "LGAutoPkgr.h"
+#import "LGJSSImporterTool.h"
+
 #import <AFNetworking/AFNetworking.h>
 #import <SecurityInterface/SFCertificateTrustPanel.h>
 #import <XMLDictionary/XMLDictionary.h>

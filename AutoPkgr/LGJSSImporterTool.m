@@ -18,6 +18,16 @@
 #import "LGJSSImporterTool.h"
 #import "LGTool+Private.h"
 
+# pragma mark - Repo Keys
+NSString *const kLGJSSDistPointNameKey = @"name";
+NSString *const kLGJSSDistPointURLKey = @"URL";
+NSString *const kLGJSSDistPointSharePointKey = @"share_name";
+NSString *const kLGJSSDistPointPortKey = @"port";
+NSString *const kLGJSSDistPointUserNameKey = @"username";
+NSString *const kLGJSSDistPointPasswordKey = @"password";
+NSString *const kLGJSSDistPointWorkgroupDomainKey = @"domain";
+NSString *const kLGJSSDistPointTypeKey = @"type";
+
 @implementation LGJSSImporterTool
 @synthesize installedVersion = _installedVersion;
 
@@ -75,6 +85,67 @@
         _installedVersion = receiptDict[@"PackageVersion"];
     }
     return _installedVersion;
+}
+
+@end
+
+#pragma mark - LGDefaults category implementation for JSSImporter Interface
+
+@implementation LGDefaults (JSSImporter)
+
+- (NSString *)JSSURL
+{
+    return [self autoPkgDomainObject:@"JSS_URL"];
+}
+
+- (void)setJSSURL:(NSString *)JSSURL
+{
+    [self setAutoPkgDomainObject:JSSURL forKey:@"JSS_URL"];
+}
+
+#pragma mark -
+- (NSString *)JSSAPIUsername
+{
+    return [self autoPkgDomainObject:@"API_USERNAME"];
+}
+
+- (void)setJSSAPIUsername:(NSString *)JSSAPIUsername
+{
+    [self setAutoPkgDomainObject:JSSAPIUsername forKey:@"API_USERNAME"];
+}
+
+#pragma mark -
+- (NSString *)JSSAPIPassword
+{
+    return [self autoPkgDomainObject:@"API_PASSWORD"];
+}
+
+- (void)setJSSAPIPassword:(NSString *)JSSAPIPassword
+{
+    [self setAutoPkgDomainObject:JSSAPIPassword forKey:@"API_PASSWORD"];
+}
+
+#pragma mark -
+- (NSArray *)JSSRepos
+{
+    return [self autoPkgDomainObject:@"JSS_REPOS"];
+}
+
+- (void)setJSSRepos:(NSArray *)JSSRepos
+{
+    [self setAutoPkgDomainObject:JSSRepos forKey:@"JSS_REPOS"];
+}
+
+#pragma mark -
+- (BOOL)JSSVerifySSL
+{
+    NSNumber *verifySSL = [self autoPkgDomainObject:@"JSS_VERIFY_SSL"];
+    return [verifySSL boolValue];
+}
+
+- (void)setJSSVerifySSL:(BOOL)JSSVerifySSL
+{
+    [self setAutoPkgDomainObject:@(JSSVerifySSL) forKey:@"JSS_VERIFY_SSL"];
 }
 
 @end

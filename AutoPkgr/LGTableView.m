@@ -21,7 +21,6 @@
 #import "LGTableView.h"
 #import "LGRecipeOverrides.h"
 #import "LGPopularRepositories.h"
-#import "LGJSSImporter.h"
 
 @implementation LGTableView
 
@@ -37,12 +36,6 @@
         } else if ([classString isEqualToString:@"LGPopularRepositories"]) {
             NSString *repo = [self repoFromRow:row];
             return [LGPopularRepositories contextualMenuForRepo:repo];
-        } else if ([classString isEqualToString:@"LGJSSImporter"]) {
-            NSDictionary *distributionPoint;
-            if (row > -1) {
-                distributionPoint = [[LGDefaults standardUserDefaults] JSSRepos][row];
-            }
-            return [(LGJSSImporter *)[self dataSource] contextualMenuForDistributionPoint:distributionPoint];
         }
     }
     return nil;

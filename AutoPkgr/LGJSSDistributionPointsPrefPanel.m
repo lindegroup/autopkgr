@@ -20,7 +20,7 @@
 //
 
 #import "LGJSSDistributionPointsPrefPanel.h"
-
+#import "LGJSSImporterTool.h"
 @interface LGJSSDistributionPointsPrefPanel ()
 
 @end
