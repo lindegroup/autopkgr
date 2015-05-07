@@ -952,11 +952,7 @@ typedef void (^AutoPkgReplyErrorBlock)(NSError *error);
     }];
 
     [task launch];
-
-    do {
-        [NSThread sleepUntilDate:[NSDate dateWithTimeIntervalSinceNow:0.05]];
-    } while([task isRunning]);
-
+    [task waitUntilExit];
 
     if (data.length) {
         NSString *outputString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
