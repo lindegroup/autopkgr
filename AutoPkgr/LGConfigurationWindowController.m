@@ -287,7 +287,6 @@
         _autoPkgTool = [[LGAutoPkgTool alloc] init];
         _autoPkgTool.progressDelegate = _progressDelegate;
         _installAutoPkgButton.target = _autoPkgTool;
-        _installAutoPkgButton.action = @selector(install:);
     }
 
     [_autoPkgTool getInfo:^(LGToolInfo *info) {
@@ -295,13 +294,13 @@
         _installAutoPkgButton.title = info.installButtonTitle;
         _autoPkgStatusIcon.image = info.statusImage;
         _autoPkgStatusLabel.stringValue = info.statusString;
+        _installAutoPkgButton.action = info.targetAction;
     }];
 
     if (!_gitTool) {
         _gitTool = [[LGGitTool alloc] init];
         _gitTool.progressDelegate = _progressDelegate;
         _installGitButton.target = _gitTool;
-        _installGitButton.action = @selector(install:);
     }
 
     [_gitTool getInfo:^(LGToolInfo *info) {
@@ -309,6 +308,7 @@
         _installGitButton.title = info.installButtonTitle;
         _gitStatusLabel.stringValue = info.statusString;
         _gitStatusIcon.image = info.statusImage;
+        _installGitButton.action = info.targetAction;
     }];
 }
 

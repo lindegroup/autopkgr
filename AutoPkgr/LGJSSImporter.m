@@ -40,11 +40,15 @@ NSPredicate *jdsFilterPredicate()
 @implementation LGJSSImporter {
     LGDefaults *_defaults;
     LGTestPort *_portTester;
-    BOOL _serverReachable;
-    BOOL _installRequestedDuringConnect;
     LGJSSDistributionPointsPrefPanel *_preferencePanel;
     LGJSSImporterTool *_jssImporterTool;
+
+    BOOL _serverReachable;
+    BOOL _installRequestedDuringConnect;
 }
+
+// TODO: Disconnect from .xib and remove
+- (void)installJSSImporter:(id)sender {}
 
 - (void)awakeFromNib
 {
@@ -55,7 +59,45 @@ NSPredicate *jdsFilterPredicate()
     _defaults = [LGDefaults standardUserDefaults];
     _installRequestedDuringConnect = NO;
 
-    [self showInstallTabItems];
+    BOOL isInstalled = [LGJSSImporterTool isInstalled];
+    BOOL show = ( isInstalled && (_defaults.JSSRepos != nil));
+
+    // Setup the JSSImporterTool
+    if (!_jssImporterTool) {
+        _jssImporterTool = [[LGJSSImporterTool alloc] init];
+
+        // Set the tool to take over controll of the button
+        _jssImporterTool.progressDelegate = _progressDelegate;
+        _jssInstallButton.target = _jssImporterTool;
+
+        __weak typeof(self) weakSelf = self;
+        [_jssImporterTool setInfoUpdateHandler:^(LGToolInfo *info) {
+            __strong typeof(self) strongSelf = weakSelf;
+            strongSelf.jssInstallButton.enabled = YES;
+            strongSelf.jssInstallButton.action = info.targetAction;
+
+            // Update the button.
+            strongSelf.jssInstallButton.title = info.installButtonTitle;
+            strongSelf.jssInstallStatusLight.image = info.statusImage;
+            strongSelf.jssInstallStatusTF.stringValue = info.statusString;
+
+            // Show installer status.
+            strongSelf.jssInstallStatusLight.hidden = NO;
+            strongSelf.jssInstallStatusTF.hidden = NO;
+            strongSelf.jssInstallButton.hidden = NO;
+        }];
+    }
+
+
+    // Show installer status
+    _jssInstallStatusLight.hidden = !show;
+    _jssInstallStatusTF.hidden = !show;
+    _jssInstallButton.hidden = !show;
+    ;
+
+    if (show) {
+        [_jssImporterTool refresh];
+    }
 
     // Disable the Add / Remove distPoint buttons
     // until a row is selected
@@ -141,23 +183,6 @@ NSPredicate *jdsFilterPredicate()
                                   }];
 }
 
-- (IBAction)installJSSImporter:(id)sender
-{
-    if (!_jssImporterTool.progressDelegate) {
-        _jssImporterTool.progressDelegate = _progressDelegate;
-    }
-
-    [_jssInstallButton setEnabled:NO];
-    [_jssImporterTool install:^(NSError *error) {
-        if (!error && _installRequestedDuringConnect) {
-            _installRequestedDuringConnect = NO;
-            [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-                [self reloadJSSServerInformation:self];
-            }];
-        }
-        [_jssImporterTool refresh];
-    }];
-}
 
 #pragma mark - Progress
 - (void)startStatusUpdate
@@ -353,43 +378,7 @@ NSPredicate *jdsFilterPredicate()
             [_jssStatusLight setImage:[NSImage LGStatusPartiallyAvailable]];
         }
     }
-    [self showInstallTabItems];
     [_jssDistributionPointTableView reloadData];
-}
-
-- (void)showInstallTabItems
-{
-    if (!_jssImporterTool) {
-        _jssImporterTool = [LGJSSImporterTool new];
-        __weak typeof(self) weakSelf = self;
-        
-        [_jssImporterTool setInfoUpdateHandler:^(LGToolInfo *info) {
-            __strong typeof(self) strongSelf = weakSelf;
-
-//            strongSelf.jssInstallButton.hidden =
-            strongSelf.jssInstallButton.enabled = info.needsInstalled;
-            strongSelf.jssInstallButton.title = info.installButtonTitle;
-            strongSelf.jssInstallStatusLight.image = info.statusImage;
-            strongSelf.jssInstallStatusTF.stringValue = info.statusString;
-
-            // Show installer status
-            strongSelf.jssInstallStatusLight.hidden = NO;
-            strongSelf.jssInstallStatusTF.hidden = NO;
-            strongSelf.jssInstallButton.hidden = NO;
-        }];
-    }
-
-    BOOL show = ([[_jssImporterTool class] isInstalled] && (_defaults.JSSRepos != nil));
-
-    // Show installer status
-    _jssInstallStatusLight.hidden = !show;
-    _jssInstallStatusTF.hidden = !show;
-    _jssInstallButton.hidden = !show;
-    ;
-
-    if (show) {
-        [_jssImporterTool refresh];
-    }
 }
 
 - (void)saveDefaults
@@ -443,7 +432,7 @@ NSPredicate *jdsFilterPredicate()
 
         NSInteger button = [alert runModal];
         if (button == NSAlertDefaultReturn) {
-            [self installJSSImporter:nil];
+            [_jssImporterTool install:_jssInstallButton];
         } else {
             _installRequestedDuringConnect = NO;
             NSLog(@"Installation of JSSImporter was canceled.");

@@ -896,7 +896,11 @@ typedef void (^AutoPkgReplyErrorBlock)(NSError *error);
 {
     LGAutoPkgTask *task = [[LGAutoPkgTask alloc] initWithArguments:@[ @"version" ]];
     [task launch];
-    return [[task standardOutString] stringByTrimmingCharactersInSet:[NSCharacterSet newlineCharacterSet]];
+    NSString *version = task.standardOutString;
+    if (version.length) {
+        return [version stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    }
+    return nil;
 }
 
 #pragma mark-- Convenience Initializers --
@@ -938,6 +942,12 @@ typedef void (^AutoPkgReplyErrorBlock)(NSError *error);
 + (LGAutoPkgTask *)addRepoTask:(NSString *)repo
 {
     LGAutoPkgTask *task = [[LGAutoPkgTask alloc] initWithArguments:@[ @"repo-add", repo ]];
+    return task;
+}
+
++ (LGAutoPkgTask *)repoDeleteTask:(NSString *)repo;
+{
+    LGAutoPkgTask *task = [[LGAutoPkgTask alloc] initWithArguments:@[ @"repo-delete", repo ]];
     return task;
 }
 

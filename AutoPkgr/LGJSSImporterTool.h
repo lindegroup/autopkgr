@@ -22,7 +22,6 @@
 
 @end
 
-
 extern NSString* const kLGJSSDistPointNameKey;
 extern NSString* const kLGJSSDistPointURLKey;
 extern NSString* const kLGJSSDistPointSharePointKey;

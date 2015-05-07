@@ -39,7 +39,7 @@ NSString *const kLGJSSDistPointTypeKey = @"type";
 
 + (LGToolTypeFlags)typeFlags
 {
-    return kLGToolTypeAutoPkgSharedProcessor | kLGToolTypeInstalledPackage;
+    return kLGToolTypeAutoPkgSharedProcessor | kLGToolTypeInstalledPackage |kLGToolTypeUninstallableTool;
 }
 
 + (NSString *)gitHubURL
@@ -58,12 +58,14 @@ NSString *const kLGJSSDistPointTypeKey = @"type";
 
 + (NSArray *)components
 {
-    return @[ self.binary ];
+    return @[[self binary],
+             ];
 }
 
-+ (NSString *)packageIdentifier
++ (NSArray *)packageIdentifiers
 {
-    return @"com.github.sheagcraig.jssimporter";
+    return @[@"com.github.sheagcraig.jssimporter",
+             @"com.github.sheagcraig.jss-autopkg-addon"];
 }
 
 # pragma mark - Instance overrides.

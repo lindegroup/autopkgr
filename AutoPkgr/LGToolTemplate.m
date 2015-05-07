@@ -54,9 +54,9 @@
     return @"/path/to/binary/if/there/is/one";
 }
 
-+ (NSString *)packageIdentifier
++ (NSArray *)packageIdentifiers
 {
-    return @"com.github.package.identifier";
+    return @[@"com.github.package.identifier"];
 }
 
 #pragma mark - Instance overrides

@@ -142,7 +142,7 @@ void subclassMustImplement(id className, SEL _cmd)
     return nil;
 }
 
-+ (NSString *)packageIdentifier
++ (NSArray *)packageIdentifiers
 {
     if ([[self class] typeFlags] & kLGToolTypeInstalledPackage) {
         subclassMustImplement(self, _cmd);
@@ -200,7 +200,7 @@ void subclassMustImplement(id className, SEL _cmd)
 
     if (typeFlags & kLGToolTypeInstalledPackage) {
         NSFileManager *fm = [NSFileManager defaultManager];
-        NSString *packageReciept = [[@"/private/var/db/receipts/" stringByAppendingPathComponent:[[self class] packageIdentifier]] stringByAppendingPathExtension:@"plist"];
+        NSString *packageReciept = [[@"/private/var/db/receipts/" stringByAppendingPathComponent:[[[self class] packageIdentifiers] firstObject]] stringByAppendingPathExtension:@"plist"];
 
         if ([[self class] isInstalled]) {
             if ([fm fileExistsAtPath:packageReciept]) {
@@ -220,43 +220,8 @@ void subclassMustImplement(id className, SEL _cmd)
     return self.gitHubInfo.latestReleaseDownload;
 }
 
-- (void)installPackage:(id)sender{
-    NSString *name = [[self class] name];
-    LGToolTypeFlags typeFlags = [[self class] typeFlags];
 
-    NSString *installMessage = [NSString stringWithFormat:@"Installing %@...", [[self class] name]];
-    [_progressDelegate startProgressWithMessage:installMessage];
-
-    LGInstaller *installer = [[LGInstaller alloc] init];
-    installer.downloadURL = self.downloadURL;
-    installer.progressDelegate = _progressDelegate;
-
-    [installer runInstaller:name reply:^(NSError *error) {
-
-        if (!error && (typeFlags & kLGToolTypeAutoPkgSharedProcessor)) {
-            [self installDefaultRepository:sender];
-        } else {
-            [self installComplete:sender error:error];
-        }
-    }];
-}
-
-- (void)installDefaultRepository:(id)sender {
-    NSString *name = [[self class] name];
-    [_progressDelegate startProgressWithMessage:[NSString stringWithFormat:@"Adding default AutoPkg repo for %@", name]];
-
-    LGAutoPkgTask *task = [LGAutoPkgTask addRepoTask:[[self class] defaultRepository]];
-    task.progressDelegate = _progressDelegate;
-    [task launchInBackground:^(NSError *error) {
-        [self installComplete:sender error:error];
-
-        // Post a notification to trigger a reload of the repo table.
-        [[NSNotificationCenter defaultCenter] postNotificationName:kLGNotificationReposModified
-                                                            object:nil];
-
-    }];
-}
-
+#pragma mark - Installer
 - (void)install:(id)sender
 {
     // Disable the sender to prevent multiple signals
@@ -273,6 +238,46 @@ void subclassMustImplement(id className, SEL _cmd)
     }
 }
 
+
+- (void)installPackage:(id)sender{
+    NSString *name = [[self class] name];
+    LGToolTypeFlags typeFlags = [[self class] typeFlags];
+
+    NSString *installMessage = [NSString stringWithFormat:@"Installing %@...", [[self class] name]];
+    [_progressDelegate startProgressWithMessage:installMessage];
+
+    LGInstaller *installer = [[LGInstaller alloc] init];
+    installer.downloadURL = self.downloadURL;
+    installer.progressDelegate = _progressDelegate;
+
+    [installer runInstaller:name reply:^(NSError *error) {
+        if (!error && (typeFlags & kLGToolTypeAutoPkgSharedProcessor)) {
+            [self installDefaultRepository:sender];
+        } else {
+            [self didCompleteInstallAction:sender error:error];
+        }
+    }];
+}
+
+- (void)installDefaultRepository:(id)sender {
+    NSString *name = [[self class] name];
+
+    LGAutoPkgTask *task = [LGAutoPkgTask addRepoTask:[[self class] defaultRepository]];
+
+    if (_progressDelegate) {
+        [_progressDelegate startProgressWithMessage:[NSString stringWithFormat:@"Adding default AutoPkg repo for %@", name]];
+
+        task.progressDelegate = _progressDelegate;
+    }
+
+    [task launchInBackground:^(NSError *error) {
+        [self didCompleteInstallAction:sender error:error];
+
+        // Post a notification to trigger a reload of the repo table.
+        [[NSNotificationCenter defaultCenter] postNotificationName:kLGNotificationReposModified object:nil];
+    }];
+}
+
 - (void)install:(void (^)(NSString *, double))progress reply:(void (^)(NSError *))reply
 {
     if (progress) {
@@ -287,20 +292,7 @@ void subclassMustImplement(id className, SEL _cmd)
     [self install:nil];
 }
 
-- (void)installComplete:(id)sender error:(NSError *)error {
-    [_progressDelegate stopProgress:error];
-
-    if ([sender respondsToSelector:@selector(isEnabled)]) {
-        [sender setEnabled:YES];
-    }
-
-    if ([[self class] isInstalled] && [sender respondsToSelector:@selector(action)]) {
-        [sender setAction:@selector(uninstall:)];
-    }
-
-    [self refresh];
-}
-
+#pragma mark - Uninstall
 - (void)uninstall:(void (^)(NSString *, double))progress reply:(void (^)(NSError *))reply
 {
     _progressDelegate = self;
@@ -315,11 +307,59 @@ void subclassMustImplement(id className, SEL _cmd)
 
 - (void)uninstall:(id)sender
 {
-    // TODO: implement an uninstaller.
-    if (![[self class] isInstalled] && [sender respondsToSelector:@selector(action)]) {
-        [sender setAction:@selector(install:)];
+    void (^removeRepo)() = ^void() {
+        if ([LGAutoPkgTask version]) {
+            LGAutoPkgTask *task = [LGAutoPkgTask repoDeleteTask:[[self class] defaultRepository]];
+            if (_progressDelegate) {
+                task.progressDelegate = _progressDelegate;
+            }
+            [task launchInBackground:^(NSError *error) {
+                [self didCompleteInstallAction:sender error:error];
+
+                [[NSNotificationCenter defaultCenter] postNotificationName:kLGNotificationReposModified object:nil];
+                
+            }];
+        } else {
+            [self didCompleteInstallAction:sender error:nil];
+        }
+    };
+
+    if ([[self class] isInstalled]) {
+        LGToolTypeFlags flags = [[self class] typeFlags];
+        if (flags & kLGToolTypeInstalledPackage) {
+            LGUninstaller *uninstaller = [[LGUninstaller alloc] init];
+            if (_progressDelegate) {
+                uninstaller.progressDelegate = _progressDelegate;
+            }
+
+            [uninstaller uninstallPackagesWithIdentifiers:[[self class] packageIdentifiers ] reply:^(NSError *error) {
+                if (flags & kLGToolTypeAutoPkgSharedProcessor) {
+                    removeRepo();
+                } else {
+                    [self didCompleteInstallAction:sender error:error];
+                }
+            }];
+        }
     }
 }
+
+#pragma mark - Install / Uninstall completion
+- (void)didCompleteInstallAction:(id)sender error:(NSError *)error {
+    [_progressDelegate stopProgress:error];
+
+    if ([sender respondsToSelector:@selector(isEnabled)]) {
+        [sender setEnabled:YES];
+    }
+
+    BOOL isInstalled = [[self class] isInstalled];
+    if ([sender respondsToSelector:@selector(action)]) {
+        [sender setAction: isInstalled ? @selector(uninstall:) : @selector(install:)];
+    }
+
+    [self refresh];
+}
+
+#pragma mark - Util
 
 - (NSString *)versionTaskWithExec:(NSString *)exec arguments:(NSArray *)arguments
 {
@@ -468,16 +508,19 @@ void subclassMustImplement(id className, SEL _cmd)
 {
     NSString *title;
     switch (self.status) {
+        case kLGToolUpToDate:
+            if (_typeFlags & kLGToolTypeUninstallableTool) {
+                title = @"Uninstall ";
+                break;
+            }
         case kLGToolNotInstalled:
             title = @"Install ";
             break;
         case kLGToolUpdateAvailable:
             title = @"Update ";
             break;
-        case kLGToolUpToDate:
-            title = @"Uninstall ";
-            break;
-        default:
+                default:
+            title = @"";
             break;
     }
     return [title stringByAppendingString:_name];
@@ -492,6 +535,14 @@ void subclassMustImplement(id className, SEL _cmd)
     case kLGToolUpToDate:
     default:
         return NO;
+    }
+}
+
+- (SEL)targetAction {
+    if ((self.status == kLGToolUpToDate) && (_typeFlags | kLGToolTypeUninstallableTool)) {
+        return @selector(uninstall:);
+    } else {
+        return  @selector(install:);
     }
 }
 

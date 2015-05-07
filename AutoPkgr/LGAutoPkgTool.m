@@ -51,9 +51,9 @@
     return @"https://api.github.com/repos/autopkg/autopkg/releases";
 }
 
-+ (NSString *)packageIdentifier
++ (NSArray *)packageIdentifiers
 {
-    return @"com.github.autopkg.autopkg";
+    return @[@"com.github.autopkg.autopkg"];
 }
 
 #pragma mark - Instance overrides

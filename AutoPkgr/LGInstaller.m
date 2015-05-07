@@ -37,7 +37,6 @@ typedef NS_ENUM(NSInteger, LGInstallType) {
     NSString *_mountPoint;
 }
 
-
 #pragma mark - Main install methods
 - (void)runInstallerFor:(NSString *)installerName
               githubAPI:(NSString *)githubAPI
@@ -61,7 +60,7 @@ typedef NS_ENUM(NSInteger, LGInstallType) {
                reply:(void (^)(NSError *error))reply
 {
     NSAssert([_progressDelegate conformsToProtocol:@protocol(LGProgressDelegate)], @"And approperiate progress delegate is not set for installer");
-    
+
     __block NSString *progressMessage;
 
     // Get tmp file path for downloaded file
@@ -168,7 +167,7 @@ typedef NS_ENUM(NSInteger, LGInstallType) {
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         reply(error);
     }];
-    
+
     [operation start];
 }
 

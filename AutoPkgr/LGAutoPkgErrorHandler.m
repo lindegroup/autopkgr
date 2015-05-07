@@ -154,7 +154,7 @@ NSString *maskPasswordInString(NSString *string)
 - (NSError *)errorWithExitCode:(NSInteger)exitCode
 {
     NSError *error = nil;
-    
+
     NSString *standardErrString = self.errorString;
     if (standardErrString.length) {
         NSString *errorMsg = errorMessageFromAutoPkgVerb(_verb);
@@ -204,7 +204,7 @@ NSString *maskPasswordInString(NSString *string)
                                         code:exitCode
                                     userInfo:@{ NSLocalizedDescriptionKey : errorMsg,
                                                 NSLocalizedRecoverySuggestionErrorKey : errorDetails ?: @"" }];
-            
+
             // If Debugging is enabled, log the error message
             if ([[NSUserDefaults standardUserDefaults] boolForKey:@"debug"]) {
                 NSLog(@"Error [%ld] %@ \n %@", (long)exitCode, errorMsg, errorDetails);

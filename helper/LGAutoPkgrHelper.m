@@ -21,6 +21,7 @@
 #import "LGAutoPkgr.h"
 #import "LGAutoPkgrProtocol.h"
 #import "LGProgressDelegate.h"
+#import "LGPackageRemover.h"
 
 #import "SNTCodesignChecker.h"
 
@@ -287,6 +288,14 @@ helper_reply:
     // If user cancels the challenge, or any other problem occurs it will return a populated error object, with the details
     NSError *error = [LGAutoPkgrAuthorizer checkAuthorization:authData
                                                       command:_cmd];
+    if (error != nil) {
+        if (error.code == errAuthorizationCanceled) {
+            reply(nil);
+        } else {
+            reply(error);
+        }
+        return;
+    }
 
     // If authorization was successful continue,
     if (!error) {
@@ -350,9 +359,10 @@ helper_reply:
     task.standardError = task.standardOutput;
 
     [[task.standardOutput fileHandleForReading] setReadabilityHandler:^(NSFileHandle *fh) {
-        if (fh.availableData) {
+        NSData *data = fh.availableData;
+        if (data.length) {
             progress ++;
-            NSString *rawMessage = [[NSString alloc] initWithData:fh.availableData encoding:NSUTF8StringEncoding];
+            NSString *rawMessage = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
             NSArray *allMessages = [ rawMessage componentsSeparatedByCharactersInSet:[NSCharacterSet newlineCharacterSet]];
 
             for (NSString *message in allMessages) {
@@ -370,6 +380,30 @@ helper_reply:
     }];
 
     [task launch];
+}
+
+- (void)uninstallPackagesWithIdentifiers:(NSArray *)identifiers authorization:(NSData *)authData reply:(uninstallPackageReplyBlock)reply{
+
+    NSError *error;
+    error = [LGAutoPkgrAuthorizer checkAuthorization:authData command:_cmd];
+    if (error != nil) {
+        if (error.code == errAuthorizationCanceled) {
+            reply(nil, nil, nil);
+        } else {
+            reply(nil, nil, error);
+        }
+        return;
+    }
+
+    LGPackageRemover *remover = [[LGPackageRemover alloc] init];
+    remover.dryRun = NO;
+
+    [remover removePackagesWithIdentifiers:identifiers progress:^(NSString *message, double progress) {
+#if DEBUG
+        syslog(LOG_INFO, "[UNINSTALLER]: %s", message.UTF8String);
+#endif
+        // TODO: send progress updates
+    } reply:reply];
 }
 
 #pragma mark - Life Cycle

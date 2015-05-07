@@ -13,14 +13,24 @@ typedef NS_ENUM(NSInteger, LGToolTypeFlags) {
      *  Unknown Tool Type.
      */
     kLGToolTypeUnspecified = 0,
+
     /**
-     *  Add this as a flag if the tool is a shared processor. If this is specified make sure to include the default repo property in the subclass.
+     *  Add this as a flag if the tool is a shared processor.
+     *  If this is specified make sure to include the default 
+     *  repo property in the subclass.
      */
     kLGToolTypeAutoPkgSharedProcessor = 1 << 0,
+
     /**
-     *  Flag to declare that the tool requires a package installation.
+     *  Flag to declare the tool requires a package installation.
      */
     kLGToolTypeInstalledPackage = 1 << 1,
+
+    /**
+     *  Flag to declare that it is acceptable to uninstall the tool.
+     *  @note this is only used when the kLGToolTypeInstalledPackage is also set
+     */
+    kLGToolTypeUninstallableTool = 1 << 2,
 };
 
 @interface LGTool () <LGProgressDelegate>
@@ -57,7 +67,7 @@ typedef NS_ENUM(NSInteger, LGToolTypeFlags) {
 /**
  *  The package identifier for the tool. Primarily used to determine items during uninstall:
  */
-+ (NSString *)packageIdentifier;
++ (NSArray *)packageIdentifiers;
 
 
 #pragma mark - Instance methods to override

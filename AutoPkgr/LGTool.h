@@ -189,4 +189,7 @@ typedef NS_ENUM(OSStatus, LGToolInstallStatus) {
 // Mapped bool for whether tool needs installed or updated.
 @property (assign, readonly) BOOL needsInstalled;
 
+// Selector to sepcify install / uninstall behavior.
+@property (assign, readonly) SEL targetAction;
+
 @end

@@ -1,5 +1,5 @@
 // LGUninstaller.h
-// 
+//
 //  Copyright 2015 Eldon Ahrold
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,15 +16,19 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "LGProgressDelegate.h"
 
 @interface LGUninstaller : NSObject
 
-- (void)uninstallPackageWithIdentifier:(NSString *)packageIdentifier
-                                 reply:(void (^)(NSError *error))reply;
+@property (weak) id<LGProgressDelegate> progressDelegate;
+
+- (void)uninstallPackagesWithIdentifiers:(NSArray *)packageIdentifiers
+                                   reply:(void (^)(NSError *error))reply;
 
 - (void)removeFilesAtPaths:(NSArray *)fileList
                      reply:(void (^)(NSError *error))reply;
 
 - (void)removePriviledgedFilesAtPaths:(NSArray *)fileList
                                 reply:(void (^)(NSError *error))reply;
+
 @end

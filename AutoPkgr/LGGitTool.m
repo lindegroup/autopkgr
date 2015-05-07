@@ -95,9 +95,12 @@ NSArray *knownGitPaths()
     return @"https://api.github.com/repos/timcharper/git_osx_installer/releases";
 }
 
-+ (NSString *)packageIdentifier
++ (NSArray *)packageIdentifiers
 {
-    return @"GitOSX.Installer.git221Universal.git.pkg";
+    if ([[[LGDefaults standardUserDefaults] gitPath] isEqualToString:kLGOfficialGit]) {
+        return @[@"GitOSX.Installer.git221Universal.git.pkg"];
+    }
+    return nil;
 }
 
 #pragma mark - Instance overrides.

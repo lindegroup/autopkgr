@@ -20,7 +20,7 @@
 @interface LGPackageRemover : NSObject
 
 @property (nonatomic, assign) BOOL dryRun;
-@property (copy, nonatomic, readonly) NSArray *installedPackages;
++(NSArray *)installedPackages;
 
 - (void)removePackageWithIdentifier:(NSString *)identifier progress:(void (^)(NSString *, double))progress reply:(void (^)(NSArray *removed, NSArray *failed, NSError *error))reply;
 

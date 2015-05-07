@@ -42,6 +42,14 @@ static NSString *kCommandKeyAuthRightDesc = @"authRightDescription";
                                                                 @"prompt shown when user is required to authorize to install a package"
                                                                 )
                 },
+            NSStringFromSelector(@selector(uninstallPackagesWithIdentifiers:authorization:reply:)) : @{
+                    kCommandKeyAuthRightName    : @"com.lindegroup.autopkgr.pkg.uninstaller",
+                    kCommandKeyAuthRightDefault : @kAuthorizationRuleAuthenticateAsAdmin,
+                    kCommandKeyAuthRightDesc    : NSLocalizedString(
+                                                                    @"AutoPkgr is trying to uninstall a package. ",
+                                                                    @"prompt shown when user is required to authorize to uninstall a package"
+                                                                    )
+                    },
             NSStringFromSelector(@selector(scheduleRun:user:program:authorization:reply:)) : @{
                 kCommandKeyAuthRightName    : @"com.lindegroup.autopkgr.add.scheduled.run",
                 kCommandKeyAuthRightDefault : @kAuthorizationRuleAuthenticateAsAdmin,
@@ -193,6 +201,7 @@ static NSString *kCommandKeyAuthRightDesc = @"authRightDescription";
     if (authRef) {
         [[self class] setupAuthorizationRights:authRef];
     }
+
     return authorization;
 }
 

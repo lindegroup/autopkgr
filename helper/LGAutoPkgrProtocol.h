@@ -27,6 +27,8 @@ typedef NS_ENUM(NSInteger, LGBackgroundTaskProgressState) {
     kLGAutoPkgProgressComplete = 1
 };
 
+typedef void (^uninstallPackageReplyBlock)(NSArray *removed, NSArray *remain, NSError *error);
+
 @protocol HelperAgent <NSObject>
 
 # pragma mark - Password / KeyFile
@@ -49,6 +51,10 @@ typedef NS_ENUM(NSInteger, LGBackgroundTaskProgressState) {
 - (void)installPackageFromPath:(NSString *)path
                  authorization:(NSData *)authData
                          reply:(void (^)(NSError *error))reply;
+
+- (void)uninstallPackagesWithIdentifiers:(NSArray *)identifiers
+                           authorization:(NSData *)authData
+                                   reply:(uninstallPackageReplyBlock)reply;
 
 #pragma mark - Life Cycle
 - (void)quitHelper:(void (^)(BOOL success))reply;

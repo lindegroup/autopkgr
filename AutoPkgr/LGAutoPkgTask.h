@@ -277,7 +277,10 @@ extern NSString *const kLGAutoPkgRepoURLKey;
 + (LGAutoPkgTask *)runRecipeListTask;
 + (LGAutoPkgTask *)searchTask:(NSString *)recipe;
 + (LGAutoPkgTask *)repoUpdateTask;
+
+// TODO: Rename to repoAddTask
 + (LGAutoPkgTask *)addRepoTask:(NSString *)repo;
++ (LGAutoPkgTask *)repoDeleteTask:(NSString *)repo;
 
 #pragma mark-- Other --
 /**

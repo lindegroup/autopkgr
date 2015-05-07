@@ -90,22 +90,20 @@ NSDictionary *errorInfoFromCode(LGPackageInsallerError code, NSString *identifie
 {
 
     BOOL dryRun = _dryRun;
-
+    __block NSError *error;
     if (!_dryRun) {
         for (NSString *identifier in identifiers) {
             if (![[[self class] validRemovablePackages] containsObject:identifier]) {
-                NSError *error = [[self class] errorWithCode:kLGPackageInstallerErrorPackageNotRemovable identifier:identifier];
+                error = [[self class] errorWithCode:kLGPackageInstallerErrorPackageNotRemovable identifier:identifier];
                 return reply(nil, nil, error);
             }
         }
     }
 
     [_executionQueue addOperationWithBlock:^{
-        __block NSError *replyError = nil;
 
         NSMutableArray *files = [[NSMutableArray alloc] init];
-        [files addObjectsFromArray:[[self bomForIdentifiers:identifiers error:&replyError] array]];
-
+        [files addObjectsFromArray:[[self bomForIdentifiers:identifiers error:&error] array]];
 
         // Remove the files...
         double count = 0.0;
@@ -161,11 +159,11 @@ NSDictionary *errorInfoFromCode(LGPackageInsallerError code, NSString *identifie
 
 
         for (NSString *identifier in identifiers) {
-            [self forget:identifier error:&replyError];
+            [self forget:identifier error:&error];
         }
 
         dispatch_async(dispatch_get_main_queue(), ^{
-            reply(removed, remain, replyError);
+            reply(removed, remain, error);
         });
     }];
 }
@@ -201,11 +199,12 @@ NSDictionary *errorInfoFromCode(LGPackageInsallerError code, NSString *identifie
     return forgot;
 }
 
+
 - (NSMutableOrderedSet *)bomForIdentifiers:(NSArray *)identifiers error:(NSError *__autoreleasing *)error
 {
 
     NSMutableOrderedSet *files = [[NSMutableOrderedSet alloc] init];
-    NSMutableOrderedSet *workingDirectoryArray = [[NSMutableOrderedSet alloc] init];
+    NSMutableOrderedSet *directories = [[NSMutableOrderedSet alloc] init];
     NSFileManager *fm = [NSFileManager defaultManager];
 
     for (NSString *identifier in identifiers) {
@@ -224,7 +223,7 @@ NSDictionary *errorInfoFromCode(LGPackageInsallerError code, NSString *identifie
                 NSString *normalizedFile = [installerBasePath stringByAppendingPathComponent:file];
                 if ([fm fileExistsAtPath:normalizedFile isDirectory:&isDir]) {
                     if (isDir) {
-                        [workingDirectoryArray addObject:normalizedFile];
+                        [directories addObject:normalizedFile];
                     } else {
                         [files addObject:normalizedFile];
                     }
@@ -235,7 +234,7 @@ NSDictionary *errorInfoFromCode(LGPackageInsallerError code, NSString *identifie
 
     // Go over the directory array and see if it will be empty once all of the
     // files in the file array are removed
-    for (NSString *dir in [workingDirectoryArray copy]) {
+    for (NSString *dir in [directories copy]) {
         NSArray *dirContents = [fm contentsOfDirectoryAtPath:dir error:nil];
 
         for (NSString *fileName in dirContents) {
@@ -248,15 +247,15 @@ NSDictionary *errorInfoFromCode(LGPackageInsallerError code, NSString *identifie
                 // If there is a file in the current dir array that is not represented
                 // in the fileArray the directory will not be empty so
                 // remove the current dir from the array of directories to purge
-                if (![files containsObject:filePath] && ![workingDirectoryArray containsObject:filePath]) {
-                    [workingDirectoryArray removeObject:dir];
+                if (![files containsObject:filePath] && ![directories containsObject:filePath]) {
+                    [directories removeObject:dir];
                     break;
                 }
             }
         }
     }
 
-    [files addObjectsFromArray:[workingDirectoryArray array]];
+    [files addObjectsFromArray:[directories array]];
 
     return files;
 }
@@ -326,6 +325,7 @@ NSDictionary *errorInfoFromCode(LGPackageInsallerError code, NSString *identifie
     return [[[self class] pkgutilTaskWithArgs:@[ @"--pkgs" ] error:nil] taskData_splitLines];
 }
 
+#pragma mark - Static declarations // For safety!
 + (NSArray *)validRemovablePackages
 {
     static NSArray *packages;
