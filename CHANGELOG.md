@@ -19,6 +19,7 @@ All notable changes to this project will be documented in this file. This projec
 - AutoPkgr menu status should now be up to date upon first click, not just upon status change. (#340)
 - Fixed a bug that caused progress indicators to show inaccurate counts when the `StopProcessingIf` processor is present in a recipe. (#333)
 - Reduced the odds of error messages overflowing the on-screen alert dialog boxes.
+- AutoPkgr now asks for XML when talking to your JSS, but should successfully revert to JSON if your JSS stubbornly refuses. (#287)
 - Fixed a minor bug that could result in excess CPU usage.
 - Various minor cosmetic changes.
 
