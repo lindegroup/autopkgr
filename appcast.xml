@@ -25,6 +25,7 @@
                     <li>AutoPkgr menu status should now be up to date upon first click, not just upon status change. (<a href="https://github.com/lindegroup/autopkgr/issues/340" class="issue-link" title="Improve appearance and behavior of &quot;Last AutoPkg Run&quot; status in menu">#340</a>)</li>
                     <li>Fixed a bug that caused progress indicators to show inaccurate counts when the <code>StopProcessingIf</code> processor is present in a recipe. (<a href="https://github.com/lindegroup/autopkgr/issues/333" class="issue-link" title="GUI mis-counts completed recipes when you Run AutoPkg Now">#333</a>)</li>
                     <li>Reduced the odds of error messages overflowing the on-screen alert dialog boxes.</li>
+                    <li>AutoPkgr now asks for XML when talking to your JSS, but should successfully revert to JSON if your JSS stubbornly refuses. (<a href="https://github.com/lindegroup/autopkgr/issues/287" class="issue-link" title="Unable to connect to JSS">#287</a>)</li>
                     <li>Fixed a minor bug that could result in excess CPU usage.</li>
                     <li>Various minor cosmetic changes.</li>
                 </ul>
