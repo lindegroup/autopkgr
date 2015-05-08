@@ -1,22 +1,22 @@
 PODS:
-  - AFNetworking (2.5.2):
-    - AFNetworking/NSURLConnection (= 2.5.2)
-    - AFNetworking/NSURLSession (= 2.5.2)
-    - AFNetworking/Reachability (= 2.5.2)
-    - AFNetworking/Security (= 2.5.2)
-    - AFNetworking/Serialization (= 2.5.2)
-    - AFNetworking/UIKit (= 2.5.2)
-  - AFNetworking/NSURLConnection (2.5.2):
+  - AFNetworking (2.5.3):
+    - AFNetworking/NSURLConnection (= 2.5.3)
+    - AFNetworking/NSURLSession (= 2.5.3)
+    - AFNetworking/Reachability (= 2.5.3)
+    - AFNetworking/Security (= 2.5.3)
+    - AFNetworking/Serialization (= 2.5.3)
+    - AFNetworking/UIKit (= 2.5.3)
+  - AFNetworking/NSURLConnection (2.5.3):
     - AFNetworking/Reachability
     - AFNetworking/Security
     - AFNetworking/Serialization
-  - AFNetworking/NSURLSession (2.5.2):
+  - AFNetworking/NSURLSession (2.5.3):
     - AFNetworking/Reachability
     - AFNetworking/Security
     - AFNetworking/Serialization
-  - AFNetworking/Reachability (2.5.2)
-  - AFNetworking/Security (2.5.2)
-  - AFNetworking/Serialization (2.5.2)
+  - AFNetworking/Reachability (2.5.3)
+  - AFNetworking/Security (2.5.3)
+  - AFNetworking/Serialization (2.5.3)
   - AHKeychain (0.2.1)
   - AHLaunchCtl (0.4.2)
   - AHProxySettings (0.1.1)
@@ -26,7 +26,7 @@ PODS:
   - XMLDictionary (1.4)
 
 DEPENDENCIES:
-  - AFNetworking (from `https://github.com/AFNetworking/AFNetworking.git`)
+  - AFNetworking (~> 2.5.3)
   - AHKeychain (~> 0.2.1)
   - AHLaunchCtl (~> 0.4.1)
   - AHProxySettings (~> 0.1.1)
@@ -35,17 +35,8 @@ DEPENDENCIES:
   - Sparkle (= 1.8)
   - XMLDictionary (~> 1.4)
 
-EXTERNAL SOURCES:
-  AFNetworking:
-    :git: https://github.com/AFNetworking/AFNetworking.git
-
-CHECKOUT OPTIONS:
-  AFNetworking:
-    :commit: 0c9216e86ec0822e7556ceaecedfe3bc2a4b486d
-    :git: https://github.com/AFNetworking/AFNetworking.git
-
 SPEC CHECKSUMS:
-  AFNetworking: f0e3cd9309e4ea3710d557938a2710f0f1111ca2
+  AFNetworking: e1d86c2a96bb5d2e7408da36149806706ee122fe
   AHKeychain: f797278e48ab3ddb4d62370b84583652bc071baa
   AHLaunchCtl: 8f8bb26326627756aa4e85609a2e1896b8dfe874
   AHProxySettings: 1f882780699d7765aca9377660ba280306d30910

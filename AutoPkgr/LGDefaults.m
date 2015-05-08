@@ -114,23 +114,22 @@
 #pragma mark - Info
 - (id)LastAutoPkgRun
 {
-    return [self objectForKey:NSStringFromSelector(@selector(LastAutoPkgRun))];
+    id date = [self objectForKey:NSStringFromSelector(@selector(LastAutoPkgRun))];
+
+    NSString *setVal;
+    if ([date isKindOfClass:[NSDate class]]){
+        setVal = [[self class] formattedDate:date];
+
+    } else if ([date isKindOfClass:[NSString class]] ) {
+        setVal = date;
+    }
+
+    return setVal;
 }
 
 - (void)setLastAutoPkgRun:(id)LastAutoPkgRun
 {
-    NSString *setVal;
-    if ([LastAutoPkgRun isKindOfClass:[NSDate class]]){
-        NSDateFormatter *fomatter = [NSDateFormatter new];
-        [fomatter setDateStyle:NSDateFormatterMediumStyle];
-        [fomatter setTimeStyle:NSDateFormatterMediumStyle];
-        setVal = [fomatter stringFromDate:LastAutoPkgRun];
-    } else if ([LastAutoPkgRun isKindOfClass:[NSString class]] ) {
-        setVal = LastAutoPkgRun;
-        NSLog(@"Setting date as string");
-    }
-    
-    [self setObject:setVal forKey:NSStringFromSelector(@selector(LastAutoPkgRun))];
+    [self setObject:LastAutoPkgRun forKey:NSStringFromSelector(@selector(LastAutoPkgRun))];
 }
 
 - (LGReportItems)reportedItemFlags {
@@ -316,6 +315,26 @@
 }
 
 #pragma mark - Class Methods
++ (NSString *)formattedDate:(NSDate *)date
+{
+    if ([date isKindOfClass:[NSDate class]]) {
+        NSDateFormatter *formatter = [NSDateFormatter new];
+
+        // Set the date style...
+
+        formatter.timeStyle = NSDateFormatterShortStyle;
+        formatter.dateStyle = NSDateFormatterShortStyle;
+
+        // Set up relative date formatting...
+        formatter.doesRelativeDateFormatting = YES;
+        formatter.locale = [NSLocale currentLocale];
+        formatter.timeZone = [NSTimeZone defaultTimeZone];
+        
+        return [formatter stringFromDate:date];
+    }
+    return nil;
+}
+
 + (BOOL)fixRelativePathsInAutoPkgDefaults:(NSError *__autoreleasing *)error neededFixing:(NSInteger *)neededFixing
 {
     LGDefaults *defaults = [LGDefaults new];

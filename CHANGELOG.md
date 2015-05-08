@@ -6,6 +6,26 @@ All notable changes to this project will be documented in this file. This projec
 
 ## [Unreleased][unreleased]
 
+- Nothing yet.
+
+## [1.2.3] - 2015-05-08
+
+### Changed
+- Now you can check the SSL box even if you're not using SMTP authentication. (#335)
+- Relative date/time now shown in AutoPkgr menu status (e.g. "Today at 8:00 AM"). (#340)
+
+### Fixed
+- Fixed a particularly devious bug that would cause AutoPkgr to get stuck running recipes while certain apps (usually Google Chrome) were active. (#230)
+- AutoPkgr menu status should now be up to date upon first click, not just upon status change. (#340)
+- Fixed a bug that caused progress indicators to show inaccurate counts when the `StopProcessingIf` processor is present in a recipe. (#333)
+- Reduced the odds of error messages overflowing the on-screen alert dialog boxes.
+- AutoPkgr now asks for XML when talking to your JSS, but should successfully revert to JSON if your JSS stubbornly refuses. (#287)
+- Fixed a minor bug that could result in excess CPU usage.
+- Various minor cosmetic changes.
+
+### Security
+- Updated to the most recent version of the AFNetworking components.
+
 
 ## [1.2.2] - 2015-04-16
 
@@ -230,7 +250,8 @@ All notable changes to this project will be documented in this file. This projec
 - Initial public release of AutoPkgr.
 
 
-[unreleased]: https://github.com/lindegroup/autopkgr/compare/v1.2.2...HEAD
+[unreleased]: https://github.com/lindegroup/autopkgr/compare/v1.2.3...HEAD
+[1.2.3]: https://github.com/lindegroup/autopkgr/compare/v1.2.2...v1.2.3
 [1.2.2]: https://github.com/lindegroup/autopkgr/compare/v1.2.1...v1.2.2
 [1.2.1]: https://github.com/lindegroup/autopkgr/compare/v1.2...v1.2.1
 [1.2]: https://github.com/lindegroup/autopkgr/compare/v1.1.3...v1.2

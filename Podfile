@@ -5,7 +5,7 @@ AutoPkgr = ["AutoPkgr", "AutoPkgrTests"]
 
 AutoPkgr.each { |t|
     target t do
-        pod 'AFNetworking', '~> 2.4.1'
+        pod 'AFNetworking', '~> 2.5.3'
         pod 'Sparkle', '1.8'
         pod 'XMLDictionary', '~> 1.4'
         pod 'mailcore2-osx', '~> 0.5'

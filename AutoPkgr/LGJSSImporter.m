@@ -130,13 +130,10 @@ NSPredicate *jdsFilterPredicate()
 
                                       [[NSOperationQueue mainQueue] addOperationWithBlock:^{
                                           [self stopStatusUpdate:error];
-                                           id distPoints = distributionPoints[@"distribution_point"];
-                                           if (distPoints) {
-                                               NSArray *cleanedArray = [self evaluateJSSRepoDictionaries:distPoints];
-                                               if (cleanedArray) {
-                                                   _defaults.JSSRepos = cleanedArray;
-                                                   [_jssDistributionPointTableView reloadData];
-                                               }
+                                            NSArray *cleanedArray = [self evaluateJSSRepoDictionaries:distributionPoints];
+                                           if (cleanedArray) {
+                                               _defaults.JSSRepos = cleanedArray;
+                                               [_jssDistributionPointTableView reloadData];
                                            }
                                       }];
                                   }];
@@ -300,8 +297,18 @@ NSPredicate *jdsFilterPredicate()
     }];
 }
 
-- (NSArray *)evaluateJSSRepoDictionaries:(id)distPoints
+- (NSArray *)evaluateJSSRepoDictionaries:(NSDictionary *)distributionPoints
 {
+
+    id distPoints;
+
+    // If the object was parsed as an XML object the key we're looking for is
+    // distribution_point. If the object is a JSON object the key is distribution_points
+    if ((distPoints = distributionPoints[@"distribution_point"]) == nil &&
+        (distPoints = distributionPoints[@"distribution_points"]) == nil) {
+        return nil;
+    }
+
     NSArray *dictArray;
     NSMutableArray *newRepos;
 
@@ -318,8 +325,10 @@ NSPredicate *jdsFilterPredicate()
     // If the "type" key is not set for the DP then it's auto detected via the server
     // and we'll strip them out here.
     LGDefaults *defaults = [LGDefaults standardUserDefaults];
+    
     NSPredicate *customDistPointsPredicate = [NSPredicate predicateWithFormat:@"not %K == nil", kLGJSSDistPointTypeKey];
     NSArray *customDistPoints = [defaults.JSSRepos filteredArrayUsingPredicate:customDistPointsPredicate];
+
     newRepos = [[NSMutableArray alloc] initWithArray:customDistPoints];
 
     if (dictArray) {

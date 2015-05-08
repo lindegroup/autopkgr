@@ -18,6 +18,8 @@
 //
 
 #import "LGAutoPkgTask.h"
+#import "LGAutoPkgErrorHandler.h"
+
 #import "LGRecipes.h"
 #import "LGVersionComparator.h"
 #import "AHProxySettings.h"
@@ -57,6 +59,8 @@ typedef void (^AutoPkgReplyErrorBlock)(NSError *error);
 @property (copy, nonatomic, readwrite) NSMutableData *standardOutData;
 @property (copy, nonatomic, readwrite) NSString *standardOutString;
 @property (copy, nonatomic, readwrite) NSString *standardErrString;
+@property (strong, nonatomic) LGAutoPkgErrorHandler *errorHandler;
+
 @property (strong, nonatomic) LGVersioner *versioner;
 
 // Results objects
@@ -163,6 +167,7 @@ typedef void (^AutoPkgReplyErrorBlock)(NSError *error);
 @implementation LGAutoPkgTask {
     BOOL _isExecuting;
     BOOL _isFinished;
+    BOOL _userCanceled;
 }
 
 - (NSString *)taskDescription
@@ -220,6 +225,8 @@ typedef void (^AutoPkgReplyErrorBlock)(NSError *error);
 - (void)cancel
 {
     [self.taskLock lock];
+
+    _userCanceled = YES;
     if (self.task && self.task.isRunning) {
         DLog(@"Canceling %@", self.taskDescription);
         [self.task terminate];
@@ -315,9 +322,9 @@ typedef void (^AutoPkgReplyErrorBlock)(NSError *error);
         [self.task.standardError fileHandleForReading].readabilityHandler = nil;
     }
 
-    if (!_error) {
+    if (!_error && !_userCanceled) {
         [self.taskLock lock];
-        self.error = [LGError errorWithTaskError:self.task verb:_verb];
+        self.error = [_errorHandler errorWithExitCode:self.task.terminationStatus];
         [self.taskLock unlock];
     }
 
@@ -344,7 +351,7 @@ typedef void (^AutoPkgReplyErrorBlock)(NSError *error);
 - (void)launchInBackground:(void (^)(NSError *))reply
 {
     LGAutoPkgTaskManager *bgQueue = [LGAutoPkgTaskManager new];
-    DLog(@"bgQueue: %@", bgQueue.name);
+    DevLog(@"bgQueue: %@", bgQueue.name);
     self.replyErrorBlock = reply;
     [bgQueue addOperation:self];
 }
@@ -397,14 +404,16 @@ typedef void (^AutoPkgReplyErrorBlock)(NSError *error);
 }
 
 #pragma mark - Task config helpers
-#pragma mark - Task config helpers
 - (void)configureFileHandles
 {
+    // Set up stdout
     NSPipe *standardOutput = [NSPipe pipe];
     self.task.standardOutput = standardOutput;
 
-    NSPipe *standardError = [NSPipe pipe];
-    self.task.standardError = standardError;
+    // Set up stderr
+    // The Error handler class creates a the pipe to process the stderr messages.
+    _errorHandler = [[LGAutoPkgErrorHandler alloc] initWithVerb:_verb];
+    self.task.standardError = _errorHandler.pipe;
 
     if (_verb == kLGAutoPkgRun || _verb == kLGAutoPkgRepoUpdate) {
         if (self.AUTOPKG_VERSION_0_4_0) {
@@ -414,7 +423,8 @@ typedef void (^AutoPkgReplyErrorBlock)(NSError *error);
 
             if (_verb == kLGAutoPkgRun) {
                 _versioner = [[LGVersioner alloc] init];
-                progressPredicate = [NSPredicate predicateWithFormat:@"SELF CONTAINS[cd] 'Processing'"];
+                progressPredicate = [NSPredicate predicateWithFormat:@"SELF MATCHES '^Processing.*\\.\\.\\.'"];
+
                 total = [self recipeListCount];
             } else if (_verb == kLGAutoPkgRepoUpdate) {
                 progressPredicate = [NSPredicate predicateWithFormat:@"SELF CONTAINS[cd] '.git'"];
@@ -423,43 +433,48 @@ typedef void (^AutoPkgReplyErrorBlock)(NSError *error);
 
             BOOL verbose = [[NSUserDefaults standardUserDefaults] boolForKey:@"verboseAutoPkgRun"];
             [[standardOutput fileHandleForReading] setReadabilityHandler:^(NSFileHandle *handle) {
-                NSString *message = [[NSString alloc]initWithData:[handle availableData] encoding:NSUTF8StringEncoding];
-                
-                [_versioner parseString:message];
-                if ([progressPredicate evaluateWithObject:message]) {
-                    NSString *fullMessage;
-                    if (_verb == kLGAutoPkgRepoUpdate) {
-                        fullMessage = [NSString stringWithFormat:@"Updating %@", [message lastPathComponent]];
-                    } else {
-                        int cntStr = (int)round(count) + 1;
-                        int totStr = (int)round(total);
-                        fullMessage = [[NSString stringWithFormat:@"(%d/%d) %@", cntStr, totStr, message] stringByTrimmingCharactersInSet:[NSCharacterSet newlineCharacterSet]];
+                NSData *data = handle.availableData;
+                if (data.length) {
+                    NSString *message = [[NSString alloc]initWithData:data encoding:NSUTF8StringEncoding];
+
+                    [_versioner parseString:message];
+                    if ([progressPredicate evaluateWithObject:message]) {
+                        NSString *fullMessage;
+                        if (_verb == kLGAutoPkgRepoUpdate) {
+                            fullMessage = [NSString stringWithFormat:@"Updating %@", [message lastPathComponent]];
+                        } else {
+                            int cntStr = (int)round(count) + 1;
+                            int totStr = (int)round(total);
+                            fullMessage = [[NSString stringWithFormat:@"(%d/%d) %@", cntStr, totStr, message] stringByTrimmingCharactersInSet:[NSCharacterSet newlineCharacterSet]];
+                        }
+
+                        double progress = ((count/total) * 100);
+
+                        LGAutoPkgTaskResponseObject *response = [[LGAutoPkgTaskResponseObject alloc] init];
+                        response.progressMessage = fullMessage;
+                        response.progress = progress;
+                        count++;
+
+                        [(NSObject *)_taskStatusDelegate performSelectorOnMainThread:@selector(didReceiveStatusUpdate:) withObject:response waitUntilDone:NO];
+
+                        // If verboseAutoPkgRun is not enabled, log the limited message here.
+                        if (!verbose) {
+                            NSLog(@"%@",message);
+                        }
                     }
-
-                    double progress = ((count/total) * 100);
-
-                    LGAutoPkgTaskResponseObject *response = [[LGAutoPkgTaskResponseObject alloc] init];
-                    response.progressMessage = fullMessage;
-                    response.progress = progress;
-                    count++;
-
-                    [(NSObject *)_taskStatusDelegate performSelectorOnMainThread:@selector(didReceiveStatusUpdate:) withObject:response waitUntilDone:NO];
-
-                    // If verboseAutoPkgRun is not enabled, log the limited message here.
-                    if (!verbose) {
+                    // If verboseAutoPkgRun is enabled, log everything generated by autopkg run -v.
+                    if (verbose) {
                         NSLog(@"%@",message);
                     }
-                }
-                // If verboseAutoPkgRun is enabled, log everything generated by autopkg run -v.
-                if (verbose) {
-                    NSLog(@"%@",message);
                 }
             }];
         }
     } else {
+        // In order to prevent maxing out the stdout buffer collect the data progressively
+        // even thought the data returned is usually small.
         [[standardOutput fileHandleForReading] setReadabilityHandler:^(NSFileHandle *fh) {
             NSData *data = [fh availableData];
-            if ([data length]) {
+            if (data.length) {
                 if (!_standardOutData) {
                     _standardOutData = [[NSMutableData alloc] init ];
                 }
@@ -524,18 +539,22 @@ typedef void (^AutoPkgReplyErrorBlock)(NSError *error);
 }
 
 #pragma mark - Output / Results
+- (int)exitCode
+{
+    if (!self.task.isRunning) {
+        return self.task.terminationStatus;
+    }
+
+    return NSTaskTerminationReasonUncaughtSignal;
+}
+
 - (NSString *)standardErrString
 {
     [self.taskLock lock];
     if (!_standardErrString && !self.task.isRunning) {
-        NSData *data;
-        if ([self.task.standardError isKindOfClass:[NSPipe class]]) {
-            data = [[self.task.standardError fileHandleForReading] readDataToEndOfFile];
-            if (data) {
-                _standardErrString = [[NSString alloc] initWithData:data encoding:NSASCIIStringEncoding];
-            }
-        }
+        _standardErrString = _errorHandler.errorString;
     }
+
     [self.taskLock unlock];
     return _standardErrString;
 }
@@ -919,23 +938,32 @@ typedef void (^AutoPkgReplyErrorBlock)(NSError *error);
 + (BOOL)instanceIsRunning
 {
     NSTask *task = [NSTask new];
+    NSMutableData *data = [[NSMutableData alloc] init];
 
     task.launchPath = @"/bin/ps";
     task.arguments = @[ @"-e", @"-o", @"command=" ];
     task.standardOutput = [NSPipe pipe];
-    task.standardError = task.standardOutput;
+
+    [[task.standardOutput fileHandleForReading] setReadabilityHandler:^(NSFileHandle *fh) {
+        NSData *newData;
+        if ((newData = fh.availableData)) {
+            [data appendData:newData];
+        }
+    }];
 
     [task launch];
     [task waitUntilExit];
 
-    NSData *outputData = [[task.standardOutput fileHandleForReading] readDataToEndOfFile];
-    NSString *outputString = [[NSString alloc] initWithData:outputData encoding:NSUTF8StringEncoding];
+    if (data.length) {
+        NSString *outputString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
 
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"SELF CONTAINS %@", autopkg()];
-    NSArray *runningProcs = [outputString componentsSeparatedByString:@"\n"];
+        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"SELF CONTAINS %@", autopkg()];
 
-    if ([[runningProcs filteredArrayUsingPredicate:predicate] count]) {
-        return YES;
+        NSArray *runningProcs = [outputString componentsSeparatedByString:@"\n"];
+
+        if ([[runningProcs filteredArrayUsingPredicate:predicate] count]) {
+            return YES;
+        }
     }
     return NO;
 }
