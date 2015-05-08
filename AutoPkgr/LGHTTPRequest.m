@@ -44,9 +44,11 @@
     NSURL *url = [NSURL URLWithString:distPointAddress];
 
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
+    [request setValue:@"application/xml" forHTTPHeaderField:@"Accept"];
     request.timeoutInterval = 5.0;
 
     // Set up the operation
+
     AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
 
     // Add the credential if specified
@@ -76,8 +78,13 @@
 
     [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSError *error = nil;
+
         NSDictionary *responseDictionary = [self xmlToDictionary:responseObject];
+
         if (!responseDictionary) error = [LGError errorWithCode:kLGErrorJSSXMLSerializerError];
+
+        DLog(@"Serialized Dictionary: [%@] %@", [responseDictionary class],responseDictionary);
+
         reply(responseDictionary,error);
         [self resetCache];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
@@ -146,12 +153,18 @@
 - (NSDictionary *)xmlToDictionary:(id)xmlObject;
 {
     NSDictionary *dictionary = nil;
+    NSError *error;
+
     if (xmlObject) {
         XMLDictionaryParser *xmlParser = [[XMLDictionaryParser alloc] init];
         if ([xmlObject isKindOfClass:[NSXMLParser class]]) {
             dictionary = [xmlParser dictionaryWithParser:xmlObject];
         } else if ([xmlObject isKindOfClass:[NSData class]]) {
-            dictionary = [xmlParser dictionaryWithData:xmlObject];
+            if((dictionary = [xmlParser dictionaryWithData:xmlObject]) == nil)
+               // If the data doesn't parse as XML also try to parse as JSON.
+                if((dictionary = [NSJSONSerialization JSONObjectWithData:xmlObject options:0 error:&error]) == nil){
+                    DLog(@"%@", error);
+                }
         } else if ([xmlObject isKindOfClass:[NSString class]]) {
             dictionary = [xmlParser dictionaryWithString:xmlObject];
         }
