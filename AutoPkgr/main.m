@@ -34,7 +34,6 @@ int main(int argc, const char *argv[])
     if ([args boolForKey:@"runInBackground"]) {
         NSLog(@"Running AutoPkgr in background...");
 
-        __block LGEmailer *emailer = [[LGEmailer alloc] init];
         __block BOOL completionMessageSent = NO;
         BOOL update = [args boolForKey:kLGCheckForRepoUpdatesAutomaticallyEnabled];
 
@@ -62,23 +61,27 @@ int main(int argc, const char *argv[])
                                                                                         progress:100
                                                                                            error:error
                                                                                         state:kLGAutoPkgProgressComplete];
-
+                             // Wrap up the progress messaging...
                              completionMessageSent = YES;
+                             if (!completionMessageSent) {
+                                 [[helper.connection remoteObjectProxy] sendMessageToMainApplication:nil
+                                                                                            progress:100
+                                                                                               error:nil
+                                                                                               state:kLGAutoPkgProgressComplete];
+                             }
+
+                             LGEmailer *emailer = [[LGEmailer alloc] init];
+
+                             [emailer setReplyBlock:^(NSError *mailErr) {
+                                 NSLog(@"AutoPkgr background run complete.");
+                                 exit((int)error.code);
+                             }];
+
                              [emailer sendEmailForReport:report error:error];
+
                          }];
 
-        while (emailer && !emailer.complete) {
-            [[NSRunLoop currentRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:1.0]];
-        }
-
-        if (!completionMessageSent) {
-            [[helper.connection remoteObjectProxy] sendMessageToMainApplication:nil
-                                                                       progress:100
-                                                                          error:nil
-                                                                          state:kLGAutoPkgProgressComplete];
-        }
-        
-        NSLog(@"AutoPkg background run complete.");
+        [[NSRunLoop currentRunLoop] run];
         return 0;
 
     } else {

@@ -29,6 +29,7 @@
  * returns NO while in the process of sending and email, YES on complete or error 
  */
 @property (nonatomic, assign) BOOL complete;
+@property (copy, nonatomic) void ((^replyBlock)(NSError *));
 
 - (void)sendEmailNotification:(NSString *)subject message:(NSString *)message;
 - (void)sendEmailForReport:(NSDictionary *)report error:(NSError *)error;

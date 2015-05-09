@@ -194,6 +194,7 @@
 {
     // Send a test email notification when the user
     // clicks "Send Test Email"
+
     DLog(@"'Send Test Email' button clicked.");
 
     // Handle UI
@@ -201,18 +202,31 @@
     [_sendTestEmailSpinner setHidden:NO]; // show spinner
     [_sendTestEmailSpinner startAnimation:self]; // animate spinner
 
-    // Create an instance of the LGEmailer class
-    LGEmailer *emailer = [[LGEmailer alloc] init];
+    // Setup a completion block
+    void (^didComplete)() = ^void(NSError *error){
+        [_sendTestEmailButton setEnabled:YES]; // enable button
+        [_sendTestEmailSpinner setHidden:YES]; // hide spinner
+        [_sendTestEmailSpinner stopAnimation:self]; // stop animation
 
-    // Listen for notifications on completion
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(testEmailReceived:)
-                                                 name:kLGNotificationEmailSent
-                                               object:emailer];
+        [self stopProgress:error];
+    };
 
-    // Send the test email notification by sending the
-    // sendTestEmail message to our object
-    [emailer sendTestEmail];
+    [self savePassword:^(NSError *error) {
+        // If the save password method has an error stop emailing,
+        // The emailer would get the same error.
+        if (error) {
+            return didComplete(error);
+        }
+
+        // Create an instance of the LGEmailer class
+        LGEmailer *emailer = [[LGEmailer alloc] init];
+
+        // Set the reply block
+        emailer.replyBlock = didComplete;
+
+        // Send the test email.
+        [emailer sendTestEmail];
+    }];
 }
 
 - (void)testSmtpServerPort:(id)sender
@@ -258,11 +272,20 @@
 
 - (IBAction)updateKeychainPassword:(id)sender
 {
+    [self savePassword:nil];
+}
+
+- (void)savePassword:(void(^)(NSError *error))reply
+{
     NSString *account = _smtpUsername.safeStringValue;
     NSString *password = _smtpPassword.safeStringValue;
 
     if (account && password) {
         [LGPasswords savePassword:password forAccount:account reply:^(NSError *error) {
+            if (reply) {
+                reply(error);
+            }
+
             if (error) {
                 if (error.code == errSecAuthFailed || error.code == errSecDuplicateKeychain) {
                     [LGPasswords resetKeychainPrompt:^(NSError *error) {
@@ -601,6 +624,11 @@
                                 [_progressDelegate stopProgress:error];
                                 if (report.count || error) {
                                     LGEmailer *emailer = [LGEmailer new];
+
+                                    emailer.replyBlock = ^(NSError *error){
+                                        [self stopProgress:error];
+                                    };
+
                                     [emailer sendEmailForReport:report error:error];
                                 }
                           }];
@@ -680,6 +708,13 @@
 }
 
 #pragma mark - NSTextDelegate
+- (void)controlTextDidChange:(NSNotification *)notification {
+    id object = [notification object];
+    if ([object isEqual:_smtpUsername]) {
+        _defaults.SMTPUsername = _smtpUsername.safeStringValue;
+    }
+}
+
 - (void)controlTextDidEndEditing:(NSNotification *)notification
 {
     id object = [notification object];
@@ -691,7 +726,6 @@
         _defaults.SMTPPort = [_smtpPort integerValue];
         [self testSmtpServerPort:self];
     } else if ([object isEqual:_smtpUsername]) {
-        _defaults.SMTPUsername = [_smtpUsername stringValue];
         [self getKeychainPassword:_smtpPassword];
     } else if ([object isEqual:_smtpFrom]) {
         _defaults.SMTPFrom = [_smtpFrom stringValue];
@@ -825,8 +859,10 @@
 
         if (error) {
             SEL selector = nil;
-            NSString *truncatedString = [error.localizedRecoverySuggestion truncateToNumberOfLines:25];
-            if (![truncatedString isEqualToString:error.localizedRecoverySuggestion]) {
+            NSString *suggestion = error.localizedRecoverySuggestion ?: @"";
+            NSString *truncatedString = [suggestion truncateToNumberOfLines:25];
+
+            if (truncatedString && ![truncatedString isEqualTo:suggestion]) {
                 truncatedString = [NSString stringWithFormat:@"%@\nMore details have been logged to the system.log", truncatedString];
                 NSLog(@"%@", error.localizedRecoverySuggestion);
             }
@@ -857,25 +893,6 @@
 }
 
 #pragma mark - Notifications
-- (void)testEmailReceived:(NSNotification *)notification
-{
-    [[NSNotificationCenter defaultCenter] removeObserver:self
-                                                    name:kLGNotificationEmailSent
-                                                  object:[notification object]];
-
-    [_sendTestEmailButton setEnabled:YES]; // enable button
-
-    // Handle Spinner
-    [_sendTestEmailSpinner stopAnimation:self]; // stop animation
-    [_sendTestEmailSpinner setHidden:YES]; // hide spinner
-
-    // pull the error out of the userInfo dictionary
-    id error = [notification.userInfo objectForKey:kLGNotificationUserInfoError];
-
-    if ([error isKindOfClass:[NSError class]]) {
-        [self stopProgress:error];
-    }
-}
 
 - (void)testSmtpServerPortNotificationReceived:(NSNotification *)notification
 {

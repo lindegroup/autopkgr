@@ -6,6 +6,14 @@ All notable changes to this project will be documented in this file. This projec
 
 ## [Unreleased][unreleased]
 
+### Changed
+- Nothing yet.
+
+### Fixed
+- Fixed a bug that could cause email username and password to not get updated immediately.
+
+
+### Security
 - Nothing yet.
 
 ## [1.2.3] - 2015-05-08

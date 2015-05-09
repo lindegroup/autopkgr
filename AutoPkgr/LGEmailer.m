@@ -36,96 +36,93 @@
 
     if (defaults.sendEmailNotificationsWhenNewVersionsAreFoundEnabled) {
 
-        MCOSMTPSession *smtpSession = [[MCOSMTPSession alloc] init];
-        smtpSession.username = defaults.SMTPUsername ?: @"";
-        smtpSession.hostname = defaults.SMTPServer ?: @"";
-        smtpSession.port = (int)defaults.SMTPPort;
+        // Transform the raw values.
+        NSString *fullSubject = [NSString stringWithFormat:@"%@ on %@", subject, [[NSHost currentHost] localizedName]];
+        NSString *from = defaults.SMTPFrom ?: @"AutoPkgr";
+
+        NSMutableArray *to = [[NSMutableArray alloc] init];
+        for (NSString *toAddress in defaults.SMTPTo) {
+            if (toAddress.length) {
+                [to addObject:[MCOAddress addressWithMailbox:toAddress]];
+            }
+        }
+
+        // Build the message.
+        MCOMessageBuilder *builder = [[MCOMessageBuilder alloc] init];
+
+        builder.header.from = [MCOAddress addressWithDisplayName:@"AutoPkgr Notification"
+                                                         mailbox:from];
+        builder.header.to = to;
+        builder.header.subject = fullSubject;
+        builder.htmlBody = message;
+
+
+        // Configure the session details
+        MCOSMTPSession *session = [[MCOSMTPSession alloc] init];
+
+        session.username = defaults.SMTPUsername ?: @"";
+        session.hostname = defaults.SMTPServer ?: @"";
+        session.port = (int)defaults.SMTPPort;
 
         if (defaults.SMTPTLSEnabled) {
             DLog(@"SSL/TLS is enabled for %@.", defaults.SMTPServer);
             // If the SMTP port is 465, use MCOConnectionTypeTLS.
             // Otherwise use MCOConnectionTypeStartTLS.
-            if (smtpSession.port == 465) {
-                smtpSession.connectionType = MCOConnectionTypeTLS;
+            if (session.port == 465) {
+                session.connectionType = MCOConnectionTypeTLS;
             } else {
-                smtpSession.connectionType = MCOConnectionTypeStartTLS;
+                session.connectionType = MCOConnectionTypeStartTLS;
             }
         } else {
             DLog(@"SSL/TLS is _not_ enabled for %@.", defaults.SMTPServer);
-            smtpSession.connectionType = MCOConnectionTypeClear;
+            session.connectionType = MCOConnectionTypeClear;
         }
 
-        // Retrieve the SMTP password from the default
-        // keychain if it exists
+        // Retrieve the SMTP password from the default keychain if it exists
         // Only check for a password if username exists
-        if (defaults.SMTPAuthenticationEnabled && ![smtpSession.username isEqualToString:@""]) {
-            __block BOOL complete = NO;
-            [LGPasswords getPasswordForAccount:smtpSession.username reply:^(NSString *password, NSError *error) {
-                if ([error code] == errSecItemNotFound) {
-                    NSLog(@"Keychain item not found for account %@.", smtpSession.username);
-                } else if ([error code] == errSecNotAvailable) {
-                    NSLog(@"Found the keychain item for %@ but no password value was returned.", smtpSession.username);
-                } else if (error != nil) {
-                    NSLog(@"An error occurred when attempting to retrieve the keychain entry for %@. Error: %@", smtpSession.username, [error localizedDescription]);
+        if (defaults.SMTPAuthenticationEnabled && session.username.length) {
+            [LGPasswords getPasswordForAccount:session.username reply:^(NSString *password, NSError *error) {
+                if (error) {
+                    if ([error code] == errSecItemNotFound) {
+                        NSLog(@"Keychain item not found for account %@.", session.username);
+                    } else if ([error code] == errSecNotAvailable) {
+                        NSLog(@"Found the keychain item for %@ but no password value was returned.", session.username);
+                    } else if (error != nil) {
+                        NSLog(@"An error occurred when attempting to retrieve the keychain entry for %@. Error: %@", session.username, [error localizedDescription]);
+                    }
+                    [self didCompleteEmailOperation:error];
                 } else {
-                    DLog(@"Retrieved password from keychain for account %@.", smtpSession.username);
-                    smtpSession.password = password ?: @"";
+                    DLog(@"Retrieved password from keychain for account %@.", session.username);
+                    session.password = password ?: @"";
+                    [self beginSession:session builder:builder];
                 }
-                complete = YES;
             }];
-
-            while (!complete) {
-                [[NSRunLoop currentRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:1.0]];
-            }
+        } else {
+            // Authentication is turned off.
+            [self beginSession:session builder:builder];
         }
 
-        NSString *from = defaults.SMTPFrom ?: @"AutoPkgr";
-
-        MCOMessageBuilder *builder = [[MCOMessageBuilder alloc] init];
-        [[builder header] setFrom:[MCOAddress addressWithDisplayName:@"AutoPkgr Notification"
-                                                             mailbox:from]];
-
-        NSMutableArray *to = [[NSMutableArray alloc] init];
-        for (NSString *toAddress in defaults.SMTPTo) {
-            if (![toAddress isEqual:@""]) {
-                MCOAddress *newAddress = [MCOAddress addressWithMailbox:toAddress];
-                [to addObject:newAddress];
-            }
-        }
-
-        NSString *fullSubject = [NSString stringWithFormat:@"%@ on %@", subject, [[NSHost currentHost] localizedName]];
-
-        [[builder header] setTo:to];
-        [[builder header] setSubject:fullSubject];
-        [builder setHTMLBody:message];
-        NSData *rfc822Data = [builder data];
-
-        MCOSMTPSendOperation *sendOperation = [smtpSession sendOperationWithData:rfc822Data];
-        [sendOperation start:^(NSError *error) {
-
-            if ([subject isEqualToString:@"Test notification from AutoPkgr"]) {
-                [LGUserNotifications sendNotificationOfTestEmailSuccess:error ? NO:YES error:error];
-            }
-            
-            NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
-            NSMutableDictionary *userInfo = [NSMutableDictionary dictionaryWithDictionary:@{kLGNotificationUserInfoSubject:subject,
-                                                                                            kLGNotificationUserInfoMessage:message}];
-            
-            if (error) {
-                NSLog(@"Error sending email from %@: %@", from, error);
-                [userInfo setObject:error forKey:kLGNotificationUserInfoError];
-            } else {
-                NSLog(@"Successfully sent email from %@.", from);
-            }
-
-            [center postNotificationName:kLGNotificationEmailSent
-                                  object:self
-                                userInfo:[NSDictionary dictionaryWithDictionary:userInfo]];
-            self.complete = YES;
-        }];
     } else {
-        self.complete = YES;
+        // Send email when new version found is set to false.
+        [self didCompleteEmailOperation:nil];
     }
+}
+
+- (void)beginSession:(MCOSMTPSession *)smtpSession builder:(MCOMessageBuilder *)builder {
+
+    MCOSMTPSendOperation *sendOperation = [smtpSession sendOperationWithData:[builder data]];
+
+    [sendOperation start:^(NSError *error) {
+
+        NSPredicate *subjectPredicate = [NSPredicate predicateWithFormat:@"SELF CONTAINS[CD] 'Test notification from AutoPkgr'"];
+
+        if ([subjectPredicate evaluateWithObject:builder.header.subject]) {
+            [LGUserNotifications sendNotificationOfTestEmailSuccess:error ? NO:YES error:error];
+        }
+
+        // Call did complete operation.
+        [self didCompleteEmailOperation:error];
+    }];
 }
 
 - (void)sendTestEmail
@@ -150,9 +147,15 @@
         if (a_report.updatesToReport) {
             [self sendEmailNotification:a_report.emailSubjectString message:a_report.emailMessageString];
         } else {
-            self.complete = YES;
+            [self didCompleteEmailOperation:nil];
         }
     }];
 }
 
+- (void)didCompleteEmailOperation:(NSError *)error {
+    self.complete = YES;
+    if (_replyBlock) {
+        _replyBlock(error);
+    }
+}
 @end
