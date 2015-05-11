@@ -18,6 +18,8 @@
 #import "LGTool.h"
 #import "LGDefaults.h"
 
+@class LGHTTPCredential;
+
 @interface LGJSSImporterTool : LGTool
 
 @end
@@ -33,7 +35,11 @@ extern NSString* const kLGJSSDistPointTypeKey;
 
 
 #pragma mark - LGDefaults extensions for JSSImporter Interface
-@interface LGDefaults (JSSImporter)
+@interface LGJSSImporterDefaults : LGDefaults
+
++ (instancetype)standardUserDefaults __attribute__((unavailable("Cannot use the shared object in this subclass.")));
+
+@property (copy, nonatomic) LGHTTPCredential *jssCredentials;
 
 @property (copy, nonatomic) NSString *JSSURL;
 @property (copy, nonatomic) NSString *JSSAPIUsername;

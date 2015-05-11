@@ -38,7 +38,7 @@ NSPredicate *jdsFilterPredicate()
 }
 
 @implementation LGJSSImporter {
-    LGDefaults *_defaults;
+    LGJSSImporterDefaults *_defaults;
     LGTestPort *_portTester;
     LGJSSDistributionPointsPrefPanel *_preferencePanel;
     LGJSSImporterTool *_jssImporterTool;
@@ -56,7 +56,7 @@ NSPredicate *jdsFilterPredicate()
         _progressDelegate = (id)[[NSApplication sharedApplication] delegate];
     }
 
-    _defaults = [LGDefaults standardUserDefaults];
+    _defaults = [LGJSSImporterDefaults new];
     _installRequestedDuringConnect = NO;
 
     BOOL isInstalled = [LGJSSImporterTool isInstalled];
@@ -70,21 +70,20 @@ NSPredicate *jdsFilterPredicate()
         _jssImporterTool.progressDelegate = _progressDelegate;
         _jssInstallButton.target = _jssImporterTool;
 
-        __weak typeof(self) weakSelf = self;
+        __weak typeof(self) w_self = self;
         [_jssImporterTool setInfoUpdateHandler:^(LGToolInfo *info) {
-            __strong typeof(self) strongSelf = weakSelf;
-            strongSelf.jssInstallButton.enabled = YES;
-            strongSelf.jssInstallButton.action = info.targetAction;
-
             // Update the button.
-            strongSelf.jssInstallButton.title = info.installButtonTitle;
-            strongSelf.jssInstallStatusLight.image = info.statusImage;
-            strongSelf.jssInstallStatusTF.stringValue = info.statusString;
+            w_self.jssInstallButton.enabled = YES; // Enabled
+            w_self.jssInstallButton.action = info.targetAction; // Selector
+            w_self.jssInstallButton.title = info.installButtonTitle; // Title
+
+            w_self.jssInstallStatusLight.image = info.statusImage;
+            w_self.jssInstallStatusTF.stringValue = info.statusString;
 
             // Show installer status.
-            strongSelf.jssInstallStatusLight.hidden = NO;
-            strongSelf.jssInstallStatusTF.hidden = NO;
-            strongSelf.jssInstallButton.hidden = NO;
+            w_self.jssInstallStatusLight.hidden = (info.status == kLGToolNotInstalled);
+            w_self.jssInstallStatusTF.hidden = (info.status == kLGToolNotInstalled);
+            w_self.jssInstallButton.hidden = (info.status == kLGToolNotInstalled);
         }];
     }
 
@@ -93,7 +92,7 @@ NSPredicate *jdsFilterPredicate()
     _jssInstallStatusLight.hidden = !show;
     _jssInstallStatusTF.hidden = !show;
     _jssInstallButton.hidden = !show;
-    ;
+
 
     if (show) {
         [_jssImporterTool refresh];
@@ -148,9 +147,35 @@ NSPredicate *jdsFilterPredicate()
     [_jssReloadServerBT setEnabled:_jssURLTF.safeStringValue ? YES : NO];
 }
 
+- (IBAction)testCredentials:(id)sender {
+    [self startStatusUpdate];
+    
+    LGHTTPCredential *jssCredentials = [[LGHTTPCredential alloc] init ];
+    jssCredentials.server =  _jssURLTF.stringValue;
+    jssCredentials.user = _jssAPIUsernameTF.stringValue;
+    jssCredentials.password = _jssAPIPasswordTF.stringValue;
+
+    [jssCredentials checkCredentialsAtPath:@"/JSSResource/distributionpoints" reply:^(LGHTTPCredential *aCredential, LGCredentialChallengeCode status, NSError *error) {
+        switch (status) {
+            case kLGCredentialChallengeSuccess:
+                _defaults.jssCredentials = aCredential;
+                [_jssStatusLight setImage:[NSImage LGStatusAvailable]];
+                break;
+            case kLGCredentialsNotChallenged:
+                [_jssStatusLight setImage:[NSImage LGStatusUnavailable]];
+                NSLog(@"The credentials for the JSS were never challenged. please check that the url you've set is correct");
+                break;
+            default:
+                break;
+        }
+
+        [self stopStatusUpdate:error];
+    }];
+}
+
 - (IBAction)reloadJSSServerInformation:(id)sender
 {
-    if (!_jssURLTF.safeStringValue) {
+    if (_jssURLTF.stringValue.length == 0) {
         return;
     }
 
@@ -161,11 +186,8 @@ NSPredicate *jdsFilterPredicate()
         }
     }
 
-    [self startStatusUpdate];
     LGHTTPRequest *request = [[LGHTTPRequest alloc] init];
-    [request retrieveDistributionPoints:_jssURLTF.stringValue
-                               withUser:_jssAPIUsernameTF.stringValue
-                            andPassword:_jssAPIPasswordTF.stringValue
+    [request retrieveDistributionPoints:_defaults.jssCredentials
                                   reply:^(NSDictionary *distributionPoints, NSError *error) {
                                       if (!error) {
                                           [self saveDefaults];
@@ -340,10 +362,9 @@ NSPredicate *jdsFilterPredicate()
 
     // If the "type" key is not set for the DP then it's auto detected via the server
     // and we'll strip them out here.
-    LGDefaults *defaults = [LGDefaults standardUserDefaults];
-    
+
     NSPredicate *customDistPointsPredicate = [NSPredicate predicateWithFormat:@"not %K == nil", kLGJSSDistPointTypeKey];
-    NSArray *customDistPoints = [defaults.JSSRepos filteredArrayUsingPredicate:customDistPointsPredicate];
+    NSArray *customDistPoints = [_defaults.JSSRepos filteredArrayUsingPredicate:customDistPointsPredicate];
 
     newRepos = [[NSMutableArray alloc] initWithArray:customDistPoints];
 
@@ -368,7 +389,7 @@ NSPredicate *jdsFilterPredicate()
 - (void)evaluateRepoViability
 {
     // if all settings have been removed clear out the JSS_REPOS key too
-    if (!_jssAPIPasswordTF.safeStringValue && !_jssAPIUsernameTF.safeStringValue && !_jssURLTF.safeStringValue) {
+    if (_jssAPIPasswordTF.safeStringValue && !_jssAPIUsernameTF.safeStringValue && !_jssURLTF.safeStringValue) {
         _defaults.JSSRepos = nil;
         [self saveDefaults];
         [_jssStatusLight setImage:[NSImage LGStatusNone]];
@@ -473,8 +494,7 @@ NSPredicate *jdsFilterPredicate()
 #pragma mark - JSS Distribution Point Preference Panel
 - (void)enableMasterJDS:(NSButton *)sender
 {
-    LGDefaults *defaults = [LGDefaults standardUserDefaults];
-    NSMutableArray *workingArray = [defaults.JSSRepos mutableCopy];
+    NSMutableArray *workingArray = [_defaults.JSSRepos mutableCopy];
     NSDictionary *JDSDict = @{ @"type" : @"JDS" };
 
     NSUInteger index = [workingArray indexOfObjectPassingTest:
@@ -495,7 +515,7 @@ NSPredicate *jdsFilterPredicate()
         }
     }
 
-    defaults.JSSRepos = [workingArray copy];
+    _defaults.JSSRepos = [workingArray copy];
 }
 
 - (void)addDistributionPoint:(id)sender

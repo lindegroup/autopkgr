@@ -23,7 +23,6 @@
 #import "LGJSSImporterTool.h"
 
 #import <AFNetworking/AFNetworking.h>
-#import <SecurityInterface/SFCertificateTrustPanel.h>
 #import <XMLDictionary/XMLDictionary.h>
 
 @implementation LGHTTPRequest {
@@ -36,13 +35,11 @@
     [self resetCredentials];
 }
 
-- (void)retrieveDistributionPoints:(NSString *)server
-                          withUser:(NSString *)user
-                       andPassword:(NSString *)password
-                             reply:(void (^)(NSDictionary *, NSError *))reply
+- (void)retrieveDistributionPoints:(LGHTTPCredential *)credential
+                             reply:(void (^)(NSDictionary *distributionPoints, NSError *error))reply;
 {
     // Setup the request
-    NSString *distPointAddress = [server stringByAppendingPathComponent:@"JSSResource/distributionpoints"];
+    NSString *distPointAddress = [credential.server stringByAppendingPathComponent:@"JSSResource/distributionpoints"];
     NSURL *url = [NSURL URLWithString:distPointAddress];
 
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
@@ -50,33 +47,33 @@
     request.timeoutInterval = 5.0;
 
     // Set up the operation
-
     AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
 
-    // Add the credential if specified
-    NSURLCredential *credential;
-    if (![user isEqualToString:@""] && ![password isEqualToString:@""]) {
-        credential = [NSURLCredential credentialWithUser:user
-                                                password:password
-                                             persistence:NSURLCredentialPersistenceNone];
-    }
+    operation.credential = credential.credential;
 
-    [operation setWillSendRequestForAuthenticationChallengeBlock:^(NSURLConnection *connection, NSURLAuthenticationChallenge *challenge) {
-        if ([challenge.protectionSpace.authenticationMethod isEqualToString:NSURLAuthenticationMethodServerTrust]){
-            DLog(@"Got certificate verification challenge");
-            // Since this calls a SecurityInterface panel put it on the main queue
-            [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-                [self promptForCertTrust:challenge connection:connection];
-            }];
-        } else if (credential && challenge.previousFailureCount < 1) {
-            DLog(@"Got authentication challenge");
-            [[challenge sender] useCredential:credential forAuthenticationChallenge:challenge];
-            if (!_protectionSpaces) _protectionSpaces = [[NSMutableArray alloc] init];
-            [_protectionSpaces addObject:challenge.protectionSpace];
-        } else {
-            [[challenge sender] continueWithoutCredentialForAuthenticationChallenge:challenge];
-        }
-    }];
+    [credential save];
+    
+    AFSecurityPolicy *policy = [AFSecurityPolicy defaultPolicy];
+    policy.allowInvalidCertificates = !credential.verifySSL;
+    policy.validatesCertificateChain = !credential.verifySSL;
+
+    operation.securityPolicy = policy;
+
+//    [operation setWillSendRequestForAuthenticationChallengeBlock:^(NSURLConnection *connection, NSURLAuthenticationChallenge *challenge) {
+//        if ([challenge.protectionSpace.authenticationMethod isEqualToString:NSURLAuthenticationMethodServerTrust]){
+//            [credential handleCertificateTrustChallenge:challenge reply:^(BOOL verifySSL) {
+//            }];
+//        } else if (credential && challenge.previousFailureCount < 1) {
+//            DLog(@"Got authentication challenge");
+//            [challenge.sender useCredential:credential.credential forAuthenticationChallenge:challenge];
+//            if (!_protectionSpaces) {
+//                _protectionSpaces = [[NSMutableArray alloc] init];
+//            }
+//            [_protectionSpaces addObject:challenge.protectionSpace];
+//        } else {
+//            [[challenge sender] continueWithoutCredentialForAuthenticationChallenge:challenge];
+//        }
+//    }];
 
     [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSError *error = nil;
@@ -97,57 +94,6 @@
     }];
 
     [operation start];
-}
-
-#pragma mark - Challenge Handlers
-
-- (void)promptForCertTrust:(NSURLAuthenticationChallenge *)challenge
-                connection:(NSURLConnection *)connection
-{
-    NSString *serverURL = connection.currentRequest.URL.host;
-    BOOL proceed = NO;
-    LGDefaults *defaults = [LGDefaults standardUserDefaults];
-
-    SecTrustResultType secresult = kSecTrustResultInvalid;
-    if (SecTrustEvaluate(challenge.protectionSpace.serverTrust, &secresult) == errSecSuccess) {
-        switch (secresult) {
-        case kSecTrustResultProceed: {
-            // The user told the OS to trust the cert but this is not
-            // picked up by the python-jss' request module so set verify to NO
-            defaults.JSSVerifySSL = NO;
-            proceed = YES;
-            break;
-        }
-        case kSecTrustResultUnspecified: {
-            // The OS trusts this certificate implicitly.
-            defaults.JSSVerifySSL = YES;
-            proceed = YES;
-            break;
-        }
-
-        default: {
-            SFCertificateTrustPanel *panel = [SFCertificateTrustPanel sharedCertificateTrustPanel];
-            [panel setAlternateButtonTitle:@"Cancel"];
-            NSString *info = [NSString stringWithFormat:@"The certificate for this server is invalid. You might be connecting to a server pretending to be \"%@\" which could put your confidential information at risk. Would you like to connect to the server anyway?", serverURL];
-
-            [panel setInformativeText:info];
-
-            proceed = [panel runModalForTrust:challenge.protectionSpace.serverTrust
-                                      message:@"AutoPkgr can't verify the identity of the server"];
-
-            // If elected to proceed here it is doing so with an unverified certificate so set JSS_VERIFY_SSL to NO
-            // However if "Cancel" is clicked we reset the JSS_VERIFY_SSL back to YES which will deliberately cause
-            // python-jss to fail.
-            defaults.JSSVerifySSL = proceed ? NO : YES;
-            panel = nil;
-        }
-        }
-    }
-    if (proceed) {
-        [challenge.sender useCredential:[NSURLCredential credentialForTrust:challenge.protectionSpace.serverTrust] forAuthenticationChallenge:challenge];
-    } else {
-        [[challenge sender] cancelAuthenticationChallenge:challenge];
-    };
 }
 
 #pragma mark - Object Conversion

@@ -66,6 +66,7 @@
     _distPointURL.safeStringValue = _editRepoDict[kLGJSSDistPointURLKey];
     _distPointUserName.safeStringValue = _editRepoDict[kLGJSSDistPointUserNameKey];
     [_distPointTypePopupBT selectItemWithTitle:_editRepoDict[kLGJSSDistPointTypeKey]];
+    
     [_cancelBT setHidden:YES];
     [_addBT setTitle:@"Done"];
     [_infoText setStringValue:@"Edit Distribution Point"];
@@ -74,7 +75,7 @@
 - (void)addDistPoint:(NSButton *)sender
 {
     // Save distpoint to defaults...
-    LGDefaults *defaults = [LGDefaults standardUserDefaults];
+    LGJSSImporterDefaults *defaults = [LGJSSImporterDefaults new];
 
     NSMutableOrderedSet *workingSet = [[NSMutableOrderedSet alloc] initWithArray:defaults.JSSRepos];
 

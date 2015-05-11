@@ -28,6 +28,7 @@
 #import "LGAutoPkgReport.h"
 #import "LGEmailer.h"
 #import "LGPasswords.h"
+#import "LGServerCredentials.h"
 
 @interface AutoPkgrTests : XCTestCase <LGProgressDelegate>
 
@@ -171,6 +172,41 @@
     [tool install:nil];
 
     [self waitForExpectationsWithTimeout:300 handler:^(NSError *error) {
+        if(error)
+        {
+            XCTFail(@"Expectation Failed with error: %@", error);
+        }
+    }];
+}
+
+- (void)testCredentials {
+
+    XCTestExpectation *wait = [self expectationWithDescription:@"Web Credential Test"];
+
+    LGHTTPCredential *credentials = [LGHTTPCredential new];
+    credentials.server = @"https://myjss.jamfcloud.com";
+    credentials.user = @"jssTest";
+    credentials.password = @"mypassword";
+
+    [credentials checkCredentialsAtPath:@"JSSResource/distributionpoints" reply:^(BOOL success, NSError *error) {
+        XCTAssertTrue(success, @"Authorization check failed: %@", error.localizedDescription);
+        [wait fulfill];
+    }];
+
+
+    XCTestExpectation *wait2 = [self expectationWithDescription:@"NetMount Credential Test"];
+
+    LGNetMountCredential *netCredential = [LGNetMountCredential new];
+    netCredential.server = @"afp://test.server.local/";
+    netCredential.user = @"myusername";
+    netCredential.password = @"mypassword";
+
+    [netCredential checkCredentialsForShare:@"JSS REPO" reply:^(LGCredentialChallengeCode code, NSError *error) {
+        XCTAssertTrue(code == kLGCredentialChallengeSuccess, @"Authorization check failed: %@", error.localizedDescription );
+        [wait2 fulfill];
+    }];
+
+    [self waitForExpectationsWithTimeout:60 handler:^(NSError *error) {
         if(error)
         {
             XCTFail(@"Expectation Failed with error: %@", error);

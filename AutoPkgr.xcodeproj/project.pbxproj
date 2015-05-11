@@ -54,6 +54,8 @@
 		BE1C810419E8224000EF77F3 /* NSImage+statusLight.m in Sources */ = {isa = PBXBuildFile; fileRef = BE1C810219E8224000EF77F3 /* NSImage+statusLight.m */; };
 		BE32178B19ED9ACA00A92E5A /* LGRecipeOverrides.m in Sources */ = {isa = PBXBuildFile; fileRef = BE32178A19ED9ACA00A92E5A /* LGRecipeOverrides.m */; };
 		BE344F551ABFBEAB00500AAE /* LGAutoPkgReport.m in Sources */ = {isa = PBXBuildFile; fileRef = BE344F541ABFBEAB00500AAE /* LGAutoPkgReport.m */; };
+		BE4985381AFE61C1006E5EDA /* LGServerCredentials.m in Sources */ = {isa = PBXBuildFile; fileRef = BE4985371AFE61C1006E5EDA /* LGServerCredentials.m */; };
+		BE4985391AFE61C1006E5EDA /* LGServerCredentials.m in Sources */ = {isa = PBXBuildFile; fileRef = BE4985371AFE61C1006E5EDA /* LGServerCredentials.m */; };
 		BE57AC2A19BA3BBC00BB17B1 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = BE57AC2C19BA3BBC00BB17B1 /* Localizable.strings */; };
 		BE67E8751A44E10500484151 /* LGRecipeSearch.m in Sources */ = {isa = PBXBuildFile; fileRef = BE67E8731A44E10500484151 /* LGRecipeSearch.m */; };
 		BE67E8761A44E10500484151 /* LGRecipeSearchPanel.xib in Resources */ = {isa = PBXBuildFile; fileRef = BE67E8741A44E10500484151 /* LGRecipeSearchPanel.xib */; };
@@ -260,6 +262,8 @@
 		BE344F541ABFBEAB00500AAE /* LGAutoPkgReport.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGAutoPkgReport.m; sourceTree = "<group>"; };
 		BE34DF2B19AA21E200DC2FAF /* LGAutoPkgr.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LGAutoPkgr.h; sourceTree = "<group>"; };
 		BE3FF3281A8A93EE00F7385B /* LGDisplayStatusDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LGDisplayStatusDelegate.h; sourceTree = "<group>"; };
+		BE4985361AFE61C1006E5EDA /* LGServerCredentials.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGServerCredentials.h; sourceTree = "<group>"; };
+		BE4985371AFE61C1006E5EDA /* LGServerCredentials.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGServerCredentials.m; sourceTree = "<group>"; };
 		BE57733619D519E400D872A4 /* LGJSSImporter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGJSSImporter.h; sourceTree = "<group>"; };
 		BE57733719D519E400D872A4 /* LGJSSImporter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGJSSImporter.m; sourceTree = "<group>"; };
 		BE57AC2B19BA3BBC00BB17B1 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -493,6 +497,8 @@
 				BE6815D41A0B18DE004AD310 /* LGUserNotifications.m */,
 				BEBF7B151A4894AC00E9967F /* LGVersioner.h */,
 				BEBF7B161A4894AC00E9967F /* LGVersioner.m */,
+				BE4985361AFE61C1006E5EDA /* LGServerCredentials.h */,
+				BE4985371AFE61C1006E5EDA /* LGServerCredentials.m */,
 			);
 			name = "Model Classes";
 			sourceTree = "<group>";
@@ -1020,6 +1026,7 @@
 				BEEFE6C21AEBCC7C00882C89 /* LGToolStatus.m in Sources */,
 				BEEFE6CE1AEC761F00882C89 /* LGJSSImporterTool.m in Sources */,
 				BE05CE8219DAF6320089068B /* LGAutoPkgrAuthorizer.m in Sources */,
+				BE4985381AFE61C1006E5EDA /* LGServerCredentials.m in Sources */,
 				BE05CE8319DAF6320089068B /* LGAutoPkgrHelperConnection.m in Sources */,
 				BE73CDC719E062AC00441443 /* NSString+cleaned.m in Sources */,
 				BEEFE6C71AEBEB1000882C89 /* LGGitTool.m in Sources */,
@@ -1044,6 +1051,7 @@
 				BE8A06BE1AF8FAFD006C2571 /* NSData+taskData.m in Sources */,
 				BEFC3C791A3DF16700C789E9 /* LGTestPort.m in Sources */,
 				BEEFE6C31AEBCE1F00882C89 /* LGToolStatus.m in Sources */,
+				BE4985391AFE61C1006E5EDA /* LGServerCredentials.m in Sources */,
 				BEEFE6CF1AEC761F00882C89 /* LGJSSImporterTool.m in Sources */,
 				BEFC3C7C1A3DF16700C789E9 /* LGPopularRepositories.m in Sources */,
 				BEE211271AF9DCBB00A3C2E1 /* LGUninstaller.m in Sources */,

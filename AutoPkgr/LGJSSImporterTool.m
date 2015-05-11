@@ -17,6 +17,10 @@
 
 #import "LGJSSImporterTool.h"
 #import "LGTool+Private.h"
+#import "LGServerCredentials.h"
+
+@interface LGJSSImporterTool ()<LGToolPackagInstaller, LGToolSharedProcessor>
+@end
 
 # pragma mark - Repo Keys
 NSString *const kLGJSSDistPointNameKey = @"name";
@@ -35,11 +39,6 @@ NSString *const kLGJSSDistPointTypeKey = @"type";
 + (NSString *)name
 {
     return @"JSSImporter";
-}
-
-+ (LGToolTypeFlags)typeFlags
-{
-    return kLGToolTypeAutoPkgSharedProcessor | kLGToolTypeInstalledPackage |kLGToolTypeUninstallableTool;
 }
 
 + (NSString *)gitHubURL
@@ -86,6 +85,7 @@ NSString *const kLGJSSDistPointTypeKey = @"type";
         }
         _installedVersion = receiptDict[@"PackageVersion"];
     }
+
     return _installedVersion;
 }
 
@@ -93,7 +93,40 @@ NSString *const kLGJSSDistPointTypeKey = @"type";
 
 #pragma mark - LGDefaults category implementation for JSSImporter Interface
 
-@implementation LGDefaults (JSSImporter)
+@implementation LGJSSImporterDefaults
+@synthesize jssCredentials = _jssCredentials;
+
+
+-(void)setJssCredentials:(LGHTTPCredential *)jssCredentials {
+    _jssCredentials = jssCredentials;
+    [self configureCredentialSaveBlock:jssCredentials];
+    [jssCredentials save];
+}
+
+- (LGHTTPCredential *)jssCredentials {
+    if (!_jssCredentials) {
+        _jssCredentials = [[LGHTTPCredential alloc] init];
+
+        _jssCredentials.server = self.JSSURL;
+        _jssCredentials.user = self.JSSAPIUsername;
+        _jssCredentials.password = self.JSSAPIPassword;
+        _jssCredentials.verifySSL = self.JSSVerifySSL;
+
+        [self configureCredentialSaveBlock:_jssCredentials];
+    }
+    return _jssCredentials;
+}
+
+- (void)configureCredentialSaveBlock:(LGHTTPCredential *)credential {
+    if (!credential.saveBlock) {
+        credential.saveBlock = ^(LGHTTPCredential *cred) {
+            self.JSSVerifySSL = cred.verifySSL;
+            self.JSSAPIUsername = cred.user;
+            self.JSSAPIPassword = cred.password;
+            self.JSSURL = cred.server;
+        };
+    }
+}
 
 - (NSString *)JSSURL
 {

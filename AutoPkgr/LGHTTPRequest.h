@@ -19,12 +19,11 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "LGServerCredentials.h"
 
 @interface LGHTTPRequest : NSObject
 
-- (void)retrieveDistributionPoints:(NSString *)server
-                          withUser:(NSString *)user
-                       andPassword:(NSString *)password
+- (void)retrieveDistributionPoints:(LGHTTPCredential *)credential
                              reply:(void (^)(NSDictionary *distributionPoints, NSError *error))reply;
 
 @end
