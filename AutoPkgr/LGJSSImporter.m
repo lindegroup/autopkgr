@@ -31,24 +31,28 @@
 #import "LGAutoPkgTask.h"
 
 #pragma mark - Class constants
+@interface LGJSSImporter ()
+@property (copy, nonatomic) LGJSSImporterTool *jssImporterTool;
+@end
 
 NSPredicate *jdsFilterPredicate()
 {
-    return [NSPredicate predicateWithFormat:@"not (type == 'JDS')"];
+    static dispatch_once_t onceToken;
+    __strong static NSPredicate * predicate = nil;
+    dispatch_once(&onceToken, ^{
+        predicate = [NSPredicate predicateWithFormat:@"not (type == 'JDS')"];
+    });
+    return predicate;
 }
 
 @implementation LGJSSImporter {
     LGJSSImporterDefaults *_defaults;
     LGTestPort *_portTester;
     LGJSSDistributionPointsPrefPanel *_preferencePanel;
-    LGJSSImporterTool *_jssImporterTool;
 
     BOOL _serverReachable;
     BOOL _installRequestedDuringConnect;
 }
-
-// TODO: Disconnect from .xib and remove
-- (void)installJSSImporter:(id)sender {}
 
 - (void)awakeFromNib
 {
@@ -59,15 +63,24 @@ NSPredicate *jdsFilterPredicate()
     _defaults = [LGJSSImporterDefaults new];
     _installRequestedDuringConnect = NO;
 
+    _jssReloadServerBT.action = @selector(testCredentials:);
+    _jssReloadServerBT.title = @"Verify";
+    _jssStatusLight.hidden = YES;
+
     BOOL isInstalled = [LGJSSImporterTool isInstalled];
-    BOOL show = ( isInstalled && (_defaults.JSSRepos != nil));
+
+    // Show installer status
+    _jssInstallStatusLight.hidden = !isInstalled;
+    _jssInstallStatusTF.hidden = !isInstalled;
+    _jssInstallButton.hidden = !isInstalled;
 
     // Setup the JSSImporterTool
     if (!_jssImporterTool) {
         _jssImporterTool = [[LGJSSImporterTool alloc] init];
+        if (_progressDelegate) {
+            _jssImporterTool.progressDelegate = _progressDelegate;
+        }
 
-        // Set the tool to take over controll of the button
-        _jssImporterTool.progressDelegate = _progressDelegate;
         _jssInstallButton.target = _jssImporterTool;
 
         __weak typeof(self) w_self = self;
@@ -76,26 +89,33 @@ NSPredicate *jdsFilterPredicate()
             w_self.jssInstallButton.enabled = YES; // Enabled
             w_self.jssInstallButton.action = info.targetAction; // Selector
             w_self.jssInstallButton.title = info.installButtonTitle; // Title
+            w_self.jssInstallButton.hidden = (info.status == kLGToolNotInstalled);
 
             w_self.jssInstallStatusLight.image = info.statusImage;
-            w_self.jssInstallStatusTF.stringValue = info.statusString;
-
-            // Show installer status.
             w_self.jssInstallStatusLight.hidden = (info.status == kLGToolNotInstalled);
+
+            w_self.jssInstallStatusTF.stringValue = info.statusString;
             w_self.jssInstallStatusTF.hidden = (info.status == kLGToolNotInstalled);
-            w_self.jssInstallButton.hidden = (info.status == kLGToolNotInstalled);
+
+            if (info.status == kLGToolNotInstalled){
+                w_self.jssReloadServerBT.title = @"Install";
+                w_self.jssReloadServerBT.target = w_self.jssImporterTool;
+                w_self.jssReloadServerBT.action = @selector(install:);
+            } else {
+                w_self.jssReloadServerBT.title = @"Verify";
+                w_self.jssReloadServerBT.target = w_self;
+                w_self.jssReloadServerBT.action = @selector(testCredentials:);
+            }
         }];
     }
 
-
-    // Show installer status
-    _jssInstallStatusLight.hidden = !show;
-    _jssInstallStatusTF.hidden = !show;
-    _jssInstallButton.hidden = !show;
-
-
-    if (show) {
+    if (isInstalled) {
         [_jssImporterTool refresh];
+    } else {
+        // have the tool take over controll of the "verify / connect" button on the F&I tab.
+        _jssInstallButton.title = @"Install";
+        _jssInstallButton.target = _jssImporterTool;
+        _jssInstallButton.action = @selector(install:);
     }
 
     // Disable the Add / Remove distPoint buttons
@@ -110,41 +130,43 @@ NSPredicate *jdsFilterPredicate()
     _jssAPIPasswordTF.safeStringValue = _defaults.JSSAPIPassword;
     _jssURLTF.safeStringValue = _defaults.JSSURL;
 
-    [self updateJSSURL:nil];
     [_jssDistributionPointTableView reloadData];
 }
 
 #pragma mark - IBActions
-- (IBAction)updateJSSUsername:(id)sender
+- (IBAction)credentialsChanged:(id)sender
 {
-    [self evaluateRepoViability];
-}
+    if ([sender isEqualTo:_jssURLTF]) {
+        // There have been reports that old style cloud hosted JSS
+        // have an issue when the base url is double slashed. Though theoritically
+        // it doesn't make sense, it's an easy enough fix to apply here by looking
+        // for a trailing slash and simply removing that.
 
-- (IBAction)updateJSSPassword:(id)sender
-{
-    [self evaluateRepoViability];
-}
+        NSMutableString *url = [NSMutableString stringWithString:_jssURLTF.stringValue];
 
-- (IBAction)updateJSSURL:(id)sender
-{
-    // There have been reports that old style cloud hosted JSS
-    // have an issue when the base url is double slashed. Though theoritically
-    // it doesn't make sense, it's an easy enough fix to apply here by looking
-    // for a trailing slash and simply removing that.
-    NSMutableString *url = [NSMutableString stringWithString:_jssURLTF.stringValue];
-
-    if (url.length > 2) {
-        while ([[url substringFromIndex:url.length - 1] isEqualToString:@"/"]) {
-            [url deleteCharactersInRange:NSMakeRange(url.length - 1, 1)];
+        if (url.length > 2) {
+            while ([[url substringFromIndex:url.length - 1] isEqualToString:@"/"]) {
+                [url deleteCharactersInRange:NSMakeRange(url.length - 1, 1)];
+            }
         }
+        _jssURLTF.safeStringValue = url;
     }
 
-    _jssURLTF.safeStringValue = url;
+    // if all settings have been removed clear out the JSS_REPOS key too
+    if (_jssAPIPasswordTF.safeStringValue && !_jssAPIUsernameTF.safeStringValue && !_jssURLTF.safeStringValue) {
+        _defaults.JSSRepos = nil;
+        [self saveDefaults];
+        [_jssStatusLight setImage:[NSImage LGStatusNone]];
 
-    [self evaluateRepoViability];
-    [self checkReachability];
+    } else if (![_defaults.JSSAPIPassword isEqualToString:_jssAPIPasswordTF.safeStringValue] ||
+               ![_defaults.JSSAPIUsername isEqualToString:_jssAPIUsernameTF.safeStringValue] ||
+               ![_defaults.JSSURL isEqualToString:_jssURLTF.safeStringValue]) {
 
-    [_jssReloadServerBT setEnabled:_jssURLTF.safeStringValue ? YES : NO];
+        // Update server status and reset the target action to check credentials...
+        [_jssStatusLight setImage:[NSImage LGStatusPartiallyAvailable]];
+        _jssReloadServerBT.action = @selector(testCredentials:);
+        _jssReloadServerBT.title = @"Verify";
+    }
 }
 
 - (IBAction)testCredentials:(id)sender {
@@ -160,6 +182,11 @@ NSPredicate *jdsFilterPredicate()
             case kLGCredentialChallengeSuccess:
                 _defaults.jssCredentials = aCredential;
                 [_jssStatusLight setImage:[NSImage LGStatusAvailable]];
+
+                // Reassign
+                _jssReloadServerBT.action = @selector(getDistributionPoints:);
+                _jssReloadServerBT.title = @"Connect";
+
                 break;
             case kLGCredentialsNotChallenged:
                 [_jssStatusLight setImage:[NSImage LGStatusUnavailable]];
@@ -173,19 +200,8 @@ NSPredicate *jdsFilterPredicate()
     }];
 }
 
-- (IBAction)reloadJSSServerInformation:(id)sender
+- (IBAction)getDistributionPoints:(id)sender
 {
-    if (_jssURLTF.stringValue.length == 0) {
-        return;
-    }
-
-    if (![[_jssImporterTool class] isInstalled]) {
-        _installRequestedDuringConnect = YES;
-        if ([self promptForInstall]) {
-            return;
-        }
-    }
-
     LGHTTPRequest *request = [[LGHTTPRequest alloc] init];
     [request retrieveDistributionPoints:_defaults.jssCredentials
                                   reply:^(NSDictionary *distributionPoints, NSError *error) {
@@ -298,46 +314,8 @@ NSPredicate *jdsFilterPredicate()
 }
 
 #pragma mark - Utility
-- (void)checkReachability
-{
-    if (!_jssURLTF.safeStringValue) {
-        return;
-    }
-    // If there's a currently processing _portTester nil it out
-    if (_portTester) {
-        _portTester = nil;
-    }
-
-    _portTester = [[LGTestPort alloc] init];
-    [self startStatusUpdate];
-
-    [_portTester testServerURL:_jssURLTF.safeStringValue reply:^(BOOL reachable, NSString *redirectedURL) {
-        _serverReachable = reachable;
-        [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-            if (redirectedURL) {
-                _jssURLTF.safeStringValue = redirectedURL;
-            }
-            
-            if (reachable && [_defaults.JSSURL isEqualToString:_jssURLTF.safeStringValue]) {
-                _jssStatusLight.image = [NSImage LGStatusAvailable];
-                DLog(@"The JSS is responding and API user credentials seem valid.");
-            } else if (reachable) {
-                _jssStatusLight.image = [NSImage LGStatusPartiallyAvailable];
-                DLog(@"The JSS is responding at that url, but API user credentials have not been verified. Click the connect button to complete the verification process.");
-            } else {
-                _jssStatusLight.image = [NSImage LGStatusUnavailable];
-                DLog(@"The JSS is not reachable. Check your network connection and verify the JSS URL and port.");
-            }
-            // No need to keep this around so nil it out.
-            _portTester = nil;
-        }];
-        [self stopStatusUpdate:nil];
-    }];
-}
-
 - (NSArray *)evaluateJSSRepoDictionaries:(NSDictionary *)distributionPoints
 {
-
     id distPoints;
 
     // If the object was parsed as an XML object the key we're looking for is
@@ -384,22 +362,6 @@ NSPredicate *jdsFilterPredicate()
     }
 
     return [NSArray arrayWithArray:newRepos];
-}
-
-- (void)evaluateRepoViability
-{
-    // if all settings have been removed clear out the JSS_REPOS key too
-    if (_jssAPIPasswordTF.safeStringValue && !_jssAPIUsernameTF.safeStringValue && !_jssURLTF.safeStringValue) {
-        _defaults.JSSRepos = nil;
-        [self saveDefaults];
-        [_jssStatusLight setImage:[NSImage LGStatusNone]];
-    } else if (![_defaults.JSSAPIPassword isEqualToString:_jssAPIPasswordTF.safeStringValue] || ![_defaults.JSSAPIUsername isEqualToString:_jssAPIUsernameTF.safeStringValue] || ![_defaults.JSSURL isEqualToString:_jssURLTF.safeStringValue]) {
-        // Update server status
-        if ([_jssStatusLight.image isEqualTo:[NSImage LGStatusAvailable]]) {
-            [_jssStatusLight setImage:[NSImage LGStatusPartiallyAvailable]];
-        }
-    }
-    [_jssDistributionPointTableView reloadData];
 }
 
 - (void)saveDefaults
