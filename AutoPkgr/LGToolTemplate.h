@@ -22,6 +22,6 @@
 @end
 
 // This is also a good place to add custom defaults
-@interface LGDefaults (exampleTool)
+@interface LGExampleDefaults : LGDefaults
 @property (copy, nonatomic) NSString *theKey;
 @end

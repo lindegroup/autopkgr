@@ -16,21 +16,25 @@
 //
 
 #import "LGToolTemplate.h"
-#import "LGTool+Private.h"
+#import "LGTool+Protocols.h"
+
+// Define the protocols you intend to conform to...
+@interface LGToolTemplate ()<LGToolPackagInstaller, LGToolSharedProcessor>
+@end
 
 #pragma mark - Tool overrides
 @implementation LGToolTemplate
 
-#pragma mark - Class overrides
-+ (NSString *)name
-{
-    return @"ToolName";
-}
+// Since this is defined using a protocol, it needs to be synthesized...
+// If not conforming to LGTOOLPackageInstaller remove it.
+@synthesize gitHubInfo = _gitHubInfo;
 
-+ (LGToolTypeFlags)typeFlags
-{
-    return kLGToolTypeInstalledPackage | kLGToolTypeAutoPkgSharedProcessor;
-}
+#pragma mark - Class overrides
+//+ (NSString *)name
+//{
+//    return @"ToolName";
+//}
+
 
 + (NSString *)gitHubURL
 {

@@ -320,7 +320,7 @@
 		BEEFE6C91AEC760700882C89 /* LGAutoPkgTool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGAutoPkgTool.m; sourceTree = "<group>"; };
 		BEEFE6CC1AEC761F00882C89 /* LGJSSImporterTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGJSSImporterTool.h; sourceTree = "<group>"; };
 		BEEFE6CD1AEC761F00882C89 /* LGJSSImporterTool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGJSSImporterTool.m; sourceTree = "<group>"; };
-		BEEFE6D11AEE73A400882C89 /* LGTool+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "LGTool+Private.h"; sourceTree = "<group>"; };
+		BEEFE6D11AEE73A400882C89 /* LGTool+Protocols.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "LGTool+Protocols.h"; sourceTree = "<group>"; };
 		BEFC931B1995F0710074C938 /* LGError.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGError.h; sourceTree = "<group>"; };
 		BEFC931C1995F0710074C938 /* LGError.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGError.m; sourceTree = "<group>"; };
 		FF435269A548437DA5380201 /* libPods-AutoPkgr.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-AutoPkgr.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -691,7 +691,7 @@
 			children = (
 				BE8C7D6C1A86CEF600EBD32A /* LGTool.h */,
 				BE8C7D6D1A86CEF600EBD32A /* LGTool.m */,
-				BEEFE6D11AEE73A400882C89 /* LGTool+Private.h */,
+				BEEFE6D11AEE73A400882C89 /* LGTool+Protocols.h */,
 				BEA2F0B31AF1672600781274 /* LGToolTemplate.h */,
 				BEA2F0B41AF1672600781274 /* LGToolTemplate.m */,
 			);

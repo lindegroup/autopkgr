@@ -16,19 +16,18 @@
 //
 
 #import "LGAutoPkgTool.h"
-#import "LGTool+Private.h"
+#import "LGTool+Protocols.h"
+
+@interface LGAutoPkgTool ()<LGToolPackagInstaller, LGToolSharedProcessor>
+@end
 
 @implementation LGAutoPkgTool
+@synthesize gitHubInfo = _gitHubInfo;
 
 #pragma mark - Class overrides
 + (NSString *)name
 {
     return @"AutoPkg";
-}
-
-+ (LGToolTypeFlags)typeFlags
-{
-    return kLGToolTypeInstalledPackage | kLGToolTypeAutoPkgSharedProcessor;
 }
 
 + (NSString *)defaultRepository
@@ -54,6 +53,10 @@
 + (NSArray *)packageIdentifiers
 {
     return @[@"com.github.autopkg.autopkg"];
+}
+
++ (BOOL)isUninstallable {
+    return NO;
 }
 
 #pragma mark - Instance overrides

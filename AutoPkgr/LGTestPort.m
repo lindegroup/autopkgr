@@ -127,9 +127,9 @@
     }];
 
     [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
-        reply(YES,redirectedURL);
+        reply(YES, redirectedURL);
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        reply(operation.response ? YES:NO,redirectedURL);
+        reply(operation.response ? YES:NO, redirectedURL);
     }];
 
     [operation start];

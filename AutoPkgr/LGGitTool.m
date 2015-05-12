@@ -16,7 +16,7 @@
 //
 
 #import "LGGitTool.h"
-#import "LGTool+Private.h"
+#import "LGTool+Protocols.h"
 
 #import "LGDefaults.h"
 
@@ -25,6 +25,9 @@ NSString *const kLGCLIToolsGit = @"/Library/Developer/CommandLineTools/usr/bin/g
 NSString *const kLGXcodeGit = @"/Applications/Xcode.app/Contents/Developer/usr/bin/git";
 NSString *const kLGHomeBrewGit = @"/usr/local/bin/git";
 NSString *const kLGBoxenBrewGit = @"/opt/boxen/homebrew/bin/git";
+
+@interface LGGitTool ()<LGToolPackagInstaller>
+@end
 
 NSArray *knownGitPaths()
 {
@@ -41,16 +44,12 @@ NSArray *knownGitPaths()
 @synthesize installedVersion = _installedVersion;
 @synthesize remoteVersion = _remoteVersion;
 @synthesize downloadURL = _downloadURL;
+@synthesize gitHubInfo = _gitHubInfo;
 
 #pragma mark - Class overrides
 + (NSString *)name
 {
     return @"Git";
-}
-
-+ (LGToolTypeFlags)typeFlags
-{
-    return kLGToolTypeInstalledPackage;
 }
 
 + (NSArray *)components
@@ -101,6 +100,10 @@ NSArray *knownGitPaths()
         return @[@"GitOSX.Installer.git221Universal.git.pkg"];
     }
     return nil;
+}
+
++ (BOOL)isUninstallable {
+    return NO;
 }
 
 #pragma mark - Instance overrides.

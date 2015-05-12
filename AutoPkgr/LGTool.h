@@ -21,7 +21,30 @@
 #import <Foundation/Foundation.h>
 #import "LGProgressDelegate.h"
 
-#pragma mark Tool
+typedef NS_ENUM(NSInteger, LGToolTypeFlags) {
+    /**
+     *  Unknown Tool Type.
+     */
+    kLGToolTypeUnspecified = 0,
+
+    /**
+     *  Add this as a flag if the tool is a shared processor.
+     *  If this is specified make sure to include the default
+     *  repo property in the subclass.
+     */
+    kLGToolTypeAutoPkgSharedProcessor = 1 << 0,
+
+    /**
+     *  Flag to declare the tool requires a package installation.
+     */
+    kLGToolTypeInstalledPackage = 1 << 1,
+
+    /**
+     *  Flag to declare that it is acceptable to uninstall the tool.
+     *  @note this is only used when the kLGToolTypeInstalledPackage is also set
+     */
+    kLGToolTypeUninstallableTool = 1 << 2,
+};
 
 /**
  *  Tool install status
@@ -41,15 +64,16 @@ typedef NS_ENUM(OSStatus, LGToolInstallStatus) {
     kLGToolUpToDate,
 };
 
+
+#pragma mark - Tool
 @class LGToolInfo;
 
 /**
  *  LGTool is an abstract class for associated tools.
- *  @note The LGTool class needs to be be subclassed. You will also need to import the LGTool_Protected.h file into your subclass.
+ *  @note The LGTool class needs to be be subclassed. You will also need to import the LGTool+Protocols.h file into your subclass.
  *  @discussion A good example of how to use an instance of this tool is
     @code
  LGToolSubclass *tool = [[LGToolSubclass alloc] init];
- tool = autoPkgTool;
  tool.progressDelegate = _progressDelegate;
  someButton.target = tool;
  someButton.target.action = @selector(install:);
@@ -63,19 +87,18 @@ typedef NS_ENUM(OSStatus, LGToolInstallStatus) {
     @endcode
  *  @discussion There a a number of properties / methods that a subclass is required to override @code
  // These are required by all.
- - (NSString *)name
- - (LGToolTypeFlags)typeFlags;
- 
+ + (NSString *)name
+
  // These are only required for installer package flag set.
- - (NSString *)binary
- - (NSArray *)components
- - (NSString *)gitHubURL
- - (NSString *)packageIdentifier
+ + (NSString *)binary
+ + (NSArray *)components
+ + (NSString *)gitHubURL
+ + (NSString *)packageIdentifier
 
  @endcode Many other methods may need to get overridden for proper functioning. See LGTool.h adn LGTool+Private.h for a comperhensive list.
  */
-@interface LGTool : NSObject
 
+@interface LGTool : NSObject
 /**
  * Check if the tool meets system requirements to proceed with installation.
  *
@@ -89,14 +112,6 @@ typedef NS_ENUM(OSStatus, LGToolInstallStatus) {
 + (BOOL)isInstalled;
 
 #pragma mark - These class methods are the responsibility of the subclass
-/**
- *  Name of the Tool
- */
-+ (NSString *)name;
-
-
-
-
 /**
  *  Progress Delegate used to send update to the UI during install / uninstall
  */

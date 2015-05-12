@@ -16,7 +16,7 @@
 //
 
 #import "LGJSSImporterTool.h"
-#import "LGTool+Private.h"
+#import "LGTool+Protocols.h"
 #import "LGServerCredentials.h"
 
 @interface LGJSSImporterTool ()<LGToolPackagInstaller, LGToolSharedProcessor>

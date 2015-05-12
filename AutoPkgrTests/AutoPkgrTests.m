@@ -188,8 +188,8 @@
     credentials.user = @"jssTest";
     credentials.password = @"mypassword";
 
-    [credentials checkCredentialsAtPath:@"JSSResource/distributionpoints" reply:^(BOOL success, NSError *error) {
-        XCTAssertTrue(success, @"Authorization check failed: %@", error.localizedDescription);
+    [credentials checkCredentialsAtPath:@"JSSResource/distributionpoints" reply:^(LGHTTPCredential *cred, LGCredentialChallengeCode status, NSError *error) {
+        XCTAssertTrue(status == kLGCredentialChallengeSuccess, @"Authorization check failed: %@", error.localizedDescription);
         [wait fulfill];
     }];
 
@@ -201,7 +201,7 @@
     netCredential.user = @"myusername";
     netCredential.password = @"mypassword";
 
-    [netCredential checkCredentialsForShare:@"JSS REPO" reply:^(LGCredentialChallengeCode code, NSError *error) {
+    [netCredential checkCredentialsForShare:@"JSS REPO" reply:^(LGNetMountCredential *cred,LGCredentialChallengeCode code, NSError *error) {
         XCTAssertTrue(code == kLGCredentialChallengeSuccess, @"Authorization check failed: %@", error.localizedDescription );
         [wait2 fulfill];
     }];

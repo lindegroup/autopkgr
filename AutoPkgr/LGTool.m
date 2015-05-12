@@ -19,7 +19,7 @@
 //
 
 #import "LGTool.h"
-#import "LGTool+Private.h"
+#import "LGTool+Protocols.h"
 
 #import "LGAutoPkgr.h"
 
@@ -31,7 +31,7 @@
 #import "LGHostInfo.h"
 
 #ifndef LGTOOL_SUBCLASS
-    #define LGTOOL_SUBCLASS
+#define LGTOOL_SUBCLASS
 #endif
 
 @interface LGTool ()
@@ -51,11 +51,40 @@ void subclassMustImplement(id className, SEL _cmd)
                                  userInfo:nil];
 }
 
+void subclassMustConformToProtocol(id className)
+{
+    NSString *reason = [NSString stringWithFormat:@"[ EXCEPTION ] %s must conform to at least one LGTool protocol",
+                        object_getClassName(className)];
+    @throw [NSException exceptionWithName:@"SubclassMustConform"
+                                   reason:reason
+                                 userInfo:nil];
+}
+
 @implementation LGTool {
     void (^_progressUpdateBlock)(NSString *, double);
     void (^_replyErrorBlock)(NSError *);
 }
 
+@synthesize installedVersion = _installedVersion;
+@synthesize remoteVersion = _remoteVersion;
+@synthesize gitHubInfo = _gitHubInfo;
+
+#pragma mark - Protocol conform check
++ (void)initialize
+{
+    // We only need to check subclasses, the super
+    if ((self != [LGTool class]) && [self isSubclassOfClass:[LGTool class]]) {
+
+        // The subclasses must conform to at least one of the protocols
+        if (([self conformsToProtocol:@protocol(LGToolSharedProcessor)] ||
+             [self conformsToProtocol:@protocol(LGToolPackagInstaller)]) == NO)
+        {
+            subclassMustConformToProtocol(self);
+        }
+    }
+}
+
+#pragma mark - Tool
 + (BOOL)isInstalled
 {
     if ((self.typeFlags & kLGToolTypeAutoPkgSharedProcessor) && (![self components])) {
@@ -68,6 +97,11 @@ void subclassMustImplement(id className, SEL _cmd)
             }
         }
     }
+    return YES;
+}
+
++ (BOOL)isUninstallable
+{
     return YES;
 }
 
@@ -91,7 +125,7 @@ void subclassMustImplement(id className, SEL _cmd)
 {
     if (self = [super init]) {
         if ([[self class] typeFlags] & kLGToolTypeInstalledPackage) {
-             _gitHubInfo = [[LGGitHubReleaseInfo alloc] initWithURL:[[self class]gitHubURL]];
+            _gitHubInfo = [[LGGitHubReleaseInfo alloc] initWithURL:[[self class] gitHubURL]];
         }
     }
     return self;
@@ -107,8 +141,20 @@ void subclassMustImplement(id className, SEL _cmd)
 
 + (LGToolTypeFlags)typeFlags
 {
-    subclassMustImplement(self, _cmd);
-    return kLGToolTypeUnspecified;
+    LGToolTypeFlags flags = kLGToolTypeUnspecified;
+    if ([self conformsToProtocol:@protocol(LGToolSharedProcessor)]) {
+        flags += kLGToolTypeAutoPkgSharedProcessor;
+    }
+
+    if ([self conformsToProtocol:@protocol(LGToolPackagInstaller)]) {
+        flags += kLGToolTypeInstalledPackage;
+    }
+
+    if ([self isUninstallable]) {
+        flags += kLGToolTypeUninstallableTool;
+    }
+
+    return flags;
 }
 
 + (NSString *)binary
@@ -121,13 +167,14 @@ void subclassMustImplement(id className, SEL _cmd)
 
 + (NSArray *)components
 {
-    if ([self typeFlags ] & kLGToolTypeInstalledPackage) {
+    if ([self typeFlags] & kLGToolTypeAutoPkgSharedProcessor) {
         subclassMustImplement(self, _cmd);
     }
     return nil;
 }
 
-+ (NSString *)defaultRepository {
++ (NSString *)defaultRepository
+{
     if ([self typeFlags] & kLGToolTypeAutoPkgSharedProcessor) {
         subclassMustImplement(self, _cmd);
     }
@@ -136,7 +183,7 @@ void subclassMustImplement(id className, SEL _cmd)
 
 + (NSString *)gitHubURL
 {
-    if ([[self class] typeFlags ] & kLGToolTypeInstalledPackage) {
+    if ([[self class] typeFlags] & kLGToolTypeInstalledPackage) {
         subclassMustImplement(self, _cmd);
     }
     return nil;
@@ -185,7 +232,7 @@ void subclassMustImplement(id className, SEL _cmd)
 
 - (NSString *)remoteVersion
 {
-    if ([[self class]typeFlags] & kLGToolTypeInstalledPackage) {
+    if ([[self class] typeFlags] & kLGToolTypeInstalledPackage) {
         return self.gitHubInfo.latestVersion;
     }
 
@@ -220,7 +267,6 @@ void subclassMustImplement(id className, SEL _cmd)
     return self.gitHubInfo.latestReleaseDownload;
 }
 
-
 #pragma mark - Installer
 - (void)install:(id)sender
 {
@@ -238,8 +284,8 @@ void subclassMustImplement(id className, SEL _cmd)
     }
 }
 
-
-- (void)installPackage:(id)sender{
+- (void)installPackage:(id)sender
+{
     NSString *name = [[self class] name];
     LGToolTypeFlags typeFlags = [[self class] typeFlags];
 
@@ -259,7 +305,8 @@ void subclassMustImplement(id className, SEL _cmd)
     }];
 }
 
-- (void)installDefaultRepository:(id)sender {
+- (void)installDefaultRepository:(id)sender
+{
     NSString *name = [[self class] name];
 
     LGAutoPkgTask *task = [LGAutoPkgTask addRepoTask:[[self class] defaultRepository]];
@@ -280,6 +327,7 @@ void subclassMustImplement(id className, SEL _cmd)
 
 - (void)install:(void (^)(NSString *, double))progress reply:(void (^)(NSError *))reply
 {
+
     if (progress) {
         _progressUpdateBlock = progress;
         _progressDelegate = self;
@@ -293,18 +341,6 @@ void subclassMustImplement(id className, SEL _cmd)
 }
 
 #pragma mark - Uninstall
-- (void)uninstall:(void (^)(NSString *, double))progress reply:(void (^)(NSError *))reply
-{
-    _progressDelegate = self;
-    if (progress) {
-        _progressUpdateBlock = progress;
-    }
-
-    if (reply) {
-        _replyErrorBlock = reply;
-    }
-}
-
 - (void)uninstall:(id)sender
 {
     void (^removeRepo)() = ^void() {
@@ -332,7 +368,7 @@ void subclassMustImplement(id className, SEL _cmd)
                 uninstaller.progressDelegate = _progressDelegate;
             }
 
-            [uninstaller uninstallPackagesWithIdentifiers:[[self class] packageIdentifiers ] reply:^(NSError *error) {
+            [uninstaller uninstallPackagesWithIdentifiers:[[self class] packageIdentifiers] reply:^(NSError *error) {
                 if (flags & kLGToolTypeAutoPkgSharedProcessor) {
                     removeRepo();
                 } else {
@@ -343,9 +379,26 @@ void subclassMustImplement(id className, SEL _cmd)
     }
 }
 
+- (void)uninstall:(void (^)(NSString *, double))progress reply:(void (^)(NSError *))reply
+{
+    _progressDelegate = self;
+    if (progress) {
+        _progressUpdateBlock = progress;
+    }
+
+    if (reply) {
+        _replyErrorBlock = reply;
+    }
+
+    [self uninstall:nil];
+}
+
 #pragma mark - Install / Uninstall completion
-- (void)didCompleteInstallAction:(id)sender error:(NSError *)error {
-    [_progressDelegate stopProgress:error];
+- (void)didCompleteInstallAction:(id)sender error:(NSError *)error
+{
+    if ([_progressDelegate respondsToSelector:@selector(stopProgress:)]) {
+        [_progressDelegate stopProgress:error];
+    }
 
     if ([sender respondsToSelector:@selector(isEnabled)]) {
         [sender setEnabled:YES];
@@ -353,7 +406,7 @@ void subclassMustImplement(id className, SEL _cmd)
 
     BOOL isInstalled = [[self class] isInstalled];
     if ([sender respondsToSelector:@selector(action)]) {
-        [sender setAction: isInstalled ? @selector(uninstall:) : @selector(install:)];
+        [sender setAction:isInstalled ? @selector(uninstall:) : @selector(install:)];
     }
 
     [self refresh];
@@ -395,10 +448,6 @@ void subclassMustImplement(id className, SEL _cmd)
 }
 
 #pragma mark - LGProgress Delegate
-- (void)startProgressWithMessage:(NSString *)message
-{
-    // Not implemented
-}
 
 - (void)stopProgress:(NSError *)error
 {
@@ -418,10 +467,8 @@ void subclassMustImplement(id className, SEL _cmd)
     }
 }
 
-- (void)bringAutoPkgrToFront
-{
-    // Not implemented
-}
+- (void)startProgressWithMessage:(NSString *)message { /* Not implemented */}
+- (void)bringAutoPkgrToFront { /* Not implemented */}
 
 @end
 
@@ -433,7 +480,6 @@ void subclassMustImplement(id className, SEL _cmd)
     LGToolInstallStatus _status;
     BOOL _installed;
     NSString *_defaultRepo;
-
 }
 
 - (instancetype)initWithTool:(LGTool *)tool;
@@ -446,7 +492,6 @@ void subclassMustImplement(id className, SEL _cmd)
 
         _remoteVersion = tool.remoteVersion;
         _installedVersion = tool.installedVersion;
-
     }
 
     return self;
@@ -508,20 +553,20 @@ void subclassMustImplement(id className, SEL _cmd)
 {
     NSString *title;
     switch (self.status) {
-        case kLGToolUpToDate:
-            if (_typeFlags & kLGToolTypeUninstallableTool) {
-                title = @"Uninstall ";
-                break;
-            }
-        case kLGToolNotInstalled:
-            title = @"Install ";
+    case kLGToolUpToDate:
+        if (_typeFlags & kLGToolTypeUninstallableTool) {
+            title = @"Uninstall ";
             break;
-        case kLGToolUpdateAvailable:
-            title = @"Update ";
-            break;
-                default:
-            title = @"";
-            break;
+        }
+    case kLGToolNotInstalled:
+        title = @"Install ";
+        break;
+    case kLGToolUpdateAvailable:
+        title = @"Update ";
+        break;
+    default:
+        title = @"";
+        break;
     }
     return [title stringByAppendingString:_name];
 }
@@ -538,11 +583,12 @@ void subclassMustImplement(id className, SEL _cmd)
     }
 }
 
-- (SEL)targetAction {
+- (SEL)targetAction
+{
     if ((self.status == kLGToolUpToDate) && (_typeFlags | kLGToolTypeUninstallableTool)) {
         return @selector(uninstall:);
     } else {
-        return  @selector(install:);
+        return @selector(install:);
     }
 }
 
