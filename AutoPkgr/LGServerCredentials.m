@@ -26,6 +26,66 @@
 
 #import <AFNetworking/AFNetworking.h>
 
+@interface LGCertificateStore : NSObject
+@end
+
+/* This credential storage is used to proxy HTTP certificate trust challenge requests
+ * since the NSURLConnectionDelegate will only call the 
+ * `-connection: willSendRequestForAuthenticationChallenge:challenge`
+ * once per host until an application is relaunched. Using this gives access 
+ * to the any initial NSURLAuthenticationMethodServerTrust results so subsequent 
+ * calls to the same server from all LGHTTPCredentials objects.
+ */
+@implementation LGCertificateStore {
+    NSMutableDictionary *_trustStore;
+    NSMutableDictionary *_challengeStore;
+}
+
++ (instancetype)sharedStorage
+{
+    static dispatch_once_t onceToken;
+    __strong static id _sharedObject = nil;
+
+    dispatch_once(&onceToken, ^{
+        _sharedObject = [[self alloc] init];
+    });
+
+    return _sharedObject;
+}
+
+- (instancetype)init
+{
+    if (self = [super init]) {
+        _trustStore = [NSMutableDictionary new];
+        _challengeStore = [NSMutableDictionary new];
+    }
+    return self;
+}
+
+- (void)setChallenge:(NSURLAuthenticationChallenge *)challenge forHost:(NSString *)host
+{
+    if (challenge && host) {
+        [_challengeStore setObject:challenge forKey:host];
+    }
+}
+
+- (NSURLAuthenticationChallenge *)challengeForHost:(NSString *)host
+{
+    return (NSURLAuthenticationChallenge *)[_challengeStore objectForKey:host];
+}
+- (void)setTrust:(LGSSLTrustSettings)trust forHost:(NSString *)host
+{
+    if (host) {
+        [_trustStore setObject:@(trust) forKey:host];
+    }
+}
+
+- (LGSSLTrustSettings)trustForHost:(NSString *)host
+{
+    return (LGSSLTrustSettings)[[_trustStore objectForKey:host] integerValue];
+}
+
+@end
 
 @interface LGServerCredentials ()
 @property (copy, nonatomic, readwrite) NSDictionary *defaultsRepresentation;
@@ -35,11 +95,6 @@
 
 @synthesize port = _port;
 @synthesize serverURL = _serverURL;
-
-- (void)dealloc
-{
-    DevLog(@"Deallocating %@", [self class]);
-}
 
 - (instancetype)initWithServer:(NSString *)server user:(NSString *)user password:(NSString *)password
 {
@@ -71,6 +126,11 @@
         _serverURL = [NSURL URLWithString:self.server];
     }
     return _serverURL;
+}
+
+- (NSString *)host
+{
+    return self.serverURL.host;
 }
 
 - (NSString *)protocol
@@ -105,25 +165,27 @@
     return _credential;
 }
 
-- (void)handleCertificateTrustChallenge:(NSURLAuthenticationChallenge *)challenge reply:(void (^)(BOOL verifySSL))reply;
+- (void)handleCertificateTrustChallenge:(NSURLAuthenticationChallenge *)challenge reply:(void (^)(LGSSLTrustSettings))reply;
 {
+    DevLog(@"Got Certificate Challenge.");
     [[NSOperationQueue mainQueue] addOperationWithBlock:^{
         BOOL proceed = NO;
-        _verifySSL = NO;
+        _sslTrustSetting = kLGSSLTrustUntrusted;
 
         SecTrustResultType secresult = kSecTrustResultInvalid;
         if (SecTrustEvaluate(challenge.protectionSpace.serverTrust, &secresult) == errSecSuccess) {
             switch (secresult) {
                 case kSecTrustResultProceed: {
-                    // The user told the OS to trust the cert but this is not
-                    // picked up by the python-jss' request module so set verify to NO
-                    _verifySSL = NO;
+                    // The user told the OS to trust the cert
+                    DevLog(@"User has explicitly told the OS to trust the certificate");
+                    _sslTrustSetting = kLGSSLTrustUserExplicitTrust;
                     proceed = YES;
                     break;
                 }
                 case kSecTrustResultUnspecified: {
                     // The OS trusts this certificate implicitly.
-                    _verifySSL = YES;
+                    DevLog(@"OS implicitly trusts the certificate");
+                    _sslTrustSetting = kLGSSLTrustOSImplicitTrust;
                     proceed = YES;
                     break;
                 }
@@ -139,27 +201,40 @@
                     proceed = [panel runModalForTrust:challenge.protectionSpace.serverTrust
                                               message:@"AutoPkgr can't verify the identity of the server"];
 
-                    // If elected to proceed here it is doing so with an unverified certificate so set JSS_VERIFY_SSL to NO
-                    // However if "Cancel" is clicked we reset the JSS_VERIFY_SSL back to YES which will deliberately cause
-                    // python-jss to fail.
-                    _verifySSL = proceed ? NO : YES;
+                    if (proceed) {
+                        _sslTrustSetting = kLGSSLTrustUserConfirmedTrust;
+                    }
+
                     panel = nil;
                 }
             }
         }
 
         if (proceed) {
-            [challenge.sender useCredential:[NSURLCredential credentialForTrust:challenge.protectionSpace.serverTrust] forAuthenticationChallenge:challenge];
+            NSURLCredential *credential = [NSURLCredential credentialForTrust:challenge.protectionSpace.serverTrust];
+
+            [challenge.sender useCredential:credential forAuthenticationChallenge:challenge];
+
+            [[LGCertificateStore sharedStorage] setTrust:_sslTrustSetting forHost:self.host];
+            [[LGCertificateStore sharedStorage] setChallenge:challenge forHost:self.host];
+
         } else {
             [challenge.sender cancelAuthenticationChallenge:challenge];
         };
-        reply(_verifySSL);
+
+        reply(_sslTrustSetting);
     }];
 }
 
-- (void)checkCredentialsAtPath:(NSString *)path reply:(void (^)(LGHTTPCredential *, LGCredentialChallengeCode, NSError *))reply
+- (void)checkCredentialsForPath:(NSString *)path reply:(void (^)(LGHTTPCredential *, LGCredentialChallengeCode, NSError *))reply
 {
-     BOOL __block authWasChallenged = NO;
+    BOOL __block authWasChallenged = NO;
+
+    _sslTrustSetting = [[LGCertificateStore sharedStorage] trustForHost:self.host];
+
+    if (_sslTrustSetting != 0) {
+        DevLog(@"Obtained certificate trust setting for %@ = %d.", self.host, _sslTrustSetting);
+    }
 
     // String encode the path.
     path = [path stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
@@ -167,30 +242,30 @@
 
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
     request.timeoutInterval = 10.0;
-    request.cachePolicy = NSURLRequestReloadIgnoringLocalCacheData;
+    request.cachePolicy = NSURLRequestUseProtocolCachePolicy;
 
     AFHTTPRequestOperation *op = [[AFHTTPRequestOperation alloc] initWithRequest:request];
-
-    op.shouldUseCredentialStorage = NO;
+    op.securityPolicy = [AFSecurityPolicy defaultPolicy];
 
     __block NSMutableArray *protectedSpaces = [[NSMutableArray alloc] initWithCapacity:3];
 
     void (^purgeProtectedSpace)() = ^void() {
-        [[NSURLCache sharedURLCache] removeCachedResponseForRequest:request];
-        NSURLCredentialStorage *storage = [NSURLCredentialStorage sharedCredentialStorage];
-
         for (NSURLProtectionSpace *space in protectedSpaces) {
-            NSDictionary *credentialsDict = [storage credentialsForProtectionSpace:space];
-            [credentialsDict enumerateKeysAndObjectsUsingBlock:^(NSString *key, NSURLCredential *obj, BOOL *stop) {
-                [storage removeCredential:obj forProtectionSpace:space];
+            NSDictionary *credentialsDict = [[NSURLCredentialStorage sharedCredentialStorage] credentialsForProtectionSpace:space];
+            [credentialsDict enumerateKeysAndObjectsUsingBlock:^(id key, NSURLCredential *credential, BOOL *stop) {
+                [[NSURLCredentialStorage sharedCredentialStorage] removeCredential:credential
+                                                                forProtectionSpace:space];
             }];
         }
+
+        [[NSURLCache sharedURLCache] removeCachedResponseForRequest:request];
     };
 
     [op setWillSendRequestForAuthenticationChallengeBlock:^(NSURLConnection *connection, NSURLAuthenticationChallenge *challenge) {
         if ([challenge.protectionSpace.authenticationMethod isEqualToString:NSURLAuthenticationMethodServerTrust]){
-            [self handleCertificateTrustChallenge:challenge reply:^(BOOL verifySSL) {
-                [self save];
+            __weak typeof(self) w_self = self;
+            [self handleCertificateTrustChallenge:challenge reply:^(LGSSLTrustSettings trust) {
+                [w_self save];
             }];
         } else if (self.credential && challenge.previousFailureCount < 1) {
             authWasChallenged = YES;
@@ -203,7 +278,6 @@
 
     [op setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
         purgeProtectedSpace();
-
         reply(self, authWasChallenged ? kLGCredentialChallengeSuccess : kLGCredentialsNotChallenged, nil);
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         purgeProtectedSpace();

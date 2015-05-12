@@ -29,6 +29,12 @@
 @property (copy, nonatomic, readonly) NSString *trimmed;
 
 /**
+ *  (Custom Category) removes any number of trailing slashes from a string.
+ *  @note Usefull for normalizing URL paths.
+ */
+@property (copy, nonatomic, readonly) NSString *trailingSlashRemoved;
+
+/**
  * (Custom Category) convert @"" to nil
  */
 @property (copy, nonatomic, readonly) NSString *blankIsNil;

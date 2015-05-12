@@ -18,6 +18,7 @@
 #import "LGJSSImporterTool.h"
 #import "LGTool+Protocols.h"
 #import "LGServerCredentials.h"
+#import "LGLogger.h"
 
 @interface LGJSSImporterTool ()<LGToolPackagInstaller, LGToolSharedProcessor>
 @end
@@ -110,7 +111,10 @@ NSString *const kLGJSSDistPointTypeKey = @"type";
         _jssCredentials.server = self.JSSURL;
         _jssCredentials.user = self.JSSAPIUsername;
         _jssCredentials.password = self.JSSAPIPassword;
-        _jssCredentials.verifySSL = self.JSSVerifySSL;
+
+        /* If the BOOL verifySSL is set to true set this to OS implicit trust. 
+         * Otherwise treat the trust setting as if it was confirmed by the user */
+        _jssCredentials.sslTrustSetting = self.JSSVerifySSL ? kLGSSLTrustOSImplicitTrust : kLGSSLTrustUserConfirmedTrust;
 
         [self configureCredentialSaveBlock:_jssCredentials];
     }
@@ -120,7 +124,6 @@ NSString *const kLGJSSDistPointTypeKey = @"type";
 - (void)configureCredentialSaveBlock:(LGHTTPCredential *)credential {
     if (!credential.saveBlock) {
         credential.saveBlock = ^(LGHTTPCredential *cred) {
-            self.JSSVerifySSL = cred.verifySSL;
             self.JSSAPIUsername = cred.user;
             self.JSSAPIPassword = cred.password;
             self.JSSURL = cred.server;
@@ -175,11 +178,16 @@ NSString *const kLGJSSDistPointTypeKey = @"type";
 - (BOOL)JSSVerifySSL
 {
     NSNumber *verifySSL = [self autoPkgDomainObject:@"JSS_VERIFY_SSL"];
+    if (verifySSL == nil) {
+        return YES;
+    }
+
     return [verifySSL boolValue];
 }
 
 - (void)setJSSVerifySSL:(BOOL)JSSVerifySSL
 {
+    DevLog(@"Setting JSS_SSL_VERIFY to %@", JSSVerifySSL ? @"YES":@"NO");
     [self setAutoPkgDomainObject:@(JSSVerifySSL) forKey:@"JSS_VERIFY_SSL"];
 }
 

@@ -50,30 +50,16 @@
     AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
 
     operation.credential = credential.credential;
-
-    [credential save];
-    
     AFSecurityPolicy *policy = [AFSecurityPolicy defaultPolicy];
-    policy.allowInvalidCertificates = !credential.verifySSL;
-    policy.validatesCertificateChain = !credential.verifySSL;
+
+    if (credential.sslTrustSetting & (kLGSSLTrustUserExplicitTrust | kLGSSLTrustUserConfirmedTrust)) {
+        // Even in the event the user has the certificate set to trust in their keychain
+        // that setting doesn't seem to get picked up by python-jss' request module so set verify to NO
+        policy.allowInvalidCertificates = YES;
+        policy.validatesCertificateChain = YES;
+    }
 
     operation.securityPolicy = policy;
-
-//    [operation setWillSendRequestForAuthenticationChallengeBlock:^(NSURLConnection *connection, NSURLAuthenticationChallenge *challenge) {
-//        if ([challenge.protectionSpace.authenticationMethod isEqualToString:NSURLAuthenticationMethodServerTrust]){
-//            [credential handleCertificateTrustChallenge:challenge reply:^(BOOL verifySSL) {
-//            }];
-//        } else if (credential && challenge.previousFailureCount < 1) {
-//            DLog(@"Got authentication challenge");
-//            [challenge.sender useCredential:credential.credential forAuthenticationChallenge:challenge];
-//            if (!_protectionSpaces) {
-//                _protectionSpaces = [[NSMutableArray alloc] init];
-//            }
-//            [_protectionSpaces addObject:challenge.protectionSpace];
-//        } else {
-//            [[challenge sender] continueWithoutCredentialForAuthenticationChallenge:challenge];
-//        }
-//    }];
 
     [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSError *error = nil;
@@ -81,10 +67,8 @@
         NSDictionary *responseDictionary = [self xmlToDictionary:responseObject];
 
         if (!responseDictionary) error = [LGError errorWithCode:kLGErrorJSSXMLSerializerError];
-
-        DLog(@"Serialized Dictionary: [%@] %@", [responseDictionary class],responseDictionary);
-
         reply(responseDictionary,error);
+        
         [self resetCache];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         DLog(@"Response: %@",operation.response);
@@ -108,9 +92,9 @@
         if ([xmlObject isKindOfClass:[NSXMLParser class]]) {
             dictionary = [xmlParser dictionaryWithParser:xmlObject];
         } else if ([xmlObject isKindOfClass:[NSData class]]) {
-            if((dictionary = [xmlParser dictionaryWithData:xmlObject]) == nil)
-               // If the data doesn't parse as XML also try to parse as JSON.
-                if((dictionary = [NSJSONSerialization JSONObjectWithData:xmlObject options:0 error:&error]) == nil){
+            if ((dictionary = [xmlParser dictionaryWithData:xmlObject]) == nil)
+                // If the data doesn't parse as XML also try to parse as JSON.
+                if ((dictionary = [NSJSONSerialization JSONObjectWithData:xmlObject options:0 error:&error]) == nil) {
                     DLog(@"%@", error);
                 }
         } else if ([xmlObject isKindOfClass:[NSString class]]) {

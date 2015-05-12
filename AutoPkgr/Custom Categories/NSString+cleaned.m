@@ -28,6 +28,19 @@
     return [self stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
 }
 
+- (NSString *)trailingSlashRemoved
+{
+    NSInteger i = 0;
+    if (self.length > 2) {
+        while ([self characterAtIndex:(self.length - (i + 1))] == '/') {
+            i++;
+        }
+    }
+
+    return [self substringToIndex:(self.length - i)];
+
+}
+
 - (NSString *)blankIsNil
 {
     NSString *aString = self;

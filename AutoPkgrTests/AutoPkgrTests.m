@@ -188,7 +188,7 @@
     credentials.user = @"jssTest";
     credentials.password = @"mypassword";
 
-    [credentials checkCredentialsAtPath:@"JSSResource/distributionpoints" reply:^(LGHTTPCredential *cred, LGCredentialChallengeCode status, NSError *error) {
+    [credentials checkCredentialsForPath:@"JSSResource/distributionpoints" reply:^(LGHTTPCredential *cred, LGCredentialChallengeCode status, NSError *error) {
         XCTAssertTrue(status == kLGCredentialChallengeSuccess, @"Authorization check failed: %@", error.localizedDescription);
         [wait fulfill];
     }];

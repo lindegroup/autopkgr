@@ -38,7 +38,7 @@
 NSPredicate *jdsFilterPredicate()
 {
     static dispatch_once_t onceToken;
-    __strong static NSPredicate * predicate = nil;
+    __strong static NSPredicate *predicate = nil;
     dispatch_once(&onceToken, ^{
         predicate = [NSPredicate predicateWithFormat:@"not (type == 'JDS')"];
     });
@@ -134,52 +134,67 @@ NSPredicate *jdsFilterPredicate()
 }
 
 #pragma mark - IBActions
-- (IBAction)credentialsChanged:(id)sender
+- (IBAction)credentialsChanged:(NSTextField *)sender
 {
-    if ([sender isEqualTo:_jssURLTF]) {
+    if ([sender isEqualTo:_jssURLTF] && ![_defaults.JSSURL isEqualToString:sender.stringValue]) {
         // There have been reports that old style cloud hosted JSS
         // have an issue when the base url is double slashed. Though theoritically
         // it doesn't make sense, it's an easy enough fix to apply here by looking
         // for a trailing slash and simply removing that.
+        NSString *url = sender.stringValue.trailingSlashRemoved;
+        sender.stringValue = url;
 
-        NSMutableString *url = [NSMutableString stringWithString:_jssURLTF.stringValue];
-
-        if (url.length > 2) {
-            while ([[url substringFromIndex:url.length - 1] isEqualToString:@"/"]) {
-                [url deleteCharactersInRange:NSMakeRange(url.length - 1, 1)];
-            }
+        if (!_portTester) {
+            _portTester = [[LGTestPort alloc] init];
         }
-        _jssURLTF.safeStringValue = url;
+        [self startStatusUpdate];
+
+        [_portTester testServerURL:url reply:^(BOOL reachable, NSString *redirect) {
+            [self stopStatusUpdate:nil];
+            // If we got a redirect, update the sender to the new url.
+            if (redirect.length && ([url isEqualToString:redirect] == NO)) {
+                sender.stringValue = redirect.trailingSlashRemoved;
+            }
+        }];
     }
 
-    // if all settings have been removed clear out the JSS_REPOS key too
-    if (_jssAPIPasswordTF.safeStringValue && !_jssAPIUsernameTF.safeStringValue && !_jssURLTF.safeStringValue) {
+    // if all settings have been removed clear out the JSS_REPOS key too.
+    if (!_jssAPIPasswordTF.safeStringValue && !_jssAPIUsernameTF.safeStringValue && !_jssURLTF.safeStringValue) {
         _defaults.JSSRepos = nil;
+        _jssStatusLight.image = [NSImage LGStatusNone];
+        _jssStatusLight.hidden = YES;
         [self saveDefaults];
-        [_jssStatusLight setImage:[NSImage LGStatusNone]];
 
-    } else if (![_defaults.JSSAPIPassword isEqualToString:_jssAPIPasswordTF.safeStringValue] ||
-               ![_defaults.JSSAPIUsername isEqualToString:_jssAPIUsernameTF.safeStringValue] ||
-               ![_defaults.JSSURL isEqualToString:_jssURLTF.safeStringValue]) {
+    } else if (![_defaults.JSSAPIPassword isEqualToString:_jssAPIPasswordTF.safeStringValue] || ![_defaults.JSSAPIUsername isEqualToString:_jssAPIUsernameTF.safeStringValue] || ![_defaults.JSSURL isEqualToString:_jssURLTF.safeStringValue]) {
 
         // Update server status and reset the target action to check credentials...
-        [_jssStatusLight setImage:[NSImage LGStatusPartiallyAvailable]];
+        _jssStatusLight.image = [NSImage LGStatusPartiallyAvailable];
         _jssReloadServerBT.action = @selector(testCredentials:);
         _jssReloadServerBT.title = @"Verify";
     }
 }
 
-- (IBAction)testCredentials:(id)sender {
+- (IBAction)testCredentials:(id)sender
+{
     [self startStatusUpdate];
-    
-    LGHTTPCredential *jssCredentials = [[LGHTTPCredential alloc] init ];
-    jssCredentials.server =  _jssURLTF.stringValue;
+
+    LGHTTPCredential *jssCredentials = [[LGHTTPCredential alloc] init];
+    jssCredentials.server = _jssURLTF.stringValue;
     jssCredentials.user = _jssAPIUsernameTF.stringValue;
     jssCredentials.password = _jssAPIPasswordTF.stringValue;
 
-    [jssCredentials checkCredentialsAtPath:@"/JSSResource/distributionpoints" reply:^(LGHTTPCredential *aCredential, LGCredentialChallengeCode status, NSError *error) {
+    [jssCredentials checkCredentialsForPath:@"/JSSResource/distributionpoints" reply:^(LGHTTPCredential *aCredential, LGCredentialChallengeCode status, NSError *error) {
         switch (status) {
             case kLGCredentialChallengeSuccess:
+
+                if (aCredential.sslTrustSetting == kLGSSLTrustStatusUnknown) {
+                    [self confirmDisableSSLVerify];
+                } else if (aCredential.sslTrustSetting & (kLGSSLTrustOSImplicitTrust | kLGSSLTrustUserExplicitTrust)){
+                    _defaults.JSSVerifySSL = YES;
+                } else {
+                    _defaults.JSSVerifySSL = NO;
+                }
+                
                 _defaults.jssCredentials = aCredential;
                 [_jssStatusLight setImage:[NSImage LGStatusAvailable]];
 
@@ -195,7 +210,7 @@ NSPredicate *jdsFilterPredicate()
             default:
                 break;
         }
-
+        
         [self stopStatusUpdate:error];
     }];
 }
@@ -205,14 +220,13 @@ NSPredicate *jdsFilterPredicate()
     LGHTTPRequest *request = [[LGHTTPRequest alloc] init];
     [request retrieveDistributionPoints:_defaults.jssCredentials
                                   reply:^(NSDictionary *distributionPoints, NSError *error) {
-                                      if (!error) {
-                                          [self saveDefaults];
-                                          [_jssStatusLight setImage:[NSImage LGStatusAvailable]];
-                                      }
-
                                       [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+                                          if (!error) {
+                                              [_jssStatusLight setImage:[NSImage LGStatusAvailable]];
+                                          }
+
                                           [self stopStatusUpdate:error];
-                                            NSArray *cleanedArray = [self evaluateJSSRepoDictionaries:distributionPoints];
+                                          NSArray *cleanedArray = [self evaluateJSSRepoDictionaries:distributionPoints];
                                            if (cleanedArray) {
                                                _defaults.JSSRepos = cleanedArray;
                                                [_jssDistributionPointTableView reloadData];
@@ -220,7 +234,6 @@ NSPredicate *jdsFilterPredicate()
                                       }];
                                   }];
 }
-
 
 #pragma mark - Progress
 - (void)startStatusUpdate
@@ -314,14 +327,25 @@ NSPredicate *jdsFilterPredicate()
 }
 
 #pragma mark - Utility
+- (void)confirmDisableSSLVerify
+{
+
+    NSAlert *alert = [NSAlert alertWithMessageText:@"Unable to verify the SSL certificate." defaultButton:@"Keep SSL Verification" alternateButton:@"Disable SSL Verification" otherButton:nil informativeTextWithFormat:@"This is most likely due to the certificate being self signed. Choosing \"Disable SSL Verification\" may be required for JSSImporter to function properly."];
+
+    if ([alert runModal] == NSModalResponseOK) {
+        _defaults.JSSVerifySSL = YES;
+    } else {
+        _defaults.JSSVerifySSL = NO;
+    }
+}
+
 - (NSArray *)evaluateJSSRepoDictionaries:(NSDictionary *)distributionPoints
 {
     id distPoints;
 
     // If the object was parsed as an XML object the key we're looking for is
     // distribution_point. If the object is a JSON object the key is distribution_points
-    if ((distPoints = distributionPoints[@"distribution_point"]) == nil &&
-        (distPoints = distributionPoints[@"distribution_points"]) == nil) {
+    if ((distPoints = distributionPoints[@"distribution_point"]) == nil && (distPoints = distributionPoints[@"distribution_points"]) == nil) {
         return nil;
     }
 
@@ -351,7 +375,7 @@ NSPredicate *jdsFilterPredicate()
             if (!repo[kLGJSSDistPointPasswordKey]) {
                 NSString *name = repo[kLGJSSDistPointNameKey];
                 NSString *password = [self promptForSharePassword:name];
-                if (password && ![password isEqualToString:@""]) {
+                if (password.length) {
                     [newRepos addObject:@{ kLGJSSDistPointNameKey : name,
                                            kLGJSSDistPointPasswordKey : password }];
                 }
@@ -515,7 +539,7 @@ NSPredicate *jdsFilterPredicate()
         distPoint = [(NSMenuItem *)sender representedObject];
     } else {
         NSInteger row = _jssDistributionPointTableView.selectedRow;
-        if (row > -1) {
+        if (0 <= row) {
             distPoint = [self filteredData][row];
         }
     }

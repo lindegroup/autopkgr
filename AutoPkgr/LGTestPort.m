@@ -107,6 +107,7 @@
 
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:serverURL];
     request.timeoutInterval = 5.0;
+    request.cachePolicy = NSURLRequestReloadIgnoringLocalCacheData;
 
     // Set up the operation
     AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
@@ -118,6 +119,8 @@
     policy.validatesCertificateChain = NO;
 
     operation.securityPolicy = policy;
+    operation.shouldUseCredentialStorage = NO;
+    
     [operation setRedirectResponseBlock:^NSURLRequest * (NSURLConnection * connection, NSURLRequest * request, NSURLResponse * redirectResponse) {
         if (redirectResponse) {
             DLog(@"redirected %@",redirectResponse);
@@ -127,8 +130,10 @@
     }];
 
     [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
+        [[NSURLCache sharedURLCache] removeCachedResponseForRequest:request];
         reply(YES, redirectedURL);
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        [[NSURLCache sharedURLCache] removeCachedResponseForRequest:request];
         reply(operation.response ? YES:NO, redirectedURL);
     }];
 
