@@ -20,7 +20,6 @@
 #import "LGAutoPkgReport.h"
 #import "LGRecipes.h"
 #import "LGToolStatus.h"
-#import "LGVersionComparator.h"
 
 #import "HTMLCategories.h"
 
@@ -336,7 +335,7 @@ NSString *const fallback_reportCSS = @"<style type='text/css'>*{font-family:'Hel
 {
 
     // Only normalize report for version pre 0.4.3.
-    if ([LGVersionComparator isVersion:report[@"report_version"] greaterThanVersion:@"0.4.2"]) {
+    if ([report[@"report_version"] version_isGreaterThanOrEqualTo:@"0.4.3"]) {
         return report;
     }
 

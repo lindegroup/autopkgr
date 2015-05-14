@@ -179,6 +179,38 @@
     }];
 }
 
+- (void)testVersionCompare {
+    // GT
+    XCTAssertTrue([@"0.4.2" version_isGreaterThan:@"0.4.1"], @"wrong");
+    XCTAssertTrue([@"0.4.2" version_isGreaterThan:@"0.4.1"], @"wrong");
+    XCTAssertTrue([@"0.4.2" version_isGreaterThan:@"0.4.2"], @"wrong");
+    XCTAssertTrue([@"0.4.12" version_isGreaterThan:@"0.4.3.0.0"], @"wrong");
+
+    // GTOE
+    XCTAssertFalse([@"0.4.2" version_isGreaterThanOrEqualTo:@"0.4.3.0"], @"wrong");
+    XCTAssertFalse([@"0.4.2" version_isGreaterThanOrEqualTo:@"0.4.3"], @"wrong");
+    XCTAssertFalse([@"0.4.2.0" version_isGreaterThanOrEqualTo:@"0.4.3"], @"wrong");
+    XCTAssertFalse([@"0.4.2.0" version_isGreaterThanOrEqualTo:@"0.4.3.0"], @"wrong");
+    XCTAssertFalse([@"0.4" version_isGreaterThanOrEqualTo:@"0.4.3.0.0"], @"wrong");
+    XCTAssertFalse([@"0.4.3.0.0" version_isGreaterThanOrEqualTo:@"0.4.12"], @"wrong");
+
+    // EQ
+    XCTAssertTrue([@"0.4.2" version_isEqualTo:@"0.4.2"], @"wrong");
+    XCTAssertTrue([@"0.4.2" version_isEqualTo:@"0.4.2.0"], @"wrong");
+    XCTAssertTrue([@"0.4.2.0" version_isEqualTo:@"0.4.2"], @"wrong");
+    XCTAssertFalse([@"0.4.1.0" version_isEqualTo:@"0.4.2"], @"wrong");
+    XCTAssertFalse([@"0.4.2" version_isEqualTo:@"0.4.1.0"], @"wrong");
+
+    // LT
+    XCTAssertFalse([@"0.4.2" version_isLessThan:@"0.4.1"], @"wrong");
+    XCTAssertTrue([@"0.4.1" version_isLessThan:@"0.4.2"], @"wrong");
+
+    // LTOE
+    XCTAssertFalse([@"0.4.2" version_isLessThanOrEqualTo:@"0.4.1"], @"wrong");
+    XCTAssertTrue([@"0.4.1" version_isLessThanOrEqualTo:@"0.4.1"], @"wrong");
+    XCTAssertTrue([@"0.4.1" version_isLessThanOrEqualTo:@"0.4.2"], @"wrong");
+}
+
 - (void)testCredentials {
 
     XCTestExpectation *wait = [self expectationWithDescription:@"Web Credential Test"];

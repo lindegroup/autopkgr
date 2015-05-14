@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		1A0A86B1195CE69300A49434 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1A0A86B0195CE69300A49434 /* Security.framework */; };
-		1A1BAD96197A0407008192A7 /* LGVersionComparator.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A1BAD95197A0407008192A7 /* LGVersionComparator.m */; };
 		1A1BAD9E197A4133008192A7 /* LGGitHubJSONLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A1BAD9D197A4133008192A7 /* LGGitHubJSONLoader.m */; };
 		1A2C7FAE19CC9F8300CFF472 /* codesign.py in Resources */ = {isa = PBXBuildFile; fileRef = 1A2C7FAD19CC9F8300CFF472 /* codesign.py */; };
 		1AC69551195B59ED00D2BD81 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1AC69550195B59ED00D2BD81 /* Cocoa.framework */; };
@@ -47,6 +46,8 @@
 		BE05CE9019DB37E50089068B /* ServiceManagement.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BE05CE8F19DB37E50089068B /* ServiceManagement.framework */; };
 		BE05CE9119DB380F0089068B /* LGConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 1AC98409195CE7D60071CAB3 /* LGConstants.m */; };
 		BE05CE9219DB38180089068B /* LGError.m in Sources */ = {isa = PBXBuildFile; fileRef = BEFC931C1995F0710074C938 /* LGError.m */; };
+		BE0A75491B04EC7400F70C9E /* NSString+versionCompare.m in Sources */ = {isa = PBXBuildFile; fileRef = BE0A75481B04EC7400F70C9E /* NSString+versionCompare.m */; };
+		BE0A754A1B04EC7400F70C9E /* NSString+versionCompare.m in Sources */ = {isa = PBXBuildFile; fileRef = BE0A75481B04EC7400F70C9E /* NSString+versionCompare.m */; };
 		BE0BACD11A2560AE00554989 /* LGJSSDistributionPointsPrefPanel.m in Sources */ = {isa = PBXBuildFile; fileRef = BE0BACCF1A2560AE00554989 /* LGJSSDistributionPointsPrefPanel.m */; };
 		BE0BACD21A2560AE00554989 /* LGJSSDistributionPointsPrefPanel.xib in Resources */ = {isa = PBXBuildFile; fileRef = BE0BACD01A2560AE00554989 /* LGJSSDistributionPointsPrefPanel.xib */; };
 		BE0E857919D668F600B25B5E /* LGHTTPRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = BE0E857819D668F600B25B5E /* LGHTTPRequest.m */; };
@@ -127,7 +128,6 @@
 		BEFC3C841A3DF16700C789E9 /* LGError.m in Sources */ = {isa = PBXBuildFile; fileRef = BEFC931C1995F0710074C938 /* LGError.m */; };
 		BEFC3C851A3DF16700C789E9 /* LGHostInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 1AC86D3C195E0AC6006FDD2B /* LGHostInfo.m */; };
 		BEFC3C861A3DF16700C789E9 /* LGHTTPRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = BE0E857819D668F600B25B5E /* LGHTTPRequest.m */; };
-		BEFC3C871A3DF16700C789E9 /* LGVersionComparator.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A1BAD95197A0407008192A7 /* LGVersionComparator.m */; };
 		BEFC3C881A3DF16700C789E9 /* LGAutoPkgrAuthorizer.m in Sources */ = {isa = PBXBuildFile; fileRef = BE05CE7F19DAF6320089068B /* LGAutoPkgrAuthorizer.m */; };
 		BEFC3C891A3DF16700C789E9 /* LGAutoPkgrHelperConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = BE05CE8119DAF6320089068B /* LGAutoPkgrHelperConnection.m */; };
 		BEFC3C8A1A3DF16700C789E9 /* NSImage+statusLight.m in Sources */ = {isa = PBXBuildFile; fileRef = BE1C810219E8224000EF77F3 /* NSImage+statusLight.m */; };
@@ -172,8 +172,6 @@
 /* Begin PBXFileReference section */
 		00A11C97CD6260BB5679DA1A /* libPods-com.lindegroup.AutoPkgr.helper.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-com.lindegroup.AutoPkgr.helper.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		1A0A86B0195CE69300A49434 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
-		1A1BAD94197A0407008192A7 /* LGVersionComparator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGVersionComparator.h; sourceTree = "<group>"; };
-		1A1BAD95197A0407008192A7 /* LGVersionComparator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGVersionComparator.m; sourceTree = "<group>"; };
 		1A1BAD9C197A4133008192A7 /* LGGitHubJSONLoader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGGitHubJSONLoader.h; sourceTree = "<group>"; };
 		1A1BAD9D197A4133008192A7 /* LGGitHubJSONLoader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGGitHubJSONLoader.m; sourceTree = "<group>"; };
 		1A2C7FAD19CC9F8300CFF472 /* codesign.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = codesign.py; sourceTree = "<group>"; };
@@ -246,6 +244,8 @@
 		BE05CE8519DB35380089068B /* libPods-AutoPkgr-AHKeychain.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libPods-AutoPkgr-AHKeychain.a"; path = "../../../../Library/Developer/Xcode/DerivedData/AutoPkgr-gvffmulnnaejibfmmwfptzyobmbb/Build/Products/Debug/libPods-AutoPkgr-AHKeychain.a"; sourceTree = "<group>"; };
 		BE05CE8619DB35380089068B /* libPods-AutoPkgr-AHLaunchCtl.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libPods-AutoPkgr-AHLaunchCtl.a"; path = "../../../../Library/Developer/Xcode/DerivedData/AutoPkgr-gvffmulnnaejibfmmwfptzyobmbb/Build/Products/Debug/libPods-AutoPkgr-AHLaunchCtl.a"; sourceTree = "<group>"; };
 		BE05CE8F19DB37E50089068B /* ServiceManagement.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ServiceManagement.framework; path = System/Library/Frameworks/ServiceManagement.framework; sourceTree = SDKROOT; };
+		BE0A75471B04EC7400F70C9E /* NSString+versionCompare.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSString+versionCompare.h"; path = "Custom Categories/NSString+versionCompare.h"; sourceTree = "<group>"; };
+		BE0A75481B04EC7400F70C9E /* NSString+versionCompare.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSString+versionCompare.m"; path = "Custom Categories/NSString+versionCompare.m"; sourceTree = "<group>"; };
 		BE0BACCE1A2560AE00554989 /* LGJSSDistributionPointsPrefPanel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGJSSDistributionPointsPrefPanel.h; sourceTree = "<group>"; };
 		BE0BACCF1A2560AE00554989 /* LGJSSDistributionPointsPrefPanel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGJSSDistributionPointsPrefPanel.m; sourceTree = "<group>"; };
 		BE0BACD01A2560AE00554989 /* LGJSSDistributionPointsPrefPanel.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LGJSSDistributionPointsPrefPanel.xib; sourceTree = "<group>"; };
@@ -572,6 +572,8 @@
 			children = (
 				BE1C810119E8224000EF77F3 /* NSImage+statusLight.h */,
 				BE1C810219E8224000EF77F3 /* NSImage+statusLight.m */,
+				BE0A75471B04EC7400F70C9E /* NSString+versionCompare.h */,
+				BE0A75481B04EC7400F70C9E /* NSString+versionCompare.m */,
 				BE73CDC519E062AC00441443 /* NSString+cleaned.h */,
 				BE73CDC619E062AC00441443 /* NSString+cleaned.m */,
 				BE8A06BA1AF8FAFD006C2571 /* NSData+taskData.h */,
@@ -632,8 +634,6 @@
 				BE8A06B71AF8F961006C2571 /* LGPackageRemover.m */,
 				BE053D131A8F90920021D97B /* LGPasswords.h */,
 				BE053D141A8F90920021D97B /* LGPasswords.m */,
-				1A1BAD94197A0407008192A7 /* LGVersionComparator.h */,
-				1A1BAD95197A0407008192A7 /* LGVersionComparator.m */,
 			);
 			name = "Utility Classes";
 			sourceTree = "<group>";
@@ -1009,6 +1009,7 @@
 				BE8C7D6E1A86CEF600EBD32A /* LGTool.m in Sources */,
 				1AC98412195CE8520071CAB3 /* LGEmailer.m in Sources */,
 				BE6815D51A0B18DE004AD310 /* LGUserNotifications.m in Sources */,
+				BE0A75491B04EC7400F70C9E /* NSString+versionCompare.m in Sources */,
 				BEC1258A19F04703006696C4 /* LGInstaller.m in Sources */,
 				BEC1258519F045EB006696C4 /* LGRecipes.m in Sources */,
 				BE32178B19ED9ACA00A92E5A /* LGRecipeOverrides.m in Sources */,
@@ -1022,7 +1023,6 @@
 				BEC1258C19F049A1006696C4 /* LGTableView.m in Sources */,
 				6A53625D1988BE59008A949C /* LGTestPort.m in Sources */,
 				BEFC931D1995F0710074C938 /* LGError.m in Sources */,
-				1A1BAD96197A0407008192A7 /* LGVersionComparator.m in Sources */,
 				BEEFE6C21AEBCC7C00882C89 /* LGToolStatus.m in Sources */,
 				BEEFE6CE1AEC761F00882C89 /* LGJSSImporterTool.m in Sources */,
 				BE05CE8219DAF6320089068B /* LGAutoPkgrAuthorizer.m in Sources */,
@@ -1066,11 +1066,11 @@
 				BED136B21AC26B7C003EBF0F /* NSString+html_report.m in Sources */,
 				BEFC3C821A3DF16700C789E9 /* LGConstants.m in Sources */,
 				BE8C7D6F1A86D32B00EBD32A /* LGTool.m in Sources */,
+				BE0A754A1B04EC7400F70C9E /* NSString+versionCompare.m in Sources */,
 				BEFC3C831A3DF16700C789E9 /* LGDefaults.m in Sources */,
 				BEFC3C841A3DF16700C789E9 /* LGError.m in Sources */,
 				BEFC3C851A3DF16700C789E9 /* LGHostInfo.m in Sources */,
 				BEFC3C861A3DF16700C789E9 /* LGHTTPRequest.m in Sources */,
-				BEFC3C871A3DF16700C789E9 /* LGVersionComparator.m in Sources */,
 				BEFC3C881A3DF16700C789E9 /* LGAutoPkgrAuthorizer.m in Sources */,
 				BEFC3C891A3DF16700C789E9 /* LGAutoPkgrHelperConnection.m in Sources */,
 				BEFC3C8A1A3DF16700C789E9 /* NSImage+statusLight.m in Sources */,

@@ -23,7 +23,6 @@
 
 #import "LGAutoPkgr.h"
 
-#import "LGVersionComparator.h"
 #import "LGInstaller.h"
 #import "LGUninstaller.h"
 
@@ -344,7 +343,7 @@ void subclassMustConformToProtocol(id className)
 - (void)uninstall:(id)sender
 {
     void (^removeRepo)() = ^void() {
-        if ([LGAutoPkgTask version]) {
+        if ([LGAutoPkgTask autoPkgVersion]) {
             LGAutoPkgTask *task = [LGAutoPkgTask repoDeleteTask:[[self class] defaultRepository]];
             if (_progressDelegate) {
                 task.progressDelegate = _progressDelegate;
@@ -504,7 +503,7 @@ void subclassMustConformToProtocol(id className)
     if (!_installed || !_installedVersion) {
         _status = kLGToolNotInstalled;
     } else if (_installedVersion && _remoteVersion) {
-        if ([LGVersionComparator isVersion:_remoteVersion greaterThanVersion:_installedVersion]) {
+        if ([_remoteVersion version_isGreaterThan:_installedVersion]) {
             _status = kLGToolUpdateAvailable;
         }
     }

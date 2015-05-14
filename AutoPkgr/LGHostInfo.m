@@ -23,7 +23,6 @@
 #import "LGConstants.h"
 #import "LGAutoPkgr.h"
 #import "LGGitHubJSONLoader.h"
-#import "LGVersionComparator.h"
 #import "LGAutoPkgrHelperConnection.h"
 
 #import "AHKeychain.h"

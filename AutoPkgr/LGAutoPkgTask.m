@@ -21,21 +21,11 @@
 #import "LGAutoPkgErrorHandler.h"
 
 #import "LGRecipes.h"
-#import "LGVersionComparator.h"
 #import "AHProxySettings.h"
 #import "LGHostInfo.h"
 #import "LGVersioner.h"
 #import "NSData+taskData.h"
 
-NSString *const kLGAutoPkgTaskLock = @"com.lindegroup.autopkg.task.lock";
-
-NSString *const kLGAutoPkgRecipeNameKey = @"Name";
-NSString *const kLGAutoPkgRecipeIdentifierKey = @"Identifier";
-NSString *const kLGAutoPkgRecipeParentKey = @"ParentRecipe";
-NSString *const kLGAutoPkgRecipePathKey = @"Path";
-NSString *const kLGAutoPkgRepoNameKey = @"RepoName";
-NSString *const kLGAutoPkgRepoPathKey = @"RepoPath";
-NSString *const kLGAutoPkgRepoURLKey = @"RepoURL";
 
 // This is a function so in the future this could be configured to
 // determine autopkg path in a more robust way.
@@ -43,6 +33,26 @@ NSString *const autopkg()
 {
     return @"/usr/local/bin/autopkg";
 }
+
+static NSString *const kLGAutoPkgTaskLock = @"com.lindegroup.autopkg.task.lock";
+
+// Version Strings
+static NSString* const AUTOPKG_0_3_0 = @"0.3.0";
+static NSString* const AUTOPKG_0_3_1 = @"0.3.1";
+static NSString* const AUTOPKG_0_3_2 = @"0.3.2";
+static NSString* const AUTOPKG_0_4_0 = @"0.4.0";
+static NSString* const AUTOPKG_0_4_1 = @"0.4.1";
+static NSString* const AUTOPKG_0_4_2 = @"0.4.2";
+static NSString* const AUTOPKG_0_4_3 = @"0.4.3";
+
+// Autopkg Task Result keys
+NSString *const kLGAutoPkgRecipeNameKey = @"Name";
+NSString *const kLGAutoPkgRecipeIdentifierKey = @"Identifier";
+NSString *const kLGAutoPkgRecipeParentKey = @"ParentRecipe";
+NSString *const kLGAutoPkgRecipePathKey = @"Path";
+NSString *const kLGAutoPkgRepoNameKey = @"RepoName";
+NSString *const kLGAutoPkgRepoPathKey = @"RepoPath";
+NSString *const kLGAutoPkgRepoURLKey = @"RepoURL";
 
 typedef void (^AutoPkgReplyResultsBlock)(NSArray *results, NSError *error);
 typedef void (^AutoPkgReplyReportBlock)(NSDictionary *report, NSError *error);
@@ -72,7 +82,6 @@ typedef void (^AutoPkgReplyErrorBlock)(NSError *error);
 
 // Version
 @property (copy, nonatomic) NSString *version;
-@property (nonatomic, assign) BOOL AUTOPKG_VERSION_0_4_0;
 
 @property (readwrite, nonatomic, strong) NSRecursiveLock *taskLock;
 
@@ -373,7 +382,7 @@ typedef void (^AutoPkgReplyErrorBlock)(NSError *error);
         _verb = kLGAutoPkgVersion;
     } else if ([verbString isEqualToString:@"run"]) {
         _verb = kLGAutoPkgRun;
-        if (self.AUTOPKG_VERSION_0_4_0) {
+        if (([self.version version_isGreaterThanOrEqualTo:AUTOPKG_0_4_0])) {
             [self.internalArgs addObject:self.reportPlistFile];
         }
         [self.internalArgs addObject:@"-v"];
@@ -396,10 +405,11 @@ typedef void (^AutoPkgReplyErrorBlock)(NSError *error);
     [self.taskLock unlock];
 }
 
+
 - (NSString *)version
 {
     if (!_version) {
-        _version = [[self class] version];
+        _version = [[self class] autoPkgVersion];
     }
     return _version;
 }
@@ -417,7 +427,7 @@ typedef void (^AutoPkgReplyErrorBlock)(NSError *error);
     self.task.standardError = _errorHandler.pipe;
 
     if (_verb == kLGAutoPkgRun || _verb == kLGAutoPkgRepoUpdate) {
-        if (self.AUTOPKG_VERSION_0_4_0) {
+        if (([self.version version_isGreaterThanOrEqualTo:AUTOPKG_0_4_0])) {
             __block double count = 0.0;
             __block double total;
             NSPredicate *progressPredicate;
@@ -591,7 +601,7 @@ typedef void (^AutoPkgReplyErrorBlock)(NSError *error);
 
     NSMutableDictionary *workingReport;
 
-    if (self.AUTOPKG_VERSION_0_4_0) {
+    if (([self.version version_isGreaterThanOrEqualTo:AUTOPKG_0_4_0])) {
         NSFileManager *fm = [NSFileManager defaultManager];
         NSString *reportPlistFile = self.reportPlistFile;
 
@@ -734,11 +744,6 @@ typedef void (^AutoPkgReplyErrorBlock)(NSError *error);
 }
 
 #pragma mark - Utility
-
-- (BOOL)AUTOPKG_VERSION_0_4_0
-{
-    return [LGVersionComparator isVersion:self.version greaterThanVersion:@"0.3.9"];
-}
 
 - (BOOL)isNetworkOperation
 {
@@ -892,7 +897,7 @@ typedef void (^AutoPkgReplyErrorBlock)(NSError *error);
     return [results isKindOfClass:[NSArray class]] ? results : nil;
 }
 
-+ (NSString *)version
++ (NSString *)autoPkgVersion
 {
     LGAutoPkgTask *task = [[LGAutoPkgTask alloc] initWithArguments:@[ @"version" ]];
     [task launch];

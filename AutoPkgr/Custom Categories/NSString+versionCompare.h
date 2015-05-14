@@ -1,10 +1,9 @@
 //
-//  LGVersionComparator.h
+//  NSString+valueCompare.h
 //  AutoPkgr
 //
-//  Created by James Barclay on 7/18/14.
-//
-//  Copyright 2014-2015 The Linde Group, Inc.
+//  Created by Eldon on 5/14/15.
+//  Copyright (c) 2015 Eldon Ahrold. All rights reserved.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -19,11 +18,18 @@
 //  limitations under the License.
 //
 
+
 #import <Foundation/Foundation.h>
 
-@interface LGVersionComparator : NSObject
+@interface NSString (versionCompare)
 
-+ (BOOL)isVersion:(NSString *)a greaterThanVersion:(NSString *)b;
-+ (NSArray *)normalizeVersionFromArray:(NSArray *)versionArray;
+- (NSComparisonResult)compareToVersion:(NSString *)version;
+
+- (BOOL)version_isGreaterThan:(NSString *)version;
+- (BOOL)version_isGreaterThanOrEqualTo:(NSString *)version;
+- (BOOL)version_isEqualTo:(NSString *)version;
+
+- (BOOL)version_isLessThan:(NSString *)version;
+- (BOOL)version_isLessThanOrEqualTo:(NSString *)version;
 
 @end

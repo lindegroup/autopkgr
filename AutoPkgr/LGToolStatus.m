@@ -21,7 +21,6 @@
 
 #import "LGAutoPkgr.h"
 #import "LGGitHubJSONLoader.h"
-#import "LGVersionComparator.h"
 
 NSString *const kLGToolAutoPkg = @"AutoPkg";
 NSString *const kLGToolGit = @"Git";

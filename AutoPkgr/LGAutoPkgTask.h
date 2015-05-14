@@ -57,6 +57,7 @@ extern NSString *const kLGAutoPkgRepoPathKey;
  */
 extern NSString *const kLGAutoPkgRepoURLKey;
 
+
 #pragma mark Task Status Delegate
 @protocol LGTaskStatusDelegate <NSObject>
 - (void)didReceiveStatusUpdate:(LGAutoPkgTaskResponseObject *)object;
@@ -288,7 +289,7 @@ extern NSString *const kLGAutoPkgRepoURLKey;
  *
  *  @return version string
  */
-+ (NSString *)version;
++ (NSString *)autoPkgVersion;
 
 @end
 
