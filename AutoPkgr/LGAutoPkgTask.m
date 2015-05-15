@@ -20,17 +20,24 @@
 #import "LGAutoPkgTask.h"
 #import "LGAutoPkgErrorHandler.h"
 
-#import "LGRecipes.h"
 #import "AHProxySettings.h"
 #import "LGHostInfo.h"
 #import "LGVersioner.h"
 #import "NSData+taskData.h"
 
+#if DEBUG
+/* For development using a custom version of autopkg cretae
+ * a symlink from the autopkg binary to /usr/local/bin/autopkg_dev
+ * and set off set AUTOPKG_DEV_MODE 1
+ */
+#define AUTOPKG_DEV_MODE 0
+#endif
 
-// This is a function so in the future this could be configured to
-// determine autopkg path in a more robust way.
-NSString *const autopkg()
-{
+static NSString *const autopkg(){
+#if AUTOPKG_DEV_MODE
+    NSLog(@"Using development autopkg binary");
+    return @"/usr/local/bin/autopkg_dev";
+#endif
     return @"/usr/local/bin/autopkg";
 }
 
@@ -54,6 +61,7 @@ NSString *const kLGAutoPkgRepoNameKey = @"RepoName";
 NSString *const kLGAutoPkgRepoPathKey = @"RepoPath";
 NSString *const kLGAutoPkgRepoURLKey = @"RepoURL";
 
+// Reply blocks
 typedef void (^AutoPkgReplyResultsBlock)(NSArray *results, NSError *error);
 typedef void (^AutoPkgReplyReportBlock)(NSDictionary *report, NSError *error);
 typedef void (^AutoPkgReplyErrorBlock)(NSError *error);
@@ -70,8 +78,9 @@ typedef void (^AutoPkgReplyErrorBlock)(NSError *error);
 @property (copy, nonatomic, readwrite) NSMutableData *standardOutData;
 @property (copy, nonatomic, readwrite) NSString *standardOutString;
 @property (copy, nonatomic, readwrite) NSString *standardErrString;
-@property (strong, nonatomic) LGAutoPkgErrorHandler *errorHandler;
 
+// Handlers
+@property (strong, nonatomic) LGAutoPkgErrorHandler *errorHandler;
 @property (strong, nonatomic) LGVersioner *versioner;
 
 // Results objects
@@ -91,7 +100,6 @@ typedef void (^AutoPkgReplyErrorBlock)(NSError *error);
 @property (copy, nonatomic, readwrite) AutoPkgReplyErrorBlock replyErrorBlock;
 
 - (NSString *)taskDescription;
-
 @end
 
 #pragma mark - Task Manager
@@ -136,7 +144,16 @@ typedef void (^AutoPkgReplyErrorBlock)(NSError *error);
 - (void)runRecipes:(NSArray *)recipes
              reply:(void (^)(NSDictionary *, NSError *))reply
 {
-    LGAutoPkgTask *task = [LGAutoPkgTask runRecipeListTask];
+    LGAutoPkgTask *task = [LGAutoPkgTask runRecipesTask:recipes];
+    task.replyReportBlock = reply;
+    [self addOperation:task];
+}
+
+- (void)runRecipes:(NSArray *)recipes
+    withInteraction:(BOOL)withInteraction
+              reply:(void (^)(NSDictionary *, NSError *))reply
+{
+    LGAutoPkgTask *task = [LGAutoPkgTask runRecipesTask:recipes];
     task.replyReportBlock = reply;
     [self addOperation:task];
 }
@@ -145,7 +162,7 @@ typedef void (^AutoPkgReplyErrorBlock)(NSError *error);
            updateRepo:(BOOL)updateRepo
                 reply:(void (^)(NSDictionary *, NSError *))reply
 {
-    LGAutoPkgTask *runTask = [LGAutoPkgTask runRecipeListTask];
+    LGAutoPkgTask *runTask = [LGAutoPkgTask runRecipeListTask:recipeList];
     runTask.replyReportBlock = reply;
 
     if (updateRepo) {
@@ -338,6 +355,11 @@ typedef void (^AutoPkgReplyErrorBlock)(NSError *error);
         [self.taskLock unlock];
     }
 
+    if (_verb & (kLGAutoPkgRepoAdd | kLGAutoPkgRepoDelete)) {
+        // Post a notification for objects watching for modified repos.
+        [[NSNotificationCenter defaultCenter] postNotificationName:kLGNotificationReposModified object:nil];
+    }
+
     LGAutoPkgTaskResponseObject *response = [[LGAutoPkgTaskResponseObject alloc] init];
     response.results = self.results;
     response.report = self.report;
@@ -355,13 +377,14 @@ typedef void (^AutoPkgReplyErrorBlock)(NSError *error);
 - (void)launch
 {
     LGAutoPkgTaskManager *mgr = [[LGAutoPkgTaskManager alloc] init];
+    NSAssert([self isInteractiveOperation], @"[autopkg %@] Interactive commands must be launched asynchronously. Use launchInBackground:", self.internalArgs.firstObject);
+
     [mgr addOperationAndWait:self];
 }
 
 - (void)launchInBackground:(void (^)(NSError *))reply
 {
     LGAutoPkgTaskManager *bgQueue = [LGAutoPkgTaskManager new];
-    DevLog(@"bgQueue: %@", bgQueue.name);
     self.replyErrorBlock = reply;
     [bgQueue addOperation:self];
 }
@@ -386,30 +409,35 @@ typedef void (^AutoPkgReplyErrorBlock)(NSError *error);
             [self.internalArgs addObject:self.reportPlistFile];
         }
         [self.internalArgs addObject:@"-v"];
-    } else if ([verbString isEqualToString:@"search"]) {
-        _verb = kLGAutoPkgSearch;
     } else if ([verbString isEqualToString:@"list-recipes"]) {
-        _verb = kLGAutoPkgRecipeList;
+        _verb = kLGAutoPkgListRecipes;
     } else if ([verbString isEqualToString:@"make-override"]) {
         _verb = kLGAutoPkgMakeOverride;
+    } else if ([verbString isEqualToString:@"search"]) {
+        _verb = kLGAutoPkgSearch;
+    } else if ([verbString isEqualToString:@"info"]) {
+        _verb = kLGAutoPkgInfo;
     } else if ([verbString isEqualToString:@"repo-add"]) {
         _verb = kLGAutoPkgRepoAdd;
     } else if ([verbString isEqualToString:@"repo-delete"]) {
         _verb = kLGAutoPkgRepoDelete;
-    } else if ([verbString isEqualToString:@"repo-list"]) {
-        _verb = kLGAutoPkgRepoList;
     } else if ([verbString isEqualToString:@"repo-update"]) {
         _verb = kLGAutoPkgRepoUpdate;
+    } else if ([verbString isEqualToString:@"repo-list"]) {
+        _verb = kLGAutoPkgRepoList;
+    } else if ([verbString isEqualToString:@"list-processors"]) {
+        _verb = kLGAutoPkgListProcessors;
+    } else if ([verbString isEqualToString:@"processor-info"]) {
+        _verb = kLGAutoPkgProcessorInfo;
     }
-
+    
     [self.taskLock unlock];
 }
-
 
 - (NSString *)version
 {
     if (!_version) {
-        _version = [[self class] autoPkgVersion];
+        _version = [[self class] version];
     }
     return _version;
 }
@@ -417,6 +445,9 @@ typedef void (^AutoPkgReplyErrorBlock)(NSError *error);
 #pragma mark - Task config helpers
 - (void)configureFileHandles
 {
+    // Place holder for stdin
+    NSPipe *standardInput;
+
     // Set up stdout
     NSPipe *standardOutput = [NSPipe pipe];
     self.task.standardOutput = standardOutput;
@@ -426,8 +457,19 @@ typedef void (^AutoPkgReplyErrorBlock)(NSError *error);
     _errorHandler = [[LGAutoPkgErrorHandler alloc] initWithVerb:_verb];
     self.task.standardError = _errorHandler.pipe;
 
-    if (_verb == kLGAutoPkgRun || _verb == kLGAutoPkgRepoUpdate) {
+    if ([self isInteractiveOperation]) {
+        /* As of AutoPkg 0.4.3 there is an interactive search feature
+         * so setup stdin */
+        standardInput = [NSPipe pipe];
+        self.task.standardInput = standardInput;
+    }
+
+    if (_verb & (kLGAutoPkgRun | kLGAutoPkgRepoUpdate)) {
+
         if (([self.version version_isGreaterThanOrEqualTo:AUTOPKG_0_4_0])) {
+            /* As of 0.4.0 AutoPkg saves the report.plist to a file rather than stdout,
+             * so we can send progress messages */
+
             __block double count = 0.0;
             __block double total;
             NSPredicate *progressPredicate;
@@ -445,8 +487,14 @@ typedef void (^AutoPkgReplyErrorBlock)(NSError *error);
             BOOL verbose = [[NSUserDefaults standardUserDefaults] boolForKey:@"verboseAutoPkgRun"];
             [[standardOutput fileHandleForReading] setReadabilityHandler:^(NSFileHandle *handle) {
                 NSData *data = handle.availableData;
+
                 if (data.length) {
                     NSString *message = [[NSString alloc]initWithData:data encoding:NSUTF8StringEncoding];
+
+                    if ([self isInteractiveData:data]) {
+                        DevLog(@"Prompting for interaction: %@", message);
+                        return [self interactiveAlertWithMessage:message];
+                    }
 
                     [_versioner parseString:message];
                     if ([progressPredicate evaluateWithObject:message]) {
@@ -486,6 +534,10 @@ typedef void (^AutoPkgReplyErrorBlock)(NSError *error);
         [[standardOutput fileHandleForReading] setReadabilityHandler:^(NSFileHandle *fh) {
             NSData *data = [fh availableData];
             if (data.length) {
+                if ([self isInteractiveData:data]) {
+                    return [self interactiveAlertWithMessage:[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding]];
+                }
+
                 if (!_standardOutData) {
                     _standardOutData = [[NSMutableData alloc] init ];
                 }
@@ -532,7 +584,7 @@ typedef void (^AutoPkgReplyErrorBlock)(NSError *error);
         }
     }
 
-    if (_verb == kLGAutoPkgRun || _verb == kLGAutoPkgRepoUpdate) {
+    if (_verb & (kLGAutoPkgRun | kLGAutoPkgRepoUpdate)) {
         // To get status from autopkg set NSUnbufferedIO environment key to YES
         // Thanks to help from -- http://stackoverflow.com/questions/8251010
         [self addEnvironmentVariable:@"YES" forKey:@"NSUnbufferedIO"];
@@ -658,7 +710,6 @@ typedef void (^AutoPkgReplyErrorBlock)(NSError *error);
     if (!_results) {
         NSString *resultString = self.standardOutString;
         if (resultString) {
-
             if (_verb == kLGAutoPkgSearch) {
                 __block NSMutableArray *searchResults;
 
@@ -694,7 +745,6 @@ typedef void (^AutoPkgReplyErrorBlock)(NSError *error);
                     }
                 }];
                 _results = [searchResults copy];
-
             } else if (_verb == kLGAutoPkgRepoList) {
                 NSArray *listResults = [resultString componentsSeparatedByCharactersInSet:[NSCharacterSet newlineCharacterSet]];
 
@@ -713,8 +763,7 @@ typedef void (^AutoPkgReplyErrorBlock)(NSError *error);
                     [strippedRepos addObject:resultDict];
                 }
                 _results = strippedRepos.count ? [strippedRepos copy] : nil;
-
-            } else if (_verb == kLGAutoPkgRecipeList) {
+            } else if (_verb == kLGAutoPkgListRecipes) {
                 // Try to serialize the stdout, if that fails continue
                 if ((_results = [self serializePropertyListString:resultString])) {
                     return _results;
@@ -737,6 +786,8 @@ typedef void (^AutoPkgReplyErrorBlock)(NSError *error);
                     }
                 }
                 _results = strippedRecipes.count ? [strippedRecipes copy] : nil;
+            } else if (_verb == kLGAutoPkgListProcessors){
+                _results = [resultString componentsSeparatedByCharactersInSet:[NSCharacterSet newlineCharacterSet]];
             }
         }
     }
@@ -744,11 +795,15 @@ typedef void (^AutoPkgReplyErrorBlock)(NSError *error);
 }
 
 #pragma mark - Utility
-
 - (BOOL)isNetworkOperation
 {
-    if (_verb == kLGAutoPkgRun || _verb == kLGAutoPkgSearch || _verb == kLGAutoPkgRepoAdd || _verb == kLGAutoPkgRepoUpdate) {
-        return YES;
+    return (_verb & (kLGAutoPkgRun | kLGAutoPkgSearch | kLGAutoPkgRepoAdd | kLGAutoPkgRepoUpdate));
+}
+
+- (BOOL)isInteractiveOperation
+{
+    if ([self.version version_isGreaterThanOrEqualTo:AUTOPKG_0_4_3]) {
+        return (_verb & (kLGAutoPkgRun | kLGAutoPkgInfo));
     }
     return NO;
 }
@@ -769,7 +824,7 @@ typedef void (^AutoPkgReplyErrorBlock)(NSError *error);
 - (id)serializePropertyListString:(NSString *)string
 {
     id results = nil;
-    if (string && ![string isEqualToString:@""]) {
+    if (string.length) {
         NSData *plistData = [string dataUsingEncoding:NSUTF8StringEncoding];
         // Initialize our dict
         results = [NSPropertyListSerialization propertyListWithData:plistData
@@ -780,14 +835,44 @@ typedef void (^AutoPkgReplyErrorBlock)(NSError *error);
     return results;
 }
 
-#pragma mark - Class Methods
+- (BOOL)isInteractiveData:(NSData *)data {
+    if ([self.version version_isGreaterThanOrEqualTo:AUTOPKG_0_4_3]) {
+        NSString *message = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
 
+        NSPredicate *prompt = [NSPredicate predicateWithFormat:@"SELF CONTAINS[CD] '[y/n]:'"];
+
+        if ([prompt evaluateWithObject:message]) {
+            return YES;
+        }
+    }
+    return NO;
+}
+
+- (void)interactiveAlertWithMessage:(NSString *)message
+{
+    /* Eventually there may be more ways to interact, for now it's only to search github for a recipe's repo */
+    [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+        NSAlert *alert = [NSAlert alertWithMessageText:@"Could not find the parent recipe" defaultButton:@"Yes" alternateButton:@"No" otherButton:nil informativeTextWithFormat:@"%@", [message stringByReplacingOccurrencesOfString:@"[y/n]:" withString:@""]];
+
+        NSString *results;
+        // Don't forget the newline char!
+        if ([alert runModal] == NSAlertDefaultReturn) {
+            results = @"y\n";
+        } else {
+            results = @"n\n";
+        }
+
+        [[self.task.standardInput fileHandleForWriting] writeData:[results dataUsingEncoding:NSUTF8StringEncoding]];
+    }];
+}
+
+#pragma mark - Class Methods
 #pragma mark-- Recipe Methods --
 + (void)runRecipes:(NSArray *)recipes
           progress:(void (^)(NSString *, double))progress
              reply:(void (^)(NSDictionary *, NSError *))reply
 {
-    LGAutoPkgTask *task = [LGAutoPkgTask runRecipeListTask];
+    LGAutoPkgTask *task = [LGAutoPkgTask runRecipesTask:recipes];
     task.progressUpdateBlock = progress;
 
     __weak typeof(task) weakTask = task;
@@ -800,7 +885,7 @@ typedef void (^AutoPkgReplyErrorBlock)(NSError *error);
              progress:(void (^)(NSString *, double))progress
                 reply:(void (^)(NSDictionary *, NSError *))reply
 {
-    LGAutoPkgTask *task = [LGAutoPkgTask runRecipeListTask];
+    LGAutoPkgTask *task = [LGAutoPkgTask runRecipeListTask:recipeList];
     task.progressUpdateBlock = progress;
 
     __weak typeof(task) weakTask = task;
@@ -860,7 +945,17 @@ typedef void (^AutoPkgReplyErrorBlock)(NSError *error);
     return [results isKindOfClass:[NSArray class]] ? results : nil;
 }
 
-#pragma mark-- Repo Methods
++ (void)info:(NSString *)recipe reply:(void (^)(NSString *info, NSError *error))reply;
+{
+    LGAutoPkgTask *task = [[LGAutoPkgTask alloc] initWithArguments:@[ @"info", recipe ]];
+    __weak typeof(task) weakTask = task;
+    [task launchInBackground:^(NSError *error) {
+        typeof(task) strongTask = weakTask;
+        reply(strongTask.standardOutString, error);
+    }];
+}
+
+#pragma mark-- Repo Methods --
 + (void)repoAdd:(NSString *)repo reply:(void (^)(NSError *))reply
 {
     LGAutoPkgTask *task = [[LGAutoPkgTask alloc] init];
@@ -897,7 +992,25 @@ typedef void (^AutoPkgReplyErrorBlock)(NSError *error);
     return [results isKindOfClass:[NSArray class]] ? results : nil;
 }
 
-+ (NSString *)autoPkgVersion
+#pragma mark --Processor Methods--
++(NSArray *)listProcessors
+{
+    LGAutoPkgTask *task = [[LGAutoPkgTask alloc] initWithArguments:@[ @"list-processors" ]];
+    [task launch];
+    id results = [task results];
+    return [results isKindOfClass:[NSArray class]] ? results : nil;
+
+}
+
++(NSString *)processorInfo:(NSString *)processor
+{
+    LGAutoPkgTask *task = [[LGAutoPkgTask alloc] initWithArguments:@[ @"processor-info", processor ]];
+    [task launch];
+    return task.standardOutString;
+}
+
+#pragma mark - Other
++ (NSString *)version
 {
     LGAutoPkgTask *task = [[LGAutoPkgTask alloc] initWithArguments:@[ @"version" ]];
     [task launch];
@@ -909,26 +1022,29 @@ typedef void (^AutoPkgReplyErrorBlock)(NSError *error);
 }
 
 #pragma mark-- Convenience Initializers --
-+ (LGAutoPkgTask *)runRecipeTask:(NSArray *)recipes
++ (LGAutoPkgTask *)runRecipesTask:(NSArray *)recipes
+{
+    return [self runRecipesTask:recipes withInteraction:NO];
+}
+
++ (LGAutoPkgTask *)runRecipesTask:(NSArray *)recipes withInteraction:(BOOL)withInteraction
 {
     LGAutoPkgTask *task = nil;
     if (recipes.count) {
-        NSMutableArray *fullRecipes = [[NSMutableArray alloc] initWithCapacity:recipes.count + 2];
-
-        [fullRecipes addObject:@"run"];
+        NSMutableArray *fullRecipes = [NSMutableArray arrayWithObject:@"run"];
         [fullRecipes addObjectsFromArray:recipes];
         [fullRecipes addObject:@"--report-plist"];
 
-        task = [[LGAutoPkgTask alloc] initWithArguments:[NSArray arrayWithArray:fullRecipes]];
+        task = [[LGAutoPkgTask alloc] initWithArguments:[fullRecipes copy]];
     }
 
     return task;
 }
 
-+ (LGAutoPkgTask *)runRecipeListTask
++ (LGAutoPkgTask *)runRecipeListTask:(NSString *)recipeList
 {
     LGAutoPkgTask *task = [[LGAutoPkgTask alloc] init];
-    task.arguments = @[ @"run", @"--recipe-list", [LGRecipes recipeList], @"--report-plist" ];
+    task.arguments = @[ @"run", @"--recipe-list", recipeList, @"--report-plist" ];
     return task;
 }
 
@@ -944,7 +1060,7 @@ typedef void (^AutoPkgReplyErrorBlock)(NSError *error);
     return task;
 }
 
-+ (LGAutoPkgTask *)addRepoTask:(NSString *)repo
++ (LGAutoPkgTask *)repoAddTask:(NSString *)repo
 {
     LGAutoPkgTask *task = [[LGAutoPkgTask alloc] initWithArguments:@[ @"repo-add", repo ]];
     return task;

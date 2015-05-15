@@ -23,21 +23,26 @@
 /* AutoPkg Task Verbs
  */
 typedef NS_ENUM(NSInteger, LGAutoPkgVerb) {
-    kLGAutoPkgUndefinedVerb,
+    kLGAutoPkgUndefinedVerb = 0,
     // recipe verbs
-    kLGAutoPkgRun,
-    kLGAutoPkgRecipeList,
-    kLGAutoPkgMakeOverride,
-    kLGAutoPkgSearch,
+    kLGAutoPkgRun = 1 << 0,
+    kLGAutoPkgListRecipes = 1 << 1,
+    kLGAutoPkgMakeOverride = 1 << 2,
+    kLGAutoPkgSearch = 1 << 3,
+    kLGAutoPkgInfo = 1 << 4,
 
     // repo verbs
-    kLGAutoPkgRepoAdd,
-    kLGAutoPkgRepoDelete,
-    kLGAutoPkgRepoUpdate,
-    kLGAutoPkgRepoList,
+    kLGAutoPkgRepoAdd = 1 << 10,
+    kLGAutoPkgRepoDelete = 1 << 11,
+    kLGAutoPkgRepoUpdate = 1 << 12,
+    kLGAutoPkgRepoList = 1 << 13,
+
+    // processor verbs
+    kLGAutoPkgProcessorInfo = 1 << 20,
+    kLGAutoPkgListProcessors = 1 << 21,
 
     // other verbs
-    kLGAutoPkgVersion,
+    kLGAutoPkgVersion = 1 << 30,
 };
 
 @interface LGAutoPkgErrorHandler : NSObject

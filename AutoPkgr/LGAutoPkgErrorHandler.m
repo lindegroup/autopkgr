@@ -33,7 +33,7 @@ static NSString *errorMessageFromAutoPkgVerb(LGAutoPkgVerb verb)
     case kLGAutoPkgRun:
         localizedBaseString = @"kLGAutoPkgRun";
         break;
-    case kLGAutoPkgRecipeList:
+    case kLGAutoPkgListRecipes:
         localizedBaseString = @"kLGAutoPkgRecipeList";
         break;
     case kLGAutoPkgMakeOverride:
@@ -200,7 +200,7 @@ NSString *maskPasswordInString(NSString *string)
 
         // Otherwise we can just use the termination status
         if (exitCode != 0) {
-            error = [NSError errorWithDomain:[[NSBundle mainBundle] bundleIdentifier]
+            error = [NSError errorWithDomain:[[NSBundle mainBundle] bundleIdentifier] ?: @"autopkg"
                                         code:exitCode
                                     userInfo:@{ NSLocalizedDescriptionKey : errorMsg,
                                                 NSLocalizedRecoverySuggestionErrorKey : errorDetails ?: @"" }];

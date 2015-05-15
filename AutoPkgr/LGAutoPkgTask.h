@@ -239,6 +239,15 @@ extern NSString *const kLGAutoPkgRepoURLKey;
  */
 + (NSArray *)listRecipes;
 
+/**
+ *  Equivalent to /usr/bin/local/autopkg info [recipe]
+ *
+ *  @param recipe recipe you want info for.
+ *
+ *  @return String output
+ */
++ (void)info:(NSString *)recipe reply:(void (^)(NSString *info, NSError *error))reply;
+
 #pragma mark-- Repo methods --
 /**
  *  Equivalent to /usr/bin/local/autopkg repo-add [recipe_repo_url]
@@ -273,15 +282,35 @@ extern NSString *const kLGAutoPkgRepoURLKey;
  */
 + (NSArray *)repoList;
 
-#pragma mark-- Convenience Initializers --
-+ (LGAutoPkgTask *)runRecipeTask:(NSArray *)recipes;
-+ (LGAutoPkgTask *)runRecipeListTask;
-+ (LGAutoPkgTask *)searchTask:(NSString *)recipe;
-+ (LGAutoPkgTask *)repoUpdateTask;
+#pragma mark-- Processor Methods --
+/**
+ *  Equivalent to /usr/bin/local/autopkg list-processors
+ *
+ *  @return list of installed autopkg repos
+ */
++ (NSArray *)listProcessors;
 
-// TODO: Rename to repoAddTask
-+ (LGAutoPkgTask *)addRepoTask:(NSString *)repo;
+/**
+ *  Equivalent to /usr/bin/local/autopkg processor-info [processor]
+ *
+ *  @return list of installed autopkg repos
+ */
++ (NSString *)processorInfo:(NSString *)processor;
+
+#pragma mark-- Convenience Initializers --
++ (LGAutoPkgTask *)runRecipesTask:(NSArray *)recipes;
+
+/**
+ * @note setting withInteraction currently has no effect. It may however in the future be made into a core autopkg option.
+ */
++ (LGAutoPkgTask *)runRecipesTask:(NSArray *)recipes withInteraction:(BOOL)withInteraction;
+
++ (LGAutoPkgTask *)runRecipeListTask:(NSString *)recipeList;
++ (LGAutoPkgTask *)searchTask:(NSString *)recipe;
+
++ (LGAutoPkgTask *)repoAddTask:(NSString *)repo;
 + (LGAutoPkgTask *)repoDeleteTask:(NSString *)repo;
++ (LGAutoPkgTask *)repoUpdateTask;
 
 #pragma mark-- Other --
 /**
@@ -289,7 +318,7 @@ extern NSString *const kLGAutoPkgRepoURLKey;
  *
  *  @return version string
  */
-+ (NSString *)autoPkgVersion;
++ (NSString *)version;
 
 @end
 

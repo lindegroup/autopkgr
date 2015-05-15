@@ -308,7 +308,7 @@ void subclassMustConformToProtocol(id className)
 {
     NSString *name = [[self class] name];
 
-    LGAutoPkgTask *task = [LGAutoPkgTask addRepoTask:[[self class] defaultRepository]];
+    LGAutoPkgTask *task = [LGAutoPkgTask repoAddTask:[[self class] defaultRepository]];
 
     if (_progressDelegate) {
         [_progressDelegate startProgressWithMessage:[NSString stringWithFormat:@"Adding default AutoPkg repo for %@", name]];
@@ -318,9 +318,6 @@ void subclassMustConformToProtocol(id className)
 
     [task launchInBackground:^(NSError *error) {
         [self didCompleteInstallAction:sender error:error];
-
-        // Post a notification to trigger a reload of the repo table.
-        [[NSNotificationCenter defaultCenter] postNotificationName:kLGNotificationReposModified object:nil];
     }];
 }
 
@@ -343,16 +340,13 @@ void subclassMustConformToProtocol(id className)
 - (void)uninstall:(id)sender
 {
     void (^removeRepo)() = ^void() {
-        if ([LGAutoPkgTask autoPkgVersion]) {
+        if ([LGAutoPkgTask version]) {
             LGAutoPkgTask *task = [LGAutoPkgTask repoDeleteTask:[[self class] defaultRepository]];
             if (_progressDelegate) {
                 task.progressDelegate = _progressDelegate;
             }
             [task launchInBackground:^(NSError *error) {
                 [self didCompleteInstallAction:sender error:error];
-
-                [[NSNotificationCenter defaultCenter] postNotificationName:kLGNotificationReposModified object:nil];
-                
             }];
         } else {
             [self didCompleteInstallAction:sender error:nil];

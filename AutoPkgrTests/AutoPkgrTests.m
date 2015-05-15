@@ -24,6 +24,7 @@
 #import "LGGitHubJSONLoader.h"
 #import "LGAutoPkgr.h"
 #import "LGToolStatus.h"
+#import "LGAutoPkgTask.h"
 
 #import "LGAutoPkgReport.h"
 #import "LGEmailer.h"
@@ -46,6 +47,16 @@
 {
     // Put teardown code here. This method is called after the invocation of each test method in the class.
     [super tearDown];
+}
+
+
+#pragma mark - LGAutoPkgTask
+- (void)testSyncMethods
+{
+    XCTAssertNotNil([LGAutoPkgTask repoList], @"Failed test");
+    XCTAssertNotNil([LGAutoPkgTask listProcessors], @"Failed test");
+    XCTAssertNotNil([LGAutoPkgTask listRecipes], @"Failed test");
+    XCTAssertNotNil([LGAutoPkgTask processorInfo:@"Installer"], @"Failed test");
 }
 
 #pragma mark - LGTools
@@ -183,8 +194,8 @@
     // GT
     XCTAssertTrue([@"0.4.2" version_isGreaterThan:@"0.4.1"], @"wrong");
     XCTAssertTrue([@"0.4.2" version_isGreaterThan:@"0.4.1"], @"wrong");
-    XCTAssertTrue([@"0.4.2" version_isGreaterThan:@"0.4.2"], @"wrong");
     XCTAssertTrue([@"0.4.12" version_isGreaterThan:@"0.4.3.0.0"], @"wrong");
+    XCTAssertFalse([@"0.4.2" version_isGreaterThan:@"0.4.2"], @"wrong");
 
     // GTOE
     XCTAssertFalse([@"0.4.2" version_isGreaterThanOrEqualTo:@"0.4.3.0"], @"wrong");
