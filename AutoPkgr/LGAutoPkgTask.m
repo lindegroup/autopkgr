@@ -377,7 +377,7 @@ typedef void (^AutoPkgReplyErrorBlock)(NSError *error);
 - (void)launch
 {
     LGAutoPkgTaskManager *mgr = [[LGAutoPkgTaskManager alloc] init];
-    NSAssert([self isInteractiveOperation], @"[autopkg %@] Interactive commands must be launched asynchronously. Use launchInBackground:", self.internalArgs.firstObject);
+//    NSAssert([self isInteractiveOperation], @"[autopkg %@] Interactive commands must be launched asynchronously. Use launchInBackground:", self.internalArgs.firstObject);
 
     [mgr addOperationAndWait:self];
 }
@@ -802,10 +802,7 @@ typedef void (^AutoPkgReplyErrorBlock)(NSError *error);
 
 - (BOOL)isInteractiveOperation
 {
-    if ([self.version version_isGreaterThanOrEqualTo:AUTOPKG_0_4_3]) {
-        return (_verb & (kLGAutoPkgRun | kLGAutoPkgInfo));
-    }
-    return NO;
+    return (_verb & (kLGAutoPkgRun | kLGAutoPkgInfo)) && [self.version version_isGreaterThanOrEqualTo:AUTOPKG_0_4_3];
 }
 
 - (NSInteger)recipeListCount
@@ -1012,13 +1009,23 @@ typedef void (^AutoPkgReplyErrorBlock)(NSError *error);
 #pragma mark - Other
 + (NSString *)version
 {
-    LGAutoPkgTask *task = [[LGAutoPkgTask alloc] initWithArguments:@[ @"version" ]];
+    NSString *version;
+
+    NSTask *task = [[NSTask alloc] init];
+
+    task = task;
+    task.launchPath = @"/usr/bin/python";
+    task.arguments = @[autopkg(), @"version"];
+    task.standardOutput = [NSPipe pipe];
     [task launch];
-    NSString *version = task.standardOutString;
-    if (version.length) {
-        return [version stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    [task waitUntilExit];
+
+    NSData *data = [[task.standardOutput fileHandleForReading] availableData];
+    if (data.length) {
+        version = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
     }
-    return nil;
+
+    return version ?: @"0.0.0";
 }
 
 #pragma mark-- Convenience Initializers --
