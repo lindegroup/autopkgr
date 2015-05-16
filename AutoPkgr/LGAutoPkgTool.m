@@ -17,6 +17,7 @@
 
 #import "LGAutoPkgTool.h"
 #import "LGTool+Protocols.h"
+#import "LGAutoPkgTask.h"
 
 @interface LGAutoPkgTool ()<LGToolPackagInstaller, LGToolSharedProcessor>
 @end
@@ -62,7 +63,7 @@
 #pragma mark - Instance overrides
 - (NSString *)installedVersion
 {
-    return [[self versionTaskWithExec:[[self class] binary] arguments:@[ @"version" ]] stringByTrimmingCharactersInSet:[NSCharacterSet newlineCharacterSet]];
+    return [LGAutoPkgTask version];
 }
 
 @end

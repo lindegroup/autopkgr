@@ -47,4 +47,15 @@
     return nil;
 }
 
+- (BOOL)taskData_isInteractive {
+    NSString *message = [[NSString alloc] initWithData:self encoding:NSUTF8StringEncoding];
+
+    NSPredicate *prompt = [NSPredicate predicateWithFormat:@"SELF CONTAINS[CD] '[y/n]:'"];
+
+    if ([prompt evaluateWithObject:message]) {
+        return YES;
+    }
+    return NO;
+}
+
 @end

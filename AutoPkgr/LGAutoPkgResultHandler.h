@@ -1,10 +1,8 @@
+// LGAutoPkgResultHandler.h
 //
-//  AutoPkgr.h
-//  AutoPkgr
+//  Created by Eldon Ahrold on 5/15/15.
 //
-//  Created by Eldon on 8/24/14.
-//
-//  Copyright 2014-2015 The Linde Group, Inc.
+// Copyright 2015 Eldon Ahrold
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -19,19 +17,16 @@
 //  limitations under the License.
 //
 
-#ifndef AutoPkgr_AutoPkgr_h
-#define AutoPkgr_AutoPkgr_h
+#import <Foundation/Foundation.h>
+#import "LGAutoPkgErrorHandler.h"
 
-#import "LGConstants.h"
-#import "LGDefaults.h"
-#import "LGError.h"
-#import "LGLogger.h"
-#import "LGHostInfo.h"
-#import "NSString+cleaned.h"
-#import "NSString+versionCompare.h"
-#import "NSTextField+setSafeStringValue.h"
-#import "NSImage+statusLight.h"
-#import "NSArray+filtered.h"
-#import "NSString+split.h"
+@interface LGAutoPkgResultHandler : NSObject
 
-#endif
+- (instancetype)init __attribute__((unavailable("init not available")));
+
+- (instancetype)initWithString:(NSString *)string verb:(LGAutoPkgVerb)verb;
+- (instancetype)initWithData:(NSData *)data verb:(LGAutoPkgVerb)verb;
+
+@property (copy, nonatomic, readonly) id results;
+
+@end

@@ -165,9 +165,9 @@ extern NSString *const kLGAutoPkgRepoURLKey;
 
 /**
  * An array of dictionaries based on the autopkg verb
- * @discussion only, recipe-list, repo-list, and search will return values, all others will return nil;
+ * @discussion only, list-recipes, repo-list, list-processors, and search will return values, all others will return nil;
  */
-@property (copy, nonatomic, readonly) NSArray *results;
+@property (copy, nonatomic, readonly) id results;
 
 /**
  *  The block to use for providing run status updates asynchronously.
