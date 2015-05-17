@@ -45,6 +45,8 @@ const CFStringRef kUTTypePropertyList = CFSTR("com.apple.property-list");
                 [NSApp presentError:error];
             } else {
                 NSDictionary *override = [NSDictionary dictionaryWithContentsOfFile:path] ?: @{};
+                assert([[NSFileManager defaultManager] fileExistsAtPath:path]);
+                
                 [[NSOperationQueue mainQueue] addOperationWithBlock:^{
                     [[NSNotificationCenter defaultCenter]postNotificationName:kLGNotificationOverrideCreated
                                                                        object:nil

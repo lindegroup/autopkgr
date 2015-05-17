@@ -784,7 +784,7 @@ typedef void (^AutoPkgReplyErrorBlock)(NSError *error);
     LGAutoPkgTask *task = [LGAutoPkgTask runRecipeListTask];
     task.progressUpdateBlock = progress;
 
-    __weak LGAutoPkgTask *weakTask = task;
+    __weak typeof(task) weakTask = task;
     [task launchInBackground:^(NSError *error) {
         reply(weakTask.report,error);
     }];
@@ -797,7 +797,7 @@ typedef void (^AutoPkgReplyErrorBlock)(NSError *error);
     LGAutoPkgTask *task = [LGAutoPkgTask runRecipeListTask];
     task.progressUpdateBlock = progress;
 
-    __weak LGAutoPkgTask *weakTask = task;
+    __weak typeof(task) weakTask = task;
     [task launchInBackground:^(NSError *error) {
         reply(weakTask.report,error);
     }];
@@ -806,7 +806,7 @@ typedef void (^AutoPkgReplyErrorBlock)(NSError *error);
 + (void)search:(NSString *)recipe reply:(void (^)(NSArray *results, NSError *error))reply
 {
     LGAutoPkgTask *task = [LGAutoPkgTask searchTask:recipe];
-    __weak LGAutoPkgTask *weakTask = task;
+    __weak typeof(task) weakTask = task;
     [task launchInBackground:^(NSError *error) {
         NSArray *results;
         if (!error) {
@@ -818,25 +818,31 @@ typedef void (^AutoPkgReplyErrorBlock)(NSError *error);
 
 + (void)makeOverride:(NSString *)recipe reply:(void (^)(NSString *, NSError *))reply
 {
-    LGAutoPkgTask *task = [[LGAutoPkgTask alloc] init];
-    task.arguments = @[ @"make-override", recipe ];
-    __weak typeof(task) weakTask = task;
-    [task launchInBackground:^(NSError *error) {
-        typeof(task) strongTask = weakTask;
-        NSString *path = [[strongTask.standardOutString stringByReplacingOccurrencesOfString:@"Override file saved to " withString:@""] stringByDeletingPathExtension];
-        reply(path,error);
-    }];
+    [[self class] makeOverride:recipe name:nil reply:reply];
 }
 
 + (void)makeOverride:(NSString *)recipe name:(NSString *)name reply:(void (^)(NSString *, NSError *))reply
 {
     LGAutoPkgTask *task = [[LGAutoPkgTask alloc] init];
-    task.arguments = @[ @"make-override", recipe, @"-n", name ];
+    NSMutableArray *args = [@[ @"make-override", recipe ] mutableCopy];
+    if (name) {
+        [args addObjectsFromArray:@[ @"-n", name ]];
+    }
+
+    task.arguments = args;
     __weak typeof(task) weakTask = task;
     [task launchInBackground:^(NSError *error) {
         typeof(task) strongTask = weakTask;
-        NSString *path = [[strongTask.standardOutString stringByReplacingOccurrencesOfString:@"Override file saved to " withString:@""] stringByDeletingPathExtension];
-        reply(path,error);
+        NSMutableString *path = nil;
+        if(!error){
+            path = [strongTask.standardOutString.trimmed mutableCopy];
+            [path deleteCharactersInRange:[path rangeOfString:@"Override file saved to "]];
+            if ((path.length > 2) && ([path characterAtIndex:path.length-1] == '.')) {
+                [path deleteCharactersInRange:NSMakeRange(path.length-1, 1)];
+            }
+        }
+        
+        reply(path, error);
     }];
 }
 
