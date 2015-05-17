@@ -41,7 +41,6 @@
 
 @property (weak) IBOutlet LGTableView *popularRepositoriesTableView;
 @property (weak) IBOutlet NSSearchField *repoSearch;
-@property (weak) IBOutlet LGRecipes *recipesObject;
 @property (weak) id<LGProgressDelegate> progressDelegate;
 
 @end

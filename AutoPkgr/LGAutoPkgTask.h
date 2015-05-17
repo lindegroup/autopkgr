@@ -80,6 +80,11 @@ extern NSString *const kLGAutoPkgRepoURLKey;
  */
 @property (copy) void (^progressUpdateBlock)(NSString *message, double progress);
 
+/**
+ *  Error block, it could get invoked multiple times.
+ */
+@property (copy) void (^errorBlock)(NSError *error);
+
 #pragma mark-- NSOperation Queue --
 /**
  *  Subclass override to produce warning if an incorrect operation is submitted

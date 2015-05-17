@@ -34,7 +34,8 @@
 #define AUTOPKG_DEV_MODE 0
 #endif
 
-static NSString *const autopkg(){
+static NSString *const autopkg()
+{
 #if AUTOPKG_DEV_MODE
     DevLog(@"Using development autopkg binary");
     return @"/usr/local/bin/autopkg_dev";
@@ -45,13 +46,13 @@ static NSString *const autopkg(){
 static NSString *const kLGAutoPkgTaskLock = @"com.lindegroup.autopkg.task.lock";
 
 // Version Strings
-static NSString* const AUTOPKG_0_3_0 = @"0.3.0";
-static NSString* const AUTOPKG_0_3_1 = @"0.3.1";
-static NSString* const AUTOPKG_0_3_2 = @"0.3.2";
-static NSString* const AUTOPKG_0_4_0 = @"0.4.0";
-static NSString* const AUTOPKG_0_4_1 = @"0.4.1";
-static NSString* const AUTOPKG_0_4_2 = @"0.4.2";
-static NSString* const AUTOPKG_0_4_3 = @"0.4.3";
+static NSString *const AUTOPKG_0_3_0 = @"0.3.0";
+static NSString *const AUTOPKG_0_3_1 = @"0.3.1";
+static NSString *const AUTOPKG_0_3_2 = @"0.3.2";
+static NSString *const AUTOPKG_0_4_0 = @"0.4.0";
+static NSString *const AUTOPKG_0_4_1 = @"0.4.1";
+static NSString *const AUTOPKG_0_4_2 = @"0.4.2";
+static NSString *const AUTOPKG_0_4_3 = @"0.4.3";
 
 // Autopkg Task Result keys
 NSString *const kLGAutoPkgRecipeNameKey = @"Name";
@@ -116,6 +117,11 @@ typedef void (^AutoPkgReplyErrorBlock)(NSError *error);
     if (!op.progressUpdateBlock && _progressUpdateBlock) {
         op.progressUpdateBlock = _progressUpdateBlock;
     }
+
+    if (!op.replyErrorBlock && _errorBlock ){
+        op.replyErrorBlock = _errorBlock;
+    }
+
 }
 
 - (void)addOperationAndWait:(LGAutoPkgTask *)op
@@ -381,7 +387,7 @@ typedef void (^AutoPkgReplyErrorBlock)(NSError *error);
 - (void)launch
 {
     LGAutoPkgTaskManager *mgr = [[LGAutoPkgTaskManager alloc] init];
-//    NSAssert([self isInteractiveOperation], @"[autopkg %@] Interactive commands must be launched asynchronously. Use launchInBackground:", self.internalArgs.firstObject);
+    //    NSAssert([self isInteractiveOperation], @"[autopkg %@] Interactive commands must be launched asynchronously. Use launchInBackground:", self.internalArgs.firstObject);
 
     [mgr addOperationAndWait:self];
 }
@@ -434,7 +440,7 @@ typedef void (^AutoPkgReplyErrorBlock)(NSError *error);
     } else if ([verbString isEqualToString:@"processor-info"]) {
         _verb = kLGAutoPkgProcessorInfo;
     }
-    
+
     [self.taskLock unlock];
 }
 
@@ -729,7 +735,6 @@ typedef void (^AutoPkgReplyErrorBlock)(NSError *error);
         }
 
         [self.taskLock unlock];
-
     }
     return _results;
 }
@@ -916,17 +921,16 @@ typedef void (^AutoPkgReplyErrorBlock)(NSError *error);
     return [results isKindOfClass:[NSArray class]] ? results : nil;
 }
 
-#pragma mark --Processor Methods--
-+(NSArray *)listProcessors
+#pragma mark--Processor Methods--
++ (NSArray *)listProcessors
 {
     LGAutoPkgTask *task = [[LGAutoPkgTask alloc] initWithArguments:@[ @"list-processors" ]];
     [task launch];
     id results = [task results];
     return [results isKindOfClass:[NSArray class]] ? results : nil;
-
 }
 
-+(NSString *)processorInfo:(NSString *)processor
++ (NSString *)processorInfo:(NSString *)processor
 {
     LGAutoPkgTask *task = [[LGAutoPkgTask alloc] initWithArguments:@[ @"processor-info", processor ]];
     [task launch];
@@ -942,7 +946,7 @@ typedef void (^AutoPkgReplyErrorBlock)(NSError *error);
 
     task = task;
     task.launchPath = @"/usr/bin/python";
-    task.arguments = @[autopkg(), @"version"];
+    task.arguments = @[ autopkg(), @"version" ];
     task.standardOutput = [NSPipe pipe];
     [task launch];
     [task waitUntilExit];

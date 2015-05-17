@@ -44,14 +44,14 @@
  *
  *  @param recipes array of recipes
  */
-+ (void)writeRecipeList:(NSMutableArray *)recipes;
++ (void)writeRecipeList:(NSMutableOrderedSet *)recipes;
 
 /**
  *  Array of the recipes currently in the recipe_list.txt.
  *
- *  @return NSArray of recipes.
+ *  @return set of recipes.
  */
-+ (NSArray *)getActiveRecipes;
++ (NSSet *)getActiveRecipes;
 
 /**
  *  Migrate a recipe_list.txt file from recipe shortnames to recipe identifiers.

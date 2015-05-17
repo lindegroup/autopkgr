@@ -382,14 +382,14 @@
                                                         <rect key="frame" x="1" y="1" width="581" height="143"/>
                                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                         <subviews>
-                                                            <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnSelection="YES" columnResizing="NO" multipleSelection="NO" autosaveColumns="NO" id="HAz-3M-Rgt" customClass="LGTableView">
+                                                            <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnSelection="YES" columnResizing="NO" multipleSelection="NO" autosaveColumns="NO" headerView="G9x-hV-Xkq" id="HAz-3M-Rgt" customClass="LGTableView">
                                                                 <rect key="frame" x="0.0" y="0.0" width="581" height="19"/>
                                                                 <autoresizingMask key="autoresizingMask"/>
                                                                 <size key="intercellSpacing" width="3" height="2"/>
                                                                 <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                                 <color key="gridColor" name="gridColor" catalog="System" colorSpace="catalog"/>
                                                                 <tableColumns>
-                                                                    <tableColumn identifier="recipeCheckbox" width="20" minWidth="20" maxWidth="20" id="qiq-rG-iyC">
+                                                                    <tableColumn identifier="isEnabled" editable="NO" width="20" minWidth="20" maxWidth="20" id="qiq-rG-iyC">
                                                                         <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left">
                                                                             <font key="font" metaFont="smallSystem"/>
                                                                             <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
@@ -399,9 +399,9 @@
                                                                             <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                                                             <font key="font" metaFont="system"/>
                                                                         </buttonCell>
-                                                                        <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
+                                                                        <sortDescriptor key="sortDescriptorPrototype" selector="compare:" sortKey="isEnabled"/>
                                                                     </tableColumn>
-                                                                    <tableColumn identifier="Name" width="171" minWidth="40" maxWidth="1000" id="BlP-un-SwO">
+                                                                    <tableColumn identifier="Name" editable="NO" width="171" minWidth="40" maxWidth="1000" id="BlP-un-SwO">
                                                                         <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left">
                                                                             <font key="font" metaFont="smallSystem"/>
                                                                             <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
@@ -412,9 +412,10 @@
                                                                             <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                                                             <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                                                         </textFieldCell>
-                                                                        <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
+                                                                        <sortDescriptor key="sortDescriptorPrototype" selector="localizedStandardCompare:" sortKey="Name"/>
+                                                                        <tableColumnResizingMask key="resizingMask" resizeWithTable="YES"/>
                                                                     </tableColumn>
-                                                                    <tableColumn identifier="Identifier" width="381" minWidth="10" maxWidth="3.4028234663852886e+38" id="Uhk-Q9-hWI">
+                                                                    <tableColumn identifier="Identifier" editable="NO" width="381" minWidth="10" maxWidth="3.4028234663852886e+38" id="Uhk-Q9-hWI">
                                                                         <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left">
                                                                             <font key="font" metaFont="smallSystem"/>
                                                                             <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
@@ -425,7 +426,8 @@
                                                                             <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                                                             <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                                         </textFieldCell>
-                                                                        <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
+                                                                        <sortDescriptor key="sortDescriptorPrototype" selector="localizedStandardCompare:" sortKey="Identifier"/>
+                                                                        <tableColumnResizingMask key="resizingMask" resizeWithTable="YES"/>
                                                                     </tableColumn>
                                                                 </tableColumns>
                                                                 <connections>
@@ -443,6 +445,10 @@
                                                     <scroller key="verticalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="NO" id="hH6-fw-9si">
                                                         <autoresizingMask key="autoresizingMask"/>
                                                     </scroller>
+                                                    <tableHeaderView key="headerView" id="G9x-hV-Xkq">
+                                                        <rect key="frame" x="0.0" y="0.0" width="10000" height="17"/>
+                                                        <autoresizingMask key="autoresizingMask"/>
+                                                    </tableHeaderView>
                                                 </scrollView>
                                                 <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="4WY-w1-VqU">
                                                     <rect key="frame" x="425" y="-2" width="180" height="28"/>
@@ -1471,7 +1477,6 @@
         <customObject id="mvj-kT-UYD" customClass="LGPopularRepositories">
             <connections>
                 <outlet property="popularRepositoriesTableView" destination="n0R-ew-DOT" id="JUt-j6-dab"/>
-                <outlet property="recipesObject" destination="oLk-Uk-whI" id="nau-VQ-HYc"/>
                 <outlet property="repoSearch" destination="Su6-Sd-cOj" id="vzT-0g-kr8"/>
             </connections>
         </customObject>

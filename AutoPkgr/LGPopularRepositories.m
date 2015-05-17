@@ -64,7 +64,7 @@
                                @"https://github.com/autopkg/n8felton-recipes.git",
                                @"https://github.com/autopkg/groob-recipes.git",
                                @"https://github.com/autopkg/jazzace-recipes.git",
-                               kLGJSSDefaultRepo ];
+                               ];
         }
 
         [self assembleRepos];
@@ -87,7 +87,6 @@
 {
     [[NSOperationQueue mainQueue] addOperationWithBlock:^{
         _activeRepos = [LGAutoPkgTask repoList];
-        [_recipesObject reload];
         [tableView reloadData];
         [_progressDelegate stopProgress:error];
     }];
@@ -97,7 +96,6 @@
 {
     [[NSOperationQueue mainQueue] addOperationWithBlock:^{
         [self assembleRepos];
-        [_recipesObject reload];
     }];
 }
 
@@ -137,6 +135,7 @@
     if ([[tableColumn identifier] isEqualToString:@"repoCheckbox"]) {
         NSString *repo = [_searchedRepos objectAtIndex:row];
         BOOL add = [object isEqual:@YES];
+
         NSString *message = [NSString stringWithFormat:@"%@ %@", add ? @"Adding" : @"Removing", repo];
         NSLog(@"%@", message);
         [_progressDelegate startProgressWithMessage:message];
@@ -162,10 +161,10 @@
     [_popularRepositoriesTableView beginUpdates];
     [_popularRepositoriesTableView removeRowsAtIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, _searchedRepos.count)] withAnimation:NSTableViewAnimationEffectNone];
 
-    if ([[_repoSearch stringValue] isEqualToString:@""]) {
+    if (_repoSearch.stringValue.length == 0) {
         _searchedRepos = _popularRepos;
     } else {
-        NSPredicate *searchPredicate = [NSPredicate predicateWithFormat:@"SELF CONTAINS[CD] %@", [_repoSearch stringValue]];
+        NSPredicate *searchPredicate = [NSPredicate predicateWithFormat:@"SELF CONTAINS[CD] %@", _repoSearch.stringValue];
         _searchedRepos = [_popularRepos filteredArrayUsingPredicate:searchPredicate];
     }
 
