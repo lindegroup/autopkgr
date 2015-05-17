@@ -167,6 +167,10 @@ static NSString *const kLGAutoPkgRecipeMissingParentKey = @"isMissingParentRecip
             } else {
                 recipe[kLGAutoPkgRecipeIsEnabledKey] = @NO;
             }
+
+            if (recipe[kLGAutoPkgRecipeParentKey]) {
+                recipe[kLGAutoPkgRecipeParentKey] = [self parentsForRecipe:recipe];
+            }
         }
 
         NSString *recipeOverride = defaults.autoPkgRecipeOverridesDir ?: @"~/Library/AutoPkg/RecipeOverrides".stringByExpandingTildeInPath;
@@ -188,6 +192,8 @@ static NSString *const kLGAutoPkgRecipeMissingParentKey = @"isMissingParentRecip
                     override[kLGAutoPkgRecipeIsEnabledKey] = @NO;
                 }
             }
+
+            override[kLGAutoPkgRecipeParentKey] = [self parentsForRecipe:override];
         }
 
         for (NSMutableDictionary *override in validOverrides) {
@@ -305,6 +311,28 @@ static NSString *const kLGAutoPkgRecipeMissingParentKey = @"isMissingParentRecip
     return dictionary.count ? dictionary : nil;
 }
 
+- (NSArray *)parentsForRecipe:(NSDictionary *)recipe {
+
+    NSArray *results = nil;
+    NSMutableArray *parents = [[NSMutableArray alloc] init];
+    while (true) {
+        if (recipe[kLGAutoPkgRecipeParentKey]) {
+            NSPredicate *parentPredicate = [NSPredicate predicateWithFormat:@"%K == %@", kLGAutoPkgRecipeIdentifierKey, recipe[kLGAutoPkgRecipeParentKey]];
+
+            results = [self.recipes filteredArrayUsingPredicate:parentPredicate];
+
+            if (results.firstObject[kLGAutoPkgRecipeIdentifierKey]) {
+                [parents addObject:results.firstObject[kLGAutoPkgRecipeIdentifierKey]];
+            }
+            recipe = results.firstObject;
+        } else {
+            break;
+        }
+    }
+
+    return [parents copy];
+}
+
 #pragma mark- Run Task Menu Actions
 - (void)cancelTask {
     if (_runTask) {
@@ -356,7 +384,7 @@ static NSString *const kLGAutoPkgRecipeMissingParentKey = @"isMissingParentRecip
     NSMenuItem *item3;
 
     if (recipe[kLGAutoPkgRecipeParentKey]) {
-        NSString *parent = [@"Parent Recipe: " stringByAppendingString:recipe[kLGAutoPkgRecipeParentKey]];
+        NSString *parent = [@"Parent Recipe: " stringByAppendingString:[recipe[kLGAutoPkgRecipeParentKey] firstObject]];
         [menu addItemWithTitle:parent action:nil keyEquivalent:@""];
     }
 
