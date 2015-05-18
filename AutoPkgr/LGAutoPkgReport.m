@@ -18,7 +18,7 @@
 //
 
 #import "LGAutoPkgReport.h"
-#import "LGRecipes.h"
+#import "LGAutoPkgRecipe.h"
 #import "LGToolStatus.h"
 
 #import "HTMLCategories.h"
@@ -288,7 +288,7 @@ NSString *const fallback_reportCSS = @"<style type='text/css'>*{font-family:'Hel
 
                 if ([noValidRecipePredicate evaluateWithObject:errString]) {
                     // Remove Recipe from Recipe.txt
-                    [LGRecipes removeRecipeFromRecipeList:[[errString componentsSeparatedByString:noValidRecipe] lastObject]];
+                    [LGAutoPkgRecipe removeRecipeFromRecipeList:[[errString componentsSeparatedByString:noValidRecipe] lastObject]];
                     [set addObject:[errString stringByAppendingString:@". It has been automatically removed from your recipe list in order to prevent recurring errors."]];
                 } else {
                     [set addObject:errString];

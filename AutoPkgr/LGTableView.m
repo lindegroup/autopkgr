@@ -31,9 +31,9 @@
     NSString *classString = NSStringFromClass([[self dataSource] class]);
 
     if (theEvent.type == NSLeftMouseDown || theEvent.type == NSRightMouseDown) {
-        if ([classString isEqualToString:@"LGRecipes"]) {
-            return [(LGRecipes *)[self dataSource] contextualMenuForRecipeAtRow:row];
-        } else if ([classString isEqualToString:@"LGPopularRepositories"]) {
+        if ([classString isEqualToString:NSStringFromClass([LGRecipeController class])]) {
+            return [(LGRecipeController *)[self dataSource] contextualMenuForRecipeAtRow:row];
+        } else if ([classString isEqualToString:NSStringFromClass([LGPopularRepositories class])]) {
             NSString *repo = [self repoFromRow:row];
             return [LGPopularRepositories contextualMenuForRepo:repo];
         }

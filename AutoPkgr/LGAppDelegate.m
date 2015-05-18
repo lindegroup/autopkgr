@@ -25,7 +25,7 @@
 #import "LGAutoPkgTask.h"
 #import "LGEmailer.h"
 #import "LGAutoPkgSchedule.h"
-#import "LGRecipes.h"
+#import "LGAutoPkgRecipe.h"
 #import "LGConfigurationWindowController.h"
 #import "LGAutoPkgrHelperConnection.h"
 #import "LGUserNotifications.h"
@@ -102,7 +102,7 @@
         DLog(@"No longer monitoring scheduled autopkg run");
     }];
 
-    if (![LGRecipes migrateToIdentifiers:nil]) {
+    if (![LGAutoPkgRecipe migrateToIdentifiers:nil]) {
         [NSApp presentError:[NSError errorWithDomain:kLGApplicationName code:-1 userInfo:@{ NSLocalizedDescriptionKey : @"AutoPkgr will now quit.",
                                                                                             NSLocalizedRecoverySuggestionErrorKey : @"You've chosen not to upgrade your recipe list. Either relaunch AutoPkgr to restart the migration process, or downgrade to an older 1.1.x AutoPkgr release." }]];
         [[NSApplication sharedApplication] terminate:self];
@@ -213,7 +213,7 @@
     DLog(@"Received 'Check Now' menulet command.");
 
     [self startProgressWithMessage:@"Running selected AutoPkg recipes..."];
-    NSString *recipeList = [LGRecipes recipeList];
+    NSString *recipeList = [LGAutoPkgRecipe defaultRecipeList];
     BOOL updateRepos = [[LGDefaults standardUserDefaults] checkForRepoUpdatesAutomaticallyEnabled];
 
     if (!_taskManager) {

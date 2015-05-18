@@ -20,7 +20,7 @@
 //
 
 #import "LGEmailer.h"
-#import "LGRecipes.h"
+#import "LGRecipeController.h"
 #import "LGAutoPkgr.h"
 #import "LGHostInfo.h"
 #import "LGPasswords.h"

@@ -37,6 +37,10 @@ extern NSString *const kLGAutoPkgRecipeNameKey;
  */
 extern NSString *const kLGAutoPkgRecipeIdentifierKey;
 /**
+ *  Constant to access recipe description in autopkg recipe-list
+ */
+extern NSString *const kLGAutoPkgRecipeNameKey;
+/**
  *  Constant to access recipe's ParentRecipe in autopkg recipe-list
  */
 extern NSString *const kLGAutoPkgRecipeParentKey;

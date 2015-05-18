@@ -30,7 +30,10 @@
 #import "LGProgressDelegate.h"
 #import "LGDisplayStatusDelegate.h"
 #import "LGPasswords.h"
-
+#import "LGPopularRepositories.h"
+#import "LGRecipeController.h"
+#import "LGTestPort.h"
+#import "LGAutoPkgRecipe.h"
 #import "LGToolStatus.h"
 
 @interface LGConfigurationWindowController () {
@@ -605,7 +608,8 @@
 
 - (IBAction)checkAppsNow:(id)sender
 {
-    NSString *recipeList = [LGRecipes recipeList];
+    NSString *recipeList = [LGAutoPkgRecipe defaultRecipeList];
+    
     if (!_taskManager) {
         _taskManager = [[LGAutoPkgTaskManager alloc] init];
     }

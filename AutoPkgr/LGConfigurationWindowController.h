@@ -20,9 +20,9 @@
 //
 
 #import <Cocoa/Cocoa.h>
-#import "LGPopularRepositories.h"
-#import "LGRecipes.h"
-#import "LGTestPort.h"
+#import "LGProgressDelegate.h"
+
+@class LGPopularRepositories, LGRecipeController;
 
 @interface LGConfigurationWindowController : NSWindowController <NSTextDelegate, NSTokenFieldDelegate, NSWindowDelegate, NSTabViewDelegate, LGProgressDelegate>
 
@@ -90,7 +90,7 @@
 
 // Objects
 @property (strong) IBOutlet LGPopularRepositories *popRepoTableViewHandler;
-@property (strong) IBOutlet LGRecipes *recipeTableViewHandler;
+@property (strong) IBOutlet LGRecipeController *recipeTableViewHandler;
 
 // IBActions
 - (IBAction)sendTestEmail:(id)sender;

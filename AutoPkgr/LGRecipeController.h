@@ -1,8 +1,8 @@
 //
-//  LGPopularRepositories.h
+//  LGApplications.h
 //  AutoPkgr
 //
-//  Created by Josh Senick on 7/9/14.
+//  Created by Josh Senick on 7/10/14.
 //
 //  Copyright 2014-2015 The Linde Group, Inc.
 //
@@ -21,26 +21,15 @@
 
 #import <Foundation/Foundation.h>
 #import "LGAutoPkgTask.h"
-#import "LGGitHubJSONLoader.h"
-#import "LGRecipeController.h"
-#import "LGProgressDelegate.h"
+#import "LGTableView.h"
 
-@interface LGPopularRepositories : NSObject <NSApplicationDelegate, NSTableViewDelegate, NSTableViewDataSource> {
+@interface LGRecipeController : NSObject <NSApplicationDelegate, NSTableViewDataSource, NSTableViewDelegate>
 
-    NSArray *_popularRepos;
-    NSArray *_activeRepos;
-    NSArray *_searchedRepos;
-    LGGitHubJSONLoader *_jsonLoader;
-    BOOL _awake;
-}
-
-+ (NSMenu *)contextualMenuForRepo:(NSString *)repo;
+/**
+ *  reload the Recipe TableView
+ */
 - (void)reload;
 
-@property (weak) IBOutlet NSWindow *modalWindow;
-
-@property (weak) IBOutlet LGTableView *popularRepositoriesTableView;
-@property (weak) IBOutlet NSSearchField *repoSearch;
-@property (weak) id<LGProgressDelegate> progressDelegate;
+- (NSMenu *)contextualMenuForRecipeAtRow:(NSInteger)row;
 
 @end

@@ -21,7 +21,7 @@
 
 #import <Cocoa/Cocoa.h>
 #import "LGAutoPkgTask.h"
-#import "LGRecipes.h"
+#import "LGAutoPkgRecipe.h"
 #import "LGEmailer.h"
 #import "LGAutoPkgr.h"
 #import "LGAutoPkgrHelperConnection.h"
@@ -54,7 +54,7 @@ int main(int argc, const char *argv[])
                                                                        state:kLGAutoPkgProgressProcessing];
         }];
 
-        [manager runRecipeList:[LGRecipes recipeList]
+        [manager runRecipeList:[LGAutoPkgRecipe defaultRecipeList]
                     updateRepo:update
                          reply:^(NSDictionary *report, NSError *error) {
                              [[helper.connection remoteObjectProxy] sendMessageToMainApplication:nil

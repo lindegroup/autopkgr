@@ -20,12 +20,14 @@
 
 #import <Foundation/Foundation.h>
 
+@class LGAutoPkgRecipe;
+
 @interface LGRecipeOverrides : NSObject
 
 extern NSString *const kLGNotificationOverrideCreated;
 extern NSString *const kLGNotificationOverrideDeleted;
 
-+ (BOOL)overrideExistsForRecipe:(NSDictionary *)recipe;
++ (BOOL)overrideExistsForRecipe:(LGAutoPkgRecipe *)recipe;
 + (NSArray *)recipeEditors;
 + (void)setRecipeEditor:(NSMenuItem *)item;
 + (void)createOverride:(NSMenuItem *)sender;
