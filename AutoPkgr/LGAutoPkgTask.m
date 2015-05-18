@@ -367,7 +367,9 @@ typedef void (^AutoPkgReplyErrorBlock)(NSError *error);
 
     if (_verb & (kLGAutoPkgRepoAdd | kLGAutoPkgRepoDelete)) {
         // Post a notification for objects watching for modified repos.
-        [[NSNotificationCenter defaultCenter] postNotificationName:kLGNotificationReposModified object:nil];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [[NSNotificationCenter defaultCenter] postNotificationName:kLGNotificationReposModified object:nil];
+        });
     }
 
     LGAutoPkgTaskResponseObject *response = [[LGAutoPkgTaskResponseObject alloc] init];

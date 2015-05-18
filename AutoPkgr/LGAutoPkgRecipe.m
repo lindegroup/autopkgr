@@ -18,7 +18,105 @@
 #import "LGAutoPkgRecipe.h"
 #import "LGAutoPkgTask.h"
 
+@interface LGRecipeStore : NSObject
+@property (strong, nonatomic, readonly) NSDictionary *urlDict;
++ (instancetype)sharedStore;
+@end
+
+@implementation LGRecipeStore
+@synthesize urlDict = _urlDict;
+
++ (instancetype)sharedStore {
+    static dispatch_once_t onceToken;
+    __strong static id _sharedObject = nil;
+
+    dispatch_once(&onceToken, ^{
+        _sharedObject = [[self alloc] init];
+    });
+
+    return _sharedObject;
+}
+
+- (instancetype)init {
+    if (self = [super init]) {
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reload) name:kLGNotificationReposModified object:nil];
+    }
+    return self;
+}
+
+- (NSDictionary *)urlDict {
+    if (!_urlDict) {
+        [self reload];
+    }
+    return _urlDict;
+}
+
+- (NSDictionary *)recipePlistForIdentifier:(NSString *)identifier {
+    NSURL *recipeURL = self.urlDict[identifier];
+    if (recipeURL) {
+        return [NSDictionary dictionaryWithContentsOfURL:recipeURL];
+    }
+    return nil;
+}
+
+- (NSDictionary *)recipeKey:(NSString *)key forIdentifier:(NSString *)identifier {
+    NSURL *recipeURL = self.urlDict[identifier];
+    if (recipeURL) {
+        return [NSDictionary dictionaryWithContentsOfURL:recipeURL][key];
+    }
+    return nil;
+}
+
+- (void)reload {
+
+    NSFileManager *manager = [NSFileManager defaultManager];
+    NSMutableDictionary *recipes = [[NSMutableDictionary alloc] init];
+    NSArray *fsPaths = [[LGDefaults standardUserDefaults] autoPkgRecipeSearchDirs];
+    for (NSString *path in fsPaths) {
+        NSDirectoryEnumerator *enumerator;
+        NSURL *searchDirURL = [NSURL fileURLWithPath:path.stringByExpandingTildeInPath];
+
+        if (searchDirURL && [manager fileExistsAtPath:path]) {
+            enumerator = [manager enumeratorAtURL:searchDirURL
+                       includingPropertiesForKeys:@[ NSURLNameKey, NSURLIsDirectoryKey ]
+                                          options:NSDirectoryEnumerationSkipsHiddenFiles
+                                     errorHandler:^BOOL(NSURL *url, NSError *error) {
+                                         return YES;
+                                     }];
+
+            NSURL *fileURL;
+            for (fileURL in enumerator) {
+                // As of autopkg 0.4.1 it only will find recipes
+                // 2 levels deep so mimic that behavior here.
+                if (enumerator.level <= 2) {
+                    NSString *filename;
+                    [fileURL getResourceValue:&filename forKey:NSURLNameKey error:nil];
+
+                    NSNumber *isDirectory;
+                    [fileURL getResourceValue:&isDirectory forKey:NSURLIsDirectoryKey error:nil];
+
+                    if (![isDirectory boolValue]) {
+                        if ([filename.pathExtension isEqualToString:@"recipe"]) {
+                            NSDictionary *dict = [NSDictionary dictionaryWithContentsOfURL:fileURL];
+                            NSString *identifier = dict[kLGAutoPkgRecipeIdentifierKey] ?: dict[@"Input"][@"IDENTIFIER"];
+                            if (identifier) {
+                                [recipes setObject:fileURL forKey:identifier];
+                            }
+                            dict = nil;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    _urlDict = [recipes copy];
+}
+
+@end
 static NSString *const kLGMakeCatalogsIdentifier = @"com.github.autopkg.munki.makecatalogs";
+
+
 
 @implementation LGAutoPkgRecipe {
 @private
@@ -29,7 +127,7 @@ static NSString *const kLGMakeCatalogsIdentifier = @"com.github.autopkg.munki.ma
     OSStatus _enabledInitialized;
 }
 
-@synthesize Description = _Description, MinimumVersion = _MinimumVersion, parentPlist = _parentPlist;
+@synthesize Description = _Description, MinimumVersion = _MinimumVersion;
 
 - (NSString *)description
 {
@@ -57,67 +155,50 @@ static NSString *const kLGMakeCatalogsIdentifier = @"com.github.autopkg.munki.ma
 
 - (NSString *)Description
 {
-    if (!_Description) {
-        if(!(_Description = _recipePlist[NSStringFromSelector(_cmd)])){
-            // try to get the parent recipe...
-            _Description = self.parentPlist[NSStringFromSelector(_cmd)];
-        }
-    }
-    return _Description;
+    return _recipePlist[NSStringFromSelector(_cmd)] ?: [[LGRecipeStore sharedStore] recipeKey:NSStringFromSelector(_cmd) forIdentifier:self.ParentRecipe];
 }
 
 - (NSString *)MinimumVersion
 {
-    if (!_MinimumVersion) {
-        if (!( _MinimumVersion =_recipePlist[NSStringFromSelector(_cmd)])) {
-            return self.parentPlist[NSStringFromSelector(_cmd)];
-        }
-    }
-    return _MinimumVersion;
+    return _recipePlist[NSStringFromSelector(_cmd)] ?: [[LGRecipeStore sharedStore] recipeKey:NSStringFromSelector(_cmd) forIdentifier:self.ParentRecipe];
 }
 
 - (NSString *)ParentRecipe
 {
-    return _recipePlist[NSStringFromSelector(_cmd)];
+    return _recipePlist[kLGAutoPkgRecipeParentKey];
 }
 
 - (NSArray *)ParentRecipes
 {
     NSMutableArray *parents;
-    if (self.ParentRecipe) {
+    NSString *parentRecipeID = self.ParentRecipe;
+
+    if (parentRecipeID) {
         // Don't back this up with an iVar since when new recipe repos are
         // added this could actually trace the origin further back.
-
-        NSArray *allRecipes = [[self class] allRecipesFilteringOverlaps:NO];
-        LGAutoPkgRecipe *recipe = self;
+        parents = [NSMutableArray arrayWithObject:parentRecipeID];
 
         while (true) {
-            if (recipe.ParentRecipe) {
-                if (parents == nil) {
-                    parents = [[NSMutableArray alloc] init];
-                }
-
-                NSPredicate *parentPredicate = [NSPredicate predicateWithFormat:@"%K == %@", kLGAutoPkgRecipeIdentifierKey, recipe.ParentRecipe];
-
-                recipe = [[allRecipes filteredArrayUsingPredicate:parentPredicate] firstObject];
-
-                if (recipe.Identifier) {
-                    [parents addObject:recipe.Identifier];
+            NSURL *parentRecipeURL = [[LGRecipeStore sharedStore] urlDict][parentRecipeID];
+            if (parentRecipeURL) {
+                NSDictionary *recipePlist = [NSDictionary dictionaryWithContentsOfURL:parentRecipeURL];
+                parentRecipeID = recipePlist[kLGAutoPkgRecipeParentKey];
+                if (parentRecipeID) {
+                    [parents addObject:parentRecipeID];
                 }
             } else {
                 break;
             }
         }
     }
-    return [parents copy];
+    return [NSArray arrayWithArray:parents];
 }
 
 - (BOOL)isMissingParent
 {
     if (self.ParentRecipe) {
-        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"%K == %@", kLGAutoPkgRecipeIdentifierKey, self.ParentRecipe];
-        return [[[self class] allRecipesFilteringOverlaps:NO] filteredArrayUsingPredicate:predicate].count == 0;
-    }
+        return ([[LGRecipeStore sharedStore] recipePlistForIdentifier:self.ParentRecipe] == nil);
+    } 
     return NO;
 }
 
@@ -130,25 +211,6 @@ static NSString *const kLGMakeCatalogsIdentifier = @"com.github.autopkg.munki.ma
 {
     return _recipePlist[NSStringFromSelector(_cmd)];
 }
-
-- (NSDictionary *)parentPlist {
-    if (!_parentPlist) {
-        NSMutableArray *recipes = [[NSMutableArray alloc] init];
-        NSArray *searchDirs = [LGDefaults standardUserDefaults].autoPkgRecipeSearchDirs;
-        for (NSString *searchDir in searchDirs) {
-            if (![searchDir isEqualToString:@"."]) {
-                [recipes addObjectsFromArray:[[self class] findRecipesRecursivelyAtPath:searchDir isOverride:NO]];
-            }
-        }
-        [recipes enumerateObjectsUsingBlock:^(LGAutoPkgRecipe *recipe, NSUInteger idx, BOOL *stop) {
-            if ([recipe.Identifier isEqualToString:self.ParentRecipe]) {
-                _parentPlist = recipe.recipePlist;
-                *stop = YES;
-            }
-        }];
-    }
-    return _parentPlist;
-};
 
 #pragma mark - Enabled
 - (BOOL)isEnabled
@@ -229,8 +291,7 @@ static NSString *const kLGMakeCatalogsIdentifier = @"com.github.autopkg.munki.ma
     NSArray *searchDirs = defaults.autoPkgRecipeSearchDirs;
     for (NSString *searchDir in searchDirs) {
         if (![searchDir isEqualToString:@"."]) {
-            NSArray *recipes = [self findRecipesRecursivelyAtPath:searchDir.stringByExpandingTildeInPath isOverride:NO];
-            [allRecipes addObjectsFromArray:recipes];
+            [allRecipes addObjectsFromArray:[self findRecipesRecursivelyAtPath:searchDir.stringByExpandingTildeInPath isOverride:NO]];
         }
     }
 
@@ -288,13 +349,15 @@ static NSString *const kLGMakeCatalogsIdentifier = @"com.github.autopkg.munki.ma
 
     [allRecipes sortUsingDescriptors:@[ descriptor ]];
 
+    validOverrides = nil;
+
     return allRecipes.count ? allRecipes : nil;
 }
 
 + (NSArray *)findRecipesRecursivelyAtPath:(NSString *)path isOverride:(BOOL)isOverride
 {
     NSFileManager *manager = [NSFileManager defaultManager];
-    NSMutableArray *array = [[NSMutableArray alloc] init];
+    NSMutableArray *recipes = [[NSMutableArray alloc] init];
 
     NSDirectoryEnumerator *enumerator;
     NSURL *searchDirURL = [NSURL fileURLWithPath:path.stringByExpandingTildeInPath];
@@ -322,7 +385,7 @@ static NSString *const kLGMakeCatalogsIdentifier = @"com.github.autopkg.munki.ma
                     if ([filename.pathExtension isEqualToString:@"recipe"]) {
                         LGAutoPkgRecipe *recipe = [[LGAutoPkgRecipe alloc] initWithRecipeFile:fileURL isOverride:isOverride];
                         if (recipe) {
-                            [array addObject:recipe];
+                            [recipes addObject:recipe];
                         }
                     }
                 }
@@ -330,7 +393,7 @@ static NSString *const kLGMakeCatalogsIdentifier = @"com.github.autopkg.munki.ma
         }
     }
 
-    return [array copy];
+    return [NSArray arrayWithArray:recipes];
 }
 
 + (NSSet *)activeRecipes
@@ -338,7 +401,7 @@ static NSString *const kLGMakeCatalogsIdentifier = @"com.github.autopkg.munki.ma
     NSError *error;
 
     NSFileManager *fm = [NSFileManager defaultManager];
-    NSMutableOrderedSet *activeRecipes = [[NSMutableOrderedSet alloc] init];
+    NSMutableSet *activeRecipes = [[NSMutableSet alloc] init];
     NSString *autoPkgrSupportDirectory = [LGHostInfo getAppSupportDirectory];
     if (autoPkgrSupportDirectory.length) {
         NSString *autoPkgrRecipeListPath = [autoPkgrSupportDirectory stringByAppendingString:@"/recipe_list.txt"];
@@ -352,9 +415,10 @@ static NSString *const kLGMakeCatalogsIdentifier = @"com.github.autopkg.munki.ma
         }
     }
 
-    return [activeRecipes copy];
+    return [NSSet setWithSet:activeRecipes];
 }
 
+# pragma mark - Util
 + (NSString *)defaultRecipeList {
     NSString *autoPkgrSupportDirectory = [LGHostInfo getAppSupportDirectory];
     if (autoPkgrSupportDirectory.length) {

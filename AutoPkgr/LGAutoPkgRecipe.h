@@ -22,7 +22,6 @@
 
 - (instancetype)initWithRecipeFile:(NSURL *)recipeFile isOverride:(BOOL)isOverride;
 @property (copy, nonatomic, readonly) NSDictionary *recipePlist;
-@property (copy, nonatomic, readonly) NSDictionary *parentPlist;
 
 @property (copy, nonatomic, readonly) NSString *Identifier;
 @property (copy, nonatomic, readonly) NSString *Name;
