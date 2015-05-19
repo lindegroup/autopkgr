@@ -57,11 +57,17 @@ static NSString *const AUTOPKG_0_4_3 = @"0.4.3";
 // Autopkg Task Result keys
 NSString *const kLGAutoPkgRecipeNameKey = @"Name";
 NSString *const kLGAutoPkgRecipeIdentifierKey = @"Identifier";
+NSString *const kLGAutoPkgRecipeDescriptionKey = @"Description";
+NSString *const kLGAutoPkgRecipeInputKey = @"Input";
+NSString *const kLGAutoPkgRecipeMinimumVersionKey = @"MinimumVersion";
 NSString *const kLGAutoPkgRecipeParentKey = @"ParentRecipe";
+NSString *const kLGAutoPkgRecipeProcessKey = @"Process";
 NSString *const kLGAutoPkgRecipePathKey = @"Path";
+
 NSString *const kLGAutoPkgRepoNameKey = @"RepoName";
 NSString *const kLGAutoPkgRepoPathKey = @"RepoPath";
 NSString *const kLGAutoPkgRepoURLKey = @"RepoURL";
+
 
 // Reply blocks
 typedef void (^AutoPkgReplyResultsBlock)(NSArray *results, NSError *error);

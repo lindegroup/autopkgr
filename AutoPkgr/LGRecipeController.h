@@ -26,7 +26,7 @@
 @interface LGRecipeController : NSObject <NSApplicationDelegate, NSTableViewDataSource, NSTableViewDelegate>
 
 /**
- *  reload the Recipe TableView
+ * Reload the LGRecipe table view and rebuild the recipe array.
  */
 - (void)reload;
 

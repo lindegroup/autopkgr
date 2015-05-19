@@ -33,21 +33,34 @@
  */
 extern NSString *const kLGAutoPkgRecipeNameKey;
 /**
+ *  Constant to access recipe description in autopkg recipe-list
+ */
+extern NSString *const kLGAutoPkgRecipeDescriptionKey;
+/**
  *  Constant to access recipe identifier in autopkg recipe-list
  */
 extern NSString *const kLGAutoPkgRecipeIdentifierKey;
 /**
- *  Constant to access recipe description in autopkg recipe-list
+ *  Constant to access recipe Input in autopkg recipe-list
  */
-extern NSString *const kLGAutoPkgRecipeNameKey;
+extern NSString *const kLGAutoPkgRecipeInputKey;
+/**
+ *  Constant to access recipe Input in autopkg recipe-list
+ */
+extern NSString *const kLGAutoPkgRecipeMinimumVersionKey;
 /**
  *  Constant to access recipe's ParentRecipe in autopkg recipe-list
  */
 extern NSString *const kLGAutoPkgRecipeParentKey;
 /**
+ *  Constant to access recipe Process in autopkg recipe-list
+ */
+extern NSString *const kLGAutoPkgRecipeProcessKey;
+/**
  *  Constant to access recipe path key in autopkg search
  */
 extern NSString *const kLGAutoPkgRecipePathKey;
+
 /**
  *  Constant to access repo name in autopkg search and autopkg repo-list
  */

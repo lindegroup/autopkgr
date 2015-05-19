@@ -44,7 +44,6 @@ static NSString *const kLGAutoPkgRecipeIsEnabledKey = @"isEnabled";
 
 - (void)awakeFromNib
 {
-    [self executeAppSearch:self];
     [_recipeSearchField setTarget:self];
     [_recipeSearchField setAction:@selector(executeAppSearch:)];
 
@@ -53,6 +52,9 @@ static NSString *const kLGAutoPkgRecipeIsEnabledKey = @"isEnabled";
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didDeleteOverride:) name:kLGNotificationOverrideDeleted object:nil];
 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reload) name:kLGNotificationReposModified object:nil];
+
+    _searchedRecipes = self.recipes;
+    [_recipeTableView reloadData];
 }
 
 - (void)reload
@@ -107,8 +109,8 @@ static NSString *const kLGAutoPkgRecipeIsEnabledKey = @"isEnabled";
         _searchedRecipes = self.recipes;
     } else {
         NSString *searchString = _recipeSearchField.stringValue;
-        // Execute search both on Name and Identifier keys
 
+        // Execute search both on Name and Identifier keys
         NSPredicate *recipeSearchPredicate = [NSPredicate predicateWithFormat:@"%K CONTAINS[cd] %@ OR %K CONTAINS[CD] %@", kLGAutoPkgRecipeNameKey, searchString, kLGAutoPkgRecipeIdentifierKey, searchString];
 
         _searchedRecipes = [[self.recipes filteredArrayUsingPredicate:recipeSearchPredicate] mutableCopy];
@@ -160,10 +162,6 @@ static NSString *const kLGAutoPkgRecipeIsEnabledKey = @"isEnabled";
 
     LGAutoPkgRecipe *recipe = [_searchedRecipes objectAtIndex:row];
 
-    if (recipe.isMissingParent) {
-        NSLog(@"Missing parent recipe.");
-    }
-
     menu = [[NSMenu alloc] init];
 
     NSMenuItem *runMenuItem;
@@ -178,15 +176,14 @@ static NSString *const kLGAutoPkgRecipeIsEnabledKey = @"isEnabled";
         [menu addItem:runMenuItem];
     }
 
-    // Setup other menu items...
-    NSMenuItem *item1;
-    NSMenuItem *item2;
-    NSMenuItem *item3;
-
     if (recipe.ParentRecipe) {
+        if (recipe.isMissingParent) {
+            NSLog(@"Missing parent recipe.");
+        }
         NSString *parent = [@"Parent Recipe: " stringByAppendingString:recipe.ParentRecipe];
         [menu addItemWithTitle:parent action:nil keyEquivalent:@""];
     }
+
 
     // Setup the recipe editor menu ...
     NSString *currentEditor = [[LGDefaults standardUserDefaults] objectForKey:@"RecipeEditor"];
@@ -207,42 +204,38 @@ static NSString *const kLGAutoPkgRecipeIsEnabledKey = @"isEnabled";
 
     [recipeEditorMenu addItem:otherEditorItem];
 
+    // Setup menu items for overrides.
+
     if ([LGRecipeOverrides overrideExistsForRecipe:recipe]) {
-        item1 = [[NSMenuItem alloc] initWithTitle:@"Open Recipe Override" action:@selector(openFile:) keyEquivalent:@""];
-        item1.representedObject = recipe;
+        NSMenuItem *openRecipeItem = [[NSMenuItem alloc] initWithTitle:@"Open Recipe Override" action:@selector(openFile:) keyEquivalent:@""];
+        openRecipeItem.target = [LGRecipeOverrides class];
+        openRecipeItem.representedObject = recipe;
+        [menu addItem:openRecipeItem];
 
         // Reveal in finder menu item
-        item2 = [[NSMenuItem alloc] initWithTitle:@"Show in Finder" action:@selector(revealInFinder:) keyEquivalent:@""];
-        item2.representedObject = recipe;
-        item2.target = [LGRecipeOverrides class];
+        NSMenuItem *showInFinderItem = [[NSMenuItem alloc] initWithTitle:@"Show in Finder" action:@selector(revealInFinder:) keyEquivalent:@""];
+        showInFinderItem.representedObject = recipe;
+        showInFinderItem.target = [LGRecipeOverrides class];
+        [menu addItem:showInFinderItem];
 
         // "Delete Override" menu item
-        item3 = [[NSMenuItem alloc] initWithTitle:@"Remove Override" action:@selector(deleteOverride:) keyEquivalent:@""];
-        item3.representedObject = recipe;
+        NSMenuItem *removeOverrideItem = [[NSMenuItem alloc] initWithTitle:@"Remove Override" action:@selector(deleteOverride:) keyEquivalent:@""];
 
-        item3.target = [LGRecipeOverrides class];
+        removeOverrideItem.representedObject = recipe;
+        removeOverrideItem.target = [LGRecipeOverrides class];
+        [menu addItem:removeOverrideItem];
 
     } else {
-        item1 = [[NSMenuItem alloc] initWithTitle:@"Create Override" action:@selector(createOverride:) keyEquivalent:@""];
-        item1.representedObject = recipe;
+        NSMenuItem *openRecipeItem = [[NSMenuItem alloc] initWithTitle:@"Create Override" action:@selector(createOverride:) keyEquivalent:@""];
+        openRecipeItem.representedObject = recipe;
+        openRecipeItem.target = [LGRecipeOverrides class];
+        [menu addItem:openRecipeItem];
     }
 
-    item1.target = [LGRecipeOverrides class];
-
-    if (item1) {
-        [menu addItem:item1];
-    }
-
-    if (item2) {
-        [menu addItem:item2];
-    }
-
-    if (item3) {
-        [menu addItem:item3];
-    }
-
+    // Add the editor menu last.
     [menu addItem:recipeEditorMenuItem];
     [menu setSubmenu:recipeEditorMenu forItem:recipeEditorMenuItem];
+
     return menu;
 }
 
@@ -250,17 +243,14 @@ static NSString *const kLGAutoPkgRecipeIsEnabledKey = @"isEnabled";
 - (void)didCreateOverride:(NSNotification *)aNotification
 {
     [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-        _recipes = nil;
-        [self executeAppSearch:nil];
+        [self reload];
     }];
 }
 
 - (void)didDeleteOverride:(NSNotification *)aNotification
 {
     [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-        _recipes = nil;
-        [self executeAppSearch:nil];
-
+        [self reload];
     }];
 }
 

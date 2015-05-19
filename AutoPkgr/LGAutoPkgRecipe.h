@@ -17,16 +17,27 @@
 
 #import <Foundation/Foundation.h>
 
+/*
+ * LGAutoPkgRecipes is a native Objective-c implementation of `autopkg  list-recipes`
+ * It's much faster than using python and since it creates objects, it has
+ * some AutoPkg(r) specific features such as the ability to enable/diable a recipe.
+ */
 @interface LGAutoPkgRecipe : NSObject
-- (instancetype)init __attribute__((unavailable("init not available")));
+- (instancetype)init __attribute__((unavailable("all recipes are readonly, use a class method to get a list")));
++ (instancetype) new __attribute__((unavailable("all recipes are readonly, use a class method to get a list")));
 
 - (instancetype)initWithRecipeFile:(NSURL *)recipeFile isOverride:(BOOL)isOverride;
+
 @property (copy, nonatomic, readonly) NSDictionary *recipePlist;
 
 @property (copy, nonatomic, readonly) NSString *Identifier;
 @property (copy, nonatomic, readonly) NSString *Name;
 @property (copy, nonatomic, readonly) NSString *Description;
 @property (copy, nonatomic, readonly) NSString *ParentRecipe;
+
+/**
+ *  An array of strings of the parent recipe identifiers
+ */
 @property (copy, nonatomic, readonly) NSArray *ParentRecipes;
 
 @property (copy, nonatomic, readonly) NSString *MinimumVersion;
@@ -42,9 +53,28 @@
 @property (nonatomic, assign, readonly) BOOL hasCheckPhase;
 @property (nonatomic, assign, readonly) BOOL buildsPackage;
 
+/**
+ *  Get a list of all recipes and overrides.
+ *  @note this will filter out parent recipes of overrides with the same name.
+ *
+ *  @return Array of LGAutoPkgRecipes
+ */
 + (NSArray *)allRecipes;
+
+/**
+ *  Get a list of all recipes and overrides.
+ *
+ *  @param filterOverlaps whether to filter out parent recipes with the same name as an override.
+ *
+ *  @return Array of LGAutoPkgRecipes
+ */
 + (NSArray *)allRecipesFilteringOverlaps:(BOOL)filterOverlaps;
 
+/**
+ *  Set of recipes 
+ *
+ *  @return Set of recipes to run.
+ */
 + (NSSet *)activeRecipes;
 
 /**
@@ -54,11 +84,20 @@
  *
  *  @return YES if conversion was successful, NO if any error occurred, even minor errors.
  */
-//
 + (BOOL)migrateToIdentifiers:(NSError *__autoreleasing *)error;
 
-+ (void)removeRecipeFromRecipeList:(NSString *)recipe;
+/**
+ *  Remove a recipe with a given name from the list of active recipes
+ *
+ *  @param recipe Identifier string of the recipe to remove.
+ */
++ (BOOL)removeRecipeFromRecipeList:(NSString *)recipe;
 
+/**
+ *  File path of the default recipe_list.txt file used to run autopkg.
+ *
+ *  @return File path.
+ */
 + (NSString *)defaultRecipeList;
 
 @end
