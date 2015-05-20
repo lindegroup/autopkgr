@@ -371,7 +371,7 @@ typedef void (^AutoPkgReplyErrorBlock)(NSError *error);
         [self.taskLock unlock];
     }
 
-    if (_verb & (kLGAutoPkgRepoAdd | kLGAutoPkgRepoDelete)) {
+    if (_verb & (kLGAutoPkgRepoAdd | kLGAutoPkgRepoDelete | kLGAutoPkgRepoUpdate)) {
         // Post a notification for objects watching for modified repos.
         dispatch_async(dispatch_get_main_queue(), ^{
             [[NSNotificationCenter defaultCenter] postNotificationName:kLGNotificationReposModified object:nil];
