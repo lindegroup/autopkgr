@@ -33,6 +33,7 @@ static dispatch_queue_t autopkgr_recipe_write_queue()
     return autopkgr_recipe_write_queue;
 }
 
+
 #pragma mark - Recipe Store
 /**
  *  The RecipeStore is a sudo persistent storage that keeps a record of a the NSURL for a recipe
@@ -41,7 +42,7 @@ static dispatch_queue_t autopkgr_recipe_write_queue()
  *  greatly reduces the memory footprint and system calls necessary to obtain aforementioned information.
  */
 @interface LGRecipeStore : NSObject
-@property (strong, nonatomic, readonly) NSDictionary *urlDict;
+@property (strong, atomic, readonly) NSDictionary *urlDict;
 + (instancetype)sharedStore;
 @end
 
@@ -96,50 +97,33 @@ static dispatch_queue_t autopkgr_recipe_write_queue()
     return nil;
 }
 
-- (void)reload
+
+- (BOOL)reload
 {
-    NSFileManager *manager = [NSFileManager defaultManager];
+    NSFileManager *manager = [[NSFileManager alloc] init];
     NSMutableDictionary *recipes = [[NSMutableDictionary alloc] init];
 
-    NSArray *fsPaths = [[LGDefaults standardUserDefaults] autoPkgRecipeSearchDirs];
-    for (NSString *path in fsPaths) {
-        NSDirectoryEnumerator *enumerator;
-        NSURL *searchDirURL = [NSURL fileURLWithPath:path.stringByExpandingTildeInPath];
+    NSArray *searchDirs = [[LGDefaults standardUserDefaults] autoPkgRecipeSearchDirs];
 
-        if (searchDirURL && [manager fileExistsAtPath:path]) {
-            enumerator = [manager enumeratorAtURL:searchDirURL
-                       includingPropertiesForKeys:@[ NSURLNameKey, NSURLIsDirectoryKey ]
-                                          options:NSDirectoryEnumerationSkipsHiddenFiles
-                                     errorHandler:^BOOL(NSURL *url, NSError *error) {
-                                         return YES;
-                                     }];
+    for (NSString *dir in searchDirs) {
+        NSArray *files = [manager subpathsOfDirectoryAtPath:dir.stringByExpandingTildeInPath error:nil];
 
-            for (NSURL *fileURL in enumerator) {
-                /* As of autopkg 0.4.1 it only will find recipes
-                 * 2 levels deep so mimic that behavior here. */
-                if (enumerator.level <= 2) {
-                    NSString *filename;
-                    [fileURL getResourceValue:&filename forKey:NSURLNameKey error:nil];
+        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"pathExtension == 'recipe'"];
 
-                    NSNumber *isDirectory;
-                    [fileURL getResourceValue:&isDirectory forKey:NSURLIsDirectoryKey error:nil];
-
-                    if (![isDirectory boolValue]) {
-                        if ([filename.pathExtension isEqualToString:@"recipe"]) {
-                            NSDictionary *dict = [NSDictionary dictionaryWithContentsOfURL:fileURL];
-                            NSString *identifier = dict[kLGAutoPkgRecipeIdentifierKey] ?: dict[@"Input"][@"IDENTIFIER"];
-                            if (identifier) {
-                                [recipes setObject:fileURL forKey:identifier];
-                            }
-                            dict = nil;
-                        }
-                    }
+        for (NSString *recipe in [files filteredArrayUsingPredicate:predicate]) {
+            NSURL *fileURL = [NSURL fileURLWithPathComponents:@[dir, recipe]];
+            NSDictionary *dict = [NSDictionary dictionaryWithContentsOfURL:fileURL];
+            if (dict) {
+                NSString *identifier = dict[kLGAutoPkgRecipeIdentifierKey] ?: dict[@"Input"][@"IDENTIFIER"];
+                if (identifier && !recipes[identifier]) {
+                    [recipes setObject:fileURL forKey:identifier];
                 }
             }
         }
     }
 
     _urlDict = [recipes copy];
+    return YES;
 }
 
 @end
@@ -405,47 +389,31 @@ static dispatch_queue_t autopkgr_recipe_write_queue()
     NSFileManager *manager = [NSFileManager defaultManager];
     NSMutableArray *recipes = [[NSMutableArray alloc] init];
 
-    NSDirectoryEnumerator *enumerator;
-    NSURL *searchDirURL = [NSURL fileURLWithPath:path.stringByExpandingTildeInPath];
+    if (path && [manager fileExistsAtPath:path]) {
+        NSArray *files = [manager subpathsOfDirectoryAtPath:path error:nil];
 
-    if (searchDirURL && [manager fileExistsAtPath:path]) {
-        enumerator = [manager enumeratorAtURL:searchDirURL
-                   includingPropertiesForKeys:@[ NSURLNameKey, NSURLIsDirectoryKey ]
-                                      options:NSDirectoryEnumerationSkipsHiddenFiles
-                                 errorHandler:^BOOL(NSURL *url, NSError *error) {
-                                     return YES;
-                                 }];
+        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"pathExtension == 'recipe'"];
 
-        NSURL *fileURL;
-        for (fileURL in enumerator) {
-            // As of autopkg 0.4.1 it only will find recipes
-            // 2 levels deep so mimic that behavior here.
-            if (enumerator.level <= 2) {
-                NSString *filename;
-                [fileURL getResourceValue:&filename forKey:NSURLNameKey error:nil];
-
-                NSNumber *isDirectory;
-                [fileURL getResourceValue:&isDirectory forKey:NSURLIsDirectoryKey error:nil];
-
-                if (![isDirectory boolValue]) {
-                    if ([filename.pathExtension isEqualToString:@"recipe"]) {
-                        LGAutoPkgRecipe *recipe = [[LGAutoPkgRecipe alloc] initWithRecipeFile:fileURL isOverride:isOverride];
-                        if (recipe) {
-                            [recipes addObject:recipe];
-                            // If it's in the active recipe list, mark it as enabled.
-                            if (activeRecipes) {
-                                if ([activeRecipes containsObject:recipe.Identifier]) {
-                                    recipe->_enabledInitialized = YES;
-                                } else {
-                                    recipe->_enabledInitialized = NO;
-                                }
-                            }
+        for (NSString *recipe in [files filteredArrayUsingPredicate:predicate]) {
+            NSURL *fileURL = [NSURL fileURLWithPathComponents:@[path, recipe]];
+            if (fileURL) {
+                LGAutoPkgRecipe *recipe = [[LGAutoPkgRecipe alloc] initWithRecipeFile:fileURL isOverride:isOverride];
+                if (recipe) {
+                    [recipes addObject:recipe];
+                    // If it's in the active recipe list, mark it as enabled.
+                    if (activeRecipes) {
+                        if ([activeRecipes containsObject:recipe.Identifier]) {
+                            recipe->_enabledInitialized = YES;
+                        } else {
+                            recipe->_enabledInitialized = NO;
                         }
                     }
                 }
+
             }
         }
     }
+
 
     return [recipes copy];
 }
