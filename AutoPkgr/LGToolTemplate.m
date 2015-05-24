@@ -30,10 +30,10 @@
 @synthesize gitHubInfo = _gitHubInfo;
 
 #pragma mark - Class overrides
-//+ (NSString *)name
-//{
-//    return @"ToolName";
-//}
++ (NSString *)name
+{
+    return @"ToolName";
+}
 
 
 + (NSString *)gitHubURL

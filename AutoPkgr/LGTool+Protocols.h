@@ -8,11 +8,16 @@
 #import "LGTool.h"
 #import "LGGitHubJSONLoader.h"
 
+/* Tool protocols are used as a base line to determine how the tool is insatlled and configured.
+ * you should conform to as many as necissary to correctly describe the tool.
+ */
 
 #pragma mark - Protocols
 #pragma mark - General Tool Protocol
 @class LGGitHubReleaseInfo;
 
+/* Tool subclasses automatically conform to this protocol,
+ * so it is unnecissary to explicitly declare it */
 @protocol LGToolSubclass <NSObject>
 @required
 /**
@@ -47,7 +52,9 @@
 @end
 
 #pragma mark - Package Installer Protocol
-
+/**
+ *  If the tool uses an installer package conform to this protocol.
+ */
 @protocol LGToolPackagInstaller <NSObject>
 @required
 /**
@@ -85,6 +92,9 @@
 @end
 
 #pragma mark - Shared Processor Protocol
+/**
+ *  If the tool is a shared processor conform to this protocol.
+ */
 @protocol LGToolSharedProcessor <NSObject>
 @required
 /**

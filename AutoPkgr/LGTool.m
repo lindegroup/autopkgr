@@ -124,7 +124,7 @@ void subclassMustConformToProtocol(id className)
 {
     if (self = [super init]) {
         if ([[self class] typeFlags] & kLGToolTypeInstalledPackage) {
-            _gitHubInfo = [[LGGitHubReleaseInfo alloc] initWithURL:[[self class] gitHubURL]];
+            self.gitHubInfo = [[LGGitHubReleaseInfo alloc] initWithURL:[[self class] gitHubURL]];
         }
     }
     return self;
@@ -323,7 +323,6 @@ void subclassMustConformToProtocol(id className)
 
 - (void)install:(void (^)(NSString *, double))progress reply:(void (^)(NSError *))reply
 {
-
     if (progress) {
         _progressUpdateBlock = progress;
         _progressDelegate = self;
@@ -340,8 +339,9 @@ void subclassMustConformToProtocol(id className)
 - (void)uninstall:(id)sender
 {
     void (^removeRepo)() = ^void() {
-        if ([LGAutoPkgTask version]) {
-            LGAutoPkgTask *task = [LGAutoPkgTask repoDeleteTask:[[self class] defaultRepository]];
+        NSString *defaultRepo = [[self class] defaultRepository];
+        if ([LGAutoPkgTask version] && [[LGAutoPkgTask repoList] containsObject:defaultRepo]) {
+            LGAutoPkgTask *task = [LGAutoPkgTask repoDeleteTask:defaultRepo];
             if (_progressDelegate) {
                 task.progressDelegate = _progressDelegate;
             }
@@ -355,17 +355,22 @@ void subclassMustConformToProtocol(id className)
 
     if ([[self class] isInstalled]) {
         LGToolTypeFlags flags = [[self class] typeFlags];
+
         if (flags & kLGToolTypeInstalledPackage) {
             LGUninstaller *uninstaller = [[LGUninstaller alloc] init];
+
+            NSString *message = [NSString stringWithFormat:@"Uninstalling %@...", [[self class] name]];
+            [_progressDelegate startProgressWithMessage:message];
+
             if (_progressDelegate) {
                 uninstaller.progressDelegate = _progressDelegate;
             }
 
             [uninstaller uninstallPackagesWithIdentifiers:[[self class] packageIdentifiers] reply:^(NSError *error) {
-                if (flags & kLGToolTypeAutoPkgSharedProcessor) {
-                    removeRepo();
-                } else {
+                if (error || !(flags & kLGToolTypeAutoPkgSharedProcessor)) {
                     [self didCompleteInstallAction:sender error:error];
+                } else {
+                    removeRepo();
                 }
             }];
         }
@@ -389,15 +394,15 @@ void subclassMustConformToProtocol(id className)
 #pragma mark - Install / Uninstall completion
 - (void)didCompleteInstallAction:(id)sender error:(NSError *)error
 {
-    if ([_progressDelegate respondsToSelector:@selector(stopProgress:)]) {
-        [_progressDelegate stopProgress:error];
+    BOOL isInstalled = [[self class] isInstalled];
+    if ([self.progressDelegate respondsToSelector:@selector(stopProgress:)]) {
+        [self.progressDelegate stopProgress:error];
     }
 
     if ([sender respondsToSelector:@selector(isEnabled)]) {
         [sender setEnabled:YES];
     }
 
-    BOOL isInstalled = [[self class] isInstalled];
     if ([sender respondsToSelector:@selector(action)]) {
         [sender setAction:isInstalled ? @selector(uninstall:) : @selector(install:)];
     }

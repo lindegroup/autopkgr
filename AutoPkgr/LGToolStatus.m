@@ -48,13 +48,13 @@ NSString *const kLGToolJSSImporter = @"JSSImporter";
 
         // Git
         LGTool *gitTool = nil;
-        if((gitTool = [LGAutoPkgTool new])){
+        if((gitTool = [LGGitTool new])){
             [tools addObject:gitTool];
         }
 
         // JSSImporter
         LGTool *jssImporterTool = nil;
-        if((jssImporterTool = [LGAutoPkgTool new])){
+        if((jssImporterTool = [LGJSSImporterTool new])){
             [tools addObject:jssImporterTool];
         }
 

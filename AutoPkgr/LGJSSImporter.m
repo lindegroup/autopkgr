@@ -113,9 +113,9 @@ NSPredicate *jdsFilterPredicate()
         [_jssImporterTool refresh];
     } else {
         // have the tool take over controll of the "verify / connect" button on the F&I tab.
-        _jssInstallButton.title = @"Install";
-        _jssInstallButton.target = _jssImporterTool;
-        _jssInstallButton.action = @selector(install:);
+        _jssReloadServerBT.title = @"Install";
+        _jssReloadServerBT.target = _jssImporterTool;
+        _jssReloadServerBT.action = @selector(install:);
     }
 
     // Disable the Add / Remove distPoint buttons

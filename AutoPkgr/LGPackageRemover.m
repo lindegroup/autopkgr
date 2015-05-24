@@ -18,6 +18,7 @@
 #import "LGPackageRemover.h"
 #import "LGConstants.h"
 #import "NSData+taskData.h"
+#import <syslog.h>
 
 static NSString *const kLGPackageRemoverRecieptsDir = @"/private/var/db/receipts";
 static NSString *const kLGPackageRemover_DS_STORE = @".DS_Store";
@@ -90,10 +91,18 @@ NSDictionary *errorInfoFromCode(LGPackageInsallerError code, NSString *identifie
 {
 
     BOOL dryRun = _dryRun;
+
+    NSArray *installedPackages = [[self class] installedPackages];
+    NSArray *validRemovablePackages = [[self class] validRemovablePackages];
+    NSMutableArray *validIdentifiers = [identifiers mutableCopy];
+
     __block NSError *error;
     if (!_dryRun) {
         for (NSString *identifier in identifiers) {
-            if (![[[self class] validRemovablePackages] containsObject:identifier]) {
+            if (![installedPackages containsObject:identifier]) {
+                [validIdentifiers removeObject:identifier];
+                syslog(0, "%s is not currently installed, removing it from the list of pkgs to consider.", identifier.UTF8String);
+            } else if (![validRemovablePackages containsObject:identifier]) {
                 error = [[self class] errorWithCode:kLGPackageInstallerErrorPackageNotRemovable identifier:identifier];
                 return reply(nil, nil, error);
             }
@@ -103,7 +112,7 @@ NSDictionary *errorInfoFromCode(LGPackageInsallerError code, NSString *identifie
     [_executionQueue addOperationWithBlock:^{
 
         NSMutableArray *files = [[NSMutableArray alloc] init];
-        [files addObjectsFromArray:[[self bomForIdentifiers:identifiers error:&error] array]];
+        [files addObjectsFromArray:[[self bomForIdentifiers:validIdentifiers error:&error] array]];
 
         // Remove the files...
         double count = 0.0;
@@ -158,7 +167,7 @@ NSDictionary *errorInfoFromCode(LGPackageInsallerError code, NSString *identifie
         }
 
 
-        for (NSString *identifier in identifiers) {
+        for (NSString *identifier in validIdentifiers) {
             [self forget:identifier error:&error];
         }
 
@@ -202,7 +211,6 @@ NSDictionary *errorInfoFromCode(LGPackageInsallerError code, NSString *identifie
 
 - (NSMutableOrderedSet *)bomForIdentifiers:(NSArray *)identifiers error:(NSError *__autoreleasing *)error
 {
-
     NSMutableOrderedSet *files = [[NSMutableOrderedSet alloc] init];
     NSMutableOrderedSet *directories = [[NSMutableOrderedSet alloc] init];
     NSFileManager *fm = [NSFileManager defaultManager];
@@ -217,7 +225,6 @@ NSDictionary *errorInfoFromCode(LGPackageInsallerError code, NSString *identifie
         NSArray *tmpFileArray = [[[self class] pkgutilTaskWithArgs:@[ @"--files", identifier ] error:error] taskData_splitLines];
 
         if (tmpFileArray.count) {
-
             for (NSString *file in tmpFileArray) {
                 BOOL isDir;
                 NSString *normalizedFile = [installerBasePath stringByAppendingPathComponent:file];
@@ -331,8 +338,7 @@ NSDictionary *errorInfoFromCode(LGPackageInsallerError code, NSString *identifie
     static NSArray *packages;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        packages = @[@"com.github.autopkg.autopkg",
-                     @"com.github.sheagcraig.jssimporter",
+        packages = @[@"com.github.sheagcraig.jssimporter",
                      @"com.github.sheagcraig.jss-autopkg-addon"];
     });
     return packages;
