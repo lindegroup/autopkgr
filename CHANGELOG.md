@@ -6,8 +6,17 @@ All notable changes to this project will be documented in this file. This projec
 
 ## [Unreleased][unreleased]
 
+### Added
+- The ability to right-click on a recipe in the list and choose Get Info to see various details about the recipe.
+- The repos table now displays the number of stars each repo has on GitHub.
+- The repos table now has a status indicator.
+- The install tab now displays your currently installed version of the Munki tools.
+- Easier uninstallation of components like AutoPkg and JSSImporter.
+- More flexible options for scheduling AutoPkg to run. New daily and weekly options! (#361)
+- Better validation of the standard output we're receiving from AutoPkg.
+
 ### Changed
-- Nothing yet.
+- Behind-the-scenes code cleanup, typo fixes, and reorganization.
 
 ### Fixed
 - Fixed a bug that could cause email username and password to not get updated immediately.
