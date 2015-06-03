@@ -80,8 +80,11 @@ static const NSTimeInterval kHelperCheckInterval = 1.0; // how often to check wh
     if (valid) {
         NSXPCInterface *exportedInterface = [NSXPCInterface interfaceWithProtocol:@protocol(HelperAgent)];
         newConnection.exportedInterface = exportedInterface;
-
         newConnection.exportedObject = self;
+
+        // We have one method that can handle multiple input types
+        NSSet *acceptedClasses = [NSSet setWithObjects:[AHLaunchJobSchedule class], [NSNumber class], nil];
+        [newConnection.exportedInterface setClasses:acceptedClasses forSelector:@selector(scheduleRun:user:program:authorization:reply:) argumentIndex:0 ofReply:NO];
 
         __weak typeof(newConnection) weakConnection = newConnection;
         // If all connections are invalidated on the remote side, shutdown the helper.
@@ -277,36 +280,39 @@ helper_reply:
 }
 
 #pragma mark - AutoPkgr Schedule
-- (void)scheduleRun:(NSInteger)timer
+- (void)scheduleRun:(AHLaunchJobSchedule *)scheduleOrInterval
                user:(NSString *)user
             program:(NSString *)program
       authorization:(NSData *)authData
               reply:(void (^)(NSError *error))reply
 {
-
     // Display Authorization Prompt based on external form contained in authData.
     // If user cancels the challenge, or any other problem occurs it will return a populated error object, with the details
+
     NSError *error = [LGAutoPkgrAuthorizer checkAuthorization:authData
                                                       command:_cmd];
     if (error != nil) {
-        if (error.code == errAuthorizationCanceled) {
-            reply(nil);
-        } else {
-            reply(error);
-        }
-        return;
+        return reply(error);
     }
 
     // If authorization was successful continue,
     if (!error) {
         // Check if the launch path and user are valid, and that the timer has a sensible minimum.
         if ([self launchPathIsValid:program error:&error] &&
-            [self userIsValid:user error:&error] && timer >= 3600) {
+            [self userIsValid:user error:&error]) {
             AHLaunchJob *job = [AHLaunchJob new];
             job.Program = program;
             job.Label = kLGAutoPkgrLaunchDaemonPlist;
             job.ProgramArguments = @[ program, @"-runInBackground", @"YES" ];
-            job.StartInterval = timer;
+
+            syslog(0, "class of job schedule %s", NSStringFromClass([scheduleOrInterval class]).UTF8String);
+
+            if ([scheduleOrInterval isKindOfClass:[AHLaunchJobSchedule class]]) {
+                job.StartCalendarInterval = scheduleOrInterval;
+            } else if ([scheduleOrInterval isKindOfClass:[NSNumber class]]){
+                job.StartInterval = [(NSNumber *)scheduleOrInterval integerValue];
+            }
+
             job.SessionCreate = YES;
             job.UserName = user;
             job.EnvironmentVariables = @{@"__CFPREFERENCES_AVOID_DAEMON" : @"1"};
@@ -320,8 +326,11 @@ helper_reply:
 
 - (void)removeScheduleWithAuthorization:(NSData *)authData reply:(void (^)(NSError *))reply
 {
-    NSError *error = [LGAutoPkgrAuthorizer checkAuthorization:authData
-                                                      command:_cmd];
+    NSError *error = nil;
+
+//    NSError *error = [LGAutoPkgrAuthorizer checkAuthorization:authData
+//                                                      command:_cmd];
+
     if (!error) {
         [[AHLaunchCtl sharedController] remove:kLGAutoPkgrLaunchDaemonPlist fromDomain:kAHGlobalLaunchDaemon error:&error];
     }

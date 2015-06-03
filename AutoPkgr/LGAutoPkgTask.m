@@ -27,9 +27,9 @@
 #import "NSData+taskData.h"
 
 #if DEBUG
-/* For development using a custom version of autopkg cretae
+/* For development using a custom version of autopkg, create
  * a symlink from the autopkg binary to /usr/local/bin/autopkg_dev
- * and set off set AUTOPKG_DEV_MODE 1
+ * and set as AUTOPKG_DEV_MODE 1
  */
 #define AUTOPKG_DEV_MODE 0
 #endif
@@ -731,11 +731,12 @@ typedef void (^AutoPkgReplyErrorBlock)(NSError *error);
         if (!self.task.isRunning) {
             NSData *data;
             if ([self.task.standardOutput isKindOfClass:[NSPipe class]]) {
+                data = [[self.task.standardOutput fileHandleForReading] readDataToEndOfFile];
+
                 // If standardOutData exists then the sdtout was gathered progressively
                 if (self.standardOutData) {
+                    [self.standardOutData appendData:data];
                     data = [self.standardOutData copy];
-                } else {
-                    data = [[self.task.standardOutput fileHandleForReading] readDataToEndOfFile];
                 }
             }
             LGAutoPkgResultHandler *resultHandler = [[LGAutoPkgResultHandler alloc] initWithData:data verb:_verb];

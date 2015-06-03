@@ -19,7 +19,8 @@
 #import "LGRecipeSearch.h"
 #import "LGAutoPkgr.h"
 #import "LGAutoPkgTask.h"
-#import "LGRecipeController.h"
+#import "LGAutoPkgRecipe.h"
+#import "LGRecipeTableViewController.h"
 
 @interface LGRecipeSearch () <NSTextViewDelegate>
 @property (weak) IBOutlet NSTableView *searchTable;

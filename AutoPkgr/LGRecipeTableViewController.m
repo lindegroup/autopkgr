@@ -1,10 +1,10 @@
 //
-//  LGApplications.m
+//  LGRecipeTableViewController.m
 //  AutoPkgr
 //
-//  Created by Josh Senick on 7/10/14.
+//  Created by Eldon Ahrold on 6/3/2015.
 //
-//  Copyright 2014-2015 The Linde Group, Inc.
+//  Copyright 2015 Eldon Ahrold
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -19,13 +19,16 @@
 //  limitations under the License.
 //
 
-#import "LGRecipeController.h"
+#import "LGRecipeTableViewController.h"
 #import "LGAutoPkgr.h"
 #import "LGAutoPkgRecipe.h"
 
 #import "LGRecipeOverrides.h"
+#import "LGRecipeInfoView.h"
 
-@interface LGRecipeController ()
+#import "LGTableCellViews.h"
+
+@interface LGRecipeTableViewController ()<NSWindowDelegate, NSPopoverDelegate>
 
 @property (copy, nonatomic) NSMutableArray *recipes;
 @property (copy, nonatomic) NSMutableArray *searchedRecipes;
@@ -35,26 +38,30 @@
 
 @end
 
-@implementation LGRecipeController {
-    LGAutoPkgTask *_runTask;
+@implementation LGRecipeTableViewController {
+    NSMutableDictionary *_runTaskDictionary;
     NSString *_currentRunningRecipe;
+    BOOL _isAwake;
 }
 
 static NSString *const kLGAutoPkgRecipeIsEnabledKey = @"isEnabled";
+static NSString *const kLGAutoPkgRecipeCurrentStatusKey = @"currentStatus";
 
 - (void)awakeFromNib
 {
-    [_recipeSearchField setTarget:self];
-    [_recipeSearchField setAction:@selector(executeAppSearch:)];
+    if (!_isAwake) {
+        _isAwake = YES;
+        [_recipeSearchField setTarget:self];
+        [_recipeSearchField setAction:@selector(executeAppSearch:)];
 
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didCreateOverride:) name:kLGNotificationOverrideCreated object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didCreateOverride:) name:kLGNotificationOverrideCreated object:nil];
 
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didDeleteOverride:) name:kLGNotificationOverrideDeleted object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didDeleteOverride:) name:kLGNotificationOverrideDeleted object:nil];
 
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reload) name:kLGNotificationReposModified object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reload) name:kLGNotificationReposModified object:nil];
 
-    _searchedRecipes = self.recipes;
-    [_recipeTableView reloadData];
+        _searchedRecipes = self.recipes;
+    }
 }
 
 - (void)reload
@@ -71,30 +78,42 @@ static NSString *const kLGAutoPkgRecipeIsEnabledKey = @"isEnabled";
 #pragma mark - Table View
 - (NSInteger)numberOfRowsInTableView:(NSTableView *)tableView
 {
-    return [_searchedRecipes count];
+    return _searchedRecipes.count;
 }
 
-- (id)tableView:(NSTableView *)tableView objectValueForTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row
-{
-    return [[_searchedRecipes objectAtIndex:row] valueForKey:tableColumn.identifier];
-}
+- (NSView *)tableView:(NSTableView *)tableView viewForTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row {
 
-- (void)tableView:(NSTableView *)tableView setObjectValue:(id)object forTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row
-{
-    if ([[tableColumn identifier] isEqualToString:kLGAutoPkgRecipeIsEnabledKey]) {
+    LGAutoPkgRecipe *recipe = [_searchedRecipes objectAtIndex:row];
+    LGRecipeStatusCellView *statusCell = [tableView makeViewWithIdentifier:tableColumn.identifier owner:self];
 
-        LGAutoPkgRecipe *recipe = [_searchedRecipes objectAtIndex:row];
-        if (recipe.isMissingParent) {
-            return [LGError presentErrorWithCode:kLGErrorMissingParentRecipe];
+    if ([tableColumn.identifier isEqualToString:kLGAutoPkgRecipeCurrentStatusKey]) {
+        if (_runTaskDictionary[recipe.Name]) {
+            [statusCell.progressIndicator startAnimation:tableView];
+            statusCell.imageView.hidden = YES;
+        } else {
+            [statusCell.progressIndicator stopAnimation:tableView];
+            statusCell.imageView.hidden = NO;
+
+            if ([[recipe valueForKey:NSStringFromSelector(@selector(isMissingParent))] boolValue]) {
+                statusCell.imageView.image =  [NSImage LGCaution];
+            } else {
+                statusCell.imageView.image =  [NSImage LGNoImage];
+            }
         }
-        // Setting the recipe.enabled property will add/remove the recipe to the recipe_list.txt
-        recipe.enabled = [object boolValue];
+    } else if ([tableColumn.identifier isEqualToString:NSStringFromSelector(@selector(isEnabled))]) {
+        statusCell.enabledCheckBox.state = [[recipe valueForKey:tableColumn.identifier] boolValue];
+        statusCell.enabledCheckBox.target = recipe;
+        statusCell.enabledCheckBox.action = @selector(enableRecipe:);
+
+    } else {
+        statusCell.textField.stringValue = [recipe valueForKey:tableColumn.identifier];
     }
 
-    return;
+    return statusCell;
 }
 
--(void)tableView:(NSTableView *)tableView sortDescriptorsDidChange:(NSArray *)oldDescriptors {
+- (void)tableView:(NSTableView *)tableView sortDescriptorsDidChange:(NSArray *)oldDescriptors
+{
     [_searchedRecipes sortUsingDescriptors:tableView.sortDescriptors];
     [tableView reloadData];
 }
@@ -121,7 +140,6 @@ static NSString *const kLGAutoPkgRecipeIsEnabledKey = @"isEnabled";
     [_recipeTableView endUpdates];
 }
 
-
 #pragma mark - Accessors
 - (NSMutableArray *)recipes
 {
@@ -133,46 +151,93 @@ static NSString *const kLGAutoPkgRecipeIsEnabledKey = @"isEnabled";
     return _recipes;
 }
 
-#pragma mark- Run Task Menu Actions
-- (void)cancelTask {
-    if (_runTask) {
-        [_runTask cancel];
+#pragma mark - Run Task Menu Actions
+- (void)runRecipeFromMenu:(NSMenuItem *)item
+{
+    NSInteger recipeRow = [item.representedObject integerValue];
+    LGAutoPkgRecipe *recipe = _searchedRecipes[recipeRow];
+
+    if (!_runTaskDictionary) {
+        _runTaskDictionary = [[NSMutableDictionary alloc] init];
     }
-    _runTask = nil;
-}
 
-- (void)runRecipeFromMenu:(NSMenuItem *)item {
+    // This runs a recipe from the Table's contextual menu...
+    LGAutoPkgTask *runTask = [LGAutoPkgTask runRecipesTask:@[ recipe.Name ]];
 
-    _runTask = [LGAutoPkgTask runRecipesTask:@[item.representedObject]];
-    _runTask.progressUpdateBlock = ^(NSString *message, double progress){
+    [_runTaskDictionary setObject:runTask forKey:recipe.Name];
+
+    runTask.progressUpdateBlock = ^(NSString *message, double progress) {
         NSLog(@"%@", message);
     };
 
-    [_runTask launchInBackground:^(NSError *error) {
+    NSIndexSet *rowIdxSet = [[NSIndexSet alloc] initWithIndex:recipeRow];
+    NSIndexSet *colIdxSet = [[NSIndexSet alloc] initWithIndex:[_recipeTableView columnWithIdentifier:kLGAutoPkgRecipeCurrentStatusKey]];
+    [_recipeTableView reloadDataForRowIndexes:rowIdxSet columnIndexes:colIdxSet];
+
+    [runTask launchInBackground:^(NSError *error) {
         if (error) {
             [[NSAlert alertWithError:error] runModal];
         }
+
+        [_runTaskDictionary removeObjectForKey:recipe.Name];
+        [_recipeTableView reloadDataForRowIndexes:rowIdxSet columnIndexes:colIdxSet];
+
+        // If there are no more run tasks don't keep the dictioanry around...
+        if (_runTaskDictionary.count == 0) {
+            _runTaskDictionary = nil;
+        }
+
     }];
 }
 
-#pragma mark - Contextual Menu
-- (NSMenu *)contextualMenuForRecipeAtRow:(NSInteger)row
-{
-    NSMenu *menu;
+- (void)openInfoPanelFromMenu:(NSMenuItem *)item {
+    [self openInfoPanel:item.representedObject];
+}
 
+- (void)openInfoPanel:(LGAutoPkgRecipe *)recipe
+{
+    LGRecipeInfoView *infoView = [[LGRecipeInfoView alloc] initWithRecipe:recipe];
+    NSPopover *infoPopover = infoPopover = [[NSPopover alloc] init];
+    infoPopover.behavior = NSPopoverBehaviorTransient;
+
+    infoPopover.contentViewController = infoView;
+    infoPopover.delegate = self;
+
+    if (!infoPopover.isShown) {
+        [infoPopover showRelativeToRect:_recipeTableView.contextualMenuMouseLocal
+                              ofView:_recipeTableView
+                       preferredEdge:NSMinYEdge];
+    }
+
+}
+
+- (void)popoverDidClose:(NSNotification *)notification {
+    NSPopover *infoPopover = notification.object;
+    infoPopover.contentViewController = nil;
+    infoPopover = nil;
+}
+
+
+#pragma mark - Contextual Menu
+- (NSMenu *)contextualMenuForRow:(NSInteger)row
+{
+    NSMenu *menu = [[NSMenu alloc] init];
     LGAutoPkgRecipe *recipe = [_searchedRecipes objectAtIndex:row];
 
-    menu = [[NSMenu alloc] init];
+    NSMenuItem *infoItem = [[NSMenuItem alloc] initWithTitle:@"Get Info" action:@selector(openInfoPanelFromMenu:) keyEquivalent:@""];
+    infoItem.representedObject = recipe;
+    infoItem.target = self;
+    [menu addItem:infoItem];
 
     NSMenuItem *runMenuItem;
-    if (_runTask.isExecuting) {
+    if (_runTaskDictionary[recipe.Name]) {
         runMenuItem = [[NSMenuItem alloc] initWithTitle:@"Cancel Run" action:@selector(cancel) keyEquivalent:@""];
-        runMenuItem.target = _runTask;
+        runMenuItem.target = _runTaskDictionary[recipe.Name];
         [menu addItem:runMenuItem];
     } else {
         runMenuItem = [[NSMenuItem alloc] initWithTitle:@"Run this recipe" action:@selector(runRecipeFromMenu:) keyEquivalent:@""];
         runMenuItem.target = self;
-        runMenuItem.representedObject = recipe.Name;
+        runMenuItem.representedObject = @(row);
         [menu addItem:runMenuItem];
     }
 

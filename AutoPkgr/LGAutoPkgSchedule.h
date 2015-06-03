@@ -22,13 +22,15 @@
 #import <Foundation/Foundation.h>
 #import "LGProgressDelegate.h"
 
+@class AHLaunchJobSchedule;
+
 extern NSString *const kLGLaunchedAtLogin;
 
 @interface LGAutoPkgSchedule : NSObject
 
-+ (void)startAutoPkgSchedule:(BOOL)start interval:(NSInteger)interval isForced:(BOOL)forced reply:(void (^)(NSError *error))reply;
++ (void)startAutoPkgSchedule:(BOOL)start scheduleOrInterval:(id)scheduleOrInterval isForced:(BOOL)forced reply:(void (^)(NSError *error))reply;
 
-+ (BOOL)updateAppsIsScheduled:(NSInteger *)scheduleInterval;
++ (BOOL)updateAppsIsScheduled:(id *)scheduleInterval;
 
 + (BOOL)launchAtLogin:(BOOL)launch;
 + (BOOL)willLaunchAtLogin;

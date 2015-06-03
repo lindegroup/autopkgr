@@ -19,7 +19,7 @@
 #import "LGTool+Protocols.h"
 
 // Define the protocols you intend to conform to...
-@interface LGToolTemplate ()<LGToolPackagInstaller, LGToolSharedProcessor>
+@interface LGToolTemplate ()<LGToolPackageInstaller, LGToolSharedProcessor>
 @end
 
 #pragma mark - Tool overrides

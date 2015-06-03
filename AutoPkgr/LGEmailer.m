@@ -20,11 +20,10 @@
 //
 
 #import "LGEmailer.h"
-#import "LGRecipeController.h"
 #import "LGAutoPkgr.h"
 #import "LGHostInfo.h"
 #import "LGPasswords.h"
-#import "LGToolStatus.h"
+#import "LGToolManager.h"
 #import "LGUserNotifications.h"
 #import "LGAutoPkgReport.h"
 
@@ -137,19 +136,15 @@
 
 - (void)sendEmailForReport:(NSDictionary *)report error:(NSError *)error
 {
-    LGToolStatus *toolStatus = [LGToolStatus new];
-    [toolStatus allToolsStatus:^(NSArray *tools) {
+    LGAutoPkgReport *a_report = [[LGAutoPkgReport alloc] initWithReportDictionary:report];
+    a_report.error = error;
+    a_report.tools = [[LGToolManager new] installedTools];
 
-        LGAutoPkgReport *a_report = [[LGAutoPkgReport alloc] initWithReportDictionary:report];
-        a_report.error = error;
-        a_report.tools = tools;
-
-        if (a_report.updatesToReport) {
-            [self sendEmailNotification:a_report.emailSubjectString message:a_report.emailMessageString];
-        } else {
-            [self didCompleteEmailOperation:nil];
-        }
-    }];
+    if (a_report.updatesToReport) {
+        [self sendEmailNotification:a_report.emailSubjectString message:a_report.emailMessageString];
+    } else {
+        [self didCompleteEmailOperation:nil];
+    }
 }
 
 - (void)didCompleteEmailOperation:(NSError *)error {

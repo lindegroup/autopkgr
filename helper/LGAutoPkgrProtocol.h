@@ -20,6 +20,7 @@
 #import <Foundation/Foundation.h>
 #import "LGConstants.h"
 #import "LGAutoPkgrAuthorizer.h"
+@class AHLaunchJobSchedule;
 
 typedef NS_ENUM(NSInteger, LGBackgroundTaskProgressState) {
     kLGAutoPkgProgressStart = -1,
@@ -36,7 +37,7 @@ typedef void (^uninstallPackageReplyBlock)(NSArray *removed, NSArray *remain, NS
 
 #pragma mark - Schedule
 #pragma mark-- Add
-- (void)scheduleRun:(NSInteger)interval
+- (void)scheduleRun:(AHLaunchJobSchedule *)scheduleOrInterval
                user:(NSString *)user
             program:(NSString *)program
       authorization:(NSData *)authData

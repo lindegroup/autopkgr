@@ -23,6 +23,26 @@
 
 @implementation NSImage (installStatus)
 
++ (instancetype)LGNoImage
+{
+    static id image;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        image = [self new];
+    });
+    return image;
+}
+
++ (instancetype)LGCaution
+{
+    static id image;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        image = [self imageNamed:@"NSCaution"];;
+    });
+    return image;
+}
+
 + (instancetype)LGStatusAvailable
 {
     return [self imageNamed:@"NSStatusAvailable"];
@@ -62,5 +82,6 @@
 {
     return [self LGStatusNone];
 }
+
 
 @end

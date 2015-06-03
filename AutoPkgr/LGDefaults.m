@@ -51,6 +51,7 @@
 
 - (BOOL)synchronize
 {
+    [super synchronize];
     BOOL success =
         (CFPreferencesSynchronize(kCFPreferencesCurrentApplication,
                                   kCFPreferencesCurrentUser,

@@ -23,7 +23,7 @@
 #import "LGInstaller.h"
 #import "LGGitHubJSONLoader.h"
 #import "LGAutoPkgr.h"
-#import "LGToolStatus.h"
+#import "LGToolManager.h"
 #import "LGAutoPkgTask.h"
 
 #import "LGAutoPkgReport.h"
@@ -60,21 +60,10 @@
 }
 
 #pragma mark - LGTools
-- (void)testTools
+- (void)testToolStatus
 {
-    XCTestExpectation *expectation = [self expectationWithDescription:@"Tools Test"];
-
-    LGToolStatus *tool = [LGToolStatus new];
-    [tool allToolsStatus:^(NSArray *tools) {
-        [expectation fulfill];
-    }];
-
-    [self waitForExpectationsWithTimeout:300 handler:^(NSError *error) {
-        if(error)
-        {
-            XCTFail(@"Expectation Failed with error: %@", error);
-        }
-    }];
+    NSArray *toolStatus = [[LGToolManager new] installedTools];
+    XCTAssertNotNil(toolStatus, @"Tool array should not be nil");
 }
 
 #pragma mark - Installers
@@ -300,6 +289,66 @@
     }];
 }
 
+- (void)testMultipleToolInfoBlocks {
+    XCTestExpectation *expect1 = [self expectationWithDescription:@"AutoPkg Tool Test 1"];
+    XCTestExpectation *expect2 = [self expectationWithDescription:@"AutoPkg Tool Test 2"];
+    XCTestExpectation *expect3 = [self expectationWithDescription:@"AutoPkg Tool Test 3"];
+
+    __block LGToolInfo *info1;
+    __block LGToolInfo *info2;
+    __block LGToolInfo *info3;
+
+    LGAutoPkgTool *tool = [[LGAutoPkgTool alloc] init];
+    [tool addInfoUpdateHandler:^(LGToolInfo *info) {
+        info1 = info;
+        NSLog(@"mainQueue info: %@", info);
+        XCTAssertEqualObjects([NSOperationQueue currentQueue], [NSOperationQueue mainQueue]);
+        [expect1 fulfill];
+    }];
+
+    NSOperationQueue *bg1 = [NSOperationQueue new];
+    [bg1 addOperationWithBlock:^{
+        [tool addInfoUpdateHandler:^(LGToolInfo *info) {
+            info2 = info;
+
+            NSLog(@"bg1 info: %@", info);
+            XCTAssertEqualObjects([NSOperationQueue currentQueue], bg1);
+            XCTAssertNotEqualObjects([NSOperationQueue currentQueue], [NSOperationQueue mainQueue]);
+            [expect2 fulfill];
+        }];
+    }];
+
+    NSOperationQueue *bg2 = [NSOperationQueue new];
+    [ bg2 addOperationWithBlock:^{
+        [tool addInfoUpdateHandler:^(LGToolInfo *info) {
+            info3 = info;
+
+            NSLog(@"bg2 info: %@", info);
+            XCTAssertEqualObjects([NSOperationQueue currentQueue], bg2);
+            XCTAssertNotEqualObjects([NSOperationQueue currentQueue], [NSOperationQueue mainQueue]);
+            [expect3 fulfill];
+        }];
+    }];
+
+    [tool refresh];
+
+    /* Check if everything is deallocate correctly too! */
+    LGAutoPkgTool *t2 = [LGAutoPkgTool new];
+    [t2 addInfoUpdateHandler:^(LGToolInfo *info) {}];
+    [t2 addInfoUpdateHandler:^(LGToolInfo *info) {}];
+    t2 = nil;
+
+    [self waitForExpectationsWithTimeout:300 handler:^(NSError *error) {
+        XCTAssertEqualObjects(info1, info2, @"Should be equal");
+        XCTAssertEqualObjects(info2, info3, @"Should be equal");
+
+        if(error)
+        {
+            XCTFail(@"Expectation Failed with error: %@", error);
+        }
+    }];
+
+}
 - (void)testTool2
 {
     LGAutoPkgTool *tool = [[LGAutoPkgTool alloc] init];
@@ -405,38 +454,26 @@
 
 - (void)testReportEmail
 {
-    XCTestExpectation *expectation = [self expectationWithDescription:@"Report Format"];
+    NSString *htmlFile = @"/tmp/report.html";
+    NSBundle *bundle = [NSBundle bundleForClass:[self class]];
 
-    [[[LGToolStatus alloc] init] allToolsStatus:^(NSArray *tools) {
-        NSString *htmlFile = @"/tmp/report.html";
-        NSBundle *bundle = [NSBundle bundleForClass:[self class]];
-        
-        NSString *reportFile = [bundle pathForResource:@"report_0.4.2" ofType:@"plist"];
-//        NSString *reportFile = [bundle pathForResource:@"report_0.4.3" ofType:@"plist"];
+    NSString *reportFile = [bundle pathForResource:@"report_0.4.2" ofType:@"plist"];
+    //        NSString *reportFile = [bundle pathForResource:@"report_0.4.3" ofType:@"plist"];
 
-        NSDictionary *reportDict = [NSDictionary dictionaryWithContentsOfFile:reportFile];
+    NSDictionary *reportDict = [NSDictionary dictionaryWithContentsOfFile:reportFile];
 
-        NSError *error = [NSError errorWithDomain:@"AutoPkgr" code:1 userInfo:@{ NSLocalizedDescriptionKey : @"Error running recipes",
-                                                                                 NSLocalizedRecoverySuggestionErrorKey : @"Code signature verification failed. Note that all verifications can be disabled by setting the variable DISABLE_CODE_SIGNATURE_VERIFICATION to a non-empty value.\nThere was an unknown exception which causes autopkg to fail." }];
+    NSError *error = [NSError errorWithDomain:@"AutoPkgr" code:1 userInfo:@{ NSLocalizedDescriptionKey : @"Error running recipes",
+                                                                             NSLocalizedRecoverySuggestionErrorKey : @"Code signature verification failed. Note that all verifications can be disabled by setting the variable DISABLE_CODE_SIGNATURE_VERIFICATION to a non-empty value.\nThere was an unknown exception which causes autopkg to fail." }];
 
-        LGAutoPkgReport *report = [[LGAutoPkgReport alloc] initWithReportDictionary:reportDict];
-        report.error = error;
-        report.tools = tools;
-        
-        report.reportedItemFlags = kLGReportItemsAll;
+    LGAutoPkgReport *report = [[LGAutoPkgReport alloc] initWithReportDictionary:reportDict];
+    report.error = error;
+    report.tools = [[LGToolManager new] installedTools];
 
-        [report.emailMessageString writeToFile:htmlFile atomically:YES encoding:NSUTF8StringEncoding error:nil];
-        
-        [[NSWorkspace sharedWorkspace] openFile:htmlFile];
-        [expectation fulfill];
-    }];
+    report.reportedItemFlags = kLGReportItemsAll;
 
-    [self waitForExpectationsWithTimeout:300 handler:^(NSError *error) {
-        if(error)
-        {
-            XCTFail(@"Expectation Failed with error: %@", error);
-        }
-    }];
+    [report.emailMessageString writeToFile:htmlFile atomically:YES encoding:NSUTF8StringEncoding error:nil];
+
+    [[NSWorkspace sharedWorkspace] openFile:htmlFile];
 }
 
 #pragma mark - Progress delegate

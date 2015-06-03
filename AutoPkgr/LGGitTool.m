@@ -19,6 +19,8 @@
 #import "LGTool+Protocols.h"
 
 #import "LGDefaults.h"
+#import "NSData+taskData.h"
+#import <AHProxySettings/NSTask+useSystemProxies.h>
 
 NSString *const kLGOfficialGit = @"/usr/local/git/bin/git";
 NSString *const kLGCLIToolsGit = @"/Library/Developer/CommandLineTools/usr/bin/git";
@@ -26,7 +28,7 @@ NSString *const kLGXcodeGit = @"/Applications/Xcode.app/Contents/Developer/usr/b
 NSString *const kLGHomeBrewGit = @"/usr/local/bin/git";
 NSString *const kLGBoxenBrewGit = @"/opt/boxen/homebrew/bin/git";
 
-@interface LGGitTool ()<LGToolPackagInstaller>
+@interface LGGitTool ()<LGToolPackageInstaller>
 @end
 
 NSArray *knownGitPaths()
@@ -144,5 +146,89 @@ NSArray *knownGitPaths()
     }
     return _downloadURL;
 }
+
+#pragma mark - Tool Extensions
++ (void)gitTaskWithArguments:(NSArray *)args repoPath:(NSString *)repoPath reply:(void (^)(NSString *, NSError *))reply {
+
+
+    // Dispatch queue for writing data.
+    dispatch_queue_t git_data_queue = dispatch_queue_create("com.lindegroup.git.data.queue", DISPATCH_QUEUE_SERIAL );
+
+    // Dispatch quque to send the reply back on.
+    dispatch_queue_t git_callback_queue = dispatch_get_current_queue();
+
+    NSString *binary = [self binary];
+    if (binary == nil) {
+        reply(nil, [self gitErrorWithMessage:@"Could not locate the git binary." code:kLGGitErrorNotInstalled]);
+    }
+
+    __block NSMutableData *outData = [[NSMutableData alloc] init];
+    __block NSMutableData *errData = [[NSMutableData alloc] init];
+
+    NSTask *task = [[NSTask alloc] init];
+    task.launchPath = binary;
+    task.arguments = args;
+    
+    if (repoPath) {
+        task.currentDirectoryPath = repoPath;
+    }
+
+    task.standardOutput = [NSPipe pipe];
+    task.standardError = [NSPipe pipe];
+    [task useSystemProxiesForDestination:@"github.com"];
+
+    NSFileHandle *outHandle = [task.standardOutput fileHandleForReading];
+    [outHandle setReadabilityHandler:^(NSFileHandle *fh) {
+        /* We append mutable data here in order to protect against the
+         * pipe's buffer from getting filled up causing task to hang. */
+        dispatch_sync(git_data_queue, ^{
+            [outData appendData:fh.availableData];
+        });
+    }];
+
+    NSFileHandle *errHandle = [task.standardError fileHandleForReading];
+    [errHandle setReadabilityHandler:^(NSFileHandle *fh) {
+        dispatch_sync(git_data_queue, ^{
+            [errData appendData:fh.availableData];
+        });
+    }];
+
+    task.terminationHandler = ^(NSTask *aTask){
+        dispatch_sync(git_data_queue, ^{
+            NSString *stdOut = nil;
+
+            // nil out the readability handlers.
+            outHandle.readabilityHandler = nil;
+            errHandle.readabilityHandler = nil;
+
+            // Get any remaining data from the handle.
+            [outData appendData:[outHandle readDataToEndOfFile]];
+            [errData appendData:[errHandle readDataToEndOfFile]];
+
+            if(outData.length){
+                stdOut = outData.taskData_string;
+            }
+
+             NSError *error = [self gitErrorWithMessage:errData.taskData_string code:aTask.terminationStatus];
+
+            dispatch_async(git_callback_queue, ^{
+                reply(stdOut, error);
+            });
+        });
+    };
+    [task launch];
+}
+
++ (NSError *)gitErrorWithMessage:(NSString *)message code:(NSInteger)code {
+    NSError *error = nil;
+    if (code != 0) {
+        error = [NSError errorWithDomain:@"AutoPkgr Git"
+                                    code:code
+                                userInfo:@{NSLocalizedDescriptionKey:@"There was a problem executing git.",
+                                           NSLocalizedRecoverySuggestionErrorKey:message ?: @""}];
+    }
+    return error;
+}
+
 
 @end

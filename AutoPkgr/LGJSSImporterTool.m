@@ -20,7 +20,7 @@
 #import "LGServerCredentials.h"
 #import "LGLogger.h"
 
-@interface LGJSSImporterTool ()<LGToolPackagInstaller, LGToolSharedProcessor>
+@interface LGJSSImporterTool ()<LGToolPackageInstaller, LGToolSharedProcessor>
 @end
 
 # pragma mark - Repo Keys

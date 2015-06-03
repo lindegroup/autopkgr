@@ -32,7 +32,6 @@
 
 #pragma mark - Class constants
 @interface LGJSSImporter ()
-@property (copy, nonatomic) LGJSSImporterTool *jssImporterTool;
 @end
 
 NSPredicate *jdsFilterPredicate()
@@ -51,7 +50,6 @@ NSPredicate *jdsFilterPredicate()
     LGJSSDistributionPointsPrefPanel *_preferencePanel;
 
     BOOL _serverReachable;
-    BOOL _installRequestedDuringConnect;
 }
 
 - (void)awakeFromNib
@@ -61,62 +59,6 @@ NSPredicate *jdsFilterPredicate()
     }
 
     _defaults = [LGJSSImporterDefaults new];
-    _installRequestedDuringConnect = NO;
-
-    _jssReloadServerBT.action = @selector(testCredentials:);
-    _jssReloadServerBT.title = @"Verify";
-    _jssStatusLight.hidden = YES;
-
-    BOOL isInstalled = [LGJSSImporterTool isInstalled];
-
-    // Show installer status
-    _jssInstallStatusLight.hidden = !isInstalled;
-    _jssInstallStatusTF.hidden = !isInstalled;
-    _jssInstallButton.hidden = !isInstalled;
-
-    // Setup the JSSImporterTool
-    if (!_jssImporterTool) {
-        _jssImporterTool = [[LGJSSImporterTool alloc] init];
-        if (_progressDelegate) {
-            _jssImporterTool.progressDelegate = _progressDelegate;
-        }
-
-        _jssInstallButton.target = _jssImporterTool;
-
-        __weak typeof(self) w_self = self;
-        [_jssImporterTool setInfoUpdateHandler:^(LGToolInfo *info) {
-            // Update the button.
-            w_self.jssInstallButton.enabled = YES; // Enabled
-            w_self.jssInstallButton.action = info.targetAction; // Selector
-            w_self.jssInstallButton.title = info.installButtonTitle; // Title
-            w_self.jssInstallButton.hidden = (info.status == kLGToolNotInstalled);
-
-            w_self.jssInstallStatusLight.image = info.statusImage;
-            w_self.jssInstallStatusLight.hidden = (info.status == kLGToolNotInstalled);
-
-            w_self.jssInstallStatusTF.stringValue = info.statusString;
-            w_self.jssInstallStatusTF.hidden = (info.status == kLGToolNotInstalled);
-
-            if (info.status == kLGToolNotInstalled){
-                w_self.jssReloadServerBT.title = @"Install";
-                w_self.jssReloadServerBT.target = w_self.jssImporterTool;
-                w_self.jssReloadServerBT.action = @selector(install:);
-            } else {
-                w_self.jssReloadServerBT.title = @"Verify";
-                w_self.jssReloadServerBT.target = w_self;
-                w_self.jssReloadServerBT.action = @selector(testCredentials:);
-            }
-        }];
-    }
-
-    if (isInstalled) {
-        [_jssImporterTool refresh];
-    } else {
-        // have the tool take over controll of the "verify / connect" button on the F&I tab.
-        _jssReloadServerBT.title = @"Install";
-        _jssReloadServerBT.target = _jssImporterTool;
-        _jssReloadServerBT.action = @selector(install:);
-    }
 
     // Disable the Add / Remove distPoint buttons
     // until a row is selected
@@ -131,6 +73,36 @@ NSPredicate *jdsFilterPredicate()
     _jssURLTF.safeStringValue = _defaults.JSSURL;
 
     [_jssDistributionPointTableView reloadData];
+}
+
+- (void)connectToTool {
+    BOOL isInstalled = [LGJSSImporterTool isInstalled];
+
+    __weak typeof(self) __weak_self = self;
+    [_jssImporterTool addInfoUpdateHandler:^(LGToolInfo *info) {
+        // Update the button.
+
+        if (info.status == kLGToolNotInstalled){
+            __weak_self.jssReloadServerBT.title = @"Install";
+            __weak_self.jssReloadServerBT.target = __weak_self.jssImporterTool;
+            __weak_self.jssReloadServerBT.action = @selector(install:);
+        } else {
+            __weak_self.jssReloadServerBT.title = @"Verify";
+            __weak_self.jssReloadServerBT.target = __weak_self;
+            __weak_self.jssReloadServerBT.action = @selector(testCredentials:);
+        }
+    }];
+
+
+    if (!isInstalled) {
+        [_jssImporterTool refresh];
+    } else {
+        // have the tool take over controll of the "verify / connect" button on the F&I tab.
+        _jssReloadServerBT.title = @"Install";
+        _jssReloadServerBT.target = _jssImporterTool;
+        _jssReloadServerBT.action = @selector(install:);
+
+    }
 }
 
 #pragma mark - IBActions
@@ -423,58 +395,6 @@ NSPredicate *jdsFilterPredicate()
     }
 
     return password;
-}
-
-- (BOOL)promptForInstall
-{
-    BOOL required = NO;
-
-    if (![[_jssImporterTool class] isInstalled]) {
-        NSLog(@"Prompting for JSSImporter installation.");
-        NSAlert *alert = [NSAlert alertWithMessageText:@"Install JSSImporter?"
-                                         defaultButton:@"Install"
-                                       alternateButton:@"Cancel"
-                                           otherButton:nil
-                             informativeTextWithFormat:@"JSSImporter is not currently installed. Would you like to install it now?"];
-
-        NSInteger button = [alert runModal];
-        if (button == NSAlertDefaultReturn) {
-            [_jssImporterTool install:_jssInstallButton];
-        } else {
-            _installRequestedDuringConnect = NO;
-            NSLog(@"Installation of JSSImporter was canceled.");
-        }
-        return YES;
-    }
-    return required;
-}
-
-#pragma mark - Table View Contextual menu
-- (NSMenu *)contextualMenuForDistributionPoint:(NSDictionary *)distPoint
-{
-    NSMenu *menu = [[NSMenu alloc] init];
-
-    if (distPoint) {
-        if (distPoint[kLGJSSDistPointTypeKey]) {
-            NSMenuItem *editItem = [[NSMenuItem alloc] initWithTitle:@"Edit Distribution Point" action:@selector(editDistributionPoint:) keyEquivalent:@""];
-            editItem.target = self;
-            editItem.representedObject = distPoint;
-            [menu addItem:editItem];
-        }
-
-        NSString *name = distPoint[kLGJSSDistPointNameKey] ?: distPoint[kLGJSSDistPointURLKey];
-        NSString *removeString = [NSString stringWithFormat:@"Remove %@", name];
-        NSMenuItem *removeItem = [[NSMenuItem alloc] initWithTitle:removeString action:@selector(removeDistributionPoint:) keyEquivalent:@""];
-        removeItem.target = self;
-        removeItem.representedObject = distPoint;
-        [menu addItem:removeItem];
-    } else {
-        NSMenuItem *addItem = [[NSMenuItem alloc] initWithTitle:@"Add New Distribution Point" action:@selector(addDistributionPoint:) keyEquivalent:@""];
-        addItem.target = self;
-        [menu addItem:addItem];
-    }
-
-    return menu;
 }
 
 #pragma mark - JSS Distribution Point Preference Panel

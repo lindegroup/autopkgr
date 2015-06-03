@@ -19,7 +19,7 @@
 #import "LGTool+Protocols.h"
 #import "LGAutoPkgTask.h"
 
-@interface LGAutoPkgTool ()<LGToolPackagInstaller, LGToolSharedProcessor>
+@interface LGAutoPkgTool ()<LGToolPackageInstaller, LGToolSharedProcessor>
 @end
 
 @implementation LGAutoPkgTool

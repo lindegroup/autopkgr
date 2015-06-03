@@ -1,10 +1,6 @@
-//
-//  LGApplications.h
-//  AutoPkgr
-//
-//  Created by Josh Senick on 7/10/14.
-//
-//  Copyright 2014-2015 The Linde Group, Inc.
+// LGHourPickerMenu.h
+// 
+//  Copyright 2015 Eldon Ahrold.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -17,19 +13,11 @@
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
-//
 
-#import <Foundation/Foundation.h>
-#import "LGAutoPkgTask.h"
-#import "LGTableView.h"
+#import <Cocoa/Cocoa.h>
 
-@interface LGRecipeController : NSObject <NSApplicationDelegate, NSTableViewDataSource, NSTableViewDelegate>
+@interface LGHourPickerMenu : NSMenu
+@end
 
-/**
- * Reload the LGRecipe table view and rebuild the recipe array.
- */
-- (void)reload;
-
-- (NSMenu *)contextualMenuForRecipeAtRow:(NSInteger)row;
-
+@interface LGDayPickerMenu : NSMenu
 @end

@@ -33,6 +33,18 @@
 #define LGTOOL_SUBCLASS
 #endif
 
+// Dispatch queue for synchronizing infoHanler setter and refresh.
+static dispatch_queue_t autopkgr_tool_synchronizer_queue()
+{
+    static dispatch_queue_t autopkgr_tool_synchronizer_queue;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        autopkgr_tool_synchronizer_queue = dispatch_queue_create("com.lindegroup.autopkgr.tool.synchronizer.queue", DISPATCH_QUEUE_SERIAL );
+    });
+
+    return autopkgr_tool_synchronizer_queue;
+}
+
 @interface LGTool ()
 @property (copy, nonatomic, readwrite) LGToolInfo *info;
 @end
@@ -62,6 +74,7 @@ void subclassMustConformToProtocol(id className)
 @implementation LGTool {
     void (^_progressUpdateBlock)(NSString *, double);
     void (^_replyErrorBlock)(NSError *);
+    NSMutableDictionary *_infoUpdateBlocksDict;
 }
 
 @synthesize installedVersion = _installedVersion;
@@ -76,7 +89,7 @@ void subclassMustConformToProtocol(id className)
 
         // The subclasses must conform to at least one of the protocols
         if (([self conformsToProtocol:@protocol(LGToolSharedProcessor)] ||
-             [self conformsToProtocol:@protocol(LGToolPackagInstaller)]) == NO)
+             [self conformsToProtocol:@protocol(LGToolPackageInstaller)]) == NO)
         {
             subclassMustConformToProtocol(self);
         }
@@ -115,9 +128,17 @@ void subclassMustConformToProtocol(id className)
     DevLog(@"Dealloc %@", self);
 
     // nil out the blocks to break retain cycles.
-    self.infoUpdateHandler = nil;
     _progressUpdateBlock = nil;
     _replyErrorBlock = nil;
+
+    /* Repoint so we don't loose reference to the _infoUpdateBlockDict after dealloc */
+    NSMutableDictionary *releaseDict = _infoUpdateBlocksDict;
+    dispatch_async(autopkgr_tool_synchronizer_queue(), ^{
+        [releaseDict enumerateKeysAndObjectsUsingBlock:^(void (^infoUpdate)(LGToolInfo *), id obj, BOOL *stop) {
+            infoUpdate = nil;
+        }];
+        [releaseDict removeAllObjects];
+    });
 }
 
 - (instancetype)init
@@ -145,7 +166,7 @@ void subclassMustConformToProtocol(id className)
         flags += kLGToolTypeAutoPkgSharedProcessor;
     }
 
-    if ([self conformsToProtocol:@protocol(LGToolPackagInstaller)]) {
+    if ([self conformsToProtocol:@protocol(LGToolPackageInstaller)]) {
         flags += kLGToolTypeInstalledPackage;
     }
 
@@ -200,25 +221,49 @@ void subclassMustConformToProtocol(id className)
 - (void)customUninstallActions {}
 
 #pragma mark - Super implementation
+- (void)addInfoUpdateHandler:(void (^)(LGToolInfo *info))infoUpdateHandler {
+    NSOperationQueue *currentQueue = [NSOperationQueue currentQueue];
+    if (infoUpdateHandler) {
+        dispatch_async(autopkgr_tool_synchronizer_queue(), ^{
+            if (!_infoUpdateBlocksDict) {
+                _infoUpdateBlocksDict = [[NSMutableDictionary alloc] init];
+            }
+
+            /* In order to always send the info update to the quque it was requested on
+             * Use that as the "object" for block which is the "key". 
+             * See -refresh for the other side */
+            if ([_infoUpdateBlocksDict objectForKey:infoUpdateHandler] == nil) {
+                [_infoUpdateBlocksDict setObject:currentQueue forKey:infoUpdateHandler];
+            }
+        });
+    }
+}
+
 - (void)getInfo:(void (^)(LGToolInfo *))complete;
 {
-    self.infoUpdateHandler = complete;
+    [self addInfoUpdateHandler:complete];
     [self refresh];
 }
 
 - (void)refresh;
 {
-    if (self.infoUpdateHandler) {
+    dispatch_async(autopkgr_tool_synchronizer_queue(), ^{
+    if (_infoUpdateBlocksDict.count) {
         LGGitHubJSONLoader *loader = [[LGGitHubJSONLoader alloc] initWithGitHubURL:[[self class] gitHubURL]];
 
         [loader getReleaseInfo:^(LGGitHubReleaseInfo *gitHubInfo, NSError *error) {
             self.gitHubInfo = gitHubInfo;
             _info = [[LGToolInfo alloc] initWithTool:self];
-            self.infoUpdateHandler(_info);
+                [_infoUpdateBlocksDict enumerateKeysAndObjectsUsingBlock:^(void (^infoUpdate)(LGToolInfo *), NSOperationQueue *queue, BOOL *stop) {
+                    [queue addOperationWithBlock:^{
+                        infoUpdate(_info);
+                    }];
+                }];
         }];
     } else {
         _info = [[LGToolInfo alloc] initWithTool:self];
     }
+    });
 }
 
 - (LGToolInfo *)info
@@ -246,11 +291,11 @@ void subclassMustConformToProtocol(id className)
 
     if (typeFlags & kLGToolTypeInstalledPackage) {
         NSFileManager *fm = [NSFileManager defaultManager];
-        NSString *packageReciept = [[@"/private/var/db/receipts/" stringByAppendingPathComponent:[[[self class] packageIdentifiers] firstObject]] stringByAppendingPathExtension:@"plist"];
+        NSString *packageReceipt = [[@"/private/var/db/receipts/" stringByAppendingPathComponent:[[[self class] packageIdentifiers] firstObject]] stringByAppendingPathExtension:@"plist"];
 
         if ([[self class] isInstalled]) {
-            if ([fm fileExistsAtPath:packageReciept]) {
-                NSDictionary *receiptDict = [NSDictionary dictionaryWithContentsOfFile:packageReciept];
+            if ([fm fileExistsAtPath:packageReceipt]) {
+                NSDictionary *receiptDict = [NSDictionary dictionaryWithContentsOfFile:packageReceipt];
                 _installedVersion = receiptDict[@"PackageVersion"];
             }
         }
@@ -567,6 +612,21 @@ void subclassMustConformToProtocol(id className)
         break;
     }
     return [title stringByAppendingString:_name];
+}
+
+- (BOOL)installButtonEnabled {
+    switch (self.status) {
+        case kLGToolNotInstalled: {}
+        case kLGToolUpdateAvailable: {
+            return YES;
+        }
+        case kLGToolUpToDate: {
+            return (_typeFlags & kLGToolTypeUninstallableTool);
+        }
+        default: {
+            break;
+        }
+    }
 }
 
 - (BOOL)needsInstalled

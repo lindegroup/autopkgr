@@ -17,6 +17,7 @@
 
 #import "LGAutoPkgRecipe.h"
 #import "LGAutoPkgTask.h"
+#import <glob.h>
 
 // MakeCatalogs recipe identifier string
 static NSString *const kLGMakeCatalogsIdentifier = @"com.github.autopkg.munki.makecatalogs";
@@ -33,100 +34,7 @@ static dispatch_queue_t autopkgr_recipe_write_queue()
     return autopkgr_recipe_write_queue;
 }
 
-
-#pragma mark - Recipe Store
-/**
- *  The RecipeStore is a sudo persistent storage that keeps a record of a the NSURL for a recipe
- *  based on their identifiers since that's the key much more relevant to finding recursive info.
- *  on parent recipes. Since may recipes and overrides can have the same parents, using a shared store
- *  greatly reduces the memory footprint and system calls necessary to obtain aforementioned information.
- */
-@interface LGRecipeStore : NSObject
-@property (strong, atomic, readonly) NSDictionary *urlDict;
-+ (instancetype)sharedStore;
-@end
-
-@implementation LGRecipeStore
-@synthesize urlDict = _urlDict;
-
-+ (instancetype)sharedStore
-{
-    static dispatch_once_t onceToken;
-    __strong static id _sharedObject = nil;
-
-    dispatch_once(&onceToken, ^{
-        _sharedObject = [[self alloc] init];
-    });
-
-    return _sharedObject;
-}
-
-- (instancetype)init
-{
-    if (self = [super init]) {
-        /* Any time a repo is added or removed the LGAutoPkgTask class sends out a notification
-         * When that happens we want to reload the data to account for the newly added repos. */
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reload) name:kLGNotificationReposModified object:nil];
-    }
-    return self;
-}
-
-- (NSDictionary *)urlDict
-{
-    if (!_urlDict) {
-        [self reload];
-    }
-    return _urlDict;
-}
-
-- (NSDictionary *)recipePlistForIdentifier:(NSString *)identifier
-{
-    NSURL *recipeURL = self.urlDict[identifier];
-    if (recipeURL) {
-        return [NSDictionary dictionaryWithContentsOfURL:recipeURL];
-    }
-    return nil;
-}
-
-- (id)objectForKey:(NSString *)key ofIdentifier:(NSString *)identifier
-{
-    NSURL *recipeURL = self.urlDict[identifier];
-    if (recipeURL) {
-        return [NSDictionary dictionaryWithContentsOfURL:recipeURL][key];
-    }
-    return nil;
-}
-
-
-- (BOOL)reload
-{
-    NSFileManager *manager = [[NSFileManager alloc] init];
-    NSMutableDictionary *recipes = [[NSMutableDictionary alloc] init];
-
-    NSArray *searchDirs = [[LGDefaults standardUserDefaults] autoPkgRecipeSearchDirs];
-
-    for (NSString *dir in searchDirs) {
-        NSArray *files = [manager subpathsOfDirectoryAtPath:dir.stringByExpandingTildeInPath error:nil];
-
-        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"pathExtension == 'recipe'"];
-
-        for (NSString *recipe in [files filteredArrayUsingPredicate:predicate]) {
-            NSURL *fileURL = [NSURL fileURLWithPathComponents:@[dir, recipe]];
-            NSDictionary *dict = [NSDictionary dictionaryWithContentsOfURL:fileURL];
-            if (dict) {
-                NSString *identifier = dict[kLGAutoPkgRecipeIdentifierKey] ?: dict[@"Input"][@"IDENTIFIER"];
-                if (identifier && !recipes[identifier]) {
-                    [recipes setObject:fileURL forKey:identifier];
-                }
-            }
-        }
-    }
-
-    _urlDict = [recipes copy];
-    return YES;
-}
-
-@end
+static NSMutableDictionary *_identifierURLStore = nil;
 
 #pragma mark - Recipes
 //////////////////////////////////////////////////////////////////////////
@@ -137,9 +45,10 @@ static dispatch_queue_t autopkgr_recipe_write_queue()
 @private
     /* This is the actual iVar used for the `enabled` property
      * which when initialize is -1. We then check for that value
-     * during the -enabled getter and know if we need to do a more 
+     * during the -enabled getter and know if we need to do a more
      * expensive check that initializes an array */
     OSStatus _enabledInitialized;
+    NSURL *_recipeFileURL;
 }
 
 @synthesize Description = _Description, MinimumVersion = _MinimumVersion;
@@ -151,31 +60,34 @@ static dispatch_queue_t autopkgr_recipe_write_queue()
 
 - (instancetype)initWithRecipeFile:(NSURL *)recipeFile isOverride:(BOOL)isOverride
 {
-    if (self = [super init]) {
-        if ((_recipePlist = [NSDictionary dictionaryWithContentsOfURL:recipeFile]) == nil) {
-            return nil;
-        }
+    // Don't Initialize anything if we can't determine a recipe identifier.
+    NSDictionary *reciptPlist = [NSDictionary dictionaryWithContentsOfURL:recipeFile];
+    NSString *identifier = reciptPlist[kLGAutoPkgRecipeIdentifierKey] ?: reciptPlist[@"Input"][@"IDENTIFIER"];
 
+    if (identifier && (self = [super init])) {
+        _recipePlist = reciptPlist;
+        _Identifier = identifier;
+
+        _recipeFileURL = recipeFile;
         _Name = [[recipeFile lastPathComponent] stringByDeletingPathExtension];
-
-        // There are two ways the identifiers are commonly referred to.
-        _Identifier = _recipePlist[kLGAutoPkgRecipeIdentifierKey] ?: _recipePlist[@"Input"][@"IDENTIFIER"];
 
         _FilePath = recipeFile.path;
         _isOverride = isOverride;
         _enabledInitialized = -1;
+
+        [_identifierURLStore setObject:_recipeFileURL forKey:_Identifier];
     }
     return self;
 }
 
 - (NSString *)Description
 {
-    return _recipePlist[NSStringFromSelector(_cmd)] ?: [[LGRecipeStore sharedStore] objectForKey:NSStringFromSelector(_cmd) ofIdentifier:self.ParentRecipe];
+    return _recipePlist[NSStringFromSelector(_cmd)] ?: [self objectForKey:NSStringFromSelector(_cmd) ofIdentifier:self.ParentRecipe];
 }
 
 - (NSString *)MinimumVersion
 {
-    return _recipePlist[NSStringFromSelector(_cmd)] ?: [[LGRecipeStore sharedStore] objectForKey:NSStringFromSelector(_cmd) ofIdentifier:self.ParentRecipe];
+    return _recipePlist[NSStringFromSelector(_cmd)] ?: [self objectForKey:NSStringFromSelector(_cmd) ofIdentifier:self.ParentRecipe];
 }
 
 - (NSString *)ParentRecipe
@@ -194,7 +106,7 @@ static dispatch_queue_t autopkgr_recipe_write_queue()
         parents = [NSMutableArray arrayWithObject:parentRecipeID];
 
         while (true) {
-            NSURL *parentRecipeURL = [[LGRecipeStore sharedStore] urlDict][parentRecipeID];
+            NSURL *parentRecipeURL = [_identifierURLStore objectForKey:parentRecipeID];
             if (parentRecipeURL) {
                 NSDictionary *recipePlist = [NSDictionary dictionaryWithContentsOfURL:parentRecipeURL];
                 parentRecipeID = recipePlist[kLGAutoPkgRecipeParentKey];
@@ -212,7 +124,7 @@ static dispatch_queue_t autopkgr_recipe_write_queue()
 - (BOOL)isMissingParent
 {
     if (self.ParentRecipe) {
-        return ([[LGRecipeStore sharedStore] recipePlistForIdentifier:self.ParentRecipe] == nil);
+        return ([_identifierURLStore objectForKey:self.ParentRecipe] == nil);
     }
     return NO;
 }
@@ -228,6 +140,17 @@ static dispatch_queue_t autopkgr_recipe_write_queue()
 }
 
 #pragma mark - Enabled
+- (void)enableRecipe:(NSButton *)sender
+{
+    if ([sender isKindOfClass:[NSButton class]]) {
+        self.enabled = sender.state;
+        // Double check that enabling of the recipe was successful.
+        dispatch_async(autopkgr_recipe_write_queue(), ^{
+            sender.state = [[[self class] activeRecipes] containsObject:self.Identifier];
+        });
+    }
+}
+
 - (BOOL)isEnabled
 {
     if (_enabledInitialized == -1) {
@@ -283,29 +206,30 @@ static dispatch_queue_t autopkgr_recipe_write_queue()
             NSLog(@"Error while writing %@.", recipeListFile);
             return;
         }
-        
+
         currentList = nil;
         _enabledInitialized = enabled;
     });
 }
 
 #pragma mark - Checks
-- (BOOL)hasStepProcessor:(NSString *)step {
+- (BOOL)hasStepProcessor:(NSString *)step
+{
     NSMutableArray *considered = [NSMutableArray arrayWithObject:_recipePlist];
 
     for (NSString *identifier in self.ParentRecipes) {
-        NSDictionary *plist = [[LGRecipeStore sharedStore] recipePlistForIdentifier:identifier];
+        NSDictionary *plist = [self recipePlistForIdentifier:identifier];
         if (plist) {
             [considered addObject:plist];
         }
     }
 
     for (NSDictionary *plist in considered) {
-        NSArray *processes =  plist[kLGAutoPkgRecipeProcessKey];
+        NSArray *processes = plist[kLGAutoPkgRecipeProcessKey];
         if (processes) {
             if ([processes indexOfObjectPassingTest:^BOOL(NSDictionary *obj, NSUInteger idx, BOOL *stop) {
                 return [obj[@"Processor"] isEqualToString:step];
-            }] != NSNotFound){
+                }] != NSNotFound) {
                 return YES;
             }
         }
@@ -319,8 +243,24 @@ static dispatch_queue_t autopkgr_recipe_write_queue()
     return [self hasStepProcessor:@"EndOfCheckPhase"];
 }
 
-- (BOOL)buildsPackage {
+- (BOOL)buildsPackage
+{
     return [self hasStepProcessor:@"PkgCreator"];
+}
+
+#pragma mark - Value retrieval
+- (NSDictionary *)recipePlistForIdentifier:(NSString *)identifier
+{
+    NSURL *recipeURL = [_identifierURLStore objectForKey:identifier];
+    if (recipeURL) {
+        return [NSDictionary dictionaryWithContentsOfURL:recipeURL];
+    }
+    return nil;
+}
+
+- (id)objectForKey:(NSString *)key ofIdentifier:(NSString *)identifier
+{
+    return [self recipePlistForIdentifier:identifier][key];
 }
 
 #pragma mark - Class Methods;
@@ -331,8 +271,9 @@ static dispatch_queue_t autopkgr_recipe_write_queue()
 
 + (NSArray *)allRecipesFilteringOverlaps:(BOOL)filterOverlaps
 {
-
+    _identifierURLStore = [[NSMutableDictionary alloc] init];
     LGDefaults *defaults = [LGDefaults standardUserDefaults];
+
     NSMutableArray *allRecipes = [[NSMutableArray alloc] init];
     NSSet *activeRecipes = [self activeRecipes];
 
@@ -386,16 +327,15 @@ static dispatch_queue_t autopkgr_recipe_write_queue()
 
 + (NSArray *)findRecipesRecursivelyAtPath:(NSString *)path isOverride:(BOOL)isOverride activeRecipes:(NSSet *)activeRecipes
 {
-    NSFileManager *manager = [NSFileManager defaultManager];
     NSMutableArray *recipes = [[NSMutableArray alloc] init];
 
-    if (path && [manager fileExistsAtPath:path]) {
-        NSArray *files = [manager subpathsOfDirectoryAtPath:path error:nil];
+    if (path && (access(path.UTF8String, F_OK) == 0)) {
+        NSString *matches = [NSString stringWithFormat:@"{%@/{*.recipe,*/*.recipe}}", path];
 
-        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"pathExtension == 'recipe'"];
-
-        for (NSString *recipe in [files filteredArrayUsingPredicate:predicate]) {
-            NSURL *fileURL = [NSURL fileURLWithPathComponents:@[path, recipe]];
+        glob_t results;
+        glob(matches.UTF8String, GLOB_BRACE | GLOB_NOSORT, NULL, &results);
+        for (int i = 0; i < results.gl_matchc; i++) {
+            NSURL *fileURL = [NSURL fileURLWithFileSystemRepresentation:results.gl_pathv[i] isDirectory:NO relativeToURL:nil];
             if (fileURL) {
                 LGAutoPkgRecipe *recipe = [[LGAutoPkgRecipe alloc] initWithRecipeFile:fileURL isOverride:isOverride];
                 if (recipe) {
@@ -409,11 +349,10 @@ static dispatch_queue_t autopkgr_recipe_write_queue()
                         }
                     }
                 }
-
             }
         }
+        globfree(&results);
     }
-
 
     return [recipes copy];
 }
@@ -499,12 +438,12 @@ static dispatch_queue_t autopkgr_recipe_write_queue()
         NSArray *activeRecipes = [[self activeRecipes] copy];
 
         [activeRecipes enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-                for (LGAutoPkgRecipe *recipe in recipes) {
-                    if ([recipe.Name isEqualToString:obj]) {
-                        recipe.enabled = YES;
-                        i++;
-                    }
+            for (LGAutoPkgRecipe *recipe in recipes) {
+                if ([recipe.Name isEqualToString:obj]) {
+                    recipe.enabled = YES;
+                    i++;
                 }
+            }
         }];
 
         BOOL success = (i == activeRecipes.count);

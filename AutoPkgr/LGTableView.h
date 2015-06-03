@@ -20,6 +20,15 @@
 
 #import <Cocoa/Cocoa.h>
 
+@protocol LGTableViewDataSource <NSTableViewDataSource>
+- (NSMenu *)contextualMenuForRow:(NSInteger)row;
+@end
+
 @interface LGTableView : NSTableView
 
+@property (nonatomic, readonly) NSRect contextualMenuMouseLocal;
+
+@end
+
+@interface LGInstallTableView : NSTableView
 @end

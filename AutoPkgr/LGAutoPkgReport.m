@@ -19,7 +19,7 @@
 
 #import "LGAutoPkgReport.h"
 #import "LGAutoPkgRecipe.h"
-#import "LGToolStatus.h"
+#import "LGToolManager.h"
 
 #import "HTMLCategories.h"
 

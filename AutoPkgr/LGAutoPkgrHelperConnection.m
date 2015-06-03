@@ -19,6 +19,8 @@
 
 #import "LGAutoPkgrHelperConnection.h"
 #import "LGAutoPkgrProtocol.h"
+#import <AHLaunchCtl/AHLaunchJobSchedule.h>
+
 @interface LGAutoPkgrHelperConnection ()
 @property (atomic, strong, readwrite) NSXPCConnection *connection;
 @end
@@ -31,8 +33,13 @@
         self.connection = [[NSXPCConnection alloc] initWithMachServiceName:kLGAutoPkgrHelperToolName
                                                                    options:NSXPCConnectionPrivileged];
 
+
         self.connection.remoteObjectInterface = [NSXPCInterface
             interfaceWithProtocol:@protocol(HelperAgent)];
+
+        NSSet *acceptedClasses = [NSSet setWithObjects:[AHLaunchJobSchedule class], [NSNumber class], nil];
+        [self.connection.remoteObjectInterface setClasses:acceptedClasses forSelector:@selector(scheduleRun:user:program:authorization:reply:) argumentIndex:0 ofReply:NO];
+        
 
         self.connection.invalidationHandler = ^{
 #pragma clang diagnostic push

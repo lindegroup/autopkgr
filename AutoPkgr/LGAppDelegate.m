@@ -47,7 +47,7 @@
 }
 
 #pragma mark - NSApplication Delegate
-
+#pragma mark -- Launching --
 - (void)applicationWillFinishLaunching:(NSNotification *)notification
 {
     // Setup activation policy. By default set as menubar only.
@@ -57,18 +57,6 @@
     if (([[LGDefaults standardUserDefaults] applicationDisplayStyle] & kLGDisplayStyleShowDock)) {
         [NSApp setActivationPolicy:NSApplicationActivationPolicyRegular];
     }
-}
-
-- (BOOL)applicationShouldTerminateAfterLastWindowClosed:(NSApplication *)sender
-{
-    // If this set to run as dock only with no menu item, quit it after the last window is closed.
-    BOOL quitOnClose = YES;
-
-    if ([[LGDefaults standardUserDefaults] applicationDisplayStyle] & kLGDisplayStyleShowMenu) {
-        quitOnClose = NO;
-    }
-
-    return quitOnClose;
 }
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
@@ -111,30 +99,25 @@
     // Setup User Notification Delegate
     _notificationDelegate = [[LGUserNotifications alloc] init];
     [NSUserNotificationCenter defaultUserNotificationCenter].delegate = _notificationDelegate;
-
-    NSInteger timer;
-    [_autoCheckForUpdatesMenuItem setState:[LGAutoPkgSchedule updateAppsIsScheduled:&timer]];
-
-    NSString *menuItemTitle = [NSString stringWithFormat:@"Run AutoPkg Every %ld Hours", timer];
-
-    [_autoCheckForUpdatesMenuItem setTitle:menuItemTitle];
+    
     // calling stopProgress: here is an easy way to get the
     // menu reset to its default configuration
     [self stopProgress:nil];
-
+    
     [self showConfigurationWindow:self];
 }
 
-- (void)applicationWillTerminate:(NSNotification *)notification
+#pragma mark -- Termination --
+- (BOOL)applicationShouldTerminateAfterLastWindowClosed:(NSApplication *)sender
 {
-    // Stop observing...
-    [[NSDistributedNotificationCenter defaultCenter] removeObserver:self name:kLGNotificationProgressMessageUpdate object:nil];
-}
+    // If this set to run as dock only with no menu item, quit it after the last window is closed.
+    BOOL quitOnClose = YES;
 
-- (BOOL)applicationShouldHandleReopen:(NSApplication *)theApplication hasVisibleWindows:(BOOL)flag
-{
-    [self showConfigurationWindow:self];
-    return YES;
+    if ([[LGDefaults standardUserDefaults] applicationDisplayStyle] & kLGDisplayStyleShowMenu) {
+        quitOnClose = NO;
+    }
+
+    return quitOnClose;
 }
 
 - (NSApplicationTerminateReply)applicationShouldTerminate:(NSApplication *)sender
@@ -153,6 +136,19 @@
         return NSTerminateLater;
     }
     return NSTerminateNow;
+}
+
+- (void)applicationWillTerminate:(NSNotification *)notification
+{
+    // Stop observing...
+    [[NSDistributedNotificationCenter defaultCenter] removeObserver:self name:kLGNotificationProgressMessageUpdate object:nil];
+}
+
+#pragma mark -- Resigning --
+- (BOOL)applicationShouldHandleReopen:(NSApplication *)theApplication hasVisibleWindows:(BOOL)flag
+{
+    [self showConfigurationWindow:self];
+    return YES;
 }
 
 - (void)applicationWillResignActive:(NSNotification *)notification
@@ -218,8 +214,8 @@
 
     if (!_taskManager) {
         _taskManager = [[LGAutoPkgTaskManager alloc] init];
-        _taskManager.progressDelegate = self;
     }
+    _taskManager.progressDelegate = self;
 
     [_taskManager runRecipeList:recipeList
                      updateRepo:updateRepos
@@ -251,8 +247,9 @@
         }
     }
 
-    if (!self->_configurationWindowController) {
-        self->_configurationWindowController = [[LGConfigurationWindowController alloc] initWithWindowNibName:@"LGConfigurationWindowController"];
+    if (!_configurationWindowController) {
+        _configurationWindowController = [[LGConfigurationWindowController alloc] initWithProgressDelegate:self];
+        _configurationWindowController.scheduleView.scheduleMenuItem = _autoCheckForUpdatesMenuItem;
     }
 
     [NSApp activateIgnoringOtherApps:YES];
@@ -348,57 +345,6 @@
     if (!([[LGDefaults standardUserDefaults] applicationDisplayStyle] & kLGDisplayStyleShowDock)) {
         [[NSRunningApplication currentApplication] activateWithOptions:NSApplicationActivateAllWindows | NSApplicationActivateIgnoringOtherApps];
     }
-}
-
-- (IBAction)changeCheckForNewVersionsOfAppsAutomatically:(id)sender
-{
-    if ([sender isEqualTo:_autoCheckForUpdatesMenuItem]) {
-        _autoCheckForUpdatesMenuItem.state = !_autoCheckForUpdatesMenuItem.state;
-    }
-
-    NSInteger scheduledInterval;
-    BOOL currentlyScheduled = [LGAutoPkgSchedule updateAppsIsScheduled:&scheduledInterval];
-
-    BOOL start = currentlyScheduled;
-    if (![sender isEqualTo:_configurationWindowController.autoPkgRunInterval]) {
-        start = [sender state];
-    }
-
-    BOOL force = NO;
-    NSInteger interval = _configurationWindowController.autoPkgRunInterval.integerValue;
-
-    if ([sender isEqualTo:_configurationWindowController.autoPkgRunInterval]) {
-        if (!start || scheduledInterval == _configurationWindowController.autoPkgRunInterval.integerValue) {
-            return;
-        }
-        // We set force here so it will reload the schedule
-        // if it is currently enabled
-        force = YES;
-    }
-
-    NSLog(@"%@ autopkg run schedule.", currentlyScheduled ? @"Enabling" : @"Disabling");
-    [LGAutoPkgSchedule startAutoPkgSchedule:start interval:interval isForced:force reply:^(NSError *error) {
-        [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-            NSInteger timer;
-            BOOL currentlyScheduled = [LGAutoPkgSchedule updateAppsIsScheduled:&timer];
-            _autoCheckForUpdatesMenuItem.state = currentlyScheduled;
-            _configurationWindowController.checkForNewVersionsOfAppsAutomaticallyButton.state = currentlyScheduled;
-
-            if (error) {
-                    // If error, reset the state to modified status
-                    _configurationWindowController.autoPkgRunInterval.stringValue = [@(timer) stringValue];
-
-                    // If the authorization was canceled by user, don't present error.
-                    if (error.code != kLGErrorAuthChallenge) {
-                        [self stopProgress:error];
-                    }
-            } else {
-                // Otherwise update our defaults
-                NSString *menuItemTitle = [NSString stringWithFormat:@"Run AutoPkg Every %ld Hours", interval];
-                [_autoCheckForUpdatesMenuItem setTitle:menuItemTitle];
-            }
-        }];
-    }];
 }
 
 #pragma mark - Menu Delegate

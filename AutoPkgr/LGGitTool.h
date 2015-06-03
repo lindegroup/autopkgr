@@ -17,6 +17,13 @@
 
 #import "LGTool.h"
 
-@interface LGGitTool : LGTool
+typedef NS_ENUM(NSInteger, kLGGitErrorCodes) {
+    kLGGitErrorSuccess = 0,
+    kLGGitErrorNotInstalled = -9,
+};
 
+@interface LGGitTool : LGTool
++ (void)gitTaskWithArguments:(NSArray *)args
+                    repoPath:(NSString *)repoPath
+                       reply:(void (^)(NSString *, NSError *))reply;
 @end

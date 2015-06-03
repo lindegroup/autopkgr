@@ -19,40 +19,36 @@
 //
 
 #import "LGTableView.h"
-#import "LGRecipeOverrides.h"
-#import "LGPopularRepositories.h"
 
 @implementation LGTableView
 
 - (NSMenu *)menuForEvent:(NSEvent *)theEvent
 {
     NSPoint mousePoint = [self convertPoint:[theEvent locationInWindow] fromView:nil];
+    _contextualMenuMouseLocal = NSMakeRect(mousePoint.x, mousePoint.y, 1, 1);
+    
     NSInteger row = [self rowAtPoint:mousePoint];
-    NSString *classString = NSStringFromClass([[self dataSource] class]);
 
     if (theEvent.type == NSLeftMouseDown || theEvent.type == NSRightMouseDown) {
-        if ([classString isEqualToString:NSStringFromClass([LGRecipeController class])]) {
-            return [(LGRecipeController *)[self dataSource] contextualMenuForRecipeAtRow:row];
-        } else if ([classString isEqualToString:NSStringFromClass([LGPopularRepositories class])]) {
-            NSString *repo = [self repoFromRow:row];
-            return [LGPopularRepositories contextualMenuForRepo:repo];
+        if ([[self dataSource] respondsToSelector:@selector(contextualMenuForRow:)]) {
+            return [(id<LGTableViewDataSource>)[self dataSource] contextualMenuForRow:row];
         }
     }
     return nil;
 }
 
-- (NSString *)recipeFromRow:(NSInteger)row
-{
-    NSTableColumn *column = [[NSTableColumn alloc] initWithIdentifier:@"recipeName"];
-    NSString *recipe = [[self dataSource] tableView:self objectValueForTableColumn:column row:row];
-    return recipe;
+@end
+
+@implementation LGInstallTableView
+
+- (NSColor *)backgroundColor {
+    return [NSColor clearColor];
 }
 
-- (NSString *)repoFromRow:(NSInteger)row
-{
-    NSTableColumn *column = [[NSTableColumn alloc] initWithIdentifier:@"repoName"];
-    NSString *repo = [[self dataSource] tableView:self objectValueForTableColumn:column row:row];
-    return repo;
+- (void)scrollWheel:(NSEvent *)theEvent {
+    if (self.numberOfRows > 4) {
+        [super scrollWheel:theEvent];
+    }
 }
 
 @end

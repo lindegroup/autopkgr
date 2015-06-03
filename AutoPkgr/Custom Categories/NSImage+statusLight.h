@@ -22,6 +22,8 @@
 #import <Cocoa/Cocoa.h>
 
 @interface NSImage (statusLight)
++ (instancetype)LGNoImage;
++ (instancetype)LGCaution;
 
 + (instancetype)LGStatusAvailable;
 + (instancetype)LGStatusPartiallyAvailable;
@@ -32,5 +34,6 @@
 + (instancetype)LGStatusUpToDate;
 + (instancetype)LGStatusUpdateAvailable;
 + (instancetype)LGStatusUnknown;
+
 
 @end
