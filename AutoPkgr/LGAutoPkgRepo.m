@@ -42,7 +42,7 @@ static NSArray *_popularRepos;
 {
     if (self = [super init]) {
         _name = dictionary[@"name"];
-        _cloneURL = [NSURL URLWithString: dictionary[@"clone_url"]];
+        _cloneURL = [NSURL URLWithString:dictionary[@"clone_url"]];
         _defaultBranch = dictionary[@"default_branch"] ?: @"master";
 
         _homeURL = [NSURL URLWithString:dictionary[@"html_url"]];
@@ -63,7 +63,8 @@ static NSArray *_popularRepos;
 }
 
 /* initWithCloneURL is used for the fall back array */
-- (instancetype)initWithCloneURL:(NSString *)cloneURL {
+- (instancetype)initWithCloneURL:(NSString *)cloneURL
+{
     if (self = [super init]) {
         _name = [[cloneURL lastPathComponent] stringByDeletingPathExtension];
         _cloneURL = [NSURL URLWithString:cloneURL];
@@ -78,7 +79,8 @@ static NSArray *_popularRepos;
     return [[_activeRepos filteredArrayUsingPredicate:repoPredicate] count];
 }
 
-- (NSString *)path {
+- (NSString *)path
+{
     for (NSDictionary *dict in _activeRepos) {
         if ([dict[kLGAutoPkgRepoURLKey] isEqualToString:self.cloneURL.absoluteString]) {
             return dict[kLGAutoPkgRepoPathKey];
@@ -87,14 +89,16 @@ static NSArray *_popularRepos;
     return nil;
 }
 
-- (NSString *)defaultBranch {
+- (NSString *)defaultBranch
+{
     if (!_defaultBranch) {
         _defaultBranch = @"master";
     }
     return _defaultBranch;
 }
 
-- (NSURL *)homeURL {
+- (NSURL *)homeURL
+{
     if (!_homeURL) {
         if ([_cloneURL.host isEqualToString:@"github.com"]) {
             _homeURL = [NSURL URLWithString:_cloneURL.absoluteString.stringByDeletingPathExtension];
@@ -103,7 +107,8 @@ static NSArray *_popularRepos;
     return _homeURL;
 }
 
--(NSURL *)commitsURL {
+- (NSURL *)commitsURL
+{
     if (!_commitsURL) {
         if (self.homeURL) {
             _commitsURL = [_homeURL URLByAppendingPathComponent:@"commits"];
@@ -130,7 +135,8 @@ static NSArray *_popularRepos;
     }
 };
 
-- (void)install:(void (^)(NSError *))reply {
+- (void)install:(void (^)(NSError *))reply
+{
     [LGAutoPkgTask repoAdd:_cloneURL.absoluteString reply:^(NSError *error) {
         _activeRepos = [LGAutoPkgTask repoList];
         if (!error) {
@@ -140,7 +146,8 @@ static NSArray *_popularRepos;
     }];
 }
 
-- (void)remove:(void (^)(NSError *))reply {
+- (void)remove:(void (^)(NSError *))reply
+{
     [LGAutoPkgTask repoRemove:_cloneURL.absoluteString reply:^(NSError *error) {
         _activeRepos = [LGAutoPkgTask repoList];
         if (!error) {
@@ -152,8 +159,7 @@ static NSArray *_popularRepos;
 
 - (void)checkRepoStatus:(id)sender
 {
-
-    if ( sender || !_checkStatusTimeStamp || [_checkStatusTimeStamp timeIntervalSinceNow] <= 0) {
+    if (sender || !_checkStatusTimeStamp || [_checkStatusTimeStamp timeIntervalSinceNow] <= 0) {
 
         // So we don't constantly hit the network at the exact same time, space it out the git calls.
         NSTimeInterval interval = arc4random_uniform(600) + 300;
@@ -176,7 +182,9 @@ static NSArray *_popularRepos;
                     }
 
                     NSString *remoteSHA1 = remStdOut.split_bySpace.firstObject;
-                    if ([localSHA1 isEqualToString:remoteSHA1]) {
+                    if (!remoteSHA1) {
+                        _checkStatusTimeStamp = [NSDate dateWithTimeIntervalSinceNow:10];
+                    } else if ([localSHA1 isEqualToString:remoteSHA1]) {
                         [self statusDidChange:kLGAutoPkgRepoUpToDate];
                     } else {
                         [self statusDidChange:kLGAutoPkgRepoUpdateAvailable];
@@ -189,6 +197,8 @@ static NSArray *_popularRepos;
         } else {
             [self statusDidChange:kLGAutoPkgRepoNotInstalled];
         }
+    } else {
+        [self statusDidChange:_status];
     }
 }
 
@@ -207,14 +217,13 @@ static NSArray *_popularRepos;
     }
 }
 
-
-
 #pragma mark - Private
-- (NSError *)errorWithMessage:(NSString *)message code:(NSInteger)code {
+- (NSError *)errorWithMessage:(NSString *)message code:(NSInteger)code
+{
     return [NSError errorWithDomain:kLGApplicationName
                                code:code
-                           userInfo:@{NSLocalizedDescriptionKey:[@"There was a error with "stringByAppendingString:self.name],
-                                      NSLocalizedRecoverySuggestionErrorKey:message}];
+                           userInfo:@{ NSLocalizedDescriptionKey : [@"There was a error with " stringByAppendingString:self.name],
+                                       NSLocalizedRecoverySuggestionErrorKey : message }];
 }
 
 #pragma mark - Class Methods
@@ -252,7 +261,7 @@ static NSArray *_popularRepos;
     } else {
         NSURL *url = [NSURL URLWithString:kLGAutoPkgRepositoriesJSONURL];
         NSURLRequest *request = [[NSURLRequest alloc] initWithURL:url cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:5.0];
-        
+
         AFHTTPRequestOperation *op = [[AFHTTPRequestOperation alloc] initWithRequest:request];
         op.responseSerializer = [AFJSONResponseSerializer serializer];
 

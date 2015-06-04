@@ -64,10 +64,13 @@
 {
     if (!_updateRepoInternally) {
         [LGAutoPkgRepo commonRepos:^(NSArray *repos) {
-            DevLog(@"Reloading...");
-
-            NSArray *sortDescriptors = _popularRepositoriesTableView.sortDescriptors ?:
-            @[[NSSortDescriptor sortDescriptorWithKey:NSStringFromSelector(@selector(stars)) ascending:NO]];
+            NSArray *sortDescriptors = nil;
+            if (_popularRepositoriesTableView.sortDescriptors.count) {
+                sortDescriptors = _popularRepositoriesTableView.sortDescriptors;
+            } else {
+                sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:NSStringFromSelector(@selector(stars))
+                                                                  ascending:NO]];
+            }
 
             _repos = [repos sortedArrayUsingDescriptors:sortDescriptors];
 
@@ -99,9 +102,12 @@
         if (repo.homeURL && (repo.stars > 0)) {
             // u2650 is the star symbol.
             statusCell.textField.stringValue = [@"\u2605 " stringByAppendingString:@(repo.stars).stringValue];
+        } else {
+            statusCell.textField.stringValue = @"";
         }
     } else if ([[tableColumn identifier] isEqualToString:@"status"]) {
         statusCell.imageView.hidden = YES;
+
         repo.statusChangeBlock = ^(LGAutoPkgRepoStatus status) {
             [statusCell.progressIndicator stopAnimation:self];
             switch (status) {
@@ -125,10 +131,9 @@
         if (repo.isInstalled) {
             [statusCell.progressIndicator startAnimation:self];
             statusCell.imageView.image = [NSImage LGStatusUpdateAvailable];
-
-            // Calling checkRepoStatus will execute the repo.statusChangeBlock.
-            [repo checkRepoStatus:nil];
         }
+        // Calling checkRepoStatus will execute the repo.statusChangeBlock.
+        [repo checkRepoStatus:nil];
     }
     return statusCell;
 }
