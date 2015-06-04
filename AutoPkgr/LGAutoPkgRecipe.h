@@ -64,6 +64,11 @@
 @property (nonatomic, assign, readonly) BOOL hasCheckPhase;
 @property (nonatomic, assign, readonly) BOOL buildsPackage;
 
+/* Bool value indicating an error with the recipe, such as it's missing
+ * it's parent recipe, (or someday a required processor ) 
+ */
+@property (nonatomic, assign, readonly) BOOL recipeConfigError;
+
 /**
  *  Get a list of all recipes and overrides.
  *  @note this will filter out parent recipes of overrides with the same name.

@@ -129,6 +129,10 @@ static NSMutableDictionary *_identifierURLStore = nil;
     return NO;
 }
 
+- (BOOL)recipeConfigError {
+    return self.isMissingParent;
+}
+
 - (NSDictionary *)Input
 {
     return _recipePlist[NSStringFromSelector(_cmd)];

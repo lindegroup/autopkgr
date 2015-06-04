@@ -10,6 +10,7 @@ All notable changes to this project will be documented in this file. This projec
 - The ability to right-click on a recipe in the list and choose Get Info to see various details about the recipe.
 - The repos table now displays the number of stars each repo has on GitHub.
 - The repos table now has a status indicator.
+- The recipe table now has a status indicator showing if a recipe is missing a parent recipe.
 - The install tab now displays your currently installed version of the Munki tools.
 - Easier uninstallation of components like AutoPkg and JSSImporter.
 - More flexible options for scheduling AutoPkg to run. New daily and weekly options! (#361)
