@@ -33,7 +33,7 @@ static NSString *const kLGMunkiimportDomain = @"com.googlecode.munki.munkiimport
 #pragma mark - Class overrides
 + (NSString *)name
 {
-    return @"Munki";
+    return @"Munki tools";
 }
 
 + (NSString *)gitHubURL

@@ -299,7 +299,7 @@
     __block LGToolInfo *info3;
 
     LGAutoPkgTool *tool = [[LGAutoPkgTool alloc] init];
-    [tool addInfoUpdateHandler:^(LGToolInfo *info) {
+    [tool setInfoUpdateHandler:^(LGToolInfo *info) {
         info1 = info;
         NSLog(@"mainQueue info: %@", info);
         XCTAssertEqualObjects([NSOperationQueue currentQueue], [NSOperationQueue mainQueue]);
@@ -308,7 +308,7 @@
 
     NSOperationQueue *bg1 = [NSOperationQueue new];
     [bg1 addOperationWithBlock:^{
-        [tool addInfoUpdateHandler:^(LGToolInfo *info) {
+        [tool getInfo:^(LGToolInfo *info) {
             info2 = info;
 
             NSLog(@"bg1 info: %@", info);
@@ -320,7 +320,7 @@
 
     NSOperationQueue *bg2 = [NSOperationQueue new];
     [ bg2 addOperationWithBlock:^{
-        [tool addInfoUpdateHandler:^(LGToolInfo *info) {
+        [tool getInfo:^(LGToolInfo *info) {
             info3 = info;
 
             NSLog(@"bg2 info: %@", info);
@@ -332,11 +332,6 @@
 
     [tool refresh];
 
-    /* Check if everything is deallocate correctly too! */
-    LGAutoPkgTool *t2 = [LGAutoPkgTool new];
-    [t2 addInfoUpdateHandler:^(LGToolInfo *info) {}];
-    [t2 addInfoUpdateHandler:^(LGToolInfo *info) {}];
-    t2 = nil;
 
     [self waitForExpectationsWithTimeout:300 handler:^(NSError *error) {
         XCTAssertEqualObjects(info1, info2, @"Should be equal");

@@ -79,7 +79,7 @@ NSPredicate *jdsFilterPredicate()
     BOOL isInstalled = [LGJSSImporterTool isInstalled];
 
     __weak typeof(self) __weak_self = self;
-    [_jssImporterTool addInfoUpdateHandler:^(LGToolInfo *info) {
+    [_jssImporterTool setInfoUpdateHandler:^(LGToolInfo *info) {
         // Update the button.
 
         if (info.status == kLGToolNotInstalled){
@@ -93,15 +93,10 @@ NSPredicate *jdsFilterPredicate()
         }
     }];
 
-
+    _jssImporterTool.progressDelegate = _progressDelegate;
+    
     if (!isInstalled) {
         [_jssImporterTool refresh];
-    } else {
-        // have the tool take over controll of the "verify / connect" button on the F&I tab.
-        _jssReloadServerBT.title = @"Install";
-        _jssReloadServerBT.target = _jssImporterTool;
-        _jssReloadServerBT.action = @selector(install:);
-
     }
 }
 

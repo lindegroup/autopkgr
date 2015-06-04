@@ -17,6 +17,7 @@
 
 #import <Foundation/Foundation.h>
 
+#import "LGTool.h"
 #import "LGAutoPkgTool.h"
 #import "LGGitTool.h"
 #import "LGJSSImporterTool.h"
@@ -29,6 +30,11 @@
  *  Get an array of all available tools.
  */
 @interface LGToolManager : NSObject
+
+/**
+ *  A block executed when when any tool's status changes.
+ */
+@property (copy) void (^installStatusDidChangeHandler)(LGTool *tool, NSInteger index);
 
 /**
  *  Get an array of all the associated tools
@@ -52,6 +58,14 @@
  *  @return Array of installed subclassed LGTools
  */
 @property (strong, readonly) NSArray *requiredTools;
+
+/**
+ *  Get an array of all installed or requried associated tools;
+ *  @note if the tools +isInstalled method retruns NO, the tool will not be added to the array.
+ *
+ *  @return Array of installed subclassed LGTools
+ */
+@property (strong, readonly) NSArray *installedOrRequiredTools;
 
 /**
  *  Get an array of all installed associated tools;
@@ -83,7 +97,6 @@
  *  @param window Modal window used for the alert. Can be nil.
  */
 + (void)displayRequirementsAlertOnWindow:(NSWindow *)window;
-
 
 @end
 

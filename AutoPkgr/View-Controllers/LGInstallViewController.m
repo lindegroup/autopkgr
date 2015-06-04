@@ -33,7 +33,6 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do view setup here.
-
 }
 
 - (void)awakeFromNib {
@@ -85,7 +84,6 @@
     }
 }
 
-
 - (IBAction)launchAtLogin:(NSButton *)sender
 {
     if (![LGAutoPkgSchedule launchAtLogin:sender.state]) {
@@ -95,7 +93,12 @@
 
 #pragma mark - Table View Delegate
 - (NSInteger)numberOfRowsInTableView:(NSTableView *)tableView {
-    return _toolManager.installedTools.count;
+    if (!_toolManager.installStatusDidChangeHandler) {
+        _toolManager.installStatusDidChangeHandler = ^(LGTool *tool, NSInteger index){
+            [tableView reloadData];
+        };
+    }
+    return _toolManager.installedOrRequiredTools.count;
 }
 
 - (NSView *)tableView:(NSTableView *)tableView viewForTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row {
@@ -104,11 +107,13 @@
     if ([tableColumn.identifier isEqualToString:@"statusCell"]) {
         statusCell = [tableView makeViewWithIdentifier:tableColumn.identifier owner:self];
 
-        LGTool *tool = _toolManager.installedTools[row];
+        LGTool *tool = _toolManager.installedOrRequiredTools[row];
         tool.progressDelegate = self.progressDelegate;
+
         statusCell.installButton.target = tool;
         statusCell.installButton.enabled = NO;
         statusCell.installButton.title = [@"Install " stringByAppendingString:[[tool class] name]];
+
         statusCell.textField.stringValue = [[[tool class] name] stringByAppendingString:@": checking status"];
 
         statusCell.imageView.hidden = YES;
@@ -116,15 +121,17 @@
 
         [tool getInfo:^(LGToolInfo *info) {
             [statusCell.progressIndicator stopAnimation:nil];
-
             statusCell.imageView.hidden = NO;
             statusCell.imageView.image = info.statusImage;
             statusCell.textField.stringValue = info.statusString;
 
             statusCell.installButton.title = info.installButtonTitle;
+
             statusCell.installButton.action = info.targetAction;
             statusCell.installButton.enabled = info.installButtonEnabled;
         }];
+
+        [tool refresh];
     }
     return statusCell;
 }

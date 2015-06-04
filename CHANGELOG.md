@@ -22,6 +22,7 @@ All notable changes to this project will be documented in this file. This projec
 
 ### Fixed
 - Fixed a bug that could cause email username and password to not get updated immediately.
+- Fixed a bug that could cause the `JSS_VERIFY_SSL` key to be incorrectly set.
 
 
 ### Security

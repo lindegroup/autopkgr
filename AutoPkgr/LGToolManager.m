@@ -35,8 +35,8 @@ static NSArray *__requiredToolsClasses;
         __toolClasses = @[
                           [LGAutoPkgTool class],
                           [LGGitTool class],
-                          [LGJSSImporterTool class],
                           [LGMunkiTool class],
+                          [LGJSSImporterTool class],
                           ];
 
         __requiredToolsClasses = @[
@@ -54,25 +54,47 @@ static NSArray *__requiredToolsClasses;
     });
 }
 
-- (NSArray *)allTools
-{
-    if (!_allTools) {
+- (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:kLGNotificationToolStatusDidChange object:nil];
+}
+
+- (instancetype)init {
+    if (self = [super init]) {
+
+        NSNotificationCenter *ndc = [NSNotificationCenter defaultCenter];
         NSMutableArray *initedTools = [NSMutableArray arrayWithCapacity:__toolClasses.count];
 
         for (Class toolClass in __toolClasses) {
             id tool = nil;
             if ((tool = [[toolClass alloc] init])) {
                 [initedTools addObject:tool];
+
+                // Add a notification for changes to the tool.
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [ndc addObserver:self
+                            selector:@selector(installStatusDidChange:)
+                                name:kLGNotificationToolStatusDidChange
+                              object:tool];
+                });
+
             }
         }
         _allTools = [initedTools copy];
+
     }
-    return _allTools;
+    return self;
+}
+
+- (void)installStatusDidChange:(NSNotification *)aNotification {
+    _installedTools = nil;
+
+    _installStatusDidChangeHandler(aNotification.object, [self.installedTools indexOfObject:aNotification.object]);
 }
 
 - (NSArray *)installedTools
 {
     if (!_installedTools) {
+
         NSMutableArray *installedTools = nil;
         for (LGTool *tool in self.allTools) {
             if (installedTools || (installedTools = [NSMutableArray new])){
@@ -84,6 +106,13 @@ static NSArray *__requiredToolsClasses;
         _installedTools = [installedTools copy];
     }
     return _installedTools;
+}
+
+- (NSArray *)installedOrRequiredTools
+{
+    NSMutableOrderedSet *set = [NSMutableOrderedSet orderedSetWithArray:self.requiredTools];
+    [set addObjectsFromArray:self.installedTools];
+    return set.array;
 }
 
 - (NSArray *)optionalTools

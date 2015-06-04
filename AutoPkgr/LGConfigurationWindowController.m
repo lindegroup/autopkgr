@@ -47,6 +47,7 @@
 
         // The toolManager is required for the following views.
         _toolManager = [[LGToolManager alloc] init];
+
         _installView.toolManager = _toolManager;
         _toolsView.toolManager = _toolManager;
     }
@@ -93,8 +94,8 @@
         /* The Cancel button is part of the progress panel
          * but the _scheduleView should controll it. */
         _scheduleView.cancelButton = _cancelAutoPkgRunButton;
-        _toolsView.modalWindow = self.window;
 
+        _toolsView.modalWindow = self.window;
         _recipeRepoView.modalWindow = self.window;
     }
 }
@@ -102,7 +103,7 @@
 #pragma mark - Tab View Delegate
 - (void)tabView:(NSTabView *)tabView didSelectTabViewItem:(NSTabViewItem *)tabViewItem
 {
-    if (![LGToolManager requiredItemsInstalled]) {
+    if (![tabViewItem.view isEqual:_installView.view] && ![LGToolManager requiredItemsInstalled]) {
         // Reset the tab view back to the install Tab.
         [tabView selectFirstTabViewItem:self];
         [LGToolManager displayRequirementsAlertOnWindow:self.window];

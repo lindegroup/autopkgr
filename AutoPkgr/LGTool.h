@@ -21,6 +21,8 @@
 #import <Foundation/Foundation.h>
 #import "LGProgressDelegate.h"
 
+extern NSString *const kLGNotificationToolStatusDidChange;
+
 typedef NS_ENUM(NSInteger, LGToolTypeFlags) {
     /**
      *  Unknown Tool Type.
@@ -126,19 +128,9 @@ typedef NS_ENUM(OSStatus, LGToolInstallStatus) {
 // LGToolInfo object with local and remote status information and useful UI mappings.
 @property (copy, nonatomic, readonly) LGToolInfo *info;
 
-/**
- *  Asynchronously get information about the tool.
- *
- *  @param complete block invoked once all information is retrieved about the tool including remote version information.
- *  @note once this is invoked any call to `refresh` will execute the completion block with updated information.
- */
-- (void)getInfo:(void (^)(LGToolInfo *toolInfo))complete;
+@property (copy) void (^infoUpdateHandler)(LGToolInfo *info);
 
-/**
- *  Add an info reply block. This will get send messages when `-refresh` is called.
- *  @note this is a passive block, and if you want to immediately get information for a tool use the @code - (void)getInfo:(void (^)(LGToolInfo *toolInfo))complete; @endcode method. You do not need to set both.
- */
-- (void)addInfoUpdateHandler:(void (^)(LGToolInfo *info))infoUpdateHandler;
+- (void)getInfo:(void(^)(LGToolInfo *info))reply;
 
 // update the tool.info property and if getInfo has been called execute the completion block.
 - (void)refresh;

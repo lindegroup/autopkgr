@@ -45,6 +45,8 @@ static dispatch_queue_t autopkgr_tool_synchronizer_queue()
     return autopkgr_tool_synchronizer_queue;
 }
 
+NSString *const kLGNotificationToolStatusDidChange = @"com.lindegroup.autopkgr.notification.toolstatus.did.change";
+
 @interface LGTool ()
 @property (copy, nonatomic, readwrite) LGToolInfo *info;
 @end
@@ -221,49 +223,31 @@ void subclassMustConformToProtocol(id className)
 - (void)customUninstallActions {}
 
 #pragma mark - Super implementation
-- (void)addInfoUpdateHandler:(void (^)(LGToolInfo *info))infoUpdateHandler {
-    NSOperationQueue *currentQueue = [NSOperationQueue currentQueue];
-    if (infoUpdateHandler) {
-        dispatch_async(autopkgr_tool_synchronizer_queue(), ^{
-            if (!_infoUpdateBlocksDict) {
-                _infoUpdateBlocksDict = [[NSMutableDictionary alloc] init];
-            }
+- (void)getInfo:(void (^)(LGToolInfo *))reply {
+    dispatch_async(autopkgr_tool_synchronizer_queue(), ^{
+        if (reply || _infoUpdateHandler) {
+            LGGitHubJSONLoader *loader = [[LGGitHubJSONLoader alloc] initWithGitHubURL:[[self class] gitHubURL]];
 
-            /* In order to always send the info update to the quque it was requested on
-             * Use that as the "object" for block which is the "key". 
-             * See -refresh for the other side */
-            if ([_infoUpdateBlocksDict objectForKey:infoUpdateHandler] == nil) {
-                [_infoUpdateBlocksDict setObject:currentQueue forKey:infoUpdateHandler];
-            }
-        });
-    }
-}
+            [loader getReleaseInfo:^(LGGitHubReleaseInfo *gitHubInfo, NSError *error) {
+                self.gitHubInfo = gitHubInfo;
+                _info = [[LGToolInfo alloc] initWithTool:self];
 
-- (void)getInfo:(void (^)(LGToolInfo *))complete;
-{
-    [self addInfoUpdateHandler:complete];
-    [self refresh];
+                if (_infoUpdateHandler) {
+                    _infoUpdateHandler(_info);
+                }
+                if (reply) {
+                    reply(_info);
+                }
+            }];
+        } else {
+            _info = [[LGToolInfo alloc] initWithTool:self];
+        }
+    });
 }
 
 - (void)refresh;
 {
-    dispatch_async(autopkgr_tool_synchronizer_queue(), ^{
-    if (_infoUpdateBlocksDict.count) {
-        LGGitHubJSONLoader *loader = [[LGGitHubJSONLoader alloc] initWithGitHubURL:[[self class] gitHubURL]];
-
-        [loader getReleaseInfo:^(LGGitHubReleaseInfo *gitHubInfo, NSError *error) {
-            self.gitHubInfo = gitHubInfo;
-            _info = [[LGToolInfo alloc] initWithTool:self];
-                [_infoUpdateBlocksDict enumerateKeysAndObjectsUsingBlock:^(void (^infoUpdate)(LGToolInfo *), NSOperationQueue *queue, BOOL *stop) {
-                    [queue addOperationWithBlock:^{
-                        infoUpdate(_info);
-                    }];
-                }];
-        }];
-    } else {
-        _info = [[LGToolInfo alloc] initWithTool:self];
-    }
-    });
+    [self getInfo:nil];
 }
 
 - (LGToolInfo *)info
@@ -338,7 +322,7 @@ void subclassMustConformToProtocol(id className)
 
     LGInstaller *installer = [[LGInstaller alloc] init];
     installer.downloadURL = self.downloadURL;
-    installer.progressDelegate = _progressDelegate;
+    installer.progressDelegate = self.progressDelegate;
 
     [installer runInstaller:name reply:^(NSError *error) {
         if (!error && (typeFlags & kLGToolTypeAutoPkgSharedProcessor)) {
@@ -451,6 +435,8 @@ void subclassMustConformToProtocol(id className)
     if ([sender respondsToSelector:@selector(action)]) {
         [sender setAction:isInstalled ? @selector(uninstall:) : @selector(install:)];
     }
+
+    [[NSNotificationCenter defaultCenter] postNotificationName:kLGNotificationToolStatusDidChange object:self];
 
     [self refresh];
 }
