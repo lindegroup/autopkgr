@@ -67,7 +67,7 @@ void subclassMustImplement(id className, SEL _cmd)
 void subclassMustConformToProtocol(id className)
 {
     NSString *reason = [NSString stringWithFormat:@"[ EXCEPTION ] %s must conform to at least one LGTool protocol",
-                                                  object_getClassName(className)];
+                        object_getClassName(className)];
     @throw [NSException exceptionWithName:@"SubclassMustConform"
                                    reason:reason
                                  userInfo:nil];
@@ -91,7 +91,8 @@ void subclassMustConformToProtocol(id className)
 
         // The subclasses must conform to at least one of the protocols
         if (([self conformsToProtocol:@protocol(LGToolSharedProcessor)] ||
-             [self conformsToProtocol:@protocol(LGToolPackageInstaller)]) == NO) {
+             [self conformsToProtocol:@protocol(LGToolPackageInstaller)]) == NO)
+        {
             subclassMustConformToProtocol(self);
         }
     }
@@ -222,14 +223,11 @@ void subclassMustConformToProtocol(id className)
 - (void)customUninstallActions {}
 
 #pragma mark - Super implementation
-- (void)getInfo:(void (^)(LGToolInfo *))reply
-{
-    dispatch_async(autopkgr_tool_synchronizer_queue(), ^{
-        if (reply || _infoUpdateHandler) {
-            LGGitHubJSONLoader *loader = [[LGGitHubJSONLoader alloc] initWithGitHubURL:[[self class] gitHubURL]];
+- (void)getInfo:(void (^)(LGToolInfo *))reply {
 
-            [loader getReleaseInfo:^(LGGitHubReleaseInfo *gitHubInfo, NSError *error) {
-                self.gitHubInfo = gitHubInfo;
+    void (^updateInfoHandlers)() = ^(){
+        dispatch_async(autopkgr_tool_synchronizer_queue(), ^{
+            if (reply || _infoUpdateHandler) {
                 _info = [[LGToolInfo alloc] initWithTool:self];
 
                 if (_infoUpdateHandler) {
@@ -238,11 +236,25 @@ void subclassMustConformToProtocol(id className)
                 if (reply) {
                     reply(_info);
                 }
-            }];
-        } else {
-            _info = [[LGToolInfo alloc] initWithTool:self];
-        }
-    });
+            } else {
+                _info = [[LGToolInfo alloc] initWithTool:self];
+            }
+        });
+    };
+
+    if (self.gitHubInfo.isExpired) {
+        DevLog(@"Getting remote GitHub info for %@", NSStringFromClass([self class]));
+
+        LGGitHubJSONLoader *loader = [[LGGitHubJSONLoader alloc] initWithGitHubURL:[[self class] gitHubURL]];
+
+        [loader getReleaseInfo:^(LGGitHubReleaseInfo *gitHubInfo, NSError *error) {
+            self.gitHubInfo = gitHubInfo;
+            updateInfoHandlers();
+        }];
+    } else {
+        DevLog(@"Using cached GitHub info for %@", NSStringFromClass([self class]));
+        updateInfoHandlers();
+    }
 }
 
 - (void)refresh;
@@ -600,20 +612,18 @@ void subclassMustConformToProtocol(id className)
     return [title stringByAppendingString:_name];
 }
 
-- (BOOL)installButtonEnabled
-{
+- (BOOL)installButtonEnabled {
     switch (self.status) {
-    case kLGToolNotInstalled: {
-    }
-    case kLGToolUpdateAvailable: {
-        return YES;
-    }
-    case kLGToolUpToDate: {
-        return (_typeFlags & kLGToolTypeUninstallableTool);
-    }
-    default: {
-        break;
-    }
+        case kLGToolNotInstalled: {}
+        case kLGToolUpdateAvailable: {
+            return YES;
+        }
+        case kLGToolUpToDate: {
+            return (_typeFlags & kLGToolTypeUninstallableTool);
+        }
+        default: {
+            break;
+        }
     }
 }
 

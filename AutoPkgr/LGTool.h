@@ -117,13 +117,13 @@ typedef NS_ENUM(OSStatus, LGToolInstallStatus) {
 // If the tool is installed.
 + (BOOL)isInstalled;
 
-#pragma mark - These class methods are the responsibility of the subclass
-/**
- *  Progress Delegate used to send update to the UI during install / uninstall
- */
+
 @property (weak) id<LGProgressDelegate> progressDelegate;
 
 #pragma mark - Implemented in the Abstract class
+@property (copy, nonatomic, readonly) NSString *name;
+@property (assign, nonatomic, readonly) BOOL *isInstalled;
+
 // LGToolInfo object with local and remote status information and useful UI mappings.
 @property (copy, nonatomic, readonly) LGToolInfo *info;
 
@@ -131,7 +131,7 @@ typedef NS_ENUM(OSStatus, LGToolInstallStatus) {
 
 - (void)getInfo:(void (^)(LGToolInfo *info))reply;
 
-// update the tool.info property and if getInfo has been called execute the completion block.
+// update the tool.info property and if infoUpdateHandler has been set execute the completion block.
 - (void)refresh;
 
 /**

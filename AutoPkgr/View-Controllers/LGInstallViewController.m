@@ -135,8 +135,6 @@
             statusCell.installButton.action = info.targetAction;
             statusCell.installButton.enabled = info.installButtonEnabled;
         }];
-
-        [tool refresh];
     }
     return statusCell;
 }

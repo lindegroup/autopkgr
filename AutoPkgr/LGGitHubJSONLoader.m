@@ -25,7 +25,7 @@
 
 #import <AFNetworking/AFNetworking.h>
 
-@interface LGGitHubReleaseInfo()
+@interface LGGitHubReleaseInfo ()
 @property (copy, nonatomic) NSString *repoURL;
 @property (copy, nonatomic, readwrite) NSArray *jsonObject;
 @property (copy, nonatomic, readwrite) NSDictionary *latestReleaseDictionary;
@@ -36,26 +36,52 @@
 @property (copy, nonatomic, readwrite) NSArray *latestReleaseDownloads;
 @end
 
-@implementation LGGitHubReleaseInfo
+@implementation LGGitHubReleaseInfo {
+    NSDate *_infoRetrievedDate;
+}
 
-- (instancetype)initWithURL:(NSString *)url {
+/**
+ *  Private init method.
+ *
+ *  @return self;
+ */
+- (instancetype)init_
+{
     if (self = [super init]) {
+        _lifespan = 600;
+    }
+    return self;
+}
+
+- (instancetype)initWithURL:(NSString *)url
+{
+    if (self = [self init_]) {
         _repoURL = url;
     }
     return self;
 }
 
-- (instancetype)initWithJSON:(NSArray *)json {
-    if (self = [super init]) {
+- (instancetype)initWithJSON:(NSArray *)json
+{
+    if (self = [self init_]) {
         _jsonObject = json;
+        _infoRetrievedDate = [NSDate date];
     }
     return self;
 }
 
-- (NSArray *)jsonObject {
+- (BOOL)isExpired
+{
+    BOOL isExpired = (_infoRetrievedDate == nil) || (_lifespan <= -(_infoRetrievedDate.timeIntervalSinceNow));
+    return isExpired;
+}
+
+- (NSArray *)jsonObject
+{
     if (!_jsonObject && _repoURL) {
         // this is a backup synchronous method to pull the information.
         _jsonObject = [LGGitHubJSONLoader getJSONFromURL:_repoURL];
+        _infoRetrievedDate = [NSDate date];
     }
     return _jsonObject;
 }
@@ -71,7 +97,7 @@
 - (NSString *)latestVersion
 {
     if (!_latestVersion) {
-         _latestVersion = [self.latestReleaseDictionary[@"tag_name"] stringByReplacingOccurrencesOfString:@"v" withString:@""];
+        _latestVersion = [self.latestReleaseDictionary[@"tag_name"] stringByReplacingOccurrencesOfString:@"v" withString:@""];
     }
     return _latestVersion;
 }
@@ -94,7 +120,7 @@
 
 - (NSArray *)latestReleaseDownloads
 {
-    if(! _latestReleaseDownloads){
+    if (!_latestReleaseDownloads) {
         NSMutableArray *array = nil;
         for (NSDictionary *asset in self.assets)
             if (asset[@"browser_download_url"]) {
@@ -115,14 +141,16 @@
     NSString *_gitHubURL;
 }
 
--(instancetype)initWithGitHubURL:(NSString *)gitHubURL {
+- (instancetype)initWithGitHubURL:(NSString *)gitHubURL
+{
     if (self = [super init]) {
         _gitHubURL = gitHubURL;
     }
     return self;
 }
 
-- (void)getReleaseInfo:(void (^)(LGGitHubReleaseInfo *, NSError *error))complete {
+- (void)getReleaseInfo:(void (^)(LGGitHubReleaseInfo *, NSError *error))complete
+{
 
     NSURL *url = [NSURL URLWithString:_gitHubURL];
 
@@ -133,16 +161,19 @@
     AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:req];
     operation.responseSerializer = [AFJSONResponseSerializer serializer];
 
-    [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, NSArray * responseObject) {
+    [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, NSArray *responseObject) {
         LGGitHubReleaseInfo *info = [[LGGitHubReleaseInfo alloc] initWithJSON:responseObject];
         complete(info, nil);
+        DevLog(@"Remaining calls/hour to GitHub API: %@/%@ (used Cache = %@)",
+               operation.response.allHeaderFields[@"X-RateLimit-Remaining"],
+               operation.response.allHeaderFields[@"X-RateLimit-Limit"],
+               [operation.response.allHeaderFields[@"Status"] isEqualToString:@"304 Not Modified"] ? @"YES": @"NO");
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         complete(nil, error);
     }];
 
     [operation start];
 }
-
 
 + (NSArray *)getJSONFromURL:(NSString *)aUrl
 {
@@ -193,7 +224,7 @@
 
     // Get the JSON data
     NSArray *reposArray = [self getJSONFromURL:kLGAutoPkgRepositoriesJSONURL];
-    
+
     NSMutableArray *mutableArray = [[NSMutableArray alloc] init];
 
     for (NSDictionary *dct in reposArray) {
