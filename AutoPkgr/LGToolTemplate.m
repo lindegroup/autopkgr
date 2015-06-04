@@ -19,7 +19,7 @@
 #import "LGTool+Protocols.h"
 
 // Define the protocols you intend to conform to...
-@interface LGToolTemplate ()<LGToolPackageInstaller, LGToolSharedProcessor>
+@interface LGToolTemplate () <LGToolPackageInstaller, LGToolSharedProcessor>
 @end
 
 #pragma mark - Tool overrides
@@ -35,13 +35,13 @@
     return @"ToolName";
 }
 
-
 + (NSString *)gitHubURL
 {
     return @"https://api.github.com/repos/reponame/releases";
 }
 
-+ (NSString *)defaultRepository {
++ (NSString *)defaultRepository
+{
     return @"https://github.com/yourusername/project.git";
 }
 
@@ -50,7 +50,7 @@
     // If there's not a binary don't include it here!!
     return @[ [self binary],
               @"/path/to/another/file",
-              ];
+    ];
 }
 
 + (NSString *)binary
@@ -60,7 +60,7 @@
 
 + (NSArray *)packageIdentifiers
 {
-    return @[@"com.github.package.identifier"];
+    return @[ @"com.github.package.identifier" ];
 }
 
 #pragma mark - Instance overrides
@@ -76,11 +76,11 @@
 }
 @end
 
-
 #pragma mark - Defaults
 @implementation LGDefaults (exampleTool)
 
-- (void)setTheKey:(NSString *)theKey{
+- (void)setTheKey:(NSString *)theKey
+{
     [self setAutoPkgDomainObject:theKey
                           forKey:NSStringFromSelector(@selector(theKey))];
 }
@@ -89,6 +89,5 @@
 {
     return [self autoPkgDomainObject:NSStringFromSelector(@selector(theKey))];
 }
-
 
 @end

@@ -26,7 +26,7 @@
 {
     NSPoint mousePoint = [self convertPoint:[theEvent locationInWindow] fromView:nil];
     _contextualMenuMouseLocal = NSMakeRect(mousePoint.x, mousePoint.y, 1, 1);
-    
+
     NSInteger row = [self rowAtPoint:mousePoint];
 
     if (theEvent.type == NSLeftMouseDown || theEvent.type == NSRightMouseDown) {
@@ -41,11 +41,13 @@
 
 @implementation LGInstallTableView
 
-- (NSColor *)backgroundColor {
+- (NSColor *)backgroundColor
+{
     return [NSColor clearColor];
 }
 
-- (void)scrollWheel:(NSEvent *)theEvent {
+- (void)scrollWheel:(NSEvent *)theEvent
+{
     if (self.numberOfRows > 4) {
         [super scrollWheel:theEvent];
     }

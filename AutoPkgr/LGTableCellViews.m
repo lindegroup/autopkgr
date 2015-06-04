@@ -11,9 +11,10 @@
 #pragma mark - Recipe Cell View
 @implementation LGRecipeStatusCellView
 
-- (void)drawRect:(NSRect)dirtyRect {
+- (void)drawRect:(NSRect)dirtyRect
+{
     [super drawRect:dirtyRect];
-    
+
     // Drawing code here.
 }
 
@@ -22,7 +23,8 @@
 #pragma mark - Repo Cell View
 @implementation LGRepoStatusCellView
 
-- (void)drawRect:(NSRect)dirtyRect {
+- (void)drawRect:(NSRect)dirtyRect
+{
     [super drawRect:dirtyRect];
 
     // Drawing code here.
@@ -33,7 +35,8 @@
 #pragma mark - Tool Cell View
 @implementation LGToolStatusTableCellView
 
-- (void)drawRect:(NSRect)dirtyRect {
+- (void)drawRect:(NSRect)dirtyRect
+{
     [super drawRect:dirtyRect];
 
     // Drawing code here.

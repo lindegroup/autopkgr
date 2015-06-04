@@ -55,7 +55,6 @@
         builder.header.subject = fullSubject;
         builder.htmlBody = message;
 
-
         // Configure the session details
         MCOSMTPSession *session = [[MCOSMTPSession alloc] init];
 
@@ -107,7 +106,8 @@
     }
 }
 
-- (void)beginSession:(MCOSMTPSession *)smtpSession builder:(MCOMessageBuilder *)builder {
+- (void)beginSession:(MCOSMTPSession *)smtpSession builder:(MCOMessageBuilder *)builder
+{
 
     MCOSMTPSendOperation *sendOperation = [smtpSession sendOperationWithData:[builder data]];
 
@@ -147,7 +147,8 @@
     }
 }
 
-- (void)didCompleteEmailOperation:(NSError *)error {
+- (void)didCompleteEmailOperation:(NSError *)error
+{
     self.complete = YES;
     if (_replyBlock) {
         _replyBlock(error);

@@ -23,14 +23,13 @@
 @interface LGNotificationsViewController : LGBaseTabViewController
 
 #pragma mark - Email
-#pragma mark -- Outlets --
+#pragma mark-- Outlets --
 
 @property (weak) IBOutlet NSTextField *smtpServer;
 @property (weak) IBOutlet NSTextField *smtpPort;
 
 @property (weak) IBOutlet NSTextField *smtpUsername;
 @property (weak) IBOutlet NSSecureTextField *smtpPassword;
-
 
 // Status icons
 @property (weak) IBOutlet NSImageView *testSmtpServerStatus;
@@ -39,7 +38,7 @@
 @property (weak) IBOutlet NSProgressIndicator *sendTestEmailSpinner;
 @property (weak) IBOutlet NSProgressIndicator *testSmtpServerSpinner;
 
-#pragma mark -- IBActions --
+#pragma mark-- IBActions --
 - (IBAction)sendTestEmail:(id)sender;
 - (IBAction)testServerPort:(id)sender;
 

@@ -8,7 +8,6 @@
 
 #import <Cocoa/Cocoa.h>
 
-
 #pragma mark - Recipe Cell View
 @interface LGRecipeStatusCellView : NSTableCellView
 

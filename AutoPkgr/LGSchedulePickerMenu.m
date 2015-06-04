@@ -21,12 +21,12 @@
 - (void)awakeFromNib
 {
     [self removeAllItems];
-    NSDateFormatter * formatter = [[NSDateFormatter alloc] init];
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
 
     int h = 0;
-    for (NSString* periods in @[ formatter.AMSymbol, formatter.PMSymbol ]) {
-        NSString* title = [NSString stringWithFormat:@"12:00 %@", periods];
-        NSMenuItem* item = [[NSMenuItem alloc] init];
+    for (NSString *periods in @[ formatter.AMSymbol, formatter.PMSymbol ]) {
+        NSString *title = [NSString stringWithFormat:@"12:00 %@", periods];
+        NSMenuItem *item = [[NSMenuItem alloc] init];
         item.title = title;
         item.keyEquivalent = @"";
         item.tag = h;
@@ -51,11 +51,11 @@
 - (void)awakeFromNib
 {
     [self removeAllItems];
-    NSDateFormatter * formatter = [[NSDateFormatter alloc] init];
-    [formatter setLocale: [NSLocale currentLocale]];
-    NSArray * weekdays = [formatter weekdaySymbols];
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    [formatter setLocale:[NSLocale currentLocale]];
+    NSArray *weekdays = [formatter weekdaySymbols];
     for (int i = 0; i < weekdays.count; i++) {
-        NSMenuItem* item = [[NSMenuItem alloc] init];
+        NSMenuItem *item = [[NSMenuItem alloc] init];
         item.title = weekdays[i];
         item.keyEquivalent = @"";
         item.tag = i;

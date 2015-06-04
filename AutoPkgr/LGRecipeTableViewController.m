@@ -28,7 +28,7 @@
 
 #import "LGTableCellViews.h"
 
-@interface LGRecipeTableViewController ()<NSWindowDelegate, NSPopoverDelegate>
+@interface LGRecipeTableViewController () <NSWindowDelegate, NSPopoverDelegate>
 
 @property (copy, nonatomic) NSMutableArray *recipes;
 @property (copy, nonatomic) NSMutableArray *searchedRecipes;
@@ -81,7 +81,8 @@ static NSString *const kLGAutoPkgRecipeCurrentStatusKey = @"currentStatus";
     return _searchedRecipes.count;
 }
 
-- (NSView *)tableView:(NSTableView *)tableView viewForTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row {
+- (NSView *)tableView:(NSTableView *)tableView viewForTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row
+{
 
     LGAutoPkgRecipe *recipe = [_searchedRecipes objectAtIndex:row];
     LGRecipeStatusCellView *statusCell = [tableView makeViewWithIdentifier:tableColumn.identifier owner:self];
@@ -95,9 +96,9 @@ static NSString *const kLGAutoPkgRecipeCurrentStatusKey = @"currentStatus";
             statusCell.imageView.hidden = NO;
 
             if ([[recipe valueForKey:NSStringFromSelector(@selector(isMissingParent))] boolValue]) {
-                statusCell.imageView.image =  [NSImage LGCaution];
+                statusCell.imageView.image = [NSImage LGCaution];
             } else {
-                statusCell.imageView.image =  [NSImage LGNoImage];
+                statusCell.imageView.image = [NSImage LGNoImage];
             }
         }
     } else if ([tableColumn.identifier isEqualToString:NSStringFromSelector(@selector(isEnabled))]) {
@@ -186,11 +187,11 @@ static NSString *const kLGAutoPkgRecipeCurrentStatusKey = @"currentStatus";
         if (_runTaskDictionary.count == 0) {
             _runTaskDictionary = nil;
         }
-
     }];
 }
 
-- (void)openInfoPanelFromMenu:(NSMenuItem *)item {
+- (void)openInfoPanelFromMenu:(NSMenuItem *)item
+{
     [self openInfoPanel:item.representedObject];
 }
 
@@ -205,18 +206,17 @@ static NSString *const kLGAutoPkgRecipeCurrentStatusKey = @"currentStatus";
 
     if (!infoPopover.isShown) {
         [infoPopover showRelativeToRect:_recipeTableView.contextualMenuMouseLocal
-                              ofView:_recipeTableView
-                       preferredEdge:NSMinYEdge];
+                                 ofView:_recipeTableView
+                          preferredEdge:NSMinYEdge];
     }
-
 }
 
-- (void)popoverDidClose:(NSNotification *)notification {
+- (void)popoverDidClose:(NSNotification *)notification
+{
     NSPopover *infoPopover = notification.object;
     infoPopover.contentViewController = nil;
     infoPopover = nil;
 }
-
 
 #pragma mark - Contextual Menu
 - (NSMenu *)contextualMenuForRow:(NSInteger)row
@@ -248,7 +248,6 @@ static NSString *const kLGAutoPkgRecipeCurrentStatusKey = @"currentStatus";
         NSString *parent = [@"Parent Recipe: " stringByAppendingString:recipe.ParentRecipe];
         [menu addItemWithTitle:parent action:nil keyEquivalent:@""];
     }
-
 
     // Setup the recipe editor menu ...
     NSString *currentEditor = [[LGDefaults standardUserDefaults] objectForKey:@"RecipeEditor"];

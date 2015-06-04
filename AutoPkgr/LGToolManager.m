@@ -25,7 +25,6 @@ static NSArray *__requiredToolsClasses;
 @implementation LGToolManager
 @synthesize allTools = _allTools, optionalTools = _optionalTools, requiredTools = _requiredTools, installedTools = _installedTools;
 
-
 + (void)load
 {
     // At +load create what are essentially static const arrays.
@@ -54,11 +53,13 @@ static NSArray *__requiredToolsClasses;
     });
 }
 
-- (void)dealloc {
+- (void)dealloc
+{
     [[NSNotificationCenter defaultCenter] removeObserver:self name:kLGNotificationToolStatusDidChange object:nil];
 }
 
-- (instancetype)init {
+- (instancetype)init
+{
     if (self = [super init]) {
 
         NSNotificationCenter *ndc = [NSNotificationCenter defaultCenter];
@@ -76,16 +77,15 @@ static NSArray *__requiredToolsClasses;
                                 name:kLGNotificationToolStatusDidChange
                               object:tool];
                 });
-
             }
         }
         _allTools = [initedTools copy];
-
     }
     return self;
 }
 
-- (void)installStatusDidChange:(NSNotification *)aNotification {
+- (void)installStatusDidChange:(NSNotification *)aNotification
+{
     _installedTools = nil;
 
     _installStatusDidChangeHandler(aNotification.object, [self.installedTools indexOfObject:aNotification.object]);
@@ -97,7 +97,7 @@ static NSArray *__requiredToolsClasses;
 
         NSMutableArray *installedTools = nil;
         for (LGTool *tool in self.allTools) {
-            if (installedTools || (installedTools = [NSMutableArray new])){
+            if (installedTools || (installedTools = [NSMutableArray new])) {
                 if ([[tool class] isInstalled]) {
                     [installedTools addObject:tool];
                 }
@@ -120,7 +120,7 @@ static NSArray *__requiredToolsClasses;
     if (!_optionalTools) {
         NSMutableArray *optionalTools = nil;
         for (LGTool *tool in self.allTools) {
-            if (optionalTools || (optionalTools = [NSMutableArray new])){
+            if (optionalTools || (optionalTools = [NSMutableArray new])) {
                 if ([__optionalToolsClasses containsObject:[tool class]]) {
                     [optionalTools addObject:tool];
                 }
@@ -136,7 +136,7 @@ static NSArray *__requiredToolsClasses;
     if (!_requiredTools) {
         NSMutableArray *requiredTool = nil;
         for (LGTool *tool in self.allTools) {
-            if (requiredTool || (requiredTool = [NSMutableArray new])){
+            if (requiredTool || (requiredTool = [NSMutableArray new])) {
                 if ([__requiredToolsClasses containsObject:[tool class]]) {
                     [requiredTool addObject:tool];
                 }
@@ -148,7 +148,8 @@ static NSArray *__requiredToolsClasses;
 }
 
 #pragma mark - Class Methods
-- (id)toolOfClass:(Class)toolClass {
+- (id)toolOfClass:(Class)toolClass
+{
     return [self.allTools filteredArrayByClass:toolClass].firstObject;
 }
 

@@ -33,15 +33,13 @@
 
 @interface LGConfigurationWindowController : NSWindowController <NSWindowDelegate, NSTabViewDelegate, LGProgressDelegate>
 
--(instancetype)initWithProgressDelegate:(id<LGProgressDelegate>)progressDelegate;
-
+- (instancetype)initWithProgressDelegate:(id<LGProgressDelegate>)progressDelegate;
 
 @property (strong, nonatomic) LGInstallViewController *installView;
 @property (strong, nonatomic) LGRecipeReposViewController *recipeRepoView;
 @property (strong, nonatomic) LGScheduleViewController *scheduleView;
 @property (strong, nonatomic) LGNotificationsViewController *notificationView;
 @property (strong, nonatomic) LGToolsViewController *toolsView;
-
 
 @property (weak) IBOutlet NSButton *cancelAutoPkgRunButton;
 
@@ -50,6 +48,5 @@
 @property (weak) IBOutlet NSProgressIndicator *progressIndicator;
 @property (weak) IBOutlet NSTextField *progressMessage;
 @property (weak) IBOutlet NSTextField *progressDetailsMessage;
-
 
 @end

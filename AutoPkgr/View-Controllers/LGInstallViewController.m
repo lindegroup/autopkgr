@@ -25,17 +25,19 @@
 #import "LGDisplayStatusDelegate.h"
 #import "LGTableCellViews.h"
 
-@interface LGInstallViewController ()<NSTableViewDataSource, NSTableViewDelegate>
+@interface LGInstallViewController () <NSTableViewDataSource, NSTableViewDelegate>
 @end
 
 @implementation LGInstallViewController
 
-- (void)viewDidLoad {
+- (void)viewDidLoad
+{
     [super viewDidLoad];
     // Do view setup here.
 }
 
-- (void)awakeFromNib {
+- (void)awakeFromNib
+{
     if (!self.awake) {
         self.awake = YES;
         // Set launch at login button
@@ -50,7 +52,8 @@
     }
 }
 
-- (NSString *)tabLabel {
+- (NSString *)tabLabel
+{
     return @"Install";
 }
 
@@ -92,16 +95,18 @@
 }
 
 #pragma mark - Table View Delegate
-- (NSInteger)numberOfRowsInTableView:(NSTableView *)tableView {
+- (NSInteger)numberOfRowsInTableView:(NSTableView *)tableView
+{
     if (!_toolManager.installStatusDidChangeHandler) {
-        _toolManager.installStatusDidChangeHandler = ^(LGTool *tool, NSInteger index){
+        _toolManager.installStatusDidChangeHandler = ^(LGTool *tool, NSInteger index) {
             [tableView reloadData];
         };
     }
     return _toolManager.installedOrRequiredTools.count;
 }
 
-- (NSView *)tableView:(NSTableView *)tableView viewForTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row {
+- (NSView *)tableView:(NSTableView *)tableView viewForTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row
+{
 
     __block LGToolStatusTableCellView *statusCell = nil;
     if ([tableColumn.identifier isEqualToString:@"statusCell"]) {
@@ -135,6 +140,5 @@
     }
     return statusCell;
 }
-
 
 @end

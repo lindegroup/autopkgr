@@ -75,7 +75,8 @@ NSPredicate *jdsFilterPredicate()
     [_jssDistributionPointTableView reloadData];
 }
 
-- (void)connectToTool {
+- (void)connectToTool
+{
     BOOL isInstalled = [LGJSSImporterTool isInstalled];
 
     __weak typeof(self) __weak_self = self;
@@ -94,7 +95,7 @@ NSPredicate *jdsFilterPredicate()
     }];
 
     _jssImporterTool.progressDelegate = _progressDelegate;
-    
+
     if (!isInstalled) {
         [_jssImporterTool refresh];
     }

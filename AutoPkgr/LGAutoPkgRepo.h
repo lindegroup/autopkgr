@@ -1,5 +1,5 @@
 // LGAutoPkgRepos.h
-// 
+//
 // Copyright 2015 The Linde Group, Inc.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,7 +17,7 @@
 
 #import <Foundation/Foundation.h>
 
-typedef NS_ENUM(OSStatus, LGAutoPkgRepoStatus){
+typedef NS_ENUM(OSStatus, LGAutoPkgRepoStatus) {
     kLGAutoPkgRepoNotInstalled = 1 << 0,
     kLGAutoPkgRepoUpdateAvailable = 1 << 1,
     kLGAutoPkgRepoUpToDate = 1 << 2,
@@ -25,7 +25,7 @@ typedef NS_ENUM(OSStatus, LGAutoPkgRepoStatus){
 
 @interface LGAutoPkgRepo : NSObject
 
--(instancetype)init __unavailable;
+- (instancetype)init __unavailable;
 
 @property (copy, nonatomic, readonly) NSString *name;
 @property (copy, nonatomic, readonly) NSString *path;
@@ -40,7 +40,7 @@ typedef NS_ENUM(OSStatus, LGAutoPkgRepoStatus){
 
 @property (assign, nonatomic, readonly) BOOL isInstalled;
 @property (assign, nonatomic, readonly) LGAutoPkgRepoStatus status;
-@property (copy) void(^statusChangeBlock)(LGAutoPkgRepoStatus);
+@property (copy) void (^statusChangeBlock)(LGAutoPkgRepoStatus);
 
 /**
  *  Check if there are updates availabel for the repo.

@@ -47,12 +47,12 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
-- (void)awakeFromNib {
+- (void)awakeFromNib
+{
     if (!_awake) {
         _awake = YES;
         [_repoSearch setTarget:self];
         [_repoSearch setAction:@selector(executeRepoSearch:)];
-
 
         [self reload];
 
@@ -85,7 +85,8 @@
     return [_searchedRepos count];
 }
 
-- (NSView *)tableView:(NSTableView *)tableView viewForTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row {
+- (NSView *)tableView:(NSTableView *)tableView viewForTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row
+{
 
     LGAutoPkgRepo *repo = [_searchedRepos objectAtIndex:row];
     LGRepoStatusCellView *statusCell = [tableView makeViewWithIdentifier:tableColumn.identifier owner:self];
@@ -144,7 +145,8 @@
     [tableView reloadData];
 }
 
-- (void)enableRepo:(NSButton *)sender {
+- (void)enableRepo:(NSButton *)sender
+{
     _updateRepoInternally = YES;
 
     BOOL add = sender.state;
@@ -164,7 +166,8 @@
     }
 }
 
-- (void)updateRepo:(id)sender {
+- (void)updateRepo:(id)sender
+{
     _updateRepoInternally = YES;
     if ([sender isKindOfClass:[NSMenuItem class]]) {
         LGAutoPkgRepo *repo = [sender representedObject];
@@ -183,7 +186,7 @@
     if (_repoSearch.stringValue.length == 0) {
         _searchedRepos = [_repos mutableCopy];
     } else {
-        NSPredicate *searchPredicate = [NSPredicate predicateWithFormat:@"%K.absoluteString CONTAINS[CD] %@", NSStringFromSelector(@selector(cloneURL)),_repoSearch.stringValue];
+        NSPredicate *searchPredicate = [NSPredicate predicateWithFormat:@"%K.absoluteString CONTAINS[CD] %@", NSStringFromSelector(@selector(cloneURL)), _repoSearch.stringValue];
         _searchedRepos = [[_repos filteredArrayUsingPredicate:searchPredicate] mutableCopy];
     }
 
@@ -191,7 +194,7 @@
     [_popularRepositoriesTableView endUpdates];
 }
 
--(NSMenu *)contextualMenuForRow:(NSInteger)row
+- (NSMenu *)contextualMenuForRow:(NSInteger)row
 {
 
     LGAutoPkgRepo *repo = _searchedRepos[row];
@@ -217,8 +220,8 @@
 
     if (repo.path) {
         NSMenuItem *clipboardItem = [[NSMenuItem alloc] initWithTitle:@"Copy path to clipboard"
-                                                             action:@selector(copyToPasteboard:)
-                                                      keyEquivalent:@""];
+                                                               action:@selector(copyToPasteboard:)
+                                                        keyEquivalent:@""];
         clipboardItem.representedObject = repo.path;
         clipboardItem.target = self;
         [menu addItem:clipboardItem];
@@ -227,7 +230,8 @@
     return menu;
 }
 
-- (void)copyToPasteboard:(id)sender {
+- (void)copyToPasteboard:(id)sender
+{
     if ([sender isKindOfClass:[NSMenuItem class]]) {
         NSString *string = [sender representedObject];
         [[NSPasteboard generalPasteboard] declareTypes:[NSArray arrayWithObject:NSStringPboardType] owner:nil];

@@ -47,13 +47,13 @@
 }
 
 #pragma mark - NSApplication Delegate
-#pragma mark -- Launching --
+#pragma mark-- Launching --
 - (void)applicationWillFinishLaunching:(NSNotification *)notification
 {
     // Setup activation policy. By default set as menubar only.
-    [[LGDefaults standardUserDefaults] registerDefaults:@{ kLGApplicationDisplayStyle : @(kLGDisplayStyleShowMenu | kLGDisplayStyleShowDock) ,
-                                                           NSStringFromSelector(@selector(reportedItemFlags)): @(kLGReportItemsAll)}];
-    
+    [[LGDefaults standardUserDefaults] registerDefaults:@{ kLGApplicationDisplayStyle : @(kLGDisplayStyleShowMenu | kLGDisplayStyleShowDock),
+                                                           NSStringFromSelector(@selector(reportedItemFlags)) : @(kLGReportItemsAll) }];
+
     if (([[LGDefaults standardUserDefaults] applicationDisplayStyle] & kLGDisplayStyleShowDock)) {
         [NSApp setActivationPolicy:NSApplicationActivationPolicyRegular];
     }
@@ -99,15 +99,15 @@
     // Setup User Notification Delegate
     _notificationDelegate = [[LGUserNotifications alloc] init];
     [NSUserNotificationCenter defaultUserNotificationCenter].delegate = _notificationDelegate;
-    
+
     // calling stopProgress: here is an easy way to get the
     // menu reset to its default configuration
     [self stopProgress:nil];
-    
+
     [self showConfigurationWindow:self];
 }
 
-#pragma mark -- Termination --
+#pragma mark-- Termination --
 - (BOOL)applicationShouldTerminateAfterLastWindowClosed:(NSApplication *)sender
 {
     // If this set to run as dock only with no menu item, quit it after the last window is closed.
@@ -144,7 +144,7 @@
     [[NSDistributedNotificationCenter defaultCenter] removeObserver:self name:kLGNotificationProgressMessageUpdate object:nil];
 }
 
-#pragma mark -- Resigning --
+#pragma mark-- Resigning --
 - (BOOL)applicationShouldHandleReopen:(NSApplication *)theApplication hasVisibleWindows:(BOOL)flag
 {
     [self showConfigurationWindow:self];
@@ -354,7 +354,7 @@
     // despite aggressive synchronization, so we need to pull the value from
     // the actual preference file until a better work around is found...
 
-    if (!_taskManager || _taskManager.operationCount == 0 ) {
+    if (!_taskManager || _taskManager.operationCount == 0) {
         NSDictionary *dict = [NSDictionary dictionaryWithContentsOfFile:[@"~/Library/Preferences/com.lindegroup.AutoPkgr.plist" stringByExpandingTildeInPath]];
 
         NSString *date = [LGDefaults formattedDate:dict[@"LastAutoPkgRun"]];

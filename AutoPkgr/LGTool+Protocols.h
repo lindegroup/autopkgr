@@ -80,13 +80,10 @@
  */
 + (NSString *)gitHubURL;
 
-
-
 /**
  *  The package identifier for the tool. Primarily used to determine items during uninstall:
  */
 + (NSArray *)packageIdentifiers;
-
 
 @optional
 /**

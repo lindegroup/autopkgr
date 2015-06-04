@@ -35,7 +35,8 @@
     // Do view setup here.
 }
 
-- (void)awakeFromNib {
+- (void)awakeFromNib
+{
     [LGPasswords migrateKeychainIfNeeded:^(NSString *password, NSError *error) {
         if (error) {
             [NSApp presentError:error];
@@ -49,7 +50,8 @@
     [self getKeychainPassword:_smtpPassword];
 }
 
-- (NSString *)tabLabel {
+- (NSString *)tabLabel
+{
     return @"Alerts & Notifications";
 }
 
@@ -126,10 +128,10 @@
     } else {
         NSLog(@"Cannot test SMTP. Either host is blank or port is unreadable.");
     }
-
 }
 
-- (void)sendTestEmail:(id)sender {
+- (void)sendTestEmail:(id)sender
+{
     [self updateKeychainPassword:self];
     // Send a test email notification when the user
     // clicks "Send Test Email"
@@ -137,12 +139,12 @@
     DLog(@"'Send Test Email' button clicked.");
 
     // Handle UI
-//    [_sendTestEmailButton setEnabled:NO]; // disable button
+    //    [_sendTestEmailButton setEnabled:NO]; // disable button
     [_sendTestEmailSpinner setHidden:NO]; // show spinner
     [_sendTestEmailSpinner startAnimation:self]; // animate spinner
 
     // Setup a completion block
-    void (^didComplete)() = ^void(NSError *error){
+    void (^didComplete)() = ^void(NSError *error) {
 //        [_sendTestEmailButton setEnabled:YES]; // enable button
         [_sendTestEmailSpinner setHidden:YES]; // hide spinner
         [_sendTestEmailSpinner stopAnimation:self]; // stop animation

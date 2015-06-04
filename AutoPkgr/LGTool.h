@@ -66,7 +66,6 @@ typedef NS_ENUM(OSStatus, LGToolInstallStatus) {
     kLGToolUpToDate,
 };
 
-
 #pragma mark - Tool
 @class LGToolInfo;
 
@@ -130,7 +129,7 @@ typedef NS_ENUM(OSStatus, LGToolInstallStatus) {
 
 @property (copy) void (^infoUpdateHandler)(LGToolInfo *info);
 
-- (void)getInfo:(void(^)(LGToolInfo *info))reply;
+- (void)getInfo:(void (^)(LGToolInfo *info))reply;
 
 // update the tool.info property and if getInfo has been called execute the completion block.
 - (void)refresh;

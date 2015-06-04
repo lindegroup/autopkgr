@@ -129,7 +129,8 @@ static NSMutableDictionary *_identifierURLStore = nil;
     return NO;
 }
 
-- (BOOL)recipeConfigError {
+- (BOOL)recipeConfigError
+{
     return self.isMissingParent;
 }
 

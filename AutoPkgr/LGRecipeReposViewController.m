@@ -29,28 +29,33 @@
 @implementation LGRecipeReposViewController
 @synthesize modalWindow = _modalWindow;
 
-- (instancetype)init {
+- (instancetype)init
+{
     return (self = [super initWithNibName:NSStringFromClass([self class]) bundle:nil]);
 }
 
-- (void)viewDidLoad {
+- (void)viewDidLoad
+{
     [super viewDidLoad];
     // Do view setup here.
 }
 
-- (void)awakeFromNib {
+- (void)awakeFromNib
+{
     if (!self.awake) {
         self.awake = YES;
         _popRepoTableViewHandler.progressDelegate = self.progressDelegate;
     }
 }
 
-- (void)setModalWindow:(NSWindow *)modalWindow {
+- (void)setModalWindow:(NSWindow *)modalWindow
+{
     _modalWindow = modalWindow;
     _popRepoTableViewHandler.modalWindow = modalWindow;
 }
 
-- (NSString *)tabLabel {
+- (NSString *)tabLabel
+{
     return @"Repos & Recipes";
 }
 

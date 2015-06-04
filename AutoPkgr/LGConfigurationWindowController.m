@@ -36,7 +36,8 @@
 
 #pragma mark - init/dealloc/nib
 
-- (instancetype)init {
+- (instancetype)init
+{
     if (self = [super initWithWindowNibName:NSStringFromClass([self class])]) {
 
         _installView = [[LGInstallViewController alloc] initWithProgressDelegate:self];
@@ -54,7 +55,8 @@
     return self;
 }
 
-- (instancetype)initWithProgressDelegate:(id<LGProgressDelegate>)progressDelegate {
+- (instancetype)initWithProgressDelegate:(id<LGProgressDelegate>)progressDelegate
+{
     if (self = [self init]) {
         /* In the main init method, the progress delegate is set as self by default,
          * but with the installView and schedule view want their progress delegate  */
@@ -64,22 +66,24 @@
     return self;
 }
 
-- (void)windowDidLoad {
+- (void)windowDidLoad
+{
     [super windowDidLoad];
 }
 
-- (void)awakeFromNib {
+- (void)awakeFromNib
+{
     if (!_awake) {
         // Awake from nib can get called multiple times, but happens early,
         // So add code here that you want executed prior to the window showing.
         _awake = YES;
 
         /* Set up all of the tabs. */
-        NSArray *tabs = @[_installView,
-                          _recipeRepoView,
-                          _scheduleView,
-                          _notificationView,
-                          _toolsView];
+        NSArray *tabs = @[ _installView,
+                           _recipeRepoView,
+                           _scheduleView,
+                           _notificationView,
+                           _toolsView ];
 
         for (LGBaseTabViewController *viewController in tabs) {
             NSTabViewItem *tabItem = [[NSTabViewItem alloc] init];
@@ -114,7 +118,6 @@
         [_toolsView enableFolders];
     }
 }
-
 
 #pragma mark - LGProgressDelegate
 - (void)startProgressWithMessage:(NSString *)message
@@ -184,8 +187,6 @@
     }];
 }
 
-
-
 #pragma mark - NSAlert didEndWith selectors
 - (void)didEndWithPreferenceRepairRequest:(NSAlert *)alert returnCode:(NSInteger)returnCode
 {
@@ -206,6 +207,5 @@
         }
     }
 }
-
 
 @end

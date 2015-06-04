@@ -20,18 +20,19 @@
 #import "LGToolsViewController.h"
 #import "LGToolManager.h"
 
-
-@implementation LGToolsViewController{
+@implementation LGToolsViewController {
     LGDefaults *_defaults;
 }
 @synthesize modalWindow = _modalWindow;
 
-- (void)viewDidLoad {
+- (void)viewDidLoad
+{
     [super viewDidLoad];
     // Do view setup here.
 }
 
-- (void)awakeFromNib {
+- (void)awakeFromNib
+{
     if (!self.awake) {
         self.awake = YES;
         _defaults = [LGDefaults standardUserDefaults];
@@ -48,12 +49,14 @@
     }
 }
 
-- (void)setModalWindow:(NSWindow *)modalWindow {
+- (void)setModalWindow:(NSWindow *)modalWindow
+{
     _modalWindow = modalWindow;
     _jssImporter.modalWindow = modalWindow;
 }
 
-- (NSString *)tabLabel {
+- (NSString *)tabLabel
+{
     return @"Folders & Integration";
 }
 
