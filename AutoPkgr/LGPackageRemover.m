@@ -20,9 +20,6 @@
 #import "NSData+taskData.h"
 #import <syslog.h>
 
-static NSString *const kLGPackageRemoverRecieptsDir = @"/private/var/db/receipts";
-static NSString *const kLGPackageRemover_DS_STORE = @".DS_Store";
-
 typedef NS_ENUM(OSStatus, LGPackageInsallerError) {
     kLGPackageInstallerErrorSuccess = 0,
     kLGPackageInstallerErrorIncompleteRemoval,
@@ -30,7 +27,11 @@ typedef NS_ENUM(OSStatus, LGPackageInsallerError) {
     kLGPackageInstallerErrorNoFilesSpecified,
 };
 
-NSDictionary *errorInfoFromCode(LGPackageInsallerError code, NSString *identifier)
+static NSString *const kLGPackageRemoverRecieptsDir = @"/private/var/db/receipts";
+static NSString *const DS_STORE = @".DS_Store";
+static NSString *const PYTHON_BYTECODE_EXTENSION = @"pyc";
+
+static NSDictionary *errorInfoFromCode(LGPackageInsallerError code, NSString *identifier)
 {
     NSString *fmtString;
     NSString *suggestion;
@@ -61,17 +62,23 @@ NSDictionary *errorInfoFromCode(LGPackageInsallerError code, NSString *identifie
               NSLocalizedDescriptionKey : suggestion };
 }
 
-@interface LGPackageRemover ()
-@property (strong, nonatomic) NSOperationQueue *executionQueue;
-@end
+static dispatch_queue_t autopkgr_pkg_remover_queue()
+{
+    static dispatch_queue_t autopkgr_recipe_write_queue;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        autopkgr_recipe_write_queue = dispatch_queue_create("com.lindegroup.autopkgr.pkg.remover.queue", DISPATCH_QUEUE_SERIAL );
+    });
+
+    return autopkgr_recipe_write_queue;
+}
+
 
 @implementation LGPackageRemover
+
 - (instancetype)init
 {
     if (self = [super init]) {
-        _executionQueue = [[NSOperationQueue alloc] init];
-        _executionQueue.name = @"pkg.file.remove.queue";
-        _executionQueue.maxConcurrentOperationCount = 1;
         _dryRun = YES;
     }
     return self;
@@ -109,8 +116,7 @@ NSDictionary *errorInfoFromCode(LGPackageInsallerError code, NSString *identifie
         }
     }
 
-    [_executionQueue addOperationWithBlock:^{
-
+    dispatch_async(autopkgr_pkg_remover_queue(), ^{
         NSMutableArray *files = [[NSMutableArray alloc] init];
         [files addObjectsFromArray:[[self bomForIdentifiers:validIdentifiers error:&error] array]];
 
@@ -174,7 +180,8 @@ NSDictionary *errorInfoFromCode(LGPackageInsallerError code, NSString *identifie
         dispatch_async(dispatch_get_main_queue(), ^{
             reply(removed, remain, error);
         });
-    }];
+    });
+
 }
 
 - (BOOL)forget:(NSString *)identifer error:(NSError *__autoreleasing *)error
@@ -270,7 +277,7 @@ NSDictionary *errorInfoFromCode(LGPackageInsallerError code, NSString *identifie
 - (BOOL)evalAutoRemove:(NSString *)fileName
 {
     BOOL autoRemove = NO;
-    if ([fileName isEqualToString:kLGPackageRemover_DS_STORE]) {
+    if ([fileName isEqualToString:DS_STORE]) {
         autoRemove = YES;
     } else if ([[[self class] autoRemoveFileExtensions] containsObject:fileName.pathExtension]) {
         autoRemove = YES;
@@ -349,8 +356,8 @@ NSDictionary *errorInfoFromCode(LGPackageInsallerError code, NSString *identifie
     static NSArray *extensions;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        extensions = @[kLGPackageRemover_DS_STORE,
-                       @"pyc",
+        extensions = @[DS_STORE,
+                       PYTHON_BYTECODE_EXTENSION,
                        ];
     });
     return extensions;
