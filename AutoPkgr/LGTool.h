@@ -122,7 +122,7 @@ typedef NS_ENUM(OSStatus, LGToolInstallStatus) {
 
 #pragma mark - Implemented in the Abstract class
 @property (copy, nonatomic, readonly) NSString *name;
-@property (assign, nonatomic, readonly) BOOL *isInstalled;
+@property (assign, nonatomic, readonly) BOOL isInstalled;
 
 // LGToolInfo object with local and remote status information and useful UI mappings.
 @property (copy, nonatomic, readonly) LGToolInfo *info;

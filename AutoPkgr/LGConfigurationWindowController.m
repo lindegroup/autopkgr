@@ -60,7 +60,6 @@
     if (self = [self init]) {
         /* In the main init method, the progress delegate is set as self by default,
          * but with the installView and schedule view want their progress delegate  */
-        _installView.progressDelegate = progressDelegate;
         _scheduleView.progressDelegate = progressDelegate;
     }
     return self;
@@ -185,6 +184,10 @@
             [self.progressDetailsMessage setStringValue:[message truncateToLength:100]];
             [self.progressIndicator setDoubleValue:progress > 5.0 ? progress:5.0 ];
     }];
+}
+
+- (void)bringAutoPkgrToFront {
+    [[NSRunningApplication currentApplication] activateWithOptions:NSApplicationActivateAllWindows | NSApplicationActivateIgnoringOtherApps];
 }
 
 #pragma mark - NSAlert didEndWith selectors

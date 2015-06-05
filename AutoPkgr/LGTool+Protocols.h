@@ -45,7 +45,6 @@
 /**
  *  Any custom uninstall actions that need to be taken.
  */
-
 - (void)customUninstallActions;
 
 @optional
@@ -67,7 +66,7 @@
 /**
  *  If the tool uses an installer package conform to this protocol.
  */
-@protocol LGToolPackageInstaller <NSObject>
+@protocol LGToolPackageInstaller <LGToolSubclass>
 @required
 /**
  *  Path to the main executable file for the tool
@@ -148,5 +147,5 @@
  *
  *  @return Populated NSError object
  */
-- (NSError *)requirementsError:(NSString *)reason;
++ (NSError *)requirementsError:(NSString *)reason;
 @end

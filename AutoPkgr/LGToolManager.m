@@ -87,8 +87,7 @@ static NSArray *__requiredToolsClasses;
 - (void)installStatusDidChange:(NSNotification *)aNotification
 {
     _installedTools = nil;
-
-    _installStatusDidChangeHandler(aNotification.object, [self.installedTools indexOfObject:aNotification.object]);
+    _installStatusDidChangeHandler(self, aNotification.object);
 }
 
 - (NSArray *)installedTools

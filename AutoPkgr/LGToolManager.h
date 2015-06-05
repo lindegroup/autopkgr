@@ -34,7 +34,7 @@
 /**
  *  A block executed when when any tool's status changes.
  */
-@property (copy) void (^installStatusDidChangeHandler)(LGTool *tool, NSInteger index);
+@property (copy) void (^installStatusDidChangeHandler)(LGToolManager *aManager, LGTool *changedTool);
 
 /**
  *  Get an array of all the associated tools

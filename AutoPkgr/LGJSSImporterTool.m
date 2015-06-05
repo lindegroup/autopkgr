@@ -68,6 +68,10 @@ NSString *const kLGJSSDistPointTypeKey = @"type";
              @"com.github.sheagcraig.jss-autopkg-addon"];
 }
 
++ (BOOL)isUninstallable {
+    return YES;
+}
+
 # pragma mark - Instance overrides.
 - (NSString *)installedVersion
 {

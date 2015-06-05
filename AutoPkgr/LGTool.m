@@ -116,7 +116,7 @@ void subclassMustConformToProtocol(id className)
 
 + (BOOL)isUninstallable
 {
-    return YES;
+    return NO;
 }
 
 + (BOOL)meetsRequirements:(NSError *__autoreleasing *)error
@@ -223,6 +223,14 @@ void subclassMustConformToProtocol(id className)
 - (void)customUninstallActions {}
 
 #pragma mark - Super implementation
+- (BOOL)isInstalled {
+    return [[self class] isInstalled];
+}
+
+- (NSString *)name {
+    return [[self class] name];
+}
+
 - (void)getInfo:(void (^)(LGToolInfo *))reply {
 
     void (^updateInfoHandlers)() = ^(){
@@ -316,8 +324,10 @@ void subclassMustConformToProtocol(id className)
     }
 
     LGToolTypeFlags flags = [[self class] typeFlags];
-
-    if (flags & kLGToolTypeInstalledPackage) {
+    NSError *error = nil;
+    if (![[self class] meetsRequirements:&error]) {
+        [self didCompleteInstallAction:sender error:error];
+    } else if (flags & kLGToolTypeInstalledPackage) {
         [self installPackage:sender];
     } else if (flags & kLGToolTypeAutoPkgSharedProcessor) {
         [self installDefaultRepository:sender];
@@ -445,7 +455,9 @@ void subclassMustConformToProtocol(id className)
     }
 
     if ([sender respondsToSelector:@selector(action)]) {
-        [sender setAction:isInstalled ? @selector(uninstall:) : @selector(install:)];
+        if ([[self class] isUninstallable]) {
+            [sender setAction:isInstalled ? @selector(uninstall:) : @selector(install:)];
+        }
     }
 
     [[NSNotificationCenter defaultCenter] postNotificationName:kLGNotificationToolStatusDidChange object:self];
@@ -477,7 +489,7 @@ void subclassMustConformToProtocol(id className)
     return installedVersion ?: @"";
 }
 
-- (NSError *)requirementsError:(NSString *)reason
++ (NSError *)requirementsError:(NSString *)reason
 {
     NSString *description = [NSString stringWithFormat:@"Requirements for %@ are not met.", [[self class] name]];
     NSDictionary *userInfo = @{
@@ -485,7 +497,7 @@ void subclassMustConformToProtocol(id className)
         NSLocalizedRecoverySuggestionErrorKey : reason ?: @"",
     };
 
-    return [NSError errorWithDomain:kLGApplicationName code:-1 userInfo:userInfo];
+    return [NSError errorWithDomain:kLGApplicationName code:(4 << 1) userInfo:userInfo];
 }
 
 #pragma mark - LGProgress Delegate

@@ -97,11 +97,52 @@
 #pragma mark - Table View Delegate
 - (NSInteger)numberOfRowsInTableView:(NSTableView *)tableView
 {
+    __block NSArray *currentTools = _toolManager.installedOrRequiredTools;
+
     if (!_toolManager.installStatusDidChangeHandler) {
-        _toolManager.installStatusDidChangeHandler = ^(LGTool *tool, NSInteger index) {
-            [tableView reloadData];
+        _toolManager.installStatusDidChangeHandler = ^(LGToolManager *aManager, LGTool *tool) {
+            [tableView beginUpdates];
+
+            if ([aManager.requiredTools containsObject:tool]) {
+                NSInteger index = [aManager.installedOrRequiredTools indexOfObject:tool];
+                NSIndexSet *idxSet = [NSIndexSet indexSetWithIndex:index];
+
+                [tableView reloadDataForRowIndexes:idxSet
+                                     columnIndexes:[NSIndexSet
+                                                    indexSetWithIndexesInRange:
+                                                    NSMakeRange(0, tableView.numberOfColumns)]];
+
+            } else if (tool.isInstalled) {
+                if ([currentTools indexOfObject:tool] == NSNotFound) {
+                    NSInteger index = [aManager.installedOrRequiredTools indexOfObject:tool];
+                    // If index is NOT NSNotFound
+                    if (index != NSNotFound) {
+                        NSIndexSet *idxSet = [NSIndexSet indexSetWithIndex:index];
+                        [tableView insertRowsAtIndexes:idxSet  withAnimation:NSTableViewAnimationEffectFade];
+
+                        [tableView reloadDataForRowIndexes:idxSet
+                                             columnIndexes:[NSIndexSet
+                                                            indexSetWithIndexesInRange:
+                                                            NSMakeRange(0, tableView.numberOfColumns)]];
+                        // Reset the currentTools
+                        currentTools = aManager.installedOrRequiredTools;
+                    }
+                }
+            } else {
+                NSInteger index = [currentTools indexOfObject:tool];
+                if (index != NSNotFound) {
+                    [tableView removeRowsAtIndexes:[NSIndexSet indexSetWithIndex:index]
+                                     withAnimation:NSTableViewAnimationEffectFade];
+
+                    // Reset the currentTools
+
+                    currentTools = aManager.installedOrRequiredTools;
+                }
+            }
+            [tableView endUpdates];
         };
     }
+
     return _toolManager.installedOrRequiredTools.count;
 }
 
@@ -110,11 +151,11 @@
 
     __block LGToolStatusTableCellView *statusCell = nil;
     if ([tableColumn.identifier isEqualToString:@"statusCell"]) {
-        statusCell = [tableView makeViewWithIdentifier:tableColumn.identifier owner:self];
 
         LGTool *tool = _toolManager.installedOrRequiredTools[row];
         tool.progressDelegate = self.progressDelegate;
 
+        statusCell = [tableView makeViewWithIdentifier:tableColumn.identifier owner:self];
         statusCell.installButton.target = tool;
         statusCell.installButton.enabled = NO;
         statusCell.installButton.title = [@"Install " stringByAppendingString:[[tool class] name]];
