@@ -34,12 +34,18 @@
     return @"ToolName";
 }
 
++ (NSString *)shortName {
+    /*If the name of the tool is Longer that 10 characters,
+     * put an abberviated name here so the buttons don't overflow */
+    return nil;
+}
+
 + (NSString *)credits {
     return @"Copyright 2014 Your Name\nhttp://www.apache.org/licenses/LICENSE-2.0";
 }
 
 + (NSURL *)homePage {
-    return [NSURL URLWithString:@"https://github.com/some/repo"];
+    return [NSURL URLWithString:@"https://github.com/project/"];
 }
 
 + (NSString *)gitHubURL

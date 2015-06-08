@@ -22,7 +22,7 @@
 @end
 
 // This is also a good place to add custom defaults
-@interface LGDefaults(munki)
+@interface LGDefaults (munki)
 @property (copy, nonatomic) NSString *default_catalog;
 @property (copy, nonatomic) NSString *editor;
 @property (copy, nonatomic) NSString *pkginfo_extension;

@@ -19,7 +19,6 @@
 //
 
 #import "LGBaseIntegrationViewController.h"
-#import "LGIntegration.h"
 
 @implementation LGBaseIntegrationViewController
 

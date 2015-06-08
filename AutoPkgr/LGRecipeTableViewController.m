@@ -20,13 +20,12 @@
 //
 
 #import "LGRecipeTableViewController.h"
+#import "LGTableCellViews.h"
+#import "LGRecipeInfoView.h"
 #import "LGAutoPkgr.h"
 #import "LGAutoPkgRecipe.h"
-
+#import "LGAutoPkgTask.h"
 #import "LGRecipeOverrides.h"
-#import "LGRecipeInfoView.h"
-
-#import "LGTableCellViews.h"
 
 @interface LGRecipeTableViewController () <NSWindowDelegate, NSPopoverDelegate>
 

@@ -21,6 +21,7 @@
 
 #import "LGMunkiIntegrationView.h"
 #import "LGAutoPkgr.h"
+
 #import "NSOpenPanel+folderChooser.h"
 
 @interface LGMunkiIntegrationView ()
@@ -60,7 +61,7 @@
     NSString *path = [[LGDefaults standardUserDefaults] munkiRepo] ?: @"/Users/Shared";
 
     // Display the dialog. If the "Choose" button was (This is a custom category)
-    [NSOpenPanel folderChooserWithStartingPath:path reply:^(NSString *selectedFolder) {
+    [NSOpenPanel folderChooser_WithStartingPath:path reply:^(NSString *selectedFolder) {
         if (selectedFolder) {
             DevLog(@"%@ selected for Munki repo location.", selectedFolder);
             [_localMunkiRepo setStringValue:selectedFolder];

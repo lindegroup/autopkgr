@@ -19,6 +19,7 @@
 
 #import <Cocoa/Cocoa.h>
 #import "LGTabViewControllerBase.h"
+
 @class LGIntegrationManager;
 
 @interface LGInstallViewController : LGTabViewControllerBase

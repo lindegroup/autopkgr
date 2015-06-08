@@ -20,15 +20,17 @@
 //
 
 #import "LGJSSImporterIntegrationView.h"
-#import "LGJSSImporterIntegration.h"
-#import "LGJSSDistributionPointsPrefPanel.h"
 
 #import "LGAutopkgr.h"
-#import "LGHTTPRequest.h"
-#import "LGTestPort.h"
-#import "LGInstaller.h"
-#import "LGHostInfo.h"
 #import "LGAutoPkgTask.h"
+#import "LGHTTPRequest.h"
+#import "LGHostInfo.h"
+#import "LGInstaller.h"
+#import "LGJSSDistributionPointsPrefPanel.h"
+#import "LGJSSImporterIntegration.h"
+#import "LGServerCredentials.h"
+#import "LGTableView.h"
+#import "LGTestPort.h"
 
 #pragma mark - Class constants
 

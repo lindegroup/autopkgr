@@ -27,7 +27,7 @@
  *  @param path  Path the open dialog should start at.
  *  @param reply reply block that takes one parameter, an NSString, that if the selected path is invalid will return nil.
  */
-+ (void)folderChooserWithStartingPath:(NSString *)path
++ (void)folderChooser_WithStartingPath:(NSString *)path
                                 reply:(void (^)(NSString *selectedFolder))reply;
 
 /**
@@ -37,7 +37,7 @@
  *  @param window modal window to present the panel on. can be nil.
  *  @param reply reply block that takes one parameter, an NSString, that if the selected path is invalid will return nil.
  */
-+ (void)folderChooserWithStartingPath:(NSString *)path
++ (void)folderChooser_WithStartingPath:(NSString *)path
                           modalWindow:(NSWindow *)window
                                 reply:(void (^)(NSString *selectedFolder))reply;
 

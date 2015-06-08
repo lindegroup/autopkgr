@@ -19,6 +19,7 @@
 
 #import "LGAutoPkgResultHandler.h"
 #import "LGAutoPkgTask.h"
+
 #import "NSData+taskData.h"
 
 @interface LGAutoPkgResultHandler ()

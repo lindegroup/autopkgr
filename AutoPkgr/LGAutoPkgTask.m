@@ -20,11 +20,12 @@
 #import "LGAutoPkgTask.h"
 #import "LGAutoPkgErrorHandler.h"
 #import "LGAutoPkgResultHandler.h"
-
-#import "AHProxySettings.h"
 #import "LGHostInfo.h"
 #import "LGVersioner.h"
+
 #import "NSData+taskData.h"
+
+#import <AHProxySettings/AHProxySettings.h>
 
 #if DEBUG
 /* For development using a custom version of autopkg, create

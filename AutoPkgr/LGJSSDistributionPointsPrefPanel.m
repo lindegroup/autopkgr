@@ -21,6 +21,8 @@
 
 #import "LGJSSDistributionPointsPrefPanel.h"
 #import "LGJSSImporterIntegration.h"
+#import "LGAutoPkgr.h"
+
 @interface LGJSSDistributionPointsPrefPanel ()<NSWindowDelegate>
 
 @end

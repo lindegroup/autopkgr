@@ -25,7 +25,7 @@
 #import "LGGitHubJSONLoader.h"
 #import "LGAutoPkgrHelperConnection.h"
 
-#import "AHKeychain.h"
+#import <AHKeychain/AHKeychain.h>
 
 
 @implementation LGHostInfo

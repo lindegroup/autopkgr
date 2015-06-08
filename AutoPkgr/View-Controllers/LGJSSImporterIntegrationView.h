@@ -20,13 +20,9 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "LGDefaults.h"
-
-#import "LGProgressDelegate.h"
-#import "LGTableView.h"
 #import "LGBaseIntegrationViewController.h"
 
-@class LGJSSImporterIntegration;
+@class LGJSSImporterIntegration, LGTableView;
 
 @interface LGJSSImporterIntegrationView : LGBaseIntegrationViewController <NSTableViewDataSource, NSTableViewDelegate>
 

@@ -20,11 +20,9 @@
 
 #import "LGIntegrationsViewController.h"
 #import "LGIntegrationManager.h"
-
 #import "LGJSSImporterIntegrationView.h"
 #import "LGMunkiIntegrationView.h"
 #import "LGAbsoluteManageIntegrationView.h"
-
 #import "LGIntegrationWindowController.h"
 #import "LGTableCellViews.h"
 
@@ -170,7 +168,7 @@
     // Set the default directory to the current setting for autoPkgCacheDir, else ~/Library/AutoPkg
     NSString *path = _defaults.autoPkgCacheDir ?: @"~/Library/AutoPkg".stringByExpandingTildeInPath;
 
-    [NSOpenPanel folderChooserWithStartingPath:path modalWindow:self.modalWindow reply:^(NSString *selectedFolder) {
+    [NSOpenPanel folderChooser_WithStartingPath:path modalWindow:self.modalWindow reply:^(NSString *selectedFolder) {
         if (selectedFolder) {
             DevLog(@"AutoPkg Cache location selected.");
             _openAutoPkgCacheFolderButton.enabled = YES;
@@ -214,7 +212,7 @@
     // Set the default directory to the current setting for autoPkgRecipeRepoDir, else ~/Library/AutoPkg
     NSString *path = _defaults.autoPkgRecipeRepoDir ?: @"~/Library/AutoPkg".stringByExpandingTildeInPath;
 
-    [NSOpenPanel folderChooserWithStartingPath:path modalWindow:self.modalWindow reply:^(NSString *selectedFolder) {
+    [NSOpenPanel folderChooser_WithStartingPath:path modalWindow:self.modalWindow reply:^(NSString *selectedFolder) {
         if(selectedFolder){
             DLog(@"AutoPkg RecipeRepos location selected.");
             _openAutoPkgRecipeReposFolderButton.enabled = YES;
@@ -261,7 +259,7 @@
     // Set the default directory to the current setting for autoPkgRecipeOverridesDir, else ~/Library/AutoPkg
     NSString *path = _defaults.autoPkgRecipeOverridesDir ?: @"~/Library/AutoPkg".stringByExpandingTildeInPath;
 
-    [NSOpenPanel folderChooserWithStartingPath:path modalWindow:self.modalWindow reply:^(NSString *selectedFolder) {
+    [NSOpenPanel folderChooser_WithStartingPath:path modalWindow:self.modalWindow reply:^(NSString *selectedFolder) {
         if (selectedFolder) {
             DevLog(@"AutoPkg RecipeOverrides location selected.");
             _openAutoPkgRecipeOverridesFolderButton.enabled = YES;

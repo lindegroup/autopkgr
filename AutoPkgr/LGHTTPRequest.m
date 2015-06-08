@@ -21,6 +21,7 @@
 #import "LGHTTPRequest.h"
 #import "LGAutoPkgr.h"
 #import "LGJSSImporterIntegration.h"
+#import "LGServerCredentials.h"
 
 #import <AFNetworking/AFNetworking.h>
 #import <XMLDictionary/XMLDictionary.h>

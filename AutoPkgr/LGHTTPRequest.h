@@ -19,7 +19,8 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "LGServerCredentials.h"
+
+@class LGHTTPCredential;
 
 @interface LGHTTPRequest : NSObject
 

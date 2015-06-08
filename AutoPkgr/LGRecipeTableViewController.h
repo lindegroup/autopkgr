@@ -20,7 +20,6 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "LGAutoPkgTask.h"
 #import "LGTableView.h"
 
 @interface LGRecipeTableViewController : NSObject <NSApplicationDelegate, NSTableViewDelegate, LGTableViewDataSource>

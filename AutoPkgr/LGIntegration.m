@@ -16,16 +16,12 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
 //
-//
 
 #import "LGIntegration.h"
 #import "LGIntegration+Protocols.h"
-
 #import "LGAutoPkgr.h"
-
 #import "LGInstaller.h"
 #import "LGUninstaller.h"
-
 #import "LGAutoPkgTask.h"
 #import "LGHostInfo.h"
 

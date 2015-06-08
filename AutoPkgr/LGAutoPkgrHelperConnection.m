@@ -18,7 +18,7 @@
 //
 
 #import "LGAutoPkgrHelperConnection.h"
-#import "LGAutoPkgrProtocol.h"
+
 #import <AHLaunchCtl/AHLaunchJobSchedule.h>
 
 @interface LGAutoPkgrHelperConnection ()

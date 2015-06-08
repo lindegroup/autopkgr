@@ -21,7 +21,8 @@
 #import "LGPasswords.h"
 #import "LGAutoPkgrHelperConnection.h"
 #import "LGAutoPkgr.h"
-#import "AHKeychain.h"
+
+#import <AHKeychain/AHKeychain.h>
 
 @implementation LGPasswords
 

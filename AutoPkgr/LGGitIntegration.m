@@ -17,9 +17,10 @@
 
 #import "LGGitIntegration.h"
 #import "LGIntegration+Protocols.h"
-
 #import "LGDefaults.h"
+
 #import "NSData+taskData.h"
+
 #import <AHProxySettings/NSTask+useSystemProxies.h>
 
 NSString *const kLGOfficialGit = @"/usr/local/git/bin/git";

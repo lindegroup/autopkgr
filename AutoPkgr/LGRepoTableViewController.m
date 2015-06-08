@@ -20,10 +20,12 @@
 //
 
 #import "LGRepoTableViewController.h"
+#import "LGTableCellViews.h"
 #import "LGAutoPkgr.h"
 #import "LGRecipeSearch.h"
 #import "LGAutoPkgRepo.h"
-#import "LGTableCellViews.h"
+#import "LGAutoPkgTask.h"
+#import "LGGitHubJSONLoader.h"
 
 @interface LGRepoTableViewController ()
 

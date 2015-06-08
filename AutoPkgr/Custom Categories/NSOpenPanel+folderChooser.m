@@ -21,7 +21,7 @@
 #import "NSOpenPanel+folderChooser.h"
 
 @implementation NSOpenPanel (folderChooser)
-+ (void)folderChooserWithStartingPath:(NSString *)path modalWindow:(NSWindow *)window reply:(void (^)(NSString *))reply
++ (void)folderChooser_WithStartingPath:(NSString *)path modalWindow:(NSWindow *)window reply:(void (^)(NSString *))reply
 {
     NSOpenPanel *panel = [NSOpenPanel openPanel];
     // Disable the selection of files in the dialog
@@ -57,8 +57,8 @@
     }];
 }
 
-+ (void)folderChooserWithStartingPath:(NSString *)path reply:(void (^)(NSString *))reply {
-    [self folderChooserWithStartingPath:path modalWindow:nil reply:reply];
++ (void)folderChooser_WithStartingPath:(NSString *)path reply:(void (^)(NSString *))reply {
+    [self folderChooser_WithStartingPath:path modalWindow:nil reply:reply];
 }
 
 

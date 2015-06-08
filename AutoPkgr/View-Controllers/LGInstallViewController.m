@@ -19,7 +19,6 @@
 
 #import "LGInstallViewController.h"
 #import "LGAutoPkgr.h"
-
 #import "LGAutoPkgSchedule.h"
 #import "LGIntegrationManager.h"
 #import "LGDisplayStatusDelegate.h"

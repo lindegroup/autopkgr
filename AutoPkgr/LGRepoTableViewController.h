@@ -20,8 +20,6 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "LGAutoPkgTask.h"
-#import "LGGitHubJSONLoader.h"
 #import "LGRecipeTableViewController.h"
 #import "LGProgressDelegate.h"
 

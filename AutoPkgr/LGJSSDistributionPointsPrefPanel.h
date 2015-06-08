@@ -20,7 +20,6 @@
 //
 
 #import <Cocoa/Cocoa.h>
-#import "LGAutoPkgr.h"
 
 @interface LGJSSDistributionPointsPrefPanel : NSWindowController
 

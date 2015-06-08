@@ -20,7 +20,6 @@
 
 #import "LGRecipeOverrides.h"
 #import "LGAutoPkgRecipe.h"
-
 #import "LGDefaults.h"
 #import "LGAutoPkgTask.h"
 
