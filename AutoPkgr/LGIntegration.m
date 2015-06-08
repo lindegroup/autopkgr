@@ -18,8 +18,8 @@
 //
 //
 
-#import "LGTool.h"
-#import "LGTool+Protocols.h"
+#import "LGIntegration.h"
+#import "LGIntegration+Protocols.h"
 
 #import "LGAutoPkgr.h"
 
@@ -45,14 +45,14 @@ static dispatch_queue_t autopkgr_tool_synchronizer_queue()
     return autopkgr_tool_synchronizer_queue;
 }
 
-NSString *const kLGNotificationToolStatusDidChange = @"com.lindegroup.autopkgr.notification.toolstatus.did.change";
+NSString *const kLGNotificationIntegrationStatusDidChange = @"com.lindegroup.autopkgr.notification.toolstatus.did.change";
 
-@interface LGTool ()
-@property (copy, nonatomic, readwrite) LGToolInfo *info;
+@interface LGIntegration ()
+@property (copy, nonatomic, readwrite) LGIntegrationInfo *info;
 @end
 
-@interface LGToolInfo ()
-- (instancetype)initWithTool:(LGTool *)tool;
+@interface LGIntegrationInfo ()
+- (instancetype)initWithIntegration:(LGIntegration *)tool;
 @end
 
 void subclassMustImplement(id className, SEL _cmd)
@@ -67,13 +67,13 @@ void subclassMustImplement(id className, SEL _cmd)
 void subclassMustConformToProtocol(id className)
 {
     NSString *reason = [NSString stringWithFormat:@"[ EXCEPTION ] %s must conform to at least one LGTool protocol",
-                        object_getClassName(className)];
+                                                  object_getClassName(className)];
     @throw [NSException exceptionWithName:@"SubclassMustConform"
                                    reason:reason
                                  userInfo:nil];
 }
 
-@implementation LGTool {
+@implementation LGIntegration {
     void (^_progressUpdateBlock)(NSString *, double);
     void (^_replyErrorBlock)(NSError *);
     NSMutableDictionary *_infoUpdateBlocksDict;
@@ -88,12 +88,11 @@ void subclassMustConformToProtocol(id className)
 + (void)initialize
 {
     // We only need to check subclasses, the super
-    if ((self != [LGTool class]) && [self isSubclassOfClass:[LGTool class]]) {
+    if ((self != [LGIntegration class]) && [self isSubclassOfClass:[LGIntegration class]]) {
 
         // The subclasses must conform to at least one of the protocols
-        if (([self conformsToProtocol:@protocol(LGToolSharedProcessor)] ||
-             [self conformsToProtocol:@protocol(LGToolPackageInstaller)]) == NO)
-        {
+        if (([self conformsToProtocol:@protocol(LGIntegrationSharedProcessor)] ||
+             [self conformsToProtocol:@protocol(LGIntegrationPackageInstaller)]) == NO) {
             subclassMustConformToProtocol(self);
         }
     }
@@ -102,7 +101,7 @@ void subclassMustConformToProtocol(id className)
 #pragma mark - Tool
 + (BOOL)isInstalled
 {
-    if ((self.typeFlags & kLGToolTypeAutoPkgSharedProcessor) && (![self components])) {
+    if ((self.typeFlags & kLGIntegrationTypeAutoPkgSharedProcessor) && (![self components])) {
         return [[LGAutoPkgTask repoList] containsObject:[self defaultRepository]];
     } else {
         NSFileManager *fm = [NSFileManager defaultManager];
@@ -137,7 +136,7 @@ void subclassMustConformToProtocol(id className)
     /* Repoint so we don't loose reference to the _infoUpdateBlockDict after dealloc */
     NSMutableDictionary *releaseDict = _infoUpdateBlocksDict;
     dispatch_async(autopkgr_tool_synchronizer_queue(), ^{
-        [releaseDict enumerateKeysAndObjectsUsingBlock:^(void (^infoUpdate)(LGToolInfo *), id obj, BOOL *stop) {
+        [releaseDict enumerateKeysAndObjectsUsingBlock:^(void (^infoUpdate)(LGIntegrationInfo *), id obj, BOOL *stop) {
             infoUpdate = nil;
         }];
         [releaseDict removeAllObjects];
@@ -147,7 +146,7 @@ void subclassMustConformToProtocol(id className)
 - (instancetype)init
 {
     if (self = [super init]) {
-        if ([[self class] typeFlags] & kLGToolTypeInstalledPackage) {
+        if ([[self class] typeFlags] & kLGIntegrationTypeInstalledPackage) {
             self.gitHubInfo = [[LGGitHubReleaseInfo alloc] initWithURL:[[self class] gitHubURL]];
         }
     }
@@ -162,19 +161,19 @@ void subclassMustConformToProtocol(id className)
     return nil;
 }
 
-+ (LGToolTypeFlags)typeFlags
++ (LGIntegrationTypeFlags)typeFlags
 {
-    LGToolTypeFlags flags = kLGToolTypeUnspecified;
-    if ([self conformsToProtocol:@protocol(LGToolSharedProcessor)]) {
-        flags += kLGToolTypeAutoPkgSharedProcessor;
+    LGIntegrationTypeFlags flags = kLGIntegrationTypeUnspecified;
+    if ([self conformsToProtocol:@protocol(LGIntegrationSharedProcessor)]) {
+        flags += kLGIntegrationTypeAutoPkgSharedProcessor;
     }
 
-    if ([self conformsToProtocol:@protocol(LGToolPackageInstaller)]) {
-        flags += kLGToolTypeInstalledPackage;
+    if ([self conformsToProtocol:@protocol(LGIntegrationPackageInstaller)]) {
+        flags += kLGIntegrationTypeInstalledPackage;
     }
 
     if ([self isUninstallable]) {
-        flags += kLGToolTypeUninstallableTool;
+        flags += kLGIntegrationTypeUninstallableIntegration;
     }
 
     return flags;
@@ -182,7 +181,7 @@ void subclassMustConformToProtocol(id className)
 
 + (NSString *)binary
 {
-    if ([self typeFlags] & kLGToolTypeInstalledPackage) {
+    if ([self typeFlags] & kLGIntegrationTypeInstalledPackage) {
         subclassMustImplement(self, _cmd);
     }
     return nil;
@@ -190,7 +189,7 @@ void subclassMustConformToProtocol(id className)
 
 + (NSArray *)components
 {
-    if ([self typeFlags] & kLGToolTypeAutoPkgSharedProcessor) {
+    if ([self typeFlags] & kLGIntegrationTypeAutoPkgSharedProcessor) {
         subclassMustImplement(self, _cmd);
     }
     return nil;
@@ -198,7 +197,7 @@ void subclassMustConformToProtocol(id className)
 
 + (NSString *)defaultRepository
 {
-    if ([self typeFlags] & kLGToolTypeAutoPkgSharedProcessor) {
+    if ([self typeFlags] & kLGIntegrationTypeAutoPkgSharedProcessor) {
         subclassMustImplement(self, _cmd);
     }
     return nil;
@@ -206,7 +205,7 @@ void subclassMustConformToProtocol(id className)
 
 + (NSString *)gitHubURL
 {
-    if ([[self class] typeFlags] & kLGToolTypeInstalledPackage) {
+    if ([[self class] typeFlags] & kLGIntegrationTypeInstalledPackage) {
         subclassMustImplement(self, _cmd);
     }
     return nil;
@@ -214,38 +213,50 @@ void subclassMustConformToProtocol(id className)
 
 + (NSArray *)packageIdentifiers
 {
-    if ([[self class] typeFlags] & kLGToolTypeInstalledPackage) {
+    if ([[self class] typeFlags] & kLGIntegrationTypeInstalledPackage) {
         subclassMustImplement(self, _cmd);
     }
     return nil;
 }
 
-- (void)customInstallActions {}
-- (void)customUninstallActions {}
++ (NSString *)credits
+{
+    return nil;
+}
+
++ (NSURL *)homePage
+{
+    return nil;
+}
+
++ (NSString *)shortName
+{
+    return nil;
+}
 
 #pragma mark - Super implementation
-- (BOOL)isInstalled {
+- (void)customInstallActions
+{
+}
+- (void)customUninstallActions {}
+
+- (BOOL)isInstalled
+{
     return [[self class] isInstalled];
 }
 
-- (NSString *)name {
+- (NSString *)name
+{
     return [[self class] name];
 }
 
-+ (NSString *)credits {
-    return nil;
-}
-
-+ (NSURL *)homePage {
-    return nil;
-}
-
-- (void)getInfo:(void (^)(LGToolInfo *))reply {
+- (void)getInfo:(void (^)(LGIntegrationInfo *))reply
+{
     _isRefreshing = YES;
-    void (^updateInfoHandlers)() = ^(){
+    void (^updateInfoHandlers)() = ^() {
         dispatch_async(autopkgr_tool_synchronizer_queue(), ^{
             if (reply || _infoUpdateHandler) {
-                _info = [[LGToolInfo alloc] initWithTool:self];
+                _info = [[LGIntegrationInfo alloc] initWithIntegration:self];
 
                 if (_infoUpdateHandler) {
                     _infoUpdateHandler(_info);
@@ -254,7 +265,7 @@ void subclassMustConformToProtocol(id className)
                     reply(_info);
                 }
             } else {
-                _info = [[LGToolInfo alloc] initWithTool:self];
+                _info = [[LGIntegrationInfo alloc] initWithIntegration:self];
             }
             _isRefreshing = NO;
         });
@@ -280,17 +291,17 @@ void subclassMustConformToProtocol(id className)
     [self getInfo:nil];
 }
 
-- (LGToolInfo *)info
+- (LGIntegrationInfo *)info
 {
     if (!_info) {
-        _info = [[LGToolInfo alloc] initWithTool:self];
+        _info = [[LGIntegrationInfo alloc] initWithIntegration:self];
     }
     return _info;
 }
 
 - (NSString *)remoteVersion
 {
-    if ([[self class] typeFlags] & kLGToolTypeInstalledPackage) {
+    if ([[self class] typeFlags] & kLGIntegrationTypeInstalledPackage) {
         return self.gitHubInfo.latestVersion;
     }
 
@@ -301,9 +312,9 @@ void subclassMustConformToProtocol(id className)
 
 - (NSString *)installedVersion
 {
-    LGToolTypeFlags typeFlags = [[self class] typeFlags];
+    LGIntegrationTypeFlags typeFlags = [[self class] typeFlags];
 
-    if (typeFlags & kLGToolTypeInstalledPackage) {
+    if (typeFlags & kLGIntegrationTypeInstalledPackage) {
         NSFileManager *fm = [NSFileManager defaultManager];
         NSString *packageReceipt = [[@"/private/var/db/receipts/" stringByAppendingPathComponent:[[[self class] packageIdentifiers] firstObject]] stringByAppendingPathExtension:@"plist"];
 
@@ -313,7 +324,7 @@ void subclassMustConformToProtocol(id className)
                 _installedVersion = receiptDict[@"PackageVersion"];
             }
         }
-    } else if (typeFlags & kLGToolTypeAutoPkgSharedProcessor) {
+    } else if (typeFlags & kLGIntegrationTypeAutoPkgSharedProcessor) {
         _installedVersion = @"Shared Processor";
     }
 
@@ -333,13 +344,13 @@ void subclassMustConformToProtocol(id className)
         [sender setEnabled:NO];
     }
 
-    LGToolTypeFlags flags = [[self class] typeFlags];
+    LGIntegrationTypeFlags flags = [[self class] typeFlags];
     NSError *error = nil;
     if (![[self class] meetsRequirements:&error]) {
         [self didCompleteInstallAction:sender error:error];
-    } else if (flags & kLGToolTypeInstalledPackage) {
+    } else if (flags & kLGIntegrationTypeInstalledPackage) {
         [self installPackage:sender];
-    } else if (flags & kLGToolTypeAutoPkgSharedProcessor) {
+    } else if (flags & kLGIntegrationTypeAutoPkgSharedProcessor) {
         [self installDefaultRepository:sender];
     }
 }
@@ -347,7 +358,7 @@ void subclassMustConformToProtocol(id className)
 - (void)installPackage:(id)sender
 {
     NSString *name = [[self class] name];
-    LGToolTypeFlags typeFlags = [[self class] typeFlags];
+    LGIntegrationTypeFlags typeFlags = [[self class] typeFlags];
 
     NSString *installMessage = [NSString stringWithFormat:@"Installing %@...", [[self class] name]];
     [self.progressDelegate startProgressWithMessage:installMessage];
@@ -357,7 +368,7 @@ void subclassMustConformToProtocol(id className)
     installer.progressDelegate = self.progressDelegate;
 
     [installer runInstaller:name reply:^(NSError *error) {
-        if (!error && (typeFlags & kLGToolTypeAutoPkgSharedProcessor)) {
+        if (!error && (typeFlags & kLGIntegrationTypeAutoPkgSharedProcessor)) {
             [self installDefaultRepository:sender];
         } else {
             [self didCompleteInstallAction:sender error:error];
@@ -418,9 +429,9 @@ void subclassMustConformToProtocol(id className)
     };
 
     if ([[self class] isInstalled]) {
-        LGToolTypeFlags flags = [[self class] typeFlags];
+        LGIntegrationTypeFlags flags = [[self class] typeFlags];
 
-        if (flags & kLGToolTypeInstalledPackage) {
+        if (flags & kLGIntegrationTypeInstalledPackage) {
             LGUninstaller *uninstaller = [[LGUninstaller alloc] init];
 
             NSString *message = [NSString stringWithFormat:@"Uninstalling %@...", [[self class] name]];
@@ -431,7 +442,7 @@ void subclassMustConformToProtocol(id className)
             }
 
             [uninstaller uninstallPackagesWithIdentifiers:[[self class] packageIdentifiers] reply:^(NSError *error) {
-                if (error || !(flags & kLGToolTypeAutoPkgSharedProcessor)) {
+                if (error || !(flags & kLGIntegrationTypeAutoPkgSharedProcessor)) {
                     [self didCompleteInstallAction:sender error:error];
                 } else {
                     removeRepo();
@@ -450,7 +461,6 @@ void subclassMustConformToProtocol(id className)
         }
         _progressUpdateBlock = progress;
         _progressDelegate = self;
-
     }
 
     if (reply) {
@@ -478,13 +488,13 @@ void subclassMustConformToProtocol(id className)
         }
     }
 
-    [[NSNotificationCenter defaultCenter] postNotificationName:kLGNotificationToolStatusDidChange object:self];
+    [[NSNotificationCenter defaultCenter] postNotificationName:kLGNotificationIntegrationStatusDidChange object:self];
 
     if (_origProgressDelegate) {
         _progressDelegate = _origProgressDelegate;
         _origProgressDelegate = nil;
     }
-    
+
     [self refresh];
 }
 
@@ -520,7 +530,7 @@ void subclassMustConformToProtocol(id className)
         NSLocalizedRecoverySuggestionErrorKey : reason ?: @"",
     };
 
-    return [NSError errorWithDomain:kLGApplicationName code:(4 << 1) userInfo:userInfo];
+    return [NSError errorWithDomain:kLGApplicationName code:(4 << 1)userInfo:userInfo];
 }
 
 #pragma mark - LGProgress Delegate
@@ -549,19 +559,19 @@ void subclassMustConformToProtocol(id className)
 @end
 
 #pragma mark - Tool Info Object
-@implementation LGToolInfo {
+@implementation LGIntegrationInfo {
     NSString *_name;
-    LGToolTypeFlags _typeFlags;
-    LGToolInstallStatus _status;
+    NSString *_shortName;
+    LGIntegrationTypeFlags _typeFlags;
+    LGIntegrationInstallStatus _status;
     BOOL _installed;
-    
 }
 
-
-- (instancetype)initWithTool:(LGTool *)tool;
+- (instancetype)initWithIntegration:(LGIntegration *)tool;
 {
     if (self = [super init]) {
         _name = [[tool class] name];
+        _shortName = [[tool class] shortName];
         _typeFlags = [[tool class] typeFlags];
         _installed = [[tool class] isInstalled];
 
@@ -572,15 +582,15 @@ void subclassMustConformToProtocol(id className)
     return self;
 }
 
-- (LGToolInstallStatus)status
+- (LGIntegrationInstallStatus)status
 {
-    _status = kLGToolUpToDate;
+    _status = kLGIntegrationUpToDate;
 
     if (!_installed || !_installedVersion) {
-        _status = kLGToolNotInstalled;
+        _status = kLGIntegrationNotInstalled;
     } else if (_installedVersion && _remoteVersion) {
         if ([_remoteVersion version_isGreaterThan:_installedVersion]) {
-            _status = kLGToolUpdateAvailable;
+            _status = kLGIntegrationUpdateAvailable;
         }
     }
     return _status;
@@ -592,13 +602,13 @@ void subclassMustConformToProtocol(id className)
 {
     NSImage *stausImage = nil;
     switch (self.status) {
-    case kLGToolNotInstalled:
+    case kLGIntegrationNotInstalled:
         stausImage = [NSImage LGStatusNotInstalled];
         break;
-    case kLGToolUpdateAvailable:
+    case kLGIntegrationUpdateAvailable:
         stausImage = [NSImage LGStatusUpdateAvailable];
         break;
-    case kLGToolUpToDate:
+    case kLGIntegrationUpToDate:
     default:
         stausImage = [NSImage LGStatusUpToDate];
         break;
@@ -610,13 +620,13 @@ void subclassMustConformToProtocol(id className)
 {
     NSString *statusString = @"";
     switch (self.status) {
-    case kLGToolNotInstalled:
+    case kLGIntegrationNotInstalled:
         statusString = [NSString stringWithFormat:@"%@ not installed.", _name];
         break;
-    case kLGToolUpdateAvailable:
+    case kLGIntegrationUpdateAvailable:
         statusString = [NSString stringWithFormat:@"%@ %@ update now available.", _name, self.remoteVersion];
         break;
-    case kLGToolUpToDate:
+    case kLGIntegrationUpToDate:
     default:
         statusString = [NSString stringWithFormat:@"%@ %@ installed.", _name, self.installedVersion];
         break;
@@ -627,12 +637,12 @@ void subclassMustConformToProtocol(id className)
 - (BOOL)needsInstalled
 {
     switch (self.status) {
-        case kLGToolNotInstalled:
-        case kLGToolUpdateAvailable:
-            return YES;
-        case kLGToolUpToDate:
-        default:
-            return NO;
+    case kLGIntegrationNotInstalled:
+    case kLGIntegrationUpdateAvailable:
+        return YES;
+    case kLGIntegrationUpToDate:
+    default:
+        return NO;
     }
 }
 
@@ -640,42 +650,44 @@ void subclassMustConformToProtocol(id className)
 {
     NSString *title;
     switch (self.status) {
-    case kLGToolUpToDate:
-        if (_typeFlags & kLGToolTypeUninstallableTool) {
+    case kLGIntegrationUpToDate:
+        if (_typeFlags & kLGIntegrationTypeUninstallableIntegration) {
             title = @"Uninstall ";
             break;
         }
-    case kLGToolNotInstalled:
+    case kLGIntegrationNotInstalled:
         title = @"Install ";
         break;
-    case kLGToolUpdateAvailable:
+    case kLGIntegrationUpdateAvailable:
         title = @"Update ";
         break;
     default:
         title = @"";
         break;
     }
-    return [title stringByAppendingString:_name];
+    return [title stringByAppendingString:_shortName ?: _name];
 }
 
-- (BOOL)installButtonEnabled {
+- (BOOL)installButtonEnabled
+{
     switch (self.status) {
-        case kLGToolNotInstalled: {}
-        case kLGToolUpdateAvailable: {
-            return YES;
-        }
-        case kLGToolUpToDate: {
-            return (_typeFlags & kLGToolTypeUninstallableTool);
-        }
-        default: {
-            break;
-        }
+    case kLGIntegrationNotInstalled: {
+    }
+    case kLGIntegrationUpdateAvailable: {
+        return YES;
+    }
+    case kLGIntegrationUpToDate: {
+        return (_typeFlags & kLGIntegrationTypeUninstallableIntegration);
+    }
+    default: {
+        break;
+    }
     }
 }
 
 - (SEL)installButtonTargetAction
 {
-    if ((self.status == kLGToolUpToDate) && (_typeFlags | kLGToolTypeUninstallableTool)) {
+    if ((self.status == kLGIntegrationUpToDate) && (_typeFlags | kLGIntegrationTypeUninstallableIntegration)) {
         return @selector(uninstall:);
     } else {
         return @selector(install:);
@@ -686,21 +698,22 @@ void subclassMustConformToProtocol(id className)
 {
     NSString *title;
     switch (self.status) {
-        case kLGToolNotInstalled:
-            title = @"Install ";
-            break;
-        case kLGToolUpToDate:
-        case kLGToolUpdateAvailable:
-            title = @"Configure ";
-            break;
-        default:
-            title = @"??? ";
-            break;
+    case kLGIntegrationNotInstalled:
+        title = @"Install ";
+        break;
+    case kLGIntegrationUpToDate:
+    case kLGIntegrationUpdateAvailable:
+        title = @"Configure ";
+        break;
+    default:
+        title = @"??? ";
+        break;
     }
-    return [title stringByAppendingString:_name];
+    return [title stringByAppendingString:_shortName ?: _name];
 }
 
-- (BOOL)configureButtonEnabled {
+- (BOOL)configureButtonEnabled
+{
     return YES;
 }
 
@@ -708,31 +721,12 @@ void subclassMustConformToProtocol(id className)
 {
     SEL selector = nil;
 
-    if (self.status != kLGToolNotInstalled) {
+    if (self.status != kLGIntegrationNotInstalled) {
         selector = NSSelectorFromString(@"configure:");
     } else {
         selector = @selector(install:);
     }
     return selector;
-}
-
-- (void)modifyInstall_UninstallButton:(NSButton *)button withTool:(LGTool *)tool {
-    button.target = tool;
-    button.action = self.installButtonTargetAction;
-    button.title = self.installButtonTitle;
-    button.enabled = self.installButtonEnabled;
-}
-
-- (void)modifyInstall_ConfigureButton:(NSButton *)button withTarget:(id)target {
-    SEL selector = self.configureButtonTargetAction;
-    if ([target respondsToSelector:selector]) {
-        button.action = selector;
-        button.target = target;
-    } else {
-        button.action = nil;
-        button.target = nil;
-        button.title = self.configureButtonTitle;
-    }
 }
 
 @end

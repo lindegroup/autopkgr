@@ -45,9 +45,9 @@
 @property (copy, nonatomic) NSError *error;
 
 /**
- *  Array of LGTools
+ *  Array of LGIntegrations
  */
-@property (copy, nonatomic) NSArray *tools;
+@property (copy, nonatomic) NSArray *integrations;
 
 /**
  *  Flags to define what to display in the report

@@ -1,4 +1,4 @@
-// LGGitTool.m
+// LGGitIntegration.m
 //
 //  Copyright 2015 Eldon Ahrold
 //
@@ -15,8 +15,8 @@
 //  limitations under the License.
 //
 
-#import "LGGitTool.h"
-#import "LGTool+Protocols.h"
+#import "LGGitIntegration.h"
+#import "LGIntegration+Protocols.h"
 
 #import "LGDefaults.h"
 #import "NSData+taskData.h"
@@ -28,7 +28,7 @@ NSString *const kLGXcodeGit = @"/Applications/Xcode.app/Contents/Developer/usr/b
 NSString *const kLGHomeBrewGit = @"/usr/local/bin/git";
 NSString *const kLGBoxenBrewGit = @"/opt/boxen/homebrew/bin/git";
 
-@interface LGGitTool ()<LGToolPackageInstaller>
+@interface LGGitIntegration ()<LGIntegrationPackageInstaller>
 @end
 
 NSArray *knownGitPaths()
@@ -41,7 +41,7 @@ NSArray *knownGitPaths()
     ];
 }
 
-@implementation LGGitTool
+@implementation LGGitIntegration
 
 @synthesize installedVersion = _installedVersion;
 @synthesize remoteVersion = _remoteVersion;
@@ -151,7 +151,7 @@ NSArray *knownGitPaths()
     return _downloadURL;
 }
 
-#pragma mark - Tool Extensions
+#pragma mark - Integration Extensions
 + (void)gitTaskWithArguments:(NSArray *)args repoPath:(NSString *)repoPath reply:(void (^)(NSString *, NSError *))reply {
 
 

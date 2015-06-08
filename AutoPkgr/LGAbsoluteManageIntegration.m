@@ -16,25 +16,29 @@
 //
 
 #import "LGAbsoluteManageIntegration.h"
-#import "LGTool+Protocols.h"
+#import "LGIntegration+Protocols.h"
 
 // Define the protocols you intend to conform to...
-@interface LGAbsoluteManageIntegration () <LGToolPackageInstaller, LGToolSharedProcessor>
+@interface LGAbsoluteManageIntegration () <LGIntegrationPackageInstaller, LGIntegrationSharedProcessor>
 @end
 
-#pragma mark - Tool overrides
+#pragma mark - Integration overrides
 @implementation LGAbsoluteManageIntegration
 
 // Since this is defined using a protocol, it needs to be synthesized...
-// If not conforming to LGTOOLPackageInstaller remove it.
+// If not conforming to LGIntegrationPackageInstaller remove it.
 @synthesize gitHubInfo = _gitHubInfo;
 
 #pragma mark - Class overrides
 + (NSString *)name
 {
-    return @"AMExporter";
+    return @"AbsoluteManageExport";
 }
 
++ (NSString *)shortName
+{
+    return @"AMExporter";
+}
 + (NSString *)credits {
     return @"Copyright 2014 Thomas Burgin\nhttp://www.apache.org/licenses/LICENSE-2.0";
 }

@@ -17,7 +17,7 @@
 
 #import "LGAutoPkgRepo.h"
 #import "LGAutoPkgTask.h"
-#import "LGGitTool.h"
+#import "LGGitIntegration.h"
 #import "NSData+taskData.h"
 
 #import <AFNetworking/AFNetworking.h>
@@ -170,13 +170,13 @@ static NSArray *_popularRepos;
             NSArray *locTaskArgs = @[ @"rev-parse", self.defaultBranch ];
             NSArray *remTaskArgs = @[ @"ls-remote", @"--heads", @"origin", @"./.", self.defaultBranch ];
 
-            [LGGitTool gitTaskWithArguments:locTaskArgs repoPath:path reply:^(NSString *locStdOut, NSError *error) {
+            [LGGitIntegration gitTaskWithArguments:locTaskArgs repoPath:path reply:^(NSString *locStdOut, NSError *error) {
                 if (error) {
                     NSLog(@"Git Error: %@", error );
                 }
 
                 NSString *localSHA1 = locStdOut.trimmed;
-                [LGGitTool gitTaskWithArguments:remTaskArgs repoPath:path reply:^(NSString *remStdOut, NSError *error) {
+                [LGGitIntegration gitTaskWithArguments:remTaskArgs repoPath:path reply:^(NSString *remStdOut, NSError *error) {
                     if (error) {
                         NSLog(@"Git Error: %@", error );
                     }

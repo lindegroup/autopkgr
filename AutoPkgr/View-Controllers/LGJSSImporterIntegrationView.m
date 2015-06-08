@@ -20,7 +20,7 @@
 //
 
 #import "LGJSSImporterIntegrationView.h"
-#import "LGJSSImporterTool.h"
+#import "LGJSSImporterIntegration.h"
 #import "LGJSSDistributionPointsPrefPanel.h"
 
 #import "LGAutopkgr.h"

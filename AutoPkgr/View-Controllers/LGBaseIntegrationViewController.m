@@ -1,5 +1,5 @@
 //
-//  LGToolViewControllerBase.m
+//  LGBaseIntegrationViewController.m
 //  AutoPkgr
 //
 //  Created by Eldon on 6/5/15.
@@ -19,7 +19,7 @@
 //
 
 #import "LGBaseIntegrationViewController.h"
-#import "LGTool.h"
+#import "LGIntegration.h"
 
 @implementation LGBaseIntegrationViewController
 
@@ -27,7 +27,7 @@
     return (self = [super initWithNibName:NSStringFromClass([self class]) bundle:nil]);
 }
 
-- (instancetype)initWithIntegration:(LGTool *)integration
+- (instancetype)initWithIntegration:(LGIntegration *)integration
 {
     if (self = [self init]) {
         _integration = integration;

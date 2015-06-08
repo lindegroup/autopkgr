@@ -1,6 +1,5 @@
-// LGAutoPkgTool.m
+// LGIntegrationTemplate.m
 //
-//  Copyright 2015 Eldon Ahrold
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -15,15 +14,15 @@
 //  limitations under the License.
 //
 
-#import "LGToolTemplate.h"
-#import "LGTool+Protocols.h"
+#import "LGIntegrationTemplate.h"
+#import "LGIntegration+Protocols.h"
 
 // Define the protocols you intend to conform to...
-@interface LGToolTemplate () <LGToolPackageInstaller, LGToolSharedProcessor>
+@interface LGIntegrationTemplate () <LGIntegrationPackageInstaller, LGIntegrationSharedProcessor>
 @end
 
 #pragma mark - Tool overrides
-@implementation LGToolTemplate
+@implementation LGIntegrationTemplate
 
 // Since this is defined using a protocol, it needs to be synthesized...
 // If not conforming to LGTOOLPackageInstaller remove it.
@@ -33,6 +32,14 @@
 + (NSString *)name
 {
     return @"ToolName";
+}
+
++ (NSString *)credits {
+    return @"Copyright 2014 Your Name\nhttp://www.apache.org/licenses/LICENSE-2.0";
+}
+
++ (NSURL *)homePage {
+    return [NSURL URLWithString:@"https://github.com/some/repo"];
 }
 
 + (NSString *)gitHubURL

@@ -15,16 +15,16 @@
 //  limitations under the License.
 //
 
-#import "LGMunkiTool.h"
-#import "LGTool+Protocols.h"
+#import "LGMunkiIntegration.h"
+#import "LGIntegration+Protocols.h"
 
 static NSString *const kLGMunkiimportDomain = @"com.googlecode.munki.munkiimport";
 // Define the protocols you intend to conform to...
-@interface LGMunkiTool ()<LGToolPackageInstaller, LGToolSharedProcessor>
+@interface LGMunkiIntegration ()<LGIntegrationPackageInstaller, LGIntegrationSharedProcessor>
 @end
 
 #pragma mark - Tool overrides
-@implementation LGMunkiTool
+@implementation LGMunkiIntegration
 
 // Since this is defined using a protocol, it needs to be synthesized...
 // If not conforming to LGToolPackageInstaller remove it.

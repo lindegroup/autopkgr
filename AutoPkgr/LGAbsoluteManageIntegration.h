@@ -15,10 +15,10 @@
 //  limitations under the License.
 //
 
-#import "LGTool.h"
+#import "LGIntegration.h"
 #import "LGDefaults.h"
 
-@interface LGAbsoluteManageIntegration : LGTool
+@interface LGAbsoluteManageIntegration : LGIntegration
 @end
 
 // This is also a good place to add custom defaults

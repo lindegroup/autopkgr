@@ -19,7 +19,7 @@
 
 #import "LGAutoPkgReport.h"
 #import "LGAutoPkgRecipe.h"
-#import "LGToolManager.h"
+#import "LGIntegrationManager.h"
 
 #import "HTMLCategories.h"
 
@@ -79,7 +79,7 @@ NSString *const fallback_reportCSS = @"<style type='text/css'>*{font-family:'Hel
         return YES;
     }
     return (([_reportDictionary[kReportKeyFailures] count] > 0) || _error ||
-            [self toolsUpdateAvailable]);
+            [self integrationsUpdateAvailable]);
 }
 
 - (NSString *)emailSubjectString
@@ -90,9 +90,9 @@ NSString *const fallback_reportCSS = @"<style type='text/css'>*{font-family:'Hel
         return [NSString stringWithFormat:@"[%@] failures occurred while running AutoPkg", kLGApplicationName];
     } else if (self.error) {
         return [NSString stringWithFormat:@"[%@] Error occurred while running AutoPkg", kLGApplicationName];
-    } else if (_tools) {
-        for (LGTool *tool in _tools) {
-            if (tool.info.status == kLGToolUpdateAvailable) {
+    } else if (_integrations) {
+        for (LGIntegration *integration in _integrations) {
+            if (integration.info.status == kLGIntegrationUpdateAvailable) {
                 return [NSString stringWithFormat:@"Update to helper components available"];
             }
         }
@@ -146,14 +146,14 @@ NSString *const fallback_reportCSS = @"<style type='text/css'>*{font-family:'Hel
     NSString *newSoftware;
     NSString *runFailures;
     NSString *errorsString;
-    NSString *toolsString;
+    NSString *integrationString;
 
     if ((newSoftware = [self newSoftwareString])) {
         [overview appendString:newSoftware];
     }
 
-    if ((toolsString = [self toolsStatusString])) {
-        [overview appendString:toolsString];
+    if ((integrationString = [self integrationStatusString])) {
+        [overview appendString:integrationString];
     }
 
     if ((runFailures = [self runFailuresString])) {
@@ -303,17 +303,17 @@ NSString *const fallback_reportCSS = @"<style type='text/css'>*{font-family:'Hel
     return [string copy];
 }
 
-- (NSString *)toolsStatusString
+- (NSString *)integrationStatusString
 {
     NSMutableString *string = nil;
 
-    for (LGTool *tool in _tools) {
-        if ([[tool class] isInstalled] && tool.info.status == kLGToolUpdateAvailable) {
+    for (LGIntegration *integration in _integrations) {
+        if ([[integration class] isInstalled] && integration.info.status == kLGIntegrationUpdateAvailable) {
             if (!string) {
-                string = [@"Updates for helper tools:".html_H3 mutableCopy];
+                string = [@"Updates for integrated components:".html_H3 mutableCopy];
                 [string appendString:html_openListUL];
             }
-            [string appendString:tool.info.statusString.html_listItem];
+            [string appendString:integration.info.statusString.html_listItem];
         }
     }
     if (string) {
@@ -400,10 +400,10 @@ NSString *const fallback_reportCSS = @"<style type='text/css'>*{font-family:'Hel
     };
 }
 
-- (BOOL)toolsUpdateAvailable
+- (BOOL)integrationsUpdateAvailable
 {
-    for (LGTool *tool in _tools) {
-        if (tool.info.status == kLGToolUpdateAvailable) {
+    for (LGIntegration *integration in _integrations) {
+        if (integration.info.status == kLGIntegrationUpdateAvailable) {
             return YES;
         }
     }

@@ -1,4 +1,4 @@
-// LGAutoPkgTool.h
+// LGIntegrationTemplate.h
 //
 //  Copyright 2015 Eldon Ahrold
 //
@@ -15,8 +15,13 @@
 //  limitations under the License.
 //
 
-#import "LGTool.h"
+#import "LGIntegration.h"
+#import "LGDefaults.h"
 
-@interface LGAutoPkgTool : LGTool
+@interface LGIntegrationTemplate : LGIntegration
+@end
 
+// This is also a good place to add custom defaults
+@interface LGExampleDefaults : LGDefaults
+@property (copy, nonatomic) NSString *theKey;
 @end

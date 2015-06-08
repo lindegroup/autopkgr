@@ -1,4 +1,4 @@
-// LGAutoPkgTool.h
+// LGAutoPkgIntegration.h
 //
 //  Copyright 2015 Eldon Ahrold
 //
@@ -15,18 +15,8 @@
 //  limitations under the License.
 //
 
-#import "LGTool.h"
-#import "LGDefaults.h"
+#import "LGIntegration.h"
 
-@interface LGMunkiTool : LGTool
-@end
-
-// This is also a good place to add custom defaults
-@interface LGDefaults(munki)
-@property (copy, nonatomic) NSString *default_catalog;
-@property (copy, nonatomic) NSString *editor;
-@property (copy, nonatomic) NSString *pkginfo_extension;
-@property (copy, nonatomic) NSString *repo_path;
-@property (copy, nonatomic) NSString *repo_url;
+@interface LGAutoPkgIntegration : LGIntegration
 
 @end

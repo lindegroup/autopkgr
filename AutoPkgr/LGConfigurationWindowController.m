@@ -22,10 +22,10 @@
 #import "LGConfigurationWindowController.h"
 #import "LGAutoPkgr.h"
 #import "LGProgressDelegate.h"
-#import "LGToolManager.h"
+#import "LGIntegrationManager.h"
 
 @interface LGConfigurationWindowController () {
-    LGToolManager *_toolManager;
+    LGIntegrationManager *_integrationManager;
     BOOL _awake;
 }
 
@@ -44,13 +44,13 @@
         _scheduleView = [[LGScheduleViewController alloc] initWithProgressDelegate:self];
         _recipeRepoView = [[LGRecipeReposViewController alloc] initWithProgressDelegate:self];
         _notificationView = [[LGNotificationsViewController alloc] initWithProgressDelegate:self];
-        _toolsView = [[LGToolsViewController alloc] initWithProgressDelegate:self];
+        _integrationsView = [[LGIntegrationsViewController alloc] initWithProgressDelegate:self];
 
-        // The toolManager is required for the following views.
-        _toolManager = [[LGToolManager alloc] init];
+        // The integrationManager is required for the following views.
+        _integrationManager = [[LGIntegrationManager alloc] init];
 
-        _installView.toolManager = _toolManager;
-        _toolsView.toolManager = _toolManager;
+        _installView.integrationManager = _integrationManager;
+        _integrationsView.integrationManager = _integrationManager;
     }
     return self;
 }
@@ -82,7 +82,7 @@
                            _recipeRepoView,
                            _scheduleView,
                            _notificationView,
-                           _toolsView ];
+                           _integrationsView ];
 
         for (LGTabViewControllerBase *viewController in tabs) {
             NSTabViewItem *tabItem = [[NSTabViewItem alloc] init];
@@ -98,7 +98,7 @@
          * but the _scheduleView should controll it. */
         _scheduleView.cancelButton = _cancelAutoPkgRunButton;
 
-        _toolsView.modalWindow = self.window;
+        _integrationsView.modalWindow = self.window;
         _recipeRepoView.modalWindow = self.window;
     }
 }
@@ -106,15 +106,15 @@
 #pragma mark - Tab View Delegate
 - (void)tabView:(NSTabView *)tabView didSelectTabViewItem:(NSTabViewItem *)tabViewItem
 {
-    if (![tabViewItem.view isEqual:_installView.view] && ![LGToolManager requiredItemsInstalled]) {
+    if (![tabViewItem.view isEqual:_installView.view] && ![LGIntegrationManager requiredItemsInstalled]) {
         // Reset the tab view back to the install Tab.
         [tabView selectFirstTabViewItem:self];
-        [LGToolManager displayRequirementsAlertOnWindow:self.window];
+        [LGIntegrationManager displayRequirementsAlertOnWindow:self.window];
         return;
     }
 
-    if ([tabViewItem.identifier isEqualToString:NSStringFromClass([LGToolsViewController class])]) {
-        [_toolsView enableFolders];
+    if ([tabViewItem.identifier isEqualToString:NSStringFromClass([LGIntegrationsViewController class])]) {
+        [_integrationsView enableFolders];
     }
 }
 

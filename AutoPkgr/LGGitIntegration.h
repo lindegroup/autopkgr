@@ -1,4 +1,4 @@
-// LGGitTool.h
+// LGGitIntegration.h
 //
 //  Copyright 2015 Eldon Ahrold
 //
@@ -15,14 +15,14 @@
 //  limitations under the License.
 //
 
-#import "LGTool.h"
+#import "LGIntegration.h"
 
 typedef NS_ENUM(NSInteger, kLGGitErrorCodes) {
     kLGGitErrorSuccess = 0,
     kLGGitErrorNotInstalled = -9,
 };
 
-@interface LGGitTool : LGTool
+@interface LGGitIntegration : LGIntegration
 + (void)gitTaskWithArguments:(NSArray *)args
                     repoPath:(NSString *)repoPath
                        reply:(void (^)(NSString *, NSError *))reply;

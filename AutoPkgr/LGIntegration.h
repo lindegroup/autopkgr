@@ -1,5 +1,5 @@
 //
-//  LGTools.h
+//  LGIntegrations.h
 //  AutoPkgr
 //
 //  Copyright 2015 Eldon Ahrold
@@ -21,65 +21,65 @@
 #import <Foundation/Foundation.h>
 #import "LGProgressDelegate.h"
 
-extern NSString *const kLGNotificationToolStatusDidChange;
+extern NSString *const kLGNotificationIntegrationStatusDidChange;
 
-typedef NS_ENUM(NSInteger, LGToolTypeFlags) {
+typedef NS_ENUM(NSInteger, LGIntegrationTypeFlags) {
     /**
-     *  Unknown Tool Type.
+     *  Unknown Integration Type.
      */
-    kLGToolTypeUnspecified = 0,
+    kLGIntegrationTypeUnspecified = 0,
 
     /**
-     *  Add this as a flag if the tool is a shared processor.
+     *  Add this as a flag if the integration is a shared processor.
      *  If this is specified make sure to include the default
      *  repo property in the subclass.
      */
-    kLGToolTypeAutoPkgSharedProcessor = 1 << 0,
+    kLGIntegrationTypeAutoPkgSharedProcessor = 1 << 0,
 
     /**
-     *  Flag to declare the tool requires a package installation.
+     *  Flag to declare the integration requires a package installation.
      */
-    kLGToolTypeInstalledPackage = 1 << 1,
+    kLGIntegrationTypeInstalledPackage = 1 << 1,
 
     /**
-     *  Flag to declare that it is acceptable to uninstall the tool.
-     *  @note this is only used when the kLGToolTypeInstalledPackage is also set
+     *  Flag to declare that it is acceptable to uninstall the integration.
+     *  @note this is only used when the kLGIntegrationTypeInstalledPackage is also set
      */
-    kLGToolTypeUninstallableTool = 1 << 2,
+    kLGIntegrationTypeUninstallableIntegration = 1 << 2,
 };
 
 /**
- *  Tool install status
+ *  Integration install status
  */
-typedef NS_ENUM(OSStatus, LGToolInstallStatus) {
+typedef NS_ENUM(OSStatus, LGIntegrationInstallStatus) {
     /**
-     *  Tool is not installed.
+     *  Integration is not installed.
      */
-    kLGToolNotInstalled,
+    kLGIntegrationNotInstalled,
     /**
-     *  Tool is installed, but an update is available for the tool.
+     *  Integration is installed, but an update is available for the integration.
      */
-    kLGToolUpdateAvailable,
+    kLGIntegrationUpdateAvailable,
     /**
-     *  Tool is installed.
+     *  Integration is installed.
      */
-    kLGToolUpToDate,
+    kLGIntegrationUpToDate,
 };
 
-#pragma mark - Tool
-@class LGToolInfo;
+#pragma mark - Integration
+@class LGIntegrationInfo;
 
 /**
- *  LGTool is an abstract class for associated tools.
- *  @note The LGTool class needs to be be subclassed. You will also need to import the LGTool+Protocols.h file into your subclass.
- *  @discussion A good example of how to use an instance of this tool is
+ *  LGIntegration is an abstract class for associated integrations.
+ *  @note The LGIntegration class needs to be be subclassed. You will also need to import the LGIntegration+Protocols.h file into your subclass.
+ *  @discussion A good example of how to use an instance of this integration is
     @code
- LGToolSubclass *tool = [[LGToolSubclass alloc] init];
- tool.progressDelegate = _progressDelegate;
- someButton.target = tool;
+ LGIntegrationSubclass *integration = [[LGIntegrationSubclass alloc] init];
+ integration.progressDelegate = _progressDelegate;
+ someButton.target = integration;
  someButton.target.action = @selector(install:);
 
- [tool getInfo:^(LGToolInfo *info) {
+ [integration getInfo:^(LGIntegrationInfo *info) {
     someButton.target.enabled = info.needsInstalled;
     someButton.target.title = info.installButtonTitle;
     someStatusImage.image = info.statusImage;
@@ -96,18 +96,23 @@ typedef NS_ENUM(OSStatus, LGToolInstallStatus) {
  + (NSString *)gitHubURL
  + (NSString *)packageIdentifier
 
- @endcode Many other methods may need to get overridden for proper functioning. See LGTool.h and LGTool+Private.h for a comprehensive list.
+ @endcode Many other methods may need to get overridden for proper functioning. See LGIntegration.h and LGIntegration+Private.h for a comprehensive list.
  */
 
-@interface LGTool : NSObject
+@interface LGIntegration : NSObject
 
 /**
- *  Name of the Tool
+ *  Name of the Integration
  */
 + (NSString *)name;
 
 /**
- * Check if the tool meets system requirements to proceed with installation.
+ *  Short Name of the Integration if the name too long to fit on a button
+ */
++ (NSString *)shortName;
+
+/**
+ * Check if the integration meets system requirements to proceed with installation.
  *
  *  @param error Populated error object if requirements are not met.
  *
@@ -115,10 +120,10 @@ typedef NS_ENUM(OSStatus, LGToolInstallStatus) {
  */
 + (BOOL)meetsRequirements:(NSError **)error;
 
-// If the tool is installed.
+// If the integration is installed.
 + (BOOL)isInstalled;
 
-// If the tool can be uninstalled.
+// If the integration can be uninstalled.
 + (BOOL)isUninstallable;
 
 + (NSString *)credits;
@@ -128,17 +133,18 @@ typedef NS_ENUM(OSStatus, LGToolInstallStatus) {
 
 #pragma mark - Implemented in the Abstract class
 @property (copy, nonatomic, readonly) NSString *name;
+
 @property (assign, nonatomic, readonly) BOOL isInstalled;
 @property (assign, nonatomic, readonly) BOOL isRefreshing;
 
-// LGToolInfo object with local and remote status information and useful UI mappings.
-@property (copy, nonatomic, readonly) LGToolInfo *info;
+// LGIntegrationInfo object with local and remote status information and useful UI mappings.
+@property (copy, nonatomic, readonly) LGIntegrationInfo *info;
 
-@property (copy) void (^infoUpdateHandler)(LGToolInfo *info);
+@property (copy) void (^infoUpdateHandler)(LGIntegrationInfo *info);
 
-- (void)getInfo:(void (^)(LGToolInfo *info))reply;
+- (void)getInfo:(void (^)(LGIntegrationInfo *info))reply;
 
-// update the tool.info property and if infoUpdateHandler has been set execute the completion block.
+// update the integration.info property and if infoUpdateHandler has been set execute the completion block.
 - (void)refresh;
 
 /**
@@ -150,7 +156,7 @@ typedef NS_ENUM(OSStatus, LGToolInstallStatus) {
 - (void)install:(void (^)(NSString *message, double progress))progress reply:(void (^)(NSError *error))reply;
 
 /**
- *  Install the tool
+ *  Install the integration
  *
  *  @param sender UI Object. This can be set as a button's action.
  *  @note To progress updates are sent to the progressDelegate property
@@ -159,7 +165,7 @@ typedef NS_ENUM(OSStatus, LGToolInstallStatus) {
 - (void)install:(id)sender;
 
 /**
- *  Uninstall the tool
+ *  Uninstall the integration
  *
  *  @param progress block invoked when progress information is available.
  *  @param reply block invoked upon completion.
@@ -167,22 +173,22 @@ typedef NS_ENUM(OSStatus, LGToolInstallStatus) {
 - (void)uninstall:(void (^)(NSString *message, double progress))progress reply:(void (^)(NSError *error))reply;
 
 /**
- *  Uninstall the tool
+ *  Uninstall the integration
  *
  *  @param sender UI object. This can be set as a button's action.
  *  @note When this method is called, progress updates are sent to the progressDelegate property.
- *  @note You can also assign a button's `target` and `action` to the LGTool will invoke this action
+ *  @note You can also assign a button's `target` and `action` to the LGIntegration will invoke this action
  *  @discussion Upon successful completion, if an object is sent as sender and that object responds @code @selector(action)  @endcode the action will get reset to `install`
  */
 - (void)uninstall:(id)sender;
 
 @end
 
-#pragma mark Tool Info Object
+#pragma mark Integration Info Object
 /**
- *  LGTool information with useful mapped values.
+ *  LGIntegration information with useful mapped values.
  */
-@interface LGToolInfo : NSObject
+@interface LGIntegrationInfo : NSObject
 
 // Installed version.
 @property (copy, nonatomic, readonly) NSString *installedVersion;
@@ -191,12 +197,12 @@ typedef NS_ENUM(OSStatus, LGToolInstallStatus) {
 @property (copy, nonatomic, readonly) NSString *remoteVersion;
 
 // Status of the item.
-@property (assign, nonatomic, readonly) LGToolInstallStatus status;
+@property (assign, nonatomic, readonly) LGIntegrationInstallStatus status;
 
-// Mapped bool for whether tool needs installed or updated.
+// Mapped bool for whether integration needs installed or updated.
 @property (assign, readonly) BOOL needsInstalled;
 
-#pragma mark - Tool Mappings
+#pragma mark - Integration Mappings
 // Mapped image of the small green/yellow/red globe.
 @property (copy, nonatomic, readonly) NSImage *statusImage;
 
@@ -218,6 +224,4 @@ typedef NS_ENUM(OSStatus, LGToolInstallStatus) {
 // Selector to specify install / uninstall behavior.
 @property (assign, readonly) SEL configureButtonTargetAction;
 
-- (void)modifyInstall_UninstallButton:(NSButton *)button withTool:(LGTool *)tool;
-- (void)modifyInstall_ConfigureButton:(NSButton *)button withTarget:(id)target;
 @end

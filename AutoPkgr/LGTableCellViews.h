@@ -24,12 +24,11 @@
 
 @end
 
-#pragma mark - Tool Cell View
-@interface LGToolStatusTableCellView : NSTableCellView
+#pragma mark - Integration Cell View
+@interface LGIntegrationStatusTableCellView : NSTableCellView
 
 @property (assign) IBOutlet NSButton *installButton;
 @property (assign) IBOutlet NSProgressIndicator *progressIndicator;
 @property (assign) IBOutlet NSButton *configureButton;
-@property (assign) IBOutlet NSButton *enabledCheckBox;
 
 @end

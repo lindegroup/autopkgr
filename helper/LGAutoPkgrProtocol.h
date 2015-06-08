@@ -1,6 +1,6 @@
 //
 //  LGAutoPkgrProtocol.h
-//  AutoPkgr - Priviledged Helper Tool
+//  AutoPkgr - Priviledged Helper Integration
 //
 //  Created by Eldon Ahrold on 7/28/14.
 //

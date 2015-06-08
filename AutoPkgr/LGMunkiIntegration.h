@@ -15,13 +15,18 @@
 //  limitations under the License.
 //
 
-#import "LGTool.h"
+#import "LGIntegration.h"
 #import "LGDefaults.h"
 
-@interface LGToolTemplate : LGTool
+@interface LGMunkiIntegration : LGIntegration
 @end
 
 // This is also a good place to add custom defaults
-@interface LGExampleDefaults : LGDefaults
-@property (copy, nonatomic) NSString *theKey;
+@interface LGDefaults(munki)
+@property (copy, nonatomic) NSString *default_catalog;
+@property (copy, nonatomic) NSString *editor;
+@property (copy, nonatomic) NSString *pkginfo_extension;
+@property (copy, nonatomic) NSString *repo_path;
+@property (copy, nonatomic) NSString *repo_url;
+
 @end

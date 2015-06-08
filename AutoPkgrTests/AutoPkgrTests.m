@@ -23,7 +23,7 @@
 #import "LGInstaller.h"
 #import "LGGitHubJSONLoader.h"
 #import "LGAutoPkgr.h"
-#import "LGToolManager.h"
+#import "LGIntegrationManager.h"
 #import "LGAutoPkgTask.h"
 
 #import "LGAutoPkgReport.h"
@@ -59,11 +59,11 @@
     XCTAssertNotNil([LGAutoPkgTask processorInfo:@"Installer"], @"Failed test");
 }
 
-#pragma mark - LGTools
-- (void)testToolStatus
+#pragma mark - LGIntegrations
+- (void)testIntegrationStatus
 {
-    NSArray *toolStatus = [[LGToolManager new] installedTools];
-    XCTAssertNotNil(toolStatus, @"Tool array should not be nil");
+    NSArray *integrationStatus = [[LGIntegrationManager new] installedIntegrations];
+    XCTAssertNotNil(integrationStatus, @"Integration array should not be nil");
 }
 
 #pragma mark - Installers
@@ -148,16 +148,16 @@
     }];
 }
 
-- (void)testToolAndInstall
+- (void)testIntegrationAndInstall
 {
-    XCTestExpectation *expectation1 = [self expectationWithDescription:@"Tool Test"];
+    XCTestExpectation *expectation1 = [self expectationWithDescription:@"Integration Test"];
 
     XCTestExpectation *expectation2 = [self expectationWithDescription:@"Tool Install Async"];
 
     __block BOOL fufillExpectation1 = NO;
-    __block LGAutoPkgTool *tool = [[LGAutoPkgTool alloc] init];
+    __block LGAutoPkgIntegration *tool = [[LGAutoPkgIntegration alloc] init];
 
-    [tool getInfo:^(LGToolInfo *info) {
+    [tool getInfo:^(LGIntegrationInfo *info) {
         XCTAssert(info.remoteVersion, @"Could not get remote version");
         XCTAssert(info.installedVersion, @"Could not get installed version");
 
@@ -253,7 +253,7 @@
     XCTestExpectation *jssImporterExpectation = [self expectationWithDescription:@"JSS Tool Test"];
     XCTestExpectation *gitExpectation = [self expectationWithDescription:@"Git Tool Test"];
 
-    LGAutoPkgTool *apkg = [LGAutoPkgTool new];
+    LGAutoPkgIntegration *apkg = [LGAutoPkgIntegration new];
     [apkg install:^(NSString *message, double progress) {
         XCTAssert([NSThread isMainThread], @"Not main thread");
     } reply:^(NSError *error) {
@@ -262,7 +262,7 @@
         [autoPkgExpectation fulfill];
     }];
 
-    LGJSSImporterTool *jss = [LGJSSImporterTool new];
+    LGJSSImporterIntegration *jss = [LGJSSImporterIntegration new];
     [jss install:^(NSString *message, double progress) {
         XCTAssert([NSThread isMainThread], @"Not main thread");
     } reply:^(NSError *error) {
@@ -271,7 +271,7 @@
         [jssImporterExpectation fulfill];
     }];
 
-    LGGitTool *git = [LGGitTool new];
+    LGGitIntegration *git = [LGGitIntegration new];
     [git install:^(NSString *message, double progress) {
         XCTAssert([NSThread isMainThread], @"Not main thread");
     } reply:^(NSError *error) {
@@ -294,12 +294,12 @@
     XCTestExpectation *expect2 = [self expectationWithDescription:@"AutoPkg Tool Test 2"];
     XCTestExpectation *expect3 = [self expectationWithDescription:@"AutoPkg Tool Test 3"];
 
-    __block LGToolInfo *info1;
-    __block LGToolInfo *info2;
-    __block LGToolInfo *info3;
+    __block LGIntegrationInfo *info1;
+    __block LGIntegrationInfo *info2;
+    __block LGIntegrationInfo *info3;
 
-    LGAutoPkgTool *tool = [[LGAutoPkgTool alloc] init];
-    [tool setInfoUpdateHandler:^(LGToolInfo *info) {
+    LGAutoPkgIntegration *tool = [[LGAutoPkgIntegration alloc] init];
+    [tool setInfoUpdateHandler:^(LGIntegrationInfo *info) {
         info1 = info;
         NSLog(@"mainQueue info: %@", info);
         XCTAssertEqualObjects([NSOperationQueue currentQueue], [NSOperationQueue mainQueue]);
@@ -308,7 +308,7 @@
 
     NSOperationQueue *bg1 = [NSOperationQueue new];
     [bg1 addOperationWithBlock:^{
-        [tool getInfo:^(LGToolInfo *info) {
+        [tool getInfo:^(LGIntegrationInfo *info) {
             info2 = info;
 
             NSLog(@"bg1 info: %@", info);
@@ -320,7 +320,7 @@
 
     NSOperationQueue *bg2 = [NSOperationQueue new];
     [ bg2 addOperationWithBlock:^{
-        [tool getInfo:^(LGToolInfo *info) {
+        [tool getInfo:^(LGIntegrationInfo *info) {
             info3 = info;
 
             NSLog(@"bg2 info: %@", info);
@@ -346,13 +346,13 @@
 }
 - (void)testTool2
 {
-    LGAutoPkgTool *tool = [[LGAutoPkgTool alloc] init];
+    LGAutoPkgIntegration *tool = [[LGAutoPkgIntegration alloc] init];
     NSLog(@"%@", tool.info.remoteVersion);
 }
 
 - (void)testTool3
 {
-    LGAutoPkgTool *tool = [[LGAutoPkgTool alloc] init];
+    LGAutoPkgIntegration *tool = [[LGAutoPkgIntegration alloc] init];
     [tool refresh];
     NSLog(@"%@", tool.info.remoteVersion);
 }
@@ -462,7 +462,7 @@
 
     LGAutoPkgReport *report = [[LGAutoPkgReport alloc] initWithReportDictionary:reportDict];
     report.error = error;
-    report.tools = [[LGToolManager new] installedTools];
+    report.integrations = [[LGIntegrationManager new] installedIntegrations];
 
     report.reportedItemFlags = kLGReportItemsAll;
 

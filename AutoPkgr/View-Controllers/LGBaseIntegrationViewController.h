@@ -1,5 +1,5 @@
 //
-//  LGToolViewControllerBase.h
+//  LGBaseIntegrationViewController.h
 //  AutoPkgr
 //
 //  Created by Eldon on 6/5/15.
@@ -19,11 +19,11 @@
 
 
 #import <Cocoa/Cocoa.h>
-#import "LGTool.h"
+#import "LGIntegration.h"
 
 @interface LGBaseIntegrationViewController : NSViewController <NSWindowDelegate>
-- (instancetype)initWithIntegration:(LGTool *)integration;
+- (instancetype)initWithIntegration:(LGIntegration *)integration;
 
-@property (strong, nonatomic, readonly) LGTool *integration;
+@property (strong, nonatomic, readonly) LGIntegration *integration;
 
 @end

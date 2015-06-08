@@ -5,7 +5,7 @@
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="6250"/>
     </dependencies>
     <objects>
-        <customObject id="-2" userLabel="File's Owner" customClass="LGToolsViewController">
+        <customObject id="-2" userLabel="File's Owner" customClass="LGIntegrationsViewController">
             <connections>
                 <outlet property="autoPkgCacheDir" destination="fAS-2t-NJR" id="qHq-Or-NzO"/>
                 <outlet property="autoPkgRecipeOverridesDir" destination="KC4-Ks-uGR" id="soi-Aa-YMU"/>
@@ -41,11 +41,15 @@
                             </textField>
                             <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="fAS-2t-NJR">
                                 <rect key="frame" x="87" y="82" width="270" height="22"/>
-                                <textFieldCell key="cell" lineBreakMode="truncatingHead" truncatesLastVisibleLine="YES" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" placeholderString="~/Library/AutoPkg/Cache" drawsBackground="YES" id="loL-kz-oBg">
+                                <textFieldCell key="cell" lineBreakMode="truncatingHead" truncatesLastVisibleLine="YES" selectable="YES" editable="YES" state="on" borderStyle="bezel" placeholderString="~/Library/AutoPkg/Cache" drawsBackground="YES" id="loL-kz-oBg">
                                     <font key="font" metaFont="system"/>
                                     <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
+                                <connections>
+                                    <action selector="saveAutoPkgFolderPath:" target="-2" id="EbV-sr-A1q"/>
+                                    <outlet property="delegate" destination="-2" id="1Vb-cm-76g"/>
+                                </connections>
                             </textField>
                             <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="c0E-Qv-nLs">
                                 <rect key="frame" x="358" y="75" width="99" height="32"/>
@@ -77,11 +81,15 @@
                             </textField>
                             <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Tl2-iz-Ard">
                                 <rect key="frame" x="87" y="52" width="270" height="22"/>
-                                <textFieldCell key="cell" lineBreakMode="truncatingHead" truncatesLastVisibleLine="YES" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" placeholderString="~/Library/AutoPkg/RecipeRepos" drawsBackground="YES" id="viP-T5-kH3">
+                                <textFieldCell key="cell" lineBreakMode="truncatingHead" truncatesLastVisibleLine="YES" selectable="YES" editable="YES" state="on" borderStyle="bezel" placeholderString="~/Library/AutoPkg/RecipeRepos" drawsBackground="YES" id="viP-T5-kH3">
                                     <font key="font" metaFont="system"/>
                                     <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
+                                <connections>
+                                    <action selector="saveAutoPkgFolderPath:" target="-2" id="0o8-zl-Cmh"/>
+                                    <outlet property="delegate" destination="-2" id="Ecq-nf-s7D"/>
+                                </connections>
                             </textField>
                             <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Q6H-Wz-o4m">
                                 <rect key="frame" x="358" y="45" width="99" height="32"/>
@@ -105,11 +113,15 @@
                             </button>
                             <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="KC4-Ks-uGR">
                                 <rect key="frame" x="87" y="22" width="270" height="22"/>
-                                <textFieldCell key="cell" lineBreakMode="truncatingHead" truncatesLastVisibleLine="YES" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" placeholderString="~/Library/AutoPkg/RecipeOverrides" drawsBackground="YES" id="vHc-Ru-xZa">
+                                <textFieldCell key="cell" lineBreakMode="truncatingHead" truncatesLastVisibleLine="YES" selectable="YES" editable="YES" state="on" borderStyle="bezel" placeholderString="~/Library/AutoPkg/RecipeOverrides" drawsBackground="YES" id="vHc-Ru-xZa">
                                     <font key="font" metaFont="system"/>
                                     <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
+                                <connections>
+                                    <action selector="saveAutoPkgFolderPath:" target="-2" id="2wk-d1-wFW"/>
+                                    <outlet property="delegate" destination="-2" id="gf6-fL-RaC"/>
+                                </connections>
                             </textField>
                             <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Qsk-Uz-rho">
                                 <rect key="frame" x="358" y="15" width="99" height="32"/>
@@ -207,30 +219,46 @@
                                                     </textFieldCell>
                                                     <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                                     <prototypeCellViews>
-                                                        <tableCellView id="Gvm-b6-grM" customClass="LGToolStatusTableCellView">
+                                                        <tableCellView id="Gvm-b6-grM" customClass="LGIntegrationStatusTableCellView">
                                                             <rect key="frame" x="1" y="1" width="555" height="21"/>
                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                             <subviews>
-                                                                <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" allowsExpansionToolTips="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Hgn-W3-2rW">
-                                                                    <rect key="frame" x="6" y="3" width="186" height="14"/>
+                                                                <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" allowsExpansionToolTips="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Hgn-W3-2rW">
+                                                                    <rect key="frame" x="6" y="3" width="375" height="14"/>
                                                                     <textFieldCell key="cell" controlSize="small" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" title="Table View Cell" id="IxD-XN-nM0">
                                                                         <font key="font" metaFont="smallSystem"/>
                                                                         <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                                                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                                                     </textFieldCell>
                                                                 </textField>
-                                                                <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="V5m-5q-nhJ">
+                                                                <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="V5m-5q-nhJ">
                                                                     <rect key="frame" x="535" y="2" width="17" height="17"/>
+                                                                    <constraints>
+                                                                        <constraint firstAttribute="width" constant="17" id="cF0-vy-XBO"/>
+                                                                    </constraints>
                                                                     <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="NSActionTemplate" id="eiO-0s-ahP"/>
                                                                 </imageView>
-                                                                <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="bqD-8f-sOf">
+                                                                <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="bqD-8f-sOf">
                                                                     <rect key="frame" x="382" y="-4" width="150" height="28"/>
+                                                                    <constraints>
+                                                                        <constraint firstAttribute="width" constant="140" id="ZE9-2K-uQz"/>
+                                                                    </constraints>
                                                                     <buttonCell key="cell" type="push" title="Install" bezelStyle="rounded" alignment="center" controlSize="small" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="8qz-tI-OVK">
                                                                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                                                         <font key="font" metaFont="smallSystem"/>
                                                                     </buttonCell>
                                                                 </button>
                                                             </subviews>
+                                                            <constraints>
+                                                                <constraint firstItem="Hgn-W3-2rW" firstAttribute="leading" secondItem="Gvm-b6-grM" secondAttribute="leading" constant="8" id="A0A-Xg-ZnQ"/>
+                                                                <constraint firstItem="bqD-8f-sOf" firstAttribute="bottom" secondItem="V5m-5q-nhJ" secondAttribute="bottom" id="JJi-cQ-lB6"/>
+                                                                <constraint firstItem="bqD-8f-sOf" firstAttribute="top" secondItem="Gvm-b6-grM" secondAttribute="top" constant="1" id="QAO-A2-PvZ"/>
+                                                                <constraint firstItem="V5m-5q-nhJ" firstAttribute="leading" secondItem="bqD-8f-sOf" secondAttribute="trailing" constant="8" symbolic="YES" id="SU5-ke-CTa"/>
+                                                                <constraint firstItem="Hgn-W3-2rW" firstAttribute="centerY" secondItem="V5m-5q-nhJ" secondAttribute="centerY" id="WTa-OI-gPf"/>
+                                                                <constraint firstAttribute="bottom" secondItem="Hgn-W3-2rW" secondAttribute="bottom" constant="3" id="ZU9-zN-Su7"/>
+                                                                <constraint firstItem="bqD-8f-sOf" firstAttribute="leading" secondItem="Hgn-W3-2rW" secondAttribute="trailing" constant="8" symbolic="YES" id="ieL-z7-AjT"/>
+                                                                <constraint firstAttribute="trailing" secondItem="V5m-5q-nhJ" secondAttribute="trailing" constant="3" id="sAB-MD-mP3"/>
+                                                            </constraints>
                                                             <connections>
                                                                 <outlet property="configureButton" destination="bqD-8f-sOf" id="bkd-AF-EJl"/>
                                                                 <outlet property="imageView" destination="V5m-5q-nhJ" id="jUG-Z2-hQb"/>

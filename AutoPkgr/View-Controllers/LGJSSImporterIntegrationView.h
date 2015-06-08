@@ -26,7 +26,7 @@
 #import "LGTableView.h"
 #import "LGBaseIntegrationViewController.h"
 
-@class LGJSSImporterTool;
+@class LGJSSImporterIntegration;
 
 @interface LGJSSImporterIntegrationView : LGBaseIntegrationViewController <NSTableViewDataSource, NSTableViewDelegate>
 

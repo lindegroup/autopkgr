@@ -1,5 +1,5 @@
 //
-//  LGTool_LGTool+Protocols.h
+//  LGIntegration+Protocols.h
 //  AutoPkgr
 //
 //  Copyright 2015 Eldon Ahrold.
@@ -17,23 +17,23 @@
 //  limitations under the License.
 //
 
-#import "LGTool.h"
+#import "LGIntegration.h"
 #import "LGGitHubJSONLoader.h"
 
-/* Tool protocols are used as a base line to determine how the tool is insatlled and configured.
- * you should conform to as many as necissary to correctly describe the tool.
+/* Integration protocols are used as a base line to determine how the integration is insatlled and configured.
+ * you should conform to as many as necissary to correctly describe the integration.
  */
 
 #pragma mark - Protocols
-#pragma mark - General Tool Protocol
+#pragma mark - General integration protocol
 @class LGGitHubReleaseInfo;
 
-/* Tool subclasses automatically conform to this protocol,
+/* integration subclasses automatically conform to this protocol,
  * so it is unnecissary to explicitly declare it */
-@protocol LGToolSubclass <NSObject>
+@protocol LGIntegrationSubclass <NSObject>
 @required
 /**
- *  Name of the Tool
+ *  Name of the integration
  */
 + (NSString *)name;
 
@@ -50,13 +50,13 @@
 @optional
 /**
  *  By default this looks for the version in the receipt for an installed package with the name specified in packageIdentifier. Override this to customize the technique.
- *  @note you should not call this directly externally, and is used to initialize LGToolInfo objects without the need for subclassing that too. To access this information externally use the tool.info property.
+ *  @note you should not call this directly externally, and is used to initialize LGIntegrationInfo objects without the need for subclassing that too. To access this information externally use the integration.info property.
  */
 @property (copy, nonatomic, readonly) NSString *installedVersion;
 
 /**
  *  By default this is obtained from the GitHub repo. Override this to provide alternate ways to determine remote version.
- *  @note you should not call this directly, and is used to initialize LGToolInfo objects without the need for subclassing that too. To access this information externally use the tool.info property.
+ *  @note you should not call this directly, and is used to initialize LGIntegrationInfo objects without the need for subclassing that too. To access this information externally use the integration.info property.
  */
 @property (copy, nonatomic, readonly) NSString *remoteVersion;
 
@@ -64,12 +64,12 @@
 
 #pragma mark - Package Installer Protocol
 /**
- *  If the tool uses an installer package conform to this protocol.
+ *  If the integration uses an installer package conform to this protocol.
  */
-@protocol LGToolPackageInstaller <LGToolSubclass>
+@protocol LGIntegrationPackageInstaller <LGIntegrationSubclass>
 @required
 /**
- *  Path to the main executable file for the tool
+ *  Path to the main executable file for the integration
  *  @note this is checked for executable status
  */
 + (NSString *)binary;
@@ -80,7 +80,7 @@
 + (NSString *)gitHubURL;
 
 /**
- *  The package identifier for the tool. Primarily used to determine items during uninstall:
+ *  The package identifier for the integration. Primarily used to determine items during uninstall:
  */
 + (NSArray *)packageIdentifiers;
 
@@ -101,9 +101,9 @@
 + (NSString *)credits;
 
 /**
- *  Whether the tool is uninstallable. Defaults to YES;
+ *  Whether the integration is uninstallable. Defaults to YES;
  *
- *  @return YES if the tool can be uninstalled, no otherwise
+ *  @return YES if the integration can be uninstalled, no otherwise
  */
 + (BOOL)isUninstallable;
 
@@ -116,25 +116,25 @@
 
 #pragma mark - Shared Processor Protocol
 /**
- *  If the tool is a shared processor conform to this protocol.
+ *  If the integration is a shared processor conform to this protocol.
  */
-@protocol LGToolSharedProcessor <LGToolSubclass>
+@protocol LGIntegrationSharedProcessor <LGIntegrationSubclass>
 @required
 /**
- *  Components of the tool that indicate the tool is successful installed.
- *  @note This is only required when the tool has the SharedProcessor flag set.
- *  @note it is unnecessary to list every item of the installer. If you have a tool that installs components in separate file system locations you should list one from each. For example JSSImporter.py exists in /Library/AutoPkg/autopkglib, but requires the python-jss library in /Library/Python/2.7/site-packages/python_jss-0.5.9-py2.7.egg/jss so each should be checked to determine if successfully installed
+ *  Components of the integration that indicate the integration is successful installed.
+ *  @note This is only required when the integration has the SharedProcessor flag set.
+ *  @note it is unnecessary to list every item of the installer. If you have a integration that installs components in separate file system locations you should list one from each. For example JSSImporter.py exists in /Library/AutoPkg/autopkglib, but requires the python-jss library in /Library/Python/2.7/site-packages/python_jss-0.5.9-py2.7.egg/jss so each should be checked to determine if successfully installed
  */
 + (NSArray *)components;
 
 /**
- *  Default repository if the tool is an autopkg shared processor.
+ *  Default repository if the integration is an autopkg shared processor.
  */
 + (NSString *)defaultRepository;
 
 @end
 
-@interface LGTool () <LGToolSubclass, LGProgressDelegate>
+@interface LGIntegration () <LGIntegrationSubclass, LGProgressDelegate>
 
 #pragma mark - Instance methods to override
 

@@ -20,7 +20,7 @@
 //
 
 #import "LGJSSDistributionPointsPrefPanel.h"
-#import "LGJSSImporterTool.h"
+#import "LGJSSImporterIntegration.h"
 @interface LGJSSDistributionPointsPrefPanel ()<NSWindowDelegate>
 
 @end

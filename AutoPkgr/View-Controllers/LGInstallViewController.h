@@ -19,7 +19,7 @@
 
 #import <Cocoa/Cocoa.h>
 #import "LGTabViewControllerBase.h"
-@class LGToolManager;
+@class LGIntegrationManager;
 
 @interface LGInstallViewController : LGTabViewControllerBase
 
@@ -30,6 +30,6 @@
 @property (weak) IBOutlet NSButton *showInMenuButton;
 @property (weak) IBOutlet NSTextField *restartRequiredLabel;
 
-@property (strong) LGToolManager *toolManager;
+@property (strong) LGIntegrationManager *integrationManager;
 
 @end

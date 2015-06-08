@@ -27,7 +27,7 @@
 #import "LGRecipeReposViewController.h"
 #import "LGScheduleViewController.h"
 #import "LGNotificationsViewController.h"
-#import "LGToolsViewController.h"
+#import "LGIntegrationsViewController.h"
 
 @class LGRepoTableViewController, LGRecipeTableViewController;
 
@@ -39,7 +39,7 @@
 @property (strong, nonatomic) LGRecipeReposViewController *recipeRepoView;
 @property (strong, nonatomic) LGScheduleViewController *scheduleView;
 @property (strong, nonatomic) LGNotificationsViewController *notificationView;
-@property (strong, nonatomic) LGToolsViewController *toolsView;
+@property (strong, nonatomic) LGIntegrationsViewController *integrationsView;
 
 @property (weak) IBOutlet NSButton *cancelAutoPkgRunButton;
 

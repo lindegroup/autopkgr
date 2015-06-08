@@ -20,11 +20,11 @@
 #import <Cocoa/Cocoa.h>
 #import "LGTabViewControllerBase.h"
 
-@class LGToolManager;
+@class LGIntegrationManager;
 
-@interface LGToolsViewController : LGTabViewControllerBase <NSWindowDelegate>
+@interface LGIntegrationsViewController : LGTabViewControllerBase <NSWindowDelegate>
 
-@property (strong) LGToolManager *toolManager;
+@property (strong) LGIntegrationManager *integrationManager;
 @property (strong) NSWindow *configurationWindow;
 
 - (void)enableFolders;

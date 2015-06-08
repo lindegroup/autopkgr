@@ -33,7 +33,7 @@
 @end
 
 #pragma mark - Tool Cell View
-@implementation LGToolStatusTableCellView
+@implementation LGIntegrationStatusTableCellView
 
 - (void)drawRect:(NSRect)dirtyRect
 {

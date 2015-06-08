@@ -15,12 +15,12 @@
 //  limitations under the License.
 //
 
-#import "LGTool.h"
+#import "LGIntegration.h"
 #import "LGDefaults.h"
 
 @class LGHTTPCredential;
 
-@interface LGJSSImporterTool : LGTool
+@interface LGJSSImporterIntegration : LGIntegration
 
 @end
 

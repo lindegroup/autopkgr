@@ -1,4 +1,4 @@
-// LGAutoPkgTool.m
+// LGAutoPkgIntegration.m
 //
 //  Copyright 2015 Eldon Ahrold
 //
@@ -15,14 +15,14 @@
 //  limitations under the License.
 //
 
-#import "LGAutoPkgTool.h"
-#import "LGTool+Protocols.h"
+#import "LGAutoPkgIntegration.h"
+#import "LGIntegration+Protocols.h"
 #import "LGAutoPkgTask.h"
 
-@interface LGAutoPkgTool () <LGToolPackageInstaller, LGToolSharedProcessor>
+@interface LGAutoPkgIntegration () <LGIntegrationPackageInstaller, LGIntegrationSharedProcessor>
 @end
 
-@implementation LGAutoPkgTool
+@implementation LGAutoPkgIntegration
 @synthesize gitHubInfo = _gitHubInfo;
 
 #pragma mark - Class overrides

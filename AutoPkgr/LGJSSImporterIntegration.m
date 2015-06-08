@@ -15,12 +15,12 @@
 //  limitations under the License.
 //
 
-#import "LGJSSImporterTool.h"
-#import "LGTool+Protocols.h"
+#import "LGJSSImporterIntegration.h"
+#import "LGIntegration+Protocols.h"
 #import "LGServerCredentials.h"
 #import "LGLogger.h"
 
-@interface LGJSSImporterTool ()<LGToolPackageInstaller, LGToolSharedProcessor>
+@interface LGJSSImporterIntegration ()<LGIntegrationPackageInstaller, LGIntegrationSharedProcessor>
 @end
 
 # pragma mark - Repo Keys
@@ -33,7 +33,7 @@ NSString *const kLGJSSDistPointPasswordKey = @"password";
 NSString *const kLGJSSDistPointWorkgroupDomainKey = @"domain";
 NSString *const kLGJSSDistPointTypeKey = @"type";
 
-@implementation LGJSSImporterTool
+@implementation LGJSSImporterIntegration
 @synthesize installedVersion = _installedVersion;
 
 #pragma mark - Class overrides
