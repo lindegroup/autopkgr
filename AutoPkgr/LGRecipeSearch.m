@@ -62,7 +62,7 @@
 #pragma mark - IBActions
 - (IBAction)searchNow:(NSSearchField *)sender
 {
-    NSString *searchString = sender.safeStringValue;
+    NSString *searchString = sender.safe_stringValue;
     if (searchString) {
         [_progressIndicator setHidden:NO];
         [_progressIndicator startAnimation:nil];

@@ -181,7 +181,7 @@ static NSMutableDictionary *_identifierURLStore = nil;
         /* Get the recipe list and split it by lines and turn it into an array */
         NSString *recipeListFile = [[self class] defaultRecipeList];
         NSString *fileContents = [NSString stringWithContentsOfFile:recipeListFile encoding:NSUTF8StringEncoding error:nil];
-        __block NSMutableArray *currentList = [fileContents.split_byLine.removeEmptyStrings mutableCopy];
+        __block NSMutableArray *currentList = [fileContents.split_byLine.filtered_noEmptyStrings mutableCopy];
 
         /* Start by removing any instance of makecatalogs from the list, it's added back in later */
         [currentList enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {

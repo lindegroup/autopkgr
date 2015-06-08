@@ -29,7 +29,7 @@
 #import "LGHostInfo.h"
 #import "NSString+cleaned.h"
 #import "NSString+versionCompare.h"
-#import "NSTextField+setSafeStringValue.h"
+#import "NSTextField+safeStringValue.h"
 #import "NSImage+statusLight.h"
 #import "NSArray+filtered.h"
 #import "NSString+split.h"

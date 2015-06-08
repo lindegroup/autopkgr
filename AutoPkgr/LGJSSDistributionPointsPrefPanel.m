@@ -61,13 +61,13 @@
 
 - (void)populateWithDictionary
 {
-    _distPointDomain.safeStringValue = _editRepoDict[kLGJSSDistPointWorkgroupDomainKey];
-    _distPointName.safeStringValue = _editRepoDict[kLGJSSDistPointNameKey];
-    _distPointPassword.safeStringValue = _editRepoDict[kLGJSSDistPointPasswordKey];
-    _distPointPort.safeStringValue = _editRepoDict[kLGJSSDistPointPortKey];
-    _distPointShareName.safeStringValue = _editRepoDict[kLGJSSDistPointSharePointKey];
-    _distPointURL.safeStringValue = _editRepoDict[kLGJSSDistPointURLKey];
-    _distPointUserName.safeStringValue = _editRepoDict[kLGJSSDistPointUserNameKey];
+    _distPointDomain.safe_stringValue = _editRepoDict[kLGJSSDistPointWorkgroupDomainKey];
+    _distPointName.safe_stringValue = _editRepoDict[kLGJSSDistPointNameKey];
+    _distPointPassword.safe_stringValue = _editRepoDict[kLGJSSDistPointPasswordKey];
+    _distPointPort.safe_stringValue = _editRepoDict[kLGJSSDistPointPortKey];
+    _distPointShareName.safe_stringValue = _editRepoDict[kLGJSSDistPointSharePointKey];
+    _distPointURL.safe_stringValue = _editRepoDict[kLGJSSDistPointURLKey];
+    _distPointUserName.safe_stringValue = _editRepoDict[kLGJSSDistPointUserNameKey];
     [_distPointTypePopupBT selectItemWithTitle:_editRepoDict[kLGJSSDistPointTypeKey]];
     
     [_cancelBT setHidden:YES];
@@ -82,14 +82,14 @@
 
     NSMutableOrderedSet *workingSet = [[NSMutableOrderedSet alloc] initWithArray:defaults.JSSRepos];
 
-    NSString *password = _distPointPassword.safeStringValue;
-    NSString *userName = _distPointUserName.safeStringValue;
-    NSString *url = _distPointURL.safeStringValue;
-    NSString *shareName = _distPointShareName.safeStringValue;
-    NSString *domain = _distPointDomain.safeStringValue;
-    NSString *port = _distPointPort.safeStringValue;
+    NSString *password = _distPointPassword.safe_stringValue;
+    NSString *userName = _distPointUserName.safe_stringValue;
+    NSString *url = _distPointURL.safe_stringValue;
+    NSString *shareName = _distPointShareName.safe_stringValue;
+    NSString *domain = _distPointDomain.safe_stringValue;
+    NSString *port = _distPointPort.safe_stringValue;
     NSString *type = _distPointTypePopupBT.title;
-    NSString *name = _distPointName.safeStringValue;
+    NSString *name = _distPointName.safe_stringValue;
 
     NSMutableDictionary *distPoint = [[NSMutableDictionary alloc] init];
 
@@ -231,7 +231,7 @@
 - (BOOL)meetsRequirementsForType
 {
     for (NSTextField *type in [self requiredForType]) {
-        if (!type.safeStringValue) {
+        if (!type.safe_stringValue) {
             return NO;
         }
     }

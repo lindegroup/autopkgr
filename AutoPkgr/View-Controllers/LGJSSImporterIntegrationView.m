@@ -65,9 +65,9 @@ static NSPredicate *jdsFilterPredicate()
     _jssUseMasterJDS.state = [_defaults.JSSRepos containsObject:@{ @"type" : @"JDS" }];
 
     // .safeStringValue is a NSTextField category that you can pass a nil value into.
-    _jssAPIUsernameTF.safeStringValue = _defaults.JSSAPIUsername;
-    _jssAPIPasswordTF.safeStringValue = _defaults.JSSAPIPassword;
-    _jssURLTF.safeStringValue = _defaults.JSSURL;
+    _jssAPIUsernameTF.safe_stringValue = _defaults.JSSAPIUsername;
+    _jssAPIPasswordTF.safe_stringValue = _defaults.JSSAPIPassword;
+    _jssURLTF.safe_stringValue = _defaults.JSSURL;
 
     _jssReloadServerBT.action = @selector(testCredentials:);
     _jssReloadServerBT.title = @"Verify";
@@ -101,13 +101,13 @@ static NSPredicate *jdsFilterPredicate()
     }
 
     // if all settings have been removed clear out the JSS_REPOS key too.
-    if (!_jssAPIPasswordTF.safeStringValue && !_jssAPIUsernameTF.safeStringValue && !_jssURLTF.safeStringValue) {
+    if (!_jssAPIPasswordTF.safe_stringValue && !_jssAPIUsernameTF.safe_stringValue && !_jssURLTF.safe_stringValue) {
         _defaults.JSSRepos = nil;
         _jssStatusLight.image = [NSImage LGStatusNone];
         _jssStatusLight.hidden = YES;
         [self saveDefaults];
 
-    } else if (![_defaults.JSSAPIPassword isEqualToString:_jssAPIPasswordTF.safeStringValue] || ![_defaults.JSSAPIUsername isEqualToString:_jssAPIUsernameTF.safeStringValue] || ![_defaults.JSSURL isEqualToString:_jssURLTF.safeStringValue]) {
+    } else if (![_defaults.JSSAPIPassword isEqualToString:_jssAPIPasswordTF.safe_stringValue] || ![_defaults.JSSAPIUsername isEqualToString:_jssAPIUsernameTF.safe_stringValue] || ![_defaults.JSSURL isEqualToString:_jssURLTF.safe_stringValue]) {
 
         // Update server status and reset the target action to check credentials...
         _jssStatusLight.image = [NSImage LGStatusPartiallyAvailable];
@@ -331,9 +331,9 @@ static NSPredicate *jdsFilterPredicate()
 
 - (void)saveDefaults
 {
-    _defaults.JSSAPIPassword = _jssAPIPasswordTF.safeStringValue;
-    _defaults.JSSAPIUsername = _jssAPIUsernameTF.safeStringValue;
-    _defaults.JSSURL = _jssURLTF.safeStringValue;
+    _defaults.JSSAPIPassword = _jssAPIPasswordTF.safe_stringValue;
+    _defaults.JSSAPIUsername = _jssAPIUsernameTF.safe_stringValue;
+    _defaults.JSSURL = _jssURLTF.safe_stringValue;
 }
 
 - (NSString *)promptForSharePassword:(NSString *)shareName

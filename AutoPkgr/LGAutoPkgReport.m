@@ -215,7 +215,7 @@ NSString *const fallback_reportCSS = @"<style type='text/css'>*{font-family:'Hel
 
 - (NSString *)runFailuresString
 {
-    NSArray *failures = [_reportDictionary[kReportKeyFailures] filteredArrayByClass:[NSDictionary class]];
+    NSArray *failures = [_reportDictionary[kReportKeyFailures] filtered_ByClass:[NSDictionary class]];
     NSMutableString *string = nil;
 
     if (failures.count) {
@@ -242,7 +242,7 @@ NSString *const fallback_reportCSS = @"<style type='text/css'>*{font-family:'Hel
             // If the included processor is nil show everything.
             if (!includedProcessors || [includedProcessors containsObject:key]) {
                 NSArray *headers = summary[kReportKeyHeaders];
-                NSArray *data_rows = [summary[kReportKeyDataRows] filteredArrayByClass:[NSDictionary class]];
+                NSArray *data_rows = [summary[kReportKeyDataRows] filtered_ByClass:[NSDictionary class]];
                 if (data_rows.count) {
                     [string appendString:[summary[kReportKeySummaryText] html_H3]];
                     if (headers.count > 1) {
@@ -273,10 +273,10 @@ NSString *const fallback_reportCSS = @"<style type='text/css'>*{font-family:'Hel
         NSString *noValidRecipe = @"No valid recipe found for ";
         NSPredicate *noValidRecipePredicate = [NSPredicate predicateWithFormat:@"SELF BEGINSWITH %@", noValidRecipe];
 
-        NSArray *failures = [_reportDictionary[kReportKeyFailures] filteredArrayByClass:[NSDictionary class]];
+        NSArray *failures = [_reportDictionary[kReportKeyFailures] filtered_ByClass:[NSDictionary class]];
         NSMutableOrderedSet *set = [NSMutableOrderedSet new];
 
-        for (NSString *errString in recoverySuggestions.removeEmptyStrings) {
+        for (NSString *errString in recoverySuggestions.filtered_noEmptyStrings) {
             NSPredicate *failurePredicate = [NSPredicate predicateWithFormat:@"message CONTAINS[cd] %@", errString];
 
             // Look over the failures array, if the same string occurred there

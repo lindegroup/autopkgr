@@ -54,7 +54,7 @@
     self.urlLinkButton.action = @selector(openIntegrationHome:);
 
     NSString *credits = [[self.viewController.integration class] credits];
-    self.infoTextField.safeStringValue = credits;
+    self.infoTextField.safe_stringValue = credits;
 }
 
 - (void)openIntegrationHome:(id)sender

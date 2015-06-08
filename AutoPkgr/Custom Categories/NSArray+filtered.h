@@ -8,15 +8,15 @@
 
 #import <Foundation/Foundation.h>
 
-@interface NSArray (filteredArray)
+@interface NSArray (filtered)
 // Returns an array with empty strings removed
-- (NSArray *)removeEmptyStrings;
+- (NSArray *)filtered_noEmptyStrings;
 
 // Returns an array with only items of the specified class.
-- (NSArray *)filteredArrayByClass:(Class)class;
+- (NSArray *)filtered_ByClass:(Class)class;
 
 // Verifies that an array only contains items of a specified class.
-- (BOOL)containsOnlyItemsOfClass:(Class)class;
+- (BOOL)filtered_containsOnlyItemsOfClass:(Class)class;
 
 @end
 

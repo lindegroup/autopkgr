@@ -19,22 +19,22 @@
 //  limitations under the License.
 //
 
-#import "NSTextField+setSafeStringValue.h"
+#import "NSTextField+safeStringValue.h"
 
-@implementation NSTextField (setSafeStringValue)
+@implementation NSTextField (safeStringValue)
 
-- (NSString *)safeStringValue
+- (NSString *)safe_stringValue
 {
-    NSString *aString;
-    if (![self.stringValue isEqualToString:@""]) {
+    NSString *aString = nil;
+    if (self.stringValue.length) {
         aString = self.stringValue;
     }
     return aString;
 }
 
-- (void)setSafeStringValue:(NSString *)aString
+- (void)setSafe_stringValue:(NSString *)aString
 {
-    if (aString && ![aString isEqualToString:@""]) {
+    if (aString.length) {
         [self setStringValue:aString];
     }
 }

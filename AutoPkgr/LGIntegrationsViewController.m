@@ -50,9 +50,9 @@
         _defaults = [LGDefaults standardUserDefaults];
 
         // AutoPkg settings
-        _autoPkgCacheDir.safeStringValue = _defaults.autoPkgCacheDir.stringByAbbreviatingWithTildeInPath;
-        _autoPkgRecipeRepoDir.safeStringValue = _defaults.autoPkgRecipeRepoDir.stringByAbbreviatingWithTildeInPath;
-        _autoPkgRecipeOverridesDir.safeStringValue = _defaults.autoPkgRecipeOverridesDir.stringByAbbreviatingWithTildeInPath;
+        _autoPkgCacheDir.safe_stringValue = _defaults.autoPkgCacheDir.stringByAbbreviatingWithTildeInPath;
+        _autoPkgRecipeRepoDir.safe_stringValue = _defaults.autoPkgRecipeRepoDir.stringByAbbreviatingWithTildeInPath;
+        _autoPkgRecipeOverridesDir.safe_stringValue = _defaults.autoPkgRecipeOverridesDir.stringByAbbreviatingWithTildeInPath;
     }
 }
 

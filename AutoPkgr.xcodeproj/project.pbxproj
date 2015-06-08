@@ -164,7 +164,7 @@
 		BEE346791B15FFBC001526AD /* LGJSSDistributionPointsPrefPanel.m in Sources */ = {isa = PBXBuildFile; fileRef = BE0BACCF1A2560AE00554989 /* LGJSSDistributionPointsPrefPanel.m */; };
 		BEE42DAD1AC6E2D100599238 /* report_malformed.plist in Resources */ = {isa = PBXBuildFile; fileRef = BEE42DAB1AC6E2D100599238 /* report_malformed.plist */; };
 		BEE42DAE1AC6E2D100599238 /* report_none.plist in Resources */ = {isa = PBXBuildFile; fileRef = BEE42DAC1AC6E2D100599238 /* report_none.plist */; };
-		BEE8CF1319E0E7F400981C4B /* NSTextField+setSafeStringValue.m in Sources */ = {isa = PBXBuildFile; fileRef = BEE8CF1219E0E7F400981C4B /* NSTextField+setSafeStringValue.m */; };
+		BEE8CF1319E0E7F400981C4B /* NSTextField+safeStringValue.m in Sources */ = {isa = PBXBuildFile; fileRef = BEE8CF1219E0E7F400981C4B /* NSTextField+safeStringValue.m */; };
 		BEEFE6B71AE9D01200882C89 /* LGAutoPkgErrorHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = BEEFE6B61AE9D01200882C89 /* LGAutoPkgErrorHandler.m */; };
 		BEEFE6B81AE9D01200882C89 /* LGAutoPkgErrorHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = BEEFE6B61AE9D01200882C89 /* LGAutoPkgErrorHandler.m */; };
 		BEEFE6BB1AE9E8A600882C89 /* LGLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = BEEFE6B91AE9E8A600882C89 /* LGLogger.m */; };
@@ -202,7 +202,7 @@
 		BEFC3C891A3DF16700C789E9 /* LGAutoPkgrHelperConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = BE05CE8119DAF6320089068B /* LGAutoPkgrHelperConnection.m */; };
 		BEFC3C8A1A3DF16700C789E9 /* NSImage+statusLight.m in Sources */ = {isa = PBXBuildFile; fileRef = BE1C810219E8224000EF77F3 /* NSImage+statusLight.m */; };
 		BEFC3C8B1A3DF16700C789E9 /* NSString+cleaned.m in Sources */ = {isa = PBXBuildFile; fileRef = BE73CDC619E062AC00441443 /* NSString+cleaned.m */; };
-		BEFC3C8C1A3DF16700C789E9 /* NSTextField+setSafeStringValue.m in Sources */ = {isa = PBXBuildFile; fileRef = BEE8CF1219E0E7F400981C4B /* NSTextField+setSafeStringValue.m */; };
+		BEFC3C8C1A3DF16700C789E9 /* NSTextField+safeStringValue.m in Sources */ = {isa = PBXBuildFile; fileRef = BEE8CF1219E0E7F400981C4B /* NSTextField+safeStringValue.m */; };
 		BEFC3C8E1A3DF16700C789E9 /* NSArray+filtered.m in Sources */ = {isa = PBXBuildFile; fileRef = BED02ADB1A194F9C00714CC2 /* NSArray+filtered.m */; };
 		BEFC931D1995F0710074C938 /* LGError.m in Sources */ = {isa = PBXBuildFile; fileRef = BEFC931C1995F0710074C938 /* LGError.m */; };
 		CAF173A0D3EC0C495067D9FF /* libPods-com.lindegroup.AutoPkgr.helper.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00A11C97CD6260BB5679DA1A /* libPods-com.lindegroup.AutoPkgr.helper.a */; };
@@ -424,8 +424,8 @@
 		BEE211251AF9DCBB00A3C2E1 /* LGUninstaller.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGUninstaller.m; sourceTree = "<group>"; };
 		BEE42DAB1AC6E2D100599238 /* report_malformed.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = report_malformed.plist; sourceTree = "<group>"; };
 		BEE42DAC1AC6E2D100599238 /* report_none.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = report_none.plist; sourceTree = "<group>"; };
-		BEE8CF1119E0E7F400981C4B /* NSTextField+setSafeStringValue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSTextField+setSafeStringValue.h"; path = "Custom Categories/NSTextField+setSafeStringValue.h"; sourceTree = "<group>"; };
-		BEE8CF1219E0E7F400981C4B /* NSTextField+setSafeStringValue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSTextField+setSafeStringValue.m"; path = "Custom Categories/NSTextField+setSafeStringValue.m"; sourceTree = "<group>"; };
+		BEE8CF1119E0E7F400981C4B /* NSTextField+safeStringValue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSTextField+safeStringValue.h"; path = "Custom Categories/NSTextField+safeStringValue.h"; sourceTree = "<group>"; };
+		BEE8CF1219E0E7F400981C4B /* NSTextField+safeStringValue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSTextField+safeStringValue.m"; path = "Custom Categories/NSTextField+safeStringValue.m"; sourceTree = "<group>"; };
 		BEEFE6B51AE9D01200882C89 /* LGAutoPkgErrorHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGAutoPkgErrorHandler.h; sourceTree = "<group>"; };
 		BEEFE6B61AE9D01200882C89 /* LGAutoPkgErrorHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGAutoPkgErrorHandler.m; sourceTree = "<group>"; };
 		BEEFE6B91AE9E8A600882C89 /* LGLogger.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGLogger.m; sourceTree = "<group>"; };
@@ -713,8 +713,8 @@
 				BE8A06BB1AF8FAFD006C2571 /* NSData+taskData.m */,
 				BECDABA01B252B3900544388 /* NSOpenPanel+folderChooser.h */,
 				BECDABA11B252B3900544388 /* NSOpenPanel+folderChooser.m */,
-				BEE8CF1119E0E7F400981C4B /* NSTextField+setSafeStringValue.h */,
-				BEE8CF1219E0E7F400981C4B /* NSTextField+setSafeStringValue.m */,
+				BEE8CF1119E0E7F400981C4B /* NSTextField+safeStringValue.h */,
+				BEE8CF1219E0E7F400981C4B /* NSTextField+safeStringValue.m */,
 				BED02ADA1A194F9C00714CC2 /* NSArray+filtered.h */,
 				BED02ADB1A194F9C00714CC2 /* NSArray+filtered.m */,
 				BED136BA1AC3BF2E003EBF0F /* Html Categories */,
@@ -1348,7 +1348,7 @@
 				BECDAB8C1B249C0400544388 /* NSButton+colored.m in Sources */,
 				BE8A06BC1AF8FAFD006C2571 /* NSData+taskData.m in Sources */,
 				BE38EA771B0B8DF7009FCBEB /* LGRecipeInfoView.m in Sources */,
-				BEE8CF1319E0E7F400981C4B /* NSTextField+setSafeStringValue.m in Sources */,
+				BEE8CF1319E0E7F400981C4B /* NSTextField+safeStringValue.m in Sources */,
 				BE1C810319E8224000EF77F3 /* NSImage+statusLight.m in Sources */,
 				BE81F2301B22340D007D16C4 /* LGBaseIntegrationViewController.m in Sources */,
 				BE81F22A1B2232ED007D16C4 /* LGJSSImporterIntegrationView.m in Sources */,
@@ -1413,7 +1413,7 @@
 				BE38EA9D1B0CFEA6009FCBEB /* LGScheduleViewController.m in Sources */,
 				BEFC3C8B1A3DF16700C789E9 /* NSString+cleaned.m in Sources */,
 				BEEFE6CB1AEC760900882C89 /* LGAutoPkgIntegration.m in Sources */,
-				BEFC3C8C1A3DF16700C789E9 /* NSTextField+setSafeStringValue.m in Sources */,
+				BEFC3C8C1A3DF16700C789E9 /* NSTextField+safeStringValue.m in Sources */,
 				BEFC3C8E1A3DF16700C789E9 /* NSArray+filtered.m in Sources */,
 				BE81F2311B22340D007D16C4 /* LGBaseIntegrationViewController.m in Sources */,
 				BEE211231AF9D6E500A3C2E1 /* LGIntegrationTemplate.m in Sources */,

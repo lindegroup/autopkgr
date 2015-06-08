@@ -150,7 +150,7 @@ static NSArray *__requiredIntegrationClasses;
 #pragma mark - Class Methods
 - (id)integrationOfClass:(Class)integrationClass
 {
-    return [self.allIntegrations filteredArrayByClass:integrationClass].firstObject;
+    return [self.allIntegrations filtered_ByClass:integrationClass].firstObject;
 }
 
 + (BOOL)requiredItemsInstalled

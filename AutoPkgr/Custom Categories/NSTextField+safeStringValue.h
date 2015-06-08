@@ -21,23 +21,14 @@
 
 #import <Cocoa/Cocoa.h>
 
-@interface NSTextField (setSafeStringValue)
+@interface NSTextField (safeStringValue)
 
 /**
- *  (Custom Category) populate the text field with a string, but do not raise if the string passed in is nil
- *  @discussion this is useful when setting NSTextFields from defaults or data sources that may not have any values yet.
- *
- *  @param aString stringValue to set
+ *  (Custom Category) populate the text field with a string, but do not raise if the string passed in is nil. This will also return nil if there is no text in the text field.
+ *  @discussion this is useful when getting or setting NSTextField from defaults or data sources that may not have any values yet.
  */
-- (void)setSafeStringValue:(NSString *)safeStringValue;
 
-/**
- *  (Custom Category) return nil from string value if it's a blank string
- *
- *  @discussion this is useful for conditionally checking values in subsequent if statements, since the default value returned from a NSTextField is @"" which will will return True.
- *
- *  @return stringValue if not blank
- */
-- (NSString *)safeStringValue;
+@property (copy, nonatomic) NSString *safe_stringValue;
+
 
 @end

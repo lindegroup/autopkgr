@@ -64,7 +64,7 @@
             if (error) {
                 NSLog(@"Error getting password for %@ [%ld]: %@", account, error.code, error.localizedDescription);
             } else {
-                _smtpPassword.safeStringValue = password;
+                _smtpPassword.safe_stringValue = password;
             }
         }];
     }
@@ -77,8 +77,8 @@
 
 - (void)savePassword:(void (^)(NSError *error))reply
 {
-    NSString *account = _smtpUsername.safeStringValue;
-    NSString *password = _smtpPassword.safeStringValue;
+    NSString *account = _smtpUsername.safe_stringValue;
+    NSString *password = _smtpPassword.safe_stringValue;
 
     if (account && password) {
         [LGPasswords savePassword:password forAccount:account reply:^(NSError *error) {

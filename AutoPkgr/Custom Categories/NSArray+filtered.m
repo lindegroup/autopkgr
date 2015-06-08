@@ -8,21 +8,21 @@
 
 #import "NSArray+filtered.h"
 
-@implementation NSArray (filteredArray)
-- (NSArray *)removeEmptyStrings
+@implementation NSArray (filtered)
+- (NSArray *)filtered_noEmptyStrings
 {
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"not (SELF == '' or SELF == ' ')"];
     return [self filteredArrayUsingPredicate:predicate];
 }
 
-- (NSArray *)filteredArrayByClass:(Class)class{
+- (NSArray *)filtered_ByClass:(Class)class{
     NSPredicate *classPredicate = [NSPredicate predicateWithFormat:@"SELF isKindOfClass: %@", class];
     return [self filteredArrayUsingPredicate:classPredicate];
 }
 
-- (BOOL)containsOnlyItemsOfClass:(Class)class
+- (BOOL)filtered_containsOnlyItemsOfClass:(Class)class
 {
-    return ([[self filteredArrayByClass:class] count] == self.count);
+    return ([[self filtered_ByClass:class] count] == self.count);
 }
 
 @end
