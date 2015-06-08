@@ -54,6 +54,10 @@ NSArray *knownGitPaths()
     return @"Git";
 }
 
++ (NSURL *)homePage {
+    return [NSURL URLWithString:@"https://git-scm.com"];
+}
+
 + (NSArray *)components
 {
     return @[ [self binary],

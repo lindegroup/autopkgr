@@ -6,13 +6,13 @@
 //  Copyright (c) 2015 The Linde Group, Inc. All rights reserved.
 //
 
-#import "LGBaseTabViewController.h"
+#import "LGTabViewControllerBase.h"
 
-@interface LGBaseTabViewController ()
+@interface LGTabViewControllerBase ()
 
 @end
 
-@implementation LGBaseTabViewController
+@implementation LGTabViewControllerBase
 
 - (instancetype)init {
     return (self = [super initWithNibName:NSStringFromClass([self class]) bundle:nil]);

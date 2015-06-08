@@ -77,6 +77,7 @@ void subclassMustConformToProtocol(id className)
     void (^_progressUpdateBlock)(NSString *, double);
     void (^_replyErrorBlock)(NSError *);
     NSMutableDictionary *_infoUpdateBlocksDict;
+    id<LGProgressDelegate> _origProgressDelegate;
 }
 
 @synthesize installedVersion = _installedVersion;
@@ -231,8 +232,16 @@ void subclassMustConformToProtocol(id className)
     return [[self class] name];
 }
 
-- (void)getInfo:(void (^)(LGToolInfo *))reply {
++ (NSString *)credits {
+    return nil;
+}
 
++ (NSURL *)homePage {
+    return nil;
+}
+
+- (void)getInfo:(void (^)(LGToolInfo *))reply {
+    _isRefreshing = YES;
     void (^updateInfoHandlers)() = ^(){
         dispatch_async(autopkgr_tool_synchronizer_queue(), ^{
             if (reply || _infoUpdateHandler) {
@@ -247,6 +256,7 @@ void subclassMustConformToProtocol(id className)
             } else {
                 _info = [[LGToolInfo alloc] initWithTool:self];
             }
+            _isRefreshing = NO;
         });
     };
 
@@ -340,7 +350,7 @@ void subclassMustConformToProtocol(id className)
     LGToolTypeFlags typeFlags = [[self class] typeFlags];
 
     NSString *installMessage = [NSString stringWithFormat:@"Installing %@...", [[self class] name]];
-    [_progressDelegate startProgressWithMessage:installMessage];
+    [self.progressDelegate startProgressWithMessage:installMessage];
 
     LGInstaller *installer = [[LGInstaller alloc] init];
     installer.downloadURL = self.downloadURL;
@@ -375,6 +385,9 @@ void subclassMustConformToProtocol(id className)
 - (void)install:(void (^)(NSString *, double))progress reply:(void (^)(NSError *))reply
 {
     if (progress) {
+        if (_progressDelegate) {
+            _origProgressDelegate = _progressDelegate;
+        }
         _progressUpdateBlock = progress;
         _progressDelegate = self;
     }
@@ -430,9 +443,14 @@ void subclassMustConformToProtocol(id className)
 
 - (void)uninstall:(void (^)(NSString *, double))progress reply:(void (^)(NSError *))reply
 {
-    _progressDelegate = self;
+
     if (progress) {
+        if (_progressDelegate) {
+            _origProgressDelegate = _progressDelegate;
+        }
         _progressUpdateBlock = progress;
+        _progressDelegate = self;
+
     }
 
     if (reply) {
@@ -462,6 +480,11 @@ void subclassMustConformToProtocol(id className)
 
     [[NSNotificationCenter defaultCenter] postNotificationName:kLGNotificationToolStatusDidChange object:self];
 
+    if (_origProgressDelegate) {
+        _progressDelegate = _origProgressDelegate;
+        _origProgressDelegate = nil;
+    }
+    
     [self refresh];
 }
 
@@ -529,11 +552,11 @@ void subclassMustConformToProtocol(id className)
 @implementation LGToolInfo {
     NSString *_name;
     LGToolTypeFlags _typeFlags;
-
     LGToolInstallStatus _status;
     BOOL _installed;
-    NSString *_defaultRepo;
+    
 }
+
 
 - (instancetype)initWithTool:(LGTool *)tool;
 {
@@ -541,7 +564,6 @@ void subclassMustConformToProtocol(id className)
         _name = [[tool class] name];
         _typeFlags = [[tool class] typeFlags];
         _installed = [[tool class] isInstalled];
-        _defaultRepo = [[tool class] defaultRepository];
 
         _remoteVersion = tool.remoteVersion;
         _installedVersion = tool.installedVersion;
@@ -602,6 +624,18 @@ void subclassMustConformToProtocol(id className)
     return statusString;
 }
 
+- (BOOL)needsInstalled
+{
+    switch (self.status) {
+        case kLGToolNotInstalled:
+        case kLGToolUpdateAvailable:
+            return YES;
+        case kLGToolUpToDate:
+        default:
+            return NO;
+    }
+}
+
 - (NSString *)installButtonTitle
 {
     NSString *title;
@@ -639,24 +673,65 @@ void subclassMustConformToProtocol(id className)
     }
 }
 
-- (BOOL)needsInstalled
-{
-    switch (self.status) {
-    case kLGToolNotInstalled:
-    case kLGToolUpdateAvailable:
-        return YES;
-    case kLGToolUpToDate:
-    default:
-        return NO;
-    }
-}
-
-- (SEL)targetAction
+- (SEL)installButtonTargetAction
 {
     if ((self.status == kLGToolUpToDate) && (_typeFlags | kLGToolTypeUninstallableTool)) {
         return @selector(uninstall:);
     } else {
         return @selector(install:);
+    }
+}
+
+- (NSString *)configureButtonTitle
+{
+    NSString *title;
+    switch (self.status) {
+        case kLGToolNotInstalled:
+            title = @"Install ";
+            break;
+        case kLGToolUpToDate:
+        case kLGToolUpdateAvailable:
+            title = @"Configure ";
+            break;
+        default:
+            title = @"??? ";
+            break;
+    }
+    return [title stringByAppendingString:_name];
+}
+
+- (BOOL)configureButtonEnabled {
+    return YES;
+}
+
+- (SEL)configureButtonTargetAction
+{
+    SEL selector = nil;
+
+    if (self.status != kLGToolNotInstalled) {
+        selector = NSSelectorFromString(@"configure:");
+    } else {
+        selector = @selector(install:);
+    }
+    return selector;
+}
+
+- (void)modifyInstall_UninstallButton:(NSButton *)button withTool:(LGTool *)tool {
+    button.target = tool;
+    button.action = self.installButtonTargetAction;
+    button.title = self.installButtonTitle;
+    button.enabled = self.installButtonEnabled;
+}
+
+- (void)modifyInstall_ConfigureButton:(NSButton *)button withTarget:(id)target {
+    SEL selector = self.configureButtonTargetAction;
+    if ([target respondsToSelector:selector]) {
+        button.action = selector;
+        button.target = target;
+    } else {
+        button.action = nil;
+        button.target = nil;
+        button.title = self.configureButtonTitle;
     }
 }
 

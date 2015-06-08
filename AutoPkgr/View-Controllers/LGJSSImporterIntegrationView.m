@@ -1,5 +1,5 @@
 //
-//  LGJSSImporter.m
+//  LGJSSImporterIntegrationView.h
 //  AutoPkgr
 //
 //  Created by Eldon on 9/25/14.
@@ -19,7 +19,7 @@
 //  limitations under the License.
 //
 
-#import "LGJSSImporter.h"
+#import "LGJSSImporterIntegrationView.h"
 #import "LGJSSImporterTool.h"
 #import "LGJSSDistributionPointsPrefPanel.h"
 
@@ -31,10 +31,8 @@
 #import "LGAutoPkgTask.h"
 
 #pragma mark - Class constants
-@interface LGJSSImporter ()
-@end
 
-NSPredicate *jdsFilterPredicate()
+static NSPredicate *jdsFilterPredicate()
 {
     static dispatch_once_t onceToken;
     __strong static NSPredicate *predicate = nil;
@@ -44,7 +42,7 @@ NSPredicate *jdsFilterPredicate()
     return predicate;
 }
 
-@implementation LGJSSImporter {
+@implementation LGJSSImporterIntegrationView {
     LGJSSImporterDefaults *_defaults;
     LGTestPort *_portTester;
     LGJSSDistributionPointsPrefPanel *_preferencePanel;
@@ -54,9 +52,6 @@ NSPredicate *jdsFilterPredicate()
 
 - (void)awakeFromNib
 {
-    if ([[[NSApplication sharedApplication] delegate] conformsToProtocol:@protocol(LGProgressDelegate)]) {
-        _progressDelegate = (id)[[NSApplication sharedApplication] delegate];
-    }
 
     _defaults = [LGJSSImporterDefaults new];
 
@@ -72,33 +67,10 @@ NSPredicate *jdsFilterPredicate()
     _jssAPIPasswordTF.safeStringValue = _defaults.JSSAPIPassword;
     _jssURLTF.safeStringValue = _defaults.JSSURL;
 
+    _jssReloadServerBT.action = @selector(testCredentials:);
+    _jssReloadServerBT.title = @"Verify";
+
     [_jssDistributionPointTableView reloadData];
-}
-
-- (void)connectToTool
-{
-    BOOL isInstalled = [LGJSSImporterTool isInstalled];
-
-    __weak typeof(self) __weak_self = self;
-    [_jssImporterTool setInfoUpdateHandler:^(LGToolInfo *info) {
-        // Update the button.
-
-        if (info.status == kLGToolNotInstalled){
-            __weak_self.jssReloadServerBT.title = @"Install";
-            __weak_self.jssReloadServerBT.target = __weak_self.jssImporterTool;
-            __weak_self.jssReloadServerBT.action = @selector(install:);
-        } else {
-            __weak_self.jssReloadServerBT.title = @"Verify";
-            __weak_self.jssReloadServerBT.target = __weak_self;
-            __weak_self.jssReloadServerBT.action = @selector(testCredentials:);
-        }
-    }];
-
-    _jssImporterTool.progressDelegate = _progressDelegate;
-
-    if (!isInstalled) {
-        [_jssImporterTool refresh];
-    }
 }
 
 #pragma mark - IBActions
@@ -154,7 +126,6 @@ NSPredicate *jdsFilterPredicate()
     [jssCredentials checkCredentialsForPath:@"/JSSResource/distributionpoints" reply:^(LGHTTPCredential *aCredential, LGCredentialChallengeCode status, NSError *error) {
         switch (status) {
             case kLGCredentialChallengeSuccess:
-
                 if (aCredential.sslTrustSetting == kLGSSLTrustStatusUnknown) {
                     [self confirmDisableSSLVerify];
                 } else if (aCredential.sslTrustSetting & (kLGSSLTrustOSImplicitTrust | kLGSSLTrustUserExplicitTrust)){
@@ -162,7 +133,7 @@ NSPredicate *jdsFilterPredicate()
                 } else {
                     _defaults.JSSVerifySSL = NO;
                 }
-                
+
                 _defaults.jssCredentials = aCredential;
                 [_jssStatusLight setImage:[NSImage LGStatusAvailable]];
 
@@ -178,7 +149,7 @@ NSPredicate *jdsFilterPredicate()
             default:
                 break;
         }
-        
+
         [self stopStatusUpdate:error];
     }];
 }
@@ -195,10 +166,10 @@ NSPredicate *jdsFilterPredicate()
 
                                           [self stopStatusUpdate:error];
                                           NSArray *cleanedArray = [self evaluateJSSRepoDictionaries:distributionPoints];
-                                           if (cleanedArray) {
-                                               _defaults.JSSRepos = cleanedArray;
-                                               [_jssDistributionPointTableView reloadData];
-                                           }
+                                          if (cleanedArray) {
+                                              _defaults.JSSRepos = cleanedArray;
+                                              [_jssDistributionPointTableView reloadData];
+                                          }
                                       }];
                                   }];
 }
@@ -220,7 +191,7 @@ NSPredicate *jdsFilterPredicate()
         [_jssStatusSpinner setHidden:YES];
         [_jssStatusSpinner stopAnimation:self];
         if (error) {
-            [_progressDelegate stopProgress:error];
+            [self.integration.progressDelegate stopProgress:error];
             [_jssStatusLight setImage:[NSImage LGStatusUnavailable]];
         }
     }];
@@ -400,9 +371,9 @@ NSPredicate *jdsFilterPredicate()
     NSDictionary *JDSDict = @{ @"type" : @"JDS" };
 
     NSUInteger index = [workingArray indexOfObjectPassingTest:
-                                         ^BOOL(NSDictionary *dict, NSUInteger idx, BOOL *stop) {
+                        ^BOOL(NSDictionary *dict, NSUInteger idx, BOOL *stop) {
                             return [dict[@"type"] isEqualToString:@"JDS"];
-                                         }];
+                        }];
 
     if (sender.state) {
         // Add JDS
@@ -465,7 +436,10 @@ NSPredicate *jdsFilterPredicate()
             _preferencePanel = [[LGJSSDistributionPointsPrefPanel alloc] initWithDistPointDictionary:distPoint];
         }
 
-        [NSApp beginSheet:_preferencePanel.window modalForWindow:_modalWindow modalDelegate:self didEndSelector:@selector(didClosePreferencePanel) contextInfo:nil];
+        [NSApp beginSheet:_preferencePanel.window
+           modalForWindow:_modalWindow
+            modalDelegate:self
+           didEndSelector:@selector(didClosePreferencePanel) contextInfo:nil];
     }
 }
 
@@ -475,7 +449,7 @@ NSPredicate *jdsFilterPredicate()
     if (![NSThread isMainThread]) {
         return [self performSelectorOnMainThread:@selector(didClosePreferencePanel) withObject:self waitUntilDone:NO];
     }
-
+    
     [_preferencePanel.window close];
     _preferencePanel = nil;
     [_jssDistributionPointTableView reloadData];

@@ -84,7 +84,22 @@
  */
 + (NSArray *)packageIdentifiers;
 
+
 @optional
+/**
+ *  Home page for the integration
+ *
+ *  @return URL string.
+ */
++ (NSURL *)homePage;
+
+/**
+ *  Credits for the integration.
+ *
+ *  @return Credits.
+ */
++ (NSString *)credits;
+
 /**
  *  Whether the tool is uninstallable. Defaults to YES;
  *
@@ -148,4 +163,5 @@
  *  @return Populated NSError object
  */
 + (NSError *)requirementsError:(NSString *)reason;
+
 @end

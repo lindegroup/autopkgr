@@ -1,5 +1,5 @@
 //
-//  LGJSSImporter.h
+//  LGJSSImporterIntegrationView.h
 //  AutoPkgr
 //
 //  Created by Eldon on 9/25/14.
@@ -24,12 +24,11 @@
 
 #import "LGProgressDelegate.h"
 #import "LGTableView.h"
+#import "LGBaseIntegrationViewController.h"
 
 @class LGJSSImporterTool;
 
-@interface LGJSSImporter : NSObject <NSTableViewDataSource, NSTableViewDelegate>
-
-@property (strong) LGJSSImporterTool *jssImporterTool;
+@interface LGJSSImporterIntegrationView : LGBaseIntegrationViewController <NSTableViewDataSource, NSTableViewDelegate>
 
 @property (strong) IBOutlet LGTableView *jssDistributionPointTableView;
 @property (weak) IBOutlet NSTextField *jssURLTF;
@@ -45,18 +44,9 @@
 
 @property (weak) NSWindow *modalWindow;
 
-// Progress delegate (object used to send updates to status menu item)
-@property (weak) id<LGProgressDelegate> progressDelegate;
-
 - (IBAction)addDistributionPoint:(id)sender;
 - (IBAction)removeDistributionPoint:(id)sender;
 - (IBAction)editDistributionPoint:(id)sender;
 - (IBAction)enableMasterJDS:(NSButton *)sender;
-
-/**
- *  Connect the LGJSSimporterTool and have it assume responsibility for the IBOutlets that it manages.
- *  @note This is required since it needs to be executed after all of the NIBs have been loaded.
- */
-- (void)connectToTool;
 
 @end

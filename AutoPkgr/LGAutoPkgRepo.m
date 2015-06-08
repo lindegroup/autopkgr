@@ -190,7 +190,7 @@ static NSArray *_popularRepos;
                         [self statusDidChange:kLGAutoPkgRepoUpdateAvailable];
                     }
 
-                    DevLog(@"%@ - %@ vs %@ : Status = %d", self.name, localSHA1.length ? [localSHA1 substringToIndex:7] : nil, remoteSHA1.length ? [remoteSHA1 substringToIndex:7] : nil, _status);
+//                    DevLog(@"%@ - %@ vs %@ : Status = %d", self.name, localSHA1.length ? [localSHA1 substringToIndex:7] : nil, remoteSHA1.length ? [remoteSHA1 substringToIndex:7] : nil, _status);
                     [self statusDidChange:_status];
                 }];
             }];

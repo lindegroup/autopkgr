@@ -1,10 +1,9 @@
 //
-//  AutoPkgr.h
+//  LGToolViewControllerBase.m
 //  AutoPkgr
 //
-//  Created by Eldon on 8/24/14.
-//
-//  Copyright 2014-2015 The Linde Group, Inc.
+//  Created by Eldon on 6/5/15.
+//  Copyright 2015 Eldon Ahrold
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -19,20 +18,27 @@
 //  limitations under the License.
 //
 
-#ifndef AutoPkgr_AutoPkgr_h
-#define AutoPkgr_AutoPkgr_h
+#import "LGBaseIntegrationViewController.h"
+#import "LGTool.h"
 
-#import "LGConstants.h"
-#import "LGDefaults.h"
-#import "LGError.h"
-#import "LGLogger.h"
-#import "LGHostInfo.h"
-#import "NSString+cleaned.h"
-#import "NSString+versionCompare.h"
-#import "NSTextField+setSafeStringValue.h"
-#import "NSImage+statusLight.h"
-#import "NSArray+filtered.h"
-#import "NSString+split.h"
-#import "NSButton+colored.h"
+@implementation LGBaseIntegrationViewController
 
-#endif
+- (instancetype)init {
+    return (self = [super initWithNibName:NSStringFromClass([self class]) bundle:nil]);
+}
+
+- (instancetype)initWithIntegration:(LGTool *)integration
+{
+    if (self = [self init]) {
+        _integration = integration;
+    }
+    return self;
+}
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    // Do view setup here.
+}
+
+
+@end

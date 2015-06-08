@@ -19,7 +19,7 @@
 #import "LGTool+Protocols.h"
 #import "LGAutoPkgTask.h"
 
-@interface LGAutoPkgTool ()<LGToolPackageInstaller, LGToolSharedProcessor>
+@interface LGAutoPkgTool () <LGToolPackageInstaller, LGToolSharedProcessor>
 @end
 
 @implementation LGAutoPkgTool
@@ -29,6 +29,11 @@
 + (NSString *)name
 {
     return @"AutoPkg";
+}
+
++ (NSURL *)homePage
+{
+    return [NSURL URLWithString:@"http://autopkg.github.io/autopkg/"];
 }
 
 + (NSString *)defaultRepository
@@ -53,10 +58,11 @@
 
 + (NSArray *)packageIdentifiers
 {
-    return @[@"com.github.autopkg.autopkg"];
+    return @[ @"com.github.autopkg.autopkg" ];
 }
 
-+ (BOOL)isUninstallable {
++ (BOOL)isUninstallable
+{
     return NO;
 }
 

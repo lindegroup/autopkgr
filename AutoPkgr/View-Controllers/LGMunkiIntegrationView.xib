@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="6250" systemVersion="13F1077" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+    <dependencies>
+        <deployment identifier="macosx"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="6250"/>
+    </dependencies>
+    <objects>
+        <customObject id="-2" userLabel="File's Owner" customClass="LGMunkiIntegrationView">
+            <connections>
+                <outlet property="localMunkiRepo" destination="LxW-1c-3jQ" id="6IJ-3S-nna"/>
+                <outlet property="openLocalMunkiRepoFolderButton" destination="rOJ-48-FyU" id="43d-nt-u15"/>
+                <outlet property="view" destination="Hz6-mo-xeY" id="0bl-1N-x8E"/>
+            </connections>
+        </customObject>
+        <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
+        <customObject id="-3" userLabel="Application" customClass="NSObject"/>
+        <customView id="Hz6-mo-xeY">
+            <rect key="frame" x="0.0" y="0.0" width="585" height="100"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+            <subviews>
+                <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="rOJ-48-FyU">
+                    <rect key="frame" x="443" y="44" width="134" height="32"/>
+                    <buttonCell key="cell" type="push" title="Open In Finder" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="dZQ-y3-qfS">
+                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                        <font key="font" metaFont="system"/>
+                    </buttonCell>
+                    <connections>
+                        <action selector="openLocalMunkiRepoFolder:" target="-2" id="tRG-sf-uCX"/>
+                    </connections>
+                </button>
+                <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="wR9-Cr-nxI">
+                    <rect key="frame" x="340" y="44" width="99" height="32"/>
+                    <buttonCell key="cell" type="push" title="Choose..." bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="srz-Tz-wvA">
+                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                        <font key="font" metaFont="system"/>
+                    </buttonCell>
+                    <connections>
+                        <action selector="chooseLocalMunkiRepo:" target="-2" id="KcU-4o-TmN"/>
+                    </connections>
+                </button>
+                <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="LxW-1c-3jQ">
+                    <rect key="frame" x="104" y="51" width="223" height="22"/>
+                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" placeholderString="/User/Shared/munki_repo" drawsBackground="YES" id="25F-Lj-I0v">
+                        <font key="font" metaFont="system"/>
+                        <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="dy1-cL-L9S">
+                    <rect key="frame" x="15" y="54" width="83" height="17"/>
+                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Munki Repo:" id="xlY-TY-p8w">
+                        <font key="font" metaFont="system"/>
+                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
+            </subviews>
+            <constraints>
+                <constraint firstItem="LxW-1c-3jQ" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="27" id="5kr-1j-RaY"/>
+                <constraint firstItem="LxW-1c-3jQ" firstAttribute="bottom" secondItem="wR9-Cr-nxI" secondAttribute="bottom" id="Ddk-s8-ocg"/>
+                <constraint firstItem="wR9-Cr-nxI" firstAttribute="leading" secondItem="LxW-1c-3jQ" secondAttribute="trailing" constant="19" id="Dhs-hj-37c"/>
+                <constraint firstItem="dy1-cL-L9S" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="17" id="Nvg-Cn-Pp2"/>
+                <constraint firstAttribute="trailing" secondItem="rOJ-48-FyU" secondAttribute="trailing" constant="14" id="WNZ-sn-sqS"/>
+                <constraint firstItem="rOJ-48-FyU" firstAttribute="leading" secondItem="wR9-Cr-nxI" secondAttribute="trailing" constant="16" id="cv9-cE-A8S"/>
+                <constraint firstItem="rOJ-48-FyU" firstAttribute="baseline" secondItem="wR9-Cr-nxI" secondAttribute="baseline" id="d1O-jb-7ZP"/>
+                <constraint firstItem="LxW-1c-3jQ" firstAttribute="leading" secondItem="dy1-cL-L9S" secondAttribute="trailing" constant="8" symbolic="YES" id="mky-qg-sI7"/>
+                <constraint firstItem="wR9-Cr-nxI" firstAttribute="baseline" secondItem="dy1-cL-L9S" secondAttribute="baseline" id="r28-TW-3Lw"/>
+            </constraints>
+            <point key="canvasLocation" x="241.5" y="142"/>
+        </customView>
+    </objects>
+</document>

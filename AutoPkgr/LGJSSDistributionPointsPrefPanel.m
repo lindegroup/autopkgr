@@ -21,7 +21,7 @@
 
 #import "LGJSSDistributionPointsPrefPanel.h"
 #import "LGJSSImporterTool.h"
-@interface LGJSSDistributionPointsPrefPanel ()
+@interface LGJSSDistributionPointsPrefPanel ()<NSWindowDelegate>
 
 @end
 
@@ -31,7 +31,7 @@
 
 - (id)init
 {
-    return [self initWithWindowNibName:@"LGJSSDistributionPointsPrefPanel"];
+    return [self initWithWindowNibName:NSStringFromClass([self class])];
 }
 
 - (instancetype)initWithDistPointDictionary:(NSDictionary *)dict
@@ -46,6 +46,7 @@
 - (void)windowDidLoad
 {
     [super windowDidLoad];
+    self.window.delegate = self;
 
     // We need to do this dance because it seems that when the class is initialized
     // the NSTextFields are nil until the window is loaded.
@@ -178,6 +179,10 @@
         [_distPointDomain setHidden:YES];
         [_distPointDomainLabel setHidden:YES];
     }
+}
+
+- (void)windowWillClose:(NSNotification *)notification {
+    [NSApp endSheet:self.window];
 }
 
 - (void)closePanel:(id)sender

@@ -100,6 +100,7 @@ typedef NS_ENUM(OSStatus, LGToolInstallStatus) {
  */
 
 @interface LGTool : NSObject
+
 /**
  *  Name of the Tool
  */
@@ -117,12 +118,18 @@ typedef NS_ENUM(OSStatus, LGToolInstallStatus) {
 // If the tool is installed.
 + (BOOL)isInstalled;
 
+// If the tool can be uninstalled.
++ (BOOL)isUninstallable;
+
++ (NSString *)credits;
++ (NSURL *)homePage;
 
 @property (weak) id<LGProgressDelegate> progressDelegate;
 
 #pragma mark - Implemented in the Abstract class
 @property (copy, nonatomic, readonly) NSString *name;
 @property (assign, nonatomic, readonly) BOOL isInstalled;
+@property (assign, nonatomic, readonly) BOOL isRefreshing;
 
 // LGToolInfo object with local and remote status information and useful UI mappings.
 @property (copy, nonatomic, readonly) LGToolInfo *info;
@@ -186,6 +193,9 @@ typedef NS_ENUM(OSStatus, LGToolInstallStatus) {
 // Status of the item.
 @property (assign, nonatomic, readonly) LGToolInstallStatus status;
 
+// Mapped bool for whether tool needs installed or updated.
+@property (assign, readonly) BOOL needsInstalled;
+
 #pragma mark - Tool Mappings
 // Mapped image of the small green/yellow/red globe.
 @property (copy, nonatomic, readonly) NSImage *statusImage;
@@ -199,10 +209,15 @@ typedef NS_ENUM(OSStatus, LGToolInstallStatus) {
 // Mapped bool for whether the button should be enabled.
 @property (assign, readonly) BOOL installButtonEnabled;
 
-// Mapped bool for whether tool needs installed or updated.
-@property (assign, readonly) BOOL needsInstalled;
+// Selector to specify install / uninstall behavior.
+@property (assign, readonly) SEL installButtonTargetAction;
+
+// Mapped title for an install button.
+@property (copy, nonatomic, readonly) NSString *configureButtonTitle;
 
 // Selector to specify install / uninstall behavior.
-@property (assign, readonly) SEL targetAction;
+@property (assign, readonly) SEL configureButtonTargetAction;
 
+- (void)modifyInstall_UninstallButton:(NSButton *)button withTool:(LGTool *)tool;
+- (void)modifyInstall_ConfigureButton:(NSButton *)button withTarget:(id)target;
 @end

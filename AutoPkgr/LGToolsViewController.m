@@ -1,3 +1,4 @@
+
 //
 //  LGToolsViewController.m
 //  AutoPkgr
@@ -20,8 +21,21 @@
 #import "LGToolsViewController.h"
 #import "LGToolManager.h"
 
+#import "LGJSSImporterIntegrationView.h"
+#import "LGMunkiIntegrationView.h"
+#import "LGAbsoluteManageIntegrationView.h"
+
+#import "LGIntegrationWindowController.h"
+#import "LGTableCellViews.h"
+
+#import "NSOpenPanel+folderChooser.h"
+
+@interface LGToolsViewController ()<NSTableViewDataSource, NSTableViewDelegate>
+@end
+
 @implementation LGToolsViewController {
     LGDefaults *_defaults;
+    LGIntegrationWindowController *integrationWindowController;
 }
 @synthesize modalWindow = _modalWindow;
 
@@ -36,23 +50,17 @@
     if (!self.awake) {
         self.awake = YES;
         _defaults = [LGDefaults standardUserDefaults];
-        // AutoPkg settings
 
-        _localMunkiRepo.safeStringValue = _defaults.munkiRepo;
+        // AutoPkg settings
         _autoPkgCacheDir.safeStringValue = _defaults.autoPkgCacheDir;
         _autoPkgRecipeRepoDir.safeStringValue = _defaults.autoPkgRecipeRepoDir;
         _autoPkgRecipeOverridesDir.safeStringValue = _defaults.autoPkgRecipeOverridesDir;
-
-        _jssImporter.jssImporterTool = [_toolManager toolOfClass:[LGJSSImporterTool class]];
-
-        [_jssImporter connectToTool];
     }
 }
 
 - (void)setModalWindow:(NSWindow *)modalWindow
 {
     _modalWindow = modalWindow;
-    _jssImporter.modalWindow = modalWindow;
 }
 
 - (NSString *)tabLabel
@@ -60,31 +68,99 @@
     return @"Folders & Integration";
 }
 
-#pragma mark - Open Folder Actions
-- (IBAction)openLocalMunkiRepoFolder:(id)sender
+- (NSArray *)tableViewIntegrations
 {
-    DLog(@"Opening Munki repo folder...");
+    return _toolManager.optionalTools;
+}
 
-    NSString *munkiRepoFolder = _defaults.munkiRepo;
-    BOOL isDir;
+#pragma mark - Integration config
 
-    if ([[NSFileManager defaultManager] fileExistsAtPath:munkiRepoFolder isDirectory:&isDir] && isDir) {
-        NSURL *localMunkiRepoFolderURL = [NSURL fileURLWithPath:munkiRepoFolder];
-        [[NSWorkspace sharedWorkspace] openURL:localMunkiRepoFolderURL];
-    } else {
-        NSLog(@"%@ does not exist.", munkiRepoFolder);
-        NSAlert *alert = [[NSAlert alloc] init];
-        [alert addButtonWithTitle:@"OK"];
-        [alert setMessageText:@"Cannot find the Munki repository."];
-        [alert setInformativeText:[NSString stringWithFormat:@"%@ could not find the Munki repository located in %@. Please verify that this folder exists.", kLGApplicationName, munkiRepoFolder]];
-        [alert setAlertStyle:NSWarningAlertStyle];
-        [alert beginSheetModalForWindow:self.modalWindow
-                          modalDelegate:self
-                         didEndSelector:nil
-                            contextInfo:nil];
+- (Class)viewControllerClassForIntegration:(LGTool *)integration {
+    Class viewClass = NULL;
+    if ([integration isMemberOfClass:[LGJSSImporterTool class]]) {
+        viewClass = [LGJSSImporterIntegrationView class];
+    } else if ([integration isMemberOfClass:[LGMunkiTool class]]) {
+        viewClass = [LGMunkiIntegrationView class];
+    } else if ([integration isMemberOfClass:[LGAbsoluteManageIntegration class]]){
+        viewClass = [LGAbsoluteManageIntegrationView class];
+    }
+    
+    return viewClass;
+}
+
+- (void)configure:(NSButton *)sender
+{
+    LGTool *integration = [[self tableViewIntegrations] objectAtIndex:sender.tag];
+    Class viewClass = [self viewControllerClassForIntegration:integration];
+
+    if (viewClass) {
+        LGBaseIntegrationViewController *integrationView = [[viewClass alloc] initWithIntegration:integration];
+
+        integrationWindowController = [[LGIntegrationWindowController alloc] initWithViewController:integrationView];
+
+        [NSApp beginSheet:integrationWindowController.window
+           modalForWindow:self.modalWindow
+            modalDelegate:self
+           didEndSelector:@selector(didEndIntegrationConfigurePanel:)
+              contextInfo:NULL];
     }
 }
 
+- (void)didEndIntegrationConfigurePanel:(id)sender
+{
+    integrationWindowController = nil;
+}
+
+#pragma mark - Table View
+- (NSInteger)numberOfRowsInTableView:(NSTableView *)tableView {
+    return [self tableViewIntegrations].count;
+}
+
+- (NSView *)tableView:(NSTableView *)tableView viewForTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row{
+    __block LGToolStatusTableCellView *statusCell = nil;
+    if ([tableColumn.identifier isEqualToString:@"statusCell"]) {
+
+        LGTool *tool = [self tableViewIntegrations][row];
+        tool.progressDelegate = self.progressDelegate;
+
+        statusCell = [tableView makeViewWithIdentifier:tableColumn.identifier owner:self];
+
+        statusCell.configureButton.target = tool;
+        statusCell.configureButton.tag = row;
+
+        statusCell.configureButton.enabled = YES;
+        statusCell.configureButton.title = [@"Install " stringByAppendingString:[[tool class] name]];
+
+        statusCell.textField.stringValue = [[[tool class] name] stringByAppendingString:@": checking status"];
+
+        statusCell.imageView.hidden = YES;
+        [statusCell.progressIndicator startAnimation:nil];
+
+        __weak typeof(tool) __weak_tool = tool;
+        tool.infoUpdateHandler = ^(LGToolInfo *info){
+            [statusCell.progressIndicator stopAnimation:nil];
+            statusCell.imageView.hidden = NO;
+            statusCell.imageView.image = info.statusImage;
+            statusCell.textField.stringValue = info.statusString;
+
+            statusCell.configureButton.title = info.configureButtonTitle;
+            statusCell.configureButton.action = info.configureButtonTargetAction;
+            if (info.status != kLGToolNotInstalled) {
+                statusCell.configureButton.target = self;
+            } else {
+                statusCell.configureButton.target = __weak_tool;
+            }
+        };
+        
+        if (tool.isRefreshing == NO) {
+            [tool refresh];
+        }
+    }
+    return statusCell;
+}
+
+
+#pragma mark - Open Folder Actions
 - (IBAction)openAutoPkgRecipeReposFolder:(id)sender
 {
     DLog(@"Opening AutoPkg RecipeRepos folder...");
@@ -162,164 +238,89 @@
 }
 
 #pragma mark - Choose AutoPkg Folder Actions
-- (IBAction)chooseLocalMunkiRepo:(id)sender
-{
-    DLog(@"Showing dialog for selecting Munki repo location.");
-    NSOpenPanel *chooseDialog = [self setupChoosePanel];
 
-    // Set the default directory to the current setting for munkiRepo, else /Users/Shared
-    [chooseDialog setDirectoryURL:[NSURL URLWithString:_defaults.munkiRepo ?: @"/Users/Shared"]];
-
-    // Display the dialog. If the "Choose" button was
-    // pressed, process the directory path.
-    [chooseDialog beginSheetModalForWindow:self.modalWindow completionHandler:^(NSInteger result) {
-        if (result == NSFileHandlingPanelOKButton) {
-            NSURL *url = [chooseDialog URL];
-            if ([url isFileURL]) {
-                BOOL isDir = NO;
-                // Verify that the file exists and is a directory
-                if ([[NSFileManager defaultManager] fileExistsAtPath:[url path] isDirectory:&isDir] && isDir) {
-                    // Here we can be certain the URL exists and it is a directory
-                    DLog(@"Munki repo location selected.");
-                    NSString *urlPath = [url path];
-                    [_localMunkiRepo setStringValue:urlPath];
-                    [_openLocalMunkiRepoFolderButton setEnabled:YES];
-                    _defaults.munkiRepo = urlPath;
-                }
-            }
-
-        }
-    }];
-}
 
 - (IBAction)chooseAutoPkgReciepRepoDir:(id)sender
 {
     DLog(@"Showing dialog for selecting AutoPkg RecipeRepos location.");
-    NSOpenPanel *chooseDialog = [self setupChoosePanel];
 
     // Set the default directory to the current setting for autoPkgRecipeRepoDir, else ~/Library/AutoPkg
-    [chooseDialog setDirectoryURL:[NSURL URLWithString:_defaults.autoPkgRecipeRepoDir ?: [@"~/Library/AutoPkg" stringByExpandingTildeInPath]]];
+    NSString *path = _defaults.autoPkgRecipeRepoDir ?: @"~/Library/AutoPkg".stringByExpandingTildeInPath;
 
-    // Display the dialog. If the "Choose" button was
-    // pressed, process the directory path.
-    [chooseDialog beginSheetModalForWindow:self.modalWindow completionHandler:^(NSInteger result) {
-        if (result == NSFileHandlingPanelOKButton) {
-            NSURL *url = [chooseDialog URL];
-            if ([url isFileURL]) {
-                BOOL isDir = NO;
-                // Verify that the file exists and is a directory
-                if ([[NSFileManager defaultManager] fileExistsAtPath:[url path] isDirectory:&isDir] && isDir) {
-                    // Here we can be certain the URL exists and it is a directory
-                    DLog(@"AutoPkg RecipeRepos location selected.");
-                    NSString *urlPath = [url path];
-                    [_autoPkgRecipeRepoDir setStringValue:urlPath];
-                    [_openAutoPkgRecipeReposFolderButton setEnabled:YES];
-                    _defaults.autoPkgRecipeRepoDir = urlPath;
-
-                    // Since we changed the repo directory reload the table accordingly
-                }
-            }
+    [NSOpenPanel folderChooserWithStartingPath:path modalWindow:self.modalWindow reply:^(NSString *selectedFolder) {
+        if(selectedFolder){
+            DLog(@"AutoPkg RecipeRepos location selected.");
+            _autoPkgRecipeRepoDir.stringValue = selectedFolder;
+            _defaults.autoPkgRecipeRepoDir = selectedFolder;
+            _openAutoPkgRecipeReposFolderButton.enabled = YES;
         }
     }];
 }
 
 - (IBAction)chooseAutoPkgCacheDir:(id)sender
 {
-    DLog(@"Showing dialog for selecting AutoPkg Cache location.");
-    NSOpenPanel *chooseDialog = [self setupChoosePanel];
+    DevLog(@"Showing dialog for selecting AutoPkg Cache location.");
 
     // Set the default directory to the current setting for autoPkgCacheDir, else ~/Library/AutoPkg
-    [chooseDialog setDirectoryURL:[NSURL URLWithString:_defaults.autoPkgCacheDir ?: [@"~/Library/AutoPkg" stringByExpandingTildeInPath]]];
-
-    // Display the dialog. If the "Choose" button was
-    // pressed, process the directory path.
-    [chooseDialog beginSheetModalForWindow:self.modalWindow completionHandler:^(NSInteger result) {
-        if (result == NSFileHandlingPanelOKButton) {
-            NSURL *url = [chooseDialog URL];
-            if ([url isFileURL]) {
-                BOOL isDir = NO;
-                // Verify that the file exists and is a directory
-                if ([[NSFileManager defaultManager] fileExistsAtPath:[url path] isDirectory:&isDir] && isDir) {
-                    // Here we can be certain the URL exists and it is a directory
-                    DLog(@"AutoPkg Cache location selected.");
-                    NSString *urlPath = [url path];
-                    [_autoPkgCacheDir setStringValue:urlPath];
-                    [_openAutoPkgCacheFolderButton setEnabled:YES];
-                    _defaults.autoPkgCacheDir = urlPath;
-                }
-            }
-
+    NSString *path = _defaults.autoPkgCacheDir ?: @"~/Library/AutoPkg".stringByExpandingTildeInPath;
+    [NSOpenPanel folderChooserWithStartingPath:path modalWindow:self.modalWindow reply:^(NSString *selectedFolder) {
+        if (selectedFolder) {
+            DevLog(@"AutoPkg Cache location selected.");
+            _openAutoPkgCacheFolderButton.enabled = YES;
+            _autoPkgCacheDir.stringValue = selectedFolder;
+            _defaults.autoPkgCacheDir = selectedFolder;
         }
     }];
 }
 
 - (IBAction)chooseAutoPkgRecipeOverridesDir:(id)sender
 {
-    DLog(@"Showing dialog for selecting AutoPkg RecipeOverrides location.");
-    NSOpenPanel *chooseDialog = [self setupChoosePanel];
+    DevLog(@"Showing dialog for selecting AutoPkg RecipeOverrides location.");
 
     // Set the default directory to the current setting for autoPkgRecipeOverridesDir, else ~/Library/AutoPkg
-    [chooseDialog setDirectoryURL:[NSURL URLWithString:_defaults.autoPkgRecipeOverridesDir ?: [@"~/Library/AutoPkg" stringByExpandingTildeInPath]]];
+    NSString *path = _defaults.autoPkgRecipeOverridesDir ?: @"~/Library/AutoPkg".stringByExpandingTildeInPath;
 
-    // Display the dialog. If the "Choose" button was
-    // pressed, process the directory path.
-    [chooseDialog beginSheetModalForWindow:self.modalWindow completionHandler:^(NSInteger result) {
-        if (result == NSFileHandlingPanelOKButton) {
-            NSURL *url = [chooseDialog URL];
-            if ([url isFileURL]) {
-                BOOL isDir = NO;
-                // Verify that the file exists and is a directory
-                if ([[NSFileManager defaultManager] fileExistsAtPath:[url path] isDirectory:&isDir] && isDir) {
-                    // Here we can be certain the URL exists and it is a directory
-                    DLog(@"AutoPkg RecipeOverrides location selected.");
-                    NSString *urlPath = [url path];
-                    [_autoPkgRecipeOverridesDir setStringValue:urlPath];
-                    [_openAutoPkgRecipeOverridesFolderButton setEnabled:YES];
-                    _defaults.autoPkgRecipeOverridesDir = urlPath;
-                }
-            }
-            
+    [NSOpenPanel folderChooserWithStartingPath:path modalWindow:self.modalWindow reply:^(NSString *selectedFolder) {
+        if (selectedFolder) {
+            DevLog(@"AutoPkg RecipeOverrides location selected.");
+            _autoPkgRecipeOverridesDir.stringValue = selectedFolder;
+            _openAutoPkgRecipeOverridesFolderButton.enabled = YES;
+            _defaults.autoPkgRecipeOverridesDir = selectedFolder;
         }
     }];
 }
 
 - (void)enableFolders
 {
+    NSFileManager *fm = [NSFileManager defaultManager];
+
     // Enable "Open in Finder" buttons if directories exist
     BOOL isDir;
 
     // AutoPkg Recipe Repos
-    NSString *recipeReposFolder = [_defaults autoPkgRecipeRepoDir];
-    recipeReposFolder = recipeReposFolder ?: [@"~/Library/AutoPkg/RecipeRepos" stringByExpandingTildeInPath];
-    if ([[NSFileManager defaultManager] fileExistsAtPath:recipeReposFolder isDirectory:&isDir] && isDir) {
-        [_openAutoPkgRecipeReposFolderButton setEnabled:YES];
+    NSString *recipeReposFolder = _defaults.autoPkgRecipeRepoDir ?: @"~/Library/AutoPkg/RecipeRepos".stringByExpandingTildeInPath;
+
+    if ([fm fileExistsAtPath:recipeReposFolder isDirectory:&isDir] && isDir) {
+        _openAutoPkgRecipeReposFolderButton.enabled = YES;
     } else {
-        [_openAutoPkgRecipeReposFolderButton setEnabled:NO];
+        _openAutoPkgRecipeReposFolderButton.enabled = NO;
     }
 
     // AutoPkg Cache
-    NSString *cacheFolder = [_defaults autoPkgCacheDir];
-    cacheFolder = cacheFolder ?: [@"~/Library/AutoPkg/Cache" stringByExpandingTildeInPath];
-    if ([[NSFileManager defaultManager] fileExistsAtPath:cacheFolder isDirectory:&isDir] && isDir) {
-        [_openAutoPkgCacheFolderButton setEnabled:YES];
+    NSString *cacheFolder = _defaults.autoPkgCacheDir ?: @"~/Library/AutoPkg/Cache".stringByExpandingTildeInPath;
+    if ([fm fileExistsAtPath:cacheFolder isDirectory:&isDir] && isDir) {
+        _openAutoPkgCacheFolderButton.enabled = YES;
     } else {
-        [_openAutoPkgCacheFolderButton setEnabled:NO];
+        _openAutoPkgCacheFolderButton.enabled = NO;
     }
 
     // AutoPkg Overrides
-    NSString *overridesFolder = [_defaults autoPkgRecipeOverridesDir];
-    overridesFolder = overridesFolder ?: [@"~/Library/AutoPkg/RecipeOverrides" stringByExpandingTildeInPath];
-    if ([[NSFileManager defaultManager] fileExistsAtPath:overridesFolder isDirectory:&isDir] && isDir) {
-        [_openAutoPkgRecipeOverridesFolderButton setEnabled:YES];
-    } else {
-        [_openAutoPkgRecipeOverridesFolderButton setEnabled:NO];
-    }
+    NSString *overridesFolder = _defaults.autoPkgRecipeOverridesDir ?: @"~/Library/AutoPkg/RecipeOverrides".stringByExpandingTildeInPath;
 
-    // Munki Repo
-    if ([[NSFileManager defaultManager] fileExistsAtPath:_defaults.munkiRepo isDirectory:&isDir] && isDir) {
-        [_openLocalMunkiRepoFolderButton setEnabled:YES];
+    if ([fm fileExistsAtPath:overridesFolder isDirectory:&isDir] && isDir) {
+        _openAutoPkgRecipeOverridesFolderButton.enabled = YES;
     } else {
-        [_openLocalMunkiRepoFolderButton setEnabled:NO];
+        _openAutoPkgRecipeOverridesFolderButton.enabled = NO;
     }
 }
 

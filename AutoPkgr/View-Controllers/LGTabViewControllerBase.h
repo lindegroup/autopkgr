@@ -10,7 +10,7 @@
 #import "LGProgressDelegate.h"
 #import "LGAutoPkgr.h"
 
-@interface LGBaseTabViewController : NSViewController
+@interface LGTabViewControllerBase : NSViewController
 
 - (instancetype)initWithProgressDelegate:(id<LGProgressDelegate>)progressDelegate;
 @property (weak) id<LGProgressDelegate>progressDelegate;

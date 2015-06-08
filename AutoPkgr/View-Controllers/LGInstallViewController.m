@@ -104,6 +104,8 @@
             [tableView beginUpdates];
 
             if ([aManager.requiredTools containsObject:tool]) {
+                /* If the tool is required, we don't need to add/remove any rows
+                 * simply reload the data for the row */
                 NSInteger index = [aManager.installedOrRequiredTools indexOfObject:tool];
                 NSIndexSet *idxSet = [NSIndexSet indexSetWithIndex:index];
 
@@ -113,9 +115,12 @@
                                                     NSMakeRange(0, tableView.numberOfColumns)]];
 
             } else if (tool.isInstalled) {
+                /* If the tool is now installed, check that it was NOT previously
+                 * listed as installed by checking the `currentTools` array
+                 * and add in a row to the table if not found */
                 if ([currentTools indexOfObject:tool] == NSNotFound) {
+                    // NSNotFound means that the tool was previously not installed.
                     NSInteger index = [aManager.installedOrRequiredTools indexOfObject:tool];
-                    // If index is NOT NSNotFound
                     if (index != NSNotFound) {
                         NSIndexSet *idxSet = [NSIndexSet indexSetWithIndex:index];
                         [tableView insertRowsAtIndexes:idxSet  withAnimation:NSTableViewAnimationEffectFade];
@@ -129,13 +134,15 @@
                     }
                 }
             } else {
+                /* Otherwise it's no longer installed and we want to remove
+                 * the row from the table that's represended by the index of
+                 * of the integration in the 'currentTools' array */
                 NSInteger index = [currentTools indexOfObject:tool];
                 if (index != NSNotFound) {
                     [tableView removeRowsAtIndexes:[NSIndexSet indexSetWithIndex:index]
                                      withAnimation:NSTableViewAnimationEffectFade];
 
                     // Reset the currentTools
-
                     currentTools = aManager.installedOrRequiredTools;
                 }
             }
@@ -173,7 +180,7 @@
 
             statusCell.installButton.title = info.installButtonTitle;
 
-            statusCell.installButton.action = info.targetAction;
+            statusCell.installButton.action = info.installButtonTargetAction;
             statusCell.installButton.enabled = info.installButtonEnabled;
         }];
     }

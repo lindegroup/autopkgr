@@ -18,37 +18,34 @@
 //  limitations under the License.//
 
 #import <Cocoa/Cocoa.h>
-#import "LGBaseTabViewController.h"
-#import "LGJSSImporter.h"
+#import "LGTabViewControllerBase.h"
 
 @class LGToolManager;
 
-@interface LGToolsViewController : LGBaseTabViewController
+@interface LGToolsViewController : LGTabViewControllerBase <NSWindowDelegate>
 
 @property (strong) LGToolManager *toolManager;
-
-@property (weak) IBOutlet NSTextField *localMunkiRepo;
-@property (weak) IBOutlet NSTextField *autoPkgRecipeRepoDir;
-@property (weak) IBOutlet NSTextField *autoPkgCacheDir;
-@property (weak) IBOutlet NSTextField *autoPkgRecipeOverridesDir;
+@property (strong) NSWindow *configurationWindow;
 
 - (void)enableFolders;
 
-// Buttons
-@property (weak) IBOutlet NSButton *openLocalMunkiRepoFolderButton;
+#pragma mark - AutoPkg
+#pragma mark -- Repo Dir --
 @property (weak) IBOutlet NSButton *openAutoPkgRecipeReposFolderButton;
-@property (weak) IBOutlet NSButton *openAutoPkgCacheFolderButton;
-@property (weak) IBOutlet NSButton *openAutoPkgRecipeOverridesFolderButton;
-
-@property (weak) IBOutlet LGJSSImporter *jssImporter;
-
-- (IBAction)openLocalMunkiRepoFolder:(id)sender;
+@property (weak) IBOutlet NSTextField *autoPkgRecipeRepoDir;
 - (IBAction)openAutoPkgRecipeReposFolder:(id)sender;
-- (IBAction)openAutoPkgCacheFolder:(id)sender;
-- (IBAction)openAutoPkgRecipeOverridesFolder:(id)sender;
+- (IBAction)chooseAutoPkgReciepRepoDir:(id)sender;
 
-- (IBAction)chooseLocalMunkiRepo:(id)sender;
+#pragma mark -- Cache Dir --
+@property (weak) IBOutlet NSButton *openAutoPkgCacheFolderButton;
+@property (weak) IBOutlet NSTextField *autoPkgCacheDir;
+- (IBAction)openAutoPkgCacheFolder:(id)sender;
 - (IBAction)chooseAutoPkgCacheDir:(id)sender;
+
+#pragma mark -- Overrides Dir --
+@property (weak) IBOutlet NSButton *openAutoPkgRecipeOverridesFolderButton;
+@property (weak) IBOutlet NSTextField *autoPkgRecipeOverridesDir;
+- (IBAction)openAutoPkgRecipeOverridesFolder:(id)sender;
 - (IBAction)chooseAutoPkgRecipeOverridesDir:(id)sender;
 
 @end

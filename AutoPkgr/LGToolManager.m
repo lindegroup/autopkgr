@@ -36,6 +36,7 @@ static NSArray *__requiredToolsClasses;
                           [LGGitTool class],
                           [LGMunkiTool class],
                           [LGJSSImporterTool class],
+                          [LGAbsoluteManageIntegration class],
                           ];
 
         __requiredToolsClasses = @[

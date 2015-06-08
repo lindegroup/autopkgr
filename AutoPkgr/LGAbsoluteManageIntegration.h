@@ -1,10 +1,6 @@
+// LGAbsoluteManageIntegration.h
 //
-//  AutoPkgr.h
-//  AutoPkgr
-//
-//  Created by Eldon on 8/24/14.
-//
-//  Copyright 2014-2015 The Linde Group, Inc.
+//  Copyright 2015 Eldon Ahrold
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -19,20 +15,13 @@
 //  limitations under the License.
 //
 
-#ifndef AutoPkgr_AutoPkgr_h
-#define AutoPkgr_AutoPkgr_h
-
-#import "LGConstants.h"
+#import "LGTool.h"
 #import "LGDefaults.h"
-#import "LGError.h"
-#import "LGLogger.h"
-#import "LGHostInfo.h"
-#import "NSString+cleaned.h"
-#import "NSString+versionCompare.h"
-#import "NSTextField+setSafeStringValue.h"
-#import "NSImage+statusLight.h"
-#import "NSArray+filtered.h"
-#import "NSString+split.h"
-#import "NSButton+colored.h"
 
-#endif
+@interface LGAbsoluteManageIntegration : LGTool
+@end
+
+// This is also a good place to add custom defaults
+@interface LGAbsoluteManageDefaults : LGDefaults
+@property (assign, nonatomic) BOOL AllowURLSDPackageImport;
+@end

@@ -18,10 +18,10 @@
 //  limitations under the License.//
 
 #import <Cocoa/Cocoa.h>
-#import "LGBaseTabViewController.h"
+#import "LGTabViewControllerBase.h"
 @class LGToolManager;
 
-@interface LGInstallViewController : LGBaseTabViewController
+@interface LGInstallViewController : LGTabViewControllerBase
 
 @property (weak) IBOutlet NSButton *launchAtLoginButton;
 

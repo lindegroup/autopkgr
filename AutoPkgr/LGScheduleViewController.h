@@ -18,10 +18,10 @@
 //  limitations under the License.//
 
 #import <Cocoa/Cocoa.h>
-#import "LGBaseTabViewController.h"
+#import "LGTabViewControllerBase.h"
 
 @class LGAutoPkgTaskManager;
-@interface LGScheduleViewController : LGBaseTabViewController
+@interface LGScheduleViewController : LGTabViewControllerBase
 
 #pragma mark - Schedule
 #pragma mark-- Outlets --

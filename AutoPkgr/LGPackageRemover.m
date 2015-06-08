@@ -346,7 +346,9 @@ static dispatch_queue_t autopkgr_pkg_remover_queue()
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         packages = @[@"com.github.sheagcraig.jssimporter",
-                     @"com.github.sheagcraig.jss-autopkg-addon"];
+                     @"com.github.sheagcraig.jss-autopkg-addon",
+                     @"com.github.tburgin.AbsoluteManageExport",
+                     ];
     });
     return packages;
 }

@@ -42,6 +42,14 @@ NSString *const kLGJSSDistPointTypeKey = @"type";
     return @"JSSImporter";
 }
 
++ (NSURL *)homePage {
+    return [NSURL URLWithString:@"https://github.com/sheagcraig/JSSImporter"];
+}
+
++ (NSString *)credits {
+   return @"Copyright 2014 Shea Craig\nhttp://www.apache.org/licenses/LICENSE-2.0";
+}
+
 + (NSString *)gitHubURL
 {
     return @"https://api.github.com/repos/sheagcraig/JSSImporter/releases";

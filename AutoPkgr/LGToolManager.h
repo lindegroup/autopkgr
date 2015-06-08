@@ -22,6 +22,7 @@
 #import "LGGitTool.h"
 #import "LGJSSImporterTool.h"
 #import "LGMunkiTool.h"
+#import "LGAbsoluteManageIntegration.h"
 
 @class LGTool;
 
