@@ -56,7 +56,9 @@ static NSArray *__requiredIntegrationClasses;
 
 - (void)dealloc
 {
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:kLGNotificationIntegrationStatusDidChange object:nil];
+    for (id integration in _allIntegrations) {
+         [[NSNotificationCenter defaultCenter] removeObserver:self name:kLGNotificationIntegrationStatusDidChange object:integration];
+    }
 }
 
 - (instancetype)init
@@ -88,7 +90,9 @@ static NSArray *__requiredIntegrationClasses;
 - (void)installStatusDidChange:(NSNotification *)aNotification
 {
     _installedIntegrations = nil;
-    _installStatusDidChangeHandler(self, aNotification.object);
+    if (_installStatusDidChangeHandler) {
+        _installStatusDidChangeHandler(self, aNotification.object);
+    }
 }
 
 - (NSArray *)installedIntegrations
