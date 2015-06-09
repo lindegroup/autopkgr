@@ -20,6 +20,7 @@
 
 #import "LGIntegrationsViewController.h"
 #import "LGIntegrationManager.h"
+#import "LGAutoPkgIntegrationView.h"
 #import "LGJSSImporterIntegrationView.h"
 #import "LGMunkiIntegrationView.h"
 #import "LGAbsoluteManageIntegrationView.h"
@@ -71,7 +72,9 @@
 - (Class)viewControllerClassForIntegration:(LGIntegration *)integration
 {
     Class viewClass = NULL;
-    if ([integration isMemberOfClass:[LGJSSImporterIntegration class]]) {
+    if ([integration isMemberOfClass:[LGAutoPkgIntegration class]]) {
+        viewClass = [LGAutoPkgIntegrationView class];
+    } else if ([integration isMemberOfClass:[LGJSSImporterIntegration class]]) {
         viewClass = [LGJSSImporterIntegrationView class];
     } else if ([integration isMemberOfClass:[LGMunkiIntegration class]]) {
         viewClass = [LGMunkiIntegrationView class];
@@ -129,7 +132,7 @@
         statusCell.configureButton.target = integration;
         statusCell.configureButton.tag = row;
 
-        statusCell.configureButton.enabled = [self viewControllerClassForIntegration:integration] ? YES : NO;
+        statusCell.configureButton.enabled = ([self viewControllerClassForIntegration:integration] != nil);
         statusCell.configureButton.title = [@"Install " stringByAppendingString:integration.name];
 
         statusCell.textField.stringValue = [integration.name stringByAppendingString:@": checking status"];
