@@ -35,7 +35,7 @@
 
 @implementation LGIntegrationsViewController {
     LGDefaults *_defaults;
-    LGIntegrationWindowController *integrationWindowController;
+    LGIntegrationWindowController *_integrationWindowController;
 }
 @synthesize modalWindow = _modalWindow;
 
@@ -96,9 +96,9 @@
     if (viewClass) {
         LGBaseIntegrationViewController *integrationView = [[viewClass alloc] initWithIntegration:integration];
 
-        integrationWindowController = [[LGIntegrationWindowController alloc] initWithViewController:integrationView];
+        _integrationWindowController = [[LGIntegrationWindowController alloc] initWithViewController:integrationView];
 
-        [NSApp beginSheet:integrationWindowController.window
+        [NSApp beginSheet:_integrationWindowController.window
             modalForWindow:self.modalWindow
              modalDelegate:self
             didEndSelector:@selector(didEndIntegrationConfigurePanel:)
@@ -108,7 +108,7 @@
 
 - (void)didEndIntegrationConfigurePanel:(id)sender
 {
-    integrationWindowController = nil;
+    _integrationWindowController = nil;
 }
 
 #pragma mark - Table View

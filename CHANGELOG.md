@@ -16,6 +16,8 @@ All notable changes to this project will be documented in this file. This projec
 - Easier uninstallation of components like AutoPkg and JSSImporter.
 - More flexible options for scheduling AutoPkg to run. New daily and weekly options! (#361)
 - Better validation of the standard output we're receiving from AutoPkg.
+- Ability to set the proxies autopkg uses in the UI.
+- Ability to change the git binary used by autopkg.
 
 ### Changed
 - Behind-the-scenes code cleanup, typo fixes, and reorganization.

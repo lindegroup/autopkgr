@@ -11,7 +11,7 @@
 #import "LGDefaults.h"
 #import "NSTextField+safeStringValue.h"
 
-@interface LGGitIntegrationView ()<NSTextFieldDelegate>
+@interface LGGitIntegrationView () <NSTextFieldDelegate>
 
 @property (weak) IBOutlet NSTextField *githPathTF;
 
@@ -19,16 +19,19 @@
 
 @implementation LGGitIntegrationView
 
-- (void)viewDidLoad {
+- (void)viewDidLoad
+{
     [super viewDidLoad];
     // Do view setup here.
 }
 
-- (void)awakeFromNib {
+- (void)awakeFromNib
+{
     _githPathTF.safe_stringValue = [[LGDefaults standardUserDefaults] gitPath];
 }
 
-- (void)controlTextDidChange:(NSNotification *)obj {
+- (void)controlTextDidChange:(NSNotification *)obj
+{
     if ([obj.object isEqualTo:_githPathTF]) {
         [self setGitPath:_githPathTF];
     }
@@ -37,32 +40,41 @@
 - (IBAction)setGitPath:(id)sender
 {
     LGDefaults *defaults = [LGDefaults standardUserDefaults];
+    NSString *initialGitPath = defaults.gitPath;
+
+    BOOL (^validExecutable)(NSString * path, NSTextField *) = ^BOOL(NSString *path, NSTextField *textField) {
+        BOOL success = NO;
+        BOOL isDir;
+        if (([[NSFileManager defaultManager] fileExistsAtPath:path isDirectory:&isDir] && !isDir) &&
+            ([[NSFileManager defaultManager] isExecutableFileAtPath:path]) &&
+            [path.lastPathComponent isEqualToString:@"git"]) {
+            [textField setTextColor:[NSColor blackColor]];
+            success =  YES;
+            if (![initialGitPath isEqualToString:path]) {
+                /* Here trigger the refresh, but also call post a notification
+                 * that the status changed so the integration's manager updates
+                 * it's status change handler.
+                 */
+                 [self.integration refresh];
+                [[NSNotificationCenter defaultCenter] postNotificationName:kLGNotificationIntegrationStatusDidChange object:self.integration];
+            }
+        } else {
+            [textField setTextColor:[NSColor redColor]];
+        }
+        return success;
+    };
 
     if ([sender isKindOfClass:[NSButton class]]) {
         [NSOpenPanel executableChooser_WithStartingPath:defaults.gitPath reply:^(NSString *selectedExecutable) {
-            if (selectedExecutable) {
-                _githPathTF.stringValue = selectedExecutable;
-                _githPathTF.textColor = [NSColor blackColor];
-                defaults.gitPath = selectedExecutable;
+            if(validExecutable(selectedExecutable, nil)){
+                defaults.gitPath = selectedExecutable.stringByExpandingTildeInPath;
             }
         }];
-    } else if ([sender isEqualTo:_githPathTF]){
+
+    } else if ([sender isEqualTo:_githPathTF]) {
         NSString *path = [sender stringValue];
 
-        BOOL (^validExecutable)(NSTextField *) = ^BOOL (NSTextField *textField) {
-            BOOL success = NO;
-            BOOL isDir;
-            if (([[NSFileManager defaultManager] fileExistsAtPath:path isDirectory:&isDir] && !isDir) &&
-                ([[NSFileManager defaultManager] isExecutableFileAtPath:path])) {
-                [sender setTextColor:[NSColor blackColor]];
-                success =  YES;
-            } else {
-                [sender setTextColor:[NSColor redColor]];
-            }
-            return success;
-        };
-
-        if(validExecutable(sender)){
+        if (validExecutable(path, sender)) {
             defaults.gitPath = path.stringByExpandingTildeInPath;
         }
     }

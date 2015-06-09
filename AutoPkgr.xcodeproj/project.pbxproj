@@ -146,8 +146,8 @@
 		BECDAB981B24C29600544388 /* LGMunkiIntegrationView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BECDAB941B24C29600544388 /* LGMunkiIntegrationView.xib */; };
 		BECDAB9B1B24DBBC00544388 /* LGIntegrationWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = BECDAB9A1B24DBBC00544388 /* LGIntegrationWindowController.m */; };
 		BECDAB9C1B24DBBC00544388 /* LGIntegrationWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = BECDAB9A1B24DBBC00544388 /* LGIntegrationWindowController.m */; };
-		BECDABA21B252B3900544388 /* NSOpenPanel+typChooser.m in Sources */ = {isa = PBXBuildFile; fileRef = BECDABA11B252B3900544388 /* NSOpenPanel+typChooser.m */; };
-		BECDABA31B252B3900544388 /* NSOpenPanel+typChooser.m in Sources */ = {isa = PBXBuildFile; fileRef = BECDABA11B252B3900544388 /* NSOpenPanel+typChooser.m */; };
+		BECDABA21B252B3900544388 /* NSOpenPanel+typeChooser.m in Sources */ = {isa = PBXBuildFile; fileRef = BECDABA11B252B3900544388 /* NSOpenPanel+typeChooser.m */; };
+		BECDABA31B252B3900544388 /* NSOpenPanel+typeChooser.m in Sources */ = {isa = PBXBuildFile; fileRef = BECDABA11B252B3900544388 /* NSOpenPanel+typeChooser.m */; };
 		BECDABA71B254E5900544388 /* LGAbsoluteManageIntegrationView.m in Sources */ = {isa = PBXBuildFile; fileRef = BECDABA51B254E5900544388 /* LGAbsoluteManageIntegrationView.m */; };
 		BECDABA81B254E5900544388 /* LGAbsoluteManageIntegrationView.m in Sources */ = {isa = PBXBuildFile; fileRef = BECDABA51B254E5900544388 /* LGAbsoluteManageIntegrationView.m */; };
 		BECDABA91B254E5900544388 /* LGAbsoluteManageIntegrationView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BECDABA61B254E5900544388 /* LGAbsoluteManageIntegrationView.xib */; };
@@ -418,7 +418,7 @@
 		BECDAB991B24DBBC00544388 /* LGIntegrationWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LGIntegrationWindowController.h; path = "View-Controllers/LGIntegrationWindowController.h"; sourceTree = "<group>"; };
 		BECDAB9A1B24DBBC00544388 /* LGIntegrationWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LGIntegrationWindowController.m; path = "View-Controllers/LGIntegrationWindowController.m"; sourceTree = "<group>"; };
 		BECDABA01B252B3900544388 /* NSOpenPanel+typeChooser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSOpenPanel+typeChooser.h"; path = "Custom Categories/NSOpenPanel+typeChooser.h"; sourceTree = "<group>"; };
-		BECDABA11B252B3900544388 /* NSOpenPanel+typChooser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSOpenPanel+typChooser.m"; path = "Custom Categories/NSOpenPanel+typChooser.m"; sourceTree = "<group>"; };
+		BECDABA11B252B3900544388 /* NSOpenPanel+typeChooser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSOpenPanel+typeChooser.m"; path = "Custom Categories/NSOpenPanel+typeChooser.m"; sourceTree = "<group>"; };
 		BECDABA41B254E5900544388 /* LGAbsoluteManageIntegrationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LGAbsoluteManageIntegrationView.h; path = "View-Controllers/LGAbsoluteManageIntegrationView.h"; sourceTree = "<group>"; };
 		BECDABA51B254E5900544388 /* LGAbsoluteManageIntegrationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LGAbsoluteManageIntegrationView.m; path = "View-Controllers/LGAbsoluteManageIntegrationView.m"; sourceTree = "<group>"; };
 		BECDABA61B254E5900544388 /* LGAbsoluteManageIntegrationView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = LGAbsoluteManageIntegrationView.xib; path = "View-Controllers/LGAbsoluteManageIntegrationView.xib"; sourceTree = "<group>"; };
@@ -726,7 +726,7 @@
 				BE8A06BA1AF8FAFD006C2571 /* NSData+taskData.h */,
 				BE8A06BB1AF8FAFD006C2571 /* NSData+taskData.m */,
 				BECDABA01B252B3900544388 /* NSOpenPanel+typeChooser.h */,
-				BECDABA11B252B3900544388 /* NSOpenPanel+typChooser.m */,
+				BECDABA11B252B3900544388 /* NSOpenPanel+typeChooser.m */,
 				BEE8CF1119E0E7F400981C4B /* NSTextField+safeStringValue.h */,
 				BEE8CF1219E0E7F400981C4B /* NSTextField+safeStringValue.m */,
 				BED02ADA1A194F9C00714CC2 /* NSArray+filtered.h */,
@@ -1340,7 +1340,7 @@
 				BE5E55A51B1B9EBB0025CFD3 /* LGAutoPkgRepo.m in Sources */,
 				BE0A75491B04EC7400F70C9E /* NSString+versionCompare.m in Sources */,
 				BEC1258519F045EB006696C4 /* LGRecipeTableViewController.m in Sources */,
-				BECDABA21B252B3900544388 /* NSOpenPanel+typChooser.m in Sources */,
+				BECDABA21B252B3900544388 /* NSOpenPanel+typeChooser.m in Sources */,
 				BE38EAAA1B0CFECE009FCBEB /* LGNotificationsViewController.m in Sources */,
 				BE32178B19ED9ACA00A92E5A /* LGRecipeOverrides.m in Sources */,
 				BEC1258B19F04703006696C4 /* LGRepoTableViewController.m in Sources */,
@@ -1402,7 +1402,7 @@
 				BEEFE6C31AEBCE1F00882C89 /* LGIntegrationManager.m in Sources */,
 				BE4985391AFE61C1006E5EDA /* LGServerCredentials.m in Sources */,
 				BEEFE6CF1AEC761F00882C89 /* LGJSSImporterIntegration.m in Sources */,
-				BECDABA31B252B3900544388 /* NSOpenPanel+typChooser.m in Sources */,
+				BECDABA31B252B3900544388 /* NSOpenPanel+typeChooser.m in Sources */,
 				BEFC3C7C1A3DF16700C789E9 /* LGRepoTableViewController.m in Sources */,
 				BEE211271AF9DCBB00A3C2E1 /* LGUninstaller.m in Sources */,
 				BEEFE6B81AE9D01200882C89 /* LGAutoPkgErrorHandler.m in Sources */,

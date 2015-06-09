@@ -84,9 +84,10 @@
         if (result == NSFileHandlingPanelOKButton) {
 
             if (panel.URL.isFileURL) {
-                // Verify that the file exists and is a directory
-                if ([[NSFileManager defaultManager] isExecutableFileAtPath:panel.URL.path]) {
-                    // Here we can be certain the URL exists and it is a directory
+                BOOL isDir;
+                // Verify that the file exists is not a directory, and is executable.
+                if (([[NSFileManager defaultManager] fileExistsAtPath:path isDirectory:&isDir] && !isDir) &&
+                    ([[NSFileManager defaultManager] isExecutableFileAtPath:panel.URL.path])) {
                     reply(panel.URL.path);
                 }
             }
@@ -98,5 +99,6 @@
 +(void)executableChooser_WithStartingPath:(NSString *)path reply:(void (^)(NSString *))reply {
     [self executableChooser_WithStartingPath:path modalWindow:nil reply:reply];
 }
+
 
 @end
