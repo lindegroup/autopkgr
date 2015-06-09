@@ -1,5 +1,5 @@
 //
-//  NSOpenPanel+folderChooser.h
+//  NSOpenPanel+typeChooser.h
 //  AutoPkgr
 //
 //  Created by Eldon on 6/7/15.
@@ -20,7 +20,7 @@
 
 #import <Cocoa/Cocoa.h>
 
-@interface NSOpenPanel (folderChooser)
+@interface NSOpenPanel (typeChooser)
 /**
  *  Open a panel specifically designed to choose a folder
  *
@@ -41,4 +41,24 @@
                           modalWindow:(NSWindow *)window
                                 reply:(void (^)(NSString *selectedFolder))reply;
 
+
+/**
+ *  Open a panel specifically designed to choose an executable
+ *
+ *  @param path  Path the open dialog should start at.
+ *  @param reply reply block that takes one parameter, an NSString, that if the selected path is invalid will return nil.
+ */
++ (void)executableChooser_WithStartingPath:(NSString *)path
+                                 reply:(void (^)(NSString *selectedExecutable))reply;
+
+/**
+ *  Open a panel specifically designed to choose an executable
+ *
+ *  @param path  Path the open dialog should start at.
+ *  @param window modal window to present the panel on. can be nil.
+ *  @param reply reply block that takes one parameter, an NSString, that if the selected path is invalid will return nil.
+ */
++ (void)executableChooser_WithStartingPath:(NSString *)path
+                           modalWindow:(NSWindow *)window
+                                 reply:(void (^)(NSString *selectedExecutable))reply;
 @end

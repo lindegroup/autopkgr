@@ -22,7 +22,7 @@
 #import "LGMunkiIntegrationView.h"
 #import "LGAutoPkgr.h"
 
-#import "NSOpenPanel+folderChooser.h"
+#import "NSOpenPanel+typeChooser.h"
 
 @interface LGMunkiIntegrationView ()
 

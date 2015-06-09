@@ -1,5 +1,5 @@
 //
-//  NSOpenPanel+folderChooser.m
+//  NSOpenPanel+typeChooser.m
 //  AutoPkgr
 //
 //  Created by Eldon on 6/7/15.
@@ -18,9 +18,9 @@
 //  limitations under the License.
 //
 
-#import "NSOpenPanel+folderChooser.h"
+#import "NSOpenPanel+typeChooser.h"
 
-@implementation NSOpenPanel (folderChooser)
+@implementation NSOpenPanel (typeChooser)
 + (void)folderChooser_WithStartingPath:(NSString *)path modalWindow:(NSWindow *)window reply:(void (^)(NSString *))reply
 {
     NSOpenPanel *panel = [NSOpenPanel openPanel];
@@ -61,5 +61,42 @@
     [self folderChooser_WithStartingPath:path modalWindow:nil reply:reply];
 }
 
++ (void)executableChooser_WithStartingPath:(NSString *)path modalWindow:(NSWindow *)window reply:(void (^)(NSString *))reply {
+    NSOpenPanel *panel = [NSOpenPanel openPanel];
+    // Disable the selection of files in the dialog
+    panel.canChooseFiles = YES;
+
+    // Enable the selection of directories in the dialog
+    panel.canChooseDirectories = NO;
+
+    // Enable the creation of directories in the dialog
+    panel.canCreateDirectories = NO;
+
+    // Disable multiple selection
+    panel.allowsMultipleSelection = NO;
+
+    // Set the prompt to "Choose" instead of "Open"
+    panel.prompt = @"Choose";
+
+    panel.directoryURL = [NSURL fileURLWithPath:path];
+
+    [panel beginSheetModalForWindow:window completionHandler:^(NSInteger result) {
+        if (result == NSFileHandlingPanelOKButton) {
+
+            if (panel.URL.isFileURL) {
+                // Verify that the file exists and is a directory
+                if ([[NSFileManager defaultManager] isExecutableFileAtPath:panel.URL.path]) {
+                    // Here we can be certain the URL exists and it is a directory
+                    reply(panel.URL.path);
+                }
+            }
+        }
+        reply(nil);
+    }];
+}
+
++(void)executableChooser_WithStartingPath:(NSString *)path reply:(void (^)(NSString *))reply {
+    [self executableChooser_WithStartingPath:path modalWindow:nil reply:reply];
+}
 
 @end

@@ -21,13 +21,14 @@
 #import "LGIntegrationsViewController.h"
 #import "LGIntegrationManager.h"
 #import "LGAutoPkgIntegrationView.h"
+#import "LGGitIntegrationView.h"
 #import "LGJSSImporterIntegrationView.h"
 #import "LGMunkiIntegrationView.h"
 #import "LGAbsoluteManageIntegrationView.h"
 #import "LGIntegrationWindowController.h"
 #import "LGTableCellViews.h"
 
-#import "NSOpenPanel+folderChooser.h"
+#import "NSOpenPanel+typeChooser.h"
 
 @interface LGIntegrationsViewController () <NSTableViewDataSource, NSTableViewDelegate>
 @end
@@ -74,6 +75,8 @@
     Class viewClass = NULL;
     if ([integration isMemberOfClass:[LGAutoPkgIntegration class]]) {
         viewClass = [LGAutoPkgIntegrationView class];
+    } else if ([integration isMemberOfClass:[LGGitIntegration class]]) {
+        viewClass = [LGGitIntegrationView class];
     } else if ([integration isMemberOfClass:[LGJSSImporterIntegration class]]) {
         viewClass = [LGJSSImporterIntegrationView class];
     } else if ([integration isMemberOfClass:[LGMunkiIntegration class]]) {

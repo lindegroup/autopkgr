@@ -58,6 +58,10 @@
 		BE1C810319E8224000EF77F3 /* NSImage+statusLight.m in Sources */ = {isa = PBXBuildFile; fileRef = BE1C810219E8224000EF77F3 /* NSImage+statusLight.m */; };
 		BE1C810419E8224000EF77F3 /* NSImage+statusLight.m in Sources */ = {isa = PBXBuildFile; fileRef = BE1C810219E8224000EF77F3 /* NSImage+statusLight.m */; };
 		BE32178B19ED9ACA00A92E5A /* LGRecipeOverrides.m in Sources */ = {isa = PBXBuildFile; fileRef = BE32178A19ED9ACA00A92E5A /* LGRecipeOverrides.m */; };
+		BE32B0381B2735DF0071778B /* LGGitIntegrationView.m in Sources */ = {isa = PBXBuildFile; fileRef = BE32B0361B2735DF0071778B /* LGGitIntegrationView.m */; };
+		BE32B0391B2735DF0071778B /* LGGitIntegrationView.m in Sources */ = {isa = PBXBuildFile; fileRef = BE32B0361B2735DF0071778B /* LGGitIntegrationView.m */; };
+		BE32B03A1B2735DF0071778B /* LGGitIntegrationView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BE32B0371B2735DF0071778B /* LGGitIntegrationView.xib */; };
+		BE32B03B1B2735DF0071778B /* LGGitIntegrationView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BE32B0371B2735DF0071778B /* LGGitIntegrationView.xib */; };
 		BE344F551ABFBEAB00500AAE /* LGAutoPkgReport.m in Sources */ = {isa = PBXBuildFile; fileRef = BE344F541ABFBEAB00500AAE /* LGAutoPkgReport.m */; };
 		BE38EA771B0B8DF7009FCBEB /* LGRecipeInfoView.m in Sources */ = {isa = PBXBuildFile; fileRef = BE38EA751B0B8DF7009FCBEB /* LGRecipeInfoView.m */; };
 		BE38EA781B0B8DF7009FCBEB /* LGRecipeInfoView.m in Sources */ = {isa = PBXBuildFile; fileRef = BE38EA751B0B8DF7009FCBEB /* LGRecipeInfoView.m */; };
@@ -142,8 +146,8 @@
 		BECDAB981B24C29600544388 /* LGMunkiIntegrationView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BECDAB941B24C29600544388 /* LGMunkiIntegrationView.xib */; };
 		BECDAB9B1B24DBBC00544388 /* LGIntegrationWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = BECDAB9A1B24DBBC00544388 /* LGIntegrationWindowController.m */; };
 		BECDAB9C1B24DBBC00544388 /* LGIntegrationWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = BECDAB9A1B24DBBC00544388 /* LGIntegrationWindowController.m */; };
-		BECDABA21B252B3900544388 /* NSOpenPanel+folderChooser.m in Sources */ = {isa = PBXBuildFile; fileRef = BECDABA11B252B3900544388 /* NSOpenPanel+folderChooser.m */; };
-		BECDABA31B252B3900544388 /* NSOpenPanel+folderChooser.m in Sources */ = {isa = PBXBuildFile; fileRef = BECDABA11B252B3900544388 /* NSOpenPanel+folderChooser.m */; };
+		BECDABA21B252B3900544388 /* NSOpenPanel+typChooser.m in Sources */ = {isa = PBXBuildFile; fileRef = BECDABA11B252B3900544388 /* NSOpenPanel+typChooser.m */; };
+		BECDABA31B252B3900544388 /* NSOpenPanel+typChooser.m in Sources */ = {isa = PBXBuildFile; fileRef = BECDABA11B252B3900544388 /* NSOpenPanel+typChooser.m */; };
 		BECDABA71B254E5900544388 /* LGAbsoluteManageIntegrationView.m in Sources */ = {isa = PBXBuildFile; fileRef = BECDABA51B254E5900544388 /* LGAbsoluteManageIntegrationView.m */; };
 		BECDABA81B254E5900544388 /* LGAbsoluteManageIntegrationView.m in Sources */ = {isa = PBXBuildFile; fileRef = BECDABA51B254E5900544388 /* LGAbsoluteManageIntegrationView.m */; };
 		BECDABA91B254E5900544388 /* LGAbsoluteManageIntegrationView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BECDABA61B254E5900544388 /* LGAbsoluteManageIntegrationView.xib */; };
@@ -335,6 +339,9 @@
 		BE32178A19ED9ACA00A92E5A /* LGRecipeOverrides.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGRecipeOverrides.m; sourceTree = "<group>"; };
 		BE32178C19EDA15400A92E5A /* LGTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGTableView.h; sourceTree = "<group>"; };
 		BE32178D19EDA15400A92E5A /* LGTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGTableView.m; sourceTree = "<group>"; };
+		BE32B0351B2735DF0071778B /* LGGitIntegrationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGGitIntegrationView.h; sourceTree = "<group>"; };
+		BE32B0361B2735DF0071778B /* LGGitIntegrationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGGitIntegrationView.m; sourceTree = "<group>"; };
+		BE32B0371B2735DF0071778B /* LGGitIntegrationView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LGGitIntegrationView.xib; sourceTree = "<group>"; };
 		BE344F531ABFBEAB00500AAE /* LGAutoPkgReport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGAutoPkgReport.h; sourceTree = "<group>"; };
 		BE344F541ABFBEAB00500AAE /* LGAutoPkgReport.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGAutoPkgReport.m; sourceTree = "<group>"; };
 		BE34DF2B19AA21E200DC2FAF /* LGAutoPkgr.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = LGAutoPkgr.h; path = AutoPkgr/LGAutoPkgr.h; sourceTree = "<group>"; };
@@ -410,8 +417,8 @@
 		BECDAB941B24C29600544388 /* LGMunkiIntegrationView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = LGMunkiIntegrationView.xib; path = "View-Controllers/LGMunkiIntegrationView.xib"; sourceTree = "<group>"; };
 		BECDAB991B24DBBC00544388 /* LGIntegrationWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LGIntegrationWindowController.h; path = "View-Controllers/LGIntegrationWindowController.h"; sourceTree = "<group>"; };
 		BECDAB9A1B24DBBC00544388 /* LGIntegrationWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LGIntegrationWindowController.m; path = "View-Controllers/LGIntegrationWindowController.m"; sourceTree = "<group>"; };
-		BECDABA01B252B3900544388 /* NSOpenPanel+folderChooser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSOpenPanel+folderChooser.h"; path = "Custom Categories/NSOpenPanel+folderChooser.h"; sourceTree = "<group>"; };
-		BECDABA11B252B3900544388 /* NSOpenPanel+folderChooser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSOpenPanel+folderChooser.m"; path = "Custom Categories/NSOpenPanel+folderChooser.m"; sourceTree = "<group>"; };
+		BECDABA01B252B3900544388 /* NSOpenPanel+typeChooser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSOpenPanel+typeChooser.h"; path = "Custom Categories/NSOpenPanel+typeChooser.h"; sourceTree = "<group>"; };
+		BECDABA11B252B3900544388 /* NSOpenPanel+typChooser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSOpenPanel+typChooser.m"; path = "Custom Categories/NSOpenPanel+typChooser.m"; sourceTree = "<group>"; };
 		BECDABA41B254E5900544388 /* LGAbsoluteManageIntegrationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LGAbsoluteManageIntegrationView.h; path = "View-Controllers/LGAbsoluteManageIntegrationView.h"; sourceTree = "<group>"; };
 		BECDABA51B254E5900544388 /* LGAbsoluteManageIntegrationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LGAbsoluteManageIntegrationView.m; path = "View-Controllers/LGAbsoluteManageIntegrationView.m"; sourceTree = "<group>"; };
 		BECDABA61B254E5900544388 /* LGAbsoluteManageIntegrationView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = LGAbsoluteManageIntegrationView.xib; path = "View-Controllers/LGAbsoluteManageIntegrationView.xib"; sourceTree = "<group>"; };
@@ -718,8 +725,8 @@
 				BEFA4DB71B07036000764BF0 /* NSString+split.m */,
 				BE8A06BA1AF8FAFD006C2571 /* NSData+taskData.h */,
 				BE8A06BB1AF8FAFD006C2571 /* NSData+taskData.m */,
-				BECDABA01B252B3900544388 /* NSOpenPanel+folderChooser.h */,
-				BECDABA11B252B3900544388 /* NSOpenPanel+folderChooser.m */,
+				BECDABA01B252B3900544388 /* NSOpenPanel+typeChooser.h */,
+				BECDABA11B252B3900544388 /* NSOpenPanel+typChooser.m */,
 				BEE8CF1119E0E7F400981C4B /* NSTextField+safeStringValue.h */,
 				BEE8CF1219E0E7F400981C4B /* NSTextField+safeStringValue.m */,
 				BED02ADA1A194F9C00714CC2 /* NSArray+filtered.h */,
@@ -844,6 +851,9 @@
 				BE09F6581B2694ED00EE4AA7 /* LGAutoPkgIntegrationView.h */,
 				BE09F6591B2694ED00EE4AA7 /* LGAutoPkgIntegrationView.m */,
 				BE09F65A1B2694ED00EE4AA7 /* LGAutoPkgIntegrationView.xib */,
+				BE32B0351B2735DF0071778B /* LGGitIntegrationView.h */,
+				BE32B0361B2735DF0071778B /* LGGitIntegrationView.m */,
+				BE32B0371B2735DF0071778B /* LGGitIntegrationView.xib */,
 				BE81F2271B2232ED007D16C4 /* LGJSSImporterIntegrationView.h */,
 				BE81F2281B2232ED007D16C4 /* LGJSSImporterIntegrationView.m */,
 				BE81F2391B22A29E007D16C4 /* LGJSSImporterIntegrationView.xib */,
@@ -1100,6 +1110,7 @@
 				BED3882A1A85E2C100DA8970 /* autopkgr_error.png in Resources */,
 				1A2C7FAE19CC9F8300CFF472 /* codesign.py in Resources */,
 				BE38EA901B0CFE68009FCBEB /* LGInstallViewController.xib in Resources */,
+				BE32B03A1B2735DF0071778B /* LGGitIntegrationView.xib in Resources */,
 				BE38EAA51B0CFEBB009FCBEB /* LGIntegrationsViewController.xib in Resources */,
 				1AC98420195CEC360071CAB3 /* LGConfigurationWindowController.xib in Resources */,
 				BE38EA791B0B8DF7009FCBEB /* LGRecipeInfoView.xib in Resources */,
@@ -1128,6 +1139,7 @@
 				BE38EAAD1B0CFECE009FCBEB /* LGNotificationsViewController.xib in Resources */,
 				BEE42DAD1AC6E2D100599238 /* report_malformed.plist in Resources */,
 				BECDABAA1B254E5900544388 /* LGAbsoluteManageIntegrationView.xib in Resources */,
+				BE32B03B1B2735DF0071778B /* LGGitIntegrationView.xib in Resources */,
 				BE81F23B1B22A29E007D16C4 /* LGJSSImporterIntegrationView.xib in Resources */,
 				BED136AE1AC0FFC5003EBF0F /* Localizable.strings in Resources */,
 				BE4DD53C1B11740900854FD8 /* LGMunkiIntegration.h in Resources */,
@@ -1328,7 +1340,7 @@
 				BE5E55A51B1B9EBB0025CFD3 /* LGAutoPkgRepo.m in Sources */,
 				BE0A75491B04EC7400F70C9E /* NSString+versionCompare.m in Sources */,
 				BEC1258519F045EB006696C4 /* LGRecipeTableViewController.m in Sources */,
-				BECDABA21B252B3900544388 /* NSOpenPanel+folderChooser.m in Sources */,
+				BECDABA21B252B3900544388 /* NSOpenPanel+typChooser.m in Sources */,
 				BE38EAAA1B0CFECE009FCBEB /* LGNotificationsViewController.m in Sources */,
 				BE32178B19ED9ACA00A92E5A /* LGRecipeOverrides.m in Sources */,
 				BEC1258B19F04703006696C4 /* LGRepoTableViewController.m in Sources */,
@@ -1341,6 +1353,7 @@
 				BE0E857919D668F600B25B5E /* LGHTTPRequest.m in Sources */,
 				BED136B11AC262CB003EBF0F /* NSString+html_report.m in Sources */,
 				1A1BAD9E197A4133008192A7 /* LGGitHubJSONLoader.m in Sources */,
+				BE32B0381B2735DF0071778B /* LGGitIntegrationView.m in Sources */,
 				BEEFE6B71AE9D01200882C89 /* LGAutoPkgErrorHandler.m in Sources */,
 				BEFA4DBD1B08F57800764BF0 /* LGAutoPkgRecipe.m in Sources */,
 				BE09F65B1B2694ED00EE4AA7 /* LGAutoPkgIntegrationView.m in Sources */,
@@ -1389,7 +1402,7 @@
 				BEEFE6C31AEBCE1F00882C89 /* LGIntegrationManager.m in Sources */,
 				BE4985391AFE61C1006E5EDA /* LGServerCredentials.m in Sources */,
 				BEEFE6CF1AEC761F00882C89 /* LGJSSImporterIntegration.m in Sources */,
-				BECDABA31B252B3900544388 /* NSOpenPanel+folderChooser.m in Sources */,
+				BECDABA31B252B3900544388 /* NSOpenPanel+typChooser.m in Sources */,
 				BEFC3C7C1A3DF16700C789E9 /* LGRepoTableViewController.m in Sources */,
 				BEE211271AF9DCBB00A3C2E1 /* LGUninstaller.m in Sources */,
 				BEEFE6B81AE9D01200882C89 /* LGAutoPkgErrorHandler.m in Sources */,
@@ -1408,6 +1421,7 @@
 				BED136B21AC26B7C003EBF0F /* NSString+html_report.m in Sources */,
 				BEFA4DBE1B08F57800764BF0 /* LGAutoPkgRecipe.m in Sources */,
 				BEFC3C821A3DF16700C789E9 /* LGConstants.m in Sources */,
+				BE32B0391B2735DF0071778B /* LGGitIntegrationView.m in Sources */,
 				BE8C7D6F1A86D32B00EBD32A /* LGIntegration.m in Sources */,
 				BE38EA781B0B8DF7009FCBEB /* LGRecipeInfoView.m in Sources */,
 				BE0A754A1B04EC7400F70C9E /* NSString+versionCompare.m in Sources */,
