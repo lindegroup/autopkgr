@@ -57,12 +57,16 @@
     NSInteger height = (newSize.height - origSize.height);
     NSInteger width = (newSize.width - origSize.width);
 
+    NSSize minSize = NSMakeSize(self.window.frame.size.width + width,
+                                self.window.frame.size.height + height);
+
     NSRect rect = NSMakeRect(0,
                              0,
-                             self.window.frame.size.width + width,
-                             self.window.frame.size.height + height);
+                             minSize.width,
+                             minSize.height);
 
     [self.window setFrame:rect display:YES];
+    [self.window setMinSize:minSize];
 
     [self.configBox setContentView:_viewController.view];
     [self.configBox sizeToFit];
