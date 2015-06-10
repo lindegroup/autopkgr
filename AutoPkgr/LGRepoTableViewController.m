@@ -42,6 +42,7 @@
 
     BOOL _awake;
     BOOL _updateRepoInternally;
+    BOOL _fetchingRepoData;
 }
 
 - (void)dealloc
@@ -65,6 +66,7 @@
 - (void)reload
 {
     if (!_updateRepoInternally) {
+        _fetchingRepoData = YES;
         [LGAutoPkgRepo commonRepos:^(NSArray *repos) {
             NSArray *sortDescriptors = nil;
             if (_popularRepositoriesTableView.sortDescriptors.count) {
@@ -75,7 +77,7 @@
             }
 
             _repos = [repos sortedArrayUsingDescriptors:sortDescriptors];
-
+            _fetchingRepoData = NO;
             [self executeRepoSearch:nil];
         }];
     }
@@ -84,11 +86,25 @@
 
 - (NSInteger)numberOfRowsInTableView:(NSTableView *)tableView
 {
-    return [_searchedRepos count];
+    return _fetchingRepoData ? 1 : _searchedRepos.count;
 }
 
 - (NSView *)tableView:(NSTableView *)tableView viewForTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row
 {
+    if (_fetchingRepoData) {
+        LGRepoStatusCellView *statusCell = nil;
+        if ([tableColumn.identifier isEqualToString:NSStringFromSelector(@selector(cloneURL))]) {
+            statusCell = [tableView makeViewWithIdentifier:tableColumn.identifier owner:self];
+
+            statusCell.textField.stringValue = @"Fetching remote data...";
+
+        } else if ([[tableColumn identifier] isEqualToString:@"status"]){
+            statusCell = [tableView makeViewWithIdentifier:tableColumn.identifier owner:self];
+
+            [statusCell.progressIndicator startAnimation:self];
+        }
+        return statusCell;
+    }
 
     LGAutoPkgRepo *repo = [_searchedRepos objectAtIndex:row];
     LGRepoStatusCellView *statusCell = [tableView makeViewWithIdentifier:tableColumn.identifier owner:self];
@@ -110,9 +126,7 @@
         }
     } else if ([[tableColumn identifier] isEqualToString:@"status"]) {
         statusCell.imageView.hidden = YES;
-
         repo.statusChangeBlock = ^(LGAutoPkgRepoStatus status) {
-            [statusCell.progressIndicator stopAnimation:self];
             switch (status) {
                 case kLGAutoPkgRepoNotInstalled: {
                     statusCell.imageView.hidden = YES;
@@ -129,6 +143,7 @@
                     break;
                 }
             }
+            [statusCell.progressIndicator stopAnimation:self];
         };
 
         if (repo.isInstalled) {
@@ -183,7 +198,8 @@
 - (void)executeRepoSearch:(id)sender
 {
     [_popularRepositoriesTableView beginUpdates];
-    [_popularRepositoriesTableView removeRowsAtIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, _searchedRepos.count)] withAnimation:NSTableViewAnimationEffectNone];
+
+    [_popularRepositoriesTableView removeRowsAtIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, _popularRepositoriesTableView.numberOfRows)] withAnimation:NSTableViewAnimationEffectNone];
 
     if (_repoSearch.stringValue.length == 0) {
         _searchedRepos = [_repos mutableCopy];
