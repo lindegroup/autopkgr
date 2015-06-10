@@ -8,19 +8,21 @@ All notable changes to this project will be documented in this file. This projec
 
 ### Added
 - The ability to right-click on a recipe in the list and choose Get Info to see various details about the recipe.
-- The ability to right-click on a repo to open the github commits page or update the individual repo.
-- The repos table now displays the number of stars each repo has on GitHub.
-- The repos table now has a status indicator showing if there are new commits to an installed repo.
-- The recipe table now has a status indicator showing if a recipe is missing a parent recipe.
+- The ability to right-click on a repo to open the GitHub commits page or update the individual repo.
+- The repos list now displays the number of stars each repo has on GitHub (and you can sort by them too).
 - The install tab now displays your currently installed version of the Munki tools.
 - Easier uninstallation of components like AutoPkg and JSSImporter.
 - More flexible options for scheduling AutoPkg to run. New daily and weekly options! (#361)
 - Better validation of the standard output we're receiving from AutoPkg.
-- Ability to set the proxies autopkg uses in the UI.
-- Ability to change the git binary used by autopkg.
+- Ability to set the proxies AutoPkg uses in the UI.
+- Ability to change the Git binary used by AutoPkg.
+
+- The repos list now has a status indicator showing if there are new commits to an installed repo.
+- The recipe list now has a status indicator showing if a recipe is missing a parent recipe.
+
 
 ### Changed
-- Behind-the-scenes code cleanup, typo fixes, and reorganization.
+- Behind-the-scenes code cleanup, typo fixes, refactors, and reorganization.
 
 ### Fixed
 - Fixed a bug that could cause email username and password to not get updated immediately.
