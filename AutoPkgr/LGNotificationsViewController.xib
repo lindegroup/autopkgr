@@ -210,7 +210,7 @@
                     </buttonCell>
                     <connections>
                         <action selector="sendTestEmail:" target="-2" id="8ry-oP-EUl"/>
-                        <binding destination="ArL-eq-uYl" name="enabled" keyPath="values.SMTPAuthenticationEnabled" id="0hh-eG-QZ6"/>
+                        <binding destination="ArL-eq-uYl" name="enabled" keyPath="values.SendEmailNotificationsWhenNewVersionsAreFoundEnabled" id="qWf-7K-WwA"/>
                     </connections>
                 </button>
                 <progressIndicator hidden="YES" horizontalHuggingPriority="750" verticalHuggingPriority="750" maxValue="100" bezeled="NO" indeterminate="YES" controlSize="small" style="spinning" translatesAutoresizingMaskIntoConstraints="NO" id="T27-XK-VY4">
