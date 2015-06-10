@@ -22,6 +22,8 @@ static NSArray *__integrationClasses;
 static NSArray *__optionalIntegrationClasses;
 static NSArray *__requiredIntegrationClasses;
 
+static void * XXInfoStatusChange = &XXInfoStatusChange;
+
 @implementation LGIntegrationManager
 @synthesize allIntegrations = _allIntegrations, optionalIntegrations = _optionalIntegrations, requiredIntegrations = _requiredIntegrations, installedIntegrations = _installedIntegrations;
 
@@ -56,43 +58,35 @@ static NSArray *__requiredIntegrationClasses;
 
 - (void)dealloc
 {
-    for (id integration in _allIntegrations) {
-         [[NSNotificationCenter defaultCenter] removeObserver:self name:kLGNotificationIntegrationStatusDidChange object:integration];
+    for (LGIntegration *integration in _allIntegrations) {
+        @try {
+            [integration removeObserver:self forKeyPath:NSStringFromSelector(@selector(info)) context:XXInfoStatusChange];
+        }
+        @catch (NSException * __unused exception) {}
     }
 }
 
 - (instancetype)init
 {
     if (self = [super init]) {
-
-        NSNotificationCenter *ndc = [NSNotificationCenter defaultCenter];
         NSMutableArray *initedIntegrations = [NSMutableArray arrayWithCapacity:__integrationClasses.count];
 
         for (Class integrationClass in __integrationClasses) {
-            id integration = nil;
+            LGIntegration *integration = nil;
             if ((integration = [[integrationClass alloc] init])) {
                 [initedIntegrations addObject:integration];
-
                 // Add a notification for changes to the integration.
                 dispatch_async(dispatch_get_main_queue(), ^{
-                    [ndc addObserver:self
-                            selector:@selector(installStatusDidChange:)
-                                name:kLGNotificationIntegrationStatusDidChange
-                              object:integration];
+                    NSKeyValueObservingOptions opts = NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld;
+                    [integration addObserver:self forKeyPath:NSStringFromSelector(@selector(info)) options:opts context:XXInfoStatusChange];
                 });
+
+
             }
         }
         _allIntegrations = [initedIntegrations copy];
     }
     return self;
-}
-
-- (void)installStatusDidChange:(NSNotification *)aNotification
-{
-    _installedIntegrations = nil;
-    if (_installStatusDidChangeHandler) {
-        _installStatusDidChangeHandler(self, aNotification.object);
-    }
 }
 
 - (NSArray *)installedIntegrations
@@ -148,6 +142,20 @@ static NSArray *__requiredIntegrationClasses;
         _requiredIntegrations = [requiredIntegration copy];
     }
     return _requiredIntegrations;
+}
+
+#pragma mark - Observation
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
+    if (context == XXInfoStatusChange) {
+        LGIntegrationInfo *infoOld = change[@"old"];
+        LGIntegrationInfo *infoNew = change[@"new"];
+        if (infoOld.status != infoNew.status) {
+            _installedIntegrations = nil;
+            if (_installStatusDidChangeHandler) {
+                _installStatusDidChangeHandler(self, (LGIntegration *)object);
+            }
+        }
+    }
 }
 
 #pragma mark - Class Methods

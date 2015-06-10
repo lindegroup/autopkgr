@@ -138,7 +138,7 @@ typedef NS_ENUM(OSStatus, LGIntegrationInstallStatus) {
 @property (assign, nonatomic, readonly) BOOL isRefreshing;
 
 // LGIntegrationInfo object with local and remote status information and useful UI mappings.
-@property (copy, nonatomic, readonly) LGIntegrationInfo *info;
+@property (strong, nonatomic, readonly) LGIntegrationInfo *info;
 
 @property (copy) void (^infoUpdateHandler)(LGIntegrationInfo *info);
 

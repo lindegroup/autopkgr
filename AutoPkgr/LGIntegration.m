@@ -44,7 +44,7 @@ static dispatch_queue_t autopkgr_integration_synchronizer_queue()
 NSString *const kLGNotificationIntegrationStatusDidChange = @"com.lindegroup.autopkgr.notification.integration.status.did.change";
 
 @interface LGIntegration ()
-@property (copy, nonatomic, readwrite) LGIntegrationInfo *info;
+@property (strong, nonatomic, readwrite) LGIntegrationInfo *info;
 @end
 
 @interface LGIntegrationInfo ()
@@ -255,7 +255,7 @@ void subclassMustConformToProtocol(id className)
     void (^updateInfoHandlers)() = ^() {
         dispatch_async(autopkgr_integration_synchronizer_queue(), ^{
             if (reply || _infoUpdateHandler) {
-                _info = [[LGIntegrationInfo alloc] initWithIntegration:self];
+                self.info = [[LGIntegrationInfo alloc] initWithIntegration:self];
 
                 if (_infoUpdateHandler) {
                     _infoUpdateHandler(_info);
@@ -264,7 +264,7 @@ void subclassMustConformToProtocol(id className)
                     reply(_info);
                 }
             } else {
-                _info = [[LGIntegrationInfo alloc] initWithIntegration:self];
+                self.info = [[LGIntegrationInfo alloc] initWithIntegration:self];
             }
             _isRefreshing = NO;
         });
