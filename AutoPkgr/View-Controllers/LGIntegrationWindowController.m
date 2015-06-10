@@ -64,15 +64,15 @@
 
 - (void)uninstall:(id)sender
 {
-    __weak typeof(self) __weak_self = self;
+    __weak typeof(self) weakSelf = self;
     [self.viewController.integration.progressDelegate startProgressWithMessage:@"Uninstalling..."];
 
     [self.progressSpinner startAnimation:nil];
     [self.viewController.integration uninstall:^(NSString *message, double progress) {} reply:^(NSError *error) {
-        [__weak_self.progressSpinner stopAnimation:nil];
+        [weakSelf.progressSpinner stopAnimation:nil];
         if (!error) {
-            [[(LGBaseIntegrationViewController *)__weak_self.viewController integration].progressDelegate stopProgress:error];
-            [__weak_self.window close];
+            [[(LGBaseIntegrationViewController *)weakSelf.viewController integration].progressDelegate stopProgress:error];
+            [weakSelf.window close];
         }
     }];
 }

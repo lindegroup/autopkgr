@@ -307,9 +307,9 @@ typedef void (^AutoPkgReplyErrorBlock)(NSError *error);
             self.task.environment = [self.internalEnvironment copy];
         }
 
-        __weak typeof(self) __weak_self = self;
+        __weak typeof(self) weakSelf = self;
         [self.task setTerminationHandler:^(NSTask *task) {
-            [__weak_self didCompleteTaskExecution];
+            [weakSelf didCompleteTaskExecution];
         }];
 
         // Since NSTask can raise for unexpected reasons,

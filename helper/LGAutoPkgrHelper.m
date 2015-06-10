@@ -18,7 +18,7 @@
 //
 
 #import "LGAutoPkgrHelper.h"
-#import "LGAutoPkgr.h"
+#import "LGError.h"
 #import "LGAutoPkgrProtocol.h"
 #import "LGProgressDelegate.h"
 #import "LGPackageRemover.h"
@@ -33,6 +33,9 @@
 #import <pwd.h>
 #import <syslog.h>
 #import <SystemConfiguration/SystemConfiguration.h>
+
+#import "NSString+split.h"
+#import "NSData+taskData.h"
 
 static const NSTimeInterval kHelperCheckInterval = 1.0; // how often to check whether to quit
 
@@ -66,7 +69,8 @@ static const NSTimeInterval kHelperCheckInterval = 1.0; // how often to check wh
     while (!self.helperToolShouldQuit) {
         [[NSRunLoop currentRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:kHelperCheckInterval]];
     }
-    syslog(LOG_ALERT, "Quitting AutoPkgr helper application.");
+
+    syslog(LOG_INFO, "Quitting AutoPkgr helper application.");
 }
 
 #pragma mark - NSXPCListenerDelegate
@@ -83,7 +87,9 @@ static const NSTimeInterval kHelperCheckInterval = 1.0; // how often to check wh
         newConnection.exportedObject = self;
 
         // We have one method that can handle multiple input types
-        NSSet *acceptedClasses = [NSSet setWithObjects:[AHLaunchJobSchedule class], [NSNumber class], nil];
+        NSSet *acceptedClasses = [NSSet setWithObjects:[AHLaunchJobSchedule class],
+                                  [NSNumber class], nil];
+
         [newConnection.exportedInterface setClasses:acceptedClasses forSelector:@selector(scheduleRun:user:program:authorization:reply:) argumentIndex:0 ofReply:NO];
 
         __weak typeof(newConnection) weakConnection = newConnection;
@@ -102,6 +108,7 @@ static const NSTimeInterval kHelperCheckInterval = 1.0; // how often to check wh
 
         [newConnection resume];
         [self.connections addObject:newConnection];
+
         syslog(LOG_INFO, "Connection Success...");
         return YES;
     }
@@ -305,8 +312,6 @@ helper_reply:
             job.Label = kLGAutoPkgrLaunchDaemonPlist;
             job.ProgramArguments = @[ program, @"-runInBackground", @"YES" ];
 
-            syslog(0, "class of job schedule %s", NSStringFromClass([scheduleOrInterval class]).UTF8String);
-
             if ([scheduleOrInterval isKindOfClass:[AHLaunchJobSchedule class]]) {
                 job.StartCalendarInterval = scheduleOrInterval;
             } else if ([scheduleOrInterval isKindOfClass:[NSNumber class]]){
@@ -346,12 +351,7 @@ helper_reply:
     NSError *error;
     error = [LGAutoPkgrAuthorizer checkAuthorization:authData command:_cmd];
     if (error != nil) {
-        if (error.code == errAuthorizationCanceled) {
-            reply(nil);
-        } else {
-            reply(error);
-        }
-        return;
+        return reply(error);
     }
 
     self.connection.remoteObjectInterface = [NSXPCInterface interfaceWithProtocol:@protocol(LGProgressDelegate)];
@@ -371,15 +371,12 @@ helper_reply:
         NSData *data = fh.availableData;
         if (data.length) {
             progress ++;
-            NSString *rawMessage = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-            NSArray *allMessages = [ rawMessage componentsSeparatedByCharactersInSet:[NSCharacterSet newlineCharacterSet]];
-
-            for (NSString *message in allMessages) {
-                if (message.length && ![message isEqualToString:@"#"]) {
-                    [self.connection.remoteObjectProxy updateProgress:message
-                                                             progress:progress];
-                }
+            NSString *message = data.taskData_splitLines.firstObject;
+            if (message.length && ![message isEqualToString:@"#"]) {
+                [self.connection.remoteObjectProxy updateProgress:[message stringByReplacingOccurrencesOfString:@"installer: " withString:@""]
+                                                         progress:progress];
             }
+
         }
     }];
 
@@ -396,11 +393,7 @@ helper_reply:
     NSError *error;
     error = [LGAutoPkgrAuthorizer checkAuthorization:authData command:_cmd];
     if (error != nil) {
-        if (error.code == errAuthorizationCanceled) {
-            reply(nil, nil, nil);
-        } else {
-            reply(nil, nil, error);
-        }
+        reply(nil, nil, error);
         return;
     }
 
@@ -480,8 +473,8 @@ helper_reply:
 #pragma mark - Private
 - (BOOL)launchPathIsValid:(NSString *)path error:(NSError *__autoreleasing *)error;
 {
-    // Get the executable path of the helper tool.  We use this to compare against
-    // the program the helper tool is asked add as the launchd.plist "Program" key
+    // Get the executable path of the helper tool (self).  Then compare that to the
+    // binary (path) the helper tool is asked to set as the launchd.plist "Program" key.
 
     SNTCodesignChecker *selfCS = [[SNTCodesignChecker alloc] initWithSelf];
 

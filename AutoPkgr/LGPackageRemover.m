@@ -109,7 +109,7 @@ static dispatch_queue_t autopkgr_pkg_remover_queue()
         for (NSString *identifier in identifiers) {
             if (![installedPackages containsObject:identifier]) {
                 [validIdentifiers removeObject:identifier];
-                syslog(0, "%s is not currently installed, removing it from the list of pkgs to consider.", identifier.UTF8String);
+                syslog(LOG_ALERT, "%s is not currently installed, removing it from the list of pkgs to consider.", identifier.UTF8String);
             } else if (![validRemovablePackages containsObject:identifier]) {
                 error = [[self class] errorWithCode:kLGPackageInstallerErrorPackageNotRemovable identifier:identifier];
                 return reply(nil, nil, error);
