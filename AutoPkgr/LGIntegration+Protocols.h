@@ -37,17 +37,17 @@
  */
 + (NSString *)name;
 
+@optional
 /**
  *  Any custom install actions that need to be taken.
  */
-- (void)customInstallActions;
+- (void)customInstallActions:(void(^)(NSError *error))reply;
 
 /**
  *  Any custom uninstall actions that need to be taken.
  */
-- (void)customUninstallActions;
+- (void)customUninstallActions:(void(^)(NSError *error))reply;
 
-@optional
 /**
  *  By default this looks for the version in the receipt for an installed package with the name specified in packageIdentifier. Override this to customize the technique.
  *  @note you should not call this directly externally, and is used to initialize LGIntegrationInfo objects without the need for subclassing that too. To access this information externally use the integration.info property.

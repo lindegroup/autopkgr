@@ -98,7 +98,6 @@ static NSArray *__requiredIntegrationClasses;
 - (NSArray *)installedIntegrations
 {
     if (!_installedIntegrations) {
-
         NSMutableArray *installedIntegrations = nil;
         for (LGIntegration *integration in self.allIntegrations) {
             if (installedIntegrations || (installedIntegrations = [NSMutableArray new])) {

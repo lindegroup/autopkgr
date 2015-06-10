@@ -231,10 +231,13 @@ void subclassMustConformToProtocol(id className)
 }
 
 #pragma mark - Super implementation
-- (void)customInstallActions
+- (void)customInstallActions:(void(^)(NSError *error))reply
 {
+    reply(nil);
 }
-- (void)customUninstallActions {}
+- (void)customUninstallActions:(void(^)(NSError *error))reply{
+    reply(nil);
+}
 
 - (BOOL)isInstalled
 {
@@ -340,53 +343,55 @@ void subclassMustConformToProtocol(id className)
         [sender setEnabled:NO];
     }
 
+    void (^complete)(NSError *) = ^void(NSError *error){
+        [self customInstallActions:^(NSError *customError) {
+            NSError *endError = error;
+            if (customError && (endError == nil)) {
+                endError = customError;
+            }
+            [self didCompleteInstallAction:sender error:endError];
+        }];
+    };
+
+    void (^addRepo)() = ^void() {
+        NSString *name = self.name;
+
+        LGAutoPkgTask *task = [LGAutoPkgTask repoAddTask:[[self class] defaultRepository]];
+        if (self.progressDelegate) {
+            [self.progressDelegate startProgressWithMessage:[NSString stringWithFormat:@"Adding default AutoPkg repo for %@", name]];
+            task.progressDelegate = self.progressDelegate;
+        }
+
+        [task launchInBackground:^(NSError *error) {
+            complete(error);
+        }];
+    };
+
     LGIntegrationTypeFlags flags = [[self class] typeFlags];
     NSError *error = nil;
     if (![[self class] meetsRequirements:&error]) {
         [self didCompleteInstallAction:sender error:error];
     } else if (flags & kLGIntegrationTypeInstalledPackage) {
-        [self installPackage:sender];
+        NSString *name = [[self class] name];
+        LGIntegrationTypeFlags typeFlags = [[self class] typeFlags];
+
+        NSString *installMessage = [NSString stringWithFormat:@"Installing %@...", [[self class] name]];
+        [self.progressDelegate startProgressWithMessage:installMessage];
+
+        LGInstaller *installer = [[LGInstaller alloc] init];
+        installer.downloadURL = self.downloadURL;
+        installer.progressDelegate = self.progressDelegate;
+
+        [installer runInstaller:name reply:^(NSError *error) {
+            if (!error && (typeFlags & kLGIntegrationTypeAutoPkgSharedProcessor)) {
+                addRepo();
+            } else {
+                complete(error);
+            }
+        }];
     } else if (flags & kLGIntegrationTypeAutoPkgSharedProcessor) {
-        [self installDefaultRepository:sender];
+        addRepo();
     }
-}
-
-- (void)installPackage:(id)sender
-{
-    NSString *name = [[self class] name];
-    LGIntegrationTypeFlags typeFlags = [[self class] typeFlags];
-
-    NSString *installMessage = [NSString stringWithFormat:@"Installing %@...", [[self class] name]];
-    [self.progressDelegate startProgressWithMessage:installMessage];
-
-    LGInstaller *installer = [[LGInstaller alloc] init];
-    installer.downloadURL = self.downloadURL;
-    installer.progressDelegate = self.progressDelegate;
-
-    [installer runInstaller:name reply:^(NSError *error) {
-        if (!error && (typeFlags & kLGIntegrationTypeAutoPkgSharedProcessor)) {
-            [self installDefaultRepository:sender];
-        } else {
-            [self didCompleteInstallAction:sender error:error];
-        }
-    }];
-}
-
-- (void)installDefaultRepository:(id)sender
-{
-    NSString *name = [[self class] name];
-
-    LGAutoPkgTask *task = [LGAutoPkgTask repoAddTask:[[self class] defaultRepository]];
-
-    if (_progressDelegate) {
-        [_progressDelegate startProgressWithMessage:[NSString stringWithFormat:@"Adding default AutoPkg repo for %@", name]];
-
-        task.progressDelegate = _progressDelegate;
-    }
-
-    [task launchInBackground:^(NSError *error) {
-        [self didCompleteInstallAction:sender error:error];
-    }];
 }
 
 - (void)install:(void (^)(NSString *, double))progress reply:(void (^)(NSError *))reply
@@ -409,39 +414,52 @@ void subclassMustConformToProtocol(id className)
 #pragma mark - Uninstall
 - (void)uninstall:(id)sender
 {
+    void (^complete)(NSError *) = ^void(NSError *error){
+        [self customUninstallActions:^(NSError *customError) {
+            NSError *endError = error;
+            if (customError && !endError) {
+                endError = customError;
+            }
+            [self didCompleteInstallAction:sender error:endError];
+        }];
+    };
+
     void (^removeRepo)() = ^void() {
         NSString *defaultRepo = [[self class] defaultRepository];
-        if ([LGAutoPkgTask version] && [[LGAutoPkgTask repoList] containsObject:defaultRepo]) {
+        if ([LGAutoPkgTask version]) {
             LGAutoPkgTask *task = [LGAutoPkgTask repoDeleteTask:defaultRepo];
-            if (_progressDelegate) {
-                task.progressDelegate = _progressDelegate;
+
+            [self.progressDelegate startProgressWithMessage:[NSString stringWithFormat:@"Removing default AutoPkg repo for %@", self.name]];
+
+            if (self.progressDelegate) {
+                task.progressDelegate = self.progressDelegate;
             }
             [task launchInBackground:^(NSError *error) {
-                [self didCompleteInstallAction:sender error:error];
+                complete(error);
             }];
         } else {
-            [self didCompleteInstallAction:sender error:nil];
+            complete(nil);
         }
     };
 
     if ([[self class] isInstalled]) {
-        LGIntegrationTypeFlags flags = [[self class] typeFlags];
+        LGIntegrationTypeFlags typeFlags = [[self class] typeFlags];
 
-        if (flags & kLGIntegrationTypeInstalledPackage) {
+        if (typeFlags & kLGIntegrationTypeInstalledPackage) {
             LGUninstaller *uninstaller = [[LGUninstaller alloc] init];
 
             NSString *message = [NSString stringWithFormat:@"Uninstalling %@...", [[self class] name]];
-            [_progressDelegate startProgressWithMessage:message];
+            [self.progressDelegate startProgressWithMessage:message];
 
-            if (_progressDelegate) {
-                uninstaller.progressDelegate = _progressDelegate;
+            if (self.progressDelegate) {
+                uninstaller.progressDelegate = self.progressDelegate;
             }
 
             [uninstaller uninstallPackagesWithIdentifiers:[[self class] packageIdentifiers] reply:^(NSError *error) {
-                if (error || !(flags & kLGIntegrationTypeAutoPkgSharedProcessor)) {
-                    [self didCompleteInstallAction:sender error:error];
-                } else {
+                if (!error && (typeFlags & kLGIntegrationTypeAutoPkgSharedProcessor)) {
                     removeRepo();
+                } else {
+                    complete(error);
                 }
             }];
         }
@@ -450,7 +468,6 @@ void subclassMustConformToProtocol(id className)
 
 - (void)uninstall:(void (^)(NSString *, double))progress reply:(void (^)(NSError *))reply
 {
-
     if (progress) {
         if (_progressDelegate) {
             _origProgressDelegate = _progressDelegate;
