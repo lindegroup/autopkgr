@@ -103,7 +103,7 @@
             [tableView beginUpdates];
 
             if ([aManager.requiredIntegrations containsObject:integration]) {
-                /* If the tool is required, we don't need to add/remove any rows
+                /* If the integration is required, we don't need to add/remove any rows
                  * simply reload the data for the row */
                 NSInteger index = [aManager.installedOrRequiredIntegrations indexOfObject:integration];
                 NSIndexSet *idxSet = [NSIndexSet indexSetWithIndex:index];
@@ -114,12 +114,12 @@
                                                     NSMakeRange(0, tableView.numberOfColumns)]];
 
             } else if (integration.isInstalled) {
-                /* If the tool is now installed, check that it was NOT previously
+                /* If the integration is now installed, check that it was NOT previously
                  * listed as installed by checking the `currentIntegrations` array
                  * and add in a row to the table if not found */
                 NSInteger previousIndex = [currentIntegrations indexOfObject:integration];
                 if ( previousIndex == NSNotFound) {
-                    // NSNotFound means that the tool was previously not installed.
+                    // NSNotFound means that the integration was previously not installed.
                     NSInteger index = [aManager.installedOrRequiredIntegrations indexOfObject:integration];
                     if (index != NSNotFound) {
                         NSIndexSet *idxSet = [NSIndexSet indexSetWithIndex:index];
@@ -133,7 +133,7 @@
                         currentIntegrations = aManager.installedOrRequiredIntegrations;
                     }
                 } else {
-                    /* The tool is being updated, reload the row */
+                    /* The integration is being updated, reload the row */
                     [tableView reloadDataForRowIndexes:[NSIndexSet
                                                         indexSetWithIndex:previousIndex]
                                          columnIndexes:[NSIndexSet
@@ -141,7 +141,7 @@
                                                         NSMakeRange(0, tableView.numberOfColumns)]];
                 }
             } else {
-                /* Otherwise it's no longer installed and we want to remove
+                /* Otherwise it's no longer installed, and we want to remove
                  * the row from the table that's represended by the index of
                  * of the integration in the 'currentIntegrations' array */
                 NSInteger index = [currentIntegrations indexOfObject:integration];
@@ -166,21 +166,20 @@
     __block LGIntegrationStatusTableCellView *statusCell = nil;
     if ([tableColumn.identifier isEqualToString:@"statusCell"]) {
 
-        LGIntegration *tool = _integrationManager.installedOrRequiredIntegrations[row];
-        tool.progressDelegate = self.progressDelegate;
+        LGIntegration *integration = _integrationManager.installedOrRequiredIntegrations[row];
+        integration.progressDelegate = self.progressDelegate;
 
         statusCell = [tableView makeViewWithIdentifier:tableColumn.identifier owner:self];
-        statusCell.installButton.target = tool;
+        statusCell.installButton.target = integration;
         statusCell.installButton.enabled = NO;
-        statusCell.installButton.title = [@"Install " stringByAppendingString:[[tool class] name]];
+        statusCell.installButton.title = [@"Install " stringByAppendingString:integration.name];
 
-        statusCell.textField.stringValue = [[[tool class] name] stringByAppendingString:@": checking status"];
+        statusCell.textField.stringValue = [integration.name stringByAppendingString:@": checking status"];
 
         statusCell.imageView.hidden = YES;
         [statusCell.progressIndicator startAnimation:nil];
 
-        [tool getInfo:^(LGIntegrationInfo *info) {
-            [statusCell.progressIndicator stopAnimation:nil];
+        [integration getInfo:^(LGIntegrationInfo *info) {
             statusCell.imageView.hidden = NO;
             statusCell.imageView.image = info.statusImage;
             statusCell.textField.stringValue = info.statusString;
@@ -189,6 +188,7 @@
 
             statusCell.installButton.action = info.installButtonTargetAction;
             statusCell.installButton.enabled = info.installButtonEnabled;
+            [statusCell.progressIndicator stopAnimation:nil];
         }];
     }
     return statusCell;

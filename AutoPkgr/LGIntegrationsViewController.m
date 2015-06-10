@@ -143,7 +143,7 @@
         statusCell.imageView.hidden = YES;
         [statusCell.progressIndicator startAnimation:nil];
 
-        __weak typeof(integration) __weak_tool = integration;
+        __weak typeof(integration) weakIntegration = integration;
         integration.infoUpdateHandler = ^(LGIntegrationInfo *info) {
             [statusCell.progressIndicator stopAnimation:nil];
             statusCell.imageView.hidden = NO;
@@ -155,7 +155,7 @@
             if (info.status != kLGIntegrationNotInstalled) {
                 statusCell.configureButton.target = self;
             } else {
-                statusCell.configureButton.target = __weak_tool;
+                statusCell.configureButton.target = weakIntegration;
             }
         };
 

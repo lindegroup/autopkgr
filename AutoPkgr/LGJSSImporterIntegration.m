@@ -1,4 +1,4 @@
-// LGJSSImporterTool.m
+// LGJSSImporterIntegration.m
 //
 //  Copyright 2015 Eldon Ahrold
 //

@@ -21,7 +21,7 @@
 @interface LGIntegrationTemplate () <LGIntegrationPackageInstaller, LGIntegrationSharedProcessor>
 @end
 
-#pragma mark - Tool overrides
+#pragma mark - Integration overrides
 @implementation LGIntegrationTemplate
 
 // Since this is defined using a protocol, it needs to be synthesized...
@@ -31,13 +31,13 @@
 #pragma mark - Class overrides
 + (NSString *)name
 {
-    return @"ToolName";
+    return @"Integration Name";
 }
 
 + (NSString *)shortName {
-    /*If the name of the tool is Longer that 10 characters,
+    /*If the name of the integration is Longer that 10 characters,
      * put an abberviated name here so the buttons don't overflow */
-    return nil;
+    return @"IGName";
 }
 
 + (NSString *)credits {

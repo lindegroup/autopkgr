@@ -1,5 +1,5 @@
 //
-//  LGToolsViewController.h
+//  LGIntegrationsViewController.h
 //  AutoPkgr
 //
 //  Created by Eldon on 5/20/15.

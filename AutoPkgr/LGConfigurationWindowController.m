@@ -92,7 +92,7 @@
             [_tabViews addTabViewItem:tabItem];
         }
 
-        /* Make any modifications needed for specific tools*/
+        /* Make any modifications needed for specific integrations*/
 
         /* The Cancel button is part of the progress panel
          * but the _scheduleView should controll it. */

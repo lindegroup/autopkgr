@@ -1,4 +1,4 @@
-// LGAutoPkgTool.h
+// LGMunkiIntegration.h
 //
 //  Copyright 2015 Eldon Ahrold
 //

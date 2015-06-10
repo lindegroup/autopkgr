@@ -155,9 +155,9 @@
     XCTestExpectation *expectation2 = [self expectationWithDescription:@"Tool Install Async"];
 
     __block BOOL fufillExpectation1 = NO;
-    __block LGAutoPkgIntegration *tool = [[LGAutoPkgIntegration alloc] init];
+    __block LGAutoPkgIntegration *integration = [[LGAutoPkgIntegration alloc] init];
 
-    [tool getInfo:^(LGIntegrationInfo *info) {
+    [integration getInfo:^(LGIntegrationInfo *info) {
         XCTAssert(info.remoteVersion, @"Could not get remote version");
         XCTAssert(info.installedVersion, @"Could not get installed version");
 
@@ -169,7 +169,7 @@
         };
     }];
 
-    [tool install:nil];
+    [integration install:nil];
 
     [self waitForExpectationsWithTimeout:300 handler:^(NSError *error) {
         if(error)
@@ -298,8 +298,8 @@
     __block LGIntegrationInfo *info2;
     __block LGIntegrationInfo *info3;
 
-    LGAutoPkgIntegration *tool = [[LGAutoPkgIntegration alloc] init];
-    [tool setInfoUpdateHandler:^(LGIntegrationInfo *info) {
+    LGAutoPkgIntegration *integration = [[LGAutoPkgIntegration alloc] init];
+    [integration setInfoUpdateHandler:^(LGIntegrationInfo *info) {
         info1 = info;
         NSLog(@"mainQueue info: %@", info);
         XCTAssertEqualObjects([NSOperationQueue currentQueue], [NSOperationQueue mainQueue]);
@@ -308,7 +308,7 @@
 
     NSOperationQueue *bg1 = [NSOperationQueue new];
     [bg1 addOperationWithBlock:^{
-        [tool getInfo:^(LGIntegrationInfo *info) {
+        [integration getInfo:^(LGIntegrationInfo *info) {
             info2 = info;
 
             NSLog(@"bg1 info: %@", info);
@@ -320,7 +320,7 @@
 
     NSOperationQueue *bg2 = [NSOperationQueue new];
     [ bg2 addOperationWithBlock:^{
-        [tool getInfo:^(LGIntegrationInfo *info) {
+        [integration getInfo:^(LGIntegrationInfo *info) {
             info3 = info;
 
             NSLog(@"bg2 info: %@", info);
@@ -330,7 +330,7 @@
         }];
     }];
 
-    [tool refresh];
+    [integration refresh];
 
 
     [self waitForExpectationsWithTimeout:300 handler:^(NSError *error) {
@@ -346,15 +346,15 @@
 }
 - (void)testTool2
 {
-    LGAutoPkgIntegration *tool = [[LGAutoPkgIntegration alloc] init];
-    NSLog(@"%@", tool.info.remoteVersion);
+    LGAutoPkgIntegration *integration = [[LGAutoPkgIntegration alloc] init];
+    NSLog(@"%@", integration.info.remoteVersion);
 }
 
 - (void)testTool3
 {
-    LGAutoPkgIntegration *tool = [[LGAutoPkgIntegration alloc] init];
-    [tool refresh];
-    NSLog(@"%@", tool.info.remoteVersion);
+    LGAutoPkgIntegration *integration = [[LGAutoPkgIntegration alloc] init];
+    [integration refresh];
+    NSLog(@"%@", integration.info.remoteVersion);
 }
 
 - (void)testLoader

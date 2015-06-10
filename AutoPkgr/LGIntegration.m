@@ -1,5 +1,5 @@
 //
-//  LGTools.m
+//  LGIntegration.m
 //  AutoPkgr
 //
 //  Copyright 2015 Eldon Ahrold
@@ -29,26 +29,26 @@
 #define LGTOOL_SUBCLASS
 #endif
 
-// Dispatch queue for synchronizing infoHanler setter and refresh.
-static dispatch_queue_t autopkgr_tool_synchronizer_queue()
+// Dispatch queue for synchronizing infoHandler setter and refresh.
+static dispatch_queue_t autopkgr_integration_synchronizer_queue()
 {
-    static dispatch_queue_t autopkgr_tool_synchronizer_queue;
+    static dispatch_queue_t dispatch_queue;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        autopkgr_tool_synchronizer_queue = dispatch_queue_create("com.lindegroup.autopkgr.tool.synchronizer.queue", DISPATCH_QUEUE_SERIAL );
+        dispatch_queue = dispatch_queue_create("com.lindegroup.autopkgr.integration.synchronizer.queue", DISPATCH_QUEUE_SERIAL );
     });
 
-    return autopkgr_tool_synchronizer_queue;
+    return dispatch_queue;
 }
 
-NSString *const kLGNotificationIntegrationStatusDidChange = @"com.lindegroup.autopkgr.notification.toolstatus.did.change";
+NSString *const kLGNotificationIntegrationStatusDidChange = @"com.lindegroup.autopkgr.notification.integration.status.did.change";
 
 @interface LGIntegration ()
 @property (copy, nonatomic, readwrite) LGIntegrationInfo *info;
 @end
 
 @interface LGIntegrationInfo ()
-- (instancetype)initWithIntegration:(LGIntegration *)tool;
+- (instancetype)initWithIntegration:(LGIntegration *)integration;
 @end
 
 void subclassMustImplement(id className, SEL _cmd)
@@ -62,7 +62,7 @@ void subclassMustImplement(id className, SEL _cmd)
 
 void subclassMustConformToProtocol(id className)
 {
-    NSString *reason = [NSString stringWithFormat:@"[ EXCEPTION ] %s must conform to at least one LGTool protocol",
+    NSString *reason = [NSString stringWithFormat:@"[ EXCEPTION ] %s must conform to at least one LGIntegration protocol",
                                                   object_getClassName(className)];
     @throw [NSException exceptionWithName:@"SubclassMustConform"
                                    reason:reason
@@ -94,7 +94,7 @@ void subclassMustConformToProtocol(id className)
     }
 }
 
-#pragma mark - Tool
+#pragma mark - Integration
 + (BOOL)isInstalled
 {
     if ((self.typeFlags & kLGIntegrationTypeAutoPkgSharedProcessor) && (![self components])) {
@@ -131,7 +131,7 @@ void subclassMustConformToProtocol(id className)
 
     /* Repoint so we don't loose reference to the _infoUpdateBlockDict after dealloc */
     NSMutableDictionary *releaseDict = _infoUpdateBlocksDict;
-    dispatch_async(autopkgr_tool_synchronizer_queue(), ^{
+    dispatch_async(autopkgr_integration_synchronizer_queue(), ^{
         [releaseDict enumerateKeysAndObjectsUsingBlock:^(void (^infoUpdate)(LGIntegrationInfo *), id obj, BOOL *stop) {
             infoUpdate = nil;
         }];
@@ -253,7 +253,7 @@ void subclassMustConformToProtocol(id className)
 {
     _isRefreshing = YES;
     void (^updateInfoHandlers)() = ^() {
-        dispatch_async(autopkgr_tool_synchronizer_queue(), ^{
+        dispatch_async(autopkgr_integration_synchronizer_queue(), ^{
             if (reply || _infoUpdateHandler) {
                 _info = [[LGIntegrationInfo alloc] initWithIntegration:self];
 
@@ -571,7 +571,7 @@ void subclassMustConformToProtocol(id className)
 
 @end
 
-#pragma mark - Tool Info Object
+#pragma mark - Integration Info Object
 @implementation LGIntegrationInfo {
     NSString *_name;
     NSString *_shortName;
@@ -580,16 +580,16 @@ void subclassMustConformToProtocol(id className)
     BOOL _installed;
 }
 
-- (instancetype)initWithIntegration:(LGIntegration *)tool;
+- (instancetype)initWithIntegration:(LGIntegration *)integration;
 {
     if (self = [super init]) {
-        _name = [[tool class] name];
-        _shortName = [[tool class] shortName];
-        _typeFlags = [[tool class] typeFlags];
-        _installed = [[tool class] isInstalled];
+        _name = [[integration class] name];
+        _shortName = [[integration class] shortName];
+        _typeFlags = [[integration class] typeFlags];
+        _installed = [[integration class] isInstalled];
 
-        _remoteVersion = tool.remoteVersion;
-        _installedVersion = tool.installedVersion;
+        _remoteVersion = integration.remoteVersion;
+        _installedVersion = integration.installedVersion;
     }
 
     return self;

@@ -44,7 +44,7 @@
 
 @end
 
-#pragma mark - Tool Cell View
+#pragma mark - Integration Cell View
 @implementation LGIntegrationStatusTableCellView
 
 - (void)drawRect:(NSRect)dirtyRect
