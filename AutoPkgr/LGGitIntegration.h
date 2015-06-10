@@ -23,7 +23,10 @@ typedef NS_ENUM(NSInteger, kLGGitErrorCodes) {
 };
 
 @interface LGGitIntegration : LGIntegration
++ (BOOL)officialGitInstalled;
+
 + (void)gitTaskWithArguments:(NSArray *)args
                     repoPath:(NSString *)repoPath
                        reply:(void (^)(NSString *, NSError *))reply;
+
 @end

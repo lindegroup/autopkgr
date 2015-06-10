@@ -25,5 +25,6 @@
 - (instancetype)initWithIntegration:(LGIntegration *)integration;
 
 @property (strong, nonatomic, readonly) LGIntegration *integration;
+@property (weak) IBOutlet NSProgressIndicator *progressSpinner;
 
 @end

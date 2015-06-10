@@ -1,24 +1,24 @@
 PODS:
-  - AFNetworking (2.5.3):
-    - AFNetworking/NSURLConnection (= 2.5.3)
-    - AFNetworking/NSURLSession (= 2.5.3)
-    - AFNetworking/Reachability (= 2.5.3)
-    - AFNetworking/Security (= 2.5.3)
-    - AFNetworking/Serialization (= 2.5.3)
-    - AFNetworking/UIKit (= 2.5.3)
-  - AFNetworking/NSURLConnection (2.5.3):
+  - AFNetworking (2.5.4):
+    - AFNetworking/NSURLConnection (= 2.5.4)
+    - AFNetworking/NSURLSession (= 2.5.4)
+    - AFNetworking/Reachability (= 2.5.4)
+    - AFNetworking/Security (= 2.5.4)
+    - AFNetworking/Serialization (= 2.5.4)
+    - AFNetworking/UIKit (= 2.5.4)
+  - AFNetworking/NSURLConnection (2.5.4):
     - AFNetworking/Reachability
     - AFNetworking/Security
     - AFNetworking/Serialization
-  - AFNetworking/NSURLSession (2.5.3):
+  - AFNetworking/NSURLSession (2.5.4):
     - AFNetworking/Reachability
     - AFNetworking/Security
     - AFNetworking/Serialization
-  - AFNetworking/Reachability (2.5.3)
-  - AFNetworking/Security (2.5.3)
-  - AFNetworking/Serialization (2.5.3)
+  - AFNetworking/Reachability (2.5.4)
+  - AFNetworking/Security (2.5.4)
+  - AFNetworking/Serialization (2.5.4)
   - AHKeychain (0.2.1)
-  - AHLaunchCtl (0.4.2)
+  - AHLaunchCtl (0.4.3)
   - AHProxySettings (0.1.1)
   - mailcore2-osx (0.5.2)
   - RNCryptor (2.2)
@@ -36,9 +36,9 @@ DEPENDENCIES:
   - XMLDictionary (~> 1.4)
 
 SPEC CHECKSUMS:
-  AFNetworking: e1d86c2a96bb5d2e7408da36149806706ee122fe
+  AFNetworking: 05edc0ac4c4c8cf57bcf4b84be5b0744b6d8e71e
   AHKeychain: f797278e48ab3ddb4d62370b84583652bc071baa
-  AHLaunchCtl: 8f8bb26326627756aa4e85609a2e1896b8dfe874
+  AHLaunchCtl: 0de6774f41967f8018d9ce6a01e6d60c1ee1e6b6
   AHProxySettings: 1f882780699d7765aca9377660ba280306d30910
   mailcore2-osx: b4380c33f2e155006db3f97b638b7a0d52344b15
   RNCryptor: c68678461a2c7474a55db9a6a98834c22d51f535

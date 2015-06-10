@@ -23,16 +23,16 @@
 
 #import <AHProxySettings/NSTask+useSystemProxies.h>
 
-NSString *const kLGOfficialGit = @"/usr/local/git/bin/git";
-NSString *const kLGCLIToolsGit = @"/Library/Developer/CommandLineTools/usr/bin/git";
-NSString *const kLGXcodeGit = @"/Applications/Xcode.app/Contents/Developer/usr/bin/git";
-NSString *const kLGHomeBrewGit = @"/usr/local/bin/git";
-NSString *const kLGBoxenBrewGit = @"/opt/boxen/homebrew/bin/git";
+static NSString *const kLGOfficialGit = @"/usr/local/git/bin/git";
+static NSString *const kLGCLIToolsGit = @"/Library/Developer/CommandLineTools/usr/bin/git";
+static NSString *const kLGXcodeGit = @"/Applications/Xcode.app/Contents/Developer/usr/bin/git";
+static NSString *const kLGHomeBrewGit = @"/usr/local/bin/git";
+static NSString *const kLGBoxenBrewGit = @"/opt/boxen/homebrew/bin/git";
 
 @interface LGGitIntegration ()<LGIntegrationPackageInstaller>
 @end
 
-NSArray *knownGitPaths()
+static NSArray *knownGitPaths()
 {
     return @[ kLGOfficialGit,
               kLGBoxenBrewGit,
@@ -58,13 +58,14 @@ NSArray *knownGitPaths()
 + (NSString *)credits {
     return @"The GNU General Public License (GPL-2.0)";
 }
+
 + (NSURL *)homePage {
     return [NSURL URLWithString:@"https://git-scm.com"];
 }
 
 + (NSArray *)components
 {
-    return @[ [self binary],
+    return @[[self binary],
               ];
 }
 
@@ -117,6 +118,11 @@ NSArray *knownGitPaths()
 }
 
 #pragma mark - Instance overrides.
+- (void)customInstallActions:(void (^)(NSError *))reply
+{
+    [[LGDefaults standardUserDefaults] setGitPath:kLGOfficialGit];
+    reply(nil);
+}
 
 - (NSString *)installedVersion
 {
@@ -156,6 +162,11 @@ NSArray *knownGitPaths()
 }
 
 #pragma mark - Integration Extensions
++(BOOL)officialGitInstalled
+{
+    return [[NSFileManager defaultManager] isExecutableFileAtPath:kLGOfficialGit];
+}
+
 + (void)gitTaskWithArguments:(NSArray *)args repoPath:(NSString *)repoPath reply:(void (^)(NSString *, NSError *))reply {
 
 
