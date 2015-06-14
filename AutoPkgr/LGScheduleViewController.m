@@ -153,7 +153,9 @@
 - (IBAction)changeSchedule:(id)sender
 {
     // First check for a few conditions that should just be returned from...
-    if ([sender isEqualTo:_scheduleIntervalTF] && _scheduleTypeMatrix.selectedTag != 0) {
+    if([self.currentSchedule isEqualTo:self.proposedSchedule]){
+        return;
+    } else if ([sender isEqualTo:_scheduleIntervalTF] && _scheduleTypeMatrix.selectedTag != 0) {
         return;
     } else if ([sender isEqualTo:_dailyHourPopupBT] && _scheduleTypeMatrix.selectedTag != 1) {
         return;
