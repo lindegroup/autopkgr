@@ -342,6 +342,38 @@ extern NSString *const kLGAutoPkgRepoURLKey;
  */
 + (NSString *)version;
 
+/**
+ *  Generate a GitHub API key for user with autopkg.
+ *
+ *  @param username GitHub username
+ *  @param password GitHub password
+ *  @param reply reply block executed upon completion. It takes one parameter NSError
+ */
++ (void)generateGitHubAPIToken:(NSString *)username password:(NSString *)password reply:(void (^)(NSError *))reply;
+
+/**
+ *  Remove the local API Token file, and delete it from your https://github.com/settings/tokens
+ *
+ *  @param username GitHub username
+ *  @param password GitHub password
+ *  @param reply reply block executed upon completion. It takes one parameter NSError
+ */
++ (void)deleteGitHubAPIToken:(NSString *)username password:(NSString *)password reply:(void (^)(NSError *))reply;
+
+/**
+ *  Check if the AutoPkg API token exists
+ *
+ *  @return YES if it exists, NO otherwise.
+ */
++ (BOOL)apiTokenFileExists:(NSString *__autoreleasing*)file;
+
+/**
+ *  AutoPkg API Token
+ *
+ *  @return AutoPkg's GitHub Public API Token
+ */
++ (NSString *)apiToken;
+
 @end
 
 #pragma mark - AutoPkg Response / Progress message Object

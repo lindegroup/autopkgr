@@ -26,6 +26,7 @@
 #import "NSData+taskData.h"
 
 #import <AHProxySettings/AHProxySettings.h>
+#import <AFNetworking/AFNetworking.h>
 
 #if DEBUG
 /* For development using a custom version of autopkg, create
@@ -45,6 +46,7 @@ static NSString *const autopkg()
 }
 
 static NSString *const kLGAutoPkgTaskLock = @"com.lindegroup.autopkg.task.lock";
+static NSString *const AUTOPKG_GITHUB_API_TOKEN_FILE = @"~/.autopkg_gh_token";
 
 // Version Strings
 static NSString *const AUTOPKG_0_3_0 = @"0.3.0";
@@ -68,7 +70,6 @@ NSString *const kLGAutoPkgRecipePathKey = @"Path";
 NSString *const kLGAutoPkgRepoNameKey = @"RepoName";
 NSString *const kLGAutoPkgRepoPathKey = @"RepoPath";
 NSString *const kLGAutoPkgRepoURLKey = @"RepoURL";
-
 
 // Reply blocks
 typedef void (^AutoPkgReplyResultsBlock)(NSArray *results, NSError *error);
@@ -125,10 +126,9 @@ typedef void (^AutoPkgReplyErrorBlock)(NSError *error);
         op.progressUpdateBlock = _progressUpdateBlock;
     }
 
-    if (!op.replyErrorBlock && _errorBlock ){
+    if (!op.replyErrorBlock && _errorBlock) {
         op.replyErrorBlock = _errorBlock;
     }
-
 }
 
 - (void)addOperationAndWait:(LGAutoPkgTask *)op
@@ -434,6 +434,10 @@ typedef void (^AutoPkgReplyErrorBlock)(NSError *error);
         _verb = kLGAutoPkgMakeOverride;
     } else if ([verbString isEqualToString:@"search"]) {
         _verb = kLGAutoPkgSearch;
+        // If the api token file exists update the args.
+        if ([[self class] apiTokenFileExists:nil]) {
+            [self.internalArgs addObject:@"-t"];
+        }
     } else if ([verbString isEqualToString:@"info"]) {
         _verb = kLGAutoPkgInfo;
     } else if ([verbString isEqualToString:@"repo-add"]) {
@@ -967,6 +971,115 @@ typedef void (^AutoPkgReplyErrorBlock)(NSError *error);
     }
 
     return [version stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] ?: @"0.0.0";
+}
+
++ (NSString *)apiToken
+{
+    NSString *tokenFile = nil;
+    if ([self apiTokenFileExists:&tokenFile]) {
+        return [NSString stringWithContentsOfFile:tokenFile encoding:NSUTF8StringEncoding error:nil];
+    }
+    return nil;
+}
+
++ (BOOL)apiTokenFileExists:(NSString *__autoreleasing *)file
+{
+    NSString *tokenFile = AUTOPKG_GITHUB_API_TOKEN_FILE.stringByExpandingTildeInPath;
+    if (file)
+        *file = tokenFile;
+    return (access(tokenFile.UTF8String, R_OK) == 0);
+}
+
++ (void)generateGitHubAPIToken:(NSString *)username password:(NSString *)password reply:(void (^)(NSError *))reply
+{
+
+    NSString *tokenFile = nil;
+    if (![self apiTokenFileExists:&tokenFile]) {
+
+        // Headers & Parameters
+        NSDictionary *headers = @{
+            @"Accept" : @"application/vnd.github.v3+json",
+            @"User-Agent" : @"AutoPkg",
+        };
+
+        NSDictionary *parameters = @{ @"note" : @"AutoPkg CLI" };
+
+        // Networking
+        AFHTTPRequestOperationManager *manager = [[AFHTTPRequestOperationManager alloc] initWithBaseURL:[NSURL URLWithString:@"https://api.github.com"]];
+
+        // Request Serializer
+        manager.requestSerializer = [AFJSONRequestSerializer serializer];
+        [manager.requestSerializer setAuthorizationHeaderFieldWithUsername:username password:password];
+        [headers enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+            [manager.requestSerializer setValue:obj forHTTPHeaderField:key];
+        }];
+
+        // Response serializer
+        manager.responseSerializer = [AFJSONResponseSerializer serializer];
+
+        [manager POST:@"/authorizations" parameters:parameters success:^(AFHTTPRequestOperation *operation, NSDictionary *responseObject) {
+            NSError *error = nil;
+            NSString *tokenString = responseObject[@"token"];
+
+            if (tokenString.length){
+                [tokenString writeToFile:tokenFile atomically:YES encoding:NSUTF8StringEncoding error:&error];
+                reply(error);
+            } else {
+                reply(error);
+            }
+        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+            reply(operation.response ? [LGError errorWithResponse:operation.response] : error);
+        }];
+    } else {
+        reply(nil);
+    }
+}
+
++ (void)deleteGitHubAPIToken:(NSString *)username password:(NSString *)password reply:(void (^)(NSError *))reply
+{
+    AFHTTPRequestOperationManager *manager = [[AFHTTPRequestOperationManager alloc] initWithBaseURL:[NSURL URLWithString:@"https://api.github.com"]];
+
+    // Request Serializer
+    manager.requestSerializer = [AFJSONRequestSerializer serializer];
+    [manager.requestSerializer setAuthorizationHeaderFieldWithUsername:username password:password];
+
+    [manager GET:@"/authorizations" parameters:nil success:^(AFHTTPRequestOperation *operation, NSArray *responseObject) {
+        // Get Auth ID
+        __block NSDictionary *autoPkgTokenDict = nil;
+        NSString *token = [self apiToken];
+        NSString *tokenLastEight = [token substringFromIndex:token.length - 8];
+
+        [responseObject enumerateObjectsUsingBlock:^(NSDictionary *obj, NSUInteger idx, BOOL *stop) {
+            if ([@"AutoPkg CLI" isEqualToString:obj[@"note"]] &&
+                 [tokenLastEight isEqualToString:obj[@"token_last_eight"]]) {
+                autoPkgTokenDict = obj;
+                *stop = YES;
+            }
+        }];
+
+        if (autoPkgTokenDict) {
+            NSString *delete = [NSString stringWithFormat:@"/authorizations/%@", autoPkgTokenDict[@"id"]];
+            [manager DELETE:delete parameters:@{} success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                // remove the file
+                NSString *tokenFile = nil;
+                NSError *error = nil;
+                if ([self apiTokenFileExists:&tokenFile]) {
+                    [[NSFileManager defaultManager] removeItemAtPath:tokenFile error:&error];
+                }
+                reply(error);
+            } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                reply(operation.response ? [LGError errorWithResponse:operation.response] : error);
+            }];
+        } else {
+            NSError *error = [NSError errorWithDomain:[[NSProcessInfo processInfo] processName]
+                                                 code:-2
+                                             userInfo:@{NSLocalizedDescriptionKey : NSLocalizedString(@"API Token not found.", nil),
+                                                        NSLocalizedRecoverySuggestionErrorKey : NSLocalizedString(@"A GitHub API token matching the local one was not found on the remote. You may need to remove it manually. If you've just added the token, you may need to wait a minute to delete it.", nil)}];
+            reply(error);
+        }
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        reply(operation.response ? [LGError errorWithResponse:operation.response] : error);
+    }];
 }
 
 #pragma mark-- Convenience Initializers --

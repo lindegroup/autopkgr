@@ -34,5 +34,6 @@
 #import "NSArray+filtered.h"
 #import "NSString+split.h"
 #import "NSButton+colored.h"
+#import "NSString+attributedString.h"
 
 #endif

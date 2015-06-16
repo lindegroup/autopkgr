@@ -261,7 +261,12 @@ static NSArray *_popularRepos;
         constructCommonRepos();
     } else {
         NSURL *url = [NSURL URLWithString:kLGAutoPkgRepositoriesJSONURL];
-        NSURLRequest *request = [[NSURLRequest alloc] initWithURL:url cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:5.0];
+        NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:5.0];
+
+        NSString *apiToken = nil;
+        if ((apiToken = [LGAutoPkgTask apiToken])) {
+            [request setValue:[@"token " stringByAppendingString:apiToken] forHTTPHeaderField:@"Authorization"];
+        }
 
         AFHTTPRequestOperation *op = [[AFHTTPRequestOperation alloc] initWithRequest:request];
         op.responseSerializer = [AFJSONResponseSerializer serializer];

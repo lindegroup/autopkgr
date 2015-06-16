@@ -17,9 +17,9 @@
 @property (copy, nonatomic, readonly) NSArray *taskData_splitLines;
 
 @property (assign, nonatomic, readonly) BOOL taskData_isInteractive;
+-(BOOL)taskData_isInteractiveWithStrings:(NSArray *)interactiveStrings;
 
 @property (copy, nonatomic, readonly) id taskData_serializePropertyList;
 - (id)taskData_serializePropertyList:(NSPropertyListFormat *)format;
-
 
 @end

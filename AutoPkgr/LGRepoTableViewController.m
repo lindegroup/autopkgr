@@ -275,7 +275,6 @@
     [[NSOperationQueue mainQueue] addOperationWithBlock:^{
         [_searchPanel.window close];
         _searchPanel = nil;
-        [self reload];
     }];
 }
 

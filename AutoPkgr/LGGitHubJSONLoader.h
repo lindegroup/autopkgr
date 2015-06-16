@@ -44,7 +44,11 @@
 @end
 
 @interface LGGitHubJSONLoader : NSObject
+@property (copy, nonatomic) NSString *apiToken;
+
+- (instancetype)init __unavailable;
 - (instancetype)initWithGitHubURL:(NSString *)gitHubURL;
+
 - (void)getReleaseInfo:(void (^)(LGGitHubReleaseInfo *info, NSError *error))info;
 
 // Synchronously get raw data from GitHub URL

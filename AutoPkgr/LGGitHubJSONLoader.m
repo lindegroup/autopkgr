@@ -154,9 +154,13 @@
 
     NSURL *url = [NSURL URLWithString:_gitHubURL];
 
-    NSURLRequest *req = [NSURLRequest requestWithURL:url
+    NSMutableURLRequest *req = [NSMutableURLRequest requestWithURL:url
                                          cachePolicy:NSURLRequestUseProtocolCachePolicy
                                      timeoutInterval:15.0];
+    
+    if (_apiToken) {
+        [req setValue:[@"token " stringByAppendingString:_apiToken] forHTTPHeaderField:@"Authorization"];
+    };
 
     AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:req];
     operation.responseSerializer = [AFJSONResponseSerializer serializer];

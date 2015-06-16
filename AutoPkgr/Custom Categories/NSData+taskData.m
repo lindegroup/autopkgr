@@ -7,6 +7,7 @@
 //
 
 #import "NSData+taskData.h"
+#import "NSString+cleaned.h"
 
 @implementation NSData (NSTaskData)
 
@@ -48,11 +49,24 @@
 }
 
 - (BOOL)taskData_isInteractive {
-    NSString *message = [[NSString alloc] initWithData:self encoding:NSUTF8StringEncoding];
+    NSArray *defaultMatches = @[@"[y/n]:",
+                                @"[YES/NO]:",
+                                @"Password:",
+                                @"Password",
+                                ];
+    return [self taskData_isInteractiveWithStrings:defaultMatches];
+   }
 
-    NSPredicate *prompt = [NSPredicate predicateWithFormat:@"SELF CONTAINS[CD] '[y/n]:'"];
+- (BOOL)taskData_isInteractiveWithStrings:(NSArray *)interactiveStrings {
+    NSString *message = [[[NSString alloc] initWithData:self encoding:NSUTF8StringEncoding] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
 
-    if ([prompt evaluateWithObject:message]) {
+    NSMutableArray *predicates = [NSMutableArray arrayWithCapacity:interactiveStrings.count];
+    for (NSString *string in interactiveStrings) {
+        NSPredicate *p = [NSPredicate predicateWithFormat:@"SELF ENDSWITH[CD] %@", string];
+        [predicates addObject:p];
+    }
+    NSCompoundPredicate *evalPredicate = [[NSCompoundPredicate alloc] initWithType:NSOrPredicateType subpredicates:predicates];
+    if ([evalPredicate evaluateWithObject:message]) {
         return YES;
     }
     return NO;

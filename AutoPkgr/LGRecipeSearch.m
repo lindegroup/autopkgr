@@ -161,7 +161,7 @@
 #pragma mark - Utility
 - (NSPredicate *)repoMatchPredicate:(NSString *)match
 {
-    return [NSPredicate predicateWithFormat:@"%K.lastPathComponent == %@", kLGAutoPkgRepoURLKey, [match stringByAppendingPathExtension:@"git"]];
+    return [NSPredicate predicateWithFormat:@"%K.%@ == %@", kLGAutoPkgRepoURLKey, NSStringFromSelector(@selector(lastPathComponent)), [match stringByAppendingPathExtension:@"git"]];
 }
 
 @end

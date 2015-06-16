@@ -251,18 +251,25 @@ void subclassMustConformToProtocol(id className)
 
 - (void)getInfo:(void (^)(LGIntegrationInfo *))reply
 {
+    /*
+     * There are a few terms here that should be clairified.
+     * _info = Mapped values for the UI such as
+     * _gitHubInfo = raw data obtained from the GitHub API.
+     */
+
     _isRefreshing = YES;
     void (^updateInfoHandlers)() = ^() {
         dispatch_async(autopkgr_integration_synchronizer_queue(), ^{
             if (reply || _infoUpdateHandler) {
                 self.info = [[LGIntegrationInfo alloc] initWithIntegration:self];
-
-                if (_infoUpdateHandler) {
-                    _infoUpdateHandler(_info);
-                }
-                if (reply) {
-                    reply(_info);
-                }
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    if (_infoUpdateHandler) {
+                        _infoUpdateHandler(_info);
+                    }
+                    if (reply) {
+                        reply(_info);
+                    }
+                });
             } else {
                 self.info = [[LGIntegrationInfo alloc] initWithIntegration:self];
             }
@@ -270,10 +277,12 @@ void subclassMustConformToProtocol(id className)
         });
     };
 
-    if (self.gitHubInfo.isExpired) {
+    if (!_gitHubInfo || _gitHubInfo.isExpired) {
         DevLog(@"Getting remote GitHub info for %@", NSStringFromClass([self class]));
 
         LGGitHubJSONLoader *loader = [[LGGitHubJSONLoader alloc] initWithGitHubURL:[[self class] gitHubURL]];
+
+        loader.apiToken = [LGAutoPkgTask apiToken];
 
         [loader getReleaseInfo:^(LGGitHubReleaseInfo *gitHubInfo, NSError *error) {
             self.gitHubInfo = gitHubInfo;
