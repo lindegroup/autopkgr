@@ -1,0 +1,29 @@
+/* 
+  LocalizableAutoPkg.strings
+  AutoPkgr
+
+  Created by Eldon on 6/18/15.
+  Copyright (c) 2015 The Linde Group, Inc. All rights reserved.
+*/
+
+/**
+ *  Errors relating specifically to AutoPkg
+ *  Recovery Suggestion string is created from the task.standardError so unnecessary here
+ */
+
+"kLGAutoPkgUndefinedVerbDescription" = "AutoPkgr encountered an error";
+
+// recipe verbs
+"kLGAutoPkgRunDescription" = "Error running recipes";
+"kLGAutoPkgRecipeListDescription" = "Error encountered listing recipes";
+"kLGAutoPkgMakeOverrideDescription" = "Error creating OverrideDescription file";
+"kLGAutoPkgSearchDescription" = "Error encountered searching for recipe";
+
+// repo verbs
+"kLGAutoPkgRepoAddDescription" = "Error adding repo";
+"kLGAutoPkgRepoDeleteDescription" = "Error removing repo";
+"kLGAutoPkgRepoUpdateDescription" = "Error updating repo";
+"kLGAutoPkgRepoListDescription" = "Error encountered listing repos";
+
+// other verbs
+"kLGAutoPkgVersionDescription" = "Error getting AutoPkg version";

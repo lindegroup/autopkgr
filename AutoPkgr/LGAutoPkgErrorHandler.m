@@ -21,6 +21,8 @@
 #import "LGAutoPkgErrorHandler.h"
 #import "LGLogger.h"
 
+NSString *const kLGAutoPkgLocalizedStringTable = @"LocalizableAutoPkg";
+
 static NSString *errorMessageFromAutoPkgVerb(LGAutoPkgVerb verb)
 {
     NSString *localizedBaseString;
@@ -62,8 +64,9 @@ static NSString *errorMessageFromAutoPkgVerb(LGAutoPkgVerb verb)
         break;
     }
 
-    message = NSLocalizedString([localizedBaseString stringByAppendingString:@"Description"],
-                                @"NSLocalizedDescriptionKey");
+    message = NSLocalizedStringFromTable([localizedBaseString stringByAppendingString:@"Description"],
+                                         kLGAutoPkgLocalizedStringTable,
+                                         @"NSLocalizedDescriptionKey");
     return message;
 }
 

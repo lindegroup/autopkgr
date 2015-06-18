@@ -20,6 +20,7 @@
 
 #import <Foundation/Foundation.h>
 
+extern NSString *const kLGAutoPkgLocalizedStringTable;
 /* AutoPkg Task Verbs
  */
 typedef NS_ENUM(NSInteger, LGAutoPkgVerb) {

@@ -28,6 +28,9 @@ NSString *const kLGAutoPkgrPreferenceDomain = @"com.lindegroup.AutoPkgr";
 NSString *const kLGAutoPkgrHelperToolName = @"com.lindegroup.AutoPkgr.helper";
 NSString *const kLGAutoPkgrLaunchDaemonPlist = @"com.lindegroup.AutoPkgr.schedule";
 
+#pragma mark - Localized String Tables
+NSString *const kLGLocalizedHelpTable = @"LocalizableHelp";
+
 #pragma mark - Message Strings / Labels
 NSString *const kLGGitInstalledLabel = @"Git has been installed.";
 NSString *const kLGGitNotInstalledLabel = @"Git is not installed.";

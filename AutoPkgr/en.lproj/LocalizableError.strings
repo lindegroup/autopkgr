@@ -1,5 +1,5 @@
 /* 
-  Localizable.strings
+  LocalizableError.strings
   AutoPkgr
 
   Created by Eldon on 9/5/14.
@@ -63,28 +63,6 @@
 /** Error authorization canceled by user*/
 "kLGErrorAuthChallenge" = "Error creating authorization";
 "kLGErrorAuthChallenge" = "You are not authorized to perform this action";
-/**
- *  Errors relating specifically to AutoPkg
- *  Recovery Suggestion string is created from the task.standardError so unnecessary here
- */
-
-"kLGAutoPkgUndefinedVerbDescription" = "AutoPkgr encountered an error";
-
-// recipe verbs
-"kLGAutoPkgRunDescription" = "Error running recipes";
-"kLGAutoPkgRecipeListDescription" = "Error encountered listing recipes";
-"kLGAutoPkgMakeOverrideDescription" = "Error creating OverrideDescription file";
-"kLGAutoPkgSearchDescription" = "Error encountered searching for recipe";
-
-// repo verbs
-"kLGAutoPkgRepoAddDescription" = "Error adding repo";
-"kLGAutoPkgRepoDeleteDescription" = "Error removing repo";
-"kLGAutoPkgRepoUpdateDescription" = "Error updating repo";
-"kLGAutoPkgRepoListDescription" = "Error encountered listing repos";
-
-// other verbs
-"kLGAutoPkgVersionDescription" = "Error getting AutoPkg version";
-
 
 /**
  *  AutoPkgr related AutoPkgr HTTP requests

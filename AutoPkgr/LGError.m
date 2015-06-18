@@ -23,6 +23,8 @@
 #import "LGConstants.h"
 #import "LGLogger.h"
 
+static NSString *const kLGLocalizableErrorTable = @"LocalizableError";
+
 static NSDictionary *userInfoFromCode(LGErrorCodes code)
 {
     NSString *localizedBaseString;
@@ -77,12 +79,14 @@ static NSDictionary *userInfoFromCode(LGErrorCodes code)
     }
 
     // Setup the localized description
-    message = NSLocalizedString([localizedBaseString stringByAppendingString:@"Description"],
-                                @"NSLocalizedDescriptionKey");
+    message = NSLocalizedStringFromTable([localizedBaseString stringByAppendingString:@"Description"],
+                                         kLGLocalizableErrorTable,
+                                         @"NSLocalizedDescriptionKey");
 
     // Setup the localized recovery suggestion
-    suggestion = NSLocalizedString([localizedBaseString stringByAppendingString:@"Suggestion"],
-                                   @"NSLocalizedRecoverySuggestionErrorKey");
+    suggestion = NSLocalizedStringFromTable([localizedBaseString stringByAppendingString:@"Suggestion"],
+                                            kLGLocalizableErrorTable,
+                                            @"NSLocalizedRecoverySuggestionErrorKey");
 
     return @{
         NSLocalizedDescriptionKey : message,
@@ -128,12 +132,16 @@ static NSDictionary *userInfoFromHTTPResponse(NSHTTPURLResponse *response)
     }
 
     // Setup the localized description
-    message = NSLocalizedString([localizedBaseString stringByAppendingString:@"Description"],
-                                @"NSLocalizedDescriptionKey");
+    message = NSLocalizedStringFromTable([localizedBaseString
+                                             stringByAppendingString:@"Description"],
+                                         kLGLocalizableErrorTable,
+                                         @"NSLocalizedDescriptionKey");
 
     // Setup the localized recovery suggestion
-    suggestion = NSLocalizedString([localizedBaseString stringByAppendingString:@"Suggestion"],
-                                   @"NSLocalizedRecoverySuggestionErrorKey");
+    suggestion = NSLocalizedStringFromTable([localizedBaseString
+                                                stringByAppendingString:@"Suggestion"],
+                                            kLGLocalizableErrorTable,
+                                            @"NSLocalizedRecoverySuggestionErrorKey");
 
     return @{
         NSLocalizedDescriptionKey : message,
@@ -241,6 +249,7 @@ static NSDictionary *userInfoFromHTTPResponse(NSHTTPURLResponse *response)
         error = [NSError errorWithDomain:kLGApplicationName
                                     code:response.statusCode
                                 userInfo:userInfo];
+
         DLog(@"Error [%ld]: %@ \n %@", code, userInfo[NSLocalizedDescriptionKey], userInfo[NSLocalizedRecoverySuggestionErrorKey]);
     }
     return error;
