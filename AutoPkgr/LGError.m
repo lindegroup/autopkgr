@@ -243,12 +243,14 @@ static NSDictionary *userInfoFromHTTPResponse(NSHTTPURLResponse *response)
 
 + (void)presentErrorWithCode:(LGErrorCodes)code window:(NSWindow *)window delegate:(id)sender didPresentSelector:(SEL)selector
 {
-    NSError *error = [[self class] errorWithCode:code];
-    [NSApp presentError:error
-            modalForWindow:window
-                  delegate:sender
-        didPresentSelector:selector
-               contextInfo:NULL];
+    NSError *error = nil;
+    if ((error = [[self class] errorWithCode:code])) {
+        [NSApp presentError:error
+             modalForWindow:window
+                   delegate:sender
+         didPresentSelector:selector
+                contextInfo:NULL];
+    }
 }
 #endif
 

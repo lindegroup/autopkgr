@@ -60,7 +60,7 @@
 
 - (NSString *)tabLabel
 {
-    return @"Schedule";
+    return NSLocalizedString(@"Schedule", @"Tab label");
 }
 
 #pragma mark - Accessors
@@ -128,13 +128,13 @@
         if ([scheduleOrInterval dictionary].count == 2) {
             [_scheduleTypeMatrix selectCellWithTag:1];
             [_dailyHourPopupBT selectItemWithTag:[(AHLaunchJobSchedule *)scheduleOrInterval hour]];
-            menuTitleString = [NSString stringWithFormat:@"Run AutoPkg Daily at %@", _dailyHourPopupBT.selectedItem.title];
+            menuTitleString = [NSString stringWithFormat:NSLocalizedString(@"Run AutoPkg Daily at %@", nil), _dailyHourPopupBT.selectedItem.title];
 
         } else {
             [_scheduleTypeMatrix selectCellWithTag:2];
             [_weeklyHourPopupBT selectItemWithTag:[(AHLaunchJobSchedule *)scheduleOrInterval hour]];
             [_weeklyDayPopupBT selectItemWithTag:[(AHLaunchJobSchedule *)scheduleOrInterval weekday]];
-            menuTitleString = [NSString stringWithFormat:@"Run AutoPkg %@s at %@", _weeklyDayPopupBT.selectedItem.title, _weeklyHourPopupBT.selectedItem.title];
+            menuTitleString = [NSString stringWithFormat:NSLocalizedString(@"Run AutoPkg %@s at %@", nil), _weeklyDayPopupBT.selectedItem.title, _weeklyHourPopupBT.selectedItem.title];
         }
         _scheduleMenuItem.title = menuTitleString;
 
@@ -143,7 +143,7 @@
         [_scheduleTypeMatrix selectCellWithTag:0];
         _scheduleIntervalTF.stringValue = [scheduleOrInterval stringValue];
 
-        _scheduleMenuItem.title = [NSString stringWithFormat:@"Run AutoPkg Every %@ Hours", scheduleOrInterval];
+        _scheduleMenuItem.title = [NSString stringWithFormat:NSLocalizedString(@"Run AutoPkg Every %@ Hours", nil), scheduleOrInterval];
 
     } else if (scheduleOrInterval) {
         NSAssert(NO, @"The schedule is not correctly formatted and cannot be handled.");
@@ -183,7 +183,7 @@
         return [self updateIBOutletsWithSchedule:self.proposedSchedule];
     }
 
-    NSLog(@"%@ autopkg run schedule.", start ? @"Disabling" : @"Enabling");
+    NSLog(@"%@ autopkg run schedule.", start ? @"Enabling" : @"Disabling");
     [LGAutoPkgSchedule startAutoPkgSchedule:start scheduleOrInterval:self.proposedSchedule isForced:force reply:^(NSError *error) {
         [[NSOperationQueue mainQueue] addOperationWithBlock:^{
 
@@ -211,7 +211,8 @@
 {
 
     _cancelButton.hidden = NO;
-    [self.progressDelegate startProgressWithMessage:@"Updating AutoPkg recipe repos."];
+    [self.progressDelegate startProgressWithMessage:NSLocalizedString(@"Updating AutoPkg recipe repos.",
+                                                                      @"Progress panel message when updating repos.")];
 
     [_updateRepoNowButton setEnabled:NO];
     if (!_taskManager) {
@@ -235,7 +236,8 @@
     }
     _taskManager.progressDelegate = self.progressDelegate;
 
-    [self.progressDelegate startProgressWithMessage:@"Running selected AutoPkg recipes..."];
+    [self.progressDelegate startProgressWithMessage:NSLocalizedString(@"Running selected AutoPkg recipes...",
+                                                                      @"Progress panel message when running recipes.")];
 
     [self.taskManager runRecipeList:recipeList
                          updateRepo:NO

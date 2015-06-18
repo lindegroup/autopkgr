@@ -1,5 +1,51 @@
-﻿/* Prompt shown when user is required to authorize adding schedule */
+﻿/* No comment provided by engineer. */
+"%@ %@ installed." = "%1$@ %2$@ installed.";
+
+/* Status message when integration update is available. */
+"%@ %@ update now available." = "%1$@ %2$@ update now available.";
+
+/* alert informativeText when a folder can't be located */
+"%@ could not find the %@ folder located in %@. Please verify that this folder exists." = "%1$@ could not find the %2$@ folder located in %3$@. Please verify that this folder exists.";
+
+/* No comment provided by engineer. */
+"%@ could not find the Munki repository located in %@. Please verify that this folder exists." = "%1$@ could not find the Munki repository \
+                                                   located in %2$@. Please verify that this folder exists.";
+
+/* status message when not integration is not installed */
+"%@ not installed." = "%@ not installed.";
+
+/* No comment provided by engineer. */
+"%ld problems were found in the AutoPkg preference file" = "%ld problems were found in the AutoPkg preference file";
+
+/* No comment provided by engineer. */
+". It has been automatically removed from your recipe list in order to prevent recurring errors." = ". It has been automatically removed from your recipe list in order to prevent recurring errors.";
+
+/* No comment provided by engineer. */
+"[%@] Error occurred while running AutoPkg" = "[%@] Error occurred while running AutoPkg";
+
+/* No comment provided by engineer. */
+"[%@] failures occurred while running AutoPkg" = "[%@] failures occurred while running AutoPkg";
+
+/* No comment provided by engineer. */
+"[%@] New software available for testing" = "[%@] New software available for testing";
+
+/* Tab label */
+"Alerts & Notifications" = "Alerts & Notifications";
+
+/* No comment provided by engineer. */
+"Are you sure you want to remove the %@ recipe override? Any changes made to the file will be lost." = "Are you sure you want to remove the %@ recipe override? Any changes made to the file will be lost.";
+
+/* No comment provided by engineer. */
+"AutoPkg Run Error on: %@" = "AutoPkg Run Error on: %@";
+
+/* No comment provided by engineer. */
+"AutoPkgr could not repair the AutoPkg preference file. If the problem persists open an issue on the AutoPkgr GitHub page." = "AutoPkgr could not repair the AutoPkg preference file. If the problem persists open an issue on the AutoPkgr GitHub page.";
+
+/* Prompt shown when user is required to authorize adding schedule */
 "AutoPkgr is trying to add an autopkg run schedule. " = "AutoPkgr is trying to add an autopkg run schedule. ";
+
+/* No comment provided by engineer. */
+"AutoPkgr is trying to remove a recipe override." = "AutoPkgr is trying to remove a recipe override.";
 
 /* Prompt shown when user is required to authorize removing schedule */
 "AutoPkgr is trying to remove the autopkg run schedule. " = "AutoPkgr is trying to remove the autopkg run schedule. ";
@@ -14,16 +60,130 @@
 "AutoPkgr wants to remove the helper tool and associated files. " = "AutoPkgr wants to remove the helper tool and associated files. ";
 
 /* No comment provided by engineer. */
+"AutoPkgr was able to repair the AutoPkg preference file. No further action is required." = "AutoPkgr was able to repair the AutoPkg preference file. No further action is required.";
+
+/* No comment provided by engineer. */
 "AutoPkgr will now quit." = "AutoPkgr will now quit.";
 
+/* No comment provided by engineer. */
+"Cancel AutoPkg Run" = "Cancel AutoPkg Run";
+
+/* alert message when a folder is not located */
+"Cannot find the %@ folder." = "Cannot find the %@ folder.";
+
+/* No comment provided by engineer. */
+"Cannot find the Munki repository." = "Cannot find the Munki repository.";
+
+/* No comment provided by engineer. */
+"checking status" = "checking status";
+
+/* No comment provided by engineer. */
+"Choose an editor for AutoPkgr recipe overrides" = "Choose an editor for AutoPkgr recipe overrides";
+
+/* NSUserNotification posted after test email is complete. */
+"Email test completed." = "Email test completed.";
+
+/* Tab label */
+"Folders & Integration" = "Folders & Integration";
+
 /* message presented to user with info about generating GitHub api token */
-"helpInfoAutoPkgAPIToken" = "helpInfoAutoPkgAPIToken";
+"helpInfoAutoPkgAPIToken" = "Creating a GitHub API token will increase your per hour search limit from 60 to 5000. The token has only a 'public' scope, meaning it cannot be used to retrieve personal information from your account, or push to any repos you may have access to. You can verify this token within your profile page at \n\n%1$@\n\nYou can revoke this token at any time. It will be stored in your user's home folder at %2$@. \n\nFor more information on GitHub's oAuth tokens visit developer.github.com";
+
+/* Tab label */
+"Install" = "Install";
+
+/* No comment provided by engineer. */
+"Last AutoPkg Run: %@" = "Last AutoPkg Run: %@";
+
+/* No comment provided by engineer. */
+"Never by AutoPkgr" = "Never by AutoPkgr";
+
+/* No comment provided by engineer. */
+"New software available for testing" = "New software available for testing";
+
+/* No comment provided by engineer. */
+"Nothing new to report." = "Nothing new to report.";
+
+/* No comment provided by engineer. */
+"Remove AutoPkgr's components." = "Remove AutoPkgr's components.";
+
+/* No comment provided by engineer. */
+"Removed AutoPkgr associated files." = "Removed AutoPkgr associated files.";
+
+/* No comment provided by engineer. */
+"Removing default AutoPkg repo for %@" = "Removing default AutoPkg repo for %@";
 
 /* The button title when removing the GitHub API Token */
 "Removing Token" = "Removing Token";
 
+/* Tab label */
+"Repos & Recipes" = "Repos & Recipes";
+
 /* The button title when requesting a GitHub API Token */
 "Requesting Token" = "Requesting Token";
+
+/* No comment provided by engineer. */
+"Requirements for %@ are not met." = "Requirements for %@ are not met.";
+
+/* No comment provided by engineer. */
+"Run AutoPkg %@s at %@" = "Run AutoPkg %1$@s at %2$@";
+
+/* No comment provided by engineer. */
+"Run AutoPkg Daily at %@" = "Run AutoPkg Daily at %@";
+
+/* No comment provided by engineer. */
+"Run AutoPkg Every %@ Hours" = "Run AutoPkg Every %@ Hours";
+
+/* No comment provided by engineer. */
+"Run AutoPkg Now" = "Run AutoPkg Now";
+
+/* Progress panel message when running recipes. */
+"Running selected AutoPkg recipes..." = "Running selected AutoPkg recipes...";
+
+/* Tab label */
+"Schedule" = "Schedule";
+
+/* NSUserNotification text when email is successfully sent. */
+"Successfully sent test email." = "Successfully sent test email.";
+
+/* No comment provided by engineer. */
+"Test notification from AutoPkgr" = "Test notification from AutoPkgr";
+
+/* No comment provided by engineer. */
+"Thanks for using AutoPkgr" = "Thanks for using AutoPkgr";
+
+/* No comment provided by engineer. */
+"The following errors occurred:" = "The following errors occurred:";
+
+/* No comment provided by engineer. */
+"The following failures occurred." = "The following failures occurred.";
+
+/* NSUserNotification text when email fails. */
+"There was a problem sending test email. Double-check the SMTP settings you specified in AutoPkgr." = "There was a problem sending test email. Double-check the SMTP settings you specified in AutoPkgr.";
+
+/* No comment provided by engineer. */
+"This includes the helper tool, launchd schedule, and other launchd plist. You can safely remove it from your Applications folder." = "This includes the helper tool, launchd schedule, and other launchd plist. You can safely remove it from your Applications folder.";
+
+/* html test email body */
+"This is a test notification from <strong>AutoPkgr</strong>." = "This is a test notification from <strong>AutoPkgr</strong>.";
+
+/* No comment provided by engineer. */
+"This report was generated by %@" = "This report was generated by %@";
+
+/* message when integration begins uninstalling */
+"Uninstalling %@..." = "Uninstalling %@...";
+
+/* No comment provided by engineer. */
+"Update to helper components available" = "Update to helper components available";
+
+/* No comment provided by engineer. */
+"Updates for integrated components:" = "Updates for integrated components:";
+
+/* Progress panel message when updating repos. */
+"Updating AutoPkg recipe repos." = "Updating AutoPkg recipe repos.";
+
+/* No comment provided by engineer. */
+"Would you like to give the override a unique name?" = "Would you like to give the override a unique name?";
 
 /* No comment provided by engineer. */
 "You've chosen not to upgrade your recipe list. Either relaunch AutoPkgr to restart the migration process, or downgrade to an older 1.1.x AutoPkgr release." = "You've chosen not to upgrade your recipe list. Either relaunch AutoPkgr to restart the migration process, or downgrade to an older 1.1.x AutoPkgr release.";

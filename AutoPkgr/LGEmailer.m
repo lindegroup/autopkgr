@@ -128,8 +128,8 @@
 {
     // Send a test email notification when the user
     // clicks "Send Test Email"
-    NSString *subject = @"Test notification from AutoPkgr";
-    NSString *message = @"This is a test notification from <strong>AutoPkgr</strong>.";
+    NSString *subject = NSLocalizedString(@"Test notification from AutoPkgr", nil);
+    NSString *message = NSLocalizedString(@"This is a test notification from <strong>AutoPkgr</strong>.", @"html test email body");
     // Send the email
     [self sendEmailNotification:subject message:message];
 }

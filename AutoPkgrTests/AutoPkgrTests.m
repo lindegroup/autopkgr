@@ -471,6 +471,15 @@
     [[NSWorkspace sharedWorkspace] openFile:htmlFile];
 }
 
+- (void)testErrorAlerts {
+    for (int i = kLGErrorSuccess; i < kLGErrorAuthChallenge; i++) {
+        NSError *error = [LGError errorWithCode:i];
+        NSLog(@"%@", error.localizedDescription);
+        NSLog(@"%@", error.localizedRecoverySuggestion);
+        i++;
+    }
+}
+
 #pragma mark - Progress delegate
 - (void)startProgressWithMessage:(NSString *)message{}
 - (void)stopProgress:(NSError *)error{}

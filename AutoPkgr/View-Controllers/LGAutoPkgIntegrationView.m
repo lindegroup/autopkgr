@@ -10,7 +10,7 @@
 #import "LGAutoPkgTask.h"
 #import "AHHelpPopover.h"
 
-static NSString *const kLGTokenRemoveButonTitle = @"Remove API Token";
+static NSString *const kLGTokenRevokeButonTitle = @"Revoke API Token";
 static NSString *const kLGTokenGenerateButonTitle = @"Generate API Token";
 
 @interface LGAutoPkgIntegrationView ()
@@ -31,7 +31,7 @@ static NSString *const kLGTokenGenerateButonTitle = @"Generate API Token";
 - (void)awakeFromNib
 {
     if ([LGAutoPkgTask apiTokenFileExists:nil]) {
-        _generateAPITokenBT.title = kLGTokenRemoveButonTitle;
+        _generateAPITokenBT.title = kLGTokenRevokeButonTitle;
         _generateAPITokenBT.action = @selector(deleteAPIToken:);
     }
 }
@@ -47,7 +47,7 @@ static NSString *const kLGTokenGenerateButonTitle = @"Generate API Token";
             [NSApp presentError:error];
             sender.title = kLGTokenGenerateButonTitle;
         } else {
-            sender.title = kLGTokenRemoveButonTitle;
+            sender.title = kLGTokenRevokeButonTitle;
             sender.action = @selector(deleteAPIToken:);
         }
     }];
@@ -62,7 +62,7 @@ static NSString *const kLGTokenGenerateButonTitle = @"Generate API Token";
         sender.enabled = YES;
         if (error) {
             [NSApp presentError:error];
-            sender.title = kLGTokenRemoveButonTitle;
+            sender.title = kLGTokenRevokeButonTitle;
         } else {
             sender.title = kLGTokenGenerateButonTitle;
             sender.action = @selector(generateAPIToken:);

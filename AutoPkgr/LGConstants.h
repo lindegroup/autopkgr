@@ -29,16 +29,6 @@ extern NSString *const kLGAutoPkgrLaunchDaemonPlist;
 #pragma mark - String Tables
 extern NSString *const kLGLocalizedHelpTable;
 
-#pragma mark - Message Strings / Labels
-extern NSString *const kLGGitInstalledLabel;
-extern NSString *const kLGGitNotInstalledLabel;
-extern NSString *const kLGAutoPkgInstalledLabel;
-extern NSString *const kLGAutoPkgNotInstalledLabel;
-extern NSString *const kLGAutoPkgUpdateAvailableLabel;
-extern NSString *const kLGJSSImporterInstalledLabel;
-extern NSString *const kLGJSSImporterNotInstalledLabel;
-extern NSString *const kLGJSSImporterUpdateAvailableLabel;
-
 #pragma mark - Static URLs
 extern NSString *const kLGAutoPkgReleasesJSONURL;
 extern NSString *const kLGGitReleasesJSONURL;

@@ -56,7 +56,7 @@
 
 - (NSString *)tabLabel
 {
-    return @"Repos & Recipes";
+    return NSLocalizedString(@"Repos & Recipes", @"Tab label");
 }
 
 - (IBAction)addAutoPkgRepoURL:(id)sender

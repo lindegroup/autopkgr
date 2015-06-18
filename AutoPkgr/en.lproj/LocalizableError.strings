@@ -119,7 +119,7 @@
 "kLGHTTPErrorUnauthorizedDescription" = "User authorization failed.";
 
 /* Unauthorized 401 (NSLocalizedRecoverySuggestionErrorKey) */
-"kLGHTTPErrorUnauthorizedSuggestion" = "Please make you have entered the correct username and password for the connection.";
+"kLGHTTPErrorUnauthorizedSuggestion" = "Please confirm you have entered the correct username and password for the connection.";
 
 /* Unknown */
 "kLGHTTPErrorUnknownDescription" = "There was a problem connecting to the server";

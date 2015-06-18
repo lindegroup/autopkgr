@@ -199,8 +199,12 @@
         BOOL rc = [LGDefaults fixRelativePathsInAutoPkgDefaults:&error neededFixing:&neededFixing];
         if (neededFixing > 0) {
             NSAlert *alert = [NSAlert new];
-            alert.messageText = [NSString stringWithFormat:@"%ld problems were found in the AutoPkg preference file", neededFixing];
-            alert.informativeText = rc ? @"AutoPkgr was able to repair the AutoPkg preference file. No further action is required." : @"AutoPkgr could not repair the AutoPkg preference file. If the problem persists open an issue on the AutoPkgr GitHub page.";
+            alert.messageText = [NSString stringWithFormat:NSLocalizedString(@"%ld problems were found in the AutoPkg preference file", nil), neededFixing];
+
+            alert.informativeText = rc ?
+            NSLocalizedString(@"AutoPkgr was able to repair the AutoPkg preference file. No further action is required.", nil) :
+            NSLocalizedString(@"AutoPkgr could not repair the AutoPkg preference file. If the problem persists open an issue on the AutoPkgr GitHub page.", nil);
+
             [alert beginSheetModalForWindow:self.window
                               modalDelegate:self
                              didEndSelector:nil

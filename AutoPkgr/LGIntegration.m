@@ -231,11 +231,12 @@ void subclassMustConformToProtocol(id className)
 }
 
 #pragma mark - Super implementation
-- (void)customInstallActions:(void(^)(NSError *error))reply
+- (void)customInstallActions:(void (^)(NSError *error))reply
 {
     reply(nil);
 }
-- (void)customUninstallActions:(void(^)(NSError *error))reply{
+- (void)customUninstallActions:(void (^)(NSError *error))reply
+{
     reply(nil);
 }
 
@@ -352,7 +353,7 @@ void subclassMustConformToProtocol(id className)
         [sender setEnabled:NO];
     }
 
-    void (^complete)(NSError *) = ^void(NSError *error){
+    void (^complete)(NSError *) = ^void(NSError *error) {
         [self customInstallActions:^(NSError *customError) {
             NSError *endError = error;
             if (customError && (endError == nil)) {
@@ -423,7 +424,7 @@ void subclassMustConformToProtocol(id className)
 #pragma mark - Uninstall
 - (void)uninstall:(id)sender
 {
-    void (^complete)(NSError *) = ^void(NSError *error){
+    void (^complete)(NSError *) = ^void(NSError *error) {
         [self customUninstallActions:^(NSError *customError) {
             NSError *endError = error;
             if (customError && !endError) {
@@ -438,7 +439,7 @@ void subclassMustConformToProtocol(id className)
         if ([LGAutoPkgTask version]) {
             LGAutoPkgTask *task = [LGAutoPkgTask repoDeleteTask:defaultRepo];
 
-            [self.progressDelegate startProgressWithMessage:[NSString stringWithFormat:@"Removing default AutoPkg repo for %@", self.name]];
+            [self.progressDelegate startProgressWithMessage:quick_formatString(NSLocalizedString(@"Removing default AutoPkg repo for %@", nil), self.name)];
 
             if (self.progressDelegate) {
                 task.progressDelegate = self.progressDelegate;
@@ -457,7 +458,10 @@ void subclassMustConformToProtocol(id className)
         if (typeFlags & kLGIntegrationTypeInstalledPackage) {
             LGUninstaller *uninstaller = [[LGUninstaller alloc] init];
 
-            NSString *message = [NSString stringWithFormat:@"Uninstalling %@...", [[self class] name]];
+            NSString *message = quick_formatString(NSLocalizedString(@"Uninstalling %@...",
+                                                                     @"message when integration begins uninstalling"),
+                                                   self.name);
+
             [self.progressDelegate startProgressWithMessage:message];
 
             if (self.progressDelegate) {
@@ -546,7 +550,7 @@ void subclassMustConformToProtocol(id className)
 
 + (NSError *)requirementsError:(NSString *)reason
 {
-    NSString *description = [NSString stringWithFormat:@"Requirements for %@ are not met.", [[self class] name]];
+    NSString *description = quick_formatString(NSLocalizedString(@"Requirements for %@ are not met.", nil), [[self class] name]);
     NSDictionary *userInfo = @{
         NSLocalizedDescriptionKey : description,
         NSLocalizedRecoverySuggestionErrorKey : reason ?: @"",
@@ -643,14 +647,16 @@ void subclassMustConformToProtocol(id className)
     NSString *statusString = @"";
     switch (self.status) {
     case kLGIntegrationNotInstalled:
-        statusString = [NSString stringWithFormat:@"%@ not installed.", _name];
+        statusString = quick_formatString(NSLocalizedString(@"%@ not installed.",
+                                                            @"status message when not integration is not installed"), _name);
         break;
     case kLGIntegrationUpdateAvailable:
-        statusString = [NSString stringWithFormat:@"%@ %@ update now available.", _name, self.remoteVersion];
+        statusString = quick_formatString(NSLocalizedString(@"%@ %@ update now available.",
+                                                            @"Status message when integration update is available."), _name, self.remoteVersion);
         break;
     case kLGIntegrationUpToDate:
     default:
-        statusString = [NSString stringWithFormat:@"%@ %@ installed.", _name, self.installedVersion];
+        statusString = quick_formatString(NSLocalizedString(@"%@ %@ installed.", nil), _name, self.installedVersion);
         break;
     }
     return statusString;

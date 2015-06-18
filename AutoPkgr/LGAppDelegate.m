@@ -216,7 +216,7 @@
 {
     DLog(@"Received 'Check Now' menulet command.");
 
-    [self startProgressWithMessage:@"Running selected AutoPkg recipes..."];
+    [self startProgressWithMessage:NSLocalizedString(@"Running selected AutoPkg recipes...", nil)];
     NSString *recipeList = [LGAutoPkgRecipe defaultRecipeList];
     BOOL updateRepos = [[LGDefaults standardUserDefaults] checkForRepoUpdatesAutomaticallyEnabled];
 
@@ -278,14 +278,18 @@
         }
     }
 
-    if (![AHLaunchCtl uninstallHelper:kLGAutoPkgrHelperToolName prompt:@"Remove AutoPkgr's components." error:&error]) {
+    if (![AHLaunchCtl uninstallHelper:kLGAutoPkgrHelperToolName prompt:NSLocalizedString(@"Remove AutoPkgr's components.", nil) error:&error]) {
         if (error.code != errAuthorizationCanceled) {
             [[NSOperationQueue mainQueue] addOperationWithBlock:^{
                 [NSApp presentError:error];
             }];
         }
     } else {
-        NSAlert *alert = [NSAlert alertWithMessageText:@"Removed AutoPkgr associated files." defaultButton:@"Thanks for using AutoPkgr" alternateButton:nil otherButton:nil informativeTextWithFormat:@"This includes the helper tool, launchd schedule, and other launchd plist. You can safely remove it from your Applications folder."];
+        NSString *alertText = NSLocalizedString(@"Removed AutoPkgr associated files.", nil);
+        NSString *defaultButton = NSLocalizedString(@"Thanks for using AutoPkgr", nil);
+        NSString *infoText = NSLocalizedString(@"This includes the helper tool, launchd schedule, and other launchd plist. You can safely remove it from your Applications folder.", nil);
+
+        NSAlert *alert = [NSAlert alertWithMessageText:alertText defaultButton:defaultButton alternateButton:nil otherButton:nil informativeTextWithFormat:@"%@", infoText];
         [alert runModal];
         [[NSApplication sharedApplication] terminate:self];
     }
@@ -301,7 +305,7 @@
             [_configurationWindowController startProgressWithMessage:message];
         }
 
-        [_runUpdatesNowMenuItem setTitle:@"Cancel AutoPkg Run"];
+        [_runUpdatesNowMenuItem setTitle:NSLocalizedString(@"Cancel AutoPkg Run", nil)];
         [_runUpdatesNowMenuItem setAction:@selector(cancelRunFromMenu:)];
 
         NSMenuItem *runStatus = [self.statusMenu itemAtIndex:0];
@@ -317,19 +321,22 @@
         }
 
         // Switch the title and selector back for run controller
-        [_runUpdatesNowMenuItem setTitle:@"Run AutoPkg Now"];
+        [_runUpdatesNowMenuItem setTitle:NSLocalizedString(@"Run AutoPkg Now", nil)];
         [_runUpdatesNowMenuItem setAction:@selector(checkNowFromMenu:)];
 
         // Set the last run date of the menu item.
         NSString *lastRunDate = [[LGDefaults standardUserDefaults] LastAutoPkgRun];
         NSString *status;
 
+        NSString *neverRun = NSLocalizedString(@"Never by AutoPkgr", nil);
         if (error) {
             self.statusItem.image = [NSImage imageNamed:@"autopkgr_error.png"];
-            status = [NSString stringWithFormat:@"AutoPkg Run Error on: %@",lastRunDate ?: @"Never by AutoPkgr"];
+            status = [NSString stringWithFormat:NSLocalizedString(@"AutoPkg Run Error on: %@", nil), lastRunDate
+                      ?: neverRun];
         } else {
             self.statusItem.image = [NSImage imageNamed:@"autopkgr.png"];
-            status = [NSString stringWithFormat:@"Last AutoPkg Run: %@",lastRunDate ?: @"Never by AutoPkgr"];
+            status = [NSString stringWithFormat:NSLocalizedString(@"Last AutoPkg Run: %@", nil), lastRunDate
+                      ?: neverRun];
         }
 
         [_progressMenuItem setTitle:status];
@@ -367,7 +374,7 @@
 
         NSString *date = [LGDefaults formattedDate:dict[@"LastAutoPkgRun"]];
         if (date) {
-            NSString *status = [NSString stringWithFormat:@"Last AutoPkg Run: %@", date ?: @"Never by AutoPkgr"];
+            NSString *status = [NSString stringWithFormat:NSLocalizedString(@"Last AutoPkg Run: %@", nil), date ?: NSLocalizedString(@"Never by AutoPkgr", nil)];
             _progressMenuItem.title = status;
         }
     }

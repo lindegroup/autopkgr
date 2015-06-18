@@ -13,7 +13,7 @@ NSString *quick_formatString(NSString *format, ...){
     if (format) {
         va_list args;
         va_start(args, format);
-        string = [NSString stringWithFormat:format, args];
+        string = [[NSString alloc] initWithFormat:format arguments:args];
         va_end(args);
     }
     return string ?: format;

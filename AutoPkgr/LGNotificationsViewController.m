@@ -52,7 +52,7 @@
 
 - (NSString *)tabLabel
 {
-    return @"Alerts & Notifications";
+    return NSLocalizedString(@"Alerts & Notifications", @"Tab label");
 }
 
 #pragma mark - Keychain Actions

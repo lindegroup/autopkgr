@@ -18,7 +18,6 @@
 //  limitations under the License.
 //
 
-
 #import "LGMunkiIntegrationView.h"
 #import "LGAutoPkgr.h"
 
@@ -36,12 +35,14 @@
 
 @implementation LGMunkiIntegrationView
 
-- (void)viewDidLoad {
+- (void)viewDidLoad
+{
     [super viewDidLoad];
     // Do view setup here.
 }
 
-- (void)awakeFromNib {
+- (void)awakeFromNib
+{
     BOOL isDir;
     NSString *munkiRepo = [[LGDefaults standardUserDefaults] munkiRepo];
 
@@ -85,8 +86,13 @@
         NSLog(@"%@ does not exist.", munkiRepoFolder);
         NSAlert *alert = [[NSAlert alloc] init];
         [alert addButtonWithTitle:@"OK"];
-        [alert setMessageText:@"Cannot find the Munki repository."];
-        [alert setInformativeText:[NSString stringWithFormat:@"%@ could not find the Munki repository located in %@. Please verify that this folder exists.", kLGApplicationName, munkiRepoFolder]];
+
+        [alert setMessageText:NSLocalizedString(@"Cannot find the Munki repository.", nil)];
+
+        alert.informativeText = quick_formatString(NSLocalizedString(@"%@ could not find the Munki repository located in %@. Please verify that this folder exists.", nil),
+                                                   kLGApplicationName,
+                                                   munkiRepoFolder);
+
         [alert setAlertStyle:NSWarningAlertStyle];
         [alert beginSheetModalForWindow:nil
                           modalDelegate:self
