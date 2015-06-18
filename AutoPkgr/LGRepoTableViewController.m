@@ -166,19 +166,31 @@
 {
     _updateRepoInternally = YES;
 
+    /* The button's tag is set to the row in 
+     * the tableView:viewForTableColumn:row: */
+    NSInteger row = sender.tag;
     BOOL add = sender.state;
-    LGAutoPkgRepo *repo = _searchedRepos[sender.tag];
+
+    LGAutoPkgRepo *repo = _searchedRepos[row];
+
+    void (^repoModified)(NSError *error) = ^void(NSError *error) {
+        [_progressDelegate stopProgress:error];
+        if (error) {
+            sender.state = !sender.state;
+        }
+    };
 
     NSString *message = [NSString stringWithFormat:@"%@ %@", add ? @"Adding" : @"Removing", repo.cloneURL];
+
     NSLog(@"%@", message);
     [_progressDelegate startProgressWithMessage:message];
     if (add) {
         [repo install:^(NSError *error) {
-            [_progressDelegate stopProgress:error];
+            repoModified(error);
         }];
     } else {
         [repo remove:^(NSError *error) {
-            [_progressDelegate stopProgress:error];
+            repoModified(error);
         }];
     }
 }
@@ -188,7 +200,9 @@
     _updateRepoInternally = YES;
     if ([sender isKindOfClass:[NSMenuItem class]]) {
         LGAutoPkgRepo *repo = [sender representedObject];
-        [_progressDelegate startProgressWithMessage:@"Updating"];
+        NSString *message = [NSString stringWithFormat:@"Updating %@", repo.cloneURL];
+
+        [_progressDelegate startProgressWithMessage:message];
         [repo updateRepo:^(NSError *error) {
             [_progressDelegate stopProgress:error];
         }];
@@ -236,6 +250,16 @@
         [menu addItem:commitsItem];
     }
 
+    if (repo.cloneURL) {
+        NSMenuItem *clipboardItem = [[NSMenuItem alloc] initWithTitle:@"Copy url to clipboard"
+                                                               action:@selector(copyToPasteboard:)
+                                                        keyEquivalent:@""];
+
+        clipboardItem.representedObject = repo.cloneURL.absoluteString;
+        clipboardItem.target = self;
+        [menu addItem:clipboardItem];
+    }
+    
     if (repo.path) {
         NSMenuItem *clipboardItem = [[NSMenuItem alloc] initWithTitle:@"Copy path to clipboard"
                                                                action:@selector(copyToPasteboard:)
@@ -244,6 +268,8 @@
         clipboardItem.target = self;
         [menu addItem:clipboardItem];
     }
+
+
 
     return menu;
 }
@@ -256,6 +282,7 @@
         [[NSPasteboard generalPasteboard] setString:string forType:NSStringPboardType];
     }
 }
+
 #pragma mark - Search Panel
 - (IBAction)openSearchPanel:(id)sender
 {
