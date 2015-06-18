@@ -36,14 +36,6 @@ typedef NS_ENUM(NSInteger, LGErrorCodes) {
     kLGErrorMultipleRunsOfAutopkg,
     /** Error when trying to enable a recipe when the Parent Recipe is not avaliable */
     kLGErrorMissingParentRecipe,
-    /** Error installing Git */
-    kLGErrorInstallGit,
-    /** Error installing/updating AutoPkg */
-    kLGErrorInstallAutoPkg,
-    /** Error installing/updating AutoPkgr */
-    kLGErrorInstallAutoPkgr,
-    /** Error installing JSSImporter */
-    kLGErrorInstallJSSImporter,
     /** Generic error installing */
     kLGErrorInstallingGeneric,
     /** Error serializing xml object */

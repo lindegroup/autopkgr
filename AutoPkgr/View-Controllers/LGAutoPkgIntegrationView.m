@@ -77,7 +77,8 @@ static NSString *const kLGTokenGenerateButonTitle = @"Generate API Token";
 
     NSString *settingsLink = @"https://github.com/settings/tokens";
 
-    NSString *message = NSLocalizedStringFromTable(@"helpInfoAutoPkgAPIToken", kLGLocalizedHelpTable, @"message presented to user with info about generating GitHub api token");
+    NSString *message = NSLocalizedString(@"helpInfoAutoPkgAPIToken",
+                                    @"message presented to user with info about generating GitHub api token");
 
     NSMutableAttributedString *attributedHelpText = [NSString stringWithFormat:message, settingsLink, tokenFile].attributed_mutableCopy;
 

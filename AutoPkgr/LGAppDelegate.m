@@ -90,8 +90,17 @@
     }];
 
     if (![LGAutoPkgRecipe migrateToIdentifiers:nil]) {
-        [NSApp presentError:[NSError errorWithDomain:kLGApplicationName code:-1 userInfo:@{ NSLocalizedDescriptionKey : @"AutoPkgr will now quit.",
-                                                                                            NSLocalizedRecoverySuggestionErrorKey : @"You've chosen not to upgrade your recipe list. Either relaunch AutoPkgr to restart the migration process, or downgrade to an older 1.1.x AutoPkgr release." }]];
+        NSString *message = NSLocalizedString(@"AutoPkgr will now quit.", nil);
+        NSString *suggestion = NSLocalizedString(@"You've chosen not to upgrade your recipe list. Either relaunch AutoPkgr to restart the migration process, or downgrade to an older 1.1.x AutoPkgr release.", nil);
+
+        [NSApp presentError:
+         [NSError errorWithDomain:kLGApplicationName
+                             code:-1
+                         userInfo:@{
+                                    NSLocalizedDescriptionKey : message,
+                                    NSLocalizedRecoverySuggestionErrorKey : suggestion
+                                    }]];
+
         [[NSApplication sharedApplication] terminate:self];
     }
 

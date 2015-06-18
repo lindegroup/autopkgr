@@ -319,11 +319,15 @@ typedef void (^AutoPkgReplyErrorBlock)(NSError *error);
         }
         @catch (NSException *exception)
         {
-            NSDictionary *userInfo = @{ NSLocalizedDescriptionKey : @"A fatal error occurred when trying to run AutoPkg",
-                                        NSLocalizedRecoverySuggestionErrorKey : @"If you repeatedly see this message please report it. The full scope of the error is in the system.log, make sure to include that in the report"
-            };
+            NSString *message = LGAutoPkgLocalizedString(@"A fatal error occurred when trying to run AutoPkg", nil);
+
+            NSString *suggestion = LGAutoPkgLocalizedString( @"If you repeatedly see this message please report it. The full scope of the error is in the system.log, make sure to include that in the report", nil);
+
+            NSDictionary *userInfo = @{ NSLocalizedDescriptionKey : message,
+                                        NSLocalizedRecoverySuggestionErrorKey : suggestion};
 
             NSLog(@"[AutoPkgr EXCEPTION] %@ %@", exception.reason, exception.userInfo);
+
             self.error = [NSError errorWithDomain:kLGApplicationName code:-9 userInfo:userInfo];
             [self didCompleteTaskExecution];
         }
@@ -795,7 +799,16 @@ typedef void (^AutoPkgReplyErrorBlock)(NSError *error);
 {
     /* Eventually there may be more ways to interact, for now it's only to search github for a recipe's repo */
     [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-        NSAlert *alert = [NSAlert alertWithMessageText:@"Could not find the parent recipe" defaultButton:@"Yes" alternateButton:@"No" otherButton:nil informativeTextWithFormat:@"%@", [message stringByReplacingOccurrencesOfString:@"[y/n]:" withString:@""]];
+        NSString *message = LGAutoPkgLocalizedString(@"Could not find the parent recipe"
+                                                     , nil);
+
+        NSString *cleanedMessage = [message stringByReplacingOccurrencesOfString:@"[y/n]:"
+                                                                      withString:@""];
+        NSAlert *alert = [NSAlert alertWithMessageText:message
+                                         defaultButton:@"Yes"
+                                       alternateButton:@"No"
+                                           otherButton:nil
+                             informativeTextWithFormat:@"%@", cleanedMessage];
 
         NSString *results;
         // Don't forget the newline char!
@@ -1041,7 +1054,8 @@ typedef void (^AutoPkgReplyErrorBlock)(NSError *error);
 
     // Request Serializer
     manager.requestSerializer = [AFJSONRequestSerializer serializer];
-    [manager.requestSerializer setAuthorizationHeaderFieldWithUsername:username password:password];
+    [manager.requestSerializer setAuthorizationHeaderFieldWithUsername:username
+                                                              password:password];
 
     [manager GET:@"/authorizations" parameters:nil success:^(AFHTTPRequestOperation *operation, NSArray *responseObject) {
         // Get Auth ID
@@ -1059,6 +1073,8 @@ typedef void (^AutoPkgReplyErrorBlock)(NSError *error);
 
         if (autoPkgTokenDict) {
             NSString *delete = [NSString stringWithFormat:@"/authorizations/%@", autoPkgTokenDict[@"id"]];
+
+            /* Delete the token from the remote */
             [manager DELETE:delete parameters:@{} success:^(AFHTTPRequestOperation *operation, id responseObject) {
                 // remove the file
                 NSString *tokenFile = nil;
@@ -1071,10 +1087,13 @@ typedef void (^AutoPkgReplyErrorBlock)(NSError *error);
                 reply(operation.response ? [LGError errorWithResponse:operation.response] : error);
             }];
         } else {
+            NSString *message = LGAutoPkgLocalizedString(@"API Token not found.", nil);
+            NSString *suggestion =  LGAutoPkgLocalizedString(@"A GitHub API token matching the local one was not found on the remote. You may need to remove it manually. If you've just added the token, you may need to wait a minute to delete it.", nil);
+
             NSError *error = [NSError errorWithDomain:[[NSProcessInfo processInfo] processName]
                                                  code:-2
-                                             userInfo:@{NSLocalizedDescriptionKey : NSLocalizedString(@"API Token not found.", nil),
-                                                        NSLocalizedRecoverySuggestionErrorKey : NSLocalizedString(@"A GitHub API token matching the local one was not found on the remote. You may need to remove it manually. If you've just added the token, you may need to wait a minute to delete it.", nil)}];
+                                             userInfo:@{NSLocalizedDescriptionKey : message,
+                                                        NSLocalizedRecoverySuggestionErrorKey : suggestion}];
             reply(error);
         }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {

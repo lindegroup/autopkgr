@@ -1,0 +1,30 @@
+﻿/* Prompt shown when user is required to authorize adding schedule */
+"AutoPkgr is trying to add an autopkg run schedule. " = "AutoPkgr is trying to add an autopkg run schedule. ";
+
+/* Prompt shown when user is required to authorize removing schedule */
+"AutoPkgr is trying to remove the autopkg run schedule. " = "AutoPkgr is trying to remove the autopkg run schedule. ";
+
+/* prompt shown when user is required to authorize to uninstall a package */
+"AutoPkgr is trying to uninstall a package. " = "AutoPkgr is trying to uninstall a package. ";
+
+/* prompt shown when user is required to authorize to install a package */
+"AutoPkgr needs to run a package installer. " = "AutoPkgr needs to run a package installer. ";
+
+/* Prompt shown when user is required to authorize removing schedule */
+"AutoPkgr wants to remove the helper tool and associated files. " = "AutoPkgr wants to remove the helper tool and associated files. ";
+
+/* No comment provided by engineer. */
+"AutoPkgr will now quit." = "AutoPkgr will now quit.";
+
+/* message presented to user with info about generating GitHub api token */
+"helpInfoAutoPkgAPIToken" = "helpInfoAutoPkgAPIToken";
+
+/* The button title when removing the GitHub API Token */
+"Removing Token" = "Removing Token";
+
+/* The button title when requesting a GitHub API Token */
+"Requesting Token" = "Requesting Token";
+
+/* No comment provided by engineer. */
+"You've chosen not to upgrade your recipe list. Either relaunch AutoPkgr to restart the migration process, or downgrade to an older 1.1.x AutoPkgr release." = "You've chosen not to upgrade your recipe list. Either relaunch AutoPkgr to restart the migration process, or downgrade to an older 1.1.x AutoPkgr release.";
+
