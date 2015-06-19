@@ -89,7 +89,7 @@
 "kLGHTTPErrorBadRequestDescription" = "Bad Request";
 
 /* Bad Request (NSLocalizedRecoverySuggestionErrorKey) */
-"kLGHTTPErrorBadRequestSuggestion" = "The request to the server was not formatted correctly. Please check the infomation you supplied.";
+"kLGHTTPErrorBadRequestSuggestion" = "The request to the server was not formatted correctly. Please check the information you supplied.";
 
 /* Forbidden 403 */
 "kLGHTTPErrorForbiddenDescription" = "Access forbidden";

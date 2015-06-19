@@ -111,6 +111,8 @@
 		BE73CDC719E062AC00441443 /* NSString+cleaned.m in Sources */ = {isa = PBXBuildFile; fileRef = BE73CDC619E062AC00441443 /* NSString+cleaned.m */; };
 		BE7EF23B1B3350E4002037B1 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = BE7EF2391B3350E4002037B1 /* Localizable.strings */; };
 		BE7EF23C1B3350E4002037B1 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = BE7EF2391B3350E4002037B1 /* Localizable.strings */; };
+		BE7EF2431B3381A7002037B1 /* LocalizableHelpPopover.strings in Resources */ = {isa = PBXBuildFile; fileRef = BE7EF2461B3381A7002037B1 /* LocalizableHelpPopover.strings */; };
+		BE7EF2441B3381A7002037B1 /* LocalizableHelpPopover.strings in Resources */ = {isa = PBXBuildFile; fileRef = BE7EF2461B3381A7002037B1 /* LocalizableHelpPopover.strings */; };
 		BE81F2231B20EFF2007D16C4 /* LGAbsoluteManageIntegration.m in Sources */ = {isa = PBXBuildFile; fileRef = BE81F2221B20EFF2007D16C4 /* LGAbsoluteManageIntegration.m */; };
 		BE81F2241B20EFF2007D16C4 /* LGAbsoluteManageIntegration.m in Sources */ = {isa = PBXBuildFile; fileRef = BE81F2221B20EFF2007D16C4 /* LGAbsoluteManageIntegration.m */; };
 		BE81F22A1B2232ED007D16C4 /* LGJSSImporterIntegrationView.m in Sources */ = {isa = PBXBuildFile; fileRef = BE81F2281B2232ED007D16C4 /* LGJSSImporterIntegrationView.m */; };
@@ -394,6 +396,7 @@
 		BE73CDC519E062AC00441443 /* NSString+cleaned.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSString+cleaned.h"; path = "Custom Categories/NSString+cleaned.h"; sourceTree = "<group>"; };
 		BE73CDC619E062AC00441443 /* NSString+cleaned.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSString+cleaned.m"; path = "Custom Categories/NSString+cleaned.m"; sourceTree = "<group>"; };
 		BE7EF23A1B3350E4002037B1 /* en */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		BE7EF2451B3381A7002037B1 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/LocalizableHelpPopover.strings; sourceTree = "<group>"; };
 		BE81F2211B20EFDD007D16C4 /* LGAbsoluteManageIntegration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGAbsoluteManageIntegration.h; sourceTree = "<group>"; };
 		BE81F2221B20EFF2007D16C4 /* LGAbsoluteManageIntegration.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGAbsoluteManageIntegration.m; sourceTree = "<group>"; };
 		BE81F2271B2232ED007D16C4 /* LGJSSImporterIntegrationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LGJSSImporterIntegrationView.h; path = "View-Controllers/LGJSSImporterIntegrationView.h"; sourceTree = "<group>"; };
@@ -596,6 +599,7 @@
 				BE7EF2391B3350E4002037B1 /* Localizable.strings */,
 				BE57AC2C19BA3BBC00BB17B1 /* LocalizableError.strings */,
 				BE2D58761B32EF110042EF1E /* LocalizableAutoPkg.strings */,
+				BE7EF2461B3381A7002037B1 /* LocalizableHelpPopover.strings */,
 				1AC6955C195B59ED00D2BD81 /* main.m */,
 				1AC6955E195B59EE00D2BD81 /* AutoPkgr-Prefix.pch */,
 				1AC6955F195B59EE00D2BD81 /* Credits.rtf */,
@@ -1126,6 +1130,7 @@
 				BE81F2441B22C211007D16C4 /* LGViewWindowController.xib in Resources */,
 				1AC69569195B59EE00D2BD81 /* Images.xcassets in Resources */,
 				BED3882A1A85E2C100DA8970 /* autopkgr_error.png in Resources */,
+				BE7EF2431B3381A7002037B1 /* LocalizableHelpPopover.strings in Resources */,
 				1A2C7FAE19CC9F8300CFF472 /* codesign.py in Resources */,
 				BE38EA901B0CFE68009FCBEB /* LGInstallViewController.xib in Resources */,
 				BE32B03A1B2735DF0071778B /* LGGitIntegrationView.xib in Resources */,
@@ -1164,6 +1169,7 @@
 				BE7EF23C1B3350E4002037B1 /* Localizable.strings in Resources */,
 				BED136AE1AC0FFC5003EBF0F /* LocalizableError.strings in Resources */,
 				BE2D58791B32EF110042EF1E /* LocalizableAutoPkg.strings in Resources */,
+				BE7EF2441B3381A7002037B1 /* LocalizableHelpPopover.strings in Resources */,
 				BE4DD53C1B11740900854FD8 /* LGMunkiIntegration.h in Resources */,
 				BE09F65E1B2694ED00EE4AA7 /* LGAutoPkgIntegrationView.xib in Resources */,
 				BE38EA9F1B0CFEA6009FCBEB /* LGScheduleViewController.xib in Resources */,
@@ -1572,6 +1578,14 @@
 				BE7EF23A1B3350E4002037B1 /* en */,
 			);
 			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
+		BE7EF2461B3381A7002037B1 /* LocalizableHelpPopover.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				BE7EF2451B3381A7002037B1 /* en */,
+			);
+			name = LocalizableHelpPopover.strings;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
