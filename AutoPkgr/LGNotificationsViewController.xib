@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="6250" systemVersion="13F1077" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="7706" systemVersion="14D136" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="6250"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="7706"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="LGNotificationsViewController">
@@ -24,8 +24,11 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <button translatesAutoresizingMaskIntoConstraints="NO" id="TPC-Gd-b8O">
-                    <rect key="frame" x="16" y="364" width="360" height="18"/>
-                    <buttonCell key="cell" type="check" title="Send email notifications when new versions are found" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="ag4-TF-sgm">
+                    <rect key="frame" x="16" y="364" width="484" height="18"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="480" id="soo-P1-Rfq"/>
+                    </constraints>
+                    <buttonCell key="cell" type="check" title="Send notifications to an email address" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="ag4-TF-sgm">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                         <font key="font" metaFont="system"/>
                     </buttonCell>
@@ -179,6 +182,17 @@
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                 </textField>
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="gEh-02-Nqs">
+                    <rect key="frame" x="49" y="82" width="121" height="17"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="117" id="wHE-8k-qC3"/>
+                    </constraints>
+                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Webhook URL:" id="Igr-ux-kuk">
+                        <font key="font" metaFont="system"/>
+                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
                 <secureTextField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="aRk-NU-9Jl">
                     <rect key="frame" x="172" y="177" width="218" height="22"/>
                     <secureTextFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" enabled="NO" sendsActionOnEndEditing="YES" borderStyle="bezel" placeholderString="" drawsBackground="YES" usesSingleLineMode="YES" id="GVq-gK-DQJ">
@@ -246,15 +260,40 @@
                         <binding destination="ArL-eq-uYl" name="enabled" keyPath="values.SendEmailNotificationsWhenNewVersionsAreFoundEnabled" id="jkM-hq-ySM"/>
                     </connections>
                 </textField>
+                <button translatesAutoresizingMaskIntoConstraints="NO" id="PWE-hu-Wcl">
+                    <rect key="frame" x="16" y="108" width="484" height="18"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="480" id="zt3-Et-rWf"/>
+                    </constraints>
+                    <buttonCell key="cell" type="check" title="Send notifications to Slack channel" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="E9P-cr-br5">
+                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                        <font key="font" metaFont="system"/>
+                    </buttonCell>
+                </button>
+                <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="pz3-MC-CSF">
+                    <rect key="frame" x="172" y="80" width="411" height="22"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="411" id="XKC-q9-clV"/>
+                    </constraints>
+                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="Vgd-MR-Zcd">
+                        <font key="font" metaFont="system"/>
+                        <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
             </subviews>
             <constraints>
                 <constraint firstItem="Jki-MF-GcS" firstAttribute="trailing" secondItem="ToE-0q-pH2" secondAttribute="trailing" id="0Nq-EF-U4G"/>
                 <constraint firstItem="ToE-0q-pH2" firstAttribute="leading" secondItem="Jki-MF-GcS" secondAttribute="leading" id="0Z9-xi-3ie"/>
                 <constraint firstItem="RB8-aR-yhY" firstAttribute="trailing" secondItem="PIX-o6-vdF" secondAttribute="trailing" id="4vy-bZ-ad5"/>
+                <constraint firstItem="PWE-hu-Wcl" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="278" id="5cc-eP-Dxj"/>
                 <constraint firstItem="6N3-g1-fHC" firstAttribute="top" secondItem="uO3-QG-q9R" secondAttribute="bottom" constant="24" id="6to-9c-qRX"/>
                 <constraint firstItem="6ha-Zn-VKa" firstAttribute="leading" secondItem="HmV-Dc-TUb" secondAttribute="trailing" constant="7" id="7HC-RT-2Q0"/>
+                <constraint firstItem="gEh-02-Nqs" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="51" id="8Gw-1m-Tut"/>
+                <constraint firstItem="pz3-MC-CSF" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="300" id="9gq-ny-iom"/>
                 <constraint firstItem="TPC-Gd-b8O" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="18" id="B68-1h-coe"/>
                 <constraint firstItem="6N3-g1-fHC" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="51" id="B8M-OT-Avh"/>
+                <constraint firstItem="gEh-02-Nqs" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="303" id="Bin-Lq-dNJ"/>
                 <constraint firstItem="HmV-Dc-TUb" firstAttribute="centerY" secondItem="6ha-Zn-VKa" secondAttribute="centerY" id="C6q-HX-riP"/>
                 <constraint firstItem="HmV-Dc-TUb" firstAttribute="leading" secondItem="0MT-rL-IEP" secondAttribute="trailing" constant="7" id="CCC-dF-4ve"/>
                 <constraint firstItem="ToE-0q-pH2" firstAttribute="leading" secondItem="cUb-Ex-bej" secondAttribute="leading" id="DAX-m1-gmO"/>
@@ -271,11 +310,13 @@
                 <constraint firstItem="0MT-rL-IEP" firstAttribute="leading" secondItem="uO3-QG-q9R" secondAttribute="trailing" constant="10" id="ONL-0j-tpU"/>
                 <constraint firstItem="PIX-o6-vdF" firstAttribute="leading" secondItem="RB8-aR-yhY" secondAttribute="leading" id="ORR-PF-7QZ"/>
                 <constraint firstItem="ToE-0q-pH2" firstAttribute="centerY" secondItem="zi5-oQ-M5R" secondAttribute="centerY" id="Q8V-Fb-4O6"/>
+                <constraint firstItem="pz3-MC-CSF" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="172" id="QKs-yL-cd0"/>
                 <constraint firstItem="VDb-hs-bB1" firstAttribute="top" secondItem="6ha-Zn-VKa" secondAttribute="top" id="SZs-g3-O8w"/>
                 <constraint firstItem="0uY-tb-AXy" firstAttribute="leading" secondItem="RB8-aR-yhY" secondAttribute="trailing" constant="4" id="ScN-Nm-Z3a"/>
                 <constraint firstItem="lqq-Vv-857" firstAttribute="trailing" secondItem="uO3-QG-q9R" secondAttribute="trailing" id="T1e-CZ-xUg"/>
                 <constraint firstItem="SZ2-Hj-GiD" firstAttribute="leading" secondItem="aRk-NU-9Jl" secondAttribute="trailing" constant="8" symbolic="YES" id="TFF-VN-Cen"/>
                 <constraint firstItem="Jki-MF-GcS" firstAttribute="baseline" secondItem="SZ2-Hj-GiD" secondAttribute="baseline" id="U3N-iv-UOK"/>
+                <constraint firstItem="PWE-hu-Wcl" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="18" id="UMd-f7-IAx"/>
                 <constraint firstItem="HmV-Dc-TUb" firstAttribute="baseline" secondItem="uO3-QG-q9R" secondAttribute="baseline" id="VJQ-6t-am9"/>
                 <constraint firstItem="zi5-oQ-M5R" firstAttribute="top" secondItem="6N3-g1-fHC" secondAttribute="bottom" constant="9" id="Xxn-Ta-HZ7"/>
                 <constraint firstItem="TPC-Gd-b8O" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="22" id="c4X-EB-GnA"/>
