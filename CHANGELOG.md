@@ -21,6 +21,7 @@ All notable changes to this project will be documented in this file. This projec
 - The recipe list now has a status indicator showing if a recipe is missing a parent recipe.
 
 - You can now create the GitHub API token used with `autopkg search` feature using AutoPkgr.
+- Now you can send notifications directly to a Slack channel. Requires the channel's Webhook URL, which Slack admins have access to. (#358)
 
 ### Changed
 - Behind-the-scenes code cleanup, typo fixes, refactors, and reorganization.
