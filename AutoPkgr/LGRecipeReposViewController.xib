@@ -42,7 +42,6 @@
                                             <font key="font" metaFont="system"/>
                                         </buttonCell>
                                         <sortDescriptor key="sortDescriptorPrototype" selector="compare:" sortKey="isInstalled"/>
-                                        <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                         <prototypeCellViews>
                                             <tableCellView id="zPw-bc-w1X" customClass="LGRepoStatusCellView">
                                                 <rect key="frame" x="1" y="1" width="20" height="19"/>
@@ -107,7 +106,6 @@
                                             <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                         </textFieldCell>
                                         <sortDescriptor key="sortDescriptorPrototype" selector="compare:" sortKey="stars"/>
-                                        <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                         <prototypeCellViews>
                                             <tableCellView id="AxP-sS-f4D">
                                                 <rect key="frame" x="451" y="1" width="50" height="17"/>
@@ -136,7 +134,6 @@
                                         </tableHeaderCell>
                                         <imageCell key="dataCell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" id="wf1-A0-UJV"/>
                                         <sortDescriptor key="sortDescriptorPrototype" selector="compare:" sortKey="status"/>
-                                        <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                         <prototypeCellViews>
                                             <tableCellView id="W23-WN-yYs" customClass="LGRepoStatusCellView">
                                                 <rect key="frame" x="527" y="1" width="50" height="17"/>
@@ -301,7 +298,7 @@
                                                 <rect key="frame" x="24" y="1" width="172" height="17"/>
                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                 <subviews>
-                                                    <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="dow-wy-zzC">
+                                                    <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="dow-wy-zzC">
                                                         <rect key="frame" x="0.0" y="0.0" width="170" height="17"/>
                                                         <textFieldCell key="cell" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" title="Table View Cell" id="a1O-2f-lb3">
                                                             <font key="font" metaFont="system"/>
@@ -310,6 +307,11 @@
                                                         </textFieldCell>
                                                     </textField>
                                                 </subviews>
+                                                <constraints>
+                                                    <constraint firstAttribute="trailing" secondItem="dow-wy-zzC" secondAttribute="trailing" constant="4" id="37Q-Cs-GI6"/>
+                                                    <constraint firstItem="dow-wy-zzC" firstAttribute="leading" secondItem="HPM-Ey-cvB" secondAttribute="leading" constant="2" id="Hpz-mj-CVT"/>
+                                                    <constraint firstItem="dow-wy-zzC" firstAttribute="centerY" secondItem="HPM-Ey-cvB" secondAttribute="centerY" id="myc-92-xjv"/>
+                                                </constraints>
                                                 <connections>
                                                     <outlet property="textField" destination="dow-wy-zzC" id="UoM-rh-DQd"/>
                                                 </connections>
@@ -334,8 +336,8 @@
                                                 <rect key="frame" x="199" y="1" width="327" height="17"/>
                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                 <subviews>
-                                                    <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="jjs-oB-RUI">
-                                                        <rect key="frame" x="0.0" y="0.0" width="351" height="17"/>
+                                                    <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="jjs-oB-RUI">
+                                                        <rect key="frame" x="0.0" y="0.0" width="325" height="17"/>
                                                         <textFieldCell key="cell" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" title="Table View Cell" id="NbP-w7-SGj">
                                                             <font key="font" metaFont="system"/>
                                                             <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -343,6 +345,11 @@
                                                         </textFieldCell>
                                                     </textField>
                                                 </subviews>
+                                                <constraints>
+                                                    <constraint firstItem="jjs-oB-RUI" firstAttribute="centerY" secondItem="qrF-hk-S9K" secondAttribute="centerY" id="cYv-ud-pJQ"/>
+                                                    <constraint firstAttribute="trailing" secondItem="jjs-oB-RUI" secondAttribute="trailing" constant="4" id="vpl-6U-ymi"/>
+                                                    <constraint firstItem="jjs-oB-RUI" firstAttribute="leading" secondItem="qrF-hk-S9K" secondAttribute="leading" constant="2" id="ylm-KV-mA2"/>
+                                                </constraints>
                                                 <connections>
                                                     <outlet property="textField" destination="jjs-oB-RUI" id="q1j-Kf-hnv"/>
                                                 </connections>
