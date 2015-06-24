@@ -53,7 +53,7 @@
 
 - (NSString *)tabLabel
 {
-    return @"Install";
+    return NSLocalizedString(@"Install", @"Tab label");
 }
 
 - (IBAction)changeDisplayMode:(NSButton *)sender

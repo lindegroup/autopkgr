@@ -28,15 +28,6 @@ NSString *const kLGAutoPkgrPreferenceDomain = @"com.lindegroup.AutoPkgr";
 NSString *const kLGAutoPkgrHelperToolName = @"com.lindegroup.AutoPkgr.helper";
 NSString *const kLGAutoPkgrLaunchDaemonPlist = @"com.lindegroup.AutoPkgr.schedule";
 
-#pragma mark - Message Strings / Labels
-NSString *const kLGGitInstalledLabel = @"Git has been installed.";
-NSString *const kLGGitNotInstalledLabel = @"Git is not installed.";
-NSString *const kLGAutoPkgInstalledLabel = @"AutoPkg has been installed.";
-NSString *const kLGAutoPkgNotInstalledLabel = @"AutoPkg is not installed.";
-NSString *const kLGAutoPkgUpdateAvailableLabel = @"An update is available for AutoPkg.";
-NSString *const kLGJSSImporterInstalledLabel = @"JSSImporter has been installed.";
-NSString *const kLGJSSImporterNotInstalledLabel = @"JSSImporter is not installed.";
-NSString *const kLGJSSImporterUpdateAvailableLabel = @"An update is available for JSSImporter.";
 
 #pragma mark - Static URLs
 #pragma mark-- GitHub

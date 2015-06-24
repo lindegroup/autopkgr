@@ -20,9 +20,20 @@
 
 #import <Foundation/Foundation.h>
 
+NSString *LGAutoPkgLocalizedString(NSString *key, NSString *comment);
+
 /* AutoPkg Task Verbs
  */
-typedef NS_ENUM(NSInteger, LGAutoPkgVerb) {
+
+typedef NS_ENUM(NSInteger, LGAutoPkgErrorCodes) {
+    kLGAutoPkgErrorSuccess = 0,
+    kLGAutoPkgErrorNoRecipes = 255,
+
+    kLGAutoPkgErrorRepoModification = -2,
+    kLGAutoPkgErrorNeedsRepair = -1
+};
+
+typedef NS_OPTIONS(NSInteger, LGAutoPkgVerb) {
     kLGAutoPkgUndefinedVerb = 0,
     // recipe verbs
     kLGAutoPkgRun = 1 << 0,

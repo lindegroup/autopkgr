@@ -65,7 +65,7 @@
 
 - (NSString *)tabLabel
 {
-    return @"Folders & Integration";
+    return NSLocalizedString(@"Folders & Integration", @"Tab label");
 }
 
 #pragma mark - Integration config
@@ -136,9 +136,14 @@
         statusCell.configureButton.tag = row;
 
         statusCell.configureButton.enabled = ([self viewControllerClassForIntegration:integration] != nil);
-        statusCell.configureButton.title = [@"Install " stringByAppendingString:integration.name];
 
-        statusCell.textField.stringValue = [integration.name stringByAppendingString:@": checking status"];
+        statusCell.configureButton.title = quick_formatString(@"%@ %@",
+                                                              NSLocalizedString(@"Install", nil),
+                                                              integration.name);
+
+        statusCell.textField.stringValue = quick_formatString(@"%@: %@",
+                                                              integration.name,
+                                                              NSLocalizedString(@"checking status", nil));
 
         statusCell.imageView.hidden = YES;
         [statusCell.progressIndicator startAnimation:nil];
@@ -186,28 +191,8 @@
 
 - (IBAction)openAutoPkgCacheFolder:(id)sender
 {
-    DLog(@"Opening AutoPkg Cache folder...");
-
-    NSString *cacheFolder = [_defaults autoPkgCacheDir];
-    BOOL isDir;
-
-    cacheFolder = cacheFolder ?: [@"~/Library/AutoPkg/Cache" stringByExpandingTildeInPath];
-
-    if ([[NSFileManager defaultManager] fileExistsAtPath:cacheFolder isDirectory:&isDir] && isDir) {
-        NSURL *autoPkgCacheFolderURL = [NSURL fileURLWithPath:cacheFolder];
-        [[NSWorkspace sharedWorkspace] openURL:autoPkgCacheFolderURL];
-    } else {
-        NSLog(@"%@ does not exist.", cacheFolder);
-        NSAlert *alert = [[NSAlert alloc] init];
-        [alert addButtonWithTitle:@"OK"];
-        [alert setMessageText:@"Cannot find the AutoPkg Cache folder."];
-        [alert setInformativeText:[NSString stringWithFormat:@"%@ could not find the AutoPkg Cache folder located in %@. Please verify that this folder exists.", kLGApplicationName, cacheFolder]];
-        [alert setAlertStyle:NSWarningAlertStyle];
-        [alert beginSheetModalForWindow:self.modalWindow
-                          modalDelegate:self
-                         didEndSelector:nil
-                            contextInfo:nil];
-    }
+    NSString *path = _defaults.autoPkgCacheDir ?: [@"~/Library/AutoPkg/Cache" stringByExpandingTildeInPath];
+    [self openFolderAtPath:path withDescription:@"AutoPkg Cache"];
 }
 
 #pragma mark - AutoPkg Repo Actions
@@ -231,29 +216,8 @@
 
 - (IBAction)openAutoPkgRecipeReposFolder:(id)sender
 {
-    DLog(@"Opening AutoPkg RecipeRepos folder...");
-
-    NSString *repoFolder = [_defaults autoPkgRecipeRepoDir];
-    BOOL isDir;
-
-    repoFolder = repoFolder ?: [@"~/Library/AutoPkg/RecipeRepos" stringByExpandingTildeInPath];
-
-    if ([[NSFileManager defaultManager] fileExistsAtPath:repoFolder isDirectory:&isDir] && isDir) {
-        NSURL *autoPkgRecipeReposFolderURL = [NSURL fileURLWithPath:repoFolder];
-        [[NSWorkspace sharedWorkspace] openURL:autoPkgRecipeReposFolderURL];
-    } else {
-        NSLog(@"%@ does not exist.", repoFolder);
-        NSAlert *alert = [[NSAlert alloc] init];
-        [alert addButtonWithTitle:@"OK"];
-        [alert setMessageText:@"Cannot find the AutoPkg RecipeRepos folder."];
-        [alert setInformativeText:[NSString stringWithFormat:@"%@ could not find the AutoPkg RecipeRepos folder located in %@. Please verify that this folder exists.", kLGApplicationName, repoFolder]];
-        [alert setAlertStyle:NSWarningAlertStyle];
-
-        [alert beginSheetModalForWindow:self.modalWindow
-                          modalDelegate:self
-                         didEndSelector:nil
-                            contextInfo:nil];
-    }
+    NSString *path = [_defaults autoPkgRecipeRepoDir] ?: [@"~/Library/AutoPkg/RecipeRepos" stringByExpandingTildeInPath];
+    [self openFolderAtPath:path withDescription:@"Recipe Repos"];
 }
 
 
@@ -277,25 +241,8 @@
 
 - (IBAction)openAutoPkgRecipeOverridesFolder:(id)sender
 {
-    DLog(@"Opening AutoPkg RecipeOverrides folder...");
-
-    NSString *overridesFolder = _defaults.autoPkgRecipeOverridesDir;
-    BOOL isDir;
-
-    overridesFolder = overridesFolder ?: [@"~/Library/AutoPkg/RecipeOverrides" stringByExpandingTildeInPath];
-
-    if ([[NSFileManager defaultManager] fileExistsAtPath:overridesFolder isDirectory:&isDir] && isDir) {
-        NSURL *autoPkgRecipeOverridesFolderURL = [NSURL fileURLWithPath:overridesFolder];
-        [[NSWorkspace sharedWorkspace] openURL:autoPkgRecipeOverridesFolderURL];
-    } else {
-        NSLog(@"%@ does not exist.", overridesFolder);
-        NSAlert *alert = [[NSAlert alloc] init];
-        [alert addButtonWithTitle:@"OK"];
-        [alert setMessageText:@"Cannot find the AutoPkg RecipeOverrides folder."];
-        [alert setInformativeText:[NSString stringWithFormat:@"%@ could not find the AutoPkg RecipeOverrides folder located in %@. Please verify that this folder exists.", kLGApplicationName, overridesFolder]];
-        [alert setAlertStyle:NSWarningAlertStyle];
-        [alert runModal];
-    }
+    NSString *overridesFolder = _defaults.autoPkgRecipeOverridesDir ?: [@"~/Library/AutoPkg/RecipeOverrides" stringByExpandingTildeInPath];
+    [self openFolderAtPath:overridesFolder withDescription:@"Recipe Overrides"];
 }
 
 
@@ -349,4 +296,32 @@
                         _openAutoPkgCacheFolderButton);
 }
 
+#pragma mark - Util
+- (void)openFolderAtPath:(NSString *)path withDescription:(NSString *)folderDescription {
+
+    DevLog(@"Opening %@ folder...", folderDescription);
+    BOOL isDir;
+
+    if ([[NSFileManager defaultManager] fileExistsAtPath:path isDirectory:&isDir] && isDir) {
+        NSURL *autoPkgCacheFolderURL = [NSURL fileURLWithPath:path];
+        [[NSWorkspace sharedWorkspace] openURL:autoPkgCacheFolderURL];
+    } else {
+        NSLog(@"%@ does not exist.", path);
+        NSAlert *alert = [[NSAlert alloc] init];
+        [alert addButtonWithTitle:@"OK"];
+
+        NSString *messageTextFormat = NSLocalizedString(@"Cannot find the %@ folder.", @"alert message when a folder is not located");
+        alert.messageText = quick_formatString(messageTextFormat, folderDescription);
+
+        NSString *infoTextFormat = NSLocalizedString(@"%@ could not find the %@ folder located in %@. Please verify that this folder exists.", @"alert informativeText when a folder can't be located");
+
+        alert.informativeText = quick_formatString(infoTextFormat, kLGApplicationName,  path);
+
+        [alert setAlertStyle:NSWarningAlertStyle];
+        [alert beginSheetModalForWindow:self.modalWindow
+                          modalDelegate:self
+                         didEndSelector:nil
+                            contextInfo:nil];
+    }
+}
 @end

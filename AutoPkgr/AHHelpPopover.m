@@ -32,12 +32,19 @@ static const int HELP_POPOVER_FRAME_PADDING = 20;
 static NSString *const BUTTON_URL_KEY = @"URL";
 static NSString *const BUTTON_TITLE_KEY = @"Title";
 
+NSString * AHHPLocalizedString(NSString *key, NSString *comment)
+{
+    return [[NSBundle mainBundle] localizedStringForKey:key
+                                                  value:key
+                                                  table:@"LocalizableHelpPopover"];
+}
+
 static NSString *NO_HELP_AVAILABLE() {
     /* This is a function so the string can be localized if you so choose */
     static dispatch_once_t onceToken;
     __strong static NSString *string = nil;
     dispatch_once(&onceToken,
-                  ^{ string = NSLocalizedString(@"No help available", nil); });
+                  ^{ string = AHHPLocalizedString(@"No help available", nil); });
     return string;
 };
 
@@ -322,7 +329,7 @@ static NSString *NO_HELP_AVAILABLE() {
                    appendingIdentifierKey:(NSString *)keyVal {
     if (!iVar) {
         NSString *key = [self.identifier stringByAppendingString:keyVal ?: @""];
-        NSString *title = NSLocalizedString(key, nil);
+        NSString *title = AHHPLocalizedString(key, nil);
 
         /* If the key is different than the results a string was
          * found in the Localized.strings so update the iVar*/

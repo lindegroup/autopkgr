@@ -1,0 +1,15 @@
+/* 
+  LocalizableHelpPopover.strings
+  AHHelpPopoverExample
+
+  Created by Eldon on 6/12/15.
+  Copyright (c) 2015 Eldon Ahrold. All rights reserved.
+*/
+
+/* Use this file as a template for the localizable strings of your buttons. */
+
+"repoTableInfoTitle" = "Repo Help:";
+"repoTableInfo" = "Control-click on a repo to bring up a contextual menu with options to update the repo or open it's commits page if hosted on GitHub.\n\nThe colored globe indicates the current status of the repo. Green means the repo is up-to-date, yellow means there are commits available from the remote repository.";
+
+"recipeTableInfoTitle" = "Recipe Help:";
+"recipeTableInfo" = "Control-click on a recipe to bring up a contextual menu with options to  get info, run the recipe, or create an override. You can also set the preferred recipe editor.\n\nIf a caution icon is present in the status column, there is an issue with the recipe, most often it's missing a parent recipe, and will require further investigation before enabling the recipe.";

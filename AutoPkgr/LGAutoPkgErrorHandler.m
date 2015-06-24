@@ -21,49 +21,51 @@
 #import "LGAutoPkgErrorHandler.h"
 #import "LGLogger.h"
 
+NSString * LGAutoPkgLocalizedString(NSString *key, NSString *comment)
+{
+    return [[NSBundle mainBundle] localizedStringForKey:key
+                                                  value:key
+                                                  table:@"LocalizableAutoPkg"];
+}
+
 static NSString *errorMessageFromAutoPkgVerb(LGAutoPkgVerb verb)
 {
-    NSString *localizedBaseString;
     NSString *message;
 
     switch (verb) {
-    case kLGAutoPkgUndefinedVerb:
-        localizedBaseString = @"kLGAutoPkgUndefinedVerb";
-        break;
     case kLGAutoPkgRun:
-        localizedBaseString = @"kLGAutoPkgRun";
+            message = NSLocalizedStringFromTable(@"Error running recipes", @"LocalizableAutoPkg", nil);
         break;
     case kLGAutoPkgListRecipes:
-        localizedBaseString = @"kLGAutoPkgRecipeList";
+            message = NSLocalizedStringFromTable(@"Error encountered listing recipes", @"LocalizableAutoPkg", nil);
         break;
     case kLGAutoPkgMakeOverride:
-        localizedBaseString = @"kLGAutoPkgMakeOverride";
+            message = NSLocalizedStringFromTable(@"Error creating recipe override file", @"LocalizableAutoPkg", nil);
         break;
     case kLGAutoPkgSearch:
-        localizedBaseString = @"kLGAutoPkgSearch";
+            message = NSLocalizedStringFromTable(@"Error encountered searching for recipe", @"LocalizableAutoPkg", nil);
         break;
     case kLGAutoPkgRepoAdd:
-        localizedBaseString = @"kLGAutoPkgRepoAdd";
+            message = NSLocalizedStringFromTable(@"Error adding repo", @"LocalizableAutoPkg", nil);
         break;
     case kLGAutoPkgRepoDelete:
-        localizedBaseString = @"kLGAutoPkgRepoDelete";
+            message = NSLocalizedStringFromTable(@"Error removing repo", @"LocalizableAutoPkg", nil);
         break;
     case kLGAutoPkgRepoUpdate:
-        localizedBaseString = @"kLGAutoPkgRepoUpdate";
+            message = NSLocalizedStringFromTable(@"Error updating repo", @"LocalizableAutoPkg", nil);
         break;
     case kLGAutoPkgRepoList:
-        localizedBaseString = @"kLGAutoPkgRepoList";
+            message = NSLocalizedStringFromTable(@"Error encountered listing repos", @"LocalizableAutoPkg", nil);
         break;
     case kLGAutoPkgVersion:
-        localizedBaseString = @"kLGAutoPkgVersion";
+            message = NSLocalizedStringFromTable(@"Error getting AutoPkg version", @"LocalizableAutoPkg", nil);
         break;
+    case kLGAutoPkgUndefinedVerb:
     default:
-        localizedBaseString = @"kLGAutoPkgUndefinedVerb";
+            message = NSLocalizedStringFromTable(@"AutoPkgr encountered an error", @"LocalizableAutoPkg", nil);
         break;
     }
 
-    message = NSLocalizedString([localizedBaseString stringByAppendingString:@"Description"],
-                                @"NSLocalizedDescriptionKey");
     return message;
 }
 
@@ -180,26 +182,28 @@ NSString *maskPasswordInString(NSString *string)
                 [recombinedErrorDetails appendString:[splitExceptionFromError firstObject]];
             }
 
-            [recombinedErrorDetails appendFormat:@"A Python exception occurred during the execution of autopkg, see the system log for more details.\n\n[ERROR] %@", exceptionDetails];
+            NSString *formatString = LGAutoPkgLocalizedString(@"A Python exception occurred during the execution of autopkg, see the system log for more details.\n\n[ERROR] %@", nil);
+
+            [recombinedErrorDetails appendFormat:formatString, exceptionDetails];
 
             errorDetails = [NSString stringWithString:recombinedErrorDetails];
 
             // Otherwise continue...
         } else {
-            // AutoPkg's rc on a failed repo-update / add / delete is 0, but we want it reported back to the UI so set it to -1.
+            // AutoPkg's rc on a failed repo-update / add / delete is 0, but we want it reported back to the UI so set it to kLGAutoPkgErrorRepoModification.
             if (_verb == kLGAutoPkgRepoUpdate || _verb == kLGAutoPkgRepoDelete || _verb == kLGAutoPkgRepoAdd) {
                 if (errorDetails.length) {
-                    exitCode = -1;
+                    exitCode = kLGAutoPkgErrorRepoModification;
                 }
             }
             // autopkg run exits 255 if no recipe specified
-            else if (_verb == kLGAutoPkgRun && exitCode == 255) {
-                errorDetails = @"No recipes specified.";
+            else if (_verb == kLGAutoPkgRun && exitCode == kLGAutoPkgErrorNoRecipes) {
+                errorDetails = LGAutoPkgLocalizedString(@"No recipes specified.", nil) ;
             }
         }
 
         // Otherwise we can just use the termination status
-        if (exitCode != 0) {
+        if (exitCode != kLGAutoPkgErrorSuccess) {
             error = [NSError errorWithDomain:[[NSBundle mainBundle] bundleIdentifier] ?: @"autopkg"
                                         code:exitCode
                                     userInfo:@{ NSLocalizedDescriptionKey : errorMsg,

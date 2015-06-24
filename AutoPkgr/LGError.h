@@ -36,14 +36,6 @@ typedef NS_ENUM(NSInteger, LGErrorCodes) {
     kLGErrorMultipleRunsOfAutopkg,
     /** Error when trying to enable a recipe when the Parent Recipe is not avaliable */
     kLGErrorMissingParentRecipe,
-    /** Error installing Git */
-    kLGErrorInstallGit,
-    /** Error installing/updating AutoPkg */
-    kLGErrorInstallAutoPkg,
-    /** Error installing/updating AutoPkgr */
-    kLGErrorInstallAutoPkgr,
-    /** Error installing JSSImporter */
-    kLGErrorInstallJSSImporter,
     /** Generic error installing */
     kLGErrorInstallingGeneric,
     /** Error serializing xml object */
@@ -75,6 +67,7 @@ typedef NS_ENUM(NSInteger, LGErrorAutoPkgCodes) {
 #endif
 
 #pragma mark - AutoPkgr Defined Errors
+
 /**
  *  Populate an NSError Object for AutoPkgr
  *
@@ -84,6 +77,7 @@ typedef NS_ENUM(NSInteger, LGErrorAutoPkgCodes) {
  *  @return NO if error occurred and error.code is not 0, otherwise YES;
  */
 + (BOOL)errorWithCode:(LGErrorCodes)code error:(NSError **)error;
+
 /**
  *  Generate an NSError Object for AutoPkgr
  *
@@ -93,6 +87,13 @@ typedef NS_ENUM(NSInteger, LGErrorAutoPkgCodes) {
  */
 + (NSError *)errorWithCode:(LGErrorCodes)code;
 
+/**
+ *  Create an NSError using an NSTask's stdout and exit code to populate the value
+ *
+ *  @param task completed NSTask object
+ *
+ *  @return populated NSError object if task's exit code != 0;
+ */
 + (NSError *)errorFromTask:(NSTask *)task;
 
 

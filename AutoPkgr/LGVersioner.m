@@ -36,7 +36,7 @@ NSString *const kLGVersionerVersionKey = @"version";
 
 - (void)parseString:(NSString *)rawString
 {
-    for (NSString *string in [rawString componentsSeparatedByCharactersInSet:[NSCharacterSet newlineCharacterSet]]) {
+    for (NSString *string in rawString.split_byLine) {
         // if string begins with "Processing" we've started a new app, so
         // reset the current values
 
@@ -91,7 +91,7 @@ NSString *const kLGVersionerVersionKey = @"version";
 {
 
     NSArray *validPathExtensions = @[ @"dmg", @"zip", @"tar", @"gz" ];
-    NSArray *possibleProcessors = @[ @"URLDownloader", ];
+    NSArray *possibleProcessors = @[ @"URLDownloader" ];
 
     // Construct a predicate string from the above values.
     // This will make it easy to adjust in the future, as more processors are

@@ -25,9 +25,11 @@
 + (void)sendNotificationOfTestEmailSuccess:(BOOL)success error:(NSError *)error
 {
     NSUserNotification *notification = [[NSUserNotification alloc] init];
-    notification.title = @"Email test completed.";
+    notification.title = NSLocalizedString(@"Email test completed.", @"NSUserNotification posted after test email is complete.");
 
-    notification.informativeText = success ? @"Successfully sent test email." : @"There was a problem sending test email. Double-check the SMTP settings you specified in AutoPkgr.";
+    notification.informativeText = success ?
+            NSLocalizedString(@"Successfully sent test email.", @"NSUserNotification text when email is successfully sent."):
+            NSLocalizedString(@"There was a problem sending test email. Double-check the SMTP settings you specified in AutoPkgr.", @"NSUserNotification text when email fails.");
 
     if (success) {
         [notification setHasActionButton:NO];

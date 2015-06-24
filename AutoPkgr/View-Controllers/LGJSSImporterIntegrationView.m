@@ -270,8 +270,23 @@ static NSPredicate *jdsFilterPredicate()
 #pragma mark - Utility
 - (void)confirmDisableSSLVerify
 {
+    NSString *alertTitle = NSLocalizedStringFromTable(@"Unable to verify the SSL certificate.",
+                                                      @"LocalizableJSSImporter",
+                                                      @"message when JSS cannot be verified");
 
-    NSAlert *alert = [NSAlert alertWithMessageText:@"Unable to verify the SSL certificate." defaultButton:@"Keep SSL Verification" alternateButton:@"Disable SSL Verification" otherButton:nil informativeTextWithFormat:@"This is most likely due to the certificate being self signed. Choosing \"Disable SSL Verification\" may be required for JSSImporter to function properly."];
+    NSString *defaultButton = NSLocalizedStringFromTable(@"Keep SSL Verification",
+                                                         @"LocalizableJSSImporter",
+                                                         @"button title for alert when ssl verification should remain enabled.");
+
+    NSString *altButton = NSLocalizedStringFromTable(@"Disable SSL Verification",
+                                                     @"LocalizableJSSImporter",
+                                                     @"button title to disable ssl verificaiton");
+
+    NSString *infoText = NSLocalizedStringFromTable(@"This is most likely due to the certificate being self signed. Choosing \"Disable SSL Verification\" may be required for JSSImporter to function properly.",
+                                                    @"LocalizableJSSImporter",
+                                                    nil);
+
+    NSAlert *alert = [NSAlert alertWithMessageText:alertTitle defaultButton:defaultButton alternateButton:altButton otherButton:nil informativeTextWithFormat:@"%@", infoText];
 
     if ([alert runModal] == NSModalResponseOK) {
         _defaults.JSSVerifySSL = YES;
@@ -340,9 +355,11 @@ static NSPredicate *jdsFilterPredicate()
 {
     NSLog(@"Prompting for password for distribution point: %@", shareName);
     NSString *password;
-    NSString *messageText = @"Distribution Point Password Required";
+    NSString *messageText = NSLocalizedStringFromTable(@"Distribution Point Password Required",
+                                                       @"LocalizableJSSImporter",
+                                                       nil) ;
 
-    NSString *const infoText = @"Please enter read/write password for the \"%@\" distribution point. If you intend to configure manually just click \"Cancel\".";
+    NSString *infoText = NSLocalizedStringFromTable(@"Please enter read/write password for the \"%@\" distribution point. If you intend to configure manually just click \"Cancel\".", @"LocalizableJSSImporter", nil);
 
     NSAlert *alert = [NSAlert alertWithMessageText:messageText
                                      defaultButton:@"OK"

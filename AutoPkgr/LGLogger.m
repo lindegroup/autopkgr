@@ -8,6 +8,17 @@
 
 #include "LGLogger.h"
 
+NSString *quick_formatString(NSString *format, ...){
+    NSString *string = nil;
+    if (format) {
+        va_list args;
+        va_start(args, format);
+        string = [[NSString alloc] initWithFormat:format arguments:args];
+        va_end(args);
+    }
+    return string ?: format;
+}
+
 // Debug Logging Method
 void DLog(NSString *format, ...)
 {

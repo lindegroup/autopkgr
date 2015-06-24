@@ -73,8 +73,12 @@ const CFStringRef kUTTypePropertyList = CFSTR("com.apple.property-list");
     NSString *recipeName = overrideToRemove.Name;
     NSString *recipePath = overrideToRemove.FilePath;
 
-    NSAlert *alert = [NSAlert alertWithMessageText:@"AutoPkgr is trying to remove a recipe override." defaultButton:@"Remove" alternateButton:@"Cancel" otherButton:nil informativeTextWithFormat:@"Are you sure you want to remove the %@ recipe override? Any changes made to the file will be lost.", recipeName];
-    NSLog(@"Displaying prompt to confirm deletion of override %@", recipeName);
+    NSString *message = NSLocalizedString(@"AutoPkgr is trying to remove a recipe override.", nil);
+    NSString *infoText = NSLocalizedString(@"Are you sure you want to remove the %@ recipe override? Any changes made to the file will be lost.", nil);
+
+    NSAlert *alert = [NSAlert alertWithMessageText:message defaultButton:@"Remove" alternateButton:@"Cancel" otherButton:nil informativeTextWithFormat:infoText, recipeName];
+
+    DevLog(@"Displaying prompt to confirm deletion of override %@", recipeName);
 
     NSInteger button = [alert runModal];
     if (button == NSAlertDefaultReturn) {
@@ -94,7 +98,7 @@ const CFStringRef kUTTypePropertyList = CFSTR("com.apple.property-list");
 + (NSString *)promptForOverrideName:(NSString *)parentName
 {
     NSString *password;
-    NSString *promptString = @"Would you like to give the override a unique name?";
+    NSString *promptString = NSLocalizedString(@"Would you like to give the override a unique name?", nil);
 
     NSAlert *alert = [NSAlert alertWithMessageText:promptString
                                      defaultButton:@"OK"
@@ -146,10 +150,10 @@ const CFStringRef kUTTypePropertyList = CFSTR("com.apple.property-list");
     NSString *newEditor;
     if ([item.title isEqual:@"Other..."]) {
         NSOpenPanel *panel = [NSOpenPanel openPanel];
-        [panel setCanChooseDirectories:NO];
-        [panel setAllowedFileTypes:@[ @"app" ]];
-        [panel setTitle:@"Choose an editor for AutoPkgr recipe overrides"];
-        [panel.defaultButtonCell setTitle:@"Choose"];
+        panel.canChooseDirectories = NO;
+        panel.allowedFileTypes =  @[ @"app" ];
+        panel.title =  NSLocalizedString(@"Choose an editor for AutoPkgr recipe overrides", nil);
+        panel.defaultButtonCell.title = @"Choose";
 
         NSInteger button = [panel runModal];
         if (button == NSFileHandlingPanelOKButton) {

@@ -10,7 +10,7 @@
 #import "LGAutoPkgTask.h"
 #import "AHHelpPopover.h"
 
-static NSString *const kLGTokenRemoveButonTitle = @"Remove API Token";
+static NSString *const kLGTokenRevokeButonTitle = @"Revoke API Token";
 static NSString *const kLGTokenGenerateButonTitle = @"Generate API Token";
 
 @interface LGAutoPkgIntegrationView ()
@@ -31,7 +31,7 @@ static NSString *const kLGTokenGenerateButonTitle = @"Generate API Token";
 - (void)awakeFromNib
 {
     if ([LGAutoPkgTask apiTokenFileExists:nil]) {
-        _generateAPITokenBT.title = kLGTokenRemoveButonTitle;
+        _generateAPITokenBT.title = kLGTokenRevokeButonTitle;
         _generateAPITokenBT.action = @selector(deleteAPIToken:);
     }
 }
@@ -47,7 +47,7 @@ static NSString *const kLGTokenGenerateButonTitle = @"Generate API Token";
             [NSApp presentError:error];
             sender.title = kLGTokenGenerateButonTitle;
         } else {
-            sender.title = kLGTokenRemoveButonTitle;
+            sender.title = kLGTokenRevokeButonTitle;
             sender.action = @selector(deleteAPIToken:);
         }
     }];
@@ -62,7 +62,7 @@ static NSString *const kLGTokenGenerateButonTitle = @"Generate API Token";
         sender.enabled = YES;
         if (error) {
             [NSApp presentError:error];
-            sender.title = kLGTokenRemoveButonTitle;
+            sender.title = kLGTokenRevokeButonTitle;
         } else {
             sender.title = kLGTokenGenerateButonTitle;
             sender.action = @selector(generateAPIToken:);
@@ -77,7 +77,10 @@ static NSString *const kLGTokenGenerateButonTitle = @"Generate API Token";
 
     NSString *settingsLink = @"https://github.com/settings/tokens";
 
-    NSMutableAttributedString *attributedHelpText = [NSString stringWithFormat:@"Creating a GitHub API token will increase your per hour search limit from 60 to 5000. The token has only a 'public' scope, meaning it cannot be used to retrieve personal information from your account, or push to any repos you may have access to. You can verify this token within your profile page at \n\n%@\n\nYou can revoke this token at any time. It will be stored in your user's home folder at %@. \n\nFor more information on GitHub's oAuth tokens visit developer.github.com ", settingsLink, tokenFile].attributed_mutableCopy;
+    NSString *message = NSLocalizedString(@"helpInfoAutoPkgAPIToken",
+                                    @"message presented to user with info about generating GitHub api token");
+
+    NSMutableAttributedString *attributedHelpText = [NSString stringWithFormat:message, settingsLink, tokenFile].attributed_mutableCopy;
 
     [attributedHelpText attributed_makeStringALink:settingsLink];
     [attributedHelpText attributed_makeString:@"developer.github.com" linkTo:@"https://developer.github.com/v3/oauth/"];

@@ -160,9 +160,9 @@ static const NSTimeInterval kHelperCheckInterval = 1.0; // how often to check wh
 
     // Attributes used to set permissions on the keyFile and it's parent directory.
     NSDictionary *const attributes = @{
-        NSFilePosixPermissions : [NSNumber numberWithShort:0700],
-        NSFileOwnerAccountID : @(0),
-        NSFileGroupOwnerAccountID : @(0),
+        NSFilePosixPermissions : [NSNumber numberWithShort:0700], // Owner read-write, others no access.
+        NSFileOwnerAccountID : @(0), // Root
+        NSFileGroupOwnerAccountID : @(0), // Wheel
     };
 
     NSFileManager *manager = [NSFileManager defaultManager];
@@ -276,6 +276,7 @@ static const NSTimeInterval kHelperCheckInterval = 1.0; // how often to check wh
         syslog(LOG_ALERT, "[ERROR] A problem was encountered updating keyFile's permissions.");
     }
 
+    
     if (passwordData) {
         // set the password as the data description.
         password = passwordData.description;
@@ -320,6 +321,10 @@ helper_reply:
 
             job.SessionCreate = YES;
             job.UserName = user;
+
+            /* Setting __CFPREFERENCES_AVOID_DAEMON helps preferences sync
+             * between the background run managed by launchd and the main
+             * app running in a Acqua session. */
             job.EnvironmentVariables = @{@"__CFPREFERENCES_AVOID_DAEMON" : @"1"};
 
             [[AHLaunchCtl sharedController] add:job toDomain:kAHGlobalLaunchDaemon error:&error];

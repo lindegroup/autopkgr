@@ -69,10 +69,10 @@
     _distPointURL.safe_stringValue = _editRepoDict[kLGJSSDistPointURLKey];
     _distPointUserName.safe_stringValue = _editRepoDict[kLGJSSDistPointUserNameKey];
     [_distPointTypePopupBT selectItemWithTitle:_editRepoDict[kLGJSSDistPointTypeKey]];
-    
-    [_cancelBT setHidden:YES];
-    [_addBT setTitle:@"Done"];
-    [_infoText setStringValue:@"Edit Distribution Point"];
+
+    _cancelBT.hidden = YES;
+    _addBT.title = @"Done";
+    _infoText.stringValue = NSLocalizedStringFromTable(@"Edit Distribution Point", @"LocalizableJSSImporter", nil);
 }
 
 - (void)addDistPoint:(NSButton *)sender
