@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="6250" systemVersion="13F1077" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="7706" systemVersion="14D136" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="6250"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="7706"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="LGInstallViewController">
@@ -27,7 +27,7 @@
                     </constraints>
                     <imageCell key="cell" refusesFirstResponder="YES" alignment="left" animates="YES" imageScaling="proportionallyDown" image="AutoPkgrIcon" id="bdC-Ay-5Db"/>
                 </imageView>
-                <button autoresizesSubviews="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gCc-Bk-Xo8">
+                <button autoresizesSubviews="NO" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="gCc-Bk-Xo8">
                     <rect key="frame" x="222" y="55" width="203" height="18"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="199" id="0hZ-LW-pra"/>
@@ -40,7 +40,7 @@
                         <action selector="launchAtLogin:" target="-2" id="sgX-Be-rnI"/>
                     </connections>
                 </button>
-                <button verticalCompressionResistancePriority="749" translatesAutoresizingMaskIntoConstraints="NO" id="D8f-jS-Mfo">
+                <button verticalCompressionResistancePriority="749" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="D8f-jS-Mfo">
                     <rect key="frame" x="222" y="36" width="203" height="16"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="12" id="rrX-gl-mpz"/>
@@ -53,7 +53,7 @@
                         <action selector="changeDisplayMode:" target="-2" id="KIz-gx-u83"/>
                     </connections>
                 </button>
-                <button translatesAutoresizingMaskIntoConstraints="NO" id="2vH-Ks-iBq">
+                <button misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="2vH-Ks-iBq">
                     <rect key="frame" x="222" y="15" width="165" height="16"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="12" id="BCI-Jv-iMK"/>
@@ -84,6 +84,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" selectionHighlightStyle="none" columnReordering="NO" columnResizing="NO" multipleSelection="NO" emptySelection="NO" autosaveColumns="NO" typeSelect="NO" rowHeight="30" rowSizeStyle="automatic" viewBased="YES" id="R8N-1t-Eqi" customClass="LGInstallTableView">
+                                <rect key="frame" x="0.0" y="0.0" width="577" height="0.0"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <size key="intercellSpacing" width="3" height="2"/>
                                 <color key="backgroundColor" name="controlHighlightColor" catalog="System" colorSpace="catalog"/>
