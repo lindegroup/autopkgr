@@ -180,6 +180,6 @@ If you discover an issue with the AutoPkgr app itself, you may want to post a me
 
 AutoPkgr was created by James Barclay, Elliot Jordan, and Josh Senick of the [Linde Group](http://www.lindegroup.com) with a huge amount of help from Eldon Ahrold.
 
-We're very friendly. Stop by Berkeley sometime and have an espresso.
+We're very friendly. Stop by Emeryville sometime and have an espresso.
 
 Briefcase icon from [FontAwesome](http://fontawesome.io/).
