@@ -21,7 +21,7 @@
 #import "LGPasswords.h"
 #import "LGAutoPkgr.h"
 #import "LGAutoPkgSchedule.h"
-#import "LGEmailer.h"
+#import "LGNotificationManager.h"
 #import "LGTestPort.h"
 #import "LGAutoPkgTask.h"
 #import "LGAutoPkgRecipe.h"
@@ -153,7 +153,7 @@
 - (IBAction)changeSchedule:(id)sender
 {
     // First check for a few conditions that should just be returned from...
-    if([self.currentSchedule isEqualTo:self.proposedSchedule]){
+    if ([self.currentSchedule isEqualTo:self.proposedSchedule]) {
         return;
     } else if ([sender isEqualTo:_scheduleIntervalTF] && _scheduleTypeMatrix.selectedTag != 0) {
         return;
@@ -242,18 +242,16 @@
     [self.taskManager runRecipeList:recipeList
                          updateRepo:NO
                               reply:^(NSDictionary *report, NSError *error) {
-                              NSAssert([NSThread isMainThread], @"Reply not on main thread!");
+                                  NSAssert([NSThread isMainThread], @"Reply not on main thread!");
+                                  [self.progressDelegate stopProgress:error];
+                                  LGNotificationManager *notifier = [[LGNotificationManager alloc]
+                                                                    initWithReportDictionary:report errors:error];
 
-                              [self.progressDelegate stopProgress:error];
-                              if (report.count || error) {
-                                  LGEmailer *emailer = [LGEmailer new];
-
-                                  emailer.replyBlock = ^(NSError *error){
-                                      [self.progressDelegate stopProgress:error];
-                                  };
-
-                                  [emailer sendEmailForReport:report error:error];
-                              }
+                                  [notifier sendEnabledNotifications:^(NSError *error) {
+                                      dispatch_async(dispatch_get_main_queue(), ^{
+                                          [self.progressDelegate stopProgress:error];
+                                      });
+                                  }];
                               }];
 }
 

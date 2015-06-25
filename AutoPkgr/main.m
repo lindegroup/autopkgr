@@ -22,10 +22,9 @@
 #import <Cocoa/Cocoa.h>
 #import "LGAutoPkgTask.h"
 #import "LGAutoPkgRecipe.h"
-#import "LGEmailer.h"
+#import "LGNotificationManager.h"
 #import "LGAutoPkgr.h"
 #import "LGAutoPkgrHelperConnection.h"
-
 
 int main(int argc, const char *argv[])
 {
@@ -70,15 +69,14 @@ int main(int argc, const char *argv[])
                                                                                                state:kLGAutoPkgProgressComplete];
                              }
 
-                             LGEmailer *emailer = [[LGEmailer alloc] init];
+                             LGNotificationManager *notifier = [[LGNotificationManager alloc]
+                                                                initWithReportDictionary:report errors:error];
 
-                             [emailer setReplyBlock:^(NSError *mailErr) {
+                             [notifier sendEnabledNotifications:^(NSError *error) {
                                  NSLog(@"AutoPkgr background run complete.");
                                  exit((int)error.code);
+
                              }];
-
-                             [emailer sendEmailForReport:report error:error];
-
                          }];
 
         [[NSRunLoop currentRunLoop] run];

@@ -123,7 +123,7 @@ void subclassMustConformToProtocol(id className)
 #pragma mark - Init / Dealloc
 - (void)dealloc
 {
-    DevLog(@"Dealloc %@", self);
+//    DevLog(@"Dealloc %@", self);
 
     // nil out the blocks to break retain cycles.
     _progressUpdateBlock = nil;

@@ -1,7 +1,5 @@
 //  LGAutoPkgReport.h
 //
-//  AutoPkgr
-//
 //  Created by Eldon Ahrold on 3/22/15.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
@@ -69,5 +67,21 @@
  *  Check to determine if there is anything to report.
  */
 @property (nonatomic, readonly) BOOL updatesToReport;
+
+/**
+ *  Array of LGUpdatedApplications
+ */
+@property (copy, nonatomic, readonly) NSArray *updatedApplications;
+
+@end
+
+@interface LGUpdatedApplication : NSObject
+
++ (instancetype) new NS_UNAVAILABLE;
+- (instancetype)init NS_UNAVAILABLE;
+
+@property (copy, nonatomic, readonly) NSString *name;
+@property (copy, nonatomic, readonly) NSString *version;
+@property (copy, nonatomic, readonly) NSString *path;
 
 @end
