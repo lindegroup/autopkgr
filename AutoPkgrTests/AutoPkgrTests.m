@@ -27,15 +27,18 @@
 #import "LGAutoPkgTask.h"
 
 #import "LGAutoPkgReport.h"
-#import "LGEmailer.h"
 #import "LGPasswords.h"
 #import "LGServerCredentials.h"
+#import "LGNotificationManager.h"
+#import "LGUserNotification.h"
 
 @interface AutoPkgrTests : XCTestCase <LGProgressDelegate>
 
 @end
 
-@implementation AutoPkgrTests
+@implementation AutoPkgrTests {
+    LGUserNotificationsDelegate *_noteDelegate;
+}
 
 - (void)setUp
 {
@@ -469,6 +472,39 @@
     [report.emailMessageString writeToFile:htmlFile atomically:YES encoding:NSUTF8StringEncoding error:nil];
 
     [[NSWorkspace sharedWorkspace] openFile:htmlFile];
+
+
+}
+
+- (void)testNotificationManager {
+    // Setup User Notification Delegate
+    _noteDelegate = [[LGUserNotificationsDelegate alloc] initAsDefaultCenterDelegate];
+
+    XCTestExpectation *expectation = [self expectationWithDescription:@"Notification manager test"];
+
+    NSBundle *bundle = [NSBundle bundleForClass:[self class]];
+    NSString *reportFile = [bundle pathForResource:@"report_0.4.2" ofType:@"plist"];
+    //        NSString *reportFile = [bundle pathForResource:@"report_0.4.3" ofType:@"plist"];
+
+    NSDictionary *reportDict = [NSDictionary dictionaryWithContentsOfFile:reportFile];
+
+    NSError *error = [NSError errorWithDomain:@"AutoPkgr" code:1 userInfo:@{ NSLocalizedDescriptionKey : @"Error running recipes",
+                                                                             NSLocalizedRecoverySuggestionErrorKey : @"Code signature verification failed. Note that all verifications can be disabled by setting the variable DISABLE_CODE_SIGNATURE_VERIFICATION to a non-empty value.\nThere was an unknown exception which causes autopkg to fail." }];
+
+
+    LGNotificationManager *mgr = [[LGNotificationManager alloc] initWithReportDictionary:reportDict errors:error];
+    [mgr sendEnabledNotifications:^(NSError *error) {
+        [expectation fulfill];
+
+    }];
+
+    [self waitForExpectationsWithTimeout:300 handler:^(NSError *error) {
+        if(error)
+        {
+            XCTFail(@"Expectation Failed with error: %@", error);
+        }
+    }];
+
 }
 
 - (void)testErrorAlerts {

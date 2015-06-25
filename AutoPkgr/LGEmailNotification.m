@@ -1,0 +1,180 @@
+//  LGEmailNotification.m
+//
+//  Copyright 2015 Eldon Ahrold
+//
+//  Licensed under the Apache License, Version 2.0 (the "License");
+//  you may not use this file except in compliance with the License.
+//  You may obtain a copy of the License at
+//
+//  http://www.apache.org/licenses/LICENSE-2.0
+//
+//  Unless required by applicable law or agreed to in writing, software
+//  distributed under the License is distributed on an "AS IS" BASIS,
+//  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//  See the License for the specific language governing permissions and
+//  limitations under the License.
+//
+
+#import "LGEmailNotification.h"
+#import "LGAutoPkgr.h"
+#import "LGServerCredentials.h"
+#import "LGPasswords.h"
+#import "LGUserNotification.h"
+
+#import <MailCore/MailCore.h>
+
+@implementation LGEmailNotification {
+    LGDefaults *_defaults;
+}
+
++ (NSString *)serviceDescription
+{
+    return NSLocalizedString(@"AutoPkgr Emailer", @"Email notification service description");
+}
+
++ (BOOL)reportsIntegrations
+{
+    return YES;
+}
+
++ (BOOL)isEnabled
+{
+    return [[LGDefaults standardUserDefaults] sendEmailNotificationsWhenNewVersionsAreFoundEnabled];
+}
+
+- (instancetype)init
+{
+    if (self = [super init]) {
+        _defaults = [LGDefaults standardUserDefaults];
+    };
+    return self;
+}
+
+#pragma mark - Required subclass overrides.
+- (void)send:(void (^)(NSError *))complete
+{
+    if (complete && !self.notificatonComplete) {
+        self.notificatonComplete = complete;
+    }
+
+    NSAssert(self.notificatonComplete, @"A completion block must be set for %@", self);
+
+    NSString *subject = quick_formatString(@"%@ on %@", self.report.emailSubjectString, [NSHost currentHost].localizedName);
+    NSString *message = self.report.emailMessageString;
+
+    // Send the email.
+    [self sendEmailNotification:subject message:message test:NO];
+}
+
+- (void)sendTest:(void (^)(NSError *))complete
+{
+    if (complete && !self.notificatonComplete) {
+        self.notificatonComplete = complete;
+    }
+
+    NSString *subject = NSLocalizedString(@"Test notification from AutoPkgr", nil);
+    NSString *message = NSLocalizedString(@"This is a test notification from <strong>AutoPkgr</strong>.", @"html test email body");
+
+    // Send the email/
+    [self sendEmailNotification:subject message:message test:YES];
+}
+
+#pragma mark - Convenience
+- (void)getMailCredentials:(void (^)(LGHTTPCredential *, NSError *))reply
+{
+    /* This sends back a credential object with three properties
+     * 1) Server Name
+     * 2) User Name, if authentication is enabled
+     * 3) Password, if authentication is enabled */
+    __block LGHTTPCredential *credential = [[LGHTTPCredential alloc] init];
+    credential.server = _defaults.SMTPServer;
+    if (_defaults.SMTPUsername && _defaults.SMTPAuthenticationEnabled) {
+        credential.user = _defaults.SMTPUsername ?: @"";
+        [LGPasswords getPasswordForAccount:credential.user reply:^(NSString *password, NSError *error) {
+            credential.password = password ?: @"";
+            reply(credential, error);
+        }];
+    } else {
+        reply(credential, nil);
+    }
+}
+
+- (NSArray *)smtpTo
+{
+    NSMutableArray *to = [[NSMutableArray alloc] init];
+    for (NSString *toAddress in [[LGDefaults standardUserDefaults] SMTPTo]) {
+        if (toAddress.length) {
+            [to addObject:[MCOAddress addressWithMailbox:toAddress]];
+        }
+    }
+    return to;
+}
+
+- (MCOAddress *)smtpFrom
+{
+    return [MCOAddress addressWithDisplayName:@"AutoPkgr Notification"
+                                      mailbox:_defaults.SMTPFrom ?: @"AutoPkgr"];
+}
+
+#pragma mark - Primary sending method
+- (void)sendEmailNotification:(NSString *)subject message:(NSString *)message test:(BOOL)test
+{
+    NSString *fullSubject = [NSString stringWithFormat:@"%@ on %@", subject, [[NSHost currentHost] localizedName]];
+
+    void (^didCompleteSendOperation)(NSError *) = ^(NSError *error) {
+        if (self.notificatonComplete) {
+            self.notificatonComplete(error);
+        }
+    };
+
+    // Build the message.
+    MCOMessageBuilder *builder = [[MCOMessageBuilder alloc] init];
+
+    builder.header.from = [self smtpFrom];
+    builder.header.to = [self smtpTo];
+    builder.header.subject = fullSubject;
+    builder.htmlBody = message;
+
+    [self getMailCredentials:^(LGHTTPCredential *credential, NSError *error) {
+        if (error) {
+            /* And error here means there was a problem getting the password */
+            return didCompleteSendOperation(error);
+        }
+
+        /* Configure the session details */
+        MCOSMTPSession *session = [[MCOSMTPSession alloc] init];
+        session.hostname = credential.server;
+        session.port = (int)_defaults.SMTPPort;
+        if (credential.user && credential.password) {
+            session.username = credential.user;
+            session.password = credential.password;
+        }
+
+
+        if (_defaults.SMTPTLSEnabled) {
+            DLog(@"SSL/TLS is enabled for %@.", _defaults.SMTPServer);
+            /* If the SMTP port is 465, use MCOConnectionTypeTLS.
+             * Otherwise use MCOConnectionTypeStartTLS. */
+            if (session.port == 465) {
+                session.connectionType = MCOConnectionTypeTLS;
+            } else {
+                session.connectionType = MCOConnectionTypeStartTLS;
+            }
+        } else {
+            DLog(@"SSL/TLS is _not_ enabled for %@.", _defaults.SMTPServer);
+            session.connectionType = MCOConnectionTypeClear;
+        }
+
+        MCOSMTPSendOperation *sendOperation = [session sendOperationWithData:builder.data];
+        [sendOperation start:^(NSError *error) {
+            if (test) {
+                [LGUserNotification sendNotificationOfTestEmailSuccess:error ? NO:YES error:error];
+            }
+
+            // Call did complete operation.
+            didCompleteSendOperation(error);
+        }];
+    }];
+}
+
+@end

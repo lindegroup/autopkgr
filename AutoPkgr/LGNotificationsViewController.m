@@ -21,9 +21,36 @@
 #import "LGPasswords.h"
 #import "LGAutoPkgr.h"
 #import "LGTestPort.h"
-#import "LGEmailer.h"
+#import "LGEmailNotification.h"
+#import "LGSlackNotification.h"
 
 @interface LGNotificationsViewController ()
+#pragma mark - Email
+#pragma mark-- Outlets --
+
+@property (weak) IBOutlet NSTextField *smtpServer;
+@property (weak) IBOutlet NSTextField *smtpPort;
+
+@property (weak) IBOutlet NSTextField *smtpUsername;
+@property (weak) IBOutlet NSSecureTextField *smtpPassword;
+
+@property (weak) IBOutlet NSTextField *slackWebhookURLTF;
+@property (weak) IBOutlet NSProgressIndicator *slackProgressIndicator;
+@property (weak) IBOutlet NSButton *slackHelpButton;
+
+// Status icons
+@property (weak) IBOutlet NSImageView *testSmtpServerStatus;
+
+// Spinners
+@property (weak) IBOutlet NSProgressIndicator *sendTestEmailSpinner;
+@property (weak) IBOutlet NSProgressIndicator *testSmtpServerSpinner;
+
+#pragma mark-- IBActions --
+- (IBAction)sendTestEmail:(id)sender;
+- (IBAction)testServerPort:(id)sender;
+
+- (IBAction)getKeychainPassword:(NSTextField *)sender;
+- (IBAction)updateKeychainPassword:(id)sender;
 
 @end
 
@@ -144,7 +171,7 @@
     [_sendTestEmailSpinner startAnimation:self]; // animate spinner
 
     // Setup a completion block
-    void (^didComplete)() = ^void(NSError *error) {
+    void (^didComplete)(NSError *) = ^void(NSError *error) {
 //        [_sendTestEmailButton setEnabled:YES]; // enable button
         [_sendTestEmailSpinner setHidden:YES]; // hide spinner
         [_sendTestEmailSpinner stopAnimation:self]; // stop animation
@@ -160,13 +187,8 @@
         }
 
         // Create an instance of the LGEmailer class
-        LGEmailer *emailer = [[LGEmailer alloc] init];
-
-        // Set the reply block
-        emailer.replyBlock = didComplete;
-
-        // Send the test email.
-        [emailer sendTestEmail];
+        LGEmailNotification *emailer = [[LGEmailNotification alloc] init];
+        [emailer sendTest:didComplete];
     }];
 }
 
@@ -192,4 +214,23 @@
     }
 }
 
+- (IBAction)testSlackWebhook:(NSButton *)sender
+{
+    LGSlackNotification *notification = [[LGSlackNotification alloc] init];
+    [_slackProgressIndicator startAnimation:self];
+
+    _slackHelpButton.hidden = YES;
+    _slackWebhookURLTF.enabled = NO;
+
+    sender.enabled = NO;
+    [notification sendTest:^(NSError *error) {
+        sender.enabled = YES;
+
+        _slackHelpButton.hidden = NO;
+        _slackWebhookURLTF.enabled = YES;
+
+        [_slackProgressIndicator stopAnimation:self];
+        [self.progressDelegate stopProgress:error];
+    }];
+}
 @end

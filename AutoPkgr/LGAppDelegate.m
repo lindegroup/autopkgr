@@ -22,19 +22,19 @@
 #import "LGAppDelegate.h"
 #import "LGAutoPkgr.h"
 #import "LGAutoPkgTask.h"
-#import "LGEmailer.h"
 #import "LGAutoPkgSchedule.h"
 #import "LGAutoPkgRecipe.h"
 #import "LGConfigurationWindowController.h"
 #import "LGAutoPkgrHelperConnection.h"
-#import "LGUserNotifications.h"
+#import "LGUserNotification.h"
 #import "LGDisplayStatusDelegate.h"
+#import "LGNotificationManager.h"
 
 #import <AHLaunchCtl/AHLaunchCtl.h>
 
 @interface LGAppDelegate () <NSMenuDelegate, LGDisplayStatusDelegate>
 @property (strong) LGConfigurationWindowController *configurationWindowController;
-@property (strong) LGUserNotifications *notificationDelegate;
+@property (strong) LGUserNotificationsDelegate *notificationDelegate;
 @property (strong) LGAutoPkgTaskManager *taskManager;
 @end
 
@@ -94,19 +94,18 @@
         NSString *suggestion = NSLocalizedString(@"You've chosen not to upgrade your recipe list. Either relaunch AutoPkgr to restart the migration process, or downgrade to an older 1.1.x AutoPkgr release.", nil);
 
         [NSApp presentError:
-         [NSError errorWithDomain:kLGApplicationName
-                             code:-1
-                         userInfo:@{
-                                    NSLocalizedDescriptionKey : message,
-                                    NSLocalizedRecoverySuggestionErrorKey : suggestion
-                                    }]];
+                   [NSError errorWithDomain:kLGApplicationName
+                                       code:-1
+                                   userInfo:@{
+                                               NSLocalizedDescriptionKey : message,
+                                               NSLocalizedRecoverySuggestionErrorKey : suggestion
+                                            }]];
 
         [[NSApplication sharedApplication] terminate:self];
     }
 
     // Setup User Notification Delegate
-    _notificationDelegate = [[LGUserNotifications alloc] init];
-    [NSUserNotificationCenter defaultUserNotificationCenter].delegate = _notificationDelegate;
+    _notificationDelegate = [[LGUserNotificationsDelegate alloc] initAsDefaultCenterDelegate];
 
     // calling stopProgress: here is an easy way to get the
     // menu reset to its default configuration
@@ -231,10 +230,10 @@
                               NSAssert([NSThread isMainThread], @"Reply not on main thread!");
 
                               [self stopProgress:error];
-                              if (report.count || error) {
-                                  LGEmailer *emailer = [LGEmailer new];
-                                  [emailer sendEmailForReport:report error:error];
-                              }
+                              LGNotificationManager *notifier = [[LGNotificationManager alloc] initWithReportDictionary:report errors:error];
+                              [notifier sendEnabledNotifications:^(NSError *error) {
+                                  NSLog(@"Done %@", error.localizedRecoverySuggestion);
+                              }];
                           }];
 }
 

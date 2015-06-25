@@ -203,6 +203,19 @@ static NSArray *_popularRepos;
     }
 }
 
+- (void)hardResetToOriginMaster
+{
+    if (self.path) {
+        [LGGitIntegration gitTaskWithArguments:@[ @"reset", @"--hard", @"origin/master" ]
+                                      repoPath:self.path
+                                         reply:^(NSString *s, NSError *e) {
+                                             if(e){
+                                                 [self statusDidChange:kLGAutoPkgRepoUpToDate];
+                                             }
+                                         }];
+    }
+}
+
 - (void)viewCommitsOnGitHub:(id)sender
 {
     if (self.commitsURL) {

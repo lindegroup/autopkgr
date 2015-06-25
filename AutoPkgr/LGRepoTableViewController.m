@@ -98,7 +98,7 @@
 
             statusCell.textField.stringValue = @"Fetching remote data...";
 
-        } else if ([[tableColumn identifier] isEqualToString:@"status"]){
+        } else if ([[tableColumn identifier] isEqualToString:@"status"]) {
             statusCell = [tableView makeViewWithIdentifier:tableColumn.identifier owner:self];
 
             [statusCell.progressIndicator startAnimation:self];
@@ -173,7 +173,7 @@
 
     LGAutoPkgRepo *repo = _searchedRepos[row];
 
-    void (^repoModified)(NSError *error) = ^void(NSError *error) {
+    void (^repoModified)(NSError * error) = ^void(NSError *error) {
         [_progressDelegate stopProgress:error];
         if (error) {
             sender.state = !sender.state;
@@ -251,15 +251,15 @@
     }
 
     if (repo.cloneURL) {
-        NSMenuItem *clipboardItem = [[NSMenuItem alloc] initWithTitle:@"Copy url to clipboard"
-                                                               action:@selector(copyToPasteboard:)
-                                                        keyEquivalent:@""];
+        NSMenuItem *cloneItem = [[NSMenuItem alloc] initWithTitle:@"Copy url to clipboard"
+                                                           action:@selector(copyToPasteboard:)
+                                                    keyEquivalent:@""];
 
-        clipboardItem.representedObject = repo.cloneURL.absoluteString;
-        clipboardItem.target = self;
-        [menu addItem:clipboardItem];
+        cloneItem.representedObject = repo.cloneURL.absoluteString;
+        cloneItem.target = self;
+        [menu addItem:cloneItem];
     }
-    
+
     if (repo.path) {
         NSMenuItem *clipboardItem = [[NSMenuItem alloc] initWithTitle:@"Copy path to clipboard"
                                                                action:@selector(copyToPasteboard:)
@@ -267,9 +267,23 @@
         clipboardItem.representedObject = repo.path;
         clipboardItem.target = self;
         [menu addItem:clipboardItem];
+
+        NSMenuItem *resetItem = [[NSMenuItem alloc] init];
+        // Reset repo menu itme
+
+        NSMutableAttributedString *str = [[NSMutableAttributedString alloc] initWithString:@"\u26A0 Hard Reset Repo \u26A0"];
+        NSRange range = NSMakeRange(0, str.length);
+        [str addAttributes:@{ NSForegroundColorAttributeName : [NSColor redColor],
+                              NSFontAttributeName : [NSFont systemFontOfSize:14]
+        }
+                     range:range];
+
+        resetItem.attributedTitle = str;
+
+        resetItem.action = @selector(hardResetToOriginMaster);
+        resetItem.target = repo;
+        [menu addItem:resetItem];
     }
-
-
 
     return menu;
 }
