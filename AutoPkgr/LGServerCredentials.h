@@ -112,7 +112,7 @@ typedef NS_ENUM(OSStatus, LGSSLTrustSettings) {
  *  The port for the server
  *  @note The `server` property must first be set. If no port is explicitly defined, this will attempt to guess the port based on default ports.
  */
-@property (nonatomic, readonly) NSInteger port;
+@property (nonatomic) NSInteger port;
 
 @end
 

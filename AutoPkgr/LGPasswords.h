@@ -22,9 +22,25 @@
 
 @interface LGPasswords : NSObject
 
-+ (void)getPasswordForAccount:(NSString *)account reply:(void (^)(NSString *password, NSError *error))reply;
++ (void)lockKeychain;
 
-+ (void)savePassword:(NSString *)password forAccount:(NSString *)account reply:(void (^)(NSError *error))reply;
++ (void)getPasswordForAccount:(NSString *)account
+                        reply:(void (^)(NSString *password, NSError *error))reply __deprecated_msg("use getPasswordForAccount:service:label:reply instead.");
+
++ (void)getPasswordForAccount:(NSString *)account
+                      service:(NSString *)service
+                        label:(NSString *)label
+                        reply:(void (^)(NSString *password, NSError *error))reply;
+
+
++ (void)savePassword:(NSString *)password
+          forAccount:(NSString *)account reply:(void (^)(NSError *error))reply __deprecated_msg("use savePassword:forAccount:service:label:reply instead.");
+
++ (void)savePassword:(NSString *)password
+          forAccount:(NSString *)account
+             service:(NSString *)service
+               label:(NSString *)label
+               reply:(void (^)(NSError *error))reply;
 
 + (void)migrateKeychainIfNeeded:(void (^)(NSString *password, NSError *error))reply;
 + (void)resetKeychainPrompt:(void (^)(NSError *))reply;

@@ -29,6 +29,30 @@
 // Is the service enabled? (most likely a lookup against NSUserDefaults)
 + (BOOL)isEnabled;
 
+// Whether the class stores information in the a keychain item. Defaults to NO;
++ (BOOL)storesInfoInKeychain;
+
+// If store in keychain is enabled, this needs to be overriden in subclass, (either a lookup against NSUserDefaults, or a constant string if the value will never change.)
++ (NSString *)account;
+
+/* (Optional) used to specify a unique service description for the keychain item, defaults to +serviceDescription
+ * @note this is mostly used when there's a possible service name clash with a previous keychain item.
+ */
++ (NSString *)keychainServiceDescription;
+
+/* (Optional) used to specify a unique lable for the keychain item, defaults to +serviceDescription
+ * @note this is mostly used when there's a possible label name clash with a previous keychain item.
+ */
++ (NSString *)keychainServiceLabel;
+
+// This will pull info from the keychain if +keychainServiceName. +storesInfoInKeychain must be set to YES, and +account must be defined in subclass;
++ (void)infoFromKeychain:(void(^)(NSString *infoOrPassword, NSError *error))reply;
+
+
+// This will pull info from the keychain if +keychainServiceName. +storesInfoInKeychain must be set to YES, and +account must be defined in subclass;
++ (void)saveInfoToKeychain:(NSString *)info reply:(void(^)(NSError *error))reply;
+
+
 - (instancetype)initWithReport:(LGAutoPkgReport *)report;
 
 @property (strong, nonatomic, readonly) LGAutoPkgReport *report;

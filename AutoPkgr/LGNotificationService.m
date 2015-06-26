@@ -16,12 +16,13 @@
 //
 
 #import "LGNotificationService.h"
+#import "LGPasswords.h"
 
 @implementation LGNotificationService
 
 - (instancetype)initWithReport:(LGAutoPkgReport *)report
 {
-    if (self = [super init]) {
+    if (self = [self init]) {
         _report = report;
     }
     return self;
@@ -42,6 +43,48 @@
 + (BOOL)reportsIntegrations
 {
     return NO;
+}
+
++ (BOOL)storesInfoInKeychain {
+    return NO;
+}
+
++ (NSString *)keychainServiceDescription {
+    return [self serviceDescription];
+}
+
++ (NSString *)keychainServiceLabel {
+    return nil;
+}
+
++ (NSString *)account {
+    if ([[self class] storesInfoInKeychain]) {
+        NSAssert(NO, @"Subclass must implement %@", NSStringFromSelector(_cmd));
+    }
+    return nil;
+}
+
++ (void)infoFromKeychain:(void (^)(NSString *, NSError *))reply {
+    if ([[self class] storesInfoInKeychain]) {
+        NSString *service = [[self class] keychainServiceDescription];
+        NSString *label = [[self class] keychainServiceLabel];
+        NSString *account = [[self class] account];
+        [LGPasswords getPasswordForAccount:account service:service label:label reply:reply];
+    } else {
+        return reply(nil, nil);
+    }
+}
+
++ (void)saveInfoToKeychain:(NSString *)info reply:(void (^)(NSError *))reply {
+    if ([[self class] storesInfoInKeychain]) {
+        NSString *service = [[self class] keychainServiceDescription];
+        NSString *label = [[self class] keychainServiceLabel];
+        NSString *account = [[self class] account];
+        [LGPasswords savePassword:info forAccount:account service:service label:label reply:reply];
+    } else {
+        return reply(nil);
+    }
+
 }
 
 - (void)send:(void (^)(NSError *))complete

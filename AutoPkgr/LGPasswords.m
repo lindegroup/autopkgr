@@ -31,42 +31,81 @@ NSString *appKeychainPath()
     return [@"~/Library/Keychains/AutoPkgr.keychain" stringByExpandingTildeInPath];
 }
 
-+ (void)getPasswordForAccount:(NSString *)account reply:(void (^)(NSString *, NSError *))reply
++ (void)lockKeychain
+{
+    NSString *appKeychain = @"AutoPkgr.keychain";
+    [[[AHKeychain alloc] initWithKeychain:appKeychain] lock];
+}
+
++ (void)getPasswordForAccount:(NSString *)account
+                      service:(NSString *)service
+                        label:(NSString *)label
+                        reply:(void (^)(NSString *, NSError *))reply
 {
     [[self class] getKeychain:^(AHKeychain *keychain) {
         [[NSOperationQueue mainQueue] addOperationWithBlock:^{
             if (keychain.keychainStatus == errSecSuccess) {
                 NSError *error = nil;
-                AHKeychainItem *item = [self keychainItemForAccount:account];
+                AHKeychainItem *item = [self keychainItemForAccount:account
+                                                            service:service
+                                                              label:label];
+
                 [keychain getItem:item error:&error];
-                [keychain lock];
-                    reply(item.password, error);
+                reply(item.password, error);
             } else {
                 reply(nil, [NSError errorWithDomain:kLGApplicationName code:keychain.keychainStatus userInfo:@{NSLocalizedDescriptionKey : keychain.statusDescription}]);
             }
         }];
     }];
+}
+
++ (void)getPasswordForAccount:(NSString *)account
+                        reply:(void (^)(NSString *, NSError *))reply
+{
+    NSString *label = [kLGApplicationName stringByAppendingString:@" Email Password"];
+    NSString *service = kLGAutoPkgrPreferenceDomain;
+    [self getPasswordForAccount:account service:service label:label reply:reply];
 };
 
-+ (void)savePassword:(NSString *)password forAccount:(NSString *)account reply:(void (^)(NSError *))reply
++ (void)savePassword:(NSString *)password
+          forAccount:(NSString *)account
+               reply:(void (^)(NSError *))reply
+{
+    NSString *label = [kLGApplicationName stringByAppendingString:@" Email Password"];
+    NSString *service = kLGAutoPkgrPreferenceDomain;
+    [self savePassword:password forAccount:account service:service label:label reply:reply];
+}
+
++ (void)savePassword:(NSString *)password
+          forAccount:(NSString *)account
+             service:(NSString *)service
+               label:(NSString *)label
+               reply:(void (^)(NSError *))reply
 {
     [[self class] getKeychain:^(AHKeychain *keychain) {
         [[NSOperationQueue mainQueue] addOperationWithBlock:^{
 
-        if (keychain.keychainStatus == errSecSuccess) {
-            NSError *error = nil;
-            AHKeychainItem *item = [self keychainItemForAccount:account];
-            item.password = password;
-            [keychain saveItem:item error:&error];
-            [keychain lock];
-                reply(error);
-        } else {
-            reply([NSError errorWithDomain:kLGApplicationName code:keychain.keychainStatus userInfo:@{NSLocalizedDescriptionKey : keychain.statusDescription}]);
-        }
+            if (keychain.keychainStatus == errSecSuccess) {
+                NSError *error = nil;
+                AHKeychainItem *item = [self keychainItemForAccount:account
+                                                            service:service
+                                                              label:label];
+
+                if (password.length == 0) {
+                    [keychain deleteItem:item error:&error];
+                    reply(error);
+                } else {
+                    item.password = password;
+                    [keychain saveItem:item error:&error];
+                    reply(error);
+                }
+                [keychain lock];
+            } else {
+                reply([NSError errorWithDomain:kLGApplicationName code:keychain.keychainStatus userInfo:@{NSLocalizedDescriptionKey : keychain.statusDescription}]);
+            }
         }];
     }];
 }
-
 #pragma mark - Migration method
 + (void)migrateKeychainIfNeeded:(void (^)(NSString *password, NSError *error))reply;
 {
@@ -89,8 +128,14 @@ NSString *appKeychainPath()
                 if(!error){
                     if([keychain changeKeychainPassword:oldPass to:key error:&error]){
                         NSString *account = [[LGDefaults standardUserDefaults] SMTPUsername];
+
                         NSLog(@"Successfully migrated keychain.");
-                        AHKeychainItem *item = [self keychainItemForAccount:account];
+
+                        NSString *label = [kLGApplicationName stringByAppendingString:@" Email Password"];
+                        NSString *service = kLGAutoPkgrPreferenceDomain;
+
+                        AHKeychainItem *item = [self keychainItemForAccount:account service:service label:label];
+
                         if ([keychain getItem:item error:&error]) {
                             reply(item.password, error);
                         }
@@ -148,11 +193,15 @@ NSString *appKeychainPath()
 }
 
 + (AHKeychainItem *)keychainItemForAccount:(NSString *)account
+                                   service:(NSString *)service
+                                     label:(NSString *)label
 {
     AHKeychainItem *item = [[AHKeychainItem alloc] init];
     item.account = account;
-    item.label = [kLGApplicationName stringByAppendingString:@" Email Password"];
-    item.service = kLGAutoPkgrPreferenceDomain;
+    item.service = service;
+    if (label) {
+        item.label = label;
+    }
     return item;
 }
 
