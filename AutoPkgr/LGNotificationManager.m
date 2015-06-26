@@ -21,6 +21,7 @@
 #import "LGEmailNotification.h"
 #import "LGSlackNotification.h"
 
+#import "LGPasswords.h"
 #import "LGIntegrationManager.h"
 
 static NSArray *serviceClasses()
@@ -30,6 +31,7 @@ static NSArray *serviceClasses()
     dispatch_once(&onceToken, ^{
         classes =  @[ [LGUserNotification class],
                       [LGEmailNotification class],
+                      [LGSlackNotification class],
                       ];
     });
     return classes;
@@ -100,6 +102,10 @@ static NSArray *serviceClasses()
             completedCounter ++;
             if (completedCounter >= expectedServices) {
                 NSError *error = [self processedError];
+
+                /* We're all done sending notifications
+                 * so go ahead and re-lock the keychain */
+                [LGPasswords lockKeychain];
                 dispatch_async(dispatch_get_main_queue(), ^{
                     complete(error);
                 });

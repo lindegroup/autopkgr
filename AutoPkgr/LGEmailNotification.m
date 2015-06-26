@@ -42,6 +42,27 @@
     return [[LGDefaults standardUserDefaults] sendEmailNotificationsWhenNewVersionsAreFoundEnabled];
 }
 
++ (BOOL)storesInfoInKeychain
+{
+    return YES;
+}
+
++ (NSString *)account
+{
+    return [[LGDefaults standardUserDefaults] SMTPUsername];
+}
+
++ (NSString *)keychainServiceLabel
+{
+    return [kLGApplicationName stringByAppendingString:@" Email Password"];
+}
+
++ (NSString *)keychainServiceDescription
+{
+    return kLGAutoPkgrPreferenceDomain;
+}
+
+#pragma mark - Init
 - (instancetype)init
 {
     if (self = [super init]) {
@@ -86,12 +107,15 @@
      * 1) Server Name
      * 2) User Name, if authentication is enabled
      * 3) Password, if authentication is enabled */
-    __block LGHTTPCredential *credential = [[LGHTTPCredential alloc] init];
+    LGHTTPCredential *credential = [[LGHTTPCredential alloc] init];
+
     credential.server = _defaults.SMTPServer;
-    if (_defaults.SMTPUsername && _defaults.SMTPAuthenticationEnabled) {
-        credential.user = _defaults.SMTPUsername ?: @"";
-        [LGPasswords getPasswordForAccount:credential.user reply:^(NSString *password, NSError *error) {
-            credential.password = password ?: @"";
+    credential.port = _defaults.SMTPPort;
+
+    if (_defaults.SMTPAuthenticationEnabled) {
+        [[self class] infoFromKeychain:^(NSString *infoOrPassword, NSError *error) {
+            credential.user = [[self class] account];
+            credential.password = infoOrPassword ?: @"";
             reply(credential, error);
         }];
     } else {
@@ -102,7 +126,7 @@
 - (NSArray *)smtpTo
 {
     NSMutableArray *to = [[NSMutableArray alloc] init];
-    for (NSString *toAddress in [[LGDefaults standardUserDefaults] SMTPTo]) {
+    for (NSString *toAddress in _defaults.SMTPTo) {
         if (toAddress.length) {
             [to addObject:[MCOAddress addressWithMailbox:toAddress]];
         }
@@ -127,29 +151,29 @@
         }
     };
 
-    // Build the message.
-    MCOMessageBuilder *builder = [[MCOMessageBuilder alloc] init];
-
-    builder.header.from = [self smtpFrom];
-    builder.header.to = [self smtpTo];
-    builder.header.subject = fullSubject;
-    builder.htmlBody = message;
-
     [self getMailCredentials:^(LGHTTPCredential *credential, NSError *error) {
         if (error) {
             /* And error here means there was a problem getting the password */
             return didCompleteSendOperation(error);
         }
 
+        // Build the message.
+        MCOMessageBuilder *builder = [[MCOMessageBuilder alloc] init];
+
+        builder.header.from = [self smtpFrom];
+        builder.header.to = [self smtpTo];
+        builder.header.subject = fullSubject;
+        builder.htmlBody = message;
+        
         /* Configure the session details */
         MCOSMTPSession *session = [[MCOSMTPSession alloc] init];
         session.hostname = credential.server;
-        session.port = (int)_defaults.SMTPPort;
+        session.port = (int)credential.port;
+
         if (credential.user && credential.password) {
             session.username = credential.user;
             session.password = credential.password;
         }
-
 
         if (_defaults.SMTPTLSEnabled) {
             DLog(@"SSL/TLS is enabled for %@.", _defaults.SMTPServer);

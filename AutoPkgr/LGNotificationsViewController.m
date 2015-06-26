@@ -18,8 +18,8 @@
 //  limitations under the License.//
 
 #import "LGNotificationsViewController.h"
-#import "LGPasswords.h"
 #import "LGAutoPkgr.h"
+#import "LGPasswords.h"
 #import "LGTestPort.h"
 #import "LGEmailNotification.h"
 #import "LGSlackNotification.h"
@@ -75,6 +75,17 @@
     }];
 
     [self getKeychainPassword:_smtpPassword];
+
+    [LGSlackNotification infoFromKeychain:^(NSString *infoOrPassword, NSError *error) {
+        _slackWebhookURLTF.safe_stringValue = infoOrPassword;
+    }];
+
+
+    [NSTimer timerWithTimeInterval:5
+                            target:[LGPasswords class]
+                          selector:@selector(lockKeychain)
+                          userInfo:nil
+                           repeats:NO];
 }
 
 - (NSString *)tabLabel
@@ -85,16 +96,13 @@
 #pragma mark - Keychain Actions
 - (void)getKeychainPassword:(NSTextField *)sender
 {
-    NSString *account = _smtpUsername.stringValue;
-    if (account.length) {
-        [LGPasswords getPasswordForAccount:account reply:^(NSString *password, NSError *error) {
-            if (error) {
-                NSLog(@"Error getting password for %@ [%ld]: %@", account, error.code, error.localizedDescription);
-            } else {
-                _smtpPassword.safe_stringValue = password;
-            }
-        }];
-    }
+    [LGEmailNotification infoFromKeychain:^(NSString *infoOrPassword, NSError *error) {
+        if (error) {
+            NSLog(@"Error getting password for %@ [%ld]: %@", [LGEmailNotification account], error.code, error.localizedDescription);
+        } else {
+            _smtpPassword.safe_stringValue = infoOrPassword;
+        }
+    }];
 }
 
 - (IBAction)updateKeychainPassword:(id)sender
@@ -107,12 +115,11 @@
     NSString *account = _smtpUsername.safe_stringValue;
     NSString *password = _smtpPassword.safe_stringValue;
 
-    if (account && password) {
-        [LGPasswords savePassword:password forAccount:account reply:^(NSError *error) {
+    if (account) {
+        [LGEmailNotification saveInfoToKeychain:password reply:^(NSError *error) {
             if (reply) {
                 reply(error);
             }
-
             if (error) {
                 if (error.code == errSecAuthFailed || error.code == errSecDuplicateKeychain) {
                     [LGPasswords resetKeychainPrompt:^(NSError *error) {
@@ -216,21 +223,35 @@
 
 - (IBAction)testSlackWebhook:(NSButton *)sender
 {
-    LGSlackNotification *notification = [[LGSlackNotification alloc] init];
+    NSString *webHook = _slackWebhookURLTF.stringValue;
+
     [_slackProgressIndicator startAnimation:self];
 
     _slackHelpButton.hidden = YES;
     _slackWebhookURLTF.enabled = NO;
-
     sender.enabled = NO;
-    [notification sendTest:^(NSError *error) {
-        sender.enabled = YES;
 
+    void (^stopProgress)(NSError *) = ^(NSError *error){
+        sender.enabled = YES;
         _slackHelpButton.hidden = NO;
         _slackWebhookURLTF.enabled = YES;
-
         [_slackProgressIndicator stopAnimation:self];
         [self.progressDelegate stopProgress:error];
+    };
+
+    [LGSlackNotification saveInfoToKeychain:webHook reply:^(NSError *error) {
+        if (error) {
+            stopProgress(error);
+        } else {
+            LGSlackNotification *notification = [[LGSlackNotification alloc] init];
+            [notification sendTest:^(NSError *error) {
+                stopProgress(error);
+            }];
+        }
     }];
+}
+
+- (IBAction)changeWebHookURL:(NSTextField *)sender {
+    [LGSlackNotification saveInfoToKeychain:sender.stringValue reply:^(NSError *error){}];
 }
 @end

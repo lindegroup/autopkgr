@@ -232,7 +232,7 @@
                               [self stopProgress:error];
                               LGNotificationManager *notifier = [[LGNotificationManager alloc] initWithReportDictionary:report errors:error];
                               [notifier sendEnabledNotifications:^(NSError *error) {
-                                  NSLog(@"Done %@", error.localizedRecoverySuggestion);
+                                  [self stopProgress:error];
                               }];
                           }];
 }
