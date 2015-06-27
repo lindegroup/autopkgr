@@ -28,39 +28,7 @@
 #pragma mark - General integration protocol
 @class LGGitHubReleaseInfo;
 
-/* integration subclasses automatically conform to this protocol,
- * so it is unnecissary to explicitly declare it */
-@protocol LGIntegrationSubclass <NSObject>
-@required
-/**
- *  Name of the integration
- */
-+ (NSString *)name;
 
-@optional
-/**
- *  Any custom install actions that need to be taken.
- */
-- (void)customInstallActions:(void(^)(NSError *error))reply;
-
-/**
- *  Any custom uninstall actions that need to be taken.
- */
-- (void)customUninstallActions:(void(^)(NSError *error))reply;
-
-/**
- *  By default this looks for the version in the receipt for an installed package with the name specified in packageIdentifier. Override this to customize the technique.
- *  @note you should not call this directly externally, and is used to initialize LGIntegrationInfo objects without the need for subclassing that too. To access this information externally use the integration.info property.
- */
-@property (copy, nonatomic, readonly) NSString *installedVersion;
-
-/**
- *  By default this is obtained from the GitHub repo. Override this to provide alternate ways to determine remote version.
- *  @note you should not call this directly, and is used to initialize LGIntegrationInfo objects without the need for subclassing that too. To access this information externally use the integration.info property.
- */
-@property (copy, nonatomic, readonly) NSString *remoteVersion;
-
-@end
 
 #pragma mark - Package Installer Protocol
 /**
@@ -87,20 +55,6 @@
 
 @optional
 /**
- *  Home page for the integration
- *
- *  @return URL string.
- */
-+ (NSURL *)homePage;
-
-/**
- *  Credits for the integration.
- *
- *  @return Credits.
- */
-+ (NSString *)credits;
-
-/**
  *  Whether the integration is uninstallable. Defaults to YES;
  *
  *  @return YES if the integration can be uninstalled, no otherwise
@@ -121,20 +75,15 @@
 @protocol LGIntegrationSharedProcessor <LGIntegrationSubclass>
 @required
 /**
- *  Components of the integration that indicate the integration is successful installed.
- *  @note This is only required when the integration has the SharedProcessor flag set.
- *  @note it is unnecessary to list every item of the installer. If you have a integration that installs components in separate file system locations you should list one from each. For example JSSImporter.py exists in /Library/AutoPkg/autopkglib, but requires the python-jss library in /Library/Python/2.7/site-packages/python_jss-0.5.9-py2.7.egg/jss so each should be checked to determine if successfully installed
- */
-+ (NSArray *)components;
-
-/**
  *  Default repository if the integration is an autopkg shared processor.
  */
 + (NSString *)defaultRepository;
-
 @end
 
-@interface LGIntegration () <LGIntegrationSubclass, LGProgressDelegate>
+
+
+@interface LGIntegration () <LGProgressDelegate>
+-(NSString *)remoteVersion; // This is just here to so subclasses have access to the super's implementation.
 
 #pragma mark - Instance methods to override
 

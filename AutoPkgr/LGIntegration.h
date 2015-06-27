@@ -21,6 +21,8 @@
 #import <Foundation/Foundation.h>
 #import "LGProgressDelegate.h"
 
+@class LGIntegrationInfo;
+
 extern NSString *const kLGNotificationIntegrationStatusDidChange;
 
 typedef NS_ENUM(NSInteger, LGIntegrationTypeFlags) {
@@ -66,8 +68,66 @@ typedef NS_ENUM(OSStatus, LGIntegrationInstallStatus) {
     kLGIntegrationUpToDate,
 };
 
-#pragma mark - Integration
-@class LGIntegrationInfo;
+#pragma mark - Integration Protocol
+/**
+ *  Base protocol for the subclass. This should not be used as a protocol directly, 
+ *  instead Import any of the sub-protocols listed in LGIntegration+Protocols.
+ */
+@protocol LGIntegrationSubclass <NSObject>
+@required
+/**
+ *  Name of the integration
+ */
++ (NSString *)name;
+
+/**
+ *  @return  Author / License
+ */
++ (NSString *)credits;
+
+/**
+ *  @return Link to the home page of the integration.
+ */
++ (NSURL *)homePage;
+
+@optional
+/**
+ *  Short Name of the Integration if the name too long to fit on a button
+ */
++ (NSString *)shortName;
+
+/**
+ *  Components of the integration that indicate the integration is successful installed.
+ *  @note it is unnecessary to list every item of the installer. If you have a integration that installs components in separate file system locations you should list one from each. For example JSSImporter.py exists in /Library/AutoPkg/autopkglib, but requires the python-jss library in /Library/Python/2.7/site-packages/python_jss-0.5.9-py2.7.egg/jss so each should be checked to determine if successfully installed
+ */
++ (NSArray *)components;
+
+// If the integration can be uninstalled.
++ (BOOL)isUninstallable;
+
+/**
+ *  Any custom install actions that need to be taken.
+ */
+- (void)customInstallActions:(void(^)(NSError *error))reply;
+
+/**
+ *  Any custom uninstall actions that need to be taken.
+ */
+- (void)customUninstallActions:(void(^)(NSError *error))reply;
+
+/**
+ *  By default this looks for the version in the receipt for an installed package with the name specified in packageIdentifier. Override this to customize the technique.
+ *  @note you should not call this directly externally, and is used to initialize LGIntegrationInfo objects without the need for subclassing that too. To access this information externally use the integration.info property.
+ */
+@property (copy, nonatomic, readonly) NSString *installedVersion;
+
+/**
+ *  By default this is obtained from the GitHub repo. Override this to provide alternate ways to determine remote version.
+ *  @note you should not call this directly, and is used to initialize LGIntegrationInfo objects without the need for subclassing that too. To access this information externally use the integration.info property.
+ */
+@property (copy, nonatomic, readonly) NSString *remoteVersion;
+
+@end
 
 /**
  *  LGIntegration is an abstract class for associated integrations.
@@ -79,6 +139,8 @@ typedef NS_ENUM(OSStatus, LGIntegrationInstallStatus) {
  someButton.target = integration;
  someButton.target.action = @selector(install:);
 
+ // getInfo will automatically trigger an
+ // asynchronous request for remote information.
  [integration getInfo:^(LGIntegrationInfo *info) {
     someButton.target.enabled = info.needsInstalled;
     someButton.target.title = info.installButtonTitle;
@@ -86,30 +148,9 @@ typedef NS_ENUM(OSStatus, LGIntegrationInstallStatus) {
     someTextFiled.stringValue = info.statusString;
  }];
     @endcode
- *  @discussion There a a number of properties / methods that a subclass is required to override @code
- // These are required by all.
- + (NSString *)name
-
- // These are only required for installer package flag set.
- + (NSString *)binary
- + (NSArray *)components
- + (NSString *)gitHubURL
- + (NSString *)packageIdentifier
-
- @endcode Many other methods may need to get overridden for proper functioning. See LGIntegration.h and LGIntegration+Private.h for a comprehensive list.
+ *  @discussion A subclass should conform to at least one of the Integration protocols Many other methods may need to get overridden for proper functioning. See LGIntegration.h and LGIntegration+Private.h for a comprehensive list.
  */
-
 @interface LGIntegration : NSObject
-
-/**
- *  Name of the Integration
- */
-+ (NSString *)name;
-
-/**
- *  Short Name of the Integration if the name too long to fit on a button
- */
-+ (NSString *)shortName;
 
 /**
  * Check if the integration meets system requirements to proceed with installation.
@@ -122,12 +163,6 @@ typedef NS_ENUM(OSStatus, LGIntegrationInstallStatus) {
 
 // If the integration is installed.
 + (BOOL)isInstalled;
-
-// If the integration can be uninstalled.
-+ (BOOL)isUninstallable;
-
-+ (NSString *)credits;
-+ (NSURL *)homePage;
 
 @property (weak) id<LGProgressDelegate> progressDelegate;
 

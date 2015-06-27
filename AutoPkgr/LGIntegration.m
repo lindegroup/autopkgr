@@ -20,6 +20,8 @@
 #import "LGIntegration.h"
 #import "LGIntegration+Protocols.h"
 #import "LGAutoPkgr.h"
+#import "LGAutoPkgRepo.h"
+
 #import "LGInstaller.h"
 #import "LGUninstaller.h"
 #import "LGAutoPkgTask.h"
@@ -43,7 +45,7 @@ static dispatch_queue_t autopkgr_integration_synchronizer_queue()
 
 NSString *const kLGNotificationIntegrationStatusDidChange = @"com.lindegroup.autopkgr.notification.integration.status.did.change";
 
-@interface LGIntegration ()
+@interface LGIntegration ()<LGIntegrationSubclass>
 @property (strong, nonatomic, readwrite) LGIntegrationInfo *info;
 @end
 
@@ -98,7 +100,8 @@ void subclassMustConformToProtocol(id className)
 + (BOOL)isInstalled
 {
     if ((self.typeFlags & kLGIntegrationTypeAutoPkgSharedProcessor) && (![self components])) {
-        return [[LGAutoPkgTask repoList] containsObject:[self defaultRepository]];
+        NSPredicate *match = [NSPredicate predicateWithFormat:@"%K == %@", kLGAutoPkgRepoURLKey, [[self class] defaultRepository]];
+        return [[LGAutoPkgTask repoList] filteredArrayUsingPredicate:match].count;
     } else {
         NSFileManager *fm = [NSFileManager defaultManager];
         for (NSString *file in self.components) {
@@ -185,9 +188,6 @@ void subclassMustConformToProtocol(id className)
 
 + (NSArray *)components
 {
-    if ([self typeFlags] & kLGIntegrationTypeAutoPkgSharedProcessor) {
-        subclassMustImplement(self, _cmd);
-    }
     return nil;
 }
 
@@ -334,7 +334,7 @@ void subclassMustConformToProtocol(id className)
             }
         }
     } else if (typeFlags & kLGIntegrationTypeAutoPkgSharedProcessor) {
-        _installedVersion = @"Shared Processor";
+        _installedVersion = @"";
     }
 
     return _installedVersion;
@@ -475,6 +475,8 @@ void subclassMustConformToProtocol(id className)
                     complete(error);
                 }
             }];
+        } else if (typeFlags & kLGIntegrationTypeAutoPkgSharedProcessor) {
+            removeRepo();
         }
     }
 }

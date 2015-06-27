@@ -18,7 +18,8 @@
 #import "LGIntegration+Protocols.h"
 
 // Define the protocols you intend to conform to...
-@interface LGIntegrationTemplate () <LGIntegrationPackageInstaller, LGIntegrationSharedProcessor>
+@interface LGIntegrationTemplate () <LGIntegrationPackageInstaller,
+                                            LGIntegrationSharedProcessor>
 @end
 
 #pragma mark - Integration overrides
@@ -29,22 +30,25 @@
 @synthesize gitHubInfo = _gitHubInfo;
 
 #pragma mark - Class overrides
-+ (NSString *)name
++ (NSString *)name // (REQUIRED)
 {
     return @"Integration Name";
 }
 
-+ (NSString *)shortName {
++ (NSString *)shortName
+{
     /*If the name of the integration is Longer that 10 characters,
      * put an abberviated name here so the buttons don't overflow */
     return @"IGName";
 }
 
-+ (NSString *)credits {
++ (NSString *)credits // (REQUIRED)
+{
     return @"Copyright 2014 Your Name\nhttp://www.apache.org/licenses/LICENSE-2.0";
 }
 
-+ (NSURL *)homePage {
++ (NSURL *)homePage // (REQUIRED)
+{
     return [NSURL URLWithString:@"https://github.com/project/"];
 }
 
@@ -53,7 +57,7 @@
     return @"https://api.github.com/repos/reponame/releases";
 }
 
-+ (NSString *)defaultRepository
++ (NSString *)defaultRepository // (REQUIRED FOR SHARED PROCESSOR)
 {
     return @"https://github.com/yourusername/project.git";
 }
