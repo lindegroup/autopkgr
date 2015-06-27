@@ -63,6 +63,12 @@
 		BE0E857919D668F600B25B5E /* LGHTTPRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = BE0E857819D668F600B25B5E /* LGHTTPRequest.m */; };
 		BE1C810319E8224000EF77F3 /* NSImage+statusLight.m in Sources */ = {isa = PBXBuildFile; fileRef = BE1C810219E8224000EF77F3 /* NSImage+statusLight.m */; };
 		BE1C810419E8224000EF77F3 /* NSImage+statusLight.m in Sources */ = {isa = PBXBuildFile; fileRef = BE1C810219E8224000EF77F3 /* NSImage+statusLight.m */; };
+		BE2337CA1B3E42EC00256F85 /* LGMacPatchIntegration.m in Sources */ = {isa = PBXBuildFile; fileRef = BE2337C91B3E42EC00256F85 /* LGMacPatchIntegration.m */; };
+		BE2337CB1B3E42EC00256F85 /* LGMacPatchIntegration.m in Sources */ = {isa = PBXBuildFile; fileRef = BE2337C91B3E42EC00256F85 /* LGMacPatchIntegration.m */; };
+		BE2337CF1B3E482100256F85 /* LGMacPatchIntegrationView.m in Sources */ = {isa = PBXBuildFile; fileRef = BE2337CD1B3E482100256F85 /* LGMacPatchIntegrationView.m */; };
+		BE2337D01B3E482100256F85 /* LGMacPatchIntegrationView.m in Sources */ = {isa = PBXBuildFile; fileRef = BE2337CD1B3E482100256F85 /* LGMacPatchIntegrationView.m */; };
+		BE2337D11B3E482100256F85 /* LGMacPatchIntegrationView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BE2337CE1B3E482100256F85 /* LGMacPatchIntegrationView.xib */; };
+		BE2337D21B3E482100256F85 /* LGMacPatchIntegrationView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BE2337CE1B3E482100256F85 /* LGMacPatchIntegrationView.xib */; };
 		BE2D58781B32EF110042EF1E /* LocalizableAutoPkg.strings in Resources */ = {isa = PBXBuildFile; fileRef = BE2D58761B32EF110042EF1E /* LocalizableAutoPkg.strings */; };
 		BE2D58791B32EF110042EF1E /* LocalizableAutoPkg.strings in Resources */ = {isa = PBXBuildFile; fileRef = BE2D58761B32EF110042EF1E /* LocalizableAutoPkg.strings */; };
 		BE32178B19ED9ACA00A92E5A /* LGRecipeOverrides.m in Sources */ = {isa = PBXBuildFile; fileRef = BE32178A19ED9ACA00A92E5A /* LGRecipeOverrides.m */; };
@@ -355,6 +361,11 @@
 		BE13A88919E2568D008A49A1 /* helper-tool-codesign-config.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = "helper-tool-codesign-config.py"; sourceTree = "<group>"; };
 		BE1C810119E8224000EF77F3 /* NSImage+statusLight.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSImage+statusLight.h"; path = "Custom Categories/NSImage+statusLight.h"; sourceTree = "<group>"; };
 		BE1C810219E8224000EF77F3 /* NSImage+statusLight.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSImage+statusLight.m"; path = "Custom Categories/NSImage+statusLight.m"; sourceTree = "<group>"; };
+		BE2337C81B3E42EC00256F85 /* LGMacPatchIntegration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGMacPatchIntegration.h; sourceTree = "<group>"; };
+		BE2337C91B3E42EC00256F85 /* LGMacPatchIntegration.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGMacPatchIntegration.m; sourceTree = "<group>"; };
+		BE2337CC1B3E482100256F85 /* LGMacPatchIntegrationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LGMacPatchIntegrationView.h; path = "View-Controllers/LGMacPatchIntegrationView.h"; sourceTree = "<group>"; };
+		BE2337CD1B3E482100256F85 /* LGMacPatchIntegrationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LGMacPatchIntegrationView.m; path = "View-Controllers/LGMacPatchIntegrationView.m"; sourceTree = "<group>"; };
+		BE2337CE1B3E482100256F85 /* LGMacPatchIntegrationView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = LGMacPatchIntegrationView.xib; path = "View-Controllers/LGMacPatchIntegrationView.xib"; sourceTree = "<group>"; };
 		BE2D58771B32EF110042EF1E /* en */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/LocalizableAutoPkg.strings; sourceTree = "<group>"; };
 		BE32178919ED9ACA00A92E5A /* LGRecipeOverrides.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGRecipeOverrides.h; sourceTree = "<group>"; };
 		BE32178A19ED9ACA00A92E5A /* LGRecipeOverrides.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGRecipeOverrides.m; sourceTree = "<group>"; };
@@ -899,6 +910,9 @@
 				BE09F6581B2694ED00EE4AA7 /* LGAutoPkgIntegrationView.h */,
 				BE09F6591B2694ED00EE4AA7 /* LGAutoPkgIntegrationView.m */,
 				BE09F65A1B2694ED00EE4AA7 /* LGAutoPkgIntegrationView.xib */,
+				BE2337CC1B3E482100256F85 /* LGMacPatchIntegrationView.h */,
+				BE2337CD1B3E482100256F85 /* LGMacPatchIntegrationView.m */,
+				BE2337CE1B3E482100256F85 /* LGMacPatchIntegrationView.xib */,
 				BE32B0351B2735DF0071778B /* LGGitIntegrationView.h */,
 				BE32B0361B2735DF0071778B /* LGGitIntegrationView.m */,
 				BE32B0371B2735DF0071778B /* LGGitIntegrationView.xib */,
@@ -1022,6 +1036,8 @@
 				BEEFE6C61AEBEB1000882C89 /* LGGitIntegration.m */,
 				BEEFE6CC1AEC761F00882C89 /* LGJSSImporterIntegration.h */,
 				BEEFE6CD1AEC761F00882C89 /* LGJSSImporterIntegration.m */,
+				BE2337C81B3E42EC00256F85 /* LGMacPatchIntegration.h */,
+				BE2337C91B3E42EC00256F85 /* LGMacPatchIntegration.m */,
 				BE4DD53A1B11740900854FD8 /* LGMunkiIntegration.h */,
 				BE4DD53D1B11743700854FD8 /* LGMunkiIntegration.m */,
 			);
@@ -1163,6 +1179,7 @@
 				BE2D58781B32EF110042EF1E /* LocalizableAutoPkg.strings in Resources */,
 				BE38EAA51B0CFEBB009FCBEB /* LGIntegrationsViewController.xib in Resources */,
 				1AC98420195CEC360071CAB3 /* LGConfigurationWindowController.xib in Resources */,
+				BE2337D11B3E482100256F85 /* LGMacPatchIntegrationView.xib in Resources */,
 				BE38EA791B0B8DF7009FCBEB /* LGRecipeInfoView.xib in Resources */,
 				BE0BACD21A2560AE00554989 /* LGJSSDistributionPointsPrefPanel.xib in Resources */,
 				BE67E8761A44E10500484151 /* LGRecipeSearchPanel.xib in Resources */,
@@ -1184,6 +1201,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				BED136AA1AC0593A003EBF0F /* report_0.4.3.plist in Resources */,
+				BE2337D21B3E482100256F85 /* LGMacPatchIntegrationView.xib in Resources */,
 				BE38EA7A1B0B8DF7009FCBEB /* LGRecipeInfoView.xib in Resources */,
 				BE81F2451B22C211007D16C4 /* LGViewWindowController.xib in Resources */,
 				BED136B41AC35650003EBF0F /* report_0.4.2.plist in Resources */,
@@ -1364,6 +1382,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BE2337CA1B3E42EC00256F85 /* LGMacPatchIntegration.m in Sources */,
 				BE053D151A8F90920021D97B /* LGPasswords.m in Sources */,
 				BE0BACD11A2560AE00554989 /* LGJSSDistributionPointsPrefPanel.m in Sources */,
 				BECDABA71B254E5900544388 /* LGAbsoluteManageIntegrationView.m in Sources */,
@@ -1395,6 +1414,7 @@
 				BE0BB0FB1B3C9563007F9DA5 /* LGSlackNotification.m in Sources */,
 				BEFA4DB31B06679F00764BF0 /* LGAutoPkgResultHandler.m in Sources */,
 				BE5E55A51B1B9EBB0025CFD3 /* LGAutoPkgRepo.m in Sources */,
+				BE2337CF1B3E482100256F85 /* LGMacPatchIntegrationView.m in Sources */,
 				BE0A75491B04EC7400F70C9E /* NSString+versionCompare.m in Sources */,
 				BEC1258519F045EB006696C4 /* LGRecipeTableViewController.m in Sources */,
 				BECDABA21B252B3900544388 /* NSOpenPanel+typeChooser.m in Sources */,
@@ -1476,6 +1496,7 @@
 				BEFC3C7E1A3DF16700C789E9 /* LGRecipeOverrides.m in Sources */,
 				BEFC3C7F1A3DF16700C789E9 /* LGTableView.m in Sources */,
 				BE5E55A61B1B9EBB0025CFD3 /* LGAutoPkgRepo.m in Sources */,
+				BE2337CB1B3E42EC00256F85 /* LGMacPatchIntegration.m in Sources */,
 				BED136B21AC26B7C003EBF0F /* NSString+html_report.m in Sources */,
 				BEFA4DBE1B08F57800764BF0 /* LGAutoPkgRecipe.m in Sources */,
 				BEFC3C821A3DF16700C789E9 /* LGConstants.m in Sources */,
@@ -1488,6 +1509,7 @@
 				BE81F2241B20EFF2007D16C4 /* LGAbsoluteManageIntegration.m in Sources */,
 				BEFC3C851A3DF16700C789E9 /* LGHostInfo.m in Sources */,
 				BEFC3C861A3DF16700C789E9 /* LGHTTPRequest.m in Sources */,
+				BE2337D01B3E482100256F85 /* LGMacPatchIntegrationView.m in Sources */,
 				BEFC3C881A3DF16700C789E9 /* LGAutoPkgrAuthorizer.m in Sources */,
 				BECDAB961B24C29600544388 /* LGMunkiIntegrationView.m in Sources */,
 				BE0BB0F31B3C2311007F9DA5 /* LGNotificationManager.m in Sources */,
