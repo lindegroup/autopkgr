@@ -162,12 +162,19 @@
             }
 
             NSAlert *alert = [NSAlert alertWithMessageText:error.localizedDescription defaultButton:@"OK" alternateButton:nil otherButton:nil informativeTextWithFormat:@"%@", truncatedString ];
+            alert.alertStyle = NSCriticalAlertStyle;
 
             // If AutoPkg exits -1 it may be misconfigured
             if (error.code == kLGErrorAutoPkgConfig) {
                 [alert addButtonWithTitle:@"Try to repair settings"];
                 selector = @selector(didEndWithPreferenceRepairRequest:returnCode:);
             }
+
+            /* Set accessory view so the size of the alert
+             * more closely matches the size of the window. */
+            NSInteger width = self.window.frame.size.width * 0.75;
+            alert.accessoryView = [[NSView alloc]
+                                   initWithFrame:NSMakeRect(0, 0, width, FLT_MIN)];
 
             [alert beginSheetModalForWindow:self.window
                               modalDelegate:self
