@@ -287,7 +287,9 @@ static NSMutableDictionary *_identifierURLStore = nil;
     for (NSString *searchDir in searchDirs) {
         if (![searchDir isEqualToString:@"."]) {
             NSArray *recipeArray = [self findRecipesRecursivelyAtPath:searchDir.stringByExpandingTildeInPath isOverride:NO activeRecipes:activeRecipes];
-            [allRecipes addObjectsFromArray:recipeArray];
+            if (recipeArray.count) {
+                [allRecipes addObjectsFromArray:recipeArray];
+            }
         }
     }
 
@@ -318,7 +320,9 @@ static NSMutableDictionary *_identifierURLStore = nil;
     }
 
     // Now add the valid overrides into the recipeArray
-    [allRecipes addObjectsFromArray:validOverrides];
+    if (validOverrides.count) {
+        [allRecipes addObjectsFromArray:validOverrides];
+    }
 
     // Make a sorted array using the recipe Name as the sort key.
     NSSortDescriptor *descriptor = [[NSSortDescriptor alloc] initWithKey:kLGAutoPkgRecipeNameKey
@@ -374,7 +378,10 @@ static NSMutableDictionary *_identifierURLStore = nil;
         if (error) {
             NSLog(@"Error reading %@.", autoPkgrRecipeList);
         } else {
-            [activeRecipes addObjectsFromArray:autoPkgrRecipeList.split_byLine];
+            NSArray *recipes = autoPkgrRecipeList.split_byLine;
+            if (recipes.count) {
+                [activeRecipes addObjectsFromArray:recipes];
+            }
         }
     }
 

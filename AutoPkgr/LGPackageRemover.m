@@ -119,7 +119,10 @@ static dispatch_queue_t autopkgr_pkg_remover_queue()
 
     dispatch_async(autopkgr_pkg_remover_queue(), ^{
         NSMutableArray *files = [[NSMutableArray alloc] init];
-        [files addObjectsFromArray:[[self bomForIdentifiers:validIdentifiers error:&error] array]];
+        NSArray *valideIdentifiers = [[self bomForIdentifiers:validIdentifiers error:&error] array];
+        if (valideIdentifiers.count) {
+            [files addObjectsFromArray:valideIdentifiers];
+        }
 
         // Remove the files...
         double count = 0.0;
@@ -270,7 +273,9 @@ static dispatch_queue_t autopkgr_pkg_remover_queue()
         }
     }
 
-    [files addObjectsFromArray:[directories array]];
+    if (directories.array.count) {
+        [files addObjectsFromArray:directories.array];
+    }
 
     return files;
 }

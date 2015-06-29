@@ -421,7 +421,9 @@ typedef void (^AutoPkgReplyErrorBlock)(NSError *error);
      *  the path to autopkg set as the first object during init
      */
     _arguments = arguments;
-    [self.internalArgs addObjectsFromArray:arguments];
+    if (arguments.count) {
+        [self.internalArgs addObjectsFromArray:arguments];
+    }
 
     NSString *verbString = [_arguments firstObject];
     if ([verbString isEqualToString:@"version"]) {

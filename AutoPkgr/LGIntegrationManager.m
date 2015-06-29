@@ -75,6 +75,8 @@ static void *XXInfoStatusChange = &XXInfoStatusChange;
         for (Class integrationClass in __integrationClasses) {
             LGIntegration *integration = nil;
             if ((integration = [[integrationClass alloc] init])) {
+                NSAssert(integration, @"Integration was not properly initialized.");
+                
                 [initedIntegrations addObject:integration];
                 // Add a notification for changes to the integration.
                 dispatch_async(dispatch_get_main_queue(), ^{
@@ -107,7 +109,9 @@ static void *XXInfoStatusChange = &XXInfoStatusChange;
 - (NSArray *)installedOrRequiredIntegrations
 {
     NSMutableOrderedSet *set = [NSMutableOrderedSet orderedSetWithArray:self.requiredIntegrations];
-    [set addObjectsFromArray:self.installedIntegrations];
+    if (self.installedIntegrations.count) {
+        [set addObjectsFromArray:self.installedIntegrations];
+    }
     return set.array;
 }
 
