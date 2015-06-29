@@ -18,8 +18,12 @@
 #import <Foundation/Foundation.h>
 
 #import "LGAutoPkgReport.h"
-@interface LGNotificationService : NSObject
 
+/**
+ *  Base protocol for LGNotification service.
+ */
+@protocol LGNotificationServiceProtocol <NSObject>
+@required
 // A short description of what the service is. Is included in error message. Must implement in subclass
 + (NSString *)serviceDescription;
 
@@ -29,6 +33,13 @@
 // Is the service enabled? (most likely a lookup against NSUserDefaults)
 + (BOOL)isEnabled;
 
+// Send the notification.
+- (void)send:(void (^)(NSError *))complete;
+
+// Send a test notification.
+- (void)sendTest:(void (^)(NSError *))complete;
+
+@optional
 // Whether the class stores information in the a keychain item. Defaults to NO;
 + (BOOL)storesInfoInKeychain;
 
@@ -44,6 +55,10 @@
  * @note this is mostly used when there's a possible label name clash with a previous keychain item.
  */
 + (NSString *)keychainServiceLabel;
+@end
+
+@interface LGNotificationService : NSObject
+
 
 // This will pull info from the keychain if +keychainServiceName. +storesInfoInKeychain must be set to YES, and +account must be defined in subclass;
 + (void)infoFromKeychain:(void(^)(NSString *infoOrPassword, NSError *error))reply;
@@ -52,7 +67,6 @@
 // This will pull info from the keychain if +keychainServiceName. +storesInfoInKeychain must be set to YES, and +account must be defined in subclass;
 + (void)saveInfoToKeychain:(NSString *)info reply:(void(^)(NSError *error))reply;
 
-
 - (instancetype)initWithReport:(LGAutoPkgReport *)report;
 
 @property (strong, nonatomic, readonly) LGAutoPkgReport *report;
@@ -60,6 +74,4 @@
 // Completion block when executed on sending
 @property (copy, nonatomic) void (^notificatonComplete)(NSError *error);
 
-- (void)send:(void (^)(NSError *))complete;
-- (void)sendTest:(void (^)(NSError *))complete;
 @end

@@ -100,6 +100,7 @@
 
         _integrationsView.modalWindow = self.window;
         _recipeRepoView.modalWindow = self.window;
+        _notificationView.modalWindow = self.window;
     }
 }
 

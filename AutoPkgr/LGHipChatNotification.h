@@ -1,10 +1,6 @@
+// LGHipChatNotification.h
 //
-//  LGIntegrationWindowController.h
-//  AutoPkgr
-//
-//  Created by Eldon on 6/7/15.
-//
-//  Copyright 2015 Eldon Ahrold
+// Copyright 2015 The Linde Group, Inc.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -19,10 +15,8 @@
 //  limitations under the License.
 //
 
-#import "LGViewWindowController.h"
-@class LGBaseIntegrationViewController;
+#import "LGNotificationService.h"
 
-@interface LGIntegrationWindowController : LGViewWindowController
-- (instancetype)initWithViewController:(LGBaseIntegrationViewController *)viewController;
+@interface LGHipChatNotification : LGNotificationService <LGNotificationServiceProtocol>
 
 @end

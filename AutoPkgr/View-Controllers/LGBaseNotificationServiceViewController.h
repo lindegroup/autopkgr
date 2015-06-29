@@ -1,10 +1,6 @@
-//
-//  LGIntegrationWindowController.h
-//  AutoPkgr
-//
-//  Created by Eldon on 6/7/15.
-//
-//  Copyright 2015 Eldon Ahrold
+// LGBaseNotificationServiceViewController.h
+// 
+// Copyright 2015 The Linde Group, Inc.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -19,10 +15,15 @@
 //  limitations under the License.
 //
 
-#import "LGViewWindowController.h"
-@class LGBaseIntegrationViewController;
+#import <Cocoa/Cocoa.h>
+#import "LGNotificationService.h"
 
-@interface LGIntegrationWindowController : LGViewWindowController
-- (instancetype)initWithViewController:(LGBaseIntegrationViewController *)viewController;
+@interface LGBaseNotificationServiceViewController : NSViewController <NSWindowDelegate>
+
+- (instancetype)initWithNotificationService:(id<LGNotificationServiceProtocol>)service;
+
+@property (strong, nonatomic, readonly) id<LGNotificationServiceProtocol>service;
+
+@property (weak) IBOutlet NSTextField *infoOrPasswordTextField; // Or NSSecureTextField
 
 @end

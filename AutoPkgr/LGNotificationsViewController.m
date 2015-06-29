@@ -23,6 +23,10 @@
 #import "LGTestPort.h"
 #import "LGEmailNotification.h"
 #import "LGSlackNotification.h"
+#import "LGHipChatNotification.h"
+
+#import "LGBaseNotificationServiceViewController.h"
+#import "LGNotificationServiceWindowController.h"
 
 @interface LGNotificationsViewController ()
 #pragma mark - Email
@@ -37,6 +41,8 @@
 @property (weak) IBOutlet NSTextField *slackWebhookURLTF;
 @property (weak) IBOutlet NSProgressIndicator *slackProgressIndicator;
 @property (weak) IBOutlet NSButton *slackHelpButton;
+
+@property (weak) IBOutlet NSButton *configureHipChatButton;
 
 // Status icons
 @property (weak) IBOutlet NSImageView *testSmtpServerStatus;
@@ -54,7 +60,9 @@
 
 @end
 
-@implementation LGNotificationsViewController
+@implementation LGNotificationsViewController {
+    LGNotificationServiceWindowController *_serviceWindow;
+}
 
 - (void)viewDidLoad
 {
@@ -64,6 +72,10 @@
 
 - (void)awakeFromNib
 {
+    self.configureHipChatButton.action = @selector(configure:);
+    self.configureHipChatButton.target = self;
+    self.configureHipChatButton.identifier = NSStringFromClass([LGHipChatNotification class]);
+
     [LGPasswords migrateKeychainIfNeeded:^(NSString *password, NSError *error) {
         if (error) {
             [NSApp presentError:error];
@@ -91,6 +103,31 @@
 - (NSString *)tabLabel
 {
     return NSLocalizedString(@"Alerts & Notifications", @"Tab label");
+}
+
+#pragma mark - Open Config Panel
+- (IBAction)configure:(NSButton *)sender {
+
+    Class viewClass = NSClassFromString([sender.identifier stringByAppendingString:@"View"]);
+    Class serviceClass = NSClassFromString(sender.identifier);
+
+    if (serviceClass && viewClass) {
+        id<LGNotificationServiceProtocol>service = [[serviceClass alloc] init];
+        LGBaseNotificationServiceViewController *serviceView = [[viewClass alloc] initWithNotificationService:service];
+
+        _serviceWindow = [[LGNotificationServiceWindowController alloc] initWithViewController:serviceView];
+
+        [NSApp beginSheet:_serviceWindow.window
+           modalForWindow:self.modalWindow
+            modalDelegate:self
+           didEndSelector:@selector(didEndConfigurePanel:)
+              contextInfo:NULL];
+    }
+}
+
+- (void)didEndConfigurePanel:(id)sender
+{
+    _serviceWindow = nil;
 }
 
 #pragma mark - Keychain Actions

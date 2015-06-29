@@ -21,6 +21,8 @@
 
 #import <Foundation/Foundation.h>
 
+// Exception Raise when subclass is required to implement a method.
+void subclassMustImplement(id sender, SEL _cmd);
 
 #pragma mark - AutoPkgr specific Error codes
 typedef NS_ENUM(NSInteger, LGErrorCodes) {

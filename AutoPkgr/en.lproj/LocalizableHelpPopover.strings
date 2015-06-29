@@ -18,3 +18,8 @@
 "slackHelpInfo" = "Incoming Webhooks are a simple way to post messages from external sources into Slack. They make use of normal HTTP requests with a JSON payload, which includes the message text and some options. Message Attachments can also be used in Incoming Webhooks to display richly-formatted messages that stand out from regular chat messages. Visit the slack webhooks documentation for more information.";
 
 "slackHelpInfoURL" = "https://api.slack.com/incoming-webhooks";
+
+"hipChatHelpInfoTitle" = "Hip Chat Help";
+"hipChatHelpInfo" = "To create the necissary API token, log into HipChat and navigate to the room you want to send messages to. Click 'Tokens' on the left hand side. Next create a token with the scope of 'Send Notification' and click 'Create'.\n\nThe 'Send user notifications to room members.' check box on this pane determines whether the message trigger a user notification (change the tab color, play a sound, notify mobile phones, etc). Each recipient's notification preferences are taken into account.";
+
+"hipChatHelpInfoURL" = "https://hipchat.com/rooms/";

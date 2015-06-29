@@ -17,6 +17,6 @@
 
 #import "LGNotificationService.h"
 
-@interface LGEmailNotification : LGNotificationService
+@interface LGEmailNotification : LGNotificationService <LGNotificationServiceProtocol>
 
 @end

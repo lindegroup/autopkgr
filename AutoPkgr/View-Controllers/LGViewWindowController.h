@@ -20,8 +20,6 @@
 
 #import <Cocoa/Cocoa.h>
 
-@class LGBaseIntegrationViewController;
-
 @interface LGViewWindowController : NSWindowController
 - (instancetype)init __unavailable;
 - (instancetype)initWithViewController:(NSViewController *)viewController;
