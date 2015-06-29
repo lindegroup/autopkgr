@@ -20,9 +20,13 @@
 #import "LGUserNotification.h"
 #import "LGEmailNotification.h"
 #import "LGSlackNotification.h"
+#import "LGHipChatNotification.h"
 
 #import "LGPasswords.h"
 #import "LGIntegrationManager.h"
+
+@interface LGNotificationService ()<LGNotificationServiceProtocol>
+@end
 
 static NSArray *serviceClasses()
 {
@@ -32,6 +36,7 @@ static NSArray *serviceClasses()
         classes =  @[ [LGUserNotification class],
                       [LGEmailNotification class],
                       [LGSlackNotification class],
+                      [LGHipChatNotification class],
                       ];
     });
     return classes;
@@ -98,6 +103,11 @@ static NSArray *serviceClasses()
             return complete(nil);
         }
 
+        /* Setup a completion callback block to keep track
+         * of the number of enabled services vs. the number
+         * of services that are done sending a message. Once
+         * everything has checked back in from their send
+         * operation call our `complete()` block. */
         void (^completedService)() = ^(){
             completedCounter ++;
             if (completedCounter >= expectedServices) {

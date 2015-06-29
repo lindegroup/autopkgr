@@ -59,7 +59,7 @@ typedef NS_ENUM(NSInteger, LGInstallType) {
 - (void)runInstaller:(NSString *)installerName
                reply:(void (^)(NSError *error))reply
 {
-    NSAssert([_progressDelegate conformsToProtocol:@protocol(LGProgressDelegate)], @"And approperiate progress delegate is not set for installer");
+    NSAssert([_progressDelegate conformsToProtocol:@protocol(LGProgressDelegate)], @"An approperiate progress delegate is not set for installer");
 
     __block NSString *progressMessage;
 

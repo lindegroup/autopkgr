@@ -1,10 +1,6 @@
-//
-//  LGIntegrationWindowController.h
-//  AutoPkgr
-//
-//  Created by Eldon on 6/7/15.
-//
-//  Copyright 2015 Eldon Ahrold
+// LGNotificationServiceWindowController.h
+// 
+// Copyright 2015 The Linde Group, Inc.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -20,9 +16,9 @@
 //
 
 #import "LGViewWindowController.h"
-@class LGBaseIntegrationViewController;
 
-@interface LGIntegrationWindowController : LGViewWindowController
-- (instancetype)initWithViewController:(LGBaseIntegrationViewController *)viewController;
+@class LGBaseNotificationServiceViewController;
+@interface LGNotificationServiceWindowController : LGViewWindowController
+- (instancetype)initWithViewController:(LGBaseNotificationServiceViewController *)viewController;
 
 @end

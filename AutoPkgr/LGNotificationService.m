@@ -17,6 +17,7 @@
 
 #import "LGNotificationService.h"
 #import "LGPasswords.h"
+#import "LGError.h"
 
 @implementation LGNotificationService
 
@@ -30,13 +31,13 @@
 
 + (NSString *)serviceDescription
 {
-    NSAssert(NO, @"Subclass must implement %@", NSStringFromSelector(_cmd));
+    subclassMustImplement(self, _cmd);
     return @"";
 }
 
 + (BOOL)isEnabled
 {
-    NSAssert(NO, @"Subclass must implement %@", NSStringFromSelector(_cmd));
+    subclassMustImplement(self, _cmd);
     return NO;
 }
 
@@ -49,18 +50,18 @@
     return NO;
 }
 
++ (NSString *)account {
+    if ([[self class] storesInfoInKeychain]) {
+        subclassMustImplement(self, _cmd);
+    }
+    return nil;
+}
+
 + (NSString *)keychainServiceDescription {
     return [self serviceDescription];
 }
 
 + (NSString *)keychainServiceLabel {
-    return nil;
-}
-
-+ (NSString *)account {
-    if ([[self class] storesInfoInKeychain]) {
-        NSAssert(NO, @"Subclass must implement %@", NSStringFromSelector(_cmd));
-    }
     return nil;
 }
 
@@ -84,16 +85,15 @@
     } else {
         return reply(nil);
     }
-
 }
 
 - (void)send:(void (^)(NSError *))complete
 {
-    NSAssert(NO, @"Subclass must implement %@", NSStringFromSelector(_cmd));
+    subclassMustImplement(self, _cmd);
 }
 
 - (void)sendTest:(void (^)(NSError *))complete
 {
-    NSAssert(NO, @"Subclass must implement %@", NSStringFromSelector(_cmd));
+    subclassMustImplement(self, _cmd);
 }
 @end

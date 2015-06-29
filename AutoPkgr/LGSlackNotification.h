@@ -17,6 +17,6 @@
 
 #import "LGNotificationService.h"
 
-@interface LGSlackNotification : LGNotificationService
+@interface LGSlackNotification : LGNotificationService <LGNotificationServiceProtocol>
 
 @end

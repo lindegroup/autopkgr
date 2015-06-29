@@ -21,7 +21,7 @@
 - (instancetype)initAsDefaultCenterDelegate;
 @end
 
-@interface LGUserNotification : LGNotificationService
+@interface LGUserNotification : LGNotificationService <LGNotificationServiceProtocol>
 + (void)sendNotificationOfTestEmailSuccess:(BOOL)success error:(NSError *)error;
 
 @end
