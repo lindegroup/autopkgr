@@ -38,10 +38,7 @@
 @property (weak) IBOutlet NSTextField *smtpUsername;
 @property (weak) IBOutlet NSSecureTextField *smtpPassword;
 
-@property (weak) IBOutlet NSTextField *slackWebhookURLTF;
-@property (weak) IBOutlet NSProgressIndicator *slackProgressIndicator;
-@property (weak) IBOutlet NSButton *slackHelpButton;
-
+@property (weak) IBOutlet NSButton *configureSlackButton;
 @property (weak) IBOutlet NSButton *configureHipChatButton;
 
 // Status icons
@@ -76,6 +73,10 @@
     self.configureHipChatButton.target = self;
     self.configureHipChatButton.identifier = NSStringFromClass([LGHipChatNotification class]);
 
+    self.configureSlackButton.action = @selector(configure:);
+    self.configureSlackButton.target = self;
+    self.configureSlackButton.identifier = NSStringFromClass([LGSlackNotification class]);
+
     [LGPasswords migrateKeychainIfNeeded:^(NSString *password, NSError *error) {
         if (error) {
             [NSApp presentError:error];
@@ -87,11 +88,6 @@
     }];
 
     [self getKeychainPassword:_smtpPassword];
-
-    [LGSlackNotification infoFromKeychain:^(NSString *infoOrPassword, NSError *error) {
-        _slackWebhookURLTF.safe_stringValue = infoOrPassword;
-    }];
-
 
     [NSTimer timerWithTimeInterval:5
                             target:[LGPasswords class]
@@ -258,37 +254,4 @@
     }
 }
 
-- (IBAction)testSlackWebhook:(NSButton *)sender
-{
-    NSString *webHook = _slackWebhookURLTF.stringValue;
-
-    [_slackProgressIndicator startAnimation:self];
-
-    _slackHelpButton.hidden = YES;
-    _slackWebhookURLTF.enabled = NO;
-    sender.enabled = NO;
-
-    void (^stopProgress)(NSError *) = ^(NSError *error){
-        sender.enabled = YES;
-        _slackHelpButton.hidden = NO;
-        _slackWebhookURLTF.enabled = YES;
-        [_slackProgressIndicator stopAnimation:self];
-        [self.progressDelegate stopProgress:error];
-    };
-
-    [LGSlackNotification saveInfoToKeychain:webHook reply:^(NSError *error) {
-        if (error) {
-            stopProgress(error);
-        } else {
-            LGSlackNotification *notification = [[LGSlackNotification alloc] init];
-            [notification sendTest:^(NSError *error) {
-                stopProgress(error);
-            }];
-        }
-    }];
-}
-
-- (IBAction)changeWebHookURL:(NSTextField *)sender {
-    [LGSlackNotification saveInfoToKeychain:sender.stringValue reply:^(NSError *error){}];
-}
 @end

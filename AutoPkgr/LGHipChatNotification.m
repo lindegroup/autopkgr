@@ -46,6 +46,11 @@
     return @"AutoPkgr HipChat API Token";
 }
 
++ (NSURL *)serviceURL
+{
+    return [NSURL URLWithString:@"https://hipchat.com"];
+}
+
 #pragma mark - Send
 - (void)send:(void (^)(NSError *))complete
 {

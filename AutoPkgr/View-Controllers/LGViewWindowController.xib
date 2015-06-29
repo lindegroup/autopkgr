@@ -20,24 +20,24 @@
         <window title="Window" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" oneShot="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" animationBehavior="default" id="F0z-JX-Cv5">
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES" fullSizeContentView="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
-            <rect key="contentRect" x="392" y="240" width="609" height="167"/>
+            <rect key="contentRect" x="392" y="240" width="713" height="167"/>
             <rect key="screenRect" x="0.0" y="0.0" width="1280" height="778"/>
             <value key="minSize" type="size" width="609" height="200"/>
             <view key="contentView" id="se5-gp-TjO">
-                <rect key="frame" x="0.0" y="-3" width="609" height="167"/>
+                <rect key="frame" x="0.0" y="0.0" width="713" height="167"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <box title="Box" borderType="line" translatesAutoresizingMaskIntoConstraints="NO" id="57I-Ql-Dza">
-                        <rect key="frame" x="17" y="79" width="575" height="70"/>
+                        <rect key="frame" x="17" y="79" width="679" height="70"/>
                         <view key="contentView">
-                            <rect key="frame" x="1" y="1" width="573" height="54"/>
+                            <rect key="frame" x="1" y="1" width="677" height="54"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         </view>
                         <color key="borderColor" white="0.0" alpha="0.41999999999999998" colorSpace="calibratedWhite"/>
                         <color key="fillColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     </box>
                     <button hidden="YES" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Jjn-EV-LWv">
-                        <rect key="frame" x="360" y="8" width="114" height="28"/>
+                        <rect key="frame" x="464" y="8" width="114" height="28"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="104" id="u3y-G4-RbD"/>
                         </constraints>
@@ -47,7 +47,7 @@
                         </buttonCell>
                     </button>
                     <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Vii-fD-PeB">
-                        <rect key="frame" x="476" y="8" width="118" height="28"/>
+                        <rect key="frame" x="580" y="8" width="118" height="28"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="108" id="I8L-bO-NhU"/>
                         </constraints>
@@ -60,7 +60,7 @@
                         </connections>
                     </button>
                     <button translatesAutoresizingMaskIntoConstraints="NO" id="sxc-H3-RRP">
-                        <rect key="frame" x="20" y="13" width="276" height="18"/>
+                        <rect key="frame" x="20" y="13" width="380" height="18"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="18" id="9Ch-45-RHL"/>
                         </constraints>
@@ -82,7 +82,7 @@
                         </textFieldCell>
                     </textField>
                     <progressIndicator horizontalHuggingPriority="750" verticalHuggingPriority="750" maxValue="100" displayedWhenStopped="NO" bezeled="NO" indeterminate="YES" controlSize="small" style="spinning" translatesAutoresizingMaskIntoConstraints="NO" id="mEb-5S-Cjl">
-                        <rect key="frame" x="342" y="14" width="16" height="16"/>
+                        <rect key="frame" x="446" y="14" width="16" height="16"/>
                     </progressIndicator>
                 </subviews>
                 <constraints>
@@ -106,7 +106,7 @@
             <connections>
                 <outlet property="delegate" destination="-2" id="0bl-1N-AYu"/>
             </connections>
-            <point key="canvasLocation" x="250.5" y="218.5"/>
+            <point key="canvasLocation" x="302.5" y="218.5"/>
         </window>
     </objects>
 </document>

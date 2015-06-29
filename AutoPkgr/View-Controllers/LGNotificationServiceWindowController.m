@@ -1,5 +1,5 @@
 // LGNotificationServiceWindowController.m
-// 
+//
 // Copyright 2015 The Linde Group, Inc.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,31 +15,36 @@
 //  limitations under the License.
 //
 
-
 #import "LGNotificationServiceWindowController.h"
 #import "LGBaseNotificationServiceViewController.h"
 #import "LGNotificationService.h"
-
 
 @interface LGNotificationServiceWindowController ()
 @property (strong, nonatomic, readonly) LGBaseNotificationServiceViewController<LGNotificationServiceProtocol> *viewController;
 @end
 
 @implementation LGNotificationServiceWindowController
-- (instancetype)initWithViewController:(LGBaseNotificationServiceViewController *)viewController {
+- (instancetype)initWithViewController:(LGBaseNotificationServiceViewController *)viewController
+{
     return [super initWithViewController:(NSViewController *)viewController];
 }
 
-- (void)awakeFromNib {
+- (void)windowDidLoad
+{
+    [super windowDidLoad];
     self.configBox.title = [[self.viewController.service class] serviceDescription] ?: @"";
 
     self.accessoryButton.hidden = NO;
     self.accessoryButton.title = NSLocalizedString(@"Send Test", @"Test notification button title.");
     self.accessoryButton.action = @selector(sendNotificationTest:);
     self.accessoryButton.target = self;
+
+    NSURL *url = [[self.viewController.service class] serviceURL];
+    [self configureLinkButtonForURL:url];
 }
 
-- (void)sendNotificationTest:(id)sender {
+- (void)sendNotificationTest:(id)sender
+{
     [self.progressSpinner startAnimation:self];
     self.infoTextField.stringValue = @"";
     self.accessoryButton.enabled = NO;

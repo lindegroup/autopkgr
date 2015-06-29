@@ -161,6 +161,10 @@
 		BE91A0701B2F53F000ED7501 /* NSString+attributedString.m in Sources */ = {isa = PBXBuildFile; fileRef = BE91A06F1B2F53F000ED7501 /* NSString+attributedString.m */; };
 		BE91A0711B2F53F000ED7501 /* NSString+attributedString.m in Sources */ = {isa = PBXBuildFile; fileRef = BE91A06F1B2F53F000ED7501 /* NSString+attributedString.m */; };
 		BEB9AF271B419F0900016D98 /* LGNotificationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = BE0BB0F11B3C2311007F9DA5 /* LGNotificationManager.m */; };
+		BEB9AF2B1B41A01900016D98 /* LGSlackNotificationView.m in Sources */ = {isa = PBXBuildFile; fileRef = BEB9AF291B41A01900016D98 /* LGSlackNotificationView.m */; };
+		BEB9AF2C1B41A01900016D98 /* LGSlackNotificationView.m in Sources */ = {isa = PBXBuildFile; fileRef = BEB9AF291B41A01900016D98 /* LGSlackNotificationView.m */; };
+		BEB9AF2D1B41A01900016D98 /* LGSlackNotificationView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BEB9AF2A1B41A01900016D98 /* LGSlackNotificationView.xib */; };
+		BEB9AF2E1B41A01900016D98 /* LGSlackNotificationView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BEB9AF2A1B41A01900016D98 /* LGSlackNotificationView.xib */; };
 		BEBF7B171A4894AC00E9967F /* LGVersioner.m in Sources */ = {isa = PBXBuildFile; fileRef = BEBF7B161A4894AC00E9967F /* LGVersioner.m */; };
 		BEBF7B1F1A48955C00E9967F /* LGVersioner.m in Sources */ = {isa = PBXBuildFile; fileRef = BEBF7B161A4894AC00E9967F /* LGVersioner.m */; };
 		BEC1258519F045EB006696C4 /* LGRecipeTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A0ACE33196FB349002C7FE4 /* LGRecipeTableViewController.m */; };
@@ -465,6 +469,9 @@
 		BEA2F0B41AF1672600781274 /* LGIntegrationTemplate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LGIntegrationTemplate.m; sourceTree = "<group>"; };
 		BEAA76CA19BFD635002D73EE /* LGInstaller.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGInstaller.h; sourceTree = "<group>"; };
 		BEAA76CB19BFD635002D73EE /* LGInstaller.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGInstaller.m; sourceTree = "<group>"; };
+		BEB9AF281B41A01900016D98 /* LGSlackNotificationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGSlackNotificationView.h; sourceTree = "<group>"; };
+		BEB9AF291B41A01900016D98 /* LGSlackNotificationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGSlackNotificationView.m; sourceTree = "<group>"; };
+		BEB9AF2A1B41A01900016D98 /* LGSlackNotificationView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LGSlackNotificationView.xib; sourceTree = "<group>"; };
 		BEBF7B151A4894AC00E9967F /* LGVersioner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGVersioner.h; sourceTree = "<group>"; };
 		BEBF7B161A4894AC00E9967F /* LGVersioner.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGVersioner.m; sourceTree = "<group>"; };
 		BECDAB881B249A2900544388 /* NSButton+colored.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSButton+colored.h"; path = "Custom Categories/NSButton+colored.h"; sourceTree = "<group>"; };
@@ -872,6 +879,9 @@
 				BE46D9971B40EE2D00004B41 /* LGHipChatNotificationView.h */,
 				BE46D9981B40EE2D00004B41 /* LGHipChatNotificationView.m */,
 				BE46D9991B40EE2D00004B41 /* LGHipChatNotificationView.xib */,
+				BEB9AF281B41A01900016D98 /* LGSlackNotificationView.h */,
+				BEB9AF291B41A01900016D98 /* LGSlackNotificationView.m */,
+				BEB9AF2A1B41A01900016D98 /* LGSlackNotificationView.xib */,
 			);
 			name = "Notification Views";
 			sourceTree = "<group>";
@@ -1251,6 +1261,7 @@
 				1AC69561195B59EE00D2BD81 /* Credits.rtf in Resources */,
 				BECDABA91B254E5900544388 /* LGAbsoluteManageIntegrationView.xib in Resources */,
 				BE09F65D1B2694ED00EE4AA7 /* LGAutoPkgIntegrationView.xib in Resources */,
+				BEB9AF2D1B41A01900016D98 /* LGSlackNotificationView.xib in Resources */,
 				BE38EAAC1B0CFECE009FCBEB /* LGNotificationsViewController.xib in Resources */,
 				1AC69567195B59EE00D2BD81 /* MainMenu.xib in Resources */,
 				BE4DD53B1B11740900854FD8 /* LGMunkiIntegration.h in Resources */,
@@ -1272,6 +1283,7 @@
 				BECDABAA1B254E5900544388 /* LGAbsoluteManageIntegrationView.xib in Resources */,
 				BE32B03B1B2735DF0071778B /* LGGitIntegrationView.xib in Resources */,
 				BE81F23B1B22A29E007D16C4 /* LGJSSImporterIntegrationView.xib in Resources */,
+				BEB9AF2E1B41A01900016D98 /* LGSlackNotificationView.xib in Resources */,
 				BE7EF23C1B3350E4002037B1 /* Localizable.strings in Resources */,
 				BED136AE1AC0FFC5003EBF0F /* LocalizableError.strings in Resources */,
 				BE2D58791B32EF110042EF1E /* LocalizableAutoPkg.strings in Resources */,
@@ -1499,6 +1511,7 @@
 				BE0BB0F21B3C2311007F9DA5 /* LGNotificationManager.m in Sources */,
 				BEEFE6B71AE9D01200882C89 /* LGAutoPkgErrorHandler.m in Sources */,
 				BEFA4DBD1B08F57800764BF0 /* LGAutoPkgRecipe.m in Sources */,
+				BEB9AF2B1B41A01900016D98 /* LGSlackNotificationView.m in Sources */,
 				BE09F65B1B2694ED00EE4AA7 /* LGAutoPkgIntegrationView.m in Sources */,
 				BE81F2471B22C30D007D16C4 /* LGViewWindowController.m in Sources */,
 				BECDAB9B1B24DBBC00544388 /* LGIntegrationWindowController.m in Sources */,
@@ -1595,6 +1608,7 @@
 				BEEFE6CB1AEC760900882C89 /* LGAutoPkgIntegration.m in Sources */,
 				BEFC3C8C1A3DF16700C789E9 /* NSTextField+safeStringValue.m in Sources */,
 				BEFC3C8E1A3DF16700C789E9 /* NSArray+filtered.m in Sources */,
+				BEB9AF2C1B41A01900016D98 /* LGSlackNotificationView.m in Sources */,
 				BE81F2311B22340D007D16C4 /* LGBaseIntegrationViewController.m in Sources */,
 				BE0BB0FC1B3C9563007F9DA5 /* LGSlackNotification.m in Sources */,
 				BEE211231AF9D6E500A3C2E1 /* LGIntegrationTemplate.m in Sources */,

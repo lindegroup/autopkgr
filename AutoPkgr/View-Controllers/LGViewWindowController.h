@@ -24,6 +24,9 @@
 - (instancetype)init __unavailable;
 - (instancetype)initWithViewController:(NSViewController *)viewController;
 
+- (IBAction)openLinkedURL:(id)sender;
+- (void)configureLinkButtonForURL:(NSURL *)url;
+
 @property (strong, nonatomic, readonly) NSViewController *viewController;
 
 @property (weak) IBOutlet NSBox *configBox;

@@ -48,19 +48,14 @@
         self.accessoryButton.hidden = YES;
     }
 
-    NSURL *title = [[self.viewController.integration class] homePage];
-    [self.urlLinkButton color_title:title.absoluteString withColor:[NSColor blueColor]];
-    self.urlLinkButton.target = self;
-    self.urlLinkButton.action = @selector(openIntegrationHome:);
+    NSURL *url = [[self.viewController.integration class] homePage];
+    [self configureLinkButtonForURL:url];
 
     NSString *credits = [[self.viewController.integration class] credits];
     self.infoTextField.safe_stringValue = credits;
 }
 
-- (void)openIntegrationHome:(id)sender
-{
-    [[NSWorkspace sharedWorkspace] openURL:[[self.viewController.integration class] homePage]];
-}
+
 
 - (void)uninstall:(id)sender
 {

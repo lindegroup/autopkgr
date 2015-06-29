@@ -46,26 +46,31 @@
     return NO;
 }
 
-+ (BOOL)storesInfoInKeychain {
++ (BOOL)storesInfoInKeychain
+{
     return NO;
 }
 
-+ (NSString *)account {
++ (NSString *)account
+{
     if ([[self class] storesInfoInKeychain]) {
         subclassMustImplement(self, _cmd);
     }
     return nil;
 }
 
-+ (NSString *)keychainServiceDescription {
++ (NSString *)keychainServiceDescription
+{
     return [self serviceDescription];
 }
 
-+ (NSString *)keychainServiceLabel {
++ (NSString *)keychainServiceLabel
+{
     return nil;
 }
 
-+ (void)infoFromKeychain:(void (^)(NSString *, NSError *))reply {
++ (void)infoFromKeychain:(void (^)(NSString *, NSError *))reply
+{
     if ([[self class] storesInfoInKeychain]) {
         NSString *service = [[self class] keychainServiceDescription];
         NSString *label = [[self class] keychainServiceLabel];
@@ -76,7 +81,8 @@
     }
 }
 
-+ (void)saveInfoToKeychain:(NSString *)info reply:(void (^)(NSError *))reply {
++ (void)saveInfoToKeychain:(NSString *)info reply:(void (^)(NSError *))reply
+{
     if ([[self class] storesInfoInKeychain]) {
         NSString *service = [[self class] keychainServiceDescription];
         NSString *label = [[self class] keychainServiceLabel];

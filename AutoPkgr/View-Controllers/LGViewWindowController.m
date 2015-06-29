@@ -19,6 +19,7 @@
 //
 
 #import "LGViewWindowController.h"
+#import "NSButton+colored.h"
 
 @interface LGViewWindowController () <NSWindowDelegate>
 @property (strong, nonatomic, readwrite) NSViewController *viewController;
@@ -26,6 +27,7 @@
 @end
 
 @implementation LGViewWindowController
+
 - (instancetype)initPrivate
 {
     return [self initWithWindowNibName:NSStringFromClass([LGViewWindowController class])];
@@ -50,7 +52,7 @@
      * positive or negative that the window gets adjusted.
      * Then add that to the current window frame size
      */
-    
+
     NSSize origSize = [_configBox.contentView frame].size;
     NSSize newSize = _viewController.view.frame.size;
 
@@ -82,4 +84,24 @@
     [self.window close];
 }
 
+- (void)configureLinkButtonForURL:(NSURL *)url
+{
+    if (url) {
+        [self.urlLinkButton color_title:url.absoluteString withColor:[NSColor blueColor]];
+        self.urlLinkButton.identifier = url.absoluteString;
+
+        self.urlLinkButton.target = self;
+        self.urlLinkButton.action = @selector(openLinkedURL:);
+    } else {
+        self.urlLinkButton.hidden = YES;
+    }
+}
+
+- (void)openLinkedURL:(NSButton *)sender
+{
+    NSURL *url = [NSURL URLWithString:self.urlLinkButton.identifier];
+    if (url) {
+        [[NSWorkspace sharedWorkspace] openURL:url];
+    }
+}
 @end

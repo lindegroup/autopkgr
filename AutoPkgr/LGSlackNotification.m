@@ -35,12 +35,19 @@
     return [[NSUserDefaults standardUserDefaults] boolForKey:@"SlackNotificationsEnabled"];
 }
 
-+ (BOOL)storesInfoInKeychain {
++ (BOOL)storesInfoInKeychain
+{
     return YES;
 }
 
-+ (NSString *)account {
++ (NSString *)account
+{
     return @"AutoPkgr Slack-Bot";
+}
+
++ (NSURL *)serviceURL
+{
+    return [NSURL URLWithString:@"https://slack.com"];
 }
 
 - (AFHTTPRequestOperationManager *)requestManager
@@ -60,7 +67,7 @@
     return manager;
 }
 
-- (void)webHookURL:(void(^)(NSString *))reply
+- (void)webHookURL:(void (^)(NSString *))reply
 {
     // This probably shouldn't be stored in defaults, but for testing now it's OK.
     [[self class] infoFromKeychain:^(NSString *webHookURL, NSError *error) {
@@ -68,7 +75,8 @@
     }];
 }
 
-- (NSDictionary *)baseParameters:(NSDictionary *)parameters {
+- (NSDictionary *)baseParameters:(NSDictionary *)parameters
+{
     NSMutableDictionary *dict = [parameters mutableCopy];
     if (!parameters[@"username"]) {
         dict[@"username"] = @"AutoPkgr";

@@ -1,5 +1,5 @@
 // LGBaseNotificationServiceViewController.h
-// 
+//
 // Copyright 2015 The Linde Group, Inc.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
@@ -22,7 +22,7 @@
 
 - (instancetype)initWithNotificationService:(id<LGNotificationServiceProtocol>)service;
 
-@property (strong, nonatomic, readonly) id<LGNotificationServiceProtocol>service;
+@property (strong, nonatomic, readonly) id<LGNotificationServiceProtocol> service;
 
 @property (weak) IBOutlet NSTextField *infoOrPasswordTextField; // Or NSSecureTextField
 

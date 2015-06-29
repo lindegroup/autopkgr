@@ -40,6 +40,11 @@
 - (void)sendTest:(void (^)(NSError *))complete;
 
 @optional
+/**
+ *  @return Link to the home page of the service.
+ */
++ (NSURL *)serviceURL;
+
 // Whether the class stores information in the a keychain item. Defaults to NO;
 + (BOOL)storesInfoInKeychain;
 
@@ -59,13 +64,11 @@
 
 @interface LGNotificationService : NSObject
 
+// This will pull info from the keychain if +keychainServiceName. +storesInfoInKeychain must be set to YES, and +account must be defined in subclass;
++ (void)infoFromKeychain:(void (^)(NSString *infoOrPassword, NSError *error))reply;
 
 // This will pull info from the keychain if +keychainServiceName. +storesInfoInKeychain must be set to YES, and +account must be defined in subclass;
-+ (void)infoFromKeychain:(void(^)(NSString *infoOrPassword, NSError *error))reply;
-
-
-// This will pull info from the keychain if +keychainServiceName. +storesInfoInKeychain must be set to YES, and +account must be defined in subclass;
-+ (void)saveInfoToKeychain:(NSString *)info reply:(void(^)(NSError *error))reply;
++ (void)saveInfoToKeychain:(NSString *)info reply:(void (^)(NSError *error))reply;
 
 - (instancetype)initWithReport:(LGAutoPkgReport *)report;
 

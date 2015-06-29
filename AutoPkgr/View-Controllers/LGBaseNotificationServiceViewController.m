@@ -1,5 +1,5 @@
 // LGBaseNotificationServiceViewController.m
-// 
+//
 // Copyright 2015 The Linde Group, Inc.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,21 +15,23 @@
 //  limitations under the License.
 //
 
-
 #import "LGBaseNotificationServiceViewController.h"
 @implementation LGBaseNotificationServiceViewController
-- (instancetype)init {
+- (instancetype)init
+{
     return (self = [super initWithNibName:NSStringFromClass([self class]) bundle:nil]);
 }
 
--(instancetype)initWithNotificationService:(id<LGNotificationServiceProtocol>)service {
+- (instancetype)initWithNotificationService:(id<LGNotificationServiceProtocol>)service
+{
     if (self = [self init]) {
         self->_service = service;
     }
     return self;
 }
 
-- (void)awakeFromNib {
+- (void)awakeFromNib
+{
     // During awakeFromNib
     [super awakeFromNib];
     if (self.infoOrPasswordTextField && [[self.service class] storesInfoInKeychain]) {
@@ -47,14 +49,13 @@
     }
 }
 
-- (IBAction)updateKeychainInfo:(id)sender{
+- (IBAction)updateKeychainInfo:(id)sender
+{
     if ([sender isKindOfClass:[NSTextField class]]) {
         if ([[self.service class] storesInfoInKeychain]) {
-            [[self.service class] saveInfoToKeychain:self.infoOrPasswordTextField.stringValue reply:^(NSError *error) {
-            }];
+            [[self.service class] saveInfoToKeychain:self.infoOrPasswordTextField.stringValue reply:^(NSError *error) {}];
         }
     }
 }
-
 
 @end
