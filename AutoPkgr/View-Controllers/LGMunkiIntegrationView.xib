@@ -31,8 +31,27 @@
                         <action selector="openLocalMunkiRepoFolder:" target="-2" id="tRG-sf-uCX"/>
                     </connections>
                 </button>
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="dy1-cL-L9S">
+                    <rect key="frame" x="15" y="53" width="101" height="17"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="97" id="3yc-U0-HCZ"/>
+                    </constraints>
+                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Munki Repo:" id="xlY-TY-p8w">
+                        <font key="font" metaFont="system"/>
+                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
+                <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="LxW-1c-3jQ">
+                    <rect key="frame" x="122" y="51" width="220" height="22"/>
+                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" placeholderString="/User/Shared/munki_repo" drawsBackground="YES" id="25F-Lj-I0v">
+                        <font key="font" metaFont="system"/>
+                        <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
                 <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="wR9-Cr-nxI">
-                    <rect key="frame" x="340" y="44" width="99" height="32"/>
+                    <rect key="frame" x="344" y="44" width="99" height="32"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="87" id="1Td-JS-LyU"/>
                     </constraints>
@@ -44,68 +63,17 @@
                         <action selector="chooseLocalMunkiRepo:" target="-2" id="KcU-4o-TmN"/>
                     </connections>
                 </button>
-                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="dy1-cL-L9S">
-                    <rect key="frame" x="15" y="54" width="101" height="17"/>
-                    <constraints>
-                        <constraint firstAttribute="width" constant="97" id="3yc-U0-HCZ"/>
-                    </constraints>
-                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Munki Repo:" id="xlY-TY-p8w">
-                        <font key="font" metaFont="system"/>
-                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
-                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                    </textFieldCell>
-                </textField>
-                <popUpButton verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Ovp-fy-Hg7">
-                    <rect key="frame" x="120" y="19" width="210" height="26"/>
-                    <constraints>
-                        <constraint firstAttribute="width" constant="205" id="xdc-XP-cH6"/>
-                    </constraints>
-                    <popUpButtonCell key="cell" type="push" title="Item 1" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="jAN-ee-wuJ" id="BW3-cz-BK1">
-                        <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
-                        <font key="font" metaFont="menu"/>
-                        <menu key="menu" id="DCp-dL-LJA">
-                            <items>
-                                <menuItem title="Item 1" state="on" id="jAN-ee-wuJ"/>
-                                <menuItem title="Item 2" id="H6I-WD-XqB"/>
-                                <menuItem title="Item 3" id="CWU-c8-dfX"/>
-                            </items>
-                        </menu>
-                    </popUpButtonCell>
-                </popUpButton>
-                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="gkO-cZ-7rf">
-                    <rect key="frame" x="15" y="25" width="101" height="17"/>
-                    <constraints>
-                        <constraint firstAttribute="width" constant="97" id="Asw-XV-ZON"/>
-                    </constraints>
-                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Default catalog:" id="5Uk-CP-B4P">
-                        <font key="font" metaFont="system"/>
-                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
-                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                    </textFieldCell>
-                </textField>
-                <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="LxW-1c-3jQ">
-                    <rect key="frame" x="122" y="51" width="205" height="22"/>
-                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" placeholderString="/User/Shared/munki_repo" drawsBackground="YES" id="25F-Lj-I0v">
-                        <font key="font" metaFont="system"/>
-                        <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
-                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                    </textFieldCell>
-                </textField>
             </subviews>
             <constraints>
-                <constraint firstItem="gkO-cZ-7rf" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="58" id="33z-0w-5os"/>
-                <constraint firstItem="LxW-1c-3jQ" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="122" id="Ed3-0X-ULC"/>
-                <constraint firstItem="Ovp-fy-Hg7" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="122" id="Mpi-jL-6Xb"/>
-                <constraint firstItem="dy1-cL-L9S" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="17" id="NzA-Dn-GGY"/>
-                <constraint firstItem="wR9-Cr-nxI" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="28" id="PKz-Fn-OC2"/>
-                <constraint firstItem="gkO-cZ-7rf" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="17" id="XM9-Jh-1X8"/>
-                <constraint firstItem="dy1-cL-L9S" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="29" id="YNa-gf-6Po"/>
-                <constraint firstAttribute="trailing" secondItem="rOJ-48-FyU" secondAttribute="trailing" constant="14" id="YrJ-Ex-z0y"/>
-                <constraint firstAttribute="trailing" secondItem="LxW-1c-3jQ" secondAttribute="trailing" constant="258" id="aWE-pn-9dE"/>
-                <constraint firstItem="rOJ-48-FyU" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="28" id="eK0-f2-mIT"/>
-                <constraint firstItem="Ovp-fy-Hg7" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="57" id="fhH-yP-AMC"/>
-                <constraint firstAttribute="trailing" secondItem="wR9-Cr-nxI" secondAttribute="trailing" constant="152" id="s8v-VR-4Cr"/>
-                <constraint firstItem="LxW-1c-3jQ" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="27" id="u0Q-sa-0eO"/>
+                <constraint firstItem="dy1-cL-L9S" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="30" id="1bi-MP-dY4"/>
+                <constraint firstItem="LxW-1c-3jQ" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="122" id="Vrr-zm-UWs"/>
+                <constraint firstItem="dy1-cL-L9S" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="17" id="Y2V-yT-xT5"/>
+                <constraint firstItem="rOJ-48-FyU" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="449" id="eZK-fg-DDL"/>
+                <constraint firstItem="rOJ-48-FyU" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="28" id="hrC-TG-VDI"/>
+                <constraint firstItem="wR9-Cr-nxI" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="350" id="kCp-1s-Pks"/>
+                <constraint firstItem="wR9-Cr-nxI" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="28" id="lal-Uq-Bm0"/>
+                <constraint firstItem="LxW-1c-3jQ" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="27" id="q4z-3Z-Uq9"/>
+                <constraint firstAttribute="trailing" secondItem="LxW-1c-3jQ" secondAttribute="trailing" constant="243" id="xM7-ug-3Ac"/>
             </constraints>
             <point key="canvasLocation" x="241.5" y="142"/>
         </customView>
