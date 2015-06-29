@@ -8,18 +8,18 @@
 
 /* Use this file as a template for the localizable strings of your buttons. */
 
-"repoTableInfoTitle" = "Repo Help:";
-"repoTableInfo" = "Control-click on a repo to bring up a contextual menu with options to update the repo or open it's commits page if hosted on GitHub.\n\nThe colored globe indicates the current status of the repo. Green means the repo is up-to-date, yellow means there are commits available from the remote repository.";
+"repoTableInfoTitle" = "Repo Help";
+"repoTableInfo" = "Control-click on a repo to bring up a contextual menu with options to update the repo or open its GitHub commits page.\n\nThe colored globe indicates the current status of the repo. Green means the repo is up-to-date, and yellow means commits are available from the remote repository.";
 
-"recipeTableInfoTitle" = "Recipe Help:";
-"recipeTableInfo" = "Control-click on a recipe to bring up a contextual menu with options to  get info, run the recipe, or create an override. You can also set the preferred recipe editor.\n\nIf a caution icon is present in the status column, there is an issue with the recipe, most often it's missing a parent recipe, and will require further investigation before enabling the recipe.";
+"recipeTableInfoTitle" = "Recipe Help";
+"recipeTableInfo" = "Control-click on a recipe to bring up a contextual menu with options to get info, run the recipe, or create an override. You can also set the preferred recipe editor.\n\nIf a caution icon is present in the status column, there is an issue with the recipe. (The most likely cause is a missing parent recipe.)";
 
-"slackHelpInfoTitle" = "Slack Webhook Help:";
-"slackHelpInfo" = "Incoming Webhooks are a simple way to post messages from external sources into Slack. They make use of normal HTTP requests with a JSON payload, which includes the message text and some options. Message Attachments can also be used in Incoming Webhooks to display richly-formatted messages that stand out from regular chat messages. Visit the slack webhooks documentation for more information.";
+"slackHelpInfoTitle" = "Slack Webhook Help";
+"slackHelpInfo" = "Incoming Webhooks are a simple way to post messages from external sources into Slack. They make use of normal HTTP requests with a JSON payload, which includes the message text and some options. Message Attachments can also be used in incoming Webhooks to display richly-formatted messages that stand out from regular chat messages. Visit the Slack webhooks documentation (linked below) for more information.";
 
 "slackHelpInfoURL" = "https://api.slack.com/incoming-webhooks";
 
-"hipChatHelpInfoTitle" = "Hip Chat Help";
-"hipChatHelpInfo" = "To create the necissary API token, log into HipChat and navigate to the room you want to send messages to. Click 'Tokens' on the left hand side. Next create a token with the scope of 'Send Notification' and click 'Create'.\n\nThe 'Send user notifications to room members.' check box on this pane determines whether the message trigger a user notification (change the tab color, play a sound, notify mobile phones, etc). Each recipient's notification preferences are taken into account.";
+"hipChatHelpInfoTitle" = "HipChat Help";
+"hipChatHelpInfo" = "To create the necessary API token, log into HipChat and navigate to the room you want to send messages to. Click 'Tokens' on the left hand side. Next create a token with the scope of 'Send Notification' and click 'Create'.\n\nThe 'Send user notifications to room members' check box on this pane determines whether the message triggers a user notification (change the tab color, play a sound, notify mobile phones, etc). Each recipient's individual notification preferences are taken into account.";
 
 "hipChatHelpInfoURL" = "https://hipchat.com/rooms/";

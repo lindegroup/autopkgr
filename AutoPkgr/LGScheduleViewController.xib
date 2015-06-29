@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="6250" systemVersion="13F1077" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="7706" systemVersion="14D136" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="6250"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="7706"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="LGScheduleViewController">
@@ -24,9 +24,12 @@
             <rect key="frame" x="0.0" y="-1" width="603" height="266"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="J8d-qW-trQ">
-                    <rect key="frame" x="16" y="224" width="149" height="18"/>
-                    <buttonCell key="cell" type="check" title="Enable Schedule" bezelStyle="regularSquare" imagePosition="left" alignment="left" inset="2" id="7rF-ef-zEP">
+                <button translatesAutoresizingMaskIntoConstraints="NO" id="J8d-qW-trQ">
+                    <rect key="frame" x="128" y="142" width="347" height="18"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="343" id="sWO-PT-lUx"/>
+                    </constraints>
+                    <buttonCell key="cell" type="check" title="Enable scheduled AutoPkg runs" bezelStyle="regularSquare" imagePosition="left" alignment="left" inset="2" id="7rF-ef-zEP">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                         <font key="font" metaFont="system"/>
                     </buttonCell>
@@ -34,10 +37,14 @@
                         <action selector="changeSchedule:" target="-2" id="I7H-ie-fbO"/>
                     </connections>
                 </button>
-                <matrix verticalHuggingPriority="750" fixedFrame="YES" selectionByRect="NO" allowsEmptySelection="NO" autorecalculatesCellSize="YES" translatesAutoresizingMaskIntoConstraints="NO" id="UxE-SU-fts" userLabel="Schedule Matrix">
-                    <rect key="frame" x="44" y="133" width="302" height="85"/>
+                <matrix verticalHuggingPriority="750" selectionByRect="NO" allowsEmptySelection="NO" autorecalculatesCellSize="YES" translatesAutoresizingMaskIntoConstraints="NO" id="UxE-SU-fts" userLabel="Schedule Matrix">
+                    <rect key="frame" x="156" y="51" width="302" height="85"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="85" id="Eez-Od-1Gv"/>
+                        <constraint firstAttribute="width" constant="302" id="HBg-Vp-Xtc"/>
+                    </constraints>
                     <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                    <size key="cellSize" width="100" height="18"/>
+                    <size key="cellSize" width="77" height="18"/>
                     <size key="intercellSpacing" width="4" height="5"/>
                     <buttonCell key="prototype" type="radio" title="Radio" imagePosition="left" alignment="left" controlSize="small" inset="2" id="Y8l-6c-rJR" userLabel="Schedule Radio Buttons">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
@@ -45,21 +52,21 @@
                     </buttonCell>
                     <cells>
                         <column>
-                            <buttonCell type="radio" title="Run every" imagePosition="left" alignment="left" controlSize="small" state="on" inset="2" id="rxf-Wp-7b6">
+                            <buttonCell type="radio" title="Every" imagePosition="left" alignment="left" controlSize="small" state="on" inset="2" id="rxf-Wp-7b6">
                                 <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                 <font key="font" metaFont="smallSystem"/>
                                 <connections>
                                     <action selector="changeSchedule:" target="-2" id="MJ3-L5-CmM"/>
                                 </connections>
                             </buttonCell>
-                            <buttonCell type="radio" title="Run Daily At" imagePosition="left" alignment="left" controlSize="small" tag="1" inset="2" id="9UX-C6-xHW">
+                            <buttonCell type="radio" title="Daily at" imagePosition="left" alignment="left" controlSize="small" tag="1" inset="2" id="9UX-C6-xHW">
                                 <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                 <font key="font" metaFont="smallSystem"/>
                                 <connections>
                                     <action selector="changeSchedule:" target="-2" id="IHe-OV-WIp"/>
                                 </connections>
                             </buttonCell>
-                            <buttonCell type="radio" title="Run Weekly on" imagePosition="left" alignment="left" controlSize="small" tag="2" inset="2" id="8bh-SR-q0v">
+                            <buttonCell type="radio" title="Weekly on" imagePosition="left" alignment="left" controlSize="small" tag="2" inset="2" id="8bh-SR-q0v">
                                 <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                 <font key="font" metaFont="smallSystem"/>
                                 <connections>
@@ -69,16 +76,16 @@
                         </column>
                     </cells>
                 </matrix>
-                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="cHq-LH-gnB">
-                    <rect key="frame" x="162" y="201" width="40" height="14"/>
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="cHq-LH-gnB">
+                    <rect key="frame" x="249" y="119" width="40" height="14"/>
                     <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="hours" id="t9N-Fo-Q3T">
                         <font key="font" metaFont="smallSystem"/>
                         <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                 </textField>
-                <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="oZ2-P7-4IE">
-                    <rect key="frame" x="127" y="199" width="29" height="19"/>
+                <textField verticalHuggingPriority="750" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="oZ2-P7-4IE">
+                    <rect key="frame" x="214" y="117" width="29" height="19"/>
                     <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" title="24" placeholderString="" drawsBackground="YES" id="9xE-ZL-3gu">
                         <font key="font" metaFont="smallSystem"/>
                         <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
@@ -89,8 +96,8 @@
                         <outlet property="delegate" destination="-2" id="lxX-Di-pxh"/>
                     </connections>
                 </textField>
-                <popUpButton verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Jpf-1J-Qbr" userLabel="DailyAt">
-                    <rect key="frame" x="142" y="178" width="85" height="15"/>
+                <popUpButton verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Jpf-1J-Qbr" userLabel="DailyAt">
+                    <rect key="frame" x="224" y="96" width="85" height="15"/>
                     <popUpButtonCell key="cell" type="push" bezelStyle="rounded" alignment="left" controlSize="mini" lineBreakMode="truncatingTail" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" id="wdV-7F-Ugw">
                         <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
                         <font key="font" metaFont="miniSystem"/>
@@ -100,8 +107,8 @@
                         <action selector="changeSchedule:" target="-2" id="hiH-q0-NTa"/>
                     </connections>
                 </popUpButton>
-                <popUpButton verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="RXR-0C-bng" userLabel="DailyAt">
-                    <rect key="frame" x="260" y="156" width="85" height="15"/>
+                <popUpButton verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="RXR-0C-bng" userLabel="DailyAt">
+                    <rect key="frame" x="342" y="74" width="85" height="15"/>
                     <popUpButtonCell key="cell" type="push" bezelStyle="rounded" alignment="left" controlSize="mini" lineBreakMode="truncatingTail" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" id="QSZ-3n-UUg">
                         <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
                         <font key="font" metaFont="miniSystem"/>
@@ -117,8 +124,8 @@
                         <action selector="changeSchedule:" target="-2" id="jVS-Nt-Xjz"/>
                     </connections>
                 </popUpButton>
-                <popUpButton verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Vo5-wL-2B2" userLabel="Weekday">
-                    <rect key="frame" x="153" y="157" width="85" height="15"/>
+                <popUpButton verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Vo5-wL-2B2" userLabel="Weekday">
+                    <rect key="frame" x="235" y="75" width="85" height="15"/>
                     <popUpButtonCell key="cell" type="push" bezelStyle="rounded" alignment="left" controlSize="mini" lineBreakMode="truncatingTail" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" id="f0t-uA-HJ7" userLabel="Pop Up Button Cell">
                         <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
                         <font key="font" metaFont="miniSystem"/>
@@ -128,36 +135,19 @@
                         <action selector="changeSchedule:" target="-2" id="b8g-gR-dNg"/>
                     </connections>
                 </popUpButton>
-                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="2BQ-ga-rjR">
-                    <rect key="frame" x="240" y="157" width="20" height="14"/>
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="2BQ-ga-rjR">
+                    <rect key="frame" x="322" y="75" width="20" height="14"/>
                     <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="at" id="qd6-CR-v7F">
                         <font key="font" metaFont="smallSystem"/>
                         <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                 </textField>
-                <button verticalHuggingPriority="750" fixedFrame="YES" placeholderIntrinsicWidth="158" placeholderIntrinsicHeight="21" translatesAutoresizingMaskIntoConstraints="NO" id="7vx-nK-KRd">
-                    <rect key="frame" x="392" y="216" width="170" height="32"/>
-                    <buttonCell key="cell" type="push" title="Run AutoPkg Now" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Hvq-HD-vrg">
-                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                        <font key="font" metaFont="system"/>
-                    </buttonCell>
-                    <connections>
-                        <action selector="checkAppsNow:" target="-2" id="Zrd-uB-oNa"/>
-                    </connections>
-                </button>
-                <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="X02-En-nic">
-                    <rect key="frame" x="392" y="187" width="170" height="32"/>
-                    <buttonCell key="cell" type="push" title="Update Repos Now" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="AmY-R1-NJM">
-                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                        <font key="font" metaFont="system"/>
-                    </buttonCell>
-                    <connections>
-                        <action selector="updateReposNow:" target="-2" id="2bi-HK-ac5"/>
-                    </connections>
-                </button>
-                <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="K6Q-1C-fKu">
-                    <rect key="frame" x="16" y="71" width="364" height="18"/>
+                <button translatesAutoresizingMaskIntoConstraints="NO" id="K6Q-1C-fKu">
+                    <rect key="frame" x="128" y="28" width="347" height="18"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="343" id="fyE-2f-gcc"/>
+                    </constraints>
                     <buttonCell key="cell" type="check" title="Check for repo updates before each AutoPkg run" bezelStyle="regularSquare" imagePosition="left" alignment="left" state="on" inset="2" id="2Rc-4D-cra">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                         <font key="font" metaFont="system"/>
@@ -173,7 +163,57 @@
                         </binding>
                     </connections>
                 </button>
+                <button verticalHuggingPriority="750" placeholderIntrinsicWidth="158" placeholderIntrinsicHeight="21" translatesAutoresizingMaskIntoConstraints="NO" id="7vx-nK-KRd">
+                    <rect key="frame" x="201" y="206" width="201" height="32"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="189" id="12h-S0-T0N"/>
+                    </constraints>
+                    <buttonCell key="cell" type="push" title="Run AutoPkg Now" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Hvq-HD-vrg">
+                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                        <font key="font" metaFont="system"/>
+                    </buttonCell>
+                    <connections>
+                        <action selector="checkAppsNow:" target="-2" id="Zrd-uB-oNa"/>
+                    </connections>
+                </button>
+                <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="X02-En-nic">
+                    <rect key="frame" x="201" y="177" width="201" height="32"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="189" id="HUu-h5-fND"/>
+                    </constraints>
+                    <buttonCell key="cell" type="push" title="Update Repos Now" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="AmY-R1-NJM">
+                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                        <font key="font" metaFont="system"/>
+                    </buttonCell>
+                    <connections>
+                        <action selector="updateReposNow:" target="-2" id="2bi-HK-ac5"/>
+                    </connections>
+                </button>
             </subviews>
+            <constraints>
+                <constraint firstAttribute="centerX" secondItem="2BQ-ga-rjR" secondAttribute="centerX" constant="-30.5" id="1zy-de-qc2"/>
+                <constraint firstItem="UxE-SU-fts" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="130" id="2Jy-fw-XBf"/>
+                <constraint firstItem="X02-En-nic" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="61" id="5id-lS-Orw"/>
+                <constraint firstAttribute="centerX" secondItem="cHq-LH-gnB" secondAttribute="centerX" constant="32.5" id="6uE-uo-4SW"/>
+                <constraint firstItem="7vx-nK-KRd" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="32" id="BIv-TM-rVW"/>
+                <constraint firstAttribute="centerX" secondItem="UxE-SU-fts" secondAttribute="centerX" constant="-5.5" id="BtI-q7-WOa"/>
+                <constraint firstAttribute="centerX" secondItem="RXR-0C-bng" secondAttribute="centerX" constant="-82.5" id="EXi-V3-7NG"/>
+                <constraint firstItem="J8d-qW-trQ" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="108" id="ExK-rK-aEM"/>
+                <constraint firstAttribute="centerX" secondItem="7vx-nK-KRd" secondAttribute="centerX" id="J5S-YO-A0f"/>
+                <constraint firstAttribute="centerX" secondItem="Jpf-1J-Qbr" secondAttribute="centerX" constant="35.5" id="LNF-OF-fX0"/>
+                <constraint firstAttribute="centerX" secondItem="K6Q-1C-fKu" secondAttribute="centerX" id="T0e-Lp-H5f"/>
+                <constraint firstItem="2BQ-ga-rjR" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="177" id="XYL-wZ-zqq"/>
+                <constraint firstItem="oZ2-P7-4IE" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="130" id="aF8-Nh-qKb"/>
+                <constraint firstAttribute="centerX" secondItem="X02-En-nic" secondAttribute="centerX" id="bRB-TM-kA8"/>
+                <constraint firstAttribute="centerX" secondItem="Vo5-wL-2B2" secondAttribute="centerX" constant="24.5" id="dce-XF-loN"/>
+                <constraint firstItem="Jpf-1J-Qbr" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="155" id="eTw-2E-IwE"/>
+                <constraint firstAttribute="centerX" secondItem="oZ2-P7-4IE" secondAttribute="centerX" constant="73" id="eYz-Ki-ay4"/>
+                <constraint firstItem="cHq-LH-gnB" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="133" id="hki-cf-8nR"/>
+                <constraint firstAttribute="centerX" secondItem="J8d-qW-trQ" secondAttribute="centerX" id="iHF-7f-lGm"/>
+                <constraint firstItem="RXR-0C-bng" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="177" id="jcE-9U-dyc"/>
+                <constraint firstItem="K6Q-1C-fKu" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="222" id="puA-tS-zGE"/>
+                <constraint firstItem="Vo5-wL-2B2" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="176" id="s9p-ZC-xAG"/>
+            </constraints>
             <point key="canvasLocation" x="140.5" y="233"/>
         </customView>
         <userDefaultsController representsSharedInstance="YES" id="Hey-vB-7Ws"/>
