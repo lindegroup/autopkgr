@@ -66,11 +66,11 @@
             </subviews>
             <constraints>
                 <constraint firstItem="dy1-cL-L9S" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="30" id="1bi-MP-dY4"/>
+                <constraint firstAttribute="trailing" secondItem="rOJ-48-FyU" secondAttribute="trailing" constant="14" id="PJE-ut-QMS"/>
                 <constraint firstItem="LxW-1c-3jQ" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="122" id="Vrr-zm-UWs"/>
                 <constraint firstItem="dy1-cL-L9S" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="17" id="Y2V-yT-xT5"/>
-                <constraint firstItem="rOJ-48-FyU" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="449" id="eZK-fg-DDL"/>
                 <constraint firstItem="rOJ-48-FyU" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="28" id="hrC-TG-VDI"/>
-                <constraint firstItem="wR9-Cr-nxI" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="350" id="kCp-1s-Pks"/>
+                <constraint firstAttribute="trailing" secondItem="wR9-Cr-nxI" secondAttribute="trailing" constant="148" id="hsc-kI-owJ"/>
                 <constraint firstItem="wR9-Cr-nxI" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="28" id="lal-Uq-Bm0"/>
                 <constraint firstItem="LxW-1c-3jQ" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="27" id="q4z-3Z-Uq9"/>
                 <constraint firstAttribute="trailing" secondItem="LxW-1c-3jQ" secondAttribute="trailing" constant="243" id="xM7-ug-3Ac"/>
