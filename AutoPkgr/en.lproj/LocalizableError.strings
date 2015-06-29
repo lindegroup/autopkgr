@@ -116,10 +116,10 @@
 "kLGHTTPErrorTimeoutSuggestion" = "Please make sure you have an active network connection and the server you've entered is correct.";
 
 /* Unauthorized 401 */
-"kLGHTTPErrorUnauthorizedDescription" = "User authorization failed.";
+"kLGHTTPErrorUnauthorizedDescription" = "Authorization failed.";
 
 /* Unauthorized 401 (NSLocalizedRecoverySuggestionErrorKey) */
-"kLGHTTPErrorUnauthorizedSuggestion" = "Please confirm you have entered the correct username and password for the connection.";
+"kLGHTTPErrorUnauthorizedSuggestion" = "Please confirm you have entered the correct username and password or API Token for the connection.";
 
 /* Unknown */
 "kLGHTTPErrorUnknownDescription" = "There was a problem connecting to the server";

@@ -27,6 +27,7 @@
     LGDefaults *_defaults;
 }
 
+#pragma mark - Protocol Conforming
 + (NSString *)serviceDescription
 {
     return NSLocalizedString(@"AutoPkgr Emailer", @"Email notification service description");
@@ -71,7 +72,7 @@
     return self;
 }
 
-#pragma mark - Required subclass overrides.
+#pragma mark - Send
 - (void)send:(void (^)(NSError *))complete
 {
     if (complete && !self.notificatonComplete) {
@@ -100,7 +101,7 @@
     [self sendEmailNotification:subject message:message test:YES];
 }
 
-#pragma mark - Convenience
+#pragma mark - Credentials
 - (void)getMailCredentials:(void (^)(LGHTTPCredential *, NSError *))reply
 {
     /* This sends back a credential object with three properties

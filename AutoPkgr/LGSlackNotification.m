@@ -18,8 +18,12 @@
 #import "LGSlackNotification.h"
 #import <AFNetworking/AFHTTPRequestOperationManager.h>
 
+static NSString *const SlackLink = @"https://slack.com/channels";
+static NSString *const SlacksNotificationsEnabledKey = @"SlackNotificationsEnabled";
+
 @implementation LGSlackNotification
 
+#pragma mark - Protocol Conforming
 + (NSString *)serviceDescription
 {
     return NSLocalizedString(@"AutoPkgr Slack Bot", @"Slack webhook service description");
@@ -32,7 +36,7 @@
 
 + (BOOL)isEnabled
 {
-    return [[NSUserDefaults standardUserDefaults] boolForKey:@"SlackNotificationsEnabled"];
+    return [[NSUserDefaults standardUserDefaults] boolForKey:SlacksNotificationsEnabledKey];
 }
 
 + (BOOL)storesInfoInKeychain
@@ -47,46 +51,10 @@
 
 + (NSURL *)serviceURL
 {
-    return [NSURL URLWithString:@"https://slack.com"];
+    return [NSURL URLWithString:SlackLink];
 }
 
-- (AFHTTPRequestOperationManager *)requestManager
-{
-    AFHTTPRequestOperationManager *manager = [[AFHTTPRequestOperationManager alloc] init];
-    manager.requestSerializer = [AFJSONRequestSerializer serializer];
-    manager.requestSerializer.timeoutInterval = 10; // This could be changed.
-
-    [manager.requestSerializer setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
-    [manager.requestSerializer setValue:@"application/json" forHTTPHeaderField:@"Accept"];
-
-    // Set up the request serializer with any additional criteria for slack
-    //[manager.requestSerializer setAuthorizationHeaderFieldWithUsername:@"" password:@""]; <- probably don't need this.
-
-    manager.responseSerializer = [AFHTTPResponseSerializer serializer];
-
-    return manager;
-}
-
-- (void)webHookURL:(void (^)(NSString *))reply
-{
-    // This probably shouldn't be stored in defaults, but for testing now it's OK.
-    [[self class] infoFromKeychain:^(NSString *webHookURL, NSError *error) {
-        reply(webHookURL ?: @"");
-    }];
-}
-
-- (NSDictionary *)baseParameters:(NSDictionary *)parameters
-{
-    NSMutableDictionary *dict = [parameters mutableCopy];
-    if (!parameters[@"username"]) {
-        dict[@"username"] = @"AutoPkgr";
-    }
-
-    dict[@"icon_url"] = @"https://raw.githubusercontent.com/lindegroup/autopkgr/master/AutoPkgr/Images.xcassets/AppIcon.appiconset/icon_32x32%402x.png";
-
-    return [dict copy];
-}
-
+#pragma mark - Send
 - (void)send:(void (^)(NSError *))complete
 {
     if (complete && !self.notificatonComplete) {
@@ -116,16 +84,50 @@
     [self sendMessageWithParameters:testParameters];
 }
 
+#pragma mark - Private
+- (AFHTTPRequestOperationManager *)requestManager
+{
+    AFHTTPRequestOperationManager *manager = [[AFHTTPRequestOperationManager alloc] init];
+    manager.requestSerializer = [AFJSONRequestSerializer serializer];
+    manager.requestSerializer.timeoutInterval = 10; // This could be changed.
+
+    [manager.requestSerializer setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+    [manager.requestSerializer setValue:@"application/json" forHTTPHeaderField:@"Accept"];
+
+    // Set up the request serializer with any additional criteria for slack
+    //[manager.requestSerializer setAuthorizationHeaderFieldWithUsername:@"" password:@""]; <- probably don't need this.
+
+    manager.responseSerializer = [AFHTTPResponseSerializer serializer];
+
+    return manager;
+}
+
+- (NSDictionary *)baseParameters:(NSDictionary *)parameters
+{
+    NSMutableDictionary *dict = [parameters mutableCopy];
+    if (!parameters[@"username"]) {
+        dict[@"username"] = @"AutoPkgr";
+    }
+
+    dict[@"icon_url"] = @"https://raw.githubusercontent.com/lindegroup/autopkgr/master/AutoPkgr/Images.xcassets/AppIcon.appiconset/icon_32x32%402x.png";
+
+    return [dict copy];
+}
+
 - (void)sendMessageWithParameters:(NSDictionary *)parameters
 {
     AFHTTPRequestOperationManager *manager = [self requestManager];
-    [self webHookURL:^(NSString *webHookURL) {
-        [manager POST:webHookURL parameters:[self baseParameters:parameters] success:^(AFHTTPRequestOperation *operation, id responseObject) {
-            self.notificatonComplete(nil);
-        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-            NSLog(@"%@", operation.responseString);
+    [[self class] infoFromKeychain:^(NSString *webHookURL, NSError *error) {
+        if (error) {
             self.notificatonComplete(error);
-        }];
+        } else {
+            [manager POST:webHookURL parameters:[self baseParameters:parameters] success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                self.notificatonComplete(nil);
+            } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                NSLog(@"%@", operation.responseString);
+                self.notificatonComplete([LGError errorWithResponse:operation.response]);
+            }];
+        }
     }];
 }
 

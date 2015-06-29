@@ -19,8 +19,17 @@
 #import "LGDefaults.h"
 
 #import <AFNetworking/AFHTTPRequestOperationManager.h>
+
+static NSString *const HipChatLink = @"https://hipchat.com/rooms";
+
+static NSString *const HipChatNotificationEnabledKey = @"HipChatNotificationEnabled";
+static NSString *const HipChatNotificationRoomKey = @"HipChatNotificationRoom";
+static NSString *const HipChatNotificationNotifyKey = @"HipChatNotificationNotify";
+
+
 @implementation LGHipChatNotification
 
+#pragma mark - Protocol Conforming
 + (NSString *)serviceDescription
 {
     return @"AutoPkgr HipChat";
@@ -33,7 +42,7 @@
 
 + (BOOL)isEnabled
 {
-    return [[NSUserDefaults standardUserDefaults] boolForKey:@"HipChatNotificationsEnabled"];
+    return [[NSUserDefaults standardUserDefaults] boolForKey:HipChatNotificationEnabledKey];
 }
 
 + (BOOL)storesInfoInKeychain
@@ -48,7 +57,7 @@
 
 + (NSURL *)serviceURL
 {
-    return [NSURL URLWithString:@"https://hipchat.com"];
+    return [NSURL URLWithString:HipChatLink];
 }
 
 #pragma mark - Send
@@ -73,7 +82,8 @@
 - (void)sendTest:(void (^)(NSError *))complete
 {
     self.notificatonComplete = complete;
-    NSString *message = @"Testing HipChat integration!";
+    NSString *message = NSLocalizedString(@"Testing HipChat notifications!",
+                                          @"Hipchat testing message");
 
     NSDictionary *parameters = @{ @"message" : message };
 
@@ -90,7 +100,7 @@
 {
     /* Get the room from defaults, or if not found use `__void` to cause
      * the request operation to fail without raising an exception */
-    NSString *room = [[NSUserDefaults standardUserDefaults] stringForKey:@"HipChatNotificationRoom"] ?: @"__void";
+    NSString *room = [[NSUserDefaults standardUserDefaults] stringForKey:HipChatNotificationRoomKey] ?: @"__void";
     return [room stringByAppendingPathComponent:@"notification"];
 }
 
@@ -100,7 +110,7 @@
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 
     NSNumber *verify;
-    if ((verify = [defaults valueForKey:@"HipChatNotificationNotify"])) {
+    if ((verify = [defaults valueForKey:HipChatNotificationNotifyKey])) {
         parameters[@"notify"] = verify;
     }
 
