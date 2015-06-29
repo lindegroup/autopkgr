@@ -631,7 +631,7 @@ void subclassMustConformToProtocol(id className)
     NSImage *stausImage = nil;
     switch (self.status) {
     case kLGIntegrationNotInstalled:
-        stausImage = [NSImage LGStatusNotInstalled];
+        stausImage = [NSImage LGStatusNone];
         break;
     case kLGIntegrationUpdateAvailable:
         stausImage = [NSImage LGStatusUpdateAvailable];
