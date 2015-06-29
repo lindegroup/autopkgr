@@ -18,11 +18,11 @@
 #import "LGIntegrationManager.h"
 #import "NSArray+filtered.h"
 
-static NSArray *__integrationClasses;
-static NSArray *__optionalIntegrationClasses;
-static NSArray *__requiredIntegrationClasses;
+static NSArray const *__integrationClasses;
+static NSArray const *__optionalIntegrationClasses;
+static NSArray const *__requiredIntegrationClasses;
 
-static void * XXInfoStatusChange = &XXInfoStatusChange;
+static void *XXInfoStatusChange = &XXInfoStatusChange;
 
 @implementation LGIntegrationManager
 @synthesize allIntegrations = _allIntegrations, optionalIntegrations = _optionalIntegrations, requiredIntegrations = _requiredIntegrations, installedIntegrations = _installedIntegrations;
@@ -39,6 +39,7 @@ static void * XXInfoStatusChange = &XXInfoStatusChange;
                           [LGMunkiIntegration class],
                           [LGJSSImporterIntegration class],
                           [LGAbsoluteManageIntegration class],
+                          [LGMacPatchIntegration class],
                           ];
 
         __requiredIntegrationClasses = @[
@@ -62,7 +63,7 @@ static void * XXInfoStatusChange = &XXInfoStatusChange;
         @try {
             [integration removeObserver:self forKeyPath:NSStringFromSelector(@selector(info)) context:XXInfoStatusChange];
         }
-        @catch (NSException * __unused exception) {}
+        @catch (NSException *__unused exception) {}
     }
 }
 
@@ -80,8 +81,6 @@ static void * XXInfoStatusChange = &XXInfoStatusChange;
                     NSKeyValueObservingOptions opts = NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld;
                     [integration addObserver:self forKeyPath:NSStringFromSelector(@selector(info)) options:opts context:XXInfoStatusChange];
                 });
-
-
             }
         }
         _allIntegrations = [initedIntegrations copy];
@@ -145,7 +144,8 @@ static void * XXInfoStatusChange = &XXInfoStatusChange;
 }
 
 #pragma mark - Observation
-- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
+{
     if (context == XXInfoStatusChange) {
         LGIntegrationInfo *infoOld = change[@"old"];
         LGIntegrationInfo *infoNew = change[@"new"];

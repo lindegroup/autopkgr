@@ -25,6 +25,7 @@
 #import "LGJSSImporterIntegrationView.h"
 #import "LGMunkiIntegrationView.h"
 #import "LGAbsoluteManageIntegrationView.h"
+#import "LGMacPatchIntegrationView.h"
 #import "LGIntegrationWindowController.h"
 #import "LGTableCellViews.h"
 
@@ -83,6 +84,8 @@
         viewClass = [LGMunkiIntegrationView class];
     } else if ([integration isMemberOfClass:[LGAbsoluteManageIntegration class]]) {
         viewClass = [LGAbsoluteManageIntegrationView class];
+    }  else if ([integration isMemberOfClass:[LGMacPatchIntegration class]]) {
+        viewClass = [LGMacPatchIntegrationView class];
     }
 
     return viewClass;

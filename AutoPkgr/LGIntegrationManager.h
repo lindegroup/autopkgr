@@ -23,6 +23,7 @@
 #import "LGJSSImporterIntegration.h"
 #import "LGMunkiIntegration.h"
 #import "LGAbsoluteManageIntegration.h"
+#import "LGMacPatchIntegration.h"
 
 @class LGIntegration;
 
