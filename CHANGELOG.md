@@ -16,14 +16,14 @@ All notable changes to this project will be documented in this file. This projec
 - Better validation of the standard output we're receiving from AutoPkg.
 - Ability to set the proxies AutoPkg uses in the UI.
 - Ability to change the Git binary used by AutoPkg.
-
 - The repos list now has a status indicator showing if there are new commits to an installed repo.
 - The recipe list now has a status indicator showing if a recipe is missing a parent recipe.
-
 - You can now create the GitHub API token used with `autopkg search` feature using AutoPkgr.
+- Now you can send notifications directly to a Slack channel. Requires the channel's Webhook URL, which Slack admins have access to. (#358)
 
 ### Changed
 - Behind-the-scenes code cleanup, typo fixes, refactors, and reorganization.
+- Updated jss-recipes repo to [its new URL](https://github.com/autopkg/jss-recipes).
 
 ### Fixed
 - Fixed a bug that could cause email username and password to not get updated immediately.

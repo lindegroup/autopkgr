@@ -39,6 +39,8 @@ typedef NS_ENUM(OSStatus, LGAutoPkgRepoStatus) {
 @property (assign, nonatomic, readonly) NSInteger stars;
 
 @property (assign, nonatomic, readonly) BOOL isInstalled;
+@property (assign, nonatomic, readonly) BOOL isAheadOfMaster;
+
 @property (assign, nonatomic, readonly) LGAutoPkgRepoStatus status;
 @property (copy) void (^statusChangeBlock)(LGAutoPkgRepoStatus);
 
@@ -51,6 +53,11 @@ typedef NS_ENUM(OSStatus, LGAutoPkgRepoStatus) {
 
 - (void)install:(void (^)(NSError *))reply;
 - (void)remove:(void (^)(NSError *))reply;
+
+/**
+ *  Hard reset repo the remote (origin) master commit
+ */
+- (void)hardResetToOriginMaster;
 
 /**
  *  Update the repo;

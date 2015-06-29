@@ -56,7 +56,7 @@ NSString *const kLGJSSDistPointTypeKey = @"type";
 }
 
 + (NSString *)defaultRepository {
-   return @"https://github.com/sheagcraig/jss-recipes.git";
+   return @"https://github.com/autopkg/jss-recipes.git";
 }
 
 + (NSString *)binary

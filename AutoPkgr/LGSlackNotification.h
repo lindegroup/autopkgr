@@ -1,6 +1,6 @@
-//  LGUserNotifications.h
+// LGSlackNotification.h
 //
-//  Copyright 2014-2015 The Linde Group, Inc.
+// Copyright 2015 The Linde Group, Inc.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -15,10 +15,8 @@
 //  limitations under the License.
 //
 
-#import <Foundation/Foundation.h>
+#import "LGNotificationService.h"
 
-@interface LGUserNotifications : NSObject <NSUserNotificationCenterDelegate>
-
-+ (void)sendNotificationOfTestEmailSuccess:(BOOL)success error:(NSError *)error;
+@interface LGSlackNotification : LGNotificationService
 
 @end

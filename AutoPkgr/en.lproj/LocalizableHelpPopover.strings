@@ -13,3 +13,8 @@
 
 "recipeTableInfoTitle" = "Recipe Help:";
 "recipeTableInfo" = "Control-click on a recipe to bring up a contextual menu with options to  get info, run the recipe, or create an override. You can also set the preferred recipe editor.\n\nIf a caution icon is present in the status column, there is an issue with the recipe, most often it's missing a parent recipe, and will require further investigation before enabling the recipe.";
+
+"slackHelpInfoTitle" = "Slack Webhook Help:";
+"slackHelpInfo" = "Incoming Webhooks are a simple way to post messages from external sources into Slack. They make use of normal HTTP requests with a JSON payload, which includes the message text and some options. Message Attachments can also be used in Incoming Webhooks to display richly-formatted messages that stand out from regular chat messages. Visit the slack webhooks documentation for more information.";
+
+"slackHelpInfoURL" = "https://api.slack.com/incoming-webhooks";

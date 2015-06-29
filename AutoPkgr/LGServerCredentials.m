@@ -128,19 +128,9 @@
     return _serverURL;
 }
 
-- (NSString *)host
-{
-    return self.serverURL.host;
-}
-
-- (NSString *)protocol
-{
-    return self.serverURL.scheme;
-}
-
 - (NSInteger)port
 {
-    return self.serverURL.port.integerValue;
+    return (_port != 0) ? _port : self.serverURL.port.integerValue;
 }
 
 #pragma mark - Error Helper

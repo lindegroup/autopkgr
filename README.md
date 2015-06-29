@@ -24,7 +24,7 @@ AutoPkgr also lets you do all of the following, which wouldn't be possible using
 
 * Easy tracking of which specific AutoPkg recipes you care about.
 * Automatic scheduled checks of the selected recipes.
-* Email notifications when the recipes are updated (and sweet silence when they're not).
+* Email or Slack notifications when the recipes are updated (and sweet silence when they're not).
 * One-click access to common folders that Munki and AutoPkg admins need.
 
 
@@ -60,11 +60,11 @@ Download the [latest release](https://github.com/lindegroup/autopkgr/releases/la
 
 1.  Set your automatic update checking preferences — we recommend checking at least once per day, and checking for repo updates when AutoPkgr starts.
 
-1.  Configure email notifications, if desired.
+1.  Configure email and/or Slack notifications, if desired.
 
 1.  Click __Save and Close__.
 
-That's it! AutoPkgr will now check for the latest app updates you specified, and when an update is available you'll receive an email notification.
+That's it! AutoPkgr will now check for the latest app updates you specified, and when an update is available you'll receive a notification.
 
 Anytime you'd like to make changes to AutoPkgr's configuration, just click on the AutoPkgr icon in the menu bar (![Menu bar icon](doc-images/menulet.png)), and choose __Configure...__
 
@@ -180,6 +180,6 @@ If you discover an issue with the AutoPkgr app itself, you may want to post a me
 
 AutoPkgr was created by James Barclay, Elliot Jordan, and Josh Senick of the [Linde Group](http://www.lindegroup.com) with a huge amount of help from Eldon Ahrold.
 
-We're very friendly. Stop by Berkeley sometime and have an espresso.
+We're very friendly. Stop by Emeryville sometime and have an espresso.
 
 Briefcase icon from [FontAwesome](http://fontawesome.io/).

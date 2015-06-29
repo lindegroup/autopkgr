@@ -1,8 +1,4 @@
-//
-//  LGEmailer.h
-//  AutoPkgr
-//
-//  Created by James Barclay on 6/26/14.
+//  LGUserNotifications.h
 //
 //  Copyright 2014-2015 The Linde Group, Inc.
 //
@@ -19,20 +15,13 @@
 //  limitations under the License.
 //
 
-#import <Foundation/Foundation.h>
-#import <MailCore/MailCore.h>
+#import "LGNotificationService.h"
 
-@interface LGEmailer : NSObject
+@interface LGUserNotificationsDelegate : NSObject <NSUserNotificationCenterDelegate>
+- (instancetype)initAsDefaultCenterDelegate;
+@end
 
-/*
- * complete observable property of current LGEmailer status
- * returns NO while in the process of sending and email, YES on complete or error 
- */
-@property (nonatomic, assign) BOOL complete;
-@property (copy, nonatomic) void ((^replyBlock)(NSError *));
-
-- (void)sendEmailNotification:(NSString *)subject message:(NSString *)message;
-- (void)sendEmailForReport:(NSDictionary *)report error:(NSError *)error;
-- (void)sendTestEmail;
+@interface LGUserNotification : LGNotificationService
++ (void)sendNotificationOfTestEmailSuccess:(BOOL)success error:(NSError *)error;
 
 @end

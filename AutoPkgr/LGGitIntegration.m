@@ -188,7 +188,7 @@ static NSArray *knownGitPaths()
     task.launchPath = binary;
     task.arguments = args;
     
-    if (repoPath) {
+    if (access(repoPath.UTF8String,F_OK) == 0) {
         task.currentDirectoryPath = repoPath;
     }
 
