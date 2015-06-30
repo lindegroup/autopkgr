@@ -156,7 +156,9 @@ static void *XXInfoStatusChange = &XXInfoStatusChange;
         if (infoOld.status != infoNew.status) {
             _installedIntegrations = nil;
             if (_installStatusDidChangeHandler) {
-                _installStatusDidChangeHandler(self, (LGIntegration *)object);
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    _installStatusDidChangeHandler(self, (LGIntegration *)object);
+                });
             }
         }
     }
