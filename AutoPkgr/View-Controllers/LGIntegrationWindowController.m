@@ -64,11 +64,14 @@
 
     [self.progressSpinner startAnimation:nil];
     [self.viewController.integration uninstall:^(NSString *message, double progress) {} reply:^(NSError *error) {
-        [weakSelf.progressSpinner stopAnimation:nil];
-        if (!error) {
-            [[(LGBaseIntegrationViewController *)weakSelf.viewController integration].progressDelegate stopProgress:error];
-            [weakSelf.window close];
-        }
+        __strong typeof(self) strongSelf = weakSelf;
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [strongSelf.progressSpinner stopAnimation:nil];
+            if (!error) {
+                [[(LGBaseIntegrationViewController *)strongSelf.viewController integration].progressDelegate stopProgress:error];
+                [strongSelf.window close];
+            }
+        });
     }];
 }
 

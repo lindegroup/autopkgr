@@ -354,6 +354,10 @@ void subclassMustConformToProtocol(id className)
     }
 
     void (^complete)(NSError *) = ^void(NSError *error) {
+        if (error.code == errAuthorizationCanceled) {
+            return [self didCompleteInstallAction:sender error:nil];
+        }
+
         [self customInstallActions:^(NSError *customError) {
             NSError *endError = error;
             if (customError && (endError == nil)) {
@@ -425,6 +429,9 @@ void subclassMustConformToProtocol(id className)
 - (void)uninstall:(id)sender
 {
     void (^complete)(NSError *) = ^void(NSError *error) {
+        if (error.code == errAuthorizationCanceled) {
+            return [self didCompleteInstallAction:sender error:nil];
+        }
         [self customUninstallActions:^(NSError *customError) {
             NSError *endError = error;
             if (customError && !endError) {
@@ -501,29 +508,31 @@ void subclassMustConformToProtocol(id className)
 #pragma mark - Install / Uninstall completion
 - (void)didCompleteInstallAction:(id)sender error:(NSError *)error
 {
-    BOOL isInstalled = [[self class] isInstalled];
-    if ([self.progressDelegate respondsToSelector:@selector(stopProgress:)]) {
-        [self.progressDelegate stopProgress:error];
-    }
-
-    if ([sender respondsToSelector:@selector(isEnabled)]) {
-        [sender setEnabled:YES];
-    }
-
-    if ([sender respondsToSelector:@selector(action)]) {
-        if ([[self class] isUninstallable]) {
-            [sender setAction:isInstalled ? @selector(uninstall:) : @selector(install:)];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        BOOL isInstalled = [[self class] isInstalled];
+        if ([self.progressDelegate respondsToSelector:@selector(stopProgress:)]) {
+            [self.progressDelegate stopProgress:error];
         }
-    }
 
-    [[NSNotificationCenter defaultCenter] postNotificationName:kLGNotificationIntegrationStatusDidChange object:self];
+        if ([sender respondsToSelector:@selector(isEnabled)]) {
+            [sender setEnabled:YES];
+        }
 
-    if (_origProgressDelegate) {
-        _progressDelegate = _origProgressDelegate;
-        _origProgressDelegate = nil;
-    }
+        if ([sender respondsToSelector:@selector(action)]) {
+            if ([[self class] isUninstallable]) {
+                [sender setAction:isInstalled ? @selector(uninstall:) : @selector(install:)];
+            }
+        }
 
-    [self refresh];
+        [[NSNotificationCenter defaultCenter] postNotificationName:kLGNotificationIntegrationStatusDidChange object:self];
+
+        if (_origProgressDelegate) {
+            _progressDelegate = _origProgressDelegate;
+            _origProgressDelegate = nil;
+        }
+        
+        [self refresh];
+    });
 }
 
 #pragma mark - Util

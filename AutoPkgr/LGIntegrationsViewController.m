@@ -71,30 +71,13 @@
 
 #pragma mark - Integration config
 
-- (Class)viewControllerClassForIntegration:(LGIntegration *)integration
-{
-    Class viewClass = NULL;
-    if ([integration isMemberOfClass:[LGAutoPkgIntegration class]]) {
-        viewClass = [LGAutoPkgIntegrationView class];
-    } else if ([integration isMemberOfClass:[LGGitIntegration class]]) {
-        viewClass = [LGGitIntegrationView class];
-    } else if ([integration isMemberOfClass:[LGJSSImporterIntegration class]]) {
-        viewClass = [LGJSSImporterIntegrationView class];
-    } else if ([integration isMemberOfClass:[LGMunkiIntegration class]]) {
-        viewClass = [LGMunkiIntegrationView class];
-    } else if ([integration isMemberOfClass:[LGAbsoluteManageIntegration class]]) {
-        viewClass = [LGAbsoluteManageIntegrationView class];
-    }  else if ([integration isMemberOfClass:[LGMacPatchIntegration class]]) {
-        viewClass = [LGMacPatchIntegrationView class];
-    }
-
-    return viewClass;
-}
-
 - (void)configure:(NSButton *)sender
 {
     LGIntegration *integration = [[self tableViewIntegrations] objectAtIndex:sender.tag];
-    Class viewClass = [self viewControllerClassForIntegration:integration];
+
+    /* The button's identifier is set during the table reload when the 
+     * cell view's button is setup with the integration object */
+    Class viewClass = NSClassFromString(sender.identifier);
 
     if (viewClass) {
         LGBaseIntegrationViewController *integrationView = [[viewClass alloc] initWithIntegration:integration];
@@ -138,7 +121,10 @@
         statusCell.configureButton.target = integration;
         statusCell.configureButton.tag = row;
 
-        statusCell.configureButton.enabled = ([self viewControllerClassForIntegration:integration] != nil);
+        /* Set the name of the identifier's cooresponding view class as the identifier
+         * in the `- config:` method this is used to create an instance of the viewClass */
+        statusCell.configureButton.identifier = [[integration className] stringByAppendingString:@"View"];
+        statusCell.configureButton.enabled = statusCell.configureButton.identifier != nil;
 
         statusCell.configureButton.title = quick_formatString(@"%@ %@",
                                                               NSLocalizedString(@"Install", nil),
