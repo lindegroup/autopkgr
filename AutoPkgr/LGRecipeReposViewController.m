@@ -22,7 +22,9 @@
 #import "LGRecipeTableViewController.h"
 #import "LGRepoTableViewController.h"
 
-@interface LGRecipeReposViewController ()
+@interface LGRecipeReposViewController ()<NSTextFieldDelegate>
+@property (weak) IBOutlet NSTextField *repoURLToAdd;
+@property (weak) IBOutlet NSButton *addRepoButton;
 
 @end
 
@@ -45,6 +47,8 @@
     if (!self.awake) {
         self.awake = YES;
         _popRepoTableViewHandler.progressDelegate = self.progressDelegate;
+        _repoURLToAdd.delegate = self;
+        _addRepoButton.enabled = NO;
     }
 }
 
@@ -70,6 +74,13 @@
         }];
     }];
     [_repoURLToAdd setStringValue:@""];
+}
+
+- (void)controlTextDidChange:(NSNotification *)note {
+    if([note.object isEqualTo:_repoURLToAdd]){
+        NSString *url = [note.object stringValue];
+        _addRepoButton.enabled = [url hasPrefix:@"http"];
+    }
 }
 
 @end

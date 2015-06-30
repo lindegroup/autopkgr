@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="7706" systemVersion="14D136" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="6250" systemVersion="13F1077" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="7706"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="6250"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="LGRecipeReposViewController">
             <connections>
+                <outlet property="addRepoButton" destination="mla-ao-F4d" id="bB7-vZ-ZEU"/>
                 <outlet property="popRepoTableViewHandler" destination="n5R-1c-D0m" id="llu-Lq-oTN"/>
                 <outlet property="recipeTableViewHandler" destination="kUD-K3-5P5" id="ZfK-3v-99B"/>
                 <outlet property="repoURLToAdd" destination="PWu-1D-EW1" id="FCu-b5-A87"/>
@@ -26,7 +27,6 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" columnSelection="YES" multipleSelection="NO" autosaveColumns="NO" rowSizeStyle="automatic" headerView="A8F-FX-vOe" viewBased="YES" id="n0R-ew-DOT" customClass="LGTableView">
-                                <rect key="frame" x="0.0" y="0.0" width="581.5" height="0.0"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <size key="intercellSpacing" width="3" height="2"/>
                                 <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -194,7 +194,7 @@
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                 </textField>
-                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="6E4-OJ-BCm">
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="6E4-OJ-BCm">
                     <rect key="frame" x="15" y="212" width="167" height="17"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Add a repo URL manually:" id="1IN-jG-Kev">
                         <font key="font" metaFont="system"/>
@@ -202,9 +202,9 @@
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                 </textField>
-                <textField verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="PWu-1D-EW1">
+                <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="PWu-1D-EW1">
                     <rect key="frame" x="188" y="210" width="350" height="22"/>
-                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" placeholderString="https://github.com/autopkg/recipes.git" drawsBackground="YES" id="hVj-tR-yVr">
+                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" continuous="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" placeholderString="https://github.com/autopkg/recipes.git" drawsBackground="YES" id="hVj-tR-yVr">
                         <font key="font" metaFont="system"/>
                         <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
                         <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -246,7 +246,6 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnSelection="YES" columnResizing="NO" multipleSelection="NO" autosaveColumns="NO" rowSizeStyle="automatic" headerView="G9x-hV-Xkq" viewBased="YES" id="HAz-3M-Rgt" customClass="LGTableView">
-                                <rect key="frame" x="0.0" y="0.0" width="581" height="0.0"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <size key="intercellSpacing" width="3" height="2"/>
                                 <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -377,7 +376,7 @@
                                                         <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyUpOrDown" id="Oh4-Re-cfC"/>
                                                     </imageView>
                                                     <progressIndicator horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" minValue="26" maxValue="26" doubleValue="26" displayedWhenStopped="NO" bezeled="NO" indeterminate="YES" controlSize="small" style="spinning" translatesAutoresizingMaskIntoConstraints="NO" id="KDy-Cc-slz">
-                                                        <rect key="frame" x="1" y="1" width="16" height="16"/>
+                                                        <rect key="frame" x="15" y="1" width="16" height="16"/>
                                                     </progressIndicator>
                                                 </subviews>
                                                 <connections>
@@ -482,5 +481,6 @@
                 <outlet property="recipeTableView" destination="HAz-3M-Rgt" id="bqE-uJ-i5n"/>
             </connections>
         </customObject>
+        <userDefaultsController representsSharedInstance="YES" id="McN-hN-Yyd"/>
     </objects>
 </document>

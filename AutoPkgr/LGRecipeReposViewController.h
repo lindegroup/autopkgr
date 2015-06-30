@@ -24,7 +24,6 @@
 
 @interface LGRecipeReposViewController : LGTabViewControllerBase
 
-@property (weak) IBOutlet NSTextField *repoURLToAdd;
 
 // Objects
 @property (strong) IBOutlet LGRepoTableViewController *popRepoTableViewHandler;
