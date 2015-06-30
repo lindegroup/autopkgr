@@ -20,15 +20,16 @@
 
 #import "LGRecipeInfoView.h"
 #import "LGAutoPkgRecipe.h"
+#import "NSTextField+safeStringValue.h"
 
 @interface LGRecipeInfoView ()
 @property (weak) IBOutlet NSTextField *nameTF;
 @property (weak) IBOutlet NSTextField *identifierTF;
-@property (weak) IBOutlet NSTextField *descriptionTF;
 @property (weak) IBOutlet NSTextField *parentRecipesTF;
 @property (weak) IBOutlet NSTextField *filePathTF;
 @property (weak) IBOutlet NSTextField *hasCheckPhaseTF;
 @property (weak) IBOutlet NSTextField *buildsPackageTF;
+@property (unsafe_unretained) IBOutlet NSTextView *descriptionTextView;
 
 @property (weak) IBOutlet NSTextField *minimumVersionTF;
 @end
@@ -45,15 +46,37 @@
 }
 
 - (void)awakeFromNib {
-    _nameTF.stringValue = _recipe.Name;
-    _identifierTF.stringValue = _recipe.Identifier;
-    _parentRecipesTF.stringValue = [_recipe.ParentRecipes componentsJoinedByString:@"\n"] ?: @"";
-    _descriptionTF.stringValue = _recipe.Description ?: @"";
-    _minimumVersionTF.stringValue = _recipe.MinimumVersion ?: @"";
-    _filePathTF.stringValue = [_recipe.FilePath stringByAbbreviatingWithTildeInPath];
+    /* Since the recipe description can be rather long, we use
+     * we're using a textView with scrolling capabilities */
+    _descriptionTextView.backgroundColor = [NSColor clearColor];
 
-    _hasCheckPhaseTF.stringValue = [self stringForBool:_recipe.hasCheckPhase];
-    _buildsPackageTF.stringValue = [self stringForBool:_recipe.buildsPackage];
+    NSMutableDictionary *attrs = @{NSFontAttributeName : [NSFont systemFontOfSize:11.0]}.mutableCopy;
+    NSString *description = _recipe.Description;
+    if (!description) {
+        [attrs setObject:[NSColor grayColor] forKey:NSForegroundColorAttributeName];
+        description = @"<No description provided>";
+    }
+    NSAttributedString *attrString = [[NSAttributedString alloc] initWithString:description
+                                                                      attributes:attrs];
+
+    [_descriptionTextView.textStorage appendAttributedString:attrString];
+
+    _nameTF.safe_stringValue = _recipe.Name;
+    _identifierTF.safe_stringValue = _recipe.Identifier;
+
+    _parentRecipesTF.safe_stringValue = [_recipe.ParentRecipes componentsJoinedByString:@"\n"];
+    if (_recipe.isMissingParent) {
+        _parentRecipesTF.textColor = [NSColor redColor];
+    }
+
+    _minimumVersionTF.safe_stringValue = _recipe.MinimumVersion;
+
+    _filePathTF.safe_stringValue = [_recipe.FilePath stringByAbbreviatingWithTildeInPath];
+    _filePathTF.toolTip = _filePathTF.safe_stringValue;
+
+    _hasCheckPhaseTF.safe_stringValue = [self stringForBool:_recipe.hasCheckPhase];
+
+    _buildsPackageTF.safe_stringValue = [self stringForBool:_recipe.buildsPackage];
 }
 
 - (void)viewDidLoad {
