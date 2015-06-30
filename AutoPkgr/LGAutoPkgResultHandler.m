@@ -133,6 +133,7 @@
                         [scanner scanCharactersFromSet:repoCharacters intoString:&repo];
                         [scanner scanCharactersFromSet:repoCharacters intoString:&path];
 
+
                         if (recipe && repo && path) {
                             if (!searchResults) {
                                 searchResults = [[NSMutableArray alloc] init];
@@ -164,6 +165,10 @@
         case kLGAutoPkgRepoList: {
             NSArray *listResults = self.dataString.split_byLine;
             __block NSMutableArray *repos = nil;
+
+            if ([listResults.firstObject hasPrefix:@"No recipe repos"]) {
+                break;
+            }
 
             NSMutableCharacterSet *skippedCharacters = [NSMutableCharacterSet whitespaceCharacterSet];
             [skippedCharacters addCharactersInString:@"()"];

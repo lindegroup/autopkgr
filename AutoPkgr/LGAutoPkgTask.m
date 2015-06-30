@@ -917,6 +917,10 @@ typedef void (^AutoPkgReplyErrorBlock)(NSError *error);
 + (void)repoAdd:(NSString *)repo reply:(void (^)(NSError *))reply
 {
     LGAutoPkgTask *task = [[LGAutoPkgTask alloc] init];
+    // Make sure everything that comes in has the .git extension.
+    if (![repo.pathExtension isEqualToString:@"git"]) {
+        repo = [repo stringByAppendingPathExtension:@"git"];
+    }
     task.arguments = @[ @"repo-add", repo ];
     [task launchInBackground:^(NSError *error) {
         reply(error);

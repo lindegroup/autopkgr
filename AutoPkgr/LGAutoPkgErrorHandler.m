@@ -106,7 +106,6 @@ NSString *maskPasswordInString(NSString *string)
 {
     _pipe.fileHandleForReading.readabilityHandler = nil;
     _pipe = nil;
-    DevLog(@"Dealloc Error Handler");
 }
 
 - (instancetype)initWithVerb:(LGAutoPkgVerb)verb
