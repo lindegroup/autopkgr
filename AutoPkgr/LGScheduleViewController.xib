@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="7706" systemVersion="14D136" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="7706" systemVersion="14E46" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="macosx"/>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="7706"/>
@@ -8,11 +8,9 @@
         <customObject id="-2" userLabel="File's Owner" customClass="LGScheduleViewController">
             <connections>
                 <outlet property="dailyHourPopupBT" destination="Jpf-1J-Qbr" id="mca-JJ-sxf"/>
-                <outlet property="runAutoPkgNowButton" destination="7vx-nK-KRd" id="rji-qa-rmw"/>
                 <outlet property="scheduleEnabledBT" destination="J8d-qW-trQ" id="ZJ4-2K-wUU"/>
                 <outlet property="scheduleIntervalTF" destination="oZ2-P7-4IE" id="Wo3-UO-eTl"/>
                 <outlet property="scheduleTypeMatrix" destination="UxE-SU-fts" id="BjG-Ja-l3f"/>
-                <outlet property="updateRepoNowButton" destination="X02-En-nic" id="erg-xd-ReS"/>
                 <outlet property="view" destination="Hz6-mo-xeY" id="0bl-1N-x8E"/>
                 <outlet property="weeklyDayPopupBT" destination="Vo5-wL-2B2" id="gSO-xQ-eOc"/>
                 <outlet property="weeklyHourPopupBT" destination="RXR-0C-bng" id="L4a-7Y-Weh"/>
@@ -25,9 +23,9 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <button translatesAutoresizingMaskIntoConstraints="NO" id="J8d-qW-trQ">
-                    <rect key="frame" x="128" y="142" width="347" height="18"/>
+                    <rect key="frame" x="18" y="230" width="364" height="18"/>
                     <constraints>
-                        <constraint firstAttribute="width" constant="343" id="sWO-PT-lUx"/>
+                        <constraint firstAttribute="width" constant="360" id="kV9-rW-wQ9"/>
                     </constraints>
                     <buttonCell key="cell" type="check" title="Enable scheduled AutoPkg runs" bezelStyle="regularSquare" imagePosition="left" alignment="left" inset="2" id="7rF-ef-zEP">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
@@ -38,7 +36,7 @@
                     </connections>
                 </button>
                 <matrix verticalHuggingPriority="750" selectionByRect="NO" allowsEmptySelection="NO" autorecalculatesCellSize="YES" translatesAutoresizingMaskIntoConstraints="NO" id="UxE-SU-fts" userLabel="Schedule Matrix">
-                    <rect key="frame" x="156" y="51" width="302" height="85"/>
+                    <rect key="frame" x="46" y="139" width="302" height="85"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="85" id="Eez-Od-1Gv"/>
                         <constraint firstAttribute="width" constant="302" id="HBg-Vp-Xtc"/>
@@ -76,16 +74,22 @@
                         </column>
                     </cells>
                 </matrix>
-                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="cHq-LH-gnB">
-                    <rect key="frame" x="249" y="119" width="40" height="14"/>
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="cHq-LH-gnB">
+                    <rect key="frame" x="139" y="207" width="40" height="14"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="36" id="LhG-vR-ozG"/>
+                    </constraints>
                     <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="hours" id="t9N-Fo-Q3T">
                         <font key="font" metaFont="smallSystem"/>
                         <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                 </textField>
-                <textField verticalHuggingPriority="750" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="oZ2-P7-4IE">
-                    <rect key="frame" x="214" y="117" width="29" height="19"/>
+                <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="oZ2-P7-4IE">
+                    <rect key="frame" x="104" y="205" width="29" height="19"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="29" id="Lde-Pl-R5L"/>
+                    </constraints>
                     <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" title="24" placeholderString="" drawsBackground="YES" id="9xE-ZL-3gu">
                         <font key="font" metaFont="smallSystem"/>
                         <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
@@ -96,8 +100,11 @@
                         <outlet property="delegate" destination="-2" id="lxX-Di-pxh"/>
                     </connections>
                 </textField>
-                <popUpButton verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Jpf-1J-Qbr" userLabel="DailyAt">
-                    <rect key="frame" x="224" y="96" width="85" height="15"/>
+                <popUpButton verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Jpf-1J-Qbr" userLabel="DailyAt">
+                    <rect key="frame" x="111" y="184" width="85" height="15"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="82" id="qi3-Py-7uI"/>
+                    </constraints>
                     <popUpButtonCell key="cell" type="push" bezelStyle="rounded" alignment="left" controlSize="mini" lineBreakMode="truncatingTail" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" id="wdV-7F-Ugw">
                         <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
                         <font key="font" metaFont="miniSystem"/>
@@ -107,8 +114,11 @@
                         <action selector="changeSchedule:" target="-2" id="hiH-q0-NTa"/>
                     </connections>
                 </popUpButton>
-                <popUpButton verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="RXR-0C-bng" userLabel="DailyAt">
-                    <rect key="frame" x="342" y="74" width="85" height="15"/>
+                <popUpButton verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="RXR-0C-bng" userLabel="DailyAt">
+                    <rect key="frame" x="230" y="162" width="85" height="15"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="82" id="CZf-Ai-wsv"/>
+                    </constraints>
                     <popUpButtonCell key="cell" type="push" bezelStyle="rounded" alignment="left" controlSize="mini" lineBreakMode="truncatingTail" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" id="QSZ-3n-UUg">
                         <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
                         <font key="font" metaFont="miniSystem"/>
@@ -125,7 +135,10 @@
                     </connections>
                 </popUpButton>
                 <popUpButton verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Vo5-wL-2B2" userLabel="Weekday">
-                    <rect key="frame" x="235" y="75" width="85" height="15"/>
+                    <rect key="frame" x="125" y="162" width="83" height="15"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="82" id="1WH-kk-z9z"/>
+                    </constraints>
                     <popUpButtonCell key="cell" type="push" bezelStyle="rounded" alignment="left" controlSize="mini" lineBreakMode="truncatingTail" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" id="f0t-uA-HJ7" userLabel="Pop Up Button Cell">
                         <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
                         <font key="font" metaFont="miniSystem"/>
@@ -135,8 +148,11 @@
                         <action selector="changeSchedule:" target="-2" id="b8g-gR-dNg"/>
                     </connections>
                 </popUpButton>
-                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="2BQ-ga-rjR">
-                    <rect key="frame" x="322" y="75" width="20" height="14"/>
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="2BQ-ga-rjR">
+                    <rect key="frame" x="212" y="163" width="20" height="14"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="16" id="YeN-eu-M8f"/>
+                    </constraints>
                     <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="at" id="qd6-CR-v7F">
                         <font key="font" metaFont="smallSystem"/>
                         <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -144,9 +160,9 @@
                     </textFieldCell>
                 </textField>
                 <button translatesAutoresizingMaskIntoConstraints="NO" id="K6Q-1C-fKu">
-                    <rect key="frame" x="128" y="28" width="347" height="18"/>
+                    <rect key="frame" x="18" y="115" width="364" height="18"/>
                     <constraints>
-                        <constraint firstAttribute="width" constant="343" id="fyE-2f-gcc"/>
+                        <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="360" id="Ifk-Cg-fkE"/>
                     </constraints>
                     <buttonCell key="cell" type="check" title="Check for repo updates before each AutoPkg run" bezelStyle="regularSquare" imagePosition="left" alignment="left" state="on" inset="2" id="2Rc-4D-cra">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
@@ -163,56 +179,26 @@
                         </binding>
                     </connections>
                 </button>
-                <button verticalHuggingPriority="750" placeholderIntrinsicWidth="158" placeholderIntrinsicHeight="21" translatesAutoresizingMaskIntoConstraints="NO" id="7vx-nK-KRd">
-                    <rect key="frame" x="201" y="206" width="201" height="32"/>
-                    <constraints>
-                        <constraint firstAttribute="width" constant="189" id="12h-S0-T0N"/>
-                    </constraints>
-                    <buttonCell key="cell" type="push" title="Run AutoPkg Now" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Hvq-HD-vrg">
-                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                        <font key="font" metaFont="system"/>
-                    </buttonCell>
-                    <connections>
-                        <action selector="checkAppsNow:" target="-2" id="Zrd-uB-oNa"/>
-                    </connections>
-                </button>
-                <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="X02-En-nic">
-                    <rect key="frame" x="201" y="177" width="201" height="32"/>
-                    <constraints>
-                        <constraint firstAttribute="width" constant="189" id="HUu-h5-fND"/>
-                    </constraints>
-                    <buttonCell key="cell" type="push" title="Update Repos Now" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="AmY-R1-NJM">
-                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                        <font key="font" metaFont="system"/>
-                    </buttonCell>
-                    <connections>
-                        <action selector="updateReposNow:" target="-2" id="2bi-HK-ac5"/>
-                    </connections>
-                </button>
             </subviews>
             <constraints>
-                <constraint firstAttribute="centerX" secondItem="2BQ-ga-rjR" secondAttribute="centerX" constant="-30.5" id="1zy-de-qc2"/>
-                <constraint firstItem="UxE-SU-fts" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="130" id="2Jy-fw-XBf"/>
-                <constraint firstItem="X02-En-nic" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="61" id="5id-lS-Orw"/>
-                <constraint firstAttribute="centerX" secondItem="cHq-LH-gnB" secondAttribute="centerX" constant="32.5" id="6uE-uo-4SW"/>
-                <constraint firstItem="7vx-nK-KRd" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="32" id="BIv-TM-rVW"/>
-                <constraint firstAttribute="centerX" secondItem="UxE-SU-fts" secondAttribute="centerX" constant="-5.5" id="BtI-q7-WOa"/>
-                <constraint firstAttribute="centerX" secondItem="RXR-0C-bng" secondAttribute="centerX" constant="-82.5" id="EXi-V3-7NG"/>
-                <constraint firstItem="J8d-qW-trQ" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="108" id="ExK-rK-aEM"/>
-                <constraint firstAttribute="centerX" secondItem="7vx-nK-KRd" secondAttribute="centerX" id="J5S-YO-A0f"/>
-                <constraint firstAttribute="centerX" secondItem="Jpf-1J-Qbr" secondAttribute="centerX" constant="35.5" id="LNF-OF-fX0"/>
-                <constraint firstAttribute="centerX" secondItem="K6Q-1C-fKu" secondAttribute="centerX" id="T0e-Lp-H5f"/>
-                <constraint firstItem="2BQ-ga-rjR" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="177" id="XYL-wZ-zqq"/>
-                <constraint firstItem="oZ2-P7-4IE" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="130" id="aF8-Nh-qKb"/>
-                <constraint firstAttribute="centerX" secondItem="X02-En-nic" secondAttribute="centerX" id="bRB-TM-kA8"/>
-                <constraint firstAttribute="centerX" secondItem="Vo5-wL-2B2" secondAttribute="centerX" constant="24.5" id="dce-XF-loN"/>
-                <constraint firstItem="Jpf-1J-Qbr" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="155" id="eTw-2E-IwE"/>
-                <constraint firstAttribute="centerX" secondItem="oZ2-P7-4IE" secondAttribute="centerX" constant="73" id="eYz-Ki-ay4"/>
-                <constraint firstItem="cHq-LH-gnB" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="133" id="hki-cf-8nR"/>
-                <constraint firstAttribute="centerX" secondItem="J8d-qW-trQ" secondAttribute="centerX" id="iHF-7f-lGm"/>
-                <constraint firstItem="RXR-0C-bng" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="177" id="jcE-9U-dyc"/>
-                <constraint firstItem="K6Q-1C-fKu" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="222" id="puA-tS-zGE"/>
-                <constraint firstItem="Vo5-wL-2B2" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="176" id="s9p-ZC-xAG"/>
+                <constraint firstItem="UxE-SU-fts" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="46" id="1Cs-QK-QSB"/>
+                <constraint firstItem="cHq-LH-gnB" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="141" id="1HJ-uh-Z8n"/>
+                <constraint firstItem="cHq-LH-gnB" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="45" id="3gT-H3-hV9"/>
+                <constraint firstItem="Jpf-1J-Qbr" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="67" id="8s5-zX-Pvg"/>
+                <constraint firstItem="Jpf-1J-Qbr" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="112" id="DU5-1w-PWn"/>
+                <constraint firstItem="UxE-SU-fts" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="42" id="Enw-wS-7SD"/>
+                <constraint firstItem="J8d-qW-trQ" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="20" id="FDa-ST-ssF"/>
+                <constraint firstItem="oZ2-P7-4IE" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="104" id="a84-Nx-QDV"/>
+                <constraint firstItem="K6Q-1C-fKu" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="135" id="aQL-8Y-Q8K"/>
+                <constraint firstItem="RXR-0C-bng" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="89" id="d51-qU-nVY"/>
+                <constraint firstItem="K6Q-1C-fKu" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="20" id="d5Q-ff-LLS"/>
+                <constraint firstItem="Vo5-wL-2B2" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="126" id="de1-Ld-NdN"/>
+                <constraint firstItem="J8d-qW-trQ" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="20" id="hLp-xr-wCF"/>
+                <constraint firstItem="Vo5-wL-2B2" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="89" id="kKT-4s-6cl"/>
+                <constraint firstItem="2BQ-ga-rjR" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="89" id="lLs-wA-xIu"/>
+                <constraint firstItem="oZ2-P7-4IE" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="42" id="rfX-Ah-Ux2"/>
+                <constraint firstItem="RXR-0C-bng" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="231" id="sIj-OF-Ahf"/>
+                <constraint firstItem="2BQ-ga-rjR" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="214" id="zLg-Yd-44r"/>
             </constraints>
             <point key="canvasLocation" x="140.5" y="233"/>
         </customView>

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="6250" systemVersion="13F1077" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="7706" systemVersion="14E46" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="6250"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="7706"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="LGRecipeReposViewController">
@@ -21,12 +21,13 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <scrollView autohidesScrollers="YES" horizontalLineScroll="19" horizontalPageScroll="10" verticalLineScroll="19" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9vg-XB-Pqv">
-                    <rect key="frame" x="17" y="238" width="583" height="135"/>
+                    <rect key="frame" x="17" y="256" width="583" height="120"/>
                     <clipView key="contentView" id="baD-Ze-qNS">
                         <rect key="frame" x="1" y="1" width="581" height="133"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" columnSelection="YES" multipleSelection="NO" autosaveColumns="NO" rowSizeStyle="automatic" headerView="A8F-FX-vOe" viewBased="YES" id="n0R-ew-DOT" customClass="LGTableView">
+                                <rect key="frame" x="0.0" y="0.0" width="581" height="0.0"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <size key="intercellSpacing" width="3" height="2"/>
                                 <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -176,9 +177,9 @@
                     </tableHeaderView>
                 </scrollView>
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="c6a-G7-vZU">
-                    <rect key="frame" x="15" y="384" width="100" height="17"/>
+                    <rect key="frame" x="15" y="384" width="82" height="17"/>
                     <constraints>
-                        <constraint firstAttribute="width" constant="96" id="sQS-Jf-o7G"/>
+                        <constraint firstAttribute="width" constant="78" id="d4U-RA-AlW"/>
                     </constraints>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Repositories" id="vz5-Q8-aHi">
                         <font key="font" metaFont="system"/>
@@ -187,7 +188,10 @@
                     </textFieldCell>
                 </textField>
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="OQZ-m7-NDG">
-                    <rect key="frame" x="15" y="173" width="100" height="17"/>
+                    <rect key="frame" x="15" y="173" width="54" height="17"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="50" id="Ou9-TC-qKn"/>
+                    </constraints>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Recipes" id="0cX-bB-x15">
                         <font key="font" metaFont="system"/>
                         <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -195,57 +199,58 @@
                     </textFieldCell>
                 </textField>
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="6E4-OJ-BCm">
-                    <rect key="frame" x="15" y="212" width="167" height="17"/>
-                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Add a repo URL manually:" id="1IN-jG-Kev">
-                        <font key="font" metaFont="system"/>
+                    <rect key="frame" x="16" y="232" width="143" height="14"/>
+                    <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Add a repo URL manually:" id="1IN-jG-Kev">
+                        <font key="font" metaFont="smallSystem"/>
                         <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                 </textField>
                 <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="PWu-1D-EW1">
-                    <rect key="frame" x="188" y="210" width="350" height="22"/>
-                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" continuous="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" placeholderString="https://github.com/autopkg/recipes.git" drawsBackground="YES" id="hVj-tR-yVr">
-                        <font key="font" metaFont="system"/>
+                    <rect key="frame" x="165" y="229" width="347" height="19"/>
+                    <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" continuous="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" placeholderString="https://github.com/autopkg/recipes.git" drawsBackground="YES" id="hVj-tR-yVr">
+                        <font key="font" metaFont="smallSystem"/>
                         <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
                         <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                 </textField>
                 <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="mla-ao-F4d">
-                    <rect key="frame" x="540" y="203" width="66" height="32"/>
-                    <buttonCell key="cell" type="push" title="Add" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="wxI-F8-DuU">
+                    <rect key="frame" x="515" y="223" width="90" height="28"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="80" id="Rux-Vg-2Tj"/>
+                    </constraints>
+                    <buttonCell key="cell" type="push" title="Add" bezelStyle="rounded" alignment="center" controlSize="small" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="wxI-F8-DuU">
                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                        <font key="font" metaFont="system"/>
+                        <font key="font" metaFont="smallSystem"/>
                     </buttonCell>
                     <connections>
                         <action selector="addAutoPkgRepoURL:" target="-2" id="Q5z-iA-mjw"/>
                     </connections>
                 </button>
                 <searchField wantsLayer="YES" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Su6-Sd-cOj">
-                    <rect key="frame" x="377" y="381" width="190" height="22"/>
-                    <constraints>
-                        <constraint firstAttribute="width" constant="190" id="B2a-0o-cRG"/>
-                    </constraints>
-                    <searchFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" borderStyle="bezel" placeholderString="Filter repos by name" usesSingleLineMode="YES" bezelStyle="round" sendsSearchStringImmediately="YES" id="kxU-o8-COd">
-                        <font key="font" metaFont="system"/>
+                    <rect key="frame" x="472" y="382" width="128" height="19"/>
+                    <searchFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" borderStyle="bezel" placeholderString="Filter repos" usesSingleLineMode="YES" bezelStyle="round" sendsSearchStringImmediately="YES" id="kxU-o8-COd">
+                        <font key="font" metaFont="smallSystem"/>
                         <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                         <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                     </searchFieldCell>
                 </searchField>
                 <searchField wantsLayer="YES" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="8hi-WA-S41">
-                    <rect key="frame" x="377" y="170" width="190" height="22"/>
-                    <searchFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" borderStyle="bezel" placeholderString="Filter recipes by name" usesSingleLineMode="YES" bezelStyle="round" sendsSearchStringImmediately="YES" id="oqD-5E-S2C">
-                        <font key="font" metaFont="system"/>
+                    <rect key="frame" x="472" y="171" width="128" height="19"/>
+                    <searchFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" borderStyle="bezel" placeholderString="Filter recipes" usesSingleLineMode="YES" bezelStyle="round" sendsSearchStringImmediately="YES" id="oqD-5E-S2C">
+                        <font key="font" metaFont="smallSystem"/>
                         <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                         <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                     </searchFieldCell>
                 </searchField>
                 <scrollView autohidesScrollers="YES" horizontalLineScroll="19" horizontalPageScroll="10" verticalLineScroll="19" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FaV-GR-28e">
-                    <rect key="frame" x="17" y="30" width="583" height="135"/>
+                    <rect key="frame" x="17" y="45" width="583" height="121"/>
                     <clipView key="contentView" id="gzb-cW-veF">
                         <rect key="frame" x="1" y="1" width="581" height="143"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnSelection="YES" columnResizing="NO" multipleSelection="NO" autosaveColumns="NO" rowSizeStyle="automatic" headerView="G9x-hV-Xkq" viewBased="YES" id="HAz-3M-Rgt" customClass="LGTableView">
+                                <rect key="frame" x="0.0" y="0.0" width="581" height="0.0"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <size key="intercellSpacing" width="3" height="2"/>
                                 <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -407,12 +412,65 @@
                         <autoresizingMask key="autoresizingMask"/>
                     </tableHeaderView>
                 </scrollView>
-                <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="4WY-w1-VqU">
-                    <rect key="frame" x="425" y="-2" width="180" height="28"/>
+                <button identifier="recipeTableInfo" horizontalHuggingPriority="750" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Dn1-yN-2IM" customClass="AHHelpPopoverButton">
+                    <rect key="frame" x="73" y="167" width="25" height="25"/>
+                    <buttonCell key="cell" type="help" bezelStyle="helpButton" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="qZs-UK-d2f">
+                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                        <font key="font" metaFont="system"/>
+                    </buttonCell>
+                </button>
+                <button identifier="repoTableInfo" horizontalHuggingPriority="750" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="M6A-V7-7i1" customClass="AHHelpPopoverButton">
+                    <rect key="frame" x="101" y="378" width="25" height="25"/>
+                    <buttonCell key="cell" type="help" bezelStyle="helpButton" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="GPh-uR-yFb">
+                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                        <font key="font" metaFont="system"/>
+                    </buttonCell>
+                </button>
+                <button verticalHuggingPriority="750" placeholderIntrinsicWidth="158" placeholderIntrinsicHeight="21" translatesAutoresizingMaskIntoConstraints="NO" id="Emc-dS-Tet">
+                    <rect key="frame" x="103" y="165" width="170" height="31"/>
                     <constraints>
-                        <constraint firstAttribute="width" constant="170" id="cey-hS-ZAk"/>
+                        <constraint firstAttribute="width" constant="160" id="rfp-R5-w2K"/>
                     </constraints>
-                    <buttonCell key="cell" type="push" title="Search for more recipes..." bezelStyle="rounded" alignment="center" controlSize="small" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="7va-qK-S1L">
+                    <buttonCell key="cell" type="push" title="Run Recipes Now" bezelStyle="rounded" alignment="center" controlSize="small" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="hfF-7L-UC7">
+                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                        <font key="font" metaFont="smallSystem"/>
+                    </buttonCell>
+                </button>
+                <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="jC6-S3-IWD">
+                    <rect key="frame" x="132" y="376" width="170" height="28"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="160" id="2Xn-j4-Ou4"/>
+                    </constraints>
+                    <buttonCell key="cell" type="push" title="Update Repos Now" bezelStyle="rounded" alignment="center" controlSize="small" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="8gs-7z-68M">
+                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                        <font key="font" metaFont="smallSystem"/>
+                    </buttonCell>
+                </button>
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Nch-uS-qeG">
+                    <rect key="frame" x="18" y="21" width="165" height="14"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="161" id="KBE-ht-KZa"/>
+                    </constraints>
+                    <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Search for a recipe on GitHub:" id="UJ1-V3-PPp">
+                        <font key="font" metaFont="smallSystem"/>
+                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
+                <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="otr-G5-TOW">
+                    <rect key="frame" x="189" y="18" width="323" height="19"/>
+                    <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" continuous="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" placeholderString="Name of recipe" drawsBackground="YES" id="4Ri-aA-xst">
+                        <font key="font" metaFont="smallSystem"/>
+                        <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
+                <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="4WY-w1-VqU">
+                    <rect key="frame" x="515" y="12" width="90" height="28"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="80" id="ha9-gI-1X2"/>
+                    </constraints>
+                    <buttonCell key="cell" type="push" title="Search..." bezelStyle="rounded" alignment="center" controlSize="small" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="7va-qK-S1L">
                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                         <font key="font" metaFont="smallSystem"/>
                     </buttonCell>
@@ -420,53 +478,48 @@
                         <action selector="openSearchPanel:" target="n5R-1c-D0m" id="7MT-Zj-lHW"/>
                     </connections>
                 </button>
-                <button identifier="recipeTableInfo" horizontalHuggingPriority="750" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Dn1-yN-2IM" customClass="AHHelpPopoverButton">
-                    <rect key="frame" x="573" y="168" width="25" height="25"/>
-                    <buttonCell key="cell" type="help" bezelStyle="helpButton" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="qZs-UK-d2f">
-                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                        <font key="font" metaFont="system"/>
-                    </buttonCell>
-                </button>
-                <button identifier="repoTableInfo" horizontalHuggingPriority="750" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="M6A-V7-7i1" customClass="AHHelpPopoverButton">
-                    <rect key="frame" x="574" y="379" width="25" height="25"/>
-                    <buttonCell key="cell" type="help" bezelStyle="helpButton" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="GPh-uR-yFb">
-                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                        <font key="font" metaFont="system"/>
-                    </buttonCell>
-                </button>
             </subviews>
             <constraints>
-                <constraint firstItem="mla-ao-F4d" firstAttribute="trailing" secondItem="9vg-XB-Pqv" secondAttribute="trailing" id="0Qk-dB-S4P"/>
-                <constraint firstItem="Dn1-yN-2IM" firstAttribute="leading" secondItem="8hi-WA-S41" secondAttribute="trailing" constant="8" id="2Bv-TX-Jxx"/>
-                <constraint firstItem="4WY-w1-VqU" firstAttribute="top" secondItem="FaV-GR-28e" secondAttribute="bottom" constant="8" symbolic="YES" id="4qc-X6-biY"/>
-                <constraint firstItem="8hi-WA-S41" firstAttribute="baseline" secondItem="OQZ-m7-NDG" secondAttribute="baseline" id="9G3-TJ-ZB5"/>
-                <constraint firstItem="8hi-WA-S41" firstAttribute="leading" secondItem="Su6-Sd-cOj" secondAttribute="leading" id="BaC-D0-Cwb"/>
-                <constraint firstItem="mla-ao-F4d" firstAttribute="leading" secondItem="PWu-1D-EW1" secondAttribute="trailing" constant="8" symbolic="YES" id="Csf-R8-rvG"/>
-                <constraint firstItem="PWu-1D-EW1" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="180" id="DLj-oy-3XI"/>
-                <constraint firstItem="M6A-V7-7i1" firstAttribute="leading" secondItem="Su6-Sd-cOj" secondAttribute="trailing" constant="9" id="E2P-hR-iQH"/>
-                <constraint firstItem="PWu-1D-EW1" firstAttribute="baseline" secondItem="6E4-OJ-BCm" secondAttribute="baseline" id="Isl-Ob-etM"/>
-                <constraint firstItem="FaV-GR-28e" firstAttribute="trailing" secondItem="4WY-w1-VqU" secondAttribute="trailing" id="KBo-sz-jM8"/>
-                <constraint firstAttribute="bottom" secondItem="4WY-w1-VqU" secondAttribute="bottom" constant="4" id="Kuw-mH-6iL"/>
-                <constraint firstItem="PWu-1D-EW1" firstAttribute="leading" secondItem="6E4-OJ-BCm" secondAttribute="trailing" constant="8" symbolic="YES" id="LeY-vc-dwV"/>
-                <constraint firstItem="OQZ-m7-NDG" firstAttribute="trailing" secondItem="c6a-G7-vZU" secondAttribute="trailing" id="PGd-UU-4R8"/>
-                <constraint firstItem="Dn1-yN-2IM" firstAttribute="top" secondItem="8hi-WA-S41" secondAttribute="top" id="Rtg-qm-XUJ"/>
-                <constraint firstItem="Su6-Sd-cOj" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="9" id="VUi-wE-zn8"/>
-                <constraint firstItem="6E4-OJ-BCm" firstAttribute="leading" secondItem="9vg-XB-Pqv" secondAttribute="leading" id="Vyc-tD-FoK"/>
-                <constraint firstItem="FaV-GR-28e" firstAttribute="top" secondItem="OQZ-m7-NDG" secondAttribute="bottom" constant="8" symbolic="YES" id="acS-hq-wWY"/>
-                <constraint firstItem="PWu-1D-EW1" firstAttribute="top" secondItem="9vg-XB-Pqv" secondAttribute="bottom" constant="6" id="bV9-2O-Olf"/>
-                <constraint firstItem="9vg-XB-Pqv" firstAttribute="leading" secondItem="c6a-G7-vZU" secondAttribute="leading" id="dkg-4X-yG5"/>
-                <constraint firstAttribute="trailing" secondItem="M6A-V7-7i1" secondAttribute="trailing" constant="20" symbolic="YES" id="eor-41-sM7"/>
-                <constraint firstItem="PWu-1D-EW1" firstAttribute="bottom" secondItem="mla-ao-F4d" secondAttribute="bottom" id="epu-TG-6KF"/>
-                <constraint firstItem="9vg-XB-Pqv" firstAttribute="top" secondItem="Su6-Sd-cOj" secondAttribute="bottom" constant="8" symbolic="YES" id="ibi-LG-izW"/>
-                <constraint firstItem="c6a-G7-vZU" firstAttribute="baseline" secondItem="Su6-Sd-cOj" secondAttribute="baseline" id="j8F-Vd-fKM"/>
-                <constraint firstItem="Su6-Sd-cOj" firstAttribute="top" secondItem="M6A-V7-7i1" secondAttribute="top" id="lXd-c6-vYf"/>
-                <constraint firstItem="FaV-GR-28e" firstAttribute="centerX" secondItem="Hz6-mo-xeY" secondAttribute="centerX" id="pZf-4G-Izv"/>
-                <constraint firstItem="c6a-G7-vZU" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="17" id="qwL-te-ttl"/>
-                <constraint firstItem="8hi-WA-S41" firstAttribute="top" secondItem="PWu-1D-EW1" secondAttribute="bottom" constant="18" id="rMl-cx-7N8"/>
-                <constraint firstItem="Su6-Sd-cOj" firstAttribute="trailing" secondItem="8hi-WA-S41" secondAttribute="trailing" id="tix-L3-z3v"/>
-                <constraint firstItem="OQZ-m7-NDG" firstAttribute="leading" secondItem="6E4-OJ-BCm" secondAttribute="leading" id="vxU-4I-Y92"/>
-                <constraint firstItem="mla-ao-F4d" firstAttribute="trailing" secondItem="FaV-GR-28e" secondAttribute="trailing" id="x36-8z-V9z"/>
-                <constraint firstItem="OQZ-m7-NDG" firstAttribute="leading" secondItem="FaV-GR-28e" secondAttribute="leading" id="zDb-cj-jWz"/>
+                <constraint firstAttribute="trailing" secondItem="mla-ao-F4d" secondAttribute="trailing" constant="17" id="4Rw-hf-kRV"/>
+                <constraint firstItem="Su6-Sd-cOj" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="11" id="6VE-pU-epS"/>
+                <constraint firstAttribute="trailing" secondItem="8hi-WA-S41" secondAttribute="trailing" constant="17" id="9GQ-ee-L7l"/>
+                <constraint firstItem="PWu-1D-EW1" firstAttribute="leading" secondItem="6E4-OJ-BCm" secondAttribute="trailing" constant="8" id="CYi-HB-ox4"/>
+                <constraint firstItem="jC6-S3-IWD" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="137" id="Cmj-he-I3C"/>
+                <constraint firstItem="Dn1-yN-2IM" firstAttribute="top" secondItem="6E4-OJ-BCm" secondAttribute="bottom" constant="41" id="GJh-G5-e4o"/>
+                <constraint firstItem="FaV-GR-28e" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="17" id="Gvx-G6-4a3"/>
+                <constraint firstAttribute="bottom" secondItem="Nch-uS-qeG" secondAttribute="bottom" constant="21" id="Hma-bF-ZMf"/>
+                <constraint firstItem="6E4-OJ-BCm" firstAttribute="top" secondItem="9vg-XB-Pqv" secondAttribute="bottom" constant="10" id="JbV-zJ-V0w"/>
+                <constraint firstItem="M6A-V7-7i1" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="103" id="KCB-lf-R5A"/>
+                <constraint firstItem="9vg-XB-Pqv" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="17" id="KqT-kl-hAy"/>
+                <constraint firstItem="M6A-V7-7i1" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="10" id="PbO-BU-SU0"/>
+                <constraint firstAttribute="centerY" secondItem="PWu-1D-EW1" secondAttribute="centerY" constant="32.5" id="Rgw-3X-UxE"/>
+                <constraint firstAttribute="trailing" secondItem="9vg-XB-Pqv" secondAttribute="trailing" constant="17" id="T8c-ll-Gbw"/>
+                <constraint firstItem="8hi-WA-S41" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="472" id="TMZ-z0-bnn"/>
+                <constraint firstItem="OQZ-m7-NDG" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="17" id="X1L-8P-pP6"/>
+                <constraint firstItem="9vg-XB-Pqv" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="36" id="XkD-pG-CSs"/>
+                <constraint firstItem="Nch-uS-qeG" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="20" id="XzT-wq-AYr"/>
+                <constraint firstItem="c6a-G7-vZU" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="11" id="aBj-8B-dnU"/>
+                <constraint firstItem="8hi-WA-S41" firstAttribute="top" secondItem="mla-ao-F4d" secondAttribute="bottom" constant="39" id="aI2-xd-zYG"/>
+                <constraint firstItem="6E4-OJ-BCm" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="18" id="b5P-XM-snM"/>
+                <constraint firstItem="Su6-Sd-cOj" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="472" id="bh6-7Q-3zM"/>
+                <constraint firstItem="mla-ao-F4d" firstAttribute="leading" secondItem="PWu-1D-EW1" secondAttribute="trailing" constant="8" id="blF-EX-StM"/>
+                <constraint firstAttribute="trailing" secondItem="4WY-w1-VqU" secondAttribute="trailing" constant="17" id="eOE-U6-pIA"/>
+                <constraint firstItem="otr-G5-TOW" firstAttribute="leading" secondItem="Nch-uS-qeG" secondAttribute="trailing" constant="8" id="fGN-3s-Hfd"/>
+                <constraint firstAttribute="centerY" secondItem="6E4-OJ-BCm" secondAttribute="centerY" constant="33" id="g9Q-he-emF"/>
+                <constraint firstItem="Dn1-yN-2IM" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="75" id="gLl-4U-qDL"/>
+                <constraint firstAttribute="bottom" secondItem="otr-G5-TOW" secondAttribute="bottom" constant="18" id="jIc-ne-Agf"/>
+                <constraint firstAttribute="bottom" secondItem="FaV-GR-28e" secondAttribute="bottom" constant="45" id="jdP-I2-N5w"/>
+                <constraint firstItem="Emc-dS-Tet" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="108" id="mHt-LM-CcH"/>
+                <constraint firstItem="OQZ-m7-NDG" firstAttribute="top" secondItem="6E4-OJ-BCm" secondAttribute="bottom" constant="42" id="n9i-cQ-une"/>
+                <constraint firstAttribute="centerY" secondItem="mla-ao-F4d" secondAttribute="centerY" constant="32" id="q2u-L2-NDv"/>
+                <constraint firstAttribute="trailing" secondItem="Su6-Sd-cOj" secondAttribute="trailing" constant="17" id="r7X-oa-sEW"/>
+                <constraint firstItem="4WY-w1-VqU" firstAttribute="leading" secondItem="otr-G5-TOW" secondAttribute="trailing" constant="8" id="seh-A0-EqD"/>
+                <constraint firstItem="Emc-dS-Tet" firstAttribute="top" secondItem="6E4-OJ-BCm" secondAttribute="bottom" constant="40" id="tOJ-tM-JU4"/>
+                <constraint firstItem="FaV-GR-28e" firstAttribute="top" secondItem="8hi-WA-S41" secondAttribute="bottom" constant="5" id="uA4-1u-omY"/>
+                <constraint firstAttribute="trailing" secondItem="FaV-GR-28e" secondAttribute="trailing" constant="17" id="wKE-D9-XFb"/>
+                <constraint firstItem="jC6-S3-IWD" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="12" id="wly-bu-N5k"/>
+                <constraint firstItem="c6a-G7-vZU" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="17" id="zF6-50-rBz"/>
+                <constraint firstAttribute="bottom" secondItem="4WY-w1-VqU" secondAttribute="bottom" constant="18" id="zWT-B5-X1J"/>
             </constraints>
         </customView>
         <customObject id="n5R-1c-D0m" customClass="LGRepoTableViewController">
