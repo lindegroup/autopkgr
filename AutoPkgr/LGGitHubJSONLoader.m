@@ -168,10 +168,10 @@
     [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, NSArray *responseObject) {
         LGGitHubReleaseInfo *info = [[LGGitHubReleaseInfo alloc] initWithJSON:responseObject];
         complete(info, nil);
-        DevLog(@"Remaining calls/hour to GitHub API: %@/%@ (used Cache = %@)",
-               operation.response.allHeaderFields[@"X-RateLimit-Remaining"],
-               operation.response.allHeaderFields[@"X-RateLimit-Limit"],
-               [operation.response.allHeaderFields[@"Status"] isEqualToString:@"304 Not Modified"] ? @"YES": @"NO");
+//        DevLog(@"Remaining calls/hour to GitHub API: %@/%@ (used Cache = %@)",
+//               operation.response.allHeaderFields[@"X-RateLimit-Remaining"],
+//               operation.response.allHeaderFields[@"X-RateLimit-Limit"],
+//               [operation.response.allHeaderFields[@"Status"] isEqualToString:@"304 Not Modified"] ? @"YES": @"NO");
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         complete(nil, error);
     }];

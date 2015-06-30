@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="7706" systemVersion="14D136" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="6250" systemVersion="13F1077" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="7706"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="6250"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="LGNotificationsViewController">
@@ -57,9 +57,10 @@
                         <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                     <connections>
-                        <binding destination="ArL-eq-uYl" name="value" keyPath="values.SMTPFrom" id="O7H-1i-xYe">
+                        <binding destination="ArL-eq-uYl" name="value" keyPath="values.SMTPFrom" id="7up-e3-Ehs">
                             <dictionary key="options">
                                 <bool key="NSContinuouslyUpdatesValue" value="YES"/>
+                                <string key="NSNullPlaceholder">sender@yourdomain.example</string>
                             </dictionary>
                         </binding>
                         <binding destination="ArL-eq-uYl" name="enabled" keyPath="values.SendEmailNotificationsWhenNewVersionsAreFoundEnabled" id="bUk-hB-OyX"/>
@@ -81,9 +82,10 @@
                         <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                     </tokenFieldCell>
                     <connections>
-                        <binding destination="ArL-eq-uYl" name="value" keyPath="values.SMTPTo" id="2F9-j4-FR1">
+                        <binding destination="ArL-eq-uYl" name="value" keyPath="values.SMTPTo" id="vDM-A8-E1x">
                             <dictionary key="options">
                                 <bool key="NSContinuouslyUpdatesValue" value="YES"/>
+                                <string key="NSNullPlaceholder">you@yourdomain.example</string>
                             </dictionary>
                         </binding>
                         <binding destination="ArL-eq-uYl" name="enabled" keyPath="values.SendEmailNotificationsWhenNewVersionsAreFoundEnabled" id="1Mn-oS-cM0"/>
@@ -106,9 +108,10 @@
                     </textFieldCell>
                     <connections>
                         <action selector="testServerPort:" target="-2" id="N77-w7-4jE"/>
-                        <binding destination="ArL-eq-uYl" name="value" keyPath="values.SMTPServer" id="DAL-fN-ek6">
+                        <binding destination="ArL-eq-uYl" name="value" keyPath="values.SMTPServer" id="a0S-7A-k2G">
                             <dictionary key="options">
                                 <bool key="NSContinuouslyUpdatesValue" value="YES"/>
+                                <string key="NSNullPlaceholder">smtp.gmail.com</string>
                             </dictionary>
                         </binding>
                         <binding destination="ArL-eq-uYl" name="enabled" keyPath="values.SendEmailNotificationsWhenNewVersionsAreFoundEnabled" id="tf3-W3-TLA"/>
@@ -160,17 +163,18 @@
                     </textFieldCell>
                     <connections>
                         <action selector="getKeychainPassword:" target="-2" id="iL9-uw-aOM"/>
+                        <binding destination="ArL-eq-uYl" name="value" keyPath="values.SMTPUsername" id="42P-04-1Kg">
+                            <dictionary key="options">
+                                <bool key="NSContinuouslyUpdatesValue" value="YES"/>
+                                <string key="NSNullPlaceholder">sender@yourdomain.example</string>
+                            </dictionary>
+                        </binding>
                         <binding destination="ArL-eq-uYl" name="enabled2" keyPath="values.SMTPAuthenticationEnabled" previousBinding="Rxc-8r-CB6" id="ghT-nV-67F">
                             <dictionary key="options">
                                 <integer key="NSMultipleValuesPlaceholder" value="-1"/>
                                 <integer key="NSNoSelectionPlaceholder" value="-1"/>
                                 <integer key="NSNotApplicablePlaceholder" value="-1"/>
                                 <integer key="NSNullPlaceholder" value="-1"/>
-                            </dictionary>
-                        </binding>
-                        <binding destination="ArL-eq-uYl" name="value" keyPath="values.SMTPUsername" id="EVG-Az-qT6">
-                            <dictionary key="options">
-                                <bool key="NSContinuouslyUpdatesValue" value="YES"/>
                             </dictionary>
                         </binding>
                         <binding destination="ArL-eq-uYl" name="enabled" keyPath="values.SendEmailNotificationsWhenNewVersionsAreFoundEnabled" id="Rxc-8r-CB6"/>
@@ -247,11 +251,15 @@
                     </textFieldCell>
                     <connections>
                         <action selector="testServerPort:" target="-2" id="sqG-kB-5wh"/>
-                        <binding destination="ArL-eq-uYl" name="value" keyPath="values.SMTPPort" id="rcS-vV-Pib"/>
+                        <binding destination="ArL-eq-uYl" name="value" keyPath="values.SMTPPort" id="nr1-yh-iKX">
+                            <dictionary key="options">
+                                <string key="NSNullPlaceholder">465</string>
+                            </dictionary>
+                        </binding>
                         <binding destination="ArL-eq-uYl" name="enabled" keyPath="values.SendEmailNotificationsWhenNewVersionsAreFoundEnabled" id="jkM-hq-ySM"/>
                     </connections>
                 </textField>
-                <button translatesAutoresizingMaskIntoConstraints="NO" id="PWE-hu-Wcl">
+                <button identifier="enableSlackCheckBox" translatesAutoresizingMaskIntoConstraints="NO" id="PWE-hu-Wcl">
                     <rect key="frame" x="18" y="99" width="284" height="18"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="280" id="5uj-eb-tah"/>
@@ -261,10 +269,11 @@
                         <font key="font" metaFont="system"/>
                     </buttonCell>
                     <connections>
+                        <action selector="configure:" target="-2" id="LOu-Mc-e5E"/>
                         <binding destination="ArL-eq-uYl" name="value" keyPath="values.SlackNotificationsEnabled" id="Yav-MK-dvA"/>
                     </connections>
                 </button>
-                <button translatesAutoresizingMaskIntoConstraints="NO" id="1Co-et-HoO">
+                <button identifier="enableHipChatCheckBox" translatesAutoresizingMaskIntoConstraints="NO" id="1Co-et-HoO">
                     <rect key="frame" x="18" y="73" width="284" height="18"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="280" id="W3p-Go-Hsj"/>
@@ -274,6 +283,7 @@
                         <font key="font" metaFont="system"/>
                     </buttonCell>
                     <connections>
+                        <action selector="configure:" target="-2" id="Y9H-gE-uyJ"/>
                         <binding destination="ArL-eq-uYl" name="value" keyPath="values.HipChatNotificationsEnabled" id="xNU-8s-nAy"/>
                     </connections>
                 </button>

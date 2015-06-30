@@ -18,6 +18,7 @@
 #import "LGNotificationServiceWindowController.h"
 #import "LGBaseNotificationServiceViewController.h"
 #import "LGNotificationService.h"
+#import "NSTextField+animatedString.h"
 
 @interface LGNotificationServiceWindowController ()
 @property (strong, nonatomic, readonly) LGBaseNotificationServiceViewController<LGNotificationServiceProtocol> *viewController;
@@ -49,15 +50,25 @@
     self.infoTextField.stringValue = @"";
     self.accessoryButton.enabled = NO;
 
-    [self.viewController.service sendTest:^(NSError *error) {
+    void (^didComplete)(NSError *) = ^(NSError *error){
         if (error) {
             [NSApp presentError:error];
         } else {
-            self.infoTextField.stringValue = NSLocalizedString(@"Successfully sent test notification ", nil);
+            [self.infoTextField fadeOut_withString:NSLocalizedString(@"Successfully sent test notification.", nil)];
         }
 
         self.accessoryButton.enabled = YES;
         [self.progressSpinner stopAnimation:self];
+    };
+
+    [[self.viewController.service class] saveInfoToKeychain:self.viewController.infoOrPasswordTextField.stringValue reply:^(NSError *error) {
+        if (error) {
+            didComplete(error);
+        } else {
+            [self.viewController.service sendTest:^(NSError *error) {
+                didComplete(error);
+            }];
+        }
     }];
 }
 @end

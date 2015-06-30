@@ -38,9 +38,6 @@
 @property (weak) IBOutlet NSTextField *smtpUsername;
 @property (weak) IBOutlet NSSecureTextField *smtpPassword;
 
-@property (weak) IBOutlet NSButton *configureSlackButton;
-@property (weak) IBOutlet NSButton *configureHipChatButton;
-
 // Status icons
 @property (weak) IBOutlet NSImageView *testSmtpServerStatus;
 
@@ -54,6 +51,14 @@
 
 - (IBAction)getKeychainPassword:(NSTextField *)sender;
 - (IBAction)updateKeychainPassword:(id)sender;
+
+#pragma mark - Other Services
+#pragma mark-- Outletes ---
+@property (weak) IBOutlet NSButton *configureSlackButton;
+@property (weak) IBOutlet NSButton *configureHipChatButton;
+
+#pragma mark-- IBActions
+- (IBAction)configure:(NSButton *)sender;
 
 @end
 
@@ -77,6 +82,9 @@
     self.configureSlackButton.target = self;
     self.configureSlackButton.identifier = NSStringFromClass([LGSlackNotification class]);
 
+    self.configureSlackButton.wantsLayer = YES;
+    self.configureSlackButton.animator.alphaValue = 1.0;
+
     [LGPasswords migrateKeychainIfNeeded:^(NSString *password, NSError *error) {
         if (error) {
             [NSApp presentError:error];
@@ -88,12 +96,7 @@
     }];
 
     [self getKeychainPassword:_smtpPassword];
-
-    [NSTimer timerWithTimeInterval:5
-                            target:[LGPasswords class]
-                          selector:@selector(lockKeychain)
-                          userInfo:nil
-                           repeats:NO];
+    [LGPasswords lockKeychain];
 }
 
 - (NSString *)tabLabel
@@ -102,22 +105,40 @@
 }
 
 #pragma mark - Open Config Panel
-- (IBAction)configure:(NSButton *)sender {
+- (IBAction)configure:(NSButton *)sender
+{
+    // Handle first time checkboxes...
+    if (sender.state) {
+        BOOL configured = NO;
+        if ([sender.identifier isEqualToString:@"enableSlackCheckBox"]) {
+            configured = [[LGDefaults standardUserDefaults] boolForKey:@"SlackConfigured"];
+            if (!configured) {
+                [self configure:self.configureSlackButton];
+                [[LGDefaults standardUserDefaults] setBool:YES forKey:@"SlackConfigured"];
+            }
+        } else if ([sender.identifier isEqualToString:@"enableHipChatCheckBox"]) {
+            configured = [[LGDefaults standardUserDefaults] boolForKey:@"HipChatConfigured"];
+            if (!configured) {
+                [self configure:self.configureHipChatButton];
+                [[LGDefaults standardUserDefaults] setBool:YES forKey:@"HipChatConfigured"];
+            }
+        }
+    }
 
     Class viewClass = NSClassFromString([sender.identifier stringByAppendingString:@"View"]);
     Class serviceClass = NSClassFromString(sender.identifier);
 
     if (serviceClass && viewClass) {
-        id<LGNotificationServiceProtocol>service = [[serviceClass alloc] init];
+        id<LGNotificationServiceProtocol> service = [[serviceClass alloc] init];
         LGBaseNotificationServiceViewController *serviceView = [[viewClass alloc] initWithNotificationService:service];
 
         _serviceWindow = [[LGNotificationServiceWindowController alloc] initWithViewController:serviceView];
 
         [NSApp beginSheet:_serviceWindow.window
-           modalForWindow:self.modalWindow
-            modalDelegate:self
-           didEndSelector:@selector(didEndConfigurePanel:)
-              contextInfo:NULL];
+            modalForWindow:self.modalWindow
+             modalDelegate:self
+            didEndSelector:@selector(didEndConfigurePanel:)
+               contextInfo:NULL];
     }
 }
 
@@ -203,16 +224,16 @@
     // Send a test email notification when the user
     // clicks "Send Test Email"
 
-    DLog(@"'Send Test Email' button clicked.");
+    DevLog(@"'Send Test Email' button clicked.");
 
     // Handle UI
-    //    [_sendTestEmailButton setEnabled:NO]; // disable button
+    [sender setEnabled:NO]; // disable button
     [_sendTestEmailSpinner setHidden:NO]; // show spinner
     [_sendTestEmailSpinner startAnimation:self]; // animate spinner
 
     // Setup a completion block
     void (^didComplete)(NSError *) = ^void(NSError *error) {
-//        [_sendTestEmailButton setEnabled:YES]; // enable button
+        [sender setEnabled:YES]; // enable button
         [_sendTestEmailSpinner setHidden:YES]; // hide spinner
         [_sendTestEmailSpinner stopAnimation:self]; // stop animation
 

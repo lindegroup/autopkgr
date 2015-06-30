@@ -60,6 +60,8 @@
 		BE0BB0FB1B3C9563007F9DA5 /* LGSlackNotification.m in Sources */ = {isa = PBXBuildFile; fileRef = BE0BB0FA1B3C9563007F9DA5 /* LGSlackNotification.m */; };
 		BE0BB0FC1B3C9563007F9DA5 /* LGSlackNotification.m in Sources */ = {isa = PBXBuildFile; fileRef = BE0BB0FA1B3C9563007F9DA5 /* LGSlackNotification.m */; };
 		BE0E857919D668F600B25B5E /* LGHTTPRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = BE0E857819D668F600B25B5E /* LGHTTPRequest.m */; };
+		BE1AE45A1B4234F900B71FA4 /* NSTextField+animatedString.m in Sources */ = {isa = PBXBuildFile; fileRef = BE1AE4591B4234F900B71FA4 /* NSTextField+animatedString.m */; };
+		BE1AE45B1B4234F900B71FA4 /* NSTextField+animatedString.m in Sources */ = {isa = PBXBuildFile; fileRef = BE1AE4591B4234F900B71FA4 /* NSTextField+animatedString.m */; };
 		BE1C810319E8224000EF77F3 /* NSImage+statusLight.m in Sources */ = {isa = PBXBuildFile; fileRef = BE1C810219E8224000EF77F3 /* NSImage+statusLight.m */; };
 		BE1C810419E8224000EF77F3 /* NSImage+statusLight.m in Sources */ = {isa = PBXBuildFile; fileRef = BE1C810219E8224000EF77F3 /* NSImage+statusLight.m */; };
 		BE2337CA1B3E42EC00256F85 /* LGMacPatchIntegration.m in Sources */ = {isa = PBXBuildFile; fileRef = BE2337C91B3E42EC00256F85 /* LGMacPatchIntegration.m */; };
@@ -373,6 +375,8 @@
 		BE0E857719D668F600B25B5E /* LGHTTPRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGHTTPRequest.h; sourceTree = "<group>"; };
 		BE0E857819D668F600B25B5E /* LGHTTPRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGHTTPRequest.m; sourceTree = "<group>"; };
 		BE13A88919E2568D008A49A1 /* helper-tool-codesign-config.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = "helper-tool-codesign-config.py"; sourceTree = "<group>"; };
+		BE1AE4581B4234F900B71FA4 /* NSTextField+animatedString.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSTextField+animatedString.h"; sourceTree = "<group>"; };
+		BE1AE4591B4234F900B71FA4 /* NSTextField+animatedString.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSTextField+animatedString.m"; sourceTree = "<group>"; };
 		BE1C810119E8224000EF77F3 /* NSImage+statusLight.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSImage+statusLight.h"; path = "Custom Categories/NSImage+statusLight.h"; sourceTree = "<group>"; };
 		BE1C810219E8224000EF77F3 /* NSImage+statusLight.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSImage+statusLight.m"; path = "Custom Categories/NSImage+statusLight.m"; sourceTree = "<group>"; };
 		BE2337C81B3E42EC00256F85 /* LGMacPatchIntegration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGMacPatchIntegration.h; sourceTree = "<group>"; };
@@ -807,6 +811,8 @@
 				BECDABA11B252B3900544388 /* NSOpenPanel+typeChooser.m */,
 				BEE8CF1119E0E7F400981C4B /* NSTextField+safeStringValue.h */,
 				BEE8CF1219E0E7F400981C4B /* NSTextField+safeStringValue.m */,
+				BE1AE4581B4234F900B71FA4 /* NSTextField+animatedString.h */,
+				BE1AE4591B4234F900B71FA4 /* NSTextField+animatedString.m */,
 				BED02ADA1A194F9C00714CC2 /* NSArray+filtered.h */,
 				BED02ADB1A194F9C00714CC2 /* NSArray+filtered.m */,
 				BED136BA1AC3BF2E003EBF0F /* Html Categories */,
@@ -1498,6 +1504,7 @@
 				BE32178B19ED9ACA00A92E5A /* LGRecipeOverrides.m in Sources */,
 				BEC1258B19F04703006696C4 /* LGRepoTableViewController.m in Sources */,
 				BEBF7B171A4894AC00E9967F /* LGVersioner.m in Sources */,
+				BE1AE45A1B4234F900B71FA4 /* NSTextField+animatedString.m in Sources */,
 				BE91A0701B2F53F000ED7501 /* NSString+attributedString.m in Sources */,
 				BECDAB951B24C29600544388 /* LGMunkiIntegrationView.m in Sources */,
 				BEC1258A19F04703006696C4 /* LGInstaller.m in Sources */,
@@ -1579,6 +1586,7 @@
 				BE5E55A61B1B9EBB0025CFD3 /* LGAutoPkgRepo.m in Sources */,
 				BE2337CB1B3E42EC00256F85 /* LGMacPatchIntegration.m in Sources */,
 				BED136B21AC26B7C003EBF0F /* NSString+html_report.m in Sources */,
+				BE1AE45B1B4234F900B71FA4 /* NSTextField+animatedString.m in Sources */,
 				BEFA4DBE1B08F57800764BF0 /* LGAutoPkgRecipe.m in Sources */,
 				BEFC3C821A3DF16700C789E9 /* LGConstants.m in Sources */,
 				BE32B0391B2735DF0071778B /* LGGitIntegrationView.m in Sources */,
