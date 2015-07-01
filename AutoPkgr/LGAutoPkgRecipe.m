@@ -178,10 +178,16 @@ static NSMutableDictionary *_identifierURLStore = nil;
     dispatch_async(autopkgr_recipe_write_queue(), ^{
         NSError *error;
 
-        /* Get the recipe list and split it by lines and turn it into an array */
+        __block NSMutableArray *currentList = [[NSMutableArray alloc] init];
+
         NSString *recipeListFile = [[self class] defaultRecipeList];
         NSString *fileContents = [NSString stringWithContentsOfFile:recipeListFile encoding:NSUTF8StringEncoding error:nil];
-        __block NSMutableArray *currentList = [fileContents.split_byLine.filtered_noEmptyStrings mutableCopy];
+
+        /* Get the recipe list and split it by lines and turn it into an array */
+        NSArray *existingList;
+        if ((existingList = fileContents.split_byLine.filtered_noEmptyStrings)) {
+            [currentList addObjectsFromArray:existingList];
+        }
 
         /* Start by removing any instance of makecatalogs from the list, it's added back in later */
         [currentList enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
@@ -209,7 +215,7 @@ static NSMutableDictionary *_identifierURLStore = nil;
 
         NSString *recipe_list = [currentList componentsJoinedByString:@"\n"];
         if (![recipe_list writeToFile:recipeListFile atomically:YES encoding:NSUTF8StringEncoding error:&error]) {
-            NSLog(@"Error while writing %@.", recipeListFile);
+            NSLog(@"Error while writing %@. %@", recipeListFile, error);
             return;
         }
 
