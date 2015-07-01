@@ -203,6 +203,7 @@
 		BED136BC1AC3C15E003EBF0F /* report.css in Resources */ = {isa = PBXBuildFile; fileRef = BED136BB1AC3C15E003EBF0F /* report.css */; };
 		BED136BD1AC3C15E003EBF0F /* report.css in Resources */ = {isa = PBXBuildFile; fileRef = BED136BB1AC3C15E003EBF0F /* report.css */; };
 		BED3882A1A85E2C100DA8970 /* autopkgr_error.png in Resources */ = {isa = PBXBuildFile; fileRef = BED388291A85E2C100DA8970 /* autopkgr_error.png */; };
+		BEDA5D551B4429E300DCC022 /* LGRecipeSearchResultsPanel.xib in Resources */ = {isa = PBXBuildFile; fileRef = BEDA5D541B4429E300DCC022 /* LGRecipeSearchResultsPanel.xib */; };
 		BEDAFBB41B3B8AA500CCE9AC /* LGNotificationService.m in Sources */ = {isa = PBXBuildFile; fileRef = BEDAFBB31B3B8AA500CCE9AC /* LGNotificationService.m */; };
 		BEE211231AF9D6E500A3C2E1 /* LGIntegrationTemplate.m in Sources */ = {isa = PBXBuildFile; fileRef = BEA2F0B41AF1672600781274 /* LGIntegrationTemplate.m */; };
 		BEE211261AF9DCBB00A3C2E1 /* LGUninstaller.m in Sources */ = {isa = PBXBuildFile; fileRef = BEE211251AF9DCBB00A3C2E1 /* LGUninstaller.m */; };
@@ -501,6 +502,7 @@
 		BED136B91AC3BEE1003EBF0F /* HTMLCategories.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = HTMLCategories.h; path = "Custom Categories/HTMLCategories.h"; sourceTree = "<group>"; };
 		BED136BB1AC3C15E003EBF0F /* report.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; path = report.css; sourceTree = "<group>"; };
 		BED388291A85E2C100DA8970 /* autopkgr_error.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = autopkgr_error.png; sourceTree = "<group>"; };
+		BEDA5D541B4429E300DCC022 /* LGRecipeSearchResultsPanel.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LGRecipeSearchResultsPanel.xib; sourceTree = "<group>"; };
 		BEDAFBB21B3B8AA500CCE9AC /* LGNotificationService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGNotificationService.h; sourceTree = "<group>"; };
 		BEDAFBB31B3B8AA500CCE9AC /* LGNotificationService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGNotificationService.m; sourceTree = "<group>"; };
 		BEE211241AF9DCBB00A3C2E1 /* LGUninstaller.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGUninstaller.h; sourceTree = "<group>"; };
@@ -1035,6 +1037,7 @@
 				BE0BACD01A2560AE00554989 /* LGJSSDistributionPointsPrefPanel.xib */,
 				BE67E8721A44E10500484151 /* LGRecipeSearch.h */,
 				BE67E8731A44E10500484151 /* LGRecipeSearch.m */,
+				BEDA5D541B4429E300DCC022 /* LGRecipeSearchResultsPanel.xib */,
 				BE67E8741A44E10500484151 /* LGRecipeSearchPanel.xib */,
 				BE38EA741B0B8DF7009FCBEB /* LGRecipeInfoView.h */,
 				BE38EA751B0B8DF7009FCBEB /* LGRecipeInfoView.m */,
@@ -1244,6 +1247,7 @@
 				BE81F23A1B22A29E007D16C4 /* LGJSSImporterIntegrationView.xib in Resources */,
 				1AC6955B195B59ED00D2BD81 /* InfoPlist.strings in Resources */,
 				BE38EA971B0CFE95009FCBEB /* LGRecipeReposViewController.xib in Resources */,
+				BEDA5D551B4429E300DCC022 /* LGRecipeSearchResultsPanel.xib in Resources */,
 				BED136BC1AC3C15E003EBF0F /* report.css in Resources */,
 				BE81F2441B22C211007D16C4 /* LGViewWindowController.xib in Resources */,
 				1AC69569195B59EE00D2BD81 /* Images.xcassets in Resources */,

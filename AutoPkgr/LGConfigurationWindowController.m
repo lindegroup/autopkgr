@@ -78,6 +78,12 @@
         _awake = YES;
 
         /* Set up all of the tabs. */
+        NSAssert(_installView, @"Install tab view not initialized");
+        NSAssert(_recipeRepoView, @"Recipe & Repo tab view not initialized");
+        NSAssert(_scheduleView, @"Schedule tab view not initialized");
+        NSAssert(_notificationView, @"Notification tab view not initialized");
+        NSAssert(_integrationsView, @"Integration tab view not initialized");
+
         NSArray *tabs = @[ _installView,
                            _recipeRepoView,
                            _scheduleView,
@@ -96,7 +102,7 @@
 
         /* The Cancel button is part of the progress panel
          * but the _scheduleView should controll it. */
-        _scheduleView.cancelButton = _cancelAutoPkgRunButton;
+        _recipeRepoView.cancelButton = _cancelAutoPkgRunButton;
 
         _integrationsView.modalWindow = self.window;
         _recipeRepoView.modalWindow = self.window;

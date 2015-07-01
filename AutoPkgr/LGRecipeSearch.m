@@ -52,11 +52,23 @@
     return [self initWithWindowNibName:@"LGRecipeSearchPanel"];
 }
 
+- (instancetype)initWithSearchResults:(NSArray *)results installedRepos:(NSArray *)installedRepos {
+    if (self = [self initWithWindowNibName:@"LGRecipeSearchResultsPanel"]) {
+        _searchResults = results;
+        _currentlyInstalledRepos = installedRepos;
+    }
+    return self;
+}
+
 - (void)windowDidLoad
 {
     [super windowDidLoad];
     _progressIndicator.hidden = YES;
+    _addBT.enabled = NO;
     _currentlyInstalledRepos = [LGAutoPkgTask repoList];
+    _searchTable.dataSource = self;
+    _searchTable.delegate = self;
+    _searchTable.backgroundColor = [NSColor clearColor];
 }
 
 #pragma mark - IBActions

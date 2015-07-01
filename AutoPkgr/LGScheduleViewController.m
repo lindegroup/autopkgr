@@ -21,18 +21,13 @@
 #import "LGPasswords.h"
 #import "LGAutoPkgr.h"
 #import "LGAutoPkgSchedule.h"
-#import "LGNotificationManager.h"
 #import "LGTestPort.h"
-#import "LGAutoPkgTask.h"
-#import "LGAutoPkgRecipe.h"
 
 #import <AHLaunchCtl/AHLaunchJobSchedule.h>
 
 @interface LGScheduleViewController () {
     LGDefaults *_defaults;
 }
-
-@property (strong, nonatomic) LGAutoPkgTaskManager *taskManager;
 
 @property (copy, nonatomic, readonly) id proposedSchedule;
 @property (copy, nonatomic, readonly) id currentSchedule;
@@ -69,13 +64,6 @@
     scheduleMenuItem.target = self;
     scheduleMenuItem.action = @selector(changeSchedule:);
     _scheduleMenuItem = scheduleMenuItem;
-}
-
-- (void)setCancelButton:(NSButton *)cancelButton
-{
-    cancelButton.target = self;
-    cancelButton.action = @selector(cancelAutoPkgRun:);
-    _cancelButton = cancelButton;
 }
 
 #pragma mark - Schedule Accessors
@@ -205,61 +193,6 @@
     }];
 }
 
-#pragma mark - AutoPkg actions
 
-- (IBAction)updateReposNow:(id)sender
-{
-
-    _cancelButton.hidden = NO;
-    [self.progressDelegate startProgressWithMessage:NSLocalizedString(@"Updating AutoPkg recipe repos.",
-                                                                      @"Progress panel message when updating repos.")];
-
-    [_updateRepoNowButton setEnabled:NO];
-    if (!_taskManager) {
-        _taskManager = [[LGAutoPkgTaskManager alloc] init];
-    }
-    _taskManager.progressDelegate = self.progressDelegate;
-
-    [_taskManager repoUpdate:^(NSError *error) {
-        NSAssert([NSThread isMainThread], @"Reply not on main thread!");
-        [self.progressDelegate stopProgress:error];
-        _updateRepoNowButton.enabled = YES;
-    }];
-}
-
-- (IBAction)checkAppsNow:(id)sender
-{
-    NSString *recipeList = [LGAutoPkgRecipe defaultRecipeList];
-    _cancelButton.hidden = NO;
-    if (!_taskManager) {
-        _taskManager = [[LGAutoPkgTaskManager alloc] init];
-    }
-    _taskManager.progressDelegate = self.progressDelegate;
-
-    [self.progressDelegate startProgressWithMessage:NSLocalizedString(@"Running selected AutoPkg recipes...",
-                                                                      @"Progress panel message when running recipes.")];
-
-    [self.taskManager runRecipeList:recipeList
-                         updateRepo:NO
-                              reply:^(NSDictionary *report, NSError *error) {
-                                  NSAssert([NSThread isMainThread], @"Reply not on main thread!");
-                                  [self.progressDelegate stopProgress:error];
-                                  LGNotificationManager *notifier = [[LGNotificationManager alloc]
-                                                                    initWithReportDictionary:report errors:error];
-
-                                  [notifier sendEnabledNotifications:^(NSError *error) {
-                                      dispatch_async(dispatch_get_main_queue(), ^{
-                                          [self.progressDelegate stopProgress:error];
-                                      });
-                                  }];
-                              }];
-}
-
-- (IBAction)cancelAutoPkgRun:(id)sender
-{
-    if (_taskManager) {
-        [_taskManager cancel];
-    }
-}
 
 @end
