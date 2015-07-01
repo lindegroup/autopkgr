@@ -27,8 +27,8 @@
 #import "LGAutoPkgTask.h"
 #import "LGHostInfo.h"
 
-#ifndef LGTOOL_SUBCLASS
-#define LGTOOL_SUBCLASS
+#ifndef LGINTEGRATION_SUBCLASS
+#define LGINTEGRATION_SUBCLASS
 #endif
 
 // Dispatch queue for synchronizing infoHandler setter and refresh.
@@ -85,7 +85,7 @@ void subclassMustConformToProtocol(id className)
 #pragma mark - Protocol conform check
 + (void)initialize
 {
-    // We only need to check subclasses, the super
+    // We only need to check subclasses (and should ignore the super).
     if ((self != [LGIntegration class]) && [self isSubclassOfClass:[LGIntegration class]]) {
 
         // The subclasses must conform to at least one of the protocols

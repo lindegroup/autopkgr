@@ -23,7 +23,7 @@
 #import "LGJSSImporterIntegration.h"
 #import "LGAutoPkgr.h"
 
-@interface LGJSSDistributionPointsPrefPanel ()<NSWindowDelegate>
+@interface LGJSSDistributionPointsPrefPanel () <NSWindowDelegate>
 
 @end
 
@@ -183,7 +183,8 @@
     }
 }
 
-- (void)windowWillClose:(NSNotification *)notification {
+- (void)windowWillClose:(NSNotification *)notification
+{
     [NSApp endSheet:self.window];
 }
 
@@ -241,7 +242,13 @@
 - (NSArray *)requiredForType
 {
     NSString *type = _distPointTypePopupBT.title;
-    NSMutableArray *types = [NSMutableArray arrayWithArray:@[ _distPointURL, _distPointUserName, _distPointPassword ]];
+
+    NSMutableArray *types = [NSMutableArray arrayWithObjects:
+                                                _distPointURL,
+                                                _distPointUserName,
+                                                _distPointPassword,
+                                                nil];
+
     if ([type isEqualToString:@"AFP"] || [type isEqualToString:@"SMB"]) {
         [types addObject:_distPointShareName];
     }

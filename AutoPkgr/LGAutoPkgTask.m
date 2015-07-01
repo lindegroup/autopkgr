@@ -874,7 +874,7 @@ typedef void (^AutoPkgReplyErrorBlock)(NSError *error);
 {
     LGAutoPkgTask *task = [[LGAutoPkgTask alloc] init];
     NSMutableArray *args = [@[ @"make-override", recipe ] mutableCopy];
-    if (name) {
+    if (name.length) {
         [args addObjectsFromArray:@[ @"-n", name ]];
     }
 
@@ -905,6 +905,8 @@ typedef void (^AutoPkgReplyErrorBlock)(NSError *error);
 
 + (void)info:(NSString *)recipe reply:(void (^)(NSString *info, NSError *error))reply;
 {
+    NSParameterAssert(recipe);
+
     LGAutoPkgTask *task = [[LGAutoPkgTask alloc] initWithArguments:@[ @"info", recipe ]];
     __weak typeof(task) weakTask = task;
     [task launchInBackground:^(NSError *error) {
@@ -916,6 +918,8 @@ typedef void (^AutoPkgReplyErrorBlock)(NSError *error);
 #pragma mark-- Repo Methods --
 + (void)repoAdd:(NSString *)repo reply:(void (^)(NSError *))reply
 {
+    NSParameterAssert(repo);
+
     LGAutoPkgTask *task = [[LGAutoPkgTask alloc] init];
     // Make sure everything that comes in has the .git extension.
     if (![repo.pathExtension isEqualToString:@"git"]) {
@@ -929,6 +933,7 @@ typedef void (^AutoPkgReplyErrorBlock)(NSError *error);
 
 + (void)repoRemove:(NSString *)repo reply:(void (^)(NSError *))reply
 {
+    NSParameterAssert(repo);
     LGAutoPkgTask *task = [[LGAutoPkgTask alloc] init];
     task.arguments = @[ @"repo-delete", repo ];
     [task launchInBackground:^(NSError *error) {
@@ -1129,6 +1134,7 @@ typedef void (^AutoPkgReplyErrorBlock)(NSError *error);
 
 + (LGAutoPkgTask *)runRecipeListTask:(NSString *)recipeList
 {
+    NSParameterAssert(recipeList);
     LGAutoPkgTask *task = [[LGAutoPkgTask alloc] init];
     task.arguments = @[ @"run", @"--recipe-list", recipeList, @"--report-plist" ];
     return task;
@@ -1136,6 +1142,7 @@ typedef void (^AutoPkgReplyErrorBlock)(NSError *error);
 
 + (LGAutoPkgTask *)searchTask:(NSString *)recipe
 {
+    NSParameterAssert(recipe);
     LGAutoPkgTask *task = [[LGAutoPkgTask alloc] initWithArguments:@[ @"search", recipe ]];
     return task;
 }
@@ -1148,12 +1155,14 @@ typedef void (^AutoPkgReplyErrorBlock)(NSError *error);
 
 + (LGAutoPkgTask *)repoAddTask:(NSString *)repo
 {
+    NSParameterAssert(repo);
     LGAutoPkgTask *task = [[LGAutoPkgTask alloc] initWithArguments:@[ @"repo-add", repo ]];
     return task;
 }
 
 + (LGAutoPkgTask *)repoDeleteTask:(NSString *)repo;
 {
+    NSParameterAssert(repo);
     LGAutoPkgTask *task = [[LGAutoPkgTask alloc] initWithArguments:@[ @"repo-delete", repo ]];
     return task;
 }

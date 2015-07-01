@@ -50,7 +50,8 @@
 {
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory, NSUserDomainMask, YES);
     NSString *applicationSupportDirectory = [paths firstObject];
-    NSString *autoPkgrSupportDirectory = [applicationSupportDirectory stringByAppendingString:@"/AutoPkgr"];
+    NSString *autoPkgrSupportDirectory = [applicationSupportDirectory stringByAppendingPathComponent:@"AutoPkgr"];
+
     NSFileManager *fm = [NSFileManager defaultManager];
     BOOL isDir;
     NSError *error;
@@ -62,6 +63,7 @@
                 NSLog(@"%@ is a file, and it cannot be deleted.", autoPkgrSupportDirectory);
                 return @"";
             }
+            
             [fm createDirectoryAtPath:autoPkgrSupportDirectory withIntermediateDirectories:NO attributes:nil error:&error];
             if (error) {
                 NSLog(@"Error when creating directory %@", autoPkgrSupportDirectory);

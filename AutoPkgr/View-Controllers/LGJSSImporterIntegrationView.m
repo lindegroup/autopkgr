@@ -324,14 +324,14 @@ static NSPredicate *jdsFilterPredicate()
     NSPredicate *customDistPointsPredicate = [NSPredicate predicateWithFormat:@"not %K == nil", kLGJSSDistPointTypeKey];
     NSArray *customDistPoints = [_defaults.JSSRepos filteredArrayUsingPredicate:customDistPointsPredicate];
 
-    newRepos = [[NSMutableArray alloc] initWithArray:customDistPoints];
+    newRepos = customDistPoints.mutableCopy;
 
     if (dictArray) {
         for (NSDictionary *repo in dictArray) {
             if (!repo[kLGJSSDistPointPasswordKey]) {
                 NSString *name = repo[kLGJSSDistPointNameKey];
                 NSString *password = [self promptForSharePassword:name];
-                if (password.length) {
+                if (name.length && password.length) {
                     [newRepos addObject:@{ kLGJSSDistPointNameKey : name,
                                            kLGJSSDistPointPasswordKey : password }];
                 }
@@ -341,7 +341,7 @@ static NSPredicate *jdsFilterPredicate()
         }
     }
 
-    return [NSArray arrayWithArray:newRepos];
+    return newRepos.copy;
 }
 
 - (void)saveDefaults
@@ -432,9 +432,9 @@ static NSPredicate *jdsFilterPredicate()
         }
     }
 
-    NSMutableArray *workingArray = [[NSMutableArray alloc] initWithArray:_defaults.JSSRepos];
+    NSMutableArray *workingArray = _defaults.JSSRepos.mutableCopy;
     [workingArray removeObject:distPoint];
-    _defaults.JSSRepos = [NSArray arrayWithArray:workingArray];
+    _defaults.JSSRepos = workingArray.copy;
     [_jssDistributionPointTableView reloadData];
 }
 

@@ -166,10 +166,10 @@ static NSArray *_popularRepos;
         NSTimeInterval interval = arc4random_uniform(600) + 300;
         _checkStatusTimeStamp = [NSDate dateWithTimeIntervalSinceNow:interval];
         NSString *path = self.path;
-
-        if (path) {
-            NSArray *locTaskArgs = @[ @"rev-parse", self.defaultBranch ];
-            NSArray *remTaskArgs = @[ @"ls-remote", @"--heads", @"origin", @"./.", self.defaultBranch ];
+        NSString *defaultBranch = self.defaultBranch;
+        if (path && defaultBranch) {
+            NSArray *locTaskArgs = @[ @"rev-parse", defaultBranch ];
+            NSArray *remTaskArgs = @[ @"ls-remote", @"--heads", @"origin", @"./.", defaultBranch ];
 
             [LGGitIntegration gitTaskWithArguments:locTaskArgs repoPath:path reply:^(NSString *locStdOut, NSError *error) {
                 if (error) {
@@ -207,7 +207,7 @@ static NSArray *_popularRepos;
         [LGGitIntegration gitTaskWithArguments:@[ @"reset", @"--hard", @"origin/master" ]
                                       repoPath:self.path
                                          reply:^(NSString *s, NSError *e) {
-                                             if(e){
+                                             if(!e){
                                                  [self statusDidChange:kLGAutoPkgRepoUpToDate];
                                              }
                                          }];

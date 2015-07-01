@@ -100,6 +100,9 @@
 
     if (!_integrationManager.installStatusDidChangeHandler) {
         _integrationManager.installStatusDidChangeHandler = ^(LGIntegrationManager *aManager, LGIntegration *integration) {
+            
+            assert([NSThread isMainThread]);
+
             [tableView beginUpdates];
 
             if ([aManager.requiredIntegrations containsObject:integration]) {

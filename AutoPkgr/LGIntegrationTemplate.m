@@ -65,6 +65,8 @@
 + (NSArray *)components
 {
     // If there's not a binary don't include it here!!
+    // Also, if the binary is determined dynamicaly handle
+    // nil values if using the literal syntax!!!
     return @[ [self binary],
               @"/path/to/another/file",
     ];

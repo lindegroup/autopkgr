@@ -190,7 +190,7 @@ typedef NS_ENUM(NSInteger, LGInstallType) {
 
 - (BOOL)unmountVolume
 {
-    if (_mountPoint) {
+    if (_mountPoint.length) {
         NSTask *task = [NSTask launchedTaskWithLaunchPath:@"/usr/bin/hdiutil" arguments:@[ @"detach", _mountPoint ]];
         [task waitUntilExit];
         return task.terminationStatus == 0;

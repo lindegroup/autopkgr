@@ -39,7 +39,7 @@ static NSArray *knownGitPaths()
               kLGHomeBrewGit,
               kLGXcodeGit,
               kLGCLIToolsGit,
-    ];
+              ];
 }
 
 @implementation LGGitIntegration
@@ -150,7 +150,7 @@ static NSArray *knownGitPaths()
         BOOL OVER_10_8 = floor(NSAppKitVersionNumber) > NSAppKitVersionNumber10_8;
 
         NSPredicate *match = [NSPredicate predicateWithFormat:@"SELF ENDSWITH[CD] %@",
-                                                              OVER_10_8 ? @"-mavericks.dmg" : @"-snow-leopard.dmg"];
+                              OVER_10_8 ? @"-mavericks.dmg" : @"-snow-leopard.dmg"];
 
         _downloadURL = [[self.gitHubInfo.latestReleaseDownloads filteredArrayUsingPredicate:match] firstObject];
 #if DEBUG
@@ -176,8 +176,8 @@ static NSArray *knownGitPaths()
     dispatch_queue_t git_callback_queue = dispatch_get_current_queue();
 
     NSString *binary = [self binary];
-    if (binary == nil) {
-        reply(nil, [self gitErrorWithMessage:@"Could not locate the git binary." code:kLGGitErrorNotInstalled]);
+    if (access(binary.UTF8String, X_OK) != 0) {
+        reply(nil, [self gitErrorWithMessage:@"Could not locate the git binary, or it was not executable" code:kLGGitErrorNotInstalled]);
     }
 
     __block NSMutableData *outData = [[NSMutableData alloc] init];
@@ -186,7 +186,7 @@ static NSArray *knownGitPaths()
     NSTask *task = [[NSTask alloc] init];
     task.launchPath = binary;
     task.arguments = args;
-    
+
     if (access(repoPath.UTF8String,F_OK) == 0) {
         task.currentDirectoryPath = repoPath;
     }
@@ -227,7 +227,7 @@ static NSArray *knownGitPaths()
                 stdOut = outData.taskData_string;
             }
 
-             NSError *error = [self gitErrorWithMessage:errData.taskData_string code:aTask.terminationStatus];
+            NSError *error = [self gitErrorWithMessage:errData.taskData_string code:aTask.terminationStatus];
 
             dispatch_async(git_callback_queue, ^{
                 reply(stdOut, error);
