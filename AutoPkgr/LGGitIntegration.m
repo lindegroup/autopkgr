@@ -65,8 +65,7 @@ static NSArray *knownGitPaths()
 
 + (NSArray *)components
 {
-    return @[[self binary],
-              ];
+    return @[[self binary] ?: kLGOfficialGit];
 }
 
 + (NSString *)binary
