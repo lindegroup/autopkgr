@@ -43,7 +43,7 @@
     // Set up schedule settings
     id currentSchedule;
     _scheduleEnabledBT.state = [LGAutoPkgSchedule updateAppsIsScheduled:&currentSchedule];
-    _scheduleMenuItem.enabled = _scheduleEnabledBT.state;
+    _scheduleMenuItem.state = _scheduleEnabledBT.state;
     [self updateIBOutletsWithSchedule:currentSchedule];
 }
 
@@ -140,30 +140,34 @@
 
 - (IBAction)changeSchedule:(id)sender
 {
+    // Determine whether to start or stop the schedule...
+    BOOL start;
+    if ([sender isEqualTo:_scheduleMenuItem]) {
+        // The status menu's `state` property isn't updated until after the
+        // action is completed so use the inverse of the state property here.
+        start = !_scheduleMenuItem.state;
+    } else {
+        start = _scheduleEnabledBT.state;
+    }
+
     // First check for a few conditions that should just be returned from...
-    if ([self.currentSchedule isEqualTo:self.proposedSchedule]) {
-        return;
-    } else if ([sender isEqualTo:_scheduleIntervalTF] && _scheduleTypeMatrix.selectedTag != 0) {
-        return;
-    } else if ([sender isEqualTo:_dailyHourPopupBT] && _scheduleTypeMatrix.selectedTag != 1) {
-        return;
-    } else if ([sender isEqualTo:_weeklyHourPopupBT] || [sender isEqualTo:_weeklyDayPopupBT]) {
-        if (_scheduleTypeMatrix.selectedTag != 2) {
+    if (start) {
+        if ([self.currentSchedule isEqualTo:self.proposedSchedule]) {
             return;
+        } else if ([sender isEqualTo:_scheduleIntervalTF] && _scheduleTypeMatrix.selectedTag != 0) {
+            return;
+        } else if ([sender isEqualTo:_dailyHourPopupBT] && _scheduleTypeMatrix.selectedTag != 1) {
+            return;
+        } else if ([sender isEqualTo:_weeklyHourPopupBT] || [sender isEqualTo:_weeklyDayPopupBT]) {
+            if (_scheduleTypeMatrix.selectedTag != 2) {
+                return;
+            }
         }
     }
 
     /* Force a change if the action was triggered by changing a setting in
      * them matrix, or a schedule interval. */
     BOOL force = (![sender isEqualTo:_scheduleEnabledBT] && (![sender isEqualTo:_scheduleMenuItem]));
-
-    // Determine whether to start or stop the schedule...
-    BOOL start;
-    if ([sender isEqualTo:_scheduleMenuItem]) {
-        start = _scheduleMenuItem.enabled;
-    } else {
-        start = _scheduleEnabledBT.state;
-    }
 
     /* If not enabled and the sender is from the the matrix
      * just update the IBOutlet settings. */
