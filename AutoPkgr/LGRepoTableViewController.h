@@ -30,4 +30,6 @@
 @property (weak) IBOutlet NSWindow *modalWindow;
 @property (weak) id<LGProgressDelegate> progressDelegate;
 
+@property (copy, nonatomic, readonly) NSArray *repos;
+
 @end

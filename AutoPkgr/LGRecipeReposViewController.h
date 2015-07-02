@@ -24,10 +24,18 @@
 
 @interface LGRecipeReposViewController : LGTabViewControllerBase
 
-
 // Objects
 @property (strong) IBOutlet LGRepoTableViewController *popRepoTableViewHandler;
 @property (strong) IBOutlet LGRecipeTableViewController *recipeTableViewHandler;
+
+
+@property (weak) IBOutlet NSButton *runAutoPkgNowButton;
+@property (weak) IBOutlet NSButton *updateRepoNowButton;
+@property (weak, nonatomic) NSButton *cancelButton;
+
+- (IBAction)updateReposNow:(id)sender;
+- (IBAction)checkAppsNow:(id)sender;
+- (void)cancelAutoPkgRun:(id)sender;
 
 - (IBAction)addAutoPkgRepoURL:(id)sender;
 

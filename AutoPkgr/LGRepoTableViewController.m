@@ -29,7 +29,7 @@
 
 @interface LGRepoTableViewController ()
 
-@property (copy, nonatomic) NSArray *repos;
+@property (copy, nonatomic, readwrite) NSArray *repos;
 @property (copy, nonatomic) NSMutableArray *searchedRepos;
 
 @property (weak) IBOutlet LGTableView *popularRepositoriesTableView;
@@ -38,8 +38,6 @@
 @end
 
 @implementation LGRepoTableViewController {
-    LGRecipeSearch *_searchPanel;
-
     BOOL _awake;
     BOOL _updateRepoInternally;
     BOOL _fetchingRepoData;
@@ -292,31 +290,9 @@
 {
     if ([sender isKindOfClass:[NSMenuItem class]]) {
         NSString *string = [sender representedObject];
-        [[NSPasteboard generalPasteboard] declareTypes:[NSArray arrayWithObject:NSStringPboardType] owner:nil];
+        [[NSPasteboard generalPasteboard] declareTypes:@[NSStringPboardType] owner:nil];
         [[NSPasteboard generalPasteboard] setString:string forType:NSStringPboardType];
     }
-}
-
-#pragma mark - Search Panel
-- (IBAction)openSearchPanel:(id)sender
-{
-    if (!_searchPanel) {
-        _searchPanel = [[LGRecipeSearch alloc] init];
-    }
-
-    [NSApp beginSheet:_searchPanel.window
-        modalForWindow:self.modalWindow
-         modalDelegate:self
-        didEndSelector:@selector(didCloseSearchPanel)
-           contextInfo:NULL];
-}
-
-- (void)didCloseSearchPanel
-{
-    [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-        [_searchPanel.window close];
-        _searchPanel = nil;
-    }];
 }
 
 @end

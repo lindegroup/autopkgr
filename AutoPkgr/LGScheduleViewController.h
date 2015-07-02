@@ -20,7 +20,6 @@
 #import <Cocoa/Cocoa.h>
 #import "LGTabViewControllerBase.h"
 
-@class LGAutoPkgTaskManager;
 @interface LGScheduleViewController : LGTabViewControllerBase
 
 #pragma mark - Schedule
@@ -33,20 +32,16 @@
 @property (weak) IBOutlet NSPopUpButton *weeklyHourPopupBT;
 @property (weak) IBOutlet NSPopUpButton *weeklyDayPopupBT;
 
-@property (weak) IBOutlet NSButton *runAutoPkgNowButton;
-@property (weak) IBOutlet NSButton *updateRepoNowButton;
+
 
 /* These are set externally and not part of the
  * LGScheduleViewController.xib. Currently the cancel button
  * is referenced by LGConfigurationWindowController's progress panel.
  * The scheduleMenuItem is referenced by the status menu item. */
-@property (weak, nonatomic) NSButton *cancelButton;
 @property (weak, nonatomic) NSMenuItem *scheduleMenuItem;
 
 #pragma mark-- IBActions --
 - (IBAction)changeSchedule:(id)sender;
-- (IBAction)updateReposNow:(id)sender;
-- (IBAction)checkAppsNow:(id)sender;
-- (void)cancelAutoPkgRun:(id)sender;
+
 
 @end

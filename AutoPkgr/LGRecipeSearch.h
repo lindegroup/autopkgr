@@ -19,4 +19,8 @@
 #import <Cocoa/Cocoa.h>
 
 @interface LGRecipeSearch : NSWindowController <NSTableViewDataSource, NSTableViewDelegate>
+
+- (instancetype)initWithSearchResults:(NSArray *)results
+                       installedRepos:(NSArray *)installedRepos;
+
 @end
