@@ -44,7 +44,7 @@ NSString *appKeychainPath()
 {
     [[self class] getKeychain:^(AHKeychain *keychain) {
         [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-            if (keychain.keychainStatus == errSecSuccess) {
+            if (keychain && (keychain.keychainStatus == errSecSuccess)) {
                 NSError *error = nil;
                 AHKeychainItem *item = [self keychainItemForAccount:account
                                                             service:service
@@ -53,7 +53,7 @@ NSString *appKeychainPath()
                 [keychain getItem:item error:&error];
                 reply(item.password, error);
             } else {
-                reply(nil, [NSError errorWithDomain:kLGApplicationName code:keychain.keychainStatus userInfo:@{NSLocalizedDescriptionKey : keychain.statusDescription}]);
+                reply(nil, [LGError errorWithCode:kLGErrorKeychainAccess]);
             }
         }];
     }];

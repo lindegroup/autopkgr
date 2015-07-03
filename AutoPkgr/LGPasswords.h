@@ -43,5 +43,6 @@
                reply:(void (^)(NSError *error))reply;
 
 + (void)migrateKeychainIfNeeded:(void (^)(NSString *password, NSError *error))reply;
+
 + (void)resetKeychainPrompt:(void (^)(NSError *))reply;
 @end

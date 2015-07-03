@@ -45,6 +45,8 @@ typedef NS_ENUM(NSInteger, LGErrorCodes) {
     /** Error Schedule timer incorrect */
     kLGErrorIncorrectScheduleTimerInterval,
     /** Error creating authorization*/
+    kLGErrorKeychainAccess,
+    /** Error creating authorization*/
     kLGErrorAuthChallenge,
 };
 

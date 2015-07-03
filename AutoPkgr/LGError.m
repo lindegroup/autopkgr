@@ -112,6 +112,15 @@ static NSDictionary *userInfoFromCode(LGErrorCodes code)
                                                 @"LocalizableError",
                                                 @"Error when AutoPkgr schedule timer interval is not valid (NSLocalizedRecoverySuggestionErrorKey)");
         break;
+    case kLGErrorKeychainAccess:
+        message = NSLocalizedStringFromTable(@"kLGErrorKeychainAccessDescription",
+                                             @"LocalizableError",
+                                             @"Error accessing the keychain");
+
+        suggestion = NSLocalizedStringFromTable(@"kLGErrorKeychainAccessSuggestion",
+                                                @"LocalizableError",
+                                                @"Error when accessing AutoPkgr.keychain (NSLocalizedRecoverySuggestionErrorKey)");
+        break;
     case kLGErrorAuthChallenge:
         message = NSLocalizedStringFromTable(@"kLGErrorAuthChallengeDescription",
                                              @"LocalizableError",
@@ -246,10 +255,10 @@ static NSDictionary *userInfoFromHTTPResponse(NSHTTPURLResponse *response)
     NSError *error = nil;
     if ((error = [[self class] errorWithCode:code])) {
         [NSApp presentError:error
-             modalForWindow:window
-                   delegate:sender
-         didPresentSelector:selector
-                contextInfo:NULL];
+                modalForWindow:window
+                      delegate:sender
+            didPresentSelector:selector
+                   contextInfo:NULL];
     }
 }
 #endif
