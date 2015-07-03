@@ -3,12 +3,13 @@
 //  AutoPkgr
 //
 //  Created by Eldon Ahrold on 7/28/14.
+//  Copyright 2014-2015 The Linde Group, Inc.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
 //  You may obtain a copy of the License at
 //
-//  http://www.apache.org/licenses/LICENSE-2.0
+//      http://www.apache.org/licenses/LICENSE-2.0
 //
 //  Unless required by applicable law or agreed to in writing, software
 //  distributed under the License is distributed on an "AS IS" BASIS,
@@ -36,7 +37,7 @@ static NSString *kCommandKeyAuthRightDesc = @"authRightDescription";
         dCommandInfo = @{
             NSStringFromSelector(@selector(installPackageFromPath:authorization:reply:)) : @{
                 kCommandKeyAuthRightName    : @"com.lindegroup.autopkgr.pkg.installer",
-                kCommandKeyAuthRightDefault : @kAuthorizationRuleAuthenticateAsAdmin, 
+                kCommandKeyAuthRightDefault : @kAuthorizationRuleAuthenticateAsAdmin,
                 kCommandKeyAuthRightDesc    : NSLocalizedString(
                                                                 @"AutoPkgr needs to run a package installer. ",
                                                                 @"prompt shown when user is required to authorize to install a package"
@@ -94,7 +95,7 @@ static NSString *kCommandKeyAuthRightDesc = @"authRightDescription";
         id           authRightDefault;
         NSString     *authRightDesc;
 
-        
+
         commandDict = (NSDictionary *) obj;
         assert([commandDict isKindOfClass:[NSDictionary class]]);
 
@@ -127,7 +128,7 @@ static NSString *kCommandKeyAuthRightDesc = @"authRightDescription";
                 CFSTR("Common")                             // localeTableName
             );
             assert(blockErr == errAuthorizationSuccess);
-        } else { 
+        } else {
         }
     }];
 }

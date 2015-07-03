@@ -1,4 +1,6 @@
-// LGIntegrationsStatus.m
+//
+//  LGIntegrationsStatus.m
+//  AutoPkgr
 //
 //  Copyright 2015 Eldon Ahrold.
 //
@@ -6,7 +8,7 @@
 //  you may not use this file except in compliance with the License.
 //  You may obtain a copy of the License at
 //
-//  http://www.apache.org/licenses/LICENSE-2.0
+//      http://www.apache.org/licenses/LICENSE-2.0
 //
 //  Unless required by applicable law or agreed to in writing, software
 //  distributed under the License is distributed on an "AS IS" BASIS,
@@ -49,7 +51,7 @@ static void *XXInfoStatusChange = &XXInfoStatusChange;
 
 
         /* The optional integrations will be everything after the first two
-         * This should grow as AutoPkgr starts handling a wider scope 
+         * This should grow as AutoPkgr starts handling a wider scope
          * of integrations and this should eliminate having to continuously modifying this. */
         NSIndexSet *idxSet = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(__requiredIntegrationClasses.count, (__integrationClasses.count)-(__requiredIntegrationClasses.count))];
 
@@ -76,7 +78,7 @@ static void *XXInfoStatusChange = &XXInfoStatusChange;
             LGIntegration *integration = nil;
             if ((integration = [[integrationClass alloc] init])) {
                 NSAssert(integration, @"Integration was not properly initialized.");
-                
+
                 [initedIntegrations addObject:integration];
                 // Add a notification for changes to the integration.
                 dispatch_async(dispatch_get_main_queue(), ^{

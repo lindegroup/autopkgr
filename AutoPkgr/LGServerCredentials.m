@@ -1,12 +1,14 @@
-// LGServerCredentials.m
 //
-// Copyright 2015 The Linde Group, Inc.
+//  LGServerCredentials.m
+//  AutoPkgr
+//
+//  Copyright 2015 The Linde Group, Inc.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
 //  You may obtain a copy of the License at
 //
-//  http://www.apache.org/licenses/LICENSE-2.0
+//      http://www.apache.org/licenses/LICENSE-2.0
 //
 //  Unless required by applicable law or agreed to in writing, software
 //  distributed under the License is distributed on an "AS IS" BASIS,
@@ -30,10 +32,10 @@
 @end
 
 /* This credential storage is used to proxy HTTP certificate trust challenge requests
- * since the NSURLConnectionDelegate will only call the 
+ * since the NSURLConnectionDelegate will only call the
  * `-connection: willSendRequestForAuthenticationChallenge:challenge`
- * once per host until an application is relaunched. Using this gives access 
- * to the any initial NSURLAuthenticationMethodServerTrust results so subsequent 
+ * once per host until an application is relaunched. Using this gives access
+ * to the any initial NSURLAuthenticationMethodServerTrust results so subsequent
  * calls to the same server from all LGHTTPCredentials objects.
  */
 @implementation LGCertificateStore {

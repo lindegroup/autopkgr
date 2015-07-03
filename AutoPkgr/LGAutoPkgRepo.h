@@ -1,12 +1,14 @@
-// LGAutoPkgRepos.h
 //
-// Copyright 2015 The Linde Group, Inc.
+//  LGAutoPkgRepos.h
+//  AutoPkgr
+//
+//  Copyright 2015 The Linde Group, Inc.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
 //  You may obtain a copy of the License at
 //
-//  http://www.apache.org/licenses/LICENSE-2.0
+//      http://www.apache.org/licenses/LICENSE-2.0
 //
 //  Unless required by applicable law or agreed to in writing, software
 //  distributed under the License is distributed on an "AS IS" BASIS,
@@ -47,7 +49,7 @@ typedef NS_ENUM(OSStatus, LGAutoPkgRepoStatus) {
 /**
  *  Check if there are updates availabel for the repo.
  *
- *  @param sender Object sending the message. If the sender is set to nil, it will only refresh every 5-10 minuets. You should set this to nil if using in a table view. 
+ *  @param sender Object sending the message. If the sender is set to nil, it will only refresh every 5-10 minuets. You should set this to nil if using in a table view.
  */
 - (IBAction)checkRepoStatus:(id)sender;
 

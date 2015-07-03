@@ -2,8 +2,8 @@
   LocalizableHelpPopover.strings
   AutoPkgr
 
-  Created by Eldon on 6/12/15.
-  Copyright (c) 2015 Eldon Ahrold. All rights reserved.
+  Created by Eldon Ahrold on 6/12/15.
+  Copyright 2015 Eldon Ahrold.
 */
 
 "repoTableInfoTitle" = "Repo List";

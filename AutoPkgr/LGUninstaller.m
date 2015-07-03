@@ -1,12 +1,14 @@
-// LGUninstaller.m
 //
-//  Copyright 2015 Eldon Ahrold
+//  LGUninstaller.m
+//  AutoPkgr
+//
+//  Copyright 2015 Eldon Ahrold.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
 //  You may obtain a copy of the License at
 //
-//  http://www.apache.org/licenses/LICENSE-2.0
+//      http://www.apache.org/licenses/LICENSE-2.0
 //
 //  Unless required by applicable law or agreed to in writing, software
 //  distributed under the License is distributed on an "AS IS" BASIS,
@@ -44,7 +46,7 @@
             if (remain.count) {
                 DLog(@"Failed to removed \t%@", [remain componentsJoinedByString:@"\n\t"]);
             }
-            
+
             reply(error);
         }];
     }];

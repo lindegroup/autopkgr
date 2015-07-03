@@ -1,12 +1,14 @@
-// LGAutoPkgRecipe.h
 //
-// Copyright 2015 The Linde Group, Inc.
+//  LGAutoPkgRecipe.h
+//  AutoPkgr
+//
+//  Copyright 2015 The Linde Group, Inc.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
 //  You may obtain a copy of the License at
 //
-//  http://www.apache.org/licenses/LICENSE-2.0
+//      http://www.apache.org/licenses/LICENSE-2.0
 //
 //  Unless required by applicable law or agreed to in writing, software
 //  distributed under the License is distributed on an "AS IS" BASIS,
@@ -65,7 +67,7 @@
 @property (nonatomic, assign, readonly) BOOL buildsPackage;
 
 /* Bool value indicating an error with the recipe, such as it's missing
- * it's parent recipe, (or someday a required processor ) 
+ * it's parent recipe, (or someday a required processor )
  */
 @property (nonatomic, assign, readonly) BOOL recipeConfigError;
 
@@ -87,7 +89,7 @@
 + (NSArray *)allRecipesFilteringOverlaps:(BOOL)filterOverlaps;
 
 /**
- *  Set of recipes 
+ *  Set of recipes
  *
  *  @return Set of recipes to run.
  */
