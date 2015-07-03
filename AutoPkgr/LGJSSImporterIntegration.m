@@ -102,6 +102,18 @@ NSString *const kLGJSSDistPointTypeKey = @"type";
     return _installedVersion;
 }
 
+- (void)customUninstallActions:(void (^)(NSError *))reply {
+    // Clear out the defaults...
+    LGJSSImporterDefaults *defaults = [[LGJSSImporterDefaults alloc] init];
+    defaults.JSSAPIPassword = nil;
+    defaults.JSSAPIUsername = nil;
+    defaults.JSSRepos = nil;
+    defaults.JSSURL = nil;
+
+    // Don't forget to reply...
+    reply(nil);
+}
+
 @end
 
 #pragma mark - LGDefaults category implementation for JSSImporter Interface

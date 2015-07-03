@@ -44,6 +44,17 @@
     return YES;
 }
 
+- (void)customUninstallActions:(void (^)(NSError *))reply {
+    LGMacPatchDefaults *defaults = [LGMacPatchDefaults new];
+    defaults.MP_PASSWORD = nil;
+    defaults.MP_URL = nil;
+    defaults.MP_USER = nil;
+    defaults.MP_SSL_VERIFY = YES;
+
+    // Don't forget to reply...
+    reply(nil);
+}
+
 @end
 
 
