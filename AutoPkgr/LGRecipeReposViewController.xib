@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="7706" systemVersion="14E46" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="6250" systemVersion="13F1077" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="7706"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="6250"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="LGRecipeReposViewController">
@@ -32,7 +32,6 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" columnSelection="YES" multipleSelection="NO" autosaveColumns="NO" rowSizeStyle="automatic" headerView="A8F-FX-vOe" viewBased="YES" id="n0R-ew-DOT" customClass="LGTableView">
-                                <rect key="frame" x="0.0" y="0.0" width="581" height="0.0"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <size key="intercellSpacing" width="3" height="2"/>
                                 <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -181,17 +180,6 @@
                         <autoresizingMask key="autoresizingMask"/>
                     </tableHeaderView>
                 </scrollView>
-                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="c6a-G7-vZU">
-                    <rect key="frame" x="15" y="392" width="82" height="17"/>
-                    <constraints>
-                        <constraint firstAttribute="width" constant="78" id="d4U-RA-AlW"/>
-                    </constraints>
-                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Repositories" id="vz5-Q8-aHi">
-                        <font key="font" metaFont="system"/>
-                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
-                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                    </textFieldCell>
-                </textField>
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="6E4-OJ-BCm">
                     <rect key="frame" x="16" y="240" width="143" height="14"/>
                     <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Add a repo URL manually:" id="1IN-jG-Kev">
@@ -247,7 +235,6 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnSelection="YES" columnResizing="NO" multipleSelection="NO" autosaveColumns="NO" rowSizeStyle="automatic" headerView="G9x-hV-Xkq" viewBased="YES" id="HAz-3M-Rgt" customClass="LGTableView">
-                                <rect key="frame" x="0.0" y="0.0" width="581" height="0.0"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <size key="intercellSpacing" width="3" height="2"/>
                                 <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -409,38 +396,8 @@
                         <autoresizingMask key="autoresizingMask"/>
                     </tableHeaderView>
                 </scrollView>
-                <button identifier="recipeTableInfo" horizontalHuggingPriority="750" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Dn1-yN-2IM" customClass="AHHelpPopoverButton">
-                    <rect key="frame" x="73" y="175" width="25" height="25"/>
-                    <constraints>
-                        <constraint firstAttribute="width" constant="21" id="2JT-kS-dBX"/>
-                    </constraints>
-                    <buttonCell key="cell" type="help" bezelStyle="helpButton" alignment="center" controlSize="small" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="qZs-UK-d2f">
-                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                        <font key="font" metaFont="smallSystem"/>
-                    </buttonCell>
-                </button>
-                <button identifier="repoTableInfo" horizontalHuggingPriority="750" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="M6A-V7-7i1" customClass="AHHelpPopoverButton">
-                    <rect key="frame" x="101" y="386" width="25" height="25"/>
-                    <buttonCell key="cell" type="help" bezelStyle="helpButton" alignment="center" controlSize="small" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="GPh-uR-yFb">
-                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                        <font key="font" metaFont="smallSystem"/>
-                    </buttonCell>
-                </button>
-                <button verticalHuggingPriority="750" placeholderIntrinsicWidth="158" placeholderIntrinsicHeight="21" translatesAutoresizingMaskIntoConstraints="NO" id="Emc-dS-Tet">
-                    <rect key="frame" x="103" y="171" width="170" height="31"/>
-                    <constraints>
-                        <constraint firstAttribute="width" constant="160" id="z6D-OA-2bw"/>
-                    </constraints>
-                    <buttonCell key="cell" type="push" title="Run Recipes Now" bezelStyle="rounded" alignment="center" controlSize="small" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="hfF-7L-UC7">
-                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                        <font key="font" metaFont="smallSystem"/>
-                    </buttonCell>
-                    <connections>
-                        <action selector="checkAppsNow:" target="-2" id="g55-ey-lwc"/>
-                    </connections>
-                </button>
                 <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="jC6-S3-IWD">
-                    <rect key="frame" x="132" y="384" width="170" height="28"/>
+                    <rect key="frame" x="12" y="383" width="170" height="28"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="160" id="2Xn-j4-Ou4"/>
                     </constraints>
@@ -492,66 +449,80 @@
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                 </textField>
-                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="OQZ-m7-NDG">
-                    <rect key="frame" x="15" y="181" width="54" height="17"/>
+                <button identifier="repoTableInfo" horizontalHuggingPriority="750" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="M6A-V7-7i1" customClass="AHHelpPopoverButton">
+                    <rect key="frame" x="183" y="385" width="25" height="25"/>
                     <constraints>
-                        <constraint firstAttribute="width" constant="50" id="B98-4T-gYM"/>
+                        <constraint firstAttribute="width" constant="21" id="Svn-PP-BSS"/>
                     </constraints>
-                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Recipes" id="0cX-bB-x15">
-                        <font key="font" metaFont="system"/>
-                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
-                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                    </textFieldCell>
-                </textField>
+                    <buttonCell key="cell" type="help" bezelStyle="helpButton" alignment="center" controlSize="small" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="GPh-uR-yFb">
+                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                        <font key="font" metaFont="smallSystem"/>
+                    </buttonCell>
+                </button>
+                <button identifier="recipeTableInfo" horizontalHuggingPriority="750" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Dn1-yN-2IM" customClass="AHHelpPopoverButton">
+                    <rect key="frame" x="183" y="177" width="25" height="25"/>
+                    <buttonCell key="cell" type="help" bezelStyle="helpButton" alignment="center" controlSize="small" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="qZs-UK-d2f">
+                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                        <font key="font" metaFont="smallSystem"/>
+                    </buttonCell>
+                </button>
+                <button verticalHuggingPriority="750" placeholderIntrinsicWidth="158" placeholderIntrinsicHeight="21" translatesAutoresizingMaskIntoConstraints="NO" id="Emc-dS-Tet">
+                    <rect key="frame" x="12" y="173" width="170" height="31"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="21" id="6lK-q7-5R7"/>
+                    </constraints>
+                    <buttonCell key="cell" type="push" title="Run Recipes Now" bezelStyle="rounded" alignment="center" controlSize="small" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="hfF-7L-UC7">
+                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                        <font key="font" metaFont="smallSystem"/>
+                    </buttonCell>
+                    <connections>
+                        <action selector="checkAppsNow:" target="-2" id="g55-ey-lwc"/>
+                    </connections>
+                </button>
             </subviews>
             <constraints>
+                <constraint firstItem="Emc-dS-Tet" firstAttribute="baseline" secondItem="8hi-WA-S41" secondAttribute="baseline" id="35A-k1-qmF"/>
                 <constraint firstAttribute="trailing" secondItem="mla-ao-F4d" secondAttribute="trailing" constant="17" id="4Rw-hf-kRV"/>
-                <constraint firstItem="M6A-V7-7i1" firstAttribute="leading" secondItem="c6a-G7-vZU" secondAttribute="trailing" constant="8" symbolic="YES" id="6SV-4H-5Wb"/>
                 <constraint firstItem="Su6-Sd-cOj" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="11" id="6VE-pU-epS"/>
                 <constraint firstItem="PWu-1D-EW1" firstAttribute="leading" secondItem="6E4-OJ-BCm" secondAttribute="trailing" constant="8" symbolic="YES" id="70R-47-npQ"/>
-                <constraint firstAttribute="trailing" secondItem="8hi-WA-S41" secondAttribute="trailing" constant="17" id="9GQ-ee-L7l"/>
-                <constraint firstItem="OQZ-m7-NDG" firstAttribute="top" secondItem="Emc-dS-Tet" secondAttribute="top" id="Av7-fg-pzW"/>
-                <constraint firstItem="jC6-S3-IWD" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="137" id="Cmj-he-I3C"/>
-                <constraint firstItem="Emc-dS-Tet" firstAttribute="top" secondItem="8hi-WA-S41" secondAttribute="top" id="D2n-8H-DSz"/>
+                <constraint firstItem="Dn1-yN-2IM" firstAttribute="leading" secondItem="Emc-dS-Tet" secondAttribute="trailing" constant="8" id="7hs-5E-elw"/>
+                <constraint firstItem="Dn1-yN-2IM" firstAttribute="top" secondItem="PWu-1D-EW1" secondAttribute="bottom" constant="36" id="CPY-dq-pGH"/>
+                <constraint firstItem="jC6-S3-IWD" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="17" id="Cmj-he-I3C"/>
                 <constraint firstItem="PWu-1D-EW1" firstAttribute="baseline" secondItem="mla-ao-F4d" secondAttribute="baseline" id="Dex-NN-kSf"/>
-                <constraint firstItem="M6A-V7-7i1" firstAttribute="centerY" secondItem="Su6-Sd-cOj" secondAttribute="centerY" id="ESC-H7-Glc"/>
-                <constraint firstItem="OQZ-m7-NDG" firstAttribute="baseline" secondItem="8hi-WA-S41" secondAttribute="baseline" id="GAx-sM-7rf"/>
+                <constraint firstItem="Emc-dS-Tet" firstAttribute="top" secondItem="PWu-1D-EW1" secondAttribute="bottom" constant="37" id="EOD-Uf-yUH"/>
                 <constraint firstItem="FaV-GR-28e" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="17" id="Gvx-G6-4a3"/>
                 <constraint firstItem="CgP-jA-Kra" firstAttribute="trailing" secondItem="4WY-w1-VqU" secondAttribute="trailing" id="HiK-ud-2vP"/>
                 <constraint firstAttribute="bottom" secondItem="Nch-uS-qeG" secondAttribute="bottom" constant="29" id="Hma-bF-ZMf"/>
+                <constraint firstItem="9vg-XB-Pqv" firstAttribute="top" secondItem="M6A-V7-7i1" secondAttribute="bottom" constant="4" id="IPo-Dj-99N"/>
                 <constraint firstItem="6E4-OJ-BCm" firstAttribute="top" secondItem="9vg-XB-Pqv" secondAttribute="bottom" constant="10" id="JbV-zJ-V0w"/>
                 <constraint firstItem="9vg-XB-Pqv" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="17" id="KqT-kl-hAy"/>
-                <constraint firstItem="FaV-GR-28e" firstAttribute="top" secondItem="Dn1-yN-2IM" secondAttribute="bottom" constant="4" id="MR6-ou-VJH"/>
-                <constraint firstItem="9vg-XB-Pqv" firstAttribute="top" secondItem="M6A-V7-7i1" secondAttribute="bottom" constant="5" id="O0b-vW-Lnb"/>
-                <constraint firstItem="OQZ-m7-NDG" firstAttribute="leading" secondItem="FaV-GR-28e" secondAttribute="leading" id="OEJ-lW-tGu"/>
                 <constraint firstAttribute="trailing" secondItem="9vg-XB-Pqv" secondAttribute="trailing" constant="17" id="T8c-ll-Gbw"/>
-                <constraint firstItem="8hi-WA-S41" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="472" id="TMZ-z0-bnn"/>
-                <constraint firstItem="M6A-V7-7i1" firstAttribute="centerY" secondItem="jC6-S3-IWD" secondAttribute="centerY" id="ULY-xb-nBF"/>
                 <constraint firstItem="mla-ao-F4d" firstAttribute="leading" secondItem="PWu-1D-EW1" secondAttribute="trailing" constant="8" symbolic="YES" id="WK1-8m-dYx"/>
-                <constraint firstItem="Emc-dS-Tet" firstAttribute="leading" secondItem="Dn1-yN-2IM" secondAttribute="trailing" constant="12" id="Wr8-P8-4Br"/>
+                <constraint firstItem="8hi-WA-S41" firstAttribute="trailing" secondItem="mla-ao-F4d" secondAttribute="trailing" id="X1C-zK-en8"/>
+                <constraint firstItem="M6A-V7-7i1" firstAttribute="leading" secondItem="jC6-S3-IWD" secondAttribute="trailing" constant="8" id="XSD-6H-fUf"/>
                 <constraint firstItem="9vg-XB-Pqv" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="36" id="XkD-pG-CSs"/>
                 <constraint firstItem="Nch-uS-qeG" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="20" id="XzT-wq-AYr"/>
-                <constraint firstItem="c6a-G7-vZU" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="11" id="aBj-8B-dnU"/>
-                <constraint firstItem="8hi-WA-S41" firstAttribute="top" secondItem="mla-ao-F4d" secondAttribute="bottom" constant="39" id="aI2-xd-zYG"/>
                 <constraint firstItem="6E4-OJ-BCm" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="18" id="b5P-XM-snM"/>
                 <constraint firstItem="Su6-Sd-cOj" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="472" id="bh6-7Q-3zM"/>
+                <constraint firstItem="FaV-GR-28e" firstAttribute="top" secondItem="Dn1-yN-2IM" secondAttribute="bottom" constant="6" id="c4d-lw-gQM"/>
+                <constraint firstItem="Dn1-yN-2IM" firstAttribute="leading" secondItem="M6A-V7-7i1" secondAttribute="leading" id="cIO-uD-IZB"/>
                 <constraint firstAttribute="trailing" secondItem="4WY-w1-VqU" secondAttribute="trailing" constant="17" id="eOE-U6-pIA"/>
                 <constraint firstItem="otr-G5-TOW" firstAttribute="leading" secondItem="Nch-uS-qeG" secondAttribute="trailing" constant="8" id="fGN-3s-Hfd"/>
                 <constraint firstAttribute="centerY" secondItem="6E4-OJ-BCm" secondAttribute="centerY" constant="37" id="g9Q-he-emF"/>
+                <constraint firstItem="Dn1-yN-2IM" firstAttribute="trailing" secondItem="M6A-V7-7i1" secondAttribute="trailing" id="h6d-Og-Xui"/>
                 <constraint firstItem="CgP-jA-Kra" firstAttribute="top" secondItem="4WY-w1-VqU" secondAttribute="bottom" constant="4" id="hd5-BW-DQC"/>
                 <constraint firstAttribute="bottom" secondItem="otr-G5-TOW" secondAttribute="bottom" constant="26" id="jIc-ne-Agf"/>
                 <constraint firstAttribute="bottom" secondItem="FaV-GR-28e" secondAttribute="bottom" constant="53" id="jdP-I2-N5w"/>
-                <constraint firstItem="jC6-S3-IWD" firstAttribute="leading" secondItem="M6A-V7-7i1" secondAttribute="trailing" constant="13" id="kwj-Fd-FwM"/>
+                <constraint firstItem="Emc-dS-Tet" firstAttribute="leading" secondItem="FaV-GR-28e" secondAttribute="leading" id="k5l-Cm-Kvi"/>
                 <constraint firstItem="CgP-jA-Kra" firstAttribute="leading" secondItem="Nch-uS-qeG" secondAttribute="leading" id="nRf-mL-a57"/>
-                <constraint firstItem="Dn1-yN-2IM" firstAttribute="centerY" secondItem="8hi-WA-S41" secondAttribute="centerY" id="onM-TY-riP"/>
+                <constraint firstItem="M6A-V7-7i1" firstAttribute="top" secondItem="Su6-Sd-cOj" secondAttribute="top" id="nZb-1x-uTI"/>
+                <constraint firstItem="8hi-WA-S41" firstAttribute="leading" secondItem="Su6-Sd-cOj" secondAttribute="leading" id="nzh-3m-4pU"/>
                 <constraint firstAttribute="centerY" secondItem="mla-ao-F4d" secondAttribute="centerY" constant="36" id="q2u-L2-NDv"/>
                 <constraint firstAttribute="trailing" secondItem="Su6-Sd-cOj" secondAttribute="trailing" constant="17" id="r7X-oa-sEW"/>
+                <constraint firstItem="FaV-GR-28e" firstAttribute="top" secondItem="Emc-dS-Tet" secondAttribute="bottom" constant="5" id="sWr-8q-Nak"/>
                 <constraint firstItem="4WY-w1-VqU" firstAttribute="leading" secondItem="otr-G5-TOW" secondAttribute="trailing" constant="8" id="seh-A0-EqD"/>
-                <constraint firstItem="FaV-GR-28e" firstAttribute="top" secondItem="8hi-WA-S41" secondAttribute="bottom" constant="5" id="uA4-1u-omY"/>
                 <constraint firstAttribute="trailing" secondItem="FaV-GR-28e" secondAttribute="trailing" constant="17" id="wKE-D9-XFb"/>
-                <constraint firstItem="jC6-S3-IWD" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="12" id="wly-bu-N5k"/>
-                <constraint firstItem="Dn1-yN-2IM" firstAttribute="leading" secondItem="OQZ-m7-NDG" secondAttribute="trailing" constant="8" symbolic="YES" id="xqa-On-YKH"/>
-                <constraint firstItem="c6a-G7-vZU" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="17" id="zF6-50-rBz"/>
+                <constraint firstItem="jC6-S3-IWD" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="13" id="wly-bu-N5k"/>
                 <constraint firstAttribute="bottom" secondItem="4WY-w1-VqU" secondAttribute="bottom" constant="26" id="zWT-B5-X1J"/>
             </constraints>
             <point key="canvasLocation" x="140.5" y="158"/>
