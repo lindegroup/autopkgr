@@ -44,7 +44,7 @@
     id currentSchedule;
     _scheduleEnabledBT.state = [LGAutoPkgSchedule updateAppsIsScheduled:&currentSchedule];
     _scheduleMenuItem.state = _scheduleEnabledBT.state;
-    [self updateIBOutletsWithSchedule:currentSchedule];
+    [self updateIBOutletsWithSchedule:currentSchedule ?: self.proposedSchedule];
 }
 
 - (void)viewDidLoad
@@ -109,7 +109,6 @@
 
 - (void)updateIBOutletsWithSchedule:(id)scheduleOrInterval
 {
-
     if ([scheduleOrInterval isKindOfClass:[AHLaunchJobSchedule class]]) {
 
         NSString *menuTitleString;
