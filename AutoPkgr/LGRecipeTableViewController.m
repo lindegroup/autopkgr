@@ -234,7 +234,7 @@ static NSString *const kLGAutoPkgRecipeCurrentStatusKey = @"currentStatus";
         runMenuItem.target = _runTaskDictionary[recipe.Name];
         [menu addItem:runMenuItem];
     } else {
-        runMenuItem = [[NSMenuItem alloc] initWithTitle:@"Run this recipe" action:@selector(runRecipeFromMenu:) keyEquivalent:@""];
+        runMenuItem = [[NSMenuItem alloc] initWithTitle:@"Run This Recipe Only" action:@selector(runRecipeFromMenu:) keyEquivalent:@""];
         runMenuItem.target = self;
         runMenuItem.representedObject = @(row);
         [menu addItem:runMenuItem];
@@ -242,7 +242,7 @@ static NSString *const kLGAutoPkgRecipeCurrentStatusKey = @"currentStatus";
 
     if (recipe.ParentRecipe) {
         if (recipe.isMissingParent) {
-            NSLog(@"Missing parent recipe.");
+            NSLog(@"Missing Parent Recipe");
         }
         NSString *parent = [@"Parent Recipe: " stringByAppendingString:recipe.ParentRecipe];
         [menu addItemWithTitle:parent action:nil keyEquivalent:@""];
@@ -276,7 +276,7 @@ static NSString *const kLGAutoPkgRecipeCurrentStatusKey = @"currentStatus";
         [menu addItem:openRecipeItem];
 
         // Reveal in finder menu item
-        NSMenuItem *showInFinderItem = [[NSMenuItem alloc] initWithTitle:@"Show in Finder" action:@selector(revealInFinder:) keyEquivalent:@""];
+        NSMenuItem *showInFinderItem = [[NSMenuItem alloc] initWithTitle:@"Reveal in Finder" action:@selector(revealInFinder:) keyEquivalent:@""];
         showInFinderItem.representedObject = recipe;
         showInFinderItem.target = [LGRecipeOverrides class];
         [menu addItem:showInFinderItem];

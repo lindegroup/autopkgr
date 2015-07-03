@@ -231,7 +231,7 @@
     NSMenu *menu = [[NSMenu alloc] init];
 
     // Update Repo...
-    NSMenuItem *updateItem = [[NSMenuItem alloc] initWithTitle:@"Update Repo"
+    NSMenuItem *updateItem = [[NSMenuItem alloc] initWithTitle:@"Update This Repo Only"
                                                         action:@selector(updateRepo:)
                                                  keyEquivalent:@""];
     updateItem.target = self;
@@ -241,7 +241,7 @@
 
     // Commits ...
     if (repo.commitsURL) {
-        NSMenuItem *commitsItem = [[NSMenuItem alloc] initWithTitle:@"Open Commits Page"
+        NSMenuItem *commitsItem = [[NSMenuItem alloc] initWithTitle:@"Open GitHub Commits Page"
                                                              action:@selector(viewCommitsOnGitHub:)
                                                       keyEquivalent:@""];
         commitsItem.target = repo;
@@ -249,7 +249,7 @@
     }
 
     if (repo.cloneURL) {
-        NSMenuItem *cloneItem = [[NSMenuItem alloc] initWithTitle:@"Copy url to clipboard"
+        NSMenuItem *cloneItem = [[NSMenuItem alloc] initWithTitle:@"Copy URL to Clipboard"
                                                            action:@selector(copyToPasteboard:)
                                                     keyEquivalent:@""];
 
@@ -259,7 +259,7 @@
     }
 
     if (repo.path) {
-        NSMenuItem *clipboardItem = [[NSMenuItem alloc] initWithTitle:@"Copy path to clipboard"
+        NSMenuItem *clipboardItem = [[NSMenuItem alloc] initWithTitle:@"Copy Path to Clipboard"
                                                                action:@selector(copyToPasteboard:)
                                                         keyEquivalent:@""];
         clipboardItem.representedObject = repo.path;
@@ -269,7 +269,7 @@
         NSMenuItem *resetItem = [[NSMenuItem alloc] init];
         // Reset repo menu itme
 
-        NSMutableAttributedString *str = [[NSMutableAttributedString alloc] initWithString:@"\u26A0 Hard Reset Repo \u26A0"];
+        NSMutableAttributedString *str = [[NSMutableAttributedString alloc] initWithString:@"\u26A0 Hard Reset Repo..."];
         NSRange range = NSMakeRange(0, str.length);
         [str addAttributes:@{ NSForegroundColorAttributeName : [NSColor redColor],
                               NSFontAttributeName : [NSFont systemFontOfSize:14]
