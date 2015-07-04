@@ -30,7 +30,7 @@
 - (void)removeFilesAtPaths:(NSArray *)fileList
                      reply:(void (^)(NSError *error))reply;
 
-- (void)removePriviledgedFilesAtPaths:(NSArray *)fileList
+- (void)removePrivilegedFilesAtPaths:(NSArray *)fileList
                                 reply:(void (^)(NSError *error))reply;
 
 @end

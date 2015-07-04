@@ -58,7 +58,7 @@
     reply(nil);
 }
 
-- (void)removePriviledgedFilesAtPaths:(NSArray *)fileList
+- (void)removePrivilegedFilesAtPaths:(NSArray *)fileList
                                 reply:(void (^)(NSError *error))reply
 {
     NSData *authorization = [LGAutoPkgrAuthorizer authorizeHelper];
