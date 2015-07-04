@@ -1,5 +1,5 @@
 //
-//  NSString+serialized.m
+//  NSData+taskData.m
 //  AutoPkgr
 //
 //  Created by Eldon Ahrold on 5/5/15.

@@ -1,5 +1,5 @@
 //
-//  LGPasswords.m
+//  LGPasswords.h
 //  AutoPkgr
 //
 //  Created by Eldon Ahrold on 2/14/15.

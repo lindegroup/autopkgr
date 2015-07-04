@@ -1,5 +1,5 @@
-    //
-//  LGNotificatonService.h
+//
+//  LGNotificationService.h
 //  AutoPkgr
 //
 //  Copyright 2015 Eldon Ahrold.

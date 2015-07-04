@@ -1,5 +1,5 @@
 //
-//  NSTextField+setStringValueSafe.h
+//  NSTextField+safeStringValue.h
 //  AutoPkgr
 //
 //  Created by Eldon Ahrold on 10/4/14.

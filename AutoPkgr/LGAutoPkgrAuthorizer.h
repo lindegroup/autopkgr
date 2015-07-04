@@ -1,5 +1,5 @@
 //
-//  LGAutoPkgrAuthorizer.m
+//  LGAutoPkgrAuthorizer.h
 //  AutoPkgr
 //
 //  Created by Eldon Ahrold on 7/28/14.

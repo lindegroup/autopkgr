@@ -1,5 +1,5 @@
 //
-//  LGHourPickerMenu.h
+//  LGSchedulePickerMenu.h
 //  AutoPkgr
 //
 //  Copyright 2015 Eldon Ahrold.

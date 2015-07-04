@@ -1,5 +1,5 @@
 //
-//  AutoPkgr.h
+//  LGAutoPkgr.h
 //  AutoPkgr
 //
 //  Created by Eldon Ahrold on 8/24/14.

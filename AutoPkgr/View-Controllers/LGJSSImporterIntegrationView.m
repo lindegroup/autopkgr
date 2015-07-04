@@ -1,5 +1,5 @@
 //
-//  LGJSSImporterIntegrationView.h
+//  LGJSSImporterIntegrationView.m
 //  AutoPkgr
 //
 //  Created by Eldon Ahrold on 9/25/14.
@@ -467,7 +467,7 @@ static NSPredicate *jdsFilterPredicate()
     if (![NSThread isMainThread]) {
         return [self performSelectorOnMainThread:@selector(didClosePreferencePanel) withObject:self waitUntilDone:NO];
     }
-    
+
     [_preferencePanel.window close];
     _preferencePanel = nil;
     [_jssDistributionPointTableView reloadData];

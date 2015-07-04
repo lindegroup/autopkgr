@@ -1,5 +1,5 @@
 //
-//  LGAutoPkgReport.h
+//  LGAutoPkgReport.m
 //  AutoPkgr
 //
 //  Created by Eldon Ahrold on 3/22/15.

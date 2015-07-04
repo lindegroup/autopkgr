@@ -1,5 +1,5 @@
 //
-//  NSTextField+AnimatedString.h
+//  NSTextField+animatedString.h
 //  AutoPkgr
 //
 //  Created by Eldon Ahrold on 6/21/15.

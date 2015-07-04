@@ -1,5 +1,5 @@
 //
-//  LGAutoPkgRepos.h
+//  LGAutoPkgRepo.h
 //  AutoPkgr
 //
 //  Copyright 2015 The Linde Group, Inc.

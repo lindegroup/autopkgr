@@ -1,5 +1,5 @@
 //
-//  LGRecipeStatusCellView.m
+//  LGTableCellViews.m
 //  AutoPkgr
 //
 //  Created by Eldon Ahrold on 5/31/15.

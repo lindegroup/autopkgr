@@ -1,5 +1,5 @@
 //
-//  LGIntegrationsStatus.h
+//  LGIntegrationManager.h
 //  AutoPkgr
 //
 //  Copyright 2015 Eldon Ahrold.

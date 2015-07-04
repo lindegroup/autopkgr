@@ -1,5 +1,5 @@
 //
-//  LGBaseViewController.h
+//  LGTabViewControllerBase.h
 //  AutoPkgr
 //
 //  Created by Eldon Ahrold on 5/20/15.

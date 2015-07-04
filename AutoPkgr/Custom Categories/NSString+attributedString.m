@@ -1,5 +1,5 @@
 //
-//  NSString+attributedCopy.m
+//  NSString+attributedString.m
 //  AutoPkgr
 //
 //  Created by Eldon Ahrold on 6/15/15.

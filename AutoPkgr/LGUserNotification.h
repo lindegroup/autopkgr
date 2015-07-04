@@ -1,5 +1,5 @@
 //
-//  LGUserNotifications.h
+//  LGUserNotification.h
 //  AutoPkgr
 //
 //  Copyright 2014-2015 The Linde Group, Inc.

@@ -1,5 +1,5 @@
 //
-//  LGStatusImage.h
+//  NSImage+statusLight.h
 //  AutoPkgr
 //
 //  Created by Eldon Ahrold on 10/6/14.

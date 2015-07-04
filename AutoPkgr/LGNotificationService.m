@@ -1,5 +1,5 @@
 //
-//  LGNotificatonService.m
+//  LGNotificationService.m
 //  AutoPkgr
 //
 //  Copyright 2015 Eldon Ahrold.

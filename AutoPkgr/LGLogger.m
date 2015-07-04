@@ -1,5 +1,5 @@
 //
-//  LGLogger.c
+//  LGLogger.m
 //  AutoPkgr
 //
 //  Created by Eldon Ahrold on 4/23/15.

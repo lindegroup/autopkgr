@@ -1,5 +1,5 @@
 //
-//  LGInfoView.m
+//  LGRecipeInfoView.m
 //  AutoPkgr
 //
 //  Created by Eldon Ahrold on 5/19/15.

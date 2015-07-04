@@ -1,5 +1,5 @@
 //
-//  LGConfigWindowController.h
+//  LGViewWindowController.h
 //  AutoPkgr
 //
 //  Created by Eldon Ahrold on 6/6/15.

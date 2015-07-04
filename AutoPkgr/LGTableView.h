@@ -1,5 +1,5 @@
 //
-//  LGRecipeTableView.h
+//  LGTableView.h
 //  AutoPkgr
 //
 //  Created by Eldon Ahrold on 8/14/14.

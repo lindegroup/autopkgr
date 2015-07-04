@@ -1,5 +1,5 @@
 //
-//  LGUserNotifications.m
+//  LGUserNotification.m
 //  AutoPkgr
 //
 //  Copyright 2014-2015 The Linde Group, Inc.
