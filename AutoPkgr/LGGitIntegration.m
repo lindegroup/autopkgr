@@ -172,10 +172,10 @@ static NSArray *knownGitPaths()
 
 
     // Dispatch queue for writing data.
-    dispatch_queue_t git_data_queue = dispatch_queue_create("com.lindegroup.git.data.queue", DISPATCH_QUEUE_SERIAL );
+    __block dispatch_queue_t git_data_queue = dispatch_queue_create("com.lindegroup.git.data.queue", DISPATCH_QUEUE_SERIAL );
 
     // Dispatch quque to send the reply back on.
-    dispatch_queue_t git_callback_queue = dispatch_get_current_queue();
+    __block dispatch_queue_t git_callback_queue = dispatch_get_current_queue();
 
     NSString *binary = [self binary];
     if (access(binary.UTF8String, X_OK) != 0) {
@@ -217,10 +217,6 @@ static NSArray *knownGitPaths()
         dispatch_sync(git_data_queue, ^{
             NSString *stdOut = nil;
 
-            // nil out the readability handlers.
-            outHandle.readabilityHandler = nil;
-            errHandle.readabilityHandler = nil;
-
             // Get any remaining data from the handle.
             [outData appendData:[outHandle readDataToEndOfFile]];
             [errData appendData:[errHandle readDataToEndOfFile]];
@@ -229,11 +225,21 @@ static NSArray *knownGitPaths()
                 stdOut = outData.taskData_string;
             }
 
-            NSError *error = [self gitErrorWithMessage:errData.taskData_string code:aTask.terminationStatus];
+            NSError *error = [self gitErrorWithMessage:errData.taskData_string
+                                                  code:aTask.terminationStatus];
 
             dispatch_async(git_callback_queue, ^{
                 reply(stdOut, error);
             });
+
+            // Clean up...
+            outHandle.readabilityHandler = nil;
+            outData = nil;
+
+            errHandle.readabilityHandler = nil;
+            errData = nil;
+
+            aTask.terminationHandler = nil;
         });
     };
     [task launch];
