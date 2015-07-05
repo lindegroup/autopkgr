@@ -99,7 +99,7 @@ NSString *launchAgentFilePath()
                                         reply(error);
                                       }];
     } else {
-        reply([LGError errorWithCode:kLGErrorIncorrectScheduleTimerInterval]);
+        reply(nil);
     }
 }
 
