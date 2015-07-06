@@ -27,6 +27,8 @@ void subclassMustImplement(id sender, SEL _cmd);
 typedef NS_ENUM(NSInteger, LGErrorCodes) {
     /** Success */
     kLGErrorSuccess,
+    /** Error when trying to install privileged helper tool */
+    kLGErrorInstallingPrivilegedHelperTool, 
     /** Error when sending email fails */
     kLGErrorSendingEmail,
     /** Error when testing port failed */

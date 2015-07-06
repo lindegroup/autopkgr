@@ -70,11 +70,12 @@
     NSError *error;
 
     if (![AHLaunchCtl installHelper:kLGAutoPkgrHelperToolName prompt:@"" error:&error]) {
-        if (error) {
-            NSLog(@"%@", error.localizedDescription);
-            [NSApp presentError:[NSError errorWithDomain:kLGApplicationName code:-1 userInfo:@{ NSLocalizedDescriptionKey : @"The associated helper tool could not be installed, we must quit now." }]];
-            [[NSApplication sharedApplication] terminate:self];
-        }
+        assert([NSThread isMainThread]);
+        DLog(@"Error installing helper: %@", error.localizedDescription);
+
+        [NSApp activateIgnoringOtherApps:YES];
+        [NSApp presentError:[LGError errorWithCode:kLGErrorInstallingPrivilegedHelperTool]];
+        [[NSApplication sharedApplication] terminate:self];
     }
 
     // Register to get background progress updates...

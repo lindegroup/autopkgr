@@ -21,6 +21,12 @@
 /* Error when authorization fails (NSLocalizedRecoverySuggestionErrorKey) */
 "kLGErrorAuthChallenge" = "You are not authorized to perform this action";
 
+/* Error trying to install privileged helper tool. */
+"kLGErrorInstallingPrivilegedHelperToolDescription" = "The associated helper tool could not be installed, we must quit now."
+
+/* Error trying to install privileged helper tool. (NSLocalizedRecoverySuggestionErrorKey) */
+"kLGErrorInstallingPrivilegedHelperToolSuggestion" = "";
+
 /* Error when AutoPkgr schedule timer interval is not valid */
 "kLGErrorIncorrectScheduleTimerIntervalDescription" = "Error setting timer";
 

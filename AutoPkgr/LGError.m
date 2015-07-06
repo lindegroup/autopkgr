@@ -37,6 +37,16 @@ static NSDictionary *userInfoFromCode(LGErrorCodes code)
                                                 @"(NSLocalizedRecoverySuggestionErrorKey)");
 
         break;
+    case kLGErrorInstallingPrivilegedHelperTool:
+        message = NSLocalizedStringFromTable(@"kLGErrorInstallingPrivilegedHelperToolDescription",
+                                             @"LocalizableError",
+                                             @"Error trying to install privileged helper tool.");
+
+        suggestion = NSLocalizedStringFromTable(@"kLGErrorInstallingPrivilegedHelperToolSuggestion",
+                                                @"LocalizableError",
+                                                @"Error trying to install privileged helper tool. (NSLocalizedRecoverySuggestionErrorKey)");
+        
+        break;
     case kLGErrorSendingEmail:
         message = NSLocalizedStringFromTable(@"kLGErrorSendingEmailDescription",
                                              @"LocalizableError",
