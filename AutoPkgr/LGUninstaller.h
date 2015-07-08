@@ -33,4 +33,6 @@
 - (void)removePrivilegedFilesAtPaths:(NSArray *)fileList
                                 reply:(void (^)(NSError *error))reply;
 
+// Prompt for uninstall and remove selected components.
+- (void)uninstallAutoPkgr:(id)sender;
 @end

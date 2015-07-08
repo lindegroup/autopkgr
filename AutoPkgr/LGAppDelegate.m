@@ -28,8 +28,10 @@
 #import "LGUserNotification.h"
 #import "LGDisplayStatusDelegate.h"
 #import "LGNotificationManager.h"
+#import "LGUninstaller.h"
 
 #import <AHLaunchCtl/AHLaunchCtl.h>
+#import <AHLaunchCtl/AHServiceManagement.h>
 
 @interface LGAppDelegate () <NSMenuDelegate, LGDisplayStatusDelegate>
 @property (strong) LGConfigurationWindowController *configurationWindowController;
@@ -266,32 +268,8 @@
 
 - (IBAction)uninstallHelper:(id)sender
 {
-    NSError *error;
-
-    if (jobIsRunning(kLGAutoPkgrLaunchDaemonPlist, kAHGlobalLaunchDaemon)) {
-        [[AHLaunchCtl sharedController] remove:kLGAutoPkgrLaunchDaemonPlist fromDomain:kAHGlobalLaunchDaemon error:&error];
-        if (error) {
-            NSLog(@"%@", error.localizedDescription);
-        } else {
-            NSLog(@"Disabled schedule.");
-        }
-    }
-
-    if (![AHLaunchCtl uninstallHelper:kLGAutoPkgrHelperToolName prompt:NSLocalizedString(@"Remove AutoPkgr's components.", nil) error:&error]) {
-        if (error.code != errAuthorizationCanceled) {
-            [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-                [NSApp presentError:error];
-            }];
-        }
-    } else {
-        NSString *alertText = NSLocalizedString(@"Removed AutoPkgr associated files.", nil);
-        NSString *defaultButton = NSLocalizedString(@"Thanks for using AutoPkgr", nil);
-        NSString *infoText = NSLocalizedString(@"This includes the helper tool, launchd schedule, and other launchd plist. You can safely remove it from your Applications folder.", nil);
-
-        NSAlert *alert = [NSAlert alertWithMessageText:alertText defaultButton:defaultButton alternateButton:nil otherButton:nil informativeTextWithFormat:@"%@", infoText];
-        [alert runModal];
-        [[NSApplication sharedApplication] terminate:self];
-    }
+    LGUninstaller *uninstaller = [[LGUninstaller alloc] init];
+    [uninstaller uninstallAutoPkgr:sender];
 }
 
 #pragma mark - Progress Protocol

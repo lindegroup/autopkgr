@@ -20,6 +20,8 @@
 
 #import <Foundation/Foundation.h>
 
+extern NSString *appKeychainPath();
+
 @interface LGPasswords : NSObject
 
 + (void)lockKeychain;

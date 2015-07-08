@@ -23,6 +23,7 @@
 #import "LGAutoPkgrHelperConnection.h"
 
 #import <AHLaunchCtl/AHLaunchCtl.h>
+#import <AHLaunchCtl/AHServiceManagement.h>
 
 NSString *const kLGLaunchedAtLogin = @"LaunchedAtLogin";
 
@@ -44,7 +45,8 @@ NSString *launchAgentFilePath()
 
 + (void)startAutoPkgSchedule:(BOOL)start scheduleOrInterval:(id)scheduleOrInterval isForced:(BOOL)forced reply:(void (^)(NSError *error))reply
 {
-    BOOL scheduleIsRunning = jobIsRunning(kLGAutoPkgrLaunchDaemonPlist, kAHGlobalLaunchDaemon);
+    BOOL scheduleIsRunning = jobIsRunning2(kLGAutoPkgrLaunchDaemonPlist, kAHGlobalLaunchDaemon);
+    
     BOOL scheduleIsNumber = [scheduleOrInterval isKindOfClass:[NSNumber class]];
 
     if (start && scheduleIsNumber && ([scheduleOrInterval integerValue] == 0)) {
@@ -103,7 +105,7 @@ NSString *launchAgentFilePath()
     }
 }
 
-+ (BOOL)updateAppsIsScheduled:(id *)scheduleInterval
++ (BOOL)updateAppsIsScheduled:(id __autoreleasing*)scheduleInterval
 {
     AHLaunchJob *job = nil;
     if ((job = [AHLaunchCtl jobFromFileNamed:kLGAutoPkgrLaunchDaemonPlist inDomain:kAHGlobalLaunchDaemon])) {
@@ -111,6 +113,7 @@ NSString *launchAgentFilePath()
         if (startInterval) {
             *scheduleInterval = startInterval;
         } else {
+            // If the interval is 0 set it to 24, else convert it from seconds to hours by
             NSInteger interval = (job.StartInterval == 0) ? 24 : (job.StartInterval / 60 / 60);
             if (scheduleInterval) {
                 *scheduleInterval = @(interval);

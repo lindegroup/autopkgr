@@ -27,6 +27,8 @@
 #import "SNTCodesignChecker.h"
 
 #import <AHLaunchCtl/AHLaunchCtl.h>
+#import <AHLaunchCtl/AHServiceManagement.h>
+
 #import <AHKeychain/AHKeychain.h>
 #import <RNCryptor/RNEncryptor.h>
 #import <RNCryptor/RNDecryptor.h>
@@ -39,6 +41,9 @@
 #import "NSData+taskData.h"
 
 static const NSTimeInterval kHelperCheckInterval = 1.0; // how often to check whether to quit
+
+// Parent directory for all of the keyFiles. Each AutoPkgr user has a unique file.
+static NSString *const kLGEncryptedKeysParentDirectory = @"/var/db/.AutoPkgrKeys";
 
 @interface LGAutoPkgrHelper () <HelperAgent, NSXPCListenerDelegate>
 @property (atomic, strong, readwrite) NSXPCListener *listener;
@@ -129,9 +134,6 @@ static const NSTimeInterval kHelperCheckInterval = 1.0; // how often to check wh
     // Password used to decrypt the keyFile. This password is stored in the System.keychain.
     NSString *encryptionPassword = nil;
 
-    // Parent directory for all of the keyFiles. Each AutoPkgr user has a unique file.
-    NSString *encryptedKeyParentDirectory = nil;
-
     // Path to current user's keyFile. Encoded with AES256 using the encryption password.
     NSString *encryptedKeyFile = nil;
 
@@ -168,15 +170,13 @@ static const NSTimeInterval kHelperCheckInterval = 1.0; // how often to check wh
 
     NSFileManager *manager = [NSFileManager defaultManager];
 
-    encryptedKeyFile = [NSString stringWithFormat:@"/var/db/.AutoPkgrKeys/UID_%d", euid];
-    encryptedKeyParentDirectory = @"/var/db/.AutoPkgrKeys";
+    encryptedKeyFile = [NSString stringWithFormat:@"%@/UID_%d", kLGEncryptedKeysParentDirectory, euid];
 
     /*///////////////////////////////////////////////////////////////
     //  Get the encryption password from the System.keychain       //
     ///////////////////////////////////////////////////////////////*/
-    AHKeychainItem *item = [[AHKeychainItem alloc] init];
-    item.service = @"AutoPkgr Common Decryption";
-    item.account = @"com.lindegroup.AutoPkgr.decryption.key";
+    AHKeychainItem *item = [self commonDecryptionKeychainItem];
+
     BOOL newEncryptionPassword = NO;
 
     if ([[AHKeychain systemKeychain] getItem:item error:&error]) {
@@ -233,17 +233,17 @@ static const NSTimeInterval kHelperCheckInterval = 1.0; // how often to check wh
         // The keyFile does not exist, create one now.
 
         BOOL isDir;
-        BOOL directoryExists = [manager fileExistsAtPath:encryptedKeyParentDirectory isDirectory:&isDir];
+        BOOL directoryExists = [manager fileExistsAtPath:kLGEncryptedKeysParentDirectory isDirectory:&isDir];
 
         if (!directoryExists) {
-            if (![manager createDirectoryAtPath:encryptedKeyParentDirectory withIntermediateDirectories:NO attributes:attributes error:&error]) {
+            if (![manager createDirectoryAtPath:kLGEncryptedKeysParentDirectory withIntermediateDirectories:NO attributes:attributes error:&error]) {
                 // If we can't create this directory something is wrong, return now.
                 syslog(LOG_ALERT, "[ERROR] Could not create the parent directory for the encrypted key files.");
                 goto helper_reply;
             }
         } else if (directoryExists && !isDir) {
             // The path exists but is not a directory, escape!.
-            syslog(LOG_ALERT, "[ERROR] The %s exists, but it is not a directory, it needs to be repaired.", encryptedKeyParentDirectory.UTF8String);
+            syslog(LOG_ALERT, "[ERROR] The %s exists, but it is not a directory, it needs to be repaired.", kLGEncryptedKeysParentDirectory.UTF8String);
             goto helper_reply;
         }
 
@@ -276,7 +276,6 @@ static const NSTimeInterval kHelperCheckInterval = 1.0; // how often to check wh
     if (![manager setAttributes:attributes ofItemAtPath:encryptedKeyFile error:nil]) {
         syslog(LOG_ALERT, "[ERROR] A problem was encountered updating keyFile's permissions.");
     }
-
 
     if (passwordData) {
         // set the password as the data description.
@@ -445,6 +444,58 @@ helper_reply:
     reply(error);
 }
 
+- (void)uninstall:(NSData *)authData removeKeychains:(BOOL)removeKeychains packages:(NSArray *)packageIDs reply:(void (^)(NSError *))reply {
+    NSError *error;
+
+    /*////////////////////////////////////////////////////////////////////
+    //   Remove LaunchD schedule                                        //
+    ////////////////////////////////////////////////////////////////////*/
+    if (jobIsRunning(kLGAutoPkgrLaunchDaemonPlist, kAHGlobalLaunchDaemon)) {
+        [[AHLaunchCtl sharedController] remove:kLGAutoPkgrLaunchDaemonPlist
+                                    fromDomain:kAHGlobalLaunchDaemon
+                                         error:&error];
+    }
+
+    /*////////////////////////////////////////////////////////////////////
+    //   Remove Keychain items                                          //
+    ////////////////////////////////////////////////////////////////////*/
+    if (removeKeychains) {
+        NSFileManager *manager = [NSFileManager defaultManager];
+        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"SELF == .DS_Store"];
+
+        NSArray *keyFiles = [[manager contentsOfDirectoryAtPath:kLGEncryptedKeysParentDirectory
+                                                          error:nil]
+                             filteredArrayUsingPredicate:predicate];
+
+        if (keyFiles.count) {
+            NSString *encryptedKeyFile = [NSString stringWithFormat:@"%@/UID_%d",
+                                         kLGEncryptedKeysParentDirectory,
+                                         self.connection.effectiveUserIdentifier];
+            if (keyFiles.count == 1) {
+                /* If the count is 1 there's only one user
+                 * remove the whole directory & common encryption key */
+                if ([manager fileExistsAtPath:encryptedKeyFile]) {
+                    if([manager removeItemAtPath:kLGEncryptedKeysParentDirectory error:nil]){
+                        /* Remove keychain item. */
+                        AHKeychainItem *item = [self commonDecryptionKeychainItem];
+                        [[AHKeychain systemKeychain] deleteItem:item error:&error];
+                    }
+                }
+            } else {
+                /* More than one user encryptedKeyFile exists. Just remove the current user's */
+                [manager removeItemAtPath:encryptedKeyFile error:&error];
+            }
+        }
+    }
+
+    /*////////////////////////////////////////////////////////////////////
+    //   Remove Integrations                                            //
+    ////////////////////////////////////////////////////////////////////*/
+        // TODO: remove selected packages...
+
+    reply(error);
+}
+
 #pragma mark - IPC communication from background run
 - (void)registerMainApplication:(void (^)(BOOL resign))resign;
 {
@@ -477,6 +528,13 @@ helper_reply:
 }
 
 #pragma mark - Private
+- (AHKeychainItem *)commonDecryptionKeychainItem {
+    AHKeychainItem *item = [[AHKeychainItem alloc] init];
+    item.service = @"AutoPkgr Common Decryption";
+    item.account = @"com.lindegroup.AutoPkgr.decryption.key";
+    return item;
+}
+
 - (BOOL)launchPathIsValid:(NSString *)path error:(NSError *__autoreleasing *)error;
 {
     // Get the executable path of the helper tool (self).  Then compare that to the

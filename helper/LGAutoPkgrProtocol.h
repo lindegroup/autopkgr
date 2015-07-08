@@ -60,7 +60,10 @@ typedef void (^uninstallPackageReplyBlock)(NSArray *removed, NSArray *remain, NS
 
 #pragma mark - Life Cycle
 - (void)quitHelper:(void (^)(BOOL success))reply;
+
 - (void)uninstall:(NSData *)authData reply:(void (^)(NSError *))reply;
+
+- (void)uninstall:(NSData *)authData removeKeychains:(BOOL)removeKeychains packages:(NSArray *)packageIDs reply:(void (^)(NSError *))reply;
 
 #pragma mark - IPC messaging
 - (void)registerMainApplication:(void (^)(BOOL resign))resign;
