@@ -27,6 +27,7 @@
 @end
 
 @implementation LGIntegrationWindowController
+@dynamic viewController;
 
 - (instancetype)initWithViewController:(LGBaseIntegrationViewController *)viewController
 {

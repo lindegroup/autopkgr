@@ -60,4 +60,12 @@
     }
 }
 
+- (BOOL)didConfigure
+{
+    if (self.infoOrPasswordTextField && [[self.service class] storesInfoInKeychain]) {
+        return (self.infoOrPasswordTextField.stringValue.length > 0);
+    }
+    return YES;
+}
+
 @end

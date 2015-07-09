@@ -55,6 +55,7 @@
 
 #pragma mark - Other Services
 #pragma mark-- Outletes ---
+
 @property (weak) IBOutlet NSButton *configureSlackButton;
 @property (weak) IBOutlet NSButton *configureHipChatButton;
 
@@ -138,13 +139,29 @@
         [NSApp beginSheet:_serviceWindow.window
             modalForWindow:self.modalWindow
              modalDelegate:self
-            didEndSelector:@selector(didEndConfigurePanel:)
-               contextInfo:NULL];
+            didEndSelector:@selector(sheetDidEnd:returnCode:contextInfo:)
+               contextInfo:(__bridge void *)(serviceClass)];
     }
 }
 
-- (void)didEndConfigurePanel:(id)sender
+- (void)sheetDidEnd:(NSWindow *)sheet returnCode:(NSInteger)returnCode contextInfo:(void *)contextInfo;
 {
+    Class class = (__bridge Class)(contextInfo);
+    NSString *enabledKey = nil;
+    if (class == [LGSlackNotification class]) {
+        enabledKey = @"Slack";
+    } else if (class == [LGHipChatNotification class]){
+        enabledKey = @"HipChat";
+    }
+
+    if (enabledKey.length) {
+        id controller = (LGBaseNotificationServiceViewController *)_serviceWindow.viewController;
+        if([controller respondsToSelector:@selector(didConfigure)] && ![controller didConfigure]){
+            [[NSUserDefaults standardUserDefaults] setBool:NO forKey:[enabledKey stringByAppendingString:@"NotificationsEnabled"]];
+            [[NSUserDefaults standardUserDefaults] setBool:NO forKey:[enabledKey stringByAppendingString:@"Configured"]];
+        }
+    }
+
     _serviceWindow = nil;
 }
 

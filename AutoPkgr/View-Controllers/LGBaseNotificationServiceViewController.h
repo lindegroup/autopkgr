@@ -28,4 +28,6 @@
 
 @property (weak) IBOutlet NSTextField *infoOrPasswordTextField; // Or NSSecureTextField
 
+- (BOOL)didConfigure;
+
 @end

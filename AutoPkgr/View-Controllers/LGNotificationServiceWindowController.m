@@ -27,6 +27,8 @@
 @end
 
 @implementation LGNotificationServiceWindowController
+@dynamic viewController;
+
 - (instancetype)initWithViewController:(LGBaseNotificationServiceViewController *)viewController
 {
     return [super initWithViewController:(NSViewController *)viewController];
@@ -63,14 +65,27 @@
         [self.progressSpinner stopAnimation:self];
     };
 
+    __weak typeof(self) weakSelf = self;
     [[self.viewController.service class] saveInfoToKeychain:self.viewController.infoOrPasswordTextField.stringValue reply:^(NSError *error) {
+        __strong typeof(self) strongSelf = weakSelf;
+
         if (error) {
             didComplete(error);
         } else {
-            [self.viewController.service sendTest:^(NSError *error) {
+            [strongSelf.viewController.service sendTest:^(NSError *error) {
                 didComplete(error);
             }];
         }
     }];
 }
+
+- (IBAction)close:(id)sender
+{
+    __weak typeof(self)weakSelf = self;
+    [[self.viewController.service class] saveInfoToKeychain:self.viewController.infoOrPasswordTextField.stringValue reply:^(NSError *error) {
+        [weakSelf.window close];
+    }];
+}
+
+
 @end

@@ -39,6 +39,10 @@
 }
 
 - (void)fadeOut_withDuration:(NSTimeInterval)duration delay:(NSTimeInterval)delay {
+    /* The animator requires some change in value from start to end when running
+     * the animation group otherwise it immediately triggers the completionHandler */
+    self.animator.alphaValue = 0.99;
+    
     [NSAnimationContext runAnimationGroup:^(NSAnimationContext *context) {
         context.duration = delay;
         context.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionDefault];
