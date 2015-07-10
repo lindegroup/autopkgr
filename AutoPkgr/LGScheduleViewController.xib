@@ -101,7 +101,7 @@
                     </connections>
                 </textField>
                 <popUpButton verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Jpf-1J-Qbr" userLabel="DailyAt">
-                    <rect key="frame" x="111" y="184" width="85" height="15"/>
+                    <rect key="frame" x="111" y="185" width="85" height="15"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="82" id="qi3-Py-7uI"/>
                     </constraints>
@@ -134,10 +134,10 @@
                         <action selector="changeSchedule:" target="-2" id="jVS-Nt-Xjz"/>
                     </connections>
                 </popUpButton>
-                <popUpButton verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Vo5-wL-2B2" userLabel="Weekday">
+                <popUpButton verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Vo5-wL-2B2" userLabel="Weekday">
                     <rect key="frame" x="125" y="162" width="83" height="15"/>
                     <constraints>
-                        <constraint firstAttribute="width" constant="82" id="1WH-kk-z9z"/>
+                        <constraint firstAttribute="width" constant="80" id="F9X-zl-TEX"/>
                     </constraints>
                     <popUpButtonCell key="cell" type="push" bezelStyle="rounded" alignment="left" controlSize="mini" lineBreakMode="truncatingTail" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" id="f0t-uA-HJ7" userLabel="Pop Up Button Cell">
                         <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
@@ -184,18 +184,18 @@
                 <constraint firstItem="UxE-SU-fts" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="46" id="1Cs-QK-QSB"/>
                 <constraint firstItem="cHq-LH-gnB" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="141" id="1HJ-uh-Z8n"/>
                 <constraint firstItem="cHq-LH-gnB" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="45" id="3gT-H3-hV9"/>
-                <constraint firstItem="Jpf-1J-Qbr" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="67" id="8s5-zX-Pvg"/>
                 <constraint firstItem="Jpf-1J-Qbr" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="112" id="DU5-1w-PWn"/>
                 <constraint firstItem="UxE-SU-fts" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="42" id="Enw-wS-7SD"/>
                 <constraint firstItem="J8d-qW-trQ" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="20" id="FDa-ST-ssF"/>
                 <constraint firstItem="oZ2-P7-4IE" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="104" id="a84-Nx-QDV"/>
+                <constraint firstItem="Jpf-1J-Qbr" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="66" id="aMo-qG-xub"/>
                 <constraint firstItem="K6Q-1C-fKu" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="135" id="aQL-8Y-Q8K"/>
-                <constraint firstItem="RXR-0C-bng" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="89" id="d51-qU-nVY"/>
                 <constraint firstItem="K6Q-1C-fKu" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="20" id="d5Q-ff-LLS"/>
                 <constraint firstItem="Vo5-wL-2B2" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="126" id="de1-Ld-NdN"/>
+                <constraint firstItem="Vo5-wL-2B2" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="89" id="gvz-H1-V1R"/>
                 <constraint firstItem="J8d-qW-trQ" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="20" id="hLp-xr-wCF"/>
-                <constraint firstItem="Vo5-wL-2B2" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="89" id="kKT-4s-6cl"/>
                 <constraint firstItem="2BQ-ga-rjR" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="89" id="lLs-wA-xIu"/>
+                <constraint firstItem="RXR-0C-bng" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="89" id="mzg-R5-3A4"/>
                 <constraint firstItem="oZ2-P7-4IE" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="42" id="rfX-Ah-Ux2"/>
                 <constraint firstItem="RXR-0C-bng" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="231" id="sIj-OF-Ahf"/>
                 <constraint firstItem="2BQ-ga-rjR" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="214" id="zLg-Yd-44r"/>
