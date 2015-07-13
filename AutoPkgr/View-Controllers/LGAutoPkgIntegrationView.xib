@@ -43,14 +43,14 @@
                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
                                 <connections>
-                                    <binding destination="oEY-e7-qCZ" name="enabled" keyPath="values.useSystemProxies" id="YFl-ef-2Rx">
-                                        <dictionary key="options">
-                                            <string key="NSValueTransformerName">NSNegateBoolean</string>
-                                        </dictionary>
-                                    </binding>
                                     <binding destination="oEY-e7-qCZ" name="value" keyPath="values.HTTP_PROXY" id="RlK-JX-Va4">
                                         <dictionary key="options">
                                             <string key="NSNullPlaceholder">http://username:password@proxy:8080</string>
+                                        </dictionary>
+                                    </binding>
+                                    <binding destination="oEY-e7-qCZ" name="enabled" keyPath="values.useSystemProxies" id="YFl-ef-2Rx">
+                                        <dictionary key="options">
+                                            <string key="NSValueTransformerName">NSNegateBoolean</string>
                                         </dictionary>
                                     </binding>
                                 </connections>
@@ -63,14 +63,14 @@
                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
                                 <connections>
-                                    <binding destination="oEY-e7-qCZ" name="enabled" keyPath="values.useSystemProxies" id="A2w-ty-sKw">
-                                        <dictionary key="options">
-                                            <string key="NSValueTransformerName">NSNegateBoolean</string>
-                                        </dictionary>
-                                    </binding>
                                     <binding destination="oEY-e7-qCZ" name="value" keyPath="values.HTTPS_PROXY" id="R7v-n2-hFc">
                                         <dictionary key="options">
                                             <string key="NSNullPlaceholder">http://username:password@proxy:8080</string>
+                                        </dictionary>
+                                    </binding>
+                                    <binding destination="oEY-e7-qCZ" name="enabled" keyPath="values.useSystemProxies" id="A2w-ty-sKw">
+                                        <dictionary key="options">
+                                            <string key="NSValueTransformerName">NSNegateBoolean</string>
                                         </dictionary>
                                     </binding>
                                 </connections>
@@ -83,14 +83,14 @@
                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
                                 <connections>
-                                    <binding destination="oEY-e7-qCZ" name="enabled" keyPath="values.useSystemProxies" id="hJn-ov-bwU">
-                                        <dictionary key="options">
-                                            <string key="NSValueTransformerName">NSNegateBoolean</string>
-                                        </dictionary>
-                                    </binding>
                                     <binding destination="oEY-e7-qCZ" name="value" keyPath="values.NO_PROXY" id="wa3-pL-PLv">
                                         <dictionary key="options">
                                             <string key="NSNullPlaceholder">.local,10.0.0.0/24,.mylocaldomain.com</string>
+                                        </dictionary>
+                                    </binding>
+                                    <binding destination="oEY-e7-qCZ" name="enabled" keyPath="values.useSystemProxies" id="hJn-ov-bwU">
+                                        <dictionary key="options">
+                                            <string key="NSValueTransformerName">NSNegateBoolean</string>
                                         </dictionary>
                                     </binding>
                                 </connections>
