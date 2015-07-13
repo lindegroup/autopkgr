@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="6250" systemVersion="13F1077" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="7706" systemVersion="14E46" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="6250"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="7706"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="LGNotificationsViewController">
@@ -25,21 +25,8 @@
             <rect key="frame" x="0.0" y="-1" width="603" height="402"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <button translatesAutoresizingMaskIntoConstraints="NO" id="TPC-Gd-b8O">
-                    <rect key="frame" x="16" y="364" width="484" height="18"/>
-                    <constraints>
-                        <constraint firstAttribute="width" constant="480" id="soo-P1-Rfq"/>
-                    </constraints>
-                    <buttonCell key="cell" type="check" title="Send notifications to an email address" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="ag4-TF-sgm">
-                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
-                        <font key="font" metaFont="system"/>
-                    </buttonCell>
-                    <connections>
-                        <binding destination="ArL-eq-uYl" name="value" keyPath="values.SendEmailNotificationsWhenNewVersionsAreFoundEnabled" id="NCV-fc-gAd"/>
-                    </connections>
-                </button>
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="RB8-aR-yhY">
-                    <rect key="frame" x="70" y="336" width="100" height="17"/>
+                    <rect key="frame" x="70" y="338" width="100" height="17"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="96" id="yK4-uK-ul9"/>
                     </constraints>
@@ -50,7 +37,7 @@
                     </textFieldCell>
                 </textField>
                 <textField identifier="smtpFrom" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="0uY-tb-AXy">
-                    <rect key="frame" x="172" y="333" width="218" height="22"/>
+                    <rect key="frame" x="172" y="335" width="218" height="22"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" placeholderString="sender@yourdomain.example" drawsBackground="YES" id="aHL-d7-Or8">
                         <font key="font" metaFont="system"/>
                         <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
@@ -67,7 +54,7 @@
                     </connections>
                 </textField>
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="PIX-o6-vdF">
-                    <rect key="frame" x="70" y="307" width="100" height="17"/>
+                    <rect key="frame" x="70" y="309" width="100" height="17"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Recipients:" id="Vsf-uW-fns">
                         <font key="font" metaFont="system"/>
                         <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -75,7 +62,7 @@
                     </textFieldCell>
                 </textField>
                 <tokenField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="lqq-Vv-857">
-                    <rect key="frame" x="172" y="304" width="218" height="22"/>
+                    <rect key="frame" x="172" y="306" width="218" height="22"/>
                     <tokenFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" borderStyle="bezel" alignment="left" placeholderString="you@yourdomain.example" drawsBackground="YES" allowsEditingTextAttributes="YES" id="2bQ-qO-Nhr">
                         <font key="font" metaFont="system"/>
                         <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -92,7 +79,7 @@
                     </connections>
                 </tokenField>
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="cUb-Ex-bej">
-                    <rect key="frame" x="70" y="278" width="100" height="17"/>
+                    <rect key="frame" x="70" y="280" width="100" height="17"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="SMTP server:" id="dIA-je-2nB">
                         <font key="font" metaFont="system"/>
                         <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -100,7 +87,7 @@
                     </textFieldCell>
                 </textField>
                 <textField identifier="smtpServer" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="uO3-QG-q9R">
-                    <rect key="frame" x="172" y="275" width="218" height="22"/>
+                    <rect key="frame" x="172" y="277" width="218" height="22"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" placeholderString="smtp.gmail.com" drawsBackground="YES" id="XrX-VY-sGj">
                         <font key="font" metaFont="system"/>
                         <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
@@ -118,7 +105,7 @@
                     </connections>
                 </textField>
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="0MT-rL-IEP">
-                    <rect key="frame" x="398" y="278" width="31" height="17"/>
+                    <rect key="frame" x="398" y="280" width="31" height="17"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="port" id="Yxg-J9-3du">
                         <font key="font" metaFont="system"/>
                         <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -126,14 +113,14 @@
                     </textFieldCell>
                 </textField>
                 <imageView translatesAutoresizingMaskIntoConstraints="NO" id="VDb-hs-bB1">
-                    <rect key="frame" x="496" y="278" width="16" height="16"/>
+                    <rect key="frame" x="496" y="280" width="16" height="16"/>
                     <imageCell key="cell" refusesFirstResponder="YES" alignment="left" animates="YES" imageScaling="proportionallyDown" image="NSStatusNone" id="gNF-i1-jtG"/>
                 </imageView>
                 <progressIndicator hidden="YES" horizontalHuggingPriority="750" verticalHuggingPriority="750" maxValue="100" bezeled="NO" indeterminate="YES" controlSize="small" style="spinning" translatesAutoresizingMaskIntoConstraints="NO" id="6ha-Zn-VKa">
-                    <rect key="frame" x="496" y="278" width="16" height="16"/>
+                    <rect key="frame" x="496" y="280" width="16" height="16"/>
                 </progressIndicator>
                 <button verticalHuggingPriority="751" translatesAutoresizingMaskIntoConstraints="NO" id="6N3-g1-fHC">
-                    <rect key="frame" x="49" y="235" width="160" height="18"/>
+                    <rect key="frame" x="49" y="237" width="160" height="18"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="156" id="lVU-kE-ULo"/>
                     </constraints>
@@ -147,7 +134,7 @@
                     </connections>
                 </button>
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="ToE-0q-pH2">
-                    <rect key="frame" x="70" y="209" width="100" height="17"/>
+                    <rect key="frame" x="70" y="211" width="100" height="17"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Username:" id="mPh-pa-Wg4">
                         <font key="font" metaFont="system"/>
                         <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -155,7 +142,7 @@
                     </textFieldCell>
                 </textField>
                 <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="zi5-oQ-M5R">
-                    <rect key="frame" x="172" y="206" width="218" height="22"/>
+                    <rect key="frame" x="172" y="208" width="218" height="22"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" enabled="NO" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" placeholderString="sender@yourdomain.example" drawsBackground="YES" id="jrh-l3-iKT">
                         <font key="font" metaFont="system"/>
                         <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
@@ -163,12 +150,6 @@
                     </textFieldCell>
                     <connections>
                         <action selector="getKeychainPassword:" target="-2" id="iL9-uw-aOM"/>
-                        <binding destination="ArL-eq-uYl" name="value" keyPath="values.SMTPUsername" id="42P-04-1Kg">
-                            <dictionary key="options">
-                                <bool key="NSContinuouslyUpdatesValue" value="YES"/>
-                                <string key="NSNullPlaceholder">sender@yourdomain.example</string>
-                            </dictionary>
-                        </binding>
                         <binding destination="ArL-eq-uYl" name="enabled2" keyPath="values.SMTPAuthenticationEnabled" previousBinding="Rxc-8r-CB6" id="ghT-nV-67F">
                             <dictionary key="options">
                                 <integer key="NSMultipleValuesPlaceholder" value="-1"/>
@@ -177,11 +158,17 @@
                                 <integer key="NSNullPlaceholder" value="-1"/>
                             </dictionary>
                         </binding>
+                        <binding destination="ArL-eq-uYl" name="value" keyPath="values.SMTPUsername" id="42P-04-1Kg">
+                            <dictionary key="options">
+                                <bool key="NSContinuouslyUpdatesValue" value="YES"/>
+                                <string key="NSNullPlaceholder">sender@yourdomain.example</string>
+                            </dictionary>
+                        </binding>
                         <binding destination="ArL-eq-uYl" name="enabled" keyPath="values.SendEmailNotificationsWhenNewVersionsAreFoundEnabled" id="Rxc-8r-CB6"/>
                     </connections>
                 </textField>
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Jki-MF-GcS">
-                    <rect key="frame" x="70" y="180" width="100" height="17"/>
+                    <rect key="frame" x="70" y="182" width="100" height="17"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Password:" id="gMF-3J-P98">
                         <font key="font" metaFont="system"/>
                         <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -189,7 +176,7 @@
                     </textFieldCell>
                 </textField>
                 <secureTextField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="aRk-NU-9Jl">
-                    <rect key="frame" x="172" y="177" width="218" height="22"/>
+                    <rect key="frame" x="172" y="179" width="218" height="22"/>
                     <secureTextFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" enabled="NO" sendsActionOnEndEditing="YES" borderStyle="bezel" placeholderString="" drawsBackground="YES" usesSingleLineMode="YES" id="GVq-gK-DQJ">
                         <font key="font" metaFont="system"/>
                         <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
@@ -212,7 +199,7 @@
                     </connections>
                 </secureTextField>
                 <button verticalHuggingPriority="750" placeholderIntrinsicWidth="158" placeholderIntrinsicHeight="21" translatesAutoresizingMaskIntoConstraints="NO" id="SZ2-Hj-GiD">
-                    <rect key="frame" x="392" y="170" width="170" height="32"/>
+                    <rect key="frame" x="392" y="172" width="170" height="32"/>
                     <buttonCell key="cell" type="push" title="Send Test Email" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="IRF-p5-PAm">
                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                         <font key="font" metaFont="system"/>
@@ -223,10 +210,10 @@
                     </connections>
                 </button>
                 <progressIndicator hidden="YES" horizontalHuggingPriority="750" verticalHuggingPriority="750" maxValue="100" bezeled="NO" indeterminate="YES" controlSize="small" style="spinning" translatesAutoresizingMaskIntoConstraints="NO" id="T27-XK-VY4">
-                    <rect key="frame" x="564" y="179" width="16" height="16"/>
+                    <rect key="frame" x="564" y="181" width="16" height="16"/>
                 </progressIndicator>
                 <button verticalHuggingPriority="752" translatesAutoresizingMaskIntoConstraints="NO" id="Bwp-ds-cik">
-                    <rect key="frame" x="170" y="153" width="240" height="18"/>
+                    <rect key="frame" x="170" y="155" width="240" height="18"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="236" id="nnB-i7-BOe"/>
                     </constraints>
@@ -240,7 +227,7 @@
                     </connections>
                 </button>
                 <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="HmV-Dc-TUb">
-                    <rect key="frame" x="434" y="275" width="55" height="22"/>
+                    <rect key="frame" x="434" y="277" width="55" height="22"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="55" id="bqZ-i4-JvH"/>
                     </constraints>
@@ -326,6 +313,19 @@
                         <binding destination="ArL-eq-uYl" name="value" keyPath="values.NSUserNotificatonsEnabled" id="QIJ-pD-dmR"/>
                     </connections>
                 </button>
+                <button translatesAutoresizingMaskIntoConstraints="NO" id="TPC-Gd-b8O">
+                    <rect key="frame" x="18" y="366" width="484" height="18"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="480" id="soo-P1-Rfq"/>
+                    </constraints>
+                    <buttonCell key="cell" type="check" title="Send notifications to an email address" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="ag4-TF-sgm">
+                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                        <font key="font" metaFont="system"/>
+                    </buttonCell>
+                    <connections>
+                        <binding destination="ArL-eq-uYl" name="value" keyPath="values.SendEmailNotificationsWhenNewVersionsAreFoundEnabled" id="NCV-fc-gAd"/>
+                    </connections>
+                </button>
             </subviews>
             <constraints>
                 <constraint firstItem="Jki-MF-GcS" firstAttribute="trailing" secondItem="ToE-0q-pH2" secondAttribute="trailing" id="0Nq-EF-U4G"/>
@@ -337,7 +337,7 @@
                 <constraint firstItem="RB8-aR-yhY" firstAttribute="trailing" secondItem="PIX-o6-vdF" secondAttribute="trailing" id="4vy-bZ-ad5"/>
                 <constraint firstItem="6N3-g1-fHC" firstAttribute="top" secondItem="uO3-QG-q9R" secondAttribute="bottom" constant="24" id="6to-9c-qRX"/>
                 <constraint firstItem="6ha-Zn-VKa" firstAttribute="leading" secondItem="HmV-Dc-TUb" secondAttribute="trailing" constant="7" id="7HC-RT-2Q0"/>
-                <constraint firstItem="TPC-Gd-b8O" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="18" id="B68-1h-coe"/>
+                <constraint firstItem="TPC-Gd-b8O" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="20" id="B68-1h-coe"/>
                 <constraint firstItem="6N3-g1-fHC" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="51" id="B8M-OT-Avh"/>
                 <constraint firstItem="HmV-Dc-TUb" firstAttribute="centerY" secondItem="6ha-Zn-VKa" secondAttribute="centerY" id="C6q-HX-riP"/>
                 <constraint firstItem="HmV-Dc-TUb" firstAttribute="leading" secondItem="0MT-rL-IEP" secondAttribute="trailing" constant="7" id="CCC-dF-4ve"/>
@@ -364,7 +364,7 @@
                 <constraint firstItem="Jki-MF-GcS" firstAttribute="baseline" secondItem="SZ2-Hj-GiD" secondAttribute="baseline" id="U3N-iv-UOK"/>
                 <constraint firstItem="HmV-Dc-TUb" firstAttribute="baseline" secondItem="uO3-QG-q9R" secondAttribute="baseline" id="VJQ-6t-am9"/>
                 <constraint firstItem="zi5-oQ-M5R" firstAttribute="top" secondItem="6N3-g1-fHC" secondAttribute="bottom" constant="9" id="Xxn-Ta-HZ7"/>
-                <constraint firstItem="TPC-Gd-b8O" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="22" id="c4X-EB-GnA"/>
+                <constraint firstItem="TPC-Gd-b8O" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="20" id="c4X-EB-GnA"/>
                 <constraint firstItem="PIX-o6-vdF" firstAttribute="leading" secondItem="cUb-Ex-bej" secondAttribute="leading" id="e6V-rb-W7X"/>
                 <constraint firstItem="lqq-Vv-857" firstAttribute="trailing" secondItem="0uY-tb-AXy" secondAttribute="trailing" id="eKS-lj-U4A"/>
                 <constraint firstItem="T27-XK-VY4" firstAttribute="centerY" secondItem="SZ2-Hj-GiD" secondAttribute="centerY" id="emb-zX-k9r"/>
