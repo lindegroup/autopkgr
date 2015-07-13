@@ -22,19 +22,6 @@
             <rect key="frame" x="0.0" y="-1" width="603" height="266"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <button translatesAutoresizingMaskIntoConstraints="NO" id="J8d-qW-trQ">
-                    <rect key="frame" x="18" y="230" width="364" height="18"/>
-                    <constraints>
-                        <constraint firstAttribute="width" constant="360" id="kV9-rW-wQ9"/>
-                    </constraints>
-                    <buttonCell key="cell" type="check" title="Enable scheduled AutoPkg runs" bezelStyle="regularSquare" imagePosition="left" alignment="left" inset="2" id="7rF-ef-zEP">
-                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
-                        <font key="font" metaFont="system"/>
-                    </buttonCell>
-                    <connections>
-                        <action selector="changeSchedule:" target="-2" id="I7H-ie-fbO"/>
-                    </connections>
-                </button>
                 <matrix verticalHuggingPriority="750" selectionByRect="NO" allowsEmptySelection="NO" autorecalculatesCellSize="YES" translatesAutoresizingMaskIntoConstraints="NO" id="UxE-SU-fts" userLabel="Schedule Matrix">
                     <rect key="frame" x="46" y="139" width="302" height="85"/>
                     <constraints>
@@ -164,7 +151,7 @@
                     <constraints>
                         <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="360" id="Ifk-Cg-fkE"/>
                     </constraints>
-                    <buttonCell key="cell" type="check" title="Check for repo updates before each AutoPkg run" bezelStyle="regularSquare" imagePosition="left" alignment="left" state="on" inset="2" id="2Rc-4D-cra">
+                    <buttonCell key="cell" type="check" title="Update all repos before each AutoPkg run" bezelStyle="regularSquare" imagePosition="left" alignment="left" state="on" inset="2" id="2Rc-4D-cra">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                         <font key="font" metaFont="system"/>
                         <connections>
@@ -177,6 +164,19 @@
                                 <bool key="NSConditionallySetsEnabled" value="NO"/>
                             </dictionary>
                         </binding>
+                    </connections>
+                </button>
+                <button translatesAutoresizingMaskIntoConstraints="NO" id="J8d-qW-trQ">
+                    <rect key="frame" x="18" y="230" width="364" height="18"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="360" id="kV9-rW-wQ9"/>
+                    </constraints>
+                    <buttonCell key="cell" type="check" title="Enable scheduled AutoPkg runs" bezelStyle="regularSquare" imagePosition="left" alignment="left" inset="2" id="7rF-ef-zEP">
+                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                        <font key="font" metaFont="system"/>
+                    </buttonCell>
+                    <connections>
+                        <action selector="changeSchedule:" target="-2" id="I7H-ie-fbO"/>
                     </connections>
                 </button>
             </subviews>
