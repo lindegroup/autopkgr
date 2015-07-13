@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="7706" systemVersion="14D136" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="7706" systemVersion="14E46" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="macosx"/>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="7706"/>
@@ -18,10 +18,29 @@
             <rect key="frame" x="0.0" y="0.0" width="585" height="100"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
-                <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="rOJ-48-FyU">
-                    <rect key="frame" x="443" y="44" width="134" height="32"/>
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="dy1-cL-L9S">
+                    <rect key="frame" x="16" y="53" width="84" height="17"/>
                     <constraints>
-                        <constraint firstAttribute="width" constant="122" id="BAd-TT-AIr"/>
+                        <constraint firstAttribute="width" constant="80" id="Pq3-tn-ezy"/>
+                    </constraints>
+                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Munki Repo:" id="xlY-TY-p8w">
+                        <font key="font" metaFont="system"/>
+                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
+                <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="LxW-1c-3jQ">
+                    <rect key="frame" x="106" y="51" width="230" height="22"/>
+                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" placeholderString="/User/Shared/munki_repo" drawsBackground="YES" id="25F-Lj-I0v">
+                        <font key="font" metaFont="system"/>
+                        <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
+                <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="rOJ-48-FyU">
+                    <rect key="frame" x="437" y="45" width="134" height="32"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="122" id="yN8-NE-8EK"/>
                     </constraints>
                     <buttonCell key="cell" type="push" title="Open In Finder" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="dZQ-y3-qfS">
                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
@@ -31,29 +50,10 @@
                         <action selector="openLocalMunkiRepoFolder:" target="-2" id="tRG-sf-uCX"/>
                     </connections>
                 </button>
-                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="dy1-cL-L9S">
-                    <rect key="frame" x="15" y="53" width="101" height="17"/>
-                    <constraints>
-                        <constraint firstAttribute="width" constant="97" id="3yc-U0-HCZ"/>
-                    </constraints>
-                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Munki Repo:" id="xlY-TY-p8w">
-                        <font key="font" metaFont="system"/>
-                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
-                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                    </textFieldCell>
-                </textField>
-                <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="LxW-1c-3jQ">
-                    <rect key="frame" x="122" y="51" width="220" height="22"/>
-                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" placeholderString="/User/Shared/munki_repo" drawsBackground="YES" id="25F-Lj-I0v">
-                        <font key="font" metaFont="system"/>
-                        <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
-                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                    </textFieldCell>
-                </textField>
                 <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="wR9-Cr-nxI">
-                    <rect key="frame" x="344" y="44" width="99" height="32"/>
+                    <rect key="frame" x="338" y="45" width="99" height="32"/>
                     <constraints>
-                        <constraint firstAttribute="width" constant="87" id="1Td-JS-LyU"/>
+                        <constraint firstAttribute="width" constant="87" id="PZB-c0-y7z"/>
                     </constraints>
                     <buttonCell key="cell" type="push" title="Choose..." bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="srz-Tz-wvA">
                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
@@ -65,15 +65,15 @@
                 </button>
             </subviews>
             <constraints>
-                <constraint firstItem="dy1-cL-L9S" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="30" id="1bi-MP-dY4"/>
-                <constraint firstAttribute="trailing" secondItem="rOJ-48-FyU" secondAttribute="trailing" constant="14" id="PJE-ut-QMS"/>
-                <constraint firstItem="LxW-1c-3jQ" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="122" id="Vrr-zm-UWs"/>
-                <constraint firstItem="dy1-cL-L9S" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="17" id="Y2V-yT-xT5"/>
-                <constraint firstItem="rOJ-48-FyU" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="28" id="hrC-TG-VDI"/>
-                <constraint firstAttribute="trailing" secondItem="wR9-Cr-nxI" secondAttribute="trailing" constant="148" id="hsc-kI-owJ"/>
-                <constraint firstItem="wR9-Cr-nxI" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="28" id="lal-Uq-Bm0"/>
-                <constraint firstItem="LxW-1c-3jQ" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="27" id="q4z-3Z-Uq9"/>
-                <constraint firstAttribute="trailing" secondItem="LxW-1c-3jQ" secondAttribute="trailing" constant="243" id="xM7-ug-3Ac"/>
+                <constraint firstItem="LxW-1c-3jQ" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="106" id="6Xg-K7-ZVc"/>
+                <constraint firstItem="dy1-cL-L9S" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="18" id="ADx-1c-0vd"/>
+                <constraint firstItem="dy1-cL-L9S" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="30" id="Ats-GT-kvv"/>
+                <constraint firstItem="rOJ-48-FyU" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="27" id="MpV-ur-jys"/>
+                <constraint firstAttribute="trailing" secondItem="wR9-Cr-nxI" secondAttribute="trailing" constant="154" id="Qd1-WT-9aa"/>
+                <constraint firstItem="LxW-1c-3jQ" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="27" id="W0H-fZ-Dbz"/>
+                <constraint firstItem="wR9-Cr-nxI" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="27" id="gXn-mV-3va"/>
+                <constraint firstAttribute="trailing" secondItem="LxW-1c-3jQ" secondAttribute="trailing" constant="249" id="gdW-Sm-mli"/>
+                <constraint firstAttribute="trailing" secondItem="rOJ-48-FyU" secondAttribute="trailing" constant="20" id="hvo-py-EH1"/>
             </constraints>
             <point key="canvasLocation" x="241.5" y="142"/>
         </customView>

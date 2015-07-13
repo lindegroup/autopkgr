@@ -18,9 +18,9 @@
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
                 <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="MvG-pY-oB6">
-                    <rect key="frame" x="30" y="20" width="469" height="60"/>
+                    <rect key="frame" x="36" y="15" width="459" height="60"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="60" id="tBw-Ye-lII"/>
+                        <constraint firstAttribute="height" constant="60" id="7eR-6C-Sil"/>
                     </constraints>
                     <textFieldCell key="cell" controlSize="small" sendsActionOnEndEditing="YES" id="Lrs-9e-sMd">
                         <font key="font" metaFont="smallSystem"/>
@@ -29,8 +29,11 @@
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                 </textField>
-                <button misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="T5V-NE-iRF">
-                    <rect key="frame" x="12" y="87" width="483" height="18"/>
+                <button translatesAutoresizingMaskIntoConstraints="NO" id="T5V-NE-iRF">
+                    <rect key="frame" x="18" y="82" width="477" height="18"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="473" id="fRI-Ew-hFv"/>
+                    </constraints>
                     <buttonCell key="cell" type="check" title="Enable External SD Package Upload" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="PiW-KV-hIG">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                         <font key="font" metaFont="system"/>
@@ -41,12 +44,11 @@
                 </button>
             </subviews>
             <constraints>
-                <constraint firstItem="T5V-NE-iRF" firstAttribute="leading" secondItem="MvG-pY-oB6" secondAttribute="leading" id="1PZ-Jl-Y93"/>
-                <constraint firstAttribute="trailing" secondItem="T5V-NE-iRF" secondAttribute="trailing" constant="20" symbolic="YES" id="Ai5-qh-dCp"/>
-                <constraint firstAttribute="bottom" secondItem="MvG-pY-oB6" secondAttribute="bottom" constant="20" symbolic="YES" id="CYA-Qo-SG9"/>
-                <constraint firstAttribute="trailing" secondItem="MvG-pY-oB6" secondAttribute="trailing" constant="16" id="cna-2c-z3x"/>
-                <constraint firstItem="MvG-pY-oB6" firstAttribute="top" secondItem="T5V-NE-iRF" secondAttribute="bottom" constant="9" id="j1r-OL-9Dm"/>
-                <constraint firstItem="MvG-pY-oB6" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="32" id="sX5-PT-4hZ"/>
+                <constraint firstItem="T5V-NE-iRF" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="20" id="3N7-rH-FVc"/>
+                <constraint firstItem="MvG-pY-oB6" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="43" id="64O-6l-Z49"/>
+                <constraint firstItem="MvG-pY-oB6" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="38" id="AN8-Dn-kAu"/>
+                <constraint firstItem="T5V-NE-iRF" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="20" id="DAq-NK-ZyC"/>
+                <constraint firstAttribute="trailing" secondItem="MvG-pY-oB6" secondAttribute="trailing" constant="20" id="alU-6i-aCP"/>
             </constraints>
             <point key="canvasLocation" x="148.5" y="77"/>
         </customView>
