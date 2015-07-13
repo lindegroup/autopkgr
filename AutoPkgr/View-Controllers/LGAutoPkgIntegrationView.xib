@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="7706" systemVersion="14D136" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="7706" systemVersion="14E46" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="macosx"/>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="7706"/>
@@ -7,256 +7,19 @@
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="LGAutoPkgIntegrationView">
             <connections>
-                <outlet property="apiInfoHelpBT" destination="Vtu-Mk-fsf" id="lJE-RB-CEi"/>
-                <outlet property="apiPasswordTF" destination="Ruz-js-P1Y" id="dEP-m4-NoR"/>
-                <outlet property="apiUsernameTF" destination="x4R-K3-ctz" id="Urk-Nn-ZQv"/>
-                <outlet property="generateAPITokenBT" destination="JsU-fv-GUV" id="WTH-wi-Mmo"/>
                 <outlet property="view" destination="Hz6-mo-xeY" id="0bl-1N-x8E"/>
             </connections>
         </customObject>
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
         <customObject id="-3" userLabel="Application" customClass="NSObject"/>
         <customView id="Hz6-mo-xeY">
-            <rect key="frame" x="0.0" y="-2" width="544" height="363"/>
+            <rect key="frame" x="0.0" y="7" width="544" height="375"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
-                <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="dgf-Tb-43f">
-                    <rect key="frame" x="126" y="266" width="398" height="22"/>
-                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" placeholderString="http://username:password@proxy:8080" drawsBackground="YES" id="dc2-Gq-zxP">
-                        <font key="font" metaFont="system"/>
-                        <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
-                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                    </textFieldCell>
-                    <connections>
-                        <binding destination="oEY-e7-qCZ" name="value" keyPath="values.HTTP_PROXY" id="aGI-sF-Oox">
-                            <dictionary key="options">
-                                <string key="NSNullPlaceholder">http://username:password@proxy:8080</string>
-                            </dictionary>
-                        </binding>
-                        <binding destination="oEY-e7-qCZ" name="enabled" keyPath="values.useSystemProxies" id="OgM-Xx-nl4">
-                            <dictionary key="options">
-                                <string key="NSValueTransformerName">NSNegateBoolean</string>
-                            </dictionary>
-                        </binding>
-                    </connections>
-                </textField>
-                <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="DDU-GV-z4D">
-                    <rect key="frame" x="126" y="240" width="398" height="22"/>
-                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" placeholderString="https://username:password@proxy:8080" drawsBackground="YES" id="K8j-bk-cyJ">
-                        <font key="font" metaFont="system"/>
-                        <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
-                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                    </textFieldCell>
-                    <connections>
-                        <binding destination="oEY-e7-qCZ" name="value" keyPath="values.HTTPS_PROXY" id="S2a-9T-dAF">
-                            <dictionary key="options">
-                                <string key="NSNullPlaceholder">http://username:password@proxy:8080</string>
-                            </dictionary>
-                        </binding>
-                        <binding destination="oEY-e7-qCZ" name="enabled" keyPath="values.useSystemProxies" id="AkB-ns-Lle">
-                            <dictionary key="options">
-                                <string key="NSValueTransformerName">NSNegateBoolean</string>
-                            </dictionary>
-                        </binding>
-                    </connections>
-                </textField>
-                <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="IZ8-zN-C9c">
-                    <rect key="frame" x="126" y="213" width="398" height="22"/>
-                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" placeholderString=".local,10.0.0.0/24,.mylocaldomain.com" drawsBackground="YES" id="K6S-2M-73Z">
-                        <font key="font" metaFont="system"/>
-                        <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
-                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                    </textFieldCell>
-                    <connections>
-                        <binding destination="oEY-e7-qCZ" name="value" keyPath="values.NO_PROXY" id="mTQ-nH-Lay">
-                            <dictionary key="options">
-                                <string key="NSNullPlaceholder">.local,10.0.0.0/24,.mylocaldomain.com</string>
-                            </dictionary>
-                        </binding>
-                        <binding destination="oEY-e7-qCZ" name="enabled" keyPath="values.useSystemProxies" id="Zo8-Bk-VMf">
-                            <dictionary key="options">
-                                <string key="NSValueTransformerName">NSNegateBoolean</string>
-                            </dictionary>
-                        </binding>
-                    </connections>
-                </textField>
-                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="jMh-6Y-esJ">
-                    <rect key="frame" x="20" y="269" width="104" height="17"/>
-                    <constraints>
-                        <constraint firstAttribute="width" constant="100" id="xj1-Uz-hPQ"/>
-                    </constraints>
-                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="HTTP Proxy:" id="Piq-nx-Cey">
-                        <font key="font" metaFont="system"/>
-                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
-                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                    </textFieldCell>
-                    <connections>
-                        <binding destination="oEY-e7-qCZ" name="enabled" keyPath="values.useSystemProxies" id="Sjm-5P-KnU">
-                            <dictionary key="options">
-                                <string key="NSValueTransformerName">NSNegateBoolean</string>
-                            </dictionary>
-                        </binding>
-                    </connections>
-                </textField>
-                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="C65-q8-DUv">
-                    <rect key="frame" x="20" y="243" width="104" height="17"/>
-                    <constraints>
-                        <constraint firstAttribute="width" constant="100" id="WOd-am-aws"/>
-                    </constraints>
-                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="HTTPS Proxy:" id="fPH-yI-Nob">
-                        <font key="font" metaFont="system"/>
-                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
-                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                    </textFieldCell>
-                    <connections>
-                        <binding destination="oEY-e7-qCZ" name="enabled" keyPath="values.useSystemProxies" id="HUV-8Y-LJd">
-                            <dictionary key="options">
-                                <string key="NSValueTransformerName">NSNegateBoolean</string>
-                            </dictionary>
-                        </binding>
-                    </connections>
-                </textField>
-                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="j5q-t6-3Z0">
-                    <rect key="frame" x="20" y="216" width="104" height="17"/>
-                    <constraints>
-                        <constraint firstAttribute="width" constant="100" id="p8b-Dy-srt"/>
-                    </constraints>
-                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Proxy Bypass:" id="Skq-OB-8bj">
-                        <font key="font" metaFont="system"/>
-                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
-                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                    </textFieldCell>
-                    <connections>
-                        <binding destination="oEY-e7-qCZ" name="enabled" keyPath="values.useSystemProxies" id="bvO-MA-Gth">
-                            <dictionary key="options">
-                                <string key="NSValueTransformerName">NSNegateBoolean</string>
-                            </dictionary>
-                        </binding>
-                    </connections>
-                </textField>
-                <button translatesAutoresizingMaskIntoConstraints="NO" id="Jal-TH-sjJ">
-                    <rect key="frame" x="8" y="327" width="521" height="18"/>
-                    <constraints>
-                        <constraint firstAttribute="width" constant="517" id="gvH-ZZ-dZW"/>
-                    </constraints>
-                    <buttonCell key="cell" type="check" title="Use proxy settings defined in System Preferences" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="8Iy-3R-l8A">
-                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
-                        <font key="font" metaFont="system"/>
-                    </buttonCell>
-                    <connections>
-                        <binding destination="oEY-e7-qCZ" name="value" keyPath="values.useSystemProxies" id="Ljr-7i-t02"/>
-                    </connections>
-                </button>
-                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="RXd-7N-rJi">
-                    <rect key="frame" x="8" y="296" width="528" height="17"/>
-                    <constraints>
-                        <constraint firstAttribute="width" constant="524" id="BFe-5E-SgX"/>
-                    </constraints>
-                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Use custom proxy settings:" id="rh4-uq-axx">
-                        <font key="font" metaFont="system"/>
-                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
-                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                    </textFieldCell>
-                </textField>
-                <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ftu-km-X0b">
-                    <rect key="frame" x="18" y="193" width="508" height="12"/>
-                    <constraints>
-                        <constraint firstAttribute="width" constant="504" id="jp7-Bl-Gyp"/>
-                    </constraints>
-                    <textFieldCell key="cell" controlSize="mini" sendsActionOnEndEditing="YES" alignment="center" title="Defining your proxy here will allow AutoPkg to work over your proxy even when no user is logged in." id="MKh-iw-NQc">
-                        <font key="font" metaFont="miniSystem"/>
-                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
-                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                    </textFieldCell>
-                </textField>
-                <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="x4R-K3-ctz">
-                    <rect key="frame" x="18" y="65" width="160" height="22"/>
-                    <constraints>
-                        <constraint firstAttribute="width" constant="160" id="FOF-qt-APe"/>
-                    </constraints>
-                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" alignment="left" placeholderString="GitHub username" drawsBackground="YES" id="xZ1-yy-fhe">
-                        <font key="font" metaFont="system"/>
-                        <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
-                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                    </textFieldCell>
-                </textField>
-                <button horizontalHuggingPriority="750" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Vtu-Mk-fsf">
-                    <rect key="frame" x="504" y="63" width="25" height="25"/>
-                    <constraints>
-                        <constraint firstAttribute="width" constant="21" id="Nuf-fz-ONm"/>
-                    </constraints>
-                    <buttonCell key="cell" type="help" bezelStyle="helpButton" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="pcC-Z7-C8Z">
-                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                        <font key="font" metaFont="system"/>
-                    </buttonCell>
-                    <connections>
-                        <action selector="showTokenHelpInfo:" target="-2" id="YST-4E-DhK"/>
-                    </connections>
-                </button>
-                <secureTextField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Ruz-js-P1Y">
-                    <rect key="frame" x="186" y="65" width="162" height="22"/>
-                    <constraints>
-                        <constraint firstAttribute="width" constant="162" id="oRN-f6-sHW"/>
-                    </constraints>
-                    <secureTextFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" placeholderString="GitHub password" drawsBackground="YES" usesSingleLineMode="YES" id="gPL-Oh-ebb">
-                        <font key="font" metaFont="system"/>
-                        <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
-                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                        <allowedInputSourceLocales>
-                            <string>NSAllRomanInputSourcesLocaleIdentifier</string>
-                        </allowedInputSourceLocales>
-                    </secureTextFieldCell>
-                </secureTextField>
-                <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" misplaced="YES" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Lwe-bk-DNC">
-                    <rect key="frame" x="18" y="178" width="508" height="12"/>
-                    <constraints>
-                        <constraint firstAttribute="width" constant="504" id="RBl-QO-vcj"/>
-                    </constraints>
-                    <textFieldCell key="cell" controlSize="mini" sendsActionOnEndEditing="YES" alignment="center" title="WARNING: This requires storing the above information in clear text, and is not recommended." id="aUW-KM-Yda">
-                        <font key="font" metaFont="miniSystemBold"/>
-                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
-                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                    </textFieldCell>
-                </textField>
-                <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="JsU-fv-GUV">
-                    <rect key="frame" x="350" y="59" width="150" height="32"/>
-                    <constraints>
-                        <constraint firstAttribute="width" constant="138" id="bCA-Ua-lGK"/>
-                    </constraints>
-                    <buttonCell key="cell" type="push" title="Generate API Token" bezelStyle="rounded" alignment="center" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="F86-jw-P50">
-                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                        <font key="font" metaFont="system"/>
-                    </buttonCell>
-                    <connections>
-                        <action selector="generateAPIToken:" target="-2" id="Rta-nZ-3M8"/>
-                    </connections>
-                </button>
-                <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" ambiguous="YES" misplaced="YES" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="xHO-B1-CI5">
-                    <rect key="frame" x="18" y="45" width="508" height="12"/>
-                    <constraints>
-                        <constraint firstAttribute="width" constant="504" id="QSB-8C-1cP"/>
-                    </constraints>
-                    <textFieldCell key="cell" controlSize="mini" sendsActionOnEndEditing="YES" alignment="center" title="Generating a GitHub API token will increase the number of recipe searches you can perform per hour." id="Zpj-JN-ozZ">
-                        <font key="font" metaFont="miniSystem"/>
-                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
-                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                    </textFieldCell>
-                </textField>
-                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="O8e-17-yfg">
-                    <rect key="frame" x="8" y="95" width="528" height="17"/>
-                    <constraints>
-                        <constraint firstAttribute="width" constant="524" id="QUs-5q-Fgk"/>
-                    </constraints>
-                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="GitHub API token generator:" id="c3n-wH-2xB">
-                        <font key="font" metaFont="system"/>
-                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
-                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                    </textFieldCell>
-                </textField>
                 <button translatesAutoresizingMaskIntoConstraints="NO" id="RcL-rV-0l5">
-                    <rect key="frame" x="8" y="139" width="528" height="18"/>
+                    <rect key="frame" x="18" y="339" width="508" height="18"/>
                     <constraints>
-                        <constraint firstAttribute="width" constant="524" id="gFY-yE-qnY"/>
+                        <constraint firstAttribute="width" constant="504" id="e2x-8h-Y4H"/>
                     </constraints>
                     <buttonCell key="cell" type="check" title="Verbose AutoPkg run" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="y5a-2Y-hgq">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
@@ -266,42 +29,297 @@
                         <binding destination="oEY-e7-qCZ" name="value" keyPath="values.verboseAutoPkgRun" id="7z4-WC-4Gi"/>
                     </connections>
                 </button>
+                <box autoresizesSubviews="NO" title="Proxy settings" borderType="line" translatesAutoresizingMaskIntoConstraints="NO" id="3nH-ob-ob4">
+                    <rect key="frame" x="16" y="116" width="511" height="207"/>
+                    <view key="contentView">
+                        <rect key="frame" x="1" y="1" width="509" height="191"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="pO2-1p-Ljw">
+                                <rect key="frame" x="124" y="112" width="367" height="19"/>
+                                <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" placeholderString="http://username:password@proxy:8080" drawsBackground="YES" id="mN7-lS-7SX">
+                                    <font key="font" metaFont="smallSystem"/>
+                                    <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                                <connections>
+                                    <binding destination="oEY-e7-qCZ" name="enabled" keyPath="values.useSystemProxies" id="YFl-ef-2Rx">
+                                        <dictionary key="options">
+                                            <string key="NSValueTransformerName">NSNegateBoolean</string>
+                                        </dictionary>
+                                    </binding>
+                                    <binding destination="oEY-e7-qCZ" name="value" keyPath="values.HTTP_PROXY" id="RlK-JX-Va4">
+                                        <dictionary key="options">
+                                            <string key="NSNullPlaceholder">http://username:password@proxy:8080</string>
+                                        </dictionary>
+                                    </binding>
+                                </connections>
+                            </textField>
+                            <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="w7R-0D-KM9">
+                                <rect key="frame" x="124" y="86" width="367" height="19"/>
+                                <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" placeholderString="https://username:password@proxy:8080" drawsBackground="YES" id="2DM-Pk-cEe">
+                                    <font key="font" metaFont="smallSystem"/>
+                                    <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                                <connections>
+                                    <binding destination="oEY-e7-qCZ" name="enabled" keyPath="values.useSystemProxies" id="A2w-ty-sKw">
+                                        <dictionary key="options">
+                                            <string key="NSValueTransformerName">NSNegateBoolean</string>
+                                        </dictionary>
+                                    </binding>
+                                    <binding destination="oEY-e7-qCZ" name="value" keyPath="values.HTTPS_PROXY" id="R7v-n2-hFc">
+                                        <dictionary key="options">
+                                            <string key="NSNullPlaceholder">http://username:password@proxy:8080</string>
+                                        </dictionary>
+                                    </binding>
+                                </connections>
+                            </textField>
+                            <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="SFt-NM-BBm">
+                                <rect key="frame" x="124" y="59" width="367" height="19"/>
+                                <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" placeholderString=".local,10.0.0.0/24,.mylocaldomain.com" drawsBackground="YES" id="8FQ-1P-GWZ">
+                                    <font key="font" metaFont="smallSystem"/>
+                                    <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                                <connections>
+                                    <binding destination="oEY-e7-qCZ" name="enabled" keyPath="values.useSystemProxies" id="hJn-ov-bwU">
+                                        <dictionary key="options">
+                                            <string key="NSValueTransformerName">NSNegateBoolean</string>
+                                        </dictionary>
+                                    </binding>
+                                    <binding destination="oEY-e7-qCZ" name="value" keyPath="values.NO_PROXY" id="wa3-pL-PLv">
+                                        <dictionary key="options">
+                                            <string key="NSNullPlaceholder">.local,10.0.0.0/24,.mylocaldomain.com</string>
+                                        </dictionary>
+                                    </binding>
+                                </connections>
+                            </textField>
+                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="xlM-7v-Sva">
+                                <rect key="frame" x="18" y="115" width="104" height="14"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="100" id="ibi-gl-6LP"/>
+                                </constraints>
+                                <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="HTTP Proxy:" id="h4b-fR-6Sb">
+                                    <font key="font" metaFont="smallSystem"/>
+                                    <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                                <connections>
+                                    <binding destination="oEY-e7-qCZ" name="enabled" keyPath="values.useSystemProxies" id="ibH-I9-a1l">
+                                        <dictionary key="options">
+                                            <string key="NSValueTransformerName">NSNegateBoolean</string>
+                                        </dictionary>
+                                    </binding>
+                                </connections>
+                            </textField>
+                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="QPR-qj-EIH">
+                                <rect key="frame" x="18" y="89" width="104" height="14"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="100" id="VlG-24-dbq"/>
+                                </constraints>
+                                <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="HTTPS Proxy:" id="qqx-yH-R4g">
+                                    <font key="font" metaFont="smallSystem"/>
+                                    <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                                <connections>
+                                    <binding destination="oEY-e7-qCZ" name="enabled" keyPath="values.useSystemProxies" id="Mqx-80-ni7">
+                                        <dictionary key="options">
+                                            <string key="NSValueTransformerName">NSNegateBoolean</string>
+                                        </dictionary>
+                                    </binding>
+                                </connections>
+                            </textField>
+                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="iUt-wZ-Ea8">
+                                <rect key="frame" x="18" y="62" width="104" height="14"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="100" id="gbV-Lm-FVN"/>
+                                </constraints>
+                                <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Proxy Bypass:" id="KQa-Dn-SVx">
+                                    <font key="font" metaFont="smallSystem"/>
+                                    <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                                <connections>
+                                    <binding destination="oEY-e7-qCZ" name="enabled" keyPath="values.useSystemProxies" id="E9d-PC-nYQ">
+                                        <dictionary key="options">
+                                            <string key="NSValueTransformerName">NSNegateBoolean</string>
+                                        </dictionary>
+                                    </binding>
+                                </connections>
+                            </textField>
+                            <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="WxI-zU-hdX">
+                                <rect key="frame" x="16" y="39" width="479" height="12"/>
+                                <textFieldCell key="cell" controlSize="mini" sendsActionOnEndEditing="YES" alignment="center" title="Defining your proxy here will allow AutoPkg to work over your proxy even when no user is logged in." id="Z6Z-la-ERa">
+                                    <font key="font" metaFont="miniSystem"/>
+                                    <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                            </textField>
+                            <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="wQJ-CB-Rb9">
+                                <rect key="frame" x="16" y="24" width="479" height="12"/>
+                                <textFieldCell key="cell" controlSize="mini" sendsActionOnEndEditing="YES" alignment="center" title="WARNING: This requires storing the above information in clear text, and is not recommended." id="Ovo-Ez-myb">
+                                    <font key="font" metaFont="miniSystemBold"/>
+                                    <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                            </textField>
+                            <button translatesAutoresizingMaskIntoConstraints="NO" id="ylr-AX-bSf">
+                                <rect key="frame" x="16" y="138" width="478" height="18"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="475" id="hCE-Cw-pQ9"/>
+                                </constraints>
+                                <buttonCell key="cell" type="radio" title="Use custom proxy settings:" bezelStyle="regularSquare" imagePosition="left" alignment="left" controlSize="small" state="on" inset="2" id="aoa-ki-wQd">
+                                    <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                    <font key="font" metaFont="smallSystem"/>
+                                </buttonCell>
+                                <connections>
+                                    <binding destination="oEY-e7-qCZ" name="value" keyPath="values.useSystemProxies" id="Fgo-Sn-3OG"/>
+                                </connections>
+                            </button>
+                            <button translatesAutoresizingMaskIntoConstraints="NO" id="vKa-Xg-1tR">
+                                <rect key="frame" x="16" y="165" width="478" height="18"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="475" id="au6-SH-8o1"/>
+                                </constraints>
+                                <buttonCell key="cell" type="radio" title="Use proxy settings defined in System Preferences" bezelStyle="regularSquare" imagePosition="left" alignment="left" controlSize="small" state="on" inset="2" id="ijW-AX-m75">
+                                    <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                    <font key="font" metaFont="smallSystem"/>
+                                </buttonCell>
+                                <connections>
+                                    <binding destination="oEY-e7-qCZ" name="value" keyPath="values.useSystemProxies" id="2Be-wc-fXI"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                    </view>
+                    <constraints>
+                        <constraint firstItem="wQJ-CB-Rb9" firstAttribute="leading" secondItem="3nH-ob-ob4" secondAttribute="leading" constant="16" id="2bJ-l4-Kgj"/>
+                        <constraint firstItem="vKa-Xg-1tR" firstAttribute="leading" secondItem="3nH-ob-ob4" secondAttribute="leading" constant="16" id="5hv-Wd-RuU"/>
+                        <constraint firstItem="ylr-AX-bSf" firstAttribute="top" secondItem="3nH-ob-ob4" secondAttribute="top" constant="52" id="8Np-7H-XQt"/>
+                        <constraint firstAttribute="trailing" secondItem="wQJ-CB-Rb9" secondAttribute="trailing" constant="14" id="9MV-8T-tGU"/>
+                        <constraint firstAttribute="trailing" secondItem="SFt-NM-BBm" secondAttribute="trailing" constant="16" id="AC3-Sr-HbP"/>
+                        <constraint firstItem="w7R-0D-KM9" firstAttribute="leading" secondItem="3nH-ob-ob4" secondAttribute="leading" constant="122" id="Ed2-t0-s4t"/>
+                        <constraint firstItem="WxI-zU-hdX" firstAttribute="top" secondItem="3nH-ob-ob4" secondAttribute="top" constant="155" id="IwQ-2W-sSE"/>
+                        <constraint firstItem="QPR-qj-EIH" firstAttribute="leading" secondItem="3nH-ob-ob4" secondAttribute="leading" constant="18" id="MGe-KR-Ynq"/>
+                        <constraint firstItem="ylr-AX-bSf" firstAttribute="leading" secondItem="3nH-ob-ob4" secondAttribute="leading" constant="16" id="MmR-O2-hJn"/>
+                        <constraint firstAttribute="trailing" secondItem="pO2-1p-Ljw" secondAttribute="trailing" constant="16" id="NJT-fm-Hm1"/>
+                        <constraint firstItem="iUt-wZ-Ea8" firstAttribute="top" secondItem="3nH-ob-ob4" secondAttribute="top" constant="130" id="PxI-OP-lkr"/>
+                        <constraint firstAttribute="trailing" secondItem="w7R-0D-KM9" secondAttribute="trailing" constant="16" id="S1R-iB-9yy"/>
+                        <constraint firstItem="pO2-1p-Ljw" firstAttribute="leading" secondItem="3nH-ob-ob4" secondAttribute="leading" constant="122" id="atc-jC-Rmg"/>
+                        <constraint firstItem="wQJ-CB-Rb9" firstAttribute="top" secondItem="3nH-ob-ob4" secondAttribute="top" constant="170" id="bw3-nX-sy4"/>
+                        <constraint firstItem="WxI-zU-hdX" firstAttribute="leading" secondItem="3nH-ob-ob4" secondAttribute="leading" constant="16" id="cC0-w3-xfT"/>
+                        <constraint firstAttribute="trailing" secondItem="WxI-zU-hdX" secondAttribute="trailing" constant="14" id="hBE-x4-Rtm"/>
+                        <constraint firstItem="pO2-1p-Ljw" firstAttribute="top" secondItem="3nH-ob-ob4" secondAttribute="top" constant="75" id="ihQ-5b-vBP"/>
+                        <constraint firstItem="SFt-NM-BBm" firstAttribute="leading" secondItem="3nH-ob-ob4" secondAttribute="leading" constant="122" id="mti-Fe-7sP"/>
+                        <constraint firstItem="vKa-Xg-1tR" firstAttribute="top" secondItem="3nH-ob-ob4" secondAttribute="top" constant="25" id="n3S-ah-Qas"/>
+                        <constraint firstItem="xlM-7v-Sva" firstAttribute="top" secondItem="3nH-ob-ob4" secondAttribute="top" constant="77" id="qlY-1E-qQh"/>
+                        <constraint firstItem="QPR-qj-EIH" firstAttribute="top" secondItem="3nH-ob-ob4" secondAttribute="top" constant="103" id="rPi-oP-OMj"/>
+                        <constraint firstItem="SFt-NM-BBm" firstAttribute="top" secondItem="3nH-ob-ob4" secondAttribute="top" constant="128" id="tdt-KK-arM"/>
+                        <constraint firstItem="w7R-0D-KM9" firstAttribute="top" secondItem="3nH-ob-ob4" secondAttribute="top" constant="101" id="us0-wP-7uf"/>
+                        <constraint firstItem="xlM-7v-Sva" firstAttribute="leading" secondItem="3nH-ob-ob4" secondAttribute="leading" constant="18" id="viV-8Y-9wI"/>
+                        <constraint firstItem="iUt-wZ-Ea8" firstAttribute="leading" secondItem="3nH-ob-ob4" secondAttribute="leading" constant="18" id="w21-Gm-SEs"/>
+                        <constraint firstAttribute="height" constant="203" id="zec-bb-L46"/>
+                    </constraints>
+                    <color key="borderColor" white="0.0" alpha="0.41999999999999998" colorSpace="calibratedWhite"/>
+                    <color key="fillColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                </box>
+                <box autoresizesSubviews="NO" title="GitHub API token generator" borderType="line" translatesAutoresizingMaskIntoConstraints="NO" id="9m9-DU-jpF">
+                    <rect key="frame" x="16" y="16" width="511" height="96"/>
+                    <view key="contentView">
+                        <rect key="frame" x="1" y="1" width="509" height="80"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="tgf-Iq-BwS">
+                                <rect key="frame" x="18" y="48" width="142" height="22"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="142" id="xtt-tj-PhV"/>
+                                </constraints>
+                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" alignment="left" placeholderString="GitHub username" drawsBackground="YES" id="BOa-ar-cgf">
+                                    <font key="font" metaFont="system"/>
+                                    <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                            </textField>
+                            <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="GwV-tn-iky">
+                                <rect key="frame" x="316" y="42" width="152" height="32"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="140" id="Kl9-hm-Gk8"/>
+                                </constraints>
+                                <buttonCell key="cell" type="push" title="Generate API Token" bezelStyle="rounded" alignment="center" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="e8M-Qy-3C2">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="generateAPIToken:" target="-2" id="UXL-ZJ-bWd"/>
+                                </connections>
+                            </button>
+                            <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="J8f-xf-AJK">
+                                <rect key="frame" x="16" y="28" width="479" height="12"/>
+                                <textFieldCell key="cell" controlSize="mini" sendsActionOnEndEditing="YES" alignment="center" title="Generating a GitHub API token will increase the number of recipe searches you can perform per hour." id="OLM-io-jIc">
+                                    <font key="font" metaFont="miniSystem"/>
+                                    <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                            </textField>
+                            <button horizontalHuggingPriority="750" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="id9-eX-Yap">
+                                <rect key="frame" x="468" y="46" width="25" height="25"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="21" id="NkW-Gx-DyK"/>
+                                </constraints>
+                                <buttonCell key="cell" type="help" bezelStyle="helpButton" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="dEP-eb-SuU">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="showTokenHelpInfo:" target="-2" id="tmM-0i-UEe"/>
+                                </connections>
+                            </button>
+                            <secureTextField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Vdh-pr-fxy">
+                                <rect key="frame" x="169" y="48" width="142" height="22"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="142" id="j90-1A-0Gd"/>
+                                </constraints>
+                                <secureTextFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" placeholderString="GitHub password" drawsBackground="YES" usesSingleLineMode="YES" id="xHZ-hf-yEN">
+                                    <font key="font" metaFont="system"/>
+                                    <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                    <allowedInputSourceLocales>
+                                        <string>NSAllRomanInputSourcesLocaleIdentifier</string>
+                                    </allowedInputSourceLocales>
+                                </secureTextFieldCell>
+                            </secureTextField>
+                        </subviews>
+                    </view>
+                    <constraints>
+                        <constraint firstAttribute="trailing" secondItem="J8f-xf-AJK" secondAttribute="trailing" constant="14" id="81S-xY-Px2"/>
+                        <constraint firstItem="GwV-tn-iky" firstAttribute="top" secondItem="9m9-DU-jpF" secondAttribute="top" constant="25" id="8VJ-8k-FP1"/>
+                        <constraint firstItem="tgf-Iq-BwS" firstAttribute="top" secondItem="9m9-DU-jpF" secondAttribute="top" constant="25" id="CX1-Ba-oGf"/>
+                        <constraint firstItem="id9-eX-Yap" firstAttribute="top" secondItem="9m9-DU-jpF" secondAttribute="top" constant="25" id="K9q-j6-0mg"/>
+                        <constraint firstItem="Vdh-pr-fxy" firstAttribute="top" secondItem="9m9-DU-jpF" secondAttribute="top" constant="25" id="OoB-cS-fyb"/>
+                        <constraint firstItem="J8f-xf-AJK" firstAttribute="top" secondItem="9m9-DU-jpF" secondAttribute="top" constant="55" id="QV7-No-EQm"/>
+                        <constraint firstAttribute="height" constant="92" id="U2a-TS-K6e"/>
+                        <constraint firstAttribute="centerX" secondItem="Vdh-pr-fxy" secondAttribute="centerX" constant="14.5" id="XJf-nK-0sb"/>
+                        <constraint firstAttribute="centerX" secondItem="id9-eX-Yap" secondAttribute="centerX" constant="-226" id="boH-gh-GFI"/>
+                        <constraint firstAttribute="centerX" secondItem="tgf-Iq-BwS" secondAttribute="centerX" constant="165.5" id="lmU-Zc-ORj"/>
+                        <constraint firstItem="J8f-xf-AJK" firstAttribute="leading" secondItem="9m9-DU-jpF" secondAttribute="leading" constant="16" id="tUN-Vp-jqn"/>
+                        <constraint firstAttribute="centerX" secondItem="GwV-tn-iky" secondAttribute="centerX" constant="-137.5" id="wfS-W5-DeK"/>
+                    </constraints>
+                    <color key="borderColor" white="0.0" alpha="0.41999999999999998" colorSpace="calibratedWhite"/>
+                    <color key="fillColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                </box>
             </subviews>
             <constraints>
-                <constraint firstAttribute="centerX" secondItem="x4R-K3-ctz" secondAttribute="centerX" constant="174" id="2sc-2w-YVE"/>
-                <constraint firstItem="j5q-t6-3Z0" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="130" id="3sC-dH-uU3"/>
-                <constraint firstAttribute="centerX" secondItem="Lwe-bk-DNC" secondAttribute="centerX" id="6Ea-Fm-Qcd"/>
-                <constraint firstItem="Vtu-Mk-fsf" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="276" id="7NH-Id-3g8"/>
-                <constraint firstItem="DDU-GV-z4D" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="101" id="7Zu-ZU-j1z"/>
-                <constraint firstItem="RcL-rV-0l5" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="10" id="9PO-TL-WV3"/>
-                <constraint firstAttribute="centerX" secondItem="Vtu-Mk-fsf" secondAttribute="centerX" constant="-244.5" id="Cab-D2-PYw"/>
-                <constraint firstItem="DDU-GV-z4D" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="126" id="ESi-Yq-swi"/>
-                <constraint firstItem="ftu-km-X0b" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="158" id="F3h-7O-s9j"/>
-                <constraint firstAttribute="centerX" secondItem="JsU-fv-GUV" secondAttribute="centerX" constant="-153" id="FYu-P1-sXP"/>
-                <constraint firstAttribute="centerX" secondItem="ftu-km-X0b" secondAttribute="centerX" id="I4n-Gd-W5b"/>
-                <constraint firstItem="C65-q8-DUv" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="103" id="IcR-Ww-xlX"/>
-                <constraint firstItem="RXd-7N-rJi" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="50" id="IrF-p4-79j"/>
-                <constraint firstItem="Lwe-bk-DNC" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="173" id="KLE-nP-NZO"/>
-                <constraint firstItem="dgf-Tb-43f" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="126" id="LBi-SB-0za"/>
-                <constraint firstItem="x4R-K3-ctz" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="276" id="LoB-aJ-8wI"/>
-                <constraint firstItem="C65-q8-DUv" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="22" id="O9h-aP-9wv"/>
-                <constraint firstItem="IZ8-zN-C9c" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="126" id="Psj-33-kEk"/>
-                <constraint firstItem="IZ8-zN-C9c" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="128" id="RKi-A6-BWA"/>
-                <constraint firstItem="JsU-fv-GUV" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="276" id="RhE-Xf-KZR"/>
-                <constraint firstItem="jMh-6Y-esJ" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="22" id="S7I-5a-1GN"/>
-                <constraint firstItem="Ruz-js-P1Y" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="276" id="Z6T-t8-ePt"/>
-                <constraint firstItem="j5q-t6-3Z0" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="22" id="a3P-df-ykh"/>
-                <constraint firstItem="jMh-6Y-esJ" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="77" id="eHT-fi-1AD"/>
-                <constraint firstAttribute="centerX" secondItem="Ruz-js-P1Y" secondAttribute="centerX" constant="5" id="hwW-QD-tBI"/>
-                <constraint firstAttribute="trailing" secondItem="dgf-Tb-43f" secondAttribute="trailing" constant="20" id="iVK-En-hF5"/>
-                <constraint firstItem="dgf-Tb-43f" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="75" id="kyu-je-ohv"/>
-                <constraint firstAttribute="trailing" secondItem="DDU-GV-z4D" secondAttribute="trailing" constant="20" id="m45-Cd-AYX"/>
-                <constraint firstItem="Jal-TH-sjJ" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="20" id="mBW-Mw-scm"/>
-                <constraint firstAttribute="trailing" secondItem="IZ8-zN-C9c" secondAttribute="trailing" constant="20" id="uNf-SR-uBL"/>
-                <constraint firstItem="Jal-TH-sjJ" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="10" id="xOz-n5-fY6"/>
-                <constraint firstItem="RcL-rV-0l5" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="208" id="zfE-5Z-792"/>
+                <constraint firstItem="9m9-DU-jpF" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="19" id="D65-vk-0P7"/>
+                <constraint firstItem="3nH-ob-ob4" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="19" id="EOa-cS-l4X"/>
+                <constraint firstItem="RcL-rV-0l5" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="20" id="MHT-bj-cgT"/>
+                <constraint firstItem="3nH-ob-ob4" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="52" id="WWJ-5j-4Jl"/>
+                <constraint firstItem="9m9-DU-jpF" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="263" id="Ytr-n0-fCL"/>
+                <constraint firstAttribute="trailing" secondItem="3nH-ob-ob4" secondAttribute="trailing" constant="20" id="hPi-7u-JID"/>
+                <constraint firstAttribute="trailing" secondItem="9m9-DU-jpF" secondAttribute="trailing" constant="20" id="kBt-Dq-TDa"/>
+                <constraint firstItem="RcL-rV-0l5" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="20" id="pOZ-Dt-afQ"/>
             </constraints>
-            <point key="canvasLocation" x="171" y="201.5"/>
+            <point key="canvasLocation" x="171" y="207.5"/>
         </customView>
         <userDefaultsController representsSharedInstance="YES" id="oEY-e7-qCZ"/>
     </objects>
