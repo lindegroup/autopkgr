@@ -30,7 +30,7 @@
                 <button autoresizesSubviews="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gCc-Bk-Xo8">
                     <rect key="frame" x="222" y="55" width="203" height="18"/>
                     <constraints>
-                        <constraint firstAttribute="width" constant="199" id="hvR-FG-Hth"/>
+                        <constraint firstAttribute="width" constant="199" id="MYt-zq-JXx"/>
                     </constraints>
                     <buttonCell key="cell" type="check" title="Launch AutoPkgr at login" bezelStyle="regularSquare" imagePosition="left" alignment="left" state="on" inset="2" id="FsQ-sy-cGX">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
@@ -40,10 +40,10 @@
                         <action selector="launchAtLogin:" target="-2" id="sgX-Be-rnI"/>
                     </connections>
                 </button>
-                <button verticalCompressionResistancePriority="749" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="D8f-jS-Mfo">
-                    <rect key="frame" x="222" y="36" width="203" height="16"/>
+                <button verticalCompressionResistancePriority="749" translatesAutoresizingMaskIntoConstraints="NO" id="D8f-jS-Mfo">
+                    <rect key="frame" x="222" y="33" width="203" height="18"/>
                     <constraints>
-                        <constraint firstAttribute="width" constant="199" id="riF-Cm-jcS"/>
+                        <constraint firstAttribute="width" constant="199" id="cAw-1X-qVc"/>
                     </constraints>
                     <buttonCell key="cell" type="check" title="Show AutoPkgr menu icon" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="bif-9b-TSQ">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
@@ -53,10 +53,10 @@
                         <action selector="changeDisplayMode:" target="-2" id="KIz-gx-u83"/>
                     </connections>
                 </button>
-                <button misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="2vH-Ks-iBq">
-                    <rect key="frame" x="222" y="15" width="165" height="16"/>
+                <button translatesAutoresizingMaskIntoConstraints="NO" id="2vH-Ks-iBq">
+                    <rect key="frame" x="222" y="11" width="203" height="18"/>
                     <constraints>
-                        <constraint firstAttribute="width" constant="161" id="md0-yh-5GR"/>
+                        <constraint firstAttribute="width" constant="199" id="pXK-Qc-NTE"/>
                     </constraints>
                     <buttonCell key="cell" type="check" title="Hide AutoPkgr in Dock" bezelStyle="regularSquare" imagePosition="left" inset="2" id="BN7-80-SnJ">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
@@ -67,9 +67,9 @@
                     </connections>
                 </button>
                 <textField hidden="YES" horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Esk-cg-7GW">
-                    <rect key="frame" x="389" y="15" width="194" height="14"/>
+                    <rect key="frame" x="388" y="12" width="194" height="14"/>
                     <constraints>
-                        <constraint firstAttribute="width" constant="190" id="Lbe-8B-mSV"/>
+                        <constraint firstAttribute="width" constant="190" id="IFa-m8-gtE"/>
                     </constraints>
                     <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Relaunch required to take effect." id="TzN-FL-hol">
                         <font key="font" metaFont="smallSystem"/>
@@ -182,20 +182,20 @@
                 </scrollView>
             </subviews>
             <constraints>
-                <constraint firstAttribute="bottom" secondItem="gCc-Bk-Xo8" secondAttribute="bottom" constant="57" id="1lQ-gN-ACj"/>
-                <constraint firstAttribute="bottom" secondItem="D8f-jS-Mfo" secondAttribute="bottom" constant="38" id="3qD-7G-bjH"/>
+                <constraint firstAttribute="bottom" secondItem="gCc-Bk-Xo8" secondAttribute="bottom" constant="57" id="2EY-Xc-pZe"/>
                 <constraint firstAttribute="bottom" secondItem="Uju-WV-dwO" secondAttribute="bottom" constant="79" id="7tY-yt-Mst"/>
-                <constraint firstAttribute="centerX" secondItem="gCc-Bk-Xo8" secondAttribute="centerX" constant="-15" id="A2c-G6-JgC"/>
                 <constraint firstItem="Uju-WV-dwO" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="10" id="BF0-Yl-Eae"/>
                 <constraint firstAttribute="centerX" secondItem="geX-ws-F4Z" secondAttribute="centerX" id="J1d-Ei-yPM"/>
-                <constraint firstItem="Esk-cg-7GW" firstAttribute="leading" secondItem="2vH-Ks-iBq" secondAttribute="trailing" constant="6" id="LmR-1k-5yx"/>
-                <constraint firstItem="2vH-Ks-iBq" firstAttribute="baseline" secondItem="Esk-cg-7GW" secondAttribute="baseline" constant="-1" id="O9e-mO-FcG"/>
                 <constraint firstItem="geX-ws-F4Z" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="25" id="WhW-bG-c0I"/>
-                <constraint firstAttribute="bottom" secondItem="2vH-Ks-iBq" secondAttribute="bottom" constant="17" id="Xis-bU-uyI"/>
+                <constraint firstAttribute="bottom" secondItem="2vH-Ks-iBq" secondAttribute="bottom" constant="13" id="XlB-0r-3Ge"/>
+                <constraint firstAttribute="centerX" secondItem="gCc-Bk-Xo8" secondAttribute="centerX" constant="-15" id="YHd-39-sxs"/>
                 <constraint firstAttribute="trailing" secondItem="Uju-WV-dwO" secondAttribute="trailing" constant="10" id="aOB-hA-hiB"/>
-                <constraint firstAttribute="centerX" secondItem="D8f-jS-Mfo" secondAttribute="centerX" constant="-15" id="krQ-0A-Zgb"/>
-                <constraint firstAttribute="centerX" secondItem="2vH-Ks-iBq" secondAttribute="centerX" constant="4" id="pFf-dO-lgZ"/>
+                <constraint firstAttribute="centerX" secondItem="2vH-Ks-iBq" secondAttribute="centerX" constant="-15" id="gUe-vC-T0u"/>
+                <constraint firstAttribute="centerX" secondItem="D8f-jS-Mfo" secondAttribute="centerX" constant="-15" id="lgr-df-QvX"/>
+                <constraint firstAttribute="bottom" secondItem="D8f-jS-Mfo" secondAttribute="bottom" constant="35" id="qJx-NC-Lf7"/>
+                <constraint firstItem="Esk-cg-7GW" firstAttribute="baseline" secondItem="2vH-Ks-iBq" secondAttribute="baseline" id="rJL-oX-MAi"/>
                 <constraint firstItem="Uju-WV-dwO" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="173" id="y14-Fo-pDm"/>
+                <constraint firstItem="Esk-cg-7GW" firstAttribute="leading" secondItem="2vH-Ks-iBq" secondAttribute="trailing" constant="-33" id="yjG-Xv-srv"/>
             </constraints>
             <point key="canvasLocation" x="140.5" y="154"/>
         </customView>
