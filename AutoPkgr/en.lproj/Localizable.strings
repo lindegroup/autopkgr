@@ -30,7 +30,7 @@
 "[%@] New software available for testing" = "[%@] New software available for testing";
 
 /* Tab label */
-"Alerts & Notifications" = "Alerts & Notifications";
+"Notifications" = "Notifications";
 
 /* No comment provided by engineer. */
 "Are you sure you want to remove the %@ recipe override? Any changes made to the file will be lost." = "Are you sure you want to remove the %@ recipe override? Any changes made to the file will be lost.";

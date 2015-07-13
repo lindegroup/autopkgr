@@ -103,7 +103,7 @@
 
 - (NSString *)tabLabel
 {
-    return NSLocalizedString(@"Alerts & Notifications", @"Tab label");
+    return NSLocalizedString(@"Notifications", @"Tab label");
 }
 
 #pragma mark - Open Config Panel
