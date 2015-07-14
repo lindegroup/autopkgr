@@ -231,7 +231,7 @@ NSString *const fallback_reportCSS = @"<style type='text/css'>*{font-family:'Hel
     NSMutableString *string = nil;
 
     if (failures.count) {
-        string = [NSLocalizedString(@"The following failures occurred.", nil).html_H3 mutableCopy];
+        string = [NSLocalizedString(@"The following failures occurred:", nil).html_H3 mutableCopy];
         [string appendString:[failures html_table]];
     }
     return [string copy];
