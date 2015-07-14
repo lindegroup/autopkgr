@@ -131,7 +131,7 @@
                                 </connections>
                             </textField>
                             <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="WxI-zU-hdX">
-                                <rect key="frame" x="16" y="29" width="479" height="12"/>
+                                <rect key="frame" x="16" y="29" width="477" height="12"/>
                                 <textFieldCell key="cell" controlSize="mini" sendsActionOnEndEditing="YES" alignment="center" title="Defining your proxy here will allow AutoPkg to work over your proxy even when no user is logged in." id="Z6Z-la-ERa">
                                     <font key="font" metaFont="miniSystem"/>
                                     <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -139,17 +139,17 @@
                                 </textFieldCell>
                             </textField>
                             <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="wQJ-CB-Rb9">
-                                <rect key="frame" x="16" y="14" width="479" height="12"/>
+                                <rect key="frame" x="16" y="14" width="477" height="12"/>
                                 <textFieldCell key="cell" controlSize="mini" sendsActionOnEndEditing="YES" alignment="center" title="WARNING: This requires storing the above information in clear text, and is not recommended." id="Ovo-Ez-myb">
                                     <font key="font" metaFont="miniSystemBold"/>
                                     <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                     <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
                             </textField>
-                            <matrix verticalHuggingPriority="750" fixedFrame="YES" allowsEmptySelection="NO" autorecalculatesCellSize="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Hq3-ek-hGA">
-                                <rect key="frame" x="18" y="126" width="285" height="58"/>
+                            <matrix verticalHuggingPriority="750" allowsEmptySelection="NO" autorecalculatesCellSize="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Hq3-ek-hGA">
+                                <rect key="frame" x="18" y="126" width="473" height="58"/>
                                 <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                                <size key="cellSize" width="285" height="18"/>
+                                <size key="cellSize" width="473" height="18"/>
                                 <size key="intercellSpacing" width="4" height="2"/>
                                 <buttonCell key="prototype" type="radio" title="Use proxy settings defined in System Preferences" imagePosition="left" alignment="left" controlSize="small" state="on" tag="1" inset="2" id="460-FS-hUS">
                                     <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
@@ -179,20 +179,23 @@
                     </view>
                     <constraints>
                         <constraint firstItem="wQJ-CB-Rb9" firstAttribute="leading" secondItem="3nH-ob-ob4" secondAttribute="leading" constant="16" id="2bJ-l4-Kgj"/>
-                        <constraint firstAttribute="trailing" secondItem="wQJ-CB-Rb9" secondAttribute="trailing" constant="14" id="9MV-8T-tGU"/>
                         <constraint firstAttribute="trailing" secondItem="SFt-NM-BBm" secondAttribute="trailing" constant="16" id="AC3-Sr-HbP"/>
+                        <constraint firstItem="Hq3-ek-hGA" firstAttribute="leading" secondItem="3nH-ob-ob4" secondAttribute="leading" constant="16" id="EKJ-zf-xg4"/>
                         <constraint firstItem="w7R-0D-KM9" firstAttribute="leading" secondItem="3nH-ob-ob4" secondAttribute="leading" constant="122" id="Ed2-t0-s4t"/>
+                        <constraint firstAttribute="trailing" secondItem="WxI-zU-hdX" secondAttribute="trailing" constant="16" id="Fru-rt-tYb"/>
                         <constraint firstItem="WxI-zU-hdX" firstAttribute="top" secondItem="3nH-ob-ob4" secondAttribute="top" constant="165" id="IwQ-2W-sSE"/>
                         <constraint firstItem="QPR-qj-EIH" firstAttribute="leading" secondItem="3nH-ob-ob4" secondAttribute="leading" constant="18" id="MGe-KR-Ynq"/>
                         <constraint firstAttribute="trailing" secondItem="pO2-1p-Ljw" secondAttribute="trailing" constant="16" id="NJT-fm-Hm1"/>
                         <constraint firstItem="iUt-wZ-Ea8" firstAttribute="top" secondItem="3nH-ob-ob4" secondAttribute="top" constant="140" id="PxI-OP-lkr"/>
                         <constraint firstAttribute="trailing" secondItem="w7R-0D-KM9" secondAttribute="trailing" constant="16" id="S1R-iB-9yy"/>
+                        <constraint firstAttribute="trailing" secondItem="Hq3-ek-hGA" secondAttribute="trailing" constant="16" id="ViB-C7-dUM"/>
                         <constraint firstItem="pO2-1p-Ljw" firstAttribute="leading" secondItem="3nH-ob-ob4" secondAttribute="leading" constant="122" id="atc-jC-Rmg"/>
                         <constraint firstItem="wQJ-CB-Rb9" firstAttribute="top" secondItem="3nH-ob-ob4" secondAttribute="top" constant="180" id="bw3-nX-sy4"/>
                         <constraint firstItem="WxI-zU-hdX" firstAttribute="leading" secondItem="3nH-ob-ob4" secondAttribute="leading" constant="16" id="cC0-w3-xfT"/>
-                        <constraint firstAttribute="trailing" secondItem="WxI-zU-hdX" secondAttribute="trailing" constant="14" id="hBE-x4-Rtm"/>
                         <constraint firstItem="pO2-1p-Ljw" firstAttribute="top" secondItem="3nH-ob-ob4" secondAttribute="top" constant="85" id="ihQ-5b-vBP"/>
                         <constraint firstItem="SFt-NM-BBm" firstAttribute="leading" secondItem="3nH-ob-ob4" secondAttribute="leading" constant="122" id="mti-Fe-7sP"/>
+                        <constraint firstItem="Hq3-ek-hGA" firstAttribute="top" secondItem="3nH-ob-ob4" secondAttribute="top" constant="22" id="okT-jc-b7z"/>
+                        <constraint firstAttribute="trailing" secondItem="wQJ-CB-Rb9" secondAttribute="trailing" constant="16" id="pdC-LO-awN"/>
                         <constraint firstItem="xlM-7v-Sva" firstAttribute="top" secondItem="3nH-ob-ob4" secondAttribute="top" constant="87" id="qlY-1E-qQh"/>
                         <constraint firstItem="QPR-qj-EIH" firstAttribute="top" secondItem="3nH-ob-ob4" secondAttribute="top" constant="113" id="rPi-oP-OMj"/>
                         <constraint firstItem="SFt-NM-BBm" firstAttribute="top" secondItem="3nH-ob-ob4" secondAttribute="top" constant="138" id="tdt-KK-arM"/>
