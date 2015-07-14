@@ -23,6 +23,7 @@
 #import "LGAutoPkgTask.h"
 #import "LGAutoPkgRecipe.h"
 #import "LGRecipeTableViewController.h"
+#import "NSTextField+animatedString.h"
 
 @interface LGRecipeSearch () <NSTextViewDelegate>
 @property (weak) IBOutlet NSTableView *searchTable;
@@ -102,17 +103,19 @@
     NSString *repoName = _searchResults[_searchTable.selectedRow][kLGAutoPkgRepoNameKey];
     NSString *url = [NSString stringWithFormat:@"https://github.com/autopkg/%@.git", repoName];
 
+    sender.enabled = NO;
     [_progressIndicator startAnimation:nil];
     [_progressIndicator setHidden:NO];
 
     [LGAutoPkgTask repoAdd:url reply:^(NSError *error) {
         [_progressIndicator stopAnimation:nil];
         [_progressIndicator setHidden:YES];
+        sender.enabled = !(error == nil);
         if (error) {
+            [self.limitMessage fadeOut_withString:error.localizedDescription];
             NSLog(@"%@", error.localizedDescription);
         } else {
             _currentlyInstalledRepos = [LGAutoPkgTask repoList];
-            [_addBT setEnabled:NO];
             [_searchTable reloadData];
         }
     }];

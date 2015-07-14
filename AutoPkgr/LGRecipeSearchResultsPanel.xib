@@ -9,6 +9,7 @@
             <connections>
                 <outlet property="addBT" destination="WhV-y9-TGQ" id="neu-o1-bip"/>
                 <outlet property="cancelBT" destination="gcF-3J-oHN" id="02E-cl-XMD"/>
+                <outlet property="limitMessage" destination="spL-Ab-OCc" id="zHc-3U-lAy"/>
                 <outlet property="progressIndicator" destination="HB6-k0-YL0" id="IQX-IH-JlE"/>
                 <outlet property="searchTable" destination="vTW-uQ-SZq" id="VL0-Fz-IK5"/>
                 <outlet property="window" destination="QvC-M9-y7g" id="m3b-OU-6DK"/>
@@ -20,7 +21,7 @@
             <windowStyleMask key="styleMask" titled="YES" resizable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="196" y="240" width="576" height="295"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="2560" height="1417"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1280" height="777"/>
             <view key="contentView" id="EiT-Mj-1SZ">
                 <rect key="frame" x="0.0" y="3" width="576" height="295"/>
                 <autoresizingMask key="autoresizingMask"/>
@@ -43,7 +44,7 @@
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             <subviews>
                                 <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" multipleSelection="NO" autosaveColumns="NO" id="vTW-uQ-SZq">
-                                    <rect key="frame" x="0.0" y="0.0" width="578" height="19"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="534" height="19"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <size key="intercellSpacing" width="3" height="2"/>
                                     <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
@@ -118,6 +119,9 @@
                         <buttonCell key="cell" type="push" title="Add Repo" bezelStyle="rounded" alignment="center" controlSize="small" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="oQH-jM-r9h">
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                             <font key="font" metaFont="smallSystem"/>
+                            <string key="keyEquivalent" base64-UTF8="YES">
+DQ
+</string>
                         </buttonCell>
                         <connections>
                             <action selector="addRecipeAndRepo:" target="-2" id="1F6-ya-zk6"/>
@@ -134,11 +138,22 @@
                         <buttonCell key="cell" type="push" title="Close" bezelStyle="rounded" alignment="center" controlSize="small" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="F4X-CJ-CjA">
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                             <font key="font" metaFont="smallSystem"/>
+                            <string key="keyEquivalent" base64-UTF8="YES">
+Gw
+</string>
                         </buttonCell>
                         <connections>
                             <action selector="closePanel:" target="-2" id="efx-N4-DL4"/>
                         </connections>
                     </button>
+                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="spL-Ab-OCc">
+                        <rect key="frame" x="20" y="45" width="296" height="14"/>
+                        <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" id="CNH-cE-rTG">
+                            <font key="font" metaFont="smallSystem"/>
+                            <color key="textColor" red="1" green="0.0" blue="0.01176470588" alpha="1" colorSpace="calibratedRGB"/>
+                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                    </textField>
                 </subviews>
                 <constraints>
                     <constraint firstAttribute="trailing" secondItem="HB6-k0-YL0" secondAttribute="trailing" constant="213" id="8Pj-W5-Bck"/>
