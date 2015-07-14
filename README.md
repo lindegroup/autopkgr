@@ -123,11 +123,10 @@ We've tried to simplify the process of creating and editing AutoPkg recipe overr
 To configure AutoPkgr to add updates directly into your Munki repository, follow these steps:
 
 1. Click on the __Folders & Integration__ tab.
-1. In the __Munki Integration__ section, click Choose.
-1. Select your munki_repo folder.
+1. Click on the __Configure Munki tools__ button.
+1. Click __Choose__, then select your munki_repo folder.
 
-You'll also want to make sure you have a few `.munki` recipes selected. Once the new versions of apps appear in your Munki repo, you can add them to the appropriate catalogs and manifests to deploy them.
-
+You'll also want to make sure you have `.munki` recipes selected for each app you want to import. Once the new versions of apps appear in your Munki repo, you can add them to the appropriate catalogs and manifests to deploy them.
 
 ### Integration with Casper
 
@@ -136,77 +135,52 @@ Note: Requires Casper version 9 or newer.
 To configure AutoPkgr to create Self Service policies in Casper for new app updates, follow these steps:
 
 1. Create a static computer group on your JSS called __Testing__. Add one or more test computers to the group.
-1. Create an account on your JSS with Create, Read, and Update access to the following objects:
-    - Categories
-    - Smart Computer Groups
-    - Static Computer Groups
-    - Computer Extension Attributes
-    - Packages
-    - Policies
-    - Scripts
-    - File Share Distribution Points (only needs Read access)
+1. Create an account on your JSS with __Create__, __Read__, and __Update__ access to the following objects:
+    - __Categories__
+    - __Computer Extension Attributes__
+    - __File Share Distribution Points__ (only needs Read access)
+    - __Packages__
+    - __Policies__
+    - __Scripts__
+    - __Smart Computer Groups__
+    - __Static Computer Groups__
 1. Open AutoPkgr and go to the __Folders & Integration__ tab.
-1. In the __Casper Suite integration__ section, enter your JSS URL, API username, and API password. Then click __Connect__.
-1. When prompted, follow the instructions to install JSSImporter.
+1. Click the __Install JSSImporter__ button. Enter your password when prompted.
+1. Click on __Configure JSSImporter__.
+1. Enter your JSS URL, API username, and API password. Then click __Connect__.
 1. When prompted, enter the read/write password for each distribution point.
 
-You'll also want to make sure you have a few `.jss` recipes selected. AutoPkgr will automatically add Shea Craig's [jss-recipes](https://github.com/sheagcraig/jss-recipes) repo so you'll have a few to choose from.
+You'll also want to make sure you have a few `.jss` recipes selected. AutoPkgr will automatically add the "official" [jss-recipes](https://github.com/autopkg/jss-recipes) repo so you'll have a few to choose from right away.
 
 When a `.jss` recipe runs, the package is uploaded to your distribution points, a Self Service policy is created and scoped to a new smart group. As a result, computers in the Testing group with less than the latest version of the app should now be able to install the latest version through Self Service.
 
-For detailed tips on integrating AutoPkgr with Casper, and to see some descriptions of example workflows, read [Auto Update Magic](https://github.com/homebysix/auto-update-magic).
-
+For detailed information on JSS recipe behavior, check out the [README for jss-recipes](https://github.com/autopkg/jss-recipes), and for some examples of advanced worfklows, see [Auto Update Magic](https://github.com/homebysix/auto-update-magic).
 
 ### Integration with Absolute Manage
 
-Lorem ipsum.
+Requires Absolute Manage version ___ or newer.
 
+To configure AutoPkgr to add updates directly into your Absolute Manage server, follow these steps:
+
+1. one
+2. two
+3. three
 
 ### Integration with MacPatch
 
-Lorem ipsum.
+To configure AutoPkgr to add updates directly into your MacPatch server, follow these steps:
+
+1. one
+2. two
+3. three
 
 ![divider](doc-images/divider.png)
 
 ## Using a Proxy
 
-If your network uses a proxy, you may need to run one or more of these commands to configure AutoPkg/AutoPkgr to use your proxy for internet access.
+If your network uses a proxy, you may need to navigate to the __Folders & Integration__ tab and click on the __Configure AutoPkg__ button. Adjust the proxy settings as necessary.
 
-Note: Running these commands is equivalent to this shell command:
-```
-export HTTP_PROXY=http://proxy:8080
-```
-It should not be compared to what you can access from a web browser.  If running autopkg in the shell won't work with the environmental variables set, neither will AutoPkgr.
-
-Note: Proxy support is still in early development and we would love feedback from the community as to it's functioning, both success and failure.
-
-
-1. Use proxies defined in System Preferences.
-`defaults write com.lindegroup.AutoPkgr useSystemProxies -bool true`
-
-    This should also pick up auto-detected WPAD/PAC proxies. Make sure you have the domains that should not use a proxy listed in the
-`System Preferences -> Network -> Advanced -> Proxies -> "Bypass proxy settings for these Hosts & Domains"`
-
-2. If using the settings from system preferences doesn't work you can try to manually set the proxy environment yourself.
-
-    Note: when manually setting make sure to unset useSystemProxies `defaults write com.lindegroup.AutoPkgr useSystemProxies -bool false`
-
-- To use HTTP proxy: `defaults write com.lindegroup.AutoPkgr HTTP_PROXY http://proxy:8080`
-
-- To use HTTPS proxy: `defaults write com.lindegroup.AutoPkgr HTTPS_PROXY https://proxy:8080`
-
-- To use HTTP proxy with authentication: `defaults write com.lindegroup.AutoPkgr HTTP_PROXY http://username:password@proxy:8080`
-
-- To use HTTPS proxy with authentication: `defaults write com.lindegroup.AutoPkgr HTTPS_PROXY https://username:password@proxy:8080`
-
-- To add a list of bypassed hosts: `defaults write com.lindegroup.AutoPkgr NO_PROXY ".local,10.0.0.0/24,.mylocaldomain.com"`
-(this is a list of comma separated items use .xxx.xxx to bypass an entire domain)
-
-- To stop using HTTP proxy: `defaults remove com.lindegroup.AutoPkgr HTTP_PROXY`
-
-- To stop using HTTPS proxy: `defaults remove com.lindegroup.AutoPkgr HTTPS_PROXY`
-
-_Note: This will not create or modify any system proxy settings; it will only add them to your shell env._
+![proxy](doc-images/proxy.png)
 
 ![divider](doc-images/divider.png)
 
