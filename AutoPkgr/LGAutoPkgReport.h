@@ -67,7 +67,7 @@
 @property (copy, nonatomic, readonly) NSString *emailSubjectString;
 
 /**
- *  Check to determine if there is anything to report.
+ *  Check to determine if there is anything to report
  */
 @property (nonatomic, readonly) BOOL updatesToReport;
 
@@ -75,6 +75,12 @@
  *  Array of LGUpdatedApplications
  */
 @property (copy, nonatomic, readonly) NSArray *updatedApplications;
+
+/**
+ *  Failure results array from report converted into an NSError object
+ */
+@property (copy, nonatomic, readonly) NSError *failureError;
+
 
 @end
 

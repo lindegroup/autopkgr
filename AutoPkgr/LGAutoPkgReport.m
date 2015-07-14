@@ -379,6 +379,25 @@ NSString *const fallback_reportCSS = @"<style type='text/css'>*{font-family:'Hel
     return _updatedApplications;
 }
 
+- (NSError *)failureError {
+    NSError *failureError = nil;
+    NSArray *failures = [_reportDictionary[kReportKeyFailures] filtered_ByClass:[NSDictionary class]];
+
+    if (failures.count) {
+        NSMutableString *string = [[NSMutableString alloc] init];
+        for (NSDictionary *failure in failures) {
+            [string appendFormat:@"%@\n", failure[@"message"]];
+        }
+
+        NSDictionary *userInfo = @{NSLocalizedDescriptionKey : NSLocalizedString(@"The following failures occurred:", nil),
+                                   NSLocalizedRecoverySuggestionErrorKey: string};
+
+        failureError = [NSError errorWithDomain:kLGApplicationName code:1 userInfo:userInfo];
+
+    }
+    return failureError;
+}
+
 #pragma mark - Utility
 /**
  *  Normalize report dictionary from AutoPkgr's implementation of @code autopkg run --report-plist @endcode

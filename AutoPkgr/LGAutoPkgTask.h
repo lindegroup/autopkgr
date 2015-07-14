@@ -191,6 +191,11 @@ extern NSString *const kLGAutoPkgRepoURLKey;
 @property (copy, nonatomic, readonly) id results;
 
 /**
+ *  Report dictionary when the task is an autopkg `run` task. Will return nil for all other tasks.
+ */
+@property (copy, nonatomic, readonly) NSDictionary *report;
+
+/**
  *  The block to use for providing run status updates asynchronously.
  */
 @property (copy) void (^progressUpdateBlock)(NSString *message, double progress);

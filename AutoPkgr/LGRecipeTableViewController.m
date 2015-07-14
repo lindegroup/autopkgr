@@ -25,6 +25,7 @@
 #import "LGAutoPkgRecipe.h"
 #import "LGAutoPkgTask.h"
 #import "LGRecipeOverrides.h"
+#import "LGAutoPkgReport.h"
 
 @interface LGRecipeTableViewController () <NSWindowDelegate, NSPopoverDelegate>
 
@@ -173,9 +174,32 @@ static NSString *const kLGAutoPkgRecipeCurrentStatusKey = @"currentStatus";
     NSIndexSet *colIdxSet = [[NSIndexSet alloc] initWithIndex:[_recipeTableView columnWithIdentifier:kLGAutoPkgRecipeCurrentStatusKey]];
     [_recipeTableView reloadDataForRowIndexes:rowIdxSet columnIndexes:colIdxSet];
 
+    __weak typeof(runTask) weakTask = runTask;
     [runTask launchInBackground:^(NSError *error) {
-        if (error) {
-            [[NSAlert alertWithError:error] runModal];
+        __strong typeof(runTask) strongTask = weakTask;
+
+        LGAutoPkgReport *report = [[LGAutoPkgReport alloc] initWithReportDictionary:strongTask.report];
+        NSError *failureError = report.failureError;
+        
+        if (error || failureError) {
+            [[NSAlert alertWithError:error ?: failureError] runModal];
+        }  else {
+            LGUpdatedApplication *updatedApplication = report.updatedApplications.firstObject;
+            if (updatedApplication) {
+                NSUserNotification *notification = [[NSUserNotification alloc] init];
+                NSString *informativeTextFormat = NSLocalizedString(@"%@ of %@ was downloaded.",
+                                                           @"NSUserNotification info message presented after single recipe run.");
+                NSString *versionString;
+                if ([updatedApplication.version.lowercaseString isEqualToString:@"Unknown version".lowercaseString]) {
+                    versionString = @"A newer version";
+                } else {
+                    versionString = quick_formatString(@"Version %@", versionString);
+                }
+
+                notification.informativeText = quick_formatString(informativeTextFormat, versionString, updatedApplication.name);
+
+                [[NSUserNotificationCenter defaultUserNotificationCenter] deliverNotification:notification];
+            }
         }
 
         [_runTaskDictionary removeObjectForKey:recipe.Name];
