@@ -37,7 +37,7 @@ static dispatch_queue_t autopkgr_integration_synchronizer_queue()
     static dispatch_queue_t dispatch_queue;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        dispatch_queue = dispatch_queue_create("com.lindegroup.autopkgr.integration.synchronizer.queue", DISPATCH_QUEUE_SERIAL );
+      dispatch_queue = dispatch_queue_create("com.lindegroup.autopkgr.integration.synchronizer.queue", DISPATCH_QUEUE_SERIAL);
     });
 
     return dispatch_queue;
@@ -45,7 +45,7 @@ static dispatch_queue_t autopkgr_integration_synchronizer_queue()
 
 NSString *const kLGNotificationIntegrationStatusDidChange = @"com.lindegroup.autopkgr.notification.integration.status.did.change";
 
-@interface LGIntegration ()<LGIntegrationSubclass>
+@interface LGIntegration () <LGIntegrationSubclass>
 @property (strong, nonatomic, readwrite) LGIntegrationInfo *info;
 @end
 
@@ -126,7 +126,7 @@ void subclassMustConformToProtocol(id className)
 #pragma mark - Init / Dealloc
 - (void)dealloc
 {
-//    DevLog(@"Dealloc %@", self);
+    //    DevLog(@"Dealloc %@", self);
 
     // nil out the blocks to break retain cycles.
     _progressUpdateBlock = nil;
@@ -135,10 +135,10 @@ void subclassMustConformToProtocol(id className)
     /* Repoint so we don't loose reference to the _infoUpdateBlockDict after dealloc */
     NSMutableDictionary *releaseDict = _infoUpdateBlocksDict;
     dispatch_async(autopkgr_integration_synchronizer_queue(), ^{
-        [releaseDict enumerateKeysAndObjectsUsingBlock:^(void (^infoUpdate)(LGIntegrationInfo *), id obj, BOOL *stop) {
-            infoUpdate = nil;
-        }];
-        [releaseDict removeAllObjects];
+      [releaseDict enumerateKeysAndObjectsUsingBlock:^(void (^infoUpdate)(LGIntegrationInfo *), id obj, BOOL * stop) {
+        infoUpdate = nil;
+      }];
+      [releaseDict removeAllObjects];
     });
 }
 
@@ -260,22 +260,22 @@ void subclassMustConformToProtocol(id className)
 
     _isRefreshing = YES;
     void (^updateInfoHandlers)() = ^() {
-        dispatch_async(autopkgr_integration_synchronizer_queue(), ^{
-            if (reply || _infoUpdateHandler) {
-                self.info = [[LGIntegrationInfo alloc] initWithIntegration:self];
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    if (_infoUpdateHandler) {
-                        _infoUpdateHandler(_info);
-                    }
-                    if (reply) {
-                        reply(_info);
-                    }
-                });
-            } else {
-                self.info = [[LGIntegrationInfo alloc] initWithIntegration:self];
-            }
-            _isRefreshing = NO;
-        });
+      dispatch_async(autopkgr_integration_synchronizer_queue(), ^{
+        if (reply || _infoUpdateHandler) {
+            self.info = [[LGIntegrationInfo alloc] initWithIntegration:self];
+            dispatch_async(dispatch_get_main_queue(), ^{
+              if (_infoUpdateHandler) {
+                  _infoUpdateHandler(_info);
+              }
+              if (reply) {
+                  reply(_info);
+              }
+            });
+        } else {
+            self.info = [[LGIntegrationInfo alloc] initWithIntegration:self];
+        }
+        _isRefreshing = NO;
+      });
     };
 
     if (!_gitHubInfo || _gitHubInfo.isExpired) {
@@ -286,8 +286,8 @@ void subclassMustConformToProtocol(id className)
         loader.apiToken = [LGAutoPkgTask apiToken];
 
         [loader getReleaseInfo:^(LGGitHubReleaseInfo *gitHubInfo, NSError *error) {
-            self.gitHubInfo = gitHubInfo;
-            updateInfoHandlers();
+          self.gitHubInfo = gitHubInfo;
+          updateInfoHandlers();
         }];
     } else {
         DevLog(@"Using cached GitHub info for %@", NSStringFromClass([self class]));
@@ -354,31 +354,31 @@ void subclassMustConformToProtocol(id className)
     }
 
     void (^complete)(NSError *) = ^void(NSError *error) {
-        if (error.code == errAuthorizationCanceled) {
-            return [self didCompleteInstallAction:sender error:nil];
-        }
+      if (error.code == errAuthorizationCanceled) {
+          return [self didCompleteInstallAction:sender error:nil];
+      }
 
-        [self customInstallActions:^(NSError *customError) {
-            NSError *endError = error;
-            if (customError && (endError == nil)) {
-                endError = customError;
-            }
-            [self didCompleteInstallAction:sender error:endError];
-        }];
+      [self customInstallActions:^(NSError *customError) {
+        NSError *endError = error;
+        if (customError && (endError == nil)) {
+            endError = customError;
+        }
+        [self didCompleteInstallAction:sender error:endError];
+      }];
     };
 
     void (^addRepo)() = ^void() {
-        NSString *name = self.name;
+      NSString *name = self.name;
 
-        LGAutoPkgTask *task = [LGAutoPkgTask repoAddTask:[[self class] defaultRepository]];
-        if (self.progressDelegate) {
-            [self.progressDelegate startProgressWithMessage:[NSString stringWithFormat:@"Adding default AutoPkg repo for %@", name]];
-            task.progressDelegate = self.progressDelegate;
-        }
+      LGAutoPkgTask *task = [LGAutoPkgTask repoAddTask:[[self class] defaultRepository]];
+      if (self.progressDelegate) {
+          [self.progressDelegate startProgressWithMessage:[NSString stringWithFormat:@"Adding default AutoPkg repo for %@", name]];
+          task.progressDelegate = self.progressDelegate;
+      }
 
-        [task launchInBackground:^(NSError *error) {
-            complete(error);
-        }];
+      [task launchInBackground:^(NSError *error) {
+        complete(error);
+      }];
     };
 
     LGIntegrationTypeFlags flags = [[self class] typeFlags];
@@ -396,13 +396,14 @@ void subclassMustConformToProtocol(id className)
         installer.downloadURL = self.downloadURL;
         installer.progressDelegate = self.progressDelegate;
 
-        [installer runInstaller:name reply:^(NSError *error) {
-            if (!error && (typeFlags & kLGIntegrationTypeAutoPkgSharedProcessor)) {
-                addRepo();
-            } else {
-                complete(error);
-            }
-        }];
+        [installer runInstaller:name
+                          reply:^(NSError *error) {
+                            if (!error && (typeFlags & kLGIntegrationTypeAutoPkgSharedProcessor)) {
+                                addRepo();
+                            } else {
+                                complete(error);
+                            }
+                          }];
     } else if (flags & kLGIntegrationTypeAutoPkgSharedProcessor) {
         addRepo();
     }
@@ -429,34 +430,53 @@ void subclassMustConformToProtocol(id className)
 - (void)uninstall:(id)sender
 {
     void (^complete)(NSError *) = ^void(NSError *error) {
-        if (error.code == errAuthorizationCanceled) {
-            return [self didCompleteInstallAction:sender error:nil];
+      if (error.code == errAuthorizationCanceled) {
+          return [self didCompleteInstallAction:sender error:error];
+      }
+      [self customUninstallActions:^(NSError *customError) {
+        NSError *endError = error;
+        if (customError && !endError) {
+            endError = customError;
         }
-        [self customUninstallActions:^(NSError *customError) {
-            NSError *endError = error;
-            if (customError && !endError) {
-                endError = customError;
-            }
-            [self didCompleteInstallAction:sender error:endError];
-        }];
+        [self didCompleteInstallAction:sender error:endError];
+      }];
     };
 
+    NSAlert *alert = [[NSAlert alloc] init];
+    NSView *upsize = [[NSView alloc] initWithFrame:NSMakeRect(0, 0, 450, 0)];
+    alert.accessoryView = upsize;
+
+    NSString *messageTextFormat = NSLocalizedString(@"Are you sure you want to uninstall %@?",
+                                                    @"NSAlert infoText prompt during uninstall.");
+    alert.messageText = quick_formatString(messageTextFormat, self.name);
+
+    NSString *infoTextFormat = NSLocalizedString(@"This includes executables, default repositories, and/or settings?",
+                                                 @"NSAlert messageText prompt during uninstall.");
+    alert.informativeText = infoTextFormat;
+
+    [alert addButtonWithTitle:@"Uninstall"];
+    [alert addButtonWithTitle:@"Cancel"];
+
+    if ([alert runModal] == NSAlertSecondButtonReturn) {
+        return complete([LGError errorWithCode:errAuthorizationCanceled]);
+    }
+
     void (^removeRepo)() = ^void() {
-        NSString *defaultRepo = [[self class] defaultRepository];
-        if ([LGAutoPkgTask version]) {
-            LGAutoPkgTask *task = [LGAutoPkgTask repoDeleteTask:defaultRepo];
+      NSString *defaultRepo = [[self class] defaultRepository];
+      if ([LGAutoPkgTask version]) {
+          LGAutoPkgTask *task = [LGAutoPkgTask repoDeleteTask:defaultRepo];
 
-            [self.progressDelegate startProgressWithMessage:quick_formatString(NSLocalizedString(@"Removing default AutoPkg repo for %@", nil), self.name)];
+          [self.progressDelegate startProgressWithMessage:quick_formatString(NSLocalizedString(@"Removing default AutoPkg repo for %@", nil), self.name)];
 
-            if (self.progressDelegate) {
-                task.progressDelegate = self.progressDelegate;
-            }
-            [task launchInBackground:^(NSError *error) {
-                complete(error);
-            }];
-        } else {
-            complete(nil);
-        }
+          if (self.progressDelegate) {
+              task.progressDelegate = self.progressDelegate;
+          }
+          [task launchInBackground:^(NSError *error) {
+            complete(error);
+          }];
+      } else {
+          complete(nil);
+      }
     };
 
     if ([[self class] isInstalled]) {
@@ -475,13 +495,14 @@ void subclassMustConformToProtocol(id className)
                 uninstaller.progressDelegate = self.progressDelegate;
             }
 
-            [uninstaller uninstallPackagesWithIdentifiers:[[self class] packageIdentifiers] reply:^(NSError *error) {
-                if (!error && (typeFlags & kLGIntegrationTypeAutoPkgSharedProcessor)) {
-                    removeRepo();
-                } else {
-                    complete(error);
-                }
-            }];
+            [uninstaller uninstallPackagesWithIdentifiers:[[self class] packageIdentifiers]
+                                                    reply:^(NSError *error) {
+                                                      if (!error && (typeFlags & kLGIntegrationTypeAutoPkgSharedProcessor)) {
+                                                          removeRepo();
+                                                      } else {
+                                                          complete(error);
+                                                      }
+                                                    }];
         } else if (typeFlags & kLGIntegrationTypeAutoPkgSharedProcessor) {
             removeRepo();
         }
@@ -509,29 +530,29 @@ void subclassMustConformToProtocol(id className)
 - (void)didCompleteInstallAction:(id)sender error:(NSError *)error
 {
     dispatch_async(dispatch_get_main_queue(), ^{
-        BOOL isInstalled = [[self class] isInstalled];
-        if ([self.progressDelegate respondsToSelector:@selector(stopProgress:)]) {
-            [self.progressDelegate stopProgress:error];
-        }
+      BOOL isInstalled = [[self class] isInstalled];
+      if ([self.progressDelegate respondsToSelector:@selector(stopProgress:)]) {
+          [self.progressDelegate stopProgress:error];
+      }
 
-        if ([sender respondsToSelector:@selector(isEnabled)]) {
-            [sender setEnabled:YES];
-        }
+      if ([sender respondsToSelector:@selector(isEnabled)]) {
+          [sender setEnabled:YES];
+      }
 
-        if ([sender respondsToSelector:@selector(action)]) {
-            if ([[self class] isUninstallable]) {
-                [sender setAction:isInstalled ? @selector(uninstall:) : @selector(install:)];
-            }
-        }
+      if ([sender respondsToSelector:@selector(action)]) {
+          if ([[self class] isUninstallable]) {
+              [sender setAction:isInstalled ? @selector(uninstall:) : @selector(install:)];
+          }
+      }
 
-        [[NSNotificationCenter defaultCenter] postNotificationName:kLGNotificationIntegrationStatusDidChange object:self];
+      [[NSNotificationCenter defaultCenter] postNotificationName:kLGNotificationIntegrationStatusDidChange object:self];
 
-        if (_origProgressDelegate) {
-            _progressDelegate = _origProgressDelegate;
-            _origProgressDelegate = nil;
-        }
-        
-        [self refresh];
+      if (_origProgressDelegate) {
+          _progressDelegate = _origProgressDelegate;
+          _origProgressDelegate = nil;
+      }
+
+      [self refresh];
     });
 }
 
@@ -576,7 +597,7 @@ void subclassMustConformToProtocol(id className)
 {
     if (_replyErrorBlock) {
         [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-            _replyErrorBlock(error);
+          _replyErrorBlock(error);
         }];
     }
 }
@@ -585,7 +606,7 @@ void subclassMustConformToProtocol(id className)
 {
     if (_progressUpdateBlock) {
         [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-            _progressUpdateBlock(message, progress);
+          _progressUpdateBlock(message, progress);
         }];
     }
 }
@@ -659,11 +680,13 @@ void subclassMustConformToProtocol(id className)
     switch (self.status) {
     case kLGIntegrationNotInstalled:
         statusString = quick_formatString(NSLocalizedString(@"%@ not installed.",
-                                                            @"status message when not integration is not installed"), _name);
+                                                            @"status message when not integration is not installed"),
+                                          _name);
         break;
     case kLGIntegrationUpdateAvailable:
         statusString = quick_formatString(NSLocalizedString(@"%@ %@ update now available.",
-                                                            @"Status message when integration update is available."), _name, self.remoteVersion);
+                                                            @"Status message when integration update is available."),
+                                          _name, self.remoteVersion);
         break;
     case kLGIntegrationUpToDate:
     default:

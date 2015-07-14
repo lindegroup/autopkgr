@@ -157,7 +157,7 @@
         [self.progressMessage setStringValue:@"Starting..."];
         [self.progressIndicator setDoubleValue:0.0];
 
-        if (error) {
+        if (error && error.code != errAuthorizationCanceled) {
             SEL selector = nil;
             NSString *suggestion = error.localizedRecoverySuggestion ?: @"";
             NSString *truncatedString = [suggestion truncateToNumberOfLines:25];
