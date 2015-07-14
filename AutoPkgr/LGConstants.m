@@ -35,7 +35,7 @@ NSString *const kLGGitReleasesJSONURL = @"https://api.github.com/repos/timcharpe
 NSString *const kLGJSSImporterJSONURL = @"https://api.github.com/repos/sheagcraig/JSSImporter/releases";
 
 NSString *const kLGAutoPkgRepositoriesJSONURL = @"https://api.github.com/orgs/autopkg/repos?per_page=100";
-NSString *const kLGJSSDefaultRepo = @"https://github.com/sheagcraig/jss-recipes.git";
+NSString *const kLGJSSDefaultRepo = @"https://github.com/autopkg/jss-recipes.git";
 #pragma mark-- AutoPkgr
 NSString *const kLGAutoPkgrWebsite = @"http://www.lindegroup.com/autopkgr";
 NSString *const kLGAutoPkgrHelpWebsite = @"https://github.com/lindegroup/autopkgr/blob/master/README.md";
