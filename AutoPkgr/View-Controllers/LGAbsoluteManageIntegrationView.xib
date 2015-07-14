@@ -24,7 +24,7 @@
                     </constraints>
                     <textFieldCell key="cell" controlSize="small" sendsActionOnEndEditing="YES" id="Lrs-9e-sMd">
                         <font key="font" metaFont="smallSystem"/>
-                        <string key="title">Note: While AutoPkgr supports running at the login window, AbsoluteManage recipes require LANrev.app to be open, so your machine must remain logged in to utilize this processor.</string>
+                        <string key="title">Note: While AutoPkgr supports running at the login window, .absolute recipes require Absolute Manage Admin.app to be open, so your machine must remain logged in to utilize this processor.</string>
                         <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
