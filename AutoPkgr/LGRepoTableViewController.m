@@ -264,22 +264,6 @@
         clipboardItem.representedObject = repo.path;
         clipboardItem.target = self;
         [menu addItem:clipboardItem];
-
-        NSMenuItem *resetItem = [[NSMenuItem alloc] init];
-        // Reset repo menu itme
-
-        NSMutableAttributedString *str = [[NSMutableAttributedString alloc] initWithString:@"\u26A0 Hard Reset Repo..."];
-        NSRange range = NSMakeRange(0, str.length);
-        [str addAttributes:@{ NSForegroundColorAttributeName : [NSColor redColor],
-                              NSFontAttributeName : [NSFont systemFontOfSize:14]
-        }
-                     range:range];
-
-        resetItem.attributedTitle = str;
-
-        resetItem.action = @selector(hardResetToOriginMaster);
-        resetItem.target = repo;
-        [menu addItem:resetItem];
     }
 
     return menu;

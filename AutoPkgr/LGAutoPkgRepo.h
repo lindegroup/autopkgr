@@ -47,7 +47,7 @@ typedef NS_ENUM(OSStatus, LGAutoPkgRepoStatus) {
 @property (copy) void (^statusChangeBlock)(LGAutoPkgRepoStatus);
 
 /**
- *  Check if there are updates availabel for the repo.
+ *  Check if there are updates available for the repo.
  *
  *  @param sender Object sending the message. If the sender is set to nil, it will only refresh every 5-10 minuets. You should set this to nil if using in a table view.
  */
@@ -55,11 +55,6 @@ typedef NS_ENUM(OSStatus, LGAutoPkgRepoStatus) {
 
 - (void)install:(void (^)(NSError *))reply;
 - (void)remove:(void (^)(NSError *))reply;
-
-/**
- *  Hard reset repo the remote (origin) master commit
- */
-- (void)hardResetToOriginMaster;
 
 /**
  *  Update the repo;
