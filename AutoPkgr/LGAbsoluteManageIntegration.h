@@ -25,5 +25,9 @@
 
 // This is also a good place to add custom defaults
 @interface LGAbsoluteManageDefaults : LGDefaults
+
+@property (copy, nonatomic, readonly) NSString *DatabaseDirectory;
+
 @property (assign, nonatomic) BOOL AllowURLSDPackageImport;
+
 @end

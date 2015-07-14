@@ -83,9 +83,12 @@
 + (BOOL)meetsRequirements:(NSError *__autoreleasing *)error {
     NSFileManager *manager = [NSFileManager defaultManager];
     NSString *lanRev = @"/Applications/LANrev Admin.app";
-    NSString *dataBase = @"~/Library/Application Support/LANrev Admin/Database/";
 
-    for (NSString* path in @[lanRev, dataBase.stringByExpandingTildeInPath]) {
+    LGAbsoluteManageDefaults *defaults = [LGAbsoluteManageDefaults new];
+
+    NSString *dataBase = defaults.DatabaseDirectory ?: @"~/Library/Application Support/LANrev Admin/Database/".stringByExpandingTildeInPath;
+
+    for (NSString* path in @[lanRev, dataBase]) {
         if (![manager fileExistsAtPath:path]) {
             if (error) {
                 *error = [[self class] requirementsError:[NSString stringWithFormat:@"Please check that %@ exists.", path]];
@@ -114,6 +117,11 @@
 @implementation LGAbsoluteManageDefaults
 
 static NSString *const kLGAbsoluteManageDomain = @"com.poleposition-sw.lanrev_admin";
+
+- (NSString *)DatabaseDirectory {
+    return [self absoluteManageDomainObject:
+             NSStringFromSelector(@selector(DatabaseDirectory))];
+}
 
 - (void)setAllowURLSDPackageImport:(BOOL)AllowURLSDPackageImport
 {
