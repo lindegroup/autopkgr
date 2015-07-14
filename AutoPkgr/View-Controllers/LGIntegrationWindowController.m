@@ -43,7 +43,7 @@
         self.accessoryButton.hidden = NO;
         self.accessoryButton.target = self;
         self.accessoryButton.action = @selector(uninstall:);
-        self.accessoryButton.title = @"Uninstall";
+        self.accessoryButton.title = @"Uninstall...";
     } else {
         self.accessoryButton.hidden = YES;
     }
