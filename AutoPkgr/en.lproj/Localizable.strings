@@ -27,7 +27,7 @@
 "[%@] failures occurred while running AutoPkg" = "[%@] failures occurred while running AutoPkg";
 
 /* No comment provided by engineer. */
-"[%@] New software available for testing" = "[%@] New software available for testing";
+"[%@] New software available for testing:" = "[%@] New software available for testing:";
 
 /* Tab label */
 "Notifications" = "Notifications";
@@ -99,7 +99,7 @@
 "Never by AutoPkgr" = "Never by AutoPkgr";
 
 /* No comment provided by engineer. */
-"New software available for testing" = "New software available for testing";
+"New software available for testing:" = "New software available for testing:";
 
 /* No comment provided by engineer. */
 "Nothing new to report." = "Nothing new to report.";
@@ -156,7 +156,7 @@
 "The following errors occurred:" = "The following errors occurred:";
 
 /* No comment provided by engineer. */
-"The following failures occurred." = "The following failures occurred.";
+"The following failures occurred:" = "The following failures occurred:";
 
 /* NSUserNotification text when email fails. */
 "There was a problem sending test email. Double-check the SMTP settings you specified in AutoPkgr." = "There was a problem sending test email. Double-check the SMTP settings you specified in AutoPkgr.";

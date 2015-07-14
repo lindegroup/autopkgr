@@ -118,7 +118,7 @@ NSString *const fallback_reportCSS = @"<style type='text/css'>*{font-family:'Hel
 - (NSString *)emailSubjectString
 {
     if ([_reportDictionary[kReportKeySummaryResults] count] > 0) {
-        return quick_formatString(NSLocalizedString(@"New software available for testing", nil));
+        return quick_formatString(NSLocalizedString(@"New software available for testing:", nil));
     } else if ([_reportDictionary[kReportKeyFailures] count] > 0) {
         return quick_formatString(NSLocalizedString(@"Failures occurred while running AutoPkg", nil));
     } else if (self.error) {
@@ -211,7 +211,7 @@ NSString *const fallback_reportCSS = @"<style type='text/css'>*{font-family:'Hel
 
     if (self.updatedApplications.count) {
         NSMutableArray *dictArray = [NSMutableArray new];
-        string = [NSLocalizedString(@"New software available for testing", nil).html_H3 mutableCopy];
+        string = [NSLocalizedString(@"New software available for testing:", nil).html_H3 mutableCopy];
 
         for (LGUpdatedApplication *application in _updatedApplications) {
             [dictArray addObject:@{ @"name" : application.name,
