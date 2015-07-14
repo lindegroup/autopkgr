@@ -132,7 +132,7 @@
 
         statusCell.textField.stringValue = quick_formatString(@"%@: %@",
                                                               integration.name,
-                                                              NSLocalizedString(@"checking status", nil));
+                                                              NSLocalizedString(@"Checking status...", nil));
 
         statusCell.imageView.hidden = YES;
         [statusCell.progressIndicator startAnimation:nil];

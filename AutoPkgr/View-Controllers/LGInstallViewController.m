@@ -178,7 +178,7 @@
         statusCell.installButton.enabled = NO;
         statusCell.installButton.title = [@"Install " stringByAppendingString:integration.name];
 
-        statusCell.textField.stringValue = [integration.name stringByAppendingString:@": checking status"];
+        statusCell.textField.stringValue = [integration.name stringByAppendingString:@": Checking status..."];
 
         statusCell.imageView.hidden = YES;
         [statusCell.progressIndicator startAnimation:nil];
