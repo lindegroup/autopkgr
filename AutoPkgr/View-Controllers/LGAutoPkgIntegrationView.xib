@@ -7,6 +7,11 @@
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="LGAutoPkgIntegrationView">
             <connections>
+                <outlet property="apiInfoHelpBT" destination="id9-eX-Yap" id="s7f-l6-5d6"/>
+                <outlet property="apiPasswordTF" destination="Vdh-pr-fxy" id="iF1-J4-k78"/>
+                <outlet property="apiUsernameTF" destination="tgf-Iq-BwS" id="iPu-Nh-k7J"/>
+                <outlet property="generateAPITokenBT" destination="GwV-tn-iky" id="TUO-2p-kW7"/>
+                <outlet property="proxySelectionMatrix" destination="Hq3-ek-hGA" id="GpH-3F-hm0"/>
                 <outlet property="view" destination="Hz6-mo-xeY" id="0bl-1N-x8E"/>
             </connections>
         </customObject>
@@ -36,67 +41,55 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="pO2-1p-Ljw">
-                                <rect key="frame" x="124" y="112" width="367" height="19"/>
+                                <rect key="frame" x="124" y="102" width="367" height="19"/>
                                 <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" placeholderString="http://username:password@proxy:8080" drawsBackground="YES" id="mN7-lS-7SX">
                                     <font key="font" metaFont="smallSystem"/>
                                     <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
                                 <connections>
+                                    <binding destination="-2" name="enabled" keyPath="self.useCustomProxies" id="k65-44-6Mx"/>
                                     <binding destination="oEY-e7-qCZ" name="value" keyPath="values.HTTP_PROXY" id="RlK-JX-Va4">
                                         <dictionary key="options">
                                             <string key="NSNullPlaceholder">http://username:password@proxy:8080</string>
                                         </dictionary>
                                     </binding>
-                                    <binding destination="oEY-e7-qCZ" name="enabled" keyPath="values.useSystemProxies" id="YFl-ef-2Rx">
-                                        <dictionary key="options">
-                                            <string key="NSValueTransformerName">NSNegateBoolean</string>
-                                        </dictionary>
-                                    </binding>
                                 </connections>
                             </textField>
                             <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="w7R-0D-KM9">
-                                <rect key="frame" x="124" y="86" width="367" height="19"/>
+                                <rect key="frame" x="124" y="76" width="367" height="19"/>
                                 <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" placeholderString="https://username:password@proxy:8080" drawsBackground="YES" id="2DM-Pk-cEe">
                                     <font key="font" metaFont="smallSystem"/>
                                     <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
                                 <connections>
+                                    <binding destination="-2" name="enabled" keyPath="self.useCustomProxies" id="mZq-iw-lzj"/>
                                     <binding destination="oEY-e7-qCZ" name="value" keyPath="values.HTTPS_PROXY" id="R7v-n2-hFc">
                                         <dictionary key="options">
                                             <string key="NSNullPlaceholder">http://username:password@proxy:8080</string>
                                         </dictionary>
                                     </binding>
-                                    <binding destination="oEY-e7-qCZ" name="enabled" keyPath="values.useSystemProxies" id="A2w-ty-sKw">
-                                        <dictionary key="options">
-                                            <string key="NSValueTransformerName">NSNegateBoolean</string>
-                                        </dictionary>
-                                    </binding>
                                 </connections>
                             </textField>
                             <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="SFt-NM-BBm">
-                                <rect key="frame" x="124" y="59" width="367" height="19"/>
+                                <rect key="frame" x="124" y="49" width="367" height="19"/>
                                 <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" placeholderString=".local,10.0.0.0/24,.mylocaldomain.com" drawsBackground="YES" id="8FQ-1P-GWZ">
                                     <font key="font" metaFont="smallSystem"/>
                                     <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
                                 <connections>
+                                    <binding destination="-2" name="enabled" keyPath="self.useCustomProxies" id="53F-Bc-nXf"/>
                                     <binding destination="oEY-e7-qCZ" name="value" keyPath="values.NO_PROXY" id="wa3-pL-PLv">
                                         <dictionary key="options">
                                             <string key="NSNullPlaceholder">.local,10.0.0.0/24,.mylocaldomain.com</string>
                                         </dictionary>
                                     </binding>
-                                    <binding destination="oEY-e7-qCZ" name="enabled" keyPath="values.useSystemProxies" id="hJn-ov-bwU">
-                                        <dictionary key="options">
-                                            <string key="NSValueTransformerName">NSNegateBoolean</string>
-                                        </dictionary>
-                                    </binding>
                                 </connections>
                             </textField>
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="xlM-7v-Sva">
-                                <rect key="frame" x="18" y="115" width="104" height="14"/>
+                                <rect key="frame" x="18" y="105" width="104" height="14"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="100" id="ibi-gl-6LP"/>
                                 </constraints>
@@ -106,15 +99,11 @@
                                     <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
                                 <connections>
-                                    <binding destination="oEY-e7-qCZ" name="enabled" keyPath="values.useSystemProxies" id="ibH-I9-a1l">
-                                        <dictionary key="options">
-                                            <string key="NSValueTransformerName">NSNegateBoolean</string>
-                                        </dictionary>
-                                    </binding>
+                                    <binding destination="-2" name="enabled" keyPath="self.useCustomProxies" id="4Ra-36-keD"/>
                                 </connections>
                             </textField>
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="QPR-qj-EIH">
-                                <rect key="frame" x="18" y="89" width="104" height="14"/>
+                                <rect key="frame" x="18" y="79" width="104" height="14"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="100" id="VlG-24-dbq"/>
                                 </constraints>
@@ -124,15 +113,11 @@
                                     <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
                                 <connections>
-                                    <binding destination="oEY-e7-qCZ" name="enabled" keyPath="values.useSystemProxies" id="Mqx-80-ni7">
-                                        <dictionary key="options">
-                                            <string key="NSValueTransformerName">NSNegateBoolean</string>
-                                        </dictionary>
-                                    </binding>
+                                    <binding destination="-2" name="enabled" keyPath="self.useCustomProxies" id="Tg8-WJ-JuX"/>
                                 </connections>
                             </textField>
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="iUt-wZ-Ea8">
-                                <rect key="frame" x="18" y="62" width="104" height="14"/>
+                                <rect key="frame" x="18" y="52" width="104" height="14"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="100" id="gbV-Lm-FVN"/>
                                 </constraints>
@@ -142,15 +127,11 @@
                                     <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
                                 <connections>
-                                    <binding destination="oEY-e7-qCZ" name="enabled" keyPath="values.useSystemProxies" id="E9d-PC-nYQ">
-                                        <dictionary key="options">
-                                            <string key="NSValueTransformerName">NSNegateBoolean</string>
-                                        </dictionary>
-                                    </binding>
+                                    <binding destination="-2" name="enabled" keyPath="self.useCustomProxies" id="Q55-9j-Vgu"/>
                                 </connections>
                             </textField>
                             <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="WxI-zU-hdX">
-                                <rect key="frame" x="16" y="39" width="479" height="12"/>
+                                <rect key="frame" x="16" y="29" width="479" height="12"/>
                                 <textFieldCell key="cell" controlSize="mini" sendsActionOnEndEditing="YES" alignment="center" title="Defining your proxy here will allow AutoPkg to work over your proxy even when no user is logged in." id="Z6Z-la-ERa">
                                     <font key="font" metaFont="miniSystem"/>
                                     <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -158,65 +139,64 @@
                                 </textFieldCell>
                             </textField>
                             <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="wQJ-CB-Rb9">
-                                <rect key="frame" x="16" y="24" width="479" height="12"/>
+                                <rect key="frame" x="16" y="14" width="479" height="12"/>
                                 <textFieldCell key="cell" controlSize="mini" sendsActionOnEndEditing="YES" alignment="center" title="WARNING: This requires storing the above information in clear text, and is not recommended." id="Ovo-Ez-myb">
                                     <font key="font" metaFont="miniSystemBold"/>
                                     <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                     <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
                             </textField>
-                            <button translatesAutoresizingMaskIntoConstraints="NO" id="ylr-AX-bSf">
-                                <rect key="frame" x="16" y="138" width="478" height="18"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="475" id="hCE-Cw-pQ9"/>
-                                </constraints>
-                                <buttonCell key="cell" type="radio" title="Use custom proxy settings:" bezelStyle="regularSquare" imagePosition="left" alignment="left" controlSize="small" state="on" inset="2" id="aoa-ki-wQd">
+                            <matrix verticalHuggingPriority="750" fixedFrame="YES" allowsEmptySelection="NO" autorecalculatesCellSize="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Hq3-ek-hGA">
+                                <rect key="frame" x="18" y="126" width="285" height="58"/>
+                                <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                <size key="cellSize" width="285" height="18"/>
+                                <size key="intercellSpacing" width="4" height="2"/>
+                                <buttonCell key="prototype" type="radio" title="Use proxy settings defined in System Preferences" imagePosition="left" alignment="left" controlSize="small" state="on" tag="1" inset="2" id="460-FS-hUS">
                                     <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                     <font key="font" metaFont="smallSystem"/>
                                 </buttonCell>
+                                <cells>
+                                    <column>
+                                        <buttonCell type="radio" title="Do not use proxies" imagePosition="left" alignment="left" controlSize="small" state="on" inset="2" id="ggi-49-F33">
+                                            <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                            <font key="font" metaFont="smallSystem"/>
+                                        </buttonCell>
+                                        <buttonCell type="radio" title="Use proxy settings defined in System Preferences" imagePosition="left" alignment="left" controlSize="small" inset="2" id="mE5-pR-bgw">
+                                            <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                            <font key="font" metaFont="smallSystem"/>
+                                        </buttonCell>
+                                        <buttonCell type="radio" title="Use custom proxy settings:" imagePosition="left" alignment="left" controlSize="small" tag="1" inset="2" id="2iB-pp-6MS">
+                                            <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                            <font key="font" metaFont="smallSystem"/>
+                                        </buttonCell>
+                                    </column>
+                                </cells>
                                 <connections>
-                                    <binding destination="oEY-e7-qCZ" name="value" keyPath="values.useSystemProxies" id="Fgo-Sn-3OG"/>
+                                    <action selector="changeProxySelection:" target="-2" id="N6q-Rj-IfG"/>
                                 </connections>
-                            </button>
-                            <button translatesAutoresizingMaskIntoConstraints="NO" id="vKa-Xg-1tR">
-                                <rect key="frame" x="16" y="165" width="478" height="18"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="475" id="au6-SH-8o1"/>
-                                </constraints>
-                                <buttonCell key="cell" type="radio" title="Use proxy settings defined in System Preferences" bezelStyle="regularSquare" imagePosition="left" alignment="left" controlSize="small" state="on" inset="2" id="ijW-AX-m75">
-                                    <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
-                                    <font key="font" metaFont="smallSystem"/>
-                                </buttonCell>
-                                <connections>
-                                    <binding destination="oEY-e7-qCZ" name="value" keyPath="values.useSystemProxies" id="2Be-wc-fXI"/>
-                                </connections>
-                            </button>
+                            </matrix>
                         </subviews>
                     </view>
                     <constraints>
                         <constraint firstItem="wQJ-CB-Rb9" firstAttribute="leading" secondItem="3nH-ob-ob4" secondAttribute="leading" constant="16" id="2bJ-l4-Kgj"/>
-                        <constraint firstItem="vKa-Xg-1tR" firstAttribute="leading" secondItem="3nH-ob-ob4" secondAttribute="leading" constant="16" id="5hv-Wd-RuU"/>
-                        <constraint firstItem="ylr-AX-bSf" firstAttribute="top" secondItem="3nH-ob-ob4" secondAttribute="top" constant="52" id="8Np-7H-XQt"/>
                         <constraint firstAttribute="trailing" secondItem="wQJ-CB-Rb9" secondAttribute="trailing" constant="14" id="9MV-8T-tGU"/>
                         <constraint firstAttribute="trailing" secondItem="SFt-NM-BBm" secondAttribute="trailing" constant="16" id="AC3-Sr-HbP"/>
                         <constraint firstItem="w7R-0D-KM9" firstAttribute="leading" secondItem="3nH-ob-ob4" secondAttribute="leading" constant="122" id="Ed2-t0-s4t"/>
-                        <constraint firstItem="WxI-zU-hdX" firstAttribute="top" secondItem="3nH-ob-ob4" secondAttribute="top" constant="155" id="IwQ-2W-sSE"/>
+                        <constraint firstItem="WxI-zU-hdX" firstAttribute="top" secondItem="3nH-ob-ob4" secondAttribute="top" constant="165" id="IwQ-2W-sSE"/>
                         <constraint firstItem="QPR-qj-EIH" firstAttribute="leading" secondItem="3nH-ob-ob4" secondAttribute="leading" constant="18" id="MGe-KR-Ynq"/>
-                        <constraint firstItem="ylr-AX-bSf" firstAttribute="leading" secondItem="3nH-ob-ob4" secondAttribute="leading" constant="16" id="MmR-O2-hJn"/>
                         <constraint firstAttribute="trailing" secondItem="pO2-1p-Ljw" secondAttribute="trailing" constant="16" id="NJT-fm-Hm1"/>
-                        <constraint firstItem="iUt-wZ-Ea8" firstAttribute="top" secondItem="3nH-ob-ob4" secondAttribute="top" constant="130" id="PxI-OP-lkr"/>
+                        <constraint firstItem="iUt-wZ-Ea8" firstAttribute="top" secondItem="3nH-ob-ob4" secondAttribute="top" constant="140" id="PxI-OP-lkr"/>
                         <constraint firstAttribute="trailing" secondItem="w7R-0D-KM9" secondAttribute="trailing" constant="16" id="S1R-iB-9yy"/>
                         <constraint firstItem="pO2-1p-Ljw" firstAttribute="leading" secondItem="3nH-ob-ob4" secondAttribute="leading" constant="122" id="atc-jC-Rmg"/>
-                        <constraint firstItem="wQJ-CB-Rb9" firstAttribute="top" secondItem="3nH-ob-ob4" secondAttribute="top" constant="170" id="bw3-nX-sy4"/>
+                        <constraint firstItem="wQJ-CB-Rb9" firstAttribute="top" secondItem="3nH-ob-ob4" secondAttribute="top" constant="180" id="bw3-nX-sy4"/>
                         <constraint firstItem="WxI-zU-hdX" firstAttribute="leading" secondItem="3nH-ob-ob4" secondAttribute="leading" constant="16" id="cC0-w3-xfT"/>
                         <constraint firstAttribute="trailing" secondItem="WxI-zU-hdX" secondAttribute="trailing" constant="14" id="hBE-x4-Rtm"/>
-                        <constraint firstItem="pO2-1p-Ljw" firstAttribute="top" secondItem="3nH-ob-ob4" secondAttribute="top" constant="75" id="ihQ-5b-vBP"/>
+                        <constraint firstItem="pO2-1p-Ljw" firstAttribute="top" secondItem="3nH-ob-ob4" secondAttribute="top" constant="85" id="ihQ-5b-vBP"/>
                         <constraint firstItem="SFt-NM-BBm" firstAttribute="leading" secondItem="3nH-ob-ob4" secondAttribute="leading" constant="122" id="mti-Fe-7sP"/>
-                        <constraint firstItem="vKa-Xg-1tR" firstAttribute="top" secondItem="3nH-ob-ob4" secondAttribute="top" constant="25" id="n3S-ah-Qas"/>
-                        <constraint firstItem="xlM-7v-Sva" firstAttribute="top" secondItem="3nH-ob-ob4" secondAttribute="top" constant="77" id="qlY-1E-qQh"/>
-                        <constraint firstItem="QPR-qj-EIH" firstAttribute="top" secondItem="3nH-ob-ob4" secondAttribute="top" constant="103" id="rPi-oP-OMj"/>
-                        <constraint firstItem="SFt-NM-BBm" firstAttribute="top" secondItem="3nH-ob-ob4" secondAttribute="top" constant="128" id="tdt-KK-arM"/>
-                        <constraint firstItem="w7R-0D-KM9" firstAttribute="top" secondItem="3nH-ob-ob4" secondAttribute="top" constant="101" id="us0-wP-7uf"/>
+                        <constraint firstItem="xlM-7v-Sva" firstAttribute="top" secondItem="3nH-ob-ob4" secondAttribute="top" constant="87" id="qlY-1E-qQh"/>
+                        <constraint firstItem="QPR-qj-EIH" firstAttribute="top" secondItem="3nH-ob-ob4" secondAttribute="top" constant="113" id="rPi-oP-OMj"/>
+                        <constraint firstItem="SFt-NM-BBm" firstAttribute="top" secondItem="3nH-ob-ob4" secondAttribute="top" constant="138" id="tdt-KK-arM"/>
+                        <constraint firstItem="w7R-0D-KM9" firstAttribute="top" secondItem="3nH-ob-ob4" secondAttribute="top" constant="111" id="us0-wP-7uf"/>
                         <constraint firstItem="xlM-7v-Sva" firstAttribute="leading" secondItem="3nH-ob-ob4" secondAttribute="leading" constant="18" id="viV-8Y-9wI"/>
                         <constraint firstItem="iUt-wZ-Ea8" firstAttribute="leading" secondItem="3nH-ob-ob4" secondAttribute="leading" constant="18" id="w21-Gm-SEs"/>
                         <constraint firstAttribute="height" constant="203" id="zec-bb-L46"/>

@@ -30,6 +30,12 @@ static NSString *const kLGTokenGenerateButonTitle = @"Generate API Token";
 @property (weak) IBOutlet NSSecureTextField *apiPasswordTF;
 @property (weak) IBOutlet NSButton *generateAPITokenBT;
 @property (weak) IBOutlet NSButton *apiInfoHelpBT;
+
+@property (weak) IBOutlet NSMatrix *proxySelectionMatrix;
+
+// Proxies text field's `enabled` property is bound to this in the XIB.
+@property (nonatomic) BOOL useCustomProxies;
+
 @end
 
 @implementation LGAutoPkgIntegrationView
@@ -45,6 +51,36 @@ static NSString *const kLGTokenGenerateButonTitle = @"Generate API Token";
     if ([LGAutoPkgTask apiTokenFileExists:nil]) {
         _generateAPITokenBT.title = kLGTokenRevokeButonTitle;
         _generateAPITokenBT.action = @selector(deleteAPIToken:);
+
+        LGDefaults *defaults = [LGDefaults standardUserDefaults];
+
+        BOOL systemProxyCheck = [defaults boolForKey:@"useSystemProxies"];
+        NSString *proxyCheck = [defaults objectForKey:@"HTTP_PROXY"];
+        NSString *proxyCheck2 = [defaults objectForKey:@"HTTPS_PROXY"];
+
+        if (systemProxyCheck) {
+            [self.proxySelectionMatrix selectCellAtRow:1 column:0];
+        } else if(proxyCheck || proxyCheck2){
+            [self.proxySelectionMatrix selectCellAtRow:2 column:0];
+            self.useCustomProxies = YES;
+        } else {
+            [self.proxySelectionMatrix selectCellAtRow:0 column:0];
+        }
+
+    }
+}
+
+#pragma mark - Proxies
+- (IBAction)changeProxySelection:(NSMatrix *)sender{
+    self.useCustomProxies = sender.selectedTag;
+    
+    LGDefaults *defaults = [LGDefaults standardUserDefaults];
+
+    [defaults setBool:(sender.selectedRow == 1) forKey:@"useSystemProxies"];
+
+    if (sender.selectedRow == 0) {
+        [defaults removeObjectForKey:@"HTTP_PROXY"];
+        [defaults removeObjectForKey:@"HTTPS_PROXY"];
     }
 }
 
