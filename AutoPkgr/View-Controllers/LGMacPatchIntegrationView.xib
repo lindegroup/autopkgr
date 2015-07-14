@@ -7,10 +7,10 @@
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="LGMacPatchIntegrationView">
             <connections>
+                <outlet property="MacPatchAllowSelfSignedCertsBT" destination="Urs-3s-vbb" id="dZV-vO-ahh"/>
                 <outlet property="MacPatchPasswordTF" destination="BYZ-FK-qfL" id="uWu-op-8OK"/>
                 <outlet property="MacPatchURL" destination="75m-34-02a" id="O5L-9R-50B"/>
                 <outlet property="MacPatchUserNameTF" destination="Ukt-F5-wP3" id="Uwl-dg-eve"/>
-                <outlet property="MacPatchVerifySSLBT" destination="Urs-3s-vbb" id="GsN-JH-2QQ"/>
                 <outlet property="view" destination="Hz6-mo-xeY" id="0bl-1N-x8E"/>
             </connections>
         </customObject>
@@ -85,7 +85,7 @@
                     <constraints>
                         <constraint firstAttribute="width" constant="363" id="NAo-gD-Tsj"/>
                     </constraints>
-                    <buttonCell key="cell" type="check" title="Verify SSL" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="ebp-wM-ziW">
+                    <buttonCell key="cell" type="check" title="Allow Self-Signed Certificate" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="ebp-wM-ziW">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                         <font key="font" metaFont="system"/>
                     </buttonCell>

@@ -27,7 +27,7 @@
 @property (weak) IBOutlet NSTextField *MacPatchURL;
 @property (weak) IBOutlet NSTextField *MacPatchUserNameTF;
 @property (weak) IBOutlet NSSecureTextField *MacPatchPasswordTF;
-@property (weak) IBOutlet NSButton *MacPatchVerifySSLBT;
+@property (weak) IBOutlet NSButton *MacPatchAllowSelfSignedCertsBT;
 
 @end
 
@@ -44,6 +44,7 @@
 - (void)awakeFromNib
 {
     _defaults = [[LGMacPatchDefaults alloc] init];
+
     _MacPatchURL.delegate = self;
     _MacPatchURL.safe_stringValue = _defaults.MP_URL;
 
@@ -53,13 +54,20 @@
     _MacPatchPasswordTF.delegate = self;
     _MacPatchPasswordTF.safe_stringValue = _defaults.MP_PASSWORD;
 
-    _MacPatchVerifySSLBT.target = self;
-    _MacPatchVerifySSLBT.action = @selector(changeSSLVerify:);
-    _MacPatchVerifySSLBT.state = _defaults.MP_SSL_VERIFY;
+    // This will return nil the first time (register defaults equivelant.)
+    if(![_defaults autoPkgDomainObject:NSStringFromSelector(@selector(MP_SSL_VERIFY))]){
+        _defaults.MP_SSL_VERIFY = YES;
+    }
+
+    _MacPatchAllowSelfSignedCertsBT.target = self;
+    _MacPatchAllowSelfSignedCertsBT.action = @selector(changeSSLVerify:);
+
+    // Allowing self signed certs is the opposite of verifySSL.
+    _MacPatchAllowSelfSignedCertsBT.state = !_defaults.MP_SSL_VERIFY;
 }
 
 - (void)changeSSLVerify:(NSButton *)sender {
-    _defaults.MP_SSL_VERIFY = sender.state;
+    _defaults.MP_SSL_VERIFY = !sender.state;
 }
 
 - (void)controlTextDidChange:(NSNotification *)notification {
