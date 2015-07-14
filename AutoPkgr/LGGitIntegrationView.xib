@@ -8,9 +8,6 @@
         <customObject id="-2" userLabel="File's Owner" customClass="LGGitIntegrationView">
             <connections>
                 <outlet property="githPathTF" destination="Jkl-K2-Upr" id="2xl-4K-d0t"/>
-                <outlet property="installButton" destination="5DW-IA-M6U" id="mfe-UH-LJV"/>
-                <outlet property="progressMessageTF" destination="8te-fS-d4A" id="ocP-dv-Nba"/>
-                <outlet property="progressSpinner" destination="xNM-7P-Eyb" id="3HM-tv-wTG"/>
                 <outlet property="view" destination="Hz6-mo-xeY" id="0bl-1N-x8E"/>
             </connections>
         </customObject>
@@ -56,51 +53,15 @@
                         <action selector="setGitPath:" target="-2" id="mbj-Ij-b3R"/>
                     </connections>
                 </button>
-                <button hidden="YES" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="5DW-IA-M6U">
-                    <rect key="frame" x="313" y="23" width="153" height="32"/>
-                    <constraints>
-                        <constraint firstAttribute="width" constant="141" id="eDN-LI-lO2"/>
-                    </constraints>
-                    <buttonCell key="cell" type="push" title="Install Official Git" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="sYv-eS-saC">
-                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                        <font key="font" metaFont="system"/>
-                    </buttonCell>
-                    <connections>
-                        <action selector="installOfficialGit:" target="-2" id="5Rr-N9-HL7"/>
-                    </connections>
-                </button>
-                <progressIndicator horizontalHuggingPriority="750" verticalHuggingPriority="750" maxValue="100" displayedWhenStopped="NO" bezeled="NO" indeterminate="YES" controlSize="small" style="spinning" translatesAutoresizingMaskIntoConstraints="NO" id="xNM-7P-Eyb">
-                    <rect key="frame" x="298" y="32" width="16" height="16"/>
-                    <constraints>
-                        <constraint firstAttribute="width" constant="16" id="teJ-4e-VYI"/>
-                    </constraints>
-                </progressIndicator>
-                <textField hidden="YES" horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="8te-fS-d4A">
-                    <rect key="frame" x="18" y="32" width="272" height="17"/>
-                    <constraints>
-                        <constraint firstAttribute="width" constant="268" id="rhj-1H-iFK"/>
-                    </constraints>
-                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Install Progress..." id="QPz-iv-8cH">
-                        <font key="font" metaFont="system"/>
-                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
-                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                    </textFieldCell>
-                </textField>
             </subviews>
             <constraints>
                 <constraint firstItem="Jkl-K2-Upr" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="20" id="8CR-wK-vya"/>
-                <constraint firstAttribute="trailing" secondItem="5DW-IA-M6U" secondAttribute="trailing" constant="20" id="AFI-uk-1U1"/>
                 <constraint firstItem="jHv-WS-Qfj" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="21" id="CQr-Mv-LVd"/>
-                <constraint firstAttribute="trailing" secondItem="xNM-7P-Eyb" secondAttribute="trailing" constant="166" id="MFA-g1-xWq"/>
-                <constraint firstItem="8te-fS-d4A" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="52" id="MSj-Gc-qzR"/>
                 <constraint firstItem="jHv-WS-Qfj" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="20" id="PGu-dW-kpo"/>
-                <constraint firstItem="5DW-IA-M6U" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="50" id="PXC-fW-ToB"/>
                 <constraint firstItem="UHV-aU-vdM" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="20" id="Plj-UA-0cM"/>
                 <constraint firstAttribute="trailing" secondItem="Jkl-K2-Upr" secondAttribute="trailing" constant="110" id="mbH-Oo-zgk"/>
                 <constraint firstAttribute="trailing" secondItem="UHV-aU-vdM" secondAttribute="trailing" constant="20" id="oXi-eQ-uJX"/>
-                <constraint firstItem="8te-fS-d4A" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="20" id="sYF-qJ-kIw"/>
                 <constraint firstItem="Jkl-K2-Upr" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="120" id="tjb-60-RmB"/>
-                <constraint firstItem="xNM-7P-Eyb" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="53" id="wru-I3-HTO"/>
             </constraints>
             <point key="canvasLocation" x="101" y="68.5"/>
         </customView>

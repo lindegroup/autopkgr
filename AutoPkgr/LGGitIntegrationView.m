@@ -29,8 +29,6 @@
 @interface LGGitIntegrationView () <NSTextFieldDelegate>
 
 @property (weak) IBOutlet NSTextField *githPathTF;
-@property (weak) IBOutlet NSButton *installButton;
-@property (weak) IBOutlet NSTextField *progressMessageTF;
 
 @end
 
@@ -45,10 +43,6 @@
 - (void)awakeFromNib
 {
     _githPathTF.safe_stringValue = [[LGDefaults standardUserDefaults] gitPath];
-
-    BOOL officialGitInstalled = [[(LGGitIntegration *)self.integration class] officialGitInstalled ];
-    _progressMessageTF.hidden = officialGitInstalled;
-    _installButton.hidden = officialGitInstalled;
 }
 
 - (void)controlTextDidChange:(NSNotification *)obj
@@ -100,23 +94,6 @@
             defaults.gitPath = path.stringByExpandingTildeInPath;
         }
     }
-}
-
-- (IBAction)installOfficialGit:(id)sender {
-    [self.progressSpinner startAnimation:self];
-    self.progressMessageTF.hidden = NO;
-
-    [self.integration install:^(NSString *message, double progress) {
-        self.progressMessageTF.safe_stringValue = [message truncateToLength:30];
-    } reply:^(NSError *error) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self.progressSpinner stopAnimation:self];
-            self.installButton.hidden = (error == nil);
-
-            self.progressMessageTF.hidden = YES;
-            self.githPathTF.safe_stringValue = [[LGDefaults standardUserDefaults] gitPath];
-        });
-    }];
 }
 
 @end
