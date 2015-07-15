@@ -10,7 +10,7 @@ If you're not yet comfortable with the command-line, or if you just want to get 
 
 ![divider](doc-images/divider.png)
 
-<!-- MarkdownTOC -->
+<!-- MarkdownTOC autolink=true depth=4 bracket=round -->
 
 - [Features](#features)
 - [Installation](#installation)
@@ -41,7 +41,7 @@ AutoPkgr makes these tasks a piece of cake:
 - Automatic scheduled checks of the recipes you choose.
 - Email, Slack, or HipChat notifications when new software is packaged.
 - One-click access to common folders that AutoPkg admins need.
-- Basic integration of AutoPkg with popular software distribution frameworks like [Munki](https://code.google.com/p/munki/), [Casper Suite](http://www.jamfsoftware.com/products/), [Absolute Manage](https://www.absolute.com/en/products/absolute-manage), and [MacPatch](https://macpatch.github.io/).
+- Basic integration of AutoPkg with popular software distribution frameworks like [Munki](https://www.munki.org/munki/), [Casper Suite](http://www.jamfsoftware.com/products/), [Absolute Manage](https://www.absolute.com/en/products/absolute-manage), and [MacPatch](https://macpatch.github.io/).
 
 ![divider](doc-images/divider.png)
 
