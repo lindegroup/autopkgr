@@ -105,15 +105,15 @@ You'll also want to make sure you have a few `.munki` recipes selected. Once the
 To configure AutoPkgr to create Self Service policies in Casper for new app updates, follow these steps:
 
 1. Create a static computer group on your JSS called __Testing__. Add one or more test computers to the group.
-1. Create an account on your JSS with Create, Read, and Update access to the following objects:
-    - Categories
-    - Computer Extension Attributes
-    - File Share Distribution Points (only needs Read access)
-    - Packages
-    - Policies
-    - Scripts
-    - Smart Computer Groups
-    - Static Computer Groups
+1. Create an account on your JSS with __Create__, __Read__, and __Update__ access to the following objects:
+    - __Categories__
+    - __Computer Extension Attributes__
+    - __File Share Distribution Points__ (only needs Read access)
+    - __Packages__
+    - __Policies__
+    - __Scripts__
+    - __Smart Computer Groups__
+    - __Static Computer Groups__
 1. Open AutoPkgr and go to the __Folders & Integration__ tab.
 1. In the __Casper Suite integration__ section, enter your JSS URL, API username, and API password. Then click __Connect__.
 1. When prompted, follow the instructions to install JSSImporter.
