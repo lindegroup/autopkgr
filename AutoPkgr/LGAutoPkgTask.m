@@ -802,12 +802,12 @@ typedef void (^AutoPkgReplyErrorBlock)(NSError *error);
 {
     /* Eventually there may be more ways to interact, for now it's only to search github for a recipe's repo */
     [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-        NSString *message = LGAutoPkgLocalizedString(@"Could not find the parent recipe"
+        NSString *title = LGAutoPkgLocalizedString(@"Could not find the parent recipe"
                                                      , nil);
 
         NSString *cleanedMessage = [message stringByReplacingOccurrencesOfString:@"[y/n]:"
                                                                       withString:@""];
-        NSAlert *alert = [NSAlert alertWithMessageText:message
+        NSAlert *alert = [NSAlert alertWithMessageText:title
                                          defaultButton:@"Yes"
                                        alternateButton:@"No"
                                            otherButton:nil
