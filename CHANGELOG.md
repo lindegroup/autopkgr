@@ -1,5 +1,4 @@
-AutoPkgr Change Log
-===================
+# AutoPkgr Change Log
 
 All notable changes to this project will be documented in this file. This project adheres to [Semantic Versioning](http://semver.org/).
 
@@ -7,23 +6,27 @@ All notable changes to this project will be documented in this file. This projec
 ## [Unreleased][unreleased]
 
 ### Added
-- The ability to right-click on a recipe in the list and choose Get Info to see various details about the recipe.
-- The ability to right-click on a repo to open the GitHub commits page or update the individual repo.
-- The repos list now displays the number of stars each repo has on GitHub (and you can sort by them too).
-- The install tab now displays status of additional integrated projects, such as Munki tools and AbsoluteManageExport.
-- Easier uninstallation of components like AutoPkg and JSSImporter.
+- Integration with Absolute Manage (via the [AbsoluteManageExport](https://github.com/tburgin/AbsoluteManageExport) processor)! (#217)
+- Integration with MacPatch (via the [MacPatchImporter](https://github.com/SMSG-MAC-DEV/MacPatch-AutoPKG) processor)! (#347)
+- Now you can send notifications directly to a Slack (#358) or HipChat (#359)channel.
+- Greatly simplified proxy configuration. To configure proxies now, go to the __Folders & Integration__ tab, then click on __Configure AutoPkg...__.
+- You can now create the GitHub API token used with `autopkg search` feature using AutoPkgr. This allows a greater number of search queries per hour.
+- Now you can right-click on a recipe in the list and choose Get Info to see various details about the recipe. (#357, #370)
+- Right-click on a repo to access the GitHub commits page or update a single repo. (#357)
+- The repos list now displays the number of stars each repo has on GitHub (and you can sort by them too). (#356, #357)
+- The install tab now displays status of additional integrated tools and processors, like AbsoluteManageExport and MacPatchImporter.
+- Easier uninstallation of components like AutoPkg and JSSImporter. (#332)
 - More flexible options for scheduling AutoPkg to run. New daily and weekly options! (#361)
-- Better validation of the standard output we're receiving from AutoPkg.
-- Ability to set the proxies AutoPkg uses in the UI.
+- Better validation of the standard output AutoPkgr receives from AutoPkg.
 - Ability to change the Git binary used by AutoPkg.
-- The repos list now has a status indicator showing if there are new commits to an installed repo.
-- The recipe list now has a status indicator showing if a recipe is missing a parent recipe.
-- You can now create the GitHub API token used with `autopkg search` feature using AutoPkgr.
-- Now you can send notifications directly to a Slack channel. Requires the channel's Webhook URL, which Slack admins have access to. (#358)
+- The repos list now has a status indicator showing if there are new commits to an installed repo. (#357)
+- The recipe list now has a status indicator showing if a recipe is missing a parent recipe. (#357, #370)
 
 ### Changed
-- Behind-the-scenes code cleanup, typo fixes, refactors, and reorganization.
-- Updated jss-recipes repo to [its new URL](https://github.com/autopkg/jss-recipes).
+- Now adding "official" [jss-recipes repo](https://github.com/autopkg/jss-recipes) when configuring JSSImporter. Existing JSSImporter users will not (yet) be affected, but will eventually need to transition to the new repo. We'll provide instructions soon. In the meantime, read the [jss-recipes readme](https://github.com/autopkg/jss-recipes#introduction)!
+- Reworked __Folders & Integration__ tab interface to support a theorically unlimited number of integration tools, including Munki, Casper, Absolute Manage, and MacPatch. The sky is the limit.
+- Updated readme to make it clear that you should only update repos before every AutoPkg run if you trust recipe authors.
+- Behind-the-scenes code cleanup, typo fixes, refactors, and reorganization. Always tidying up!
 
 ### Fixed
 - Fixed a bug that could cause email username and password to not get updated immediately.
