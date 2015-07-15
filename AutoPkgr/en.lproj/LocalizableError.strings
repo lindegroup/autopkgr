@@ -22,7 +22,7 @@
 "kLGErrorAuthChallenge" = "You are not authorized to perform this action";
 
 /* Error trying to install privileged helper tool. */
-"kLGErrorInstallingPrivilegedHelperToolDescription" = "The associated helper tool could not be installed, we must quit now."
+"kLGErrorInstallingPrivilegedHelperToolDescription" = "The associated helper tool could not be installed, we must quit now.";
 
 /* Error trying to install privileged helper tool. (NSLocalizedRecoverySuggestionErrorKey) */
 "kLGErrorInstallingPrivilegedHelperToolSuggestion" = "";
