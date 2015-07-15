@@ -41,6 +41,10 @@
 
 @implementation LGInstallTableView
 
+- (NSTableViewSelectionHighlightStyle)selectionHighlightStyle {
+    return NSTableViewSelectionHighlightStyleNone;
+}
+
 - (NSColor *)backgroundColor
 {
     return [NSColor clearColor];
