@@ -60,16 +60,18 @@ Download the [latest release](https://github.com/lindegroup/autopkgr/releases/la
 1.  On first launch, you'll see the configuration window:
     ![Install](doc-images/config_tab1.png)
 
-1.  Click the button to __Install Git__ if needed.
+1.  Click the button to __Install Git__ if it's not already installed.
 
-1.  Click the button to __Install AutoPkg__ if needed.
+1.  Click the button to __Install AutoPkg__ if it's not already installed.
 
 1.  Switch to the __Repos & Recipes__ tab.
     ![Repos & Recipes](doc-images/config_tab2.png)
 
-1.  Select the repositories you'd like to subscribe to. We've already added the "default" repo to get you started.
+1.  Select the repositories you'd like to subscribe to. We recommend adding the "default" repo to get you started:
+    ![Default repo](doc-images/repo_default.png)
 
     You can also add repositories manually using the "Add a repo URL manually" field.
+    ![Add a repo manually](doc-images/repo_manual.png)
 
 1.  Select any recipes you wish to subscribe to.
 
@@ -88,6 +90,8 @@ Download the [latest release](https://github.com/lindegroup/autopkgr/releases/la
 1.  Configure email, Slack, or HipChat notifications as desired.
 
 That's it! AutoPkgr will now check for the latest app updates you specified, and when an update is available you'll receive a notification.
+
+&nbsp;
 
 Anytime you'd like to make changes to AutoPkgr's configuration, just click on the AutoPkgr icon in the menu bar (![Menu bar icon](doc-images/menulet.png)), and choose __AutoPkgr Preferences...__
 
@@ -197,7 +201,7 @@ You'll also want to make sure you have a few `.absolute` recipes selected. There
 :warning: &nbsp; _MacPatch integration is still in beta. We welcome [your feedback](https://github.com/lindegroup/autopkgr/issues/new)._
 
 :bulb: &nbsp; _Note: Requires you to have the default recipe repo added._
-![MacPatch requirements](doc-images/integration_macpatch_reqs.png)
+![Default repo](doc-images/repo_default.png)
 
 To configure AutoPkgr to add updates directly into your MacPatch server, follow these steps:
 
