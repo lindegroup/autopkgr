@@ -21,7 +21,7 @@
 #import "LGIntegration+Protocols.h"
 #import "LGAutoPkgTask.h"
 
-@interface LGAutoPkgIntegration () <LGIntegrationPackageInstaller, LGIntegrationSharedProcessor>
+@interface LGAutoPkgIntegration () <LGIntegrationPackageInstaller>
 @end
 
 @implementation LGAutoPkgIntegration
@@ -40,11 +40,6 @@
 + (NSURL *)homePage
 {
     return [NSURL URLWithString:@"http://autopkg.github.io/autopkg/"];
-}
-
-+ (NSString *)defaultRepository
-{
-    return @"https://github.com/autopkg/recipes.git";
 }
 
 + (NSArray *)components
