@@ -37,9 +37,9 @@ AutoPkgr makes these tasks a piece of cake:
 - Installation of AutoPkg itself.
 - Installation of Git, which AutoPkg requires.
 - Discovery of and subscription to the repositories and recipes you need.
-- Ability to easily create and edit AutoPkg recipe overrides.
 - Automatic scheduled checks of the recipes you choose.
 - Email, Slack, or HipChat notifications when new software is packaged.
+- Ability to easily create and edit AutoPkg recipe overrides.
 - One-click access to common folders that AutoPkg admins need.
 - Basic integration of AutoPkg with popular software distribution frameworks like [Munki](https://www.munki.org/munki/), [Casper Suite](http://www.jamfsoftware.com/products/), [Absolute Manage](https://www.absolute.com/en/products/absolute-manage), and [MacPatch](https://macpatch.github.io/).
 
@@ -47,7 +47,7 @@ AutoPkgr makes these tasks a piece of cake:
 
 ## Installation
 
-AutoPkgr requires Mac OS X 10.8 or higher. If you plan on integrating with Munki, Casper, or other tools, additional requirements may apply.
+AutoPkgr requires Mac OS X 10.8 or higher. If you plan on integrating with Munki, Casper, or other tools, additional requirements may apply. (See the [Integrations](#integrations) section for details.)
 
 Download the [latest release](https://github.com/lindegroup/autopkgr/releases/latest), and drag the AutoPkgr app to your Applications folder. Then launch it.
 
