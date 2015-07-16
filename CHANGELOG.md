@@ -32,6 +32,8 @@ All notable changes to this project will be documented in this file. This projec
     Note: Existing JSSImporter users will not (yet) be affected, but will eventually need to transition to the new repo. Instructions will be available soon. In the meantime, read through the [jss-recipes readme](https://github.com/autopkg/jss-recipes#introduction)!
 - Reworked Folders & Integration tab interface to support a theorically unlimited number of integration tools, including Munki, Casper, Absolute Manage, and MacPatch. The sky is the limit.
 - Updated readme to make it clear that you should only update repos before every AutoPkg run if you trust recipe authors.
+- Removed unused menus and menu items.
+- Significantly rewrote the readme with new and updated information.
 - Behind-the-scenes code cleanup, typo fixes, refactors, and reorganization. Always tidying up!
 
 ### Fixed
