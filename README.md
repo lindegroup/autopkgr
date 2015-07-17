@@ -10,7 +10,7 @@ If you're not yet comfortable with the command-line, or if you just want to get 
 
 ![divider](doc-images/divider.png)
 
-<!-- MarkdownTOC autolink=true depth=4 bracket=round -->
+<!-- MarkdownTOC autolink=true depth=3 bracket=round -->
 
 - [Features](#features)
 - [Installation](#installation)
@@ -223,9 +223,24 @@ If your network uses a proxy, you may need to navigate to the __Folders & Integr
 
 ## Troubleshooting
 
-__Step 1: Is it really AutoPkgr?__
+#### Step 1: Check for simple errors
 
-If AutoPkgr doesn't do what you expect, try running your recipes directly using `autopkg` in Terminal. Specifically, the following command has been helpful for us when troubleshooting. (Triple-click to select the entire line for copying.)
+- __Missing parent recipes__
+    If the recipe you're trying to run has a :warning: icon next to it, the most likely problem is that its parent recipe is missing.
+    ![Recipe missing parent](doc-images/recipe_missing_parent.png)
+    Right-click on the recipe to view the identifier of the parent recipe.
+    ![View parent recipe identifier](doc-images/recipe_view_parent.png)
+    You don't need to add the parent recipe itself to your list, but you _do_ need to make sure that the repository that the parent recipe belongs to is checked in the repo list.
+
+- __Out of date components__
+    Quit and relaunch AutoPkgr to check for new versions of installed components, including AutoPkg, Git, and AutoPkgr itself. We recommend updating to the latest version of these tools as a first step when troubleshooting.
+
+- __Temporarily broken recipes__
+    Because software manufacturers frequently change their feeds, recipes that used to work sometimes stop working. Wait a day or so, then update your repos and try running the recipe again. Also see the troubleshooting steps [here](https://github.com/autopkg/autopkg/wiki/FAQ#this-recipe-used-to-work-but-now-it-doesnt-what-should-i-try).
+
+#### Step 2: Is it really AutoPkgr?
+
+You've eliminated the simple errors above, but AutoPkgr doesn't do what you expect? Try running your recipes directly using `autopkg` in Terminal. Specifically, the following command has been helpful for us when troubleshooting. (Triple-click to select the entire line for copying.)
 
 ```
 /usr/bin/python /usr/local/bin/autopkg run --recipe-list ~/Library/Application\ Support/AutoPkgr/recipe_list.txt --report-plist /tmp/autopkg-report.xml
@@ -233,15 +248,19 @@ If AutoPkgr doesn't do what you expect, try running your recipes directly using 
 
 If the issue repeats itself there, it's likely that the problem is with an AutoPkg recipe or repository, not with AutoPkgr. See if you can see which recipe is failing based on the output of the command above. (Information on troubleshooting individual AutoPkg recipes is [available on the AutoPkg wiki](https://github.com/autopkg/autopkg/wiki/FAQ#this-recipe-used-to-work-but-now-it-doesnt-what-should-i-try).)
 
-__Step 2: Check the logs__
+#### Step 3: Check the logs
 
 If you've determined the issue is with AutoPkgr and not a specific recipe or repo, you may find it useful to enable AutoPkgr's verbose logging feature. To do that, click the AutoPkgr icon in the menu bar (![Menu bar icon](doc-images/menulet.png)). Then select __Verbose Logs__. The simplest way to view the logs is to filter for "AutoPkgr" in the Console app on your Mac. Sometimes the log messages illuminate the cause of the error.
 
-__Step 3: Reach out for help__
+![Check the logs](doc-images/console_logs.png)
+
+#### Step 4: Reach out for help
 
 If you're still stuck, you may want to post a message (and relevant sections of the Console logs, after removing any sensitive information) to our [Google Group](https://groups.google.com/forum/#!forum/autopkgr-discuss). And if it's a reproducible bug, please do submit an [issue](https://github.com/lindegroup/autopkgr/issues) on GitHub. We do our best to investigate bug reports and release fixes.
 
 We also welcome feature requests on GitHub! Some of our best features have come from community suggestions.
+
+![New GitHub issue](doc-images/github_new_issue.png)
 
 ![divider](doc-images/divider.png)
 
