@@ -141,7 +141,7 @@ To configure AutoPkgr to add updates directly into your Munki repository, follow
 1. If Munki tools are not already installed, click on the __Install Munki tools__ button. Enter your password if prompted.
 1. If your Munki repo is not located at `/Users/Shared/munki_repo`, click on the __Configure Munki tools...__ button, click __Choose__, and browse to your munki_repo.
     ![Munki repo](doc-images/integration_munki.png)
-    Click __Close and Save__.
+1. Click __Close and Save__.
 
 You'll also want to make sure you have `.munki` recipes selected for each app you want to import. Once the new versions of apps appear in your Munki repo, you can add them to the appropriate catalogs and manifests to deploy them.
 
@@ -192,7 +192,7 @@ To configure AutoPkgr to add updates directly into your Absolute Manage server, 
 1. Click on the __Install AMExporter__ button. Enter your password when prompted.
 1. Click on the __Configure AMExporter...__ button. Select the __Enable External SD Package Upload__ option if desired.
     ![Absolute Manage Settings](doc-images/integration_absolute.png)
-    Click __Close and Save__.
+1. Click __Close and Save__.
 
 You'll also want to make sure you have a few `.absolute` recipes selected. There is no official repository for Absolute Manage recipes yet, but if you add the `seansgm-recipes` repository, you'll see a few to get you started.
 
@@ -209,7 +209,7 @@ To configure AutoPkgr to add updates directly into your MacPatch server, follow 
 1. Click on the __Install MacPatchImporter__ button. Enter your password when prompted.
 1. Click on the __Configure MacPatchImporter...__ button. Enter the URL, username, and password for your MacPatch server.
     ![MacPatch Settings](doc-images/integration_macpatch.png)
-    Click __Close and Save__.
+1. Click __Close and Save__.
 
 ![divider](doc-images/divider.png)
 
@@ -247,9 +247,9 @@ We also welcome feature requests on GitHub! Some of our best features have come 
 
 ## Credits
 
-AutoPkgr was created by James Barclay, Elliot Jordan, and Josh Senick of the [Linde Group](http://www.lindegroup.com) with a huge amount of help from Eldon Ahrold.
+AutoPkgr was created at the [Linde Group](http://www.lindegroup.com) by James Barclay, Elliot Jordan, and Josh Senick. Credit to most of the ongoing development goes to Eldon Ahrold.
 
-We're very friendly. Stop by Emeryville sometime and have an espresso.
+We're very friendly. [Stop by Emeryville sometime](http://www.lindegroup.com/contact/) and have an espresso.
 
 Briefcase icon from [FontAwesome](http://fontawesome.io/).
 
