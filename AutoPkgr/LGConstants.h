@@ -3,14 +3,13 @@
 //  AutoPkgr
 //
 //  Created by James Barclay on 6/26/14.
-//
 //  Copyright 2014-2015 The Linde Group, Inc.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
 //  You may obtain a copy of the License at
 //
-//  http://www.apache.org/licenses/LICENSE-2.0
+//      http://www.apache.org/licenses/LICENSE-2.0
 //
 //  Unless required by applicable law or agreed to in writing, software
 //  distributed under the License is distributed on an "AS IS" BASIS,
@@ -26,15 +25,8 @@ extern NSString *const kLGAutoPkgrPreferenceDomain;
 extern NSString *const kLGAutoPkgrHelperToolName;
 extern NSString *const kLGAutoPkgrLaunchDaemonPlist;
 
-#pragma mark - Message Strings / Labels
-extern NSString *const kLGGitInstalledLabel;
-extern NSString *const kLGGitNotInstalledLabel;
-extern NSString *const kLGAutoPkgInstalledLabel;
-extern NSString *const kLGAutoPkgNotInstalledLabel;
-extern NSString *const kLGAutoPkgUpdateAvailableLabel;
-extern NSString *const kLGJSSImporterInstalledLabel;
-extern NSString *const kLGJSSImporterNotInstalledLabel;
-extern NSString *const kLGJSSImporterUpdateAvailableLabel;
+#pragma mark - String Tables
+extern NSString *const kLGLocalizedHelpTable;
 
 #pragma mark - Static URLs
 extern NSString *const kLGAutoPkgReleasesJSONURL;

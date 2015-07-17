@@ -3,23 +3,27 @@
 //  AutoPkgr
 //
 //  Created by Eldon Ahrold on 12/19/14.
+//  Copyright 2014-2015 The Linde Group, Inc.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
 //  You may obtain a copy of the License at
 //
-//  http://www.apache.org/licenses/LICENSE-2.0
+//      http://www.apache.org/licenses/LICENSE-2.0
 //
 //  Unless required by applicable law or agreed to in writing, software
 //  distributed under the License is distributed on an "AS IS" BASIS,
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
+//
 
 #import "LGRecipeSearch.h"
 #import "LGAutoPkgr.h"
 #import "LGAutoPkgTask.h"
-#import "LGRecipes.h"
+#import "LGAutoPkgRecipe.h"
+#import "LGRecipeTableViewController.h"
+#import "NSTextField+animatedString.h"
 
 @interface LGRecipeSearch () <NSTextViewDelegate>
 @property (weak) IBOutlet NSTableView *searchTable;
@@ -51,17 +55,29 @@
     return [self initWithWindowNibName:@"LGRecipeSearchPanel"];
 }
 
+- (instancetype)initWithSearchResults:(NSArray *)results installedRepos:(NSArray *)installedRepos {
+    if (self = [self initWithWindowNibName:@"LGRecipeSearchResultsPanel"]) {
+        _searchResults = results;
+        _currentlyInstalledRepos = installedRepos;
+    }
+    return self;
+}
+
 - (void)windowDidLoad
 {
     [super windowDidLoad];
     _progressIndicator.hidden = YES;
+    _addBT.enabled = NO;
     _currentlyInstalledRepos = [LGAutoPkgTask repoList];
+    _searchTable.dataSource = self;
+    _searchTable.delegate = self;
+    _searchTable.backgroundColor = [NSColor clearColor];
 }
 
 #pragma mark - IBActions
 - (IBAction)searchNow:(NSSearchField *)sender
 {
-    NSString *searchString = sender.safeStringValue;
+    NSString *searchString = sender.safe_stringValue;
     if (searchString) {
         [_progressIndicator setHidden:NO];
         [_progressIndicator startAnimation:nil];
@@ -87,17 +103,19 @@
     NSString *repoName = _searchResults[_searchTable.selectedRow][kLGAutoPkgRepoNameKey];
     NSString *url = [NSString stringWithFormat:@"https://github.com/autopkg/%@.git", repoName];
 
+    sender.enabled = NO;
     [_progressIndicator startAnimation:nil];
     [_progressIndicator setHidden:NO];
 
     [LGAutoPkgTask repoAdd:url reply:^(NSError *error) {
         [_progressIndicator stopAnimation:nil];
         [_progressIndicator setHidden:YES];
+        sender.enabled = !(error == nil);
         if (error) {
+            [self.limitMessage fadeOut_withString:error.localizedDescription];
             NSLog(@"%@", error.localizedDescription);
         } else {
             _currentlyInstalledRepos = [LGAutoPkgTask repoList];
-            [_addBT setEnabled:NO];
             [_searchTable reloadData];
         }
     }];
@@ -160,7 +178,7 @@
 #pragma mark - Utility
 - (NSPredicate *)repoMatchPredicate:(NSString *)match
 {
-    return [NSPredicate predicateWithFormat:@"%K.lastPathComponent == %@", kLGAutoPkgRepoURLKey, [match stringByAppendingPathExtension:@"git"]];
+    return [NSPredicate predicateWithFormat:@"%K.%@ == %@", kLGAutoPkgRepoURLKey, NSStringFromSelector(@selector(lastPathComponent)), [match stringByAppendingPathExtension:@"git"]];
 }
 
 @end

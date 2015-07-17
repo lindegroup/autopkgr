@@ -2,15 +2,14 @@
 //  LGError.m
 //  AutoPkgr
 //
-//  Created by Eldon on 8/9/14.
-//
+//  Created by Eldon Ahrold on 8/9/14.
 //  Copyright 2014-2015 The Linde Group, Inc.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
 //  You may obtain a copy of the License at
 //
-//  http://www.apache.org/licenses/LICENSE-2.0
+//      http://www.apache.org/licenses/LICENSE-2.0
 //
 //  Unless required by applicable law or agreed to in writing, software
 //  distributed under the License is distributed on an "AS IS" BASIS,
@@ -25,64 +24,131 @@
 
 static NSDictionary *userInfoFromCode(LGErrorCodes code)
 {
-    NSString *localizedBaseString;
     NSString *message;
     NSString *suggestion;
     switch (code) {
     case kLGErrorSuccess:
-        localizedBaseString = @"kLGErrorSuccess";
+        message = NSLocalizedStringFromTable(@"kLGErrorSuccessDescription",
+                                             @"LocalizableError",
+                                             @"Success, no error occurred");
+
+        suggestion = NSLocalizedStringFromTable(@"kLGErrorSuccessSuggestion",
+                                                @"LocalizableError",
+                                                @"(NSLocalizedRecoverySuggestionErrorKey)");
+
+        break;
+    case kLGErrorInstallingPrivilegedHelperTool:
+        message = NSLocalizedStringFromTable(@"kLGErrorInstallingPrivilegedHelperToolDescription",
+                                             @"LocalizableError",
+                                             @"Error trying to install privileged helper tool.");
+
+        suggestion = NSLocalizedStringFromTable(@"kLGErrorInstallingPrivilegedHelperToolSuggestion",
+                                                @"LocalizableError",
+                                                @"Error trying to install privileged helper tool. (NSLocalizedRecoverySuggestionErrorKey)");
+        
         break;
     case kLGErrorSendingEmail:
-        localizedBaseString = @"kLGErrorSendingEmail";
+        message = NSLocalizedStringFromTable(@"kLGErrorSendingEmailDescription",
+                                             @"LocalizableError",
+                                             @"Generic error when sending email");
+
+        suggestion = NSLocalizedStringFromTable(@"kLGErrorSendingEmailSuggestion",
+                                                @"LocalizableError",
+                                                @"Generic error when sending email. (NSLocalizedRecoverySuggestionErrorKey)");
+
         break;
     case kLGErrorTestingPort:
-        localizedBaseString = @"kLGErrorTestingPort";
+        message = NSLocalizedStringFromTable(@"kLGErrorTestingPortDescription",
+                                             @"LocalizableError",
+                                             @"Generic error during port testing");
+
+        suggestion = NSLocalizedStringFromTable(@"kLGErrorTestingPortSuggestion",
+                                                @"LocalizableError",
+                                                @"Generic error during port testing (NSLocalizedRecoverySuggestionErrorKey)");
+
         break;
     case kLGErrorReparingAutoPkgPrefs:
-        localizedBaseString = @"kLGErrorReparingAutoPkgPrefs";
+        message = NSLocalizedStringFromTable(@"kLGErrorReparingAutoPkgPrefsDescription",
+                                             @"LocalizableError",
+                                             @"Error repairing autopkg preferences file.");
+
+        suggestion = NSLocalizedStringFromTable(@"kLGErrorReparingAutoPkgPrefsSuggestion",
+                                                @"LocalizableError",
+                                                @"Error repairing autopkg preferences file. (NSLocalizedRecoverySuggestionErrorKey)");
         break;
     case kLGErrorMultipleRunsOfAutopkg:
-        localizedBaseString = @"kLGErrorMultipleRunsOfAutopkg";
+        message = NSLocalizedStringFromTable(@"kLGErrorMultipleRunsOfAutopkgDescription",
+                                             @"LocalizableError",
+                                             @"Error when trying to run multiple instances of AutoPkg");
+
+        suggestion = NSLocalizedStringFromTable(@"kLGErrorMultipleRunsOfAutopkgSuggestion",
+                                                @"LocalizableError",
+                                                @"Error when trying to run multiple instances of AutoPkg (NSLocalizedRecoverySuggestionErrorKey)");
         break;
     case kLGErrorMissingParentRecipe:
-        localizedBaseString = @"kLGErrorMissingParentRecipe";
-        break;
-    case kLGErrorInstallGit:
-        localizedBaseString = @"kLGErrorInstallGit";
-        break;
-    case kLGErrorInstallAutoPkg:
-        localizedBaseString = @"kLGErrorInstallAutoPkg";
-        break;
-    case kLGErrorInstallAutoPkgr:
-        localizedBaseString = @"kLGErrorInstallAutoPkgr";
-        break;
-    case kLGErrorInstallJSSImporter:
-        localizedBaseString = @"kLGErrorInstallJSSImporter";
+        message = NSLocalizedStringFromTable(@"kLGErrorMissingParentRecipeDescription",
+                                             @"LocalizableError",
+                                             @"Error when recipe is missing parent recipe");
+
+        suggestion = NSLocalizedStringFromTable(@"kLGErrorMissingParentRecipeSuggestion",
+                                                @"LocalizableError",
+                                                @"Error when recipe is missing parent recipe (NSLocalizedRecoverySuggestionErrorKey)");
         break;
     case kLGErrorInstallingGeneric:
-        localizedBaseString = @"kLGErrorInstallingGeneric";
+        message = NSLocalizedStringFromTable(@"kLGErrorInstallingGenericDescription",
+                                             @"LocalizableError",
+                                             @"Generic install error description");
+
+        suggestion = NSLocalizedStringFromTable(@"kLGErrorInstallingGenericSuggestion",
+                                                @"LocalizableError",
+                                                @"Generic install error (NSLocalizedRecoverySuggestionErrorKey)");
         break;
     case kLGErrorJSSXMLSerializerError:
-        localizedBaseString = @"kLGErrorJSSXMLSerializerError";
+        message = NSLocalizedStringFromTable(@"kLGErrorJSSXMLSerializerErrorDescription",
+                                             @"LocalizableError",
+                                             @"Error serializing JSS response data.");
+
+        suggestion = NSLocalizedStringFromTable(@"kLGErrorJSSXMLSerializerErrorSuggestion",
+                                                @"LocalizableError",
+                                                @"Error serializing JSS response data. (NSLocalizedRecoverySuggestionErrorKey)");
         break;
     case kLGErrorIncorrectScheduleTimerInterval:
-        localizedBaseString = @"kLGErrorIncorrectScheduleTimerInterval";
+        message = NSLocalizedStringFromTable(@"kLGErrorIncorrectScheduleTimerIntervalDescription",
+                                             @"LocalizableError",
+                                             @"Error when AutoPkgr schedule timer interval is not valid");
+
+        suggestion = NSLocalizedStringFromTable(@"kLGErrorIncorrectScheduleTimerIntervalSuggestion",
+                                                @"LocalizableError",
+                                                @"Error when AutoPkgr schedule timer interval is not valid (NSLocalizedRecoverySuggestionErrorKey)");
+        break;
+    case kLGErrorKeychainAccess:
+        message = NSLocalizedStringFromTable(@"kLGErrorKeychainAccessDescription",
+                                             @"LocalizableError",
+                                             @"Error accessing the keychain");
+
+        suggestion = NSLocalizedStringFromTable(@"kLGErrorKeychainAccessSuggestion",
+                                                @"LocalizableError",
+                                                @"Error when accessing AutoPkgr.keychain (NSLocalizedRecoverySuggestionErrorKey)");
         break;
     case kLGErrorAuthChallenge:
-        localizedBaseString = @"kLGErrorAuthChallenge";
+        message = NSLocalizedStringFromTable(@"kLGErrorAuthChallengeDescription",
+                                             @"LocalizableError",
+                                             @"Error when authorization fails");
+
+        suggestion = NSLocalizedStringFromTable(@"kLGErrorAuthChallengeSuggestion",
+                                                @"LocalizableError",
+                                                @"Error when authorization fails (NSLocalizedRecoverySuggestionErrorKey)");
         break;
     default:
-        localizedBaseString = @"kLGErrorUnknown";
+        message = NSLocalizedStringFromTable(@"kLGErrorUnknownDescription",
+                                             @"LocalizableError",
+                                             @"Unknown error");
+
+        suggestion = NSLocalizedStringFromTable(@"kLGErrorUnknownSuggestion",
+                                                @"LocalizableError",
+                                                @"Unknown error (NSLocalizedRecoverySuggestionErrorKey)");
         break;
     }
-
-    // Setup the localized description
-    message = NSLocalizedString([localizedBaseString stringByAppendingString:@"Description"],
-                                @"NSLocalizedDescriptionKey");
-
-    // Setup the localized recovery suggestion
-    suggestion = NSLocalizedString([localizedBaseString stringByAppendingString:@"Suggestion"],
-                                   @"NSLocalizedRecoverySuggestionErrorKey");
 
     return @{
         NSLocalizedDescriptionKey : message,
@@ -92,48 +158,88 @@ static NSDictionary *userInfoFromCode(LGErrorCodes code)
 
 static NSDictionary *userInfoFromHTTPResponse(NSHTTPURLResponse *response)
 {
-    NSString *localizedBaseString;
     NSString *message;
     NSString *suggestion;
 
     switch (response.statusCode) {
     case 200:
         // success
-        localizedBaseString = @"kLGHTTPErrorSuccess";
+        message = NSLocalizedStringFromTable(@"kLGHTTPErrorSuccessDescription",
+                                             @"LocalizableError",
+                                             @"Success");
+
+        // Setup the localized recovery suggestion
+        suggestion = NSLocalizedStringFromTable(@"kLGHTTPErrorSuccessSuggestion",
+                                                @"LocalizableError",
+                                                @"success (NSLocalizedRecoverySuggestionErrorKey)");
         break;
     case 400:
         // Bad Request
-        localizedBaseString = @"kLGHTTPErrorBadRequest";
+        message = NSLocalizedStringFromTable(@"kLGHTTPErrorBadRequestDescription",
+                                             @"LocalizableError",
+                                             @"Bad Request response 400");
+
+        // Setup the localized recovery suggestion
+        suggestion = NSLocalizedStringFromTable(@"kLGHTTPErrorBadRequestSuggestion",
+                                                @"LocalizableError",
+                                                @"Bad Request (NSLocalizedRecoverySuggestionErrorKey)");
         break;
     case 401:
         // Unauthorized
-        localizedBaseString = @"kLGHTTPErrorUnauthorized";
+        message = NSLocalizedStringFromTable(@"kLGHTTPErrorUnauthorizedDescription",
+                                             @"LocalizableError",
+                                             @"Unauthorized 401");
+
+        // Setup the localized recovery suggestion
+        suggestion = NSLocalizedStringFromTable(@"kLGHTTPErrorUnauthorizedSuggestion",
+                                                @"LocalizableError",
+                                                @"Unauthorized 401 (NSLocalizedRecoverySuggestionErrorKey)");
         break;
     case 403:
         // Forbidden
-        localizedBaseString = @"kLGHTTPErrorForbidden";
+        message = NSLocalizedStringFromTable(@"kLGHTTPErrorForbiddenDescription",
+                                             @"LocalizableError",
+                                             @"Forbidden 403");
+
+        // Setup the localized recovery suggestion
+        suggestion = NSLocalizedStringFromTable(@"kLGHTTPErrorForbiddenSuggestion",
+                                                @"LocalizableError",
+                                                @"Forbidden 403 (NSLocalizedRecoverySuggestionErrorKey)");
         break;
     case 404:
         // Not Found
-        localizedBaseString = @"kLGHTTPErrorNotFound";
+        message = NSLocalizedStringFromTable(@"kLGHTTPErrorNotFoundDescription",
+                                             @"LocalizableError",
+                                             @"Not Found 404");
+
+        // Setup the localized recovery suggestion
+        suggestion = NSLocalizedStringFromTable(@"kLGHTTPErrorNotFoundSuggestion",
+                                                @"LocalizableError",
+                                                @"Not Found 404 (NSLocalizedRecoverySuggestionErrorKey)");
         break;
     case 408:
         // Timeout
-        localizedBaseString = @"kLGHTTPErrorTimeout";
+        message = NSLocalizedStringFromTable(@"kLGHTTPErrorTimeoutDescription",
+                                             @"LocalizableError",
+                                             @"Time Out 408");
+
+        // Setup the localized recovery suggestion
+        suggestion = NSLocalizedStringFromTable(@"kLGHTTPErrorTimeoutSuggestion",
+                                                @"LocalizableError",
+                                                @"Time Out 408 (NSLocalizedRecoverySuggestionErrorKey)");
         break;
     default:
         // General failure
-        localizedBaseString = @"kLGHTTPErrorUnknown";
+        message = NSLocalizedStringFromTable(@"kLGHTTPErrorUnknownDescription",
+                                             @"LocalizableError",
+                                             @"Unknown");
+
+        // Setup the localized recovery suggestion
+        suggestion = NSLocalizedStringFromTable(@"kLGHTTPErrorUnknownSuggestion",
+                                                @"LocalizableError",
+                                                @"Unknown (NSLocalizedRecoverySuggestionErrorKey)");
         break;
     }
-
-    // Setup the localized description
-    message = NSLocalizedString([localizedBaseString stringByAppendingString:@"Description"],
-                                @"NSLocalizedDescriptionKey");
-
-    // Setup the localized recovery suggestion
-    suggestion = NSLocalizedString([localizedBaseString stringByAppendingString:@"Suggestion"],
-                                   @"NSLocalizedRecoverySuggestionErrorKey");
 
     return @{
         NSLocalizedDescriptionKey : message,
@@ -155,12 +261,14 @@ static NSDictionary *userInfoFromHTTPResponse(NSHTTPURLResponse *response)
 
 + (void)presentErrorWithCode:(LGErrorCodes)code window:(NSWindow *)window delegate:(id)sender didPresentSelector:(SEL)selector
 {
-    NSError *error = [[self class] errorWithCode:code];
-    [NSApp presentError:error
-            modalForWindow:window
-                  delegate:sender
-        didPresentSelector:selector
-               contextInfo:NULL];
+    NSError *error = nil;
+    if ((error = [[self class] errorWithCode:code])) {
+        [NSApp presentError:error
+                modalForWindow:window
+                      delegate:sender
+            didPresentSelector:selector
+                   contextInfo:NULL];
+    }
 }
 #endif
 
@@ -203,7 +311,9 @@ static NSDictionary *userInfoFromHTTPResponse(NSHTTPURLResponse *response)
     NSString *errorDetails;
 
     NSInteger taskError = task.terminationStatus;
-    NSString *errorMsg = @"An error occurred.";
+    NSString *errorMsg = NSLocalizedStringFromTable(@"An error occurred.",
+                                                    @"LocalizableError",
+                                                    nil);
 
     if ([task.standardError isKindOfClass:[NSPipe class]]) {
         NSData *errData = [[task.standardError fileHandleForReading] readDataToEndOfFile];
@@ -241,6 +351,7 @@ static NSDictionary *userInfoFromHTTPResponse(NSHTTPURLResponse *response)
         error = [NSError errorWithDomain:kLGApplicationName
                                     code:response.statusCode
                                 userInfo:userInfo];
+
         DLog(@"Error [%ld]: %@ \n %@", code, userInfo[NSLocalizedDescriptionKey], userInfo[NSLocalizedRecoverySuggestionErrorKey]);
     }
     return error;

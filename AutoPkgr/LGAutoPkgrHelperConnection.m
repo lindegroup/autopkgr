@@ -3,12 +3,13 @@
 //  AutoPkgr
 //
 //  Created by Eldon Ahrold on 7/28/14.
+//  Copyright 2014-2015 The Linde Group, Inc.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
 //  You may obtain a copy of the License at
 //
-//  http://www.apache.org/licenses/LICENSE-2.0
+//      http://www.apache.org/licenses/LICENSE-2.0
 //
 //  Unless required by applicable law or agreed to in writing, software
 //  distributed under the License is distributed on an "AS IS" BASIS,
@@ -18,7 +19,9 @@
 //
 
 #import "LGAutoPkgrHelperConnection.h"
-#import "LGAutoPkgrProtocol.h"
+
+#import <AHLaunchCtl/AHLaunchJobSchedule.h>
+
 @interface LGAutoPkgrHelperConnection ()
 @property (atomic, strong, readwrite) NSXPCConnection *connection;
 @end
@@ -31,8 +34,13 @@
         self.connection = [[NSXPCConnection alloc] initWithMachServiceName:kLGAutoPkgrHelperToolName
                                                                    options:NSXPCConnectionPrivileged];
 
+
         self.connection.remoteObjectInterface = [NSXPCInterface
             interfaceWithProtocol:@protocol(HelperAgent)];
+
+        NSSet *acceptedClasses = [NSSet setWithObjects:[AHLaunchJobSchedule class], [NSNumber class], nil];
+
+        [self.connection.remoteObjectInterface setClasses:acceptedClasses forSelector:@selector(scheduleRun:user:program:authorization:reply:) argumentIndex:0 ofReply:NO];
 
         self.connection.invalidationHandler = ^{
 #pragma clang diagnostic push

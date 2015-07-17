@@ -2,15 +2,14 @@
 //  LGError.h
 //  AutoPkgr
 //
-//  Created by Eldon on 8/9/14.
-//
+//  Created by Eldon Ahrold on 8/9/14.
 //  Copyright 2014-2015 The Linde Group, Inc.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
 //  You may obtain a copy of the License at
 //
-//  http://www.apache.org/licenses/LICENSE-2.0
+//      http://www.apache.org/licenses/LICENSE-2.0
 //
 //  Unless required by applicable law or agreed to in writing, software
 //  distributed under the License is distributed on an "AS IS" BASIS,
@@ -21,11 +20,15 @@
 
 #import <Foundation/Foundation.h>
 
+// Exception Raise when subclass is required to implement a method.
+void subclassMustImplement(id sender, SEL _cmd);
 
 #pragma mark - AutoPkgr specific Error codes
 typedef NS_ENUM(NSInteger, LGErrorCodes) {
     /** Success */
     kLGErrorSuccess,
+    /** Error when trying to install privileged helper tool */
+    kLGErrorInstallingPrivilegedHelperTool, 
     /** Error when sending email fails */
     kLGErrorSendingEmail,
     /** Error when testing port failed */
@@ -36,20 +39,14 @@ typedef NS_ENUM(NSInteger, LGErrorCodes) {
     kLGErrorMultipleRunsOfAutopkg,
     /** Error when trying to enable a recipe when the Parent Recipe is not avaliable */
     kLGErrorMissingParentRecipe,
-    /** Error installing Git */
-    kLGErrorInstallGit,
-    /** Error installing/updating AutoPkg */
-    kLGErrorInstallAutoPkg,
-    /** Error installing/updating AutoPkgr */
-    kLGErrorInstallAutoPkgr,
-    /** Error installing JSSImporter */
-    kLGErrorInstallJSSImporter,
     /** Generic error installing */
     kLGErrorInstallingGeneric,
     /** Error serializing xml object */
     kLGErrorJSSXMLSerializerError,
     /** Error Schedule timer incorrect */
     kLGErrorIncorrectScheduleTimerInterval,
+    /** Error creating authorization*/
+    kLGErrorKeychainAccess,
     /** Error creating authorization*/
     kLGErrorAuthChallenge,
 };
@@ -75,6 +72,7 @@ typedef NS_ENUM(NSInteger, LGErrorAutoPkgCodes) {
 #endif
 
 #pragma mark - AutoPkgr Defined Errors
+
 /**
  *  Populate an NSError Object for AutoPkgr
  *
@@ -84,6 +82,7 @@ typedef NS_ENUM(NSInteger, LGErrorAutoPkgCodes) {
  *  @return NO if error occurred and error.code is not 0, otherwise YES;
  */
 + (BOOL)errorWithCode:(LGErrorCodes)code error:(NSError **)error;
+
 /**
  *  Generate an NSError Object for AutoPkgr
  *
@@ -93,6 +92,13 @@ typedef NS_ENUM(NSInteger, LGErrorAutoPkgCodes) {
  */
 + (NSError *)errorWithCode:(LGErrorCodes)code;
 
+/**
+ *  Create an NSError using an NSTask's stdout and exit code to populate the value
+ *
+ *  @param task completed NSTask object
+ *
+ *  @return populated NSError object if task's exit code != 0;
+ */
 + (NSError *)errorFromTask:(NSTask *)task;
 
 

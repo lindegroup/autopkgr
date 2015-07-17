@@ -1,14 +1,15 @@
 //
 //  LGAutoPkgrProtocol.h
-//  AutoPkgr - Priviledged Helper Tool
+//  AutoPkgr
 //
 //  Created by Eldon Ahrold on 7/28/14.
+//  Copyright 2014-2015 The Linde Group, Inc.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
 //  You may obtain a copy of the License at
 //
-//  http://www.apache.org/licenses/LICENSE-2.0
+//      http://www.apache.org/licenses/LICENSE-2.0
 //
 //  Unless required by applicable law or agreed to in writing, software
 //  distributed under the License is distributed on an "AS IS" BASIS,
@@ -20,12 +21,15 @@
 #import <Foundation/Foundation.h>
 #import "LGConstants.h"
 #import "LGAutoPkgrAuthorizer.h"
+@class AHLaunchJobSchedule;
 
 typedef NS_ENUM(NSInteger, LGBackgroundTaskProgressState) {
     kLGAutoPkgProgressStart = -1,
     kLGAutoPkgProgressProcessing = 0,
     kLGAutoPkgProgressComplete = 1
 };
+
+typedef void (^uninstallPackageReplyBlock)(NSArray *removed, NSArray *remain, NSError *error);
 
 @protocol HelperAgent <NSObject>
 
@@ -34,7 +38,7 @@ typedef NS_ENUM(NSInteger, LGBackgroundTaskProgressState) {
 
 #pragma mark - Schedule
 #pragma mark-- Add
-- (void)scheduleRun:(NSInteger)interval
+- (void)scheduleRun:(AHLaunchJobSchedule *)scheduleOrInterval
                user:(NSString *)user
             program:(NSString *)program
       authorization:(NSData *)authData
@@ -50,9 +54,16 @@ typedef NS_ENUM(NSInteger, LGBackgroundTaskProgressState) {
                  authorization:(NSData *)authData
                          reply:(void (^)(NSError *error))reply;
 
+- (void)uninstallPackagesWithIdentifiers:(NSArray *)identifiers
+                           authorization:(NSData *)authData
+                                   reply:(uninstallPackageReplyBlock)reply;
+
 #pragma mark - Life Cycle
 - (void)quitHelper:(void (^)(BOOL success))reply;
+
 - (void)uninstall:(NSData *)authData reply:(void (^)(NSError *))reply;
+
+- (void)uninstall:(NSData *)authData removeKeychains:(BOOL)removeKeychains packages:(NSArray *)packageIDs reply:(void (^)(NSError *))reply;
 
 #pragma mark - IPC messaging
 - (void)registerMainApplication:(void (^)(BOOL resign))resign;

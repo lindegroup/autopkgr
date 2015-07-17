@@ -1,14 +1,15 @@
 //
 //  LGAutoPkgrHelper.m
-//  AutoPkgr - Privileged Helper Tool
+//  AutoPkgr
 //
 //  Created by Eldon Ahrold on 7/28/14.
+//  Copyright 2014-2015 The Linde Group, Inc.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
 //  You may obtain a copy of the License at
 //
-//  http://www.apache.org/licenses/LICENSE-2.0
+//      http://www.apache.org/licenses/LICENSE-2.0
 //
 //  Unless required by applicable law or agreed to in writing, software
 //  distributed under the License is distributed on an "AS IS" BASIS,
@@ -18,13 +19,16 @@
 //
 
 #import "LGAutoPkgrHelper.h"
-#import "LGAutoPkgr.h"
+#import "LGError.h"
 #import "LGAutoPkgrProtocol.h"
 #import "LGProgressDelegate.h"
+#import "LGPackageRemover.h"
 
 #import "SNTCodesignChecker.h"
 
 #import <AHLaunchCtl/AHLaunchCtl.h>
+#import <AHLaunchCtl/AHServiceManagement.h>
+
 #import <AHKeychain/AHKeychain.h>
 #import <RNCryptor/RNEncryptor.h>
 #import <RNCryptor/RNDecryptor.h>
@@ -33,7 +37,13 @@
 #import <syslog.h>
 #import <SystemConfiguration/SystemConfiguration.h>
 
+#import "NSString+split.h"
+#import "NSData+taskData.h"
+
 static const NSTimeInterval kHelperCheckInterval = 1.0; // how often to check whether to quit
+
+// Parent directory for all of the keyFiles. Each AutoPkgr user has a unique file.
+static NSString *const kLGEncryptedKeysParentDirectory = @"/var/db/.AutoPkgrKeys";
 
 @interface LGAutoPkgrHelper () <HelperAgent, NSXPCListenerDelegate>
 @property (atomic, strong, readwrite) NSXPCListener *listener;
@@ -65,7 +75,8 @@ static const NSTimeInterval kHelperCheckInterval = 1.0; // how often to check wh
     while (!self.helperToolShouldQuit) {
         [[NSRunLoop currentRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:kHelperCheckInterval]];
     }
-    syslog(LOG_ALERT, "Quitting AutoPkgr helper application.");
+
+    syslog(LOG_INFO, "Quitting AutoPkgr helper application.");
 }
 
 #pragma mark - NSXPCListenerDelegate
@@ -79,8 +90,13 @@ static const NSTimeInterval kHelperCheckInterval = 1.0; // how often to check wh
     if (valid) {
         NSXPCInterface *exportedInterface = [NSXPCInterface interfaceWithProtocol:@protocol(HelperAgent)];
         newConnection.exportedInterface = exportedInterface;
-
         newConnection.exportedObject = self;
+
+        // We have one method that can handle multiple input types
+        NSSet *acceptedClasses = [NSSet setWithObjects:[AHLaunchJobSchedule class],
+                                  [NSNumber class], nil];
+
+        [newConnection.exportedInterface setClasses:acceptedClasses forSelector:@selector(scheduleRun:user:program:authorization:reply:) argumentIndex:0 ofReply:NO];
 
         __weak typeof(newConnection) weakConnection = newConnection;
         // If all connections are invalidated on the remote side, shutdown the helper.
@@ -98,6 +114,7 @@ static const NSTimeInterval kHelperCheckInterval = 1.0; // how often to check wh
 
         [newConnection resume];
         [self.connections addObject:newConnection];
+
         syslog(LOG_INFO, "Connection Success...");
         return YES;
     }
@@ -116,9 +133,6 @@ static const NSTimeInterval kHelperCheckInterval = 1.0; // how often to check wh
 {
     // Password used to decrypt the keyFile. This password is stored in the System.keychain.
     NSString *encryptionPassword = nil;
-
-    // Parent directory for all of the keyFiles. Each AutoPkgr user has a unique file.
-    NSString *encryptedKeyParentDirectory = nil;
 
     // Path to current user's keyFile. Encoded with AES256 using the encryption password.
     NSString *encryptedKeyFile = nil;
@@ -149,22 +163,20 @@ static const NSTimeInterval kHelperCheckInterval = 1.0; // how often to check wh
 
     // Attributes used to set permissions on the keyFile and it's parent directory.
     NSDictionary *const attributes = @{
-        NSFilePosixPermissions : [NSNumber numberWithShort:0700],
-        NSFileOwnerAccountID : @(0),
-        NSFileGroupOwnerAccountID : @(0),
+        NSFilePosixPermissions : [NSNumber numberWithShort:0700], // Owner read-write, others no access.
+        NSFileOwnerAccountID : @(0), // Root
+        NSFileGroupOwnerAccountID : @(0), // Wheel
     };
 
     NSFileManager *manager = [NSFileManager defaultManager];
 
-    encryptedKeyFile = [NSString stringWithFormat:@"/var/db/.AutoPkgrKeys/UID_%d", euid];
-    encryptedKeyParentDirectory = @"/var/db/.AutoPkgrKeys";
+    encryptedKeyFile = [NSString stringWithFormat:@"%@/UID_%d", kLGEncryptedKeysParentDirectory, euid];
 
     /*///////////////////////////////////////////////////////////////
     //  Get the encryption password from the System.keychain       //
     ///////////////////////////////////////////////////////////////*/
-    AHKeychainItem *item = [[AHKeychainItem alloc] init];
-    item.service = @"AutoPkgr Common Decryption";
-    item.account = @"com.lindegroup.AutoPkgr.decryption.key";
+    AHKeychainItem *item = [self commonDecryptionKeychainItem];
+
     BOOL newEncryptionPassword = NO;
 
     if ([[AHKeychain systemKeychain] getItem:item error:&error]) {
@@ -221,17 +233,17 @@ static const NSTimeInterval kHelperCheckInterval = 1.0; // how often to check wh
         // The keyFile does not exist, create one now.
 
         BOOL isDir;
-        BOOL directoryExists = [manager fileExistsAtPath:encryptedKeyParentDirectory isDirectory:&isDir];
+        BOOL directoryExists = [manager fileExistsAtPath:kLGEncryptedKeysParentDirectory isDirectory:&isDir];
 
         if (!directoryExists) {
-            if (![manager createDirectoryAtPath:encryptedKeyParentDirectory withIntermediateDirectories:NO attributes:attributes error:&error]) {
+            if (![manager createDirectoryAtPath:kLGEncryptedKeysParentDirectory withIntermediateDirectories:NO attributes:attributes error:&error]) {
                 // If we can't create this directory something is wrong, return now.
                 syslog(LOG_ALERT, "[ERROR] Could not create the parent directory for the encrypted key files.");
                 goto helper_reply;
             }
         } else if (directoryExists && !isDir) {
             // The path exists but is not a directory, escape!.
-            syslog(LOG_ALERT, "[ERROR] The %s exists, but it is not a directory, it needs to be repaired.", encryptedKeyParentDirectory.UTF8String);
+            syslog(LOG_ALERT, "[ERROR] The %s exists, but it is not a directory, it needs to be repaired.", kLGEncryptedKeysParentDirectory.UTF8String);
             goto helper_reply;
         }
 
@@ -276,30 +288,43 @@ helper_reply:
 }
 
 #pragma mark - AutoPkgr Schedule
-- (void)scheduleRun:(NSInteger)timer
+- (void)scheduleRun:(AHLaunchJobSchedule *)scheduleOrInterval
                user:(NSString *)user
             program:(NSString *)program
       authorization:(NSData *)authData
               reply:(void (^)(NSError *error))reply
 {
-
     // Display Authorization Prompt based on external form contained in authData.
     // If user cancels the challenge, or any other problem occurs it will return a populated error object, with the details
+
     NSError *error = [LGAutoPkgrAuthorizer checkAuthorization:authData
                                                       command:_cmd];
+    if (error != nil) {
+        return reply(error);
+    }
 
     // If authorization was successful continue,
     if (!error) {
         // Check if the launch path and user are valid, and that the timer has a sensible minimum.
         if ([self launchPathIsValid:program error:&error] &&
-            [self userIsValid:user error:&error] && timer >= 3600) {
+            [self userIsValid:user error:&error]) {
             AHLaunchJob *job = [AHLaunchJob new];
             job.Program = program;
             job.Label = kLGAutoPkgrLaunchDaemonPlist;
             job.ProgramArguments = @[ program, @"-runInBackground", @"YES" ];
-            job.StartInterval = timer;
+
+            if ([scheduleOrInterval isKindOfClass:[AHLaunchJobSchedule class]]) {
+                job.StartCalendarInterval = scheduleOrInterval;
+            } else if ([scheduleOrInterval isKindOfClass:[NSNumber class]]){
+                job.StartInterval = [(NSNumber *)scheduleOrInterval integerValue];
+            }
+
             job.SessionCreate = YES;
             job.UserName = user;
+
+            /* Setting __CFPREFERENCES_AVOID_DAEMON helps preferences sync
+             * between the background run managed by launchd and the main
+             * app running in a Acqua session. */
             job.EnvironmentVariables = @{@"__CFPREFERENCES_AVOID_DAEMON" : @"1"};
 
             [[AHLaunchCtl sharedController] add:job toDomain:kAHGlobalLaunchDaemon error:&error];
@@ -311,8 +336,11 @@ helper_reply:
 
 - (void)removeScheduleWithAuthorization:(NSData *)authData reply:(void (^)(NSError *))reply
 {
-    NSError *error = [LGAutoPkgrAuthorizer checkAuthorization:authData
-                                                      command:_cmd];
+    NSError *error = nil;
+
+//    NSError *error = [LGAutoPkgrAuthorizer checkAuthorization:authData
+//                                                      command:_cmd];
+
     if (!error) {
         [[AHLaunchCtl sharedController] remove:kLGAutoPkgrLaunchDaemonPlist fromDomain:kAHGlobalLaunchDaemon error:&error];
     }
@@ -328,12 +356,7 @@ helper_reply:
     NSError *error;
     error = [LGAutoPkgrAuthorizer checkAuthorization:authData command:_cmd];
     if (error != nil) {
-        if (error.code == errAuthorizationCanceled) {
-            reply(nil);
-        } else {
-            reply(error);
-        }
-        return;
+        return reply(error);
     }
 
     self.connection.remoteObjectInterface = [NSXPCInterface interfaceWithProtocol:@protocol(LGProgressDelegate)];
@@ -350,17 +373,15 @@ helper_reply:
     task.standardError = task.standardOutput;
 
     [[task.standardOutput fileHandleForReading] setReadabilityHandler:^(NSFileHandle *fh) {
-        if (fh.availableData) {
+        NSData *data = fh.availableData;
+        if (data.length) {
             progress ++;
-            NSString *rawMessage = [[NSString alloc] initWithData:fh.availableData encoding:NSUTF8StringEncoding];
-            NSArray *allMessages = [ rawMessage componentsSeparatedByCharactersInSet:[NSCharacterSet newlineCharacterSet]];
-
-            for (NSString *message in allMessages) {
-                if (message.length && ![message isEqualToString:@"#"]) {
-                    [self.connection.remoteObjectProxy updateProgress:message
-                                                             progress:progress];
-                }
+            NSString *message = data.taskData_splitLines.firstObject;
+            if (message.length && ![message isEqualToString:@"#"]) {
+                [self.connection.remoteObjectProxy updateProgress:[message stringByReplacingOccurrencesOfString:@"installer: " withString:@""]
+                                                         progress:progress];
             }
+
         }
     }];
 
@@ -370,6 +391,26 @@ helper_reply:
     }];
 
     [task launch];
+}
+
+- (void)uninstallPackagesWithIdentifiers:(NSArray *)identifiers authorization:(NSData *)authData reply:(uninstallPackageReplyBlock)reply{
+
+    NSError *error;
+    error = [LGAutoPkgrAuthorizer checkAuthorization:authData command:_cmd];
+    if (error != nil) {
+        reply(nil, nil, error);
+        return;
+    }
+
+    LGPackageRemover *remover = [[LGPackageRemover alloc] init];
+    remover.dryRun = NO;
+
+    [remover removePackagesWithIdentifiers:identifiers progress:^(NSString *message, double progress) {
+#if DEBUG
+        syslog(LOG_INFO, "[UNINSTALLER]: %s", message.UTF8String);
+#endif
+        // TODO: send progress updates
+    } reply:reply];
 }
 
 #pragma mark - Life Cycle
@@ -399,6 +440,58 @@ helper_reply:
                                     fromDomain:kAHGlobalLaunchDaemon
                                          error:&error];
     }
+
+    reply(error);
+}
+
+- (void)uninstall:(NSData *)authData removeKeychains:(BOOL)removeKeychains packages:(NSArray *)packageIDs reply:(void (^)(NSError *))reply {
+    NSError *error;
+
+    /*////////////////////////////////////////////////////////////////////
+    //   Remove LaunchD schedule                                        //
+    ////////////////////////////////////////////////////////////////////*/
+    if (jobIsRunning(kLGAutoPkgrLaunchDaemonPlist, kAHGlobalLaunchDaemon)) {
+        [[AHLaunchCtl sharedController] remove:kLGAutoPkgrLaunchDaemonPlist
+                                    fromDomain:kAHGlobalLaunchDaemon
+                                         error:&error];
+    }
+
+    /*////////////////////////////////////////////////////////////////////
+    //   Remove Keychain items                                          //
+    ////////////////////////////////////////////////////////////////////*/
+    if (removeKeychains) {
+        NSFileManager *manager = [NSFileManager defaultManager];
+        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"SELF == .DS_Store"];
+
+        NSArray *keyFiles = [[manager contentsOfDirectoryAtPath:kLGEncryptedKeysParentDirectory
+                                                          error:nil]
+                             filteredArrayUsingPredicate:predicate];
+
+        if (keyFiles.count) {
+            NSString *encryptedKeyFile = [NSString stringWithFormat:@"%@/UID_%d",
+                                         kLGEncryptedKeysParentDirectory,
+                                         self.connection.effectiveUserIdentifier];
+            if (keyFiles.count == 1) {
+                /* If the count is 1 there's only one user
+                 * remove the whole directory & common encryption key */
+                if ([manager fileExistsAtPath:encryptedKeyFile]) {
+                    if([manager removeItemAtPath:kLGEncryptedKeysParentDirectory error:nil]){
+                        /* Remove keychain item. */
+                        AHKeychainItem *item = [self commonDecryptionKeychainItem];
+                        [[AHKeychain systemKeychain] deleteItem:item error:&error];
+                    }
+                }
+            } else {
+                /* More than one user encryptedKeyFile exists. Just remove the current user's */
+                [manager removeItemAtPath:encryptedKeyFile error:&error];
+            }
+        }
+    }
+
+    /*////////////////////////////////////////////////////////////////////
+    //   Remove Integrations                                            //
+    ////////////////////////////////////////////////////////////////////*/
+        // TODO: remove selected packages...
 
     reply(error);
 }
@@ -435,10 +528,17 @@ helper_reply:
 }
 
 #pragma mark - Private
+- (AHKeychainItem *)commonDecryptionKeychainItem {
+    AHKeychainItem *item = [[AHKeychainItem alloc] init];
+    item.service = @"AutoPkgr Common Decryption";
+    item.account = @"com.lindegroup.AutoPkgr.decryption.key";
+    return item;
+}
+
 - (BOOL)launchPathIsValid:(NSString *)path error:(NSError *__autoreleasing *)error;
 {
-    // Get the executable path of the helper tool.  We use this to compare against
-    // the program the helper tool is asked add as the launchd.plist "Program" key
+    // Get the executable path of the helper tool (self).  Then compare that to the
+    // binary (path) the helper tool is asked to set as the launchd.plist "Program" key.
 
     SNTCodesignChecker *selfCS = [[SNTCodesignChecker alloc] initWithSelf];
 

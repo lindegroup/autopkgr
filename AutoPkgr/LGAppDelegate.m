@@ -3,14 +3,13 @@
 //  AutoPkgr
 //
 //  Created by James Barclay on 6/25/14.
-//
 //  Copyright 2014-2015 The Linde Group, Inc.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
 //  You may obtain a copy of the License at
 //
-//  http://www.apache.org/licenses/LICENSE-2.0
+//      http://www.apache.org/licenses/LICENSE-2.0
 //
 //  Unless required by applicable law or agreed to in writing, software
 //  distributed under the License is distributed on an "AS IS" BASIS,
@@ -21,21 +20,22 @@
 
 #import "LGAppDelegate.h"
 #import "LGAutoPkgr.h"
-#import "LGHostInfo.h"
 #import "LGAutoPkgTask.h"
-#import "LGEmailer.h"
 #import "LGAutoPkgSchedule.h"
-#import "LGRecipes.h"
+#import "LGAutoPkgRecipe.h"
 #import "LGConfigurationWindowController.h"
 #import "LGAutoPkgrHelperConnection.h"
-#import "LGUserNotifications.h"
+#import "LGUserNotification.h"
 #import "LGDisplayStatusDelegate.h"
+#import "LGNotificationManager.h"
+#import "LGUninstaller.h"
 
 #import <AHLaunchCtl/AHLaunchCtl.h>
+#import <AHLaunchCtl/AHServiceManagement.h>
 
 @interface LGAppDelegate () <NSMenuDelegate, LGDisplayStatusDelegate>
 @property (strong) LGConfigurationWindowController *configurationWindowController;
-@property (strong) LGUserNotifications *notificationDelegate;
+@property (strong) LGUserNotificationsDelegate *notificationDelegate;
 @property (strong) LGAutoPkgTaskManager *taskManager;
 @end
 
@@ -47,28 +47,16 @@
 }
 
 #pragma mark - NSApplication Delegate
-
+#pragma mark-- Launching --
 - (void)applicationWillFinishLaunching:(NSNotification *)notification
 {
     // Setup activation policy. By default set as menubar only.
-    [[LGDefaults standardUserDefaults] registerDefaults:@{ kLGApplicationDisplayStyle : @(kLGDisplayStyleShowMenu | kLGDisplayStyleShowDock) ,
-                                                           NSStringFromSelector(@selector(reportedItemFlags)): @(kLGReportItemsAll)}];
-    
+    [[LGDefaults standardUserDefaults] registerDefaults:@{ kLGApplicationDisplayStyle : @(kLGDisplayStyleShowMenu | kLGDisplayStyleShowDock),
+                                                           NSStringFromSelector(@selector(reportedItemFlags)) : @(kLGReportItemsAll) }];
+
     if (([[LGDefaults standardUserDefaults] applicationDisplayStyle] & kLGDisplayStyleShowDock)) {
         [NSApp setActivationPolicy:NSApplicationActivationPolicyRegular];
     }
-}
-
-- (BOOL)applicationShouldTerminateAfterLastWindowClosed:(NSApplication *)sender
-{
-    // If this set to run as dock only with no menu item, quit it after the last window is closed.
-    BOOL quitOnClose = YES;
-
-    if ([[LGDefaults standardUserDefaults] applicationDisplayStyle] & kLGDisplayStyleShowMenu) {
-        quitOnClose = NO;
-    }
-
-    return quitOnClose;
 }
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
@@ -84,11 +72,12 @@
     NSError *error;
 
     if (![AHLaunchCtl installHelper:kLGAutoPkgrHelperToolName prompt:@"" error:&error]) {
-        if (error) {
-            NSLog(@"%@", error.localizedDescription);
-            [NSApp presentError:[NSError errorWithDomain:kLGApplicationName code:-1 userInfo:@{ NSLocalizedDescriptionKey : @"The associated helper tool could not be installed, we must quit now." }]];
-            [[NSApplication sharedApplication] terminate:self];
-        }
+        assert([NSThread isMainThread]);
+        DLog(@"Error installing helper: %@", error.localizedDescription);
+
+        [NSApp activateIgnoringOtherApps:YES];
+        [NSApp presentError:[LGError errorWithCode:kLGErrorInstallingPrivilegedHelperTool]];
+        [[NSApplication sharedApplication] terminate:self];
     }
 
     // Register to get background progress updates...
@@ -102,22 +91,24 @@
         DLog(@"No longer monitoring scheduled autopkg run");
     }];
 
-    if (![LGRecipes migrateToIdentifiers:nil]) {
-        [NSApp presentError:[NSError errorWithDomain:kLGApplicationName code:-1 userInfo:@{ NSLocalizedDescriptionKey : @"AutoPkgr will now quit.",
-                                                                                            NSLocalizedRecoverySuggestionErrorKey : @"You've chosen not to upgrade your recipe list. Either relaunch AutoPkgr to restart the migration process, or downgrade to an older 1.1.x AutoPkgr release." }]];
+    if (![LGAutoPkgRecipe migrateToIdentifiers:nil]) {
+        NSString *message = NSLocalizedString(@"AutoPkgr will now quit.", nil);
+        NSString *suggestion = NSLocalizedString(@"You've chosen not to upgrade your recipe list. Either relaunch AutoPkgr to restart the migration process, or downgrade to an older 1.1.x AutoPkgr release.", nil);
+
+        [NSApp presentError:
+                   [NSError errorWithDomain:kLGApplicationName
+                                       code:-1
+                                   userInfo:@{
+                                               NSLocalizedDescriptionKey : message,
+                                               NSLocalizedRecoverySuggestionErrorKey : suggestion
+                                            }]];
+
         [[NSApplication sharedApplication] terminate:self];
     }
 
     // Setup User Notification Delegate
-    _notificationDelegate = [[LGUserNotifications alloc] init];
-    [NSUserNotificationCenter defaultUserNotificationCenter].delegate = _notificationDelegate;
+    _notificationDelegate = [[LGUserNotificationsDelegate alloc] initAsDefaultCenterDelegate];
 
-    NSInteger timer;
-    [_autoCheckForUpdatesMenuItem setState:[LGAutoPkgSchedule updateAppsIsScheduled:&timer]];
-
-    NSString *menuItemTitle = [NSString stringWithFormat:@"Run AutoPkg Every %ld Hours", timer];
-
-    [_autoCheckForUpdatesMenuItem setTitle:menuItemTitle];
     // calling stopProgress: here is an easy way to get the
     // menu reset to its default configuration
     [self stopProgress:nil];
@@ -125,16 +116,17 @@
     [self showConfigurationWindow:self];
 }
 
-- (void)applicationWillTerminate:(NSNotification *)notification
+#pragma mark-- Termination --
+- (BOOL)applicationShouldTerminateAfterLastWindowClosed:(NSApplication *)sender
 {
-    // Stop observing...
-    [[NSDistributedNotificationCenter defaultCenter] removeObserver:self name:kLGNotificationProgressMessageUpdate object:nil];
-}
+    // If this set to run as dock only with no menu item, quit it after the last window is closed.
+    BOOL quitOnClose = YES;
 
-- (BOOL)applicationShouldHandleReopen:(NSApplication *)theApplication hasVisibleWindows:(BOOL)flag
-{
-    [self showConfigurationWindow:self];
-    return YES;
+    if ([[LGDefaults standardUserDefaults] applicationDisplayStyle] & kLGDisplayStyleShowMenu) {
+        quitOnClose = NO;
+    }
+
+    return quitOnClose;
 }
 
 - (NSApplicationTerminateReply)applicationShouldTerminate:(NSApplication *)sender
@@ -153,6 +145,19 @@
         return NSTerminateLater;
     }
     return NSTerminateNow;
+}
+
+- (void)applicationWillTerminate:(NSNotification *)notification
+{
+    // Stop observing...
+    [[NSDistributedNotificationCenter defaultCenter] removeObserver:self name:kLGNotificationProgressMessageUpdate object:nil];
+}
+
+#pragma mark-- Resigning --
+- (BOOL)applicationShouldHandleReopen:(NSApplication *)theApplication hasVisibleWindows:(BOOL)flag
+{
+    [self showConfigurationWindow:self];
+    return YES;
 }
 
 - (void)applicationWillResignActive:(NSNotification *)notification
@@ -212,14 +217,14 @@
 {
     DLog(@"Received 'Check Now' menulet command.");
 
-    [self startProgressWithMessage:@"Running selected AutoPkg recipes..."];
-    NSString *recipeList = [LGRecipes recipeList];
+    [self startProgressWithMessage:NSLocalizedString(@"Running selected AutoPkg recipes...", nil)];
+    NSString *recipeList = [LGAutoPkgRecipe defaultRecipeList];
     BOOL updateRepos = [[LGDefaults standardUserDefaults] checkForRepoUpdatesAutomaticallyEnabled];
 
     if (!_taskManager) {
         _taskManager = [[LGAutoPkgTaskManager alloc] init];
-        _taskManager.progressDelegate = self;
     }
+    _taskManager.progressDelegate = self;
 
     [_taskManager runRecipeList:recipeList
                      updateRepo:updateRepos
@@ -227,10 +232,10 @@
                               NSAssert([NSThread isMainThread], @"Reply not on main thread!");
 
                               [self stopProgress:error];
-                              if (report.count || error) {
-                                  LGEmailer *emailer = [LGEmailer new];
-                                  [emailer sendEmailForReport:report error:error];
-                              }
+                              LGNotificationManager *notifier = [[LGNotificationManager alloc] initWithReportDictionary:report errors:error];
+                              [notifier sendEnabledNotifications:^(NSError *error) {
+                                  [self stopProgress:error];
+                              }];
                           }];
 }
 
@@ -251,8 +256,9 @@
         }
     }
 
-    if (!self->_configurationWindowController) {
-        self->_configurationWindowController = [[LGConfigurationWindowController alloc] initWithWindowNibName:@"LGConfigurationWindowController"];
+    if (!_configurationWindowController) {
+        _configurationWindowController = [[LGConfigurationWindowController alloc] initWithProgressDelegate:self];
+        _configurationWindowController.scheduleView.scheduleMenuItem = _autoCheckForUpdatesMenuItem;
     }
 
     [NSApp activateIgnoringOtherApps:YES];
@@ -262,28 +268,8 @@
 
 - (IBAction)uninstallHelper:(id)sender
 {
-    NSError *error;
-
-    if (jobIsRunning(kLGAutoPkgrLaunchDaemonPlist, kAHGlobalLaunchDaemon)) {
-        [[AHLaunchCtl sharedController] remove:kLGAutoPkgrLaunchDaemonPlist fromDomain:kAHGlobalLaunchDaemon error:&error];
-        if (error) {
-            NSLog(@"%@", error.localizedDescription);
-        } else {
-            NSLog(@"Disabled schedule.");
-        }
-    }
-
-    if (![AHLaunchCtl uninstallHelper:kLGAutoPkgrHelperToolName prompt:@"Remove AutoPkgr's components." error:&error]) {
-        if (error.code != errAuthorizationCanceled) {
-            [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-                [NSApp presentError:error];
-            }];
-        }
-    } else {
-        NSAlert *alert = [NSAlert alertWithMessageText:@"Removed AutoPkgr associated files." defaultButton:@"Thanks for using AutoPkgr" alternateButton:nil otherButton:nil informativeTextWithFormat:@"This includes the helper tool, launchd schedule, and other launchd plist. You can safely remove it from your Applications folder."];
-        [alert runModal];
-        [[NSApplication sharedApplication] terminate:self];
-    }
+    LGUninstaller *uninstaller = [[LGUninstaller alloc] init];
+    [uninstaller uninstallAutoPkgr:sender];
 }
 
 #pragma mark - Progress Protocol
@@ -296,7 +282,7 @@
             [_configurationWindowController startProgressWithMessage:message];
         }
 
-        [_runUpdatesNowMenuItem setTitle:@"Cancel AutoPkg Run"];
+        [_runUpdatesNowMenuItem setTitle:NSLocalizedString(@"Cancel AutoPkg Run", nil)];
         [_runUpdatesNowMenuItem setAction:@selector(cancelRunFromMenu:)];
 
         NSMenuItem *runStatus = [self.statusMenu itemAtIndex:0];
@@ -312,19 +298,22 @@
         }
 
         // Switch the title and selector back for run controller
-        [_runUpdatesNowMenuItem setTitle:@"Run AutoPkg Now"];
+        [_runUpdatesNowMenuItem setTitle:NSLocalizedString(@"Run AutoPkg Now", nil)];
         [_runUpdatesNowMenuItem setAction:@selector(checkNowFromMenu:)];
 
         // Set the last run date of the menu item.
         NSString *lastRunDate = [[LGDefaults standardUserDefaults] LastAutoPkgRun];
         NSString *status;
 
+        NSString *neverRun = NSLocalizedString(@"Never by AutoPkgr", nil);
         if (error) {
             self.statusItem.image = [NSImage imageNamed:@"autopkgr_error.png"];
-            status = [NSString stringWithFormat:@"AutoPkg Run Error on: %@",lastRunDate ?: @"Never by AutoPkgr"];
+            status = [NSString stringWithFormat:NSLocalizedString(@"AutoPkg Run Error on: %@", nil), lastRunDate
+                      ?: neverRun];
         } else {
             self.statusItem.image = [NSImage imageNamed:@"autopkgr.png"];
-            status = [NSString stringWithFormat:@"Last AutoPkg Run: %@",lastRunDate ?: @"Never by AutoPkgr"];
+            status = [NSString stringWithFormat:NSLocalizedString(@"Last AutoPkg Run: %@", nil), lastRunDate
+                      ?: neverRun];
         }
 
         [_progressMenuItem setTitle:status];
@@ -350,57 +339,6 @@
     }
 }
 
-- (IBAction)changeCheckForNewVersionsOfAppsAutomatically:(id)sender
-{
-    if ([sender isEqualTo:_autoCheckForUpdatesMenuItem]) {
-        _autoCheckForUpdatesMenuItem.state = !_autoCheckForUpdatesMenuItem.state;
-    }
-
-    NSInteger scheduledInterval;
-    BOOL currentlyScheduled = [LGAutoPkgSchedule updateAppsIsScheduled:&scheduledInterval];
-
-    BOOL start = currentlyScheduled;
-    if (![sender isEqualTo:_configurationWindowController.autoPkgRunInterval]) {
-        start = [sender state];
-    }
-
-    BOOL force = NO;
-    NSInteger interval = _configurationWindowController.autoPkgRunInterval.integerValue;
-
-    if ([sender isEqualTo:_configurationWindowController.autoPkgRunInterval]) {
-        if (!start || scheduledInterval == _configurationWindowController.autoPkgRunInterval.integerValue) {
-            return;
-        }
-        // We set force here so it will reload the schedule
-        // if it is currently enabled
-        force = YES;
-    }
-
-    NSLog(@"%@ autopkg run schedule.", currentlyScheduled ? @"Enabling" : @"Disabling");
-    [LGAutoPkgSchedule startAutoPkgSchedule:start interval:interval isForced:force reply:^(NSError *error) {
-        [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-            NSInteger timer;
-            BOOL currentlyScheduled = [LGAutoPkgSchedule updateAppsIsScheduled:&timer];
-            _autoCheckForUpdatesMenuItem.state = currentlyScheduled;
-            _configurationWindowController.checkForNewVersionsOfAppsAutomaticallyButton.state = currentlyScheduled;
-
-            if (error) {
-                    // If error, reset the state to modified status
-                    _configurationWindowController.autoPkgRunInterval.stringValue = [@(timer) stringValue];
-
-                    // If the authorization was canceled by user, don't present error.
-                    if (error.code != kLGErrorAuthChallenge) {
-                        [self stopProgress:error];
-                    }
-            } else {
-                // Otherwise update our defaults
-                NSString *menuItemTitle = [NSString stringWithFormat:@"Run AutoPkg Every %ld Hours", interval];
-                [_autoCheckForUpdatesMenuItem setTitle:menuItemTitle];
-            }
-        }];
-    }];
-}
-
 #pragma mark - Menu Delegate
 - (void)menuWillOpen:(NSMenu *)menu
 {
@@ -408,12 +346,12 @@
     // despite aggressive synchronization, so we need to pull the value from
     // the actual preference file until a better work around is found...
 
-    if (!_taskManager || _taskManager.operationCount == 0 ) {
+    if (!_taskManager || _taskManager.operationCount == 0) {
         NSDictionary *dict = [NSDictionary dictionaryWithContentsOfFile:[@"~/Library/Preferences/com.lindegroup.AutoPkgr.plist" stringByExpandingTildeInPath]];
 
         NSString *date = [LGDefaults formattedDate:dict[@"LastAutoPkgRun"]];
         if (date) {
-            NSString *status = [NSString stringWithFormat:@"Last AutoPkg Run: %@", date ?: @"Never by AutoPkgr"];
+            NSString *status = [NSString stringWithFormat:NSLocalizedString(@"Last AutoPkg Run: %@", nil), date ?: NSLocalizedString(@"Never by AutoPkgr", nil)];
             _progressMenuItem.title = status;
         }
     }

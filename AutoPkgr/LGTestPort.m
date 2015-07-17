@@ -3,14 +3,13 @@
 //  AutoPkgr
 //
 //  Created by Josh Senick on 7/29/14.
-//
 //  Copyright 2014-2015 The Linde Group, Inc.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
 //  You may obtain a copy of the License at
 //
-//  http://www.apache.org/licenses/LICENSE-2.0
+//      http://www.apache.org/licenses/LICENSE-2.0
 //
 //  Unless required by applicable law or agreed to in writing, software
 //  distributed under the License is distributed on an "AS IS" BASIS,
@@ -21,6 +20,7 @@
 
 #import "LGTestPort.h"
 #import "LGAutoPkgr.h"
+
 #import <AFNetworking/AFNetworking.h>
 
 @interface LGTestPort ()
@@ -107,6 +107,7 @@
 
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:serverURL];
     request.timeoutInterval = 5.0;
+    request.cachePolicy = NSURLRequestReloadIgnoringLocalCacheData;
 
     // Set up the operation
     AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
@@ -118,6 +119,8 @@
     policy.validatesCertificateChain = NO;
 
     operation.securityPolicy = policy;
+    operation.shouldUseCredentialStorage = NO;
+    
     [operation setRedirectResponseBlock:^NSURLRequest * (NSURLConnection * connection, NSURLRequest * request, NSURLResponse * redirectResponse) {
         if (redirectResponse) {
             DLog(@"redirected %@",redirectResponse);
@@ -127,9 +130,11 @@
     }];
 
     [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
-        reply(YES,redirectedURL);
+        [[NSURLCache sharedURLCache] removeCachedResponseForRequest:request];
+        reply(YES, redirectedURL);
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        reply(operation.response ? YES:NO,redirectedURL);
+        [[NSURLCache sharedURLCache] removeCachedResponseForRequest:request];
+        reply(operation.response ? YES:NO, redirectedURL);
     }];
 
     [operation start];

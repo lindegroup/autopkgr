@@ -2,15 +2,14 @@
 //  LGJSSDistributionPointsPrefPanel.m
 //  AutoPkgr
 //
-//  Created by Eldon on 11/5/14.
-//
+//  Created by Eldon Ahrold on 11/5/14.
 //  Copyright 2014-2015 The Linde Group, Inc.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
 //  You may obtain a copy of the License at
 //
-//  http://www.apache.org/licenses/LICENSE-2.0
+//      http://www.apache.org/licenses/LICENSE-2.0
 //
 //  Unless required by applicable law or agreed to in writing, software
 //  distributed under the License is distributed on an "AS IS" BASIS,
@@ -20,8 +19,10 @@
 //
 
 #import "LGJSSDistributionPointsPrefPanel.h"
+#import "LGJSSImporterIntegration.h"
+#import "LGAutoPkgr.h"
 
-@interface LGJSSDistributionPointsPrefPanel ()
+@interface LGJSSDistributionPointsPrefPanel () <NSWindowDelegate>
 
 @end
 
@@ -31,7 +32,7 @@
 
 - (id)init
 {
-    return [self initWithWindowNibName:@"LGJSSDistributionPointsPrefPanel"];
+    return [self initWithWindowNibName:NSStringFromClass([self class])];
 }
 
 - (instancetype)initWithDistPointDictionary:(NSDictionary *)dict
@@ -46,6 +47,7 @@
 - (void)windowDidLoad
 {
     [super windowDidLoad];
+    self.window.delegate = self;
 
     // We need to do this dance because it seems that when the class is initialized
     // the NSTextFields are nil until the window is loaded.
@@ -58,34 +60,35 @@
 
 - (void)populateWithDictionary
 {
-    _distPointDomain.safeStringValue = _editRepoDict[kLGJSSDistPointWorkgroupDomainKey];
-    _distPointName.safeStringValue = _editRepoDict[kLGJSSDistPointNameKey];
-    _distPointPassword.safeStringValue = _editRepoDict[kLGJSSDistPointPasswordKey];
-    _distPointPort.safeStringValue = _editRepoDict[kLGJSSDistPointPortKey];
-    _distPointShareName.safeStringValue = _editRepoDict[kLGJSSDistPointSharePointKey];
-    _distPointURL.safeStringValue = _editRepoDict[kLGJSSDistPointURLKey];
-    _distPointUserName.safeStringValue = _editRepoDict[kLGJSSDistPointUserNameKey];
+    _distPointDomain.safe_stringValue = _editRepoDict[kLGJSSDistPointWorkgroupDomainKey];
+    _distPointName.safe_stringValue = _editRepoDict[kLGJSSDistPointNameKey];
+    _distPointPassword.safe_stringValue = _editRepoDict[kLGJSSDistPointPasswordKey];
+    _distPointPort.safe_stringValue = _editRepoDict[kLGJSSDistPointPortKey];
+    _distPointShareName.safe_stringValue = _editRepoDict[kLGJSSDistPointSharePointKey];
+    _distPointURL.safe_stringValue = _editRepoDict[kLGJSSDistPointURLKey];
+    _distPointUserName.safe_stringValue = _editRepoDict[kLGJSSDistPointUserNameKey];
     [_distPointTypePopupBT selectItemWithTitle:_editRepoDict[kLGJSSDistPointTypeKey]];
-    [_cancelBT setHidden:YES];
-    [_addBT setTitle:@"Done"];
-    [_infoText setStringValue:@"Edit Distribution Point"];
+
+    _cancelBT.hidden = YES;
+    _addBT.title = @"Done";
+    _infoText.stringValue = NSLocalizedStringFromTable(@"Edit Distribution Point", @"LocalizableJSSImporter", nil);
 }
 
 - (void)addDistPoint:(NSButton *)sender
 {
     // Save distpoint to defaults...
-    LGDefaults *defaults = [LGDefaults standardUserDefaults];
+    LGJSSImporterDefaults *defaults = [LGJSSImporterDefaults new];
 
     NSMutableOrderedSet *workingSet = [[NSMutableOrderedSet alloc] initWithArray:defaults.JSSRepos];
 
-    NSString *password = _distPointPassword.safeStringValue;
-    NSString *userName = _distPointUserName.safeStringValue;
-    NSString *url = _distPointURL.safeStringValue;
-    NSString *shareName = _distPointShareName.safeStringValue;
-    NSString *domain = _distPointDomain.safeStringValue;
-    NSString *port = _distPointPort.safeStringValue;
+    NSString *password = _distPointPassword.safe_stringValue;
+    NSString *userName = _distPointUserName.safe_stringValue;
+    NSString *url = _distPointURL.safe_stringValue;
+    NSString *shareName = _distPointShareName.safe_stringValue;
+    NSString *domain = _distPointDomain.safe_stringValue;
+    NSString *port = _distPointPort.safe_stringValue;
     NSString *type = _distPointTypePopupBT.title;
-    NSString *name = _distPointName.safeStringValue;
+    NSString *name = _distPointName.safe_stringValue;
 
     NSMutableDictionary *distPoint = [[NSMutableDictionary alloc] init];
 
@@ -179,6 +182,11 @@
     }
 }
 
+- (void)windowWillClose:(NSNotification *)notification
+{
+    [NSApp endSheet:self.window];
+}
+
 - (void)closePanel:(id)sender
 {
     [NSApp endSheet:self.window];
@@ -223,7 +231,7 @@
 - (BOOL)meetsRequirementsForType
 {
     for (NSTextField *type in [self requiredForType]) {
-        if (!type.safeStringValue) {
+        if (!type.safe_stringValue) {
             return NO;
         }
     }
@@ -233,7 +241,13 @@
 - (NSArray *)requiredForType
 {
     NSString *type = _distPointTypePopupBT.title;
-    NSMutableArray *types = [NSMutableArray arrayWithArray:@[ _distPointURL, _distPointUserName, _distPointPassword ]];
+
+    NSMutableArray *types = [NSMutableArray arrayWithObjects:
+                                                _distPointURL,
+                                                _distPointUserName,
+                                                _distPointPassword,
+                                                nil];
+
     if ([type isEqualToString:@"AFP"] || [type isEqualToString:@"SMB"]) {
         [types addObject:_distPointShareName];
     }

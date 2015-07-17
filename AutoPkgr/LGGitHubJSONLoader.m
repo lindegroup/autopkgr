@@ -3,14 +3,13 @@
 //  AutoPkgr
 //
 //  Created by James Barclay on 7/18/14.
-//
 //  Copyright 2014-2015 The Linde Group, Inc.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
 //  You may obtain a copy of the License at
 //
-//  http://www.apache.org/licenses/LICENSE-2.0
+//      http://www.apache.org/licenses/LICENSE-2.0
 //
 //  Unless required by applicable law or agreed to in writing, software
 //  distributed under the License is distributed on an "AS IS" BASIS,
@@ -23,10 +22,166 @@
 #import "LGConstants.h"
 #import "LGAutoPkgr.h"
 
-@implementation LGGitHubJSONLoader
+#import <AFNetworking/AFNetworking.h>
 
-- (NSData *)getJSONFromURL:(NSURL *)url
+@interface LGGitHubReleaseInfo ()
+@property (copy, nonatomic) NSString *repoURL;
+@property (copy, nonatomic, readwrite) NSArray *jsonObject;
+@property (copy, nonatomic, readwrite) NSDictionary *latestReleaseDictionary;
+@property (copy, nonatomic, readwrite) NSArray *assets;
+
+@property (copy, nonatomic, readwrite) NSString *latestVersion;
+@property (copy, nonatomic, readwrite) NSString *latestReleaseDownload;
+@property (copy, nonatomic, readwrite) NSArray *latestReleaseDownloads;
+@end
+
+@implementation LGGitHubReleaseInfo {
+    NSDate *_infoRetrievedDate;
+}
+
+/**
+ *  Private init method.
+ *
+ *  @return self;
+ */
+- (instancetype)init_
 {
+    if (self = [super init]) {
+        _lifespan = 600;
+    }
+    return self;
+}
+
+- (instancetype)initWithURL:(NSString *)url
+{
+    if (self = [self init_]) {
+        _repoURL = url;
+    }
+    return self;
+}
+
+- (instancetype)initWithJSON:(NSArray *)json
+{
+    if (self = [self init_]) {
+        _jsonObject = json;
+        _infoRetrievedDate = [NSDate date];
+    }
+    return self;
+}
+
+- (BOOL)isExpired
+{
+    BOOL isExpired = (_infoRetrievedDate == nil) || (_lifespan <= -(_infoRetrievedDate.timeIntervalSinceNow));
+    return isExpired;
+}
+
+- (NSArray *)jsonObject
+{
+    if (!_jsonObject && _repoURL) {
+        // this is a backup synchronous method to pull the information.
+        _jsonObject = [LGGitHubJSONLoader getJSONFromURL:_repoURL];
+        _infoRetrievedDate = [NSDate date];
+    }
+    return _jsonObject;
+}
+
+- (NSDictionary *)latestReleaseDictionary
+{
+    if (!_latestReleaseDictionary) {
+        _latestReleaseDictionary = [self.jsonObject firstObject];
+    }
+    return _latestReleaseDictionary;
+}
+
+- (NSString *)latestVersion
+{
+    if (!_latestVersion) {
+        _latestVersion = [self.latestReleaseDictionary[@"tag_name"] stringByReplacingOccurrencesOfString:@"v" withString:@""];
+    }
+    return _latestVersion;
+}
+
+- (NSArray *)assets
+{
+    if (!_assets) {
+        _assets = self.latestReleaseDictionary[@"assets"];
+    }
+    return _assets;
+}
+
+- (NSString *)latestReleaseDownload
+{
+    if (!_latestReleaseDownload) {
+        _latestReleaseDownload = self.assets.firstObject[@"browser_download_url"];
+    }
+    return _latestReleaseDownload;
+}
+
+- (NSArray *)latestReleaseDownloads
+{
+    if (!_latestReleaseDownloads) {
+        NSMutableArray *array = nil;
+        for (NSDictionary *asset in self.assets)
+            if (asset[@"browser_download_url"]) {
+                if (!array) {
+                    array = [[NSMutableArray alloc] init];
+                };
+                [array addObject:asset[@"browser_download_url"]];
+            }
+        _latestReleaseDownloads = [array copy];
+    }
+
+    return _latestReleaseDownloads;
+}
+
+@end
+
+@implementation LGGitHubJSONLoader {
+    NSString *_gitHubURL;
+}
+
+- (instancetype)initWithGitHubURL:(NSString *)gitHubURL
+{
+    if (self = [super init]) {
+        _gitHubURL = gitHubURL;
+    }
+    return self;
+}
+
+- (void)getReleaseInfo:(void (^)(LGGitHubReleaseInfo *, NSError *error))complete
+{
+
+    NSURL *url = [NSURL URLWithString:_gitHubURL];
+
+    NSMutableURLRequest *req = [NSMutableURLRequest requestWithURL:url
+                                         cachePolicy:NSURLRequestUseProtocolCachePolicy
+                                     timeoutInterval:15.0];
+    
+    if (_apiToken) {
+        [req setValue:[@"token " stringByAppendingString:_apiToken] forHTTPHeaderField:@"Authorization"];
+    };
+
+    AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:req];
+    operation.responseSerializer = [AFJSONResponseSerializer serializer];
+
+    [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, NSArray *responseObject) {
+        LGGitHubReleaseInfo *info = [[LGGitHubReleaseInfo alloc] initWithJSON:responseObject];
+        complete(info, nil);
+//        DevLog(@"Remaining calls/hour to GitHub API: %@/%@ (used Cache = %@)",
+//               operation.response.allHeaderFields[@"X-RateLimit-Remaining"],
+//               operation.response.allHeaderFields[@"X-RateLimit-Limit"],
+//               [operation.response.allHeaderFields[@"Status"] isEqualToString:@"304 Not Modified"] ? @"YES": @"NO");
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        complete(nil, error);
+    }];
+
+    [operation start];
+}
+
++ (NSArray *)getJSONFromURL:(NSString *)aUrl
+{
+    NSURL *url = [NSURL URLWithString:aUrl];
+
     // Create the NSURLRequest object with the given URL
     NSURLRequest *req = [NSURLRequest requestWithURL:url
                                          cachePolicy:NSURLRequestUseProtocolCachePolicy
@@ -46,11 +201,6 @@
         return nil;
     }
 
-    return reqData;
-}
-
-- (NSArray *)getArrayFromJSONData:(NSData *)reqData
-{
     if (reqData != nil) {
         // Initialize our error object
         NSError *error = nil;
@@ -68,21 +218,7 @@
     return nil;
 }
 
-- (NSArray *)getReleaseArray:(NSString *)gitHubURL
-{
-    // Get the JSON data
-    NSData *data = [self getJSONFromURL:[NSURL URLWithString:gitHubURL]];
-    return [self getArrayFromJSONData:data];
-}
-
-- (NSDictionary *)getLatestReleaseDictionary:(NSString *)githubURL
-{
-    // GitHub returns the latest release from the API at index 0
-    NSArray *releases = [self getReleaseArray:githubURL];
-    return releases.count ? releases[0] : nil;
-}
-
-- (NSArray *)getAutoPkgRecipeRepos
++ (NSArray *)getAutoPkgRecipeRepos
 {
     // Assign the keys we'll be using
     NSString *cloneURL = @"clone_url";
@@ -90,7 +226,8 @@
     NSString *stargazersCount = @"stargazers_count";
 
     // Get the JSON data
-    NSArray *reposArray = [self getArrayFromJSONData:[self getJSONFromURL:[NSURL URLWithString:kLGAutoPkgRepositoriesJSONURL]]];
+    NSArray *reposArray = [self getJSONFromURL:kLGAutoPkgRepositoriesJSONURL];
+
     NSMutableArray *mutableArray = [[NSMutableArray alloc] init];
 
     for (NSDictionary *dct in reposArray) {
@@ -123,56 +260,6 @@
     }
 
     return nil;
-}
-
-- (NSString *)getLatestAutoPkgReleaseVersionNumber
-{
-    // Get an NSDictionary of the latest release JSON
-    NSDictionary *latestVersionDict = [self getLatestReleaseDictionary:kLGAutoPkgReleasesJSONURL];
-
-    // AutoPkg version numbers are prepended with "v"
-    // Let's remove that from our version string
-    NSString *latestVersionNumber = [[latestVersionDict objectForKey:@"tag_name"] stringByReplacingOccurrencesOfString:@"v" withString:@""];
-    NSLog(@"Latest version of AutoPkg available on GitHub: %@.", latestVersionNumber);
-
-    return latestVersionNumber;
-}
-
-- (NSString *)latestVersion:(NSString *)gitHubURL
-{
-    // Get an NSDictionary of the latest release JSON
-    NSDictionary *latestVersionDict = [self getLatestReleaseDictionary:gitHubURL];
-
-    // AutoPkg version numbers are prepended with "v"
-    // Let's remove that from our version string
-    NSString *latestVersionNumber = [[latestVersionDict objectForKey:@"tag_name"] stringByReplacingOccurrencesOfString:@"v" withString:@""];
-
-    return latestVersionNumber;
-}
-
-- (NSString *)latestReleaseDownload:(NSString *)gitHubURL
-{
-    // Get an NSDictionary of the latest release JSON
-    NSDictionary *latestVersionDict = [self getLatestReleaseDictionary:gitHubURL];
-
-    // Get the PKG / DMG download URL
-    NSString *browserDownloadURL = [[[latestVersionDict objectForKey:@"assets"] firstObject] objectForKey:@"browser_download_url"];
-
-    return browserDownloadURL;
-}
-
-- (NSArray *)latestReleaseDownloads:(NSString *)gitHubURL
-{
-    // Get an NSDictionary of the latest release JSON
-    NSDictionary *latestVersionDict = [self getLatestReleaseDictionary:gitHubURL];
-    NSMutableArray *array = [[NSMutableArray alloc] init];
-
-    for (NSDictionary *asset in latestVersionDict[@"assets"])
-        if (asset[@"browser_download_url"]) {
-            [array addObject:asset[@"browser_download_url"]];
-        }
-
-    return [array copy];
 }
 
 @end

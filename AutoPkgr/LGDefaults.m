@@ -2,15 +2,14 @@
 //  LGDefaults.m
 //  AutoPkgr
 //
-//  Created by Eldon on 8/5/14.
-//
+//  Created by Eldon Ahrold on 8/5/14.
 //  Copyright 2014-2015 The Linde Group, Inc.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
 //  You may obtain a copy of the License at
 //
-//  http://www.apache.org/licenses/LICENSE-2.0
+//      http://www.apache.org/licenses/LICENSE-2.0
 //
 //  Unless required by applicable law or agreed to in writing, software
 //  distributed under the License is distributed on an "AS IS" BASIS,
@@ -31,14 +30,17 @@
 
 @implementation LGDefaults
 
-+ (LGDefaults *)standardUserDefaults
++ (instancetype)standardUserDefaults
 {
     static dispatch_once_t onceToken;
-    static LGDefaults *shared;
+    __strong static id _sharedObject = nil;
+
     dispatch_once(&onceToken, ^{
-        shared = [[LGDefaults alloc] init];
+        _sharedObject = [[self alloc] init];
     });
-    return shared;
+
+    return _sharedObject;
+
 }
 
 - (void)dealloc
@@ -48,6 +50,7 @@
 
 - (BOOL)synchronize
 {
+    [super synchronize];
     BOOL success =
         (CFPreferencesSynchronize(kCFPreferencesCurrentApplication,
                                   kCFPreferencesCurrentUser,

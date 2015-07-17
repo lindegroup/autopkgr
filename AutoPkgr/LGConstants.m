@@ -3,14 +3,13 @@
 //  AutoPkgr
 //
 //  Created by James Barclay on 6/26/14.
-//
 //  Copyright 2014-2015 The Linde Group, Inc.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
 //  You may obtain a copy of the License at
 //
-//  http://www.apache.org/licenses/LICENSE-2.0
+//      http://www.apache.org/licenses/LICENSE-2.0
 //
 //  Unless required by applicable law or agreed to in writing, software
 //  distributed under the License is distributed on an "AS IS" BASIS,
@@ -28,15 +27,6 @@ NSString *const kLGAutoPkgrPreferenceDomain = @"com.lindegroup.AutoPkgr";
 NSString *const kLGAutoPkgrHelperToolName = @"com.lindegroup.AutoPkgr.helper";
 NSString *const kLGAutoPkgrLaunchDaemonPlist = @"com.lindegroup.AutoPkgr.schedule";
 
-#pragma mark - Message Strings / Labels
-NSString *const kLGGitInstalledLabel = @"Git has been installed.";
-NSString *const kLGGitNotInstalledLabel = @"Git is not installed.";
-NSString *const kLGAutoPkgInstalledLabel = @"AutoPkg has been installed.";
-NSString *const kLGAutoPkgNotInstalledLabel = @"AutoPkg is not installed.";
-NSString *const kLGAutoPkgUpdateAvailableLabel = @"An update is available for AutoPkg.";
-NSString *const kLGJSSImporterInstalledLabel = @"JSSImporter has been installed.";
-NSString *const kLGJSSImporterNotInstalledLabel = @"JSSImporter is not installed.";
-NSString *const kLGJSSImporterUpdateAvailableLabel = @"An update is available for JSSImporter.";
 
 #pragma mark - Static URLs
 #pragma mark-- GitHub
@@ -45,7 +35,7 @@ NSString *const kLGGitReleasesJSONURL = @"https://api.github.com/repos/timcharpe
 NSString *const kLGJSSImporterJSONURL = @"https://api.github.com/repos/sheagcraig/JSSImporter/releases";
 
 NSString *const kLGAutoPkgRepositoriesJSONURL = @"https://api.github.com/orgs/autopkg/repos?per_page=100";
-NSString *const kLGJSSDefaultRepo = @"https://github.com/sheagcraig/jss-recipes.git";
+NSString *const kLGJSSDefaultRepo = @"https://github.com/autopkg/jss-recipes.git";
 #pragma mark-- AutoPkgr
 NSString *const kLGAutoPkgrWebsite = @"http://www.lindegroup.com/autopkgr";
 NSString *const kLGAutoPkgrHelpWebsite = @"https://github.com/lindegroup/autopkgr/blob/master/README.md";

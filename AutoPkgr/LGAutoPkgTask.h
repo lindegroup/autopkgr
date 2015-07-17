@@ -2,15 +2,14 @@
 //  LGAutoPkgTask.h
 //  AutoPkgr
 //
-//  Created by Eldon on 8/30/14.
-//
+//  Created by Eldon Ahrold on 8/30/14.
 //  Copyright 2014-2015 The Linde Group, Inc.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
 //  You may obtain a copy of the License at
 //
-//  http://www.apache.org/licenses/LICENSE-2.0
+//      http://www.apache.org/licenses/LICENSE-2.0
 //
 //  Unless required by applicable law or agreed to in writing, software
 //  distributed under the License is distributed on an "AS IS" BASIS,
@@ -33,17 +32,34 @@
  */
 extern NSString *const kLGAutoPkgRecipeNameKey;
 /**
+ *  Constant to access recipe description in autopkg recipe-list
+ */
+extern NSString *const kLGAutoPkgRecipeDescriptionKey;
+/**
  *  Constant to access recipe identifier in autopkg recipe-list
  */
 extern NSString *const kLGAutoPkgRecipeIdentifierKey;
+/**
+ *  Constant to access recipe Input in autopkg recipe-list
+ */
+extern NSString *const kLGAutoPkgRecipeInputKey;
+/**
+ *  Constant to access recipe Input in autopkg recipe-list
+ */
+extern NSString *const kLGAutoPkgRecipeMinimumVersionKey;
 /**
  *  Constant to access recipe's ParentRecipe in autopkg recipe-list
  */
 extern NSString *const kLGAutoPkgRecipeParentKey;
 /**
+ *  Constant to access recipe Process in autopkg recipe-list
+ */
+extern NSString *const kLGAutoPkgRecipeProcessKey;
+/**
  *  Constant to access recipe path key in autopkg search
  */
 extern NSString *const kLGAutoPkgRecipePathKey;
+
 /**
  *  Constant to access repo name in autopkg search and autopkg repo-list
  */
@@ -56,6 +72,7 @@ extern NSString *const kLGAutoPkgRepoPathKey;
  *  Constant to access git url for the repo from autopkg repo-list
  */
 extern NSString *const kLGAutoPkgRepoURLKey;
+
 
 #pragma mark Task Status Delegate
 @protocol LGTaskStatusDelegate <NSObject>
@@ -78,6 +95,11 @@ extern NSString *const kLGAutoPkgRepoURLKey;
  *  Progress update block
  */
 @property (copy) void (^progressUpdateBlock)(NSString *message, double progress);
+
+/**
+ *  Error block, it could get invoked multiple times.
+ */
+@property (copy) void (^errorBlock)(NSError *error);
 
 #pragma mark-- NSOperation Queue --
 /**
@@ -164,9 +186,14 @@ extern NSString *const kLGAutoPkgRepoURLKey;
 
 /**
  * An array of dictionaries based on the autopkg verb
- * @discussion only, recipe-list, repo-list, and search will return values, all others will return nil;
+ * @discussion only, list-recipes, repo-list, list-processors, and search will return values, all others will return nil;
  */
-@property (copy, nonatomic, readonly) NSArray *results;
+@property (copy, nonatomic, readonly) id results;
+
+/**
+ *  Report dictionary when the task is an autopkg `run` task. Will return nil for all other tasks.
+ */
+@property (copy, nonatomic, readonly) NSDictionary *report;
 
 /**
  *  The block to use for providing run status updates asynchronously.
@@ -238,6 +265,15 @@ extern NSString *const kLGAutoPkgRepoURLKey;
  */
 + (NSArray *)listRecipes;
 
+/**
+ *  Equivalent to /usr/bin/local/autopkg info [recipe]
+ *
+ *  @param recipe recipe you want info for.
+ *
+ *  @return String output
+ */
++ (void)info:(NSString *)recipe reply:(void (^)(NSString *info, NSError *error))reply;
+
 #pragma mark-- Repo methods --
 /**
  *  Equivalent to /usr/bin/local/autopkg repo-add [recipe_repo_url]
@@ -272,12 +308,35 @@ extern NSString *const kLGAutoPkgRepoURLKey;
  */
 + (NSArray *)repoList;
 
+#pragma mark-- Processor Methods --
+/**
+ *  Equivalent to /usr/bin/local/autopkg list-processors
+ *
+ *  @return list of installed autopkg repos
+ */
++ (NSArray *)listProcessors;
+
+/**
+ *  Equivalent to /usr/bin/local/autopkg processor-info [processor]
+ *
+ *  @return list of installed autopkg repos
+ */
++ (NSString *)processorInfo:(NSString *)processor;
+
 #pragma mark-- Convenience Initializers --
-+ (LGAutoPkgTask *)runRecipeTask:(NSArray *)recipes;
-+ (LGAutoPkgTask *)runRecipeListTask;
++ (LGAutoPkgTask *)runRecipesTask:(NSArray *)recipes;
+
+/**
+ * @note setting withInteraction currently has no effect. It may however in the future be made into a core autopkg option.
+ */
++ (LGAutoPkgTask *)runRecipesTask:(NSArray *)recipes withInteraction:(BOOL)withInteraction;
+
++ (LGAutoPkgTask *)runRecipeListTask:(NSString *)recipeList;
 + (LGAutoPkgTask *)searchTask:(NSString *)recipe;
+
++ (LGAutoPkgTask *)repoAddTask:(NSString *)repo;
++ (LGAutoPkgTask *)repoDeleteTask:(NSString *)repo;
 + (LGAutoPkgTask *)repoUpdateTask;
-+ (LGAutoPkgTask *)addRepoTask:(NSString *)repo;
 
 #pragma mark-- Other --
 /**
@@ -286,6 +345,38 @@ extern NSString *const kLGAutoPkgRepoURLKey;
  *  @return version string
  */
 + (NSString *)version;
+
+/**
+ *  Generate a GitHub API key for user with autopkg.
+ *
+ *  @param username GitHub username
+ *  @param password GitHub password
+ *  @param reply reply block executed upon completion. It takes one parameter NSError
+ */
++ (void)generateGitHubAPIToken:(NSString *)username password:(NSString *)password reply:(void (^)(NSError *))reply;
+
+/**
+ *  Remove the local API Token file, and delete it from your https://github.com/settings/tokens
+ *
+ *  @param username GitHub username
+ *  @param password GitHub password
+ *  @param reply reply block executed upon completion. It takes one parameter NSError
+ */
++ (void)deleteGitHubAPIToken:(NSString *)username password:(NSString *)password reply:(void (^)(NSError *))reply;
+
+/**
+ *  Check if the AutoPkg API token exists
+ *
+ *  @return YES if it exists, NO otherwise.
+ */
++ (BOOL)apiTokenFileExists:(NSString *__autoreleasing*)file;
+
+/**
+ *  AutoPkg API Token
+ *
+ *  @return AutoPkg's GitHub Public API Token
+ */
++ (NSString *)apiToken;
 
 @end
 

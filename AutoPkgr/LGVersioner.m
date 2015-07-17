@@ -3,12 +3,13 @@
 //  AutoPkgr
 //
 //  Created by Eldon Ahrold on 12/9/14.
+//  Copyright 2014-2015 The Linde Group, Inc.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
 //  You may obtain a copy of the License at
 //
-//  http://www.apache.org/licenses/LICENSE-2.0
+//      http://www.apache.org/licenses/LICENSE-2.0
 //
 //  Unless required by applicable law or agreed to in writing, software
 //  distributed under the License is distributed on an "AS IS" BASIS,
@@ -36,7 +37,7 @@ NSString *const kLGVersionerVersionKey = @"version";
 
 - (void)parseString:(NSString *)rawString
 {
-    for (NSString *string in [rawString componentsSeparatedByCharactersInSet:[NSCharacterSet newlineCharacterSet]]) {
+    for (NSString *string in rawString.split_byLine) {
         // if string begins with "Processing" we've started a new app, so
         // reset the current values
 
@@ -91,7 +92,7 @@ NSString *const kLGVersionerVersionKey = @"version";
 {
 
     NSArray *validPathExtensions = @[ @"dmg", @"zip", @"tar", @"gz" ];
-    NSArray *possibleProcessors = @[ @"URLDownloader", ];
+    NSArray *possibleProcessors = @[ @"URLDownloader" ];
 
     // Construct a predicate string from the above values.
     // This will make it easy to adjust in the future, as more processors are

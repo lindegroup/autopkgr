@@ -1,14 +1,15 @@
-//  LGAutoPkgReport.h
 //
+//  LGAutoPkgReport.h
 //  AutoPkgr
 //
 //  Created by Eldon Ahrold on 3/22/15.
+//  Copyright 2015 The Linde Group, Inc.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
 //  You may obtain a copy of the License at
 //
-//  http://www.apache.org/licenses/LICENSE-2.0
+//      http://www.apache.org/licenses/LICENSE-2.0
 //
 //  Unless required by applicable law or agreed to in writing, software
 //  distributed under the License is distributed on an "AS IS" BASIS,
@@ -45,9 +46,9 @@
 @property (copy, nonatomic) NSError *error;
 
 /**
- *  Array of LGTools
+ *  Array of LGIntegrations
  */
-@property (copy, nonatomic) NSArray *tools;
+@property (copy, nonatomic) NSArray *integrations;
 
 /**
  *  Flags to define what to display in the report
@@ -66,8 +67,30 @@
 @property (copy, nonatomic, readonly) NSString *emailSubjectString;
 
 /**
- *  Check to determine if there is anything to report.
+ *  Check to determine if there is anything to report
  */
 @property (nonatomic, readonly) BOOL updatesToReport;
+
+/**
+ *  Array of LGUpdatedApplications
+ */
+@property (copy, nonatomic, readonly) NSArray *updatedApplications;
+
+/**
+ *  Failure results array from report converted into an NSError object
+ */
+@property (copy, nonatomic, readonly) NSError *failureError;
+
+
+@end
+
+@interface LGUpdatedApplication : NSObject
+
++ (instancetype) new NS_UNAVAILABLE;
+- (instancetype)init NS_UNAVAILABLE;
+
+@property (copy, nonatomic, readonly) NSString *name;
+@property (copy, nonatomic, readonly) NSString *version;
+@property (copy, nonatomic, readonly) NSString *path;
 
 @end

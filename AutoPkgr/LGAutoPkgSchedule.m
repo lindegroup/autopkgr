@@ -2,15 +2,14 @@
 //  LGAutoPkgSchedule.m
 //  AutoPkgr
 //
-//  Created by Eldon on 9/6/14.
-//
+//  Created by Eldon Ahrold on 9/6/14.
 //  Copyright 2014-2015 The Linde Group, Inc.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
 //  You may obtain a copy of the License at
 //
-//  http://www.apache.org/licenses/LICENSE-2.0
+//      http://www.apache.org/licenses/LICENSE-2.0
 //
 //  Unless required by applicable law or agreed to in writing, software
 //  distributed under the License is distributed on an "AS IS" BASIS,
@@ -22,7 +21,9 @@
 #import "LGAutoPkgSchedule.h"
 #import "LGAutoPkgr.h"
 #import "LGAutoPkgrHelperConnection.h"
+
 #import <AHLaunchCtl/AHLaunchCtl.h>
+#import <AHLaunchCtl/AHServiceManagement.h>
 
 NSString *const kLGLaunchedAtLogin = @"LaunchedAtLogin";
 
@@ -40,13 +41,15 @@ NSString *launchAgentFilePath()
     return [launchAgentFolderPath() stringByAppendingPathComponent:launchAgentFileName];
 }
 
-
 @implementation LGAutoPkgSchedule
 
-+ (void)startAutoPkgSchedule:(BOOL)start interval:(NSInteger)interval isForced:(BOOL)forced reply:(void (^)(NSError *error))reply;
++ (void)startAutoPkgSchedule:(BOOL)start scheduleOrInterval:(id)scheduleOrInterval isForced:(BOOL)forced reply:(void (^)(NSError *error))reply
 {
-    BOOL scheduleIsRunning = jobIsRunning(kLGAutoPkgrLaunchDaemonPlist, kAHGlobalLaunchDaemon);
-    if (start && interval == 0) {
+    BOOL scheduleIsRunning = jobIsRunning2(kLGAutoPkgrLaunchDaemonPlist, kAHGlobalLaunchDaemon);
+    
+    BOOL scheduleIsNumber = [scheduleOrInterval isKindOfClass:[NSNumber class]];
+
+    if (start && scheduleIsNumber && ([scheduleOrInterval integerValue] == 0)) {
         reply([LGError errorWithCode:kLGErrorIncorrectScheduleTimerInterval]);
         return;
     }
@@ -58,20 +61,29 @@ NSString *launchAgentFilePath()
     LGAutoPkgrHelperConnection *helper = [LGAutoPkgrHelperConnection new];
     [helper connectToHelper];
 
+    /* Check for two conditions, first that start was the desired action
+     * And second that either the schedule is not running or we want to 
+     * force a reload of the schedule such as when the interval is changed
+     */
     if (start && (!scheduleIsRunning || forced)) {
-        // Convert seconds to hours for our time interval
-        NSTimeInterval runInterval = interval * 60 * 60;
+
+        if (scheduleIsNumber) {
+            // Convert seconds to hours for our time interval
+            scheduleOrInterval = @([scheduleOrInterval integerValue] * 60 * 60);
+        }
+
         NSString *program = [[NSProcessInfo processInfo] arguments].firstObject;
 
         [[helper.connection remoteObjectProxyWithErrorHandler:^(NSError *error) {
+            NSLog(@"%@", error);
             reply(error);
-        }] scheduleRun:runInterval
+        }] scheduleRun:scheduleOrInterval
                      user:NSUserName()
                   program:program
             authorization:authorization
                     reply:^(NSError *error) {
-                        if (!error) {
-                            NSDate *date = [NSDate dateWithTimeIntervalSinceNow:runInterval];
+                        if (!error && scheduleIsNumber) {
+                            NSDate *date = [NSDate dateWithTimeIntervalSinceNow:[scheduleOrInterval integerValue]];
                             NSDateFormatter *fomatter = [NSDateFormatter new];
                             [fomatter setDateStyle:NSDateFormatterShortStyle];
                             [fomatter setTimeStyle:NSDateFormatterShortStyle];
@@ -88,23 +100,32 @@ NSString *launchAgentFilePath()
                                           [[NSApplication sharedApplication] activateIgnoringOtherApps:YES];
                                         reply(error);
                                       }];
+    } else {
+        reply(nil);
     }
 }
 
-+ (BOOL)updateAppsIsScheduled:(NSInteger *)scheduleInterval
++ (BOOL)updateAppsIsScheduled:(id __autoreleasing*)scheduleInterval
 {
-    AHLaunchJob *job = [AHLaunchCtl jobFromFileNamed:kLGAutoPkgrLaunchDaemonPlist inDomain:kAHGlobalLaunchDaemon];
-
-    NSInteger interval = (job.StartInterval == 0) ? 24 : job.StartInterval / 60 / 60;
-    if (scheduleInterval) {
-        *scheduleInterval = interval;
+    AHLaunchJob *job = nil;
+    if ((job = [AHLaunchCtl jobFromFileNamed:kLGAutoPkgrLaunchDaemonPlist inDomain:kAHGlobalLaunchDaemon])) {
+        AHLaunchJobSchedule *startInterval = job.StartCalendarInterval;
+        if (startInterval) {
+            *scheduleInterval = startInterval;
+        } else {
+            // If the interval is 0 set it to 24, else convert it from seconds to hours by
+            NSInteger interval = (job.StartInterval == 0) ? 24 : (job.StartInterval / 60 / 60);
+            if (scheduleInterval) {
+                *scheduleInterval = @(interval);
+            }
+        }
     }
-    return job ? YES : NO;
+
+    return (job != nil);
 }
 
 + (BOOL)launchAtLogin:(BOOL)launch
 {
-
     AHLaunchJob *job = [AHLaunchJob new];
     job.Label = [[launchAgentFilePath() lastPathComponent] stringByDeletingPathExtension];
 
