@@ -66,8 +66,8 @@
         _fetchingRepoData = YES;
         [LGAutoPkgRepo commonRepos:^(NSArray *repos) {
             NSArray *sortDescriptors = nil;
-            if (_popularRepositoriesTableView.sortDescriptors.count) {
-                sortDescriptors = _popularRepositoriesTableView.sortDescriptors;
+            if (self.popularRepositoriesTableView.sortDescriptors.count) {
+                sortDescriptors = self.popularRepositoriesTableView.sortDescriptors;
             } else {
                 sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:NSStringFromSelector(@selector(stars))
                                                                   ascending:NO]];
