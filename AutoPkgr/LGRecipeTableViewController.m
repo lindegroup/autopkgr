@@ -190,10 +190,10 @@ static NSString *const kLGAutoPkgRecipeCurrentStatusKey = @"currentStatus";
                 NSString *informativeTextFormat = NSLocalizedString(@"%@ of %@ was downloaded.",
                                                            @"NSUserNotification info message presented after single recipe run.");
                 NSString *versionString;
-                if ([updatedApplication.version.lowercaseString isEqualToString:@"Unknown version".lowercaseString]) {
+                if (!updatedApplication.version || [updatedApplication.version.lowercaseString isEqualToString:@"Unknown version".lowercaseString]) {
                     versionString = @"A newer version";
                 } else {
-                    versionString = quick_formatString(@"Version %@", versionString);
+                    versionString = quick_formatString(@"Version %@", updatedApplication.version);
                 }
 
                 notification.informativeText = quick_formatString(informativeTextFormat, versionString, updatedApplication.name);
