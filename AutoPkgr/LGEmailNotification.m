@@ -83,7 +83,7 @@
 
     NSAssert(self.notificatonComplete, @"A completion block must be set for %@", self);
 
-    NSString *subject = quick_formatString(@"%@ on %@", self.report.emailSubjectString, [NSHost currentHost].localizedName);
+    NSString *subject = self.report.emailSubjectString;
     NSString *message = self.report.emailMessageString;
 
     // Send the email.
@@ -146,7 +146,7 @@
 #pragma mark - Primary sending method
 - (void)sendEmailNotification:(NSString *)subject message:(NSString *)message test:(BOOL)test
 {
-    NSString *fullSubject = [NSString stringWithFormat:@"%@ on %@", subject, [[NSHost currentHost] localizedName]];
+    NSString *fullSubject = quick_formatString(@"%@ on %@", subject, [NSHost currentHost].localizedName);
 
     void (^didCompleteSendOperation)(NSError *) = ^(NSError *error) {
         if (self.notificatonComplete) {
