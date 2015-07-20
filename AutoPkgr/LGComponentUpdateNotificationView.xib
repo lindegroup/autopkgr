@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="7706" systemVersion="14E46" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+    <dependencies>
+        <deployment identifier="macosx"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="7706"/>
+    </dependencies>
+    <objects>
+        <customObject id="-2" userLabel="File's Owner"/>
+        <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
+        <customObject id="-3" userLabel="Application" customClass="NSObject"/>
+        <customView id="c22-O7-iKe">
+            <rect key="frame" x="0.0" y="-5" width="480" height="130"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+            <subviews>
+                <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="gq6-du-30W">
+                    <rect key="frame" x="18" y="93" width="444" height="17"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="440" id="Dzw-l2-oZU"/>
+                        <constraint firstAttribute="height" constant="17" id="hd2-6I-ozG"/>
+                    </constraints>
+                    <textFieldCell key="cell" sendsActionOnEndEditing="YES" title="Send component tool update notifications no more than:" id="foB-AA-b7p">
+                        <font key="font" metaFont="system"/>
+                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
+                <matrix verticalHuggingPriority="750" selectionByRect="NO" allowsEmptySelection="NO" autorecalculatesCellSize="YES" translatesAutoresizingMaskIntoConstraints="NO" id="RUe-EL-jjr" userLabel="Schedule Matrix">
+                    <rect key="frame" x="40" y="0.0" width="302" height="85"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="302" id="OVz-Px-zMU"/>
+                        <constraint firstAttribute="height" constant="85" id="ys0-vA-Zbk"/>
+                    </constraints>
+                    <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                    <size key="cellSize" width="60" height="18"/>
+                    <size key="intercellSpacing" width="4" height="5"/>
+                    <buttonCell key="prototype" type="radio" title="Radio" imagePosition="left" alignment="left" controlSize="small" inset="2" id="wCY-0t-Uvj" userLabel="Schedule Radio Buttons">
+                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                        <font key="font" metaFont="smallSystem"/>
+                    </buttonCell>
+                    <cells>
+                        <column>
+                            <buttonCell type="radio" title="Once" imagePosition="left" alignment="left" controlSize="small" state="on" inset="2" id="0i3-fZ-VEo">
+                                <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                <font key="font" metaFont="smallSystem"/>
+                            </buttonCell>
+                            <buttonCell type="radio" title="Weekly" imagePosition="left" alignment="left" controlSize="small" tag="1" inset="2" id="nbi-hh-k2m">
+                                <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                <font key="font" metaFont="smallSystem"/>
+                            </buttonCell>
+                            <buttonCell type="radio" title="Daily" imagePosition="left" alignment="left" controlSize="small" tag="2" inset="2" id="NyX-Ot-EKX">
+                                <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                <font key="font" metaFont="smallSystem"/>
+                            </buttonCell>
+                        </column>
+                    </cells>
+                </matrix>
+            </subviews>
+            <constraints>
+                <constraint firstItem="gq6-du-30W" firstAttribute="leading" secondItem="c22-O7-iKe" secondAttribute="leading" constant="20" id="DOI-zs-2Iv"/>
+                <constraint firstItem="RUe-EL-jjr" firstAttribute="leading" secondItem="c22-O7-iKe" secondAttribute="leading" constant="40" id="dSm-Bt-PRw"/>
+                <constraint firstItem="RUe-EL-jjr" firstAttribute="top" secondItem="c22-O7-iKe" secondAttribute="top" constant="45" id="eEV-YV-nD2"/>
+                <constraint firstItem="gq6-du-30W" firstAttribute="top" secondItem="c22-O7-iKe" secondAttribute="top" constant="20" id="o1g-AZ-cdj"/>
+            </constraints>
+            <point key="canvasLocation" x="549" y="505"/>
+        </customView>
+    </objects>
+</document>

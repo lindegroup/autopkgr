@@ -28,6 +28,7 @@
 		4B8E6E4F9D8944C883A98423 /* libPods-AutoPkgr.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FF435269A548437DA5380201 /* libPods-AutoPkgr.a */; };
 		6A53625D1988BE59008A949C /* LGTestPort.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A53625C1988BE59008A949C /* LGTestPort.m */; };
 		8B32152D89506869029955FC /* libPods-AutoPkgrTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7EF915ABFCFD78F7257B58CD /* libPods-AutoPkgrTests.a */; };
+		8B997B471B5D660A008486F1 /* LGComponentUpdateNotificationView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8B997B461B5D660A008486F1 /* LGComponentUpdateNotificationView.xib */; };
 		8BB217F619709A2C00EF8B93 /* AutoPkgrIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 8BB217F519709A2C00EF8B93 /* AutoPkgrIcon.png */; };
 		BE025CF719BAE93400D36345 /* LGAutoPkgTask.m in Sources */ = {isa = PBXBuildFile; fileRef = BE025CF519BAE93400D36345 /* LGAutoPkgTask.m */; };
 		BE025CFE19BAEF8800D36345 /* LGAutoPkgSchedule.m in Sources */ = {isa = PBXBuildFile; fileRef = BE025CFD19BAEF8800D36345 /* LGAutoPkgSchedule.m */; };
@@ -332,6 +333,7 @@
 		6A53625C1988BE59008A949C /* LGTestPort.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGTestPort.m; sourceTree = "<group>"; };
 		78FF6F632570F6CB7453F9D7 /* Pods-AutoPkgrTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AutoPkgrTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-AutoPkgrTests/Pods-AutoPkgrTests.release.xcconfig"; sourceTree = "<group>"; };
 		7EF915ABFCFD78F7257B58CD /* libPods-AutoPkgrTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-AutoPkgrTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		8B997B461B5D660A008486F1 /* LGComponentUpdateNotificationView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LGComponentUpdateNotificationView.xib; sourceTree = "<group>"; };
 		8BB217F519709A2C00EF8B93 /* AutoPkgrIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = AutoPkgrIcon.png; sourceTree = "<group>"; };
 		906DD048439B1EC0FBD74F69 /* Pods-AutoPkgr.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AutoPkgr.release.xcconfig"; path = "Pods/Target Support Files/Pods-AutoPkgr/Pods-AutoPkgr.release.xcconfig"; sourceTree = "<group>"; };
 		BE025CF419BAE93400D36345 /* LGAutoPkgTask.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGAutoPkgTask.h; sourceTree = "<group>"; };
@@ -887,6 +889,7 @@
 				BE46D9971B40EE2D00004B41 /* LGHipChatNotificationView.h */,
 				BE46D9981B40EE2D00004B41 /* LGHipChatNotificationView.m */,
 				BE46D9991B40EE2D00004B41 /* LGHipChatNotificationView.xib */,
+				8B997B461B5D660A008486F1 /* LGComponentUpdateNotificationView.xib */,
 				BEB9AF281B41A01900016D98 /* LGSlackNotificationView.h */,
 				BEB9AF291B41A01900016D98 /* LGSlackNotificationView.m */,
 				BEB9AF2A1B41A01900016D98 /* LGSlackNotificationView.xib */,
@@ -1247,6 +1250,7 @@
 				BE81F23A1B22A29E007D16C4 /* LGJSSImporterIntegrationView.xib in Resources */,
 				1AC6955B195B59ED00D2BD81 /* InfoPlist.strings in Resources */,
 				BE38EA971B0CFE95009FCBEB /* LGRecipeReposViewController.xib in Resources */,
+				8B997B471B5D660A008486F1 /* LGComponentUpdateNotificationView.xib in Resources */,
 				BEDA5D551B4429E300DCC022 /* LGRecipeSearchResultsPanel.xib in Resources */,
 				BED136BC1AC3C15E003EBF0F /* report.css in Resources */,
 				BE81F2441B22C211007D16C4 /* LGViewWindowController.xib in Resources */,
