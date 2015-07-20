@@ -20,13 +20,13 @@
 
 #import <Foundation/Foundation.h>
 
-typedef NS_ENUM(NSInteger, LGApplicationDisplayStyle) {
+typedef NS_OPTIONS(NSInteger, LGApplicationDisplayStyle) {
     kLGDisplayStyleShowNone,
     kLGDisplayStyleShowMenu = 1 << 0,
     kLGDisplayStyleShowDock = 1 << 1,
 };
 
-typedef NS_ENUM(NSInteger, LGReportItems) {
+typedef NS_OPTIONS(NSInteger, LGReportItems) {
     kLGReportItemsNone = 0,
     kLGReportItemsAll = 1 << 0,
     kLGReportItemsNewDownloads = 2 << 0,
