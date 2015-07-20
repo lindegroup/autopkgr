@@ -40,7 +40,7 @@ int main(int argc, const char *argv[])
         LGAutoPkgrHelperConnection *helper = [LGAutoPkgrHelperConnection new];
         [helper connectToHelper];
 
-        [[helper.connection remoteObjectProxy] sendMessageToMainApplication:@"Running AutoPkg in background..."
+        [[helper.connection remoteObjectProxy] sendMessageToMainApplication:@"Scheduled AutoPkg run in progress..."
                                                                    progress:0
                                                                       error:nil
                                                                       state:kLGAutoPkgProgressStart];
