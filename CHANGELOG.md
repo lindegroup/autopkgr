@@ -26,7 +26,8 @@ All notable changes to this project will be documented in this file. This projec
 - The repos list now has a status indicator showing if there are new commits to an installed repo. (#357)
 - The recipe list now has a status indicator showing if a recipe is missing a parent recipe. (#357, #370)
 - We're now using OS X Notification Center for a few useful messages, like when new software has been packaged by AutoPkg. (#79)
-- Add the ability to configure how often notifications are sent for new version of AutoPkg, JSSImporter, Git, and other components. (#379)
+- Added the ability to configure how often notifications are sent for new version of AutoPkg, JSSImporter, Git, and other components. (#379)
+- Added a "Check for AutoPkgr Updates" item in the AutoPkgr menu extra. (#275, #312)
 
 ### Changed
 - New JSSImporter users will now get the "official" [jss-recipes repo](https://github.com/autopkg/jss-recipes) when configuring JSSImporter.
