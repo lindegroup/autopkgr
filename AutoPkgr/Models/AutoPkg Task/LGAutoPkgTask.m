@@ -293,6 +293,8 @@ typedef void (^AutoPkgReplyErrorBlock)(NSError *error);
 
         self.task.arguments = [self.internalArgs copy];
 
+        self.task.currentDirectoryPath = NSTemporaryDirectory();
+
         // If an instance of autopkg is running,
         // and we're trying to do a run, exit.
         if (_verb == kLGAutoPkgRun && [[self class] instanceIsRunning]) {
