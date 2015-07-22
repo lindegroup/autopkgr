@@ -34,12 +34,6 @@
                                     <action selector="orderFrontStandardAboutPanel:" target="-1" id="Exp-CZ-Vem"/>
                                 </connections>
                             </menuItem>
-                            <menuItem title="Check For Updates..." id="3R2-hO-YyK">
-                                <modifierMask key="keyEquivalentModifierMask"/>
-                                <connections>
-                                    <action selector="checkForUpdates:" target="MZ8-j7-lrs" id="a2q-WD-JPE"/>
-                                </connections>
-                            </menuItem>
                             <menuItem isSeparatorItem="YES" id="VOq-y0-SEH"/>
                             <menuItem title="Services" id="NMo-om-nkz">
                                 <modifierMask key="keyEquivalentModifierMask"/>
@@ -375,6 +369,12 @@
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <connections>
                         <action selector="showConfigurationWindow:" target="Voe-Tx-rLC" id="q4g-vL-fgF"/>
+                    </connections>
+                </menuItem>
+                <menuItem title="Check for AutoPkgr Updates..." id="3R2-hO-YyK">
+                    <modifierMask key="keyEquivalentModifierMask"/>
+                    <connections>
+                        <action selector="checkForUpdates:" target="MZ8-j7-lrs" id="a2q-WD-JPE"/>
                     </connections>
                 </menuItem>
                 <menuItem isSeparatorItem="YES" id="JSt-Pd-pn4"/>
