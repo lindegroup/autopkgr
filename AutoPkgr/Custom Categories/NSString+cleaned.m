@@ -27,6 +27,10 @@
     return [self stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
 }
 
+- (NSString *)spaces_removed {
+    return [self stringByReplacingOccurrencesOfString:@" " withString:@""];
+}
+
 - (NSString *)trailingSlashRemoved
 {
     NSInteger i = 0;

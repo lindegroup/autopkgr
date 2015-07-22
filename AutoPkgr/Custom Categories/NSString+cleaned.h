@@ -28,6 +28,11 @@
 @property (copy, nonatomic, readonly) NSString *trimmed;
 
 /**
+ *  (Custom Category) equivalent to stringByReplacingOccurrencesOfString:@" " withString:@""
+ */
+@property (copy, nonatomic, readonly) NSString *spaces_removed;
+
+/**
  *  (Custom Category) removes any number of trailing slashes from a string.
  *  @note Usefull for normalizing URL paths.
  */

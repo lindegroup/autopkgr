@@ -94,7 +94,8 @@ NSString *const fallback_reportCSS = @"<style type='text/css'>*{font-family:'Hel
         _reportedItemFlags = kLGReportItemsNone;
 
 #if DEBUG
-        [_reportDictionary writeToFile:@"/tmp/report.plist" atomically:YES];
+        [_reportDictionary writeToFile:@"/tmp/report.plist"
+                            atomically:YES];
 #endif
     }
     return self;
@@ -245,30 +246,30 @@ NSString *const fallback_reportCSS = @"<style type='text/css'>*{font-family:'Hel
     NSDictionary *summaryResults = _reportDictionary[kReportKeySummaryResults];
 
     // The includedProcessorSummaryResults method returns nil when intended to show all.
-    // It's this way to be future compatible with autopkg processors that do
+    // It's this way to be future compatible with autopkg processors that do not
     // yet exist, or do not currently provide _summary_results
     if ((!includedProcessors || includedProcessors.count) && summaryResults.count) {
 
         string = [[NSMutableString alloc] init];
         [summaryResults enumerateKeysAndObjectsUsingBlock:^(NSString *key, NSDictionary *summary, BOOL *stop) {
-            // If the included processor is nil show everything.
-            if (!includedProcessors || [includedProcessors containsObject:key]) {
-                NSArray *headers = summary[kReportKeyHeaders];
-                NSArray *data_rows = [summary[kReportKeyDataRows] filtered_ByClass:[NSDictionary class]];
-                if (data_rows.count) {
-                    [string appendString:[summary[kReportKeySummaryText] html_H3]];
-                    if (headers.count > 1) {
-                        [string appendString:[data_rows html_tableWithHeaders:headers]];
-                    } else {
-                        [string appendString:html_openListUL];
-                        for (NSDictionary *row in data_rows) {
-                            NSString *value = [[row allValues] firstObject];
-                            [string appendString:[[value stringByAbbreviatingWithTildeInPath] html_listItem]];
-                        }
-                        [string appendString:html_closeListUL];
-                    }
-                }
-            }
+          // If the included processor is nil show everything.
+          if (!includedProcessors || [includedProcessors containsObject:key]) {
+              NSArray *headers = summary[kReportKeyHeaders];
+              NSArray *data_rows = [summary[kReportKeyDataRows] filtered_ByClass:[NSDictionary class]];
+              if (data_rows.count) {
+                  [string appendString:[summary[kReportKeySummaryText] html_H3]];
+                  if (headers.count > 1) {
+                      [string appendString:[data_rows html_tableWithHeaders:headers]];
+                  } else {
+                      [string appendString:html_openListUL];
+                      for (NSDictionary *row in data_rows) {
+                          NSString *value = [[row allValues] firstObject];
+                          [string appendString:[[value stringByAbbreviatingWithTildeInPath] html_listItem]];
+                      }
+                      [string appendString:html_closeListUL];
+                  }
+              }
+          }
         }];
     }
     return [string copy];
@@ -379,7 +380,8 @@ NSString *const fallback_reportCSS = @"<style type='text/css'>*{font-family:'Hel
     return _updatedApplications;
 }
 
-- (NSError *)failureError {
+- (NSError *)failureError
+{
     NSError *failureError = nil;
     NSArray *failures = [_reportDictionary[kReportKeyFailures] filtered_ByClass:[NSDictionary class]];
 
@@ -389,11 +391,10 @@ NSString *const fallback_reportCSS = @"<style type='text/css'>*{font-family:'Hel
             [string appendFormat:@"%@\n", failure[@"message"]];
         }
 
-        NSDictionary *userInfo = @{NSLocalizedDescriptionKey : NSLocalizedString(@"The following failures occurred:", nil),
-                                   NSLocalizedRecoverySuggestionErrorKey: string};
+        NSDictionary *userInfo = @{ NSLocalizedDescriptionKey : NSLocalizedString(@"The following failures occurred:", nil),
+                                    NSLocalizedRecoverySuggestionErrorKey : string };
 
         failureError = [NSError errorWithDomain:kLGApplicationName code:1 userInfo:userInfo];
-
     }
     return failureError;
 }
@@ -477,9 +478,55 @@ NSString *const fallback_reportCSS = @"<style type='text/css'>*{font-family:'Hel
 
 - (BOOL)integrationsUpdateAvailable
 {
-    for (LGIntegration *integration in _integrations) {
-        if (integration.info.status == kLGIntegrationUpdateAvailable) {
-            return YES;
+    /* Determine if updates to integrations should be reported. */
+    LGDefaults *defaults = [LGDefaults standardUserDefaults];
+
+    /* ReportIntegrationFrequency is bound to the defaults controller in the
+     * LGScheduleViewController.xib. It's bound to the popup button's selectedTag property. */
+    LGReportIntegrationFrequency noteFrequency = [defaults integerForKey:@"ReportIntegrationFrequency"];
+
+    if (noteFrequency > kLGReportIntegrationFrequencyNever) {
+        for (LGIntegration *integration in _integrations) {
+            if (integration.info.status == kLGIntegrationUpdateAvailable) {
+                if (noteFrequency == kLGReportIntegrationFrequencyOncePerVersion) {
+                    NSString *reportedVersionKey = quick_formatString(@"ReportSentVersion%@", integration.name.spaces_removed);
+                    NSString *lastReportedVersion = [defaults stringForKey:reportedVersionKey];
+
+                    NSString *availableVersion = integration.info.remoteVersion;
+
+                    if ([availableVersion version_isGreaterThan:lastReportedVersion]) {
+                        [defaults setObject:availableVersion forKey:reportedVersionKey];
+                        return YES;
+                    }
+                } else {
+                    // For all other types, the frequency is a date comparison.
+                    NSDate *now = [NSDate date];
+                    NSDate *compareDate = nil;
+
+                    switch (noteFrequency) {
+                        case kLGReportIntegrationFrequencyDaily: {
+                            // 60 Sec * 60 Min * 24Hr = 86400
+                            compareDate = [now dateByAddingTimeInterval:-86400];
+                            break;
+                        }
+                        case kLGReportIntegrationFrequencyWeekly:
+                        default: {
+                            // 60 Sec * 60 Min * 24 Hr * 7 Day = 604800
+                            compareDate = [now dateByAddingTimeInterval:-604800];
+                            break;
+                        }
+                    }
+                    
+                    NSString *reportedDateSentKey = quick_formatString(@"ReportSentDate%@", integration.name.spaces_removed);
+                    NSDate *lastReportDate = [defaults objectForKey:reportedDateSentKey];
+
+                    NSComparisonResult comp = [compareDate compare:lastReportDate];
+                    if (comp != NSOrderedAscending) {
+                        [defaults setObject:now forKey:reportedDateSentKey];
+                        return YES;
+                    }
+                }
+            }
         }
     }
     return NO;

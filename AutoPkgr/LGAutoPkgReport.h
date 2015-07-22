@@ -21,6 +21,19 @@
 #import <Foundation/Foundation.h>
 #import "LGAutoPkgr.h"
 
+typedef NS_ENUM(NSInteger, LGReportIntegrationFrequency) {
+    // Do not include integrations' status in report.
+    kLGReportIntegrationFrequencyNever = -1,
+
+    // Send a report for any give update once a week (Default)
+    kLGReportIntegrationFrequencyWeekly = 0,
+
+    // Send a report for any give update once a day
+    kLGReportIntegrationFrequencyDaily,
+
+    // Send a report only once per version
+    kLGReportIntegrationFrequencyOncePerVersion,
+};
 /**
  *  Class to construct formatted messages from defined attributes.
  */
