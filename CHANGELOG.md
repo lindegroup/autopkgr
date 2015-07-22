@@ -20,12 +20,13 @@ All notable changes to this project will be documented in this file. This projec
 - Proxy configuration is now much easier than typing Terminal commands. Just go to the Folders & Integration tab, then click on Configure AutoPkg to access the proxy settings.
 - In the same location as the proxy settings, you can now create the GitHub API token used with `autopkg search` feature using AutoPkgr. This allows a greater number of search queries per hour.
 - The install tab now displays status of additional integrated tools and processors, like AbsoluteManageExport and MacPatchImporter.
-- Easier uninstallation of components like AutoPkg and JSSImporter. (#332)
+- Easier uninstallation of components like JSSImporter and AbsoluteManagerExport. (#332)
 - Better validation of the standard output AutoPkgr receives from AutoPkg.
 - Ability to change the Git binary used by AutoPkg.
 - The repos list now has a status indicator showing if there are new commits to an installed repo. (#357)
 - The recipe list now has a status indicator showing if a recipe is missing a parent recipe. (#357, #370)
 - We're now using OS X Notification Center for a few useful messages, like when new software has been packaged by AutoPkg. (#79)
+- Add the ability to configure how often notifications are sent for new version of AutoPkg, JSSImporter, Git, and other components. (#379)
 
 ### Changed
 - New JSSImporter users will now get the "official" [jss-recipes repo](https://github.com/autopkg/jss-recipes) when configuring JSSImporter.
