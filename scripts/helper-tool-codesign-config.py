@@ -15,9 +15,9 @@ import plistlib
 
 '''If the helper tool's root folder is in a folder named something other 
 than helper At the root of your project make the adjustments here'''
-HELPER_INFO = 'helper/helper-Info.plist'
+HELPER_INFO = 'Privileged Helper/helper-Info.plist'
 
-HELPER_LAUNCHD = 'helper/helper-Launchd.plist'
+HELPER_LAUNCHD = 'Privileged Helper/helper-Launchd.plist'
 
 '''the name for the helper tool will be default to this format com.your.app.helper
 which is the main apps bundleID with a .helper extension. if the executable you're

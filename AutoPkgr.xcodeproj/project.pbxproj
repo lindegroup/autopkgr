@@ -176,6 +176,7 @@
 		BEC1258A19F04703006696C4 /* LGInstaller.m in Sources */ = {isa = PBXBuildFile; fileRef = BEAA76CB19BFD635002D73EE /* LGInstaller.m */; };
 		BEC1258B19F04703006696C4 /* LGRepoTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A0BABE8196E560000A136BB /* LGRepoTableViewController.m */; };
 		BEC1258C19F049A1006696C4 /* LGTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = BE32178D19EDA15400A92E5A /* LGTableView.m */; };
+		BEC2024B1B600FF100F3BC2A /* LocalizableJSSImporter.strings in Resources */ = {isa = PBXBuildFile; fileRef = BEC202491B600FF100F3BC2A /* LocalizableJSSImporter.strings */; };
 		BECDAB8C1B249C0400544388 /* NSButton+colored.m in Sources */ = {isa = PBXBuildFile; fileRef = BECDAB891B249A2900544388 /* NSButton+colored.m */; };
 		BECDAB8D1B249C0B00544388 /* NSButton+colored.m in Sources */ = {isa = PBXBuildFile; fileRef = BECDAB891B249A2900544388 /* NSButton+colored.m */; };
 		BECDAB951B24C29600544388 /* LGMunkiIntegrationView.m in Sources */ = {isa = PBXBuildFile; fileRef = BECDAB931B24C29600544388 /* LGMunkiIntegrationView.m */; };
@@ -346,8 +347,8 @@
 		BE053D1A1A8F9DC00021D97B /* SNTCertificate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SNTCertificate.m; sourceTree = "<group>"; };
 		BE05CE6719DAF26B0089068B /* com.lindegroup.AutoPkgr.helper */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = com.lindegroup.AutoPkgr.helper; sourceTree = BUILT_PRODUCTS_DIR; };
 		BE05CE6919DAF26B0089068B /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		BE05CE7619DAF5A30089068B /* helper-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "helper-Info.plist"; sourceTree = "<group>"; };
-		BE05CE7719DAF5A30089068B /* helper-Launchd.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "helper-Launchd.plist"; sourceTree = "<group>"; };
+		BE05CE7619DAF5A30089068B /* helper-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "helper-Info.plist"; path = "../helper-Info.plist"; sourceTree = "<group>"; };
+		BE05CE7719DAF5A30089068B /* helper-Launchd.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "helper-Launchd.plist"; path = "../helper-Launchd.plist"; sourceTree = "<group>"; };
 		BE05CE7819DAF5A30089068B /* helper-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "helper-Prefix.pch"; sourceTree = "<group>"; };
 		BE05CE7919DAF5A30089068B /* LGAutoPkgrHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGAutoPkgrHelper.h; sourceTree = "<group>"; };
 		BE05CE7A19DAF5A30089068B /* LGAutoPkgrHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGAutoPkgrHelper.m; sourceTree = "<group>"; };
@@ -359,11 +360,11 @@
 		BE05CE8519DB35380089068B /* libPods-AutoPkgr-AHKeychain.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libPods-AutoPkgr-AHKeychain.a"; path = "../../../../Library/Developer/Xcode/DerivedData/AutoPkgr-gvffmulnnaejibfmmwfptzyobmbb/Build/Products/Debug/libPods-AutoPkgr-AHKeychain.a"; sourceTree = "<group>"; };
 		BE05CE8619DB35380089068B /* libPods-AutoPkgr-AHLaunchCtl.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libPods-AutoPkgr-AHLaunchCtl.a"; path = "../../../../Library/Developer/Xcode/DerivedData/AutoPkgr-gvffmulnnaejibfmmwfptzyobmbb/Build/Products/Debug/libPods-AutoPkgr-AHLaunchCtl.a"; sourceTree = "<group>"; };
 		BE05CE8F19DB37E50089068B /* ServiceManagement.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ServiceManagement.framework; path = System/Library/Frameworks/ServiceManagement.framework; sourceTree = SDKROOT; };
-		BE09F6581B2694ED00EE4AA7 /* LGAutoPkgIntegrationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LGAutoPkgIntegrationView.h; path = "View-Controllers/LGAutoPkgIntegrationView.h"; sourceTree = "<group>"; };
-		BE09F6591B2694ED00EE4AA7 /* LGAutoPkgIntegrationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LGAutoPkgIntegrationView.m; path = "View-Controllers/LGAutoPkgIntegrationView.m"; sourceTree = "<group>"; };
-		BE09F65A1B2694ED00EE4AA7 /* LGAutoPkgIntegrationView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = LGAutoPkgIntegrationView.xib; path = "View-Controllers/LGAutoPkgIntegrationView.xib"; sourceTree = "<group>"; };
-		BE0A75471B04EC7400F70C9E /* NSString+versionCompare.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSString+versionCompare.h"; path = "Custom Categories/NSString+versionCompare.h"; sourceTree = "<group>"; };
-		BE0A75481B04EC7400F70C9E /* NSString+versionCompare.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSString+versionCompare.m"; path = "Custom Categories/NSString+versionCompare.m"; sourceTree = "<group>"; };
+		BE09F6581B2694ED00EE4AA7 /* LGAutoPkgIntegrationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGAutoPkgIntegrationView.h; sourceTree = "<group>"; };
+		BE09F6591B2694ED00EE4AA7 /* LGAutoPkgIntegrationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGAutoPkgIntegrationView.m; sourceTree = "<group>"; };
+		BE09F65A1B2694ED00EE4AA7 /* LGAutoPkgIntegrationView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LGAutoPkgIntegrationView.xib; sourceTree = "<group>"; };
+		BE0A75471B04EC7400F70C9E /* NSString+versionCompare.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+versionCompare.h"; sourceTree = "<group>"; };
+		BE0A75481B04EC7400F70C9E /* NSString+versionCompare.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+versionCompare.m"; sourceTree = "<group>"; };
 		BE0BACCE1A2560AE00554989 /* LGJSSDistributionPointsPrefPanel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGJSSDistributionPointsPrefPanel.h; sourceTree = "<group>"; };
 		BE0BACCF1A2560AE00554989 /* LGJSSDistributionPointsPrefPanel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGJSSDistributionPointsPrefPanel.m; sourceTree = "<group>"; };
 		BE0BACD01A2560AE00554989 /* LGJSSDistributionPointsPrefPanel.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LGJSSDistributionPointsPrefPanel.xib; sourceTree = "<group>"; };
@@ -378,13 +379,13 @@
 		BE13A88919E2568D008A49A1 /* helper-tool-codesign-config.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = "helper-tool-codesign-config.py"; sourceTree = "<group>"; };
 		BE1AE4581B4234F900B71FA4 /* NSTextField+animatedString.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSTextField+animatedString.h"; sourceTree = "<group>"; };
 		BE1AE4591B4234F900B71FA4 /* NSTextField+animatedString.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSTextField+animatedString.m"; sourceTree = "<group>"; };
-		BE1C810119E8224000EF77F3 /* NSImage+statusLight.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSImage+statusLight.h"; path = "Custom Categories/NSImage+statusLight.h"; sourceTree = "<group>"; };
-		BE1C810219E8224000EF77F3 /* NSImage+statusLight.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSImage+statusLight.m"; path = "Custom Categories/NSImage+statusLight.m"; sourceTree = "<group>"; };
+		BE1C810119E8224000EF77F3 /* NSImage+statusLight.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSImage+statusLight.h"; sourceTree = "<group>"; };
+		BE1C810219E8224000EF77F3 /* NSImage+statusLight.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSImage+statusLight.m"; sourceTree = "<group>"; };
 		BE2337C81B3E42EC00256F85 /* LGMacPatchIntegration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGMacPatchIntegration.h; sourceTree = "<group>"; };
 		BE2337C91B3E42EC00256F85 /* LGMacPatchIntegration.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGMacPatchIntegration.m; sourceTree = "<group>"; };
-		BE2337CC1B3E482100256F85 /* LGMacPatchIntegrationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LGMacPatchIntegrationView.h; path = "View-Controllers/LGMacPatchIntegrationView.h"; sourceTree = "<group>"; };
-		BE2337CD1B3E482100256F85 /* LGMacPatchIntegrationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LGMacPatchIntegrationView.m; path = "View-Controllers/LGMacPatchIntegrationView.m"; sourceTree = "<group>"; };
-		BE2337CE1B3E482100256F85 /* LGMacPatchIntegrationView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = LGMacPatchIntegrationView.xib; path = "View-Controllers/LGMacPatchIntegrationView.xib"; sourceTree = "<group>"; };
+		BE2337CC1B3E482100256F85 /* LGMacPatchIntegrationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGMacPatchIntegrationView.h; sourceTree = "<group>"; };
+		BE2337CD1B3E482100256F85 /* LGMacPatchIntegrationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGMacPatchIntegrationView.m; sourceTree = "<group>"; };
+		BE2337CE1B3E482100256F85 /* LGMacPatchIntegrationView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LGMacPatchIntegrationView.xib; sourceTree = "<group>"; };
 		BE2D58771B32EF110042EF1E /* en */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/LocalizableAutoPkg.strings; sourceTree = "<group>"; };
 		BE32178919ED9ACA00A92E5A /* LGRecipeOverrides.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGRecipeOverrides.h; sourceTree = "<group>"; };
 		BE32178A19ED9ACA00A92E5A /* LGRecipeOverrides.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGRecipeOverrides.m; sourceTree = "<group>"; };
@@ -399,9 +400,9 @@
 		BE38EA741B0B8DF7009FCBEB /* LGRecipeInfoView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGRecipeInfoView.h; sourceTree = "<group>"; };
 		BE38EA751B0B8DF7009FCBEB /* LGRecipeInfoView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGRecipeInfoView.m; sourceTree = "<group>"; };
 		BE38EA761B0B8DF7009FCBEB /* LGRecipeInfoView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LGRecipeInfoView.xib; sourceTree = "<group>"; };
-		BE38EA8B1B0CFE68009FCBEB /* LGInstallViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LGInstallViewController.h; path = "View-Controllers/LGInstallViewController.h"; sourceTree = "<group>"; };
-		BE38EA8C1B0CFE68009FCBEB /* LGInstallViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LGInstallViewController.m; path = "View-Controllers/LGInstallViewController.m"; sourceTree = "<group>"; };
-		BE38EA8D1B0CFE68009FCBEB /* LGInstallViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = LGInstallViewController.xib; path = "View-Controllers/LGInstallViewController.xib"; sourceTree = "<group>"; };
+		BE38EA8B1B0CFE68009FCBEB /* LGInstallViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGInstallViewController.h; sourceTree = "<group>"; };
+		BE38EA8C1B0CFE68009FCBEB /* LGInstallViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGInstallViewController.m; sourceTree = "<group>"; };
+		BE38EA8D1B0CFE68009FCBEB /* LGInstallViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LGInstallViewController.xib; sourceTree = "<group>"; };
 		BE38EA921B0CFE95009FCBEB /* LGRecipeReposViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGRecipeReposViewController.h; sourceTree = "<group>"; };
 		BE38EA931B0CFE95009FCBEB /* LGRecipeReposViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGRecipeReposViewController.m; sourceTree = "<group>"; };
 		BE38EA941B0CFE95009FCBEB /* LGRecipeReposViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LGRecipeReposViewController.xib; sourceTree = "<group>"; };
@@ -414,18 +415,18 @@
 		BE38EAA71B0CFECE009FCBEB /* LGNotificationsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGNotificationsViewController.h; sourceTree = "<group>"; };
 		BE38EAA81B0CFECE009FCBEB /* LGNotificationsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGNotificationsViewController.m; sourceTree = "<group>"; };
 		BE38EAA91B0CFECE009FCBEB /* LGNotificationsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LGNotificationsViewController.xib; sourceTree = "<group>"; };
-		BE38EAAE1B0D0CF1009FCBEB /* LGTabViewControllerBase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LGTabViewControllerBase.h; path = "View-Controllers/LGTabViewControllerBase.h"; sourceTree = "<group>"; };
-		BE38EAAF1B0D0CF1009FCBEB /* LGTabViewControllerBase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LGTabViewControllerBase.m; path = "View-Controllers/LGTabViewControllerBase.m"; sourceTree = "<group>"; };
+		BE38EAAE1B0D0CF1009FCBEB /* LGTabViewControllerBase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGTabViewControllerBase.h; sourceTree = "<group>"; };
+		BE38EAAF1B0D0CF1009FCBEB /* LGTabViewControllerBase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGTabViewControllerBase.m; sourceTree = "<group>"; };
 		BE3FF3281A8A93EE00F7385B /* LGDisplayStatusDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LGDisplayStatusDelegate.h; sourceTree = "<group>"; };
-		BE46D9891B40E46F00004B41 /* LGBaseNotificationServiceViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LGBaseNotificationServiceViewController.h; path = "View-Controllers/LGBaseNotificationServiceViewController.h"; sourceTree = "<group>"; };
-		BE46D98A1B40E46F00004B41 /* LGBaseNotificationServiceViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LGBaseNotificationServiceViewController.m; path = "View-Controllers/LGBaseNotificationServiceViewController.m"; sourceTree = "<group>"; };
-		BE46D98F1B40E67500004B41 /* LGNotificationServiceWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LGNotificationServiceWindowController.h; path = "View-Controllers/LGNotificationServiceWindowController.h"; sourceTree = "<group>"; };
-		BE46D9901B40E67500004B41 /* LGNotificationServiceWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LGNotificationServiceWindowController.m; path = "View-Controllers/LGNotificationServiceWindowController.m"; sourceTree = "<group>"; };
+		BE46D9891B40E46F00004B41 /* LGBaseNotificationServiceViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGBaseNotificationServiceViewController.h; sourceTree = "<group>"; };
+		BE46D98A1B40E46F00004B41 /* LGBaseNotificationServiceViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGBaseNotificationServiceViewController.m; sourceTree = "<group>"; };
+		BE46D98F1B40E67500004B41 /* LGNotificationServiceWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGNotificationServiceWindowController.h; sourceTree = "<group>"; };
+		BE46D9901B40E67500004B41 /* LGNotificationServiceWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGNotificationServiceWindowController.m; sourceTree = "<group>"; };
 		BE46D9931B40EBF800004B41 /* LGHipChatNotification.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGHipChatNotification.h; sourceTree = "<group>"; };
 		BE46D9941B40EBF800004B41 /* LGHipChatNotification.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGHipChatNotification.m; sourceTree = "<group>"; };
-		BE46D9971B40EE2D00004B41 /* LGHipChatNotificationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LGHipChatNotificationView.h; path = "View-Controllers/LGHipChatNotificationView.h"; sourceTree = "<group>"; };
-		BE46D9981B40EE2D00004B41 /* LGHipChatNotificationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LGHipChatNotificationView.m; path = "View-Controllers/LGHipChatNotificationView.m"; sourceTree = "<group>"; };
-		BE46D9991B40EE2D00004B41 /* LGHipChatNotificationView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = LGHipChatNotificationView.xib; path = "View-Controllers/LGHipChatNotificationView.xib"; sourceTree = "<group>"; };
+		BE46D9971B40EE2D00004B41 /* LGHipChatNotificationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGHipChatNotificationView.h; sourceTree = "<group>"; };
+		BE46D9981B40EE2D00004B41 /* LGHipChatNotificationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGHipChatNotificationView.m; sourceTree = "<group>"; };
+		BE46D9991B40EE2D00004B41 /* LGHipChatNotificationView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LGHipChatNotificationView.xib; sourceTree = "<group>"; };
 		BE4985361AFE61C1006E5EDA /* LGServerCredentials.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGServerCredentials.h; sourceTree = "<group>"; };
 		BE4985371AFE61C1006E5EDA /* LGServerCredentials.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGServerCredentials.m; sourceTree = "<group>"; };
 		BE4DD53A1B11740900854FD8 /* LGMunkiIntegration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGMunkiIntegration.h; sourceTree = "<group>"; };
@@ -442,33 +443,33 @@
 		BE67E8741A44E10500484151 /* LGRecipeSearchPanel.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LGRecipeSearchPanel.xib; sourceTree = "<group>"; };
 		BE6815D31A0B18DE004AD310 /* LGUserNotification.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGUserNotification.h; sourceTree = "<group>"; };
 		BE6815D41A0B18DE004AD310 /* LGUserNotification.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGUserNotification.m; sourceTree = "<group>"; };
-		BE73CDC519E062AC00441443 /* NSString+cleaned.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSString+cleaned.h"; path = "Custom Categories/NSString+cleaned.h"; sourceTree = "<group>"; };
-		BE73CDC619E062AC00441443 /* NSString+cleaned.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSString+cleaned.m"; path = "Custom Categories/NSString+cleaned.m"; sourceTree = "<group>"; };
+		BE73CDC519E062AC00441443 /* NSString+cleaned.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+cleaned.h"; sourceTree = "<group>"; };
+		BE73CDC619E062AC00441443 /* NSString+cleaned.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+cleaned.m"; sourceTree = "<group>"; };
 		BE7EF23A1B3350E4002037B1 /* en */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		BE7EF2451B3381A7002037B1 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/LocalizableHelpPopover.strings; sourceTree = "<group>"; };
 		BE81F2211B20EFDD007D16C4 /* LGAbsoluteManageIntegration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGAbsoluteManageIntegration.h; sourceTree = "<group>"; };
 		BE81F2221B20EFF2007D16C4 /* LGAbsoluteManageIntegration.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGAbsoluteManageIntegration.m; sourceTree = "<group>"; };
-		BE81F2271B2232ED007D16C4 /* LGJSSImporterIntegrationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LGJSSImporterIntegrationView.h; path = "View-Controllers/LGJSSImporterIntegrationView.h"; sourceTree = "<group>"; };
-		BE81F2281B2232ED007D16C4 /* LGJSSImporterIntegrationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LGJSSImporterIntegrationView.m; path = "View-Controllers/LGJSSImporterIntegrationView.m"; sourceTree = "<group>"; };
-		BE81F22E1B22340D007D16C4 /* LGBaseIntegrationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LGBaseIntegrationViewController.h; path = "View-Controllers/LGBaseIntegrationViewController.h"; sourceTree = "<group>"; };
-		BE81F22F1B22340D007D16C4 /* LGBaseIntegrationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LGBaseIntegrationViewController.m; path = "View-Controllers/LGBaseIntegrationViewController.m"; sourceTree = "<group>"; };
+		BE81F2271B2232ED007D16C4 /* LGJSSImporterIntegrationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGJSSImporterIntegrationView.h; sourceTree = "<group>"; };
+		BE81F2281B2232ED007D16C4 /* LGJSSImporterIntegrationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGJSSImporterIntegrationView.m; sourceTree = "<group>"; };
+		BE81F22E1B22340D007D16C4 /* LGBaseIntegrationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGBaseIntegrationViewController.h; sourceTree = "<group>"; };
+		BE81F22F1B22340D007D16C4 /* LGBaseIntegrationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGBaseIntegrationViewController.m; sourceTree = "<group>"; };
 		BE81F2391B22A29E007D16C4 /* LGJSSImporterIntegrationView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LGJSSImporterIntegrationView.xib; sourceTree = "<group>"; };
-		BE81F23F1B22C211007D16C4 /* LGViewWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LGViewWindowController.h; path = "View-Controllers/LGViewWindowController.h"; sourceTree = "<group>"; };
-		BE81F2401B22C211007D16C4 /* LGViewWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LGViewWindowController.m; path = "View-Controllers/LGViewWindowController.m"; sourceTree = "<group>"; };
-		BE81F2411B22C211007D16C4 /* LGViewWindowController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = LGViewWindowController.xib; path = "View-Controllers/LGViewWindowController.xib"; sourceTree = "<group>"; };
+		BE81F23F1B22C211007D16C4 /* LGViewWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGViewWindowController.h; sourceTree = "<group>"; };
+		BE81F2401B22C211007D16C4 /* LGViewWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGViewWindowController.m; sourceTree = "<group>"; };
+		BE81F2411B22C211007D16C4 /* LGViewWindowController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LGViewWindowController.xib; sourceTree = "<group>"; };
 		BE8526B119D5F641007DFA9E /* SecurityInterface.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SecurityInterface.framework; path = System/Library/Frameworks/SecurityInterface.framework; sourceTree = SDKROOT; };
 		BE8799491995BA410082472B /* LGDefaults.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGDefaults.h; sourceTree = "<group>"; };
 		BE87994A1995BA410082472B /* LGDefaults.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGDefaults.m; sourceTree = "<group>"; };
 		BE8A06B61AF8F961006C2571 /* LGPackageRemover.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGPackageRemover.h; sourceTree = "<group>"; };
 		BE8A06B71AF8F961006C2571 /* LGPackageRemover.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGPackageRemover.m; sourceTree = "<group>"; };
-		BE8A06BA1AF8FAFD006C2571 /* NSData+taskData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSData+taskData.h"; path = "Custom Categories/NSData+taskData.h"; sourceTree = "<group>"; };
-		BE8A06BB1AF8FAFD006C2571 /* NSData+taskData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSData+taskData.m"; path = "Custom Categories/NSData+taskData.m"; sourceTree = "<group>"; };
+		BE8A06BA1AF8FAFD006C2571 /* NSData+taskData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+taskData.h"; sourceTree = "<group>"; };
+		BE8A06BB1AF8FAFD006C2571 /* NSData+taskData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+taskData.m"; sourceTree = "<group>"; };
 		BE8C7D6C1A86CEF600EBD32A /* LGIntegration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGIntegration.h; sourceTree = "<group>"; };
 		BE8C7D6D1A86CEF600EBD32A /* LGIntegration.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGIntegration.m; sourceTree = "<group>"; };
 		BE91A06A1B2F298900ED7501 /* AHHelpPopover.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AHHelpPopover.h; sourceTree = "<group>"; };
 		BE91A06B1B2F298900ED7501 /* AHHelpPopover.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AHHelpPopover.m; sourceTree = "<group>"; };
-		BE91A06E1B2F53F000ED7501 /* NSString+attributedString.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSString+attributedString.h"; path = "Custom Categories/NSString+attributedString.h"; sourceTree = "<group>"; };
-		BE91A06F1B2F53F000ED7501 /* NSString+attributedString.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSString+attributedString.m"; path = "Custom Categories/NSString+attributedString.m"; sourceTree = "<group>"; };
+		BE91A06E1B2F53F000ED7501 /* NSString+attributedString.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+attributedString.h"; sourceTree = "<group>"; };
+		BE91A06F1B2F53F000ED7501 /* NSString+attributedString.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+attributedString.m"; sourceTree = "<group>"; };
 		BE94AA7B19BB8A78001A00D0 /* LGProgressDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LGProgressDelegate.h; sourceTree = "<group>"; };
 		BEA2F0B31AF1672600781274 /* LGIntegrationTemplate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LGIntegrationTemplate.h; sourceTree = "<group>"; };
 		BEA2F0B41AF1672600781274 /* LGIntegrationTemplate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LGIntegrationTemplate.m; sourceTree = "<group>"; };
@@ -479,27 +480,28 @@
 		BEB9AF2A1B41A01900016D98 /* LGSlackNotificationView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LGSlackNotificationView.xib; sourceTree = "<group>"; };
 		BEBF7B151A4894AC00E9967F /* LGVersioner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGVersioner.h; sourceTree = "<group>"; };
 		BEBF7B161A4894AC00E9967F /* LGVersioner.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGVersioner.m; sourceTree = "<group>"; };
-		BECDAB881B249A2900544388 /* NSButton+colored.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSButton+colored.h"; path = "Custom Categories/NSButton+colored.h"; sourceTree = "<group>"; };
-		BECDAB891B249A2900544388 /* NSButton+colored.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSButton+colored.m"; path = "Custom Categories/NSButton+colored.m"; sourceTree = "<group>"; };
-		BECDAB921B24C29600544388 /* LGMunkiIntegrationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LGMunkiIntegrationView.h; path = "View-Controllers/LGMunkiIntegrationView.h"; sourceTree = "<group>"; };
-		BECDAB931B24C29600544388 /* LGMunkiIntegrationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LGMunkiIntegrationView.m; path = "View-Controllers/LGMunkiIntegrationView.m"; sourceTree = "<group>"; };
-		BECDAB941B24C29600544388 /* LGMunkiIntegrationView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = LGMunkiIntegrationView.xib; path = "View-Controllers/LGMunkiIntegrationView.xib"; sourceTree = "<group>"; };
-		BECDAB991B24DBBC00544388 /* LGIntegrationWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LGIntegrationWindowController.h; path = "View-Controllers/LGIntegrationWindowController.h"; sourceTree = "<group>"; };
-		BECDAB9A1B24DBBC00544388 /* LGIntegrationWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LGIntegrationWindowController.m; path = "View-Controllers/LGIntegrationWindowController.m"; sourceTree = "<group>"; };
-		BECDABA01B252B3900544388 /* NSOpenPanel+typeChooser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSOpenPanel+typeChooser.h"; path = "Custom Categories/NSOpenPanel+typeChooser.h"; sourceTree = "<group>"; };
-		BECDABA11B252B3900544388 /* NSOpenPanel+typeChooser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSOpenPanel+typeChooser.m"; path = "Custom Categories/NSOpenPanel+typeChooser.m"; sourceTree = "<group>"; };
-		BECDABA41B254E5900544388 /* LGAbsoluteManageIntegrationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LGAbsoluteManageIntegrationView.h; path = "View-Controllers/LGAbsoluteManageIntegrationView.h"; sourceTree = "<group>"; };
-		BECDABA51B254E5900544388 /* LGAbsoluteManageIntegrationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LGAbsoluteManageIntegrationView.m; path = "View-Controllers/LGAbsoluteManageIntegrationView.m"; sourceTree = "<group>"; };
-		BECDABA61B254E5900544388 /* LGAbsoluteManageIntegrationView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = LGAbsoluteManageIntegrationView.xib; path = "View-Controllers/LGAbsoluteManageIntegrationView.xib"; sourceTree = "<group>"; };
-		BED02ADA1A194F9C00714CC2 /* NSArray+filtered.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSArray+filtered.h"; path = "Custom Categories/NSArray+filtered.h"; sourceTree = "<group>"; };
-		BED02ADB1A194F9C00714CC2 /* NSArray+filtered.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSArray+filtered.m"; path = "Custom Categories/NSArray+filtered.m"; sourceTree = "<group>"; };
+		BEC2024A1B600FF100F3BC2A /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/LocalizableJSSImporter.strings; sourceTree = "<group>"; };
+		BECDAB881B249A2900544388 /* NSButton+colored.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSButton+colored.h"; sourceTree = "<group>"; };
+		BECDAB891B249A2900544388 /* NSButton+colored.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSButton+colored.m"; sourceTree = "<group>"; };
+		BECDAB921B24C29600544388 /* LGMunkiIntegrationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGMunkiIntegrationView.h; sourceTree = "<group>"; };
+		BECDAB931B24C29600544388 /* LGMunkiIntegrationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGMunkiIntegrationView.m; sourceTree = "<group>"; };
+		BECDAB941B24C29600544388 /* LGMunkiIntegrationView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LGMunkiIntegrationView.xib; sourceTree = "<group>"; };
+		BECDAB991B24DBBC00544388 /* LGIntegrationWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGIntegrationWindowController.h; sourceTree = "<group>"; };
+		BECDAB9A1B24DBBC00544388 /* LGIntegrationWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGIntegrationWindowController.m; sourceTree = "<group>"; };
+		BECDABA01B252B3900544388 /* NSOpenPanel+typeChooser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSOpenPanel+typeChooser.h"; sourceTree = "<group>"; };
+		BECDABA11B252B3900544388 /* NSOpenPanel+typeChooser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSOpenPanel+typeChooser.m"; sourceTree = "<group>"; };
+		BECDABA41B254E5900544388 /* LGAbsoluteManageIntegrationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGAbsoluteManageIntegrationView.h; sourceTree = "<group>"; };
+		BECDABA51B254E5900544388 /* LGAbsoluteManageIntegrationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGAbsoluteManageIntegrationView.m; sourceTree = "<group>"; };
+		BECDABA61B254E5900544388 /* LGAbsoluteManageIntegrationView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LGAbsoluteManageIntegrationView.xib; sourceTree = "<group>"; };
+		BED02ADA1A194F9C00714CC2 /* NSArray+filtered.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSArray+filtered.h"; sourceTree = "<group>"; };
+		BED02ADB1A194F9C00714CC2 /* NSArray+filtered.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSArray+filtered.m"; sourceTree = "<group>"; };
 		BED136A91AC058F8003EBF0F /* report_0.4.3.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = report_0.4.3.plist; sourceTree = "<group>"; };
-		BED136AF1AC262CB003EBF0F /* NSString+html_report.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSString+html_report.h"; path = "Custom Categories/NSString+html_report.h"; sourceTree = "<group>"; };
-		BED136B01AC262CB003EBF0F /* NSString+html_report.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSString+html_report.m"; path = "Custom Categories/NSString+html_report.m"; sourceTree = "<group>"; };
+		BED136AF1AC262CB003EBF0F /* NSString+html_report.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+html_report.h"; sourceTree = "<group>"; };
+		BED136B01AC262CB003EBF0F /* NSString+html_report.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+html_report.m"; sourceTree = "<group>"; };
 		BED136B31AC35650003EBF0F /* report_0.4.2.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = report_0.4.2.plist; sourceTree = "<group>"; };
-		BED136B51AC3BE04003EBF0F /* NSArray+html_report.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSArray+html_report.h"; path = "Custom Categories/NSArray+html_report.h"; sourceTree = "<group>"; };
-		BED136B61AC3BE04003EBF0F /* NSArray+html_report.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSArray+html_report.m"; path = "Custom Categories/NSArray+html_report.m"; sourceTree = "<group>"; };
-		BED136B91AC3BEE1003EBF0F /* HTMLCategories.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = HTMLCategories.h; path = "Custom Categories/HTMLCategories.h"; sourceTree = "<group>"; };
+		BED136B51AC3BE04003EBF0F /* NSArray+html_report.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSArray+html_report.h"; sourceTree = "<group>"; };
+		BED136B61AC3BE04003EBF0F /* NSArray+html_report.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSArray+html_report.m"; sourceTree = "<group>"; };
+		BED136B91AC3BEE1003EBF0F /* HTMLCategories.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HTMLCategories.h; sourceTree = "<group>"; };
 		BED136BB1AC3C15E003EBF0F /* report.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; path = report.css; sourceTree = "<group>"; };
 		BED388291A85E2C100DA8970 /* autopkgr_error.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = autopkgr_error.png; sourceTree = "<group>"; };
 		BEDA5D541B4429E300DCC022 /* LGRecipeSearchResultsPanel.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LGRecipeSearchResultsPanel.xib; sourceTree = "<group>"; };
@@ -509,8 +511,8 @@
 		BEE211251AF9DCBB00A3C2E1 /* LGUninstaller.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGUninstaller.m; sourceTree = "<group>"; };
 		BEE42DAB1AC6E2D100599238 /* report_malformed.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = report_malformed.plist; sourceTree = "<group>"; };
 		BEE42DAC1AC6E2D100599238 /* report_none.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = report_none.plist; sourceTree = "<group>"; };
-		BEE8CF1119E0E7F400981C4B /* NSTextField+safeStringValue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSTextField+safeStringValue.h"; path = "Custom Categories/NSTextField+safeStringValue.h"; sourceTree = "<group>"; };
-		BEE8CF1219E0E7F400981C4B /* NSTextField+safeStringValue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSTextField+safeStringValue.m"; path = "Custom Categories/NSTextField+safeStringValue.m"; sourceTree = "<group>"; };
+		BEE8CF1119E0E7F400981C4B /* NSTextField+safeStringValue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSTextField+safeStringValue.h"; sourceTree = "<group>"; };
+		BEE8CF1219E0E7F400981C4B /* NSTextField+safeStringValue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSTextField+safeStringValue.m"; sourceTree = "<group>"; };
 		BEEFE6B51AE9D01200882C89 /* LGAutoPkgErrorHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGAutoPkgErrorHandler.h; sourceTree = "<group>"; };
 		BEEFE6B61AE9D01200882C89 /* LGAutoPkgErrorHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGAutoPkgErrorHandler.m; sourceTree = "<group>"; };
 		BEEFE6B91AE9E8A600882C89 /* LGLogger.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGLogger.m; sourceTree = "<group>"; };
@@ -526,8 +528,8 @@
 		BEEFE6D11AEE73A400882C89 /* LGIntegration+Protocols.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "LGIntegration+Protocols.h"; sourceTree = "<group>"; };
 		BEFA4DB11B06679F00764BF0 /* LGAutoPkgResultHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGAutoPkgResultHandler.h; sourceTree = "<group>"; };
 		BEFA4DB21B06679F00764BF0 /* LGAutoPkgResultHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGAutoPkgResultHandler.m; sourceTree = "<group>"; };
-		BEFA4DB61B07036000764BF0 /* NSString+split.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSString+split.h"; path = "Custom Categories/NSString+split.h"; sourceTree = "<group>"; };
-		BEFA4DB71B07036000764BF0 /* NSString+split.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSString+split.m"; path = "Custom Categories/NSString+split.m"; sourceTree = "<group>"; };
+		BEFA4DB61B07036000764BF0 /* NSString+split.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+split.h"; sourceTree = "<group>"; };
+		BEFA4DB71B07036000764BF0 /* NSString+split.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+split.m"; sourceTree = "<group>"; };
 		BEFA4DBB1B08F57800764BF0 /* LGAutoPkgRecipe.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGAutoPkgRecipe.h; sourceTree = "<group>"; };
 		BEFA4DBC1B08F57800764BF0 /* LGAutoPkgRecipe.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGAutoPkgRecipe.m; sourceTree = "<group>"; };
 		BEFC931B1995F0710074C938 /* LGError.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGError.h; sourceTree = "<group>"; };
@@ -577,7 +579,7 @@
 				BE13A88919E2568D008A49A1 /* helper-tool-codesign-config.py */,
 			);
 			path = scripts;
-			sourceTree = SOURCE_ROOT;
+			sourceTree = "<group>";
 		};
 		1AC69544195B59ED00D2BD81 = {
 			isa = PBXGroup;
@@ -634,7 +636,7 @@
 			isa = PBXGroup;
 			children = (
 				1AC86D36195E0972006FDD2B /* Models */,
-				BE40CB7719D4441600A1DABD /* Views / Controllers / XIB */,
+				BE40CB7719D4441600A1DABD /* Views-Controllers-XIB */,
 				BE40CB7819D4444D00A1DABD /* Utility */,
 				BE978FA61B102588000079D0 /* Protocols-Delegates */,
 				BE05CE8419DAF63D0089068B /* Privileged Helper Communication */,
@@ -654,12 +656,13 @@
 				BE7EF2391B3350E4002037B1 /* Localizable.strings */,
 				BE57AC2C19BA3BBC00BB17B1 /* LocalizableError.strings */,
 				BE2D58761B32EF110042EF1E /* LocalizableAutoPkg.strings */,
+				BEC202491B600FF100F3BC2A /* LocalizableJSSImporter.strings */,
 				BE7EF2461B3381A7002037B1 /* LocalizableHelpPopover.strings */,
 				1AC6955C195B59ED00D2BD81 /* main.m */,
 				1AC6955E195B59EE00D2BD81 /* AutoPkgr-Prefix.pch */,
 				1AC6955F195B59EE00D2BD81 /* Credits.rtf */,
 			);
-			name = "Supporting Files";
+			path = "Supporting Files";
 			sourceTree = "<group>";
 		};
 		1AC69574195B59EE00D2BD81 /* AutoPkgrTests */ = {
@@ -681,7 +684,7 @@
 				1AC69576195B59EE00D2BD81 /* AutoPkgrTests-Info.plist */,
 				1AC69577195B59EE00D2BD81 /* InfoPlist.strings */,
 			);
-			name = "Supporting Files";
+			path = "Supporting Files";
 			sourceTree = "<group>";
 		};
 		1AC86D36195E0972006FDD2B /* Models */ = {
@@ -690,10 +693,10 @@
 				BEEFE6BE1AEA82CD00882C89 /* AutoPkg Task */,
 				BEEFE6C41AEBEA6A00882C89 /* Integrations */,
 				BE4DD5431B12385C00854FD8 /* Email & Notifications */,
-				BE4DD5411B1237D400854FD8 /* Install / Uninstall */,
-				BE4DD5421B12382600854FD8 /* Passwords / Credentials */,
+				BE4DD5411B1237D400854FD8 /* Install-Uninstall */,
+				BE4DD5421B12382600854FD8 /* Passwords-Credentials */,
 			);
-			name = Models;
+			path = Models;
 			sourceTree = "<group>";
 		};
 		1AC98423195DF6270071CAB3 /* Resources */ = {
@@ -706,7 +709,7 @@
 				1AC98428195DF6DE0071CAB3 /* autopkgr_alt.png */,
 				BED388291A85E2C100DA8970 /* autopkgr_error.png */,
 			);
-			name = Resources;
+			path = Resources;
 			sourceTree = "<group>";
 		};
 		51AB14E0BF99455BB01C0946 /* Pods */ = {
@@ -731,8 +734,7 @@
 				BE05CE7B19DAF5A30089068B /* LGAutoPkgrProtocol.h */,
 				BE05CE7D19DAF5B80089068B /* Supporting Files */,
 			);
-			name = "Privileged Helper";
-			path = helper;
+			path = "Privileged Helper";
 			sourceTree = "<group>";
 		};
 		BE05CE7D19DAF5B80089068B /* Supporting Files */ = {
@@ -746,7 +748,7 @@
 				BE05CE7719DAF5A30089068B /* helper-Launchd.plist */,
 				BE05CE7819DAF5A30089068B /* helper-Prefix.pch */,
 			);
-			name = "Supporting Files";
+			path = "Supporting Files";
 			sourceTree = "<group>";
 		};
 		BE05CE8419DAF63D0089068B /* Privileged Helper Communication */ = {
@@ -757,7 +759,7 @@
 				BE05CE8019DAF6320089068B /* LGAutoPkgrHelperConnection.h */,
 				BE05CE8119DAF6320089068B /* LGAutoPkgrHelperConnection.m */,
 			);
-			name = "Privileged Helper Communication";
+			path = "Privileged Helper Communication";
 			sourceTree = "<group>";
 		};
 		BE0BB0EF1B3C2169007F9DA5 /* Base Notificaton Service */ = {
@@ -766,7 +768,7 @@
 				BEDAFBB21B3B8AA500CCE9AC /* LGNotificationService.h */,
 				BEDAFBB31B3B8AA500CCE9AC /* LGNotificationService.m */,
 			);
-			name = "Base Notificaton Service";
+			path = "Base Notificaton Service";
 			sourceTree = "<group>";
 		};
 		BE38EAB21B0D1C2D009FCBEB /* Tab Views */ = {
@@ -789,7 +791,7 @@
 				BE38EAA11B0CFEBB009FCBEB /* LGIntegrationsViewController.m */,
 				BE38EAA21B0CFEBB009FCBEB /* LGIntegrationsViewController.xib */,
 			);
-			name = "Tab Views";
+			path = "Tab Views";
 			sourceTree = "<group>";
 		};
 		BE39FE5419DFBB2900C1B4A1 /* Custom Categories */ = {
@@ -819,10 +821,10 @@
 				BED02ADB1A194F9C00714CC2 /* NSArray+filtered.m */,
 				BED136BA1AC3BF2E003EBF0F /* Html Categories */,
 			);
-			name = "Custom Categories";
+			path = "Custom Categories";
 			sourceTree = "<group>";
 		};
-		BE40CB7719D4441600A1DABD /* Views / Controllers / XIB */ = {
+		BE40CB7719D4441600A1DABD /* Views-Controllers-XIB */ = {
 			isa = PBXGroup;
 			children = (
 				1AC69562195B59EE00D2BD81 /* LGAppDelegate.h */,
@@ -835,10 +837,10 @@
 				BE5E559C1B1A5B6E0025CFD3 /* Integration Views */,
 				BE46D9881B40E40D00004B41 /* Notification Views */,
 				BE4DD5401B1237AE00854FD8 /* Recipes & Repos Table Controllers */,
-				BE9FD4BA1B15746500BB2DA9 /* Panels / Popovers */,
+				BE9FD4BA1B15746500BB2DA9 /* Panels-Popovers */,
 				BE6B1CF71B1286BD00578F97 /* UI Subclasses */,
 			);
-			name = "Views / Controllers / XIB";
+			path = "Views-Controllers-XIB";
 			sourceTree = "<group>";
 		};
 		BE40CB7819D4444D00A1DABD /* Utility */ = {
@@ -867,7 +869,7 @@
 				BEBF7B151A4894AC00E9967F /* LGVersioner.h */,
 				BEBF7B161A4894AC00E9967F /* LGVersioner.m */,
 			);
-			name = Utility;
+			path = Utility;
 			sourceTree = "<group>";
 		};
 		BE46D9871B40C5B500004B41 /* Notification Manager */ = {
@@ -876,7 +878,7 @@
 				BE0BB0F01B3C2311007F9DA5 /* LGNotificationManager.h */,
 				BE0BB0F11B3C2311007F9DA5 /* LGNotificationManager.m */,
 			);
-			name = "Notification Manager";
+			path = "Notification Manager";
 			sourceTree = "<group>";
 		};
 		BE46D9881B40E40D00004B41 /* Notification Views */ = {
@@ -891,7 +893,7 @@
 				BEB9AF291B41A01900016D98 /* LGSlackNotificationView.m */,
 				BEB9AF2A1B41A01900016D98 /* LGSlackNotificationView.xib */,
 			);
-			name = "Notification Views";
+			path = "Notification Views";
 			sourceTree = "<group>";
 		};
 		BE46D98D1B40E5D900004B41 /* Base View Controller (Notification) */ = {
@@ -900,7 +902,7 @@
 				BE46D9891B40E46F00004B41 /* LGBaseNotificationServiceViewController.h */,
 				BE46D98A1B40E46F00004B41 /* LGBaseNotificationServiceViewController.m */,
 			);
-			name = "Base View Controller (Notification)";
+			path = "Base View Controller (Notification)";
 			sourceTree = "<group>";
 		};
 		BE46D98E1B40E5EB00004B41 /* Window Controller (Notification) */ = {
@@ -909,7 +911,7 @@
 				BE46D98F1B40E67500004B41 /* LGNotificationServiceWindowController.h */,
 				BE46D9901B40E67500004B41 /* LGNotificationServiceWindowController.m */,
 			);
-			name = "Window Controller (Notification)";
+			path = "Window Controller (Notification)";
 			sourceTree = "<group>";
 		};
 		BE4DD5401B1237AE00854FD8 /* Recipes & Repos Table Controllers */ = {
@@ -922,10 +924,10 @@
 				BE32178919ED9ACA00A92E5A /* LGRecipeOverrides.h */,
 				BE32178A19ED9ACA00A92E5A /* LGRecipeOverrides.m */,
 			);
-			name = "Recipes & Repos Table Controllers";
+			path = "Recipes & Repos Table Controllers";
 			sourceTree = "<group>";
 		};
-		BE4DD5411B1237D400854FD8 /* Install / Uninstall */ = {
+		BE4DD5411B1237D400854FD8 /* Install-Uninstall */ = {
 			isa = PBXGroup;
 			children = (
 				BEAA76CA19BFD635002D73EE /* LGInstaller.h */,
@@ -935,10 +937,10 @@
 				BE8A06B61AF8F961006C2571 /* LGPackageRemover.h */,
 				BE8A06B71AF8F961006C2571 /* LGPackageRemover.m */,
 			);
-			name = "Install / Uninstall";
+			path = "Install-Uninstall";
 			sourceTree = "<group>";
 		};
-		BE4DD5421B12382600854FD8 /* Passwords / Credentials */ = {
+		BE4DD5421B12382600854FD8 /* Passwords-Credentials */ = {
 			isa = PBXGroup;
 			children = (
 				BE053D131A8F90920021D97B /* LGPasswords.h */,
@@ -946,7 +948,7 @@
 				BE4985361AFE61C1006E5EDA /* LGServerCredentials.h */,
 				BE4985371AFE61C1006E5EDA /* LGServerCredentials.m */,
 			);
-			name = "Passwords / Credentials";
+			path = "Passwords-Credentials";
 			sourceTree = "<group>";
 		};
 		BE4DD5431B12385C00854FD8 /* Email & Notifications */ = {
@@ -965,7 +967,7 @@
 				BE0BB0F91B3C9563007F9DA5 /* LGSlackNotification.h */,
 				BE0BB0FA1B3C9563007F9DA5 /* LGSlackNotification.m */,
 			);
-			name = "Email & Notifications";
+			path = "Email & Notifications";
 			sourceTree = "<group>";
 		};
 		BE4DD5441B1239A300854FD8 /* Integration Manager */ = {
@@ -974,7 +976,7 @@
 				BEEFE6C01AEBCC7C00882C89 /* LGIntegrationManager.h */,
 				BEEFE6C11AEBCC7C00882C89 /* LGIntegrationManager.m */,
 			);
-			name = "Integration Manager";
+			path = "Integration Manager";
 			sourceTree = "<group>";
 		};
 		BE5E559C1B1A5B6E0025CFD3 /* Integration Views */ = {
@@ -1001,7 +1003,7 @@
 				BECDAB931B24C29600544388 /* LGMunkiIntegrationView.m */,
 				BECDAB941B24C29600544388 /* LGMunkiIntegrationView.xib */,
 			);
-			name = "Integration Views";
+			path = "Integration Views";
 			sourceTree = "<group>";
 		};
 		BE6B1CF71B1286BD00578F97 /* UI Subclasses */ = {
@@ -1017,7 +1019,7 @@
 				BE5E559F1B1B59D50025CFD3 /* LGTableCellViews.h */,
 				BE5E55A01B1B59D50025CFD3 /* LGTableCellViews.m */,
 			);
-			name = "UI Subclasses";
+			path = "UI Subclasses";
 			sourceTree = "<group>";
 		};
 		BE978FA61B102588000079D0 /* Protocols-Delegates */ = {
@@ -1026,10 +1028,10 @@
 				BE94AA7B19BB8A78001A00D0 /* LGProgressDelegate.h */,
 				BE3FF3281A8A93EE00F7385B /* LGDisplayStatusDelegate.h */,
 			);
-			name = "Protocols-Delegates";
+			path = "Protocols-Delegates";
 			sourceTree = "<group>";
 		};
-		BE9FD4BA1B15746500BB2DA9 /* Panels / Popovers */ = {
+		BE9FD4BA1B15746500BB2DA9 /* Panels-Popovers */ = {
 			isa = PBXGroup;
 			children = (
 				BE0BACCE1A2560AE00554989 /* LGJSSDistributionPointsPrefPanel.h */,
@@ -1043,7 +1045,7 @@
 				BE38EA751B0B8DF7009FCBEB /* LGRecipeInfoView.m */,
 				BE38EA761B0B8DF7009FCBEB /* LGRecipeInfoView.xib */,
 			);
-			name = "Panels / Popovers";
+			path = "Panels-Popovers";
 			sourceTree = "<group>";
 		};
 		BE9FD4BC1B15760000BB2DA9 /* Base Tab View */ = {
@@ -1052,7 +1054,7 @@
 				BE38EAAE1B0D0CF1009FCBEB /* LGTabViewControllerBase.h */,
 				BE38EAAF1B0D0CF1009FCBEB /* LGTabViewControllerBase.m */,
 			);
-			name = "Base Tab View";
+			path = "Base Tab View";
 			sourceTree = "<group>";
 		};
 		BECDAB861B234EE700544388 /* Window Controller (Integration) */ = {
@@ -1061,7 +1063,7 @@
 				BECDAB991B24DBBC00544388 /* LGIntegrationWindowController.h */,
 				BECDAB9A1B24DBBC00544388 /* LGIntegrationWindowController.m */,
 			);
-			name = "Window Controller (Integration)";
+			path = "Window Controller (Integration)";
 			sourceTree = "<group>";
 		};
 		BECDAB871B234F0200544388 /* Base View Controller (Integration) */ = {
@@ -1070,7 +1072,7 @@
 				BE81F22E1B22340D007D16C4 /* LGBaseIntegrationViewController.h */,
 				BE81F22F1B22340D007D16C4 /* LGBaseIntegrationViewController.m */,
 			);
-			name = "Base View Controller (Integration)";
+			path = "Base View Controller (Integration)";
 			sourceTree = "<group>";
 		};
 		BED136BA1AC3BF2E003EBF0F /* Html Categories */ = {
@@ -1082,7 +1084,7 @@
 				BED136B51AC3BE04003EBF0F /* NSArray+html_report.h */,
 				BED136B61AC3BE04003EBF0F /* NSArray+html_report.m */,
 			);
-			name = "Html Categories";
+			path = "Html Categories";
 			sourceTree = "<group>";
 		};
 		BEEFE6BE1AEA82CD00882C89 /* AutoPkg Task */ = {
@@ -1099,7 +1101,7 @@
 				BE5E55A31B1B9EBB0025CFD3 /* LGAutoPkgRepo.h */,
 				BE5E55A41B1B9EBB0025CFD3 /* LGAutoPkgRepo.m */,
 			);
-			name = "AutoPkg Task";
+			path = "AutoPkg Task";
 			sourceTree = "<group>";
 		};
 		BEEFE6C41AEBEA6A00882C89 /* Integrations */ = {
@@ -1120,7 +1122,7 @@
 				BE4DD53A1B11740900854FD8 /* LGMunkiIntegration.h */,
 				BE4DD53D1B11743700854FD8 /* LGMunkiIntegration.m */,
 			);
-			name = Integrations;
+			path = Integrations;
 			sourceTree = "<group>";
 		};
 		BEEFE6D21AF008A200882C89 /* LGIntegration Base */ = {
@@ -1132,7 +1134,7 @@
 				BEA2F0B31AF1672600781274 /* LGIntegrationTemplate.h */,
 				BEA2F0B41AF1672600781274 /* LGIntegrationTemplate.m */,
 			);
-			name = "LGIntegration Base";
+			path = "LGIntegration Base";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -1271,6 +1273,7 @@
 				1AC69561195B59EE00D2BD81 /* Credits.rtf in Resources */,
 				BECDABA91B254E5900544388 /* LGAbsoluteManageIntegrationView.xib in Resources */,
 				BE09F65D1B2694ED00EE4AA7 /* LGAutoPkgIntegrationView.xib in Resources */,
+				BEC2024B1B600FF100F3BC2A /* LocalizableJSSImporter.strings in Resources */,
 				BEB9AF2D1B41A01900016D98 /* LGSlackNotificationView.xib in Resources */,
 				BE38EAAC1B0CFECE009FCBEB /* LGNotificationsViewController.xib in Resources */,
 				1AC69567195B59EE00D2BD81 /* MainMenu.xib in Resources */,
@@ -1680,6 +1683,7 @@
 				1AC6955A195B59ED00D2BD81 /* en */,
 			);
 			name = InfoPlist.strings;
+			path = .;
 			sourceTree = "<group>";
 		};
 		1AC6955F195B59EE00D2BD81 /* Credits.rtf */ = {
@@ -1688,6 +1692,7 @@
 				1AC69560195B59EE00D2BD81 /* en */,
 			);
 			name = Credits.rtf;
+			path = .;
 			sourceTree = "<group>";
 		};
 		1AC69565195B59EE00D2BD81 /* MainMenu.xib */ = {
@@ -1696,6 +1701,7 @@
 				1AC69566195B59EE00D2BD81 /* Base */,
 			);
 			name = MainMenu.xib;
+			path = .;
 			sourceTree = "<group>";
 		};
 		1AC69577195B59EE00D2BD81 /* InfoPlist.strings */ = {
@@ -1704,6 +1710,7 @@
 				1AC69578195B59EE00D2BD81 /* en */,
 			);
 			name = InfoPlist.strings;
+			path = .;
 			sourceTree = "<group>";
 		};
 		BE2D58761B32EF110042EF1E /* LocalizableAutoPkg.strings */ = {
@@ -1712,6 +1719,7 @@
 				BE2D58771B32EF110042EF1E /* en */,
 			);
 			name = LocalizableAutoPkg.strings;
+			path = .;
 			sourceTree = "<group>";
 		};
 		BE57AC2C19BA3BBC00BB17B1 /* LocalizableError.strings */ = {
@@ -1720,6 +1728,7 @@
 				BE57AC2B19BA3BBC00BB17B1 /* en */,
 			);
 			name = LocalizableError.strings;
+			path = .;
 			sourceTree = "<group>";
 		};
 		BE7EF2391B3350E4002037B1 /* Localizable.strings */ = {
@@ -1728,6 +1737,7 @@
 				BE7EF23A1B3350E4002037B1 /* en */,
 			);
 			name = Localizable.strings;
+			path = .;
 			sourceTree = "<group>";
 		};
 		BE7EF2461B3381A7002037B1 /* LocalizableHelpPopover.strings */ = {
@@ -1736,6 +1746,15 @@
 				BE7EF2451B3381A7002037B1 /* en */,
 			);
 			name = LocalizableHelpPopover.strings;
+			path = .;
+			sourceTree = "<group>";
+		};
+		BEC202491B600FF100F3BC2A /* LocalizableJSSImporter.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				BEC2024A1B600FF100F3BC2A /* en */,
+			);
+			name = LocalizableJSSImporter.strings;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
@@ -1821,8 +1840,8 @@
 				CODE_SIGN_IDENTITY = "Developer ID Application: The Linde Group Computer Support Inc (JVY2ZR6SEF)";
 				COMBINE_HIDPI_IMAGES = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "AutoPkgr/AutoPkgr-Prefix.pch";
-				INFOPLIST_FILE = "AutoPkgr/AutoPkgr-Info.plist";
+				GCC_PREFIX_HEADER = "AutoPkgr/Supporting Files/AutoPkgr-Prefix.pch";
+				INFOPLIST_FILE = "AutoPkgr/Supporting Files/AutoPkgr-Info.plist";
 				MACOSX_DEPLOYMENT_TARGET = 10.8;
 				OTHER_CODE_SIGN_FLAGS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1838,8 +1857,8 @@
 				CODE_SIGN_IDENTITY = "Developer ID Application: The Linde Group Computer Support Inc (JVY2ZR6SEF)";
 				COMBINE_HIDPI_IMAGES = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "AutoPkgr/AutoPkgr-Prefix.pch";
-				INFOPLIST_FILE = "AutoPkgr/AutoPkgr-Info.plist";
+				GCC_PREFIX_HEADER = "AutoPkgr/Supporting Files/AutoPkgr-Prefix.pch";
+				INFOPLIST_FILE = "AutoPkgr/Supporting Files/AutoPkgr-Info.plist";
 				MACOSX_DEPLOYMENT_TARGET = 10.8;
 				OTHER_CODE_SIGN_FLAGS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1857,12 +1876,12 @@
 					"$(inherited)",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "AutoPkgr/AutoPkgr-Prefix.pch";
+				GCC_PREFIX_HEADER = "AutoPkgr/Supporting Files/AutoPkgr-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
 				);
-				INFOPLIST_FILE = "AutoPkgrTests/AutoPkgrTests-Info.plist";
+				INFOPLIST_FILE = "AutoPkgrTests/Supporting Files/AutoPkgrTests-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = xctest;
 			};
@@ -1878,8 +1897,8 @@
 					"$(inherited)",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "AutoPkgr/AutoPkgr-Prefix.pch";
-				INFOPLIST_FILE = "AutoPkgrTests/AutoPkgrTests-Info.plist";
+				GCC_PREFIX_HEADER = "AutoPkgr/Supporting Files/AutoPkgr-Prefix.pch";
+				INFOPLIST_FILE = "AutoPkgrTests/Supporting Files/AutoPkgrTests-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = xctest;
 			};
@@ -1893,7 +1912,7 @@
 				CODE_SIGN_IDENTITY = "Developer ID Application: The Linde Group Computer Support Inc (JVY2ZR6SEF)";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				FRAMEWORK_SEARCH_PATHS = "";
-				GCC_PREFIX_HEADER = "helper/helper-Prefix.pch";
+				GCC_PREFIX_HEADER = "Privileged Helper/Supporting Files/helper-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"$(inherited)",
 					"COCOAPODS=1",
@@ -1921,11 +1940,11 @@
 					"-sectcreate",
 					__TEXT,
 					__info_plist,
-					"helper/helper-Info.plist",
+					"Privileged\\ Helper/helper-Info.plist",
 					"-sectcreate",
 					__TEXT,
 					__launchd_plist,
-					"helper/helper-Launchd.plist",
+					"Privileged\\ Helper/helper-Launchd.plist",
 					"-ObjC",
 					"$(inherited)",
 				);
@@ -1942,7 +1961,7 @@
 				CODE_SIGN_IDENTITY = "Developer ID Application: The Linde Group Computer Support Inc (JVY2ZR6SEF)";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				FRAMEWORK_SEARCH_PATHS = "";
-				GCC_PREFIX_HEADER = "helper/helper-Prefix.pch";
+				GCC_PREFIX_HEADER = "Privileged Helper/Supporting Files/helper-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"$(inherited)",
 					"COCOAPODS=1",
@@ -1970,11 +1989,11 @@
 					"-sectcreate",
 					__TEXT,
 					__info_plist,
-					"helper/helper-Info.plist",
+					"Privileged\\ Helper/helper-Info.plist",
 					"-sectcreate",
 					__TEXT,
 					__launchd_plist,
-					"helper/helper-Launchd.plist",
+					"Privileged\\ Helper/helper-Launchd.plist",
 					"-ObjC",
 					"$(inherited)",
 				);
