@@ -480,7 +480,7 @@
 		BEB9AF2A1B41A01900016D98 /* LGSlackNotificationView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LGSlackNotificationView.xib; sourceTree = "<group>"; };
 		BEBF7B151A4894AC00E9967F /* LGVersioner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGVersioner.h; sourceTree = "<group>"; };
 		BEBF7B161A4894AC00E9967F /* LGVersioner.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGVersioner.m; sourceTree = "<group>"; };
-		BEC2024A1B600FF100F3BC2A /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/LocalizableJSSImporter.strings; sourceTree = "<group>"; };
+		BEC2024A1B600FF100F3BC2A /* en */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/LocalizableJSSImporter.strings; sourceTree = "<group>"; };
 		BECDAB881B249A2900544388 /* NSButton+colored.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSButton+colored.h"; sourceTree = "<group>"; };
 		BECDAB891B249A2900544388 /* NSButton+colored.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSButton+colored.m"; sourceTree = "<group>"; };
 		BECDAB921B24C29600544388 /* LGMunkiIntegrationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGMunkiIntegrationView.h; sourceTree = "<group>"; };
