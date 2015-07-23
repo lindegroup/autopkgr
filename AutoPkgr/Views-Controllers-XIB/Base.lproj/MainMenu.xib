@@ -390,6 +390,12 @@
                         <action selector="uninstallHelper:" target="Voe-Tx-rLC" id="1gI-Zx-48m"/>
                     </connections>
                 </menuItem>
+                <menuItem title="Reinstall Helper Tool" alternate="YES" id="8fp-RP-syp">
+                    <modifierMask key="keyEquivalentModifierMask" control="YES" option="YES"/>
+                    <connections>
+                        <action selector="reinstallHelperTool:" target="Voe-Tx-rLC" id="HEk-jg-EhL"/>
+                    </connections>
+                </menuItem>
             </items>
         </menu>
         <userDefaultsController representsSharedInstance="YES" id="SYv-Ba-SbG"/>

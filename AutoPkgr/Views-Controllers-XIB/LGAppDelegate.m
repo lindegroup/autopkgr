@@ -272,6 +272,21 @@
     [uninstaller uninstallAutoPkgr:sender];
 }
 
+-(IBAction)reinstallHelperTool:(id)sender
+{
+    NSError *error = nil;
+    if(![AHLaunchCtl uninstallHelper:kLGAutoPkgrHelperToolName
+                           prompt:NSLocalizedString(@"Begin reinstall process. ", nil)
+                               error:&error]){
+        if(error.code != errAuthorizationCanceled){
+            [NSApp presentError:error];
+        }
+    } else if (![AHLaunchCtl installHelper:kLGAutoPkgrHelperToolName prompt:@"" error:&error]){
+        [NSApp presentError:[LGError errorWithCode:kLGErrorInstallingPrivilegedHelperTool]];
+        [[NSApplication sharedApplication] terminate:self];
+    }
+}
+
 #pragma mark - Progress Protocol
 - (void)startProgressWithMessage:(NSString *)message
 {
