@@ -139,8 +139,11 @@
 
 - (MCOAddress *)smtpFrom
 {
+    NSString *from = _defaults.SMTPFrom ?: @"AutoPkgr";
+    DevLog(@"Sending 'From' %@", from);
+
     return [MCOAddress addressWithDisplayName:@"AutoPkgr Notification"
-                                      mailbox:_defaults.SMTPFrom ?: @"AutoPkgr"];
+                                      mailbox:from];
 }
 
 #pragma mark - Primary sending method

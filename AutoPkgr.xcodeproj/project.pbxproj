@@ -123,6 +123,7 @@
 		BE4DD5471B126E2800854FD8 /* LGSchedulePickerMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = BE4DD5461B126E2800854FD8 /* LGSchedulePickerMenu.m */; };
 		BE4DD5481B126E2800854FD8 /* LGSchedulePickerMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = BE4DD5461B126E2800854FD8 /* LGSchedulePickerMenu.m */; };
 		BE57AC2A19BA3BBC00BB17B1 /* LocalizableError.strings in Resources */ = {isa = PBXBuildFile; fileRef = BE57AC2C19BA3BBC00BB17B1 /* LocalizableError.strings */; };
+		BE59D8941B61956C0037F3CA /* LGMenuItems.m in Sources */ = {isa = PBXBuildFile; fileRef = BE59D8931B61956C0037F3CA /* LGMenuItems.m */; };
 		BE5E55A11B1B59D50025CFD3 /* LGTableCellViews.m in Sources */ = {isa = PBXBuildFile; fileRef = BE5E55A01B1B59D50025CFD3 /* LGTableCellViews.m */; };
 		BE5E55A21B1B59D50025CFD3 /* LGTableCellViews.m in Sources */ = {isa = PBXBuildFile; fileRef = BE5E55A01B1B59D50025CFD3 /* LGTableCellViews.m */; };
 		BE5E55A51B1B9EBB0025CFD3 /* LGAutoPkgRepo.m in Sources */ = {isa = PBXBuildFile; fileRef = BE5E55A41B1B9EBB0025CFD3 /* LGAutoPkgRepo.m */; };
@@ -434,6 +435,8 @@
 		BE4DD5451B126E2800854FD8 /* LGSchedulePickerMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGSchedulePickerMenu.h; sourceTree = "<group>"; };
 		BE4DD5461B126E2800854FD8 /* LGSchedulePickerMenu.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGSchedulePickerMenu.m; sourceTree = "<group>"; };
 		BE57AC2B19BA3BBC00BB17B1 /* en */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/LocalizableError.strings; sourceTree = "<group>"; };
+		BE59D8921B61956C0037F3CA /* LGMenuItems.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGMenuItems.h; sourceTree = "<group>"; };
+		BE59D8931B61956C0037F3CA /* LGMenuItems.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGMenuItems.m; sourceTree = "<group>"; };
 		BE5E559F1B1B59D50025CFD3 /* LGTableCellViews.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGTableCellViews.h; sourceTree = "<group>"; };
 		BE5E55A01B1B59D50025CFD3 /* LGTableCellViews.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGTableCellViews.m; sourceTree = "<group>"; };
 		BE5E55A31B1B9EBB0025CFD3 /* LGAutoPkgRepo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGAutoPkgRepo.h; sourceTree = "<group>"; };
@@ -1018,6 +1021,8 @@
 				BE4DD5461B126E2800854FD8 /* LGSchedulePickerMenu.m */,
 				BE5E559F1B1B59D50025CFD3 /* LGTableCellViews.h */,
 				BE5E55A01B1B59D50025CFD3 /* LGTableCellViews.m */,
+				BE59D8921B61956C0037F3CA /* LGMenuItems.h */,
+				BE59D8931B61956C0037F3CA /* LGMenuItems.m */,
 			);
 			path = "UI Subclasses";
 			sourceTree = "<group>";
@@ -1519,6 +1524,7 @@
 				BE4DD5471B126E2800854FD8 /* LGSchedulePickerMenu.m in Sources */,
 				BE38EA9C1B0CFEA6009FCBEB /* LGScheduleViewController.m in Sources */,
 				BE0E857919D668F600B25B5E /* LGHTTPRequest.m in Sources */,
+				BE59D8941B61956C0037F3CA /* LGMenuItems.m in Sources */,
 				BED136B11AC262CB003EBF0F /* NSString+html_report.m in Sources */,
 				1A1BAD9E197A4133008192A7 /* LGGitHubJSONLoader.m in Sources */,
 				BE32B0381B2735DF0071778B /* LGGitIntegrationView.m in Sources */,
