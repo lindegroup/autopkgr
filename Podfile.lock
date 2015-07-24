@@ -41,7 +41,7 @@ EXTERNAL SOURCES:
 
 CHECKOUT OPTIONS:
   AHLaunchCtl:
-    :commit: f16e63c58e485210c875ae20f507e73dc0e25328
+    :commit: a5d0e98f9ef1b77d1d30e961ef6488e1b31bab9f
     :git: https://github.com/eahrold/AHLaunchCtl.git
 
 SPEC CHECKSUMS:

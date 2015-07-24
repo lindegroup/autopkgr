@@ -77,8 +77,29 @@
         [sender setEnabled:NO];
     }
 
+    // TODO: Prompt for components.
+    BOOL removeKeychain = NO;
+
     // Setup completion block.
     void (^didComplete)(NSError *) = ^(NSError *error) {
+        if (![AHLaunchCtl uninstallHelper:kLGAutoPkgrHelperToolName
+                                   prompt:NSLocalizedString(@"Remove AutoPkgr's components.", nil)
+                                    error:&error]) {
+            NSLog(@"A problem occurred uninstalling helper....");
+        } else {
+            // Remove launch at login agent.
+            [LGAutoPkgSchedule launchAtLogin:NO];
+
+            if (removeKeychain) {
+                // Remove AutoPkgr.keychain file
+                NSString *keychainFile = appKeychainPath();
+                NSFileManager *manager = [NSFileManager defaultManager];
+                if ([manager fileExistsAtPath:appKeychainPath() ]) {
+                    [manager removeItemAtPath:keychainFile error:nil];
+                }
+            }
+        }
+        
         dispatch_async(dispatch_get_main_queue(), ^{
             if ([sender respondsToSelector:@selector(enable)]) {
                 [sender setEnabled:YES];
@@ -101,10 +122,6 @@
         });
     };
 
-    // TODO: Prompt for components.
-
-    BOOL removeKeychain = NO;
-
     LGAutoPkgrHelperConnection *helper = [LGAutoPkgrHelperConnection new];
     NSData *authorization = [LGAutoPkgrAuthorizer authorizeHelper];
     assert(authorization != nil);
@@ -117,27 +134,8 @@
         removeKeychains:removeKeychain
                packages:nil
                   reply:^(NSError *error) {
-                            if (![AHLaunchCtl uninstallHelper:kLGAutoPkgrHelperToolName
-                                                       prompt:NSLocalizedString(@"Remove AutoPkgr's components.", nil)
-                                                        error:&error]) {
-                                if (error) {
-                                    didComplete(error);
-                                }
-                            } else {
-                                // Remove launch at login agent.
-                                [LGAutoPkgSchedule launchAtLogin:NO];
-
-                                if (removeKeychain) {
-                                    // Remove AutoPkgr.keychain file
-                                    NSString *keychainFile = appKeychainPath();
-                                    NSFileManager *manager = [NSFileManager defaultManager];
-                                    if ([manager fileExistsAtPath:appKeychainPath() ]) {
-                                        [manager removeItemAtPath:keychainFile error:nil];
-                                    }
-                                }
-                                didComplete(error);
-                            }
-                  }];
+                      didComplete(error);
+    }];
 }
 
 @end
