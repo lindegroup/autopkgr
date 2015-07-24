@@ -124,6 +124,8 @@
 		BE4DD5481B126E2800854FD8 /* LGSchedulePickerMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = BE4DD5461B126E2800854FD8 /* LGSchedulePickerMenu.m */; };
 		BE57AC2A19BA3BBC00BB17B1 /* LocalizableError.strings in Resources */ = {isa = PBXBuildFile; fileRef = BE57AC2C19BA3BBC00BB17B1 /* LocalizableError.strings */; };
 		BE59D8941B61956C0037F3CA /* LGMenuItems.m in Sources */ = {isa = PBXBuildFile; fileRef = BE59D8931B61956C0037F3CA /* LGMenuItems.m */; };
+		BE59D8971B61998D0037F3CA /* BSDProcessInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = BE59D8961B61998D0037F3CA /* BSDProcessInfo.m */; };
+		BE59D8981B619A980037F3CA /* BSDProcessInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = BE59D8961B61998D0037F3CA /* BSDProcessInfo.m */; };
 		BE5E55A11B1B59D50025CFD3 /* LGTableCellViews.m in Sources */ = {isa = PBXBuildFile; fileRef = BE5E55A01B1B59D50025CFD3 /* LGTableCellViews.m */; };
 		BE5E55A21B1B59D50025CFD3 /* LGTableCellViews.m in Sources */ = {isa = PBXBuildFile; fileRef = BE5E55A01B1B59D50025CFD3 /* LGTableCellViews.m */; };
 		BE5E55A51B1B9EBB0025CFD3 /* LGAutoPkgRepo.m in Sources */ = {isa = PBXBuildFile; fileRef = BE5E55A41B1B9EBB0025CFD3 /* LGAutoPkgRepo.m */; };
@@ -437,6 +439,8 @@
 		BE57AC2B19BA3BBC00BB17B1 /* en */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/LocalizableError.strings; sourceTree = "<group>"; };
 		BE59D8921B61956C0037F3CA /* LGMenuItems.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGMenuItems.h; sourceTree = "<group>"; };
 		BE59D8931B61956C0037F3CA /* LGMenuItems.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGMenuItems.m; sourceTree = "<group>"; };
+		BE59D8951B61998D0037F3CA /* BSDProcessInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BSDProcessInfo.h; sourceTree = "<group>"; };
+		BE59D8961B61998D0037F3CA /* BSDProcessInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BSDProcessInfo.m; sourceTree = "<group>"; };
 		BE5E559F1B1B59D50025CFD3 /* LGTableCellViews.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGTableCellViews.h; sourceTree = "<group>"; };
 		BE5E55A01B1B59D50025CFD3 /* LGTableCellViews.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGTableCellViews.m; sourceTree = "<group>"; };
 		BE5E55A31B1B9EBB0025CFD3 /* LGAutoPkgRepo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGAutoPkgRepo.h; sourceTree = "<group>"; };
@@ -851,6 +855,8 @@
 			children = (
 				BE91A06A1B2F298900ED7501 /* AHHelpPopover.h */,
 				BE91A06B1B2F298900ED7501 /* AHHelpPopover.m */,
+				BE59D8951B61998D0037F3CA /* BSDProcessInfo.h */,
+				BE59D8961B61998D0037F3CA /* BSDProcessInfo.m */,
 				BE025CFC19BAEF8800D36345 /* LGAutoPkgSchedule.h */,
 				BE025CFD19BAEF8800D36345 /* LGAutoPkgSchedule.m */,
 				1AC98408195CE7D60071CAB3 /* LGConstants.h */,
@@ -1479,6 +1485,7 @@
 				BE0BACD11A2560AE00554989 /* LGJSSDistributionPointsPrefPanel.m in Sources */,
 				BECDABA71B254E5900544388 /* LGAbsoluteManageIntegrationView.m in Sources */,
 				BEEFE6CA1AEC760700882C89 /* LGAutoPkgIntegration.m in Sources */,
+				BE59D8971B61998D0037F3CA /* BSDProcessInfo.m in Sources */,
 				BEC1258919F046FA006696C4 /* main.m in Sources */,
 				BED136B71AC3BE04003EBF0F /* NSArray+html_report.m in Sources */,
 				BEEFE6BB1AE9E8A600882C89 /* LGLogger.m in Sources */,
@@ -1568,6 +1575,7 @@
 				BEFC3C771A3DF16700C789E9 /* LGGitHubJSONLoader.m in Sources */,
 				BEEFE6BC1AE9E8A600882C89 /* LGLogger.m in Sources */,
 				BED136AD1AC0F993003EBF0F /* LGPasswords.m in Sources */,
+				BE59D8981B619A980037F3CA /* BSDProcessInfo.m in Sources */,
 				BECDAB8D1B249C0B00544388 /* NSButton+colored.m in Sources */,
 				BE46D99B1B40EE2D00004B41 /* LGHipChatNotificationView.m in Sources */,
 				BED136AB1AC05B1D003EBF0F /* LGAutoPkgReport.m in Sources */,
