@@ -12,11 +12,10 @@
     NSView *_zeroView;
 }
 
-- (NSView *)view {
-    if (!_zeroView) {
-        _zeroView = [[NSView alloc] initWithFrame:NSMakeRect(0, 0, 0, 0)];
-    }
-    return _zeroView;
+- (void)awakeFromNib
+{
+    self.view = [[NSView alloc] initWithFrame:NSMakeRect(0, 0, 0, 0)];
+    [super awakeFromNib];
 }
 
 - (BOOL)isEnabled {
