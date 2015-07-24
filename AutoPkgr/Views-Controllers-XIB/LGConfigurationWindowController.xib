@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="7706" systemVersion="14E46" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+    <dependencies>
+        <deployment identifier="macosx"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="7706"/>
+    </dependencies>
+    <objects>
+        <customObject id="-2" userLabel="File's Owner" customClass="LGConfigurationWindowController">
+            <connections>
+                <outlet property="cancelAutoPkgRunButton" destination="xEr-jr-9qR" id="Emk-lI-q0t"/>
+                <outlet property="progressDetailsMessage" destination="KHL-zp-6jp" id="KP6-bW-tIZ"/>
+                <outlet property="progressIndicator" destination="qol-Go-AJd" id="L2u-sJ-XVZ"/>
+                <outlet property="progressMessage" destination="u7l-Fz-3uc" id="bfC-89-DgO"/>
+                <outlet property="progressPanel" destination="043-gL-HLj" id="EfU-ER-kYK"/>
+                <outlet property="tabViews" destination="Dvq-fn-q18" id="3Lg-Ht-EZA"/>
+                <outlet property="window" destination="F0z-JX-Cv5" id="gIp-Ho-8D9"/>
+            </connections>
+        </customObject>
+        <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
+        <customObject id="-3" userLabel="Application" customClass="NSObject"/>
+        <window title="AutoPkgr" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" oneShot="NO" releasedWhenClosed="NO" frameAutosaveName="AutoPkgr" animationBehavior="default" id="F0z-JX-Cv5">
+            <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
+            <rect key="contentRect" x="196" y="240" width="657" height="478"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1280" height="777"/>
+            <value key="minSize" type="size" width="657" height="478"/>
+            <view key="contentView" id="se5-gp-TjO">
+                <rect key="frame" x="0.0" y="0.0" width="657" height="478"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <view translatesAutoresizingMaskIntoConstraints="NO" id="wtX-Sr-awJ">
+                        <rect key="frame" x="0.0" y="0.0" width="657" height="478"/>
+                        <subviews>
+                            <tabView translatesAutoresizingMaskIntoConstraints="NO" id="Dvq-fn-q18">
+                                <rect key="frame" x="10" y="10" width="637" height="458"/>
+                                <font key="font" metaFont="system"/>
+                                <tabViewItems/>
+                                <connections>
+                                    <outlet property="delegate" destination="-2" id="lJ7-YI-39X"/>
+                                </connections>
+                            </tabView>
+                        </subviews>
+                        <constraints>
+                            <constraint firstItem="Dvq-fn-q18" firstAttribute="leading" secondItem="wtX-Sr-awJ" secondAttribute="leading" constant="17" id="D2w-se-Ew2"/>
+                            <constraint firstAttribute="bottom" secondItem="Dvq-fn-q18" secondAttribute="bottom" constant="20" id="JFs-0T-3Hz"/>
+                            <constraint firstAttribute="trailing" secondItem="Dvq-fn-q18" secondAttribute="trailing" constant="17" id="khA-Q2-CV9"/>
+                            <constraint firstItem="Dvq-fn-q18" firstAttribute="top" secondItem="wtX-Sr-awJ" secondAttribute="top" constant="16" id="wdk-Cw-vR9"/>
+                        </constraints>
+                    </view>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="wtX-Sr-awJ" firstAttribute="leading" secondItem="se5-gp-TjO" secondAttribute="leading" id="05N-ro-4r3"/>
+                    <constraint firstAttribute="bottom" secondItem="wtX-Sr-awJ" secondAttribute="bottom" id="Dgd-qP-QxI"/>
+                    <constraint firstItem="wtX-Sr-awJ" firstAttribute="top" secondItem="se5-gp-TjO" secondAttribute="top" id="FTz-ET-zMv"/>
+                    <constraint firstAttribute="trailing" secondItem="wtX-Sr-awJ" secondAttribute="trailing" id="iAb-6i-YBW"/>
+                </constraints>
+            </view>
+            <connections>
+                <outlet property="delegate" destination="-2" id="0bl-1N-AYu"/>
+            </connections>
+            <point key="canvasLocation" x="142.5" y="133"/>
+        </window>
+        <userDefaultsController representsSharedInstance="YES" id="6hU-Zy-Fpz"/>
+        <window title="progressPanel" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" restorable="NO" hidesOnDeactivate="YES" oneShot="NO" showsToolbarButton="NO" visibleAtLaunch="NO" animationBehavior="default" id="043-gL-HLj" customClass="NSPanel">
+            <windowStyleMask key="styleMask" closable="YES" miniaturizable="YES" resizable="YES" utility="YES"/>
+            <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
+            <rect key="contentRect" x="385" y="323" width="610" height="133"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1280" height="777"/>
+            <view key="contentView" id="dCS-sn-B3a">
+                <rect key="frame" x="0.0" y="0.0" width="610" height="133"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <progressIndicator verticalHuggingPriority="750" maxValue="100" bezeled="NO" style="bar" translatesAutoresizingMaskIntoConstraints="NO" id="qol-Go-AJd">
+                        <rect key="frame" x="20" y="62" width="570" height="20"/>
+                    </progressIndicator>
+                    <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="u7l-Fz-3uc">
+                        <rect key="frame" x="18" y="96" width="574" height="17"/>
+                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Adding..." id="oW2-L7-9c7">
+                            <font key="font" metaFont="system"/>
+                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                    </textField>
+                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="KHL-zp-6jp">
+                        <rect key="frame" x="20" y="36" width="572" height="17"/>
+                        <textFieldCell key="cell" lineBreakMode="truncatingTail" truncatesLastVisibleLine="YES" continuous="YES" sendsActionOnEndEditing="YES" usesSingleLineMode="YES" id="qQH-Mt-pLc">
+                            <font key="font" metaFont="system"/>
+                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                    </textField>
+                    <button hidden="YES" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="xEr-jr-9qR">
+                        <rect key="frame" x="492" y="7" width="104" height="32"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="92" id="fxa-f0-Ply"/>
+                        </constraints>
+                        <buttonCell key="cell" type="push" title="Cancel" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="MNj-2I-2Jh">
+                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" metaFont="system"/>
+                            <string key="keyEquivalent" base64-UTF8="YES">
+Gw
+</string>
+                        </buttonCell>
+                    </button>
+                </subviews>
+                <constraints>
+                    <constraint firstAttribute="trailing" secondItem="u7l-Fz-3uc" secondAttribute="trailing" constant="20" id="57D-zC-X65"/>
+                    <constraint firstItem="u7l-Fz-3uc" firstAttribute="leading" secondItem="dCS-sn-B3a" secondAttribute="leading" constant="20" id="7Rp-ip-yz2"/>
+                    <constraint firstItem="KHL-zp-6jp" firstAttribute="top" secondItem="qol-Go-AJd" secondAttribute="bottom" constant="10" id="IP1-mn-USo"/>
+                    <constraint firstAttribute="trailing" secondItem="xEr-jr-9qR" secondAttribute="trailing" constant="20" id="OFa-21-yIe"/>
+                    <constraint firstItem="KHL-zp-6jp" firstAttribute="leading" secondItem="dCS-sn-B3a" secondAttribute="leading" constant="22" id="S3l-WC-g6w"/>
+                    <constraint firstItem="u7l-Fz-3uc" firstAttribute="top" secondItem="dCS-sn-B3a" secondAttribute="top" constant="20" id="XAf-x9-6Oe"/>
+                    <constraint firstItem="qol-Go-AJd" firstAttribute="leading" secondItem="dCS-sn-B3a" secondAttribute="leading" constant="20" id="cl2-zB-yPB"/>
+                    <constraint firstAttribute="trailing" secondItem="qol-Go-AJd" secondAttribute="trailing" constant="20" id="d6E-bC-Oml"/>
+                    <constraint firstAttribute="trailing" secondItem="KHL-zp-6jp" secondAttribute="trailing" constant="20" id="hyJ-sC-plT"/>
+                    <constraint firstItem="qol-Go-AJd" firstAttribute="top" secondItem="u7l-Fz-3uc" secondAttribute="bottom" constant="15" id="iXN-Pa-tLK"/>
+                    <constraint firstItem="xEr-jr-9qR" firstAttribute="top" secondItem="qol-Go-AJd" secondAttribute="bottom" constant="28" id="n7B-Sk-Auy"/>
+                </constraints>
+            </view>
+        </window>
+    </objects>
+</document>

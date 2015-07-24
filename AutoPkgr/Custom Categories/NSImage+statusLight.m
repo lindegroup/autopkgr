@@ -1,16 +1,15 @@
 //
-//  LGStatusImage.m
+//  NSImage+statusLight.m
 //  AutoPkgr
 //
-//  Created by Eldon on 10/6/14.
-//
+//  Created by Eldon Ahrold on 10/6/14.
 //  Copyright 2014-2015 The Linde Group, Inc.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
 //  You may obtain a copy of the License at
 //
-//  http://www.apache.org/licenses/LICENSE-2.0
+//      http://www.apache.org/licenses/LICENSE-2.0
 //
 //  Unless required by applicable law or agreed to in writing, software
 //  distributed under the License is distributed on an "AS IS" BASIS,
@@ -22,6 +21,26 @@
 #import "NSImage+statusLight.h"
 
 @implementation NSImage (installStatus)
+
++ (instancetype)LGNoImage
+{
+    static id image;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        image = [self new];
+    });
+    return image;
+}
+
++ (instancetype)LGCaution
+{
+    static id image;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        image = [self imageNamed:@"NSCaution"];;
+    });
+    return image;
+}
 
 + (instancetype)LGStatusAvailable
 {
@@ -62,5 +81,6 @@
 {
     return [self LGStatusNone];
 }
+
 
 @end
