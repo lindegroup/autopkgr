@@ -18,7 +18,7 @@ PODS:
   - AFNetworking/Security (2.5.4)
   - AFNetworking/Serialization (2.5.4)
   - AHKeychain (0.2.1)
-  - AHLaunchCtl (0.5.0)
+  - AHLaunchCtl (0.5.1)
   - AHProxySettings (0.1.1)
   - mailcore2-osx (0.5.2)
   - RNCryptor (2.2)
@@ -41,13 +41,13 @@ EXTERNAL SOURCES:
 
 CHECKOUT OPTIONS:
   AHLaunchCtl:
-    :commit: 6de67e62de3575457debaa97878e7b91d53c419c
+    :commit: f16e63c58e485210c875ae20f507e73dc0e25328
     :git: https://github.com/eahrold/AHLaunchCtl.git
 
 SPEC CHECKSUMS:
   AFNetworking: 05edc0ac4c4c8cf57bcf4b84be5b0744b6d8e71e
   AHKeychain: f797278e48ab3ddb4d62370b84583652bc071baa
-  AHLaunchCtl: 4d2b58da9572abb57df3131f6f29a6cdd17cacca
+  AHLaunchCtl: 63eb465a31dec7f0fd13afa04b8ad8c4dbd3d009
   AHProxySettings: 1f882780699d7765aca9377660ba280306d30910
   mailcore2-osx: b4380c33f2e155006db3f97b638b7a0d52344b15
   RNCryptor: c68678461a2c7474a55db9a6a98834c22d51f535
