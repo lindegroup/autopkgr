@@ -3,14 +3,13 @@
 //  AutoPkgrTests
 //
 //  Created by James Barclay on 6/25/14.
-//
 //  Copyright 2014-2015 The Linde Group, Inc.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
 //  You may obtain a copy of the License at
 //
-//  http://www.apache.org/licenses/LICENSE-2.0
+//      http://www.apache.org/licenses/LICENSE-2.0
 //
 //  Unless required by applicable law or agreed to in writing, software
 //  distributed under the License is distributed on an "AS IS" BASIS,
@@ -23,16 +22,30 @@
 #import "LGInstaller.h"
 #import "LGGitHubJSONLoader.h"
 #import "LGAutoPkgr.h"
-#import "LGTools.h"
-#import "LGAutoPkgReport.h"
-#import "LGEmailer.h"
-#import "LGPasswords.h"
+#import "LGIntegrationManager.h"
+#import "LGJSSImporterIntegration.h"
 
-@interface AutoPkgrTests : XCTestCase
+#import "LGAutoPkgTask.h"
+#import "LGAutoPkgReport.h"
+
+#import "LGPasswords.h"
+#import "LGServerCredentials.h"
+
+#import "LGNotificationManager.h"
+#import "LGSlackNotification.h"
+#import "LGHipChatNotification.h"
+
+#import "LGUserNotification.h"
+
+static const BOOL _TEST_PRIVILEGED_HELPER = YES;
+
+@interface AutoPkgrTests : XCTestCase <LGProgressDelegate>
 
 @end
 
-@implementation AutoPkgrTests
+@implementation AutoPkgrTests {
+    LGUserNotificationsDelegate *_noteDelegate;
+}
 
 - (void)setUp
 {
@@ -46,15 +59,46 @@
     [super tearDown];
 }
 
-#pragma mark - LGTools
-- (void)testTools
-{
-    XCTestExpectation *expectation = [self expectationWithDescription:@"Tools Test"];
 
-    LGToolStatus *tool = [LGToolStatus new];
-    [tool allToolsStatus:^(NSArray *tools) {
-        [expectation fulfill];
+#pragma mark - LGAutoPkgTask
+- (void)testSyncMethods
+{
+    XCTAssertNotNil([LGAutoPkgTask repoList], @"Failed test");
+    XCTAssertNotNil([LGAutoPkgTask listProcessors], @"Failed test");
+    XCTAssertNotNil([LGAutoPkgTask listRecipes], @"Failed test");
+    XCTAssertNotNil([LGAutoPkgTask processorInfo:@"Installer"], @"Failed test");
+}
+
+#pragma mark - LGIntegrations
+- (void)testIntegrationStatus
+{
+    NSArray *integrationStatus = [[LGIntegrationManager new] installedIntegrations];
+    XCTAssertNotNil(integrationStatus, @"Integration array should not be nil");
+}
+
+- (void)testIntegrationAndInstall
+{
+    XCTestExpectation *expectation1 = [self expectationWithDescription:@"Integration Test"];
+    XCTestExpectation *expectation2 = [self expectationWithDescription:@"Integration Install Async"];
+
+    __block BOOL fufillExpectation1 = NO;
+    __block LGAutoPkgIntegration *integration = [[LGAutoPkgIntegration alloc] init];
+    integration.progressDelegate = self;
+
+    [integration setInfoUpdateHandler:^(LGIntegrationInfo *info) {
+        XCTAssert(info.remoteVersion, @"Could not get remote version");
+        XCTAssert(info.installedVersion, @"Could not get installed version");
+
+        if (!fufillExpectation1) {
+            [expectation1 fulfill];
+            fufillExpectation1 = YES;
+        } else {
+            [expectation2 fulfill];
+        };
     }];
+    
+    [integration refresh];
+    [integration install:nil];
 
     [self waitForExpectationsWithTimeout:300 handler:^(NSError *error) {
         if(error)
@@ -64,52 +108,60 @@
     }];
 }
 
-#pragma mark - Installers
-- (void)testInstallGit
+- (void)testToolAndInstallWithBlock
 {
-    XCTestExpectation *expectation = [self expectationWithDescription:@"Git Install Async"];
+    /*
+     * This test requires modifying the privileged helper tool to
+     * and override the -newConnectionIsValid: method in the helper tool to just return YES.
+     * The code for this has never been committed to ensure it's never released into the wild.
+     */
 
-    LGInstaller *installer = [[LGInstaller alloc] init];
-    [installer installGit:^(NSError *error) {
-        XCTAssertNil(error, @"Error installing Git: %@",error);
-        [expectation fulfill];
-    }];
+    if (_TEST_PRIVILEGED_HELPER){
+        NSArray *integrations = [[LGIntegrationManager new] allIntegrations];
+        NSMutableArray *expectations = [[NSMutableArray alloc] init];
 
-    [self waitForExpectationsWithTimeout:300 handler:^(NSError *error) {
-        if(error)
-        {
-            XCTFail(@"Expectation Failed with error: %@", error);
+        for (LGIntegration *integration in integrations) {
+            XCTestExpectation *expectation = [self expectationWithDescription:quick_formatString(@"Expectation: %@", integration.name)];
+            [expectations addObject:expectation];
         }
-    }];
+
+        for (int i = 0; i < integrations.count; i++) {
+            LGIntegration *integration = integrations[i];
+            [integration install:^(NSString *message, double progress) {
+                NSLog(@"Progress: %@", message);
+                XCTAssert([NSThread isMainThread], @"Not main thread");
+            } reply:^(NSError *error) {
+                XCTAssert([NSThread isMainThread], @"Not main thread");
+                XCTAssertNil(error, @"error %@", error.localizedDescription);
+                [expectations[i] fulfill];
+            }];
+        }
+
+        [self waitForExpectationsWithTimeout:300 handler:^(NSError *error) {
+            if(error)
+            {
+                XCTFail(@"Expectation Failed with error: %@", error);
+            }
+        }];
+    }
 }
 
-- (void)testInstallAutoPkg
+- (void)testIntegrationInfo1
 {
-    XCTestExpectation *expectation = [self expectationWithDescription:@"AutoPkg Install Async"];
-
-    LGInstaller *installer = [[LGInstaller alloc] init];
-    [installer installAutoPkg:^(NSError *error) {
-        XCTAssertNil(error, @"Error installing AutoPkgr: %@",error);
-        [expectation fulfill];
-    }];
-
-    [self waitForExpectationsWithTimeout:300 handler:^(NSError *error) {
-        if(error)
-        {
-            XCTFail(@"Expectation Failed with error: %@", error);
-        }
-    }];
+    LGAutoPkgIntegration *integration = [[LGAutoPkgIntegration alloc] init];
+    XCTAssertNotNil(integration.info.remoteVersion);
 }
 
-- (void)testInstallJSSImporter
+- (void)testIntegrationInfo2
 {
-    XCTestExpectation *expectation = [self expectationWithDescription:@"JSSImporter Install Async"];
+    XCTestExpectation *expectation = [self expectationWithDescription:@"Integration info"];
 
-    LGInstaller *installer = [[LGInstaller alloc] init];
-    [installer installJSSImporter:^(NSError *error) {
-        XCTAssertNil(error, @"Error installing JSSImporter: %@",error);
+    LGAutoPkgIntegration *integration = [[LGAutoPkgIntegration alloc] init];
+    [integration setInfoUpdateHandler:^(LGIntegrationInfo *info) {
+        XCTAssertNotNil(info.remoteVersion);
         [expectation fulfill];
     }];
+    [integration refresh];
 
     [self waitForExpectationsWithTimeout:300 handler:^(NSError *error) {
         if(error)
@@ -122,100 +174,12 @@
 #pragma mark - LGGitHubJSONLoader
 - (void)testLatestReleases
 {
-    LGGitHubJSONLoader *loader = [[LGGitHubJSONLoader alloc] init];
-    NSArray *array = [loader latestReleaseDownloads:kLGGitReleasesJSONURL];
-    NSLog(@"%@", array);
-}
+    XCTestExpectation *expectation = [self expectationWithDescription:@"Github Release Async"];
 
-#pragma mark - LGAutoPkgReports
-- (void)test_reports {
-    [self test_report_malformed];
-    [self test_report_none];
-    [self test0_4_2_report];
-    [self test0_4_3_report];
-}
+    LGGitHubJSONLoader *loader = [[LGGitHubJSONLoader alloc] initWithGitHubURL:kLGAutoPkgReleasesJSONURL];
 
-- (void)test0_4_2_report
-{
-    [self runReportTestWithResourceNamed:@"report_0.4.2" flags:kLGReportItemsAll];
-}
-
-- (void)test0_4_3_report {
-    [self runReportTestWithResourceNamed:@"report_0.4.3" flags:kLGReportItemsAll];
-}
-
-- (void)test0_4_3_reportLimited {
-    [self runReportTestWithResourceNamed:@"report_0.4.3" flags:kLGReportItemsJSSImports | kLGReportItemsNewInstalls];
-}
-
-- (void)test_report_none {
-    [self runReportTestWithResourceNamed:@"report_none" flags:kLGReportItemsAll];
-}
-
-- (void)test_report_malformed {
-    [self runReportTestWithResourceNamed:@"report_malformed" flags:kLGReportItemsAll];
-}
-
-- (void)runReportTestWithResourceNamed:(NSString *)resource flags:(LGReportItems)flags
-{
-    NSBundle *bundle = [NSBundle bundleForClass:[self class]];
-    NSString *reportFile = [bundle pathForResource:resource ofType:@"plist"];
-    NSDictionary *reportDict = [NSDictionary dictionaryWithContentsOfFile:reportFile];
-
-    [self runReportTestWithDict:reportDict flags:flags];
-
-}
-
-- (void)runReportTestWithDict:(NSDictionary *)dict flags:(LGReportItems)flags
-{
-    NSString *htmlFile = @"/tmp/report.html";
-    if ([[NSFileManager defaultManager] fileExistsAtPath:htmlFile]) {
-        [[NSFileManager defaultManager] removeItemAtPath:htmlFile error:nil];
-    }
-
-    NSError *error = nil;
-//    error = [NSError errorWithDomain:@"AutoPkgr"
-//                                code:1
-//                            userInfo:@{ NSLocalizedDescriptionKey : @"Error running recipes",
-//                                        NSLocalizedRecoverySuggestionErrorKey : @"Code signature verification failed. Note that all verifications can be disabled by setting the variable DISABLE_CODE_SIGNATURE_VERIFICATION to a non-empty value.\nThere was an unknown exception which causes autopkg to fail." }];
-
-    LGAutoPkgReport *report = [[LGAutoPkgReport alloc] initWithReportDictionary:dict];
-    report.error = error;
-
-    report.reportedItemFlags = flags;
-
-    [report.emailMessageString writeToFile:htmlFile atomically:YES encoding:NSUTF8StringEncoding error:nil];
-
-    [[NSWorkspace sharedWorkspace] openFile:htmlFile];
-}
-
-
-
-- (void)testReportEmail
-{
-    XCTestExpectation *expectation = [self expectationWithDescription:@"Report Format"];
-
-    [[[LGToolStatus alloc] init] allToolsStatus:^(NSArray *tools) {
-        NSString *htmlFile = @"/tmp/report.html";
-        NSBundle *bundle = [NSBundle bundleForClass:[self class]];
-        
-        NSString *reportFile = [bundle pathForResource:@"report_0.4.2" ofType:@"plist"];
-//        NSString *reportFile = [bundle pathForResource:@"report_0.4.3" ofType:@"plist"];
-
-        NSDictionary *reportDict = [NSDictionary dictionaryWithContentsOfFile:reportFile];
-
-        NSError *error = [NSError errorWithDomain:@"AutoPkgr" code:1 userInfo:@{ NSLocalizedDescriptionKey : @"Error running recipes",
-                                                                                 NSLocalizedRecoverySuggestionErrorKey : @"Code signature verification failed. Note that all verifications can be disabled by setting the variable DISABLE_CODE_SIGNATURE_VERIFICATION to a non-empty value.\nThere was an unknown exception which causes autopkg to fail." }];
-
-        LGAutoPkgReport *report = [[LGAutoPkgReport alloc] initWithReportDictionary:reportDict];
-        report.error = error;
-        report.tools = tools;
-        
-        report.reportedItemFlags = kLGReportItemsAll;
-
-        [report.emailMessageString writeToFile:htmlFile atomically:YES encoding:NSUTF8StringEncoding error:nil];
-        
-        [[NSWorkspace sharedWorkspace] openFile:htmlFile];
+    [loader getReleaseInfo:^(LGGitHubReleaseInfo *info, NSError *error) {
+        NSLog(@"%@, %@", info.description, error.localizedDescription);
         [expectation fulfill];
     }];
 
@@ -227,4 +191,260 @@
     }];
 }
 
+
+
+- (void)testVersionCompare {
+    // GT
+    XCTAssertTrue([@"0.4.2" version_isGreaterThan:@"0.4.1"], @"wrong");
+    XCTAssertTrue([@"0.4.2" version_isGreaterThan:@"0.4.1"], @"wrong");
+    XCTAssertTrue([@"0.4.12" version_isGreaterThan:@"0.4.3.0.0"], @"wrong");
+    XCTAssertFalse([@"0.4.2" version_isGreaterThan:@"0.4.2"], @"wrong");
+
+    // GTOE
+    XCTAssertFalse([@"0.4.2" version_isGreaterThanOrEqualTo:@"0.4.3.0"], @"wrong");
+    XCTAssertFalse([@"0.4.2" version_isGreaterThanOrEqualTo:@"0.4.3"], @"wrong");
+    XCTAssertFalse([@"0.4.2.0" version_isGreaterThanOrEqualTo:@"0.4.3"], @"wrong");
+    XCTAssertFalse([@"0.4.2.0" version_isGreaterThanOrEqualTo:@"0.4.3.0"], @"wrong");
+    XCTAssertFalse([@"0.4" version_isGreaterThanOrEqualTo:@"0.4.3.0.0"], @"wrong");
+    XCTAssertFalse([@"0.4.3.0.0" version_isGreaterThanOrEqualTo:@"0.4.12"], @"wrong");
+
+    // EQ
+    XCTAssertTrue([@"0.4.2" version_isEqualTo:@"0.4.2"], @"wrong");
+    XCTAssertTrue([@"0.4.2" version_isEqualTo:@"0.4.2.0"], @"wrong");
+    XCTAssertTrue([@"0.4.2.0" version_isEqualTo:@"0.4.2"], @"wrong");
+    XCTAssertFalse([@"0.4.1.0" version_isEqualTo:@"0.4.2"], @"wrong");
+    XCTAssertFalse([@"0.4.2" version_isEqualTo:@"0.4.1.0"], @"wrong");
+
+    // LT
+    XCTAssertFalse([@"0.4.2" version_isLessThan:@"0.4.1"], @"wrong");
+    XCTAssertTrue([@"0.4.1" version_isLessThan:@"0.4.2"], @"wrong");
+
+    // LTOE
+    XCTAssertFalse([@"0.4.2" version_isLessThanOrEqualTo:@"0.4.1"], @"wrong");
+    XCTAssertTrue([@"0.4.1" version_isLessThanOrEqualTo:@"0.4.1"], @"wrong");
+    XCTAssertTrue([@"0.4.1" version_isLessThanOrEqualTo:@"0.4.2"], @"wrong");
+}
+
+- (void)testCredentials {
+
+    XCTestExpectation *wait = [self expectationWithDescription:@"Web Credential Test"];
+
+    LGJSSImporterDefaults *defaults = [[LGJSSImporterDefaults alloc] init];
+
+    LGHTTPCredential *credentials = [LGHTTPCredential new];
+    credentials.server = defaults.JSSURL;
+    credentials.user = defaults.JSSAPIUsername;
+    credentials.password = defaults.JSSAPIPassword;
+
+    if (credentials.server.length && credentials.user.length && credentials.password.length) {
+        [credentials checkCredentialsForPath:@"JSSResource/distributionpoints" reply:^(LGHTTPCredential *cred, LGCredentialChallengeCode status, NSError *error) {
+            XCTAssertTrue(status == kLGCredentialChallengeSuccess, @"Authorization check failed: %@", error.localizedDescription);
+            [wait fulfill];
+        }];
+    }
+}
+
+- (void)testLoader
+{
+    XCTestExpectation *expectation = [self expectationWithDescription:@"Github Release Async"];
+
+    LGGitHubJSONLoader *loader = [[LGGitHubJSONLoader alloc] initWithGitHubURL:kLGAutoPkgReleasesJSONURL];
+    [loader getReleaseInfo:^(LGGitHubReleaseInfo *info, NSError *error) {
+        XCTAssertNotNil(info.latestVersion, @"The latest version should not be nil!");
+        [expectation fulfill];
+    }];
+
+    [self waitForExpectationsWithTimeout:300 handler:^(NSError *error) {
+        if(error)
+        {
+            XCTFail(@"Expectation Failed with error: %@", error);
+        }
+    }];
+}
+
+- (void)testGitHubInfo
+{
+    // Tests tests the synchronous fall back method used by LGGitHubJSONLoader
+    LGGitHubReleaseInfo *info = [[LGGitHubReleaseInfo alloc] initWithURL:kLGAutoPkgReleasesJSONURL];
+    XCTAssertNotNil(info.latestVersion, @"The latest version should not be nil!");
+}
+
+#pragma mark - LGAutoPkgReports
+- (void)test_reports
+{
+    [self test_report_malformed];
+    [self test_report_none];
+    [self test0_4_2_report];
+    [self test0_4_3_report];
+}
+
+- (void)test0_4_2_report
+{
+    [self runReportTestWithResourceNamed:@"report_0.4.2" flags:kLGReportItemsAll];
+}
+
+- (void)test0_4_3_report
+{
+    [self runReportTestWithResourceNamed:@"report_0.4.3" flags:kLGReportItemsAll];
+}
+
+- (void)test0_4_3_reportLimited
+{
+    [self runReportTestWithResourceNamed:@"report_0.4.3" flags:kLGReportItemsJSSImports | kLGReportItemsNewInstalls];
+}
+
+- (void)test_report_none
+{
+    [self runReportTestWithResourceNamed:@"report_none" flags:kLGReportItemsAll];
+}
+
+- (void)test_report_malformed
+{
+    [self runReportTestWithResourceNamed:@"report_malformed" flags:kLGReportItemsAll];
+}
+
+- (NSError *)reportError
+{
+    return [NSError errorWithDomain:@"AutoPkgr" code:1 userInfo:@{ NSLocalizedDescriptionKey : @"Error running recipes",
+                                                                             NSLocalizedRecoverySuggestionErrorKey : @"Code signature verification failed. Note that all verifications can be disabled by setting the variable DISABLE_CODE_SIGNATURE_VERIFICATION to a non-empty value.\nThere was an unknown exception which causes autopkg to fail." }];
+}
+
+- (void)runReportTestWithResourceNamed:(NSString *)resource flags:(LGReportItems)flags
+{
+    NSBundle *bundle = [NSBundle bundleForClass:[self class]];
+    NSString *reportFile = [bundle pathForResource:resource ofType:@"plist"];
+    NSDictionary *reportDict = [NSDictionary dictionaryWithContentsOfFile:reportFile];
+
+    [self runReportTestWithDict:reportDict flags:flags];
+}
+
+- (void)runReportTestWithDict:(NSDictionary *)dict flags:(LGReportItems)flags
+{
+    NSString *htmlFile = @"/tmp/report.html";
+    if ([[NSFileManager defaultManager] fileExistsAtPath:htmlFile]) {
+        [[NSFileManager defaultManager] removeItemAtPath:htmlFile error:nil];
+    }
+
+
+    LGAutoPkgReport *report = [[LGAutoPkgReport alloc] initWithReportDictionary:dict];
+    report.error = [self reportError];
+
+    report.reportedItemFlags = flags;
+
+    [report.emailMessageString writeToFile:htmlFile atomically:YES encoding:NSUTF8StringEncoding error:nil];
+
+    [[NSWorkspace sharedWorkspace] openFile:htmlFile];
+}
+
+- (void)testReportEmail
+{
+    NSString *htmlFile = @"/tmp/report.html";
+    NSBundle *bundle = [NSBundle bundleForClass:[self class]];
+
+    NSString *reportFile = [bundle pathForResource:@"report_0.4.2" ofType:@"plist"];
+    //        NSString *reportFile = [bundle pathForResource:@"report_0.4.3" ofType:@"plist"];
+
+    NSDictionary *reportDict = [NSDictionary dictionaryWithContentsOfFile:reportFile];
+
+
+
+    LGAutoPkgReport *report = [[LGAutoPkgReport alloc] initWithReportDictionary:reportDict];
+    report.error = [self reportError];
+
+    report.integrations = [[LGIntegrationManager new] installedIntegrations];
+
+    report.reportedItemFlags = kLGReportItemsAll;
+
+    [report.emailMessageString writeToFile:htmlFile atomically:YES encoding:NSUTF8StringEncoding error:nil];
+
+    [[NSWorkspace sharedWorkspace] openFile:htmlFile];
+
+
+}
+
+#pragma mark - Notifications
+- (LGAutoPkgReport *)notificationReport
+{
+    NSBundle *bundle = [NSBundle bundleForClass:[self class]];
+    NSString *reportFile = [bundle pathForResource:@"report_0.4.2" ofType:@"plist"];
+    NSDictionary *reportDict = [NSDictionary dictionaryWithContentsOfFile:reportFile];
+
+    LGAutoPkgReport *report = [[LGAutoPkgReport alloc] initWithReportDictionary:reportDict];
+    report.error = [self reportError];
+
+    return report;
+}
+
+- (void)testNotificationManager {
+    // Setup User Notification Delegate
+    _noteDelegate = [[LGUserNotificationsDelegate alloc] initAsDefaultCenterDelegate];
+    XCTestExpectation *expectation = [self expectationWithDescription:@"Notification manager test"];
+
+    LGNotificationManager *mgr = [[LGNotificationManager alloc] initWithReportDictionary:[self notificationReport].autoPkgReport
+                                                                                  errors:[self reportError]];
+
+    [mgr sendEnabledNotifications:^(NSError *error) {
+        [expectation fulfill];
+    }];
+
+    [self waitForExpectationsWithTimeout:300 handler:^(NSError *error) {
+        if(error)
+        {
+            XCTFail(@"Expectation Failed with error: %@", error);
+        }
+    }];
+
+}
+
+- (void)testSlackNotification {
+    id<LGNotificationServiceProtocol>notification = [[LGSlackNotification alloc] initWithReport:[self notificationReport]];
+    XCTestExpectation *expectation = [self expectationWithDescription:quick_formatString(@"Test %@", [notification.class serviceDescription])];
+
+    [notification send:^(NSError *error) {
+        if (_TEST_PRIVILEGED_HELPER) {
+            XCTAssertNil(error, @"%@", error);
+        }
+        [expectation fulfill];
+    }];
+
+    [self waitForExpectationsWithTimeout:300 handler:^(NSError *error) {
+        XCTAssertNil(error,@"Expectation Failed with error: %@", error);
+    }];
+}
+
+- (void)testHipChatNotification {
+    id<LGNotificationServiceProtocol>notification = [[LGHipChatNotification alloc] initWithReport:[self notificationReport]];
+    
+    XCTestExpectation *expectation = [self expectationWithDescription:quick_formatString(@"Test %@", [notification.class serviceDescription])];
+
+    [notification send:^(NSError *error) {
+        if (_TEST_PRIVILEGED_HELPER) {
+            XCTAssertNil(error, @"%@", error);
+        }
+        [expectation fulfill];
+    }];
+
+    [self waitForExpectationsWithTimeout:300 handler:^(NSError *error) {
+        XCTAssertNil(error,@"Expectation Failed with error: %@", error);
+    }];
+}
+
+#pragma mark - Utility
+- (void)testErrorAlerts {
+    for (int i = 1; i < kLGErrorAuthChallenge; i++) {
+        NSError *error = [LGError errorWithCode:i];
+        XCTAssertNotNil(error.localizedDescription, @"Error description for code % is nil", i);
+        XCTAssertNotNil(error.localizedRecoverySuggestion, @"Error suggestion for code % is nil", i);
+        i++;
+    }
+}
+
+#pragma mark - Progress delegate
+- (void)startProgressWithMessage:(NSString *)message{}
+- (void)stopProgress:(NSError *)error{}
+- (void)bringAutoPkgrToFront{}
+
+- (void)updateProgress:(NSString *)message progress:(double)progress{
+    NSLog(@"%@", message);
+}
 @end

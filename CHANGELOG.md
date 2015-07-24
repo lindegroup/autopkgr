@@ -1,12 +1,53 @@
-AutoPkgr Change Log
-===================
+# AutoPkgr Change Log
 
 All notable changes to this project will be documented in this file. This project adheres to [Semantic Versioning](http://semver.org/).
 
+<!-- ## [Unreleased][unreleased] -->
 
-## [Unreleased][unreleased]
 
-- Nothing yet.
+## [1.3] - 2015-05-08
+
+### Added
+- Integration with Absolute Manage (via the [AbsoluteManageExport](https://github.com/tburgin/AbsoluteManageExport) processor). (#217)
+- Integration with MacPatch (via the [MacPatchImporter](https://github.com/SMSG-MAC-DEV/MacPatch-AutoPKG) processor). (#347)
+- Now you can send notifications directly to a Slack (#358) or HipChat (#359) channel.
+- More flexible options for scheduling AutoPkg to run. New daily and weekly options! (#361)
+- By popular request, you can now right-click on a recipe and choose Run This Recipe. (#107)
+- You can also right-click on a recipe in the list and choose Get Info to see various details about the recipe. (#342, #357, #370)
+- Right-click on a repo to access the GitHub commits page or update a single repo. (#357)
+- The repo and recipe lists are now sortable! (#356)
+- The repos list now displays the number of stars each repo has on GitHub (and you can sort by them too). (#356, #357)
+- Proxy configuration is now much easier than typing Terminal commands. Just go to the Folders & Integration tab, then click on Configure AutoPkg to access the proxy settings.
+- In the same location as the proxy settings, you can now create the GitHub API token used with `autopkg search` feature using AutoPkgr. This allows a greater number of search queries per hour.
+- The install tab now displays status of additional integrated tools and processors, like AbsoluteManageExport and MacPatchImporter.
+- Easier uninstallation of components like JSSImporter and AbsoluteManagerExport. (#332)
+- Better validation of the standard output AutoPkgr receives from AutoPkg.
+- Ability to change the Git binary used by AutoPkg.
+- The repos list now has a status indicator showing if there are new commits to an installed repo. (#357)
+- The recipe list now has a status indicator showing if a recipe is missing a parent recipe. (#357, #370)
+- We're now using OS X Notification Center for a few useful messages, like when new software has been packaged by AutoPkg. (#79)
+- Added the ability to configure how often notifications are sent for new version of AutoPkg, JSSImporter, Git, and other components. (#379)
+- Added a "Check for AutoPkgr Updates" item in the AutoPkgr menu extra. (#275, #312)
+
+### Changed
+- New JSSImporter users will now get the "official" [jss-recipes repo](https://github.com/autopkg/jss-recipes) when configuring JSSImporter.
+    Note: Existing JSSImporter users will not (yet) be affected, but will eventually need to transition to the new repo. Instructions will be available soon. In the meantime, read through the [jss-recipes readme](https://github.com/autopkg/jss-recipes#introduction)!
+- Reworked Folders & Integration tab interface to support a theorically unlimited number of integration tools, including Munki, Casper, Absolute Manage, and MacPatch. The sky is the limit.
+- Updated readme to make it clear that you should only update repos before every AutoPkg run if you trust recipe authors.
+- Removed unused menus and menu items.
+- Significantly rewrote the readme with new and updated information.
+- Behind-the-scenes code cleanup, typo fixes, refactors, and reorganization. Always tidying up!
+
+### Fixed
+- Fixed a bug that could prevent email configuration changes from "sticking."
+- Squished a bug that could cause the `JSS_VERIFY_SSL` key to be incorrectly set.
+- Stomped on a bug that resulted in a "(null)" error in certain circumstances. (#352)
+- Swatted a bug that required pressing Tab or Enter in order to save the email password before sending a test email. Now the password is saved upon clicking the Send Test Email button as well. (#352)
+- When a JSSImporter update was available, the text on the Install tab would often overflow its container. We've enlarged the container, so hopefully that won't happen now. (#314)
+- AutoPkgr now remembers the last window position and table sort status upon subsequent launches. (#375)
+- Squashed a bug that resulted in "Version (null)" in OS X notifications. (#376)
+- Eradicated a bug that could cause AutoPkgr to falsely believe there are multiple instances of AutoPkg running.
+
 
 ## [1.2.3] - 2015-05-08
 
@@ -250,7 +291,8 @@ All notable changes to this project will be documented in this file. This projec
 - Initial public release of AutoPkgr.
 
 
-[unreleased]: https://github.com/lindegroup/autopkgr/compare/v1.2.3...HEAD
+[unreleased]: https://github.com/lindegroup/autopkgr/compare/v1.3...HEAD
+[1.3]: https://github.com/lindegroup/autopkgr/compare/v1.2.3...v1.3
 [1.2.3]: https://github.com/lindegroup/autopkgr/compare/v1.2.2...v1.2.3
 [1.2.2]: https://github.com/lindegroup/autopkgr/compare/v1.2.1...v1.2.2
 [1.2.1]: https://github.com/lindegroup/autopkgr/compare/v1.2...v1.2.1
