@@ -266,7 +266,7 @@ We also welcome feature requests on GitHub! Some of our best features have come 
 
 ## Credits
 
-AutoPkgr was created at the [Linde Group](http://www.lindegroup.com) by James Barclay, Elliot Jordan, and Josh Senick. Credit to most of the ongoing development goes to Eldon Ahrold.
+AutoPkgr was created at the [Linde Group](http://www.lindegroup.com) by James Barclay, Elliot Jordan, and Josh Senick. Credit for most of the ongoing development goes to Eldon Ahrold.
 
 We're very friendly. [Stop by Emeryville sometime](http://www.lindegroup.com/contact/) and have an espresso.
 

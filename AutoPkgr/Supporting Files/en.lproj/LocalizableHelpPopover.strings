@@ -13,7 +13,7 @@
 "recipeTableInfo" = "Check the box next to the name of a recipe in order to add the recipe to your AutoPkg run schedule.\n\nControl-click on a recipe to bring up a contextual menu with options to get info, run the recipe, or create an override. You can also set the preferred recipe editor.\n\nIf a caution icon is present in the status column, there is an issue with the recipe. (The most likely cause is a missing parent recipe.)";
 
 "slackHelpInfoTitle" = "Slack Notifications";
-"slackHelpInfo" = "Incoming Webhooks are a simple way to post messages from external sources into Slack. They make use of normal HTTP requests with a JSON payload, which includes the message text and some options. Message Attachments can also be used in incoming Webhooks to display richly-formatted messages that stand out from regular chat messages. Visit the Slack webhooks documentation (linked below) for more information.";
+"slackHelpInfo" = "Incoming Webhooks are a simple way to post messages from external sources into Slack. Slack admins can generate the Webhook URL that is used to post messages to a specific toom. Visit the Slack webhooks documentation (linked below) for more information.";
 
 "slackHelpInfoURL" = "https://api.slack.com/incoming-webhooks";
 
