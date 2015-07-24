@@ -49,8 +49,6 @@ NSString *launchAgentFilePath()
     
     BOOL scheduleIsNumber = [scheduleOrInterval isKindOfClass:[NSNumber class]];
 
-    NSLog(@"Is running start = %d", scheduleIsRunning);
-
     if (start && scheduleIsNumber && ([scheduleOrInterval integerValue] == 0)) {
         reply([LGError errorWithCode:kLGErrorIncorrectScheduleTimerInterval]);
         return;
@@ -95,7 +93,6 @@ NSString *launchAgentFilePath()
                         reply(error);
                     }];
     } else if (scheduleIsRunning) {
-        NSLog(@"Now we're really disabling the schedule");
         [[helper.connection remoteObjectProxyWithErrorHandler:^(NSError *error) {
             reply(error);
         }] removeScheduleWithAuthorization:authorization
@@ -111,7 +108,7 @@ NSString *launchAgentFilePath()
 + (BOOL)updateAppsIsScheduled:(id __autoreleasing*)scheduleInterval
 {
     AHLaunchJob *job = nil;
-    if ((job = [AHLaunchCtl runningJobWithLabel:kLGAutoPkgrLaunchDaemonPlist inDomain:kAHGlobalLaunchDaemon])) {
+    if ((job = [AHLaunchCtl jobFromFileNamed:kLGAutoPkgrLaunchDaemonPlist inDomain:kAHGlobalLaunchDaemon])) {
         AHLaunchJobSchedule *startInterval = job.StartCalendarInterval;
         if (startInterval) {
             *scheduleInterval = startInterval;
