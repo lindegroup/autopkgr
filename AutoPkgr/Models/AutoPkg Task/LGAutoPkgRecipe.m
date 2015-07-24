@@ -353,7 +353,9 @@ static NSMutableDictionary *_identifierURLStore = nil;
         glob_t results;
         glob(matches.UTF8String, GLOB_BRACE | GLOB_NOSORT, NULL, &results);
         for (int i = 0; i < results.gl_matchc; i++) {
-            NSURL *fileURL = [NSURL fileURLWithFileSystemRepresentation:results.gl_pathv[i] isDirectory:NO relativeToURL:nil];
+            NSString *globPath = [NSString stringWithUTF8String:results.gl_pathv[i]];
+            NSURL *fileURL = [NSURL fileURLWithPath:globPath isDirectory:NO];
+
             if (fileURL) {
                 LGAutoPkgRecipe *recipe = [[LGAutoPkgRecipe alloc] initWithRecipeFile:fileURL isOverride:isOverride];
                 if (recipe) {
