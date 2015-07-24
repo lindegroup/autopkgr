@@ -6,6 +6,76 @@
         <description>Most recent changes with links to updates.</description>
         <language>en</language>
         <item>
+            <title>Version 1.3</title>
+            <description>
+                <![CDATA[
+                <p>We're proud to announce AutoPkgr 1.3, with a ton of new features and improvements.</p>
+
+                <p>Along with integration with Absolute Manage and MacPatch, there are new scheduling options (running at a specific time every day) and notification options (notifying a Slack or HipChat channel). We've also polished and refined the interface, and reworked the back-end to more easily support future integration with other AutoPkg processors.</p>
+
+                <p>See a full list of the changes below:</p>
+
+                <h3>Added</h3>
+
+                <ul>
+                    <li>Integration with Absolute Manage (via the <a href="https://github.com/tburgin/AbsoluteManageExport">AbsoluteManageExport</a> processor). (<a href="https://github.com/lindegroup/autopkgr/issues/217" class="issue-link" title="Absolute Manage integration">#217</a>)</li>
+                    <li>Integration with MacPatch (via the <a href="https://github.com/SMSG-MAC-DEV/MacPatch-AutoPKG">MacPatchImporter</a> processor). (<a href="https://github.com/lindegroup/autopkgr/issues/347" class="issue-link" title="Enhancement: Integrate with MacPatch">#347</a>)</li>
+                    <li>Now you can send notifications directly to a Slack (<a href="https://github.com/lindegroup/autopkgr/issues/358" class="issue-link" title="Enhancement: Integration with Slack">#358</a>) or HipChat (<a href="https://github.com/lindegroup/autopkgr/issues/359" class="issue-link" title="Enhancement: Integration with HipChat">#359</a>) channel.</li>
+                    <li>More flexible options for scheduling AutoPkg to run. New daily and weekly options! (<a href="https://github.com/lindegroup/autopkgr/issues/361" class="issue-link" title="Enhancement: Set time for scheduled run">#361</a>)</li>
+                    <li>By popular request, you can now right-click on a recipe and choose Run This Recipe. (<a href="https://github.com/lindegroup/autopkgr/issues/107" class="issue-link" title="Only run one recipe">#107</a>)</li>
+                    <li>You can also right-click on a recipe in the list and choose Get Info to see various details about the recipe. (<a href="https://github.com/lindegroup/autopkgr/issues/342" class="issue-link" title="Enhancement: Utilize `autopkg info` command">#342</a>, <a href="https://github.com/lindegroup/autopkgr/issues/357" class="issue-link" title="Display additional information about recipes and repos">#357</a>, <a href="https://github.com/lindegroup/autopkgr/issues/370" class="issue-link" title="Quick Look recipes">#370</a>)</li>
+                    <li>Right-click on a repo to access the GitHub commits page or update a single repo. (<a href="https://github.com/lindegroup/autopkgr/issues/357" class="issue-link" title="Display additional information about recipes and repos">#357</a>)</li>
+                    <li>The repo and recipe lists are now sortable! (<a href="https://github.com/lindegroup/autopkgr/issues/356" class="issue-link" title="Ability to sort repo and recipe lists">#356</a>)</li>
+                    <li>The repos list now displays the number of stars each repo has on GitHub (and you can sort by them too). (<a href="https://github.com/lindegroup/autopkgr/issues/356" class="issue-link" title="Ability to sort repo and recipe lists">#356</a>, <a href="https://github.com/lindegroup/autopkgr/issues/357" class="issue-link" title="Display additional information about recipes and repos">#357</a>)</li>
+                    <li>Proxy configuration is now much easier than typing Terminal commands. Just go to the Folders &amp; Integration tab, then click on Configure AutoPkg to access the proxy settings.</li>
+                    <li>In the same location as the proxy settings, you can now create the GitHub API token used with <code>autopkg search</code> feature using AutoPkgr. This allows a greater number of search queries per hour.</li>
+                    <li>The install tab now displays status of additional integrated tools and processors, like AbsoluteManageExport and MacPatchImporter.</li>
+                    <li>Easier uninstallation of components like JSSImporter and AbsoluteManagerExport. (<a href="https://github.com/lindegroup/autopkgr/issues/332" class="issue-link" title="More granular and comprehensive uninstall options">#332</a>)</li>
+                    <li>Better validation of the standard output AutoPkgr receives from AutoPkg.</li>
+                    <li>Ability to change the Git binary used by AutoPkg.</li>
+                    <li>The repos list now has a status indicator showing if there are new commits to an installed repo. (<a href="https://github.com/lindegroup/autopkgr/issues/357" class="issue-link" title="Display additional information about recipes and repos">#357</a>)</li>
+                    <li>The recipe list now has a status indicator showing if a recipe is missing a parent recipe. (<a href="https://github.com/lindegroup/autopkgr/issues/357" class="issue-link" title="Display additional information about recipes and repos">#357</a>, <a href="https://github.com/lindegroup/autopkgr/issues/370" class="issue-link" title="Quick Look recipes">#370</a>)</li>
+                    <li>We're now using OS X Notification Center for a few useful messages, like when new software has been packaged by AutoPkg. (<a href="https://github.com/lindegroup/autopkgr/issues/79" class="issue-link" title="Option to send local notifications instead or in addition of emails">#79</a>)</li>
+                    <li>Added the ability to configure how often notifications are sent for new version of AutoPkg, JSSImporter, Git, and other components. (<a href="https://github.com/lindegroup/autopkgr/issues/379" class="issue-link" title="Repeated &quot;Update to helper components available&quot; Notification Emails">#379</a>)</li>
+                    <li>Added a "Check for AutoPkgr Updates" item in the AutoPkgr menu extra. (<a href="https://github.com/lindegroup/autopkgr/issues/275" class="issue-link" title="Check for (AutoPkgr) Updates and About AutoPkgr Unavailable Without Dock Icon">#275</a>, <a href="https://github.com/lindegroup/autopkgr/issues/312" class="issue-link" title="Feature Request: Allow &quot;Check for Update&quot; in Menu item">#312</a>)</li>
+                </ul>
+
+                <h3>Changed</h3>
+
+                <ul>
+                    <li>New JSSImporter users will now get the "official" <a href="https://github.com/autopkg/jss-recipes">jss-recipes repo</a> when configuring JSSImporter.
+                    Note: Existing JSSImporter users will not (yet) be affected, but will eventually need to transition to the new repo. Instructions will be available soon. In the meantime, read through the <a href="https://github.com/autopkg/jss-recipes#introduction">jss-recipes readme</a>!</li>
+                    <li>Reworked Folders &amp; Integration tab interface to support a theorically unlimited number of integration tools, including Munki, Casper, Absolute Manage, and MacPatch. The sky is the limit.</li>
+                    <li>Updated readme to make it clear that you should only update repos before every AutoPkg run if you trust recipe authors.</li>
+                    <li>Removed unused menus and menu items.</li>
+                    <li>Significantly rewrote the readme with new and updated information.</li>
+                    <li>Behind-the-scenes code cleanup, typo fixes, refactors, and reorganization. Always tidying up!</li>
+                </ul>
+
+                <h3>Fixed</h3>
+
+                <ul>
+                    <li>Fixed a bug that could prevent email configuration changes from "sticking."</li>
+                    <li>Squished a bug that could cause the <code>JSS_VERIFY_SSL</code> key to be incorrectly set.</li>
+                    <li>Stomped on a bug that resulted in a "(null)" error in certain circumstances. (<a href="https://github.com/lindegroup/autopkgr/issues/352" class="issue-link" title="Test email fails unless you &quot;tab out&quot; of the Password field">#352</a>)</li>
+                    <li>Swatted a bug that required pressing Tab or Enter in order to save the email password before sending a test email. Now the password is saved upon clicking the Send Test Email button as well. (<a href="https://github.com/lindegroup/autopkgr/issues/352" class="issue-link" title="Test email fails unless you &quot;tab out&quot; of the Password field">#352</a>)</li>
+                    <li>When a JSSImporter update was available, the text on the Install tab would often overflow its container. We've enlarged the container, so hopefully that won't happen now. (<a href="https://github.com/lindegroup/autopkgr/issues/314" class="issue-link" title="Text element overflows when JSSImporter update is available">#314</a>)</li>
+                    <li>AutoPkgr now remembers the last window position and table sort status upon subsequent launches. (<a href="https://github.com/lindegroup/autopkgr/issues/375" class="issue-link" title="AutoPkgr doesn't remember its previous window size and position">#375</a>)</li>
+                    <li>Squashed a bug that resulted in "Version (null)" in OS X notifications. (<a href="https://github.com/lindegroup/autopkgr/issues/376" class="issue-link" title="Version (null) reported in Notification Center">#376</a>)</li>
+                    <li>Eradicated a bug that could cause AutoPkgr to falsely believe there are multiple instances of AutoPkg running.</li>
+                </ul>
+
+                <p>We don't just love community feedback; we require it! AutoPkgr wouldn't be as cool as it is without the input from Mac admins who use it. Get in touch with us and let us know what you think.</p>
+
+                <p>To get help with AutoPkgr, you can find us on our <a href="https://groups.google.com/forum/#!forum/autopkgr-discuss">Google Group</a> or <a href="https://github.com/lindegroup/autopkgr/issues">submit an issue</a> on GitHub. You can also sometimes get help and ideas on the <a href="http://macadmins.org/">MacAdmins Slack channel</a>. Also, we've greatly expanded the <a href="https://github.com/lindegroup/autopkgr#troubleshooting">Troubleshooting</a> section of our readme, so please do check that out.</p>
+
+                <p>Hope you love it!</p>
+                ]]>
+            </description>
+            <pubDate>Fri, 24 July 2015 10:00:00 -0700</pubDate>
+            <enclosure url="https://github.com/lindegroup/autopkgr/releases/download/v1.3/AutoPkgr-1.3.dmg" sparkle:version="992" sparkle:shortVersionString="1.3" type="application/octet-stream" />
+        </item>
+        <item>
             <title>Version 1.2.3</title>
             <description>
                 <![CDATA[
