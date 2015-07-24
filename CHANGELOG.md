@@ -46,6 +46,7 @@ All notable changes to this project will be documented in this file. This projec
 - When a JSSImporter update was available, the text on the Install tab would often overflow its container. We've enlarged the container, so hopefully that won't happen now. (#314)
 - AutoPkgr now remembers the last window position and table sort status upon subsequent launches. (#375)
 - Squashed a bug that resulted in "Version (null)" in OS X notifications. (#376)
+- Eradicated a bug that could cause AutoPkgr to falsely believe there are multiple instances of AutoPkg running.
 
 
 ## [1.2.3] - 2015-05-08
