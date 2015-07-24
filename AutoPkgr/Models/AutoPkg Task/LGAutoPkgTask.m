@@ -23,7 +23,7 @@
 #import "LGAutoPkgResultHandler.h"
 #import "LGHostInfo.h"
 #import "LGVersioner.h"
-
+#import "BSDProcessInfo.h"
 #import "NSData+taskData.h"
 
 #import <AHProxySettings/AHProxySettings.h>
