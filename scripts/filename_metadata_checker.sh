@@ -7,8 +7,8 @@
 #                   metadata matches the actual filename.
 #          Author:  Elliot Jordan <elliot@lindegroup.com>
 #         Created:  2015-07-03
-#   Last Modified:  2015-07-03
-#         Version:  1.0
+#   Last Modified:  2015-07-24
+#         Version:  1.1
 #
 ###
 
@@ -22,7 +22,12 @@ find "$PROJ_ROOT" ! -ipath "*/Pods/*" -and -iname "*.m" -or ! -ipath "*/Pods/*" 
         echo "$fname"
         echo "$ACTUAL"
         echo
-        open -a "Sublime Text 2.app" "$fname"
+        open -a "Atom" "$fname"
+    fi
+    grep -q "Apache License, Version 2.0" "$fname"
+    if [[ $? -ne 0 ]]; then
+        echo "No license found in $fname."
+        open -a "Atom" "$fname"
     fi
 done
 
