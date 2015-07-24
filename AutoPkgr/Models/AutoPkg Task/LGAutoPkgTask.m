@@ -1173,35 +1173,9 @@ typedef void (^AutoPkgReplyErrorBlock)(NSError *error);
 #pragma mark-- Other Methods --
 + (BOOL)instanceIsRunning
 {
-    NSTask *task = [NSTask new];
-    NSMutableData *data = [[NSMutableData alloc] init];
-
-    task.launchPath = @"/bin/ps";
-    task.arguments = @[ @"-e", @"-o", @"command=" ];
-    task.standardOutput = [NSPipe pipe];
-
-    [[task.standardOutput fileHandleForReading] setReadabilityHandler:^(NSFileHandle *fh) {
-        NSData *newData;
-        if ((newData = fh.availableData)) {
-            [data appendData:newData];
-        }
-    }];
-
-    [task launch];
-    [task waitUntilExit];
-
-    if (data.length) {
-        NSString *outputString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-
-        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"SELF CONTAINS %@", autopkg()];
-
-        NSArray *runningProcs = [outputString componentsSeparatedByString:@"\n"];
-
-        if ([[runningProcs filteredArrayUsingPredicate:predicate] count]) {
-            return YES;
-        }
-    }
-    return NO;
+    NSArray *runningArgs = @[ autopkg(), @"run", @"--recipe-list" ];
+    return ([BSDProcessInfo processWithName:@"Python"
+                          matchingArguments:runningArgs] != nil);
 }
 
 #pragma mark - Task Status Update Delegate
