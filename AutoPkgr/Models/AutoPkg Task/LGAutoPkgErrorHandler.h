@@ -30,7 +30,12 @@ typedef NS_ENUM(NSInteger, LGAutoPkgErrorCodes) {
     kLGAutoPkgErrorNoRecipes = 255,
 
     kLGAutoPkgErrorRepoModification = -2,
-    kLGAutoPkgErrorNeedsRepair = -1
+    kLGAutoPkgErrorNeedsRepair = -1,
+};
+
+typedef NS_ENUM(NSInteger, LGAutoPkgGitHubAPIError) {
+    kLGAutoPkgErrorGHApi2FAAuthRequired = 401,
+    kLGAutoPkgErrorAPITokenNotOnRemote = 600,
 };
 
 typedef NS_OPTIONS(NSInteger, LGAutoPkgVerb) {
@@ -63,5 +68,7 @@ typedef NS_OPTIONS(NSInteger, LGAutoPkgVerb) {
 
 - (instancetype)initWithVerb:(LGAutoPkgVerb)verb;
 - (NSError *)errorWithExitCode:(NSInteger)exitCode;
+
++ (NSError *)errorWithGitHubAPIErrorCode:(LGAutoPkgGitHubAPIError)statusCode;
 
 @end

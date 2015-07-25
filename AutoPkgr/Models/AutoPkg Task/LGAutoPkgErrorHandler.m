@@ -21,7 +21,7 @@
 #import "LGAutoPkgErrorHandler.h"
 #import "LGLogger.h"
 
-NSString * LGAutoPkgLocalizedString(NSString *key, NSString *comment)
+NSString *LGAutoPkgLocalizedString(NSString *key, NSString *comment)
 {
     return [[NSBundle mainBundle] localizedStringForKey:key
                                                   value:key
@@ -34,39 +34,60 @@ static NSString *errorMessageFromAutoPkgVerb(LGAutoPkgVerb verb)
 
     switch (verb) {
     case kLGAutoPkgRun:
-            message = NSLocalizedStringFromTable(@"Error running recipes", @"LocalizableAutoPkg", nil);
+        message = NSLocalizedStringFromTable(@"Error running recipes", @"LocalizableAutoPkg", nil);
         break;
     case kLGAutoPkgListRecipes:
-            message = NSLocalizedStringFromTable(@"Error encountered listing recipes", @"LocalizableAutoPkg", nil);
+        message = NSLocalizedStringFromTable(@"Error encountered listing recipes", @"LocalizableAutoPkg", nil);
         break;
     case kLGAutoPkgMakeOverride:
-            message = NSLocalizedStringFromTable(@"Error creating recipe override file", @"LocalizableAutoPkg", nil);
+        message = NSLocalizedStringFromTable(@"Error creating recipe override file", @"LocalizableAutoPkg", nil);
         break;
     case kLGAutoPkgSearch:
-            message = NSLocalizedStringFromTable(@"Error encountered searching for recipe", @"LocalizableAutoPkg", nil);
+        message = NSLocalizedStringFromTable(@"Error encountered searching for recipe", @"LocalizableAutoPkg", nil);
         break;
     case kLGAutoPkgRepoAdd:
-            message = NSLocalizedStringFromTable(@"Error adding repo", @"LocalizableAutoPkg", nil);
+        message = NSLocalizedStringFromTable(@"Error adding repo", @"LocalizableAutoPkg", nil);
         break;
     case kLGAutoPkgRepoDelete:
-            message = NSLocalizedStringFromTable(@"Error removing repo", @"LocalizableAutoPkg", nil);
+        message = NSLocalizedStringFromTable(@"Error removing repo", @"LocalizableAutoPkg", nil);
         break;
     case kLGAutoPkgRepoUpdate:
-            message = NSLocalizedStringFromTable(@"Error updating repo", @"LocalizableAutoPkg", nil);
+        message = NSLocalizedStringFromTable(@"Error updating repo", @"LocalizableAutoPkg", nil);
         break;
     case kLGAutoPkgRepoList:
-            message = NSLocalizedStringFromTable(@"Error encountered listing repos", @"LocalizableAutoPkg", nil);
+        message = NSLocalizedStringFromTable(@"Error encountered listing repos", @"LocalizableAutoPkg", nil);
         break;
     case kLGAutoPkgVersion:
-            message = NSLocalizedStringFromTable(@"Error getting AutoPkg version", @"LocalizableAutoPkg", nil);
+        message = NSLocalizedStringFromTable(@"Error getting AutoPkg version", @"LocalizableAutoPkg", nil);
         break;
     case kLGAutoPkgUndefinedVerb:
     default:
-            message = NSLocalizedStringFromTable(@"AutoPkgr encountered an error", @"LocalizableAutoPkg", nil);
+        message = NSLocalizedStringFromTable(@"AutoPkgr encountered an error", @"LocalizableAutoPkg", nil);
         break;
     }
 
     return message;
+}
+
+static NSDictionary *errorFromAutoPkgGitHubAPICode(LGAutoPkgGitHubAPIError code)
+{
+    NSDictionary *userInfo = nil;
+    switch (code) {
+    case kLGAutoPkgErrorGHApi2FAAuthRequired: {
+        userInfo = @{ NSLocalizedDescriptionKey : NSLocalizedStringFromTable(@"Two factor authentication is required", @"LocalizableAutoPkg", nil),
+                      NSLocalizedRecoverySuggestionErrorKey : NSLocalizedStringFromTable(@"Your GitHub account has two factor authentication enabled. If you did not recieve a code on your mobile device, check your account's security settings and confirm the information there is correct.", @"LocalizableAutoPkg", nil) };
+        break;
+    }
+    case kLGAutoPkgErrorAPITokenNotOnRemote: {
+        userInfo = @{ NSLocalizedDescriptionKey : NSLocalizedStringFromTable(@"API Token not found.", @"LocalizableAutoPkg", nil),
+                      NSLocalizedRecoverySuggestionErrorKey : NSLocalizedStringFromTable(@"A GitHub API token matching the local one was not found on the remote. You may need to remove it manually. If you've just added the token, you may need to wait a minute to delete it.", @"LocalizableAutoPkg", nil) };
+    } break;
+    default: {
+        userInfo = @{ NSLocalizedDescriptionKey : NSLocalizedStringFromTable(@"There was a problem communicating with GitHub", @"LocalizableAutoPkg", nil) };
+        break;
+    }
+    }
+    return userInfo;
 }
 
 NSString *maskPasswordInString(NSString *string)
@@ -117,16 +138,16 @@ NSString *maskPasswordInString(NSString *string)
         _pipe = pipe;
 
         [pipe.fileHandleForReading setReadabilityHandler:^(NSFileHandle *fh) {
-            NSData *data = fh.availableData;
-            if (data) {
-                NSString *str = [[NSMutableString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+          NSData *data = fh.availableData;
+          if (data) {
+              NSString *str = [[NSMutableString alloc] initWithData:data encoding:NSUTF8StringEncoding];
 
-                if (!_errorStrings) {
-                    _errorStrings = [[NSMutableOrderedSet alloc] init];
-                }
-                
-                [_errorStrings addObject:str];
-            }
+              if (!_errorStrings) {
+                  _errorStrings = [[NSMutableOrderedSet alloc] init];
+              }
+
+              [_errorStrings addObject:str];
+          }
         }];
     }
     return self;
@@ -197,7 +218,7 @@ NSString *maskPasswordInString(NSString *string)
             }
             // autopkg run exits 255 if no recipe specified
             else if (_verb == kLGAutoPkgRun && exitCode == kLGAutoPkgErrorNoRecipes) {
-                errorDetails = LGAutoPkgLocalizedString(@"No recipes specified.", nil) ;
+                errorDetails = LGAutoPkgLocalizedString(@"No recipes specified.", nil);
             }
         }
 
@@ -215,6 +236,15 @@ NSString *maskPasswordInString(NSString *string)
         }
     }
 
+    return error;
+}
+
++ (NSError *)errorWithGitHubAPIErrorCode:(LGAutoPkgGitHubAPIError)statusCode
+{
+    NSDictionary *userInfo = errorFromAutoPkgGitHubAPICode(statusCode);
+    NSError *error = [NSError errorWithDomain:[[NSBundle mainBundle] bundleIdentifier] ?: @"autopkg"
+                                         code:statusCode
+                                     userInfo:userInfo];
     return error;
 }
 

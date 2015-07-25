@@ -1017,32 +1017,18 @@ typedef void (^AutoPkgReplyErrorBlock)(NSError *error);
     return (access(tokenFile.UTF8String, R_OK) == 0);
 }
 
-+ (void)generateGitHubAPIToken:(NSString *)username password:(NSString *)password reply:(void (^)(NSError *))reply
++ (void)generateGitHubAPIToken:(NSString *)username password:(NSString *)password reply:(void (^)(NSError *))reply{
+    [self generateGitHubAPIToken:username password:password twoFactorCode:nil reply:reply];
+}
+
++ (void)generateGitHubAPIToken:(NSString *)username password:(NSString *)password twoFactorCode:(NSString *)twoFactorCode reply:(void (^)(NSError *))reply
 {
 
     NSString *tokenFile = nil;
     if (![self apiTokenFileExists:&tokenFile]) {
-
-        // Headers & Parameters
-        NSDictionary *headers = @{
-            @"Accept" : @"application/vnd.github.v3+json",
-            @"User-Agent" : @"AutoPkg",
-        };
+        AFHTTPRequestOperationManager *manager = [self tokenRequestManager:username password:password twoFactorCode:twoFactorCode];
 
         NSDictionary *parameters = @{ @"note" : @"AutoPkg CLI" };
-
-        // Networking
-        AFHTTPRequestOperationManager *manager = [[AFHTTPRequestOperationManager alloc] initWithBaseURL:[NSURL URLWithString:@"https://api.github.com"]];
-
-        // Request Serializer
-        manager.requestSerializer = [AFJSONRequestSerializer serializer];
-        [manager.requestSerializer setAuthorizationHeaderFieldWithUsername:username password:password];
-        [headers enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
-            [manager.requestSerializer setValue:obj forHTTPHeaderField:key];
-        }];
-
-        // Response serializer
-        manager.responseSerializer = [AFJSONResponseSerializer serializer];
 
         [manager POST:@"/authorizations" parameters:parameters success:^(AFHTTPRequestOperation *operation, NSDictionary *responseObject) {
             NSError *error = nil;
@@ -1050,26 +1036,34 @@ typedef void (^AutoPkgReplyErrorBlock)(NSError *error);
 
             if (tokenString.length){
                 [tokenString writeToFile:tokenFile atomically:YES encoding:NSUTF8StringEncoding error:&error];
-                reply(error);
-            } else {
-                reply(error);
             }
+            reply(error);
+
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-            reply(operation.response ? [LGError errorWithResponse:operation.response] : error);
+            NSDictionary *headers = operation.response.allHeaderFields;
+            if (operation.response.statusCode == 401 && [headers[@"X-GitHub-OTP"] hasPrefix:@"required"]) {
+                NSString *tfa = [self requestTwoFactorCode];
+                if (tfa.length) {
+                    [self generateGitHubAPIToken:username password:password twoFactorCode:tfa reply:reply];
+                } else {
+                    reply([LGAutoPkgErrorHandler errorWithGitHubAPIErrorCode:kLGAutoPkgErrorGHApi2FAAuthRequired]);
+                }
+            } else {
+                reply(operation.response ? [LGError errorWithResponse:operation.response] : error);
+            }
         }];
     } else {
         reply(nil);
     }
 }
 
-+ (void)deleteGitHubAPIToken:(NSString *)username password:(NSString *)password reply:(void (^)(NSError *))reply
-{
-    AFHTTPRequestOperationManager *manager = [[AFHTTPRequestOperationManager alloc] initWithBaseURL:[NSURL URLWithString:@"https://api.github.com"]];
++ (void)deleteGitHubAPIToken:(NSString *)username password:(NSString *)password reply:(void (^)(NSError *))reply{
+    [self deleteGitHubAPIToken:username password:password twoFactorCode:nil reply:reply];
+}
 
-    // Request Serializer
-    manager.requestSerializer = [AFJSONRequestSerializer serializer];
-    [manager.requestSerializer setAuthorizationHeaderFieldWithUsername:username
-                                                              password:password];
++ (void)deleteGitHubAPIToken:(NSString *)username password:(NSString *)password twoFactorCode:(NSString *)twoFactorCode reply:(void (^)(NSError *))reply
+{
+    AFHTTPRequestOperationManager *manager = [self tokenRequestManager:username password:password twoFactorCode:twoFactorCode];
 
     [manager GET:@"/authorizations" parameters:nil success:^(AFHTTPRequestOperation *operation, NSArray *responseObject) {
         // Get Auth ID
@@ -1101,18 +1095,77 @@ typedef void (^AutoPkgReplyErrorBlock)(NSError *error);
                 reply(operation.response ? [LGError errorWithResponse:operation.response] : error);
             }];
         } else {
-            NSString *message = LGAutoPkgLocalizedString(@"API Token not found.", nil);
-            NSString *suggestion =  LGAutoPkgLocalizedString(@"A GitHub API token matching the local one was not found on the remote. You may need to remove it manually. If you've just added the token, you may need to wait a minute to delete it.", nil);
-
-            NSError *error = [NSError errorWithDomain:[[NSProcessInfo processInfo] processName]
-                                                 code:-2
-                                             userInfo:@{NSLocalizedDescriptionKey : message,
-                                                        NSLocalizedRecoverySuggestionErrorKey : suggestion}];
-            reply(error);
+            reply([LGAutoPkgErrorHandler errorWithGitHubAPIErrorCode:kLGAutoPkgErrorAPITokenNotOnRemote]);
         }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        reply(operation.response ? [LGError errorWithResponse:operation.response] : error);
+        NSDictionary *headers = operation.response.allHeaderFields;
+        if (operation.response.statusCode == 401 && [headers[@"X-GitHub-OTP"] hasPrefix:@"required"]) {
+            // GitHub only seems to send 2FA with POST request, not GET (as of7/25/15 )
+            // So we need to loop over again this time specifying POST.
+            [manager POST:@"/authorizations" parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {} failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                NSString *tfa = [self requestTwoFactorCode];
+                if (tfa.length) {
+                    [self deleteGitHubAPIToken:username password:password twoFactorCode:tfa reply:reply];
+                } else {
+                    reply([LGAutoPkgErrorHandler errorWithGitHubAPIErrorCode:kLGAutoPkgErrorGHApi2FAAuthRequired]);
+                }
+            }];
+
+        } else {
+            reply(operation.response ? [LGError errorWithResponse:operation.response] : error);
+        }
     }];
+}
+
++ (AFHTTPRequestOperationManager *)tokenRequestManager:(NSString *)username password:(NSString *)password twoFactorCode:(NSString *)twoFactorCode{
+    AFHTTPRequestOperationManager *manager = [[AFHTTPRequestOperationManager alloc] initWithBaseURL:[NSURL URLWithString:@"https://api.github.com"]];
+
+    // Request Serializer
+    manager.requestSerializer = [AFJSONRequestSerializer serializer];
+
+    // Headers & Parameters
+    NSDictionary *headers = @{
+                              @"Accept" : @"application/vnd.github.v3+json",
+                              @"User-Agent" : @"AutoPkg",
+                              };
+
+    [manager.requestSerializer setAuthorizationHeaderFieldWithUsername:username
+                                                              password:password];
+
+    [headers enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+        [manager.requestSerializer setValue:obj forHTTPHeaderField:key];
+    }];
+
+    if (twoFactorCode) {
+        [manager.requestSerializer setValue:twoFactorCode forHTTPHeaderField:@"X-GitHub-OTP"];
+    }
+
+    // Response serializer
+    manager.responseSerializer = [AFJSONResponseSerializer serializer];
+
+    return manager;
+}
+
++ (NSString *)requestTwoFactorCode{
+    NSString *password;
+    NSString *promptString = NSLocalizedString(@"Please enter the two factor authentication code.", nil);
+
+    NSAlert *alert = [NSAlert alertWithMessageText:promptString
+                                     defaultButton:@"OK"
+                                   alternateButton:@"Cancel"
+                                       otherButton:nil
+                         informativeTextWithFormat:@""];
+
+    NSTextField *input = [[NSTextField alloc] init];
+    [input setFrame:NSMakeRect(0, 0, 300, 24)];
+    [alert setAccessoryView:input];
+
+    NSInteger button = [alert runModal];
+    if (button == NSAlertDefaultReturn) {
+        [input validateEditing];
+        password = [input stringValue];
+    }
+    return password;
 }
 
 #pragma mark-- Convenience Initializers --
