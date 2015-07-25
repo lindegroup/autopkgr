@@ -23,6 +23,8 @@
 #import "LGAutoPkgResultHandler.h"
 #import "LGHostInfo.h"
 #import "LGVersioner.h"
+#import "LGTwoFactorAuthAlert.h"
+
 #import "BSDProcessInfo.h"
 #import "NSData+taskData.h"
 
@@ -165,8 +167,8 @@ typedef void (^AutoPkgReplyErrorBlock)(NSError *error);
 }
 
 - (void)runRecipes:(NSArray *)recipes
-    withInteraction:(BOOL)withInteraction
-              reply:(void (^)(NSDictionary *, NSError *))reply
+   withInteraction:(BOOL)withInteraction
+             reply:(void (^)(NSDictionary *, NSError *))reply
 {
     LGAutoPkgTask *task = [LGAutoPkgTask runRecipesTask:recipes];
     task.replyReportBlock = reply;
@@ -312,7 +314,7 @@ typedef void (^AutoPkgReplyErrorBlock)(NSError *error);
 
         __weak typeof(self) weakSelf = self;
         [self.task setTerminationHandler:^(NSTask *task) {
-            [weakSelf didCompleteTaskExecution];
+          [weakSelf didCompleteTaskExecution];
         }];
 
         // Since NSTask can raise for unexpected reasons,
@@ -320,14 +322,13 @@ typedef void (^AutoPkgReplyErrorBlock)(NSError *error);
         @try {
             [self.task launch];
         }
-        @catch (NSException *exception)
-        {
+        @catch (NSException *exception) {
             NSString *message = LGAutoPkgLocalizedString(@"A fatal error occurred when trying to run AutoPkg", nil);
 
-            NSString *suggestion = LGAutoPkgLocalizedString( @"If you repeatedly see this message please report it. The full scope of the error is in the system.log, make sure to include that in the report", nil);
+            NSString *suggestion = LGAutoPkgLocalizedString(@"If you repeatedly see this message please report it. The full scope of the error is in the system.log, make sure to include that in the report", nil);
 
             NSDictionary *userInfo = @{ NSLocalizedDescriptionKey : message,
-                                        NSLocalizedRecoverySuggestionErrorKey : suggestion};
+                                        NSLocalizedRecoverySuggestionErrorKey : suggestion };
 
             NSLog(@"[AutoPkgr EXCEPTION] %@ %@", exception.reason, exception.userInfo);
 
@@ -382,7 +383,7 @@ typedef void (^AutoPkgReplyErrorBlock)(NSError *error);
     if (_verb & (kLGAutoPkgRepoAdd | kLGAutoPkgRepoDelete | kLGAutoPkgRepoUpdate)) {
         // Post a notification for objects watching for modified repos.
         dispatch_async(dispatch_get_main_queue(), ^{
-            [[NSNotificationCenter defaultCenter] postNotificationName:kLGNotificationReposModified object:nil];
+          [[NSNotificationCenter defaultCenter] postNotificationName:kLGNotificationReposModified object:nil];
         });
     }
 
@@ -519,63 +520,63 @@ typedef void (^AutoPkgReplyErrorBlock)(NSError *error);
 
             BOOL verbose = [[NSUserDefaults standardUserDefaults] boolForKey:@"verboseAutoPkgRun"];
             [[standardOutput fileHandleForReading] setReadabilityHandler:^(NSFileHandle *handle) {
-                NSData *data = handle.availableData;
+              NSData *data = handle.availableData;
 
-                if (data.length) {
-                    NSString *message = [[NSString alloc]initWithData:data encoding:NSUTF8StringEncoding];
+              if (data.length) {
+                  NSString *message = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
 
-                    if (isInteractive && data.taskData_isInteractive) {
-                        DevLog(@"Prompting for interaction: %@", message);
-                        return [self interactiveAlertWithMessage:message];
-                    }
+                  if (isInteractive && data.taskData_isInteractive) {
+                      DevLog(@"Prompting for interaction: %@", message);
+                      return [self interactiveAlertWithMessage:message];
+                  }
 
-                    [_versioner parseString:message];
-                    if ([progressPredicate evaluateWithObject:message]) {
-                        NSString *fullMessage;
-                        if (_verb == kLGAutoPkgRepoUpdate) {
-                            fullMessage = [NSString stringWithFormat:@"Updating %@", [message lastPathComponent]];
-                        } else {
-                            int cntStr = (int)round(count) + 1;
-                            int totStr = (int)round(total);
-                            fullMessage = [[NSString stringWithFormat:@"(%d/%d) %@", cntStr, totStr, message] stringByTrimmingCharactersInSet:[NSCharacterSet newlineCharacterSet]];
-                        }
+                  [_versioner parseString:message];
+                  if ([progressPredicate evaluateWithObject:message]) {
+                      NSString *fullMessage;
+                      if (_verb == kLGAutoPkgRepoUpdate) {
+                          fullMessage = [NSString stringWithFormat:@"Updating %@", [message lastPathComponent]];
+                      } else {
+                          int cntStr = (int)round(count) + 1;
+                          int totStr = (int)round(total);
+                          fullMessage = [[NSString stringWithFormat:@"(%d/%d) %@", cntStr, totStr, message] stringByTrimmingCharactersInSet:[NSCharacterSet newlineCharacterSet]];
+                      }
 
-                        double progress = ((count/total) * 100);
+                      double progress = ((count / total) * 100);
 
-                        LGAutoPkgTaskResponseObject *response = [[LGAutoPkgTaskResponseObject alloc] init];
-                        response.progressMessage = fullMessage;
-                        response.progress = progress;
-                        count++;
+                      LGAutoPkgTaskResponseObject *response = [[LGAutoPkgTaskResponseObject alloc] init];
+                      response.progressMessage = fullMessage;
+                      response.progress = progress;
+                      count++;
 
-                        [(NSObject *)_taskStatusDelegate performSelectorOnMainThread:@selector(didReceiveStatusUpdate:) withObject:response waitUntilDone:NO];
+                      [(NSObject *)_taskStatusDelegate performSelectorOnMainThread:@selector(didReceiveStatusUpdate:) withObject:response waitUntilDone:NO];
 
-                        // If verboseAutoPkgRun is not enabled, log the limited message here.
-                        if (!verbose) {
-                            NSLog(@"%@",message);
-                        }
-                    }
-                    // If verboseAutoPkgRun is enabled, log everything generated by autopkg run -v.
-                    if (verbose) {
-                        NSLog(@"%@",message);
-                    }
-                }
+                      // If verboseAutoPkgRun is not enabled, log the limited message here.
+                      if (!verbose) {
+                          NSLog(@"%@", message);
+                      }
+                  }
+                  // If verboseAutoPkgRun is enabled, log everything generated by autopkg run -v.
+                  if (verbose) {
+                      NSLog(@"%@", message);
+                  }
+              }
             }];
         }
     } else {
         // In order to prevent maxing out the stdout buffer collect the data progressively
         // even thought the data returned is usually small.
         [[standardOutput fileHandleForReading] setReadabilityHandler:^(NSFileHandle *fh) {
-            NSData *data = [fh availableData];
-            if (data.length) {
-                if (isInteractive && data.taskData_isInteractive) {
-                    return [self interactiveAlertWithMessage:[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding]];
-                }
+          NSData *data = [fh availableData];
+          if (data.length) {
+              if (isInteractive && data.taskData_isInteractive) {
+                  return [self interactiveAlertWithMessage:[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding]];
+              }
 
-                if (!_standardOutData) {
-                    _standardOutData = [[NSMutableData alloc] init ];
-                }
-                [_standardOutData appendData:data];
-            }
+              if (!_standardOutData) {
+                  _standardOutData = [[NSMutableData alloc] init];
+              }
+              [_standardOutData appendData:data];
+          }
         }];
     }
 }
@@ -804,26 +805,25 @@ typedef void (^AutoPkgReplyErrorBlock)(NSError *error);
 {
     /* Eventually there may be more ways to interact, for now it's only to search github for a recipe's repo */
     [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-        NSString *title = LGAutoPkgLocalizedString(@"Could not find the parent recipe"
-                                                     , nil);
+      NSString *title = LGAutoPkgLocalizedString(@"Could not find the parent recipe", nil);
 
-        NSString *cleanedMessage = [message stringByReplacingOccurrencesOfString:@"[y/n]:"
-                                                                      withString:@""];
-        NSAlert *alert = [NSAlert alertWithMessageText:title
-                                         defaultButton:@"Yes"
-                                       alternateButton:@"No"
-                                           otherButton:nil
-                             informativeTextWithFormat:@"%@", cleanedMessage];
+      NSString *cleanedMessage = [message stringByReplacingOccurrencesOfString:@"[y/n]:"
+                                                                    withString:@""];
+      NSAlert *alert = [NSAlert alertWithMessageText:title
+                                       defaultButton:@"Yes"
+                                     alternateButton:@"No"
+                                         otherButton:nil
+                           informativeTextWithFormat:@"%@", cleanedMessage];
 
-        NSString *results;
-        // Don't forget the newline char!
-        if ([alert runModal] == NSAlertDefaultReturn) {
-            results = @"y\n";
-        } else {
-            results = @"n\n";
-        }
+      NSString *results;
+      // Don't forget the newline char!
+      if ([alert runModal] == NSAlertDefaultReturn) {
+          results = @"y\n";
+      } else {
+          results = @"n\n";
+      }
 
-        [[self.task.standardInput fileHandleForWriting] writeData:[results dataUsingEncoding:NSUTF8StringEncoding]];
+      [[self.task.standardInput fileHandleForWriting] writeData:[results dataUsingEncoding:NSUTF8StringEncoding]];
     }];
 }
 
@@ -838,7 +838,7 @@ typedef void (^AutoPkgReplyErrorBlock)(NSError *error);
 
     __weak typeof(task) weakTask = task;
     [task launchInBackground:^(NSError *error) {
-        reply(weakTask.report,error);
+      reply(weakTask.report, error);
     }];
 }
 
@@ -851,7 +851,7 @@ typedef void (^AutoPkgReplyErrorBlock)(NSError *error);
 
     __weak typeof(task) weakTask = task;
     [task launchInBackground:^(NSError *error) {
-        reply(weakTask.report,error);
+      reply(weakTask.report, error);
     }];
 }
 
@@ -860,11 +860,11 @@ typedef void (^AutoPkgReplyErrorBlock)(NSError *error);
     LGAutoPkgTask *task = [LGAutoPkgTask searchTask:recipe];
     __weak typeof(task) weakTask = task;
     [task launchInBackground:^(NSError *error) {
-        NSArray *results;
-        if (!error) {
-            results = [weakTask results];
-        }
-        reply(results, error);
+      NSArray *results;
+      if (!error) {
+          results = [weakTask results];
+      }
+      reply(results, error);
     }];
 }
 
@@ -884,17 +884,17 @@ typedef void (^AutoPkgReplyErrorBlock)(NSError *error);
     task.arguments = args;
     __weak typeof(task) weakTask = task;
     [task launchInBackground:^(NSError *error) {
-        typeof(task) strongTask = weakTask;
-        NSMutableString *path = nil;
-        if(!error){
-            path = [strongTask.standardOutString.trimmed mutableCopy];
-            [path deleteCharactersInRange:[path rangeOfString:@"Override file saved to "]];
-            if ((path.length > 2) && ([path characterAtIndex:path.length-1] == '.')) {
-                [path deleteCharactersInRange:NSMakeRange(path.length-1, 1)];
-            }
-        }
+      typeof(task) strongTask = weakTask;
+      NSMutableString *path = nil;
+      if (!error) {
+          path = [strongTask.standardOutString.trimmed mutableCopy];
+          [path deleteCharactersInRange:[path rangeOfString:@"Override file saved to "]];
+          if ((path.length > 2) && ([path characterAtIndex:path.length - 1] == '.')) {
+              [path deleteCharactersInRange:NSMakeRange(path.length - 1, 1)];
+          }
+      }
 
-        reply(path, error);
+      reply(path, error);
     }];
 }
 
@@ -913,8 +913,8 @@ typedef void (^AutoPkgReplyErrorBlock)(NSError *error);
     LGAutoPkgTask *task = [[LGAutoPkgTask alloc] initWithArguments:@[ @"info", recipe ]];
     __weak typeof(task) weakTask = task;
     [task launchInBackground:^(NSError *error) {
-        typeof(task) strongTask = weakTask;
-        reply(strongTask.standardOutString, error);
+      typeof(task) strongTask = weakTask;
+      reply(strongTask.standardOutString, error);
     }];
 }
 
@@ -930,7 +930,7 @@ typedef void (^AutoPkgReplyErrorBlock)(NSError *error);
     }
     task.arguments = @[ @"repo-add", repo ];
     [task launchInBackground:^(NSError *error) {
-        reply(error);
+      reply(error);
     }];
 }
 
@@ -940,7 +940,7 @@ typedef void (^AutoPkgReplyErrorBlock)(NSError *error);
     LGAutoPkgTask *task = [[LGAutoPkgTask alloc] init];
     task.arguments = @[ @"repo-delete", repo ];
     [task launchInBackground:^(NSError *error) {
-        reply(error);
+      reply(error);
     }];
 }
 
@@ -950,7 +950,7 @@ typedef void (^AutoPkgReplyErrorBlock)(NSError *error);
     LGAutoPkgTask *task = [[LGAutoPkgTask alloc] initWithArguments:@[ @"repo-update", @"all" ]];
     task.progressUpdateBlock = progress;
     [task launchInBackground:^(NSError *error) {
-        reply(error);
+      reply(error);
     }];
 }
 
@@ -979,27 +979,7 @@ typedef void (^AutoPkgReplyErrorBlock)(NSError *error);
 }
 
 #pragma mark - Other
-+ (NSString *)version
-{
-    NSString *version;
-
-    NSTask *task = [[NSTask alloc] init];
-
-    task = task;
-    task.launchPath = @"/usr/bin/python";
-    task.arguments = @[ autopkg(), @"version" ];
-    task.standardOutput = [NSPipe pipe];
-    [task launch];
-    [task waitUntilExit];
-
-    NSData *data = [[task.standardOutput fileHandleForReading] availableData];
-    if (data.length) {
-        version = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-    }
-
-    return [version stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] ?: @"0.0.0";
-}
-
+#pragma mark-- GitHub API token --
 + (NSString *)apiToken
 {
     NSString *tokenFile = nil;
@@ -1017,7 +997,8 @@ typedef void (^AutoPkgReplyErrorBlock)(NSError *error);
     return (access(tokenFile.UTF8String, R_OK) == 0);
 }
 
-+ (void)generateGitHubAPIToken:(NSString *)username password:(NSString *)password reply:(void (^)(NSError *))reply{
++ (void)generateGitHubAPIToken:(NSString *)username password:(NSString *)password reply:(void (^)(NSError *))reply
+{
     [self generateGitHubAPIToken:username password:password twoFactorCode:nil reply:reply];
 }
 
@@ -1030,34 +1011,38 @@ typedef void (^AutoPkgReplyErrorBlock)(NSError *error);
 
         NSDictionary *parameters = @{ @"note" : @"AutoPkg CLI" };
 
-        [manager POST:@"/authorizations" parameters:parameters success:^(AFHTTPRequestOperation *operation, NSDictionary *responseObject) {
-            NSError *error = nil;
-            NSString *tokenString = responseObject[@"token"];
+        [manager POST:@"/authorizations"
+            parameters:parameters
+            success:^(AFHTTPRequestOperation *operation, NSDictionary *responseObject) {
+              NSError *error = nil;
+              NSString *tokenString = responseObject[@"token"];
 
-            if (tokenString.length){
-                [tokenString writeToFile:tokenFile atomically:YES encoding:NSUTF8StringEncoding error:&error];
-            }
-            reply(error);
+              if (tokenString.length) {
+                  [tokenString writeToFile:tokenFile atomically:YES encoding:NSUTF8StringEncoding error:&error];
+              }
+              reply(error);
 
-        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-            NSDictionary *headers = operation.response.allHeaderFields;
-            if (operation.response.statusCode == 401 && [headers[@"X-GitHub-OTP"] hasPrefix:@"required"]) {
-                NSString *tfa = [self requestTwoFactorCode];
-                if (tfa.length) {
-                    [self generateGitHubAPIToken:username password:password twoFactorCode:tfa reply:reply];
-                } else {
-                    reply([LGAutoPkgErrorHandler errorWithGitHubAPIErrorCode:kLGAutoPkgErrorGHApi2FAAuthRequired]);
-                }
-            } else {
-                reply(operation.response ? [LGError errorWithResponse:operation.response] : error);
             }
-        }];
+            failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+              NSDictionary *headers = operation.response.allHeaderFields;
+              if (operation.response.statusCode == 401 && [headers[@"X-GitHub-OTP"] hasPrefix:@"required"]) {
+                  NSString *tfa = [self promptForTwoFactorAuthCode];
+                  if (tfa.length) {
+                      [self generateGitHubAPIToken:username password:password twoFactorCode:tfa reply:reply];
+                  } else {
+                      reply([LGAutoPkgErrorHandler errorWithGitHubAPIErrorCode:kLGAutoPkgErrorGHApi2FAAuthRequired]);
+                  }
+              } else {
+                  reply(operation.response ? [LGError errorWithResponse:operation.response] : error);
+              }
+            }];
     } else {
         reply(nil);
     }
 }
 
-+ (void)deleteGitHubAPIToken:(NSString *)username password:(NSString *)password reply:(void (^)(NSError *))reply{
++ (void)deleteGitHubAPIToken:(NSString *)username password:(NSString *)password reply:(void (^)(NSError *))reply
+{
     [self deleteGitHubAPIToken:username password:password twoFactorCode:nil reply:reply];
 }
 
@@ -1065,107 +1050,107 @@ typedef void (^AutoPkgReplyErrorBlock)(NSError *error);
 {
     AFHTTPRequestOperationManager *manager = [self tokenRequestManager:username password:password twoFactorCode:twoFactorCode];
 
-    [manager GET:@"/authorizations" parameters:nil success:^(AFHTTPRequestOperation *operation, NSArray *responseObject) {
-        // Get Auth ID
-        __block NSDictionary *autoPkgTokenDict = nil;
-        NSString *token = [self apiToken];
-        NSString *tokenLastEight = [token substringFromIndex:token.length - 8];
+    [manager GET:@"/authorizations"
+        parameters:nil
+        success:^(AFHTTPRequestOperation *operation, NSArray *responseObject) {
+          // Get Auth ID
+          __block NSDictionary *autoPkgTokenDict = nil;
+          NSString *token = [self apiToken];
+          NSString *tokenLastEight = [token substringFromIndex:token.length - 8];
 
-        [responseObject enumerateObjectsUsingBlock:^(NSDictionary *obj, NSUInteger idx, BOOL *stop) {
+          [responseObject enumerateObjectsUsingBlock:^(NSDictionary *obj, NSUInteger idx, BOOL *stop) {
             if ([@"AutoPkg CLI" isEqualToString:obj[@"note"]] &&
-                 [tokenLastEight isEqualToString:obj[@"token_last_eight"]]) {
+                [tokenLastEight isEqualToString:obj[@"token_last_eight"]]) {
                 autoPkgTokenDict = obj;
                 *stop = YES;
             }
+          }];
+
+          if (autoPkgTokenDict) {
+              NSString *delete = [NSString stringWithFormat:@"/authorizations/%@", autoPkgTokenDict[@"id"]];
+
+              /* Delete the token from the remote */
+              [manager DELETE:delete
+                  parameters:@{}
+                  success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                    // remove the file
+                    NSString *tokenFile = nil;
+                    NSError *error = nil;
+                    if ([self apiTokenFileExists:&tokenFile]) {
+                        [[NSFileManager defaultManager] removeItemAtPath:tokenFile error:&error];
+                    }
+                    reply(error);
+                  }
+                  failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                    reply(operation.response ? [LGError errorWithResponse:operation.response] : error);
+                  }];
+          } else {
+              reply([LGAutoPkgErrorHandler errorWithGitHubAPIErrorCode:kLGAutoPkgErrorAPITokenNotOnRemote]);
+          }
+        }
+        failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+
+          NSDictionary *headers = operation.response.allHeaderFields;
+          if (operation.response.statusCode == 401 && [headers[@"X-GitHub-OTP"] hasPrefix:@"required"]) {
+              // GitHub only seems to send 2FA with POST request, not GET (as of7/25/15 )
+              // Do the request again this time specifying POST.
+              [manager POST:@"/authorizations"
+                  parameters:nil
+                  success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                    // We should never get here, but in case we do send a reply so the UI doesn't hang.
+                    reply(nil);
+                  }
+                  failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                    NSString *newTwoFactorCode = [self promptForTwoFactorAuthCode];
+                    if (newTwoFactorCode.length) {
+                        [self deleteGitHubAPIToken:username password:password twoFactorCode:newTwoFactorCode reply:reply];
+                    } else {
+                        reply([LGAutoPkgErrorHandler errorWithGitHubAPIErrorCode:kLGAutoPkgErrorGHApi2FAAuthRequired]);
+                    }
+                  }];
+          } else {
+              reply(operation.response ? [LGError errorWithResponse:operation.response] : error);
+          }
         }];
-
-        if (autoPkgTokenDict) {
-            NSString *delete = [NSString stringWithFormat:@"/authorizations/%@", autoPkgTokenDict[@"id"]];
-
-            /* Delete the token from the remote */
-            [manager DELETE:delete parameters:@{} success:^(AFHTTPRequestOperation *operation, id responseObject) {
-                // remove the file
-                NSString *tokenFile = nil;
-                NSError *error = nil;
-                if ([self apiTokenFileExists:&tokenFile]) {
-                    [[NSFileManager defaultManager] removeItemAtPath:tokenFile error:&error];
-                }
-                reply(error);
-            } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                reply(operation.response ? [LGError errorWithResponse:operation.response] : error);
-            }];
-        } else {
-            reply([LGAutoPkgErrorHandler errorWithGitHubAPIErrorCode:kLGAutoPkgErrorAPITokenNotOnRemote]);
-        }
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        NSDictionary *headers = operation.response.allHeaderFields;
-        if (operation.response.statusCode == 401 && [headers[@"X-GitHub-OTP"] hasPrefix:@"required"]) {
-            // GitHub only seems to send 2FA with POST request, not GET (as of7/25/15 )
-            // So we need to loop over again this time specifying POST.
-            [manager POST:@"/authorizations" parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {} failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                NSString *tfa = [self requestTwoFactorCode];
-                if (tfa.length) {
-                    [self deleteGitHubAPIToken:username password:password twoFactorCode:tfa reply:reply];
-                } else {
-                    reply([LGAutoPkgErrorHandler errorWithGitHubAPIErrorCode:kLGAutoPkgErrorGHApi2FAAuthRequired]);
-                }
-            }];
-
-        } else {
-            reply(operation.response ? [LGError errorWithResponse:operation.response] : error);
-        }
-    }];
 }
 
-+ (AFHTTPRequestOperationManager *)tokenRequestManager:(NSString *)username password:(NSString *)password twoFactorCode:(NSString *)twoFactorCode{
++ (AFHTTPRequestOperationManager *)tokenRequestManager:(NSString *)username password:(NSString *)password twoFactorCode:(NSString *)twoFactorCode
+{
     AFHTTPRequestOperationManager *manager = [[AFHTTPRequestOperationManager alloc] initWithBaseURL:[NSURL URLWithString:@"https://api.github.com"]];
 
-    // Request Serializer
+    manager.responseSerializer = [AFJSONResponseSerializer serializer];
     manager.requestSerializer = [AFJSONRequestSerializer serializer];
-
-    // Headers & Parameters
-    NSDictionary *headers = @{
-                              @"Accept" : @"application/vnd.github.v3+json",
-                              @"User-Agent" : @"AutoPkg",
-                              };
 
     [manager.requestSerializer setAuthorizationHeaderFieldWithUsername:username
                                                               password:password];
 
-    [headers enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
-        [manager.requestSerializer setValue:obj forHTTPHeaderField:key];
+    NSDictionary *defaultHeaders = @{
+        @"Accept" : @"application/vnd.github.v3+json",
+        @"User-Agent" : @"AutoPkg",
+    };
+
+    [defaultHeaders enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+      [manager.requestSerializer setValue:obj forHTTPHeaderField:key];
     }];
 
     if (twoFactorCode) {
         [manager.requestSerializer setValue:twoFactorCode forHTTPHeaderField:@"X-GitHub-OTP"];
     }
 
-    // Response serializer
-    manager.responseSerializer = [AFJSONResponseSerializer serializer];
-
     return manager;
 }
 
-+ (NSString *)requestTwoFactorCode{
-    NSString *password;
-    NSString *promptString = NSLocalizedString(@"Please enter the two factor authentication code.", nil);
++ (NSString *)promptForTwoFactorAuthCode
+{
+    NSString *code;
+    LGTwoFactorAuthAlert *alert = [[LGTwoFactorAuthAlert alloc] init];
 
-    NSAlert *alert = [NSAlert alertWithMessageText:promptString
-                                     defaultButton:@"OK"
-                                   alternateButton:@"Cancel"
-                                       otherButton:nil
-                         informativeTextWithFormat:@""];
-
-    NSTextField *input = [[NSTextField alloc] init];
-    [input setFrame:NSMakeRect(0, 0, 300, 24)];
-    [alert setAccessoryView:input];
-
-    NSInteger button = [alert runModal];
-    if (button == NSAlertDefaultReturn) {
-        [input validateEditing];
-        password = [input stringValue];
+    NSModalResponse button = [alert runModal];
+    if (button == NSAlertFirstButtonReturn) {
+        code = [alert authorizatoinCode];
     }
-    return password;
+
+    return code;
 }
 
 #pragma mark-- Convenience Initializers --
@@ -1224,6 +1209,27 @@ typedef void (^AutoPkgReplyErrorBlock)(NSError *error);
 }
 
 #pragma mark-- Other Methods --
++ (NSString *)version
+{
+    NSString *version;
+
+    NSTask *task = [[NSTask alloc] init];
+
+    task = task;
+    task.launchPath = @"/usr/bin/python";
+    task.arguments = @[ autopkg(), @"version" ];
+    task.standardOutput = [NSPipe pipe];
+    [task launch];
+    [task waitUntilExit];
+
+    NSData *data = [[task.standardOutput fileHandleForReading] availableData];
+    if (data.length) {
+        version = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+    }
+
+    return [version stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] ?: @"0.0.0";
+}
+
 + (BOOL)instanceIsRunning
 {
     NSArray *runningArgs = @[ autopkg(), @"run", @"--recipe-list" ];
