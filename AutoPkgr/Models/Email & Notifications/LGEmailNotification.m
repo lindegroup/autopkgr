@@ -172,6 +172,7 @@
         MCOSMTPSession *session = [[MCOSMTPSession alloc] init];
         session.hostname = credential.server;
         session.port = (int)credential.port;
+        session.timeout = 15;
 
         if (credential.user && credential.password) {
             session.username = credential.user;

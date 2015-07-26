@@ -45,6 +45,7 @@ int main(int argc, const char *argv[])
                                                                       error:nil
                                                                       state:kLGAutoPkgProgressStart];
 
+
         [manager setProgressUpdateBlock:^(NSString *message, double progress) {
             [[helper.connection remoteObjectProxy] sendMessageToMainApplication:message
                                                                        progress:progress
@@ -61,12 +62,6 @@ int main(int argc, const char *argv[])
                                                                                         state:kLGAutoPkgProgressComplete];
                              // Wrap up the progress messaging...
                              completionMessageSent = YES;
-                             if (!completionMessageSent) {
-                                 [[helper.connection remoteObjectProxy] sendMessageToMainApplication:nil
-                                                                                            progress:100
-                                                                                               error:nil
-                                                                                               state:kLGAutoPkgProgressComplete];
-                             }
 
                              LGNotificationManager *notifier = [[LGNotificationManager alloc]
                                                                 initWithReportDictionary:report errors:error];
@@ -80,7 +75,6 @@ int main(int argc, const char *argv[])
 
         [[NSRunLoop currentRunLoop] run];
         return 0;
-
     } else {
         return NSApplicationMain(argc, argv);
     }

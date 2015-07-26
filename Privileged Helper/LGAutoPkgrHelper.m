@@ -499,7 +499,7 @@ helper_reply:
 #pragma mark - IPC communication from background run
 - (void)registerMainApplication:(void (^)(BOOL resign))resign;
 {
-    if(!self.relayConnection){
+    if(self.connection && !self.relayConnection){
         self.relayConnection = self.connection;
         self.relayConnection.remoteObjectInterface = [NSXPCInterface interfaceWithProtocol:@protocol(LGProgressDelegate)];
         _resign = resign;

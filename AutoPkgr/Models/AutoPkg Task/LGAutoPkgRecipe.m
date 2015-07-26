@@ -79,8 +79,9 @@ static NSMutableDictionary *_identifierURLStore = nil;
         _enabledInitialized = -1;
 
         [_identifierURLStore setObject:_recipeFileURL forKey:_Identifier];
+        return self;
     }
-    return self;
+    return nil;
 }
 
 - (NSString *)Description

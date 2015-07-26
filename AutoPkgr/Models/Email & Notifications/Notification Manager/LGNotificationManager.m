@@ -60,10 +60,9 @@ static NSArray *serviceClasses()
 
 - (void)sendEnabledNotifications:(void (^)(NSError *))complete;
 {
-    dispatch_queue_t autopkgr_notification_manager_queue;
-    autopkgr_notification_manager_queue = dispatch_queue_create("com.lindegroup.autopkgr.notification.manager.queue", DISPATCH_QUEUE_CONCURRENT);
 
-    dispatch_async(autopkgr_notification_manager_queue, ^{
+    NSOperationQueue *queue = [[NSOperationQueue alloc] init];
+    [queue addOperationWithBlock:^{
         NSMutableArray *enabledServices = [NSMutableArray
                                            arrayWithCapacity:serviceClasses().count];
 
@@ -135,7 +134,7 @@ static NSArray *serviceClasses()
                 completedService();
             }];
         }
-    });
+    }];
 }
 
 - (NSError *)processedError
