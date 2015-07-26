@@ -149,6 +149,9 @@
     NSString *fullSubject = quick_formatString(@"%@ on %@", subject, [NSHost currentHost].localizedName);
 
     void (^didCompleteSendOperation)(NSError *) = ^(NSError *error) {
+        if (error) {
+            NSLog(@"Error sending email: %@", error);
+        }
         if (self.notificatonComplete) {
             self.notificatonComplete(error);
         }

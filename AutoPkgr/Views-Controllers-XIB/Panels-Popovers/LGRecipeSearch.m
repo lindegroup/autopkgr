@@ -88,7 +88,7 @@
                             [_progressIndicator setHidden:YES];
                             if (error) {
                                 _limitMessage.hidden = NO;
-                                NSLog(@"%@",error);
+                                NSLog(@"Search error: %@",error);
                             } else {
                                 _limitMessage.hidden = YES;
                                 _searchResults = results;
@@ -113,7 +113,7 @@
         sender.enabled = !(error == nil);
         if (error) {
             [self.limitMessage fadeOut_withString:error.localizedDescription];
-            NSLog(@"%@", error.localizedDescription);
+            NSLog(@"Error adding repo: %@", error.localizedDescription);
         } else {
             _currentlyInstalledRepos = [LGAutoPkgTask repoList];
             [_searchTable reloadData];

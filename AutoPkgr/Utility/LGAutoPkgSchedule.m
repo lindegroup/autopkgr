@@ -75,7 +75,7 @@ NSString *launchAgentFilePath()
         NSString *program = [[NSProcessInfo processInfo] arguments].firstObject;
 
         [[helper.connection remoteObjectProxyWithErrorHandler:^(NSError *error) {
-            NSLog(@"%@", error);
+            NSLog(@"[%@] %@ ",[self class], error);
             reply(error);
         }] scheduleRun:scheduleOrInterval
                      user:NSUserName()

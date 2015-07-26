@@ -417,7 +417,7 @@ static NSMutableDictionary *_identifierURLStore = nil;
 
     NSString *recipe_list = [recipes.array componentsJoinedByString:@"\n"];
     if (![recipe_list writeToFile:[self defaultRecipeList] atomically:YES encoding:NSUTF8StringEncoding error:&error]) {
-        NSLog(@"%@", error);
+        NSLog(@"Error writing file: %@", error.localizedDescription);
         return NO;
     }
     return YES;
