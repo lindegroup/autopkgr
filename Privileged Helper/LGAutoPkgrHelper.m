@@ -101,19 +101,18 @@ static NSString *const kLGEncryptedKeysParentDirectory = @"/var/db/.AutoPkgrKeys
         __weak typeof(newConnection) weakConnection = newConnection;
         // If all connections are invalidated on the remote side, shutdown the helper.
         newConnection.invalidationHandler = ^() {
-            __strong typeof(newConnection) strongConnection = weakConnection;
-            if ([strongConnection isEqualTo:self.relayConnection] && _resign) {
+            if ([weakConnection isEqualTo:self.relayConnection] && _resign) {
                 _resign(YES);
             }
 
-            [self.connections removeObject:strongConnection];
+            [self.connections removeObject:weakConnection];
             if (!self.connections.count) {
                 [self quitHelper:^(BOOL success) {}];
             }
         };
 
-        [newConnection resume];
         [self.connections addObject:newConnection];
+        [newConnection resume];
 
         syslog(LOG_INFO, "Connection Success...");
         return YES;
@@ -131,6 +130,8 @@ static NSString *const kLGEncryptedKeysParentDirectory = @"/var/db/.AutoPkgrKeys
 #pragma mark - Password
 - (void)getKeychainKey:(void (^)(NSString *, NSError *))reply
 {
+    NSXPCConnection *connection = self.connection;
+
     // Password used to decrypt the keyFile. This password is stored in the System.keychain.
     NSString *encryptionPassword = nil;
 
@@ -153,11 +154,11 @@ static NSString *const kLGEncryptedKeysParentDirectory = @"/var/db/.AutoPkgrKeys
     NSError *error = nil;
 
     // Effective user id used to determine location of the user's AutoPkgr keychain.
-    uid_t euid = self.connection.effectiveUserIdentifier;
+    uid_t euid = connection.effectiveUserIdentifier;
     struct passwd *pw = getpwuid(euid);
     NSAssert(euid != 0, @"The euid of the connection should never be 0!");
     if (euid == 0) {
-        [self.connection invalidate];
+        [connection invalidate];
         return;
     }
 
@@ -354,14 +355,16 @@ helper_reply:
                          reply:(void (^)(NSError *error))reply;
 {
     NSError *error;
+    NSXPCConnection *connection = self.connection;
+
     error = [LGAutoPkgrAuthorizer checkAuthorization:authData command:_cmd];
     if (error != nil) {
         return reply(error);
     }
 
-    self.connection.remoteObjectInterface = [NSXPCInterface interfaceWithProtocol:@protocol(LGProgressDelegate)];
+    connection.remoteObjectInterface = [NSXPCInterface interfaceWithProtocol:@protocol(LGProgressDelegate)];
 
-    [self.connection.remoteObjectProxy bringAutoPkgrToFront];
+    [connection.remoteObjectProxy bringAutoPkgrToFront];
 
     __block double progress = 75.00;
 
@@ -378,7 +381,7 @@ helper_reply:
             progress ++;
             NSString *message = data.taskData_splitLines.firstObject;
             if (message.length && ![message isEqualToString:@"#"]) {
-                [self.connection.remoteObjectProxy updateProgress:[message stringByReplacingOccurrencesOfString:@"installer: " withString:@""]
+                [connection.remoteObjectProxy updateProgress:[message stringByReplacingOccurrencesOfString:@"installer: " withString:@""]
                                                          progress:progress];
             }
 
@@ -499,8 +502,9 @@ helper_reply:
 #pragma mark - IPC communication from background run
 - (void)registerMainApplication:(void (^)(BOOL resign))resign;
 {
-    if(self.connection && !self.relayConnection){
-        self.relayConnection = self.connection;
+    NSXPCConnection *connection = self.connection;
+    if(connection && !self.relayConnection){
+        self.relayConnection = connection;
         self.relayConnection.remoteObjectInterface = [NSXPCInterface interfaceWithProtocol:@protocol(LGProgressDelegate)];
         _resign = resign;
     } else {
