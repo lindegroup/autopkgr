@@ -185,10 +185,10 @@
     // Create the NSURLRequest object with the given URL
     NSURLRequest *req = [NSURLRequest requestWithURL:url
                                          cachePolicy:NSURLRequestUseProtocolCachePolicy
-                                     timeoutInterval:15.0];
+                                     timeoutInterval:5.0];
 
     // Initialize our response and error objects
-    NSURLResponse *resp;
+    NSHTTPURLResponse *resp;
     NSError *error = nil;
 
     // Get the JSON data
@@ -196,7 +196,7 @@
                                             returningResponse:&resp
                                                         error:&error];
 
-    if (error) {
+    if (error || resp.statusCode != 200) {
         NSLog(@"NSURLConnection error when attempting to get JSON data from the GitHub API. Error: %@.", error);
         return nil;
     }
