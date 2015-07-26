@@ -56,6 +56,9 @@ static NSString *const kLGEncryptedKeysParentDirectory = @"/var/db/.AutoPkgrKeys
 
 @implementation LGAutoPkgrHelper {
     void (^_resign)(BOOL);
+
+@private
+    NSString *_keyChainKey;
 }
 
 - (id)init
@@ -94,21 +97,22 @@ static NSString *const kLGEncryptedKeysParentDirectory = @"/var/db/.AutoPkgrKeys
 
         // We have one method that can handle multiple input types
         NSSet *acceptedClasses = [NSSet setWithObjects:[AHLaunchJobSchedule class],
-                                  [NSNumber class], nil];
+                                                       [NSNumber class], nil];
 
         [newConnection.exportedInterface setClasses:acceptedClasses forSelector:@selector(scheduleRun:user:program:authorization:reply:) argumentIndex:0 ofReply:NO];
 
         __weak typeof(newConnection) weakConnection = newConnection;
         // If all connections are invalidated on the remote side, shutdown the helper.
         newConnection.invalidationHandler = ^() {
-            if ([weakConnection isEqualTo:self.relayConnection] && _resign) {
-                _resign(YES);
-            }
+          if ([weakConnection isEqualTo:self.relayConnection] && _resign) {
+              _resign(YES);
+          }
 
-            [self.connections removeObject:weakConnection];
-            if (!self.connections.count) {
-                [self quitHelper:^(BOOL success) {}];
-            }
+          [self.connections removeObject:weakConnection];
+          if (!self.connections.count) {
+              [self quitHelper:^(BOOL success){
+              }];
+          }
         };
 
         [self.connections addObject:newConnection];
@@ -131,6 +135,28 @@ static NSString *const kLGEncryptedKeysParentDirectory = @"/var/db/.AutoPkgrKeys
 - (void)getKeychainKey:(void (^)(NSString *, NSError *))reply
 {
     NSXPCConnection *connection = self.connection;
+#if DEBUG
+    syslog(LOG_ALERT, "Connection querying keychain %s : EUID: %d", connection.description.UTF8String, connection.effectiveUserIdentifier);
+#endif
+    // Effective user id used to determine location of the user's AutoPkgr keychain.
+    uid_t euid = connection.effectiveUserIdentifier;
+    struct passwd *pw = getpwuid(euid);
+    if (euid == 0) {
+        [connection invalidate];
+        return;
+    }
+
+    // 10.8 has displayed instability on some systems when accessing the system keychain
+    // in rapid succession. So reluctantly we need to bypass direct calls to direct calls
+    // to the Security framewor in this method, and simply store the keyChain data in memory
+    // for the life of the helper.
+    // @note the getKeychain: call is still protected by codesign checking done when accepting new connecions so has "almost" the same level of security.
+    if (floor(NSFoundationVersionNumber) < NSFoundationVersionNumber10_9) {
+        if (_keyChainKey) {
+            syslog(LOG_ALERT, "[ 10.8 ] Helper Found keychain key in memory.");
+            return reply(_keyChainKey, nil);
+        }
+    }
 
     // Password used to decrypt the keyFile. This password is stored in the System.keychain.
     NSString *encryptionPassword = nil;
@@ -152,15 +178,6 @@ static NSString *const kLGEncryptedKeysParentDirectory = @"/var/db/.AutoPkgrKeys
 
     // Error.
     NSError *error = nil;
-
-    // Effective user id used to determine location of the user's AutoPkgr keychain.
-    uid_t euid = connection.effectiveUserIdentifier;
-    struct passwd *pw = getpwuid(euid);
-    NSAssert(euid != 0, @"The euid of the connection should never be 0!");
-    if (euid == 0) {
-        [connection invalidate];
-        return;
-    }
 
     // Attributes used to set permissions on the keyFile and it's parent directory.
     NSDictionary *const attributes = @{
@@ -284,7 +301,11 @@ static NSString *const kLGEncryptedKeysParentDirectory = @"/var/db/.AutoPkgrKeys
     }
 
 helper_reply:
-
+    if (floor(NSFoundationVersionNumber) < NSFoundationVersionNumber10_9) {
+        if (password) {
+            _keyChainKey = password;
+        }
+    }
     reply(password, error);
 }
 
@@ -308,7 +329,8 @@ helper_reply:
     if (!error) {
         // Check if the launch path and user are valid, and that the timer has a sensible minimum.
         if ([self launchPathIsValid:program error:&error] &&
-            [self userIsValid:user error:&error]) {
+            [self userIsValid:user
+                        error:&error]) {
             AHLaunchJob *job = [AHLaunchJob new];
             job.Program = program;
             job.Label = kLGAutoPkgrLaunchDaemonPlist;
@@ -316,7 +338,7 @@ helper_reply:
 
             if ([scheduleOrInterval isKindOfClass:[AHLaunchJobSchedule class]]) {
                 job.StartCalendarInterval = scheduleOrInterval;
-            } else if ([scheduleOrInterval isKindOfClass:[NSNumber class]]){
+            } else if ([scheduleOrInterval isKindOfClass:[NSNumber class]]) {
                 job.StartInterval = [(NSNumber *)scheduleOrInterval integerValue];
             }
 
@@ -326,7 +348,7 @@ helper_reply:
             /* Setting __CFPREFERENCES_AVOID_DAEMON helps preferences sync
              * between the background run managed by launchd and the main
              * app running in a Acqua session. */
-            job.EnvironmentVariables = @{@"__CFPREFERENCES_AVOID_DAEMON" : @"1"};
+            job.EnvironmentVariables = @{ @"__CFPREFERENCES_AVOID_DAEMON" : @"1" };
 
             [[AHLaunchCtl sharedController] add:job toDomain:kAHGlobalLaunchDaemon error:&error];
         }
@@ -339,8 +361,8 @@ helper_reply:
 {
     NSError *error = nil;
 
-//    NSError *error = [LGAutoPkgrAuthorizer checkAuthorization:authData
-//                                                      command:_cmd];
+    //    NSError *error = [LGAutoPkgrAuthorizer checkAuthorization:authData
+    //                                                      command:_cmd];
 
     if (!error) {
         [[AHLaunchCtl sharedController] remove:kLGAutoPkgrLaunchDaemonPlist fromDomain:kAHGlobalLaunchDaemon error:&error];
@@ -376,27 +398,27 @@ helper_reply:
     task.standardError = task.standardOutput;
 
     [[task.standardOutput fileHandleForReading] setReadabilityHandler:^(NSFileHandle *fh) {
-        NSData *data = fh.availableData;
-        if (data.length) {
-            progress ++;
-            NSString *message = data.taskData_splitLines.firstObject;
-            if (message.length && ![message isEqualToString:@"#"]) {
-                [connection.remoteObjectProxy updateProgress:[message stringByReplacingOccurrencesOfString:@"installer: " withString:@""]
-                                                         progress:progress];
-            }
-
-        }
+      NSData *data = fh.availableData;
+      if (data.length) {
+          progress++;
+          NSString *message = data.taskData_splitLines.firstObject;
+          if (message.length && ![message isEqualToString:@"#"]) {
+              [connection.remoteObjectProxy updateProgress:[message stringByReplacingOccurrencesOfString:@"installer: " withString:@""]
+                                                  progress:progress];
+          }
+      }
     }];
 
     [task setTerminationHandler:^(NSTask *endTask) {
-        NSError *error = [LGError errorFromTask:endTask];
-        reply(error);
+      NSError *error = [LGError errorFromTask:endTask];
+      reply(error);
     }];
 
     [task launch];
 }
 
-- (void)uninstallPackagesWithIdentifiers:(NSArray *)identifiers authorization:(NSData *)authData reply:(uninstallPackageReplyBlock)reply{
+- (void)uninstallPackagesWithIdentifiers:(NSArray *)identifiers authorization:(NSData *)authData reply:(uninstallPackageReplyBlock)reply
+{
 
     NSError *error;
     error = [LGAutoPkgrAuthorizer checkAuthorization:authData command:_cmd];
@@ -408,12 +430,13 @@ helper_reply:
     LGPackageRemover *remover = [[LGPackageRemover alloc] init];
     remover.dryRun = NO;
 
-    [remover removePackagesWithIdentifiers:identifiers progress:^(NSString *message, double progress) {
+    [remover removePackagesWithIdentifiers:identifiers
+                                  progress:^(NSString *message, double progress) {
 #if DEBUG
-        syslog(LOG_INFO, "[UNINSTALLER]: %s", message.UTF8String);
+                                    syslog(LOG_INFO, "[UNINSTALLER]: %s", message.UTF8String);
 #endif
-        // TODO: send progress updates
-    } reply:reply];
+                                    // TODO: send progress updates
+                                  } reply:reply];
 }
 
 #pragma mark - Life Cycle
@@ -447,7 +470,8 @@ helper_reply:
     reply(error);
 }
 
-- (void)uninstall:(NSData *)authData removeKeychains:(BOOL)removeKeychains packages:(NSArray *)packageIDs reply:(void (^)(NSError *))reply {
+- (void)uninstall:(NSData *)authData removeKeychains:(BOOL)removeKeychains packages:(NSArray *)packageIDs reply:(void (^)(NSError *))reply
+{
     NSError *error;
 
     /*////////////////////////////////////////////////////////////////////
@@ -468,17 +492,17 @@ helper_reply:
 
         NSArray *keyFiles = [[manager contentsOfDirectoryAtPath:kLGEncryptedKeysParentDirectory
                                                           error:nil]
-                             filteredArrayUsingPredicate:predicate];
+            filteredArrayUsingPredicate:predicate];
 
         if (keyFiles.count) {
             NSString *encryptedKeyFile = [NSString stringWithFormat:@"%@/UID_%d",
-                                         kLGEncryptedKeysParentDirectory,
-                                         self.connection.effectiveUserIdentifier];
+                                                                    kLGEncryptedKeysParentDirectory,
+                                                                    self.connection.effectiveUserIdentifier];
             if (keyFiles.count == 1) {
                 /* If the count is 1 there's only one user
                  * remove the whole directory & common encryption key */
                 if ([manager fileExistsAtPath:encryptedKeyFile]) {
-                    if([manager removeItemAtPath:kLGEncryptedKeysParentDirectory error:nil]){
+                    if ([manager removeItemAtPath:kLGEncryptedKeysParentDirectory error:nil]) {
                         /* Remove keychain item. */
                         AHKeychainItem *item = [self commonDecryptionKeychainItem];
                         [[AHKeychain systemKeychain] deleteItem:item error:&error];
@@ -494,7 +518,7 @@ helper_reply:
     /*////////////////////////////////////////////////////////////////////
     //   Remove Integrations                                            //
     ////////////////////////////////////////////////////////////////////*/
-        // TODO: remove selected packages...
+    // TODO: remove selected packages...
 
     reply(error);
 }
@@ -503,7 +527,7 @@ helper_reply:
 - (void)registerMainApplication:(void (^)(BOOL resign))resign;
 {
     NSXPCConnection *connection = self.connection;
-    if(connection && !self.relayConnection){
+    if (connection && !self.relayConnection) {
         self.relayConnection = connection;
         self.relayConnection.remoteObjectInterface = [NSXPCInterface interfaceWithProtocol:@protocol(LGProgressDelegate)];
         _resign = resign;
@@ -512,27 +536,28 @@ helper_reply:
     }
 }
 
-- (void)sendMessageToMainApplication:(NSString *)message progress:(double)progress error:(NSError *)error                             state:(LGBackgroundTaskProgressState)state;
+- (void)sendMessageToMainApplication:(NSString *)message progress:(double)progress error:(NSError *)error state:(LGBackgroundTaskProgressState)state;
 {
     if (self.relayConnection) {
         switch (state) {
-            case kLGAutoPkgProgressStart:
-                [self.relayConnection.remoteObjectProxy startProgressWithMessage:message];
-                break;
-            case kLGAutoPkgProgressProcessing:
-                [self.relayConnection.remoteObjectProxy updateProgress:message progress:progress];
-                break;
-            case kLGAutoPkgProgressComplete:
-                [self.relayConnection.remoteObjectProxy stopProgress:error];
-                break;
-            default:
-                break;
+        case kLGAutoPkgProgressStart:
+            [self.relayConnection.remoteObjectProxy startProgressWithMessage:message];
+            break;
+        case kLGAutoPkgProgressProcessing:
+            [self.relayConnection.remoteObjectProxy updateProgress:message progress:progress];
+            break;
+        case kLGAutoPkgProgressComplete:
+            [self.relayConnection.remoteObjectProxy stopProgress:error];
+            break;
+        default:
+            break;
         }
     }
 }
 
 #pragma mark - Private
-- (AHKeychainItem *)commonDecryptionKeychainItem {
+- (AHKeychainItem *)commonDecryptionKeychainItem
+{
     AHKeychainItem *item = [[AHKeychainItem alloc] init];
     item.service = @"AutoPkgr Common Decryption";
     item.account = @"com.lindegroup.AutoPkgr.decryption.key";
