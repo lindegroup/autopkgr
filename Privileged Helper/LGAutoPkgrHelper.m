@@ -135,178 +135,190 @@ static NSString *const kLGEncryptedKeysParentDirectory = @"/var/db/.AutoPkgrKeys
 - (void)getKeychainKey:(void (^)(NSString *, NSError *))reply
 {
     NSXPCConnection *connection = self.connection;
+
+    dispatch_async(dispatch_get_main_queue(), ^{
+        NSAssert([NSThread isMainThread], @"Not main thread");
+
 #if DEBUG
-    syslog(LOG_ALERT, "Connection querying keychain %s : EUID: %d", connection.description.UTF8String, connection.effectiveUserIdentifier);
+        syslog(LOG_ALERT, "Connection querying keychain %s : EUID: %d", connection.description.UTF8String, connection.effectiveUserIdentifier);
 #endif
-    // Effective user id used to determine location of the user's AutoPkgr keychain.
-    uid_t euid = connection.effectiveUserIdentifier;
-    struct passwd *pw = getpwuid(euid);
-    if (euid == 0) {
-        [connection invalidate];
-        return;
-    }
-
-    // 10.8 has displayed instability on some systems when accessing the system keychain
-    // in rapid succession. So reluctantly we need to bypass direct calls to direct calls
-    // to the Security framewor in this method, and simply store the keyChain data in memory
-    // for the life of the helper.
-    // @note the getKeychain: call is still protected by codesign checking done when accepting new connecions so has "almost" the same level of security.
-    if (floor(NSFoundationVersionNumber) < NSFoundationVersionNumber10_9) {
-        if (_keyChainKey) {
-            syslog(LOG_ALERT, "[ 10.8 ] Helper Found keychain key in memory.");
-            return reply(_keyChainKey, nil);
+        // Effective user id used to determine location of the user's AutoPkgr keychain.
+        uid_t euid = connection.effectiveUserIdentifier;
+        struct passwd *pw = getpwuid(euid);
+        if (euid == 0) {
+            [connection invalidate];
+            return;
         }
-    }
 
-    // Password used to decrypt the keyFile. This password is stored in the System.keychain.
-    NSString *encryptionPassword = nil;
-
-    // Path to current user's keyFile. Encoded with AES256 using the encryption password.
-    NSString *encryptedKeyFile = nil;
-
-    // Data representing the keyFile. This data is encoded
-    NSData *encryptedKeyFileData = nil;
-
-    // The decoded raw data from the keyFile representing the password for the user's keychain.
-    NSData *passwordData = nil;
-
-    // The password for the user's keychain (in string form).
-    NSString *password = nil;
-
-    // Path to the user's AutoPkgr keychain. Located at ~/Library/Keychain/AutoPkgr.keychain.
-    NSString *appKeychainPath = nil;
-
-    // Error.
-    NSError *error = nil;
-
-    // Attributes used to set permissions on the keyFile and it's parent directory.
-    NSDictionary *const attributes = @{
-        NSFilePosixPermissions : [NSNumber numberWithShort:0700], // Owner read-write, others no access.
-        NSFileOwnerAccountID : @(0), // Root
-        NSFileGroupOwnerAccountID : @(0), // Wheel
-    };
-
-    NSFileManager *manager = [NSFileManager defaultManager];
-
-    encryptedKeyFile = [NSString stringWithFormat:@"%@/UID_%d", kLGEncryptedKeysParentDirectory, euid];
-
-    /*///////////////////////////////////////////////////////////////
-    //  Get the encryption password from the System.keychain       //
-    ///////////////////////////////////////////////////////////////*/
-    AHKeychainItem *item = [self commonDecryptionKeychainItem];
-
-    BOOL newEncryptionPassword = NO;
-
-    if ([[AHKeychain systemKeychain] getItem:item error:&error]) {
-        // We found the encryption password.
-        encryptionPassword = item.password;
-    } else if (error.code == errSecItemNotFound) {
-        // The item was not found in the keychain. Create it now.
-
-        // Reset the error so it doesn't inadvertently pass back the wrong message.
-        error = nil;
-
-        // Generate a new encryption password.
-        encryptionPassword = [[NSProcessInfo processInfo] globallyUniqueString];
-        item.password = encryptionPassword;
-
-        if ([[AHKeychain systemKeychain] saveItem:item error:&error]) {
-            // Success, a new common encryption was generated.
-            newEncryptionPassword = YES;
-        } else {
-            // If we can't create the keychain return now. There's nothing more to be done.
-            goto helper_reply;
+        // 10.8 has displayed instability on some systems when accessing the system keychain
+        // in rapid succession. So reluctantly we need to bypass direct calls to direct calls
+        // to the Security framewor in this method, and simply store the keyChain data in memory
+        // for the life of the helper.
+        // @note the getKeychain: call is still protected by codesign checking done when accepting new connecions so has "almost" the same level of security.
+        if (floor(NSFoundationVersionNumber) < NSFoundationVersionNumber10_9) {
+            if (_keyChainKey) {
+                syslog(LOG_ALERT, "[ 10.8 ] Helper Found keychain key in memory.");
+                return reply(_keyChainKey, nil);
+            }
         }
-    } else {
-        // some other error occurred when trying to find the item ???
-        goto helper_reply;
-    }
 
-    appKeychainPath = [NSString stringWithFormat:@"%s/Library/Keychains/AutoPkgr.keychain", pw->pw_dir];
+        // Password used to decrypt the keyFile. This password is stored in the System.keychain.
+        NSString *encryptionPassword = nil;
 
-    // Check for an old version of the keychainKey.
-    BOOL keyFileExists = [manager fileExistsAtPath:encryptedKeyFile];
+        // Path to current user's keyFile. Encoded with AES256 using the encryption password.
+        NSString *encryptedKeyFile = nil;
 
-    // Check to see if user's AutoPkgr keychain exists.
-    BOOL usersKeychainExists = [manager fileExistsAtPath:appKeychainPath];
+        // Data representing the keyFile. This data is encoded
+        NSData *encryptedKeyFileData = nil;
 
-    // If the user's AutoPkgr keychain has been deleted, try to remove the keyFile and start fresh.
-    BOOL check1 = !usersKeychainExists && keyFileExists;
+        // The decoded raw data from the keyFile representing the password for the user's keychain.
+        NSData *passwordData = nil;
 
-    // If a new encryption key was generated, but an old keyFile exists.
-    BOOL check2 = keyFileExists && newEncryptionPassword;
+        // The password for the user's keychain (in string form).
+        NSString *password = nil;
 
-    // If either condition is true, remove the old keyFile.
-    if (check1 || check2) {
-        syslog(LOG_ALERT, "Removing unusable keyFile...");
-        if (![manager removeItemAtPath:encryptedKeyFile error:nil]) {
-            syslog(LOG_ALERT, "There was a problem removing the encrypted key file");
-        }
-    }
+        // Path to the user's AutoPkgr keychain. Located at ~/Library/Keychain/AutoPkgr.keychain.
+        NSString *appKeychainPath = nil;
 
-    /*////////////////////////////////////////////////////////////////////
-    //   Decrypt the keyFile in a root protected space                  //
-    ////////////////////////////////////////////////////////////////////*/
-    if (![manager fileExistsAtPath:encryptedKeyFile]) {
-        // The keyFile does not exist, create one now.
+        // Error.
+        NSError *error = nil;
 
-        BOOL isDir;
-        BOOL directoryExists = [manager fileExistsAtPath:kLGEncryptedKeysParentDirectory isDirectory:&isDir];
+        // Attributes used to set permissions on the keyFile and it's parent directory.
+        NSDictionary *const attributes = @{
+                                           NSFilePosixPermissions : [NSNumber numberWithShort:0700], // Owner read-write, others no access.
+                                           NSFileOwnerAccountID : @(0), // Root
+                                           NSFileGroupOwnerAccountID : @(0), // Wheel
+                                           };
 
-        if (!directoryExists) {
-            if (![manager createDirectoryAtPath:kLGEncryptedKeysParentDirectory withIntermediateDirectories:NO attributes:attributes error:&error]) {
-                // If we can't create this directory something is wrong, return now.
-                syslog(LOG_ALERT, "[ERROR] Could not create the parent directory for the encrypted key files.");
+        NSFileManager *manager = [NSFileManager defaultManager];
+
+        encryptedKeyFile = [NSString stringWithFormat:@"%@/UID_%d", kLGEncryptedKeysParentDirectory, euid];
+
+        /*///////////////////////////////////////////////////////////////
+         //  Get the encryption password from the System.keychain       //
+         ///////////////////////////////////////////////////////////////*/
+        AHKeychainItem *item = [self commonDecryptionKeychainItem];
+
+        BOOL newEncryptionPassword = NO;
+
+        NSRecursiveLock *lock = [[NSRecursiveLock alloc] init];
+
+        [lock lock];
+        AHKeychain *keychain = [AHKeychain systemKeychain];
+        BOOL getSuccess = [keychain getItem:item error:&error];
+        [lock unlock];
+
+        if (getSuccess) {
+            // We found the encryption password.
+            encryptionPassword = item.password;
+        } else if (error.code == errSecItemNotFound) {
+            // The item was not found in the keychain. Create it now.
+
+            // Reset the error so it doesn't inadvertently pass back the wrong message.
+            error = nil;
+
+            // Generate a new encryption password.
+            encryptionPassword = [[NSProcessInfo processInfo] globallyUniqueString];
+            item.password = encryptionPassword;
+
+            if ([[AHKeychain systemKeychain] saveItem:item error:&error]) {
+                // Success, a new common encryption was generated.
+                newEncryptionPassword = YES;
+            } else {
+                // If we can't create the keychain return now. There's nothing more to be done.
                 goto helper_reply;
             }
-        } else if (directoryExists && !isDir) {
-            // The path exists but is not a directory, escape!.
-            syslog(LOG_ALERT, "[ERROR] The %s exists, but it is not a directory, it needs to be repaired.", kLGEncryptedKeysParentDirectory.UTF8String);
+        } else {
+            // some other error occurred when trying to find the item ???
             goto helper_reply;
         }
 
-        // Generate some random data to use as the password for the user's keychain.
-        passwordData = [RNCryptor randomDataOfLength:48];
+        appKeychainPath = [NSString stringWithFormat:@"%s/Library/Keychains/AutoPkgr.keychain", pw->pw_dir];
 
-        // Encrypt the random data into AES256.
-        encryptedKeyFileData = [RNEncryptor encryptData:passwordData
-                                           withSettings:kRNCryptorAES256Settings
-                                               password:encryptionPassword
-                                                  error:&error];
+        // Check for an old version of the keychainKey.
+        BOOL keyFileExists = [manager fileExistsAtPath:encryptedKeyFile];
 
-        // Write the encrypted data to the keyFile.
-        [encryptedKeyFileData writeToFile:encryptedKeyFile atomically:YES];
+        // Check to see if user's AutoPkgr keychain exists.
+        BOOL usersKeychainExists = [manager fileExistsAtPath:appKeychainPath];
 
-    } else {
-        // The keyFile is there.
+        // If the user's AutoPkgr keychain has been deleted, try to remove the keyFile and start fresh.
+        BOOL check1 = !usersKeychainExists && keyFileExists;
 
-        // Read in the encrypted data of the keyFile.
-        encryptedKeyFileData = [NSData dataWithContentsOfFile:encryptedKeyFile];
+        // If a new encryption key was generated, but an old keyFile exists.
+        BOOL check2 = keyFileExists && newEncryptionPassword;
 
-        // Decrypt the data.
-        passwordData = [RNDecryptor decryptData:encryptedKeyFileData
-                                   withSettings:kRNCryptorAES256Settings
-                                       password:encryptionPassword
-                                          error:&error];
-    }
-
-    // Reset the attributes of the file to root only access.
-    if (![manager setAttributes:attributes ofItemAtPath:encryptedKeyFile error:nil]) {
-        syslog(LOG_ALERT, "[ERROR] A problem was encountered updating keyFile's permissions.");
-    }
-
-    if (passwordData) {
-        // set the password as the data description.
-        password = passwordData.description;
-    }
-
-helper_reply:
-    if (floor(NSFoundationVersionNumber) < NSFoundationVersionNumber10_9) {
-        if (password) {
-            _keyChainKey = password;
+        // If either condition is true, remove the old keyFile.
+        if (check1 || check2) {
+            syslog(LOG_ALERT, "Removing unusable keyFile...");
+            if (![manager removeItemAtPath:encryptedKeyFile error:nil]) {
+                syslog(LOG_ALERT, "There was a problem removing the encrypted key file");
+            }
         }
-    }
-    reply(password, error);
+
+        /*////////////////////////////////////////////////////////////////////
+         //   Decrypt the keyFile in a root protected space                  //
+         ////////////////////////////////////////////////////////////////////*/
+        if (![manager fileExistsAtPath:encryptedKeyFile]) {
+            // The keyFile does not exist, create one now.
+
+            BOOL isDir;
+            BOOL directoryExists = [manager fileExistsAtPath:kLGEncryptedKeysParentDirectory isDirectory:&isDir];
+
+            if (!directoryExists) {
+                if (![manager createDirectoryAtPath:kLGEncryptedKeysParentDirectory withIntermediateDirectories:NO attributes:attributes error:&error]) {
+                    // If we can't create this directory something is wrong, return now.
+                    syslog(LOG_ALERT, "[ERROR] Could not create the parent directory for the encrypted key files.");
+                    goto helper_reply;
+                }
+            } else if (directoryExists && !isDir) {
+                // The path exists but is not a directory, escape!.
+                syslog(LOG_ALERT, "[ERROR] The %s exists, but it is not a directory, it needs to be repaired.", kLGEncryptedKeysParentDirectory.UTF8String);
+                goto helper_reply;
+            }
+
+            // Generate some random data to use as the password for the user's keychain.
+            passwordData = [RNCryptor randomDataOfLength:48];
+
+            // Encrypt the random data into AES256.
+            encryptedKeyFileData = [RNEncryptor encryptData:passwordData
+                                               withSettings:kRNCryptorAES256Settings
+                                                   password:encryptionPassword
+                                                      error:&error];
+
+            // Write the encrypted data to the keyFile.
+            [encryptedKeyFileData writeToFile:encryptedKeyFile atomically:YES];
+
+        } else {
+            // The keyFile is there.
+
+            // Read in the encrypted data of the keyFile.
+            encryptedKeyFileData = [NSData dataWithContentsOfFile:encryptedKeyFile];
+            
+            // Decrypt the data.
+            passwordData = [RNDecryptor decryptData:encryptedKeyFileData
+                                       withSettings:kRNCryptorAES256Settings
+                                           password:encryptionPassword
+                                              error:&error];
+        }
+        
+        // Reset the attributes of the file to root only access.
+        if (![manager setAttributes:attributes ofItemAtPath:encryptedKeyFile error:nil]) {
+            syslog(LOG_ALERT, "[ERROR] A problem was encountered updating keyFile's permissions.");
+        }
+        
+        if (passwordData) {
+            // set the password as the data description.
+            password = passwordData.description;
+        }
+        
+    helper_reply:
+        if (floor(NSFoundationVersionNumber) < NSFoundationVersionNumber10_9) {
+            if (password) {
+                _keyChainKey = password;
+            }
+        }
+        reply(password, error);
+    });
 }
 
 #pragma mark - AutoPkgr Schedule
