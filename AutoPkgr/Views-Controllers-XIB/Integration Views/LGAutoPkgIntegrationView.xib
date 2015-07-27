@@ -49,8 +49,9 @@
                                 </textFieldCell>
                                 <connections>
                                     <binding destination="-2" name="enabled" keyPath="self.useCustomProxies" id="k65-44-6Mx"/>
-                                    <binding destination="oEY-e7-qCZ" name="value" keyPath="values.HTTP_PROXY" id="RlK-JX-Va4">
+                                    <binding destination="oEY-e7-qCZ" name="value" keyPath="values.HTTP_PROXY" id="Vf8-4E-bKf">
                                         <dictionary key="options">
+                                            <bool key="NSContinuouslyUpdatesValue" value="YES"/>
                                             <string key="NSNullPlaceholder">http://username:password@proxy:8080</string>
                                         </dictionary>
                                     </binding>
@@ -65,8 +66,9 @@
                                 </textFieldCell>
                                 <connections>
                                     <binding destination="-2" name="enabled" keyPath="self.useCustomProxies" id="mZq-iw-lzj"/>
-                                    <binding destination="oEY-e7-qCZ" name="value" keyPath="values.HTTPS_PROXY" id="R7v-n2-hFc">
+                                    <binding destination="oEY-e7-qCZ" name="value" keyPath="values.HTTPS_PROXY" id="Zpn-pz-ra4">
                                         <dictionary key="options">
+                                            <bool key="NSContinuouslyUpdatesValue" value="YES"/>
                                             <string key="NSNullPlaceholder">http://username:password@proxy:8080</string>
                                         </dictionary>
                                     </binding>
@@ -81,8 +83,9 @@
                                 </textFieldCell>
                                 <connections>
                                     <binding destination="-2" name="enabled" keyPath="self.useCustomProxies" id="53F-Bc-nXf"/>
-                                    <binding destination="oEY-e7-qCZ" name="value" keyPath="values.NO_PROXY" id="wa3-pL-PLv">
+                                    <binding destination="oEY-e7-qCZ" name="value" keyPath="values.NO_PROXY" id="xL9-cT-bfZ">
                                         <dictionary key="options">
+                                            <bool key="NSContinuouslyUpdatesValue" value="YES"/>
                                             <string key="NSNullPlaceholder">.local,10.0.0.0/24,.mylocaldomain.com</string>
                                         </dictionary>
                                     </binding>
