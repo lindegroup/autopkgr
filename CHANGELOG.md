@@ -10,6 +10,7 @@ All notable changes to this project will be documented in this file. This projec
 
 ### Fixed
 - Fixed a bug that would cause proxy settings to be displayed incorrectly. (#399)
+- Fixed a bug where launchd would not reload in memory schedule.
 
 ## [1.3] - 2015-05-08
 
