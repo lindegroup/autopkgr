@@ -327,6 +327,11 @@ helper_reply:
              * app running in a Acqua session. */
             job.EnvironmentVariables = @{@"__CFPREFERENCES_AVOID_DAEMON" : @"1"};
 
+            if (jobIsRunning(job.Label, kAHGlobalLaunchDaemon)) {
+                syslog(LOG_ALERT, "Reloading current schedule.");
+                [[AHLaunchCtl sharedController] unload:job.Label inDomain:kAHGlobalLaunchDaemon error:nil];
+            }
+
             [[AHLaunchCtl sharedController] add:job toDomain:kAHGlobalLaunchDaemon error:&error];
         }
     }
