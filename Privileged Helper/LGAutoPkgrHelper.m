@@ -45,6 +45,17 @@ static const NSTimeInterval kHelperCheckInterval = 1.0; // how often to check wh
 // Parent directory for all of the keyFiles. Each AutoPkgr user has a unique file.
 static NSString *const kLGEncryptedKeysParentDirectory = @"/var/db/.AutoPkgrKeys";
 
+static dispatch_queue_t autopkgr_kc_access_synchronizer_queue()
+{
+    static dispatch_queue_t dispatch_queue;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        dispatch_queue = dispatch_queue_create("com.lindegroup.autopkgr.helper.kcaccess.queue", DISPATCH_QUEUE_SERIAL);
+    });
+
+    return dispatch_queue;
+}
+
 @interface LGAutoPkgrHelper () <HelperAgent, NSXPCListenerDelegate>
 @property (atomic, strong, readwrite) NSXPCListener *listener;
 @property (readonly) NSXPCConnection *connection;
@@ -134,22 +145,10 @@ static NSString *const kLGEncryptedKeysParentDirectory = @"/var/db/.AutoPkgrKeys
 #pragma mark - Password
 - (void)getKeychainKey:(void (^)(NSString *, NSError *))reply
 {
+    dispatch_queue_t replyQueueu = dispatch_get_current_queue();
     NSXPCConnection *connection = self.connection;
 
-    dispatch_async(dispatch_get_main_queue(), ^{
-        NSAssert([NSThread isMainThread], @"Not main thread");
-
-#if DEBUG
-        syslog(LOG_ALERT, "Connection querying keychain %s : EUID: %d", connection.description.UTF8String, connection.effectiveUserIdentifier);
-#endif
-        // Effective user id used to determine location of the user's AutoPkgr keychain.
-        uid_t euid = connection.effectiveUserIdentifier;
-        struct passwd *pw = getpwuid(euid);
-        if (euid == 0) {
-            [connection invalidate];
-            return;
-        }
-
+    dispatch_sync(autopkgr_kc_access_synchronizer_queue(), ^{
         // 10.8 has displayed instability on some systems when accessing the system keychain
         // in rapid succession. So reluctantly we need to bypass direct calls to direct calls
         // to the Security framewor in this method, and simply store the keyChain data in memory
@@ -160,6 +159,16 @@ static NSString *const kLGEncryptedKeysParentDirectory = @"/var/db/.AutoPkgrKeys
                 syslog(LOG_ALERT, "[ 10.8 ] Helper Found keychain key in memory.");
                 return reply(_keyChainKey, nil);
             }
+        }
+#if DEBUG
+        syslog(LOG_ALERT, "Connection querying keychain %s : EUID: %d", connection.description.UTF8String, connection.effectiveUserIdentifier);
+#endif
+        // Effective user id used to determine location of the user's AutoPkgr keychain.
+        uid_t euid = connection.effectiveUserIdentifier;
+        struct passwd *pw = getpwuid(euid);
+        if (euid == 0) {
+            [connection invalidate];
+            return;
         }
 
         // Password used to decrypt the keyFile. This password is stored in the System.keychain.
@@ -201,12 +210,8 @@ static NSString *const kLGEncryptedKeysParentDirectory = @"/var/db/.AutoPkgrKeys
 
         BOOL newEncryptionPassword = NO;
 
-        NSRecursiveLock *lock = [[NSRecursiveLock alloc] init];
-
-        [lock lock];
         AHKeychain *keychain = [AHKeychain systemKeychain];
         BOOL getSuccess = [keychain getItem:item error:&error];
-        [lock unlock];
 
         if (getSuccess) {
             // We found the encryption password.
@@ -317,7 +322,11 @@ static NSString *const kLGEncryptedKeysParentDirectory = @"/var/db/.AutoPkgrKeys
                 _keyChainKey = password;
             }
         }
-        reply(password, error);
+
+        dispatch_async(replyQueueu, ^{
+            syslog(LOG_ALERT, "Sending keychain key to AutoPkgr.");
+            reply(password, error);
+        });
     });
 }
 
