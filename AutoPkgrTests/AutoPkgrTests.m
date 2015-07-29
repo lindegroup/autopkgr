@@ -27,6 +27,7 @@
 
 #import "LGAutoPkgTask.h"
 #import "LGAutoPkgReport.h"
+#import "LGAutoPkgErrorHandler.h"
 
 #import "LGPasswords.h"
 #import "LGServerCredentials.h"
@@ -396,7 +397,35 @@ static const BOOL _TEST_PRIVILEGED_HELPER = YES;
 
 }
 
-- (void)testSlackNotification {
+- (void)testIsNetworkOpCheck {
+    // Are
+    XCTAssertTrue([self isNetworkOperation:kLGAutoPkgRun], @"Run should be ");
+    XCTAssertTrue([self isNetworkOperation:kLGAutoPkgSearch], @"Search should be");
+    XCTAssertTrue([self isNetworkOperation:kLGAutoPkgRepoAdd], @"Repo Add should be");
+    XCTAssertTrue([self isNetworkOperation:kLGAutoPkgRepoUpdate], @"Repo Update should be");
+
+    // Are not.
+    XCTAssertFalse([self isNetworkOperation:kLGAutoPkgMakeOverride], @"Repo List should not be");
+    XCTAssertFalse([self isNetworkOperation:kLGAutoPkgInfo], @"Repo List should not be");
+    XCTAssertFalse([self isNetworkOperation:kLGAutoPkgRepoDelete], @"Repo List should not be");
+    XCTAssertFalse([self isNetworkOperation:kLGAutoPkgProcessorInfo], @"Repo List should not be");
+    XCTAssertFalse([self isNetworkOperation:kLGAutoPkgListProcessors], @"Repo List should not be");
+
+    XCTAssertFalse([self isNetworkOperation:kLGAutoPkgRepoList], @"Repo List should not be");
+    XCTAssertFalse([self isNetworkOperation:kLGAutoPkgVersion], @"Version should not be");
+}
+
+- (BOOL)isNetworkOperation:(LGAutoPkgVerb)verb
+{
+    NSInteger ck = (kLGAutoPkgRepoAdd | kLGAutoPkgRepoUpdate | kLGAutoPkgRun | kLGAutoPkgSearch );
+
+    BOOL isNetworkOperation = verb & ck;
+
+    return isNetworkOperation;
+}
+
+
+-(void)testSlackNotification {
     id<LGNotificationServiceProtocol>notification = [[LGSlackNotification alloc] initWithReport:[self notificationReport]];
     XCTestExpectation *expectation = [self expectationWithDescription:quick_formatString(@"Test %@", [notification.class serviceDescription])];
 
