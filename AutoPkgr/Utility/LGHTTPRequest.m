@@ -36,11 +36,50 @@
     [self resetCredentials];
 }
 
+- (void)retrieveDistributionPoints2:(LGHTTPCredential *)credential
+                              reply:(void (^)(NSDictionary *distributionPoints, NSError *error))reply;
+{
+    NSLog(@"server = %@", credential.serverURL);
+    
+    AFHTTPRequestOperationManager *manager = [[AFHTTPRequestOperationManager alloc] initWithBaseURL:credential.serverURL];
+
+    manager.requestSerializer = [AFJSONRequestSerializer serializer];
+    [manager.requestSerializer setValue:@"application/json" forHTTPHeaderField:@"Accept"];
+
+    manager.requestSerializer.timeoutInterval = 5.0;
+    manager.securityPolicy = [AFSecurityPolicy defaultPolicy];
+    if (credential.sslTrustSetting & (kLGSSLTrustUserExplicitTrust | kLGSSLTrustUserConfirmedTrust)) {
+        // Even in the event the user has the certificate set to trust in their keychain
+        // that setting doesn't seem to get picked up by python-jss' request module so set verify to NO
+        manager.securityPolicy.allowInvalidCertificates = YES;
+        manager.securityPolicy.validatesCertificateChain = NO;
+    }
+    manager.credential = credential.credential;
+    manager.responseSerializer = [AFJSONResponseSerializer serializer];
+
+    // As of 7/29/15 JAMF cloud is returning json data as text/plain
+    // so handle that too.
+    [manager.responseSerializer setAcceptableContentTypes:[NSSet setWithObjects:
+                                                           @"application/json",
+                                                           @"text/plain", nil]];
+
+    NSString *fullPath = [credential.serverURL.path
+                          stringByAppendingPathComponent:@"JSSResource/distributionpoints"];
+
+    [manager GET:fullPath parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        reply(responseObject, nil);
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        reply(nil, error);
+    }];
+}
+
 - (void)retrieveDistributionPoints:(LGHTTPCredential *)credential
                              reply:(void (^)(NSDictionary *distributionPoints, NSError *error))reply;
 {
     // Setup the request
-    NSString *distPointAddress = [credential.server stringByAppendingPathComponent:@"JSSResource/distributionpoints"];
+    NSMutableString *distPointAddress = [credential.server.trailingSlashRemoved mutableCopy];
+    [ distPointAddress appendString:@"/JSSResource/distributionpoints" ];
+
     NSURL *url = [NSURL URLWithString:distPointAddress];
 
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
@@ -62,6 +101,16 @@
 
     operation.securityPolicy = policy;
 
+    [operation setWillSendRequestForAuthenticationChallengeBlock:^(NSURLConnection *connection, NSURLAuthenticationChallenge *challenge) {
+        if ([challenge.protectionSpace.authenticationMethod isEqualToString:NSURLAuthenticationMethodServerTrust]){
+            [credential handleCertificateTrustChallenge:challenge reply:^(LGSSLTrustSettings trust) {}];
+        } else if (credential.credential && challenge.previousFailureCount < 1) {
+            [challenge.sender useCredential:credential.credential forAuthenticationChallenge:challenge];
+        } else {
+            [[challenge sender] continueWithoutCredentialForAuthenticationChallenge:challenge];
+        }
+    }];
+    
     [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSError *error = nil;
 

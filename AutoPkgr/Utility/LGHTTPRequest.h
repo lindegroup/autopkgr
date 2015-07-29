@@ -27,4 +27,7 @@
 - (void)retrieveDistributionPoints:(LGHTTPCredential *)credential
                              reply:(void (^)(NSDictionary *distributionPoints, NSError *error))reply;
 
+- (void)retrieveDistributionPoints2:(LGHTTPCredential *)credential
+                              reply:(void (^)(NSDictionary *distributionPoints, NSError *error))reply;
+
 @end
