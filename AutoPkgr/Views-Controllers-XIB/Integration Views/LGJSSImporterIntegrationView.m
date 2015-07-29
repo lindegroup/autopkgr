@@ -321,9 +321,10 @@ static NSPredicate *jdsFilterPredicate()
     // and we'll strip them out here.
 
     NSPredicate *customDistPointsPredicate = [NSPredicate predicateWithFormat:@"not %K == nil", kLGJSSDistPointTypeKey];
+
     NSArray *customDistPoints = [_defaults.JSSRepos filteredArrayUsingPredicate:customDistPointsPredicate];
 
-    newRepos = customDistPoints.mutableCopy;
+    newRepos = customDistPoints.mutableCopy ?: [NSMutableArray new];
 
     if (dictArray) {
         for (NSDictionary *repo in dictArray) {
