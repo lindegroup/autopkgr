@@ -82,7 +82,7 @@ static NSPredicate *jdsFilterPredicate()
         // have an issue when the base url is double slashed. Though theoritically
         // it doesn't make sense, it's an easy enough fix to apply here by looking
         // for a trailing slash and simply removing that.
-        NSString *url = sender.stringValue.trailingSlashRemoved;
+        NSString *url = sender.stringValue;
         sender.stringValue = url;
 
         if (!_portTester) {
@@ -94,19 +94,21 @@ static NSPredicate *jdsFilterPredicate()
             [self stopStatusUpdate:nil];
             // If we got a redirect, update the sender to the new url.
             if (redirect.length && ([url isEqualToString:redirect] == NO)) {
-                sender.stringValue = redirect.trailingSlashRemoved;
+                sender.stringValue = redirect;
             }
         }];
     }
 
     // if all settings have been removed clear out the JSS_REPOS key too.
-    if (!_jssAPIPasswordTF.safe_stringValue && !_jssAPIUsernameTF.safe_stringValue && !_jssURLTF.safe_stringValue) {
+    else if (!_jssAPIPasswordTF.safe_stringValue && !_jssAPIUsernameTF.safe_stringValue && !_jssURLTF.safe_stringValue) {
         _defaults.JSSRepos = nil;
         _jssStatusLight.image = [NSImage LGStatusNone];
         _jssStatusLight.hidden = YES;
         [self saveDefaults];
 
-    } else if (![_defaults.JSSAPIPassword isEqualToString:_jssAPIPasswordTF.safe_stringValue] || ![_defaults.JSSAPIUsername isEqualToString:_jssAPIUsernameTF.safe_stringValue] || ![_defaults.JSSURL isEqualToString:_jssURLTF.safe_stringValue]) {
+    }
+
+    else if (![_defaults.JSSAPIPassword isEqualToString:_jssAPIPasswordTF.safe_stringValue] || ![_defaults.JSSAPIUsername isEqualToString:_jssAPIUsernameTF.safe_stringValue] || ![_defaults.JSSURL isEqualToString:_jssURLTF.safe_stringValue]) {
 
         // Update server status and reset the target action to check credentials...
         _jssStatusLight.image = [NSImage LGStatusPartiallyAvailable];
@@ -192,6 +194,7 @@ static NSPredicate *jdsFilterPredicate()
         [_jssStatusSpinner setHidden:YES];
         [_jssStatusSpinner stopAnimation:self];
         if (error) {
+            NSLog(@"JSS Error: [%ld] %@", error.code, error.localizedDescription);
             [self.integration.progressDelegate stopProgress:error];
             [_jssStatusLight setImage:[NSImage LGStatusUnavailable]];
         }
@@ -281,7 +284,7 @@ static NSPredicate *jdsFilterPredicate()
                                                      @"LocalizableJSSImporter",
                                                      @"button title to disable ssl verificaiton");
 
-    NSString *infoText = NSLocalizedStringFromTable(@"This is most likely due to the certificate being self signed. Choosing \"Disable SSL Verification\" may be required for JSSImporter to function properly.",
+    NSString *infoText = NSLocalizedStringFromTable(@"This is possibly due to the certificate being self signed. Choosing \"Disable SSL Verification\" may be required for JSSImporter to function properly. If you are sure the JSS is using a trusted certificate signed by public Certificate Authority keep SSL verification enabled.",
                                                     @"LocalizableJSSImporter",
                                                     nil);
 

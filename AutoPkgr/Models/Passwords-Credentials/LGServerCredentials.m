@@ -130,6 +130,14 @@
     return _serverURL;
 }
 
+- (NSString *)host {
+    return self.serverURL.host;
+}
+
+- (NSString *)protocol {
+    return self.serverURL.scheme;
+}
+
 - (NSInteger)port
 {
     return (_port != 0) ? _port : self.serverURL.port.integerValue;
@@ -202,12 +210,13 @@
             }
         }
 
+        [[LGCertificateStore sharedStorage] setTrust:_sslTrustSetting forHost:self.host];
+
         if (proceed) {
             NSURLCredential *credential = [NSURLCredential credentialForTrust:challenge.protectionSpace.serverTrust];
 
             [challenge.sender useCredential:credential forAuthenticationChallenge:challenge];
 
-            [[LGCertificateStore sharedStorage] setTrust:_sslTrustSetting forHost:self.host];
             [[LGCertificateStore sharedStorage] setChallenge:challenge forHost:self.host];
 
         } else {
@@ -229,8 +238,9 @@
     }
 
     // String encode the path.
-    path = [path stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-    NSURL *url = [NSURL URLWithString:path relativeToURL:self.serverURL];
+    NSString *fullURL = [[self.server stringByAppendingPathComponent:path] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+
+    NSURL *url = [NSURL URLWithString:fullURL];
 
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
     request.timeoutInterval = 10.0;
@@ -269,10 +279,12 @@
     }];
 
     [op setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
+        DLog(@"Successfully checked credentials for %@ at %@", self.user, self.server);
         purgeProtectedSpace();
         reply(self, authWasChallenged ? kLGCredentialChallengeSuccess : kLGCredentialsNotChallenged, nil);
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         purgeProtectedSpace();
+        DLog(@"Credential verification failed for %@ at %@. Error: %@", self.user, self.server, error.localizedDescription);
         reply(self, kLGCredentialChallengeFailed, error);
     }];
 
