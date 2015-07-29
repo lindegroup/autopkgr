@@ -43,17 +43,17 @@ typedef NS_OPTIONS(NSInteger, LGAutoPkgVerb) {
     kLGAutoPkgInfo = 1 << 4,
 
     // repo verbs
-    kLGAutoPkgRepoAdd = 1 << 10,
-    kLGAutoPkgRepoDelete = 1 << 11,
-    kLGAutoPkgRepoUpdate = 1 << 12,
-    kLGAutoPkgRepoList = 1 << 13,
+    kLGAutoPkgRepoAdd = 1 << 5,
+    kLGAutoPkgRepoDelete = 1 << 6,
+    kLGAutoPkgRepoUpdate = 1 << 7,
+    kLGAutoPkgRepoList = 1 << 8,
 
     // processor verbs
-    kLGAutoPkgProcessorInfo = 1 << 20,
-    kLGAutoPkgListProcessors = 1 << 21,
+    kLGAutoPkgProcessorInfo = 1 << 9,
+    kLGAutoPkgListProcessors = 1 << 10,
 
     // other verbs
-    kLGAutoPkgVersion = 1 << 30,
+    kLGAutoPkgVersion = 1 << 11,
 };
 
 @interface LGAutoPkgErrorHandler : NSObject
