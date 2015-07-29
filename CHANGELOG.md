@@ -4,15 +4,16 @@ All notable changes to this project will be documented in this file. This projec
 
 ## [Unreleased][unreleased]
 
-### Added  
+### Added
+- Now supports GitHub two-factor authentication for generation of API tokens. (#393)
 
-### Changed  
+### Changed
 
 ### Fixed
 - Fixed a bug that would cause proxy settings to be displayed incorrectly. (#399)
 - Fixed a bug where schedule changes would not reload in-memory launchd schedule.
 - Fixed a bug that would prevent JSS_REPOS defaults from getting set.
-- 
+
 ## [1.3] - 2015-05-08
 
 ### Added
