@@ -150,13 +150,18 @@ static NSArray *_popularRepos;
 
 - (void)install:(void (^)(NSError *))reply
 {
-    [LGAutoPkgTask repoAdd:_cloneURL.absoluteString reply:^(NSError *error) {
-        _activeRepos = [LGAutoPkgTask repoList];
-        if (!error) {
-            [self statusDidChange:kLGAutoPkgRepoUpToDate];
-        }
-        reply(error);
-    }];
+    _activeRepos = [LGAutoPkgTask repoList];
+    if (!self.isInstalled) {
+        [LGAutoPkgTask repoAdd:_cloneURL.absoluteString reply:^(NSError *error) {
+            _activeRepos = [LGAutoPkgTask repoList];
+            if (!error) {
+                [self statusDidChange:kLGAutoPkgRepoUpToDate];
+            }
+            reply(error);
+        }];
+    } else {
+        reply(nil);
+    }
 }
 
 - (void)remove:(void (^)(NSError *))reply
