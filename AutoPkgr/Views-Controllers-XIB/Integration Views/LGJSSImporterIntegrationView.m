@@ -124,22 +124,22 @@ static NSPredicate *jdsFilterPredicate()
     LGHTTPRequest *request = [[LGHTTPRequest alloc] init];
 
     [request retrieveDistributionPoints2:[self jssCredentials]
-                                  reply:^(NSDictionary *distributionPoints, NSError *error) {
-                                      [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-                                          if (!error) {
-                                              [_jssStatusLight setImage:[NSImage LGStatusAvailable]];
-                                          } else {
-                                              [NSApp presentError:error];
-                                          }
+                                   reply:^(NSDictionary *distributionPoints, NSError *error) {
+        [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+            if (!error) {
+                [_jssStatusLight setImage:[NSImage LGStatusAvailable]];
+            } else if (error){
+                [NSApp presentError:error];
+            }
 
-                                          [self stopStatusUpdate:error];
-                                          NSArray *cleanedArray = [self evaluateJSSRepoDictionaries:distributionPoints];
-                                          if (cleanedArray) {
-                                              _defaults.JSSRepos = cleanedArray;
-                                              [_jssDistributionPointTableView reloadData];
-                                          }
-                                      }];
-                                  }];
+            [self stopStatusUpdate:error];
+            NSArray *cleanedArray = [self evaluateJSSRepoDictionaries:distributionPoints];
+            if (cleanedArray) {
+                _defaults.JSSRepos = cleanedArray;
+                [_jssDistributionPointTableView reloadData];
+            }
+        }];
+    }];
 }
 
 #pragma mark - Progress
@@ -312,13 +312,6 @@ static NSPredicate *jdsFilterPredicate()
     return newRepos.copy;
 }
 
-- (void)saveDefaults
-{
-    _defaults.JSSAPIPassword = _jssAPIPasswordTF.safe_stringValue;
-    _defaults.JSSAPIUsername = _jssAPIUsernameTF.safe_stringValue;
-    _defaults.JSSURL = _jssURLTF.safe_stringValue;
-}
-
 - (NSString *)promptForSharePassword:(NSString *)shareName
 {
     NSLog(@"Prompting for password for distribution point: %@", shareName);
@@ -432,6 +425,8 @@ static NSPredicate *jdsFilterPredicate()
 
 #pragma mark - Text Field delegate
 - (void)controlTextDidChange:(NSNotification *)notification {
+    _jssStatusLight.image = [NSImage LGStatusPartiallyAvailable];
+
     NSTextField *obj = notification.object;
     if ([obj isEqualTo:_jssURLTF]) {
         _defaults.JSSURL = obj.safe_stringValue;
@@ -439,6 +434,35 @@ static NSPredicate *jdsFilterPredicate()
         _defaults.JSSAPIUsername = obj.safe_stringValue;
     } else if ([obj isEqualTo:_jssAPIPasswordTF]) {
         _defaults.JSSAPIPassword = obj.safe_stringValue;
+    }
+}
+
+- (void)controlTextDidEndEditing:(NSNotification *)obj {
+    if ([_jssURLTF isEqualTo:obj.object]) {
+        [self startStatusUpdate];
+        LGTestPort *tester = [[LGTestPort alloc] init];
+        [tester testServerURL:_jssURLTF.stringValue reply:^(BOOL reachable, NSString *redirectedURL) {
+            if (redirectedURL) {
+                NSAlert *alert = [[NSAlert alloc] init];
+                NSString *title = NSLocalizedStringFromTable(@"The server redirected the requested URL.",
+                                                             @"LocalizableJSSImporter",
+                                                             @"alert title when server sends a redirect for JSS");
+
+                NSString *informativeText = NSLocalizedStringFromTable(@"The server redirected the request to\n\n%@\n\nYou should consider using this for the JSS url.",
+                                                                       @"LocalizableJSSImporter",
+                                                                       @"informativeText when server sends a redirect.");
+                alert.messageText = title;
+                alert.informativeText = quick_formatString(informativeText, redirectedURL);
+                [alert addButtonWithTitle:@"Use suggested URL"];
+                [alert addButtonWithTitle:@"Ignore"];
+
+                if([alert runModal] == NSAlertFirstButtonReturn){
+                    _jssURLTF.stringValue = redirectedURL;
+                    _defaults.JSSURL = redirectedURL;
+                }
+            }
+            [self stopStatusUpdate:nil];
+        }];
     }
 }
 

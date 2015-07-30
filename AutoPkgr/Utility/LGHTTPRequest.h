@@ -25,6 +25,10 @@
 @interface LGHTTPRequest : NSObject
 
 - (void)retrieveDistributionPoints:(LGHTTPCredential *)credential
+                              reply:(void (^)(NSDictionary *distributionPoints, NSError *error))reply;
+
+- (void)retrieveDistributionPoints:(LGHTTPCredential *)credential
+                          redirect:(void (^)(NSString *redirect))redirect
                              reply:(void (^)(NSDictionary *distributionPoints, NSError *error))reply;
 
 - (void)retrieveDistributionPoints2:(LGHTTPCredential *)credential

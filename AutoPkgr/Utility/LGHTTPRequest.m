@@ -58,7 +58,8 @@
     manager.responseSerializer = [AFJSONResponseSerializer serializer];
 
     // As of 7/29/15 JAMF cloud is returning json data as text/plain
-    // so handle that too.
+    // But add `application/json` to be future ready, for more approperiate
+    // Content-Types
     [manager.responseSerializer setAcceptableContentTypes:[NSSet setWithObjects:
                                                            @"application/json",
                                                            @"text/plain", nil]];
@@ -74,15 +75,15 @@
 }
 
 - (void)retrieveDistributionPoints:(LGHTTPCredential *)credential
-                             reply:(void (^)(NSDictionary *distributionPoints, NSError *error))reply;
+                             reply:(void (^)(NSDictionary *distributionPoints, NSError *error))reply
 {
-    // Setup the request
     NSMutableString *distPointAddress = [credential.server.trailingSlashRemoved mutableCopy];
     [ distPointAddress appendString:@"/JSSResource/distributionpoints" ];
 
     NSURL *url = [NSURL URLWithString:distPointAddress];
 
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
+
     [request setValue:@"application/xml" forHTTPHeaderField:@"Accept"];
     request.timeoutInterval = 5.0;
 
