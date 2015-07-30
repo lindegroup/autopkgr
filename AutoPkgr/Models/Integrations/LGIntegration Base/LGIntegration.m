@@ -132,14 +132,13 @@ void subclassMustConformToProtocol(id className)
     _progressUpdateBlock = nil;
     _replyErrorBlock = nil;
 
-    /* Repoint so we don't loose reference to the _infoUpdateBlockDict after dealloc */
+    DevLog(@"Starting Dealloc %@", self);
     NSMutableDictionary *releaseDict = _infoUpdateBlocksDict;
-    dispatch_async(autopkgr_integration_synchronizer_queue(), ^{
-      [releaseDict enumerateKeysAndObjectsUsingBlock:^(void (^infoUpdate)(LGIntegrationInfo *), id obj, BOOL * stop) {
+    [releaseDict enumerateKeysAndObjectsUsingBlock:^(void (^infoUpdate)(LGIntegrationInfo *), id obj, BOOL * stop) {
         infoUpdate = nil;
-      }];
-      [releaseDict removeAllObjects];
-    });
+    }];
+    [releaseDict removeAllObjects];
+    DevLog(@"Done Dealloc %@", self);
 }
 
 - (instancetype)init
@@ -261,8 +260,8 @@ void subclassMustConformToProtocol(id className)
     _isRefreshing = YES;
     void (^updateInfoHandlers)() = ^() {
       dispatch_async(autopkgr_integration_synchronizer_queue(), ^{
+        self.info = [[LGIntegrationInfo alloc] initWithIntegration:self];
         if (reply || _infoUpdateHandler) {
-            self.info = [[LGIntegrationInfo alloc] initWithIntegration:self];
             dispatch_async(dispatch_get_main_queue(), ^{
               if (_infoUpdateHandler) {
                   _infoUpdateHandler(_info);
@@ -271,8 +270,6 @@ void subclassMustConformToProtocol(id className)
                   reply(_info);
               }
             });
-        } else {
-            self.info = [[LGIntegrationInfo alloc] initWithIntegration:self];
         }
         _isRefreshing = NO;
       });

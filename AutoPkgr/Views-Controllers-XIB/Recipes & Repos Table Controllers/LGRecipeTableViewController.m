@@ -167,7 +167,7 @@ static NSString *const kLGAutoPkgRecipeCurrentStatusKey = @"currentStatus";
     [_runTaskDictionary setObject:runTask forKey:recipe.Name];
 
     runTask.progressUpdateBlock = ^(NSString *message, double progress) {
-        NSLog(@"%@", message);
+        NSLog(@"Run status: %@", message);
     };
 
     NSIndexSet *rowIdxSet = [[NSIndexSet alloc] initWithIndex:recipeRow];

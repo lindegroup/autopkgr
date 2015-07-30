@@ -126,7 +126,7 @@ static NSString *const SlacksNotificationsEnabledKey = @"SlackNotificationsEnabl
             [manager POST:webHookURL parameters:[self baseParameters:parameters] success:^(AFHTTPRequestOperation *operation, id responseObject) {
                 self.notificatonComplete(nil);
             } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                NSLog(@"%@", operation.responseString);
+                NSLog(@"Error sending Slack notification: %@", operation.responseString);
                 self.notificatonComplete([LGError errorWithResponse:operation.response]);
             }];
         }
