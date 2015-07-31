@@ -114,10 +114,7 @@
 
             __block NSMutableArray *searchResults;
 
-            NSMutableCharacterSet *repoCharacters = [NSMutableCharacterSet alphanumericCharacterSet];
-            [repoCharacters formUnionWithCharacterSet:[NSCharacterSet punctuationCharacterSet]];
-
-            NSCharacterSet *skippedCharacters = [NSCharacterSet whitespaceCharacterSet];
+            NSCharacterSet *whiteSpace = [NSCharacterSet whitespaceAndNewlineCharacterSet];
 
             NSPredicate *skipLinePredicate = [NSPredicate predicateWithFormat:@"SELF BEGINSWITH 'To add' \
                                                                                 or SELF BEGINSWITH '----' \
@@ -125,17 +122,12 @@
 
             [self.dataString enumerateLinesUsingBlock:^(NSString *line, BOOL *stop) {
                     if (![skipLinePredicate evaluateWithObject:line ]) {
-                        NSScanner *scanner = [NSScanner scannerWithString:line];
-                        [scanner setCharactersToBeSkipped:skippedCharacters];
+                        NSArray *array = [line componentsSeparatedByString:@"  "].filtered_noEmptyStrings;
+                        if (array.count == 3) {
+                            NSString *recipe = [array[0] stringByTrimmingCharactersInSet:whiteSpace];
+                            NSString *repo = [array[1] stringByTrimmingCharactersInSet:whiteSpace];
+                            NSString *path = [array[2] stringByTrimmingCharactersInSet:whiteSpace];
 
-                        NSString *recipe, *repo, *path;
-
-                        [scanner scanCharactersFromSet:repoCharacters intoString:&recipe];
-                        [scanner scanCharactersFromSet:repoCharacters intoString:&repo];
-                        [scanner scanCharactersFromSet:repoCharacters intoString:&path];
-
-
-                        if (recipe && repo && path) {
                             if (!searchResults) {
                                 searchResults = [[NSMutableArray alloc] init];
                             }
