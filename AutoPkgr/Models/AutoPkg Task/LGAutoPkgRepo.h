@@ -47,6 +47,15 @@ typedef NS_ENUM(OSStatus, LGAutoPkgRepoStatus) {
 @property (copy) void (^statusChangeBlock)(LGAutoPkgRepoStatus);
 
 /**
+ *  Initialize a repo with a clone url
+ *
+ *  @param cloneURL clone URL
+ *
+ *  @return initialized AutoPkgRepo Object
+ */
+- (instancetype)initWithCloneURL:(NSString *)cloneURL;
+
+/**
  *  Check if there are updates available for the repo.
  *
  *  @param sender Object sending the message. If the sender is set to nil, it will only refresh every 5-10 minuets. You should set this to nil if using in a table view.

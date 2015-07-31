@@ -22,6 +22,7 @@
 #import "LGRecipeTableViewController.h"
 #import "LGRepoTableViewController.h"
 #import "LGAutoPkgTask.h"
+#import "LGAutoPkgRepo.h"
 #import "LGAutoPkgRecipe.h"
 #import "LGRecipeSearch.h"
 #import "LGNotificationManager.h"
@@ -150,14 +151,16 @@
 
 - (IBAction)addAutoPkgRepoURL:(id)sender
 {
-    NSString *repo = [_repoURLToAdd stringValue];
-    [self.progressDelegate startProgressWithMessage:[NSString stringWithFormat:@"Adding %@", repo]];
+    NSString *cloneURL = [_repoURLToAdd stringValue];
+    [self.progressDelegate startProgressWithMessage:[NSString stringWithFormat:@"Adding %@", cloneURL]];
 
-    [LGAutoPkgTask repoAdd:repo reply:^(NSError *error) {
+    LGAutoPkgRepo *repo = [[LGAutoPkgRepo alloc] initWithCloneURL:cloneURL];
+    [repo install:^(NSError *error) {
         [[NSOperationQueue mainQueue] addOperationWithBlock:^{
             [self.progressDelegate stopProgress:error];
         }];
     }];
+
     [_repoURLToAdd setStringValue:@""];
 }
 

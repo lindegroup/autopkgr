@@ -230,13 +230,15 @@
     NSMenu *menu = [[NSMenu alloc] init];
 
     // Update Repo...
-    NSMenuItem *updateItem = [[NSMenuItem alloc] initWithTitle:@"Update This Repo Only"
-                                                        action:@selector(updateRepo:)
-                                                 keyEquivalent:@""];
-    updateItem.target = self;
-    updateItem.representedObject = repo;
+    if (repo.isInstalled) {
+        NSMenuItem *updateItem = [[NSMenuItem alloc] initWithTitle:@"Update This Repo Only"
+                                                            action:@selector(updateRepo:)
+                                                     keyEquivalent:@""];
+        updateItem.target = self;
+        updateItem.representedObject = repo;
 
-    [menu addItem:updateItem];
+        [menu addItem:updateItem];
+    }
 
     // Commits ...
     if (repo.commitsURL) {
