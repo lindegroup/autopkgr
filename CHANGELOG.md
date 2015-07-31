@@ -14,6 +14,7 @@ All notable changes to this project will be documented in this file. This projec
 - Fixed a bug that would cause proxy settings to be displayed incorrectly. (#399)
 - Fixed a bug where schedule changes would not reload in-memory launchd schedule.
 - Fixed a bug that would prevent JSS_REPOS defaults from getting set.
+- Fixed a bug that would result in repos appearing twice in the repo table. (#406)
 
 ## [1.3] - 2015-05-08
 
