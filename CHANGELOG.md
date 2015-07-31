@@ -15,7 +15,7 @@ All notable changes to this project will be documented in this file. This projec
 - Fixed a bug where schedule changes would not reload in-memory launchd schedule.
 - Fixed a bug that would prevent JSS_REPOS defaults from getting set.
 - Fixed a bug that would result in repos appearing twice in the repo table. (#406)
-- Fixed a bug causing search results to be incorrectly formatted.
+- Fixed a bug causing search results to be incorrectly formatted. (#410)
 
 ## [1.3] - 2015-05-08
 
