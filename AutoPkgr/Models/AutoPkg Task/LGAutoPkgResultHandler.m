@@ -114,7 +114,7 @@
 
             __block NSMutableArray *searchResults;
 
-            NSMutableCharacterSet *whiteSpace = [NSCharacterSet whitespaceAndNewlineCharacterSet];
+            NSCharacterSet *whiteSpace = [NSCharacterSet whitespaceAndNewlineCharacterSet];
 
             NSPredicate *skipLinePredicate = [NSPredicate predicateWithFormat:@"SELF BEGINSWITH 'To add' \
                                                                                 or SELF BEGINSWITH '----' \
