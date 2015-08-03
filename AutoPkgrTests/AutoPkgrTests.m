@@ -359,8 +359,24 @@ static const BOOL _TEST_PRIVILEGED_HELPER = YES;
     [report.emailMessageString writeToFile:htmlFile atomically:YES encoding:NSUTF8StringEncoding error:nil];
 
     [[NSWorkspace sharedWorkspace] openFile:htmlFile];
+}
 
+- (void)testReportFailureOnly
+{
+    NSString *htmlFile = @"/tmp/report.html";
+    NSBundle *bundle = [NSBundle bundleForClass:[self class]];
 
+    NSString *reportFile = [bundle pathForResource:@"report_0.4.3_failure_only" ofType:@"plist"];
+    NSDictionary *reportDict = [NSDictionary dictionaryWithContentsOfFile:reportFile];
+
+    LGAutoPkgReport *report = [[LGAutoPkgReport alloc] initWithReportDictionary:reportDict];
+    report.reportedItemFlags = kLGReportItemsAll;
+
+    [report.emailMessageString writeToFile:htmlFile atomically:YES encoding:NSUTF8StringEncoding error:nil];
+
+    NSLog(@"%@", report.emailSubjectString);
+
+    [[NSWorkspace sharedWorkspace] openFile:htmlFile];
 }
 
 #pragma mark - Notifications
@@ -371,7 +387,6 @@ static const BOOL _TEST_PRIVILEGED_HELPER = YES;
     NSDictionary *reportDict = [NSDictionary dictionaryWithContentsOfFile:reportFile];
 
     LGAutoPkgReport *report = [[LGAutoPkgReport alloc] initWithReportDictionary:reportDict];
-    report.error = [self reportError];
 
     return report;
 }
