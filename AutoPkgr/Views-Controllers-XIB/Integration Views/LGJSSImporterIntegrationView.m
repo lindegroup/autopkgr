@@ -249,7 +249,7 @@ static NSPredicate *jdsFilterPredicate()
                                                      @"LocalizableJSSImporter",
                                                      @"button title to disable ssl verificaiton");
 
-    NSString *infoText = NSLocalizedStringFromTable(@"This is possibly due to the certificate being self signed. Choosing \"Disable SSL Verification\" may be required for JSSImporter to function properly. If you are sure the JSS is using a trusted certificate signed by public Certificate Authority keep SSL verification enabled.",
+    NSString *infoText = NSLocalizedStringFromTable(@"This is possibly due to the certificate being self signed. Choosing \"Disable SSL Verification\" may be required for JSSImporter to function properly. If you are sure the JSS is using a trusted certificate signed by a public Certificate Authority, keep SSL verification enabled.",
                                                     @"LocalizableJSSImporter",
                                                     nil);
 
