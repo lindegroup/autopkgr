@@ -104,6 +104,14 @@ NSString *const kLGJSSDistPointTypeKey = @"type";
     return _installedVersion;
 }
 
+- (void)customInstallActions:(void (^)(NSError *))reply {
+    LGJSSImporterDefaults *defaults = [[LGJSSImporterDefaults alloc] init];
+    NSNumber *verifySSL = [defaults autoPkgDomainObject:@"JSS_VERIFY_SSL"];
+    if (!verifySSL) {
+        defaults.JSSVerifySSL = YES;
+    }
+}
+
 - (void)customUninstallActions:(void (^)(NSError *))reply {
     // Clear out the defaults...
     LGJSSImporterDefaults *defaults = [[LGJSSImporterDefaults alloc] init];
@@ -121,41 +129,6 @@ NSString *const kLGJSSDistPointTypeKey = @"type";
 #pragma mark - LGDefaults category implementation for JSSImporter Interface
 
 @implementation LGJSSImporterDefaults
-@synthesize jssCredentials = _jssCredentials;
-
-
--(void)setJssCredentials:(LGHTTPCredential *)jssCredentials {
-    _jssCredentials = jssCredentials;
-    [self configureCredentialSaveBlock:jssCredentials];
-    [jssCredentials save];
-}
-
-- (LGHTTPCredential *)jssCredentials {
-    if (!_jssCredentials) {
-        _jssCredentials = [[LGHTTPCredential alloc] init];
-
-        _jssCredentials.server = self.JSSURL;
-        _jssCredentials.user = self.JSSAPIUsername;
-        _jssCredentials.password = self.JSSAPIPassword;
-
-        /* If the BOOL verifySSL is set to true set this to OS implicit trust.
-         * Otherwise treat the trust setting as if it was confirmed by the user */
-        _jssCredentials.sslTrustSetting = self.JSSVerifySSL ? kLGSSLTrustOSImplicitTrust : kLGSSLTrustUserConfirmedTrust;
-
-        [self configureCredentialSaveBlock:_jssCredentials];
-    }
-    return _jssCredentials;
-}
-
-- (void)configureCredentialSaveBlock:(LGHTTPCredential *)credential {
-    if (!credential.saveBlock) {
-        credential.saveBlock = ^(LGHTTPCredential *cred) {
-            self.JSSAPIUsername = cred.user;
-            self.JSSAPIPassword = cred.password;
-            self.JSSURL = cred.server;
-        };
-    }
-}
 
 - (NSString *)JSSURL
 {

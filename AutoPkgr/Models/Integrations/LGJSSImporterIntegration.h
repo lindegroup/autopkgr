@@ -41,8 +41,6 @@ extern NSString* const kLGJSSDistPointTypeKey;
 
 + (instancetype)standardUserDefaults __attribute__((unavailable("Cannot use the shared object in this subclass.")));
 
-@property (copy, nonatomic) LGHTTPCredential *jssCredentials;
-
 @property (copy, nonatomic) NSString *JSSURL;
 @property (copy, nonatomic) NSString *JSSAPIUsername;
 @property (copy, nonatomic) NSString *JSSAPIPassword;
