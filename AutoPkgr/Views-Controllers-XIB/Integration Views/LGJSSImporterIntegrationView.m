@@ -43,6 +43,29 @@ static NSPredicate *jdsFilterPredicate()
     return predicate;
 }
 
+@interface LGJSSImporterIntegrationView ()<NSTextFieldDelegate>
+@property (strong) IBOutlet LGTableView *jssDistributionPointTableView;
+@property (weak) IBOutlet NSTextField *jssURLTF;
+@property (weak) IBOutlet NSTextField *jssAPIUsernameTF;
+@property (weak) IBOutlet NSTextField *jssAPIPasswordTF;
+@property (weak) IBOutlet NSButton *jssReloadServerBT;
+@property (weak) IBOutlet NSProgressIndicator *jssStatusSpinner;
+@property (weak) IBOutlet NSImageView *jssStatusLight;
+
+@property (weak) IBOutlet NSButton *jssEditDistPointBT;
+@property (weak) IBOutlet NSButton *jssRemoveDistPointBT;
+@property (weak) IBOutlet NSButton *jssUseMasterJDS;
+@property (weak) IBOutlet NSButton *jssVerifySSLBT;
+
+@property (weak) NSWindow *modalWindow;
+
+- (IBAction)addDistributionPoint:(id)sender;
+- (IBAction)removeDistributionPoint:(id)sender;
+- (IBAction)editDistributionPoint:(id)sender;
+- (IBAction)enableMasterJDS:(NSButton *)sender;
+
+@end
+
 @implementation LGJSSImporterIntegrationView {
     LGJSSImporterDefaults *_defaults;
     LGTestPort *_portTester;
@@ -68,111 +91,55 @@ static NSPredicate *jdsFilterPredicate()
     _jssAPIPasswordTF.safe_stringValue = _defaults.JSSAPIPassword;
     _jssURLTF.safe_stringValue = _defaults.JSSURL;
 
-    _jssReloadServerBT.action = @selector(testCredentials:);
-    _jssReloadServerBT.title = @"Verify";
+    _jssReloadServerBT.action = @selector(getDistributionPoints:);
+    _jssReloadServerBT.title = @"Connect";
+
+    _jssAPIPasswordTF.delegate = self;
+    _jssAPIUsernameTF.delegate = self;
+    _jssURLTF.delegate = self;
+
+    _jssVerifySSLBT.state = _defaults.JSSVerifySSL;
 
     [_jssDistributionPointTableView reloadData];
 }
 
 #pragma mark - IBActions
-- (IBAction)credentialsChanged:(NSTextField *)sender
+- (IBAction)verifySSL:(NSButton *)sender
 {
-    if ([sender isEqualTo:_jssURLTF] && ![_defaults.JSSURL isEqualToString:sender.stringValue]) {
-        // There have been reports that old style cloud hosted JSS
-        // have an issue when the base url is double slashed. Though theoritically
-        // it doesn't make sense, it's an easy enough fix to apply here by looking
-        // for a trailing slash and simply removing that.
-        NSString *url = sender.stringValue.trailingSlashRemoved;
-        sender.stringValue = url;
-
-        if (!_portTester) {
-            _portTester = [[LGTestPort alloc] init];
-        }
-        [self startStatusUpdate];
-
-        [_portTester testServerURL:url reply:^(BOOL reachable, NSString *redirect) {
-            [self stopStatusUpdate:nil];
-            // If we got a redirect, update the sender to the new url.
-            if (redirect.length && ([url isEqualToString:redirect] == NO)) {
-                sender.stringValue = redirect.trailingSlashRemoved;
-            }
-        }];
-    }
-
-    // if all settings have been removed clear out the JSS_REPOS key too.
-    if (!_jssAPIPasswordTF.safe_stringValue && !_jssAPIUsernameTF.safe_stringValue && !_jssURLTF.safe_stringValue) {
-        _defaults.JSSRepos = nil;
-        _jssStatusLight.image = [NSImage LGStatusNone];
-        _jssStatusLight.hidden = YES;
-        [self saveDefaults];
-
-    } else if (![_defaults.JSSAPIPassword isEqualToString:_jssAPIPasswordTF.safe_stringValue] || ![_defaults.JSSAPIUsername isEqualToString:_jssAPIUsernameTF.safe_stringValue] || ![_defaults.JSSURL isEqualToString:_jssURLTF.safe_stringValue]) {
-
-        // Update server status and reset the target action to check credentials...
-        _jssStatusLight.image = [NSImage LGStatusPartiallyAvailable];
-        _jssReloadServerBT.action = @selector(testCredentials:);
-        _jssReloadServerBT.title = @"Verify";
-    }
+    _defaults.JSSVerifySSL = _jssVerifySSLBT.state;
 }
 
-- (IBAction)testCredentials:(id)sender
-{
-    [self startStatusUpdate];
+- (LGHTTPCredential *)jssCredentials {
+    LGHTTPCredential *credentials = [[LGHTTPCredential alloc] initWithServer:_defaults.JSSURL
+                                                                        user:_defaults.JSSAPIUsername
+                                                                    password:_defaults.JSSAPIPassword];
 
-    LGHTTPCredential *jssCredentials = [[LGHTTPCredential alloc] init];
-    jssCredentials.server = _jssURLTF.stringValue;
-    jssCredentials.user = _jssAPIUsernameTF.stringValue;
-    jssCredentials.password = _jssAPIPasswordTF.stringValue;
-
-    [jssCredentials checkCredentialsForPath:@"/JSSResource/distributionpoints" reply:^(LGHTTPCredential *aCredential, LGCredentialChallengeCode status, NSError *error) {
-        switch (status) {
-            case kLGCredentialChallengeSuccess:
-                if (aCredential.sslTrustSetting == kLGSSLTrustStatusUnknown) {
-                    [self confirmDisableSSLVerify];
-                } else if (aCredential.sslTrustSetting & (kLGSSLTrustOSImplicitTrust | kLGSSLTrustUserExplicitTrust)){
-                    _defaults.JSSVerifySSL = YES;
-                } else {
-                    _defaults.JSSVerifySSL = NO;
-                }
-
-                _defaults.jssCredentials = aCredential;
-                [_jssStatusLight setImage:[NSImage LGStatusAvailable]];
-
-                // Reassign
-                _jssReloadServerBT.action = @selector(getDistributionPoints:);
-                _jssReloadServerBT.title = @"Connect";
-
-                break;
-            case kLGCredentialsNotChallenged:
-                [_jssStatusLight setImage:[NSImage LGStatusUnavailable]];
-                NSLog(@"The credentials for the JSS were never challenged. please check that the url you've set is correct");
-                break;
-            default:
-                break;
-        }
-
-        [self stopStatusUpdate:error];
-    }];
+    credentials.sslTrustSetting = _defaults.JSSVerifySSL ? kLGSSLTrustOSImplicitTrust : kLGSSLTrustUserConfirmedTrust;
+    
+    return credentials;
 }
 
 - (IBAction)getDistributionPoints:(id)sender
 {
     LGHTTPRequest *request = [[LGHTTPRequest alloc] init];
-    [request retrieveDistributionPoints:_defaults.jssCredentials
-                                  reply:^(NSDictionary *distributionPoints, NSError *error) {
-                                      [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-                                          if (!error) {
-                                              [_jssStatusLight setImage:[NSImage LGStatusAvailable]];
-                                          }
 
-                                          [self stopStatusUpdate:error];
-                                          NSArray *cleanedArray = [self evaluateJSSRepoDictionaries:distributionPoints];
-                                          if (cleanedArray) {
-                                              _defaults.JSSRepos = cleanedArray;
-                                              [_jssDistributionPointTableView reloadData];
-                                          }
-                                      }];
-                                  }];
+    [request retrieveDistributionPoints2:[self jssCredentials]
+                                   reply:^(NSDictionary *distributionPoints, NSError *error) {
+        [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+            if (!error) {
+                [_jssStatusLight setImage:[NSImage LGStatusAvailable]];
+            } else if (error){
+                [NSApp presentError:error];
+            }
+
+            [self stopStatusUpdate:error];
+            NSArray *cleanedArray = [self evaluateJSSRepoDictionaries:distributionPoints];
+            if (cleanedArray) {
+                _defaults.JSSRepos = cleanedArray;
+                [_jssDistributionPointTableView reloadData];
+            }
+        }];
+    }];
 }
 
 #pragma mark - Progress
@@ -192,6 +159,7 @@ static NSPredicate *jdsFilterPredicate()
         [_jssStatusSpinner setHidden:YES];
         [_jssStatusSpinner stopAnimation:self];
         if (error) {
+            NSLog(@"JSS Error: [%ld] %@", error.code, error.localizedDescription);
             [self.integration.progressDelegate stopProgress:error];
             [_jssStatusLight setImage:[NSImage LGStatusUnavailable]];
         }
@@ -281,7 +249,7 @@ static NSPredicate *jdsFilterPredicate()
                                                      @"LocalizableJSSImporter",
                                                      @"button title to disable ssl verificaiton");
 
-    NSString *infoText = NSLocalizedStringFromTable(@"This is most likely due to the certificate being self signed. Choosing \"Disable SSL Verification\" may be required for JSSImporter to function properly.",
+    NSString *infoText = NSLocalizedStringFromTable(@"This is possibly due to the certificate being self signed. Choosing \"Disable SSL Verification\" may be required for JSSImporter to function properly. If you are sure the JSS is using a trusted certificate signed by a public Certificate Authority, keep SSL verification enabled.",
                                                     @"LocalizableJSSImporter",
                                                     nil);
 
@@ -342,13 +310,6 @@ static NSPredicate *jdsFilterPredicate()
     }
 
     return newRepos.copy;
-}
-
-- (void)saveDefaults
-{
-    _defaults.JSSAPIPassword = _jssAPIPasswordTF.safe_stringValue;
-    _defaults.JSSAPIUsername = _jssAPIUsernameTF.safe_stringValue;
-    _defaults.JSSURL = _jssURLTF.safe_stringValue;
 }
 
 - (NSString *)promptForSharePassword:(NSString *)shareName
@@ -459,6 +420,49 @@ static NSPredicate *jdsFilterPredicate()
            modalForWindow:_modalWindow
             modalDelegate:self
            didEndSelector:@selector(didClosePreferencePanel) contextInfo:nil];
+    }
+}
+
+#pragma mark - Text Field delegate
+- (void)controlTextDidChange:(NSNotification *)notification {
+    _jssStatusLight.image = [NSImage LGStatusPartiallyAvailable];
+
+    NSTextField *obj = notification.object;
+    if ([obj isEqualTo:_jssURLTF]) {
+        _defaults.JSSURL = obj.safe_stringValue;
+    } else if ([obj isEqualTo:_jssAPIUsernameTF]) {
+        _defaults.JSSAPIUsername = obj.safe_stringValue;
+    } else if ([obj isEqualTo:_jssAPIPasswordTF]) {
+        _defaults.JSSAPIPassword = obj.safe_stringValue;
+    }
+}
+
+- (void)controlTextDidEndEditing:(NSNotification *)obj {
+    if ([_jssURLTF isEqualTo:obj.object]) {
+        [self startStatusUpdate];
+        LGTestPort *tester = [[LGTestPort alloc] init];
+        [tester testServerURL:_jssURLTF.stringValue reply:^(BOOL reachable, NSString *redirectedURL) {
+            if (redirectedURL) {
+                NSAlert *alert = [[NSAlert alloc] init];
+                NSString *title = NSLocalizedStringFromTable(@"The server redirected the requested URL.",
+                                                             @"LocalizableJSSImporter",
+                                                             @"alert title when server sends a redirect for JSS");
+
+                NSString *informativeText = NSLocalizedStringFromTable(@"The server redirected the request to\n\n%@\n\nYou should consider using this for the JSS url.",
+                                                                       @"LocalizableJSSImporter",
+                                                                       @"informativeText when server sends a redirect.");
+                alert.messageText = title;
+                alert.informativeText = quick_formatString(informativeText, redirectedURL);
+                [alert addButtonWithTitle:@"Use suggested URL"];
+                [alert addButtonWithTitle:@"Ignore"];
+
+                if([alert runModal] == NSAlertFirstButtonReturn){
+                    _jssURLTF.stringValue = redirectedURL;
+                    _defaults.JSSURL = redirectedURL;
+                }
+            }
+            [self stopStatusUpdate:nil];
+        }];
     }
 }
 

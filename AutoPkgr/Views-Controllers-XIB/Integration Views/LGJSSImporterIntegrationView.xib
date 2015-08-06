@@ -17,6 +17,7 @@
                 <outlet property="jssStatusSpinner" destination="OT5-hu-oZC" id="BFo-7b-HVd"/>
                 <outlet property="jssURLTF" destination="Kox-gt-MfQ" id="XxR-fu-xuE"/>
                 <outlet property="jssUseMasterJDS" destination="E50-5r-sIs" id="MDR-6a-qnb"/>
+                <outlet property="jssVerifySSLBT" destination="c5h-ql-lyI" id="fbr-pf-WOo"/>
                 <outlet property="view" destination="Hs1-wy-3Gl" id="OzK-YF-krQ"/>
             </connections>
         </customObject>
@@ -33,9 +34,6 @@
                         <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
                         <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
-                    <connections>
-                        <action selector="credentialsChanged:" target="-2" id="aT7-jN-O7q"/>
-                    </connections>
                 </textField>
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="fG9-wC-8B0">
                     <rect key="frame" x="24" y="159" width="81" height="14"/>
@@ -63,9 +61,6 @@
                             <string>NSAllRomanInputSourcesLocaleIdentifier</string>
                         </allowedInputSourceLocales>
                     </secureTextFieldCell>
-                    <connections>
-                        <action selector="credentialsChanged:" target="-2" id="z78-eo-nXt"/>
-                    </connections>
                 </secureTextField>
                 <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Kox-gt-MfQ">
                     <rect key="frame" x="86" y="186" width="474" height="22"/>
@@ -74,9 +69,6 @@
                         <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
                         <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
-                    <connections>
-                        <action selector="credentialsChanged:" target="-2" id="YQ0-y2-3IG"/>
-                    </connections>
                 </textField>
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="MRy-Ea-7v9">
                     <rect key="frame" x="15" y="188" width="65" height="17"/>
@@ -250,7 +242,17 @@
                         <font key="font" metaFont="cellTitle"/>
                     </buttonCell>
                     <connections>
-                        <action selector="testCredentials:" target="-2" id="Nag-d9-Yn5"/>
+                        <action selector="getDistributionPoints:" target="-2" id="Lef-4H-hSA"/>
+                    </connections>
+                </button>
+                <button translatesAutoresizingMaskIntoConstraints="NO" id="c5h-ql-lyI">
+                    <rect key="frame" x="469" y="7" width="101" height="20"/>
+                    <buttonCell key="cell" type="check" title="Verify JSS SSL" bezelStyle="regularSquare" imagePosition="left" controlSize="small" state="on" inset="2" id="090-OS-0lt">
+                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                        <font key="font" metaFont="smallSystem"/>
+                    </buttonCell>
+                    <connections>
+                        <action selector="verifySSL:" target="-2" id="nol-ZP-9Og"/>
                     </connections>
                 </button>
             </subviews>
@@ -263,6 +265,7 @@
                 <constraint firstAttribute="trailing" secondItem="INC-3f-REM" secondAttribute="trailing" constant="22" id="6Hh-Y0-pnh"/>
                 <constraint firstItem="E50-5r-sIs" firstAttribute="top" secondItem="K47-TQ-18O" secondAttribute="bottom" constant="10" id="6x7-yg-a6F"/>
                 <constraint firstAttribute="trailing" secondItem="Kox-gt-MfQ" secondAttribute="trailing" constant="46" id="7yX-TW-dEu"/>
+                <constraint firstAttribute="bottom" secondItem="c5h-ql-lyI" secondAttribute="bottom" constant="10" id="9v7-A4-5aH"/>
                 <constraint firstItem="ijl-Se-UV6" firstAttribute="baseline" secondItem="HqD-rL-S3O" secondAttribute="baseline" id="Ahb-t9-WbP"/>
                 <constraint firstItem="n9u-rv-Mbf" firstAttribute="top" secondItem="Kox-gt-MfQ" secondAttribute="top" id="AwZ-x0-hTF"/>
                 <constraint firstItem="MRy-Ea-7v9" firstAttribute="baseline" secondItem="Kox-gt-MfQ" secondAttribute="baseline" id="Ax9-EW-aTq"/>
@@ -289,8 +292,10 @@
                 <constraint firstItem="ijl-Se-UV6" firstAttribute="top" secondItem="Kox-gt-MfQ" secondAttribute="bottom" constant="13" id="h4a-WR-YkF"/>
                 <constraint firstItem="ijl-Se-UV6" firstAttribute="baseline" secondItem="fG9-wC-8B0" secondAttribute="baseline" id="leB-6F-3Zh"/>
                 <constraint firstItem="INC-3f-REM" firstAttribute="top" secondItem="n9u-rv-Mbf" secondAttribute="bottom" constant="9" id="nKi-Tb-yl1"/>
+                <constraint firstItem="c5h-ql-lyI" firstAttribute="leading" secondItem="E50-5r-sIs" secondAttribute="leading" id="pF2-RC-xwx"/>
                 <constraint firstItem="Kox-gt-MfQ" firstAttribute="top" secondItem="Hs1-wy-3Gl" secondAttribute="top" constant="20" symbolic="YES" id="qSi-Aq-qnc"/>
                 <constraint firstItem="eEY-Hf-ysc" firstAttribute="leading" secondItem="ijl-Se-UV6" secondAttribute="trailing" constant="8" symbolic="YES" id="wAw-Tx-d8g"/>
+                <constraint firstItem="c5h-ql-lyI" firstAttribute="top" secondItem="E50-5r-sIs" secondAttribute="bottom" constant="8" id="y4Y-Cv-VIq"/>
             </constraints>
             <point key="canvasLocation" x="192" y="371"/>
         </customView>

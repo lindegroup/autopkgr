@@ -25,23 +25,4 @@
 
 @interface LGJSSImporterIntegrationView : LGBaseIntegrationViewController <NSTableViewDataSource, NSTableViewDelegate>
 
-@property (strong) IBOutlet LGTableView *jssDistributionPointTableView;
-@property (weak) IBOutlet NSTextField *jssURLTF;
-@property (weak) IBOutlet NSTextField *jssAPIUsernameTF;
-@property (weak) IBOutlet NSTextField *jssAPIPasswordTF;
-@property (weak) IBOutlet NSButton *jssReloadServerBT;
-@property (weak) IBOutlet NSProgressIndicator *jssStatusSpinner;
-@property (weak) IBOutlet NSImageView *jssStatusLight;
-
-@property (weak) IBOutlet NSButton *jssEditDistPointBT;
-@property (weak) IBOutlet NSButton *jssRemoveDistPointBT;
-@property (weak) IBOutlet NSButton *jssUseMasterJDS;
-
-@property (weak) NSWindow *modalWindow;
-
-- (IBAction)addDistributionPoint:(id)sender;
-- (IBAction)removeDistributionPoint:(id)sender;
-- (IBAction)editDistributionPoint:(id)sender;
-- (IBAction)enableMasterJDS:(NSButton *)sender;
-
 @end
