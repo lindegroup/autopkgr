@@ -240,7 +240,7 @@ If your network uses a proxy, you may need to navigate to the __Folders & Integr
 
 #### Step 2: Is it really AutoPkgr?
 
-You've eliminated the simple errors above, but AutoPkgr doesn't do what you expect? Try running your recipes directly using `autopkg` in Terminal. Specifically, the following command has been helpful for us when troubleshooting. (Triple-click to select the entire line for copying.)
+If you've eliminated the simple errors above, but AutoPkgr still doesn't do what you expect, the next step is to run your recipes directly using `autopkg` in Terminal. The following command has been helpful for us when troubleshooting. (Triple-click to select the entire line for copying.)
 
 ```
 /usr/bin/python /usr/local/bin/autopkg run --recipe-list ~/Library/Application\ Support/AutoPkgr/recipe_list.txt --report-plist /tmp/autopkg-report.xml
@@ -248,9 +248,13 @@ You've eliminated the simple errors above, but AutoPkgr doesn't do what you expe
 
 If the issue repeats itself there, it's likely that the problem is with an AutoPkg recipe or repository, not with AutoPkgr. See if you can see which recipe is failing based on the output of the command above. (Information on troubleshooting individual AutoPkg recipes is [available on the AutoPkg wiki](https://github.com/autopkg/autopkg/wiki/FAQ#this-recipe-used-to-work-but-now-it-doesnt-what-should-i-try).)
 
+For problems with email notifications, try sending an email using the same SMTP settings in another email client app.
+
 #### Step 3: Check the logs
 
-If you've determined the issue is with AutoPkgr and not a specific recipe or repo, you may find it useful to enable AutoPkgr's verbose logging feature. To do that, click the AutoPkgr icon in the menu bar (![Menu bar icon](doc-images/menulet.png)). Then select __Verbose Logs__. The simplest way to view the logs is to filter for "AutoPkgr" in the Console app on your Mac. Sometimes the log messages illuminate the cause of the error.
+If you've determined the issue is with AutoPkgr and not a specific recipe or repo, you may find it useful to enable AutoPkgr's verbose logging feature. To do that, click the AutoPkgr icon in the menu bar (![Menu bar icon](doc-images/menulet.png)). Then select __Verbose Logs__.
+
+The simplest way to view the logs is to filter for "AutoPkgr" in the Console app on your Mac.
 
 ![Check the logs](doc-images/console_logs.png)
 
@@ -266,9 +270,9 @@ We also welcome feature requests on GitHub! Some of our best features have come 
 
 ## Credits
 
-AutoPkgr was created at the [Linde Group](http://www.lindegroup.com) by James Barclay, Elliot Jordan, and Josh Senick. Credit for most of the ongoing development goes to Eldon Ahrold.
+AutoPkgr was created at the [Linde Group](http://www.lindegroup.com) in Emeryville, California. If you're a talented Mac admin looking for a job in the Bay Area, [check out our job listings](https://sfbay.craigslist.org/search/jjj?sort=rel&query=linde). We've got a wonderful team of people and fantastic clients.
 
-We're very friendly. [Stop by Emeryville sometime](http://www.lindegroup.com/contact/) and have an espresso.
+James Barclay, Elliot Jordan, and Josh Senick originally created AutoPkgr in June 2014, and ongoing development is led by Eldon Ahrold and Elliot Jordan.
 
 Briefcase icon from [FontAwesome](http://fontawesome.io/).
 
