@@ -88,7 +88,12 @@
 - (NSDictionary *)latestReleaseDictionary
 {
     if (!_latestReleaseDictionary) {
-        _latestReleaseDictionary = [self.jsonObject firstObject];
+        [self.jsonObject enumerateObjectsUsingBlock:^(NSDictionary *releaseDict, NSUInteger idx, BOOL *stop) {
+            if (releaseDict[@"prerelease"] == NO) {
+                _latestReleaseDictionary = releaseDict;
+                *stop = YES;
+            }
+        }];
     }
     return _latestReleaseDictionary;
 }
