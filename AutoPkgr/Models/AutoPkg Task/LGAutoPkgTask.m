@@ -58,7 +58,7 @@ static NSString *const AUTOPKG_0_3_2 = @"0.3.2";
 static NSString *const AUTOPKG_0_4_0 = @"0.4.0";
 static NSString *const AUTOPKG_0_4_1 = @"0.4.1";
 static NSString *const AUTOPKG_0_4_2 = @"0.4.2";
-static NSString *const AUTOPKG_0_4_3 = @"0.4.3";
+static NSString *const AUTOPKG_0_5_0 = @"0.5.0";
 
 // Autopkg Task Result keys
 NSString *const kLGAutoPkgRecipeNameKey = @"Name";
@@ -771,7 +771,19 @@ typedef void (^AutoPkgReplyErrorBlock)(NSError *error);
 
 - (BOOL)isInteractiveOperation
 {
-    return (_verb & (kLGAutoPkgRun | kLGAutoPkgInfo)) && [_version version_isGreaterThanOrEqualTo:AUTOPKG_0_4_3];
+    BOOL isInteractiveOperation = NO;
+    if([_version version_isGreaterThanOrEqualTo:AUTOPKG_0_5_0]){
+        if (_verb == kLGAutoPkgInfo) {
+            isInteractiveOperation = YES;
+        } else if (_verb == kLGAutoPkgRun){
+            // As of AutoPkg 0.5.0 AutoPkg will only "make_suggestions"
+            // when not running with the --recipe-list argument.
+            if (![_arguments containsObject:@"--recipe-list"]) {
+                isInteractiveOperation = YES;
+            }
+        }
+    }
+    return isInteractiveOperation;
 }
 
 - (NSInteger)recipeListCount
@@ -823,7 +835,9 @@ typedef void (^AutoPkgReplyErrorBlock)(NSError *error);
           results = @"n\n";
       }
 
-      [[self.task.standardInput fileHandleForWriting] writeData:[results dataUsingEncoding:NSUTF8StringEncoding]];
+        if (self.task.isRunning) {
+            [[self.task.standardInput fileHandleForWriting] writeData:[results dataUsingEncoding:NSUTF8StringEncoding]];
+        }
     }];
 }
 
