@@ -1247,8 +1247,13 @@ typedef void (^AutoPkgReplyErrorBlock)(NSError *error);
 + (BOOL)instanceIsRunning
 {
     NSArray *runningArgs = @[ autopkg(), @"run", @"--recipe-list" ];
-    return ([BSDProcessInfo processWithName:@"Python"
-                          matchingArguments:runningArgs] != nil);
+    NSArray *matchedProcs = [BSDProcessInfo allProcessesWithName:@"Python"
+                                               matchingArguments:runningArgs];
+
+    if (matchedProcs.count) {
+        DLog(@"Another autopkg run recipe process detected: %@", matchedProcs);
+    }
+    return (matchedProcs.count != 0);
 }
 
 #pragma mark - Task Status Update Delegate
