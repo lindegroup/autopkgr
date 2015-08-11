@@ -58,6 +58,7 @@ Download the [latest release](https://github.com/lindegroup/autopkgr/releases/la
 1.  Launch the AutoPkgr app.
 
 1.  On first launch, you'll see the configuration window:
+
     ![Install](doc-images/config_tab1.png)
 
 1.  Click the button to __Install Git__ if it's not already installed.
@@ -65,12 +66,15 @@ Download the [latest release](https://github.com/lindegroup/autopkgr/releases/la
 1.  Click the button to __Install AutoPkg__ if it's not already installed.
 
 1.  Switch to the __Repos & Recipes__ tab.
+
     ![Repos & Recipes](doc-images/config_tab2.png)
 
 1.  Select the repositories you'd like to subscribe to. We recommend adding the "default" repo to get you started:
+
     ![Default repo](doc-images/repo_default.png)
 
     You can also add repositories manually using the "Add a repo URL manually" field.
+
     ![Add a repo manually](doc-images/repo_manual.png)
 
 1.  Select any recipes you wish to subscribe to.
@@ -78,6 +82,7 @@ Download the [latest release](https://github.com/lindegroup/autopkgr/releases/la
     You can search for recipes using the "Search for a recipe on GitHub" field.
 
 1.  Switch to the __Schedule__ tab.
+
     ![Schedule](doc-images/config_tab3.png)
 
 1.  Set your automatic update checking preferences. Most people like to check about once per day.
@@ -85,6 +90,7 @@ Download the [latest release](https://github.com/lindegroup/autopkgr/releases/la
     :warning: &nbsp; Only choose "Update all repos before each AutoPkg run" if you know and trust the authors of the recipes you subscribe to.
 
 1.  Switch to the __Notifications__ tab.
+
     ![Notifications](doc-images/config_tab4.png)
 
 1.  Configure email, Slack, or HipChat notifications as desired.
@@ -140,7 +146,9 @@ To configure AutoPkgr to add updates directly into your Munki repository, follow
 1. Click on the __Folders & Integration__ tab.
 1. If Munki tools are not already installed, click on the __Install Munki tools__ button. Enter your password if prompted.
 1. If your Munki repo is not located at `/Users/Shared/munki_repo`, click on the __Configure Munki tools...__ button, click __Choose__, and browse to your munki_repo.
+
     ![Munki repo](doc-images/integration_munki.png)
+
 1. Click __Close and Save__.
 
 You'll also want to make sure you have `.munki` recipes selected for each app you want to import. Once the new versions of apps appear in your Munki repo, you can add them to the appropriate catalogs and manifests to deploy them.
@@ -165,7 +173,9 @@ To configure AutoPkgr to create Self Service policies in Casper for new app upda
 1. Click the __Install JSSImporter__ button. Enter your password if prompted.
 1. Click on __Configure JSSImporter__.
 1. Enter your JSS URL, API username, and API password. Then click __Connect__.
+
     ![Casper Settings](doc-images/integration_casper.png)
+
 1. When prompted, enter the read/write password for each distribution point.
 1. Click __Close and Save__.
 
@@ -191,7 +201,9 @@ To configure AutoPkgr to add updates directly into your Absolute Manage server, 
 1. Click on the __Folders & Integration__ tab.
 1. Click on the __Install AMExporter__ button. Enter your password when prompted.
 1. Click on the __Configure AMExporter...__ button. Select the __Enable External SD Package Upload__ option if desired.
+
     ![Absolute Manage Settings](doc-images/integration_absolute.png)
+
 1. Click __Close and Save__.
 
 You'll also want to make sure you have a few `.absolute` recipes selected. There is no official repository for Absolute Manage recipes yet, but if you add the `seansgm-recipes` repository, you'll see a few to get you started.
@@ -201,6 +213,7 @@ You'll also want to make sure you have a few `.absolute` recipes selected. There
 :warning: &nbsp; _MacPatch integration is still in beta. We welcome [your feedback](https://github.com/lindegroup/autopkgr/issues/new)._
 
 :bulb: &nbsp; _Note: Requires you to have the default recipe repo added._
+
 ![Default repo](doc-images/repo_default.png)
 
 To configure AutoPkgr to add updates directly into your MacPatch server, follow these steps:
@@ -208,7 +221,9 @@ To configure AutoPkgr to add updates directly into your MacPatch server, follow 
 1. Click on the __Folders & Integration__ tab.
 1. Click on the __Install MacPatchImporter__ button. Enter your password when prompted.
 1. Click on the __Configure MacPatchImporter...__ button. Enter the URL, username, and password for your MacPatch server.
+
     ![MacPatch Settings](doc-images/integration_macpatch.png)
+
 1. Click __Close and Save__.
 
 ![divider](doc-images/divider.png)
@@ -227,9 +242,13 @@ If your network uses a proxy, you may need to navigate to the __Folders & Integr
 
 - __Missing parent recipes__
     If the recipe you're trying to run has a :warning: icon next to it, the most likely problem is that its parent recipe is missing.
+
     ![Recipe missing parent](doc-images/recipe_missing_parent.png)
+
     Right-click on the recipe to view the identifier of the parent recipe.
+
     ![View parent recipe identifier](doc-images/recipe_view_parent.png)
+
     You don't need to add the parent recipe itself to your list, but you _do_ need to make sure that the repository that the parent recipe belongs to is checked in the repo list.
 
 - __Out of date components__
