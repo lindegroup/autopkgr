@@ -47,7 +47,7 @@
 
 + (BOOL)storesInfoInKeychain
 {
-    return YES;
+    return [[LGDefaults standardUserDefaults] SMTPAuthenticationEnabled];
 }
 
 + (NSString *)account

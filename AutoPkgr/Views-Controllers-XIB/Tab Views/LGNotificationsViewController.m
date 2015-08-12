@@ -187,7 +187,7 @@
     NSString *account = _smtpUsername.safe_stringValue;
     NSString *password = _smtpPassword.safe_stringValue;
 
-    if (account) {
+    if (account && [LGEmailNotification storesInfoInKeychain]) {
         [LGEmailNotification saveInfoToKeychain:password reply:^(NSError *error) {
             if (reply) {
                 reply(error);
@@ -206,6 +206,10 @@
                 }
             }
         }];
+    } else {
+        if(reply){
+            reply(nil);
+        }
     }
 }
 
