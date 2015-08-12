@@ -195,7 +195,29 @@ static NSArray *knownGitPaths()
 
     task.standardOutput = [NSPipe pipe];
     task.standardError = [NSPipe pipe];
-    [task useSystemProxiesForDestination:@"github.com"];
+
+    LGDefaults *defaults = [LGDefaults standardUserDefaults];
+    if ([defaults boolForKey:@"useSystemProxies"]) {
+        [task useSystemProxiesForDestination:@"https://github.com"];
+    } else {
+        NSString *httpProxy = [defaults objectForKey:@"HTTP_PROXY"];
+        NSString *httpsProxy = [defaults objectForKey:@"HTTPS_PROXY"];
+        NSString *noProxy = [defaults objectForKey:@"NO_PROXY"];
+
+        if (httpProxy || httpsProxy) {
+            NSMutableDictionary *env = [[[NSProcessInfo processInfo] environment] mutableCopy];
+            if (httpProxy) {
+                env[@"HTTP_PROXY"] = httpProxy;
+            }
+            if (httpsProxy) {
+                env[@"HTTPS_PROXY"] = httpsProxy;
+            }
+            if (noProxy) {
+                env[@"NO_PROXY"] = noProxy;
+            }
+            task.environment = env.copy;
+        }
+    }
 
     NSFileHandle *outHandle = [task.standardOutput fileHandleForReading];
     [outHandle setReadabilityHandler:^(NSFileHandle *fh) {
