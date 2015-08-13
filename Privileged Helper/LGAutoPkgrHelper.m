@@ -342,16 +342,12 @@ static dispatch_queue_t autopkgr_kc_access_synchronizer_queue()
 
     NSError *error = [LGAutoPkgrAuthorizer checkAuthorization:authData
                                                       command:_cmd];
-    if (error != nil) {
-        return reply(error);
-    }
 
     // If authorization was successful continue,
-    if (!error) {
-        // Check if the launch path and user are valid, and that the timer has a sensible minimum.
+    if (error == nil) {
         if ([self launchPathIsValid:program error:&error] &&
-            [self userIsValid:user
-                        error:&error]) {
+            [self userIsValid:user error:&error]) {
+            
             AHLaunchJob *job = [AHLaunchJob new];
             job.Program = program;
             job.Label = kLGAutoPkgrLaunchDaemonPlist;
@@ -596,33 +592,44 @@ static dispatch_queue_t autopkgr_kc_access_synchronizer_queue()
     // binary (path) the helper tool is asked to set as the launchd.plist "Program" key.
 
     SNTCodesignChecker *selfCS = [[SNTCodesignChecker alloc] initWithSelf];
-
     SNTCodesignChecker *remoteCS = [[SNTCodesignChecker alloc] initWithBinaryPath:path];
 
-    return [selfCS signingInformationMatches:remoteCS];
+    BOOL launchPathIsValid = [selfCS signingInformationMatches:remoteCS];
+    if (!launchPathIsValid) {
+        if (error) {
+            NSString *suggestionFormat = NSLocalizedString( @"The code signature of the AutoPkgr executable was not valid or did not match the registry. The offending application's code signing credentials are %@ for the binary located at %@.", nil);
+
+            NSString *recoverySuggestion = [NSString stringWithFormat:suggestionFormat, remoteCS.description, path];
+
+            NSDictionary *errorDict = @{ NSLocalizedDescriptionKey : @"Invalid binary for a scheduled run.",
+                                         NSLocalizedRecoverySuggestionErrorKey :  recoverySuggestion};
+            *error = [NSError errorWithDomain:kLGApplicationName code:1 userInfo:errorDict];
+        }    }
+
+    return launchPathIsValid;
 }
 
 - (BOOL)userIsValid:(NSString *)user error:(NSError *__autoreleasing *)error;
 {
-    // TODO: decide what criteria qualifies a valid user.
-    // In future release we could potentially specify a user other
-    // than the current logged in user to run the schedule as, but
-    // we would need to check a number of criteria. For now just check
-    // that the user matches the logged in (console) user.
-    BOOL success = YES;
-    NSString *loggedInUser = CFBridgingRelease(SCDynamicStoreCopyConsoleUser(NULL, NULL, NULL));
+    // As of 1.3.1 we're no longer using SCDynamicStoreCopyConsoleUser()
+    // This is due to situations where RDPd users were unable to setup schedule
+    // since the console user was virtual and the function returned `loginwindow`
+    // Now we'll use the euid of the NSXPCConnection to check the proposed user.
 
-    syslog(LOG_INFO, "Checking that logged in user is the same as the user to run the schedule as: %s", loggedInUser.UTF8String);
-    if (!loggedInUser || !user || ![user isEqualToString:loggedInUser]) {
+    struct passwd *pw = getpwuid(self.connection.effectiveUserIdentifier);
+    NSString *effectiveUserName = [NSString stringWithUTF8String:pw->pw_name];
+    NSString *ghPrefs = [NSString stringWithFormat:@"%s/Library/Preferences/com.github.autopkg.plist", pw->pw_dir];
+
+    if ( [user isEqualToString:effectiveUserName] && access(ghPrefs.UTF8String, F_OK) == 0) {
+        return YES;
+    } else {
         if (error) {
             NSDictionary *errorDict = @{ NSLocalizedDescriptionKey : @"Invalid user for scheduling autopkg run",
-                                         NSLocalizedRecoverySuggestionErrorKey : @"There was a problem either verifying the user, or with the user's configuration. The user must be have a home directory set, a shell environment, and valid com.github.autopkg preferences." };
+                                         NSLocalizedRecoverySuggestionErrorKey : @"There was a problem either verifying the user or with the user's configuration. The user must be have a home directory set, and valid com.github.autopkg preferences." };
             *error = [NSError errorWithDomain:kLGApplicationName code:1 userInfo:errorDict];
         }
-        success = NO;
+        return NO;
     }
-
-    return success;
 }
 
 - (BOOL)newConnectionIsValid:(NSXPCConnection *)newConnection
