@@ -9,6 +9,7 @@ All notable changes to this project will be documented in this file. This projec
 
 ### Changed
 - AutoPkgr no longer attempts to automatically correct or change JSS URLs entered through the "Configure JSSImporter" options. As long as the URL you enter is valid, you shouldn't notice this.
+- Changed the way a valid user is determined when adding a schedule. Users not physically logged into the system can now enable the schedule assuming they have a valid home directory, and a `com.github.autopkg.plist` preference file. (#416)
 
 ### Fixed
 - Adjusted a few things that should improve AutoPkgr's behavior when running on Mac OS X 10.8.
