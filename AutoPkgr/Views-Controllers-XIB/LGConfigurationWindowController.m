@@ -59,7 +59,7 @@
     if (self = [self init]) {
         /* In the main init method, the progress delegate is set as self by default,
          * but with the installView and schedule view want their progress delegate  */
-        _scheduleView.progressDelegate = progressDelegate;
+//        _scheduleView.progressDelegate = progressDelegate;
     }
     return self;
 }
