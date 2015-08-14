@@ -145,7 +145,8 @@ static NSString *const HipChatNotificationNotifyKey = @"HipChatNotificationNotif
             // Error here means there was a problem getting the password.
             self.notificatonComplete(error);
         } else {
-            NSString *urlString  = [self sendNotificationPath];
+            NSString *urlString  = [[self sendNotificationPath] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+            
             [manager POST:urlString parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
                 //
                 self.notificatonComplete(nil);
