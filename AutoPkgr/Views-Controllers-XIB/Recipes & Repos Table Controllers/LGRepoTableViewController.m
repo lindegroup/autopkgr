@@ -88,24 +88,18 @@
 
 - (NSView *)tableView:(NSTableView *)tableView viewForTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row
 {
+    LGRepoStatusCellView *statusCell = [tableView makeViewWithIdentifier:tableColumn.identifier owner:self];
+
     if (_fetchingRepoData) {
-        LGRepoStatusCellView *statusCell = nil;
         if ([tableColumn.identifier isEqualToString:NSStringFromSelector(@selector(cloneURL))]) {
-            statusCell = [tableView makeViewWithIdentifier:tableColumn.identifier owner:self];
-
             statusCell.textField.stringValue = @"Fetching remote data...";
-
         } else if ([[tableColumn identifier] isEqualToString:@"status"]) {
-            statusCell = [tableView makeViewWithIdentifier:tableColumn.identifier owner:self];
-
             [statusCell.progressIndicator startAnimation:self];
         }
         return statusCell;
     }
 
     LGAutoPkgRepo *repo = [_searchedRepos objectAtIndex:row];
-    LGRepoStatusCellView *statusCell = [tableView makeViewWithIdentifier:tableColumn.identifier owner:self];
-
     if ([[tableColumn identifier] isEqualToString:NSStringFromSelector(@selector(isInstalled))]) {
         statusCell.enabledCheckBox.state = repo.isInstalled;
         statusCell.enabledCheckBox.tag = row;
@@ -113,7 +107,12 @@
         statusCell.enabledCheckBox.target = self;
 
     } else if ([[tableColumn identifier] isEqualToString:NSStringFromSelector(@selector(cloneURL))]) {
-        statusCell.textField.stringValue = repo.cloneURL.absoluteString;
+        NSString *cloneURL = repo.cloneURL.absoluteString;
+        if (cloneURL) {
+            statusCell.textField.stringValue = repo.cloneURL.absoluteString;
+        } else {
+            statusCell.textField.placeholderString = @"<Could not find clone URL>";
+        }
     } else if ([[tableColumn identifier] isEqualToString:NSStringFromSelector(@selector(stars))]) {
         if (repo.homeURL && (repo.stars > 0)) {
             // u2650 is the star symbol.
