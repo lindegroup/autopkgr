@@ -18,6 +18,8 @@ All notable changes to this project will be documented in this file. This projec
 - Fixed a bug that would prevent JSSImporter-related defaults from getting set.
 - Fixed a bug that would result in repos appearing twice in the repo table. (#406)
 - Fixed a bug causing search results to be incorrectly formatted. (#410)
+- Improved handling of git operations when using proxies.
+- Resolved issue where Slack/HipChat settings were not saving properly in OS X El Capitan. (Note: AutoPkgr does not officially support El Capitan yet.)
 
 ## [1.3] - 2015-05-08
 
