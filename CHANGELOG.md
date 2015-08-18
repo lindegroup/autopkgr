@@ -8,7 +8,6 @@ All notable changes to this project will be documented in this file. This projec
 - Now supports GitHub two-factor authentication for generation of API tokens. (#393)
 
 ### Changed
-- AutoPkgr no longer attempts to automatically correct or change JSS URLs entered through the "Configure JSSImporter" options. As long as the URL you enter is valid, you shouldn't notice this.
 - Changed the way a valid user is determined when adding a schedule. Users not physically logged into the system can now enable the schedule assuming they have a valid home directory, and a `com.github.autopkg.plist` preference file. (#416)
 
 ### Fixed
@@ -20,6 +19,10 @@ All notable changes to this project will be documented in this file. This projec
 - Fixed a bug causing search results to be incorrectly formatted. (#410)
 - Improved handling of git operations when using proxies.
 - Resolved issue where Slack/HipChat settings were not saving properly in OS X El Capitan. (Note: AutoPkgr does not officially support El Capitan yet.)
+
+### Removed
+- AutoPkgr no longer attempts to automatically correct or change JSS URLs entered through the "Configure JSSImporter" options. As long as the URL you enter is valid, you shouldn't notice this.
+
 
 ## [1.3] - 2015-05-08
 
