@@ -4,6 +4,9 @@ All notable changes to this project will be documented in this file. This projec
 
 ## [Unreleased][unreleased]
 
+
+## [1.3.1] - 2015-08-19
+
 ### Added
 - Now supports GitHub two-factor authentication for generation of API tokens. (#393)
 - Made Slack and HipChat output more verbose, including errors. (#417)
@@ -15,6 +18,7 @@ All notable changes to this project will be documented in this file. This projec
 - Adjusted a few things that should improve AutoPkgr's behavior when running on Mac OS X 10.8.
 - Fixed a bug that would cause proxy settings to be displayed incorrectly. (#399)
 - Fixed a bug where schedule changes would not reload in-memory launchd schedule.
+- Incorporates a new version of AHLaunchCtl, which improves the reliability of the schedule settings.
 - Fixed a bug that would prevent JSSImporter-related defaults from getting set.
 - Fixed a bug that would result in repos appearing twice in the repo table. (#406)
 - Fixed a bug causing search results to be incorrectly formatted. (#410)
