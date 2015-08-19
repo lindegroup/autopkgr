@@ -6,6 +6,7 @@ All notable changes to this project will be documented in this file. This projec
 
 ### Added
 - Now supports GitHub two-factor authentication for generation of API tokens. (#393)
+- Made Slack and HipChat output more verbose, including errors. (#417)
 
 ### Changed
 - Changed the way a valid user is determined when adding a schedule. Users not physically logged into the system can now enable the schedule assuming they have a valid home directory, and a `com.github.autopkg.plist` preference file. (#416)
