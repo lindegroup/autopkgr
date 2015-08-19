@@ -149,6 +149,9 @@
     NSString *fullSubject = quick_formatString(@"%@ on %@", subject, [NSHost currentHost].localizedName);
 
     void (^didCompleteSendOperation)(NSError *) = ^(NSError *error) {
+        if (error) {
+            NSLog(@"Error sending email: %@", error);
+        }
         if (self.notificatonComplete) {
             self.notificatonComplete(error);
         }
@@ -172,6 +175,7 @@
         MCOSMTPSession *session = [[MCOSMTPSession alloc] init];
         session.hostname = credential.server;
         session.port = (int)credential.port;
+        session.timeout = 15;
 
         if (credential.user && credential.password) {
             session.username = credential.user;

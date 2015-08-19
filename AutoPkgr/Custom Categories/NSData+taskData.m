@@ -61,13 +61,13 @@
 }
 
 - (BOOL)taskData_isInteractive {
-    NSArray *defaultMatches = @[@"[y/n]:",
-                                @"[YES/NO]:",
-                                @"Password:",
-                                @"Password",
+    NSArray *defaultMatches = @[@" [y/n]:",
+                                @" [YES/NO]:",
+                                @" Password:",
                                 ];
+
     return [self taskData_isInteractiveWithStrings:defaultMatches];
-   }
+}
 
 - (BOOL)taskData_isInteractiveWithStrings:(NSArray *)interactiveStrings {
     NSString *message = [[[NSString alloc] initWithData:self encoding:NSUTF8StringEncoding] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];

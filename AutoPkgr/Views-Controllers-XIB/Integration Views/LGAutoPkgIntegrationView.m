@@ -51,22 +51,21 @@ static NSString *const kLGTokenGenerateButonTitle = @"Generate API Token";
     if ([LGAutoPkgTask apiTokenFileExists:nil]) {
         _generateAPITokenBT.title = kLGTokenRevokeButonTitle;
         _generateAPITokenBT.action = @selector(deleteAPIToken:);
+    }
 
-        LGDefaults *defaults = [LGDefaults standardUserDefaults];
+    LGDefaults *defaults = [LGDefaults standardUserDefaults];
 
-        BOOL systemProxyCheck = [defaults boolForKey:@"useSystemProxies"];
-        NSString *proxyCheck = [defaults objectForKey:@"HTTP_PROXY"];
-        NSString *proxyCheck2 = [defaults objectForKey:@"HTTPS_PROXY"];
+    BOOL systemProxyCheck = [defaults boolForKey:@"useSystemProxies"];
+    NSString *proxyCheck = [defaults objectForKey:@"HTTP_PROXY"];
+    NSString *proxyCheck2 = [defaults objectForKey:@"HTTPS_PROXY"];
 
-        if (systemProxyCheck) {
-            [self.proxySelectionMatrix selectCellAtRow:1 column:0];
-        } else if(proxyCheck || proxyCheck2){
-            [self.proxySelectionMatrix selectCellAtRow:2 column:0];
-            self.useCustomProxies = YES;
-        } else {
-            [self.proxySelectionMatrix selectCellAtRow:0 column:0];
-        }
-
+    if (systemProxyCheck) {
+        [self.proxySelectionMatrix selectCellAtRow:1 column:0];
+    } else if(proxyCheck || proxyCheck2){
+        [self.proxySelectionMatrix selectCellAtRow:2 column:0];
+        self.useCustomProxies = YES;
+    } else {
+        [self.proxySelectionMatrix selectCellAtRow:0 column:0];
     }
 }
 

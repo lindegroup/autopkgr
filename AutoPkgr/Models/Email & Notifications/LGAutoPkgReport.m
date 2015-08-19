@@ -118,16 +118,16 @@ NSString *const fallback_reportCSS = @"<style type='text/css'>*{font-family:'Hel
 
 - (NSString *)emailSubjectString
 {
-    if ([_reportDictionary[kReportKeySummaryResults] count] > 0) {
-        return quick_formatString(NSLocalizedString(@"New software available for testing", nil));
+    if ([_reportDictionary[kReportKeySummaryResults][kReportProcessorURLDownloader] count] > 0) {
+        return NSLocalizedString(@"New software available for testing", nil);
     } else if ([_reportDictionary[kReportKeyFailures] count] > 0) {
-        return quick_formatString(NSLocalizedString(@"Failures occurred while running AutoPkg", nil));
+        return NSLocalizedString(@"Failures occurred while running AutoPkg", nil);
     } else if (self.error) {
-        return quick_formatString(NSLocalizedString(@"An error occurred while running AutoPkg", nil));
+        return NSLocalizedString(@"An error occurred while running AutoPkg", nil);
     } else if (_integrations) {
         for (LGIntegration *integration in _integrations) {
             if (integration.info.status == kLGIntegrationUpdateAvailable) {
-                return quick_formatString(NSLocalizedString(@"Update to helper components available", nil));
+                return NSLocalizedString(@"Update to helper components available", nil);
             }
         }
     }
@@ -172,6 +172,21 @@ NSString *const fallback_reportCSS = @"<style type='text/css'>*{font-family:'Hel
     return [message copy];
 }
 
+- (NSString *)webChannelMessageString {
+    NSMutableString *message = self.emailSubjectString.mutableCopy;
+    [message appendString:@":\n"];
+
+    [self.updatedApplications enumerateObjectsUsingBlock:^(LGUpdatedApplication *app, NSUInteger idx, BOOL *stop) {
+        [message appendFormat:@"  * %@ [%@]\n", app.name, app.version]; // Format howerver
+    }];
+
+    NSError *error = self.failureError;
+    if (error) {
+        [message appendFormat:@"\n%@\n%@", error.localizedDescription, error.localizedRecoverySuggestion];
+    }
+
+    return message.copy ?: @"";
+}
 #pragma mark - Private
 - (NSString *)overviewString
 {

@@ -198,7 +198,7 @@
                         if (!error) {
                             [self updateKeychainPassword:nil];
                         } else {
-                            NSLog(@"%@", error.localizedDescription);
+                            NSLog(@"Error resetting password [%ld]: %@", error.code, error.localizedDescription);
                         }
                     }];
                 } else {

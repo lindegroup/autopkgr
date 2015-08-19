@@ -63,15 +63,7 @@ static NSString *const SlacksNotificationsEnabledKey = @"SlackNotificationsEnabl
         self.notificatonComplete = complete;
     }
 
-    NSMutableString *str = self.report.emailSubjectString.mutableCopy;
-    [str appendString:@":\n"];
-
-    [self.report.updatedApplications enumerateObjectsUsingBlock:^(LGUpdatedApplication *app, NSUInteger idx, BOOL *stop) {
-        [str appendFormat:@" * %@ [%@]\n", app.name, app.version]; // Format howerver
-    }];
-
-    NSDictionary *slackParameters = @{ @"text" : str };
-
+    NSDictionary *slackParameters = @{ @"text" :  self.report.webChannelMessageString };
     [self sendMessageWithParameters:slackParameters];
 }
 
@@ -126,7 +118,7 @@ static NSString *const SlacksNotificationsEnabledKey = @"SlackNotificationsEnabl
             [manager POST:webHookURL parameters:[self baseParameters:parameters] success:^(AFHTTPRequestOperation *operation, id responseObject) {
                 self.notificatonComplete(nil);
             } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                NSLog(@"%@", operation.responseString);
+                NSLog(@"Error sending Slack notification: %@", operation.responseString);
                 self.notificatonComplete([LGError errorWithResponse:operation.response]);
             }];
         }

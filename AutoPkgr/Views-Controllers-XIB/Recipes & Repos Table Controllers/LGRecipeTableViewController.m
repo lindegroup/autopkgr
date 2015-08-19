@@ -106,7 +106,12 @@ static NSString *const kLGAutoPkgRecipeCurrentStatusKey = @"currentStatus";
         statusCell.enabledCheckBox.action = @selector(enableRecipe:);
 
     } else {
-        statusCell.textField.stringValue = [recipe valueForKey:tableColumn.identifier];
+        NSString *string = [recipe valueForKey:tableColumn.identifier];
+        if (string) {
+            statusCell.textField.stringValue = string;
+        } else {
+            statusCell.textField.placeholderString = @"<Missing>";
+        }
     }
 
     return statusCell;
@@ -167,7 +172,7 @@ static NSString *const kLGAutoPkgRecipeCurrentStatusKey = @"currentStatus";
     [_runTaskDictionary setObject:runTask forKey:recipe.Name];
 
     runTask.progressUpdateBlock = ^(NSString *message, double progress) {
-        NSLog(@"%@", message);
+        NSLog(@"Run status: %@", message);
     };
 
     NSIndexSet *rowIdxSet = [[NSIndexSet alloc] initWithIndex:recipeRow];

@@ -76,9 +76,19 @@ static NSArray *_popularRepos;
 }
 
 #pragma mark - Accessors
+- (NSString *)description {
+    return self.cloneURL.absoluteString;
+}
+
 - (BOOL)isInstalled
 {
-    NSPredicate *repoPredicate = [NSPredicate predicateWithFormat:@"%K CONTAINS[cd] %@", kLGAutoPkgRepoURLKey, self.cloneURL.absoluteString];
+    NSMutableString *repoURL = self.cloneURL.absoluteString.mutableCopy;
+    if ([repoURL.pathExtension isEqualToString:@"git"]) {
+         [repoURL deleteCharactersInRange:NSMakeRange(repoURL.length - 4, 4)];
+    }
+
+    NSPredicate *repoPredicate = [NSPredicate predicateWithFormat:@"%K CONTAINS[cd] %@", kLGAutoPkgRepoURLKey, repoURL];
+
     return [[_activeRepos filteredArrayUsingPredicate:repoPredicate] count];
 }
 
@@ -140,13 +150,18 @@ static NSArray *_popularRepos;
 
 - (void)install:(void (^)(NSError *))reply
 {
-    [LGAutoPkgTask repoAdd:_cloneURL.absoluteString reply:^(NSError *error) {
-        _activeRepos = [LGAutoPkgTask repoList];
-        if (!error) {
-            [self statusDidChange:kLGAutoPkgRepoUpToDate];
-        }
-        reply(error);
-    }];
+    _activeRepos = [LGAutoPkgTask repoList];
+    if (!self.isInstalled) {
+        [LGAutoPkgTask repoAdd:_cloneURL.absoluteString reply:^(NSError *error) {
+            _activeRepos = [LGAutoPkgTask repoList];
+            if (!error) {
+                [self statusDidChange:kLGAutoPkgRepoUpToDate];
+            }
+            reply(error);
+        }];
+    } else {
+        reply(nil);
+    }
 }
 
 - (void)remove:(void (^)(NSError *))reply
@@ -245,19 +260,33 @@ static NSArray *_popularRepos;
 {
     void (^constructCommonRepos)() = ^() {
         _activeRepos = [LGAutoPkgTask repoList];
-        NSMutableArray *commonRepos = [_popularRepos mutableCopy];
+        NSMutableArray *commonRepos = [NSMutableArray arrayWithArray:_popularRepos];
 
         [_activeRepos enumerateObjectsUsingBlock:^(NSDictionary *activeRepo, NSUInteger idx, BOOL *stop) {
+            NSString *repoURL = activeRepo[kLGAutoPkgRepoURLKey];
+            NSMutableString *normalizedRepo = repoURL.mutableCopy;
+
+            if (![normalizedRepo.pathExtension isEqualToString:@"git"]) {
+                // Using -stringByAppendingPathComponent: on a url here
+                // results in the scheme getting mangled from https://xxx to https:/xxx
+                // so just use -stringByAppendingString: string.
+                [normalizedRepo appendString:@".git"];
+            }
 
             NSPredicate *pred = [NSPredicate predicateWithFormat:@"%K.absoluteString == %@",
                                  NSStringFromSelector(@selector(cloneURL)),
-                                 activeRepo[kLGAutoPkgRepoURLKey]];
+                                 normalizedRepo];
 
-            if ([_popularRepos filteredArrayUsingPredicate:pred].count == 0) {
+            NSArray *matches = [_popularRepos filteredArrayUsingPredicate:pred];
+
+            if (matches.count == 0) {
                 LGAutoPkgRepo *repo = nil;
                 if ((repo = [[self alloc] initWithAutoPkgDictionary:activeRepo])) {
                     [commonRepos addObject:repo];
                 }
+            } if (matches.count == 1 && ![repoURL isEqualToString:normalizedRepo]) {
+                LGAutoPkgRepo *repo = matches.firstObject;
+                repo->_cloneURL = [NSURL URLWithString:repoURL];
             }
         }];
 

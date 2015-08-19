@@ -81,6 +81,7 @@
 
     if (viewClass) {
         LGBaseIntegrationViewController *integrationView = [[viewClass alloc] initWithIntegration:integration];
+        integrationView.integration.progressDelegate = self.progressDelegate;
 
         _integrationWindowController = [[LGIntegrationWindowController alloc] initWithViewController:integrationView];
 

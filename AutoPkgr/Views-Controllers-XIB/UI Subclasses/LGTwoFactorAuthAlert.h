@@ -1,8 +1,8 @@
 //
-//  LGHTTPRequest.h
+//  LGTwoFactorAuthAlert.h
 //  AutoPkgr
 //
-//  Created by Eldon Ahrold on 8/9/14.
+//  Created by Eldon on 7/25/15.
 //  Copyright 2014-2015 The Linde Group, Inc.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,18 +17,8 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
 //
+#import <Cocoa/Cocoa.h>
 
-#import <Foundation/Foundation.h>
-
-@class LGHTTPCredential;
-
-@interface LGHTTPRequest : NSObject
-
-- (void)retrieveDistributionPoints:(LGHTTPCredential *)credential
-                              reply:(void (^)(NSDictionary *distributionPoints, NSError *error))reply;
-
-
-- (void)retrieveDistributionPoints2:(LGHTTPCredential *)credential
-                              reply:(void (^)(NSDictionary *distributionPoints, NSError *error))reply;
-
+@interface LGTwoFactorAuthAlert : NSAlert
+- (NSString *)authorizatoinCode;
 @end

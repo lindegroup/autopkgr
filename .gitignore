@@ -27,5 +27,7 @@ DerivedData
 *.xcuserstate
 mailcore2/unittest/data
 *.orig
+
+# Markdown preview
 README.html
 CHANGELOG.html

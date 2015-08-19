@@ -22,7 +22,7 @@
 #import "LGDefaults.h"
 
 #import "NSData+taskData.h"
-
+#import "LGLogger.h"
 #import <AHProxySettings/NSTask+useSystemProxies.h>
 
 static NSString *const kLGOfficialGit = @"/usr/local/git/bin/git";
@@ -179,7 +179,7 @@ static NSArray *knownGitPaths()
 
     NSString *binary = [self binary];
     if (access(binary.UTF8String, X_OK) != 0) {
-        reply(nil, [self gitErrorWithMessage:@"Could not locate the git binary, or it was not executable" code:kLGGitErrorNotInstalled]);
+        reply(nil, [self gitErrorWithMessage:@"Could not locate the git binary, or it was not executable" repo:repoPath code:kLGGitErrorNotInstalled]);
     }
 
     __block NSMutableData *outData = [[NSMutableData alloc] init];
@@ -195,7 +195,29 @@ static NSArray *knownGitPaths()
 
     task.standardOutput = [NSPipe pipe];
     task.standardError = [NSPipe pipe];
-    [task useSystemProxiesForDestination:@"github.com"];
+
+    LGDefaults *defaults = [LGDefaults standardUserDefaults];
+    if ([defaults boolForKey:@"useSystemProxies"]) {
+        [task useSystemProxiesForDestination:@"https://github.com"];
+    } else {
+        NSString *httpProxy = [defaults objectForKey:@"HTTP_PROXY"];
+        NSString *httpsProxy = [defaults objectForKey:@"HTTPS_PROXY"];
+        NSString *noProxy = [defaults objectForKey:@"NO_PROXY"];
+
+        if (httpProxy || httpsProxy) {
+            NSMutableDictionary *env = [[[NSProcessInfo processInfo] environment] mutableCopy];
+            if (httpProxy) {
+                env[@"HTTP_PROXY"] = httpProxy;
+            }
+            if (httpsProxy) {
+                env[@"HTTPS_PROXY"] = httpsProxy;
+            }
+            if (noProxy) {
+                env[@"NO_PROXY"] = noProxy;
+            }
+            task.environment = env.copy;
+        }
+    }
 
     NSFileHandle *outHandle = [task.standardOutput fileHandleForReading];
     [outHandle setReadabilityHandler:^(NSFileHandle *fh) {
@@ -226,6 +248,7 @@ static NSArray *knownGitPaths()
             }
 
             NSError *error = [self gitErrorWithMessage:errData.taskData_string
+                                                  repo:repoPath
                                                   code:aTask.terminationStatus];
 
             dispatch_async(git_callback_queue, ^{
@@ -245,12 +268,13 @@ static NSArray *knownGitPaths()
     [task launch];
 }
 
-+ (NSError *)gitErrorWithMessage:(NSString *)message code:(NSInteger)code {
++ (NSError *)gitErrorWithMessage:(NSString *)message repo:(NSString *)repo code:(NSInteger)code {
     NSError *error = nil;
     if (code != 0) {
+
         error = [NSError errorWithDomain:@"AutoPkgr Git"
                                     code:code
-                                userInfo:@{NSLocalizedDescriptionKey:@"There was a problem executing git.",
+                                userInfo:@{NSLocalizedDescriptionKey: quick_formatString( @"There was a problem executing git on %@", repo),
                                            NSLocalizedRecoverySuggestionErrorKey:message ?: @""}];
     }
     return error;

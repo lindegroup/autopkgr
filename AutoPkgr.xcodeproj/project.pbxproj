@@ -180,6 +180,8 @@
 		BEC1258B19F04703006696C4 /* LGRepoTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A0BABE8196E560000A136BB /* LGRepoTableViewController.m */; };
 		BEC1258C19F049A1006696C4 /* LGTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = BE32178D19EDA15400A92E5A /* LGTableView.m */; };
 		BEC2024B1B600FF100F3BC2A /* LocalizableJSSImporter.strings in Resources */ = {isa = PBXBuildFile; fileRef = BEC202491B600FF100F3BC2A /* LocalizableJSSImporter.strings */; };
+		BEC949791B63FDA3005641EB /* LGTwoFactorAuthAlert.m in Sources */ = {isa = PBXBuildFile; fileRef = BEC949781B63FDA3005641EB /* LGTwoFactorAuthAlert.m */; };
+		BEC9497A1B63FDA3005641EB /* LGTwoFactorAuthAlert.m in Sources */ = {isa = PBXBuildFile; fileRef = BEC949781B63FDA3005641EB /* LGTwoFactorAuthAlert.m */; };
 		BECDAB8C1B249C0400544388 /* NSButton+colored.m in Sources */ = {isa = PBXBuildFile; fileRef = BECDAB891B249A2900544388 /* NSButton+colored.m */; };
 		BECDAB8D1B249C0B00544388 /* NSButton+colored.m in Sources */ = {isa = PBXBuildFile; fileRef = BECDAB891B249A2900544388 /* NSButton+colored.m */; };
 		BECDAB951B24C29600544388 /* LGMunkiIntegrationView.m in Sources */ = {isa = PBXBuildFile; fileRef = BECDAB931B24C29600544388 /* LGMunkiIntegrationView.m */; };
@@ -488,6 +490,8 @@
 		BEBF7B151A4894AC00E9967F /* LGVersioner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGVersioner.h; sourceTree = "<group>"; };
 		BEBF7B161A4894AC00E9967F /* LGVersioner.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGVersioner.m; sourceTree = "<group>"; };
 		BEC2024A1B600FF100F3BC2A /* en */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/LocalizableJSSImporter.strings; sourceTree = "<group>"; };
+		BEC949771B63FDA3005641EB /* LGTwoFactorAuthAlert.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGTwoFactorAuthAlert.h; sourceTree = "<group>"; };
+		BEC949781B63FDA3005641EB /* LGTwoFactorAuthAlert.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGTwoFactorAuthAlert.m; sourceTree = "<group>"; };
 		BECDAB881B249A2900544388 /* NSButton+colored.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSButton+colored.h"; sourceTree = "<group>"; };
 		BECDAB891B249A2900544388 /* NSButton+colored.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSButton+colored.m"; sourceTree = "<group>"; };
 		BECDAB921B24C29600544388 /* LGMunkiIntegrationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGMunkiIntegrationView.h; sourceTree = "<group>"; };
@@ -1023,6 +1027,8 @@
 				BE81F2411B22C211007D16C4 /* LGViewWindowController.xib */,
 				BE32178C19EDA15400A92E5A /* LGTableView.h */,
 				BE32178D19EDA15400A92E5A /* LGTableView.m */,
+				BEC949771B63FDA3005641EB /* LGTwoFactorAuthAlert.h */,
+				BEC949781B63FDA3005641EB /* LGTwoFactorAuthAlert.m */,
 				BE4DD5451B126E2800854FD8 /* LGSchedulePickerMenu.h */,
 				BE4DD5461B126E2800854FD8 /* LGSchedulePickerMenu.m */,
 				BE5E559F1B1B59D50025CFD3 /* LGTableCellViews.h */,
@@ -1545,6 +1551,7 @@
 				BEC1258C19F049A1006696C4 /* LGTableView.m in Sources */,
 				6A53625D1988BE59008A949C /* LGTestPort.m in Sources */,
 				BEFC931D1995F0710074C938 /* LGError.m in Sources */,
+				BEC949791B63FDA3005641EB /* LGTwoFactorAuthAlert.m in Sources */,
 				BEEFE6C21AEBCC7C00882C89 /* LGIntegrationManager.m in Sources */,
 				BEEFE6CE1AEC761F00882C89 /* LGJSSImporterIntegration.m in Sources */,
 				BE05CE8219DAF6320089068B /* LGAutoPkgrAuthorizer.m in Sources */,
@@ -1635,6 +1642,7 @@
 				BE38EA9D1B0CFEA6009FCBEB /* LGScheduleViewController.m in Sources */,
 				BEFC3C8B1A3DF16700C789E9 /* NSString+cleaned.m in Sources */,
 				BEEFE6CB1AEC760900882C89 /* LGAutoPkgIntegration.m in Sources */,
+				BEC9497A1B63FDA3005641EB /* LGTwoFactorAuthAlert.m in Sources */,
 				BEFC3C8C1A3DF16700C789E9 /* NSTextField+safeStringValue.m in Sources */,
 				BEFC3C8E1A3DF16700C789E9 /* NSArray+filtered.m in Sources */,
 				BEB9AF2C1B41A01900016D98 /* LGSlackNotificationView.m in Sources */,

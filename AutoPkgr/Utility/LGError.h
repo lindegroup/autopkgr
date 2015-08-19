@@ -58,6 +58,8 @@ typedef NS_ENUM(NSInteger, LGErrorAutoPkgCodes) {
 
     /** AutoPkg returns 255 if no recipe is specified */
     kLGErrorAutoPkgNoRecipes = 255,
+
+    
 };
 
 @interface LGError : NSObject

@@ -27,6 +27,7 @@
 
 #import "LGAutoPkgTask.h"
 #import "LGAutoPkgReport.h"
+#import "LGAutoPkgErrorHandler.h"
 
 #import "LGPasswords.h"
 #import "LGServerCredentials.h"
@@ -357,9 +358,27 @@ static const BOOL _TEST_PRIVILEGED_HELPER = YES;
 
     [report.emailMessageString writeToFile:htmlFile atomically:YES encoding:NSUTF8StringEncoding error:nil];
 
+    NSLog(@"%@", report.webChannelMessageString);
+
     [[NSWorkspace sharedWorkspace] openFile:htmlFile];
+}
 
+- (void)testReportFailureOnly
+{
+    NSString *htmlFile = @"/tmp/report.html";
+    NSBundle *bundle = [NSBundle bundleForClass:[self class]];
 
+    NSString *reportFile = [bundle pathForResource:@"report_0.4.3_failure_only" ofType:@"plist"];
+    NSDictionary *reportDict = [NSDictionary dictionaryWithContentsOfFile:reportFile];
+
+    LGAutoPkgReport *report = [[LGAutoPkgReport alloc] initWithReportDictionary:reportDict];
+    report.reportedItemFlags = kLGReportItemsAll;
+
+    [report.emailMessageString writeToFile:htmlFile atomically:YES encoding:NSUTF8StringEncoding error:nil];
+
+    NSLog(@"%@", report.webChannelMessageString);
+
+    [[NSWorkspace sharedWorkspace] openFile:htmlFile];
 }
 
 #pragma mark - Notifications
@@ -370,7 +389,6 @@ static const BOOL _TEST_PRIVILEGED_HELPER = YES;
     NSDictionary *reportDict = [NSDictionary dictionaryWithContentsOfFile:reportFile];
 
     LGAutoPkgReport *report = [[LGAutoPkgReport alloc] initWithReportDictionary:reportDict];
-    report.error = [self reportError];
 
     return report;
 }
@@ -396,7 +414,35 @@ static const BOOL _TEST_PRIVILEGED_HELPER = YES;
 
 }
 
-- (void)testSlackNotification {
+- (void)testIsNetworkOpCheck {
+    // Are
+    XCTAssertTrue([self isNetworkOperation:kLGAutoPkgRun], @"Run should be ");
+    XCTAssertTrue([self isNetworkOperation:kLGAutoPkgSearch], @"Search should be");
+    XCTAssertTrue([self isNetworkOperation:kLGAutoPkgRepoAdd], @"Repo Add should be");
+    XCTAssertTrue([self isNetworkOperation:kLGAutoPkgRepoUpdate], @"Repo Update should be");
+
+    // Are not.
+    XCTAssertFalse([self isNetworkOperation:kLGAutoPkgMakeOverride], @"Repo List should not be");
+    XCTAssertFalse([self isNetworkOperation:kLGAutoPkgInfo], @"Repo List should not be");
+    XCTAssertFalse([self isNetworkOperation:kLGAutoPkgRepoDelete], @"Repo List should not be");
+    XCTAssertFalse([self isNetworkOperation:kLGAutoPkgProcessorInfo], @"Repo List should not be");
+    XCTAssertFalse([self isNetworkOperation:kLGAutoPkgListProcessors], @"Repo List should not be");
+
+    XCTAssertFalse([self isNetworkOperation:kLGAutoPkgRepoList], @"Repo List should not be");
+    XCTAssertFalse([self isNetworkOperation:kLGAutoPkgVersion], @"Version should not be");
+}
+
+- (BOOL)isNetworkOperation:(LGAutoPkgVerb)verb
+{
+    NSInteger ck = (kLGAutoPkgRepoAdd | kLGAutoPkgRepoUpdate | kLGAutoPkgRun | kLGAutoPkgSearch );
+
+    BOOL isNetworkOperation = verb & ck;
+
+    return isNetworkOperation;
+}
+
+
+-(void)testSlackNotification {
     id<LGNotificationServiceProtocol>notification = [[LGSlackNotification alloc] initWithReport:[self notificationReport]];
     XCTestExpectation *expectation = [self expectationWithDescription:quick_formatString(@"Test %@", [notification.class serviceDescription])];
 

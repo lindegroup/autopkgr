@@ -2,7 +2,31 @@
 
 All notable changes to this project will be documented in this file. This project adheres to [Semantic Versioning](http://semver.org/).
 
-<!-- ## [Unreleased][unreleased] -->
+## [Unreleased][unreleased]
+
+
+## [1.3.1] - 2015-08-19
+
+### Added
+- Now supports GitHub two-factor authentication for generation of API tokens. (#393)
+- Made Slack and HipChat output more verbose, including errors. (#417)
+
+### Changed
+- Changed the way a valid user is determined when adding a schedule. Users not physically logged into the system can now enable the schedule assuming they have a valid home directory, and a `com.github.autopkg.plist` preference file. (#416)
+
+### Fixed
+- Adjusted a few things that should improve AutoPkgr's behavior when running on Mac OS X 10.8.
+- Fixed a bug that would cause proxy settings to be displayed incorrectly. (#399)
+- Fixed a bug where schedule changes would not reload in-memory launchd schedule.
+- Incorporates a new version of AHLaunchCtl, which improves the reliability of the schedule settings.
+- Fixed a bug that would prevent JSSImporter-related defaults from getting set.
+- Fixed a bug that would result in repos appearing twice in the repo table. (#406)
+- Fixed a bug causing search results to be incorrectly formatted. (#410)
+- Improved handling of git operations when using proxies.
+- Resolved issue where Slack/HipChat settings were not saving properly in OS X El Capitan. (Note: AutoPkgr does not officially support El Capitan yet.)
+
+### Removed
+- AutoPkgr no longer attempts to automatically correct or change JSS URLs entered through the "Configure JSSImporter" options. As long as the URL you enter is valid, you shouldn't notice this.
 
 
 ## [1.3] - 2015-05-08
@@ -292,6 +316,7 @@ All notable changes to this project will be documented in this file. This projec
 
 
 [unreleased]: https://github.com/lindegroup/autopkgr/compare/v1.3...HEAD
+[1.3.1]: https://github.com/lindegroup/autopkgr/compare/v1.3...v1.3.1
 [1.3]: https://github.com/lindegroup/autopkgr/compare/v1.2.3...v1.3
 [1.2.3]: https://github.com/lindegroup/autopkgr/compare/v1.2.2...v1.2.3
 [1.2.2]: https://github.com/lindegroup/autopkgr/compare/v1.2.1...v1.2.2

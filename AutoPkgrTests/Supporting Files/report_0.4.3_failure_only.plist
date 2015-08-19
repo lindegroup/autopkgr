@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>summary_results</key>
+	<dict>
+	  <key>jss_importer_summary_result</key>
+	  <dict>
+	      <key>data_rows</key>
+	      <array>
+	          <dict>
+	              <key>Categories</key>
+	              <string></string>
+	              <key>Extension Attributes</key>
+	              <string>AdobeFlashVersion</string>
+	              <key>Groups</key>
+	              <string>Needs Update Adobe Flash Player</string>
+	              <key>Icon</key>
+	              <string></string>
+	              <key>Package</key>
+	              <string></string>
+	              <key>Policy</key>
+	              <string>Install Latest AdobeFlashPlayer</string>
+	              <key>Scripts</key>
+	              <string></string>
+	          </dict>
+	          <dict>
+	              <key>Categories</key>
+	              <string></string>
+	              <key>Extension Attributes</key>
+	              <string>MSOffice2011OutOfDate</string>
+	              <key>Groups</key>
+	              <string>Needs Update Office2011Update</string>
+	              <key>Icon</key>
+	              <string></string>
+	              <key>Package</key>
+	              <string></string>
+	              <key>Policy</key>
+	              <string>Install Latest Office2011Update</string>
+	              <key>Scripts</key>
+	              <string></string>
+	          </dict>
+	          <dict>
+	              <key>Categories</key>
+	              <string></string>
+	              <key>Extension Attributes</key>
+	              <string>SilverlightVersion</string>
+	              <key>Groups</key>
+	              <string>Needs Update Silverlight</string>
+	              <key>Icon</key>
+	              <string></string>
+	              <key>Package</key>
+	              <string></string>
+	              <key>Policy</key>
+	              <string>Install Latest Silverlight</string>
+	              <key>Scripts</key>
+	              <string></string>
+	          </dict>
+	          <dict>
+	              <key>Categories</key>
+	              <string></string>
+	              <key>Extension Attributes</key>
+	              <string></string>
+	              <key>Groups</key>
+	              <string>Needs Update VLC</string>
+	              <key>Icon</key>
+	              <string></string>
+	              <key>Package</key>
+	              <string></string>
+	              <key>Policy</key>
+	              <string>Install Latest VLC</string>
+	              <key>Scripts</key>
+	              <string></string>
+	          </dict>
+	          <dict>
+	              <key>Categories</key>
+	              <string></string>
+	              <key>Extension Attributes</key>
+	              <string>Adobe Shockwave Player</string>
+	              <key>Groups</key>
+	              <string>Needs Update Shockwave</string>
+	              <key>Icon</key>
+	              <string></string>
+	              <key>Package</key>
+	              <string></string>
+	              <key>Policy</key>
+	              <string>Install Latest Adobe Shockwave Player</string>
+	              <key>Scripts</key>
+	              <string></string>
+	          </dict>
+	          <dict>
+	              <key>Categories</key>
+	              <string></string>
+	              <key>Extension Attributes</key>
+	              <string>OracleJavaVersion</string>
+	              <key>Groups</key>
+	              <string>Needs Update OracleJava7</string>
+	              <key>Icon</key>
+	              <string></string>
+	              <key>Package</key>
+	              <string></string>
+	              <key>Policy</key>
+	              <string>Install Latest OracleJava7</string>
+	              <key>Scripts</key>
+	              <string></string>
+	          </dict>
+	      </array>
+	      <key>header</key>
+	      <array>
+	          <string>Package</string>
+	          <string>Categories</string>
+	          <string>Groups</string>
+	          <string>Scripts</string>
+	          <string>Extension Attributes</string>
+	          <string>Policy</string>
+	          <string>Icon</string>
+	      </array>
+	      <key>summary_text</key>
+	      <string>The following changes were made to the JSS:</string>
+	  </dict>
+	  <key>pkg_copier_summary_result</key>
+	  <dict>
+	      <key>data_rows</key>
+	      <array>
+	          <dict>
+	              <key>pkg_path</key>
+	              <string>/Volumes/********/AutoPkg/Cache/local.jss.AdobeFlashPlayer/AdobeFlashPlayer-18.0.0.209.pkg</string>
+	          </dict>
+	          <dict>
+	              <key>pkg_path</key>
+	              <string>/Volumes/********/AutoPkg/Cache/local.jss.MSOffice2011Updates/Office 2011 14.5.3 Update.pkg</string>
+	          </dict>
+	          <dict>
+	              <key>pkg_path</key>
+	              <string>/Volumes/********/AutoPkg/Cache/local.jss.Silverlight/Silverlight-5.1.40416.0.pkg</string>
+	          </dict>
+	          <dict>
+	              <key>pkg_path</key>
+	              <string>/Volumes/********AutoPkg/Cache/local.jss.AdobeShockwavePlayer/Adobe Shockwave Player.pkg</string>
+	          </dict>
+	          <dict>
+	              <key>pkg_path</key>
+	              <string>/Volumes/********/AutoPkg/Cache/local.jss.AdobeShockwavePlayer/Adobe Shockwave Player-12.1.9r160.pkg</string>
+	          </dict>
+	          <dict>
+	              <key>pkg_path</key>
+	              <string>/Volumes/********/AutoPkg/Cache/local.jss.OracleJava7/OracleJava7-1.7.79.15.pkg</string>
+	          </dict>
+	          <dict>
+	              <key>pkg_path</key>
+	              <string>/Volumes/********/AutoPkg/Cache/local.jss.WiresharkDev/Wireshark-1.99.8.pkg</string>
+	          </dict>
+	      </array>
+	      <key>header</key>
+	      <array>
+	          <string>pkg_path</string>
+	      </array>
+	      <key>summary_text</key>
+	      <string>The following packages were copied:</string>
+	  </dict>
+	</dict>
+	<key>failures</key>
+	<array>
+		<dict>
+			<key>message</key>
+			<string>Error in io.github.hjuutilainen.jss.iTerm2: Processor: CodeSignatureVerifier: Error: Code signature verification failed. Note that all verifications can be disabled by setting the variable DISABLE_CODE_SIGNATURE_VERIFICATION to a non-empty value.</string>
+			<key>recipe</key>
+			<string>io.github.hjuutilainen.jss.iTerm2</string>
+		</dict>
+	</array>
+	<key>detected_versions</key>
+	<array>
+		<dict>
+			<key>pkg_path</key>
+			<string>AutoDMG</string>
+			<key>version</key>
+			<string>1.5.2</string>
+		</dict>
+		<dict>
+			<key>pkg_path</key>
+			<string>Caffeine</string>
+			<key>version</key>
+			<string>1.1.1</string>
+		</dict>
+		<dict>
+			<key>pkg_path</key>
+			<string>CreateUserPkg</string>
+			<key>version</key>
+			<string>1.2.4</string>
+		</dict>
+	</array>
+	<key>report_version</key>
+	<string>0.4.3</string>
+</dict>
+</plist>

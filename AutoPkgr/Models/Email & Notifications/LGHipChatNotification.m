@@ -24,7 +24,7 @@
 
 static NSString *const HipChatLink = @"https://hipchat.com/rooms";
 
-static NSString *const HipChatNotificationEnabledKey = @"HipChatNotificationEnabled";
+static NSString *const HipChatNotificationEnabledKey = @"HipChatNotificationsEnabled";
 static NSString *const HipChatNotificationRoomKey = @"HipChatNotificationRoom";
 static NSString *const HipChatNotificationNotifyKey = @"HipChatNotificationNotify";
 
@@ -67,7 +67,6 @@ static NSString *const HipChatNotificationNotifyKey = @"HipChatNotificationNotif
 {
     self.notificatonComplete = complete;
 
-    NSString *message = self.report.emailSubjectString;
     NSString *color;
     if (self.report.error) {
         color = @"red";
@@ -75,9 +74,11 @@ static NSString *const HipChatNotificationNotifyKey = @"HipChatNotificationNotif
         color = @"green";
     }
 
-    NSDictionary *parameters = @{ @"message" : message,
-                                  @"color" : color
-    };
+    NSDictionary *parameters = @{ @"message" : self.report.webChannelMessageString,
+                                  @"color" : color,
+                                  @"message_format" : @"text"
+                                  };
+
     [self sendMessageWithParameters:[self baseRoomPostParameters:parameters]];
 }
 
@@ -145,7 +146,8 @@ static NSString *const HipChatNotificationNotifyKey = @"HipChatNotificationNotif
             // Error here means there was a problem getting the password.
             self.notificatonComplete(error);
         } else {
-            NSString *urlString  = [self sendNotificationPath];
+            NSString *urlString  = [[self sendNotificationPath] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+            
             [manager POST:urlString parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
                 //
                 self.notificatonComplete(nil);

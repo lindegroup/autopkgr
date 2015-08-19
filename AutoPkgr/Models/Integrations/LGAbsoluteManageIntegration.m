@@ -39,7 +39,7 @@
 
 + (NSString *)shortName
 {
-    return @"AMExporter";
+    return @"AMExport";
 }
 + (NSString *)credits {
     return @"Copyright 2014 Thomas Burgin\nhttp://www.apache.org/licenses/LICENSE-2.0";
