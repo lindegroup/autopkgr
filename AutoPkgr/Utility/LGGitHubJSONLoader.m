@@ -89,9 +89,12 @@
 {
     if (!_latestReleaseDictionary) {
         [self.jsonObject enumerateObjectsUsingBlock:^(NSDictionary *releaseDict, NSUInteger idx, BOOL *stop) {
-            if (releaseDict[@"prerelease"] == NO) {
+            NSNumber *prerelease = releaseDict[@"prerelease"];
+            if (prerelease.boolValue == NO) {
                 _latestReleaseDictionary = releaseDict;
                 *stop = YES;
+            } else {
+                NSLog(@"Skipping prerelease version of %@", self.repoURL);
             }
         }];
     }
