@@ -6,6 +6,55 @@
         <description>Most recent changes with links to updates.</description>
         <language>en</language>
         <item>
+            <title>Version 1.3.1</title>
+            <description>
+                <![CDATA[
+                <p>AutoPkgr 1.3.1 is a minor update that focuses on fixing a couple bugs and adding some small features.</p>
+
+                <h3>Added</h3>
+
+                <ul>
+                    <li>Now supports GitHub two-factor authentication for generation of API tokens. (<a href="https://github.com/lindegroup/autopkgr/issues/393" class="issue-link" title="Github API Token Generator fails with 2 factor authentication">#393</a>)</li>
+                    <li>Made Slack and HipChat output more verbose, including errors. (<a href="https://github.com/lindegroup/autopkgr/issues/417" class="issue-link" title="Slack integration not sending list of what failed">#417</a>)</li>
+                </ul>
+
+                <h3>Changed</h3>
+
+                <ul>
+                    <li>Changed the way a valid user is determined when adding a schedule. Users not physically logged into the system can now enable the schedule assuming they have a valid home directory, and a <code>com.github.autopkg.plist</code> preference file. (<a href="https://github.com/lindegroup/autopkgr/issues/416" class="issue-link" title="&quot;Enable scheduled AutoPkg runs&quot; checkbox not sticking">#416</a>)</li>
+                </ul>
+
+                <h3>Fixed</h3>
+
+                <ul>
+                    <li>Adjusted a few things that should improve AutoPkgr's behavior when running on Mac OS X 10.8.</li>
+                    <li>Fixed a bug that would cause proxy settings to be displayed incorrectly. (<a href="https://github.com/lindegroup/autopkgr/issues/399" class="issue-link" title="Proxy radio buttons do not &quot;stick&quot;">#399</a>)</li>
+                    <li>Fixed a bug where schedule changes would not reload in-memory launchd schedule.</li>
+                    <li>Incorporates a new version of AHLaunchCtl, which improves the reliability of the schedule settings.</li>
+                    <li>Fixed a bug that would prevent JSSImporter-related defaults from getting set.</li>
+                    <li>Fixed a bug that would result in repos appearing twice in the repo table. (<a href="https://github.com/lindegroup/autopkgr/issues/406" class="issue-link" title="Repos that were added manually appear twice in the repo table">#406</a>)</li>
+                    <li>Fixed a bug causing search results to be incorrectly formatted. (<a href="https://github.com/lindegroup/autopkgr/issues/410" class="issue-link" title="Recipe search results with spaces in name">#410</a>)</li>
+                    <li>Improved handling of git operations when using proxies.</li>
+                    <li>Resolved issue where Slack/HipChat settings were not saving properly in OS X El Capitan. (Note: AutoPkgr does not officially support El Capitan yet.)</li>
+                </ul>
+
+                <h3>Removed</h3>
+
+                <ul>
+                    <li>AutoPkgr no longer attempts to automatically correct or change JSS URLs entered through the "Configure JSSImporter" options. As long as the URL you enter is valid, you shouldn't notice this.</li>
+                </ul>
+
+                <p>Do you love AutoPkgr? We want to hear from you! Take a minute and <a href="http://www.lindegroup.com/autopkgr-feedback">tell us how AutoPkgr has made your life easier</a>.</p>
+
+                <p>As always, if you discover a reproducible bug, the best thing to do is <a href="https://github.com/lindegroup/autopkgr/issues">submit an issue</a> on GitHub. This is how bug fixes like the ones in 1.3.1 happen!</p>
+
+                <p>Happy packaging.</p>
+                ]]>
+            </description>
+            <pubDate>Wed, 19 August 2015 16:15:00 -0700</pubDate>
+            <enclosure url="https://github.com/lindegroup/autopkgr/releases/download/v1.3.1/AutoPkgr-1.3.1.dmg" sparkle:version="1076" sparkle:shortVersionString="1.3.1" type="application/octet-stream" />
+        </item>
+        <item>
             <title>Version 1.3</title>
             <description>
                 <![CDATA[
