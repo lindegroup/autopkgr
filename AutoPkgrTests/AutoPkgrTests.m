@@ -358,6 +358,8 @@ static const BOOL _TEST_PRIVILEGED_HELPER = YES;
 
     [report.emailMessageString writeToFile:htmlFile atomically:YES encoding:NSUTF8StringEncoding error:nil];
 
+    NSLog(@"%@", report.webChannelMessageString);
+
     [[NSWorkspace sharedWorkspace] openFile:htmlFile];
 }
 
@@ -374,7 +376,7 @@ static const BOOL _TEST_PRIVILEGED_HELPER = YES;
 
     [report.emailMessageString writeToFile:htmlFile atomically:YES encoding:NSUTF8StringEncoding error:nil];
 
-    NSLog(@"%@", report.emailSubjectString);
+    NSLog(@"%@", report.webChannelMessageString);
 
     [[NSWorkspace sharedWorkspace] openFile:htmlFile];
 }

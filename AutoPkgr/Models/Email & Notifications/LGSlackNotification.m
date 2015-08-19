@@ -63,15 +63,7 @@ static NSString *const SlacksNotificationsEnabledKey = @"SlackNotificationsEnabl
         self.notificatonComplete = complete;
     }
 
-    NSMutableString *str = self.report.emailSubjectString.mutableCopy;
-    [str appendString:@":\n"];
-
-    [self.report.updatedApplications enumerateObjectsUsingBlock:^(LGUpdatedApplication *app, NSUInteger idx, BOOL *stop) {
-        [str appendFormat:@" * %@ [%@]\n", app.name, app.version]; // Format howerver
-    }];
-
-    NSDictionary *slackParameters = @{ @"text" : str };
-
+    NSDictionary *slackParameters = @{ @"text" :  self.report.webChannelMessageString };
     [self sendMessageWithParameters:slackParameters];
 }
 

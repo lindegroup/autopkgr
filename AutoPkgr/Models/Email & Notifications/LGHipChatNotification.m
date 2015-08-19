@@ -67,7 +67,6 @@ static NSString *const HipChatNotificationNotifyKey = @"HipChatNotificationNotif
 {
     self.notificatonComplete = complete;
 
-    NSString *message = self.report.emailSubjectString;
     NSString *color;
     if (self.report.error) {
         color = @"red";
@@ -75,9 +74,11 @@ static NSString *const HipChatNotificationNotifyKey = @"HipChatNotificationNotif
         color = @"green";
     }
 
-    NSDictionary *parameters = @{ @"message" : message,
-                                  @"color" : color
-    };
+    NSDictionary *parameters = @{ @"message" : self.report.webChannelMessageString,
+                                  @"color" : color,
+                                  @"message_format" : @"text"
+                                  };
+
     [self sendMessageWithParameters:[self baseRoomPostParameters:parameters]];
 }
 
