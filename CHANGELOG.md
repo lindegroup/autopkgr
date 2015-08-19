@@ -316,6 +316,7 @@ All notable changes to this project will be documented in this file. This projec
 
 
 [unreleased]: https://github.com/lindegroup/autopkgr/compare/v1.3...HEAD
+[1.3.1]: https://github.com/lindegroup/autopkgr/compare/v1.3...v1.3.1
 [1.3]: https://github.com/lindegroup/autopkgr/compare/v1.2.3...v1.3
 [1.2.3]: https://github.com/lindegroup/autopkgr/compare/v1.2.2...v1.2.3
 [1.2.2]: https://github.com/lindegroup/autopkgr/compare/v1.2.1...v1.2.2
