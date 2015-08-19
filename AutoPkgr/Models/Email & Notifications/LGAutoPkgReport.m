@@ -172,6 +172,21 @@ NSString *const fallback_reportCSS = @"<style type='text/css'>*{font-family:'Hel
     return [message copy];
 }
 
+- (NSString *)webChannelMessageString {
+    NSMutableString *message = self.emailSubjectString.mutableCopy;
+    [message appendString:@":\n"];
+
+    [self.updatedApplications enumerateObjectsUsingBlock:^(LGUpdatedApplication *app, NSUInteger idx, BOOL *stop) {
+        [message appendFormat:@"  * %@ [%@]\n", app.name, app.version]; // Format howerver
+    }];
+
+    NSError *error = self.failureError;
+    if (error) {
+        [message appendFormat:@"\n%@\n%@", error.localizedDescription, error.localizedRecoverySuggestion];
+    }
+
+    return message.copy ?: @"";
+}
 #pragma mark - Private
 - (NSString *)overviewString
 {

@@ -80,6 +80,11 @@ typedef NS_ENUM(NSInteger, LGReportIntegrationFrequency) {
 @property (copy, nonatomic, readonly) NSString *emailSubjectString;
 
 /**
+ *  Formatted message suitable for Slack / HipChat (formatted as text)
+ */
+@property (copy, nonatomic, readonly) NSString *webChannelMessageString;
+
+/**
  *  Check to determine if there is anything to report
  */
 @property (nonatomic, readonly) BOOL updatesToReport;
