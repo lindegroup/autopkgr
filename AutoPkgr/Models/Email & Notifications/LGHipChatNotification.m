@@ -24,7 +24,7 @@
 
 static NSString *const HipChatLink = @"https://hipchat.com/rooms";
 
-static NSString *const HipChatNotificationEnabledKey = @"HipChatNotificationEnabled";
+static NSString *const HipChatNotificationEnabledKey = @"HipChatNotificationsEnabled";
 static NSString *const HipChatNotificationRoomKey = @"HipChatNotificationRoom";
 static NSString *const HipChatNotificationNotifyKey = @"HipChatNotificationNotify";
 
