@@ -289,7 +289,7 @@ We also welcome feature requests on GitHub! Some of our best features have come 
 
 ## Credits
 
-AutoPkgr was created at the [Linde Group](http://www.lindegroup.com) in Emeryville, California. If you're a talented Mac admin looking for a job in the Bay Area, [check out our job listings](https://sfbay.craigslist.org/search/jjj?sort=rel&query=linde). We've got a wonderful team of people and fantastic clients.
+AutoPkgr was created at the [Linde Group](http://www.lindegroup.com) in Emeryville, California. If you're a talented Mac admin looking for a job in the Bay Area, [check out our job listings](http://www.lindegroup.com/careers/). We've got a wonderful team of people and fantastic clients.
 
 James Barclay, Elliot Jordan, and Josh Senick originally created AutoPkgr in June 2014, and ongoing development is led by Eldon Ahrold, Elliot Jordan, and James Barclay.
 
