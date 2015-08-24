@@ -222,13 +222,47 @@
     [_popularRepositoriesTableView endUpdates];
 }
 
+
+/**
+ *  This will add or remove an array of recipe repos. The LGAuotPkg task args are created while building the contextual menu.
+ *
+ *  @param sender The contextual menu item sending the request.
+ */
+
+- (void)bulkModifyRecipeRepos:(NSMenuItem *)sender{
+    NSArray *taskArgs = sender.representedObject;
+
+    LGAutoPkgTask *task = [[LGAutoPkgTask alloc] init];
+    task.arguments = taskArgs;
+
+    [task setProgressUpdateBlock:^(NSString *message, double progress) {
+        [_progressDelegate updateProgress:message progress:progress];
+    }];
+
+    NSInteger count = (taskArgs.count - 1);
+    NSString *action = nil;
+    if ([taskArgs.firstObject isEqualToString:@"repo-add"]) {
+        action = @"Adding";
+    } else if ([taskArgs.firstObject isEqualToString:@"repo-delete"]) {
+        action = @"Removing";
+    }
+
+    if (action) {
+        NSString *message = quick_formatString(@"%@ %ld recipe repo%@.", action, count , count > 1 ? @"s": @"");
+        [_progressDelegate startProgressWithMessage:message];
+        [task launchInBackground:^(NSError *error) {
+            [_progressDelegate stopProgress:error];
+        }];
+    }
+}
+
+
 - (NSMenu *)contextualMenuForRow:(NSInteger)row
 {
-
     LGAutoPkgRepo *repo = _searchedRepos[row];
     NSMenu *menu = [[NSMenu alloc] init];
 
-    // Update Repo...
+    // Update repo
     if (repo.isInstalled) {
         NSMenuItem *updateItem = [[NSMenuItem alloc] initWithTitle:@"Update This Repo Only"
                                                             action:@selector(updateRepo:)
@@ -265,6 +299,41 @@
         clipboardItem.representedObject = repo.path;
         clipboardItem.target = self;
         [menu addItem:clipboardItem];
+    }
+
+    [menu addItem:[NSMenuItem separatorItem]];
+
+    // Creat the Add / Remove repos menu. We construct the full args that are passed into the AutoPkg task.
+    // With both repo-add and repo-delete multiple repos can be passed in, so start with the command
+    // and append the recipes that are considered. That is the array ultimately set as the menu item's
+    // represented object.
+    __block NSMutableArray *enabled = @[ @"repo-delete" ].mutableCopy, *disabled = @[ @"repo-add" ].mutableCopy;
+    NSIndexSet *set = _popularRepositoriesTableView.selectedRowIndexes;
+    [set enumerateIndexesUsingBlock:^(NSUInteger idx, BOOL *stop) {
+      LGRepoStatusCellView *cell = [_popularRepositoriesTableView viewAtColumn:0 row:idx makeIfNecessary:NO];
+      if (cell) {
+          if (cell.enabledCheckBox.state) {
+              [enabled addObject:[_searchedRepos[idx] cloneURL].absoluteString];
+          } else {
+              [disabled addObject:[_searchedRepos[idx] cloneURL].absoluteString];
+          }
+      }
+    }];
+
+    // Add Repos...
+    if (disabled.count > 1) {
+        NSMenuItem *addReposItem = [[NSMenuItem alloc] initWithTitle:@"Add Repos" action:@selector(bulkModifyRecipeRepos:) keyEquivalent:@""];
+        addReposItem.representedObject = disabled;
+        addReposItem.target = self;
+        [menu addItem:addReposItem];
+    }
+
+    // Remove Repos...
+    if (enabled.count > 1) {
+        NSMenuItem *removeReposItem = [[NSMenuItem alloc] initWithTitle:@"Remove Repos" action:@selector(bulkModifyRecipeRepos:) keyEquivalent:@""];
+        removeReposItem.representedObject = enabled;
+        removeReposItem.target = self;
+        [menu addItem:removeReposItem];
     }
 
     return menu;
