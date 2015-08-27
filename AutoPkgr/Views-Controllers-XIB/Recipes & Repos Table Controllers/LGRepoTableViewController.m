@@ -263,52 +263,55 @@
     NSMenu *menu = [[NSMenu alloc] init];
 
     // Update repo
-    if (repo.isInstalled) {
-        NSMenuItem *updateItem = [[NSMenuItem alloc] initWithTitle:@"Update This Repo Only"
-                                                            action:@selector(updateRepo:)
-                                                     keyEquivalent:@""];
-        updateItem.target = self;
-        updateItem.representedObject = repo;
+    NSIndexSet *set = _popularRepositoriesTableView.selectedRowIndexes;
 
-        [menu addItem:updateItem];
-    }
+    if (set.count == 1) {
+        if (repo.isInstalled) {
+            NSMenuItem *updateItem = [[NSMenuItem alloc] initWithTitle:@"Update This Repo Only"
+                                                                action:@selector(updateRepo:)
+                                                         keyEquivalent:@""];
+            updateItem.target = self;
+            updateItem.representedObject = repo;
 
-    // Commits ...
-    if (repo.commitsURL) {
-        NSMenuItem *commitsItem = [[NSMenuItem alloc] initWithTitle:@"Open GitHub Commits Page"
-                                                             action:@selector(viewCommitsOnGitHub:)
-                                                      keyEquivalent:@""];
-        commitsItem.target = repo;
-        [menu addItem:commitsItem];
-    }
+            [menu addItem:updateItem];
+        }
 
-    if (repo.cloneURL) {
-        NSMenuItem *cloneItem = [[NSMenuItem alloc] initWithTitle:@"Copy URL to Clipboard"
-                                                           action:@selector(copyToPasteboard:)
-                                                    keyEquivalent:@""];
+        // Commits ...
+        if (repo.commitsURL) {
+            NSMenuItem *commitsItem = [[NSMenuItem alloc] initWithTitle:@"Open GitHub Commits Page"
+                                                                 action:@selector(viewCommitsOnGitHub:)
+                                                          keyEquivalent:@""];
+            commitsItem.target = repo;
+            [menu addItem:commitsItem];
+        }
 
-        cloneItem.representedObject = repo.cloneURL.absoluteString;
-        cloneItem.target = self;
-        [menu addItem:cloneItem];
-    }
-
-    if (repo.path) {
-        NSMenuItem *clipboardItem = [[NSMenuItem alloc] initWithTitle:@"Copy Path to Clipboard"
+        if (repo.cloneURL) {
+            NSMenuItem *cloneItem = [[NSMenuItem alloc] initWithTitle:@"Copy URL to Clipboard"
                                                                action:@selector(copyToPasteboard:)
                                                         keyEquivalent:@""];
-        clipboardItem.representedObject = repo.path;
-        clipboardItem.target = self;
-        [menu addItem:clipboardItem];
-    }
 
-    [menu addItem:[NSMenuItem separatorItem]];
+            cloneItem.representedObject = repo.cloneURL.absoluteString;
+            cloneItem.target = self;
+            [menu addItem:cloneItem];
+        }
+
+        if (repo.path) {
+            NSMenuItem *clipboardItem = [[NSMenuItem alloc] initWithTitle:@"Copy Path to Clipboard"
+                                                                   action:@selector(copyToPasteboard:)
+                                                            keyEquivalent:@""];
+            clipboardItem.representedObject = repo.path;
+            clipboardItem.target = self;
+            [menu addItem:clipboardItem];
+        }
+
+        [menu addItem:[NSMenuItem separatorItem]];
+    }
 
     // Creat the Add / Remove repos menu. We construct the full args that are passed into the AutoPkg task.
     // With both repo-add and repo-delete multiple repos can be passed in, so start with the command
     // and append the recipes that are considered. That is the array ultimately set as the menu item's
     // represented object.
     __block NSMutableArray *enabled = @[ @"repo-delete" ].mutableCopy, *disabled = @[ @"repo-add" ].mutableCopy;
-    NSIndexSet *set = _popularRepositoriesTableView.selectedRowIndexes;
     [set enumerateIndexesUsingBlock:^(NSUInteger idx, BOOL *stop) {
       LGRepoStatusCellView *cell = [_popularRepositoriesTableView viewAtColumn:0 row:idx makeIfNecessary:NO];
       if (cell) {
