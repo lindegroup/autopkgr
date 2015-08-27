@@ -118,19 +118,25 @@ NSString *const fallback_reportCSS = @"<style type='text/css'>*{font-family:'Hel
 
 - (NSString *)emailSubjectString
 {
+    NSString *subject = nil;
     if ([_reportDictionary[kReportKeySummaryResults][kReportProcessorURLDownloader] count] > 0) {
-        return NSLocalizedString(@"New software available for testing", nil);
+        subject = NSLocalizedString(@"New software available for testing", nil);
     } else if ([_reportDictionary[kReportKeyFailures] count] > 0) {
-        return NSLocalizedString(@"Failures occurred while running AutoPkg", nil);
+        subject = NSLocalizedString(@"Failures occurred while running AutoPkg", nil);
     } else if (self.error) {
-        return NSLocalizedString(@"An error occurred while running AutoPkg", nil);
+        subject =  NSLocalizedString(@"An error occurred while running AutoPkg", nil);
     } else if (_integrations) {
         for (LGIntegration *integration in _integrations) {
             if (integration.info.status == kLGIntegrationUpdateAvailable) {
-                return NSLocalizedString(@"Update to helper components available", nil);
+                subject = NSLocalizedString(@"Update to helper components available", nil);
             }
         }
     }
+
+    if (subject) {
+        return quick_formatString(@"%@ on %@", subject, [NSHost currentHost].localizedName);
+    }
+
     return nil;
 }
 

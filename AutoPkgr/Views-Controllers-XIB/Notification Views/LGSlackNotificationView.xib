@@ -14,13 +14,13 @@
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
         <customObject id="-3" userLabel="Application" customClass="NSObject"/>
         <customView id="Hz6-mo-xeY">
-            <rect key="frame" x="0.0" y="-1" width="567" height="109"/>
+            <rect key="frame" x="0.0" y="1" width="567" height="134"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="wgb-zQ-52W">
-                    <rect key="frame" x="-14" y="69" width="121" height="17"/>
+                    <rect key="frame" x="10" y="94" width="97" height="17"/>
                     <constraints>
-                        <constraint firstAttribute="width" constant="117" id="Gcv-QB-CH3"/>
+                        <constraint firstAttribute="width" constant="93" id="ecX-Mb-Lhp"/>
                     </constraints>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Webhook URL:" id="wUT-Ey-E1F">
                         <font key="font" metaFont="system"/>
@@ -29,7 +29,7 @@
                     </textFieldCell>
                 </textField>
                 <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="QSi-iQ-e1A">
-                    <rect key="frame" x="113" y="67" width="434" height="22"/>
+                    <rect key="frame" x="113" y="92" width="434" height="22"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="L6M-9U-VSV">
                         <font key="font" metaFont="system"/>
                         <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
@@ -37,23 +37,47 @@
                     </textFieldCell>
                 </textField>
                 <button identifier="slackHelpInfo" horizontalHuggingPriority="750" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="KkN-I1-9tF" customClass="AHHelpPopoverButton">
-                    <rect key="frame" x="524" y="35" width="25" height="25"/>
+                    <rect key="frame" x="524" y="32" width="25" height="25"/>
                     <buttonCell key="cell" type="help" bezelStyle="helpButton" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="kpU-Na-RRR">
                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                         <font key="font" metaFont="system"/>
                     </buttonCell>
                 </button>
+                <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="rT7-KI-ie2">
+                    <rect key="frame" x="113" y="64" width="434" height="22"/>
+                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" title="AutoPkgr" placeholderString="" drawsBackground="YES" id="MkV-Zf-cdC">
+                        <font key="font" metaFont="system"/>
+                        <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="uGQ-hH-paE">
+                    <rect key="frame" x="10" y="66" width="97" height="17"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="93" id="Ukm-yw-Cp5"/>
+                    </constraints>
+                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Bot Name:" id="w0b-FV-FBc">
+                        <font key="font" metaFont="system"/>
+                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
             </subviews>
             <constraints>
+                <constraint firstAttribute="trailing" secondItem="rT7-KI-ie2" secondAttribute="trailing" constant="20" id="2FR-Xa-X7S"/>
                 <constraint firstItem="QSi-iQ-e1A" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="113" id="Ff2-76-FNq"/>
-                <constraint firstItem="wgb-zQ-52W" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="-12" id="JYc-BJ-eey"/>
+                <constraint firstItem="wgb-zQ-52W" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="12" id="KaW-vo-894"/>
                 <constraint firstAttribute="trailing" secondItem="KkN-I1-9tF" secondAttribute="trailing" constant="20" id="PJG-RV-ipE"/>
-                <constraint firstItem="KkN-I1-9tF" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="50" id="iCq-3Z-k3B"/>
+                <constraint firstItem="uGQ-hH-paE" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="12" id="WYl-nw-n08"/>
+                <constraint firstItem="rT7-KI-ie2" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="113" id="aIV-49-2Re"/>
+                <constraint firstItem="wgb-zQ-52W" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="23" id="cWy-iO-pI9"/>
+                <constraint firstItem="KkN-I1-9tF" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="78" id="iCq-3Z-k3B"/>
                 <constraint firstItem="QSi-iQ-e1A" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="20" id="jUk-8D-yu5"/>
-                <constraint firstItem="wgb-zQ-52W" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="23" id="uHh-KP-D6K"/>
+                <constraint firstItem="rT7-KI-ie2" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="48" id="pEn-nA-yDh"/>
+                <constraint firstItem="uGQ-hH-paE" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="51" id="rDL-4B-spx"/>
                 <constraint firstAttribute="trailing" secondItem="QSi-iQ-e1A" secondAttribute="trailing" constant="20" id="vmD-8E-Nh9"/>
             </constraints>
-            <point key="canvasLocation" x="152.5" y="72.5"/>
+            <point key="canvasLocation" x="152.5" y="85"/>
         </customView>
     </objects>
 </document>
