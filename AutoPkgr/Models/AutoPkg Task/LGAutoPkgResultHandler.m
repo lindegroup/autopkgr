@@ -86,20 +86,19 @@
             if (listResults.count) {
                 recipes = [NSMutableArray arrayWithCapacity:listResults.count];
                 [listResults enumerateObjectsUsingBlock:^(NSString *str, NSUInteger idx, BOOL *stop) {
-                        if (str.length) {
-                            NSArray *split = str.split_bySpace;
-                            if (split.count) {
-                                NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithCapacity:split.count];
+                    if (str.length) {
+                        NSArray *split = str.split_bySpace;
+                        if (split.count) {
+                            NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithCapacity:split.count];
 
-                                if (split.count > 1) {
-                                    [dict setObject:split[1] forKey:kLGAutoPkgRecipeIdentifierKey];
-                                }
-
-                                [dict setObject:split.firstObject forKey:kLGAutoPkgRecipeNameKey];
-                                [recipes addObject:dict];
-                                
+                            if (split.count > 1) {
+                                [dict setObject:split[1] forKey:kLGAutoPkgRecipeIdentifierKey];
                             }
+
+                            [dict setObject:split.firstObject forKey:kLGAutoPkgRecipeNameKey];
+                            [recipes addObject:dict];
                         }
+                    }
                 }];
             }
 
@@ -117,26 +116,27 @@
             NSCharacterSet *whiteSpace = [NSCharacterSet whitespaceAndNewlineCharacterSet];
 
             NSPredicate *skipLinePredicate = [NSPredicate predicateWithFormat:@"SELF BEGINSWITH 'To add' \
-                                                                                or SELF BEGINSWITH '----' \
-                                                                                or SELF BEGINSWITH 'Name'"];
+                                                  or SELF BEGINSWITH '----' \
+                                                  or SELF BEGINSWITH 'Name'"];
 
             [self.dataString enumerateLinesUsingBlock:^(NSString *line, BOOL *stop) {
-                    if (![skipLinePredicate evaluateWithObject:line ]) {
-                        NSArray *array = [line componentsSeparatedByString:@"  "].filtered_noEmptyStrings;
-                        if (array.count == 3) {
-                            NSString *recipe = [array[0] stringByTrimmingCharactersInSet:whiteSpace];
-                            NSString *repo = [array[1] stringByTrimmingCharactersInSet:whiteSpace];
-                            NSString *path = [array[2] stringByTrimmingCharactersInSet:whiteSpace];
+                if (![skipLinePredicate evaluateWithObject:line]) {
+                    NSArray *array = [line componentsSeparatedByString:@"  "].filtered_noEmptyStrings;
+                    if (array.count == 3) {
+                        NSString *recipe = [array[0] stringByTrimmingCharactersInSet:whiteSpace];
+                        NSString *repo = [array[1] stringByTrimmingCharactersInSet:whiteSpace];
+                        NSString *path = [array[2] stringByTrimmingCharactersInSet:whiteSpace];
 
-                            if (!searchResults) {
-                                searchResults = [[NSMutableArray alloc] init];
-                            }
-                            [searchResults addObject:@{kLGAutoPkgRecipeNameKey:[recipe stringByDeletingPathExtension],
-                                                       kLGAutoPkgRepoNameKey:repo,
-                                                       kLGAutoPkgRecipePathKey:path,
-                                                       }];
+                        if (!searchResults) {
+                            searchResults = [[NSMutableArray alloc] init];
                         }
+                        [searchResults addObject:@{
+                            kLGAutoPkgRecipeNameKey : [recipe stringByDeletingPathExtension],
+                            kLGAutoPkgRepoNameKey : repo,
+                            kLGAutoPkgRecipePathKey : path,
+                        }];
                     }
+                }
             }];
 
             _results = [searchResults copy];
@@ -163,30 +163,22 @@
                 break;
             }
 
-            NSMutableCharacterSet *skippedCharacters = [NSMutableCharacterSet whitespaceCharacterSet];
-            [skippedCharacters addCharactersInString:@"()"];
-
-            NSMutableCharacterSet *repoCharacters = [NSMutableCharacterSet alphanumericCharacterSet];
-            [repoCharacters formUnionWithCharacterSet:[NSCharacterSet punctuationCharacterSet]];
-            [repoCharacters removeCharactersInString:@"()"];
-
             [listResults enumerateObjectsUsingBlock:^(NSString *repo, NSUInteger idx, BOOL *stop) {
-                    if (repo.length) {
-                        NSScanner *scanner = [NSScanner scannerWithString:repo];
-                        [scanner setCharactersToBeSkipped:skippedCharacters];
+                if (repo.length) {
+                    NSArray *split = [repo componentsSeparatedByString:@"("];
+                    NSString *repoPath, *repoUrl;
+                    if (split.count == 2) {
+                        repoPath = [split[0] trimmed];
+                        repoUrl = [split[1] stringByReplacingOccurrencesOfString:@")" withString:@""].trimmed;
+                    }
 
-                        NSString *repoPath, *repoUrl;
-
-                        [scanner scanCharactersFromSet:repoCharacters intoString:&repoPath];
-                        [scanner scanCharactersFromSet:repoCharacters intoString:&repoUrl];
-
-                        if (repoPath.length && repoUrl.length) {
-                            if (repos || (repos = [[NSMutableArray alloc] init])) {
-                                [repos addObject:@{kLGAutoPkgRepoURLKey : repoUrl.trimmed,
-                                                   kLGAutoPkgRepoPathKey : repoPath.trimmed}];
-                            }
+                    if (repoPath.length && repoUrl.length) {
+                        if (repos || (repos = [[NSMutableArray alloc] init])) {
+                            [repos addObject:@{ kLGAutoPkgRepoURLKey : repoUrl.trimmed,
+                                                kLGAutoPkgRepoPathKey : repoPath.trimmed }];
                         }
                     }
+                }
             }];
 
             _results = [repos copy];
