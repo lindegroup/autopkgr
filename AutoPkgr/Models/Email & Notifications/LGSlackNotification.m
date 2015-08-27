@@ -48,7 +48,7 @@ static NSString *const SlacksNotificationsEnabledKey = @"SlackNotificationsEnabl
 
 + (NSString *)account
 {
-    return @"AutoPkgr Slack Bot";
+    return @"AutoPkgr Slack-Bot";
 }
 
 + (NSURL *)serviceURL
