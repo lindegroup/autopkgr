@@ -259,84 +259,83 @@
 
 - (NSMenu *)contextualMenuForRow:(NSInteger)row
 {
-    LGAutoPkgRepo *repo = _searchedRepos[row];
     NSMenu *menu = [[NSMenu alloc] init];
 
     // Update repo
     NSIndexSet *set = _popularRepositoriesTableView.selectedRowIndexes;
 
-    if (set.count == 1) {
-        if (repo.isInstalled) {
-            NSMenuItem *updateItem = [[NSMenuItem alloc] initWithTitle:@"Update This Repo Only"
-                                                                action:@selector(updateRepo:)
-                                                         keyEquivalent:@""];
-            updateItem.target = self;
-            updateItem.representedObject = repo;
+    if (set.count > 1) {
+        // Creat the Add / Remove repos menu. We construct the full args that are passed into the AutoPkg task.
+        // With both repo-add and repo-delete multiple repos can be passed in, so start with the command
+        // and append the recipes that are considered. That is the array ultimately set as the menu item's
+        // represented object.
+        __block NSMutableArray *enabled = @[ @"repo-delete" ].mutableCopy, *disabled = @[ @"repo-add" ].mutableCopy;
+        [set enumerateIndexesUsingBlock:^(NSUInteger idx, BOOL *stop) {
+            LGRepoStatusCellView *cell = [_popularRepositoriesTableView viewAtColumn:0 row:idx makeIfNecessary:NO];
+            if (cell) {
+                if (cell.enabledCheckBox.state) {
+                    [enabled addObject:[_searchedRepos[idx] cloneURL].absoluteString];
+                } else {
+                    [disabled addObject:[_searchedRepos[idx] cloneURL].absoluteString];
+                }
+            }
+        }];
 
-            [menu addItem:updateItem];
+        // Add Repos...
+        if (disabled.count > 1) {
+            NSMenuItem *addReposItem = [[NSMenuItem alloc] initWithTitle:@"Add Repos" action:@selector(bulkModifyRecipeRepos:) keyEquivalent:@""];
+            addReposItem.representedObject = disabled;
+            addReposItem.target = self;
+            [menu addItem:addReposItem];
         }
 
-        // Commits ...
-        if (repo.commitsURL) {
-            NSMenuItem *commitsItem = [[NSMenuItem alloc] initWithTitle:@"Open GitHub Commits Page"
-                                                                 action:@selector(viewCommitsOnGitHub:)
-                                                          keyEquivalent:@""];
-            commitsItem.target = repo;
-            [menu addItem:commitsItem];
+        // Remove Repos...
+        if (enabled.count > 1) {
+            NSMenuItem *removeReposItem = [[NSMenuItem alloc] initWithTitle:@"Remove Repos" action:@selector(bulkModifyRecipeRepos:) keyEquivalent:@""];
+            removeReposItem.representedObject = enabled;
+            removeReposItem.target = self;
+            [menu addItem:removeReposItem];
         }
+        return menu;
+    }
 
-        if (repo.cloneURL) {
-            NSMenuItem *cloneItem = [[NSMenuItem alloc] initWithTitle:@"Copy URL to Clipboard"
+    LGAutoPkgRepo *repo = _searchedRepos[row];
+    if (repo.isInstalled) {
+        NSMenuItem *updateItem = [[NSMenuItem alloc] initWithTitle:@"Update This Repo Only"
+                                                            action:@selector(updateRepo:)
+                                                     keyEquivalent:@""];
+        updateItem.target = self;
+        updateItem.representedObject = repo;
+
+        [menu addItem:updateItem];
+    }
+
+    // Commits ...
+    if (repo.commitsURL) {
+        NSMenuItem *commitsItem = [[NSMenuItem alloc] initWithTitle:@"Open GitHub Commits Page"
+                                                             action:@selector(viewCommitsOnGitHub:)
+                                                      keyEquivalent:@""];
+        commitsItem.target = repo;
+        [menu addItem:commitsItem];
+    }
+
+    if (repo.cloneURL) {
+        NSMenuItem *cloneItem = [[NSMenuItem alloc] initWithTitle:@"Copy URL to Clipboard"
+                                                           action:@selector(copyToPasteboard:)
+                                                    keyEquivalent:@""];
+
+        cloneItem.representedObject = repo.cloneURL.absoluteString;
+        cloneItem.target = self;
+        [menu addItem:cloneItem];
+    }
+
+    if (repo.path) {
+        NSMenuItem *clipboardItem = [[NSMenuItem alloc] initWithTitle:@"Copy Path to Clipboard"
                                                                action:@selector(copyToPasteboard:)
                                                         keyEquivalent:@""];
-
-            cloneItem.representedObject = repo.cloneURL.absoluteString;
-            cloneItem.target = self;
-            [menu addItem:cloneItem];
-        }
-
-        if (repo.path) {
-            NSMenuItem *clipboardItem = [[NSMenuItem alloc] initWithTitle:@"Copy Path to Clipboard"
-                                                                   action:@selector(copyToPasteboard:)
-                                                            keyEquivalent:@""];
-            clipboardItem.representedObject = repo.path;
-            clipboardItem.target = self;
-            [menu addItem:clipboardItem];
-        }
-
-        [menu addItem:[NSMenuItem separatorItem]];
-    }
-
-    // Creat the Add / Remove repos menu. We construct the full args that are passed into the AutoPkg task.
-    // With both repo-add and repo-delete multiple repos can be passed in, so start with the command
-    // and append the recipes that are considered. That is the array ultimately set as the menu item's
-    // represented object.
-    __block NSMutableArray *enabled = @[ @"repo-delete" ].mutableCopy, *disabled = @[ @"repo-add" ].mutableCopy;
-    [set enumerateIndexesUsingBlock:^(NSUInteger idx, BOOL *stop) {
-      LGRepoStatusCellView *cell = [_popularRepositoriesTableView viewAtColumn:0 row:idx makeIfNecessary:NO];
-      if (cell) {
-          if (cell.enabledCheckBox.state) {
-              [enabled addObject:[_searchedRepos[idx] cloneURL].absoluteString];
-          } else {
-              [disabled addObject:[_searchedRepos[idx] cloneURL].absoluteString];
-          }
-      }
-    }];
-
-    // Add Repos...
-    if (disabled.count > 1) {
-        NSMenuItem *addReposItem = [[NSMenuItem alloc] initWithTitle:@"Add Repos" action:@selector(bulkModifyRecipeRepos:) keyEquivalent:@""];
-        addReposItem.representedObject = disabled;
-        addReposItem.target = self;
-        [menu addItem:addReposItem];
-    }
-
-    // Remove Repos...
-    if (enabled.count > 1) {
-        NSMenuItem *removeReposItem = [[NSMenuItem alloc] initWithTitle:@"Remove Repos" action:@selector(bulkModifyRecipeRepos:) keyEquivalent:@""];
-        removeReposItem.representedObject = enabled;
-        removeReposItem.target = self;
-        [menu addItem:removeReposItem];
+        clipboardItem.representedObject = repo.path;
+        clipboardItem.target = self;
+        [menu addItem:clipboardItem];
     }
 
     return menu;
