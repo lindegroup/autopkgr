@@ -102,8 +102,7 @@ static NSString *const kLGAutoPkgRecipeCurrentStatusKey = @"currentStatus";
         }
     } else if ([tableColumn.identifier isEqualToString:NSStringFromSelector(@selector(isEnabled))]) {
         statusCell.enabledCheckBox.state = [[recipe valueForKey:tableColumn.identifier] boolValue];
-        statusCell.enabledCheckBox.target = self;
-        statusCell.enabledCheckBox.tag = row;
+        statusCell.enabledCheckBox.target = recipe;
         statusCell.enabledCheckBox.action = @selector(enableRecipe:);
     } else {
         NSString *string = [recipe valueForKey:tableColumn.identifier];
@@ -123,21 +122,6 @@ static NSString *const kLGAutoPkgRecipeCurrentStatusKey = @"currentStatus";
 }
 
 #pragma mark - IBActions
-- (void)enableRecipe:(NSButton *)sender {
-    if ([NSEvent modifierFlags] & NSAlternateKeyMask){
-        NSLog(@"%@ All Recipes", sender.state ? @"Enabling":@"Disabling");
-        BOOL enabled = sender.state;
-        for (LGAutoPkgRecipe *recipe in _searchedRecipes) {
-            recipe.enabled = enabled;
-        }
-        [self reload];
-    } else {
-        // The `sender.tag` is set during -tableView:viewForTableColumn:tableColumn row:row
-        LGAutoPkgRecipe *recipe = _searchedRecipes[sender.tag];
-        [recipe enableRecipe:sender];
-    }
-}
-
 - (void)enableRecipes:(NSMenuItem *)sender {
     NSArray *recipes = sender.representedObject;
     BOOL state = [recipes.firstObject isEnabled];
