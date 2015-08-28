@@ -100,7 +100,8 @@ static NSString *const SlacksNotificationsEnabledKey = @"SlackNotificationsEnabl
 {
     NSMutableDictionary *dict = [parameters mutableCopy];
     if (!parameters[@"username"]) {
-        dict[@"username"] = @"AutoPkgr";
+        // "SlackBotName" is bound to TextField in Slack integration view controller.
+        dict[@"username"] = [[NSUserDefaults standardUserDefaults] objectForKey:@"SlackBotName"] ?: @"AutoPkgr";
     }
 
     dict[@"icon_url"] = @"https://raw.githubusercontent.com/lindegroup/autopkgr/master/AutoPkgr/Images.xcassets/AppIcon.appiconset/icon_32x32%402x.png";
