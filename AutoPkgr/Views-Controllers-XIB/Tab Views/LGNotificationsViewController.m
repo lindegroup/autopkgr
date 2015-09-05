@@ -25,6 +25,7 @@
 #import "LGEmailNotification.h"
 #import "LGSlackNotification.h"
 #import "LGHipChatNotification.h"
+#import "LGTwitterNotification.h"
 
 #import "LGBaseNotificationServiceViewController.h"
 #import "LGNotificationServiceWindowController.h"
@@ -58,6 +59,7 @@
 
 @property (weak) IBOutlet NSButton *configureSlackButton;
 @property (weak) IBOutlet NSButton *configureHipChatButton;
+@property (weak) IBOutlet NSButton *configureTwitterButton;
 
 #pragma mark-- IBActions
 - (IBAction)configure:(NSButton *)sender;
@@ -86,6 +88,10 @@
 
     self.configureSlackButton.wantsLayer = YES;
     self.configureSlackButton.animator.alphaValue = 1.0;
+
+    self.configureTwitterButton.action = @selector(configure:);
+    self.configureTwitterButton.target = self;
+    self.configureTwitterButton.identifier = NSStringFromClass([LGTwitterNotification class]);
 
     [LGPasswords migrateKeychainIfNeeded:^(NSString *password, NSError *error) {
         if (error) {
@@ -124,6 +130,12 @@
                 [self configure:self.configureHipChatButton];
                 [[LGDefaults standardUserDefaults] setBool:YES forKey:@"HipChatConfigured"];
             }
+        } else if ([sender.identifier isEqualToString:@"enableTwitterCheckBox"]) {
+            configured = [[LGDefaults standardUserDefaults] boolForKey:@"TwitterConfigured"];
+            if (!configured) {
+                [self configure:self.configureTwitterButton];
+                [[LGDefaults standardUserDefaults] setBool:YES forKey:@"TwitterConfigured"];
+            }
         }
     }
 
@@ -152,6 +164,8 @@
         enabledKey = @"Slack";
     } else if (class == [LGHipChatNotification class]){
         enabledKey = @"HipChat";
+    } else if (class == [LGTwitterNotification class]){
+        enabledKey = @"Twitter";
     }
 
     if (enabledKey.length) {

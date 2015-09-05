@@ -1,7 +1,8 @@
 //
-//  LGEmailNotification.h
+//  LGTwitterNotificationView.h
 //  AutoPkgr
 //
+//  Created by James Barclay on 8/11/15.
 //  Copyright 2015 The Linde Group, Inc.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,8 +18,8 @@
 //  limitations under the License.
 //
 
-#import "LGNotificationService.h"
+#import "LGBaseNotificationServiceViewController.h"
 
-@interface LGEmailNotification : LGNotificationService <LGNotificationServiceProtocol>
+@interface LGTwitterNotificationView : LGBaseNotificationServiceViewController
 
 @end

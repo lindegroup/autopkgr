@@ -54,7 +54,7 @@
     self.infoTextField.stringValue = @"";
     self.accessoryButton.enabled = NO;
 
-    void (^didComplete)(NSError *) = ^(NSError *error){
+    void (^didComplete)(NSError *) = ^(NSError *error) {
         if (error) {
             [NSApp presentError:error];
         } else {

@@ -23,6 +23,7 @@
 #import "LGEmailNotification.h"
 #import "LGSlackNotification.h"
 #import "LGHipChatNotification.h"
+#import "LGTwitterNotification.h"
 
 #import "LGPasswords.h"
 #import "LGIntegrationManager.h"
@@ -39,6 +40,7 @@ static NSArray *serviceClasses()
                       [LGEmailNotification class],
                       [LGSlackNotification class],
                       [LGHipChatNotification class],
+                      [LGTwitterNotification class],
                       ];
     });
     return classes;

@@ -86,7 +86,7 @@ static NSString *const HipChatNotificationNotifyKey = @"HipChatNotificationNotif
 {
     self.notificatonComplete = complete;
     NSString *message = NSLocalizedString(@"Testing HipChat notifications!",
-                                          @"Hipchat testing message");
+                                          @"HipChat testing message");
 
     NSDictionary *parameters = @{ @"message" : message };
 

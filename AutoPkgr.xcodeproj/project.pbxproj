@@ -26,6 +26,9 @@
 		1AC98427195DF6350071CAB3 /* autopkgr.png in Resources */ = {isa = PBXBuildFile; fileRef = 1AC98425195DF6350071CAB3 /* autopkgr.png */; };
 		1AC98429195DF6DE0071CAB3 /* autopkgr_alt.png in Resources */ = {isa = PBXBuildFile; fileRef = 1AC98428195DF6DE0071CAB3 /* autopkgr_alt.png */; };
 		4B8E6E4F9D8944C883A98423 /* libPods-AutoPkgr.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FF435269A548437DA5380201 /* libPods-AutoPkgr.a */; };
+		57216C7B1B6B43B300CCAA23 /* LGTwitterNotification.m in Sources */ = {isa = PBXBuildFile; fileRef = 57216C7A1B6B43B300CCAA23 /* LGTwitterNotification.m */; };
+		57D1A3A01B7ACCE300934ABF /* LGTwitterNotificationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 57D1A39E1B7ACCE300934ABF /* LGTwitterNotificationView.m */; };
+		57D1A3A11B7ACCE300934ABF /* LGTwitterNotificationView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 57D1A39F1B7ACCE300934ABF /* LGTwitterNotificationView.xib */; };
 		6A53625D1988BE59008A949C /* LGTestPort.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A53625C1988BE59008A949C /* LGTestPort.m */; };
 		8B32152D89506869029955FC /* libPods-AutoPkgrTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7EF915ABFCFD78F7257B58CD /* libPods-AutoPkgrTests.a */; };
 		8BB217F619709A2C00EF8B93 /* AutoPkgrIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 8BB217F519709A2C00EF8B93 /* AutoPkgrIcon.png */; };
@@ -259,6 +262,7 @@
 		BEFC3C8E1A3DF16700C789E9 /* NSArray+filtered.m in Sources */ = {isa = PBXBuildFile; fileRef = BED02ADB1A194F9C00714CC2 /* NSArray+filtered.m */; };
 		BEFC931D1995F0710074C938 /* LGError.m in Sources */ = {isa = PBXBuildFile; fileRef = BEFC931C1995F0710074C938 /* LGError.m */; };
 		CAF173A0D3EC0C495067D9FF /* libPods-com.lindegroup.AutoPkgr.helper.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00A11C97CD6260BB5679DA1A /* libPods-com.lindegroup.AutoPkgr.helper.a */; };
+		D8B7647CBACCF5F9776C2930 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 81FE74727F854353A6144C2B /* libPods.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -328,6 +332,13 @@
 		1AC98425195DF6350071CAB3 /* autopkgr.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = autopkgr.png; sourceTree = "<group>"; };
 		1AC98428195DF6DE0071CAB3 /* autopkgr_alt.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = autopkgr_alt.png; sourceTree = "<group>"; };
 		52A518D9E8BA16BC7F523996 /* Pods-com.lindegroup.AutoPkgr.helper.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-com.lindegroup.AutoPkgr.helper.release.xcconfig"; path = "Pods/Target Support Files/Pods-com.lindegroup.AutoPkgr.helper/Pods-com.lindegroup.AutoPkgr.helper.release.xcconfig"; sourceTree = "<group>"; };
+		57216C791B6B43B300CCAA23 /* LGTwitterNotification.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGTwitterNotification.h; sourceTree = "<group>"; };
+		57216C7A1B6B43B300CCAA23 /* LGTwitterNotification.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGTwitterNotification.m; sourceTree = "<group>"; };
+		574FCF1C1B9A9FEA006A10B3 /* Accounts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accounts.framework; path = System/Library/Frameworks/Accounts.framework; sourceTree = SDKROOT; };
+		574FCF1F1B9AA3A5006A10B3 /* Social.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Social.framework; path = System/Library/Frameworks/Social.framework; sourceTree = SDKROOT; };
+		57D1A39D1B7ACCE300934ABF /* LGTwitterNotificationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LGTwitterNotificationView.h; path = "AutoPkgr/Views-Controllers-XIB/Notification Views/LGTwitterNotificationView.h"; sourceTree = SOURCE_ROOT; };
+		57D1A39E1B7ACCE300934ABF /* LGTwitterNotificationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LGTwitterNotificationView.m; path = "AutoPkgr/Views-Controllers-XIB/Notification Views/LGTwitterNotificationView.m"; sourceTree = SOURCE_ROOT; };
+		57D1A39F1B7ACCE300934ABF /* LGTwitterNotificationView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = LGTwitterNotificationView.xib; path = "AutoPkgr/Views-Controllers-XIB/Notification Views/LGTwitterNotificationView.xib"; sourceTree = SOURCE_ROOT; };
 		5F030AE32F891FB6D46E1F34 /* Pods-AutoPkgrTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AutoPkgrTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-AutoPkgrTests/Pods-AutoPkgrTests.debug.xcconfig"; sourceTree = "<group>"; };
 		5F5D515706D5DA01E7256573 /* Pods-AutoPkgr.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AutoPkgr.debug.xcconfig"; path = "Pods/Target Support Files/Pods-AutoPkgr/Pods-AutoPkgr.debug.xcconfig"; sourceTree = "<group>"; };
 		6A0ACE32196FB349002C7FE4 /* LGRecipeTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGRecipeTableViewController.h; sourceTree = "<group>"; };
@@ -338,6 +349,7 @@
 		6A53625C1988BE59008A949C /* LGTestPort.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGTestPort.m; sourceTree = "<group>"; };
 		78FF6F632570F6CB7453F9D7 /* Pods-AutoPkgrTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AutoPkgrTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-AutoPkgrTests/Pods-AutoPkgrTests.release.xcconfig"; sourceTree = "<group>"; };
 		7EF915ABFCFD78F7257B58CD /* libPods-AutoPkgrTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-AutoPkgrTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		81FE74727F854353A6144C2B /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		8BB217F519709A2C00EF8B93 /* AutoPkgrIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = AutoPkgrIcon.png; sourceTree = "<group>"; };
 		906DD048439B1EC0FBD74F69 /* Pods-AutoPkgr.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AutoPkgr.release.xcconfig"; path = "Pods/Target Support Files/Pods-AutoPkgr/Pods-AutoPkgr.release.xcconfig"; sourceTree = "<group>"; };
 		BE025CF419BAE93400D36345 /* LGAutoPkgTask.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGAutoPkgTask.h; sourceTree = "<group>"; };
@@ -557,6 +569,7 @@
 				1A0A86B1195CE69300A49434 /* Security.framework in Frameworks */,
 				1AC69551195B59ED00D2BD81 /* Cocoa.framework in Frameworks */,
 				4B8E6E4F9D8944C883A98423 /* libPods-AutoPkgr.a in Frameworks */,
+				D8B7647CBACCF5F9776C2930 /* libPods.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -618,6 +631,8 @@
 		1AC6954F195B59ED00D2BD81 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				574FCF1F1B9AA3A5006A10B3 /* Social.framework */,
+				574FCF1C1B9A9FEA006A10B3 /* Accounts.framework */,
 				FF435269A548437DA5380201 /* libPods-AutoPkgr.a */,
 				BE05CE8519DB35380089068B /* libPods-AutoPkgr-AHKeychain.a */,
 				BE05CE8619DB35380089068B /* libPods-AutoPkgr-AHLaunchCtl.a */,
@@ -628,6 +643,7 @@
 				1AC69552195B59ED00D2BD81 /* Other Frameworks */,
 				7EF915ABFCFD78F7257B58CD /* libPods-AutoPkgrTests.a */,
 				00A11C97CD6260BB5679DA1A /* libPods-com.lindegroup.AutoPkgr.helper.a */,
+				81FE74727F854353A6144C2B /* libPods.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -905,6 +921,9 @@
 				BEB9AF281B41A01900016D98 /* LGSlackNotificationView.h */,
 				BEB9AF291B41A01900016D98 /* LGSlackNotificationView.m */,
 				BEB9AF2A1B41A01900016D98 /* LGSlackNotificationView.xib */,
+				57D1A39D1B7ACCE300934ABF /* LGTwitterNotificationView.h */,
+				57D1A39E1B7ACCE300934ABF /* LGTwitterNotificationView.m */,
+				57D1A39F1B7ACCE300934ABF /* LGTwitterNotificationView.xib */,
 			);
 			path = "Notification Views";
 			sourceTree = "<group>";
@@ -975,6 +994,8 @@
 				BE0BB0F61B3C68A3007F9DA5 /* LGEmailNotification.m */,
 				BE46D9931B40EBF800004B41 /* LGHipChatNotification.h */,
 				BE46D9941B40EBF800004B41 /* LGHipChatNotification.m */,
+				57216C791B6B43B300CCAA23 /* LGTwitterNotification.h */,
+				57216C7A1B6B43B300CCAA23 /* LGTwitterNotification.m */,
 				BE6815D31A0B18DE004AD310 /* LGUserNotification.h */,
 				BE6815D41A0B18DE004AD310 /* LGUserNotification.m */,
 				BE0BB0F91B3C9563007F9DA5 /* LGSlackNotification.h */,
@@ -1274,6 +1295,7 @@
 				BE7EF2431B3381A7002037B1 /* LocalizableHelpPopover.strings in Resources */,
 				1A2C7FAE19CC9F8300CFF472 /* codesign.py in Resources */,
 				BE38EA901B0CFE68009FCBEB /* LGInstallViewController.xib in Resources */,
+				57D1A3A11B7ACCE300934ABF /* LGTwitterNotificationView.xib in Resources */,
 				BE32B03A1B2735DF0071778B /* LGGitIntegrationView.xib in Resources */,
 				BE2D58781B32EF110042EF1E /* LocalizableAutoPkg.strings in Resources */,
 				BE38EAA51B0CFEBB009FCBEB /* LGIntegrationsViewController.xib in Resources */,
@@ -1509,6 +1531,7 @@
 				BE344F551ABFBEAB00500AAE /* LGAutoPkgReport.m in Sources */,
 				BE38EA8E1B0CFE68009FCBEB /* LGInstallViewController.m in Sources */,
 				BE38EA951B0CFE95009FCBEB /* LGRecipeReposViewController.m in Sources */,
+				57216C7B1B6B43B300CCAA23 /* LGTwitterNotification.m in Sources */,
 				1AC86D3D195E0AC6006FDD2B /* LGHostInfo.m in Sources */,
 				BEC1258719F0465F006696C4 /* LGAutoPkgTask.m in Sources */,
 				BE025CFE19BAEF8800D36345 /* LGAutoPkgSchedule.m in Sources */,
@@ -1541,6 +1564,7 @@
 				BED136B11AC262CB003EBF0F /* NSString+html_report.m in Sources */,
 				1A1BAD9E197A4133008192A7 /* LGGitHubJSONLoader.m in Sources */,
 				BE32B0381B2735DF0071778B /* LGGitIntegrationView.m in Sources */,
+				57D1A3A01B7ACCE300934ABF /* LGTwitterNotificationView.m in Sources */,
 				BE0BB0F21B3C2311007F9DA5 /* LGNotificationManager.m in Sources */,
 				BEEFE6B71AE9D01200882C89 /* LGAutoPkgErrorHandler.m in Sources */,
 				BEFA4DBD1B08F57800764BF0 /* LGAutoPkgRecipe.m in Sources */,
