@@ -33,7 +33,7 @@ DEPENDENCIES:
   - AHProxySettings (~> 0.1.1)
   - mailcore2-osx (~> 0.5)
   - RNCryptor (~> 2.2)
-  - Sparkle (~> 1.8)
+  - Sparkle (= 1.8)
   - STTwitter (~> 0.2.2)
   - XMLDictionary (~> 1.4)
 
