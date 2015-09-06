@@ -3,7 +3,14 @@
 All notable changes to this project will be documented in this file. This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased][unreleased]
+### Added
+- You can now specify the name of the AutoPkgr bot when configuring Slack integration. (#437)
 
+### Changed
+- Now includes localized hostname in all notifications, not just email.
+
+### Fixed
+- Fixed a bug that resulted in errors when a repo path contained spaces. (#435)
 
 ## [1.3.1] - 2015-08-19
 

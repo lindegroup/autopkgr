@@ -146,7 +146,6 @@
 #pragma mark - Primary sending method
 - (void)sendEmailNotification:(NSString *)subject message:(NSString *)message test:(BOOL)test
 {
-    NSString *fullSubject = quick_formatString(@"%@ on %@", subject, [NSHost currentHost].localizedName);
 
     void (^didCompleteSendOperation)(NSError *) = ^(NSError *error) {
         if (error) {
@@ -168,7 +167,7 @@
 
         builder.header.from = [self smtpFrom];
         builder.header.to = [self smtpTo];
-        builder.header.subject = fullSubject;
+        builder.header.subject = subject;
         builder.htmlBody = message;
 
         /* Configure the session details */
