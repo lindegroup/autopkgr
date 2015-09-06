@@ -47,7 +47,7 @@
  */
 + (NSURL *)serviceURL;
 
-// Whether the class stores information in the a keychain item. Defaults to NO;
+// Whether the class stores information in the the AutoPkg.keychain. If you need to use the standard login keychain to retreive data you can set this to YES, but also need to override +infoFromKeychain: and +saveInfoToKeychain. Defaults to NO;
 + (BOOL)storesInfoInKeychain;
 
 // If store in keychain is enabled, this needs to be overriden in subclass, (either a lookup against NSUserDefaults, or a constant string if the value will never change.)

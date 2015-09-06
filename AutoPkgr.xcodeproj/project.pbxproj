@@ -214,6 +214,8 @@
 		BED3882A1A85E2C100DA8970 /* autopkgr_error.png in Resources */ = {isa = PBXBuildFile; fileRef = BED388291A85E2C100DA8970 /* autopkgr_error.png */; };
 		BEDA5D551B4429E300DCC022 /* LGRecipeSearchResultsPanel.xib in Resources */ = {isa = PBXBuildFile; fileRef = BEDA5D541B4429E300DCC022 /* LGRecipeSearchResultsPanel.xib */; };
 		BEDAFBB41B3B8AA500CCE9AC /* LGNotificationService.m in Sources */ = {isa = PBXBuildFile; fileRef = BEDAFBB31B3B8AA500CCE9AC /* LGNotificationService.m */; };
+		BEDB824D1B9BCAF4004E492E /* LGTwitterNotification.m in Sources */ = {isa = PBXBuildFile; fileRef = 57216C7A1B6B43B300CCAA23 /* LGTwitterNotification.m */; };
+		BEDB824E1B9BCB0F004E492E /* LGTwitterNotificationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 57D1A39E1B7ACCE300934ABF /* LGTwitterNotificationView.m */; };
 		BEE211231AF9D6E500A3C2E1 /* LGIntegrationTemplate.m in Sources */ = {isa = PBXBuildFile; fileRef = BEA2F0B41AF1672600781274 /* LGIntegrationTemplate.m */; };
 		BEE211261AF9DCBB00A3C2E1 /* LGUninstaller.m in Sources */ = {isa = PBXBuildFile; fileRef = BEE211251AF9DCBB00A3C2E1 /* LGUninstaller.m */; };
 		BEE211271AF9DCBB00A3C2E1 /* LGUninstaller.m in Sources */ = {isa = PBXBuildFile; fileRef = BEE211251AF9DCBB00A3C2E1 /* LGUninstaller.m */; };
@@ -262,7 +264,6 @@
 		BEFC3C8E1A3DF16700C789E9 /* NSArray+filtered.m in Sources */ = {isa = PBXBuildFile; fileRef = BED02ADB1A194F9C00714CC2 /* NSArray+filtered.m */; };
 		BEFC931D1995F0710074C938 /* LGError.m in Sources */ = {isa = PBXBuildFile; fileRef = BEFC931C1995F0710074C938 /* LGError.m */; };
 		CAF173A0D3EC0C495067D9FF /* libPods-com.lindegroup.AutoPkgr.helper.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00A11C97CD6260BB5679DA1A /* libPods-com.lindegroup.AutoPkgr.helper.a */; };
-		D8B7647CBACCF5F9776C2930 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 81FE74727F854353A6144C2B /* libPods.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -569,7 +570,6 @@
 				1A0A86B1195CE69300A49434 /* Security.framework in Frameworks */,
 				1AC69551195B59ED00D2BD81 /* Cocoa.framework in Frameworks */,
 				4B8E6E4F9D8944C883A98423 /* libPods-AutoPkgr.a in Frameworks */,
-				D8B7647CBACCF5F9776C2930 /* libPods.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1624,6 +1624,7 @@
 				BEFC3C7C1A3DF16700C789E9 /* LGRepoTableViewController.m in Sources */,
 				BEE211271AF9DCBB00A3C2E1 /* LGUninstaller.m in Sources */,
 				BEEFE6B81AE9D01200882C89 /* LGAutoPkgErrorHandler.m in Sources */,
+				BEDB824D1B9BCAF4004E492E /* LGTwitterNotification.m in Sources */,
 				BECDABA81B254E5900544388 /* LGAbsoluteManageIntegrationView.m in Sources */,
 				BEB9AF271B419F0900016D98 /* LGNotificationManager.m in Sources */,
 				BE09F65C1B2694ED00EE4AA7 /* LGAutoPkgIntegrationView.m in Sources */,
@@ -1656,6 +1657,7 @@
 				BE46D9961B40EBF800004B41 /* LGHipChatNotification.m in Sources */,
 				BE38EAB11B0D0E2F009FCBEB /* LGTabViewControllerBase.m in Sources */,
 				BEFC3C891A3DF16700C789E9 /* LGAutoPkgrHelperConnection.m in Sources */,
+				BEDB824E1B9BCB0F004E492E /* LGTwitterNotificationView.m in Sources */,
 				BE91A0711B2F53F000ED7501 /* NSString+attributedString.m in Sources */,
 				BE91A06D1B2F298900ED7501 /* AHHelpPopover.m in Sources */,
 				BE38EA8F1B0CFE68009FCBEB /* LGInstallViewController.m in Sources */,

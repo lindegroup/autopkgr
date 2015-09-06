@@ -47,7 +47,7 @@ static NSString *const TwitterNotificationEnabledKey = @"TwitterNotificationEnab
 
 + (BOOL)storesInfoInKeychain
 {
-    return YES;
+    return NO;
 }
 
 + (NSString *)account
@@ -65,11 +65,7 @@ static NSString *const TwitterNotificationEnabledKey = @"TwitterNotificationEnab
 {
     self.notificatonComplete = complete;
     NSString *message = self.report.emailSubjectString;
-    [self.twitter postStatusUpdate:message inReplyToStatusID:nil latitude:nil longitude:nil placeID:nil displayCoordinates:nil trimUser:nil successBlock:^(NSDictionary *status) {
-        NSLog(@"Success: %@.", status);
-    } errorBlock:^(NSError *error) {
-        NSLog(@"Error: %@.", error);
-    }];
+    [self tweet:message reply:complete];
 }
 
 - (void)sendTest:(void (^)(NSError *))complete
@@ -77,10 +73,15 @@ static NSString *const TwitterNotificationEnabledKey = @"TwitterNotificationEnab
     self.notificatonComplete = complete;
     NSString *message = NSLocalizedString(@"Testing Twitter notifications from AutoPkgr!",
                                           @"Twitter testing message");
+    [self tweet:message reply:complete];
+}
+
+- (void)tweet:(NSString *)message reply:(void (^)(NSError *))complete
+{
     [self.twitter postStatusUpdate:message inReplyToStatusID:nil latitude:nil longitude:nil placeID:nil displayCoordinates:nil trimUser:nil successBlock:^(NSDictionary *status) {
-        NSLog(@"Success: %@.", status);
+        complete(nil);
     } errorBlock:^(NSError *error) {
-        NSLog(@"Error: %@.", error);
+        complete(error);
     }];
 }
 
