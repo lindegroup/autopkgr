@@ -78,7 +78,19 @@ static NSString *const TwitterNotificationEnabledKey = @"TwitterNotificationEnab
 
 - (void)tweet:(NSString *)message reply:(void (^)(NSError *))complete
 {
-    [self.twitter postStatusUpdate:message inReplyToStatusID:nil latitude:nil longitude:nil placeID:nil displayCoordinates:nil trimUser:nil successBlock:^(NSDictionary *status) {
+    [self.twitter verifyCredentialsWithUserSuccessBlock:^(NSString *username, NSString *userID) {
+        NSLog(@"Successfully authenticated as %@ (%@).", username, userID);
+    } errorBlock:^(NSError *error) {
+        NSLog(@"Error when authenticating to Twitter. Error: %@.", error);
+    }];
+    [self.twitter postStatusUpdate:message
+                 inReplyToStatusID:nil
+                          latitude:nil
+                         longitude:nil
+                           placeID:nil
+                displayCoordinates:nil
+                          trimUser:nil
+                      successBlock:^(NSDictionary *status) {
         complete(nil);
     } errorBlock:^(NSError *error) {
         complete(error);

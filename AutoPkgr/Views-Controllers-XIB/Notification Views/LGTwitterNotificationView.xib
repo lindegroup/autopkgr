@@ -16,15 +16,21 @@
             <rect key="frame" x="0.0" y="1" width="480" height="180"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
-                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="vgL-cH-v6S">
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="vgL-cH-v6S">
                     <rect key="frame" x="18" y="82" width="444" height="17"/>
-                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="center" title="Configure Twitter Accounts in System Preferences -&gt; Internet Accounts" id="kBA-oH-BUN">
+                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="center" title="Configure Twitter Accounts in System Preferences &gt; Internet Accounts" id="kBA-oH-BUN">
                         <font key="font" metaFont="system"/>
                         <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                 </textField>
             </subviews>
+            <constraints>
+                <constraint firstAttribute="trailing" secondItem="vgL-cH-v6S" secondAttribute="trailing" constant="20" symbolic="YES" id="4S5-be-Bpv"/>
+                <constraint firstItem="vgL-cH-v6S" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="20" symbolic="YES" id="4qE-zd-7VA"/>
+                <constraint firstAttribute="centerX" secondItem="vgL-cH-v6S" secondAttribute="centerX" id="dMf-Ml-gJk"/>
+                <constraint firstAttribute="centerY" secondItem="vgL-cH-v6S" secondAttribute="centerY" constant="0.5" id="lTp-qp-jde"/>
+            </constraints>
             <point key="canvasLocation" x="273" y="273"/>
         </customView>
     </objects>
