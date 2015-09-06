@@ -23,7 +23,7 @@
 
 #import "STTwitter.h"
 
-static NSString *const TwitterLink = @"https://support.apple.com/kb/PH18993?locale=en_US";
+static NSString *const TwitterLink = @"https://support.apple.com/kb/PH18993";
 
 static NSString *const TwitterNotificationEnabledKey = @"TwitterNotificationEnabled";
 
@@ -80,20 +80,20 @@ static NSString *const TwitterNotificationEnabledKey = @"TwitterNotificationEnab
 {
     [self.twitter verifyCredentialsWithUserSuccessBlock:^(NSString *username, NSString *userID) {
         NSLog(@"Successfully authenticated as %@ (%@).", username, userID);
+        [self.twitter postStatusUpdate:message
+                     inReplyToStatusID:nil
+                              latitude:nil
+                             longitude:nil
+                               placeID:nil
+                    displayCoordinates:nil
+                              trimUser:nil
+        successBlock:^(NSDictionary *status) {
+            complete(nil);
+        } errorBlock:^(NSError *error) {
+            complete(error);
+        }];
     } errorBlock:^(NSError *error) {
         NSLog(@"Error when authenticating to Twitter. Error: %@.", error);
-    }];
-    [self.twitter postStatusUpdate:message
-                 inReplyToStatusID:nil
-                          latitude:nil
-                         longitude:nil
-                           placeID:nil
-                displayCoordinates:nil
-                          trimUser:nil
-                      successBlock:^(NSDictionary *status) {
-        complete(nil);
-    } errorBlock:^(NSError *error) {
-        complete(error);
     }];
 }
 
