@@ -19,7 +19,10 @@
 //
 
 #import "LGNotificationService.h"
+#import "STTwitter.h"
 
 @interface LGTwitterNotification : LGNotificationService <LGNotificationServiceProtocol>
+
+@property (nonatomic, retain) STTwitterAPI *twitter;
 
 @end

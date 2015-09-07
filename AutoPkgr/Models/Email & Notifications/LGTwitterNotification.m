@@ -21,8 +21,6 @@
 #import "LGTwitterNotification.h"
 #import "LGDefaults.h"
 
-#import "STTwitter.h"
-
 static NSString *const TwitterLink = @"https://support.apple.com/kb/PH18993";
 
 static NSString *const TwitterNotificationEnabledKey = @"TwitterNotificationEnabled";
@@ -78,6 +76,8 @@ static NSString *const TwitterNotificationEnabledKey = @"TwitterNotificationEnab
 
 - (void)tweet:(NSString *)message reply:(void (^)(NSError *))complete
 {
+    self.twitter = [STTwitterAPI twitterAPIOSWithFirstAccount];
+
     [self.twitter verifyCredentialsWithUserSuccessBlock:^(NSString *username, NSString *userID) {
         NSLog(@"Successfully authenticated as %@ (%@).", username, userID);
         [self.twitter postStatusUpdate:message
@@ -95,12 +95,6 @@ static NSString *const TwitterNotificationEnabledKey = @"TwitterNotificationEnab
     } errorBlock:^(NSError *error) {
         NSLog(@"Error when authenticating to Twitter. Error: %@.", error);
     }];
-}
-
-#pragma mark - Private
-- (STTwitterAPI *)twitter
-{
-    return [STTwitterAPI twitterAPIOSWithFirstAccount];
 }
 
 @end
