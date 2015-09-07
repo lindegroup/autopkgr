@@ -22,4 +22,6 @@
 
 @interface LGTwitterNotificationView : LGBaseNotificationServiceViewController
 
+- (IBAction)openInternetAccountsPrefs:(id)sender;
+
 @end

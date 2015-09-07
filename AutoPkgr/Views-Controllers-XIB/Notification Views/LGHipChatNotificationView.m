@@ -26,7 +26,8 @@
 
 @implementation LGHipChatNotificationView
 
-- (void)viewDidLoad {
+- (void)viewDidLoad
+{
     [super viewDidLoad];
     // Do view setup here.
 }

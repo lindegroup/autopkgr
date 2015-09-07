@@ -26,9 +26,15 @@
 
 @implementation LGTwitterNotificationView
 
-- (void)viewDidLoad {
+- (void)viewDidLoad
+{
     [super viewDidLoad];
     // Do view setup here.
+}
+
+- (IBAction)openInternetAccountsPrefs:(id)sender
+{
+    [[NSWorkspace sharedWorkspace] openURL:[NSURL fileURLWithPath:@"/System/Library/PreferencePanes/InternetAccounts.prefPane"]];
 }
 
 @end

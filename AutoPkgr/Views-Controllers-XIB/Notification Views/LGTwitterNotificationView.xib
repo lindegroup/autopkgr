@@ -24,12 +24,25 @@
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                 </textField>
+                <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="a6M-OD-jwR">
+                    <rect key="frame" x="133" y="13" width="215" height="32"/>
+                    <buttonCell key="cell" type="push" title="Open in System Preferences" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Ron-dl-89M">
+                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                        <font key="font" metaFont="system"/>
+                    </buttonCell>
+                    <connections>
+                        <action selector="openInternetAccountsPrefs:" target="-2" id="lmc-KJ-WjX"/>
+                    </connections>
+                </button>
             </subviews>
             <constraints>
+                <constraint firstItem="a6M-OD-jwR" firstAttribute="centerX" secondItem="vgL-cH-v6S" secondAttribute="centerX" id="0fe-iz-YiL"/>
                 <constraint firstAttribute="trailing" secondItem="vgL-cH-v6S" secondAttribute="trailing" constant="20" symbolic="YES" id="4S5-be-Bpv"/>
                 <constraint firstItem="vgL-cH-v6S" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="20" symbolic="YES" id="4qE-zd-7VA"/>
+                <constraint firstAttribute="bottom" secondItem="a6M-OD-jwR" secondAttribute="bottom" constant="20" id="Kxg-Fp-3CE"/>
                 <constraint firstAttribute="centerX" secondItem="vgL-cH-v6S" secondAttribute="centerX" id="dMf-Ml-gJk"/>
                 <constraint firstAttribute="centerY" secondItem="vgL-cH-v6S" secondAttribute="centerY" constant="0.5" id="lTp-qp-jde"/>
+                <constraint firstAttribute="centerY" secondItem="a6M-OD-jwR" secondAttribute="centerY" constant="-59.5" id="s3B-Z0-RHv"/>
             </constraints>
             <point key="canvasLocation" x="273" y="273"/>
         </customView>
