@@ -22,6 +22,9 @@
 
 @interface LGTwitterNotificationView : LGBaseNotificationServiceViewController
 
+@property (weak) IBOutlet NSTextField *configureTwitterLabel;
+@property (weak) IBOutlet NSButton *openInternetAccountsPrefsButton;
+
 - (IBAction)openInternetAccountsPrefs:(id)sender;
 
 @end

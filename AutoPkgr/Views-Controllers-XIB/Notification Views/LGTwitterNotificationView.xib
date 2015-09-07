@@ -7,26 +7,21 @@
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="LGTwitterNotificationView">
             <connections>
+                <outlet property="configureTwitterLabel" destination="vgL-cH-v6S" id="GJi-SL-Sfb"/>
+                <outlet property="openInternetAccountsPrefsButton" destination="a6M-OD-jwR" id="6sn-0T-nk0"/>
+                <outlet property="osxTwitterAccountsController" destination="x0z-mH-aGR" id="2sM-I5-eki"/>
                 <outlet property="view" destination="Hz6-mo-xeY" id="0bl-1N-x8E"/>
             </connections>
         </customObject>
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
         <customObject id="-3" userLabel="Application" customClass="NSObject"/>
         <customView id="Hz6-mo-xeY">
-            <rect key="frame" x="0.0" y="1" width="480" height="180"/>
+            <rect key="frame" x="0.0" y="-1" width="480" height="265"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
-                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="vgL-cH-v6S">
-                    <rect key="frame" x="18" y="82" width="444" height="17"/>
-                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="center" title="Configure Twitter Accounts in System Preferences &gt; Internet Accounts" id="kBA-oH-BUN">
-                        <font key="font" metaFont="system"/>
-                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
-                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                    </textFieldCell>
-                </textField>
                 <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="a6M-OD-jwR">
-                    <rect key="frame" x="133" y="13" width="215" height="32"/>
-                    <buttonCell key="cell" type="push" title="Open in System Preferences" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Ron-dl-89M">
+                    <rect key="frame" x="279" y="13" width="187" height="32"/>
+                    <buttonCell key="cell" type="push" title="Open Internet Accounts" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Ron-dl-89M">
                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                         <font key="font" metaFont="system"/>
                     </buttonCell>
@@ -34,17 +29,102 @@
                         <action selector="openInternetAccountsPrefs:" target="-2" id="lmc-KJ-WjX"/>
                     </connections>
                 </button>
+                <scrollView autohidesScrollers="YES" horizontalLineScroll="19" horizontalPageScroll="10" verticalLineScroll="19" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WWc-bD-BVM">
+                    <rect key="frame" x="20" y="94" width="440" height="151"/>
+                    <clipView key="contentView" id="eJh-8d-foO">
+                        <rect key="frame" x="1" y="17" width="238" height="117"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" columnSelection="YES" multipleSelection="NO" autosaveColumns="NO" rowSizeStyle="automatic" headerView="7KE-NX-278" viewBased="YES" id="Ad1-DL-Ujs">
+                                <rect key="frame" x="0.0" y="0.0" width="238" height="117"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <size key="intercellSpacing" width="3" height="2"/>
+                                <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                <color key="gridColor" name="gridColor" catalog="System" colorSpace="catalog"/>
+                                <tableColumns>
+                                    <tableColumn width="435" minWidth="40" maxWidth="1000" id="ovy-KW-wQB">
+                                        <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left">
+                                            <font key="font" metaFont="smallSystem"/>
+                                            <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
+                                            <color key="backgroundColor" name="headerColor" catalog="System" colorSpace="catalog"/>
+                                        </tableHeaderCell>
+                                        <textFieldCell key="dataCell" lineBreakMode="truncatingTail" selectable="YES" editable="YES" alignment="left" title="Text Cell" id="awu-46-GZ1">
+                                            <font key="font" metaFont="system"/>
+                                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                            <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                        </textFieldCell>
+                                        <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
+                                        <prototypeCellViews>
+                                            <tableCellView id="FU3-X5-icP">
+                                                <rect key="frame" x="1" y="1" width="435" height="17"/>
+                                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                                <subviews>
+                                                    <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="hkp-e4-Y7Y">
+                                                        <rect key="frame" x="0.0" y="0.0" width="100" height="17"/>
+                                                        <textFieldCell key="cell" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" title="Table View Cell" placeholderString="No Twitter Accounts" id="LNA-j7-8Vx">
+                                                            <font key="font" metaFont="system"/>
+                                                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                                        </textFieldCell>
+                                                    </textField>
+                                                </subviews>
+                                                <connections>
+                                                    <outlet property="textField" destination="hkp-e4-Y7Y" id="5Qg-4r-i7s"/>
+                                                </connections>
+                                            </tableCellView>
+                                        </prototypeCellViews>
+                                        <connections>
+                                            <binding destination="x0z-mH-aGR" name="value" keyPath="arrangedObjects.username" id="uHh-zd-zN2"/>
+                                        </connections>
+                                    </tableColumn>
+                                </tableColumns>
+                            </tableView>
+                        </subviews>
+                        <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
+                    </clipView>
+                    <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="YES" id="jqO-Pk-O2N">
+                        <rect key="frame" x="1" y="119" width="223" height="15"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </scroller>
+                    <scroller key="verticalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="NO" id="btI-AO-7BO">
+                        <rect key="frame" x="224" y="17" width="15" height="102"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </scroller>
+                    <tableHeaderView key="headerView" id="7KE-NX-278">
+                        <rect key="frame" x="0.0" y="0.0" width="238" height="17"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </tableHeaderView>
+                </scrollView>
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="vgL-cH-v6S">
+                    <rect key="frame" x="80" y="75" width="321" height="11"/>
+                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="center" title="Configure Twitter Accounts in System Preferences &gt; Internet Accounts" id="kBA-oH-BUN">
+                        <font key="font" metaFont="miniSystem"/>
+                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
             </subviews>
             <constraints>
-                <constraint firstItem="a6M-OD-jwR" firstAttribute="centerX" secondItem="vgL-cH-v6S" secondAttribute="centerX" id="0fe-iz-YiL"/>
-                <constraint firstAttribute="trailing" secondItem="vgL-cH-v6S" secondAttribute="trailing" constant="20" symbolic="YES" id="4S5-be-Bpv"/>
-                <constraint firstItem="vgL-cH-v6S" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="20" symbolic="YES" id="4qE-zd-7VA"/>
-                <constraint firstAttribute="bottom" secondItem="a6M-OD-jwR" secondAttribute="bottom" constant="20" id="Kxg-Fp-3CE"/>
-                <constraint firstAttribute="centerX" secondItem="vgL-cH-v6S" secondAttribute="centerX" id="dMf-Ml-gJk"/>
-                <constraint firstAttribute="centerY" secondItem="vgL-cH-v6S" secondAttribute="centerY" constant="0.5" id="lTp-qp-jde"/>
-                <constraint firstAttribute="centerY" secondItem="a6M-OD-jwR" secondAttribute="centerY" constant="-59.5" id="s3B-Z0-RHv"/>
+                <constraint firstItem="a6M-OD-jwR" firstAttribute="trailing" secondItem="WWc-bD-BVM" secondAttribute="trailing" id="5nk-aY-QFY"/>
+                <constraint firstItem="a6M-OD-jwR" firstAttribute="top" secondItem="vgL-cH-v6S" secondAttribute="bottom" constant="34" id="6Eg-KZ-eVk"/>
+                <constraint firstAttribute="trailing" secondItem="WWc-bD-BVM" secondAttribute="trailing" constant="20" id="PVi-Th-EAS"/>
+                <constraint firstItem="WWc-bD-BVM" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="20" id="XvA-7y-ofz"/>
+                <constraint firstItem="vgL-cH-v6S" firstAttribute="top" secondItem="WWc-bD-BVM" secondAttribute="bottom" constant="8" id="iwx-6m-syq"/>
+                <constraint firstItem="vgL-cH-v6S" firstAttribute="centerX" secondItem="WWc-bD-BVM" secondAttribute="centerX" id="oSW-F7-2L2"/>
+                <constraint firstAttribute="bottom" secondItem="vgL-cH-v6S" secondAttribute="bottom" constant="75" id="pgf-c1-R4b"/>
+                <constraint firstItem="WWc-bD-BVM" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="20" id="uWk-ry-fAn"/>
             </constraints>
-            <point key="canvasLocation" x="273" y="273"/>
+            <point key="canvasLocation" x="273" y="315.5"/>
         </customView>
+        <arrayController id="x0z-mH-aGR" userLabel="AC OS X Twitter Accounts">
+            <connections>
+                <binding destination="-2" name="contentArray" keyPath="self.osxTwitterAccounts" id="5Ig-Tj-hVC">
+                    <dictionary key="options">
+                        <bool key="NSValidatesImmediately" value="YES"/>
+                    </dictionary>
+                </binding>
+            </connections>
+        </arrayController>
+        <userDefaultsController representsSharedInstance="YES" id="HKk-jz-GIf"/>
     </objects>
 </document>
