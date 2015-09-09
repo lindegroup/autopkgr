@@ -19,16 +19,6 @@
             <rect key="frame" x="0.0" y="-1" width="480" height="265"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
-                <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="a6M-OD-jwR">
-                    <rect key="frame" x="279" y="13" width="187" height="32"/>
-                    <buttonCell key="cell" type="push" title="Open Internet Accounts" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Ron-dl-89M">
-                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                        <font key="font" metaFont="system"/>
-                    </buttonCell>
-                    <connections>
-                        <action selector="openInternetAccountsPrefs:" target="-2" id="lmc-KJ-WjX"/>
-                    </connections>
-                </button>
                 <scrollView autohidesScrollers="YES" horizontalLineScroll="19" horizontalPageScroll="10" verticalLineScroll="19" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WWc-bD-BVM">
                     <rect key="frame" x="20" y="94" width="440" height="151"/>
                     <clipView key="contentView" id="eJh-8d-foO">
@@ -36,7 +26,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" columnSelection="YES" multipleSelection="NO" autosaveColumns="NO" rowSizeStyle="automatic" headerView="7KE-NX-278" viewBased="YES" id="Ad1-DL-Ujs">
-                                <rect key="frame" x="0.0" y="0.0" width="238" height="117"/>
+                                <rect key="frame" x="0.0" y="0.0" width="438" height="0.0"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <size key="intercellSpacing" width="3" height="2"/>
                                 <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -96,23 +86,38 @@
                     </tableHeaderView>
                 </scrollView>
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="vgL-cH-v6S">
-                    <rect key="frame" x="80" y="75" width="321" height="11"/>
-                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="center" title="Configure Twitter Accounts in System Preferences &gt; Internet Accounts" id="kBA-oH-BUN">
+                    <rect key="frame" x="18" y="70" width="444" height="13"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="13" id="it2-7Y-KdU"/>
+                    </constraints>
+                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="center" title="Configure Twitter accounts in System Preferences." id="kBA-oH-BUN">
                         <font key="font" metaFont="miniSystem"/>
                         <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                 </textField>
+                <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="a6M-OD-jwR">
+                    <rect key="frame" x="152" y="46" width="177" height="16"/>
+                    <buttonCell key="cell" type="push" title="Open Internet Accounts" bezelStyle="rounded" alignment="center" controlSize="mini" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Ron-dl-89M">
+                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                        <font key="font" metaFont="miniSystem"/>
+                    </buttonCell>
+                    <connections>
+                        <action selector="openInternetAccountsPrefs:" target="-2" id="lmc-KJ-WjX"/>
+                    </connections>
+                </button>
             </subviews>
             <constraints>
-                <constraint firstItem="a6M-OD-jwR" firstAttribute="trailing" secondItem="WWc-bD-BVM" secondAttribute="trailing" id="5nk-aY-QFY"/>
-                <constraint firstItem="a6M-OD-jwR" firstAttribute="top" secondItem="vgL-cH-v6S" secondAttribute="bottom" constant="34" id="6Eg-KZ-eVk"/>
-                <constraint firstAttribute="trailing" secondItem="WWc-bD-BVM" secondAttribute="trailing" constant="20" id="PVi-Th-EAS"/>
-                <constraint firstItem="WWc-bD-BVM" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="20" id="XvA-7y-ofz"/>
-                <constraint firstItem="vgL-cH-v6S" firstAttribute="top" secondItem="WWc-bD-BVM" secondAttribute="bottom" constant="8" id="iwx-6m-syq"/>
-                <constraint firstItem="vgL-cH-v6S" firstAttribute="centerX" secondItem="WWc-bD-BVM" secondAttribute="centerX" id="oSW-F7-2L2"/>
-                <constraint firstAttribute="bottom" secondItem="vgL-cH-v6S" secondAttribute="bottom" constant="75" id="pgf-c1-R4b"/>
-                <constraint firstItem="WWc-bD-BVM" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="20" id="uWk-ry-fAn"/>
+                <constraint firstItem="a6M-OD-jwR" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="153" id="1Wb-vw-UV5"/>
+                <constraint firstItem="WWc-bD-BVM" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="20" id="Cyu-Tg-xu7"/>
+                <constraint firstItem="vgL-cH-v6S" firstAttribute="top" secondItem="WWc-bD-BVM" secondAttribute="bottom" constant="11" id="K8D-9j-gaR"/>
+                <constraint firstAttribute="trailing" secondItem="a6M-OD-jwR" secondAttribute="trailing" constant="152" id="KLQ-Wi-YyI"/>
+                <constraint firstItem="WWc-bD-BVM" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="20" id="ifr-Rf-mhJ"/>
+                <constraint firstAttribute="trailing" secondItem="vgL-cH-v6S" secondAttribute="trailing" constant="20" id="ld3-OA-gL7"/>
+                <constraint firstItem="vgL-cH-v6S" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="20" id="mHp-hQ-7eB"/>
+                <constraint firstAttribute="bottom" secondItem="WWc-bD-BVM" secondAttribute="bottom" constant="94" id="qZn-yd-ZYf"/>
+                <constraint firstItem="a6M-OD-jwR" firstAttribute="top" secondItem="vgL-cH-v6S" secondAttribute="bottom" constant="8" id="xjx-fA-nrl"/>
+                <constraint firstAttribute="trailing" secondItem="WWc-bD-BVM" secondAttribute="trailing" constant="20" id="y5n-Vk-sRX"/>
             </constraints>
             <point key="canvasLocation" x="273" y="315.5"/>
         </customView>
