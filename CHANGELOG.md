@@ -10,6 +10,7 @@ All notable changes to this project will be documented in this file. This projec
 - Now includes localized hostname in all notifications, not just email.
 
 ### Fixed
+- Fixed a freeze that occurred after installing JSSImporter. (#443)
 - Fixed a bug that resulted in errors when a repo path contained spaces. (#435)
 
 ## [1.3.1] - 2015-08-19
