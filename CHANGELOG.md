@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file. This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased][unreleased]
+
+
+## [1.3.2] - 2015-09-16
+
 ### Added
 - You can now specify the name of the AutoPkgr bot when configuring Slack integration. (#437)
 
@@ -10,8 +14,10 @@ All notable changes to this project will be documented in this file. This projec
 - Now includes localized hostname in all notifications, not just email.
 
 ### Fixed
-- Fixed a freeze that occurred after installing JSSImporter. (#443)
+- Fixed an unpleasant freeze that occurred after installing JSSImporter. (#443)
+- AutoPkgr now more gracefully handles mid-run interactive prompts from AutoPkg, which is usually a result of missing parent recipes. (#441)
 - Fixed a bug that resulted in errors when a repo path contained spaces. (#435)
+
 
 ## [1.3.1] - 2015-08-19
 
@@ -323,7 +329,8 @@ All notable changes to this project will be documented in this file. This projec
 - Initial public release of AutoPkgr.
 
 
-[unreleased]: https://github.com/lindegroup/autopkgr/compare/v1.3...HEAD
+[unreleased]: https://github.com/lindegroup/autopkgr/compare/v1.3.2...HEAD
+[1.3.2]: https://github.com/lindegroup/autopkgr/compare/v1.3.1...v1.3.2
 [1.3.1]: https://github.com/lindegroup/autopkgr/compare/v1.3...v1.3.1
 [1.3]: https://github.com/lindegroup/autopkgr/compare/v1.2.3...v1.3
 [1.2.3]: https://github.com/lindegroup/autopkgr/compare/v1.2.2...v1.2.3
