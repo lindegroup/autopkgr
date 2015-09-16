@@ -110,6 +110,7 @@ NSString *const kLGJSSDistPointTypeKey = @"type";
     if (!verifySSL) {
         defaults.JSSVerifySSL = YES;
     }
+    reply(nil);
 }
 
 - (void)customUninstallActions:(void (^)(NSError *))reply {

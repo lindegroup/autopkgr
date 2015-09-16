@@ -25,6 +25,7 @@ KeepEmptyLinesAtTheStartOfBlocks: true
 NamespaceIndentation: Inner
 ObjCSpaceAfterProperty: true
 ObjCSpaceBeforeProtocolList: true
+ObjCBlockIndentWidth: 4
 PenaltyBreakBeforeFirstCallParameter: 19
 PenaltyBreakComment: 300
 PenaltyBreakString: 1000

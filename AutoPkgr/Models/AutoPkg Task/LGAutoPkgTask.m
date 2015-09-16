@@ -59,6 +59,9 @@ static NSString *const AUTOPKG_0_4_0 = @"0.4.0";
 static NSString *const AUTOPKG_0_4_1 = @"0.4.1";
 static NSString *const AUTOPKG_0_4_2 = @"0.4.2";
 static NSString *const AUTOPKG_0_5_0 = @"0.5.0";
+static NSString *const AUTOPKG_0_5_1 = @"0.5.1";
+static NSString *const AUTOPKG_0_5_2 = @"0.5.2";
+
 
 // Autopkg Task Result keys
 NSString *const kLGAutoPkgRecipeNameKey = @"Name";
@@ -527,6 +530,9 @@ typedef void (^AutoPkgReplyErrorBlock)(NSError *error);
 
                   if (isInteractive && data.taskData_isInteractive) {
                       DevLog(@"Prompting for interaction: %@", message);
+
+                      // ATTN: the "return" here only returns from the FH readability block,
+                      // not the `-configureFileHandles:` method
                       return [self interactiveAlertWithMessage:message];
                   }
 
@@ -776,11 +782,17 @@ typedef void (^AutoPkgReplyErrorBlock)(NSError *error);
         if (_verb == kLGAutoPkgInfo) {
             isInteractiveOperation = YES;
         } else if (_verb == kLGAutoPkgRun){
-            // As of AutoPkg 0.5.0 AutoPkg will only "make_suggestions"
-            // when not running with the --recipe-list argument.
-            if (![_arguments containsObject:@"--recipe-list"]) {
+             /* AutoPkg 0.5.0 had a small bug with make_suggestions when the `load_recipe()`
+              * is called for a parent recipe. Addressed by PR https://github.com/autopkg/autopkg/pull/224
+              * Slated for 0.5.2 release */
+            if ([_version version_isGreaterThanOrEqualTo:AUTOPKG_0_5_2]){
+                if (![_arguments containsObject:@"--recipe-list"]) {
+                    isInteractiveOperation = YES;
+                }
+            } else {
                 isInteractiveOperation = YES;
             }
+
         }
     }
     return isInteractiveOperation;
@@ -815,25 +827,36 @@ typedef void (^AutoPkgReplyErrorBlock)(NSError *error);
 
 - (void)interactiveAlertWithMessage:(NSString *)message
 {
+    /*
+     * TODO: As of 9/16/2015 AutoPkg's search feature is not designed to 
+     * successfully locate parent recipes by identifier, the primary use case
+     * for AutoPkgr. So we just pipe in "n" (no) to trigger the end of run.
+     */
+    if (self.task.isRunning) {
+        DevLog(@"Declining AutoPkg GitHub search request");
+        [[self.task.standardInput fileHandleForWriting] writeData:[@"n\n" dataUsingEncoding:NSUTF8StringEncoding]];
+        return;
+    }
+
     /* Eventually there may be more ways to interact, for now it's only to search github for a recipe's repo */
     [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-      NSString *title = LGAutoPkgLocalizedString(@"Could not find the parent recipe", nil);
+        NSString *title = LGAutoPkgLocalizedString(@"Could not find the parent recipe", nil);
 
-      NSString *cleanedMessage = [message stringByReplacingOccurrencesOfString:@"[y/n]:"
+        NSString *cleanedMessage = [message stringByReplacingOccurrencesOfString:@"[y/n]:"
                                                                     withString:@""];
-      NSAlert *alert = [NSAlert alertWithMessageText:title
+        NSAlert *alert = [NSAlert alertWithMessageText:title
                                        defaultButton:@"Yes"
                                      alternateButton:@"No"
                                          otherButton:nil
                            informativeTextWithFormat:@"%@", cleanedMessage];
 
-      NSString *results;
-      // Don't forget the newline char!
-      if ([alert runModal] == NSAlertDefaultReturn) {
+        NSString *results;
+        // Don't forget the newline char!
+        if ([alert runModal] == NSAlertDefaultReturn) {
           results = @"y\n";
-      } else {
+        } else {
           results = @"n\n";
-      }
+        }
 
         if (self.task.isRunning) {
             [[self.task.standardInput fileHandleForWriting] writeData:[results dataUsingEncoding:NSUTF8StringEncoding]];
