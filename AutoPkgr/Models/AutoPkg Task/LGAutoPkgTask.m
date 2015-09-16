@@ -59,6 +59,9 @@ static NSString *const AUTOPKG_0_4_0 = @"0.4.0";
 static NSString *const AUTOPKG_0_4_1 = @"0.4.1";
 static NSString *const AUTOPKG_0_4_2 = @"0.4.2";
 static NSString *const AUTOPKG_0_5_0 = @"0.5.0";
+static NSString *const AUTOPKG_0_5_1 = @"0.5.1";
+static NSString *const AUTOPKG_0_5_2 = @"0.5.2";
+
 
 // Autopkg Task Result keys
 NSString *const kLGAutoPkgRecipeNameKey = @"Name";
@@ -779,19 +782,17 @@ typedef void (^AutoPkgReplyErrorBlock)(NSError *error);
         if (_verb == kLGAutoPkgInfo) {
             isInteractiveOperation = YES;
         } else if (_verb == kLGAutoPkgRun){
-            isInteractiveOperation = YES;
+             /* 0.5.0 had a small bug wher make_suggestions when the `load_recipe()`
+              * is called for a parent recipe. Addressed by PR https://github.com/autopkg/autopkg/pull/224
+              * Slated for 0.5.2 release */
+            if ([_version version_isGreaterThanOrEqualTo:AUTOPKG_0_5_2]){
+                if (![_arguments containsObject:@"--recipe-list"]) {
+                    isInteractiveOperation = YES;
+                }
+            } else {
+                isInteractiveOperation = YES;
+            }
 
-            /* TODO: as of 9/16/15 autopkg has a bug where it will
-             * make_suggestions when the `load_recipe()` is called for a parent recipe.
-             * Addressed by PR https://github.com/autopkg/autopkg/pull/224
-             * but until that's pulled, we need to keep it turned on for
-             * all variations of the recipe runs */
-
-            // As of AutoPkg 0.5.0 AutoPkg will only "make_suggestions"
-            // when not running with the --recipe-list argument.
-//            if (![_arguments containsObject:@"--recipe-list"]) {
-//                isInteractiveOperation = YES;
-//            }
         }
     }
     return isInteractiveOperation;
@@ -829,11 +830,12 @@ typedef void (^AutoPkgReplyErrorBlock)(NSError *error);
     /*
      * TODO: As of 9/16/2015 AutoPkg's search feature is not designed to 
      * successfully locate parent recipes by identifier, the primary use case
-     * for AutoPkgr. So we just pipe in not to trigger the end of run.
+     * for AutoPkgr. So we just pipe in no to trigger the end of run.
      */
     if (self.task.isRunning) {
         DevLog(@"Declining autopkg GitHub search request");
         [[self.task.standardInput fileHandleForWriting] writeData:[@"n\n" dataUsingEncoding:NSUTF8StringEncoding]];
+        return;
     }
 
     /* Eventually there may be more ways to interact, for now it's only to search github for a recipe's repo */
