@@ -782,7 +782,7 @@ typedef void (^AutoPkgReplyErrorBlock)(NSError *error);
         if (_verb == kLGAutoPkgInfo) {
             isInteractiveOperation = YES;
         } else if (_verb == kLGAutoPkgRun){
-             /* 0.5.0 had a small bug wher make_suggestions when the `load_recipe()`
+             /* AutoPkg 0.5.0 had a small bug with make_suggestions when the `load_recipe()`
               * is called for a parent recipe. Addressed by PR https://github.com/autopkg/autopkg/pull/224
               * Slated for 0.5.2 release */
             if ([_version version_isGreaterThanOrEqualTo:AUTOPKG_0_5_2]){
@@ -830,10 +830,10 @@ typedef void (^AutoPkgReplyErrorBlock)(NSError *error);
     /*
      * TODO: As of 9/16/2015 AutoPkg's search feature is not designed to 
      * successfully locate parent recipes by identifier, the primary use case
-     * for AutoPkgr. So we just pipe in no to trigger the end of run.
+     * for AutoPkgr. So we just pipe in "n" (no) to trigger the end of run.
      */
     if (self.task.isRunning) {
-        DevLog(@"Declining autopkg GitHub search request");
+        DevLog(@"Declining AutoPkg GitHub search request");
         [[self.task.standardInput fileHandleForWriting] writeData:[@"n\n" dataUsingEncoding:NSUTF8StringEncoding]];
         return;
     }
