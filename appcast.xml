@@ -6,6 +6,16 @@
         <description>Most recent changes with links to updates.</description>
         <language>en</language>
         <item>
+            <title>Version 1.3.2</title>
+            <description>
+                <![CDATA[
+
+                ]]>
+            </description>
+            <pubDate>Wed, 16 September 2015 10:00:00 -0700</pubDate>
+            <enclosure url="https://github.com/lindegroup/autopkgr/releases/download/v1.3.2/AutoPkgr-1.3.2.dmg" sparkle:version="1091" sparkle:shortVersionString="1.3.2" type="application/octet-stream" />
+        </item>
+        <item>
             <title>Version 1.3.1</title>
             <description>
                 <![CDATA[
