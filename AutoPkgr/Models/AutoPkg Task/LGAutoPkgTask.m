@@ -527,6 +527,9 @@ typedef void (^AutoPkgReplyErrorBlock)(NSError *error);
 
                   if (isInteractive && data.taskData_isInteractive) {
                       DevLog(@"Prompting for interaction: %@", message);
+
+                      // ATTN: the "return" here only returns from the FH readability block,
+                      // not the `-configureFileHandles:` method
                       return [self interactiveAlertWithMessage:message];
                   }
 
@@ -776,11 +779,19 @@ typedef void (^AutoPkgReplyErrorBlock)(NSError *error);
         if (_verb == kLGAutoPkgInfo) {
             isInteractiveOperation = YES;
         } else if (_verb == kLGAutoPkgRun){
+            isInteractiveOperation = YES;
+
+            /* TODO: as of 9/16/15 autopkg has a bug where it will
+             * make_suggestions when the `load_recipe()` is called for a parent recipe.
+             * Addressed by PR https://github.com/autopkg/autopkg/pull/224
+             * but until that's pulled, we need to keep it turned on for
+             * all variations of the recipe runs */
+
             // As of AutoPkg 0.5.0 AutoPkg will only "make_suggestions"
             // when not running with the --recipe-list argument.
-            if (![_arguments containsObject:@"--recipe-list"]) {
-                isInteractiveOperation = YES;
-            }
+//            if (![_arguments containsObject:@"--recipe-list"]) {
+//                isInteractiveOperation = YES;
+//            }
         }
     }
     return isInteractiveOperation;
@@ -815,25 +826,35 @@ typedef void (^AutoPkgReplyErrorBlock)(NSError *error);
 
 - (void)interactiveAlertWithMessage:(NSString *)message
 {
+    /*
+     * TODO: As of 9/16/2015 AutoPkg's search feature is not designed to 
+     * successfully locate parent recipes by identifier, the primary use case
+     * for AutoPkgr. So we just pipe in not to trigger the end of run.
+     */
+    if (self.task.isRunning) {
+        DevLog(@"Declining autopkg GitHub search request");
+        [[self.task.standardInput fileHandleForWriting] writeData:[@"n\n" dataUsingEncoding:NSUTF8StringEncoding]];
+    }
+
     /* Eventually there may be more ways to interact, for now it's only to search github for a recipe's repo */
     [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-      NSString *title = LGAutoPkgLocalizedString(@"Could not find the parent recipe", nil);
+        NSString *title = LGAutoPkgLocalizedString(@"Could not find the parent recipe", nil);
 
-      NSString *cleanedMessage = [message stringByReplacingOccurrencesOfString:@"[y/n]:"
+        NSString *cleanedMessage = [message stringByReplacingOccurrencesOfString:@"[y/n]:"
                                                                     withString:@""];
-      NSAlert *alert = [NSAlert alertWithMessageText:title
+        NSAlert *alert = [NSAlert alertWithMessageText:title
                                        defaultButton:@"Yes"
                                      alternateButton:@"No"
                                          otherButton:nil
                            informativeTextWithFormat:@"%@", cleanedMessage];
 
-      NSString *results;
-      // Don't forget the newline char!
-      if ([alert runModal] == NSAlertDefaultReturn) {
+        NSString *results;
+        // Don't forget the newline char!
+        if ([alert runModal] == NSAlertDefaultReturn) {
           results = @"y\n";
-      } else {
+        } else {
           results = @"n\n";
-      }
+        }
 
         if (self.task.isRunning) {
             [[self.task.standardInput fileHandleForWriting] writeData:[results dataUsingEncoding:NSUTF8StringEncoding]];
