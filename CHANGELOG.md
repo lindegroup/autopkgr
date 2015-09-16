@@ -17,6 +17,8 @@ All notable changes to this project will be documented in this file. This projec
 - Fixed an unpleasant freeze that occurred after installing JSSImporter. (#443)
 - AutoPkgr now more gracefully handles mid-run interactive prompts from AutoPkg, which is usually a result of missing parent recipes. (#441)
 - Fixed a bug that resulted in errors when a repo path contained spaces. (#435)
+- Fixed a tiny typo in the default Munki repo path.
+- Resolved an issue in the CocoaPods configuration.
 
 
 ## [1.3.1] - 2015-08-19
