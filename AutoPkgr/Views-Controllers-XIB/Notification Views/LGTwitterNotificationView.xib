@@ -50,12 +50,19 @@
                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                 <subviews>
                                                     <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="hkp-e4-Y7Y">
-                                                        <rect key="frame" x="0.0" y="0.0" width="100" height="17"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="434" height="17"/>
                                                         <textFieldCell key="cell" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" title="Table View Cell" placeholderString="No Twitter Accounts" id="LNA-j7-8Vx">
                                                             <font key="font" metaFont="system"/>
                                                             <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                                             <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                                         </textFieldCell>
+                                                        <connections>
+                                                            <binding destination="FU3-X5-icP" name="value" keyPath="objectValue.username" id="vi8-Td-ECE">
+                                                                <dictionary key="options">
+                                                                    <bool key="NSContinuouslyUpdatesValue" value="YES"/>
+                                                                </dictionary>
+                                                            </binding>
+                                                        </connections>
                                                     </textField>
                                                 </subviews>
                                                 <connections>
@@ -63,11 +70,12 @@
                                                 </connections>
                                             </tableCellView>
                                         </prototypeCellViews>
-                                        <connections>
-                                            <binding destination="x0z-mH-aGR" name="value" keyPath="arrangedObjects.username" id="uHh-zd-zN2"/>
-                                        </connections>
                                     </tableColumn>
                                 </tableColumns>
+                                <connections>
+                                    <binding destination="x0z-mH-aGR" name="content" keyPath="arrangedObjects" id="TjV-zC-Bub"/>
+                                    <binding destination="x0z-mH-aGR" name="selectionIndexes" keyPath="selectionIndexes" previousBinding="TjV-zC-Bub" id="Ej0-5i-tZM"/>
+                                </connections>
                             </tableView>
                         </subviews>
                         <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -97,7 +105,7 @@
                     </textFieldCell>
                 </textField>
                 <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="a6M-OD-jwR">
-                    <rect key="frame" x="152" y="46" width="177" height="16"/>
+                    <rect key="frame" x="176" y="46" width="130" height="16"/>
                     <buttonCell key="cell" type="push" title="Open Internet Accounts" bezelStyle="rounded" alignment="center" controlSize="mini" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Ron-dl-89M">
                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                         <font key="font" metaFont="miniSystem"/>
@@ -108,21 +116,25 @@
                 </button>
             </subviews>
             <constraints>
-                <constraint firstItem="a6M-OD-jwR" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="153" id="1Wb-vw-UV5"/>
                 <constraint firstItem="WWc-bD-BVM" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="20" id="Cyu-Tg-xu7"/>
                 <constraint firstItem="vgL-cH-v6S" firstAttribute="top" secondItem="WWc-bD-BVM" secondAttribute="bottom" constant="11" id="K8D-9j-gaR"/>
-                <constraint firstAttribute="trailing" secondItem="a6M-OD-jwR" secondAttribute="trailing" constant="152" id="KLQ-Wi-YyI"/>
                 <constraint firstItem="WWc-bD-BVM" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="20" id="ifr-Rf-mhJ"/>
                 <constraint firstAttribute="trailing" secondItem="vgL-cH-v6S" secondAttribute="trailing" constant="20" id="ld3-OA-gL7"/>
                 <constraint firstItem="vgL-cH-v6S" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="20" id="mHp-hQ-7eB"/>
                 <constraint firstAttribute="bottom" secondItem="WWc-bD-BVM" secondAttribute="bottom" constant="94" id="qZn-yd-ZYf"/>
                 <constraint firstItem="a6M-OD-jwR" firstAttribute="top" secondItem="vgL-cH-v6S" secondAttribute="bottom" constant="8" id="xjx-fA-nrl"/>
                 <constraint firstAttribute="trailing" secondItem="WWc-bD-BVM" secondAttribute="trailing" constant="20" id="y5n-Vk-sRX"/>
+                <constraint firstAttribute="centerX" secondItem="a6M-OD-jwR" secondAttribute="centerX" constant="-0.5" id="zAH-6F-rsL"/>
             </constraints>
             <point key="canvasLocation" x="273" y="315.5"/>
         </customView>
         <arrayController id="x0z-mH-aGR" userLabel="AC OS X Twitter Accounts">
             <connections>
+                <binding destination="HKk-jz-GIf" name="selectionIndexes" keyPath="values.selectedOSXTwitterAccount" id="B3c-km-To9">
+                    <dictionary key="options">
+                        <string key="NSValueTransformerName">NSKeyedUnarchiveFromData</string>
+                    </dictionary>
+                </binding>
                 <binding destination="-2" name="contentArray" keyPath="self.osxTwitterAccounts" id="5Ig-Tj-hVC">
                     <dictionary key="options">
                         <bool key="NSValidatesImmediately" value="YES"/>
