@@ -6,6 +6,46 @@
         <description>Most recent changes with links to updates.</description>
         <language>en</language>
         <item>
+            <title>Version 1.3.2</title>
+            <description>
+                <![CDATA[
+                <p>AutoPkgr 1.3.2 is now available, and fixes a couple bugs that were reported by the community. </p>
+
+                <h3>Added</h3>
+
+                <ul>
+                    <li>You can now specify the name of the AutoPkgr bot when configuring Slack integration. (<a href="https://github.com/lindegroup/autopkgr/issues/437" class="issue-link" title="Feature Request: Ability to customize the name displayed in Slack integration">#437</a>)</li>
+                </ul>
+
+                <h3>Changed</h3>
+
+                <ul>
+                    <li>Now includes localized hostname in all notifications, not just email.</li>
+                </ul>
+
+                <h3>Fixed</h3>
+
+                <ul>
+                    <li>Fixed an unpleasant freeze that occurred after installing JSSImporter. (<a href="https://github.com/lindegroup/autopkgr/issues/443" class="issue-link" title="AutoPkgr remains on &quot;Adding default repo&quot; message upon installing JSSImporter">#443</a>)</li>
+                    <li>AutoPkgr now more gracefully handles mid-run interactive prompts from AutoPkg, which is usually a result of missing parent recipes. (<a href="https://github.com/lindegroup/autopkgr/issues/441" class="issue-link" title="[ERROR] EOF when reading a line">#441</a>)</li>
+                    <li>Fixed a bug that resulted in errors when a repo path contained spaces. (<a href="https://github.com/lindegroup/autopkgr/issues/435" class="issue-link" title="GUI crash with space in path">#435</a>)</li>
+                    <li>Fixed a tiny typo in the default Munki repo path.</li>
+                    <li>Resolved an issue in the CocoaPods configuration.</li>
+                </ul>
+
+                <p>If you have any trouble with AutoPkgr, first check the <a href="https://github.com/lindegroup/autopkgr#troubleshooting">Troubleshooting section</a> of the README file. We've tried to describe a few common solutions to problems there.</p>
+
+                <p>Still have questions after reading the manual? Reach out to us on the <a href="http://macadmins.org/">MacAdmins Slack</a> channel, or on the <a href="https://groups.google.com/forum/#!forum/autopkgr-discuss">AutoPkgr discussion group</a>. Or if you believe you've discovered a reproducible bug, please <a href="https://github.com/lindegroup/autopkgr/issues/new">submit an issue</a> on GitHub.</p>
+
+                <p>We've started collecting AutoPkgr-related success stories on the Linde Group website, and we'd love for you to <a href="http://www.lindegroup.com/autopkgr-feedback">share your story</a> if you feel so inclined!</p>
+
+                <p>Have a great day.</p>
+                ]]>
+            </description>
+            <pubDate>Fri, 18 September 2015 11:00:00 -0700</pubDate>
+            <enclosure url="https://github.com/lindegroup/autopkgr/releases/download/v1.3.2/AutoPkgr-1.3.2.dmg" sparkle:version="1104" sparkle:shortVersionString="1.3.2" type="application/octet-stream" />
+        </item>
+        <item>
             <title>Version 1.3.1</title>
             <description>
                 <![CDATA[
