@@ -266,6 +266,15 @@ If your network uses a proxy, you may need to navigate to the __Folders & Integr
 - __Temporarily broken recipes__
     Because software manufacturers frequently change their feeds, recipes that used to work sometimes stop working. Wait a day or so, then update your repos and try running the recipe again. Also see the troubleshooting steps [here](https://github.com/autopkg/autopkg/wiki/FAQ#this-recipe-used-to-work-but-now-it-doesnt-what-should-i-try).
 
+- __AutoPkg is already running__
+    If you get an error that says "A scheduled AutoPkg run may be running in the background," try running this command in the Terminal:
+
+    ```
+    ps ax | grep python | grep autopkg
+    ```
+
+    This should reveal the process information for active AutoPkg runs. If it's appropriate to do so, you can then terminate the process(es) by using `kill` or `killall`.
+
 #### Step 2: Is it really AutoPkgr?
 
 If you've eliminated the simple errors above, but AutoPkgr still doesn't do what you expect, the next step is to run your recipes directly using `autopkg` in Terminal. The following command has been helpful for us when troubleshooting. (Triple-click to select the entire line for copying.)
