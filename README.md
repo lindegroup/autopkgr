@@ -16,6 +16,7 @@ If you're not yet comfortable with the command-line, or if you just want to get 
 - [Installation](#installation)
 - [Basic Usage](#basic-usage)
 - [Searching for Recipes](#searching-for-recipes)
+- [Running individual recipes](#running-individual-recipes)
 - [Creating/Editing Recipe Overrides](#creatingediting-recipe-overrides)
 - [Integrations](#integrations)
     - [Integration with Munki](#integration-with-munki)
@@ -122,6 +123,14 @@ Click __Close__ to return to the recipe list. Then you should see the newly-adde
 ![Add the Recipe](doc-images/recipe_search3.png)
 
 Don't see a recipe for an app you use? [Write one](https://github.com/autopkg/autopkg/wiki/Recipe-Format)!
+
+![divider](doc-images/divider.png)
+
+## Running individual recipes
+
+If you want to run a single recipe once, simply right-click on a recipe and choose __Run This Recipe Only__.
+
+![Running individual recipes](doc-images/individual_recipe_run.png)
 
 ![divider](doc-images/divider.png)
 
