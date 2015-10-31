@@ -544,7 +544,11 @@ typedef void (^AutoPkgReplyErrorBlock)(NSError *error);
                       } else {
                           int cntStr = (int)round(count) + 1;
                           int totStr = (int)round(total);
-                          fullMessage = [[NSString stringWithFormat:@"(%d/%d) %@", cntStr, totStr, message] stringByTrimmingCharactersInSet:[NSCharacterSet newlineCharacterSet]];
+                          if (total){
+                              fullMessage = [[NSString stringWithFormat:@"(%d/%d) %@", cntStr, totStr, message] stringByTrimmingCharactersInSet:[NSCharacterSet newlineCharacterSet]];
+                          } else {
+                              fullMessage = message.trimmed;
+                          }
                       }
 
                       double progress = ((count / total) * 100);
