@@ -87,7 +87,7 @@ static NSString *const kLGAutoPkgRecipeCurrentStatusKey = @"currentStatus";
     LGRecipeStatusCellView *statusCell = [tableView makeViewWithIdentifier:tableColumn.identifier owner:self];
 
     if ([tableColumn.identifier isEqualToString:kLGAutoPkgRecipeCurrentStatusKey]) {
-        if (_runTaskDictionary[recipe.Name]) {
+        if (_runTaskDictionary[recipe.Identifier]) {
             [statusCell.progressIndicator startAnimation:tableView];
             statusCell.imageView.hidden = YES;
         } else {
@@ -178,7 +178,7 @@ static NSString *const kLGAutoPkgRecipeCurrentStatusKey = @"currentStatus";
     // This runs a recipe from the Table's contextual menu...
     LGAutoPkgTask *runTask = [LGAutoPkgTask runRecipesTask:@[ recipe.Name ]];
 
-    [_runTaskDictionary setObject:runTask forKey:recipe.Name];
+    [_runTaskDictionary setObject:runTask forKey:recipe.Identifier];
 
     runTask.progressUpdateBlock = ^(NSString *message, double progress) {
         NSLog(@"Run status: %@", message);
@@ -216,7 +216,7 @@ static NSString *const kLGAutoPkgRecipeCurrentStatusKey = @"currentStatus";
             }
         }
 
-        [_runTaskDictionary removeObjectForKey:recipe.Name];
+        [_runTaskDictionary removeObjectForKey:recipe.Identifier];
         [_recipeTableView reloadDataForRowIndexes:rowIdxSet columnIndexes:colIdxSet];
 
         // If there are no more run tasks don't keep the dictioanry around...
@@ -296,9 +296,9 @@ static NSString *const kLGAutoPkgRecipeCurrentStatusKey = @"currentStatus";
     [menu addItem:infoItem];
 
     NSMenuItem *runMenuItem;
-    if (_runTaskDictionary[recipe.Name]) {
+    if (_runTaskDictionary[recipe.Identifier]) {
         runMenuItem = [[NSMenuItem alloc] initWithTitle:@"Cancel Run" action:@selector(cancel) keyEquivalent:@""];
-        runMenuItem.target = _runTaskDictionary[recipe.Name];
+        runMenuItem.target = _runTaskDictionary[recipe.Identifier];
         [menu addItem:runMenuItem];
     } else {
         runMenuItem = [[NSMenuItem alloc] initWithTitle:@"Run This Recipe Only" action:@selector(runRecipeFromMenu:) keyEquivalent:@""];

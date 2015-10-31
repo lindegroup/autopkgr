@@ -16,6 +16,7 @@ If you're not yet comfortable with the command-line, or if you just want to get 
 - [Installation](#installation)
 - [Basic Usage](#basic-usage)
 - [Searching for Recipes](#searching-for-recipes)
+- [Running individual recipes](#running-individual-recipes)
 - [Creating/Editing Recipe Overrides](#creatingediting-recipe-overrides)
 - [Integrations](#integrations)
     - [Integration with Munki](#integration-with-munki)
@@ -122,6 +123,14 @@ Click __Close__ to return to the recipe list. Then you should see the newly-adde
 ![Add the Recipe](doc-images/recipe_search3.png)
 
 Don't see a recipe for an app you use? [Write one](https://github.com/autopkg/autopkg/wiki/Recipe-Format)!
+
+![divider](doc-images/divider.png)
+
+## Running individual recipes
+
+If you want to run a single recipe once, simply right-click on a recipe and choose __Run This Recipe Only__.
+
+![Running individual recipes](doc-images/individual_recipe_run.png)
 
 ![divider](doc-images/divider.png)
 
@@ -256,6 +265,15 @@ If your network uses a proxy, you may need to navigate to the __Folders & Integr
 
 - __Temporarily broken recipes__
     Because software manufacturers frequently change their feeds, recipes that used to work sometimes stop working. Wait a day or so, then update your repos and try running the recipe again. Also see the troubleshooting steps [here](https://github.com/autopkg/autopkg/wiki/FAQ#this-recipe-used-to-work-but-now-it-doesnt-what-should-i-try).
+
+- __AutoPkg is already running__
+    If you get an error that says "A scheduled AutoPkg run may be running in the background," try running this command in the Terminal:
+
+    ```
+    ps ax | grep python | grep autopkg
+    ```
+
+    This should reveal the process information for active AutoPkg runs. If it's appropriate to do so, you can then terminate the process(es) by using `kill` or `killall`.
 
 #### Step 2: Is it really AutoPkgr?
 

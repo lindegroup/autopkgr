@@ -565,16 +565,20 @@ void subclassMustConformToProtocol(id className)
         task.arguments = arguments;
         task.standardOutput = [NSPipe pipe];
 
-        [task launch];
-        [task waitUntilExit];
+        @try {
+            [task launch];
+            [task waitUntilExit];
 
-        NSData *data = [[task.standardOutput fileHandleForReading] readDataToEndOfFile];
-        if (data) {
-            installedVersion = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+            NSData *data = [[task.standardOutput fileHandleForReading] readDataToEndOfFile];
+            if (data) {
+                installedVersion = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+            }
+        }
+        @catch (NSException *exception) {
+            NSLog(@"There was a problem when executing %@ with args: %@, if the issue persists please open an issue on the AutoPkgr GitHub page.", exec, [arguments componentsJoinedByString:@" "]);
         }
     }
-
-    return installedVersion ?: @"";
+    return installedVersion ?: @"0.0.0";
 }
 
 + (NSError *)requirementsError:(NSString *)reason

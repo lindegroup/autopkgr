@@ -50,6 +50,14 @@
                         <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
                         <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
+                    <connections>
+                        <binding destination="cIJ-zl-KaW" name="value" keyPath="values.SlackBotName" id="N84-cj-yTh">
+                            <dictionary key="options">
+                                <bool key="NSContinuouslyUpdatesValue" value="YES"/>
+                                <string key="NSNullPlaceholder">AutoPkgr</string>
+                            </dictionary>
+                        </binding>
+                    </connections>
                 </textField>
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="uGQ-hH-paE">
                     <rect key="frame" x="10" y="66" width="97" height="17"/>
@@ -79,5 +87,6 @@
             </constraints>
             <point key="canvasLocation" x="152.5" y="85"/>
         </customView>
+        <userDefaultsController representsSharedInstance="YES" id="cIJ-zl-KaW"/>
     </objects>
 </document>

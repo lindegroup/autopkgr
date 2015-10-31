@@ -10,29 +10,29 @@
 	<string>AutoPkgr</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
-		<key>09DA797B-5D96-443A-A5A6-936E06508576</key>
-		<string>https://github.com/eahrold/autopkgr.git</string>
+		<key>941A3B01BA9BA1841C1477B8E57AB717E0D7F561</key>
+		<string>github.com:lindegroup/autopkgr.git</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
-	<string>AutoPkgr.xcodeproj/project.xcworkspace</string>
+	<string>AutoPkgr.xcodeproj</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
-		<key>09DA797B-5D96-443A-A5A6-936E06508576</key>
+		<key>941A3B01BA9BA1841C1477B8E57AB717E0D7F561</key>
 		<string>../..</string>
 	</dict>
 	<key>IDESourceControlProjectURL</key>
-	<string>https://github.com/eahrold/autopkgr.git</string>
+	<string>github.com:lindegroup/autopkgr.git</string>
 	<key>IDESourceControlProjectVersion</key>
-	<integer>110</integer>
+	<integer>111</integer>
 	<key>IDESourceControlProjectWCCIdentifier</key>
-	<string>09DA797B-5D96-443A-A5A6-936E06508576</string>
+	<string>941A3B01BA9BA1841C1477B8E57AB717E0D7F561</string>
 	<key>IDESourceControlProjectWCConfigurations</key>
 	<array>
 		<dict>
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
 			<string>public.vcs.git</string>
 			<key>IDESourceControlWCCIdentifierKey</key>
-			<string>09DA797B-5D96-443A-A5A6-936E06508576</string>
+			<string>941A3B01BA9BA1841C1477B8E57AB717E0D7F561</string>
 			<key>IDESourceControlWCCName</key>
 			<string>autopkgr</string>
 		</dict>

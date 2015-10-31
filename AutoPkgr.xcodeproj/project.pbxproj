@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		12F5CBFAA5D2739B92B3E955 /* libPods-AutoPkgr.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FF435269A548437DA5380201 /* libPods-AutoPkgr.a */; };
 		1A0A86B1195CE69300A49434 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1A0A86B0195CE69300A49434 /* Security.framework */; };
 		1A1BAD9E197A4133008192A7 /* LGGitHubJSONLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A1BAD9D197A4133008192A7 /* LGGitHubJSONLoader.m */; };
 		1A2C7FAE19CC9F8300CFF472 /* codesign.py in Resources */ = {isa = PBXBuildFile; fileRef = 1A2C7FAD19CC9F8300CFF472 /* codesign.py */; };
@@ -25,10 +26,10 @@
 		1AC98420195CEC360071CAB3 /* LGConfigurationWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1AC9841E195CEC360071CAB3 /* LGConfigurationWindowController.xib */; };
 		1AC98427195DF6350071CAB3 /* autopkgr.png in Resources */ = {isa = PBXBuildFile; fileRef = 1AC98425195DF6350071CAB3 /* autopkgr.png */; };
 		1AC98429195DF6DE0071CAB3 /* autopkgr_alt.png in Resources */ = {isa = PBXBuildFile; fileRef = 1AC98428195DF6DE0071CAB3 /* autopkgr_alt.png */; };
-		4B8E6E4F9D8944C883A98423 /* libPods-AutoPkgr.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FF435269A548437DA5380201 /* libPods-AutoPkgr.a */; };
 		6A53625D1988BE59008A949C /* LGTestPort.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A53625C1988BE59008A949C /* LGTestPort.m */; };
-		8B32152D89506869029955FC /* libPods-AutoPkgrTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7EF915ABFCFD78F7257B58CD /* libPods-AutoPkgrTests.a */; };
 		8BB217F619709A2C00EF8B93 /* AutoPkgrIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 8BB217F519709A2C00EF8B93 /* AutoPkgrIcon.png */; };
+		9D2C8D4C186E66B3303DD645 /* libPods-com.lindegroup.AutoPkgr.helper.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00A11C97CD6260BB5679DA1A /* libPods-com.lindegroup.AutoPkgr.helper.a */; };
+		B8D45ABF903D8E3083FBEFAC /* libPods-AutoPkgrTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7EF915ABFCFD78F7257B58CD /* libPods-AutoPkgrTests.a */; };
 		BE025CF719BAE93400D36345 /* LGAutoPkgTask.m in Sources */ = {isa = PBXBuildFile; fileRef = BE025CF519BAE93400D36345 /* LGAutoPkgTask.m */; };
 		BE025CFE19BAEF8800D36345 /* LGAutoPkgSchedule.m in Sources */ = {isa = PBXBuildFile; fileRef = BE025CFD19BAEF8800D36345 /* LGAutoPkgSchedule.m */; };
 		BE025CFF19BAEF8800D36345 /* LGAutoPkgSchedule.m in Sources */ = {isa = PBXBuildFile; fileRef = BE025CFD19BAEF8800D36345 /* LGAutoPkgSchedule.m */; };
@@ -258,7 +259,6 @@
 		BEFC3C8C1A3DF16700C789E9 /* NSTextField+safeStringValue.m in Sources */ = {isa = PBXBuildFile; fileRef = BEE8CF1219E0E7F400981C4B /* NSTextField+safeStringValue.m */; };
 		BEFC3C8E1A3DF16700C789E9 /* NSArray+filtered.m in Sources */ = {isa = PBXBuildFile; fileRef = BED02ADB1A194F9C00714CC2 /* NSArray+filtered.m */; };
 		BEFC931D1995F0710074C938 /* LGError.m in Sources */ = {isa = PBXBuildFile; fileRef = BEFC931C1995F0710074C938 /* LGError.m */; };
-		CAF173A0D3EC0C495067D9FF /* libPods-com.lindegroup.AutoPkgr.helper.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00A11C97CD6260BB5679DA1A /* libPods-com.lindegroup.AutoPkgr.helper.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -294,6 +294,7 @@
 
 /* Begin PBXFileReference section */
 		00A11C97CD6260BB5679DA1A /* libPods-com.lindegroup.AutoPkgr.helper.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-com.lindegroup.AutoPkgr.helper.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		0A32A81D28552AD332018192 /* libPods-helper.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-helper.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		1A0A86B0195CE69300A49434 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		1A1BAD9C197A4133008192A7 /* LGGitHubJSONLoader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGGitHubJSONLoader.h; sourceTree = "<group>"; };
 		1A1BAD9D197A4133008192A7 /* LGGitHubJSONLoader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGGitHubJSONLoader.m; sourceTree = "<group>"; };
@@ -327,6 +328,9 @@
 		1AC9841E195CEC360071CAB3 /* LGConfigurationWindowController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LGConfigurationWindowController.xib; sourceTree = "<group>"; };
 		1AC98425195DF6350071CAB3 /* autopkgr.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = autopkgr.png; sourceTree = "<group>"; };
 		1AC98428195DF6DE0071CAB3 /* autopkgr_alt.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = autopkgr_alt.png; sourceTree = "<group>"; };
+		2878575949D902F3D0B9F451 /* Pods-helper.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-helper.debug.xcconfig"; path = "Pods/Target Support Files/Pods-helper/Pods-helper.debug.xcconfig"; sourceTree = "<group>"; };
+		40AD8CC63CDA9FC62E64BBA8 /* Pods-autopkgr.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-autopkgr.debug.xcconfig"; path = "Pods/Target Support Files/Pods-autopkgr/Pods-autopkgr.debug.xcconfig"; sourceTree = "<group>"; };
+		498622C9B70FF9D6DDC0926F /* Pods-autopkgr.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-autopkgr.release.xcconfig"; path = "Pods/Target Support Files/Pods-autopkgr/Pods-autopkgr.release.xcconfig"; sourceTree = "<group>"; };
 		52A518D9E8BA16BC7F523996 /* Pods-com.lindegroup.AutoPkgr.helper.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-com.lindegroup.AutoPkgr.helper.release.xcconfig"; path = "Pods/Target Support Files/Pods-com.lindegroup.AutoPkgr.helper/Pods-com.lindegroup.AutoPkgr.helper.release.xcconfig"; sourceTree = "<group>"; };
 		5F030AE32F891FB6D46E1F34 /* Pods-AutoPkgrTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AutoPkgrTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-AutoPkgrTests/Pods-AutoPkgrTests.debug.xcconfig"; sourceTree = "<group>"; };
 		5F5D515706D5DA01E7256573 /* Pods-AutoPkgr.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AutoPkgr.debug.xcconfig"; path = "Pods/Target Support Files/Pods-AutoPkgr/Pods-AutoPkgr.debug.xcconfig"; sourceTree = "<group>"; };
@@ -338,7 +342,9 @@
 		6A53625C1988BE59008A949C /* LGTestPort.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGTestPort.m; sourceTree = "<group>"; };
 		78FF6F632570F6CB7453F9D7 /* Pods-AutoPkgrTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AutoPkgrTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-AutoPkgrTests/Pods-AutoPkgrTests.release.xcconfig"; sourceTree = "<group>"; };
 		7EF915ABFCFD78F7257B58CD /* libPods-AutoPkgrTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-AutoPkgrTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		82E1025CEEB73A7B5A709EE0 /* Pods-helper.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-helper.release.xcconfig"; path = "Pods/Target Support Files/Pods-helper/Pods-helper.release.xcconfig"; sourceTree = "<group>"; };
 		8BB217F519709A2C00EF8B93 /* AutoPkgrIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = AutoPkgrIcon.png; sourceTree = "<group>"; };
+		8FDCE77563036A319CDEEBF5 /* libPods-autopkgr.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-autopkgr.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		906DD048439B1EC0FBD74F69 /* Pods-AutoPkgr.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AutoPkgr.release.xcconfig"; path = "Pods/Target Support Files/Pods-AutoPkgr/Pods-AutoPkgr.release.xcconfig"; sourceTree = "<group>"; };
 		BE025CF419BAE93400D36345 /* LGAutoPkgTask.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGAutoPkgTask.h; sourceTree = "<group>"; };
 		BE025CF519BAE93400D36345 /* LGAutoPkgTask.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGAutoPkgTask.m; sourceTree = "<group>"; };
@@ -556,7 +562,7 @@
 				BE8526B219D5F641007DFA9E /* SecurityInterface.framework in Frameworks */,
 				1A0A86B1195CE69300A49434 /* Security.framework in Frameworks */,
 				1AC69551195B59ED00D2BD81 /* Cocoa.framework in Frameworks */,
-				4B8E6E4F9D8944C883A98423 /* libPods-AutoPkgr.a in Frameworks */,
+				12F5CBFAA5D2739B92B3E955 /* libPods-AutoPkgr.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -566,7 +572,7 @@
 			files = (
 				1AC69571195B59EE00D2BD81 /* Cocoa.framework in Frameworks */,
 				1AC69570195B59EE00D2BD81 /* XCTest.framework in Frameworks */,
-				8B32152D89506869029955FC /* libPods-AutoPkgrTests.a in Frameworks */,
+				B8D45ABF903D8E3083FBEFAC /* libPods-AutoPkgrTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -576,7 +582,7 @@
 			files = (
 				BE05CE9019DB37E50089068B /* ServiceManagement.framework in Frameworks */,
 				BE05CE8E19DB37DF0089068B /* Security.framework in Frameworks */,
-				CAF173A0D3EC0C495067D9FF /* libPods-com.lindegroup.AutoPkgr.helper.a in Frameworks */,
+				9D2C8D4C186E66B3303DD645 /* libPods-com.lindegroup.AutoPkgr.helper.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -628,6 +634,8 @@
 				1AC69552195B59ED00D2BD81 /* Other Frameworks */,
 				7EF915ABFCFD78F7257B58CD /* libPods-AutoPkgrTests.a */,
 				00A11C97CD6260BB5679DA1A /* libPods-com.lindegroup.AutoPkgr.helper.a */,
+				8FDCE77563036A319CDEEBF5 /* libPods-autopkgr.a */,
+				0A32A81D28552AD332018192 /* libPods-helper.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -732,6 +740,10 @@
 				78FF6F632570F6CB7453F9D7 /* Pods-AutoPkgrTests.release.xcconfig */,
 				1A7ADB1D1E710AEEEB0754C1 /* Pods-com.lindegroup.AutoPkgr.helper.debug.xcconfig */,
 				52A518D9E8BA16BC7F523996 /* Pods-com.lindegroup.AutoPkgr.helper.release.xcconfig */,
+				40AD8CC63CDA9FC62E64BBA8 /* Pods-autopkgr.debug.xcconfig */,
+				498622C9B70FF9D6DDC0926F /* Pods-autopkgr.release.xcconfig */,
+				2878575949D902F3D0B9F451 /* Pods-helper.debug.xcconfig */,
+				82E1025CEEB73A7B5A709EE0 /* Pods-helper.release.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
@@ -1161,8 +1173,8 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 1AC6957E195B59EE00D2BD81 /* Build configuration list for PBXNativeTarget "AutoPkgr" */;
 			buildPhases = (
-				BE13A88A19E256A0008A49A1 /* Run script: Helper tool codsign config */,
 				570AE652B42D4D4D86875A8A /* Check Pods Manifest.lock */,
+				BE13A88A19E256A0008A49A1 /* Run script: Helper tool codsign config */,
 				BECFF2B619CA9854004C2721 /* Run Script: Set build number to commit count */,
 				1AC69549195B59ED00D2BD81 /* Sources */,
 				1AC6954A195B59ED00D2BD81 /* Frameworks */,
@@ -1205,9 +1217,9 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = BE05CE7119DAF26B0089068B /* Build configuration list for PBXNativeTarget "com.lindegroup.AutoPkgr.helper" */;
 			buildPhases = (
+				BE05CE8B19DB35530089068B /* Check Pods Manifest.lock */,
 				BE05CE6319DAF26B0089068B /* Sources */,
 				BE05CE6419DAF26B0089068B /* Frameworks */,
-				BE05CE8B19DB35530089068B /* Check Pods Manifest.lock */,
 				BE05CE8C19DB35A50089068B /* Copy POD Resources */,
 				615CDD8CD06A6F3B3D9F6A5E /* Copy Pods Resources */,
 			);
@@ -1420,7 +1432,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\ncat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\nexit 1\nfi\n";
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
 		};
 		BE05CE8C19DB35A50089068B /* Copy POD Resources */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -1784,7 +1796,6 @@
 /* Begin XCBuildConfiguration section */
 		1AC6957C195B59EE00D2BD81 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 5F5D515706D5DA01E7256573 /* Pods-AutoPkgr.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
@@ -1823,7 +1834,6 @@
 		};
 		1AC6957D195B59EE00D2BD81 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 906DD048439B1EC0FBD74F69 /* Pods-AutoPkgr.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
@@ -1933,15 +1943,12 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CODE_SIGN_IDENTITY = "Developer ID Application: The Linde Group Computer Support Inc (JVY2ZR6SEF)";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				FRAMEWORK_SEARCH_PATHS = "";
 				GCC_PREFIX_HEADER = "Privileged Helper/Supporting Files/helper-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"$(inherited)",
 					"COCOAPODS=1",
 				);
-				HEADER_SEARCH_PATHS = "$(inherited)";
 				INSTALL_PATH = "";
-				LIBRARY_SEARCH_PATHS = "$(USER_LIBRARY_DIR)/Developer/Xcode/DerivedData/AutoPkgr-gvffmulnnaejibfmmwfptzyobmbb/Build/Products/Debug";
 				MTL_ENABLE_DEBUG_INFO = YES;
 				OTHER_CFLAGS = (
 					"$(inherited)",
@@ -1982,15 +1989,12 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CODE_SIGN_IDENTITY = "Developer ID Application: The Linde Group Computer Support Inc (JVY2ZR6SEF)";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				FRAMEWORK_SEARCH_PATHS = "";
 				GCC_PREFIX_HEADER = "Privileged Helper/Supporting Files/helper-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"$(inherited)",
 					"COCOAPODS=1",
 				);
-				HEADER_SEARCH_PATHS = "$(inherited)";
 				INSTALL_PATH = "";
-				LIBRARY_SEARCH_PATHS = "$(USER_LIBRARY_DIR)/Developer/Xcode/DerivedData/AutoPkgr-gvffmulnnaejibfmmwfptzyobmbb/Build/Products/Debug";
 				MTL_ENABLE_DEBUG_INFO = NO;
 				OTHER_CFLAGS = (
 					"$(inherited)",
