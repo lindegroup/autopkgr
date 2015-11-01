@@ -4,6 +4,15 @@ All notable changes to this project will be documented in this file. This projec
 
 ## [Unreleased][unreleased]
 
+### Added
+- Ability to select multiple repos and then update, add, or remove the selected repos. (#434)
+- Ability to select multiple recipes and then run, enable, or disable the selected recipes. (#434)
+
+### Fixed
+- Fixed a bug that caused progress spinners to incorrectly display on multiple recipes if they share the same name. (#447)
+- Fixed a minor counting error in log output. (#446)
+- Fixed crash that occurred if Git was not reinstalled after an OS X upgrade. (#458)
+
 
 ## [1.3.2] - 2015-09-16
 
