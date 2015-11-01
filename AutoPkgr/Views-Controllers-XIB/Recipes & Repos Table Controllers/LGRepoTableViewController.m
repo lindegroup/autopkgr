@@ -245,6 +245,8 @@
         action = @"Adding";
     } else if ([taskArgs.firstObject isEqualToString:@"repo-delete"]) {
         action = @"Removing";
+    } else if ([taskArgs.firstObject isEqualToString:@"repo-update"]) {
+        action = @"Updating";
     }
 
     if (action) {
@@ -269,11 +271,15 @@
         // With both repo-add and repo-delete multiple repos can be passed in, so start with the command
         // and append the recipes that are considered. That is the array ultimately set as the menu item's
         // represented object.
-        __block NSMutableArray *enabled = @[ @"repo-delete" ].mutableCopy, *disabled = @[ @"repo-add" ].mutableCopy;
+        __block NSMutableArray *update = @[ @"repo-update" ].mutableCopy,
+                               *enabled = @[ @"repo-delete" ].mutableCopy,
+                               *disabled = @[ @"repo-add" ].mutableCopy;
+
         [set enumerateIndexesUsingBlock:^(NSUInteger idx, BOOL *stop) {
             LGRepoStatusCellView *cell = [_popularRepositoriesTableView viewAtColumn:0 row:idx makeIfNecessary:NO];
             if (cell) {
                 if (cell.enabledCheckBox.state) {
+                    [update addObject:[_searchedRepos[idx] path]];
                     [enabled addObject:[_searchedRepos[idx] cloneURL].absoluteString];
                 } else {
                     [disabled addObject:[_searchedRepos[idx] cloneURL].absoluteString];
@@ -281,21 +287,21 @@
             }
         }];
 
-        // Add Repos...
-        if (disabled.count > 1) {
-            NSMenuItem *addReposItem = [[NSMenuItem alloc] initWithTitle:@"Add Repos" action:@selector(bulkModifyRecipeRepos:) keyEquivalent:@""];
-            addReposItem.representedObject = disabled;
-            addReposItem.target = self;
-            [menu addItem:addReposItem];
-        }
+        [@[update, enabled, disabled] enumerateObjectsUsingBlock:^(NSArray *array, NSUInteger idx, BOOL *stop) {
+            if (array.count > 1) {
+                NSString *title = [[NSString stringWithFormat:@"%@ selected repos",
+                                    [[array.firstObject componentsSeparatedByString:@"-"]
+                                     lastObject]] capitalizedString];
 
-        // Remove Repos...
-        if (enabled.count > 1) {
-            NSMenuItem *removeReposItem = [[NSMenuItem alloc] initWithTitle:@"Remove Repos" action:@selector(bulkModifyRecipeRepos:) keyEquivalent:@""];
-            removeReposItem.representedObject = enabled;
-            removeReposItem.target = self;
-            [menu addItem:removeReposItem];
-        }
+                NSMenuItem *updateReposItem = [[NSMenuItem alloc] initWithTitle:title
+                                                                         action:@selector(bulkModifyRecipeRepos:)
+                                                                  keyEquivalent:@""];
+                updateReposItem.representedObject = array;
+                updateReposItem.target = self;
+                [menu addItem:updateReposItem];
+            }
+        }];
+
         return menu;
     }
 
