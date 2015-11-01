@@ -104,7 +104,6 @@ static NSString *const kLGAutoPkgRecipeCurrentStatusKey = @"currentStatus";
         statusCell.enabledCheckBox.state = [[recipe valueForKey:tableColumn.identifier] boolValue];
         statusCell.enabledCheckBox.target = recipe;
         statusCell.enabledCheckBox.action = @selector(enableRecipe:);
-
     } else {
         NSString *string = [recipe valueForKey:tableColumn.identifier];
         if (string) {
@@ -113,7 +112,6 @@ static NSString *const kLGAutoPkgRecipeCurrentStatusKey = @"currentStatus";
             statusCell.textField.placeholderString = @"<Missing>";
         }
     }
-
     return statusCell;
 }
 
@@ -121,6 +119,17 @@ static NSString *const kLGAutoPkgRecipeCurrentStatusKey = @"currentStatus";
 {
     [_searchedRecipes sortUsingDescriptors:tableView.sortDescriptors];
     [tableView reloadData];
+}
+
+#pragma mark - IBActions
+- (void)enableRecipes:(NSMenuItem *)sender {
+    NSArray *recipes = sender.representedObject;
+    BOOL state = [recipes.firstObject isEnabled];
+    [recipes enumerateObjectsUsingBlock:^(LGAutoPkgRecipe *recipe, NSUInteger idx, BOOL *stop) {
+        recipe.enabled = !state;
+    }];
+
+    [self.recipeTableView reloadData];
 }
 
 #pragma mark - Filtering
@@ -250,6 +259,36 @@ static NSString *const kLGAutoPkgRecipeCurrentStatusKey = @"currentStatus";
 {
     NSMenu *menu = [[NSMenu alloc] init];
     LGAutoPkgRecipe *recipe = [_searchedRecipes objectAtIndex:row];
+
+    NSIndexSet *set = _recipeTableView.selectedRowIndexes;
+
+    if (set.count > 1){
+        NSMutableArray *enable = @[].mutableCopy, *disable = @[].mutableCopy;
+        [set enumerateIndexesUsingBlock:^(NSUInteger idx, BOOL *stop) {
+            LGAutoPkgRecipe *recipe = _searchedRecipes[idx];
+            if (recipe.isEnabled){
+                [disable addObject:recipe];
+            } else {
+                [enable addObject:recipe];
+            }
+        }];
+
+        if (enable.count){
+            NSMenuItem *item = [[NSMenuItem alloc] initWithTitle:@"Enable Selected Recipes" action:@selector(enableRecipes:) keyEquivalent:@""];
+            item.target = self;
+            item.representedObject = enable;
+            [menu addItem:item];
+        }
+
+        if (disable.count){
+            NSMenuItem *item = [[NSMenuItem alloc] initWithTitle:@"Disable Selected Recipes" action:@selector(enableRecipes:) keyEquivalent:@""];
+            item.target = self;
+            item.representedObject = disable;
+            [menu addItem:item];
+        }
+
+        return menu;
+    }
 
     NSMenuItem *infoItem = [[NSMenuItem alloc] initWithTitle:@"Get Info" action:@selector(openInfoPanelFromMenu:) keyEquivalent:@""];
     infoItem.representedObject = recipe;

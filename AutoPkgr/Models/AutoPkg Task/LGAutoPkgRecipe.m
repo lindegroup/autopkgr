@@ -154,8 +154,10 @@ static NSMutableDictionary *_identifierURLStore = nil;
     if ([sender isKindOfClass:[NSButton class]]) {
         self.enabled = sender.state;
         // Double check that enabling of the recipe was successful.
-        dispatch_async(autopkgr_recipe_write_queue(), ^{
-            sender.state = [[[self class] activeRecipes] containsObject:self.Identifier];
+        BOOL state = [[[self class] activeRecipes] containsObject:self.Identifier];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            // Update the UI on the main thread.
+            sender.state = state;
         });
     }
 }
@@ -178,7 +180,7 @@ static NSMutableDictionary *_identifierURLStore = nil;
 
     /* This is all dispatched to a serial queue so a race condition doesn't arise
      * when multiple recipes are added or removed in rapid succession */
-    dispatch_async(autopkgr_recipe_write_queue(), ^{
+    dispatch_sync(autopkgr_recipe_write_queue(), ^{
         NSError *error;
 
         __block NSMutableArray *currentList = [[NSMutableArray alloc] init];

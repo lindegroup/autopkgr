@@ -501,7 +501,7 @@ typedef void (^AutoPkgReplyErrorBlock)(NSError *error);
         self.task.standardInput = standardInput;
     }
 
-    if (_verb & (kLGAutoPkgRun | kLGAutoPkgRepoUpdate)) {
+    if (_verb & (kLGAutoPkgRun | kLGAutoPkgRepoUpdate | kLGAutoPkgRepoAdd)) {
 
         if (([_version version_isGreaterThanOrEqualTo:AUTOPKG_0_4_0])) {
             /* As of 0.4.0 AutoPkg saves the report.plist to a file rather than stdout,
@@ -519,6 +519,9 @@ typedef void (^AutoPkgReplyErrorBlock)(NSError *error);
             } else if (_verb == kLGAutoPkgRepoUpdate) {
                 progressPredicate = [NSPredicate predicateWithFormat:@"SELF CONTAINS[cd] '.git'"];
                 total = [[[self class] repoList] count];
+            } else if (_verb == kLGAutoPkgRepoAdd){
+                progressPredicate = [NSPredicate predicateWithFormat:@"SELF BEGINSWITH[CD] 'Attempting git'"];
+                total = self.arguments.count - 1;
             }
 
             BOOL verbose = [[NSUserDefaults standardUserDefaults] boolForKey:@"verboseAutoPkgRun"];
