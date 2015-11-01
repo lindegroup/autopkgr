@@ -3,10 +3,10 @@
 <plist version="1.0">
 <dict>
 	<key>Label</key>
-	<string>com.lindegroup.AutoPkgr.helper</string>
+	<string>AutoPkgr.helper</string>
 	<key>MachServices</key>
 	<dict>
-		<key>com.lindegroup.AutoPkgr.helper</key>
+		<key>AutoPkgr.helper</key>
 		<true/>
 	</dict>
 </dict>
