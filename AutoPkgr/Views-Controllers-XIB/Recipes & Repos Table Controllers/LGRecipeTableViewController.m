@@ -296,6 +296,21 @@ static NSString *const kLGAutoPkgRecipeCurrentStatusKey = @"currentStatus";
         [update addIndex:idx];
     }];
 
+    id task = _runTaskDictionary[recipe.Identifier];
+    if (!task && update.count){
+        NSString *title = update.count > 1 ? @"Run Selected Recipes" : @"Run This Recipe Only";
+        NSMenuItem *item = [[NSMenuItem alloc] initWithTitle:title action:@selector(runRecipesFromMenu:) keyEquivalent:@""];
+        item.target = self;
+        item.representedObject = update;
+        [menu addItem:item];
+    }
+
+    if (task) {
+        NSMenuItem *cancelItem = [[NSMenuItem alloc] initWithTitle:@"Cancel Run" action:@selector(cancel) keyEquivalent:@""];
+        cancelItem.target = task;
+        [menu addItem:cancelItem];
+    }
+
     if (set.count > 1 ){
         if (enable.count){
             NSMenuItem *item = [[NSMenuItem alloc] initWithTitle:@"Enable Selected Recipes" action:@selector(enableRecipes:) keyEquivalent:@""];
@@ -310,21 +325,7 @@ static NSString *const kLGAutoPkgRecipeCurrentStatusKey = @"currentStatus";
             item.representedObject = disable;
             [menu addItem:item];
         }
-    }
-
-    id task = _runTaskDictionary[recipe.Identifier];
-    if (!task && update.count){
-        NSString *title = update.count > 1 ? @"Run Selected Recipes" : @"Run This Recipe Only";
-        NSMenuItem *item = [[NSMenuItem alloc] initWithTitle:title action:@selector(runRecipesFromMenu:) keyEquivalent:@""];
-        item.target = self;
-        item.representedObject = update;
-        [menu addItem:item];
-    }
-
-    if (task) {
-        NSMenuItem *cancelItem = [[NSMenuItem alloc] initWithTitle:@"Cancel Run" action:@selector(cancel) keyEquivalent:@""];
-        cancelItem.target = task;
-        [menu addItem:cancelItem];
+        return menu;
     }
 
     NSMenuItem *infoItem = [[NSMenuItem alloc] initWithTitle:@"Get Info" action:@selector(openInfoPanelFromMenu:) keyEquivalent:@""];
