@@ -77,6 +77,11 @@ NSString *const kLGAutoPkgRepoNameKey = @"RepoName";
 NSString *const kLGAutoPkgRepoPathKey = @"RepoPath";
 NSString *const kLGAutoPkgRepoURLKey = @"RepoURL";
 
+
+NSString *const kLGMunkiSetDefaultCatalogEnabledKey = @"MunkiSetDefaultCatalogPreProcessorEnabled";
+NSString *const kLGPreProcessorDefaultsKey = @"PreProcessors";
+NSString *const kLGPostProcessorDefaultsKey = @"PostProcessors";
+
 // Reply blocks
 typedef void (^AutoPkgReplyResultsBlock)(NSArray *results, NSError *error);
 typedef void (^AutoPkgReplyReportBlock)(NSDictionary *report, NSError *error);
@@ -441,6 +446,10 @@ typedef void (^AutoPkgReplyErrorBlock)(NSError *error);
             [self.internalArgs addObject:self.reportPlistFile];
         }
         [self.internalArgs addObject:@"-v"];
+
+        [self configurePreProcessors];
+        [self configurePostProcessors];
+
     } else if ([verbString isEqualToString:@"list-recipes"]) {
         _verb = kLGAutoPkgListRecipes;
     } else if ([verbString isEqualToString:@"make-override"]) {
@@ -635,6 +644,58 @@ typedef void (^AutoPkgReplyErrorBlock)(NSError *error);
         // To get status from autopkg set NSUnbufferedIO environment key to YES
         // Thanks to help from -- http://stackoverflow.com/questions/8251010
         [self addEnvironmentVariable:@"YES" forKey:@"NSUnbufferedIO"];
+    }
+}
+
+- (void)configurePreProcessors {
+    // If an autopkg run has been setup using a custom implementation
+    // that includes explicitly declared preprocessors don't override
+    // those settings.
+    if([self.internalArgs containsObject:@"--pre"] ||
+       [self.internalArgs containsObject:@"--preprocessor"]){
+        return;
+    }
+
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+
+    // Since the MunkiSetDefaultCatalog is part of the core autopkg lib,
+    // we've included an explicit default to check for that.
+    NSString *msdcKey = @"MunkiSetDefaultCatalog";
+    if (![self.internalArgs containsObject:msdcKey]) {
+        if ([defaults boolForKey:kLGMunkiSetDefaultCatalogEnabledKey]) {
+            [self.internalArgs addObjectsFromArray:@[@"--pre", msdcKey]];
+        }
+    }
+
+    NSArray *preprocessors = [defaults arrayForKey:kLGPreProcessorDefaultsKey];
+    if (preprocessors.count) {
+        [preprocessors enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+            // Prevent adding a duplicate entry.
+            if (![self.internalArgs containsObject:obj]) {
+                [self.internalArgs addObjectsFromArray:@[@"--pre", obj]];
+            }
+        }];
+    }
+}
+
+- (void)configurePostProcessors {
+    // If an autopkg run has been setup using a custom implementation
+    // that includes explicitly declared postprocessors don't override
+    // those settings.
+    if([self.internalArgs containsObject:@"--post"] ||
+       [self.internalArgs containsObject:@"--postprocessor"]){
+        return;
+    }
+
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSArray *postprocessors = [defaults arrayForKey:kLGPostProcessorDefaultsKey];
+    if (postprocessors.count) {
+        [postprocessors enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+            // Prevent adding a duplicate entry.
+            if (![self.internalArgs containsObject:obj]) {
+                [self.internalArgs addObjectsFromArray:@[@"--post", obj]];
+            }
+        }];
     }
 }
 

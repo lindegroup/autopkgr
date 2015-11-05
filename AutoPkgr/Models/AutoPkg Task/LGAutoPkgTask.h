@@ -73,6 +73,19 @@ extern NSString *const kLGAutoPkgRepoPathKey;
  */
 extern NSString *const kLGAutoPkgRepoURLKey;
 
+/**
+ *  NSUserDefaults key used to get the bool value for whether the MunkiSetDefaultCatalog processor should be added to the autopkg run
+ */
+extern NSString *const kLGMunkiSetDefaultCatalogEnabledKey;
+/**
+ *  NSUserDefaults key used to get the array of preprocessors that should included in the autopkg run. The array should only include the processor names, not the --pre optargs.
+ */
+extern NSString *const kLGPreProcessorDefaultsKey;
+/**
+ *  NSUserDefaults key used to get the array of postprocessors that should included in the autopkg run. The array should only include the processor names, not the --post optargs.
+ */
+extern NSString *const kLGPostProcessorDefaultsKey;
+
 
 #pragma mark Task Status Delegate
 @protocol LGTaskStatusDelegate <NSObject>

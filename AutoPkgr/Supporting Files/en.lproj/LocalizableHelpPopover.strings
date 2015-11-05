@@ -21,3 +21,7 @@
 "hipChatHelpInfo" = "To create the necessary API token, log into HipChat and navigate to the room you want to send messages to. Click 'Tokens' on the left hand side. Next create a token with the scope of 'Send Notification' and click 'Create'.\n\nThe 'Send user notifications to room members' check box on this pane determines whether the message triggers a user notification (change the tab color, play a sound, notify mobile phones, etc). Each recipient's individual notification preferences are taken into account.";
 
 "hipChatHelpInfoURL" = "https://hipchat.com/rooms/";
+
+"MunkiSetDefaultCatalogInfoTitle" = "MunkiSetDefaultCatalog Preprocessor";
+"MunkiSetDefaultCatalogInfo" = "This preprocessor will edit the current munki pkginfo to set the 'catalog' key to the default catalog preference for munkiimport (com.googlecode.munki.munkiimport), if one has been set.";
+"MunkiSetDefaultCatalogInfoURL" = "https://github.com/autopkg/autopkg/blob/master/Code/autopkglib/MunkiSetDefaultCatalog.py";
