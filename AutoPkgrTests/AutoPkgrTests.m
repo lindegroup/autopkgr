@@ -28,6 +28,7 @@
 #import "LGAutoPkgTask.h"
 #import "LGAutoPkgReport.h"
 #import "LGAutoPkgErrorHandler.h"
+#import "LGAutoPkgRecipeList.h"
 
 #import "LGPasswords.h"
 #import "LGServerCredentials.h"
@@ -68,6 +69,26 @@ static const BOOL _TEST_PRIVILEGED_HELPER = YES;
     XCTAssertNotNil([LGAutoPkgTask listProcessors], @"Failed test");
     XCTAssertNotNil([LGAutoPkgTask listRecipes], @"Failed test");
     XCTAssertNotNil([LGAutoPkgTask processorInfo:@"Installer"], @"Failed test");
+}
+
+- (void)testRecipeLists {
+    LGAutoPkgRecipeList *list = [[LGAutoPkgRecipeList alloc] init];
+    NSString *newList = @"bilbo";
+
+    NSLog(@"%@", list.currentListName);
+    NSLog(@"%@", list.currentListPath);
+    list.currentListName = newList;
+
+
+    NSLog(@"%@", list.currentListName);
+
+    [list addRecipeList:newList error:nil];
+    list.currentListName = newList;
+
+    NSLog(newList, list.currentListName);
+    NSLog(@"%@", list.recipeLists);
+
+    [list removeRecipeList:newList error:nil];
 }
 
 #pragma mark - LGIntegrations

@@ -71,6 +71,8 @@
 		BE2337D01B3E482100256F85 /* LGMacPatchIntegrationView.m in Sources */ = {isa = PBXBuildFile; fileRef = BE2337CD1B3E482100256F85 /* LGMacPatchIntegrationView.m */; };
 		BE2337D11B3E482100256F85 /* LGMacPatchIntegrationView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BE2337CE1B3E482100256F85 /* LGMacPatchIntegrationView.xib */; };
 		BE2337D21B3E482100256F85 /* LGMacPatchIntegrationView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BE2337CE1B3E482100256F85 /* LGMacPatchIntegrationView.xib */; };
+		BE2867A61BEB88D8009891A0 /* LGAutoPkgRecipeList.m in Sources */ = {isa = PBXBuildFile; fileRef = BE2867A51BEB88D8009891A0 /* LGAutoPkgRecipeList.m */; };
+		BE2867A71BEB88D8009891A0 /* LGAutoPkgRecipeList.m in Sources */ = {isa = PBXBuildFile; fileRef = BE2867A51BEB88D8009891A0 /* LGAutoPkgRecipeList.m */; };
 		BE2D58781B32EF110042EF1E /* LocalizableAutoPkg.strings in Resources */ = {isa = PBXBuildFile; fileRef = BE2D58761B32EF110042EF1E /* LocalizableAutoPkg.strings */; };
 		BE2D58791B32EF110042EF1E /* LocalizableAutoPkg.strings in Resources */ = {isa = PBXBuildFile; fileRef = BE2D58761B32EF110042EF1E /* LocalizableAutoPkg.strings */; };
 		BE32178B19ED9ACA00A92E5A /* LGRecipeOverrides.m in Sources */ = {isa = PBXBuildFile; fileRef = BE32178A19ED9ACA00A92E5A /* LGRecipeOverrides.m */; };
@@ -166,6 +168,8 @@
 		BE91A06D1B2F298900ED7501 /* AHHelpPopover.m in Sources */ = {isa = PBXBuildFile; fileRef = BE91A06B1B2F298900ED7501 /* AHHelpPopover.m */; };
 		BE91A0701B2F53F000ED7501 /* NSString+attributedString.m in Sources */ = {isa = PBXBuildFile; fileRef = BE91A06F1B2F53F000ED7501 /* NSString+attributedString.m */; };
 		BE91A0711B2F53F000ED7501 /* NSString+attributedString.m in Sources */ = {isa = PBXBuildFile; fileRef = BE91A06F1B2F53F000ED7501 /* NSString+attributedString.m */; };
+		BEB7BF7C1BEBAFDB009386C1 /* NSArray+mapped.m in Sources */ = {isa = PBXBuildFile; fileRef = BEB7BF7B1BEBAFDB009386C1 /* NSArray+mapped.m */; };
+		BEB7BF7D1BEBAFDB009386C1 /* NSArray+mapped.m in Sources */ = {isa = PBXBuildFile; fileRef = BEB7BF7B1BEBAFDB009386C1 /* NSArray+mapped.m */; };
 		BEB9AF271B419F0900016D98 /* LGNotificationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = BE0BB0F11B3C2311007F9DA5 /* LGNotificationManager.m */; };
 		BEB9AF2B1B41A01900016D98 /* LGSlackNotificationView.m in Sources */ = {isa = PBXBuildFile; fileRef = BEB9AF291B41A01900016D98 /* LGSlackNotificationView.m */; };
 		BEB9AF2C1B41A01900016D98 /* LGSlackNotificationView.m in Sources */ = {isa = PBXBuildFile; fileRef = BEB9AF291B41A01900016D98 /* LGSlackNotificationView.m */; };
@@ -397,6 +401,8 @@
 		BE2337CC1B3E482100256F85 /* LGMacPatchIntegrationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGMacPatchIntegrationView.h; sourceTree = "<group>"; };
 		BE2337CD1B3E482100256F85 /* LGMacPatchIntegrationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGMacPatchIntegrationView.m; sourceTree = "<group>"; };
 		BE2337CE1B3E482100256F85 /* LGMacPatchIntegrationView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LGMacPatchIntegrationView.xib; sourceTree = "<group>"; };
+		BE2867A41BEB88D8009891A0 /* LGAutoPkgRecipeList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LGAutoPkgRecipeList.h; path = "AutoPkgr/Models/AutoPkg Task/LGAutoPkgRecipeList.h"; sourceTree = SOURCE_ROOT; };
+		BE2867A51BEB88D8009891A0 /* LGAutoPkgRecipeList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LGAutoPkgRecipeList.m; path = "AutoPkgr/Models/AutoPkg Task/LGAutoPkgRecipeList.m"; sourceTree = SOURCE_ROOT; };
 		BE2D58771B32EF110042EF1E /* en */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/LocalizableAutoPkg.strings; sourceTree = "<group>"; };
 		BE32178919ED9ACA00A92E5A /* LGRecipeOverrides.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGRecipeOverrides.h; sourceTree = "<group>"; };
 		BE32178A19ED9ACA00A92E5A /* LGRecipeOverrides.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGRecipeOverrides.m; sourceTree = "<group>"; };
@@ -490,6 +496,8 @@
 		BEA2F0B41AF1672600781274 /* LGIntegrationTemplate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LGIntegrationTemplate.m; sourceTree = "<group>"; };
 		BEAA76CA19BFD635002D73EE /* LGInstaller.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGInstaller.h; sourceTree = "<group>"; };
 		BEAA76CB19BFD635002D73EE /* LGInstaller.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGInstaller.m; sourceTree = "<group>"; };
+		BEB7BF7A1BEBAFDB009386C1 /* NSArray+mapped.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSArray+mapped.h"; sourceTree = "<group>"; };
+		BEB7BF7B1BEBAFDB009386C1 /* NSArray+mapped.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSArray+mapped.m"; sourceTree = "<group>"; };
 		BEB9AF281B41A01900016D98 /* LGSlackNotificationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGSlackNotificationView.h; sourceTree = "<group>"; };
 		BEB9AF291B41A01900016D98 /* LGSlackNotificationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGSlackNotificationView.m; sourceTree = "<group>"; };
 		BEB9AF2A1B41A01900016D98 /* LGSlackNotificationView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LGSlackNotificationView.xib; sourceTree = "<group>"; };
@@ -842,6 +850,8 @@
 				BE1AE4591B4234F900B71FA4 /* NSTextField+animatedString.m */,
 				BED02ADA1A194F9C00714CC2 /* NSArray+filtered.h */,
 				BED02ADB1A194F9C00714CC2 /* NSArray+filtered.m */,
+				BEB7BF7A1BEBAFDB009386C1 /* NSArray+mapped.h */,
+				BEB7BF7B1BEBAFDB009386C1 /* NSArray+mapped.m */,
 				BED136BA1AC3BF2E003EBF0F /* Html Categories */,
 			);
 			path = "Custom Categories";
@@ -1127,6 +1137,8 @@
 				BEFA4DB21B06679F00764BF0 /* LGAutoPkgResultHandler.m */,
 				BEFA4DBB1B08F57800764BF0 /* LGAutoPkgRecipe.h */,
 				BEFA4DBC1B08F57800764BF0 /* LGAutoPkgRecipe.m */,
+				BE2867A41BEB88D8009891A0 /* LGAutoPkgRecipeList.h */,
+				BE2867A51BEB88D8009891A0 /* LGAutoPkgRecipeList.m */,
 				BE5E55A31B1B9EBB0025CFD3 /* LGAutoPkgRepo.h */,
 				BE5E55A41B1B9EBB0025CFD3 /* LGAutoPkgRepo.m */,
 			);
@@ -1511,7 +1523,9 @@
 				BE38EAB01B0D0CF1009FCBEB /* LGTabViewControllerBase.m in Sources */,
 				BEE211261AF9DCBB00A3C2E1 /* LGUninstaller.m in Sources */,
 				BE5E55A11B1B59D50025CFD3 /* LGTableCellViews.m in Sources */,
+				BEB7BF7C1BEBAFDB009386C1 /* NSArray+mapped.m in Sources */,
 				BED02ADC1A194F9C00714CC2 /* NSArray+filtered.m in Sources */,
+				BE2867A61BEB88D8009891A0 /* LGAutoPkgRecipeList.m in Sources */,
 				1AC69564195B59EE00D2BD81 /* LGAppDelegate.m in Sources */,
 				BE91A06C1B2F298900ED7501 /* AHHelpPopover.m in Sources */,
 				BE0BB0F71B3C68A3007F9DA5 /* LGEmailNotification.m in Sources */,
@@ -1602,7 +1616,9 @@
 				BEFC3C781A3DF16700C789E9 /* LGInstaller.m in Sources */,
 				BE4DD5481B126E2800854FD8 /* LGSchedulePickerMenu.m in Sources */,
 				BE8A06BE1AF8FAFD006C2571 /* NSData+taskData.m in Sources */,
+				BEB7BF7D1BEBAFDB009386C1 /* NSArray+mapped.m in Sources */,
 				BE5E55A21B1B59D50025CFD3 /* LGTableCellViews.m in Sources */,
+				BE2867A71BEB88D8009891A0 /* LGAutoPkgRecipeList.m in Sources */,
 				BEFC3C791A3DF16700C789E9 /* LGTestPort.m in Sources */,
 				BEE346791B15FFBC001526AD /* LGJSSDistributionPointsPrefPanel.m in Sources */,
 				BEEFE6C31AEBCE1F00882C89 /* LGIntegrationManager.m in Sources */,

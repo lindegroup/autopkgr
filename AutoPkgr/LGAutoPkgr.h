@@ -31,6 +31,7 @@
 #import "NSTextField+safeStringValue.h"
 #import "NSImage+statusLight.h"
 #import "NSArray+filtered.h"
+#import "NSArray+mapped.h"
 #import "NSString+split.h"
 #import "NSButton+colored.h"
 #import "NSString+attributedString.h"
