@@ -18,18 +18,20 @@
 //
 
 #import "LGFileWaveIntegration.h"
+#import "LGIntegration+Protocols.h"
+#import "NSString+versionCompare.h"
+
+@interface LGFileWaveIntegration () <LGIntegrationSharedProcessor>
+@end
 
 @implementation LGFileWaveIntegration
+
 + (NSString *)name {
     return @"FileWaveImporter";
 }
 
 + (NSString *)credits {
     return @"Copyright 2015 FileWave (Europe) GmbH\nhttp://www.apache.org/licenses/LICENSE-2.0";
-}
-
-+ (NSArray *)components {
-    return nil;
 }
 
 + (NSString *)defaultRepository {
@@ -43,6 +45,26 @@
 
 + (BOOL)isUninstallable {
     return YES;
+}
+
++ (BOOL)meetsRequirements:(NSError *__autoreleasing *)error {
+    NSError *err = nil;
+    NSString *fwAdmin = @"/Applications/FileWave/FileWave Admin.app";
+    NSString *bundleVersionKey = @"CFBundleShortVersionString";
+
+    NSBundle *bundle = [NSBundle bundleWithPath:fwAdmin];
+    if(!bundle){
+        err = [[self class] requirementsError:@"Filewave Admin.app is not installed"];
+    } else {
+        NSString *version = bundle.infoDictionary[bundleVersionKey];
+        if ([version version_isLessThan:@"10.0"]){
+            err = [[self class] requirementsError:@"Filewave Admin version 10.0 or greater required."];
+        }
+    }
+    if (err && error){
+        *error = err;
+    }
+    return err ? NO : YES;
 }
 
 - (void)customUninstallActions:(void (^)(NSError *))reply {

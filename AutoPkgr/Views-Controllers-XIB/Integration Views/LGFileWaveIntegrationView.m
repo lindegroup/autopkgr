@@ -20,8 +20,9 @@
 
 #import "LGFileWaveIntegrationView.h"
 #import "LGFileWaveIntegration.h"
-
+#import "LGAutoPkgTask.h"
 #import "NSTextField+safeStringValue.h"
+
 @interface LGFileWaveIntegrationView ()<NSTextFieldDelegate>
 
 @property (weak) IBOutlet NSTextField *FW_SERVER_HOST;
@@ -60,8 +61,19 @@
 
 }
 
-- (void)FWToolVerify:(NSButton *)sender {
+- (IBAction)FWToolVerify:(NSButton *)sender {
     // Run `autopkg run FWTool.recipe` and make sure that it verifies.
+    sender.state = NSOffState;
+    [self.progressSpinner startAnimation:nil];
+    [LGAutoPkgTask runRecipes:@[@"FWTool.filewave.recipe"]
+                     progress:nil
+                        reply:^(NSDictionary *results, NSError *error) {
+                            sender.state = NSOnState;
+                            [self.progressSpinner stopAnimation:nil];
+                            if (error){
+                                [NSApp presentError:error];
+                            }
+    }];
 }
 
 - (void)controlTextDidChange:(NSNotification *)notification {

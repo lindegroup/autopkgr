@@ -27,9 +27,9 @@
 		1AC98427195DF6350071CAB3 /* autopkgr.png in Resources */ = {isa = PBXBuildFile; fileRef = 1AC98425195DF6350071CAB3 /* autopkgr.png */; };
 		1AC98429195DF6DE0071CAB3 /* autopkgr_alt.png in Resources */ = {isa = PBXBuildFile; fileRef = 1AC98428195DF6DE0071CAB3 /* autopkgr_alt.png */; };
 		6A53625D1988BE59008A949C /* LGTestPort.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A53625C1988BE59008A949C /* LGTestPort.m */; };
-		8B1AF8521BED81440013BE37 /* LGFileWaveIntegrationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B1AF8501BED81440013BE37 /* LGFileWaveIntegrationView.m */; settings = {ASSET_TAGS = (); }; };
-		8B1AF8531BED81440013BE37 /* LGFileWaveIntegrationView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8B1AF8511BED81440013BE37 /* LGFileWaveIntegrationView.xib */; settings = {ASSET_TAGS = (); }; };
-		8B1AF8561BED81540013BE37 /* LGFileWaveIntegration.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B1AF8551BED81540013BE37 /* LGFileWaveIntegration.m */; settings = {ASSET_TAGS = (); }; };
+		8B1AF8521BED81440013BE37 /* LGFileWaveIntegrationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B1AF8501BED81440013BE37 /* LGFileWaveIntegrationView.m */; };
+		8B1AF8531BED81440013BE37 /* LGFileWaveIntegrationView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8B1AF8511BED81440013BE37 /* LGFileWaveIntegrationView.xib */; };
+		8B1AF8561BED81540013BE37 /* LGFileWaveIntegration.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B1AF8551BED81540013BE37 /* LGFileWaveIntegration.m */; };
 		8BB217F619709A2C00EF8B93 /* AutoPkgrIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 8BB217F519709A2C00EF8B93 /* AutoPkgrIcon.png */; };
 		9D2C8D4C186E66B3303DD645 /* libPods-com.lindegroup.AutoPkgr.helper.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00A11C97CD6260BB5679DA1A /* libPods-com.lindegroup.AutoPkgr.helper.a */; };
 		B8D45ABF903D8E3083FBEFAC /* libPods-AutoPkgrTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7EF915ABFCFD78F7257B58CD /* libPods-AutoPkgrTests.a */; };
@@ -169,6 +169,8 @@
 		BE91A06D1B2F298900ED7501 /* AHHelpPopover.m in Sources */ = {isa = PBXBuildFile; fileRef = BE91A06B1B2F298900ED7501 /* AHHelpPopover.m */; };
 		BE91A0701B2F53F000ED7501 /* NSString+attributedString.m in Sources */ = {isa = PBXBuildFile; fileRef = BE91A06F1B2F53F000ED7501 /* NSString+attributedString.m */; };
 		BE91A0711B2F53F000ED7501 /* NSString+attributedString.m in Sources */ = {isa = PBXBuildFile; fileRef = BE91A06F1B2F53F000ED7501 /* NSString+attributedString.m */; };
+		BEB27FCC1BED8FF20084DA0F /* LGFileWaveIntegrationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B1AF8501BED81440013BE37 /* LGFileWaveIntegrationView.m */; };
+		BEB27FCD1BED8FF80084DA0F /* LGFileWaveIntegration.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B1AF8551BED81540013BE37 /* LGFileWaveIntegration.m */; };
 		BEB9AF271B419F0900016D98 /* LGNotificationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = BE0BB0F11B3C2311007F9DA5 /* LGNotificationManager.m */; };
 		BEB9AF2B1B41A01900016D98 /* LGSlackNotificationView.m in Sources */ = {isa = PBXBuildFile; fileRef = BEB9AF291B41A01900016D98 /* LGSlackNotificationView.m */; };
 		BEB9AF2C1B41A01900016D98 /* LGSlackNotificationView.m in Sources */ = {isa = PBXBuildFile; fileRef = BEB9AF291B41A01900016D98 /* LGSlackNotificationView.m */; };
@@ -1015,9 +1017,6 @@
 		BE5E559C1B1A5B6E0025CFD3 /* Integration Views */ = {
 			isa = PBXGroup;
 			children = (
-				8B1AF84F1BED81440013BE37 /* LGFileWaveIntegrationView.h */,
-				8B1AF8501BED81440013BE37 /* LGFileWaveIntegrationView.m */,
-				8B1AF8511BED81440013BE37 /* LGFileWaveIntegrationView.xib */,
 				BECDAB861B234EE700544388 /* Window Controller (Integration) */,
 				BECDAB871B234F0200544388 /* Base View Controller (Integration) */,
 				BECDABA41B254E5900544388 /* LGAbsoluteManageIntegrationView.h */,
@@ -1026,15 +1025,18 @@
 				BE09F6581B2694ED00EE4AA7 /* LGAutoPkgIntegrationView.h */,
 				BE09F6591B2694ED00EE4AA7 /* LGAutoPkgIntegrationView.m */,
 				BE09F65A1B2694ED00EE4AA7 /* LGAutoPkgIntegrationView.xib */,
-				BE2337CC1B3E482100256F85 /* LGMacPatchIntegrationView.h */,
-				BE2337CD1B3E482100256F85 /* LGMacPatchIntegrationView.m */,
-				BE2337CE1B3E482100256F85 /* LGMacPatchIntegrationView.xib */,
+				8B1AF84F1BED81440013BE37 /* LGFileWaveIntegrationView.h */,
+				8B1AF8501BED81440013BE37 /* LGFileWaveIntegrationView.m */,
+				8B1AF8511BED81440013BE37 /* LGFileWaveIntegrationView.xib */,
 				BE32B0351B2735DF0071778B /* LGGitIntegrationView.h */,
 				BE32B0361B2735DF0071778B /* LGGitIntegrationView.m */,
 				BE32B0371B2735DF0071778B /* LGGitIntegrationView.xib */,
 				BE81F2271B2232ED007D16C4 /* LGJSSImporterIntegrationView.h */,
 				BE81F2281B2232ED007D16C4 /* LGJSSImporterIntegrationView.m */,
 				BE81F2391B22A29E007D16C4 /* LGJSSImporterIntegrationView.xib */,
+				BE2337CC1B3E482100256F85 /* LGMacPatchIntegrationView.h */,
+				BE2337CD1B3E482100256F85 /* LGMacPatchIntegrationView.m */,
+				BE2337CE1B3E482100256F85 /* LGMacPatchIntegrationView.xib */,
 				BECDAB921B24C29600544388 /* LGMunkiIntegrationView.h */,
 				BECDAB931B24C29600544388 /* LGMunkiIntegrationView.m */,
 				BECDAB941B24C29600544388 /* LGMunkiIntegrationView.xib */,
@@ -1147,14 +1149,14 @@
 		BEEFE6C41AEBEA6A00882C89 /* Integrations */ = {
 			isa = PBXGroup;
 			children = (
-				8B1AF8541BED81540013BE37 /* LGFileWaveIntegration.h */,
-				8B1AF8551BED81540013BE37 /* LGFileWaveIntegration.m */,
 				BE4DD5441B1239A300854FD8 /* Integration Manager */,
 				BEEFE6D21AF008A200882C89 /* LGIntegration Base */,
 				BE81F2211B20EFDD007D16C4 /* LGAbsoluteManageIntegration.h */,
 				BE81F2221B20EFF2007D16C4 /* LGAbsoluteManageIntegration.m */,
 				BEEFE6C81AEC760700882C89 /* LGAutoPkgIntegration.h */,
 				BEEFE6C91AEC760700882C89 /* LGAutoPkgIntegration.m */,
+				8B1AF8541BED81540013BE37 /* LGFileWaveIntegration.h */,
+				8B1AF8551BED81540013BE37 /* LGFileWaveIntegration.m */,
 				BEEFE6C51AEBEB1000882C89 /* LGGitIntegration.h */,
 				BEEFE6C61AEBEB1000882C89 /* LGGitIntegration.m */,
 				BEEFE6CC1AEC761F00882C89 /* LGJSSImporterIntegration.h */,
@@ -1621,6 +1623,7 @@
 				BE5E55A21B1B59D50025CFD3 /* LGTableCellViews.m in Sources */,
 				BEFC3C791A3DF16700C789E9 /* LGTestPort.m in Sources */,
 				BEE346791B15FFBC001526AD /* LGJSSDistributionPointsPrefPanel.m in Sources */,
+				BEB27FCC1BED8FF20084DA0F /* LGFileWaveIntegrationView.m in Sources */,
 				BEEFE6C31AEBCE1F00882C89 /* LGIntegrationManager.m in Sources */,
 				BE4985391AFE61C1006E5EDA /* LGServerCredentials.m in Sources */,
 				BEEFE6CF1AEC761F00882C89 /* LGJSSImporterIntegration.m in Sources */,
@@ -1632,6 +1635,7 @@
 				BEB9AF271B419F0900016D98 /* LGNotificationManager.m in Sources */,
 				BE09F65C1B2694ED00EE4AA7 /* LGAutoPkgIntegrationView.m in Sources */,
 				BEEFE6D01AEDF5BE00882C89 /* LGGitIntegration.m in Sources */,
+				BEB27FCD1BED8FF80084DA0F /* LGFileWaveIntegration.m in Sources */,
 				BE38EAA41B0CFEBB009FCBEB /* LGIntegrationsViewController.m in Sources */,
 				BECDAB9C1B24DBBC00544388 /* LGIntegrationWindowController.m in Sources */,
 				BEFC3C7D1A3DF16700C789E9 /* LGRecipeTableViewController.m in Sources */,
