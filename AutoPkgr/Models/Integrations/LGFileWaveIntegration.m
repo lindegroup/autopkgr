@@ -54,11 +54,11 @@
 
     NSBundle *bundle = [NSBundle bundleWithPath:fwAdmin];
     if(!bundle){
-        err = [[self class] requirementsError:@"Filewave Admin.app is not installed"];
+        err = [[self class] requirementsError:@"FileWave Admin.app is not installed"];
     } else {
         NSString *version = bundle.infoDictionary[bundleVersionKey];
         if ([version version_isLessThan:@"10.0"]){
-            err = [[self class] requirementsError:@"Filewave Admin version 10.0 or greater required."];
+            err = [[self class] requirementsError:@"FileWave Admin version 10.0 or greater required."];
         }
     }
     if (err && error){
