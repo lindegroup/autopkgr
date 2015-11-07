@@ -18,136 +18,86 @@
 //
 
 #import "LGFileWaveIntegration.h"
-#import "LGIntegration+Protocols.h"
 
-// Define the protocols you intend to conform to...
-@interface LGFileWaveIntegration () <LGIntegrationPackageInstaller, LGIntegrationSharedProcessor>
-@end
-
-#pragma mark - Integration overrides
 @implementation LGFileWaveIntegration
-
-// Since this is defined using a protocol, it needs to be synthesized...
-// If not conforming to LGIntegrationPackageInstaller remove it.
-@synthesize gitHubInfo = _gitHubInfo;
-
-#pragma mark - Class overrides
-+ (NSString *)name
-{
++ (NSString *)name {
     return @"FileWaveImporter";
 }
 
-+ (NSString *)shortName
-{
-    return @"FileWaveImporter";
-}
 + (NSString *)credits {
     return @"Copyright 2015 FileWave (Europe) GmbH\nhttp://www.apache.org/licenses/LICENSE-2.0";
 }
 
-+ (NSURL *)homePage {
-    return [NSURL URLWithString:@"https://github.com/autopkg/filewave"];
++ (NSArray *)components {
+    return nil;
 }
 
-+ (NSString *)gitHubURL
-{
-    return @"https://api.github.com/repos/autopkg/filewave/releases";
-}
-
-+ (NSString *)defaultRepository
-{
-    // Not sure what the "Official" default repo is yet.
++ (NSString *)defaultRepository {
     return @"https://github.com/autopkg/filewave.git";
 }
 
-+ (NSArray *)components
++(NSURL *)homePage
 {
-    // If there's not a binary don't include it here!!
-    return @[[self binary]];
-}
-
-+ (NSString *)binary
-{
-    return @"/Library/AutoPkg/autopkglib/FileWaveImporter.py";
-}
-
-+ (NSArray *)packageIdentifiers
-{
-    return @[ @"com.github.autopkg.filewave.FWTool" ];
+    return [NSURL URLWithString: @"https://github.com/autopkg/filewave"];
 }
 
 + (BOOL)isUninstallable {
     return YES;
 }
 
-+ (BOOL)meetsRequirements:(NSError *__autoreleasing *)error {
-    NSFileManager *manager = [NSFileManager defaultManager];
-    NSString *lanRev = @"/Applications/LANrev Admin.app";
-
+- (void)customUninstallActions:(void (^)(NSError *))reply {
     LGFileWaveDefaults *defaults = [LGFileWaveDefaults new];
+    defaults.FW_SERVER_HOST = nil;
+    defaults.FW_SERVER_PORT = nil;
+    defaults.FW_ADMIN_USER = nil;
+    defaults.FW_ADMIN_PASSWORD = nil;
 
-    NSString *dataBase = defaults.DatabaseDirectory ?: @"~/Library/Application Support/LANrev Admin/Database/".stringByExpandingTildeInPath;
-
-    for (NSString* path in @[lanRev, dataBase]) {
-        if (![manager fileExistsAtPath:path]) {
-            if (error) {
-                *error = [[self class] requirementsError:[NSString stringWithFormat:@"Please check that %@ exists.", path]];
-            }
-            return NO;
-        }
-    }
-
-    return YES;
-}
-
-#pragma mark - Instance overrides
-- (NSString *)installedVersion
-{
-    NSString *receipt = @"/private/var/db/receipts/com.github.autopkg.filewave.FWTool.plist";
-    return [NSDictionary dictionaryWithContentsOfFile:receipt][@"PackageVersion"];
-}
-
-- (void)customInstallActions {
-    [[LGFileWaveDefaults new] setAllowURLSDPackageImport:YES];
+    // Don't forget to reply...
+    reply(nil);
 }
 
 @end
 
-#pragma mark - Defaults
+
 @implementation LGFileWaveDefaults
-
-static NSString *const kLGFileWaveDomain = @"com.poleposition-sw.lanrev_admin";
-
-- (NSString *)DatabaseDirectory {
-    return [self filewaveDomainObject:
-             NSStringFromSelector(@selector(DatabaseDirectory))];
+// URL
+- (NSString *)FW_SERVER_HOST {
+    return [self autoPkgDomainObject:NSStringFromSelector(@selector(FW_SERVER_HOST))];
 }
 
-- (void)setAllowURLSDPackageImport:(BOOL)AllowURLSDPackageImport
-{
-    [self setFileWaveDomainObject:@(AllowURLSDPackageImport)
-                                 forKey:NSStringFromSelector(@selector(AllowURLSDPackageImport))];
+-(void)setFW_SERVER_HOST:(NSString *)FW_SERVER_HOST {
+    [self setAutoPkgDomainObject:FW_SERVER_HOST forKey:NSStringFromSelector(@selector(FW_SERVER_HOST))];
 }
 
-- (BOOL)AllowURLSDPackageImport
-{
-    return [[self filewaveDomainObject:
-                      NSStringFromSelector(@selector(AllowURLSDPackageImport))] boolValue];
+// PORT
+- (NSString *)FW_SERVER_PORT {
+    return [self autoPkgDomainObject:NSStringFromSelector(@selector(FW_SERVER_PORT))];
 }
 
-- (id)filewaveDomainObject:(NSString *)key
-{
-    id value = CFBridgingRelease(
-        CFPreferencesCopyAppValue((__bridge CFStringRef)(key),
-                                  (__bridge CFStringRef)(kLGFileWaveDomain)));
-    return value;
+-(void)setFW_SERVER_PORT:(NSString *)FW_SERVER_PORT {
+    [self setAutoPkgDomainObject:FW_SERVER_PORT forKey:NSStringFromSelector(@selector(FW_SERVER_PORT))];
 }
 
-- (void)setFileWaveDomainObject:(id)object forKey:(NSString *)key
-{
-    CFPreferencesSetAppValue((__bridge CFStringRef)(key),
-                             (__bridge CFTypeRef)(object),
-                             (__bridge CFStringRef)(kLGFileWaveDomain));
+// USER
+-(NSString *)FW_ADMIN_USER{
+    return [self autoPkgDomainObject:NSStringFromSelector(@selector(FW_ADMIN_USER))];
+
 }
+
+-(void)setFW_ADMIN_USER:(NSString *)FW_ADMIN_USER {
+    [self setAutoPkgDomainObject:FW_ADMIN_USER forKey:NSStringFromSelector(@selector(FW_ADMIN_USER))];
+}
+
+// PASSWORD
+- (NSString *)FW_ADMIN_PASSWORD {
+    return [self autoPkgDomainObject:NSStringFromSelector(@selector(FW_ADMIN_PASSWORD))];
+
+}
+
+- (void)setFW_ADMIN_PASSWORD:(NSString *)FW_ADMIN_PASSWORD {
+    [self setAutoPkgDomainObject:FW_ADMIN_PASSWORD forKey:NSStringFromSelector(@selector(FW_ADMIN_PASSWORD))];
+
+}
+
 
 @end

@@ -7,6 +7,9 @@
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="LGFileWaveIntegrationView">
             <connections>
+                <outlet property="FW_ADMIN_USER" destination="Tjf-aD-P4A" id="toF-wa-j5R"/>
+                <outlet property="FW_SERVER_HOST" destination="yRa-44-e8a" id="GZk-O4-l19"/>
+                <outlet property="FW_SERVER_PORT" destination="EHv-BV-WGq" id="UMB-e6-lpp"/>
                 <outlet property="view" destination="Hz6-mo-xeY" id="0bl-1N-x8E"/>
             </connections>
         </customObject>

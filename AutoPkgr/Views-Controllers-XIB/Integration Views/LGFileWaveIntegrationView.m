@@ -17,28 +17,74 @@
 //  limitations under the License.
 //
 
+
 #import "LGFileWaveIntegrationView.h"
 #import "LGFileWaveIntegration.h"
 
-@interface LGFileWaveIntegrationView ()
-@property (weak) IBOutlet NSButton *enableExternalUploadBT;
+#import "NSTextField+safeStringValue.h"
+@interface LGFileWaveIntegrationView ()<NSTextFieldDelegate>
+
+@property (weak) IBOutlet NSTextField *FW_SERVER_HOST;
+@property (weak) IBOutlet NSTextField *FW_SERVER_PORT;
+@property (weak) IBOutlet NSTextField *FW_ADMIN_USER;
+@property (weak) IBOutlet NSSecureTextField *FW_ADMIN_PASSWORD;
+@property (weak) IBOutlet NSButton *FWToolVerify;
 
 @end
 
-@implementation LGFileWaveIntegrationView
-
-- (void)awakeFromNib {
-    _enableExternalUploadBT.state = [LGFileWaveDefaults new].AllowURLSDPackageImport;
+@implementation LGFileWaveIntegrationView {
+    LGFileWaveDefaults *_defaults;
 }
 
-- (IBAction)enableExternalSDPackageUpload:(NSButton *)sender
+- (void)viewDidLoad
 {
-    [LGFileWaveDefaults new].AllowURLSDPackageImport = sender.state;
-}
-
-- (void)viewDidLoad {
     [super viewDidLoad];
     // Do view setup here.
 }
 
+- (void)awakeFromNib
+{
+    _defaults = [[LGFileWaveDefaults alloc] init];
+
+    _FW_SERVER_HOST.delegate = self;
+    _FW_SERVER_HOST.safe_stringValue = _defaults.FW_SERVER_HOST;
+
+    _FW_SERVER_PORT.delegate = self;
+    _FW_SERVER_PORT.safe_stringValue = _defaults.FW_SERVER_PORT;
+
+    _FW_ADMIN_USER.delegate = self;
+    _FW_ADMIN_USER.safe_stringValue = _defaults.FW_ADMIN_USER;
+
+    _FW_ADMIN_PASSWORD.delegate = self;
+    _FW_ADMIN_PASSWORD.safe_stringValue = _defaults.FW_ADMIN_PASSWORD;
+
+}
+
+- (void)FWToolVerify:(NSButton *)sender {
+    // Run `autopkg run FWTool.recipe` and make sure that it verifies.
+}
+
+- (void)controlTextDidChange:(NSNotification *)notification {
+    NSString *string = [notification.object stringValue];
+
+    // URL
+    if ([notification.object isEqualTo:_FW_SERVER_HOST]) {
+        _defaults.FW_SERVER_HOST = string;
+    }
+
+    // Port
+    if ([notification.object isEqualTo:_FW_SERVER_PORT]) {
+        _defaults.FW_SERVER_PORT = string;
+    }
+
+    // User
+    else if ([notification.object isEqualTo:_FW_ADMIN_USER]) {
+        _defaults.FW_ADMIN_USER = string;
+    }
+
+    // Password
+    else if ([notification.object isEqualTo:_FW_ADMIN_PASSWORD]) {
+        _defaults.FW_ADMIN_PASSWORD = string;
+    }
+}
 @end

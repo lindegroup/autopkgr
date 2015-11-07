@@ -26,8 +26,9 @@
 // This is also a good place to add custom defaults
 @interface LGFileWaveDefaults : LGDefaults
 
-@property (copy, nonatomic, readonly) NSString *DatabaseDirectory;
-
-@property (assign, nonatomic) BOOL AllowURLSDPackageImport;
+@property (copy, nonatomic) NSString *FW_SERVER_HOST;
+@property (copy, nonatomic) NSString *FW_SERVER_PORT;
+@property (copy, nonatomic) NSString *FW_ADMIN_USER;
+@property (copy, nonatomic) NSString *FW_ADMIN_PASSWORD;
 
 @end
