@@ -18,15 +18,16 @@
 //  limitations under the License.
 //
 
-#import "LGIntegrationsViewController.h"
-#import "LGIntegrationManager.h"
-#import "LGAutoPkgIntegrationView.h"
-#import "LGGitIntegrationView.h"
-#import "LGJSSImporterIntegrationView.h"
-#import "LGMunkiIntegrationView.h"
 #import "LGAbsoluteManageIntegrationView.h"
-#import "LGMacPatchIntegrationView.h"
+#import "LGAutoPkgIntegrationView.h"
+#import "LGFileWaveIntegrationView.h"
+#import "LGGitIntegrationView.h"
+#import "LGIntegrationManager.h"
+#import "LGIntegrationsViewController.h"
 #import "LGIntegrationWindowController.h"
+#import "LGJSSImporterIntegrationView.h"
+#import "LGMacPatchIntegrationView.h"
+#import "LGMunkiIntegrationView.h"
 #import "LGTableCellViews.h"
 
 #import "NSOpenPanel+typeChooser.h"

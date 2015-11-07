@@ -19,13 +19,14 @@
 
 #import <Foundation/Foundation.h>
 
-#import "LGIntegration.h"
-#import "LGAutoPkgIntegration.h"
-#import "LGGitIntegration.h"
-#import "LGJSSImporterIntegration.h"
-#import "LGMunkiIntegration.h"
 #import "LGAbsoluteManageIntegration.h"
+#import "LGAutoPkgIntegration.h"
+#import "LGFileWaveIntegration.h"
+#import "LGGitIntegration.h"
+#import "LGIntegration.h"
+#import "LGJSSImporterIntegration.h"
 #import "LGMacPatchIntegration.h"
+#import "LGMunkiIntegration.h"
 
 @class LGIntegration;
 

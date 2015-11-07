@@ -36,12 +36,13 @@ static void *XXInfoStatusChange = &XXInfoStatusChange;
     dispatch_once(&token, ^{
         // As needed add additional integrations to this array.
         __integrationClasses = @[
-                          [LGAutoPkgIntegration class],
-                          [LGGitIntegration class],
-                          [LGMunkiIntegration class],
-                          [LGJSSImporterIntegration class],
                           [LGAbsoluteManageIntegration class],
+                          [LGAutoPkgIntegration class],
+                          [LGFileWaveIntegration class],
+                          [LGGitIntegration class],
+                          [LGJSSImporterIntegration class],
                           [LGMacPatchIntegration class],
+                          [LGMunkiIntegration class],
                           ];
 
         __requiredIntegrationClasses = @[
