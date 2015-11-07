@@ -23,7 +23,7 @@
 #import "LGRecipeInfoView.h"
 #import "LGAutoPkgr.h"
 #import "LGAutoPkgRecipe.h"
-#import "LGAutoPkgRecipeList.h"
+#import "LGAutoPkgRecipeListManager.h"
 #import "LGAutoPkgTask.h"
 #import "LGRecipeOverrides.h"
 #import "LGAutoPkgReport.h"
@@ -37,7 +37,7 @@
 @property (weak) IBOutlet NSSearchField *recipeSearchField;
 @property (weak) IBOutlet NSPopUpButton *recipeListButton;
 
-@property (strong) LGAutoPkgRecipeList *recipeList;
+@property (strong) LGAutoPkgRecipeListManager *recipeList;
 
 @end
 
@@ -66,7 +66,7 @@ static NSString *const kLGAutoPkgRecipeCurrentStatusKey = @"currentStatus";
 
         _searchedRecipes = self.recipes;
 
-        _recipeList = [[LGAutoPkgRecipeList alloc] init];
+        _recipeList = [[LGAutoPkgRecipeListManager alloc] init];
         [self refreshRecipeList];
     }
 }
@@ -78,11 +78,6 @@ static NSString *const kLGAutoPkgRecipeCurrentStatusKey = @"currentStatus";
         // nil out _recipes here so when the self.recipes accessor is called
         // it will actually get reconstructed.
         _recipes = nil;
-
-        [_recipeListButton removeAllItems];
-        [_recipeListButton addItemsWithTitles:_recipeList.recipeLists];
-        [_recipeListButton selectItemWithTitle:_recipeList.currentListName];
-
         [self executeAppSearch:self];
         [self refreshRecipeList];
     });
@@ -235,8 +230,12 @@ static NSString *const kLGAutoPkgRecipeCurrentStatusKey = @"currentStatus";
         NSString *searchString = _recipeSearchField.stringValue;
 
         // Execute search both on Name and Identifier keys
-        NSPredicate *recipeSearchPredicate = [NSPredicate predicateWithFormat:@"%K CONTAINS[cd] %@ OR %K CONTAINS[CD] %@", kLGAutoPkgRecipeNameKey, searchString, kLGAutoPkgRecipeIdentifierKey, searchString];
+        NSMutableArray *predicates = [[NSMutableArray alloc] init];
+        for (NSString *key in @[kLGAutoPkgRecipeNameKey, kLGAutoPkgRecipeIdentifierKey]) {
+            [predicates addObject:[NSPredicate predicateWithFormat:@"%K CONTAINS[cd] %@", key, searchString]];
+        }
 
+        NSCompoundPredicate *recipeSearchPredicate = [[NSCompoundPredicate alloc] initWithType:NSOrPredicateType subpredicates:predicates];
         _searchedRecipes = [[self.recipes filteredArrayUsingPredicate:recipeSearchPredicate] mutableCopy];
     }
 

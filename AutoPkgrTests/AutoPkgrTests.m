@@ -28,7 +28,7 @@
 #import "LGAutoPkgTask.h"
 #import "LGAutoPkgReport.h"
 #import "LGAutoPkgErrorHandler.h"
-#import "LGAutoPkgRecipeList.h"
+#import "LGAutoPkgRecipeListManager.h"
 
 #import "LGPasswords.h"
 #import "LGServerCredentials.h"
@@ -72,23 +72,23 @@ static const BOOL _TEST_PRIVILEGED_HELPER = YES;
 }
 
 - (void)testRecipeLists {
-    LGAutoPkgRecipeList *list = [[LGAutoPkgRecipeList alloc] init];
+    LGAutoPkgRecipeListManager *listManager = [[LGAutoPkgRecipeListManager alloc] init];
     NSString *newList = @"bilbo";
 
-    NSLog(@"%@", list.currentListName);
-    NSLog(@"%@", list.currentListPath);
-    list.currentListName = newList;
+    NSLog(@"%@", listManager.currentListName);
+    NSLog(@"%@", listManager.currentListPath);
+    listManager.currentListName = newList;
 
 
-    NSLog(@"%@", list.currentListName);
+    NSLog(@"%@", listManager.currentListName);
 
-    [list addRecipeList:newList error:nil];
-    list.currentListName = newList;
+    [listManager addRecipeList:newList error:nil];
+    listManager.currentListName = newList;
 
-    NSLog(newList, list.currentListName);
-    NSLog(@"%@", list.recipeLists);
+    NSLog(newList, listManager.currentListName);
+    NSLog(@"%@", listManager.recipeLists);
 
-    [list removeRecipeList:newList error:nil];
+    [listManager removeRecipeList:newList error:nil];
 }
 
 #pragma mark - LGIntegrations
