@@ -50,7 +50,7 @@
 + (BOOL)meetsRequirements:(NSError *__autoreleasing *)error {
     NSError *err = nil;
     NSString *fwAdmin = @"/Applications/FileWave/FileWave Admin.app";
-    NSString *bundleVersionKey = @"CFBundleShortVersionString";
+    NSString *bundleVersionKey = @"CFBundleVersion";
 
     NSBundle *bundle = [NSBundle bundleWithPath:fwAdmin];
     if(!bundle){
