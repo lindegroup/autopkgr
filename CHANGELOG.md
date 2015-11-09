@@ -7,6 +7,7 @@ All notable changes to this project will be documented in this file. This projec
 ### Added
 - Ability to select multiple repos and then update, add, or remove the selected repos. (#434)
 - Ability to select multiple recipes and then run, enable, or disable the selected recipes. (#434)
+- Built-in integration with FileWave version 10 and higher, via the new [FileWaveImporter](https://github.com/autopkg/filewave) processor. (#339, with thanks to @johncclayton)
 
 ### Fixed
 - Fixed a bug that caused progress spinners to incorrectly display on multiple recipes if they share the same name. (#447)
