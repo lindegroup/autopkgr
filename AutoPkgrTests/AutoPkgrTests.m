@@ -24,6 +24,7 @@
 #import "LGAutoPkgr.h"
 #import "LGIntegrationManager.h"
 #import "LGJSSImporterIntegration.h"
+#import "LGJSSDistributionPoint.h"
 
 #import "LGAutoPkgTask.h"
 #import "LGAutoPkgReport.h"
@@ -62,6 +63,24 @@ static const BOOL _TEST_PRIVILEGED_HELPER = YES;
 
 
 #pragma mark - LGAutoPkgTask
+- (void)testDP
+{
+
+    LGJSSImporterDefaults *defaults  = [[LGJSSImporterDefaults alloc] init];
+    NSArray *arr = [LGJSSDistributionPoint distributionPoints];
+
+    [arr enumerateObjectsUsingBlock:^(LGJSSDistributionPoint *obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        [obj remove];
+    }];
+    NSLog(@"%@", defaults.JSSRepos);
+
+    [arr enumerateObjectsUsingBlock:^(LGJSSDistributionPoint *obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        [obj save];
+    }];
+
+    NSLog(@"%@", defaults.JSSRepos);
+}
+
 - (void)testSyncMethods
 {
     XCTAssertNotNil([LGAutoPkgTask repoList], @"Failed test");

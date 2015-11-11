@@ -29,6 +29,7 @@
 NSString *const kLGJSSDistPointNameKey = @"name";
 NSString *const kLGJSSDistPointURLKey = @"URL";
 NSString *const kLGJSSDistPointSharePointKey = @"share_name";
+NSString *const kLGJSSDistPointMountPointKey = @"mount_point";
 NSString *const kLGJSSDistPointPortKey = @"port";
 NSString *const kLGJSSDistPointUserNameKey = @"username";
 NSString *const kLGJSSDistPointPasswordKey = @"password";

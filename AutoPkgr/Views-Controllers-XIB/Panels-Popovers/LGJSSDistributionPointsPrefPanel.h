@@ -19,10 +19,11 @@
 //
 
 #import <Cocoa/Cocoa.h>
+@class LGJSSDistributionPoint;
 
 @interface LGJSSDistributionPointsPrefPanel : NSWindowController
 
-- (instancetype)initWithDistPointDictionary:(NSDictionary *)dict;
+- (instancetype)initWithDistPoint:(LGJSSDistributionPoint *)distPoint;
 
 @property (weak) IBOutlet NSTextField *distPointName;
 @property (weak) IBOutlet NSTextField *distPointNameLabel;

@@ -55,6 +55,8 @@
 		BE09F65E1B2694ED00EE4AA7 /* LGAutoPkgIntegrationView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BE09F65A1B2694ED00EE4AA7 /* LGAutoPkgIntegrationView.xib */; };
 		BE0A75491B04EC7400F70C9E /* NSString+versionCompare.m in Sources */ = {isa = PBXBuildFile; fileRef = BE0A75481B04EC7400F70C9E /* NSString+versionCompare.m */; };
 		BE0A754A1B04EC7400F70C9E /* NSString+versionCompare.m in Sources */ = {isa = PBXBuildFile; fileRef = BE0A75481B04EC7400F70C9E /* NSString+versionCompare.m */; };
+		BE0A8BEA1BF18D1E004DDB5E /* LGJSSDistributionPoint.m in Sources */ = {isa = PBXBuildFile; fileRef = BE0A8BE91BF18D1E004DDB5E /* LGJSSDistributionPoint.m */; };
+		BE0A8BEB1BF18D1E004DDB5E /* LGJSSDistributionPoint.m in Sources */ = {isa = PBXBuildFile; fileRef = BE0A8BE91BF18D1E004DDB5E /* LGJSSDistributionPoint.m */; };
 		BE0BACD11A2560AE00554989 /* LGJSSDistributionPointsPrefPanel.m in Sources */ = {isa = PBXBuildFile; fileRef = BE0BACCF1A2560AE00554989 /* LGJSSDistributionPointsPrefPanel.m */; };
 		BE0BACD21A2560AE00554989 /* LGJSSDistributionPointsPrefPanel.xib in Resources */ = {isa = PBXBuildFile; fileRef = BE0BACD01A2560AE00554989 /* LGJSSDistributionPointsPrefPanel.xib */; };
 		BE0BB0F21B3C2311007F9DA5 /* LGNotificationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = BE0BB0F11B3C2311007F9DA5 /* LGNotificationManager.m */; };
@@ -386,6 +388,10 @@
 		BE09F65A1B2694ED00EE4AA7 /* LGAutoPkgIntegrationView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LGAutoPkgIntegrationView.xib; sourceTree = "<group>"; };
 		BE0A75471B04EC7400F70C9E /* NSString+versionCompare.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+versionCompare.h"; sourceTree = "<group>"; };
 		BE0A75481B04EC7400F70C9E /* NSString+versionCompare.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+versionCompare.m"; sourceTree = "<group>"; };
+		BE0A8BDF1BF13F62004DDB5E /* AutoPkgr-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "AutoPkgr-Bridging-Header.h"; sourceTree = "<group>"; };
+		BE0A8BE01BF13F62004DDB5E /* AutoPkgrTests-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "AutoPkgrTests-Bridging-Header.h"; sourceTree = "<group>"; };
+		BE0A8BE81BF18D1E004DDB5E /* LGJSSDistributionPoint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LGJSSDistributionPoint.h; path = AutoPkgr/Models/Other/LGJSSDistributionPoint.h; sourceTree = SOURCE_ROOT; };
+		BE0A8BE91BF18D1E004DDB5E /* LGJSSDistributionPoint.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LGJSSDistributionPoint.m; path = AutoPkgr/Models/Other/LGJSSDistributionPoint.m; sourceTree = SOURCE_ROOT; };
 		BE0BACCE1A2560AE00554989 /* LGJSSDistributionPointsPrefPanel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGJSSDistributionPointsPrefPanel.h; sourceTree = "<group>"; };
 		BE0BACCF1A2560AE00554989 /* LGJSSDistributionPointsPrefPanel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGJSSDistributionPointsPrefPanel.m; sourceTree = "<group>"; };
 		BE0BACD01A2560AE00554989 /* LGJSSDistributionPointsPrefPanel.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LGJSSDistributionPointsPrefPanel.xib; sourceTree = "<group>"; };
@@ -724,6 +730,7 @@
 				BE4DD5431B12385C00854FD8 /* Email & Notifications */,
 				BE4DD5411B1237D400854FD8 /* Install-Uninstall */,
 				BE4DD5421B12382600854FD8 /* Passwords-Credentials */,
+				BE0A8BEC1BF18D2E004DDB5E /* Other */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -793,6 +800,15 @@
 				BE05CE8119DAF6320089068B /* LGAutoPkgrHelperConnection.m */,
 			);
 			path = "Privileged Helper Communication";
+			sourceTree = "<group>";
+		};
+		BE0A8BEC1BF18D2E004DDB5E /* Other */ = {
+			isa = PBXGroup;
+			children = (
+				BE0A8BE81BF18D1E004DDB5E /* LGJSSDistributionPoint.h */,
+				BE0A8BE91BF18D1E004DDB5E /* LGJSSDistributionPoint.m */,
+			);
+			name = Other;
 			sourceTree = "<group>";
 		};
 		BE0BB0EF1B3C2169007F9DA5 /* Base Notificaton Service */ = {
@@ -1040,6 +1056,8 @@
 				BECDAB921B24C29600544388 /* LGMunkiIntegrationView.h */,
 				BECDAB931B24C29600544388 /* LGMunkiIntegrationView.m */,
 				BECDAB941B24C29600544388 /* LGMunkiIntegrationView.xib */,
+				BE0A8BDF1BF13F62004DDB5E /* AutoPkgr-Bridging-Header.h */,
+				BE0A8BE01BF13F62004DDB5E /* AutoPkgrTests-Bridging-Header.h */,
 			);
 			path = "Integration Views";
 			sourceTree = "<group>";
@@ -1254,6 +1272,7 @@
 			isa = PBXProject;
 			attributes = {
 				CLASSPREFIX = LG;
+				LastSwiftUpdateCheck = 0710;
 				LastUpgradeCheck = 0600;
 				ORGANIZATIONNAME = "The Linde Group, Inc.";
 				TargetAttributes = {
@@ -1570,6 +1589,7 @@
 				BE59D8941B61956C0037F3CA /* LGMenuItems.m in Sources */,
 				BED136B11AC262CB003EBF0F /* NSString+html_report.m in Sources */,
 				1A1BAD9E197A4133008192A7 /* LGGitHubJSONLoader.m in Sources */,
+				BE0A8BEA1BF18D1E004DDB5E /* LGJSSDistributionPoint.m in Sources */,
 				BE32B0381B2735DF0071778B /* LGGitIntegrationView.m in Sources */,
 				BE0BB0F21B3C2311007F9DA5 /* LGNotificationManager.m in Sources */,
 				BEEFE6B71AE9D01200882C89 /* LGAutoPkgErrorHandler.m in Sources */,
@@ -1663,6 +1683,7 @@
 				BECDAB961B24C29600544388 /* LGMunkiIntegrationView.m in Sources */,
 				BE46D9961B40EBF800004B41 /* LGHipChatNotification.m in Sources */,
 				BE38EAB11B0D0E2F009FCBEB /* LGTabViewControllerBase.m in Sources */,
+				BE0A8BEB1BF18D1E004DDB5E /* LGJSSDistributionPoint.m in Sources */,
 				BEFC3C891A3DF16700C789E9 /* LGAutoPkgrHelperConnection.m in Sources */,
 				BE91A0711B2F53F000ED7501 /* NSString+attributedString.m in Sources */,
 				BE91A06D1B2F298900ED7501 /* AHHelpPopover.m in Sources */,
@@ -1889,14 +1910,18 @@
 			baseConfigurationReference = 5F5D515706D5DA01E7256573 /* Pods-AutoPkgr.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "Developer ID Application: The Linde Group Computer Support Inc (JVY2ZR6SEF)";
 				COMBINE_HIDPI_IMAGES = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "AutoPkgr/Supporting Files/AutoPkgr-Prefix.pch";
 				INFOPLIST_FILE = "AutoPkgr/Supporting Files/AutoPkgr-Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.8;
 				OTHER_CODE_SIGN_FLAGS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "AutoPkgr/Views-Controllers-XIB/Integration Views/AutoPkgr-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -1906,14 +1931,17 @@
 			baseConfigurationReference = 906DD048439B1EC0FBD74F69 /* Pods-AutoPkgr.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "Developer ID Application: The Linde Group Computer Support Inc (JVY2ZR6SEF)";
 				COMBINE_HIDPI_IMAGES = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "AutoPkgr/Supporting Files/AutoPkgr-Prefix.pch";
 				INFOPLIST_FILE = "AutoPkgr/Supporting Files/AutoPkgr-Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.8;
 				OTHER_CODE_SIGN_FLAGS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "AutoPkgr/Views-Controllers-XIB/Integration Views/AutoPkgr-Bridging-Header.h";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
@@ -1922,6 +1950,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 5F030AE32F891FB6D46E1F34 /* Pods-AutoPkgrTests.debug.xcconfig */;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				COMBINE_HIDPI_IMAGES = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(DEVELOPER_FRAMEWORKS_DIR)",
@@ -1934,7 +1963,10 @@
 					"$(inherited)",
 				);
 				INFOPLIST_FILE = "AutoPkgrTests/Supporting Files/AutoPkgrTests-Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "AutoPkgr/Views-Controllers-XIB/Integration Views/AutoPkgrTests-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				WRAPPER_EXTENSION = xctest;
 			};
 			name = Debug;
@@ -1943,6 +1975,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 78FF6F632570F6CB7453F9D7 /* Pods-AutoPkgrTests.release.xcconfig */;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				COMBINE_HIDPI_IMAGES = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(DEVELOPER_FRAMEWORKS_DIR)",
@@ -1951,7 +1984,9 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "AutoPkgr/Supporting Files/AutoPkgr-Prefix.pch";
 				INFOPLIST_FILE = "AutoPkgrTests/Supporting Files/AutoPkgrTests-Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "AutoPkgr/Views-Controllers-XIB/Integration Views/AutoPkgrTests-Bridging-Header.h";
 				WRAPPER_EXTENSION = xctest;
 			};
 			name = Release;

@@ -81,7 +81,12 @@
 
 - (IBAction)close:(id)sender
 {
-    [self.window close];
+    if ([self.window isKindOfClass:[NSWindow class]]) {
+        if([self.window makeFirstResponder:nil]){
+            [self.window orderOut:nil];
+            [NSApp endSheet:self.window];
+        }
+    }
 }
 
 - (void)configureLinkButtonForURL:(NSURL *)url
