@@ -11,14 +11,17 @@
 
 #pragma mark - Key Dict
 // Key used to indicate the array of required keys for a DP
-static NSString *kRequired = @"required";
+const NSString *kRequired = @"required";
 
 // Key used to indicate the array of optional keys for a DP
-static NSString *kOptional = @"optional";
+const NSString *kOptional = @"optional";
 
 // Key used to indicate the array containing the keys used to
 // determine whether the dp should be updated or inserted.
-static NSString *kExclusiveUnique = @"unique";
+const NSString *kExclusiveUnique = @"unique";
+
+// Key used to indicate the type string for the key
+const NSString *kTypeString = @"typestr";
 
 NSDictionary *keyInfoDict()
 {
@@ -36,7 +39,8 @@ NSDictionary *keyInfoDict()
         dictionary = @{
             // Local
             @(kLGJSSTypeLocal) :
-                @{ kRequired : @[ kLGJSSDistPointTypeKey,
+                @{ kTypeString: @"Local",
+                   kRequired : @[ kLGJSSDistPointTypeKey,
                                   kLGJSSDistPointSharePointKey,
                                   kLGJSSDistPointMountPointKey ],
                    kOptional : @[],
@@ -44,7 +48,8 @@ NSDictionary *keyInfoDict()
 
             // SMB
             @(kLGJSSTypeSMB) :
-                @{ kRequired : mountable,
+                @{ kTypeString: @"SMB",
+                   kRequired : mountable,
                    kOptional : @[ kLGJSSDistPointNameKey,
                                   kLGJSSDistPointPortKey,
                                   kLGJSSDistPointWorkgroupDomainKey ],
@@ -52,20 +57,23 @@ NSDictionary *keyInfoDict()
 
             // AFP
             @(kLGJSSTypeAFP) :
-                @{ kRequired : mountable,
+                @{ kTypeString: @"AFP",
+                   kRequired : mountable,
                    kOptional : @[ kLGJSSDistPointNameKey,
                                   kLGJSSDistPointPortKey ],
                    kExclusiveUnique : @[ kLGJSSDistPointURLKey ] },
 
             // JDS
             @(kLGJSSTypeJDS) :
-                @{ kRequired : @[ kLGJSSDistPointTypeKey ],
+                @{ kTypeString: @"JDS",
+                   kRequired : @[ kLGJSSDistPointTypeKey ],
                    kOptional : @[],
                    kExclusiveUnique : @[ kLGJSSDistPointTypeKey ] },
 
             // CDP
             @(kLGJSSTypeCDP) :
-                @{ kRequired : @[ kLGJSSDistPointTypeKey ],
+                @{ kTypeString: @"CDP",
+                   kRequired : @[ kLGJSSDistPointTypeKey ],
                    kOptional : @[],
                    kExclusiveUnique : @[ kLGJSSDistPointTypeKey ] },
 
@@ -84,6 +92,10 @@ NSDictionary *keyInfoDict()
 @implementation LGJSSDistributionPoint {
 @private
     NSMutableDictionary *_dpDict;
+}
+
++ (NSDictionary *)keyInfoDict {
+    return keyInfoDict();
 }
 
 #pragma mark - Init
@@ -123,32 +135,7 @@ NSDictionary *keyInfoDict()
 #pragma mark - Util
 - (void)setType:(JSSDistributionPointType)type
 {
-    NSString *typeString = nil;
-    switch (type) {
-    case kLGJSSTypeAFP: {
-        typeString = @"AFP";
-        break;
-    }
-    case kLGJSSTypeSMB: {
-        typeString = @"SMB";
-        break;
-    }
-    case kLGJSSTypeJDS: {
-        typeString = @"JDS";
-        break;
-    }
-    case kLGJSSTypeCDP: {
-        typeString = @"CDP";
-        break;
-    }
-    case kLGJSSTypeLocal: {
-        typeString = @"Local";
-        break;
-    }
-    default: {
-        break;
-    }
-    }
+    NSString *typeString = keyInfoDict()[@(type)][kTypeString];
     if (typeString) {
         [_dpDict setObject:typeString forKey:kLGJSSDistPointTypeKey];
     }
@@ -157,22 +144,14 @@ NSDictionary *keyInfoDict()
 - (JSSDistributionPointType)type
 {
     NSString *type = [_dpDict[kLGJSSDistPointTypeKey] lowercaseString];
-    if (!type) {
-        return kLGJSSTypeFromJSS;
-    } else if ([type isEqualToString:@"afp"]) {
-        return kLGJSSTypeAFP;
-    } else if ([type isEqualToString:@"smb"]) {
-        return kLGJSSTypeSMB;
-    } else if ([type isEqualToString:@"cdp"]) {
-        return kLGJSSTypeCDP;
-    } else if ([type isEqualToString:@"jds"]) {
-        return kLGJSSTypeJDS;
-    } else if ([type isEqualToString:@"local"]) {
-        return kLGJSSTypeLocal;
-    } else {
-        assert(@"Correct type not determined.");
-        return kLGJSSTypeFromJSS;
+    NSDictionary *d = keyInfoDict();
+    for (NSNumber *k in d){
+        if ([[d[k][kTypeString] lowercaseString] isEqualToString:type]){
+            return (JSSDistributionPointType)k.integerValue;
+        }
     }
+    assert(@"Correct type not determined.");
+    return kLGJSSTypeFromJSS;
 }
 
 - (BOOL)validKeyForType:(NSString *)key

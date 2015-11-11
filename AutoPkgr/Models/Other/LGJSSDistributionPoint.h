@@ -17,7 +17,15 @@ typedef NS_OPTIONS(NSInteger, JSSDistributionPointType) {
     kLGJSSTypeLocal = 1 << 5
 };
 
+// Cooresponding type string in keyInfoDict()
+extern const NSString *kTypeString;
+
 @interface LGJSSDistributionPoint : NSObject
+// Dictionary to query for type string
+// Cooresponding values can be looked up
+// using an NSNumber representation of JSSDistributionPointType
+// as the key.
++ (NSDictionary *)keyInfoDict;
 
 + (NSArray<LGJSSDistributionPoint *> *)distributionPoints;
 
