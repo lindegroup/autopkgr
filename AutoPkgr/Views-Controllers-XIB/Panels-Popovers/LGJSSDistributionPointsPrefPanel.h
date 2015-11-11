@@ -41,6 +41,8 @@
 @property (weak) IBOutlet NSTextField *distPointDomainLabel;
 
 @property (weak) IBOutlet NSPopUpButton *distPointTypePopupBT;
+@property (weak) IBOutlet NSTextField *distPointTypeLabel;
+
 @property (weak) IBOutlet NSButton *cancelBT;
 @property (weak) IBOutlet NSButton *addBT;
 @property (weak) IBOutlet NSTextField *infoText;

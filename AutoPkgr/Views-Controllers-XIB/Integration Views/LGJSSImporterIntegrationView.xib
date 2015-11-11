@@ -73,11 +73,11 @@
                 <scrollView autohidesScrollers="YES" horizontalLineScroll="19" horizontalPageScroll="10" verticalLineScroll="19" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="K47-TQ-18O">
                     <rect key="frame" x="20" y="48" width="566" height="91"/>
                     <clipView key="contentView" copiesOnScroll="NO" id="9Xr-Y3-eg1">
-                        <rect key="frame" x="1" y="17" width="564" height="73"/>
+                        <rect key="frame" x="1" y="1" width="564" height="89"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" columnSelection="YES" multipleSelection="NO" autosaveColumns="NO" headerView="rtb-0N-cF3" id="Z5b-9F-2lZ" customClass="LGTableView">
-                                <rect key="frame" x="0.0" y="0.0" width="564" height="73"/>
+                            <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" columnReordering="NO" multipleSelection="NO" autosaveColumns="NO" id="Z5b-9F-2lZ" customClass="LGTableView">
+                                <rect key="frame" x="0.0" y="0.0" width="564" height="89"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <size key="intercellSpacing" width="3" height="2"/>
                                 <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -96,7 +96,7 @@
                                         </textFieldCell>
                                         <tableColumnResizingMask key="resizingMask" userResizable="YES"/>
                                     </tableColumn>
-                                    <tableColumn identifier="name" editable="NO" width="211.56640625" minWidth="40" maxWidth="1000" id="ij4-LO-8bY">
+                                    <tableColumn identifier="URL" editable="NO" width="478.14453125" minWidth="40" maxWidth="1000" id="ij4-LO-8bY">
                                         <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left" title="URL">
                                             <font key="font" metaFont="smallSystem"/>
                                             <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
@@ -119,16 +119,13 @@
                         <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                     </clipView>
                     <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="YES" id="gjk-0k-O2j">
+                        <rect key="frame" x="1" y="74" width="564" height="16"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </scroller>
                     <scroller key="verticalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="NO" id="iHJ-eL-OPL">
                         <rect key="frame" x="549" y="17" width="16" height="0.0"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </scroller>
-                    <tableHeaderView key="headerView" id="rtb-0N-cF3">
-                        <rect key="frame" x="0.0" y="0.0" width="564" height="17"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </tableHeaderView>
                 </scrollView>
                 <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="tdL-wP-gx2">
                     <rect key="frame" x="422" y="8" width="100" height="28"/>
@@ -224,7 +221,6 @@
             <constraints>
                 <constraint firstItem="eEY-Hf-ysc" firstAttribute="centerY" secondItem="ijl-Se-UV6" secondAttribute="centerY" id="0Qo-LC-7bd"/>
                 <constraint firstItem="OT5-hu-oZC" firstAttribute="centerY" secondItem="n9u-rv-Mbf" secondAttribute="centerY" id="0r2-vf-6Ws"/>
-                <constraint firstItem="fG9-wC-8B0" firstAttribute="leading" secondItem="rtb-0N-cF3" secondAttribute="leading" id="1Je-Wq-oNj"/>
                 <constraint firstItem="K47-TQ-18O" firstAttribute="top" secondItem="fG9-wC-8B0" secondAttribute="bottom" constant="12" id="4Qg-1M-eVD"/>
                 <constraint firstAttribute="trailing" secondItem="K47-TQ-18O" secondAttribute="trailing" constant="20" id="5bf-uD-e3t"/>
                 <constraint firstItem="OT5-hu-oZC" firstAttribute="trailing" secondItem="Z5b-9F-2lZ" secondAttribute="trailing" id="6VL-go-jx2"/>
@@ -256,6 +252,7 @@
                 <constraint firstAttribute="bottom" secondItem="YtI-Sx-J6O" secondAttribute="bottom" constant="14" id="j2z-IV-4Ck"/>
                 <constraint firstItem="K47-TQ-18O" firstAttribute="top" secondItem="ijl-Se-UV6" secondAttribute="bottom" constant="12" id="m17-9Q-j1f"/>
                 <constraint firstItem="c5h-ql-lyI" firstAttribute="leading" secondItem="Kox-gt-MfQ" secondAttribute="trailing" constant="13" id="pQl-9H-j8x"/>
+                <constraint firstItem="fG9-wC-8B0" firstAttribute="leading" secondItem="MRy-Ea-7v9" secondAttribute="leading" id="qaW-Am-lMv"/>
                 <constraint firstItem="EjN-fl-a5J" firstAttribute="leading" secondItem="MRy-Ea-7v9" secondAttribute="leading" id="sDD-OG-vfU"/>
                 <constraint firstItem="MRy-Ea-7v9" firstAttribute="leading" secondItem="Z5b-9F-2lZ" secondAttribute="leading" id="uDq-HT-NNA"/>
                 <constraint firstItem="K47-TQ-18O" firstAttribute="top" secondItem="INC-3f-REM" secondAttribute="bottom" constant="10" id="uvS-PJ-2T2"/>

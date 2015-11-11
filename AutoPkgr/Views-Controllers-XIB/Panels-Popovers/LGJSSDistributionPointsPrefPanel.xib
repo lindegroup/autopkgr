@@ -19,6 +19,7 @@
                 <outlet property="distPointPortLabel" destination="vTm-IV-qbB" id="bPP-cX-YHl"/>
                 <outlet property="distPointShareName" destination="ME1-yU-Ml3" id="YD3-dK-Ifz"/>
                 <outlet property="distPointShareNameLabel" destination="QIV-Sr-11v" id="TsL-1Z-2py"/>
+                <outlet property="distPointTypeLabel" destination="lgz-QM-68R" id="Q24-3X-4EV"/>
                 <outlet property="distPointTypePopupBT" destination="GyS-vJ-4BH" id="GK0-gg-NZY"/>
                 <outlet property="distPointURL" destination="1ER-8h-W6H" id="7eG-n3-MOU"/>
                 <outlet property="distPointURLLabel" destination="uDD-20-wUL" id="rBR-9L-kLT"/>
@@ -30,10 +31,10 @@
         </customObject>
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
         <customObject id="-3" userLabel="Application" customClass="NSObject"/>
-        <window title="Configure New Distribution Point" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" oneShot="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" animationBehavior="default" id="F0z-JX-Cv5">
+        <window title="Configure New Distribution Point" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" oneShot="NO" visibleAtLaunch="NO" animationBehavior="default" id="F0z-JX-Cv5">
             <windowStyleMask key="styleMask" titled="YES" closable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
-            <rect key="contentRect" x="196" y="240" width="368" height="348"/>
+            <rect key="contentRect" x="446" y="248" width="368" height="348"/>
             <rect key="screenRect" x="0.0" y="0.0" width="1280" height="777"/>
             <view key="contentView" id="se5-gp-TjO">
                 <rect key="frame" x="0.0" y="0.0" width="368" height="348"/>

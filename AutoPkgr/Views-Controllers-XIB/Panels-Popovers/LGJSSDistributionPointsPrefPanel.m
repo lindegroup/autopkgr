@@ -54,19 +54,29 @@
 
     // We need to do this dance because it seems that when the class is initialized
     // the NSTextFields are nil until the window is loaded.
+    
     if (_distPoint) {
         [self populateUI];
     } else {
-        [_distPointTypePopupBT addItemsWithTitles:@[@"AFP",@"SMB",@"JDS",@"CDP",@"Local"]];
+        [[LGJSSDistributionPoint keyInfoDict] enumerateKeysAndObjectsUsingBlock:^(NSNumber *key, NSDictionary *obj, BOOL * _Nonnull stop) {
+            NSString *typeString = obj[kTypeString];
+            if(!typeString) {
+                return;
+            }
+            NSMenuItem *item = [[NSMenuItem alloc] initWithTitle:obj[kTypeString] action:nil keyEquivalent:@""];
+            item.tag = key.integerValue;
+            [_distPointTypePopupBT.menu addItem:item];
+        }];
+        [self chooseDistPointType:_distPointTypePopupBT];
     }
 
-    [self chooseDistPointType:_distPointTypePopupBT];
 }
 
 - (void)populateUI
 {
-    [_distPointTypePopupBT addItemWithTitle:_distPoint.typeString];
-    [_distPointTypePopupBT setEnabled:NO];
+    _distPointTypePopupBT.hidden = YES;
+    _distPointTypeLabel.hidden = YES;
+
     if (_distPoint.type == kLGJSSTypeLocal){
         _distPointURL.safe_stringValue = _distPoint.mount_point;
         _distPointName.safe_stringValue = _distPoint.share_name;
@@ -82,19 +92,22 @@
 
         _distPointDomain.safe_stringValue = _distPoint.domain;
     }
-
-    [_distPointTypePopupBT selectItemWithTitle:_distPoint.typeString];
-
     _cancelBT.hidden = YES;
     _addBT.title = @"Done";
-    _infoText.stringValue = NSLocalizedStringFromTable(@"Edit Distribution Point", @"LocalizableJSSImporter", nil);
+    _infoText.stringValue = quick_formatString(@"Edit %@", _distPoint.name ?: @"Distribution Point");
+
+    [self chooseDistributionPointType:_distPoint.type];
 }
 
 - (void)addDistPoint:(NSButton *)sender
 {
     // Save distpoint to defaults...
     LGJSSDistributionPoint *distributionPoint = [[LGJSSDistributionPoint alloc] init];
-    distributionPoint.typeString = _distPointTypePopupBT.title;
+    if (_distPoint){
+        distributionPoint.typeString = _distPoint.typeString;
+    } else {
+        distributionPoint.typeString = _distPointTypePopupBT.title;
+    }
     distributionPoint.password = _distPointPassword.safe_stringValue;
     distributionPoint.username = _distPointUserName.safe_stringValue;
     distributionPoint.URL = _distPointURL.safe_stringValue;
@@ -112,49 +125,65 @@
 
 - (IBAction)chooseDistPointType:(NSPopUpButton *)sender
 {
+    [self chooseDistributionPointType:sender.selectedTag];
+}
+
+- (void)chooseDistributionPointType:(JSSDistributionPointType )type
+{
     NSArray *allTextFields = [self allTextFields];
-    for (NSButton *b in allTextFields){
-        b.hidden = NO;
-        b.enabled = YES;
+    for (NSTextField *t in allTextFields){
+        t.hidden = NO;
+        t.enabled = YES;
     }
 
     [_distPointName.cell setPlaceholderString:@"Descriptive Name (optional)"];
-    [_distPointDomain setHidden:YES];
-    [_distPointDomainLabel setHidden:YES];
-
+    _distPointDomain.hidden = YES;
+    _distPointDomainLabel.hidden = YES;
     _distPointURLLabel.stringValue = @"URL";
-    if ([sender.title isEqualToString:@"AFP"]) {
-        [_distPointPort.cell setPlaceholderString:@"548 (optional)"];
-        [_distPointURL.cell setPlaceholderString:@"afp://casper.yourcompany.example"];
 
-    } else if ([sender.title isEqualToString:@"SMB"]) {
-        [_distPointDomain setHidden:NO];
-        [_distPointDomain.cell setPlaceholderString:@"WORKGROUP (optional)"];
+    switch (type) {
+        case kLGJSSTypeFromJSS: {
+            for (NSTextField *t in allTextFields){t.hidden = YES;}
+            _distPointPassword.hidden = NO;
+            _distPointPasswordLabel.hidden = NO;
+            break;
+        }
+        case kLGJSSTypeAFP: {
+            [_distPointPort.cell setPlaceholderString:@"548 (optional)"];
+            [_distPointURL.cell setPlaceholderString:@"afp://casper.yourcompany.example"];
+            break;
+        }
+        case kLGJSSTypeSMB: {
+            _distPointDomain.hidden = NO;
+            [_distPointDomain.cell setPlaceholderString:@"WORKGROUP (optional)"];
 
-        [_distPointDomainLabel setHidden:NO];
-        [_distPointPort.cell setPlaceholderString:@"139 or 445 (optional)"];
-        [_distPointURL.cell setPlaceholderString:@"smb://casper.yourcompany.example"];
+            _distPointDomainLabel.hidden = NO;
+            [_distPointPort.cell setPlaceholderString:@"139 or 445 (optional)"];
+            [_distPointURL.cell setPlaceholderString:@"smb://casper.yourcompany.example"];
+            break;
+        }
+        case kLGJSSTypeJDS:
+        case kLGJSSTypeCDP: {
+            for (NSButton *b in allTextFields){b.hidden = YES;}
+            break;
+        }
+        case kLGJSSTypeLocal: {
+            _distPointURLLabel.stringValue = @"Mount Point";
+            [_distPointURL.cell setPlaceholderString:@"/Path/To/Mount"];
 
-    } else if ([sender.title isEqualToString:@"JDS"] ||
-               [sender.title isEqualToString:@"CDP"]) {
-        for (NSButton *b in allTextFields){b.hidden = YES;}
+            _distPointUserName.hidden = YES;
+            _distPointUserNameLabel.hidden = YES;
 
-    } else if ([sender.title isEqualToString:@"Local"]) {
-        _distPointURLLabel.stringValue = @"Mount Point";
-        [_distPointURL.cell setPlaceholderString:@"/Path/To/Mount"];
+            _distPointPassword.hidden = YES;
+            _distPointPasswordLabel.hidden = YES;
 
-        _distPointUserName.hidden = YES;
-        _distPointUserNameLabel.hidden = YES;
-        //
-        _distPointPassword.hidden = YES;
-        _distPointPasswordLabel.hidden = YES;
-        //
-        _distPointShareName.hidden = YES;
-        _distPointShareNameLabel.hidden = YES;
-        //
-        _distPointPort.hidden = YES;
-        _distPointPortLabel.hidden = YES;
-        //
+            _distPointShareName.hidden = YES;
+            _distPointShareNameLabel.hidden = YES;
+
+            _distPointPort.hidden = YES;
+            _distPointPortLabel.hidden = YES;
+            break;
+        }
     }
 }
 
@@ -208,17 +237,34 @@
 
 - (NSArray *)requiredForType
 {
-    NSString *type = _distPointTypePopupBT.title;
-
-    NSMutableArray *types = [NSMutableArray arrayWithObjects: _distPointName,
-                                                              _distPointURL, nil];
-
-    if ([type isEqualToString:@"AFP"] || [type isEqualToString:@"SMB"]) {
-        [types addObjectsFromArray:@[ _distPointUserName,
-                                      _distPointPassword ]];
+    JSSDistributionPointType type = _distPointPassword.selectedTag;
+    switch (type) {
+        case kLGJSSTypeFromJSS: {
+            return @[_distPointPassword];
+            break;
+        }
+        case kLGJSSTypeAFP:
+        case kLGJSSTypeSMB: {
+            return @[ _distPointName,
+                      _distPointURL,
+                      _distPointUserName,
+                      _distPointPassword ];
+            break;
+        }
+        case kLGJSSTypeJDS:
+        case kLGJSSTypeCDP: {
+            break;
+        }
+        case kLGJSSTypeLocal: {
+            return @[ _distPointName,
+                      _distPointURL,];
+            break;
+        }
+        default: {
+            break;
+        }
     }
-
-    return types.copy;
+    return @[];
 }
 
 - (NSArray *)allTextFields

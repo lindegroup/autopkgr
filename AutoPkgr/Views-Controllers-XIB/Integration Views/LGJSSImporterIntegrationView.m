@@ -171,21 +171,17 @@
         return nil;
     }
 
-    if (tableView.dataSource == nil) {
-        return nil;
-    }
-
     LGJSSDistributionPoint *distributionPoint = _distributionPoints[row];
     NSString *identifier = [tableColumn identifier];
-
-    NSString *setObject = distributionPoint.representation[identifier];
-
-    // if the object is still nil, because the name is not set sub in the url key
-    if (!setObject && [identifier isEqualToString:kLGJSSDistPointNameKey]) {
-        setObject = distributionPoint.URL;
+    if ([identifier isEqualToString:@"URL"]){
+        if (distributionPoint.type == kLGJSSTypeFromJSS){
+            return quick_formatString(@"(Attributes provided by JSS: %@)", distributionPoint.name);
+        } else {
+            return distributionPoint.URL;
+        }
     }
 
-    return setObject;
+    return distributionPoint.representation[identifier];
 }
 
 - (void)tableView:(NSTableView *)tableView setObjectValue:(id)object forTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row
@@ -197,7 +193,7 @@
     // so we need to hijack this a little bit
     NSString *identifier = nil;
     if (distributionPoint.type == kLGJSSTypeLocal) {
-        if ([tableColumn.identifier isEqualToString:@"name"]) {
+        if ([tableColumn.identifier isEqualToString:@"URL"]) {
             identifier = kLGJSSDistPointMountPointKey;
         } else if ([tableColumn.identifier isEqualToString:@"share_name"]) {
             identifier = kLGJSSDistPointSharePointKey;
@@ -207,7 +203,7 @@
     }
 
     if (identifier && [distributionPoint respondsToSelector:NSSelectorFromString(identifier)]) {
-        [distributionPoint setValue:object forKey:tableColumn.identifier];
+        [distributionPoint setValue:object forKey:identifier];
         [distributionPoint save];
     }
 }
@@ -216,19 +212,8 @@
 {
     NSInteger row = [_jssDistributionPointTableView selectedRow];
     // If nothing in the table is selected the row value is -1 so
-    if (row > -1) {
-        [_jssRemoveDistPointBT setEnabled:YES];
-        // If a type key is not set, then it's from a DP from
-        // the jss server and not editable.
-        if ([[_defaults.JSSRepos objectAtIndex:row] objectForKey:@"type"]) {
-            [_jssEditDistPointBT setEnabled:YES];
-        } else {
-            [_jssEditDistPointBT setEnabled:NO];
-        }
-    } else {
-        [_jssEditDistPointBT setEnabled:NO];
-        [_jssRemoveDistPointBT setEnabled:NO];
-    }
+    [_jssRemoveDistPointBT setEnabled:(row > -1)];
+    [_jssEditDistPointBT setEnabled:(row > -1)];
 }
 
 #pragma mark - Utility
@@ -375,7 +360,7 @@
         }
     }
 
-    if (distPoint && distPoint.type != kLGJSSTypeFromJSS) {
+    if (distPoint) {
         if (!_preferencePanel) {
             _preferencePanel = [[LGJSSDistributionPointsPrefPanel alloc] initWithDistPoint:distPoint];
         }
