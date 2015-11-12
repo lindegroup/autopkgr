@@ -20,11 +20,11 @@
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
         <customObject id="-3" userLabel="Application" customClass="NSObject"/>
         <customView id="Hz6-mo-xeY">
-            <rect key="frame" x="0.0" y="0.0" width="513" height="216"/>
+            <rect key="frame" x="0.0" y="0.0" width="513" height="219"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
                 <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="yRa-44-e8a">
-                    <rect key="frame" x="208" y="174" width="285" height="22"/>
+                    <rect key="frame" x="208" y="177" width="285" height="22"/>
                     <animations/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="ZFA-IW-McZ">
                         <font key="font" metaFont="system"/>
@@ -33,7 +33,7 @@
                     </textFieldCell>
                 </textField>
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="JEr-CG-Pgl">
-                    <rect key="frame" x="18" y="177" width="184" height="17"/>
+                    <rect key="frame" x="18" y="180" width="184" height="17"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="180" id="jZr-T3-iLy"/>
                     </constraints>
@@ -45,7 +45,7 @@
                     </textFieldCell>
                 </textField>
                 <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="EHv-BV-WGq">
-                    <rect key="frame" x="208" y="142" width="285" height="22"/>
+                    <rect key="frame" x="208" y="145" width="285" height="22"/>
                     <animations/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" title="20016" drawsBackground="YES" id="hgm-TZ-yGN">
                         <font key="font" metaFont="system"/>
@@ -54,7 +54,7 @@
                     </textFieldCell>
                 </textField>
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="LdN-lb-Mxz">
-                    <rect key="frame" x="18" y="145" width="184" height="17"/>
+                    <rect key="frame" x="18" y="148" width="184" height="17"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="180" id="kdx-p4-3Ae"/>
                     </constraints>
@@ -66,7 +66,7 @@
                     </textFieldCell>
                 </textField>
                 <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Tjf-aD-P4A">
-                    <rect key="frame" x="208" y="110" width="285" height="22"/>
+                    <rect key="frame" x="208" y="113" width="285" height="22"/>
                     <animations/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" title="fwadmin" drawsBackground="YES" id="IwY-8t-4ra">
                         <font key="font" metaFont="system"/>
@@ -75,7 +75,7 @@
                     </textFieldCell>
                 </textField>
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="x24-eE-iR0">
-                    <rect key="frame" x="18" y="113" width="184" height="17"/>
+                    <rect key="frame" x="18" y="116" width="184" height="17"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="180" id="9Zx-Pm-niG"/>
                     </constraints>
@@ -87,7 +87,7 @@
                     </textFieldCell>
                 </textField>
                 <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="4OS-cf-Fch" customClass="NSSecureTextField">
-                    <rect key="frame" x="208" y="78" width="285" height="22"/>
+                    <rect key="frame" x="208" y="81" width="285" height="22"/>
                     <animations/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="iP7-68-fqO">
                         <font key="font" metaFont="system"/>
@@ -96,7 +96,7 @@
                     </textFieldCell>
                 </textField>
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="1ll-8f-8Td">
-                    <rect key="frame" x="18" y="81" width="184" height="17"/>
+                    <rect key="frame" x="18" y="84" width="184" height="17"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="180" id="rVO-X8-HU4"/>
                     </constraints>
@@ -108,7 +108,7 @@
                     </textFieldCell>
                 </textField>
                 <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="1xU-M6-bXt">
-                    <rect key="frame" x="329" y="36" width="145" height="28"/>
+                    <rect key="frame" x="329" y="39" width="145" height="28"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="135" id="8bf-Yz-Uaw"/>
                     </constraints>
@@ -122,7 +122,7 @@
                     </connections>
                 </button>
                 <progressIndicator wantsLayer="YES" horizontalHuggingPriority="750" verticalHuggingPriority="750" maxValue="100" displayedWhenStopped="NO" bezeled="NO" indeterminate="YES" controlSize="small" style="spinning" translatesAutoresizingMaskIntoConstraints="NO" id="Wpx-Eb-uhs">
-                    <rect key="frame" x="477" y="43" width="16" height="16"/>
+                    <rect key="frame" x="477" y="46" width="16" height="16"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="16" id="BPj-Fl-M2f"/>
                         <constraint firstAttribute="height" constant="16" id="Kbh-VO-jqB"/>
@@ -130,7 +130,7 @@
                     <animations/>
                 </progressIndicator>
                 <imageView translatesAutoresizingMaskIntoConstraints="NO" id="nCR-dN-Nut">
-                    <rect key="frame" x="477" y="40" width="16" height="23"/>
+                    <rect key="frame" x="477" y="43" width="16" height="23"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="16" id="2bZ-Hr-cYB"/>
                         <constraint firstAttribute="height" constant="23" id="cj9-kG-VtC"/>
@@ -139,12 +139,13 @@
                     <imageCell key="cell" refusesFirstResponder="YES" alignment="left" animates="YES" imageScaling="proportionallyDown" image="NSStatusNone" id="MP1-Qb-Bwf"/>
                 </imageView>
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Bfq-xl-brG">
-                    <rect key="frame" x="30" y="17" width="465" height="17"/>
+                    <rect key="frame" x="30" y="20" width="465" height="14"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="17" id="jO8-qg-ijl"/>
+                        <constraint firstAttribute="height" constant="14" id="jO8-qg-ijl"/>
                     </constraints>
-                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" id="IFp-ZL-CbF">
-                        <font key="font" metaFont="system"/>
+                    <animations/>
+                    <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" id="IFp-ZL-CbF">
+                        <font key="font" metaFont="smallSystem"/>
                         <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
@@ -166,7 +167,7 @@
                 <constraint firstItem="1ll-8f-8Td" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="118" id="Wy9-7c-yrs"/>
                 <constraint firstItem="4OS-cf-Fch" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="208" id="Xff-pP-UeA"/>
                 <constraint firstItem="EHv-BV-WGq" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="52" id="bE5-lh-mIL"/>
-                <constraint firstItem="Bfq-xl-brG" firstAttribute="top" secondItem="nCR-dN-Nut" secondAttribute="bottom" constant="6" id="bnG-2u-tHc"/>
+                <constraint firstItem="Bfq-xl-brG" firstAttribute="top" secondItem="nCR-dN-Nut" secondAttribute="bottom" constant="9" id="bnG-2u-tHc"/>
                 <constraint firstItem="1xU-M6-bXt" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="156" id="bss-Os-6fH"/>
                 <constraint firstItem="x24-eE-iR0" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="86" id="dg1-oW-o6w"/>
                 <constraint firstAttribute="trailing" secondItem="Bfq-xl-brG" secondAttribute="trailing" constant="20" id="f29-ZK-dxX"/>
@@ -177,7 +178,7 @@
                 <constraint firstItem="Wpx-Eb-uhs" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="157" id="nJv-Sw-Bqf"/>
                 <constraint firstAttribute="trailing" secondItem="4OS-cf-Fch" secondAttribute="trailing" constant="20" id="qZl-rF-XPA"/>
                 <constraint firstItem="EHv-BV-WGq" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="208" id="tzr-QZ-ldd"/>
-                <constraint firstAttribute="bottom" secondItem="Bfq-xl-brG" secondAttribute="bottom" constant="17" id="vlE-zc-fDq"/>
+                <constraint firstAttribute="bottom" secondItem="Bfq-xl-brG" secondAttribute="bottom" constant="20" id="vlE-zc-fDq"/>
                 <constraint firstAttribute="trailing" secondItem="Wpx-Eb-uhs" secondAttribute="trailing" constant="20" id="w1q-l4-sha"/>
                 <constraint firstItem="JEr-CG-Pgl" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="20" id="wgI-rv-oJj"/>
                 <constraint firstItem="LdN-lb-Mxz" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="54" id="xxI-Jn-tXk"/>
