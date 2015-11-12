@@ -23,6 +23,7 @@ If you're not yet comfortable with the command-line, or if you just want to get 
     - [Integration with Casper](#integration-with-casper)
     - [Integration with Absolute Manage](#integration-with-absolute-manage)
     - [Integration with MacPatch](#integration-with-macpatch)
+    - [Integration with FileWave](#integration-with-filewave)
 - [Using a Proxy](#using-a-proxy)
 - [Troubleshooting](#troubleshooting)
 - [Credits](#credits)
@@ -158,7 +159,7 @@ To configure AutoPkgr to add updates directly into your Munki repository, follow
 
     ![Munki repo](doc-images/integration_munki.png)
 
-1. Click __Close and Save__.
+1. Click __Save and Close__.
 
 You'll also want to make sure you have `.munki` recipes selected for each app you want to import. Once the new versions of apps appear in your Munki repo, you can add them to the appropriate catalogs and manifests to deploy them.
 
@@ -186,7 +187,7 @@ To configure AutoPkgr to create Self Service policies in Casper for new app upda
     ![Casper Settings](doc-images/integration_casper.png)
 
 1. When prompted, enter the read/write password for each distribution point.
-1. Click __Close and Save__.
+1. Click __Save and Close__.
 
 You'll also want to make sure you have a few `.jss` recipes selected. AutoPkgr will automatically add the "official" [jss-recipes](https://github.com/autopkg/jss-recipes) repo so you'll have a few to choose from right away.
 
@@ -213,7 +214,7 @@ To configure AutoPkgr to add updates directly into your Absolute Manage server, 
 
     ![Absolute Manage Settings](doc-images/integration_absolute.png)
 
-1. Click __Close and Save__.
+1. Click __Save and Close__.
 
 You'll also want to make sure you have a few `.absolute` recipes selected. There is no official repository for Absolute Manage recipes yet, but if you add the `seansgm-recipes` repository, you'll see a few to get you started.
 
@@ -233,7 +234,30 @@ To configure AutoPkgr to add updates directly into your MacPatch server, follow 
 
     ![MacPatch Settings](doc-images/integration_macpatch.png)
 
-1. Click __Close and Save__.
+1. Click __Save and Close__.
+
+![divider](doc-images/divider.png)
+
+### Integration with FileWave
+
+:warning: &nbsp; _FileWave integration is still in beta. We welcome [your feedback](https://github.com/lindegroup/autopkgr/issues/new)._
+
+:bulb: &nbsp; _Notes and requirements for FileWave integration:_
+
+- _AutoPkg version 0.5.0 or newer is required._
+- _FileWave version 10.0 or newer is required._
+- _The FileWave Admin app should be installed in your Applications folder._
+
+To configure AutoPkgr to add updates directly into your FileWave server, follow these steps:
+
+1. Click on the __Folders & Integration__ tab.
+1. Click on the __Install FileWaveImporter__ button. Enter your password when prompted.
+1. Click on the __Configure FileWaveImporter...__ button.
+1. Enter the hostname, port, username, and password for your FileWave server, and click __Verify__.
+
+    ![FileWave Settings](doc-images/integration_filewave.png)
+
+1. If verification succeeds, click __Save and Close__.
 
 ![divider](doc-images/divider.png)
 

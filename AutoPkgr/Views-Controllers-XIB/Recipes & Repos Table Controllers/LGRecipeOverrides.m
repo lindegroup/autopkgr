@@ -136,7 +136,7 @@ const CFStringRef kUTTypePropertyList = CFSTR("com.apple.property-list");
 + (void)revealInFinder:(NSMenuItem *)sender
 {
     NSString *recipePath = [(LGAutoPkgRecipe *)sender.representedObject FilePath];
-    [[NSWorkspace sharedWorkspace] selectFile:recipePath inFileViewerRootedAtPath:nil];
+    [[NSWorkspace sharedWorkspace] selectFile:recipePath inFileViewerRootedAtPath:@"/"];
 }
 
 + (BOOL)overrideExistsForRecipe:(LGAutoPkgRecipe *)recipe
