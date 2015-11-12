@@ -21,7 +21,9 @@
 #import "LGFileWaveIntegrationView.h"
 #import "LGFileWaveIntegration.h"
 #import "LGAutoPkgTask.h"
+#import "NSImage+statusLight.h"
 #import "NSTextField+safeStringValue.h"
+#import "NSTextField+animatedString.h"
 
 @interface LGFileWaveIntegrationView ()<NSTextFieldDelegate>
 
@@ -30,6 +32,8 @@
 @property (weak) IBOutlet NSTextField *FW_ADMIN_USER;
 @property (weak) IBOutlet NSSecureTextField *FW_ADMIN_PASSWORD;
 @property (weak) IBOutlet NSButton *FWToolVerify;
+@property (weak) IBOutlet NSImageView *statusImage;
+@property (weak) IBOutlet NSTextField *statusLabel;
 
 @end
 
@@ -58,21 +62,29 @@
 
     _FW_ADMIN_PASSWORD.delegate = self;
     _FW_ADMIN_PASSWORD.safe_stringValue = _defaults.FW_ADMIN_PASSWORD;
-
+    _statusImage.hidden = NO;
 }
 
 - (IBAction)FWToolVerify:(NSButton *)sender {
     // Run `autopkg run FWTool.recipe` and make sure that it verifies.
     sender.state = NSOffState;
     [self.progressSpinner startAnimation:nil];
+    _statusImage.hidden = YES;
     [LGAutoPkgTask runRecipes:@[@"FWTool.filewave.recipe"]
                      progress:nil
                         reply:^(NSDictionary *results, NSError *error) {
                             sender.state = NSOnState;
-                            [self.progressSpinner stopAnimation:nil];
+                            _statusImage.hidden = NO;
                             if (error){
-                                [NSApp presentError:error];
+                                _statusImage.image = [NSImage LGStatusUnavailable];
+                                [_statusLabel fadeOut_withString:error.localizedRecoverySuggestion];
+                            } else {
+                                _statusImage.image = [NSImage LGStatusAvailable];
+                                [_statusLabel fadeOut_withString:NSLocalizedString(@"Successfully verified FileWave settings", nil)];
                             }
+
+                            [self.progressSpinner stopAnimation:nil];
+
     }];
 }
 

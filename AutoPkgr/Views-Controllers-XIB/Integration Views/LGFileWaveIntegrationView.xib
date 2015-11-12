@@ -11,7 +11,9 @@
                 <outlet property="FW_ADMIN_USER" destination="Tjf-aD-P4A" id="toF-wa-j5R"/>
                 <outlet property="FW_SERVER_HOST" destination="yRa-44-e8a" id="GZk-O4-l19"/>
                 <outlet property="FW_SERVER_PORT" destination="EHv-BV-WGq" id="UMB-e6-lpp"/>
-                <outlet property="progressSpinner" destination="Wpx-Eb-uhs" id="duU-eA-7wT"/>
+                <outlet property="progressSpinner" destination="Wpx-Eb-uhs" id="iAA-eD-vot"/>
+                <outlet property="statusImage" destination="nCR-dN-Nut" id="Du2-x5-7b5"/>
+                <outlet property="statusLabel" destination="Bfq-xl-brG" id="W7Z-Pn-6Aa"/>
                 <outlet property="view" destination="Hz6-mo-xeY" id="0bl-1N-x8E"/>
             </connections>
         </customObject>
@@ -119,6 +121,14 @@
                         <action selector="FWToolVerify:" target="-2" id="DIW-BH-goe"/>
                     </connections>
                 </button>
+                <progressIndicator wantsLayer="YES" horizontalHuggingPriority="750" verticalHuggingPriority="750" maxValue="100" displayedWhenStopped="NO" bezeled="NO" indeterminate="YES" controlSize="small" style="spinning" translatesAutoresizingMaskIntoConstraints="NO" id="Wpx-Eb-uhs">
+                    <rect key="frame" x="477" y="43" width="16" height="16"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="16" id="BPj-Fl-M2f"/>
+                        <constraint firstAttribute="height" constant="16" id="Kbh-VO-jqB"/>
+                    </constraints>
+                    <animations/>
+                </progressIndicator>
                 <imageView translatesAutoresizingMaskIntoConstraints="NO" id="nCR-dN-Nut">
                     <rect key="frame" x="477" y="40" width="16" height="23"/>
                     <constraints>
@@ -128,14 +138,17 @@
                     <animations/>
                     <imageCell key="cell" refusesFirstResponder="YES" alignment="left" animates="YES" imageScaling="proportionallyDown" image="NSStatusNone" id="MP1-Qb-Bwf"/>
                 </imageView>
-                <progressIndicator hidden="YES" wantsLayer="YES" horizontalHuggingPriority="750" verticalHuggingPriority="750" maxValue="100" bezeled="NO" indeterminate="YES" controlSize="small" style="spinning" translatesAutoresizingMaskIntoConstraints="NO" id="Wpx-Eb-uhs">
-                    <rect key="frame" x="477" y="43" width="16" height="16"/>
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Bfq-xl-brG">
+                    <rect key="frame" x="30" y="17" width="465" height="17"/>
                     <constraints>
-                        <constraint firstAttribute="width" constant="16" id="BPj-Fl-M2f"/>
-                        <constraint firstAttribute="height" constant="16" id="Kbh-VO-jqB"/>
+                        <constraint firstAttribute="height" constant="17" id="jO8-qg-ijl"/>
                     </constraints>
-                    <animations/>
-                </progressIndicator>
+                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" id="IFp-ZL-CbF">
+                        <font key="font" metaFont="system"/>
+                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
             </subviews>
             <constraints>
                 <constraint firstItem="x24-eE-iR0" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="20" id="2d7-yU-OVe"/>
@@ -149,11 +162,14 @@
                 <constraint firstAttribute="trailing" secondItem="EHv-BV-WGq" secondAttribute="trailing" constant="20" id="P48-y4-NvM"/>
                 <constraint firstAttribute="trailing" secondItem="nCR-dN-Nut" secondAttribute="trailing" constant="20" id="TCP-7h-npC"/>
                 <constraint firstItem="yRa-44-e8a" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="208" id="TmW-rN-S1j"/>
+                <constraint firstItem="Bfq-xl-brG" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="32" id="UKA-kM-u2c"/>
                 <constraint firstItem="1ll-8f-8Td" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="118" id="Wy9-7c-yrs"/>
                 <constraint firstItem="4OS-cf-Fch" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="208" id="Xff-pP-UeA"/>
                 <constraint firstItem="EHv-BV-WGq" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="52" id="bE5-lh-mIL"/>
+                <constraint firstItem="Bfq-xl-brG" firstAttribute="top" secondItem="nCR-dN-Nut" secondAttribute="bottom" constant="6" id="bnG-2u-tHc"/>
                 <constraint firstItem="1xU-M6-bXt" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="156" id="bss-Os-6fH"/>
                 <constraint firstItem="x24-eE-iR0" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="86" id="dg1-oW-o6w"/>
+                <constraint firstAttribute="trailing" secondItem="Bfq-xl-brG" secondAttribute="trailing" constant="20" id="f29-ZK-dxX"/>
                 <constraint firstItem="LdN-lb-Mxz" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="20" id="fSY-hO-j7p"/>
                 <constraint firstItem="yRa-44-e8a" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="20" id="gFQ-ua-Mfh"/>
                 <constraint firstAttribute="trailing" secondItem="yRa-44-e8a" secondAttribute="trailing" constant="20" id="jSg-bd-X5s"/>
@@ -161,6 +177,7 @@
                 <constraint firstItem="Wpx-Eb-uhs" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="157" id="nJv-Sw-Bqf"/>
                 <constraint firstAttribute="trailing" secondItem="4OS-cf-Fch" secondAttribute="trailing" constant="20" id="qZl-rF-XPA"/>
                 <constraint firstItem="EHv-BV-WGq" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="208" id="tzr-QZ-ldd"/>
+                <constraint firstAttribute="bottom" secondItem="Bfq-xl-brG" secondAttribute="bottom" constant="17" id="vlE-zc-fDq"/>
                 <constraint firstAttribute="trailing" secondItem="Wpx-Eb-uhs" secondAttribute="trailing" constant="20" id="w1q-l4-sha"/>
                 <constraint firstItem="JEr-CG-Pgl" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="20" id="wgI-rv-oJj"/>
                 <constraint firstItem="LdN-lb-Mxz" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="54" id="xxI-Jn-tXk"/>
