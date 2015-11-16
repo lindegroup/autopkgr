@@ -197,6 +197,35 @@ NSDictionary *keyInfoDict()
 }
 
 #pragma mark-- Public --
+- (NSString *)description {
+    NSString *description = nil;
+    NSString *type = self.typeString;
+
+    switch (self.type) {
+        case kLGJSSTypeFromJSS: {
+            description = @"Pulled from JSS.";
+            type = @"<Auto>";
+            break;
+        }
+        case kLGJSSTypeAFP:
+        case kLGJSSTypeSMB:
+        case kLGJSSTypeLocal: {
+            description = self.URL;
+            break;
+        }
+        case kLGJSSTypeJDS:
+        case kLGJSSTypeCDP:
+        default: {
+            break;
+        }
+    }
+
+    if (description) {
+        return [NSString stringWithFormat:@"%@ (%@)", type, description];
+    }
+    
+    return self.typeString;
+}
 - (NSDictionary *)representation
 {
     NSMutableDictionary *representation = [[NSMutableDictionary alloc] init];

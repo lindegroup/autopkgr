@@ -29,6 +29,7 @@ extern const NSString *kTypeString;
 
 + (NSArray<LGJSSDistributionPoint *> *)distributionPoints;
 
+// The Dictionary representation of the Distribution Point object, sutiable for writing to defaults.
 @property (copy, readonly) NSDictionary *representation;
 @property (copy) NSString *name;
 @property (copy) NSString *URL;

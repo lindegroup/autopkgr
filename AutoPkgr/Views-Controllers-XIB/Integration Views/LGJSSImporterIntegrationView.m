@@ -172,16 +172,7 @@
     }
 
     LGJSSDistributionPoint *distributionPoint = _distributionPoints[row];
-    NSString *identifier = [tableColumn identifier];
-    if ([identifier isEqualToString:@"URL"]){
-        if (distributionPoint.type == kLGJSSTypeFromJSS){
-            return quick_formatString(@"(Attributes provided by JSS: %@)", distributionPoint.name);
-        } else {
-            return distributionPoint.URL;
-        }
-    }
-
-    return distributionPoint.representation[identifier];
+    return distributionPoint.description;
 }
 
 - (void)tableView:(NSTableView *)tableView setObjectValue:(id)object forTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row
