@@ -23,6 +23,7 @@
 #import "LGRecipeInfoView.h"
 #import "LGAutoPkgr.h"
 #import "LGAutoPkgRecipe.h"
+#import "LGAutoPkgRecipeListManager.h"
 #import "LGAutoPkgTask.h"
 #import "LGRecipeOverrides.h"
 #import "LGAutoPkgReport.h"
@@ -34,6 +35,9 @@
 
 @property (weak) IBOutlet LGTableView *recipeTableView;
 @property (weak) IBOutlet NSSearchField *recipeSearchField;
+@property (weak) IBOutlet NSPopUpButton *recipeListButton;
+
+@property (strong) LGAutoPkgRecipeListManager *recipeList;
 
 @end
 
@@ -50,6 +54,7 @@ static NSString *const kLGAutoPkgRecipeCurrentStatusKey = @"currentStatus";
 {
     if (!_isAwake) {
         _isAwake = YES;
+
         [_recipeSearchField setTarget:self];
         [_recipeSearchField setAction:@selector(executeAppSearch:)];
 
@@ -60,6 +65,9 @@ static NSString *const kLGAutoPkgRecipeCurrentStatusKey = @"currentStatus";
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reload) name:kLGNotificationReposModified object:nil];
 
         _searchedRecipes = self.recipes;
+
+        _recipeList = [[LGAutoPkgRecipeListManager alloc] init];
+        [self refreshRecipeList];
     }
 }
 
@@ -71,6 +79,16 @@ static NSString *const kLGAutoPkgRecipeCurrentStatusKey = @"currentStatus";
         // it will actually get reconstructed.
         _recipes = nil;
         [self executeAppSearch:self];
+        [self refreshRecipeList];
+    });
+}
+
+- (void)refreshRecipeList
+{
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [_recipeListButton removeAllItems];
+        [_recipeListButton addItemsWithTitles:_recipeList.recipeLists];
+        [_recipeListButton selectItemWithTitle:_recipeList.currentListName];
     });
 }
 
@@ -145,6 +163,61 @@ static NSString *const kLGAutoPkgRecipeCurrentStatusKey = @"currentStatus";
 
 }
 
+- (IBAction)addRecipeList:(NSButton *)sender
+{
+    NSError *error;
+    NSString *str;
+    if ((str = [self promptForRecipeListName])){
+        if(![_recipeList addRecipeList:str error:&error]){
+            [NSApp presentError:error];
+        } else {
+            [self reload];
+        }
+    }
+}
+
+- (IBAction)removeRecipeList:(NSButton *)sender
+{
+    NSError *error;
+    if (![_recipeList removeRecipeList:_recipeListButton.title error:&error]){
+        [NSApp presentError:error];
+    } else {
+        [self reload];
+    }
+}
+
+- (IBAction)recipeListSelectionChanged:(NSPopUpButton *)sender
+{
+    _recipeList.currentListName = sender.title;
+    [self reload];
+}
+
+- (NSString *)promptForRecipeListName
+{
+    NSString *listName = nil;
+    NSString *promptString = NSLocalizedString(@"Add a new recipe list?", nil);
+
+    NSAlert *alert = [NSAlert alertWithMessageText:promptString
+                                     defaultButton:@"OK"
+                                   alternateButton:@"Cancel"
+                                       otherButton:nil
+                         informativeTextWithFormat:@""];
+
+    NSTextField *input = [[NSTextField alloc] init];
+    [input setFrame:NSMakeRect(0, 0, 300, 24)];
+    [alert setAccessoryView:input];
+
+    NSInteger button = [alert runModal];
+    if (button == NSAlertDefaultReturn) {
+        [input validateEditing];
+        listName = [input stringValue];
+        if (!listName || [listName isEqualToString:@""]) {
+            return [self promptForRecipeListName];
+        }
+    }
+    return listName;
+}
+
 #pragma mark - Filtering
 - (void)executeAppSearch:(id)sender
 {
@@ -157,8 +230,12 @@ static NSString *const kLGAutoPkgRecipeCurrentStatusKey = @"currentStatus";
         NSString *searchString = _recipeSearchField.stringValue;
 
         // Execute search both on Name and Identifier keys
-        NSPredicate *recipeSearchPredicate = [NSPredicate predicateWithFormat:@"%K CONTAINS[cd] %@ OR %K CONTAINS[CD] %@", kLGAutoPkgRecipeNameKey, searchString, kLGAutoPkgRecipeIdentifierKey, searchString];
+        NSMutableArray *predicates = [[NSMutableArray alloc] init];
+        for (NSString *key in @[kLGAutoPkgRecipeNameKey, kLGAutoPkgRecipeIdentifierKey]) {
+            [predicates addObject:[NSPredicate predicateWithFormat:@"%K CONTAINS[cd] %@", key, searchString]];
+        }
 
+        NSCompoundPredicate *recipeSearchPredicate = [[NSCompoundPredicate alloc] initWithType:NSOrPredicateType subpredicates:predicates];
         _searchedRecipes = [[self.recipes filteredArrayUsingPredicate:recipeSearchPredicate] mutableCopy];
     }
 

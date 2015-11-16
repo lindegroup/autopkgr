@@ -18,6 +18,7 @@
 //
 
 #import "LGAutoPkgRecipe.h"
+#import "LGAutoPkgRecipeListManager.h"
 #import "LGAutoPkgTask.h"
 
 #import <glob.h>
@@ -404,11 +405,7 @@ static NSMutableDictionary *_identifierURLStore = nil;
 #pragma mark - Util
 + (NSString *)defaultRecipeList
 {
-    NSString *autoPkgrSupportDirectory = [LGHostInfo getAppSupportDirectory];
-    if (autoPkgrSupportDirectory.length) {
-        return [autoPkgrSupportDirectory stringByAppendingPathComponent:@"recipe_list.txt"];
-    }
-    return nil;
+    return [[LGAutoPkgRecipeListManager new] currentListPath];
 }
 
 + (BOOL)removeRecipeFromRecipeList:(NSString *)recipe

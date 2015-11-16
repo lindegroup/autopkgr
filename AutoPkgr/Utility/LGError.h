@@ -39,6 +39,8 @@ typedef NS_ENUM(NSInteger, LGErrorCodes) {
     kLGErrorMultipleRunsOfAutopkg,
     /** Error when trying to enable a recipe when the Parent Recipe is not avaliable */
     kLGErrorMissingParentRecipe,
+    /** Error creating, reading or writing a recipe_list.txt file */
+    kLGErrorRecipeListFileAccess,
     /** Generic error installing */
     kLGErrorInstallingGeneric,
     /** Error serializing xml object */

@@ -94,6 +94,15 @@ static NSDictionary *userInfoFromCode(LGErrorCodes code)
                                                 @"LocalizableError",
                                                 @"Error when recipe is missing parent recipe (NSLocalizedRecoverySuggestionErrorKey)");
         break;
+    case kLGErrorRecipeListFileAccess:
+        message = NSLocalizedStringFromTable(@"kLGErrorRecipeListFileAccessDescription",
+                                             @"LocalizableError",
+                                             @"Error when recipe is missing parent recipe");
+
+        suggestion = NSLocalizedStringFromTable(@"kLGErrorRecipeListFileAccessSuggestion",
+                                                @"LocalizableError",
+                                                @"Error when recipe is missing parent recipe (NSLocalizedRecoverySuggestionErrorKey)");
+        break;
     case kLGErrorInstallingGeneric:
         message = NSLocalizedStringFromTable(@"kLGErrorInstallingGenericDescription",
                                              @"LocalizableError",
