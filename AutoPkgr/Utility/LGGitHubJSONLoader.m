@@ -71,8 +71,13 @@
 
 - (BOOL)isExpired
 {
-    BOOL isExpired = (_infoRetrievedDate == nil) || (_lifespan <= -(_infoRetrievedDate.timeIntervalSinceNow));
-    return isExpired;
+    if (_infoRetrievedDate == nil) {
+        _infoRetrievedDate = [NSDate date];
+        return YES;
+    } else if (_lifespan <= -(_infoRetrievedDate.timeIntervalSinceNow)){
+        return YES;
+    }
+    return NO;
 }
 
 - (NSArray *)jsonObject
