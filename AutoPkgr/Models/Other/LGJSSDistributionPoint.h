@@ -27,7 +27,7 @@ extern const NSString *kTypeString;
 // as the key.
 + (NSDictionary *)keyInfoDict;
 
-+ (NSArray<LGJSSDistributionPoint *> *)distributionPoints;
++ (NSArray<LGJSSDistributionPoint *> *)enabledDistributionPoints;
 
 // The Dictionary representation of the Distribution Point object, sutiable for writing to defaults.
 @property (copy, readonly) NSDictionary *representation;
@@ -41,6 +41,8 @@ extern const NSString *kTypeString;
 @property (copy) NSString *domain;
 @property (copy) NSString *typeString;
 @property JSSDistributionPointType type;
+
+- (BOOL)isEditable;
 
 // Initialize a distribution point using a dictionary
 - (instancetype)initWithDictionary:(NSDictionary *)dict;

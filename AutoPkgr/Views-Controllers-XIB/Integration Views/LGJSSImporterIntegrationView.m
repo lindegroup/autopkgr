@@ -161,7 +161,7 @@
 
 - (NSInteger)numberOfRowsInTableView:(NSTableView *)tableView
 {
-    _distributionPoints = [LGJSSDistributionPoint distributionPoints];
+    _distributionPoints = [LGJSSDistributionPoint enabledDistributionPoints];
     return _distributionPoints.count;
 }
 
@@ -203,8 +203,9 @@
 {
     NSInteger row = [_jssDistributionPointTableView selectedRow];
     // If nothing in the table is selected the row value is -1 so
+
     [_jssRemoveDistPointBT setEnabled:(row > -1)];
-    [_jssEditDistPointBT setEnabled:(row > -1)];
+    [_jssEditDistPointBT setEnabled:(row > -1) && [_distributionPoints[row] isEditable]];
 }
 
 #pragma mark - Utility

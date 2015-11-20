@@ -8,6 +8,7 @@
 
 #import "LGJSSDistributionPoint.h"
 #import "LGJSSImporterIntegration.h"
+#import "LGLogger.h"
 
 #pragma mark - Key Dict
 // Key used to indicate the array of required keys for a DP
@@ -178,6 +179,15 @@ NSDictionary *keyInfoDict()
     return YES;
 }
 
+- (BOOL)isEditable {
+    switch (self.type) {
+        case kLGJSSTypeCDP:
+        case kLGJSSTypeJDS:
+            return NO;
+        default:
+            return YES;
+    }
+}
 #pragma mark - Accesssors
 #pragma mark-- Private --
 - (void)updateValue:(NSString *)value forKey:(NSString *)key
@@ -203,8 +213,8 @@ NSDictionary *keyInfoDict()
 
     switch (self.type) {
         case kLGJSSTypeFromJSS: {
-            description = @"Pulled from JSS.";
-            type = @"<Auto>";
+            description = quick_formatString(@"Name: %@", self.name);
+            type = @"From JSS";
             break;
         }
         case kLGJSSTypeAFP:
@@ -214,7 +224,9 @@ NSDictionary *keyInfoDict()
             break;
         }
         case kLGJSSTypeJDS:
+            return @"JAMF Distribution Server";
         case kLGJSSTypeCDP:
+            return @"Cloud Distribution Point";
         default: {
             break;
         }
@@ -398,7 +410,7 @@ NSDictionary *keyInfoDict()
     return index;
 }
 
-+ (NSArray *)distributionPoints
++ (NSArray *)enabledDistributionPoints
 {
     NSArray *array = [[[LGJSSImporterDefaults alloc] init] JSSRepos];
     if (!array.count) {

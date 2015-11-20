@@ -58,18 +58,36 @@
     if (_distPoint) {
         [self populateUI];
     } else {
-        [[LGJSSDistributionPoint keyInfoDict] enumerateKeysAndObjectsUsingBlock:^(NSNumber *key, NSDictionary *obj, BOOL * _Nonnull stop) {
+        NSMutableDictionary *keyInfoDict = [[LGJSSDistributionPoint keyInfoDict] mutableCopy];
+
+        // Enumerate over the enabled dict to see if there are any dp types
+        // that can only have one instance, and remove them if that is the case.
+        NSArray *enabled = [LGJSSDistributionPoint enabledDistributionPoints];
+        [enabled enumerateObjectsUsingBlock:^(LGJSSDistributionPoint *dp, NSUInteger idx, BOOL *stop) {
+            switch (dp.type) {
+                case kLGJSSTypeJDS:
+                case kLGJSSTypeCDP:
+                case kLGJSSTypeLocal: {
+                    [keyInfoDict removeObjectForKey:@(dp.type)];
+                    break;
+                }
+                default:break;
+            }
+        }];
+
+        [keyInfoDict enumerateKeysAndObjectsUsingBlock:^(NSNumber *key, NSDictionary *obj, BOOL *stop) {
             NSString *typeString = obj[kTypeString];
             if(!typeString) {
                 return;
             }
+            
             NSMenuItem *item = [[NSMenuItem alloc] initWithTitle:obj[kTypeString] action:nil keyEquivalent:@""];
             item.tag = key.integerValue;
             [_distPointTypePopupBT.menu addItem:item];
         }];
+
         [self chooseDistPointType:_distPointTypePopupBT];
     }
-
 }
 
 - (void)populateUI
