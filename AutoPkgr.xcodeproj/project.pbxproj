@@ -1215,6 +1215,7 @@
 				BE05CE7419DAF4C30089068B /* Copy Files: Helper Tool */,
 				C97E222596F14727B875BF98 /* Copy Pods Resources */,
 				1A56282C19CC01D600980AB9 /* Run Script: Deeper sign */,
+				8D68CC123A60D7575A4AF01E /* Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -1235,6 +1236,7 @@
 				1AC6956B195B59EE00D2BD81 /* Frameworks */,
 				1AC6956C195B59EE00D2BD81 /* Resources */,
 				26170D597736193FA7397F5E /* Copy Pods Resources */,
+				7D943D5E98AE5B852BAAE0E6 /* Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -1453,6 +1455,36 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-com.lindegroup.AutoPkgr.helper/Pods-com.lindegroup.AutoPkgr.helper-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		7D943D5E98AE5B852BAAE0E6 /* Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-AutoPkgrTests/Pods-AutoPkgrTests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		8D68CC123A60D7575A4AF01E /* Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-AutoPkgr/Pods-AutoPkgr-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		BE05CE8B19DB35530089068B /* Check Pods Manifest.lock */ = {
