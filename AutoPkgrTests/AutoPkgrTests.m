@@ -68,7 +68,7 @@ static const BOOL _TEST_PRIVILEGED_HELPER = YES;
 {
 
     LGJSSImporterDefaults *defaults  = [[LGJSSImporterDefaults alloc] init];
-    NSArray *arr = [LGJSSDistributionPoint distributionPoints];
+    NSArray *arr = [LGJSSDistributionPoint enabledDistributionPoints];
 
     [arr enumerateObjectsUsingBlock:^(LGJSSDistributionPoint *obj, NSUInteger idx, BOOL * _Nonnull stop) {
         [obj remove];
