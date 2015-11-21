@@ -56,7 +56,7 @@ static dispatch_queue_t autopkgr_kc_access_synchronizer_queue()
     return dispatch_queue;
 }
 
-@interface LGAutoPkgrHelper () <HelperAgent, NSXPCListenerDelegate>
+@interface LGAutoPkgrHelper () <AutoPkgrHelperAgent, NSXPCListenerDelegate>
 @property (atomic, strong, readwrite) NSXPCListener *listener;
 @property (readonly) NSXPCConnection *connection;
 @property (weak) NSXPCConnection *relayConnection;
@@ -102,7 +102,7 @@ static dispatch_queue_t autopkgr_kc_access_synchronizer_queue()
     BOOL valid = [self newConnectionIsValid:newConnection];
 
     if (valid) {
-        NSXPCInterface *exportedInterface = [NSXPCInterface interfaceWithProtocol:@protocol(HelperAgent)];
+        NSXPCInterface *exportedInterface = [NSXPCInterface interfaceWithProtocol:@protocol(AutoPkgrHelperAgent)];
         newConnection.exportedInterface = exportedInterface;
         newConnection.exportedObject = self;
 
@@ -120,9 +120,9 @@ static dispatch_queue_t autopkgr_kc_access_synchronizer_queue()
             }
 
             [self.connections removeObject:weakConnection];
-            if (!self.connections.count) {
-                [self quitHelper:^(BOOL success){
-                }];
+
+            if (self.connections.count == 0) {
+                [self quitHelper:^(BOOL success) {}];
             }
         };
 
@@ -461,18 +461,17 @@ helper_reply:
 {
     // This will cause the run-loop to exit. You should call it
     // from the main app during applicationShouldTerminate:.
-    for (NSXPCConnection *connection in self.connections) {
-        [connection invalidate];
-    }
-
     if (_resign) {
         _resign(YES);
     }
 
+    for (NSXPCConnection *connection in self.connections) {
+        [connection invalidate];
+    }
     [self.connections removeAllObjects];
 
     self.helperToolShouldQuit = YES;
-    reply(YES);
+    reply(!self.connection);
 }
 
 - (void)uninstall:(NSData *)authData reply:(void (^)(NSError *))reply;
@@ -538,7 +537,6 @@ helper_reply:
     //////////////////////////////////////////////////////////////////////
 
     // TODO: remove selected packages...
-
     reply(error);
 }
 

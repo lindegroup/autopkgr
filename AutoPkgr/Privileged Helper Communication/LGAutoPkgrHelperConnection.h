@@ -20,9 +20,24 @@
 
 #import <Foundation/Foundation.h>
 #import "LGAutoPkgrProtocol.h"
+#import "LGProgressDelegate.h"
 
 @interface LGAutoPkgrHelperConnection : NSObject
 
-@property (atomic, strong, readonly) NSXPCConnection *connection;
-- (void)connectToHelper;
+- (instancetype)initWithProgressDelegate:(id<LGProgressDelegate>)delegate;
+
+//@property (copy, nonatomic) void (^proxyErrorHandler)(NSError *);
+
+/**
+ *  @return proxy connection to Priviledged Helper
+ */
+@property (copy, nonatomic, readonly) id<AutoPkgrHelperAgent>remoteObjectProxy;
+
+/**
+ *  @return proxy connection to the Priviledged Helper plus error handler block
+ */
+- (id<AutoPkgrHelperAgent>)connectionError:(void (^)(NSError *error))handler;
+
+- (void)closeConnection;
+
 @end

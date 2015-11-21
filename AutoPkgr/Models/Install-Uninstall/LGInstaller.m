@@ -63,7 +63,7 @@ typedef NS_ENUM(NSInteger, LGInstallType) {
     __block NSString *progressMessage;
 
     // Get tmp file path for downloaded file
-    NSString *tmpFileLocation = [NSTemporaryDirectory() stringByAppendingPathComponent:[_downloadURL lastPathComponent]];
+    NSString *tmpFileLocation = [NSTemporaryDirectory() stringByAppendingPathComponent:_downloadURL.lastPathComponent];
 
     progressMessage = [NSString stringWithFormat:@"Downloading %@ installer...", installerName];
     [_progressDelegate updateProgress:progressMessage progress:25.0];
@@ -82,12 +82,12 @@ typedef NS_ENUM(NSInteger, LGInstallType) {
     [operation.outputStream open];
 
     [operation setDownloadProgressBlock:^(NSUInteger bytesRead, long long totalBytesRead, long long totalBytesExpectedToRead) {
-        double progress  = ((double)totalBytesRead / (double)totalBytesExpectedToRead) * 100;
+        double progress = ((double)totalBytesRead / (double)totalBytesExpectedToRead) * 100;
 
         NSString *message = [NSString stringWithFormat:@"Downloading %@: %.02f/%.02f MB",
-                             installerName,
-                             (float)totalBytesRead/1024/1024,
-                             (float)totalBytesExpectedToRead/1024/1024];
+                                                       installerName,
+                                                       (float)totalBytesRead / 1024 / 1024,
+                                                       (float)totalBytesExpectedToRead / 1024 / 1024];
 
         [_progressDelegate updateProgress:message progress:progress];
     }];
@@ -97,69 +97,64 @@ typedef NS_ENUM(NSInteger, LGInstallType) {
 
         LGInstallType type = [self evaluateInstallerType];
         switch (type) {
-            case kLGInstallerTypeUnknown:
-                reply([LGError errorWithCode:kLGErrorInstallingGeneric]);
-                return ;
-            case kLGInstallerTypeDMG:
-                if ([self mountDMG:tmpFileLocation] && _mountPoint) {
-                    // install Pkg
-                    NSArray *contents = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:_mountPoint error:nil];
-                    DLog(@"Contents of DMG %@ ", contents);
+        case kLGInstallerTypeUnknown:
+            reply([LGError errorWithCode:kLGErrorInstallingGeneric]);
+            return;
+        case kLGInstallerTypeDMG:
+            if ([self mountDMG:tmpFileLocation] && _mountPoint) {
+                // install Pkg
+                NSArray *contents = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:_mountPoint error:nil];
+                DLog(@"Contents of DMG %@ ", contents);
 
-                    // The predicate here is "CONTAINS" so we get both .pkg and .mpkg files
-                    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"pathExtension CONTAINS[cd] 'pkg'"];
-                    NSString *pkg = [[contents filteredArrayUsingPredicate:predicate] firstObject];
+                // The predicate here is "CONTAINS" so we get both .pkg and .mpkg files
+                NSPredicate *predicate = [NSPredicate predicateWithFormat:@"pathExtension CONTAINS[cd] 'pkg'"];
+                NSString *pkg = [[contents filteredArrayUsingPredicate:predicate] firstObject];
 
-                    if (pkg) {
-                        DLog(@"Found installer package: %@", pkg);
-                        pkgFile = [_mountPoint stringByAppendingPathComponent:pkg];
-                    } else {
-                        DLog(@"Could not locate .pkg file.");
-                    }
+                if (pkg) {
+                    DLog(@"Found installer package: %@", pkg);
+                    pkgFile = [_mountPoint stringByAppendingPathComponent:pkg];
+                } else {
+                    DLog(@"Could not locate .pkg file.");
                 }
-                break;
-            case kLGInstallerTypePKG:
-                pkgFile = tmpFileLocation;
-                break;
-            default:
-                break;
+            }
+            break;
+        case kLGInstallerTypePKG:
+            pkgFile = tmpFileLocation;
+            break;
+        default:
+            break;
         }
 
         if (type != kLGInstallerTypeUnknown && pkgFile) {
             // Set the `installer` command
             // Install the pkg as root
-            progressMessage = [NSString stringWithFormat:@"Running %@ installer...", installerName];
-
-            [_progressDelegate updateProgress:progressMessage progress:75.0];
-
             NSData *authorization = [LGAutoPkgrAuthorizer authorizeHelper];
             assert(authorization != nil);
 
-            [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-                LGAutoPkgrHelperConnection *helper = [LGAutoPkgrHelperConnection new];
-                [helper connectToHelper];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                progressMessage = [NSString stringWithFormat:@"Running %@ installer...", installerName];
+                [_progressDelegate updateProgress:progressMessage progress:75.0];
 
+                LGAutoPkgrHelperConnection *helperConnection = [[LGAutoPkgrHelperConnection alloc] initWithProgressDelegate:_progressDelegate];
 
-                helper.connection.exportedObject = _progressDelegate;
-                helper.connection.exportedInterface = [NSXPCInterface interfaceWithProtocol:@protocol(LGProgressDelegate)];
+                [helperConnection connectionError:reply];
 
+                [helperConnection.remoteObjectProxy installPackageFromPath:pkgFile
+                                                             authorization:authorization
+                                                                     reply:^(NSError *error) {
 
-                [[helper.connection remoteObjectProxyWithErrorHandler:^(NSError *error) {
-                    DLog(@"%@",error);
-                    reply(error);
-                }] installPackageFromPath:pkgFile authorization:authorization reply:^(NSError *error) {
-                    progressMessage = [NSString stringWithFormat:@"%@ installation complete.", installerName];
+                                                                         progressMessage = [NSString stringWithFormat:@"%@ installation complete.", installerName];
+                                                                         [_progressDelegate updateProgress:progressMessage progress:100.0];
 
-                    [_progressDelegate updateProgress:progressMessage progress:100.0];
-
-                    if (type == kLGInstallerTypeDMG) {
-                        progressMessage = [NSString stringWithFormat:@"Unmounting %@ disk image...", installerName];
-                        [_progressDelegate updateProgress:progressMessage progress:100.0];
-                        [self unmountVolume];
-                    }
-                    reply(error);
-                }];
-            }];
+                                                                         if (type == kLGInstallerTypeDMG) {
+                                                                             progressMessage = [NSString stringWithFormat:@"Unmounting %@ disk image...", installerName];
+                                                                             [_progressDelegate updateProgress:progressMessage progress:100.0];
+                                                                             [self unmountVolume];
+                                                                         }
+                                                                         reply(error);
+                                                                         [helperConnection closeConnection];
+                                                                     }];
+            });
         } else {
             reply([LGError errorWithCode:kLGErrorInstallingGeneric]);
         }
