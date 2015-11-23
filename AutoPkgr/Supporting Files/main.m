@@ -38,16 +38,16 @@ int main(int argc, const char *argv[])
         LGAutoPkgTaskManager *manager = [[LGAutoPkgTaskManager alloc] init];
 
         LGAutoPkgrHelperConnection *helperConnection = [LGAutoPkgrHelperConnection new];
-        [[helperConnection remoteObjectProxy] sendMessageToMainApplication:@"Scheduled AutoPkg run in progress..."
-                                                                  progress:0
-                                                                     error:nil
-                                                                     state:kLGAutoPkgProgressStart];
+        [helperConnection.remoteObjectProxy sendMessageToMainApplication:@"Scheduled AutoPkg run in progress..."
+                                                                progress:0
+                                                                   error:nil
+                                                                   state:kLGAutoPkgProgressStart];
 
         [manager setProgressUpdateBlock:^(NSString *message, double progress) {
-            [[helperConnection remoteObjectProxy] sendMessageToMainApplication:message
-                                                                      progress:progress
-                                                                         error:nil
-                                                                         state:kLGAutoPkgProgressProcessing];
+            [helperConnection.remoteObjectProxy sendMessageToMainApplication:message
+                                                                    progress:progress
+                                                                       error:nil
+                                                                       state:kLGAutoPkgProgressProcessing];
         }];
 
         [manager runRecipeList:[LGAutoPkgRecipe defaultRecipeList]

@@ -174,8 +174,16 @@ typedef NS_ENUM(OSStatus, LGIntegrationInstallStatus) {
 // LGIntegrationInfo object with local and remote status information and useful UI mappings.
 @property (strong, nonatomic, readonly) LGIntegrationInfo *info;
 
+/**
+ *  Block that is executed when the status of the integration changes. It's triggered during `-install:, -uninstall: -refresh`. The block has no return value and takes one parameter, LGIntegrationInfo, an object with mapped values for use with IBOutlets
+ */
 @property (copy) void (^infoUpdateHandler)(LGIntegrationInfo *info);
 
+/**
+ *  Asynchronous retrevial of mapped values for use with IBOutlets.
+ *
+ *  @param reply Reply block has no return value and takes one parameter, LGIntegrationInfo, an object with mapped values for use with IBOutlets
+ */
 - (void)getInfo:(void (^)(LGIntegrationInfo *info))reply;
 
 // update the integration.info property and if infoUpdateHandler has been set execute the completion block.

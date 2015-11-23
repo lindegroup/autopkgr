@@ -110,7 +110,9 @@ static dispatch_queue_t autopkgr_kc_access_synchronizer_queue()
         NSSet *acceptedClasses = [NSSet setWithObjects:[AHLaunchJobSchedule class],
                                                        [NSNumber class], nil];
 
-        [newConnection.exportedInterface setClasses:acceptedClasses forSelector:@selector(scheduleRun:user:program:authorization:reply:) argumentIndex:0 ofReply:NO];
+        [newConnection.exportedInterface setClasses:acceptedClasses
+                                        forSelector:@selector(scheduleRun:user:program:authorization:reply:)
+                                      argumentIndex:0 ofReply:NO];
 
         __weak typeof(newConnection) weakConnection = newConnection;
         // If all connections are invalidated on the remote side, shutdown the helper.

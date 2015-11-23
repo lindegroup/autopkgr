@@ -112,7 +112,7 @@ static NSString *kCommandKeyAuthRightDesc = @"authRightDescription";
     }];
 }
 
-+ (void)setupAuthorizationRights:(AuthorizationRef)authRef
++ (void)setupAuthorizationRights:(AuthorizationRef *)authRef
 {
     assert(authRef != NULL);
     [[self class] enumerateRightsUsingBlock:^(NSString *authRightName, id authRightDefault, NSString *authRightDesc) {
@@ -120,7 +120,7 @@ static NSString *kCommandKeyAuthRightDesc = @"authRightDescription";
         blockErr = AuthorizationRightGet([authRightName UTF8String], NULL);
         if (blockErr == errAuthorizationDenied) {
             blockErr = AuthorizationRightSet(
-                authRef,                                    // authRef
+                *authRef,                                   // authRef
                 [authRightName UTF8String],                 // rightName
                 (__bridge CFTypeRef) authRightDefault,      // rightDefinition
                 (__bridge CFStringRef) authRightDesc,       // descriptionKey
@@ -200,7 +200,7 @@ static NSString *kCommandKeyAuthRightDesc = @"authRightDescription";
     assert(err == errAuthorizationSuccess);
 
     if (authRef) {
-        [[self class] setupAuthorizationRights:authRef];
+        [[self class] setupAuthorizationRights:&authRef];
     }
 
     return authorization;

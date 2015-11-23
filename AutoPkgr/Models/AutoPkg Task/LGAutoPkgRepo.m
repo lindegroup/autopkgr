@@ -80,6 +80,13 @@ static NSArray *_popularRepos;
     return self.cloneURL.absoluteString;
 }
 
+- (NSArray *)activeRepos {
+    if (!_activeRepos){
+        _activeRepos = [LGAutoPkgTask repoList];
+    }
+    return _activeRepos;
+}
+
 - (BOOL)isInstalled
 {
     NSMutableString *repoURL = self.cloneURL.absoluteString.mutableCopy;
@@ -89,12 +96,12 @@ static NSArray *_popularRepos;
 
     NSPredicate *repoPredicate = [NSPredicate predicateWithFormat:@"%K CONTAINS[cd] %@", kLGAutoPkgRepoURLKey, repoURL];
 
-    return [[_activeRepos filteredArrayUsingPredicate:repoPredicate] count];
+    return [[[self activeRepos] filteredArrayUsingPredicate:repoPredicate] count];
 }
 
 - (NSString *)path
 {
-    for (NSDictionary *dict in _activeRepos) {
+    for (NSDictionary *dict in [self activeRepos]) {
         if ([dict[kLGAutoPkgRepoURLKey] isEqualToString:self.cloneURL.absoluteString]) {
             return dict[kLGAutoPkgRepoPathKey];
         }
@@ -131,7 +138,7 @@ static NSArray *_popularRepos;
 }
 
 #pragma mark - Implementation Methods
-- (void)updateRepo:(void (^)(NSError *))reply
+- (void)update:(void (^)(NSError *))reply
 {
     NSString *path;
     if ((path = self.path)) {
@@ -175,47 +182,56 @@ static NSArray *_popularRepos;
     }];
 }
 
+- (void)getRepoStatus:(void (^)(LGAutoPkgRepoStatus status))reply {
+    if (_checkStatusTimeStamp && [_checkStatusTimeStamp timeIntervalSinceNow] <= 0) {
+        return reply(_status);
+    }
+    // So we don't constantly hit the network at the exact same time, space it out the git calls.
+    NSTimeInterval interval = arc4random_uniform(600) + 300;
+    _checkStatusTimeStamp = [NSDate dateWithTimeIntervalSinceNow:interval];
+    NSString *path = self.path;
+    NSString *defaultBranch = self.defaultBranch;
+
+    _status = kLGAutoPkgRepoNotInstalled;
+    if (!path || !defaultBranch) {
+        return reply(_status);
+    }
+
+    NSArray *locTaskArgs = @[ @"rev-parse", defaultBranch ];
+    NSArray *remTaskArgs = @[ @"ls-remote", @"--heads", @"origin", @"./.", defaultBranch ];
+
+    [LGGitIntegration gitTaskWithArguments:locTaskArgs repoPath:path reply:^(NSString *locStdOut, NSError *error) {
+        if (error) {
+            NSLog(@"Git Error: %@", error );
+            _status = kLGAutoPkgRepoNotInstalled;
+            return reply(_status);
+        }
+
+        NSString *localSHA1 = locStdOut.trimmed;
+        [LGGitIntegration gitTaskWithArguments:remTaskArgs repoPath:path reply:^(NSString *remStdOut, NSError *error) {
+            if (error) {
+                NSLog(@"Git Error: %@", error );
+            }
+
+            NSString *remoteSHA1 = remStdOut.split_bySpace.firstObject;
+            if (!remoteSHA1) {
+                _status = kLGAutoPkgRepoUpToDate;
+                _checkStatusTimeStamp = [NSDate dateWithTimeIntervalSinceNow:10];
+            } else if ([localSHA1 isEqualToString:remoteSHA1]) {
+                _status = kLGAutoPkgRepoUpToDate;
+            } else {
+                _status = kLGAutoPkgRepoUpdateAvailable;
+            }
+            reply(_status);
+        }];
+    }];
+}
+
 - (void)checkRepoStatus:(id)sender
 {
-    if (sender || !_checkStatusTimeStamp || [_checkStatusTimeStamp timeIntervalSinceNow] <= 0) {
-
-        // So we don't constantly hit the network at the exact same time, space it out the git calls.
-        NSTimeInterval interval = arc4random_uniform(600) + 300;
-        _checkStatusTimeStamp = [NSDate dateWithTimeIntervalSinceNow:interval];
-        NSString *path = self.path;
-        NSString *defaultBranch = self.defaultBranch;
-        if (path && defaultBranch) {
-            NSArray *locTaskArgs = @[ @"rev-parse", defaultBranch ];
-            NSArray *remTaskArgs = @[ @"ls-remote", @"--heads", @"origin", @"./.", defaultBranch ];
-
-            [LGGitIntegration gitTaskWithArguments:locTaskArgs repoPath:path reply:^(NSString *locStdOut, NSError *error) {
-                if (error) {
-                    NSLog(@"Git Error: %@", error );
-                }
-
-                NSString *localSHA1 = locStdOut.trimmed;
-                [LGGitIntegration gitTaskWithArguments:remTaskArgs repoPath:path reply:^(NSString *remStdOut, NSError *error) {
-                    if (error) {
-                        NSLog(@"Git Error: %@", error );
-                    }
-
-                    NSString *remoteSHA1 = remStdOut.split_bySpace.firstObject;
-                    if (!remoteSHA1) {
-                        _checkStatusTimeStamp = [NSDate dateWithTimeIntervalSinceNow:10];
-                    } else if ([localSHA1 isEqualToString:remoteSHA1]) {
-                        [self statusDidChange:kLGAutoPkgRepoUpToDate];
-                    } else {
-                        [self statusDidChange:kLGAutoPkgRepoUpdateAvailable];
-                    }
-                    [self statusDidChange:_status];
-                }];
-            }];
-        } else {
-            [self statusDidChange:kLGAutoPkgRepoNotInstalled];
-        }
-    } else {
-        [self statusDidChange:_status];
-    }
+    [self getRepoStatus:^(LGAutoPkgRepoStatus status) {
+        [self statusDidChange:status];
+    }];
 }
 
 - (void)hardResetToOriginMaster

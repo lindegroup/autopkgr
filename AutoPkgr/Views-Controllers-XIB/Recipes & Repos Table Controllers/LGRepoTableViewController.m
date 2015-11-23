@@ -69,8 +69,8 @@
             if (self.popularRepositoriesTableView.sortDescriptors.count) {
                 sortDescriptors = self.popularRepositoriesTableView.sortDescriptors;
             } else {
-                sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:NSStringFromSelector(@selector(stars))
-                                                                  ascending:NO]];
+                sortDescriptors = @[ [NSSortDescriptor sortDescriptorWithKey:NSStringFromSelector(@selector(stars))
+                                                                   ascending:NO] ];
             }
 
             _repos = [repos sortedArrayUsingDescriptors:sortDescriptors];
@@ -124,20 +124,20 @@
         statusCell.imageView.hidden = YES;
         repo.statusChangeBlock = ^(LGAutoPkgRepoStatus status) {
             switch (status) {
-                case kLGAutoPkgRepoNotInstalled: {
-                    statusCell.imageView.hidden = YES;
-                    break;
-                }
-                case kLGAutoPkgRepoUpdateAvailable: {
-                    statusCell.imageView.image = [NSImage LGStatusUpdateAvailable];
-                    statusCell.imageView.hidden = NO;
-                    break;
-                }
-                case kLGAutoPkgRepoUpToDate: {
-                    statusCell.imageView.image = [NSImage LGStatusUpToDate];
-                    statusCell.imageView.hidden = NO;
-                    break;
-                }
+            case kLGAutoPkgRepoNotInstalled: {
+                statusCell.imageView.hidden = YES;
+                break;
+            }
+            case kLGAutoPkgRepoUpdateAvailable: {
+                statusCell.imageView.image = [NSImage LGStatusUpdateAvailable];
+                statusCell.imageView.hidden = NO;
+                break;
+            }
+            case kLGAutoPkgRepoUpToDate: {
+                statusCell.imageView.image = [NSImage LGStatusUpToDate];
+                statusCell.imageView.hidden = NO;
+                break;
+            }
             }
             [statusCell.progressIndicator stopAnimation:self];
         };
@@ -169,7 +169,7 @@
 
     LGAutoPkgRepo *repo = _searchedRepos[row];
 
-    void (^repoModified)(NSError * error) = ^void(NSError *error) {
+    void (^repoModified)(NSError *error) = ^void(NSError *error) {
         [_progressDelegate stopProgress:error];
         if (error) {
             sender.state = !sender.state;
@@ -181,13 +181,9 @@
     NSLog(@"%@", message);
     [_progressDelegate startProgressWithMessage:message];
     if (add) {
-        [repo install:^(NSError *error) {
-            repoModified(error);
-        }];
+        [repo install:repoModified];
     } else {
-        [repo remove:^(NSError *error) {
-            repoModified(error);
-        }];
+        [repo remove:repoModified];
     }
 }
 
@@ -199,7 +195,7 @@
         NSString *message = [NSString stringWithFormat:@"Updating %@", repo.cloneURL];
 
         [_progressDelegate startProgressWithMessage:message];
-        [repo updateRepo:^(NSError *error) {
+        [repo update:^(NSError *error) {
             [_progressDelegate stopProgress:error];
         }];
     }
@@ -222,14 +218,14 @@
     [_popularRepositoriesTableView endUpdates];
 }
 
-
 /**
  *  This will add or remove an array of recipe repos. The LGAuotPkg task args are created while building the contextual menu.
  *
  *  @param sender The contextual menu item sending the request.
  */
 
-- (void)bulkModifyRecipeRepos:(NSMenuItem *)sender{
+- (void)bulkModifyRecipeRepos:(NSMenuItem *)sender
+{
     NSArray *taskArgs = sender.representedObject;
 
     LGAutoPkgTask *task = [[LGAutoPkgTask alloc] init];
@@ -250,14 +246,13 @@
     }
 
     if (action) {
-        NSString *message = quick_formatString(@"%@ %ld recipe repo%@.", action, count , count > 1 ? @"s": @"");
+        NSString *message = quick_formatString(@"%@ %ld recipe repo%@.", action, count, count > 1 ? @"s" : @"");
         [_progressDelegate startProgressWithMessage:message];
         [task launchInBackground:^(NSError *error) {
             [_progressDelegate stopProgress:error];
         }];
     }
 }
-
 
 - (NSMenu *)contextualMenuForRow:(NSInteger)row
 {
@@ -287,11 +282,10 @@
             }
         }];
 
-        [@[update, enabled, disabled] enumerateObjectsUsingBlock:^(NSArray *array, NSUInteger idx, BOOL *stop) {
+        [@[ update, enabled, disabled ] enumerateObjectsUsingBlock:^(NSArray *array, NSUInteger idx, BOOL *stop) {
             if (array.count > 1) {
                 NSString *title = [[NSString stringWithFormat:@"%@ selected repos",
-                                    [[array.firstObject componentsSeparatedByString:@"-"]
-                                     lastObject]] capitalizedString];
+                                                              [[array.firstObject componentsSeparatedByString:@"-"] lastObject]] capitalizedString];
 
                 NSMenuItem *updateReposItem = [[NSMenuItem alloc] initWithTitle:title
                                                                          action:@selector(bulkModifyRecipeRepos:)
@@ -351,7 +345,7 @@
 {
     if ([sender isKindOfClass:[NSMenuItem class]]) {
         NSString *string = [sender representedObject];
-        [[NSPasteboard generalPasteboard] declareTypes:@[NSStringPboardType] owner:nil];
+        [[NSPasteboard generalPasteboard] declareTypes:@[ NSStringPboardType ] owner:nil];
         [[NSPasteboard generalPasteboard] setString:string forType:NSStringPboardType];
     }
 }

@@ -61,6 +61,7 @@ typedef NS_ENUM(OSStatus, LGAutoPkgRepoStatus) {
  *  @param sender Object sending the message. If the sender is set to nil, it will only refresh every 5-10 minuets. You should set this to nil if using in a table view.
  */
 - (IBAction)checkRepoStatus:(id)sender;
+- (void)getRepoStatus:(void (^)(LGAutoPkgRepoStatus status))reply;
 
 - (void)install:(void (^)(NSError *))reply;
 - (void)remove:(void (^)(NSError *))reply;
@@ -70,7 +71,7 @@ typedef NS_ENUM(OSStatus, LGAutoPkgRepoStatus) {
  *
  *  @param reply block executed upon completion.
  */
-- (void)updateRepo:(void (^)(NSError *error))reply;
+- (void)update:(void (^)(NSError *error))reply;
 
 /**
  *  Open the GitHub commit page for the repo.
