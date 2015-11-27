@@ -87,4 +87,12 @@ typedef NS_ENUM(OSStatus, LGAutoPkgRepoStatus) {
  */
 + (void)commonRepos:(void (^)(NSArray *repos))reply;
 
+/**
+ *  Check if the repo has a valid clone URL specified.
+ *
+ *  @param urlString url string
+ *
+ *  @return YES if the repo can be cloned, NO otherwise
+ */
++ (BOOL)stringIsValidRepoURL:(NSString *)urlString;
 @end

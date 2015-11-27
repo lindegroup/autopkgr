@@ -212,13 +212,13 @@
     NSString *string = [note.object stringValue];
 
     if([note.object isEqualTo:_repoURLToAdd]){
-        _addRepoButton.enabled = [string hasPrefix:@"http"];
+        _addRepoButton.enabled = [LGAutoPkgRepo stringIsValidRepoURL:string];
     }
 
     else if([note.object isEqualTo:_recipeSearchTF]){
         _recipeSearchButton.enabled = string.length;
     }
-
 }
+
 
 @end
