@@ -32,7 +32,7 @@ DEPENDENCIES:
   - AHProxySettings (~> 0.1.1)
   - mailcore2-osx (~> 0.5)
   - RNCryptor (~> 2.2)
-  - Sparkle (= 1.8)
+  - Sparkle (= 1.8.0)
   - XMLDictionary (~> 1.4)
 
 EXTERNAL SOURCES:
@@ -54,4 +54,4 @@ SPEC CHECKSUMS:
   Sparkle: 3adb45d38bcdf80caf505f2b4cd693031db70835
   XMLDictionary: f9f51601ba76678b594ab485f2b00ec1fed23724
 
-COCOAPODS: 0.38.2
+COCOAPODS: 0.39.0
