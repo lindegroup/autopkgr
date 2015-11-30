@@ -264,12 +264,21 @@ static NSString *const kLGAutoPkgRecipeCurrentStatusKey = @"currentStatus";
         _runTaskDictionary = [[NSMutableDictionary alloc] init];
     }
 
-
+    __block BOOL runMakeCatalogs = NO;
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"SELF.Identifier contains[cd] '.munki'"];
     NSMutableArray* recipes = [[NSMutableArray alloc] initWithCapacity:recipeRows.count];
+
     [recipeRows enumerateIndexesUsingBlock:^(NSUInteger idx, BOOL *stop) {
         LGAutoPkgRecipe *recipe = _searchedRecipes[idx];
         [recipes addObject:recipe.Identifier];
+        if([predicate evaluateWithObject:recipe]){
+            runMakeCatalogs = YES;
+        }
     }];
+
+    if (runMakeCatalogs){
+        [recipes addObject:@"MakeCatalogs.munki"];
+    }
 
     LGAutoPkgTask *runTask = [LGAutoPkgTask runRecipesTask:recipes];
     [recipes enumerateObjectsUsingBlock:^(id  recipes, NSUInteger idx, BOOL * _Nonnull stop) {
