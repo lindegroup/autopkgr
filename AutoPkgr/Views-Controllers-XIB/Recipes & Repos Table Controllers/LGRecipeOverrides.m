@@ -37,7 +37,13 @@ const CFStringRef kUTTypePropertyList = CFSTR("com.apple.property-list");
 
     NSString *recipeName = recipe.Name;
     NSString *recipeIdentifier = recipe.Identifier;
-    NSString *overrideName = [self promptForOverrideName:recipeName];
+
+    NSString *overrideName = nil;
+    if ([recipe.Name isEqualToString:@"MakeCatalogs.munki"]){
+        overrideName = recipe.Name;
+    } else {
+        overrideName = [self promptForOverrideName:recipeName];
+    }
 
     if (overrideName && recipeIdentifier) {
         DevLog(@"Creating override for %@", recipeName);

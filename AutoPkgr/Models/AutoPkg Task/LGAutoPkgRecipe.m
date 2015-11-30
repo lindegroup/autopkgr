@@ -24,6 +24,7 @@
 #import <glob.h>
 
 // MakeCatalogs recipe identifier string
+static NSString *const kLGMakeCatalogsRecipeName = @"MakeCatalogs.munki";
 static NSString *const kLGMakeCatalogsIdentifier = @"com.github.autopkg.munki.makecatalogs";
 
 // Dispatch queue for enabling / disabling recipe
@@ -175,7 +176,7 @@ static NSMutableDictionary *_identifierURLStore = nil;
 {
     /* We automatically handle the enabling of the makecatalogs recipe
      * so don't do anything if that's the one getting enabled. */
-    if ([self.Identifier isEqualToString:kLGMakeCatalogsIdentifier]) {
+    if ([self.Name isEqualToString:kLGMakeCatalogsRecipeName]) {
         return;
     }
 
@@ -196,8 +197,9 @@ static NSMutableDictionary *_identifierURLStore = nil;
         }
 
         /* Start by removing any instance of makecatalogs from the list, it's added back in later */
+         NSPredicate *makeCatalogPredicate = [NSPredicate predicateWithFormat:@"SELF contains[cd] 'MakeCatalogs'"];
         [currentList enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-            if ([obj isEqualToString:kLGMakeCatalogsIdentifier]) {
+            if ([makeCatalogPredicate evaluateWithObject:obj]) {
                 [currentList removeObject:obj];
             }
         }];
@@ -214,7 +216,7 @@ static NSMutableDictionary *_identifierURLStore = nil;
          * now listed. If so re-add the makecatalogs recipe. */
         [currentList enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
             if ([obj rangeOfString:@"munki"].location != NSNotFound ) {
-                [currentList addObject:kLGMakeCatalogsIdentifier];
+                [currentList addObject:kLGMakeCatalogsRecipeName];
                 *stop = YES;
             }
         }];

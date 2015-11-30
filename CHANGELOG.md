@@ -10,13 +10,20 @@ All notable changes to this project will be documented in this file. This projec
 - Built-in integration with FileWave version 10 and higher, via the new [FileWaveImporter](https://github.com/autopkg/filewave) processor. (#339, with thanks to @johncclayton)
 - Ability to switch between multiple recipe lists. (#263)
 - Ability to specify pre/post processors. (#346, #384)
-
-
+- MakeCatalogs.munki will be included when .munki recipes are run from the contextual menu.
+ 
 ### Fixed
 - Fixed a bug that caused progress spinners to incorrectly display on multiple recipes if they share the same name. (#447)
 - Fixed a minor counting error in log output. (#446)
 - Fixed crash that occurred if Git was not reinstalled after an OS X upgrade. (#458)
 - Fixed a bug that resulted in unreliable "Run This Only Recipe Only" selection (#456)
+- XPC Connections to helper tool are now explicitly closed on process completion.
+
+### Changed
+- MakeCatalogs.munki recipe is now added by name rather than by identifier. An override with the same name will now be used.
+- General improvements to integration performance, no longer makes duplicate GitHub API calls when "releases" don't exists.
+- Redesign JSS Importer Integration view. 
+- JSS Configuration now supports CDP and Local distribution points. (#463, )
 
 ## [1.3.2] - 2015-09-16
 
