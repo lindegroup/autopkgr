@@ -4,26 +4,30 @@ All notable changes to this project will be documented in this file. This projec
 
 ## [Unreleased][unreleased]
 
+## [1.4] - pending release
+
 ### Added
 - Ability to select multiple repos and then update, add, or remove the selected repos. (#434)
 - Ability to select multiple recipes and then run, enable, or disable the selected recipes. (#434)
-- Built-in integration with FileWave version 10 and higher, via the new [FileWaveImporter](https://github.com/autopkg/filewave) processor. (#339, with thanks to @johncclayton)
+- Built-in integration with FileWave version 10 and higher, via the new [FileWaveImporter](https://github.com/autopkg/filewave) processor. (#339, with thanks to @johncclayton.)
 - Ability to switch between multiple recipe lists. (#263)
 - Ability to specify pre/post processors. (#346, #384)
 - MakeCatalogs.munki will be included when .munki recipes are run from the contextual menu.
- 
+
 ### Fixed
 - Fixed a bug that caused progress spinners to incorrectly display on multiple recipes if they share the same name. (#447)
 - Fixed a minor counting error in log output. (#446)
 - Fixed crash that occurred if Git was not reinstalled after an OS X upgrade. (#458)
-- Fixed a bug that resulted in unreliable "Run This Only Recipe Only" selection (#456)
-- XPC Connections to helper tool are now explicitly closed on process completion.
+- Fixed a bug that resulted in unreliable "Run This Only Recipe Only" selection. (#456)
+- XPC connections to helper tool are now explicitly closed on process completion.
 
 ### Changed
-- MakeCatalogs.munki recipe is now added by name rather than by identifier. An override with the same name will now be used.
-- General improvements to integration performance, no longer makes duplicate GitHub API calls when "releases" don't exists.
-- Redesign JSS Importer Integration view. 
-- JSS Configuration now supports CDP and Local distribution points. (#463, )
+- MakeCatalogs.munki recipe is now added by name rather than by identifier. An override with the same name will now be used. (Hat tip to @grahampugh.)
+- General improvements to integration performance. No longer makes duplicate GitHub API calls when "releases" don't exist.
+- Totally redesigned and simplified the JSSImporter settings sheet.
+- JSSImporter configuration UI now supports cloud distribution points (CDP) and local distribution points. (#463)
+- Updated "AutoPkgr" link in footer of notification emails to point to [AutoPkgr information page](http://www.lindegroup.com/autopkgr) instead of [GitHub repo](https://github.com/lindegroup/autopkgr).
+
 
 ## [1.3.2] - 2015-09-16
 
@@ -351,7 +355,8 @@ All notable changes to this project will be documented in this file. This projec
 - Initial public release of AutoPkgr.
 
 
-[unreleased]: https://github.com/lindegroup/autopkgr/compare/v1.3.2...HEAD
+[unreleased]: https://github.com/lindegroup/autopkgr/compare/v1.4...HEAD
+[1.4]: https://github.com/lindegroup/autopkgr/compare/v1.3.2...v1.4
 [1.3.2]: https://github.com/lindegroup/autopkgr/compare/v1.3.1...v1.3.2
 [1.3.1]: https://github.com/lindegroup/autopkgr/compare/v1.3...v1.3.1
 [1.3]: https://github.com/lindegroup/autopkgr/compare/v1.2.3...v1.3
