@@ -31,18 +31,6 @@
 #define LGINTEGRATION_SUBCLASS
 #endif
 
-// Dispatch queue for synchronizing infoHandler setter and refresh.
-static dispatch_queue_t autopkgr_integration_synchronizer_queue()
-{
-    static dispatch_queue_t dispatch_queue;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        dispatch_queue = dispatch_queue_create("com.lindegroup.autopkgr.integration.synchronizer.queue", DISPATCH_QUEUE_SERIAL);
-    });
-
-    return dispatch_queue;
-}
-
 NSString *const kLGNotificationIntegrationStatusDidChange = @"com.lindegroup.autopkgr.notification.integration.status.did.change";
 
 @interface LGIntegration () <LGIntegrationSubclass>
@@ -85,6 +73,18 @@ void subclassMustConformToProtocol(id className)
 @synthesize installedVersion = _installedVersion;
 @synthesize remoteVersion = _remoteVersion;
 @synthesize gitHubInfo = _gitHubInfo;
+
+// Dispatch queue for synchronizing infoHandler setter and refresh.
++ (dispatch_queue_t )synchronizerQueue
+{
+    NSString *queueName = quick_formatString(@"com.lindegroup.autopkgr.integration.%@.synchronizer.queue", self.className);
+    static dispatch_queue_t dispatch_queue;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        dispatch_queue = dispatch_queue_create(queueName.UTF8String, DISPATCH_QUEUE_SERIAL);
+    });
+    return dispatch_queue;
+}
 
 #pragma mark - Protocol conform check
 + (void)initialize
@@ -268,7 +268,7 @@ void subclassMustConformToProtocol(id className)
 
     _isRefreshing = YES;
     void (^updateInfoHandlers)() = ^() {
-        dispatch_async(autopkgr_integration_synchronizer_queue(), ^{
+        dispatch_async([[self class] synchronizerQueue], ^{
             self.info = [[LGIntegrationInfo alloc] initWithIntegration:self];
             if (reply || _infoUpdateHandler) {
                 dispatch_async(dispatch_get_main_queue(), ^{
@@ -407,8 +407,6 @@ void subclassMustConformToProtocol(id className)
         [self didCompleteInstallAction:sender error:error];
     } else if (flags & kLGIntegrationTypeInstalledPackage) {
         NSString *name = [[self class] name];
-        LGIntegrationTypeFlags typeFlags = [[self class] typeFlags];
-
         NSString *installMessage = [NSString stringWithFormat:@"Installing %@...", [[self class] name]];
         [self.progressDelegate startProgressWithMessage:installMessage];
 
