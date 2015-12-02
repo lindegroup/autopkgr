@@ -32,6 +32,8 @@
 #import "LGTableView.h"
 #import "LGTestPort.h"
 
+#import "NSTableView+Resizing.h"
+
 #pragma mark - Class constants
 
 @interface LGJSSImporterIntegrationView () <NSTextFieldDelegate>
@@ -167,8 +169,12 @@
     return _distributionPoints.count;
 }
 
+
 - (id)tableView:(NSTableView *)tableView objectValueForTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row
 {
+    if ((row+1) == tableView.numberOfRows){
+        [tableView resized_HeightToFit];
+    }
     return [_distributionPoints[row] description];
 }
 

@@ -20,6 +20,14 @@
 #import <Cocoa/Cocoa.h>
 
 @interface NSTableView (Resizing)
+
+/**
+ *  Animated Rezising of a table view to accomidate all rows if possible. It will max out when the window is 90% of the screen.
+ *  @warning Calling this in in the data source's `-numberOfRowsInTableView`will cause an exception.
+ *  @note For this to work you the table view must have a NSLayoutAttributeHeight constratint set on the tableView.
+ */
+- (void)resized_HeightToFit;
+
 /**
  *  Animated Rezising of a table view to a specific height
  *  @note For this to work you the table view must have a NSLayoutAttributeHeight constratint set on the tableView.
@@ -28,10 +36,25 @@
 - (void)resized_Height:(NSInteger)height;
 
 /**
+ *  Animated Rezising of a table view to a specific height
+ *  @note For this to work you the table view must have a NSLayoutAttributeHeight constratint set on the tableView.
+ *  @param height New height of the tableView
+ *  @param duration how long the animation lasts.
+ */
+- (void)resized_Height:(NSInteger)height duration:(NSTimeInterval)duration;
+
+/**
  *  Animated Rezising of a table view to a specific width
  *  @note For this to work you the table view must have a NSLayoutAttributeWith constratint set on the tableView.
  *  @param height New width of the tableView
  */
 - (void)resized_Width:(NSInteger)width;
 
+/**
+ *  Animated Rezising of a table view to a specific width
+ *  @note For this to work you the table view must have a NSLayoutAttributeWith constratint set on the tableView.
+ *  @param height New width of the tableView
+ *  @param duration how long the animation lasts.
+ */
+- (void)resized_Width:(NSInteger)width duration:(NSTimeInterval)duration;
 @end

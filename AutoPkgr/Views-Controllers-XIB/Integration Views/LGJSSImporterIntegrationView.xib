@@ -61,7 +61,7 @@
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" columnReordering="NO" multipleSelection="NO" autosaveColumns="NO" id="Z5b-9F-2lZ" customClass="LGTableView">
-                                            <rect key="frame" x="0.0" y="0.0" width="467" height="73"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="467" height="19"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <animations/>
                                             <size key="intercellSpacing" width="3" height="2"/>
@@ -91,6 +91,9 @@
                                     <animations/>
                                     <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 </clipView>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="75" id="s7j-zM-rKd"/>
+                                </constraints>
                                 <animations/>
                                 <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="YES" id="gjk-0k-O2j">
                                     <rect key="frame" x="-100" y="-100" width="467" height="16"/>

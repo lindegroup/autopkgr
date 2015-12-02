@@ -127,13 +127,10 @@
 #pragma mark - Table View delegate & dataSource
 - (NSInteger)numberOfRowsInTableView:(NSTableView *)tableView {
     _tableView = tableView;
-    tableView.backgroundColor = [NSColor clearColor];
     NSInteger count = _dpRows.count;
-    [tableView resized_Height:(count*32)];
+    [tableView resized_Height:(count * tableView.rowHeight) * 1.1];
     return count;
 };
-
-
 
 - (NSView *)tableView:(NSTableView *)tableView viewForTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row {
 
