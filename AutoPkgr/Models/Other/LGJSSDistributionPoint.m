@@ -9,6 +9,10 @@
 #import "LGJSSDistributionPoint.h"
 #import "LGJSSImporterIntegration.h"
 #import "LGLogger.h"
+#import "LGHTTPRequest.h"
+#import "LGServerCredentials.h"
+
+#import "NSArray+mapped.h"
 
 # pragma mark - Distribution Point Keys
 NSString *const kLGJSSDistPointNameKey = @"name";
@@ -438,4 +442,49 @@ NSDictionary *keyInfoDict()
     return repos.copy;
 }
 
++ (void)getFromRemote:(void (^)(NSArray<LGJSSDistributionPoint *> *, NSError *))distPoints {
+    LGHTTPRequest *request = [[LGHTTPRequest alloc] init];
+    LGJSSImporterDefaults *defaults = [[LGJSSImporterDefaults alloc] init];
+
+    LGHTTPCredential *credentials = [[LGHTTPCredential alloc] initWithServer:defaults.JSSURL
+                                                                        user:defaults.JSSAPIUsername
+                                                                    password:defaults.JSSAPIPassword];
+
+    credentials.sslTrustSetting = defaults.JSSVerifySSL ? kLGSSLTrustOSImplicitTrust : kLGSSLTrustUserConfirmedTrust;
+
+    [request retrieveDistributionPoints2:credentials
+                                   reply:^(NSDictionary *dp, NSError *error) {
+                                       dispatch_async(dispatch_get_main_queue(), ^{
+                                           distPoints([self normalizeDistributionPoints:dp], error);
+                                       });
+                                   }];
+}
+
+#pragma mark - Normalize
++ (NSArray<LGJSSDistributionPoint *> *)normalizeDistributionPoints:(NSDictionary *)distributionPoints
+{
+    id distPoints;
+
+    // If the object was parsed as an XML object the key we're looking for is
+    // distribution_point. If the object is a JSON object the key is distribution_points
+    if ((distPoints = distributionPoints[@"distribution_point"]) == nil && (distPoints = distributionPoints[@"distribution_points"]) == nil) {
+        return nil;
+    }
+
+    NSArray *dictArray;
+    // If there is just one ditribution point distPoint will be a dictionary entry
+    // and we need to normalize it here by wrapping it in an array.
+    if ([distPoints isKindOfClass:[NSDictionary class]]) {
+        dictArray = @[ distPoints ];
+    }
+    // If there are more then one entries distPoint will be an array, so pass it along.
+    else if ([distPoints isKindOfClass:[NSArray class]]) {
+        dictArray = distPoints;
+    }
+
+    return [dictArray mapObjectsUsingBlock:^LGJSSDistributionPoint *(NSDictionary *obj, NSUInteger idx) {
+        return [[LGJSSDistributionPoint alloc] initWithDictionary:obj];
+    }];
+
+}
 @end

@@ -44,6 +44,8 @@ extern const NSString *kOptional;
 
 + (NSArray<LGJSSDistributionPoint *> *)enabledDistributionPoints;
 
++ (void)getFromRemote:(void(^)(NSArray<LGJSSDistributionPoint *> *distPoints, NSError *error))distPoints;
+
 // The Dictionary representation of the Distribution Point object, sutiable for writing to defaults.
 @property (copy, readonly) NSDictionary *representation;
 @property (copy) NSString *name;

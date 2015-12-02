@@ -80,7 +80,7 @@
 
     // We need to do this dance because it seems that when the class is initialized
     // the NSTextFields are nil until the window is loaded.
-    
+
     if (_distPoint) {
         _distPointTypePopupBT.hidden = YES;
         _distPointTypeLabel.hidden = YES;
@@ -101,6 +101,8 @@
     // Save distpoint to defaults...
     if ([_distPoint save]) {
         [self closePanel:nil];
+    } else {
+        [self hilightRequiredTypes];
     }
 }
 
@@ -110,8 +112,7 @@
     [self chooseDistributionPointType:sender.selectedTag];
 }
 
-
-- (void)chooseDistributionPointType:(JSSDistributionPointType )type
+- (void)chooseDistributionPointType:(JSSDistributionPointType)type
 {
     NSDictionary *dict = [LGJSSDistributionPoint keyInfoDict][@(type)];
     _dpRows = [[NSMutableOrderedSet alloc] initWithArray:dict[kRequired]];
@@ -125,14 +126,16 @@
 }
 
 #pragma mark - Table View delegate & dataSource
-- (NSInteger)numberOfRowsInTableView:(NSTableView *)tableView {
+- (NSInteger)numberOfRowsInTableView:(NSTableView *)tableView
+{
     _tableView = tableView;
     NSInteger count = _dpRows.count;
     [tableView resized_Height:(count * tableView.rowHeight) * 1.1];
     return count;
 };
 
-- (NSView *)tableView:(NSTableView *)tableView viewForTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row {
+- (NSView *)tableView:(NSTableView *)tableView viewForTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row
+{
 
     LGJSSDistPointTableViewCell *view = [tableView makeViewWithIdentifier:tableColumn.identifier owner:self];
 
@@ -140,24 +143,22 @@
         NSString *key = _dpRows[row];
         view.textField.stringValue = [[key stringByReplacingOccurrencesOfString:@"_" withString:@" "].capitalizedString stringByAppendingString:@":"];
 
-        BOOL changeToSecureText = [key isEqualToString:kLGJSSDistPointPasswordKey] &&
-        ![view.input isKindOfClass:[NSSecureTextField class]];
+        BOOL changeToSecureText = [key isEqualToString:kLGJSSDistPointPasswordKey] && ![view.input isKindOfClass:[NSSecureTextField class]];
         BOOL changeToClearText = ![key isEqualToString:kLGJSSDistPointPasswordKey] &&
-        [view.input isKindOfClass:[NSSecureTextField class]];
+                                 [view.input isKindOfClass:[NSSecureTextField class]];
 
         if (changeToSecureText || changeToClearText) {
             // Swap out a secure text field for the regular text field.
             NSRect r = view.input.frame;
 
             // The old input y origin isn't translating correctly so pad it by -3.
-            NSRect frame = changeToSecureText ? NSMakeRect(r.origin.x, (r.origin.y - 3), r.size.width , r.size.height) : r;
+            NSRect frame = changeToSecureText ? NSMakeRect(r.origin.x, (r.origin.y - 3), r.size.width, r.size.height) : r;
 
-            Class textField = changeToSecureText ?
-            [NSSecureTextField class] : [NSTextField class];
+            Class textField = changeToSecureText ? [NSSecureTextField class] : [NSTextField class];
 
             id input = [[textField alloc] initWithFrame:frame];
-
             [view.input removeFromSuperview];
+
             [view addSubview:input];
             [view setInput:input];
         }
@@ -170,9 +171,9 @@
             [_distPoint setValue:newVal forKey:key];
         }];
 
-        if(_distPoint){
+        if (_distPoint) {
             NSString *string = [_distPoint valueForKey:key];
-            if (string.length){
+            if (string.length) {
                 view.input.stringValue = string;
             }
         }
@@ -180,7 +181,7 @@
     return view;
 }
 
-# pragma mark - Sheet
+#pragma mark - Sheet
 - (void)windowWillClose:(NSNotification *)notification
 {
     [NSApp endSheet:self.window];
@@ -192,7 +193,8 @@
 }
 
 #pragma mark - Util
-- (void)populatePopupButton:(NSPopUpButton *)button {
+- (void)populatePopupButton:(NSPopUpButton *)button
+{
     NSMutableDictionary *keyInfoDict = [[LGJSSDistributionPoint keyInfoDict] mutableCopy];
 
     // Enumerate over the enabled dict to see if there are any dp types
@@ -200,19 +202,20 @@
     NSArray *enabled = [LGJSSDistributionPoint enabledDistributionPoints];
     [enabled enumerateObjectsUsingBlock:^(LGJSSDistributionPoint *dp, NSUInteger idx, BOOL *stop) {
         switch (dp.type) {
-            case kLGJSSTypeJDS:
-            case kLGJSSTypeCDP:
-            case kLGJSSTypeLocal: {
-                [keyInfoDict removeObjectForKey:@(dp.type)];
-                break;
-            }
-            default:break;
+        case kLGJSSTypeJDS:
+        case kLGJSSTypeCDP:
+        case kLGJSSTypeLocal: {
+            [keyInfoDict removeObjectForKey:@(dp.type)];
+            break;
+        }
+        default:
+            break;
         }
     }];
 
     [keyInfoDict enumerateKeysAndObjectsUsingBlock:^(NSNumber *key, NSDictionary *obj, BOOL *stop) {
         NSString *typeString = obj[kTypeString];
-        if(!typeString) {
+        if (!typeString) {
             return;
         }
 
@@ -222,41 +225,70 @@
     }];
 }
 
+- (void)hilightRequiredTypes
+{
+    NSDictionary *redDict = @{
+        NSForegroundColorAttributeName : [NSColor redColor],
+        NSFontAttributeName : [NSFont systemFontOfSize:[NSFont systemFontSize]],
+    };
 
-- (NSDictionary *)placeholderDictForType:(JSSDistributionPointType)type {
+    NSDictionary *grayDict = @{
+        NSForegroundColorAttributeName : [NSColor grayColor],
+        NSFontAttributeName : [NSFont systemFontOfSize:[NSFont systemFontSize]],
+    };
+
+    NSArray *required = [LGJSSDistributionPoint keyInfoDict][@(_distPoint.type)][kRequired];
+
+    [_tableView enumerateAvailableRowViewsUsingBlock:^(__kindof NSTableRowView *rowView, NSInteger row) {
+        NSTextField *input = [(LGJSSDistPointTableViewCell *)rowView.subviews.firstObject input];
+        NSString *identifier = input.identifier;
+
+        NSString *string = [[input.cell placeholderAttributedString] string];
+        if (!string) {
+            string = [input.cell placeholderString];
+        }
+        BOOL missingRequired = ([required containsObject:identifier] && !input.stringValue.length);
+        NSAttributedString *colorString = [[NSMutableAttributedString alloc] initWithString:string
+                                                                                 attributes:missingRequired ? redDict : grayDict];
+        [[input cell] setPlaceholderAttributedString:colorString];
+    }];
+}
+
+- (NSDictionary *)placeholderDictForType:(JSSDistributionPointType)type
+{
     NSString *port = @"";
     NSString *url = @"";
     NSString *label = @"Distribution Point";
     NSString *share = @"CasperShare";
     switch (type) {
-        case kLGJSSTypeAFP: {
-            port = @"548 (optional)";
-            url = @"afp://casper.pretendo.com";
-            break;
-        }
-        case kLGJSSTypeSMB: {
-            port = @"139 or 445 (optional)";
-            url = @"smb://casper.pretendo.com";
-            break;
-        }
-        case kLGJSSTypeLocal: {
-            label = @"Mount Point";
-            share = @"JAMFdistrib";
-            break;
-        }
-        default: {
-            break;
-        }
+    case kLGJSSTypeAFP: {
+        port = @"548 (optional)";
+        url = @"afp://casper.pretendo.com";
+        break;
     }
-    return @{kLGJSSDistPointPortKey: port,
-             kLGJSSDistPointURLKey: url,
-             kLGJSSDistPointNameKey: label,
-             kLGJSSDistPointSharePointKey: share,
-             kLGJSSDistPointMountPointKey: @"/Users/Shared/JAMFdistrib",
-             kLGJSSDistPointUserNameKey: @"rwuser",
-             kLGJSSDistPointWorkgroupDomainKey: @"WORKGROUP",
-             kLGJSSDistPointPasswordKey: @"Password",
-             };
+    case kLGJSSTypeSMB: {
+        port = @"139 or 445 (optional)";
+        url = @"smb://casper.pretendo.com";
+        break;
+    }
+    case kLGJSSTypeLocal: {
+        label = @"Mount Point";
+        share = @"JAMFdistrib";
+        break;
+    }
+    default: {
+        break;
+    }
+    }
+    return @{ kLGJSSDistPointPortKey : port,
+              kLGJSSDistPointURLKey : url,
+              kLGJSSDistPointNameKey : label,
+              kLGJSSDistPointSharePointKey : share,
+              kLGJSSDistPointMountPointKey : @"/Users/Shared/JAMFdistrib",
+              kLGJSSDistPointUserNameKey : @"rwuser",
+              kLGJSSDistPointWorkgroupDomainKey : @"WORKGROUP",
+              kLGJSSDistPointPasswordKey : @"Password",
+    };
 }
 
 @end

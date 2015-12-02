@@ -21,7 +21,7 @@
 #import <objc/runtime.h>
 
 typedef void (^privateTextChangeBlock)(NSString *);
-typedef void (^privateCompletionBlock)(void);
+typedef void (^privateCompletionBlock)(NSTextField *);
 
 @interface NSTextField (_changeHandle) <NSTextFieldDelegate>
 @property (copy, nonatomic) privateTextChangeBlock _textChanged;
@@ -58,21 +58,21 @@ typedef void (^privateCompletionBlock)(void);
 
 @implementation NSTextField (changeHandle)
 
-- (instancetype)editingStarted:(void (^)())block
+- (instancetype)editingStarted:(privateCompletionBlock)block
 {
     self._editingStarted = block;
     self.delegate = self;
     return self;
 }
 
-- (instancetype)textChanged:(void (^)(NSString *))block
+- (instancetype)textChanged:(privateTextChangeBlock)block
 {
     self._textChanged = block;
     self.delegate = self;
     return self;
 }
 
-- (instancetype)editingEnded:(void (^)())block
+- (instancetype)editingEnded:(privateCompletionBlock)block
 {
     self._editingEnded = block;
     self.delegate = self;
@@ -91,7 +91,7 @@ typedef void (^privateCompletionBlock)(void);
 {
     privateCompletionBlock pcb = self._editingStarted;
     if (pcb) {
-       pcb();
+        pcb(self);
     }
 }
 
@@ -99,7 +99,7 @@ typedef void (^privateCompletionBlock)(void);
 {
     privateCompletionBlock pcb = self._editingEnded;
     if (pcb) {
-        pcb();
+        pcb(self);
     }
 }
 

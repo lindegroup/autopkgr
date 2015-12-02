@@ -24,16 +24,19 @@ static const NSTimeInterval defaultDuration = 0.2f;
 @implementation NSTableView (Resizing)
 
 #pragma mark - Height
-- (void)resized_HeightToFit {
+- (void)resized_HeightToFit
+{
     NSInteger height = (self.numberOfRows * self.rowHeight) * 1.2;
     [self resized_Height:height];
 }
 
-- (void)resized_Height:(NSInteger)height {
+- (void)resized_Height:(NSInteger)height
+{
     [self resized_Height:height duration:defaultDuration];
 }
 
-- (void)resized_Height:(NSInteger)height duration:(NSTimeInterval)duration {
+- (void)resized_Height:(NSInteger)height duration:(NSTimeInterval)duration
+{
     NSInteger max = ([NSScreen mainScreen].frame.size.height * 0.9);
     if (height > max) {
         height = max;
@@ -42,16 +45,19 @@ static const NSTimeInterval defaultDuration = 0.2f;
 }
 
 #pragma mark - Width
-- (void)resized_Width:(NSInteger)width {
+- (void)resized_Width:(NSInteger)width
+{
     [self resized_Width:width duration:defaultDuration];
 }
 
-- (void)resized_Width:(NSInteger)width duration:(NSTimeInterval)duration {
+- (void)resized_Width:(NSInteger)width duration:(NSTimeInterval)duration
+{
     [self resize_withConstraintAttribute:NSLayoutAttributeHeight size:width duration:duration];
 }
 
 #pragma mark - Base
-- (void)resize_withConstraintAttribute:(NSLayoutAttribute)attribute size:(NSInteger)size duration:(NSTimeInterval)duration{
+- (void)resize_withConstraintAttribute:(NSLayoutAttribute)attribute size:(NSInteger)size duration:(NSTimeInterval)duration
+{
     NSView *superview = self.superview.superview;
     superview.translatesAutoresizingMaskIntoConstraints = NO;
 
@@ -63,6 +69,7 @@ static const NSTimeInterval defaultDuration = 0.2f;
         context.duration = 0.2f;
         context.allowsImplicitAnimation = YES;
         [constraint.animator setConstant:size];
-    } completionHandler: ^{}];
+    } completionHandler:^{
+    }];
 }
 @end

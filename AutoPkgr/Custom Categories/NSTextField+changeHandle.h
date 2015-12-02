@@ -30,7 +30,7 @@
  *
  *  @return self
  */
-- (instancetype)editingStarted:(void (^)())block;
+- (instancetype)editingStarted:(void (^)(NSTextField *))block;
 
 /**
  *  Execute a block when the string value changes
@@ -48,5 +48,5 @@
  *
  *  @return self
  */
-- (instancetype)editingEnded:(void (^)())block;
+- (instancetype)editingEnded:(void (^)(NSTextField *))block;
 @end
