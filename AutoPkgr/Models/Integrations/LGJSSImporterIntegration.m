@@ -25,16 +25,6 @@
 @interface LGJSSImporterIntegration ()<LGIntegrationPackageInstaller, LGIntegrationSharedProcessor>
 @end
 
-# pragma mark - Repo Keys
-NSString *const kLGJSSDistPointNameKey = @"name";
-NSString *const kLGJSSDistPointURLKey = @"URL";
-NSString *const kLGJSSDistPointSharePointKey = @"share_name";
-NSString *const kLGJSSDistPointMountPointKey = @"mount_point";
-NSString *const kLGJSSDistPointPortKey = @"port";
-NSString *const kLGJSSDistPointUserNameKey = @"username";
-NSString *const kLGJSSDistPointPasswordKey = @"password";
-NSString *const kLGJSSDistPointWorkgroupDomainKey = @"domain";
-NSString *const kLGJSSDistPointTypeKey = @"type";
 
 @implementation LGJSSImporterIntegration
 @synthesize installedVersion = _installedVersion;

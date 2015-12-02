@@ -23,14 +23,40 @@
 #import "LGJSSImporterIntegration.h"
 #import "LGAutoPkgr.h"
 
-@interface LGJSSDistributionPointsPrefPanel () <NSWindowDelegate>
+#import "NSTextField+changeHandle.h"
+#import "NSTableView+Resizing.h"
+#import <Quartz/Quartz.h>
 
+#pragma mark - Table View Cell
+@interface LGJSSDistPointTableViewCell : NSTableCellView
+@property (strong, nonatomic) IBOutlet NSTextField *input;
+@end
+
+@implementation LGJSSDistPointTableViewCell
+@end
+
+#pragma mark - Panel
+@interface LGJSSDistributionPointsPrefPanel () <NSWindowDelegate, NSTableViewDataSource, NSTableViewDelegate>
+@property (weak) IBOutlet NSPopUpButton *distPointTypePopupBT;
+@property (weak) IBOutlet NSTextField *distPointTypeLabel;
+
+@property (weak) IBOutlet NSButton *cancelBT;
+@property (weak) IBOutlet NSButton *addBT;
+@property (weak) IBOutlet NSTextField *infoText;
+
+- (IBAction)addDistPoint:(NSButton *)sender;
+- (IBAction)chooseDistPointType:(NSPopUpButton *)sender;
+
+- (IBAction)closePanel:(id)sender;
 @end
 
 @implementation LGJSSDistributionPointsPrefPanel {
     LGJSSDistributionPoint *_distPoint;
+    NSTableView *_tableView;
+    NSMutableOrderedSet *_dpRows;
 }
 
+#pragma mark - Init / Loading
 - (id)init
 {
     return [self initWithWindowNibName:NSStringFromClass([self class])];
@@ -56,155 +82,108 @@
     // the NSTextFields are nil until the window is loaded.
     
     if (_distPoint) {
-        [self populateUI];
+        _distPointTypePopupBT.hidden = YES;
+        _distPointTypeLabel.hidden = YES;
+
+        _cancelBT.hidden = YES;
+        _addBT.title = @"Done";
+        _infoText.stringValue = quick_formatString(@"Edit %@", _distPoint.name ?: @"Distribution Point");
+
+        [self chooseDistributionPointType:_distPoint.type];
     } else {
-        NSMutableDictionary *keyInfoDict = [[LGJSSDistributionPoint keyInfoDict] mutableCopy];
-
-        // Enumerate over the enabled dict to see if there are any dp types
-        // that can only have one instance, and remove them if that is the case.
-        NSArray *enabled = [LGJSSDistributionPoint enabledDistributionPoints];
-        [enabled enumerateObjectsUsingBlock:^(LGJSSDistributionPoint *dp, NSUInteger idx, BOOL *stop) {
-            switch (dp.type) {
-                case kLGJSSTypeJDS:
-                case kLGJSSTypeCDP:
-                case kLGJSSTypeLocal: {
-                    [keyInfoDict removeObjectForKey:@(dp.type)];
-                    break;
-                }
-                default:break;
-            }
-        }];
-
-        [keyInfoDict enumerateKeysAndObjectsUsingBlock:^(NSNumber *key, NSDictionary *obj, BOOL *stop) {
-            NSString *typeString = obj[kTypeString];
-            if(!typeString) {
-                return;
-            }
-            
-            NSMenuItem *item = [[NSMenuItem alloc] initWithTitle:obj[kTypeString] action:nil keyEquivalent:@""];
-            item.tag = key.integerValue;
-            [_distPointTypePopupBT.menu addItem:item];
-        }];
-
+        [self populatePopupButton:_distPointTypePopupBT];
         [self chooseDistPointType:_distPointTypePopupBT];
     }
-}
-
-- (void)populateUI
-{
-    _distPointTypePopupBT.hidden = YES;
-    _distPointTypeLabel.hidden = YES;
-
-    if (_distPoint.type == kLGJSSTypeLocal){
-        _distPointURL.safe_stringValue = _distPoint.mount_point;
-        _distPointName.safe_stringValue = _distPoint.share_name;
-    } else {
-        _distPointName.safe_stringValue = _distPoint.name;
-
-        _distPointUserName.safe_stringValue = _distPoint.username;
-        _distPointPassword.safe_stringValue = _distPoint.password;
-
-        _distPointURL.safe_stringValue = _distPoint.URL;
-        _distPointPort.safe_stringValue = _distPoint.port;
-        _distPointShareName.safe_stringValue = _distPoint.share_name;
-
-        _distPointDomain.safe_stringValue = _distPoint.domain;
-    }
-    _cancelBT.hidden = YES;
-    _addBT.title = @"Done";
-    _infoText.stringValue = quick_formatString(@"Edit %@", _distPoint.name ?: @"Distribution Point");
-
-    [self chooseDistributionPointType:_distPoint.type];
 }
 
 - (void)addDistPoint:(NSButton *)sender
 {
     // Save distpoint to defaults...
-    LGJSSDistributionPoint *distributionPoint = [[LGJSSDistributionPoint alloc] init];
-    if (_distPoint){
-        distributionPoint.typeString = _distPoint.typeString;
-    } else {
-        distributionPoint.typeString = _distPointTypePopupBT.title;
-    }
-    distributionPoint.password = _distPointPassword.safe_stringValue;
-    distributionPoint.username = _distPointUserName.safe_stringValue;
-    distributionPoint.URL = _distPointURL.safe_stringValue;
-    distributionPoint.share_name = _distPointShareName.safe_stringValue;
-    distributionPoint.domain = _distPointDomain.safe_stringValue;
-    distributionPoint.port = _distPointPort.safe_stringValue;
-    distributionPoint.name = _distPointName.safe_stringValue;
-
-    if ([distributionPoint save]) {
+    if ([_distPoint save]) {
         [self closePanel:nil];
-    } else {
-        [self hilightRequiredTypes];
     }
 }
 
 - (IBAction)chooseDistPointType:(NSPopUpButton *)sender
 {
+    _distPoint = [[LGJSSDistributionPoint alloc] initWithType:sender.selectedTag];
     [self chooseDistributionPointType:sender.selectedTag];
 }
 
+
 - (void)chooseDistributionPointType:(JSSDistributionPointType )type
 {
-    NSArray *allTextFields = [self allTextFields];
-    for (NSTextField *t in allTextFields){
-        t.hidden = NO;
-        t.enabled = YES;
+    NSDictionary *dict = [LGJSSDistributionPoint keyInfoDict][@(type)];
+    _dpRows = [[NSMutableOrderedSet alloc] initWithArray:dict[kRequired]];
+    [_dpRows addObjectsFromArray:dict[kOptional]];
+    [_dpRows removeObject:kLGJSSDistPointTypeKey];
+    // When it's set from a JSS, the share name isn't editable either, so pop it here.
+    if (type == kLGJSSTypeFromJSS) {
+        [_dpRows removeObject:kLGJSSDistPointNameKey];
     }
-
-    [_distPointName.cell setPlaceholderString:@"Descriptive Name (optional)"];
-    _distPointDomain.hidden = YES;
-    _distPointDomainLabel.hidden = YES;
-    _distPointURLLabel.stringValue = @"URL";
-
-    switch (type) {
-        case kLGJSSTypeFromJSS: {
-            for (NSTextField *t in allTextFields){t.hidden = YES;}
-            _distPointPassword.hidden = NO;
-            _distPointPasswordLabel.hidden = NO;
-            break;
-        }
-        case kLGJSSTypeAFP: {
-            [_distPointPort.cell setPlaceholderString:@"548 (optional)"];
-            [_distPointURL.cell setPlaceholderString:@"afp://casper.yourcompany.example"];
-            break;
-        }
-        case kLGJSSTypeSMB: {
-            _distPointDomain.hidden = NO;
-            [_distPointDomain.cell setPlaceholderString:@"WORKGROUP (optional)"];
-
-            _distPointDomainLabel.hidden = NO;
-            [_distPointPort.cell setPlaceholderString:@"139 or 445 (optional)"];
-            [_distPointURL.cell setPlaceholderString:@"smb://casper.yourcompany.example"];
-            break;
-        }
-        case kLGJSSTypeJDS:
-        case kLGJSSTypeCDP: {
-            for (NSButton *b in allTextFields){b.hidden = YES;}
-            break;
-        }
-        case kLGJSSTypeLocal: {
-            _distPointURLLabel.stringValue = @"Mount Point";
-            [_distPointURL.cell setPlaceholderString:@"/Path/To/Mount"];
-
-            _distPointUserName.hidden = YES;
-            _distPointUserNameLabel.hidden = YES;
-
-            _distPointPassword.hidden = YES;
-            _distPointPasswordLabel.hidden = YES;
-
-            _distPointShareName.hidden = YES;
-            _distPointShareNameLabel.hidden = YES;
-
-            _distPointPort.hidden = YES;
-            _distPointPortLabel.hidden = YES;
-            break;
-        }
-    }
+    [_tableView reloadData];
 }
 
+#pragma mark - Table View delegate & dataSource
+- (NSInteger)numberOfRowsInTableView:(NSTableView *)tableView {
+    _tableView = tableView;
+    tableView.backgroundColor = [NSColor clearColor];
+    NSInteger count = _dpRows.count;
+    [tableView resized_Height:(count*32)];
+    return count;
+};
+
+
+
+- (NSView *)tableView:(NSTableView *)tableView viewForTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row {
+
+    LGJSSDistPointTableViewCell *view = [tableView makeViewWithIdentifier:tableColumn.identifier owner:self];
+
+    if ([view.identifier isEqualToString:@"main"]) {
+        NSString *key = _dpRows[row];
+        view.textField.stringValue = [[key stringByReplacingOccurrencesOfString:@"_" withString:@" "].capitalizedString stringByAppendingString:@":"];
+
+        BOOL changeToSecureText = [key isEqualToString:kLGJSSDistPointPasswordKey] &&
+        ![view.input isKindOfClass:[NSSecureTextField class]];
+        BOOL changeToClearText = ![key isEqualToString:kLGJSSDistPointPasswordKey] &&
+        [view.input isKindOfClass:[NSSecureTextField class]];
+
+        if (changeToSecureText || changeToClearText) {
+            // Swap out a secure text field for the regular text field.
+            NSRect r = view.input.frame;
+
+            // The old input y origin isn't translating correctly so pad it by -3.
+            NSRect frame = changeToSecureText ? NSMakeRect(r.origin.x, (r.origin.y - 3), r.size.width , r.size.height) : r;
+
+            Class textField = changeToSecureText ?
+            [NSSecureTextField class] : [NSTextField class];
+
+            id input = [[textField alloc] initWithFrame:frame];
+
+            [view.input removeFromSuperview];
+            [view addSubview:input];
+            [view setInput:input];
+        }
+
+        view.input.placeholderString = [self placeholderDictForType:_distPointTypePopupBT.selectedTag][key];
+        view.input.identifier = key;
+        view.input.refusesFirstResponder = NO;
+
+        [view.input textChanged:^(NSString *newVal) {
+            [_distPoint setValue:newVal forKey:key];
+        }];
+
+        if(_distPoint){
+            NSString *string = [_distPoint valueForKey:key];
+            if (string.length){
+                view.input.stringValue = string;
+            }
+        }
+    }
+    return view;
+}
+
+# pragma mark - Sheet
 - (void)windowWillClose:(NSNotification *)notification
 {
     [NSApp endSheet:self.window];
@@ -215,85 +194,72 @@
     [NSApp endSheet:self.window];
 }
 
-#pragma mark - Utility
-- (void)hilightRequiredTypes
-{
-    NSDictionary *redDict = @{
-        NSForegroundColorAttributeName : [NSColor redColor],
-        NSFontAttributeName : [NSFont systemFontOfSize:[NSFont systemFontSize]],
-    };
+#pragma mark - Util
+- (void)populatePopupButton:(NSPopUpButton *)button {
+    NSMutableDictionary *keyInfoDict = [[LGJSSDistributionPoint keyInfoDict] mutableCopy];
 
-    NSDictionary *grayDict = @{
-        NSForegroundColorAttributeName : [NSColor grayColor],
-        NSFontAttributeName : [NSFont systemFontOfSize:[NSFont systemFontSize]],
-    };
-
-    for (NSTextField *type in [self allTextFields]) {
-        if (!type.stringValue.length) {
-            NSString *string = [[type.cell placeholderAttributedString] string];
-            if (!string) {
-                string = [type.cell placeholderString] ;
+    // Enumerate over the enabled dict to see if there are any dp types
+    // that can only have one instance, and remove them if that is the case.
+    NSArray *enabled = [LGJSSDistributionPoint enabledDistributionPoints];
+    [enabled enumerateObjectsUsingBlock:^(LGJSSDistributionPoint *dp, NSUInteger idx, BOOL *stop) {
+        switch (dp.type) {
+            case kLGJSSTypeJDS:
+            case kLGJSSTypeCDP:
+            case kLGJSSTypeLocal: {
+                [keyInfoDict removeObjectForKey:@(dp.type)];
+                break;
             }
-
-            NSMutableAttributedString *grayString = [[NSMutableAttributedString alloc] initWithString:string attributes:grayDict];
-
-            [[type cell] setPlaceholderAttributedString:grayString];
+            default:break;
         }
-    }
+    }];
 
-    for (NSTextField *type in [self requiredForType]) {
-        NSString *string = [[type.cell placeholderAttributedString] string];
-        if (!string) {
-            string = [type.cell placeholderString];
+    [keyInfoDict enumerateKeysAndObjectsUsingBlock:^(NSNumber *key, NSDictionary *obj, BOOL *stop) {
+        NSString *typeString = obj[kTypeString];
+        if(!typeString) {
+            return;
         }
 
-        NSMutableAttributedString *redString = [[NSMutableAttributedString alloc] initWithString:string attributes:redDict];
-
-        [[type cell] setPlaceholderAttributedString:redString];
-    }
+        NSMenuItem *item = [[NSMenuItem alloc] initWithTitle:obj[kTypeString] action:nil keyEquivalent:@""];
+        item.tag = key.integerValue;
+        [button.menu addItem:item];
+    }];
 }
 
-- (NSArray *)requiredForType
-{
-    JSSDistributionPointType type = _distPointPassword.selectedTag;
+
+- (NSDictionary *)placeholderDictForType:(JSSDistributionPointType)type {
+    NSString *port = @"";
+    NSString *url = @"";
+    NSString *label = @"Distribution Point";
+    NSString *share = @"CasperShare";
     switch (type) {
-        case kLGJSSTypeFromJSS: {
-            return @[_distPointPassword];
+        case kLGJSSTypeAFP: {
+            port = @"548 (optional)";
+            url = @"afp://casper.pretendo.com";
             break;
         }
-        case kLGJSSTypeAFP:
         case kLGJSSTypeSMB: {
-            return @[ _distPointName,
-                      _distPointURL,
-                      _distPointUserName,
-                      _distPointPassword ];
-            break;
-        }
-        case kLGJSSTypeJDS:
-        case kLGJSSTypeCDP: {
+            port = @"139 or 445 (optional)";
+            url = @"smb://casper.pretendo.com";
             break;
         }
         case kLGJSSTypeLocal: {
-            return @[ _distPointName,
-                      _distPointURL,];
+            label = @"Mount Point";
+            share = @"JAMFdistrib";
             break;
         }
         default: {
             break;
         }
     }
-    return @[];
-}
-
-- (NSArray *)allTextFields
-{
-    return @[ _distPointDomain, _distPointDomainLabel,
-              _distPointName, _distPointNameLabel,
-              _distPointPassword, _distPointPasswordLabel,
-              _distPointPort, _distPointPortLabel,
-              _distPointShareName, _distPointShareNameLabel,
-              _distPointURL, _distPointURLLabel,
-              _distPointUserName, _distPointUserNameLabel ];
+    return @{kLGJSSDistPointPortKey: port,
+             kLGJSSDistPointURLKey: url,
+             kLGJSSDistPointNameKey: label,
+             kLGJSSDistPointSharePointKey: share,
+             kLGJSSDistPointMountPointKey: @"/Users/Shared/JAMFdistrib",
+             kLGJSSDistPointUserNameKey: @"rwuser",
+             kLGJSSDistPointWorkgroupDomainKey: @"WORKGROUP",
+             kLGJSSDistPointPasswordKey: @"Password",
+             };
 }
 
 @end

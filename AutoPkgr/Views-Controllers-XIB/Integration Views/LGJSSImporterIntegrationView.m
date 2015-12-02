@@ -118,9 +118,11 @@
 - (IBAction)getDistributionPoints:(id)sender
 {
     LGHTTPRequest *request = [[LGHTTPRequest alloc] init];
+    [sender setEnabled:NO];
     [request retrieveDistributionPoints2:[self jssCredentials]
                                    reply:^(NSDictionary *distributionPoints, NSError *error) {
                                        [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+                                           [sender setEnabled:YES];
                                            if (!error) {
                                                [_jssStatusLight setImage:[NSImage LGStatusAvailable]];
                                            } else if (error) {
@@ -167,12 +169,7 @@
 
 - (id)tableView:(NSTableView *)tableView objectValueForTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row
 {
-    if (_distributionPoints.count < row) {
-        return nil;
-    }
-
-    LGJSSDistributionPoint *distributionPoint = _distributionPoints[row];
-    return distributionPoint.description;
+    return [_distributionPoints[row] description];
 }
 
 - (void)tableView:(NSTableView *)tableView setObjectValue:(id)object forTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row

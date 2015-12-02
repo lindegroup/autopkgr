@@ -26,16 +26,6 @@
 
 @end
 
-extern NSString* const kLGJSSDistPointNameKey;
-extern NSString* const kLGJSSDistPointURLKey;
-extern NSString* const kLGJSSDistPointSharePointKey;
-extern NSString *const kLGJSSDistPointMountPointKey;
-extern NSString* const kLGJSSDistPointPortKey;
-extern NSString* const kLGJSSDistPointUserNameKey;
-extern NSString* const kLGJSSDistPointPasswordKey;
-extern NSString* const kLGJSSDistPointWorkgroupDomainKey;
-extern NSString* const kLGJSSDistPointTypeKey;
-
 #pragma mark - LGDefaults extensions for JSSImporter Interface
 @interface LGJSSImporterDefaults : LGDefaults
 

@@ -17,8 +17,23 @@ typedef NS_OPTIONS(NSInteger, JSSDistributionPointType) {
     kLGJSSTypeLocal = 1 << 5
 };
 
+extern NSString* const kLGJSSDistPointNameKey;
+extern NSString* const kLGJSSDistPointURLKey;
+extern NSString* const kLGJSSDistPointSharePointKey;
+extern NSString *const kLGJSSDistPointMountPointKey;
+extern NSString* const kLGJSSDistPointPortKey;
+extern NSString* const kLGJSSDistPointUserNameKey;
+extern NSString* const kLGJSSDistPointPasswordKey;
+extern NSString* const kLGJSSDistPointWorkgroupDomainKey;
+extern NSString* const kLGJSSDistPointTypeKey;
+
 // Cooresponding type string in keyInfoDict()
 extern const NSString *kTypeString;
+// Key used to indicate the array of required keys for a DP
+extern const NSString *kRequired;
+// Key used to indicate the array of optional keys for a DP
+extern const NSString *kOptional;
+
 
 @interface LGJSSDistributionPoint : NSObject
 // Dictionary to query for type string

@@ -10,6 +10,17 @@
 #import "LGJSSImporterIntegration.h"
 #import "LGLogger.h"
 
+# pragma mark - Distribution Point Keys
+NSString *const kLGJSSDistPointNameKey = @"name";
+NSString *const kLGJSSDistPointURLKey = @"URL";
+NSString *const kLGJSSDistPointSharePointKey = @"share_name";
+NSString *const kLGJSSDistPointMountPointKey = @"mount_point";
+NSString *const kLGJSSDistPointPortKey = @"port";
+NSString *const kLGJSSDistPointUserNameKey = @"username";
+NSString *const kLGJSSDistPointPasswordKey = @"password";
+NSString *const kLGJSSDistPointWorkgroupDomainKey = @"domain";
+NSString *const kLGJSSDistPointTypeKey = @"type";
+
 #pragma mark - Key Dict
 // Key used to indicate the array of required keys for a DP
 const NSString *kRequired = @"required";

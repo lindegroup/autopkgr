@@ -76,6 +76,7 @@
 		BE2337D01B3E482100256F85 /* LGMacPatchIntegrationView.m in Sources */ = {isa = PBXBuildFile; fileRef = BE2337CD1B3E482100256F85 /* LGMacPatchIntegrationView.m */; };
 		BE2337D11B3E482100256F85 /* LGMacPatchIntegrationView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BE2337CE1B3E482100256F85 /* LGMacPatchIntegrationView.xib */; };
 		BE2337D21B3E482100256F85 /* LGMacPatchIntegrationView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BE2337CE1B3E482100256F85 /* LGMacPatchIntegrationView.xib */; };
+		BE25FE071C0E7A14006039BA /* NSTextField+changeHandle.m in Sources */ = {isa = PBXBuildFile; fileRef = BE25FE061C0E7A14006039BA /* NSTextField+changeHandle.m */; };
 		BE2867A61BEB88D8009891A0 /* LGAutoPkgRecipeListManager.m in Sources */ = {isa = PBXBuildFile; fileRef = BE2867A51BEB88D8009891A0 /* LGAutoPkgRecipeListManager.m */; };
 		BE2867A71BEB88D8009891A0 /* LGAutoPkgRecipeListManager.m in Sources */ = {isa = PBXBuildFile; fileRef = BE2867A51BEB88D8009891A0 /* LGAutoPkgRecipeListManager.m */; };
 		BE2D58781B32EF110042EF1E /* LocalizableAutoPkg.strings in Resources */ = {isa = PBXBuildFile; fileRef = BE2D58761B32EF110042EF1E /* LocalizableAutoPkg.strings */; };
@@ -182,6 +183,7 @@
 		BEB9AF2C1B41A01900016D98 /* LGSlackNotificationView.m in Sources */ = {isa = PBXBuildFile; fileRef = BEB9AF291B41A01900016D98 /* LGSlackNotificationView.m */; };
 		BEB9AF2D1B41A01900016D98 /* LGSlackNotificationView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BEB9AF2A1B41A01900016D98 /* LGSlackNotificationView.xib */; };
 		BEB9AF2E1B41A01900016D98 /* LGSlackNotificationView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BEB9AF2A1B41A01900016D98 /* LGSlackNotificationView.xib */; };
+		BEBDDCF31C0F5E4200BD1C55 /* NSTableView+Resizing.m in Sources */ = {isa = PBXBuildFile; fileRef = BEBDDCF21C0F5E4200BD1C55 /* NSTableView+Resizing.m */; };
 		BEBF7B171A4894AC00E9967F /* LGVersioner.m in Sources */ = {isa = PBXBuildFile; fileRef = BEBF7B161A4894AC00E9967F /* LGVersioner.m */; };
 		BEBF7B1F1A48955C00E9967F /* LGVersioner.m in Sources */ = {isa = PBXBuildFile; fileRef = BEBF7B161A4894AC00E9967F /* LGVersioner.m */; };
 		BEC1258519F045EB006696C4 /* LGRecipeTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A0ACE33196FB349002C7FE4 /* LGRecipeTableViewController.m */; };
@@ -417,6 +419,8 @@
 		BE2337CC1B3E482100256F85 /* LGMacPatchIntegrationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGMacPatchIntegrationView.h; sourceTree = "<group>"; };
 		BE2337CD1B3E482100256F85 /* LGMacPatchIntegrationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGMacPatchIntegrationView.m; sourceTree = "<group>"; };
 		BE2337CE1B3E482100256F85 /* LGMacPatchIntegrationView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LGMacPatchIntegrationView.xib; sourceTree = "<group>"; };
+		BE25FE051C0E7A14006039BA /* NSTextField+changeHandle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSTextField+changeHandle.h"; sourceTree = "<group>"; };
+		BE25FE061C0E7A14006039BA /* NSTextField+changeHandle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSTextField+changeHandle.m"; sourceTree = "<group>"; };
 		BE2867A41BEB88D8009891A0 /* LGAutoPkgRecipeListManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LGAutoPkgRecipeListManager.h; path = "AutoPkgr/Models/AutoPkg Task/LGAutoPkgRecipeListManager.h"; sourceTree = SOURCE_ROOT; };
 		BE2867A51BEB88D8009891A0 /* LGAutoPkgRecipeListManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LGAutoPkgRecipeListManager.m; path = "AutoPkgr/Models/AutoPkg Task/LGAutoPkgRecipeListManager.m"; sourceTree = SOURCE_ROOT; };
 		BE2D58771B32EF110042EF1E /* en */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/LocalizableAutoPkg.strings; sourceTree = "<group>"; };
@@ -517,6 +521,8 @@
 		BEB9AF281B41A01900016D98 /* LGSlackNotificationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGSlackNotificationView.h; sourceTree = "<group>"; };
 		BEB9AF291B41A01900016D98 /* LGSlackNotificationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGSlackNotificationView.m; sourceTree = "<group>"; };
 		BEB9AF2A1B41A01900016D98 /* LGSlackNotificationView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LGSlackNotificationView.xib; sourceTree = "<group>"; };
+		BEBDDCF11C0F5E4200BD1C55 /* NSTableView+Resizing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSTableView+Resizing.h"; sourceTree = "<group>"; };
+		BEBDDCF21C0F5E4200BD1C55 /* NSTableView+Resizing.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSTableView+Resizing.m"; sourceTree = "<group>"; };
 		BEBF7B151A4894AC00E9967F /* LGVersioner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGVersioner.h; sourceTree = "<group>"; };
 		BEBF7B161A4894AC00E9967F /* LGVersioner.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGVersioner.m; sourceTree = "<group>"; };
 		BEC2024A1B600FF100F3BC2A /* en */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/LocalizableJSSImporter.strings; sourceTree = "<group>"; };
@@ -870,6 +876,10 @@
 				BE8A06BB1AF8FAFD006C2571 /* NSData+taskData.m */,
 				BECDABA01B252B3900544388 /* NSOpenPanel+typeChooser.h */,
 				BECDABA11B252B3900544388 /* NSOpenPanel+typeChooser.m */,
+				BEBDDCF11C0F5E4200BD1C55 /* NSTableView+Resizing.h */,
+				BEBDDCF21C0F5E4200BD1C55 /* NSTableView+Resizing.m */,
+				BE25FE051C0E7A14006039BA /* NSTextField+changeHandle.h */,
+				BE25FE061C0E7A14006039BA /* NSTextField+changeHandle.m */,
 				BEE8CF1119E0E7F400981C4B /* NSTextField+safeStringValue.h */,
 				BEE8CF1219E0E7F400981C4B /* NSTextField+safeStringValue.m */,
 				BE1AE4581B4234F900B71FA4 /* NSTextField+animatedString.h */,
@@ -1609,6 +1619,7 @@
 				BEFA4DB81B07036000764BF0 /* NSString+split.m in Sources */,
 				8B1AF8561BED81540013BE37 /* LGFileWaveIntegration.m in Sources */,
 				BE8C7D6E1A86CEF600EBD32A /* LGIntegration.m in Sources */,
+				BE25FE071C0E7A14006039BA /* NSTextField+changeHandle.m in Sources */,
 				BEDAFBB41B3B8AA500CCE9AC /* LGNotificationService.m in Sources */,
 				BE6815D51A0B18DE004AD310 /* LGUserNotification.m in Sources */,
 				BE0BB0FB1B3C9563007F9DA5 /* LGSlackNotification.m in Sources */,
@@ -1617,6 +1628,7 @@
 				BE2337CF1B3E482100256F85 /* LGMacPatchIntegrationView.m in Sources */,
 				BE0A75491B04EC7400F70C9E /* NSString+versionCompare.m in Sources */,
 				BEC1258519F045EB006696C4 /* LGRecipeTableViewController.m in Sources */,
+				BEBDDCF31C0F5E4200BD1C55 /* NSTableView+Resizing.m in Sources */,
 				BECDABA21B252B3900544388 /* NSOpenPanel+typeChooser.m in Sources */,
 				BE46D9911B40E67500004B41 /* LGNotificationServiceWindowController.m in Sources */,
 				BE38EAAA1B0CFECE009FCBEB /* LGNotificationsViewController.m in Sources */,

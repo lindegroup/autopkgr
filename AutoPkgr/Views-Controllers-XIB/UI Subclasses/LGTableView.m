@@ -39,22 +39,21 @@
 
 @end
 
-@implementation LGInstallTableView
-
+@implementation LGClearTable
 - (NSTableViewSelectionHighlightStyle)selectionHighlightStyle {
     return NSTableViewSelectionHighlightStyleNone;
 }
-
 - (NSColor *)backgroundColor
 {
     return [NSColor clearColor];
 }
+@end
 
+@implementation LGInstallTableView
 - (void)scrollWheel:(NSEvent *)theEvent
 {
     if (self.numberOfRows > 4) {
         [super scrollWheel:theEvent];
     }
 }
-
 @end
