@@ -14,7 +14,7 @@
 
 #import "NSArray+mapped.h"
 
-# pragma mark - Distribution Point Keys
+#pragma mark - Distribution Point Keys
 NSString *const kLGJSSDistPointNameKey = @"name";
 NSString *const kLGJSSDistPointURLKey = @"URL";
 NSString *const kLGJSSDistPointSharePointKey = @"share_name";
@@ -55,7 +55,7 @@ NSDictionary *keyInfoDict()
         dictionary = @{
             // Local
             @(kLGJSSTypeLocal) :
-                @{ kTypeString: @"Local",
+                @{ kTypeString : @"Local",
                    kRequired : @[ kLGJSSDistPointTypeKey,
                                   kLGJSSDistPointSharePointKey,
                                   kLGJSSDistPointMountPointKey ],
@@ -64,7 +64,7 @@ NSDictionary *keyInfoDict()
 
             // SMB
             @(kLGJSSTypeSMB) :
-                @{ kTypeString: @"SMB",
+                @{ kTypeString : @"SMB",
                    kRequired : mountable,
                    kOptional : @[ kLGJSSDistPointNameKey,
                                   kLGJSSDistPointPortKey,
@@ -73,7 +73,7 @@ NSDictionary *keyInfoDict()
 
             // AFP
             @(kLGJSSTypeAFP) :
-                @{ kTypeString: @"AFP",
+                @{ kTypeString : @"AFP",
                    kRequired : mountable,
                    kOptional : @[ kLGJSSDistPointNameKey,
                                   kLGJSSDistPointPortKey ],
@@ -81,14 +81,14 @@ NSDictionary *keyInfoDict()
 
             // JDS
             @(kLGJSSTypeJDS) :
-                @{ kTypeString: @"JDS",
+                @{ kTypeString : @"JDS",
                    kRequired : @[ kLGJSSDistPointTypeKey ],
                    kOptional : @[],
                    kExclusiveUnique : @[ kLGJSSDistPointTypeKey ] },
 
             // CDP
             @(kLGJSSTypeCDP) :
-                @{ kTypeString: @"CDP",
+                @{ kTypeString : @"CDP",
                    kRequired : @[ kLGJSSDistPointTypeKey ],
                    kOptional : @[],
                    kExclusiveUnique : @[ kLGJSSDistPointTypeKey ] },
@@ -110,7 +110,8 @@ NSDictionary *keyInfoDict()
     NSMutableDictionary *_dpDict;
 }
 
-+ (NSDictionary *)keyInfoDict {
++ (NSDictionary *)keyInfoDict
+{
     return keyInfoDict();
 }
 
@@ -161,8 +162,8 @@ NSDictionary *keyInfoDict()
 {
     NSString *type = [_dpDict[kLGJSSDistPointTypeKey] lowercaseString];
     NSDictionary *d = keyInfoDict();
-    for (NSNumber *k in d){
-        if ([[d[k][kTypeString] lowercaseString] isEqualToString:type]){
+    for (NSNumber *k in d) {
+        if ([[d[k][kTypeString] lowercaseString] isEqualToString:type]) {
             return (JSSDistributionPointType)k.integerValue;
         }
     }
@@ -194,13 +195,14 @@ NSDictionary *keyInfoDict()
     return YES;
 }
 
-- (BOOL)isEditable {
+- (BOOL)isEditable
+{
     switch (self.type) {
-        case kLGJSSTypeCDP:
-        case kLGJSSTypeJDS:
-            return NO;
-        default:
-            return YES;
+    case kLGJSSTypeCDP:
+    case kLGJSSTypeJDS:
+        return NO;
+    default:
+        return YES;
     }
 }
 #pragma mark - Accesssors
@@ -222,35 +224,36 @@ NSDictionary *keyInfoDict()
 }
 
 #pragma mark-- Public --
-- (NSString *)description {
+- (NSString *)description
+{
     NSString *description = nil;
     NSString *type = self.typeString;
 
     switch (self.type) {
-        case kLGJSSTypeFromJSS: {
-            description = quick_formatString(@"Name: %@", self.name);
-            type = @"From JSS";
-            break;
-        }
-        case kLGJSSTypeAFP:
-        case kLGJSSTypeSMB:
-        case kLGJSSTypeLocal: {
-            description = self.URL;
-            break;
-        }
-        case kLGJSSTypeJDS:
-            return @"JAMF Distribution Server";
-        case kLGJSSTypeCDP:
-            return @"Cloud Distribution Point";
-        default: {
-            break;
-        }
+    case kLGJSSTypeFromJSS: {
+        description = quick_formatString(@"Name: %@", self.name);
+        type = @"From JSS";
+        break;
+    }
+    case kLGJSSTypeAFP:
+    case kLGJSSTypeSMB:
+    case kLGJSSTypeLocal: {
+        description = self.URL;
+        break;
+    }
+    case kLGJSSTypeJDS:
+        return @"JAMF Distribution Server";
+    case kLGJSSTypeCDP:
+        return @"Cloud Distribution Point";
+    default: {
+        break;
+    }
     }
 
     if (description) {
         return [NSString stringWithFormat:@"%@ (%@)", type, description];
     }
-    
+
     return self.typeString;
 }
 - (NSDictionary *)representation
@@ -442,7 +445,8 @@ NSDictionary *keyInfoDict()
     return repos.copy;
 }
 
-+ (void)getFromRemote:(void (^)(NSArray<LGJSSDistributionPoint *> *, NSError *))distPoints {
++ (void)getFromRemote:(void (^)(NSArray<LGJSSDistributionPoint *> *, NSError *))distPoints
+{
     LGHTTPRequest *request = [[LGHTTPRequest alloc] init];
     LGJSSImporterDefaults *defaults = [[LGJSSImporterDefaults alloc] init];
 
@@ -452,12 +456,12 @@ NSDictionary *keyInfoDict()
 
     credentials.sslTrustSetting = defaults.JSSVerifySSL ? kLGSSLTrustOSImplicitTrust : kLGSSLTrustUserConfirmedTrust;
 
-    [request retrieveDistributionPoints2:credentials
-                                   reply:^(NSDictionary *dp, NSError *error) {
-                                       dispatch_async(dispatch_get_main_queue(), ^{
-                                           distPoints([self normalizeDistributionPoints:dp], error);
-                                       });
-                                   }];
+    [request retrieveDistributionPoints:credentials
+                                  reply:^(NSDictionary *dp, NSError *error) {
+                                      dispatch_async(dispatch_get_main_queue(), ^{
+                                          distPoints([self normalizeDistributionPoints:dp], error);
+                                      });
+                                  }];
 }
 
 #pragma mark - Normalize
@@ -485,6 +489,5 @@ NSDictionary *keyInfoDict()
     return [dictArray mapObjectsUsingBlock:^LGJSSDistributionPoint *(NSDictionary *obj, NSUInteger idx) {
         return [[LGJSSDistributionPoint alloc] initWithDictionary:obj];
     }];
-
 }
 @end
