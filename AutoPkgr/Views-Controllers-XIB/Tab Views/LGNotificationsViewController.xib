@@ -342,55 +342,6 @@
                         <binding destination="ArL-eq-uYl" name="value" keyPath="values.SendEmailNotificationsWhenNewVersionsAreFoundEnabled" id="NCV-fc-gAd"/>
                     </connections>
                 </button>
-                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="W93-CV-RZ2">
-                    <rect key="frame" x="18" y="50" width="251" height="17"/>
-                    <constraints>
-                        <constraint firstAttribute="width" constant="247" id="Gdr-48-CKt"/>
-                    </constraints>
-                    <animations/>
-                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Report new versions of integrated tools: " id="Pws-E6-Duw">
-                        <font key="font" metaFont="system"/>
-                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
-                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                    </textFieldCell>
-                </textField>
-                <popUpButton verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Laa-QY-xtR">
-                    <rect key="frame" x="270" y="45" width="152" height="26"/>
-                    <constraints>
-                        <constraint firstAttribute="width" constant="147" id="9SB-8O-6uW"/>
-                    </constraints>
-                    <animations/>
-                    <popUpButtonCell key="cell" type="push" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" id="tpn-Ad-M5F">
-                        <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
-                        <font key="font" metaFont="menu"/>
-                        <menu key="menu" id="c1d-WQ-Ts1">
-                            <items>
-                                <menuItem title="Once a week" id="lcX-gJ-VcA"/>
-                                <menuItem title="Once a day" tag="1" id="G4G-bN-z0l"/>
-                                <menuItem title="Once per version" tag="2" id="VWU-R4-mrc"/>
-                                <menuItem title="Never" tag="-1" id="vRK-ZW-ayV">
-                                    <modifierMask key="keyEquivalentModifierMask"/>
-                                </menuItem>
-                            </items>
-                        </menu>
-                    </popUpButtonCell>
-                    <connections>
-                        <binding destination="ArL-eq-uYl" name="selectedTag" keyPath="values.ReportIntegrationFrequency" id="F9Y-I5-oJB"/>
-                    </connections>
-                </popUpButton>
-                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="g5M-sz-zQ4">
-                    <rect key="frame" x="18" y="25" width="251" height="17"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="17" id="7lY-nE-bOO"/>
-                        <constraint firstAttribute="width" constant="247" id="PSR-aq-OaH"/>
-                    </constraints>
-                    <animations/>
-                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="This includes AutoPkg, Git, Munki tools, etc." id="LR7-l6-ta9">
-                        <font key="font" metaFont="smallSystem"/>
-                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
-                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                    </textFieldCell>
-                </textField>
                 <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="20B-Il-F8i">
                     <rect key="frame" x="302" y="78" width="123" height="32"/>
                     <constraints>
@@ -463,14 +414,12 @@
                 <constraint firstItem="zi5-oQ-M5R" firstAttribute="leading" secondItem="uO3-QG-q9R" secondAttribute="leading" constant="-7" id="Hwz-MT-XkD"/>
                 <constraint firstItem="aRk-NU-9Jl" firstAttribute="top" secondItem="zi5-oQ-M5R" secondAttribute="bottom" constant="-19" id="Icw-Ru-fh9"/>
                 <constraint firstItem="aRk-NU-9Jl" firstAttribute="bottom" secondItem="SZ2-Hj-GiD" secondAttribute="bottom" constant="153" id="Iyo-MC-Dbo"/>
-                <constraint firstItem="Laa-QY-xtR" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="272" id="K3L-DR-OHx"/>
                 <constraint firstItem="PIX-o6-vdF" firstAttribute="trailing" secondItem="cUb-Ex-bej" secondAttribute="trailing" id="MOt-c5-O0p"/>
                 <constraint firstItem="0MT-rL-IEP" firstAttribute="leading" secondItem="uO3-QG-q9R" secondAttribute="trailing" constant="10" id="ONL-0j-tpU"/>
                 <constraint firstItem="PIX-o6-vdF" firstAttribute="leading" secondItem="RB8-aR-yhY" secondAttribute="leading" id="ORR-PF-7QZ"/>
                 <constraint firstItem="ToE-0q-pH2" firstAttribute="centerY" secondItem="zi5-oQ-M5R" secondAttribute="centerY" id="Q8V-Fb-4O6"/>
                 <constraint firstItem="20B-Il-F8i" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="296" id="QXq-y8-cAZ"/>
                 <constraint firstItem="PWE-hu-Wcl" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="20" id="RYh-mh-YQZ"/>
-                <constraint firstItem="W93-CV-RZ2" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="335" id="S7a-PP-ePu"/>
                 <constraint firstItem="VDb-hs-bB1" firstAttribute="top" secondItem="6ha-Zn-VKa" secondAttribute="top" id="SZs-g3-O8w"/>
                 <constraint firstItem="0uY-tb-AXy" firstAttribute="leading" secondItem="RB8-aR-yhY" secondAttribute="trailing" constant="4" id="ScN-Nm-Z3a"/>
                 <constraint firstItem="lqq-Vv-857" firstAttribute="trailing" secondItem="uO3-QG-q9R" secondAttribute="trailing" constant="99" id="T1e-CZ-xUg"/>
@@ -478,14 +427,12 @@
                 <constraint firstItem="Jki-MF-GcS" firstAttribute="baseline" secondItem="SZ2-Hj-GiD" secondAttribute="baseline" constant="153" id="U3N-iv-UOK"/>
                 <constraint firstItem="HmV-Dc-TUb" firstAttribute="baseline" secondItem="uO3-QG-q9R" secondAttribute="baseline" id="VJQ-6t-am9"/>
                 <constraint firstItem="zi5-oQ-M5R" firstAttribute="top" secondItem="6N3-g1-fHC" secondAttribute="bottom" constant="8" id="Xxn-Ta-HZ7"/>
-                <constraint firstItem="Laa-QY-xtR" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="333" id="b7Z-QN-gWg"/>
                 <constraint firstItem="TPC-Gd-b8O" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="20" id="c4X-EB-GnA"/>
                 <constraint firstItem="PIX-o6-vdF" firstAttribute="leading" secondItem="cUb-Ex-bej" secondAttribute="leading" id="e6V-rb-W7X"/>
                 <constraint firstItem="lqq-Vv-857" firstAttribute="trailing" secondItem="0uY-tb-AXy" secondAttribute="trailing" id="eKS-lj-U4A"/>
                 <constraint firstItem="T27-XK-VY4" firstAttribute="centerY" secondItem="SZ2-Hj-GiD" secondAttribute="centerY" id="emb-zX-k9r"/>
                 <constraint firstItem="uO3-QG-q9R" firstAttribute="leading" secondItem="lqq-Vv-857" secondAttribute="leading" id="esf-0i-Yvz"/>
                 <constraint firstItem="lqq-Vv-857" firstAttribute="top" secondItem="0uY-tb-AXy" secondAttribute="bottom" constant="8" id="fya-b0-uU4"/>
-                <constraint firstItem="g5M-sz-zQ4" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="20" id="gf9-E7-8BY"/>
                 <constraint firstItem="RB8-aR-yhY" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="51" id="hmQ-jB-Jqw"/>
                 <constraint firstItem="JJm-8E-4nN" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="308" id="ijT-Hc-paF"/>
                 <constraint firstItem="PWE-hu-Wcl" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="212" id="j1J-mI-KMz"/>
@@ -494,11 +441,9 @@
                 <constraint firstItem="RB8-aR-yhY" firstAttribute="centerY" secondItem="0uY-tb-AXy" secondAttribute="centerY" id="m9c-2N-o0a"/>
                 <constraint firstItem="cUb-Ex-bej" firstAttribute="trailing" secondItem="ToE-0q-pH2" secondAttribute="trailing" constant="11" id="oDq-dO-Vrj"/>
                 <constraint firstAttribute="trailing" secondItem="T27-XK-VY4" secondAttribute="trailing" constant="20" id="rkg-Pu-zxL"/>
-                <constraint firstItem="g5M-sz-zQ4" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="360" id="sHc-US-iGK"/>
                 <constraint firstItem="1Co-et-HoO" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="238" id="sS1-bn-mTs"/>
                 <constraint firstItem="uO3-QG-q9R" firstAttribute="top" secondItem="lqq-Vv-857" secondAttribute="bottom" constant="8" id="skZ-0A-Xwb"/>
                 <constraint firstItem="cUb-Ex-bej" firstAttribute="baseline" secondItem="0MT-rL-IEP" secondAttribute="baseline" id="u2m-rM-KLo"/>
-                <constraint firstItem="W93-CV-RZ2" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="20" id="uPF-Xh-sJQ"/>
                 <constraint firstItem="zi5-oQ-M5R" firstAttribute="trailing" secondItem="uO3-QG-q9R" secondAttribute="trailing" constant="-77" id="umW-fo-jBa"/>
                 <constraint firstItem="zi5-oQ-M5R" firstAttribute="trailing" secondItem="aRk-NU-9Jl" secondAttribute="trailing" constant="-228" id="whP-tE-ABG"/>
                 <constraint firstItem="JJm-8E-4nN" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="209" id="ygx-uM-Vvu"/>
