@@ -67,7 +67,7 @@
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                 </textField>
-                <button identifier="slackHelpInfo" horizontalHuggingPriority="750" verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="KkN-I1-9tF" customClass="AHHelpPopoverButton">
+                <button identifier="slackHelpInfo" horizontalHuggingPriority="750" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="KkN-I1-9tF" customClass="AHHelpPopoverButton">
                     <rect key="frame" x="437" y="17" width="25" height="25"/>
                     <animations/>
                     <buttonCell key="cell" type="help" bezelStyle="helpButton" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="kpU-Na-RRR">
@@ -84,7 +84,7 @@
                 <constraint firstItem="uGQ-hH-paE" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="12" id="WYl-nw-n08"/>
                 <constraint firstItem="rT7-KI-ie2" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="113" id="aIV-49-2Re"/>
                 <constraint firstItem="wgb-zQ-52W" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="23" id="cWy-iO-pI9"/>
-                <constraint firstItem="KkN-I1-9tF" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="93" id="iCq-3Z-k3B"/>
+                <constraint firstItem="KkN-I1-9tF" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="78" id="iCq-3Z-k3B"/>
                 <constraint firstItem="QSi-iQ-e1A" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="20" id="jUk-8D-yu5"/>
                 <constraint firstItem="rT7-KI-ie2" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="48" id="pEn-nA-yDh"/>
                 <constraint firstItem="uGQ-hH-paE" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="51" id="rDL-4B-spx"/>
