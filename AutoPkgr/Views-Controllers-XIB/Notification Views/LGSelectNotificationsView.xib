@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="9060" systemVersion="15B42" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+    <dependencies>
+        <deployment identifier="macosx"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="9060"/>
+    </dependencies>
+    <objects>
+        <customObject id="-2" userLabel="File's Owner" customClass="LGSelectNotificationsView">
+            <connections>
+                <outlet property="view" destination="Hz6-mo-xeY" id="0bl-1N-x8E"/>
+            </connections>
+        </customObject>
+        <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
+        <customObject id="-3" userLabel="Application" customClass="NSObject"/>
+        <customView id="Hz6-mo-xeY">
+            <rect key="frame" x="0.0" y="0.0" width="480" height="295"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+            <subviews>
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="wgb-zQ-52W">
+                    <rect key="frame" x="67" y="258" width="346" height="17"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="93" id="ecX-Mb-Lhp"/>
+                    </constraints>
+                    <animations/>
+                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Select which actions will trigger an AutoPkgr notification" id="wUT-Ey-E1F">
+                        <font key="font" metaFont="system"/>
+                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
+                <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="n1K-Kc-cyD">
+                    <rect key="frame" x="18" y="224" width="196" height="18"/>
+                    <animations/>
+                    <buttonCell key="cell" type="check" title="New software is downloaded" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="1Rr-2t-jbQ">
+                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                        <font key="font" metaFont="system"/>
+                    </buttonCell>
+                </button>
+                <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="9C2-81-hRS">
+                    <rect key="frame" x="18" y="204" width="148" height="18"/>
+                    <animations/>
+                    <buttonCell key="cell" type="check" title="New package is built" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="a7N-UE-puc">
+                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                        <font key="font" metaFont="system"/>
+                    </buttonCell>
+                </button>
+                <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="hRt-E5-teS">
+                    <rect key="frame" x="18" y="164" width="348" height="18"/>
+                    <animations/>
+                    <buttonCell key="cell" type="check" title="New software imported to Munki, JSS, or other server" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="pz4-cE-Kdo">
+                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                        <font key="font" metaFont="system"/>
+                    </buttonCell>
+                </button>
+                <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="dQC-ya-1jY">
+                    <rect key="frame" x="18" y="184" width="173" height="18"/>
+                    <animations/>
+                    <buttonCell key="cell" type="check" title="New software is installed" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="JPe-CI-6Iu">
+                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                        <font key="font" metaFont="system"/>
+                    </buttonCell>
+                </button>
+                <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="jge-hQ-PIl">
+                    <rect key="frame" x="18" y="144" width="59" height="18"/>
+                    <animations/>
+                    <buttonCell key="cell" type="check" title="Errors" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="KMq-5l-htn">
+                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                        <font key="font" metaFont="system"/>
+                    </buttonCell>
+                </button>
+                <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="U43-hj-5g4">
+                    <rect key="frame" x="18" y="124" width="69" height="18"/>
+                    <animations/>
+                    <buttonCell key="cell" type="check" title="Failures" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="XMb-Yx-w5B">
+                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                        <font key="font" metaFont="system"/>
+                    </buttonCell>
+                </button>
+                <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="qFZ-Vs-pNY">
+                    <rect key="frame" x="18" y="104" width="250" height="18"/>
+                    <animations/>
+                    <buttonCell key="cell" type="check" title="Updates for integrated tools, at most:" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="koq-mz-SW8">
+                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                        <font key="font" metaFont="system"/>
+                    </buttonCell>
+                </button>
+                <popUpButton verticalHuggingPriority="750" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="QYC-nZ-5Mp">
+                    <rect key="frame" x="272" y="99" width="152" height="26"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="147" id="ZeZ-ve-v6L"/>
+                    </constraints>
+                    <animations/>
+                    <popUpButtonCell key="cell" type="push" title="Once a week" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" id="Ju0-9u-hRs">
+                        <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
+                        <font key="font" metaFont="menu"/>
+                        <menu key="menu" id="kIb-5c-hNB">
+                            <items>
+                                <menuItem title="Once a week" state="on" id="yL0-SF-JGw"/>
+                                <menuItem title="Once a day" tag="1" id="7SL-3w-45S"/>
+                                <menuItem title="Once per version" tag="2" id="tDb-Nc-QZ9"/>
+                                <menuItem title="Never" tag="-1" id="jFz-Vb-fTP">
+                                    <modifierMask key="keyEquivalentModifierMask"/>
+                                </menuItem>
+                            </items>
+                        </menu>
+                    </popUpButtonCell>
+                </popUpButton>
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Lmy-sa-wwL">
+                    <rect key="frame" x="37" y="85" width="251" height="17"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="247" id="FuH-rt-NWc"/>
+                        <constraint firstAttribute="height" constant="17" id="glm-Yf-n3w"/>
+                    </constraints>
+                    <animations/>
+                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="This includes AutoPkg, Git, Munki tools, etc." id="988-Tr-5EC">
+                        <font key="font" metaFont="smallSystem"/>
+                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
+                <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="mnt-3I-Ubd">
+                    <rect key="frame" x="18" y="61" width="227" height="18"/>
+                    <animations/>
+                    <buttonCell key="cell" type="check" title="Other actions not specified above" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="76M-IM-V8K">
+                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                        <font key="font" metaFont="system"/>
+                    </buttonCell>
+                </button>
+                <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="TaW-Dh-h90">
+                    <rect key="frame" x="374" y="13" width="92" height="32"/>
+                    <animations/>
+                    <buttonCell key="cell" type="push" title="Save" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="DsH-ND-E8J">
+                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                        <font key="font" metaFont="system"/>
+                    </buttonCell>
+                </button>
+                <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="6fv-dm-ZGV">
+                    <rect key="frame" x="282" y="13" width="92" height="32"/>
+                    <animations/>
+                    <buttonCell key="cell" type="push" title="Cancel" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="tfF-c8-dIl">
+                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                        <font key="font" metaFont="system"/>
+                        <string key="keyEquivalent" base64-UTF8="YES">
+Gw
+</string>
+                    </buttonCell>
+                </button>
+            </subviews>
+            <constraints>
+                <constraint firstItem="wgb-zQ-52W" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="12" id="KaW-vo-894"/>
+                <constraint firstItem="wgb-zQ-52W" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="23" id="cWy-iO-pI9"/>
+            </constraints>
+            <animations/>
+            <point key="canvasLocation" x="152" y="165.5"/>
+        </customView>
+        <userDefaultsController representsSharedInstance="YES" id="cIJ-zl-KaW"/>
+    </objects>
+</document>
