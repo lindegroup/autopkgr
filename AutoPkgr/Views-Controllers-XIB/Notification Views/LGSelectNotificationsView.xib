@@ -16,10 +16,10 @@
             <rect key="frame" x="0.0" y="0.0" width="480" height="295"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
-                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="wgb-zQ-52W">
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="wgb-zQ-52W">
                     <rect key="frame" x="67" y="258" width="346" height="17"/>
                     <constraints>
-                        <constraint firstAttribute="width" constant="93" id="ecX-Mb-Lhp"/>
+                        <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="342" id="xy6-JO-ryc"/>
                     </constraints>
                     <animations/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Select which actions will trigger an AutoPkgr notification" id="wUT-Ey-E1F">
@@ -28,7 +28,7 @@
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                 </textField>
-                <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="n1K-Kc-cyD">
+                <button translatesAutoresizingMaskIntoConstraints="NO" id="n1K-Kc-cyD">
                     <rect key="frame" x="18" y="224" width="196" height="18"/>
                     <animations/>
                     <buttonCell key="cell" type="check" title="New software is downloaded" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="1Rr-2t-jbQ">
@@ -36,7 +36,7 @@
                         <font key="font" metaFont="system"/>
                     </buttonCell>
                 </button>
-                <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="9C2-81-hRS">
+                <button translatesAutoresizingMaskIntoConstraints="NO" id="9C2-81-hRS">
                     <rect key="frame" x="18" y="204" width="148" height="18"/>
                     <animations/>
                     <buttonCell key="cell" type="check" title="New package is built" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="a7N-UE-puc">
@@ -44,7 +44,7 @@
                         <font key="font" metaFont="system"/>
                     </buttonCell>
                 </button>
-                <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="hRt-E5-teS">
+                <button translatesAutoresizingMaskIntoConstraints="NO" id="hRt-E5-teS">
                     <rect key="frame" x="18" y="164" width="348" height="18"/>
                     <animations/>
                     <buttonCell key="cell" type="check" title="New software imported to Munki, JSS, or other server" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="pz4-cE-Kdo">
@@ -52,7 +52,7 @@
                         <font key="font" metaFont="system"/>
                     </buttonCell>
                 </button>
-                <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="dQC-ya-1jY">
+                <button translatesAutoresizingMaskIntoConstraints="NO" id="dQC-ya-1jY">
                     <rect key="frame" x="18" y="184" width="173" height="18"/>
                     <animations/>
                     <buttonCell key="cell" type="check" title="New software is installed" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="JPe-CI-6Iu">
@@ -60,7 +60,7 @@
                         <font key="font" metaFont="system"/>
                     </buttonCell>
                 </button>
-                <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="jge-hQ-PIl">
+                <button translatesAutoresizingMaskIntoConstraints="NO" id="jge-hQ-PIl">
                     <rect key="frame" x="18" y="144" width="59" height="18"/>
                     <animations/>
                     <buttonCell key="cell" type="check" title="Errors" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="KMq-5l-htn">
@@ -68,7 +68,7 @@
                         <font key="font" metaFont="system"/>
                     </buttonCell>
                 </button>
-                <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="U43-hj-5g4">
+                <button translatesAutoresizingMaskIntoConstraints="NO" id="U43-hj-5g4">
                     <rect key="frame" x="18" y="124" width="69" height="18"/>
                     <animations/>
                     <buttonCell key="cell" type="check" title="Failures" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="XMb-Yx-w5B">
@@ -76,7 +76,7 @@
                         <font key="font" metaFont="system"/>
                     </buttonCell>
                 </button>
-                <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="qFZ-Vs-pNY">
+                <button translatesAutoresizingMaskIntoConstraints="NO" id="qFZ-Vs-pNY">
                     <rect key="frame" x="18" y="104" width="250" height="18"/>
                     <animations/>
                     <buttonCell key="cell" type="check" title="Updates for integrated tools, at most:" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="koq-mz-SW8">
@@ -84,7 +84,7 @@
                         <font key="font" metaFont="system"/>
                     </buttonCell>
                 </button>
-                <popUpButton verticalHuggingPriority="750" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="QYC-nZ-5Mp">
+                <popUpButton verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="QYC-nZ-5Mp">
                     <rect key="frame" x="272" y="99" width="152" height="26"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="147" id="ZeZ-ve-v6L"/>
@@ -105,7 +105,7 @@
                         </menu>
                     </popUpButtonCell>
                 </popUpButton>
-                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Lmy-sa-wwL">
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Lmy-sa-wwL">
                     <rect key="frame" x="37" y="85" width="251" height="17"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="247" id="FuH-rt-NWc"/>
@@ -118,7 +118,7 @@
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                 </textField>
-                <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="mnt-3I-Ubd">
+                <button translatesAutoresizingMaskIntoConstraints="NO" id="mnt-3I-Ubd">
                     <rect key="frame" x="18" y="61" width="227" height="18"/>
                     <animations/>
                     <buttonCell key="cell" type="check" title="Other actions not specified above" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="76M-IM-V8K">
@@ -126,8 +126,11 @@
                         <font key="font" metaFont="system"/>
                     </buttonCell>
                 </button>
-                <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="TaW-Dh-h90">
+                <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="TaW-Dh-h90">
                     <rect key="frame" x="374" y="13" width="92" height="32"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="80" id="IXN-Xy-l4r"/>
+                    </constraints>
                     <animations/>
                     <buttonCell key="cell" type="push" title="Save" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="DsH-ND-E8J">
                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
@@ -137,8 +140,11 @@ DQ
 </string>
                     </buttonCell>
                 </button>
-                <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="6fv-dm-ZGV">
+                <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="6fv-dm-ZGV">
                     <rect key="frame" x="282" y="13" width="92" height="32"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="80" id="OHs-Sz-9z0"/>
+                    </constraints>
                     <animations/>
                     <buttonCell key="cell" type="push" title="Cancel" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="tfF-c8-dIl">
                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
@@ -150,8 +156,32 @@ Gw
                 </button>
             </subviews>
             <constraints>
-                <constraint firstItem="wgb-zQ-52W" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="12" id="KaW-vo-894"/>
-                <constraint firstItem="wgb-zQ-52W" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="23" id="cWy-iO-pI9"/>
+                <constraint firstItem="n1K-Kc-cyD" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="55" id="0dj-OA-xik"/>
+                <constraint firstItem="jge-hQ-PIl" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="20" id="2Ut-Zz-GdO"/>
+                <constraint firstItem="Lmy-sa-wwL" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="193" id="9aS-KU-2Ee"/>
+                <constraint firstAttribute="trailing" secondItem="6fv-dm-ZGV" secondAttribute="trailing" constant="112" id="A5x-jB-Bnm"/>
+                <constraint firstItem="mnt-3I-Ubd" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="20" id="CLZ-jL-Rbn"/>
+                <constraint firstItem="hRt-E5-teS" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="20" id="DSJ-dP-2qp"/>
+                <constraint firstItem="Lmy-sa-wwL" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="39" id="Dpa-yb-KzM"/>
+                <constraint firstItem="wgb-zQ-52W" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="20" id="E1R-Ps-lep"/>
+                <constraint firstItem="9C2-81-hRS" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="75" id="EKW-fI-tpy"/>
+                <constraint firstItem="dQC-ya-1jY" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="95" id="EbO-ac-bLj"/>
+                <constraint firstItem="QYC-nZ-5Mp" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="172" id="KM9-s9-VYG"/>
+                <constraint firstItem="qFZ-Vs-pNY" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="175" id="MGc-rh-nJi"/>
+                <constraint firstAttribute="trailing" secondItem="TaW-Dh-h90" secondAttribute="trailing" constant="20" id="Nsc-Sx-JRm"/>
+                <constraint firstItem="n1K-Kc-cyD" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="20" id="PT3-3J-5K6"/>
+                <constraint firstItem="wgb-zQ-52W" firstAttribute="centerX" secondItem="Hz6-mo-xeY" secondAttribute="centerX" id="PYn-f1-So3"/>
+                <constraint firstItem="qFZ-Vs-pNY" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="20" id="S6d-10-kO0"/>
+                <constraint firstItem="QYC-nZ-5Mp" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="274" id="V7M-6f-xPy"/>
+                <constraint firstItem="U43-hj-5g4" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="155" id="X1e-Mf-yZb"/>
+                <constraint firstItem="hRt-E5-teS" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="115" id="Xe6-yI-VBO"/>
+                <constraint firstItem="jge-hQ-PIl" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="135" id="aV8-b8-Kdl"/>
+                <constraint firstItem="mnt-3I-Ubd" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="218" id="ef1-Pv-4Hb"/>
+                <constraint firstItem="dQC-ya-1jY" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="20" id="mHJ-cq-gTq"/>
+                <constraint firstAttribute="bottom" secondItem="6fv-dm-ZGV" secondAttribute="bottom" constant="20" id="oqA-dA-4nE"/>
+                <constraint firstItem="U43-hj-5g4" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="20" id="q49-MQ-O0N"/>
+                <constraint firstAttribute="bottom" secondItem="TaW-Dh-h90" secondAttribute="bottom" constant="20" id="qY8-kK-23I"/>
+                <constraint firstItem="9C2-81-hRS" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="20" id="snu-c8-UkN"/>
             </constraints>
             <animations/>
             <point key="canvasLocation" x="152" y="165.5"/>
