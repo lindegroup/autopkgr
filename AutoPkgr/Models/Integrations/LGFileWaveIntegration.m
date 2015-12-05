@@ -47,6 +47,10 @@
     return YES;
 }
 
++ (NSString *)summaryResultsKey {
+    return @"filewave_summary_result";
+}
+
 + (BOOL)meetsRequirements:(NSError *__autoreleasing *)error {
     NSError *err = nil;
     NSString *fwAdmin = @"/Applications/FileWave/FileWave Admin.app";

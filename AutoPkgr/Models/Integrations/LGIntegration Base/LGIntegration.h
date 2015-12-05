@@ -101,7 +101,9 @@ typedef NS_ENUM(OSStatus, LGIntegrationInstallStatus) {
  */
 + (NSArray *)components;
 
-// If the integration can be uninstalled.
+/**
+ *  Can the integration can be uninstalled.
+ */
 + (BOOL)isUninstallable;
 
 /**

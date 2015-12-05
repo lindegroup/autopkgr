@@ -117,6 +117,10 @@ void subclassMustConformToProtocol(id className)
     return YES;
 }
 
++ (NSString *)summaryResultsKey {
+    return nil;
+}
+
 + (BOOL)isUninstallable
 {
     return NO;

@@ -45,6 +45,10 @@
     return YES;
 }
 
++ (NSString *)summaryResultsKey {
+    return @"macpatch_importer_summary_result";
+}
+
 - (void)customUninstallActions:(void (^)(NSError *))reply {
     LGMacPatchDefaults *defaults = [LGMacPatchDefaults new];
     defaults.MP_PASSWORD = nil;

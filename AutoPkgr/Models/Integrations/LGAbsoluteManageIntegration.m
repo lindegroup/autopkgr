@@ -80,6 +80,10 @@
     return YES;
 }
 
++ (NSString *)summaryResultsKey {
+    return @"absolute_manage_export_summary_result";
+}
+
 + (BOOL)meetsRequirements:(NSError *__autoreleasing *)error {
     NSFileManager *manager = [NSFileManager defaultManager];
     NSString *lanRev = @"/Applications/LANrev Admin.app";

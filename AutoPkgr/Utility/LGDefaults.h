@@ -29,11 +29,12 @@ typedef NS_OPTIONS(NSInteger, LGApplicationDisplayStyle) {
 typedef NS_OPTIONS(NSInteger, LGReportItems) {
     kLGReportItemsNone = 0,
     kLGReportItemsAll = 1 << 0,
-    kLGReportItemsNewDownloads = 2 << 0,
-    kLGReportItemsNewPackages = 2 << 1,
-    kLGReportItemsNewInstalls = 2 << 2,
-    kLGReportItemsMunkiImports = 2 << 3,
-    kLGReportItemsJSSImports = 2 << 4,
+    kLGReportItemsNewDownloads = 1 << 1,
+    kLGReportItemsNewPackages = 1 << 2,
+    kLGReportItemsNewInstalls = 1 << 3,
+    kLGReportItemsErrors = 1 << 4,
+    kLGReportItemsFailures = 1 << 5,
+    kLGReportItemsIntegrationImports = 1 << 6,
 };
 
 

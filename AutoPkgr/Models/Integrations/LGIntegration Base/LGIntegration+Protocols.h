@@ -78,6 +78,13 @@
  *  Default repository if the integration is an autopkg shared processor.
  */
 + (NSString *)defaultRepository;
+
+/**
+ *  Key cooresponding to the report plist's "xxx_summary_results"
+ *
+ *  @return full key for the integration's summary results.
+ */
++ (NSString *)summaryResultsKey;
 @end
 
 

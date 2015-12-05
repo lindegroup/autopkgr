@@ -329,10 +329,10 @@ static const BOOL _TEST_PRIVILEGED_HELPER = YES;
     [self runReportTestWithResourceNamed:@"report_0.4.3" flags:kLGReportItemsAll];
 }
 
-- (void)test0_4_3_reportLimited
-{
-    [self runReportTestWithResourceNamed:@"report_0.4.3" flags:kLGReportItemsJSSImports | kLGReportItemsNewInstalls];
-}
+//- (void)test0_4_3_reportLimited
+//{
+//    [self runReportTestWithResourceNamed:@"report_0.4.3" flags:kLGReportItemsJSSImports | kLGReportItemsNewInstalls];
+//}
 
 - (void)test_report_none
 {

@@ -21,6 +21,8 @@
 #import <Foundation/Foundation.h>
 #import "LGAutoPkgr.h"
 
+@class LGIntegration;
+
 typedef NS_ENUM(NSInteger, LGReportIntegrationFrequency) {
     // Do not include integrations' status in report.
     kLGReportIntegrationFrequencyNever = -1,
@@ -61,7 +63,7 @@ typedef NS_ENUM(NSInteger, LGReportIntegrationFrequency) {
 /**
  *  Array of LGIntegrations
  */
-@property (copy, nonatomic) NSArray *integrations;
+@property (copy, nonatomic) NSArray<LGIntegration *> *integrations;
 
 /**
  *  Flags to define what to display in the report

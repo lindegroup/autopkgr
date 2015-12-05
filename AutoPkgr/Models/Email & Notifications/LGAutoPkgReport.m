@@ -21,34 +21,33 @@
 #import "LGAutoPkgReport.h"
 #import "LGAutoPkgRecipe.h"
 #import "LGIntegrationManager.h"
+#import "LGIntegration+Protocols.h"
 
 #import "HTMLCategories.h"
 
 // Key for AutoPkg 0.4.3 report summary
-NSString *const kReportKeySummaryResults = @"summary_results";
+static NSString *const kReportKeySummaryResults = @"summary_results";
 
 // Key used to check for AutoPkg version
-NSString *const kReportKeyReportVersion = @"report_version";
+static NSString *const kReportKeyReportVersion = @"report_version";
 
 // Other Top level keys
-NSString *const kReportKeyFailures = @"failures";
-NSString *const kReportKeyDetectedVersions = @"detected_versions";
+static NSString *const kReportKeyFailures = @"failures";
+static NSString *const kReportKeyDetectedVersions = @"detected_versions";
 
 // _summary_result level keys for AutoPkg report
-NSString *const kReportKeySummaryText = @"summary_text";
-NSString *const kReportKeyDataRows = @"data_rows";
-NSString *const kReportKeyHeaders = @"header";
+static NSString *const kReportKeySummaryText = @"summary_text";
+static NSString *const kReportKeyDataRows = @"data_rows";
+static NSString *const kReportKeyHeaders = @"header";
 
 // _summary_result processor keys
-NSString *const kReportProcessorInstaller = @"installer_summary_result";
-NSString *const kReportProcessorURLDownloader = @"url_downloader_summary_result";
-NSString *const kReportProcessorInstallFromDMG = @"install_from_dmg_summary_result";
-NSString *const kReportProcessorMunkiImporter = @"munki_importer_summary_result";
-NSString *const kReportProcessorPKGCreator = @"pkg_creator_summary_result";
-NSString *const kReportProcessorJSSImporter = @"jss_importer_summary_result";
-NSString *const kReportProcessorPKGCopier = @"pkg_copier_summary_result";
+static NSString *const kReportProcessorInstaller = @"installer_summary_result";
+static NSString *const kReportProcessorURLDownloader = @"url_downloader_summary_result";
+static NSString *const kReportProcessorInstallFromDMG = @"install_from_dmg_summary_result";
+static NSString *const kReportProcessorPKGCreator = @"pkg_creator_summary_result";
+static NSString *const kReportProcessorPKGCopier = @"pkg_copier_summary_result";
 
-NSString *const fallback_reportCSS = @"<style type='text/css'>*{font-family:'Helvetica Neue',Helvetica,sans-serif;font-size:11pt}a{color:#157463;text-decoration:underline}a:hover{color:#0d332a}h1{background-color:#eaf6f4;color:#157463;font-weight:700;font-size:14pt;margin:30px 0 0;padding:5px;text-transform:uppercase;text-align:center}ul{list-style-type:none;padding:0;margin:0;margin-left:1em}p{padding:5px}td,th{padding:5px 15px;text-align:left}th{background-color:#eaf6f4;color:#157463;font-weight:400;text-transform:uppercase}.status,.pkgname{font-weight:700}.footer{font-size:10pt;text-align:center;margin:30px 0 10px}</style>";
+static NSString *const fallback_reportCSS = @"<style type='text/css'>*{font-family:'Helvetica Neue',Helvetica,sans-serif;font-size:11pt}a{color:#157463;text-decoration:underline}a:hover{color:#0d332a}h1{background-color:#eaf6f4;color:#157463;font-weight:700;font-size:14pt;margin:30px 0 0;padding:5px;text-transform:uppercase;text-align:center}ul{list-style-type:none;padding:0;margin:0;margin-left:1em}p{padding:5px}td,th{padding:5px 15px;text-align:left}th{background-color:#eaf6f4;color:#157463;font-weight:400;text-transform:uppercase}.status,.pkgname{font-weight:700}.footer{font-size:10pt;text-align:center;margin:30px 0 10px}</style>";
 
 #pragma mark - LGUpdatedApplication
 @implementation LGUpdatedApplication {
@@ -82,6 +81,7 @@ NSString *const fallback_reportCSS = @"<style type='text/css'>*{font-family:'Hel
 
 @implementation LGAutoPkgReport {
     NSDictionary *_reportDictionary;
+    NSArray *_includedProcessorSummaryResults;
 }
 
 @synthesize updatedApplications = _updatedApplications;
@@ -109,11 +109,15 @@ NSString *const fallback_reportCSS = @"<style type='text/css'>*{font-family:'Hel
 
 - (BOOL)updatesToReport
 {
-    if (([_reportDictionary[kReportKeySummaryResults][kReportProcessorURLDownloader] count] > 0)) {
+    if ((_reportedItemFlags & kLGReportItemsFailures && [_reportDictionary[kReportKeyFailures] count] > 0) ||
+        (_reportedItemFlags & kLGReportItemsFailures && _error) ||
+        [[self includedProcessorSummaryResults] count] ||
+        [self integrationsUpdateAvailable])
+    {
         return YES;
     }
-    return (([_reportDictionary[kReportKeyFailures] count] > 0) || _error ||
-            [self integrationsUpdateAvailable]);
+
+    return NO;
 }
 
 - (NSString *)emailSubjectString
@@ -486,7 +490,7 @@ NSString *const fallback_reportCSS = @"<style type='text/css'>*{font-family:'Hel
                                 kReportKeyDataRows : dataRows,
                                 kReportKeySummaryText : @"The following new items were imported into Munki:" };
 
-        [summaryResults setObject:dict forKey:kReportProcessorMunkiImporter];
+        [summaryResults setObject:dict forKey:@"munki_importer_summary_result"];
     }
 
     return @{
@@ -560,15 +564,18 @@ NSString *const fallback_reportCSS = @"<style type='text/css'>*{font-family:'Hel
  */
 - (NSArray *)includedProcessorSummaryResults
 {
+    if (_includedProcessorSummaryResults){
+        return _includedProcessorSummaryResults;
+    }
+
     if (_reportedItemFlags == kLGReportItemsNone) {
         _reportedItemFlags = [[LGDefaults standardUserDefaults] reportedItemFlags];
     }
 
-    NSMutableArray *itemArray = [[NSMutableArray alloc] init];
-
     if (_reportedItemFlags & kLGReportItemsAll) {
         return nil;
     } else {
+        NSMutableArray *itemArray = [[NSMutableArray alloc] init];
         if (_reportedItemFlags & kLGReportItemsNewDownloads) {
             [itemArray addObject:kReportProcessorURLDownloader];
         }
@@ -578,14 +585,17 @@ NSString *const fallback_reportCSS = @"<style type='text/css'>*{font-family:'Hel
         if (_reportedItemFlags & kLGReportItemsNewPackages) {
             [itemArray addObject:kReportProcessorPKGCreator];
         }
-        if (_reportedItemFlags & kLGReportItemsMunkiImports) {
-            [itemArray addObject:kReportProcessorMunkiImporter];
+
+        if (_reportedItemFlags & kLGReportItemsIntegrationImports) {
+            [self.integrations enumerateObjectsUsingBlock:^(LGIntegration *obj, NSUInteger idx, BOOL *stop) {
+                if ([[obj class] respondsToSelector:@selector(summaryResultsKey)]) {
+                    [itemArray addObject:[[obj class] summaryResultsKey]];
+                }
+            }];
         }
-        if (_reportedItemFlags & kLGReportItemsJSSImports) {
-            [itemArray addObject:kReportProcessorJSSImporter];
-        }
+        _includedProcessorSummaryResults = [itemArray copy];
     }
-    return [itemArray copy];
+    return _includedProcessorSummaryResults;
 }
 
 @end
