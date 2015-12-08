@@ -28,6 +28,8 @@
 
 #import "LGBaseNotificationServiceViewController.h"
 #import "LGNotificationServiceWindowController.h"
+#import "LGTemplateRenderWindowController.h"
+#import "LGSelectNotificationsWindowController.h"
 
 @interface LGNotificationsViewController ()
 #pragma mark - Email
@@ -66,6 +68,8 @@
 
 @implementation LGNotificationsViewController {
     LGNotificationServiceWindowController *_serviceWindow;
+    LGTemplateRenderWindowController *_templateRenderWindow;
+    LGSelectNotificationsWindowController *_flagConfigureWindow;
 }
 
 - (void)viewDidLoad
@@ -136,33 +140,36 @@
 
         _serviceWindow = [[LGNotificationServiceWindowController alloc] initWithViewController:serviceView];
 
-        [NSApp beginSheet:_serviceWindow.window
-            modalForWindow:self.modalWindow
-             modalDelegate:self
-            didEndSelector:@selector(sheetDidEnd:returnCode:contextInfo:)
-               contextInfo:(__bridge void *)(serviceClass)];
+        [_serviceWindow openSheetOnWindow:self.modalWindow complete:^(LGWindowController *windowController) {
+            NSString *enabledKey = nil;
+            if (serviceClass == [LGSlackNotification class]) {
+                enabledKey = @"Slack";
+            } else if (serviceClass == [LGHipChatNotification class]){
+                enabledKey = @"HipChat";
+            }
+            if (enabledKey.length) {
+                id controller = (LGBaseNotificationServiceViewController *)_serviceWindow.viewController;
+                if([controller respondsToSelector:@selector(didConfigure)] && ![controller didConfigure]){
+                    [[NSUserDefaults standardUserDefaults] setBool:NO forKey:[enabledKey stringByAppendingString:@"NotificationsEnabled"]];
+                    [[NSUserDefaults standardUserDefaults] setBool:NO forKey:[enabledKey stringByAppendingString:@"Configured"]];
+                }
+            }
+            _serviceWindow = nil;
+        }];
     }
 }
 
-- (void)sheetDidEnd:(NSWindow *)sheet returnCode:(NSInteger)returnCode contextInfo:(void *)contextInfo;
+- (IBAction)configureNotificationsFlags:(id)sender {
+    _flagConfigureWindow = [[LGSelectNotificationsWindowController alloc] init];
+    [_flagConfigureWindow openSheetOnWindow:self.modalWindow complete:^(LGWindowController *windowController) {
+        _flagConfigureWindow = nil;
+    }];
+}
+
+- (IBAction)openTemplateEditor:(id)sender
 {
-    Class class = (__bridge Class)(contextInfo);
-    NSString *enabledKey = nil;
-    if (class == [LGSlackNotification class]) {
-        enabledKey = @"Slack";
-    } else if (class == [LGHipChatNotification class]){
-        enabledKey = @"HipChat";
-    }
-
-    if (enabledKey.length) {
-        id controller = (LGBaseNotificationServiceViewController *)_serviceWindow.viewController;
-        if([controller respondsToSelector:@selector(didConfigure)] && ![controller didConfigure]){
-            [[NSUserDefaults standardUserDefaults] setBool:NO forKey:[enabledKey stringByAppendingString:@"NotificationsEnabled"]];
-            [[NSUserDefaults standardUserDefaults] setBool:NO forKey:[enabledKey stringByAppendingString:@"Configured"]];
-        }
-    }
-
-    _serviceWindow = nil;
+    _templateRenderWindow = [[LGTemplateRenderWindowController alloc] init];
+    [_templateRenderWindow open:^(LGWindowController *renderer){}];
 }
 
 #pragma mark - Keychain Actions

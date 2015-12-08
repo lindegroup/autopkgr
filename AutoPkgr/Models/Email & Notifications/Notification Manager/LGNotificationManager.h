@@ -18,6 +18,9 @@
 //
 
 #import <Foundation/Foundation.h>
+
+extern NSArray *NotificationServiceClasses();
+
 @interface LGNotificationManager : NSObject
 
 @property (copy, nonatomic, readonly) NSDictionary *reportDictionary;

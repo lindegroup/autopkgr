@@ -45,7 +45,7 @@
     return YES;
 }
 
-+ (NSString *)summaryResultsKey {
++ (NSString *)summaryResultKey {
     return @"macpatch_importer_summary_result";
 }
 

@@ -81,7 +81,7 @@ static NSString *const kLGMunkiimportDomain = @"com.googlecode.munki.munkiimport
     return NO;
 }
 
-+ (NSString *)summaryResultsKey {
++ (NSString *)summaryResultKey {
     return @"munki_importer_summary_result";
 }
 

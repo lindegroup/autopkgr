@@ -1,4 +1,5 @@
 PODS:
+  - ACEView (0.0.5)
   - AFNetworking (2.5.4):
     - AFNetworking/NSURLConnection (= 2.5.4)
     - AFNetworking/NSURLSession (= 2.5.4)
@@ -20,17 +21,24 @@ PODS:
   - AHKeychain (0.2.1)
   - AHLaunchCtl (0.5.1)
   - AHProxySettings (0.1.1)
+  - GRMustache (7.3.2):
+    - JRSwizzle (~> 1.0)
+  - JRSwizzle (1.0)
   - mailcore2-osx (0.5.2)
+  - MMMarkdown (0.5.1)
   - RNCryptor (2.2)
   - Sparkle (1.8.0)
   - XMLDictionary (1.4)
 
 DEPENDENCIES:
+  - ACEView (~> 0.0.5)
   - AFNetworking (~> 2.5.4)
   - AHKeychain (~> 0.2.1)
   - AHLaunchCtl (from `https://github.com/eahrold/AHLaunchCtl.git`)
   - AHProxySettings (~> 0.1.1)
+  - GRMustache (~> 7.3.2)
   - mailcore2-osx (~> 0.5)
+  - MMMarkdown (~> 0.5.1)
   - RNCryptor (~> 2.2)
   - Sparkle (= 1.8.0)
   - XMLDictionary (~> 1.4)
@@ -45,11 +53,15 @@ CHECKOUT OPTIONS:
     :git: https://github.com/eahrold/AHLaunchCtl.git
 
 SPEC CHECKSUMS:
+  ACEView: cf3f665c61c8567d5dd04f395796342f58bad1a0
   AFNetworking: 05edc0ac4c4c8cf57bcf4b84be5b0744b6d8e71e
   AHKeychain: f797278e48ab3ddb4d62370b84583652bc071baa
   AHLaunchCtl: 5d50bc1c6de834de91ab00d83d045d32f253a443
   AHProxySettings: 1f882780699d7765aca9377660ba280306d30910
+  GRMustache: ebe6104fd30a6d22c1f36af131e19e2dbf7cd292
+  JRSwizzle: dd5ead5d913a0f29e7f558200165849f006bb1e3
   mailcore2-osx: b4380c33f2e155006db3f97b638b7a0d52344b15
+  MMMarkdown: 06f7989e0350d10a7de50516af6c812402ce554b
   RNCryptor: c68678461a2c7474a55db9a6a98834c22d51f535
   Sparkle: 3adb45d38bcdf80caf505f2b4cd693031db70835
   XMLDictionary: f9f51601ba76678b594ab485f2b00ec1fed23724

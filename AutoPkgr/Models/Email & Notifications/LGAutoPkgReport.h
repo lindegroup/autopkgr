@@ -70,27 +70,33 @@ typedef NS_ENUM(NSInteger, LGReportIntegrationFrequency) {
  */
 @property (assign, nonatomic) LGReportItems reportedItemFlags;
 
-#pragma mark - Strings
-/**
- *  Fully formatted HTML message suitable for email
- */
-@property (copy, nonatomic, readonly) NSString *emailMessageString;
-
-/**
- *  Email subject message
- */
-@property (copy, nonatomic, readonly) NSString *emailSubjectString;
-
-/**
- *  Formatted message suitable for Slack / HipChat (formatted as text)
- */
-@property (copy, nonatomic, readonly) NSString *webChannelMessageString;
-
 /**
  *  Check to determine if there is anything to report
  */
 @property (nonatomic, readonly) BOOL updatesToReport;
 
+/**
+ *  Subject of message, follows importance updates -> failures -> errors -> updates to integrations.
+ */
+@property (copy, nonatomic, readonly) NSString *reportSubject;
+
+/**
+ *  NSDictionary representing the data usable to the templating system.
+ *  AutoPkgr pops know processor summary results to the top level for easier and more succinct templating.
+ */
+@property (copy, nonatomic, readonly) NSDictionary *templateData;
+
+/**
+ *  Render a completed message using a given template.
+ *
+ *  @param templateString Raw mustache style template string.
+ *  @param error Populated NSError should an error occur rendering
+ *
+ *  @return Fully formatted message. 
+ */
+- (NSString *)renderWithTemplate:(NSString *)templateString error:(NSError **)error;
+
+#pragma mark - Additional
 /**
  *  Array of LGUpdatedApplications
  */
@@ -101,7 +107,6 @@ typedef NS_ENUM(NSInteger, LGReportIntegrationFrequency) {
  */
 @property (copy, nonatomic, readonly) NSError *failureError;
 
-
 @end
 
 @interface LGUpdatedApplication : NSObject
@@ -109,6 +114,7 @@ typedef NS_ENUM(NSInteger, LGReportIntegrationFrequency) {
 + (instancetype) new NS_UNAVAILABLE;
 - (instancetype)init NS_UNAVAILABLE;
 
+@property (copy, nonatomic, readonly) NSString *dictionaryRepresentation;
 @property (copy, nonatomic, readonly) NSString *name;
 @property (copy, nonatomic, readonly) NSString *version;
 @property (copy, nonatomic, readonly) NSString *path;

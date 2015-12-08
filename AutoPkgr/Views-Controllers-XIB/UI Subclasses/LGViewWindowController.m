@@ -64,8 +64,8 @@
 
     NSRect rect = NSMakeRect(0,
                              0,
-                             minSize.width,
-                             minSize.height);
+                             minSize.width * 1.1,
+                             minSize.height * 1.1);
 
     [self.window setFrame:rect display:YES];
     [self.window setMinSize:minSize];

@@ -117,7 +117,7 @@ void subclassMustConformToProtocol(id className)
     return YES;
 }
 
-+ (NSString *)summaryResultsKey {
++ (NSString *)summaryResultKey {
     return nil;
 }
 

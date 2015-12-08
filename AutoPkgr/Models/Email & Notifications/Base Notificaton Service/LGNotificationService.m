@@ -95,6 +95,65 @@
     }
 }
 
+#pragma mark - Template
++ (NSString *)_reportTemplateKey
+{
+    return quick_formatString(@"%@%@", NSStringFromSelector(@selector(reportTemplate)).uppercaseString, [self className]);
+}
++ (NSString *)_reportTemplateFile
+{
+    NSString *className = [self className];
+    NSRange r1 = [className rangeOfString:@"LG"];
+    NSRange r2 = [className rangeOfString:@"Notification"];
+    NSRange rSub = NSMakeRange(r1.location + r1.length, r2.location - r1.location - r1.length);
+    NSString *base = [[className substringWithRange:rSub] stringByAppendingString:@"_report.html"];
+    return [[LGHostInfo getAppSupportDirectory] stringByAppendingPathComponent:[base lowercaseString]];
+}
+
++ (NSString *)reportTemplate
+{
+    NSError *error = nil;
+    NSString *reportTemplate = nil;
+    if ([[self class] templateIsFile]) {
+        reportTemplate = [NSString stringWithContentsOfFile:[self _reportTemplateFile]
+                                                   encoding:NSUTF8StringEncoding error:&error];
+    } else {
+        reportTemplate = [[NSUserDefaults standardUserDefaults] stringForKey:[self _reportTemplateKey]];
+    }
+    if (error) {
+        NSLog(@"%@", error);
+    }
+    return reportTemplate ?: [(id<LGNotificationServiceProtocol>)self defaultTemplate];
+};
+
++ (void)setReportTemplate:(NSString *)reportTemplate
+{
+    NSError *error = nil;
+    if ([[self class] templateIsFile]) {
+        if (!reportTemplate) {
+            [[NSFileManager defaultManager] removeItemAtPath:[self _reportTemplateFile] error:&error];
+        } else  {
+            [reportTemplate writeToFile:[self _reportTemplateFile] atomically:YES encoding:NSUTF8StringEncoding error:&error];
+        }
+    } else {
+        [[NSUserDefaults standardUserDefaults] setValue:reportTemplate forKey:[self _reportTemplateKey]];
+    }
+    if (error) {
+        NSLog(@"%@", error);
+    }
+}
+
++ (ACEMode)tempateFormat {
+    return ACEModeHTML;
+}
+
++ (NSString *)templateWithName:(NSString *)name type:(NSString *)type
+{
+    NSString *dataFile = [[NSBundle mainBundle] pathForResource:name ofType:type];
+    return  [NSString stringWithContentsOfFile:dataFile encoding:NSUTF8StringEncoding error:nil];
+}
+
+#pragma mark - Send
 - (void)send:(void (^)(NSError *))complete
 {
     subclassMustImplement(self, _cmd);
@@ -104,4 +163,9 @@
 {
     subclassMustImplement(self, _cmd);
 }
+
+- (void)sendMessage:(NSString *)message title:(NSString *)title complete:(void (^)(NSError *))complete {
+    subclassMustImplement(self, _cmd);
+}
+
 @end

@@ -84,7 +84,7 @@
  *
  *  @return full key for the integration's summary results.
  */
-+ (NSString *)summaryResultsKey;
++ (NSString *)summaryResultKey;
 @end
 
 

@@ -94,7 +94,7 @@
                                                    munkiRepoFolder);
 
         [alert setAlertStyle:NSWarningAlertStyle];
-        [alert beginSheetModalForWindow:nil
+        [alert beginSheetModalForWindow:self.view.window
                           modalDelegate:self
                          didEndSelector:nil
                             contextInfo:nil];

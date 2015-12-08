@@ -73,7 +73,7 @@
     return YES;
 }
 
-+ (NSString *)summaryResultsKey {
++ (NSString *)summaryResultKey {
     return @"jss_importer_summary_result";
 }
 

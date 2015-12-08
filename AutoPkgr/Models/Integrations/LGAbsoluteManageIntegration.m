@@ -80,7 +80,7 @@
     return YES;
 }
 
-+ (NSString *)summaryResultsKey {
++ (NSString *)summaryResultKey {
     return @"absolute_manage_export_summary_result";
 }
 
