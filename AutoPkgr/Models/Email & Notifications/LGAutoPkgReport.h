@@ -24,9 +24,6 @@
 @class LGIntegration;
 
 typedef NS_ENUM(NSInteger, LGReportIntegrationFrequency) {
-    // Do not include integrations' status in report.
-    kLGReportIntegrationFrequencyNever = -1,
-
     // Send a report for any give update once a week (Default)
     kLGReportIntegrationFrequencyWeekly = 0,
 

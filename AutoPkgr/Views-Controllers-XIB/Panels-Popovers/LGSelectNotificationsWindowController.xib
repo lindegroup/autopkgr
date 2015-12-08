@@ -21,71 +21,83 @@
                 <rect key="frame" x="0.0" y="0.0" width="480" height="285"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <button translatesAutoresizingMaskIntoConstraints="NO" id="kHJ-8E-Jr6">
+                    <button tag="2" translatesAutoresizingMaskIntoConstraints="NO" id="kHJ-8E-Jr6">
                         <rect key="frame" x="34" y="224" width="424" height="18"/>
                         <buttonCell key="cell" type="check" title="New software is downloaded" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="93b-UK-JQ9">
                             <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                             <font key="font" metaFont="system"/>
                         </buttonCell>
+                        <connections>
+                            <action selector="updateFlags:" target="-2" id="CU5-cj-IyZ"/>
+                        </connections>
                     </button>
-                    <button translatesAutoresizingMaskIntoConstraints="NO" id="AAi-Ly-vw6">
+                    <button tag="4" translatesAutoresizingMaskIntoConstraints="NO" id="AAi-Ly-vw6">
                         <rect key="frame" x="34" y="204" width="424" height="18"/>
                         <buttonCell key="cell" type="check" title="New package is built" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="Rrw-eM-Kne">
                             <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                             <font key="font" metaFont="system"/>
                         </buttonCell>
+                        <connections>
+                            <action selector="updateFlags:" target="-2" id="ceE-Ay-DO3"/>
+                        </connections>
                     </button>
-                    <button translatesAutoresizingMaskIntoConstraints="NO" id="PTz-bS-pZc">
+                    <button tag="64" translatesAutoresizingMaskIntoConstraints="NO" id="PTz-bS-pZc">
                         <rect key="frame" x="34" y="164" width="424" height="18"/>
                         <buttonCell key="cell" type="check" title="New software imported to Munki, JSS, or other server" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="iUL-bU-gWt">
                             <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                             <font key="font" metaFont="system"/>
                         </buttonCell>
+                        <connections>
+                            <action selector="updateFlags:" target="-2" id="42A-tn-dQK"/>
+                        </connections>
                     </button>
-                    <button translatesAutoresizingMaskIntoConstraints="NO" id="mXz-OA-1lG">
-                        <rect key="frame" x="34" y="184" width="424" height="18"/>
-                        <buttonCell key="cell" type="check" title="New software is installed" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="vpW-70-0of">
-                            <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
-                            <font key="font" metaFont="system"/>
-                        </buttonCell>
-                    </button>
-                    <button translatesAutoresizingMaskIntoConstraints="NO" id="ad9-qn-QW0">
+                    <button tag="16" translatesAutoresizingMaskIntoConstraints="NO" id="ad9-qn-QW0">
                         <rect key="frame" x="34" y="144" width="424" height="18"/>
                         <buttonCell key="cell" type="check" title="Errors" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="MGr-wA-mKE">
                             <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                             <font key="font" metaFont="system"/>
                         </buttonCell>
+                        <connections>
+                            <action selector="updateFlags:" target="-2" id="bfa-1q-0v6"/>
+                        </connections>
                     </button>
-                    <button translatesAutoresizingMaskIntoConstraints="NO" id="jGs-I5-LQa">
+                    <button tag="32" translatesAutoresizingMaskIntoConstraints="NO" id="jGs-I5-LQa">
                         <rect key="frame" x="34" y="124" width="424" height="18"/>
                         <buttonCell key="cell" type="check" title="Failures" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="VXM-yd-Y5e">
                             <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                             <font key="font" metaFont="system"/>
                         </buttonCell>
+                        <connections>
+                            <action selector="updateFlags:" target="-2" id="fUe-4y-JvK"/>
+                        </connections>
                     </button>
                     <popUpButton horizontalHuggingPriority="249" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="A1h-qg-Hik">
                         <rect key="frame" x="292" y="99" width="148" height="26"/>
-                        <popUpButtonCell key="cell" type="push" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" id="Xqj-mT-15z">
+                        <popUpButtonCell key="cell" type="push" title="Once per version" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" tag="2" imageScaling="proportionallyDown" inset="2" selectedItem="Fdo-BA-Js6" id="Xqj-mT-15z">
                             <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
                             <font key="font" metaFont="menu"/>
                             <menu key="menu" id="MsK-px-fRu">
                                 <items>
                                     <menuItem title="Once a week" id="yE4-Cq-TFS"/>
                                     <menuItem title="Once a day" tag="1" id="yLO-ap-fGm"/>
-                                    <menuItem title="Once per version" tag="2" id="Fdo-BA-Js6"/>
-                                    <menuItem title="Never" tag="-1" id="eS3-hK-qWJ">
-                                        <modifierMask key="keyEquivalentModifierMask"/>
-                                    </menuItem>
+                                    <menuItem title="Once per version" state="on" tag="2" id="Fdo-BA-Js6"/>
                                 </items>
                             </menu>
                         </popUpButtonCell>
+                        <connections>
+                            <binding destination="-2" name="enabled" keyPath="self.integrationUpdateState" id="9if-vB-7JC"/>
+                            <binding destination="Ikb-58-MlX" name="selectedTag" keyPath="values.ReportIntegrationFrequency" id="8ib-mG-LQX"/>
+                        </connections>
                     </popUpButton>
-                    <button translatesAutoresizingMaskIntoConstraints="NO" id="yhT-Xg-3nj">
+                    <button tag="1" translatesAutoresizingMaskIntoConstraints="NO" id="yhT-Xg-3nj">
                         <rect key="frame" x="34" y="64" width="424" height="18"/>
-                        <buttonCell key="cell" type="check" title="Other actions not specified above" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="nWD-xK-HQZ">
+                        <buttonCell key="cell" type="check" title="Report All Items" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="nWD-xK-HQZ">
                             <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                             <font key="font" metaFont="system"/>
                         </buttonCell>
+                        <connections>
+                            <action selector="updateFlags:" target="-2" id="RSG-a8-RH0"/>
+                        </connections>
                     </button>
                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="PZg-h6-oPd">
                         <rect key="frame" x="11" y="253" width="447" height="17"/>
@@ -95,12 +107,15 @@
                             <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                         </textFieldCell>
                     </textField>
-                    <button translatesAutoresizingMaskIntoConstraints="NO" id="wN4-tS-lbz">
+                    <button tag="128" translatesAutoresizingMaskIntoConstraints="NO" id="wN4-tS-lbz">
                         <rect key="frame" x="34" y="104" width="254" height="18"/>
                         <buttonCell key="cell" type="check" title="Updates for integrated tools, at most:" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="OEp-t0-mfM">
                             <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                             <font key="font" metaFont="system"/>
                         </buttonCell>
+                        <connections>
+                            <action selector="updateFlags:" target="-2" id="nG7-b5-LQ2"/>
+                        </connections>
                     </button>
                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="xeJ-hP-MvA">
                         <rect key="frame" x="53" y="88" width="251" height="14"/>
@@ -112,6 +127,9 @@
                             <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                             <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                         </textFieldCell>
+                        <connections>
+                            <binding destination="-2" name="enabled" keyPath="self.integrationUpdateState" id="ehd-YS-GHF"/>
+                        </connections>
                     </textField>
                     <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="LdM-NS-cWD">
                         <rect key="frame" x="333" y="13" width="110" height="32"/>
@@ -127,6 +145,16 @@ Gw
                         </buttonCell>
                         <connections>
                             <action selector="closeSheet:" target="-2" id="VNE-5G-ju4"/>
+                        </connections>
+                    </button>
+                    <button tag="8" translatesAutoresizingMaskIntoConstraints="NO" id="mXz-OA-1lG">
+                        <rect key="frame" x="34" y="184" width="424" height="18"/>
+                        <buttonCell key="cell" type="check" title="New software is installed" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="vpW-70-0of">
+                            <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                            <font key="font" metaFont="system"/>
+                        </buttonCell>
+                        <connections>
+                            <action selector="updateFlags:" target="-2" id="JEE-2F-Geg"/>
                         </connections>
                     </button>
                 </subviews>
@@ -171,5 +199,6 @@ Gw
             </connections>
             <point key="canvasLocation" x="180" y="204.5"/>
         </window>
+        <userDefaultsController representsSharedInstance="YES" id="Ikb-58-MlX"/>
     </objects>
 </document>

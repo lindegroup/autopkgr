@@ -55,7 +55,7 @@
 - (IBAction)getKeychainPassword:(NSTextField *)sender;
 - (IBAction)updateKeychainPassword:(id)sender;
 
-#pragma mark - Other Services
+#pragma mark Other Services
 #pragma mark-- Outletes ---
 
 @property (weak) IBOutlet NSButton *configureSlackButton;
@@ -66,6 +66,7 @@
 
 @end
 
+#pragma mark - LGNotificationsViewController
 @implementation LGNotificationsViewController {
     LGNotificationServiceWindowController *_serviceWindow;
     LGTemplateRenderWindowController *_templateRenderWindow;

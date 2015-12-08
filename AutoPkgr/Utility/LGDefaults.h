@@ -35,6 +35,7 @@ typedef NS_OPTIONS(NSInteger, LGReportItems) {
     kLGReportItemsErrors = 1 << 4,
     kLGReportItemsFailures = 1 << 5,
     kLGReportItemsIntegrationImports = 1 << 6,
+    kLGReportItemsIntegrationUpdates = 1 << 7,
 };
 
 

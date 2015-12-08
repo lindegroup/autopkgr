@@ -119,7 +119,7 @@ static NSString *const kReportProcessorPKGCopier = @"pkg_copier_summary_result";
 
     if ((_reportedItemFlags & kLGReportItemsFailures && failureCount) ||
         (_reportedItemFlags & kLGReportItemsErrors && _error) ||
-         summaryCount || [self integrationsUpdateAvailable])
+         summaryCount || [self integrationsUpdatesToReport])
     {
         return YES;
     } else if (_reportedItemFlags == kLGReportItemsAll && (failureCount || summaryCount || _error )) {
@@ -175,7 +175,7 @@ static NSString *const kReportProcessorPKGCopier = @"pkg_copier_summary_result";
         }];
     }
 
-    if ([self integrationsUpdateAvailable]){
+    if ([self integrationsUpdatesToReport]){
         data[@"integration_updates"] = [self integrationUpdates];
     }
 
@@ -336,16 +336,17 @@ static NSString *const kReportProcessorPKGCopier = @"pkg_copier_summary_result";
     };
 }
 
-- (BOOL)integrationsUpdateAvailable
+- (BOOL)integrationsUpdatesToReport
 {
     /* Determine if updates to integrations should be reported. */
     LGDefaults *defaults = [LGDefaults standardUserDefaults];
 
-    /* ReportIntegrationFrequency is bound to the defaults controller in the
-     * LGScheduleViewController.xib. It's bound to the popup button's selectedTag property. */
-    LGReportIntegrationFrequency noteFrequency = [defaults integerForKey:@"ReportIntegrationFrequency"];
-
-    if (noteFrequency > kLGReportIntegrationFrequencyNever) {
+    LGReportItems check = (kLGReportItemsIntegrationUpdates | kLGReportItemsAll);
+    if (defaults.reportedItemFlags & check) {
+        /* ReportIntegrationFrequency is bound to the defaults controller in the
+         * LGScheduleViewController.xib. It's bound to the popup button's selectedTag property. */
+        LGReportIntegrationFrequency noteFrequency = [defaults integerForKey:@"ReportIntegrationFrequency"];
+        
         for (LGIntegration *integration in _integrations) {
             if (integration.info.status == kLGIntegrationUpdateAvailable) {
                 if (noteFrequency == kLGReportIntegrationFrequencyOncePerVersion) {
@@ -425,7 +426,10 @@ static NSString *const kReportProcessorPKGCopier = @"pkg_copier_summary_result";
         if (_reportedItemFlags & kLGReportItemsIntegrationImports) {
             [self.integrations enumerateObjectsUsingBlock:^(LGIntegration *obj, NSUInteger idx, BOOL *stop) {
                 if ([[obj class] respondsToSelector:@selector(summaryResultKey)]) {
-                    [itemArray addObject:[[obj class] summaryResultKey]];
+                    id key = [[obj class] summaryResultKey];
+                    if(key){
+                        [itemArray addObject:key];
+                    }
                 }
             }];
         }

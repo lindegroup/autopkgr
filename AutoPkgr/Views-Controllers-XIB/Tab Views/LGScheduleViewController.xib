@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="9060" systemVersion="15B42" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="9059" systemVersion="14F27" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="9060"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="9059"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="LGScheduleViewController">
@@ -19,7 +19,7 @@
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
         <customObject id="-3" userLabel="Application" customClass="NSObject"/>
         <customView id="Hz6-mo-xeY">
-            <rect key="frame" x="0.0" y="0.0" width="617" height="266"/>
+            <rect key="frame" x="0.0" y="0.0" width="603" height="266"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <matrix verticalHuggingPriority="750" selectionByRect="NO" allowsEmptySelection="NO" autorecalculatesCellSize="YES" translatesAutoresizingMaskIntoConstraints="NO" id="UxE-SU-fts" userLabel="Schedule Matrix">
@@ -28,9 +28,8 @@
                         <constraint firstAttribute="height" constant="85" id="Eez-Od-1Gv"/>
                         <constraint firstAttribute="width" constant="302" id="HBg-Vp-Xtc"/>
                     </constraints>
-                    <animations/>
                     <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                    <size key="cellSize" width="76" height="18"/>
+                    <size key="cellSize" width="77" height="18"/>
                     <size key="intercellSpacing" width="4" height="5"/>
                     <buttonCell key="prototype" type="radio" title="Radio" imagePosition="left" alignment="left" controlSize="small" inset="2" id="Y8l-6c-rJR" userLabel="Schedule Radio Buttons">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
@@ -67,7 +66,6 @@
                     <constraints>
                         <constraint firstAttribute="width" constant="36" id="LhG-vR-ozG"/>
                     </constraints>
-                    <animations/>
                     <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="hours" id="t9N-Fo-Q3T">
                         <font key="font" metaFont="smallSystem"/>
                         <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -79,7 +77,6 @@
                     <constraints>
                         <constraint firstAttribute="width" constant="29" id="Lde-Pl-R5L"/>
                     </constraints>
-                    <animations/>
                     <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" title="24" placeholderString="" drawsBackground="YES" id="9xE-ZL-3gu">
                         <font key="font" metaFont="smallSystem"/>
                         <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
@@ -95,7 +92,6 @@
                     <constraints>
                         <constraint firstAttribute="width" constant="82" id="qi3-Py-7uI"/>
                     </constraints>
-                    <animations/>
                     <popUpButtonCell key="cell" type="push" bezelStyle="rounded" alignment="left" controlSize="mini" lineBreakMode="truncatingTail" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" id="wdV-7F-Ugw">
                         <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
                         <font key="font" metaFont="miniSystem"/>
@@ -110,7 +106,6 @@
                     <constraints>
                         <constraint firstAttribute="width" constant="82" id="CZf-Ai-wsv"/>
                     </constraints>
-                    <animations/>
                     <popUpButtonCell key="cell" type="push" bezelStyle="rounded" alignment="left" controlSize="mini" lineBreakMode="truncatingTail" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" id="QSZ-3n-UUg">
                         <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
                         <font key="font" metaFont="miniSystem"/>
@@ -131,7 +126,6 @@
                     <constraints>
                         <constraint firstAttribute="width" constant="80" id="F9X-zl-TEX"/>
                     </constraints>
-                    <animations/>
                     <popUpButtonCell key="cell" type="push" bezelStyle="rounded" alignment="left" controlSize="mini" lineBreakMode="truncatingTail" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" id="f0t-uA-HJ7" userLabel="Pop Up Button Cell">
                         <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
                         <font key="font" metaFont="miniSystem"/>
@@ -146,7 +140,6 @@
                     <constraints>
                         <constraint firstAttribute="width" constant="16" id="YeN-eu-M8f"/>
                     </constraints>
-                    <animations/>
                     <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="at" id="qd6-CR-v7F">
                         <font key="font" metaFont="smallSystem"/>
                         <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -158,7 +151,6 @@
                     <constraints>
                         <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="360" id="Ifk-Cg-fkE"/>
                     </constraints>
-                    <animations/>
                     <buttonCell key="cell" type="check" title="Update all repos before each AutoPkg run" bezelStyle="regularSquare" imagePosition="left" alignment="left" state="on" inset="2" id="2Rc-4D-cra">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                         <font key="font" metaFont="system"/>
@@ -179,7 +171,6 @@
                     <constraints>
                         <constraint firstAttribute="width" constant="360" id="kV9-rW-wQ9"/>
                     </constraints>
-                    <animations/>
                     <buttonCell key="cell" type="check" title="Enable scheduled AutoPkg runs" bezelStyle="regularSquare" imagePosition="left" alignment="left" inset="2" id="7rF-ef-zEP">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                         <font key="font" metaFont="system"/>
@@ -209,7 +200,6 @@
                 <constraint firstItem="RXR-0C-bng" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="231" id="sIj-OF-Ahf"/>
                 <constraint firstItem="2BQ-ga-rjR" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="214" id="zLg-Yd-44r"/>
             </constraints>
-            <animations/>
             <point key="canvasLocation" x="140.5" y="233"/>
         </customView>
         <userDefaultsController representsSharedInstance="YES" id="Hey-vB-7Ws"/>
