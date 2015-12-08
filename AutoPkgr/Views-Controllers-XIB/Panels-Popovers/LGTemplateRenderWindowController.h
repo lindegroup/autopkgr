@@ -14,8 +14,6 @@
 
 @interface LGTemplateRenderWindowController : LGWindowController
 @property (copy, nonatomic) NSDictionary *exampleData;
-
-
 - (NSString *)templateString;
 @end
 

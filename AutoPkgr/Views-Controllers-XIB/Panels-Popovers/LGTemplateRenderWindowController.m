@@ -46,11 +46,8 @@
 
 - (void)awakeFromNib {
     self.inputView.delegate = self;
-    self.inputView.string = _templateString ?: @"";
 
     ACETheme theme = [[NSUserDefaults standardUserDefaults] integerForKey:@"SyntaxEditorTheme"];
-
-    [self.inputView setMode:_currentMode];
     [self.inputView setTheme:theme];
 
     [self.themeMenu addItemsWithTitles:[ACEThemeNames humanThemeNames]];
@@ -62,6 +59,7 @@
     [self.serviceClassMenu setTarget:self];
     [self.serviceClassMenu setAction:@selector(serviceClassChanged:)];
 
+    [self serviceClassChanged:self.serviceClassMenu];
     [self.exampleDataOutlineView reloadData];
 }
 
@@ -125,8 +123,10 @@
 - (IBAction)serviceClassChanged:(NSPopUpButton *)sender {
     NSInteger idx = [sender indexOfSelectedItem];
     _serviceClass = NotificationServiceClasses()[idx];
-    _inputView.string = [_serviceClass reportTemplate];
     _currentMode = [_serviceClass tempateFormat];
+
+    [self.inputView setMode:_currentMode];
+    [self.inputView setString:[_serviceClass reportTemplate]];
     [self renderToView:_inputView.string];
 }
 
@@ -134,7 +134,6 @@
     [_inputView setTheme:[sender indexOfSelectedItem]];
     [[NSUserDefaults standardUserDefaults] setInteger:[sender indexOfSelectedItem] forKey:@"SyntaxEditorTheme"];
 }
-
 
 - (void)textDidChange:(NSNotification *)notification {
     [self renderToView:_inputView.string];

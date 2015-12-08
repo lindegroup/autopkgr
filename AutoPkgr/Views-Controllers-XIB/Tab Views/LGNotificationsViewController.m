@@ -169,7 +169,9 @@
 - (IBAction)openTemplateEditor:(id)sender
 {
     _templateRenderWindow = [[LGTemplateRenderWindowController alloc] init];
-    [_templateRenderWindow open:^(LGWindowController *renderer){}];
+    [_templateRenderWindow open:^(LGWindowController *renderer){
+        _templateRenderWindow = nil;
+    }];
 }
 
 #pragma mark - Keychain Actions

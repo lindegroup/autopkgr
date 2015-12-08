@@ -30,7 +30,7 @@
 
 - (void)open:(windowCloseHandle)closed {
     [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(close:)
+                                             selector:@selector(willClose:)
                                                  name:NSWindowWillCloseNotification
                                                object:self.window];
     _controllerCloseHandle = closed;
@@ -49,13 +49,16 @@
 }
 
 - (IBAction)close:(id)sender {
+    [self close];
+}
+
+- (void)willClose:(NSNotification *)notification {
     [[NSNotificationCenter defaultCenter] removeObserver:self
                                                     name:NSWindowWillCloseNotification
-                                                  object:self.window];
+                                                  object:notification.object];
     if (_controllerCloseHandle) {
         _controllerCloseHandle(self);
     }
-    [self close];
 }
 
 - (IBAction)closeSheet:(id)sender
@@ -70,7 +73,7 @@
 
 - (void)sheetDidEnd:(NSWindow *)sheet
          returnCode:(NSInteger)returnCode
-        contextInfo:(void *)contextInfo
+        contextInfo:(void *)contextInfo;
 {
     if (_controllerCloseHandle) {
         _controllerCloseHandle(self);
