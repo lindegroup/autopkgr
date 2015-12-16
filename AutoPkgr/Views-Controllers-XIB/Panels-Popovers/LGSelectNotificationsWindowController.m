@@ -12,6 +12,9 @@
 
 @interface LGSelectNotificationsWindowController ()
 @property BOOL integrationUpdateState;
+@property (weak) IBOutlet NSMatrix *enabledMatrix;
+@property (weak) IBOutlet NSTextField *integrationDescription;
+
 @end
 
 @implementation LGSelectNotificationsWindowController {
@@ -20,27 +23,42 @@
 
 - (void)windowDidLoad {
     [super windowDidLoad];
-    // All of the button tags have been setup in XIB with a cooresponding LGReportItems flag
-    // this allows us to enumerate & update flag values.
-    _buttons = [[self.window.contentView subviews] mapObjectsUsingBlock:^id(NSButton *obj, NSUInteger idx) {
-        return ([obj isMemberOfClass:[NSButton class]] && obj.tag) ? obj : nil;
-    }];
-
 
     LGReportItems flags = [[LGDefaults standardUserDefaults] reportedItemFlags];
+    // All of the button tags have been setup in XIB with a cooresponding LGReportItems flag
+    // this allows us to enumerate & update flag values.
+    _buttons = [[self.window.contentView subviews] mapObjectsUsingBlock:^id(id obj, NSUInteger idx) {
+        if ([obj isMemberOfClass:[NSMatrix class]]) {
+            [obj selectCellAtRow:!(flags & kLGReportItemsAll) column:0];
+        }
+        return ([obj isMemberOfClass:[NSButton class]] && [obj tag]) ? obj : nil;
+    }];
+
     [_buttons enumerateObjectsUsingBlock:^(NSButton *button, NSUInteger idx, BOOL * _Nonnull stop) {
         button.state = (flags & button.tag);
     }];
     [self updateEnabled:flags];
 }
 
-- (IBAction)updateFlags:(NSButton *)sender {
+- (IBAction)updateFlags:(id)sender {
     LGReportItems flags = [[LGDefaults standardUserDefaults] reportedItemFlags];
-    if (sender.state) {
-        flags |= sender.tag;
+    NSInteger tag;
+    BOOL state;
+
+    if([sender isKindOfClass:[NSMatrix class]]){
+        tag = kLGReportItemsAll;
+        // The first row represents "Report All Items"
+        state = ([sender selectedRow] == 0);
+    } else {
+        state = [sender state];
+        tag = [sender tag];
+    }
+
+    if (state) {
+        flags |= tag;
         [[LGDefaults standardUserDefaults] setReportedItemFlags:flags];
     } else {
-        flags ^= sender.tag;
+        flags ^= tag;
         [[LGDefaults standardUserDefaults] setReportedItemFlags:flags];
     }
     [self updateEnabled:flags];
@@ -48,6 +66,8 @@
 
 - (void)updateEnabled:(LGReportItems)flags {
     self.integrationUpdateState = flags & kLGReportItemsIntegrationUpdates;
+    self.integrationDescription.textColor = (flags & kLGReportItemsAll) ?[NSColor lightGrayColor] : [NSColor blackColor];
+
     [_buttons enumerateObjectsUsingBlock:^(NSButton *button, NSUInteger idx, BOOL * _Nonnull stop) {
         button.enabled = (button.tag == kLGReportItemsAll) || !(flags & kLGReportItemsAll);
     }];
