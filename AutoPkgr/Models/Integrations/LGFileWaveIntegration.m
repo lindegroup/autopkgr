@@ -47,7 +47,11 @@
     return YES;
 }
 
-+ (BOOL)meetsRequirements:(NSError *__autoreleasing *)error {
++ (NSString *)summaryResultKey {
+    return @"filewave_summary_result";
+}
+
++ (BOOL)meetsRequirements:(NSError *__autoreleasing*)error {
     NSError *err = nil;
     NSString *fwAdmin = @"/Applications/FileWave/FileWave Admin.app";
     NSString *bundleVersionKey = @"CFBundleVersion";

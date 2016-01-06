@@ -34,6 +34,7 @@
                                 <constraints>
                                     <constraint firstAttribute="width" constant="68" id="4ao-AQ-21a"/>
                                 </constraints>
+                                <animations/>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Cache:" id="9Pa-A5-LiR">
                                     <font key="font" metaFont="system"/>
                                     <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -42,6 +43,7 @@
                             </textField>
                             <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="fAS-2t-NJR">
                                 <rect key="frame" x="94" y="82" width="262" height="22"/>
+                                <animations/>
                                 <textFieldCell key="cell" lineBreakMode="truncatingHead" truncatesLastVisibleLine="YES" selectable="YES" editable="YES" state="on" borderStyle="bezel" placeholderString="~/Library/AutoPkg/Cache" drawsBackground="YES" id="loL-kz-oBg">
                                     <font key="font" metaFont="system"/>
                                     <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
@@ -57,6 +59,7 @@
                                 <constraints>
                                     <constraint firstAttribute="width" constant="87" id="uy4-Mu-WCq"/>
                                 </constraints>
+                                <animations/>
                                 <buttonCell key="cell" type="push" title="Choose..." bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="HVQ-B9-qFe">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="system"/>
@@ -70,6 +73,7 @@
                                 <constraints>
                                     <constraint firstAttribute="width" constant="122" id="2Bv-JW-ZsD"/>
                                 </constraints>
+                                <animations/>
                                 <buttonCell key="cell" type="push" title="Open in Finder" bezelStyle="rounded" alignment="center" enabled="NO" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="aaW-Xo-fdG">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="system"/>
@@ -83,6 +87,7 @@
                                 <constraints>
                                     <constraint firstAttribute="width" constant="68" id="dtt-KN-I6N"/>
                                 </constraints>
+                                <animations/>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Repos:" id="l5o-py-X9A">
                                     <font key="font" metaFont="system"/>
                                     <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -91,6 +96,7 @@
                             </textField>
                             <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Tl2-iz-Ard">
                                 <rect key="frame" x="94" y="52" width="262" height="22"/>
+                                <animations/>
                                 <textFieldCell key="cell" lineBreakMode="truncatingHead" truncatesLastVisibleLine="YES" selectable="YES" editable="YES" state="on" borderStyle="bezel" placeholderString="~/Library/AutoPkg/RecipeRepos" drawsBackground="YES" id="viP-T5-kH3">
                                     <font key="font" metaFont="system"/>
                                     <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
@@ -106,6 +112,7 @@
                                 <constraints>
                                     <constraint firstAttribute="width" constant="87" id="HD8-Gs-0TC"/>
                                 </constraints>
+                                <animations/>
                                 <buttonCell key="cell" type="push" title="Choose..." bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="vam-69-phD">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="system"/>
@@ -119,6 +126,7 @@
                                 <constraints>
                                     <constraint firstAttribute="width" constant="122" id="YOG-7p-sdM"/>
                                 </constraints>
+                                <animations/>
                                 <buttonCell key="cell" type="push" title="Open in Finder" bezelStyle="rounded" alignment="center" enabled="NO" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="gTC-Jl-CoB">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="system"/>
@@ -129,6 +137,7 @@
                             </button>
                             <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="KC4-Ks-uGR">
                                 <rect key="frame" x="94" y="22" width="262" height="22"/>
+                                <animations/>
                                 <textFieldCell key="cell" lineBreakMode="truncatingHead" truncatesLastVisibleLine="YES" selectable="YES" editable="YES" state="on" borderStyle="bezel" placeholderString="~/Library/AutoPkg/RecipeOverrides" drawsBackground="YES" id="vHc-Ru-xZa">
                                     <font key="font" metaFont="system"/>
                                     <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
@@ -144,6 +153,7 @@
                                 <constraints>
                                     <constraint firstAttribute="width" constant="87" id="W3t-RN-mSe"/>
                                 </constraints>
+                                <animations/>
                                 <buttonCell key="cell" type="push" title="Choose..." bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Tyq-UC-DFc">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="system"/>
@@ -157,6 +167,7 @@
                                 <constraints>
                                     <constraint firstAttribute="width" constant="122" id="G6T-Ox-h67"/>
                                 </constraints>
+                                <animations/>
                                 <buttonCell key="cell" type="push" title="Open in Finder" bezelStyle="rounded" alignment="center" enabled="NO" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="1ck-Sa-gTO">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="system"/>
@@ -170,6 +181,7 @@
                                 <constraints>
                                     <constraint firstAttribute="width" constant="68" id="1k9-16-Opm"/>
                                 </constraints>
+                                <animations/>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Overrides:" id="g8b-Ua-YZE">
                                     <font key="font" metaFont="system"/>
                                     <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -177,6 +189,7 @@
                                 </textFieldCell>
                             </textField>
                         </subviews>
+                        <animations/>
                     </view>
                     <constraints>
                         <constraint firstItem="fAS-2t-NJR" firstAttribute="top" secondItem="Uu3-dg-Ae2" secondAttribute="top" constant="25" id="08Z-Yy-spY"/>
@@ -208,6 +221,7 @@
                         <constraint firstItem="Q6H-Wz-o4m" firstAttribute="top" secondItem="Uu3-dg-Ae2" secondAttribute="top" constant="56" id="wuV-P8-5UE"/>
                         <constraint firstAttribute="trailing" secondItem="c0E-Qv-nLs" secondAttribute="trailing" constant="150" id="ykM-Ds-8Mg"/>
                     </constraints>
+                    <animations/>
                     <color key="borderColor" name="textColor" catalog="System" colorSpace="catalog"/>
                     <color key="fillColor" name="textColor" catalog="System" colorSpace="catalog"/>
                 </box>
@@ -226,6 +240,7 @@
                                         <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="firstColumnOnly" columnReordering="NO" multipleSelection="NO" emptySelection="NO" autosaveColumns="NO" typeSelect="NO" rowHeight="20" rowSizeStyle="automatic" viewBased="YES" id="Gef-5M-8CR" customClass="LGInstallTableView">
                                             <rect key="frame" x="0.0" y="0.0" width="567" height="0.0"/>
                                             <autoresizingMask key="autoresizingMask"/>
+                                            <animations/>
                                             <size key="intercellSpacing" width="3" height="2"/>
                                             <color key="backgroundColor" white="1" alpha="0.0" colorSpace="deviceWhite"/>
                                             <color key="gridColor" name="gridColor" catalog="System" colorSpace="catalog"/>
@@ -252,6 +267,7 @@
                                                                     <constraints>
                                                                         <constraint firstAttribute="width" constant="172" id="S7x-Ip-ruQ"/>
                                                                     </constraints>
+                                                                    <animations/>
                                                                     <buttonCell key="cell" type="push" title="Install" bezelStyle="rounded" alignment="center" controlSize="small" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="8qz-tI-OVK">
                                                                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                                                         <font key="font" metaFont="smallSystem"/>
@@ -263,6 +279,7 @@
                                                                         <constraint firstAttribute="width" constant="17" id="dTp-6P-fxe"/>
                                                                         <constraint firstAttribute="height" constant="18" id="tma-vT-Cf6"/>
                                                                     </constraints>
+                                                                    <animations/>
                                                                     <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="NSActionTemplate" id="eiO-0s-ahP"/>
                                                                 </imageView>
                                                                 <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" allowsExpansionToolTips="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Hgn-W3-2rW">
@@ -270,6 +287,7 @@
                                                                     <constraints>
                                                                         <constraint firstAttribute="height" constant="18" id="e4u-d9-yqj"/>
                                                                     </constraints>
+                                                                    <animations/>
                                                                     <textFieldCell key="cell" controlSize="small" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" title="Table View Cell" id="IxD-XN-nM0">
                                                                         <font key="font" metaFont="smallSystem"/>
                                                                         <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -278,6 +296,7 @@
                                                                 </textField>
                                                                 <progressIndicator horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" maxValue="100" displayedWhenStopped="NO" bezeled="NO" indeterminate="YES" controlSize="small" style="spinning" translatesAutoresizingMaskIntoConstraints="NO" id="OzE-Dy-ec3">
                                                                     <rect key="frame" x="183" y="1" width="16" height="16"/>
+                                                                    <animations/>
                                                                 </progressIndicator>
                                                             </subviews>
                                                             <constraints>
@@ -289,6 +308,7 @@
                                                                 <constraint firstItem="Hgn-W3-2rW" firstAttribute="leading" secondItem="Gvm-b6-grM" secondAttribute="leading" constant="208" id="Qbz-XA-xgA"/>
                                                                 <constraint firstItem="bqD-8f-sOf" firstAttribute="top" secondItem="Gvm-b6-grM" secondAttribute="top" constant="1" id="cOo-ag-7DN"/>
                                                             </constraints>
+                                                            <animations/>
                                                             <connections>
                                                                 <outlet property="configureButton" destination="bqD-8f-sOf" id="bkd-AF-EJl"/>
                                                                 <outlet property="imageView" destination="V5m-5q-nhJ" id="jUG-Z2-hQb"/>
@@ -305,18 +325,23 @@
                                             </connections>
                                         </tableView>
                                     </subviews>
+                                    <animations/>
                                     <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 </clipView>
+                                <animations/>
                                 <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="YES" id="8zh-JQ-0N4">
                                     <rect key="frame" x="1" y="119" width="223" height="15"/>
                                     <autoresizingMask key="autoresizingMask"/>
+                                    <animations/>
                                 </scroller>
                                 <scroller key="verticalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="NO" id="S5A-0k-aMF">
                                     <rect key="frame" x="224" y="17" width="15" height="102"/>
                                     <autoresizingMask key="autoresizingMask"/>
+                                    <animations/>
                                 </scroller>
                             </scrollView>
                         </subviews>
+                        <animations/>
                     </view>
                     <constraints>
                         <constraint firstAttribute="bottom" secondItem="5Lw-Je-y2U" secondAttribute="bottom" constant="11" id="8n6-yK-ZXb"/>
@@ -324,6 +349,7 @@
                         <constraint firstItem="5Lw-Je-y2U" firstAttribute="leading" secondItem="QM0-hF-4j5" secondAttribute="leading" constant="16" id="LWd-Qx-zSO"/>
                         <constraint firstItem="5Lw-Je-y2U" firstAttribute="top" secondItem="QM0-hF-4j5" secondAttribute="top" constant="25" id="VVn-Im-vS9"/>
                     </constraints>
+                    <animations/>
                     <color key="borderColor" white="0.0" alpha="0.41999999999999998" colorSpace="calibratedWhite"/>
                     <color key="fillColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                 </box>
@@ -337,6 +363,7 @@
                 <constraint firstItem="Uu3-dg-Ae2" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="9" id="v4D-xu-H6c"/>
                 <constraint firstAttribute="trailing" secondItem="QM0-hF-4j5" secondAttribute="trailing" constant="9" id="zDE-00-i45"/>
             </constraints>
+            <animations/>
             <point key="canvasLocation" x="271.5" y="233"/>
         </customView>
     </objects>

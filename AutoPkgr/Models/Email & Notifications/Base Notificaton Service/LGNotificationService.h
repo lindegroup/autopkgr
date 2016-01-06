@@ -20,6 +20,7 @@
 #import <Foundation/Foundation.h>
 
 #import "LGAutoPkgReport.h"
+#import <ACEModes.h>
 
 /**
  *  Base protocol for LGNotification service.
@@ -35,11 +36,20 @@
 // Is the service enabled? (most likely a lookup against NSUserDefaults)
 + (BOOL)isEnabled;
 
+// Is the report template a file. return YES if a file, NO if it's a string
++ (BOOL)templateIsFile;
+
+// Default notification template. 
++ (NSString *)defaultTemplate;
+
 // Send the notification.
 - (void)send:(void (^)(NSError *))complete;
 
 // Send a test notification.
 - (void)sendTest:(void (^)(NSError *))complete;
+
+// Send a message.
+- (void)sendMessage:(NSString *)message title:(NSString *)title complete:(void (^)(NSError *))complete;
 
 @optional
 /**
@@ -62,6 +72,13 @@
  * @note this is mostly used when there's a possible label name clash with a previous keychain item.
  */
 + (NSString *)keychainServiceLabel;
+
+// Mustache template that report data is applied to
++ (NSString *)reportTemplate;
+
++ (ACEMode)tempateFormat;
+
++ (void)setReportTemplate:(NSString *)reportTemplate;
 @end
 
 @interface LGNotificationService : NSObject
@@ -71,6 +88,9 @@
 
 // This will pull info from the keychain if +keychainServiceName. +storesInfoInKeychain must be set to YES, and +account must be defined in subclass;
 + (void)saveInfoToKeychain:(NSString *)info reply:(void (^)(NSError *error))reply;
+
+// Get a template by name from the main bundle.
++ (NSString *)templateWithName:(NSString *)name type:(NSString *)type;
 
 - (instancetype)initWithReport:(LGAutoPkgReport *)report;
 

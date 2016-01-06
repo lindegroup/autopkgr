@@ -39,23 +39,29 @@
     return NO;
 }
 
++ (BOOL)templateIsFile {
+    return NO;
+}
+
++ (NSString *)defaultTemplate {
+    return @"Updates occurred.";
+};
+
 - (void)send:(void (^)(NSError *))complete
 {
-    if (complete && !self.notificatonComplete) {
-        self.notificatonComplete = complete;
-    }
-
-    NSUserNotification *notification = [[NSUserNotification alloc] init];
-    notification.informativeText = self.report.emailSubjectString;
-    [[NSUserNotificationCenter defaultUserNotificationCenter] deliverNotification:notification];
-
-    self.notificatonComplete(nil);
+    [self sendMessage:self.report.reportSubject title:nil complete:complete];
 }
 
 - (void)sendTest:(void (^)(NSError *))complete
 {
+    NSString *message = NSLocalizedString(@"User notifications are working", nil);
+    [self sendMessage:message title:nil complete:complete];
+}
+
+- (void)sendMessage:(NSString *)message title:(NSString *)title complete:(void (^)(NSError *))complete {
     NSUserNotification *notification = [[NSUserNotification alloc] init];
-    notification.informativeText = NSLocalizedString(@"User notifications are working", nil);
+    notification.informativeText = message;
+    [[NSUserNotificationCenter defaultUserNotificationCenter] deliverNotification:notification];
     complete(nil);
 }
 

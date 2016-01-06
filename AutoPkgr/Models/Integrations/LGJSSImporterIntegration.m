@@ -73,6 +73,10 @@
     return YES;
 }
 
++ (NSString *)summaryResultKey {
+    return @"jss_importer_summary_result";
+}
+
 # pragma mark - Instance overrides.
 - (NSString *)installedVersion
 {

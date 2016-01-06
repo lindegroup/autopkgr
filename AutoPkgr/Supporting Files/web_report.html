@@ -1,0 +1,115 @@
+
+<!-- Upated Applications -->
+{{# updated_applications.count }}
+<strong>New software available for testing:</strong>
+<table>
+    <tr><th>name</th><th>version</th></tr>
+    {{# updated_applications }}
+    <tr><td class='pkgname'>{{ name }}</td><td>{{ version }}</td></tr>
+    {{/ updated_applications }}
+</table>
+{{/ updated_applications.count }}
+
+<!-- Integration Updates -->
+{{# integration_updates.count }}
+<strong>Update to core components available: </strong>
+<ul>
+    {{# integration_updates }}
+    <li>{{ . }}</li>
+    {{/ integration_updates }}
+</ul>
+{{/ integration_updates.count }}
+<br/><br/>
+{{# failures.count }}
+<!-- Failures -->
+<strong>Failures occurred in these recipes:</strong>
+<ul>
+    {{# failures }}
+    <li>{{ recipe }}</li>
+    {{/ failures }}
+</ul>
+{{/ failures.count }}
+
+{{# error }}
+<!-- Errors -->
+<strong>The following errors occurred: </strong>
+<ul>
+    <li>{{ error.suggestion }}</li>
+</ul>
+{{/ error }}
+
+{{# url_downloader.data_rows.count }}
+<!-- Downloads -->
+<strong>{{ url_downloader.summary_text }}</strong>
+<ul>
+    {{# url_downloader.data_rows }}
+    <li>{{ download_path }}</li>
+    {{/ url_downloader.data_rows }}
+</ul>
+{{/ url_downloader.data_rows.count }}
+
+{{# install_from_dmg.data_rows.count }}
+<!-- DMG Installer -->
+<strong>{{ install_from_dmg.summary_text }}</strong>
+<ul>
+    {{# install_from_dmg.data_rows }}
+    <li>{{ dmg_path }}</li>
+    {{/ install_from_dmg.data_rows }}
+</ul>
+{{/ install_from_dmg.data_rows.count }}
+
+{{# installer.data_rows.count }}
+<!-- Pkg Installer -->
+<strong>{{ installer.summary_text }}</strong>
+<ul>
+    {{# installer.data_rows }}
+    <li>{{ pkg_path }}</li>
+    {{/ installer.data_rows }}
+</ul>
+{{/ installer.data_rows.count }}
+
+{{# pkg_copier.data_rows.count }}
+<!-- Pkg Copied -->
+<strong>{{ pkg_copier.summary_text }}</strong>
+<ul>
+    {{# pkg_copier.data_rows }}
+    <li>{{ pkg_path }}</li>
+    {{/ pkg_copier.data_rows }}
+</ul>
+{{/ pkg_copier.data_rows.count }}
+
+{{# pkg_creator.data_rows.count }}
+<!-- Package Creator -->
+<strong>{{ pkg_creator.summary_text }}</strong>
+<table>
+    <tr><th>identifier</th><th>version</th><th>pkg_path</th></tr>
+    {{# pkg_creator.data_rows }}
+    <tr><td>{{ identifier }}</td><td>{{ version }}</td><td>{{ pkg_path }}</td></tr>
+    {{/ pkg_creator.data_rows }}
+</table>
+{{/ pkg_creator.data_rows.count }}
+
+{{# munki_importer.data_rows.count }}
+<!-- MunkiImporter -->
+<strong>{{ munki_importer.summary_text }}</strong>
+<ul>
+    {{# munki_importer.data_rows }}
+    <li>{{ name }} {{ version }} Catalog:{{ catalogs }}</li>
+    {{/ munki_importer.data_rows }}
+</ul>
+{{/ munki_importer.data_rows.count }}
+
+{{# jss_importer.data_rows.count }}
+<!-- JSSImporter -->
+<strong>{{ jss_importer.summary_text }}</strong>
+<ul>
+    {{# jss_importer.data_rows }}
+    <li>{{ Package }}</li>
+    {{/ jss_importer.data_rows }}
+</ul>
+{{/ jss_importer.data_rows.count }}
+<!-- TODO: Filewave -->
+<!-- TODO: AbsoluteManage -->
+<!-- TODO: Mac Patch -->
+
+<!-- End summary results-->
