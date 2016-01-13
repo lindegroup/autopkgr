@@ -121,7 +121,6 @@
 		BE5E55A51B1B9EBB0025CFD3 /* LGAutoPkgRepo.m in Sources */ = {isa = PBXBuildFile; fileRef = BE5E55A41B1B9EBB0025CFD3 /* LGAutoPkgRepo.m */; };
 		BE5E55A61B1B9EBB0025CFD3 /* LGAutoPkgRepo.m in Sources */ = {isa = PBXBuildFile; fileRef = BE5E55A41B1B9EBB0025CFD3 /* LGAutoPkgRepo.m */; };
 		BE67E8751A44E10500484151 /* LGRecipeSearch.m in Sources */ = {isa = PBXBuildFile; fileRef = BE67E8731A44E10500484151 /* LGRecipeSearch.m */; };
-		BE67E8761A44E10500484151 /* LGRecipeSearchPanel.xib in Resources */ = {isa = PBXBuildFile; fileRef = BE67E8741A44E10500484151 /* LGRecipeSearchPanel.xib */; };
 		BE6815D51A0B18DE004AD310 /* LGUserNotification.m in Sources */ = {isa = PBXBuildFile; fileRef = BE6815D41A0B18DE004AD310 /* LGUserNotification.m */; };
 		BE73CDC719E062AC00441443 /* NSString+cleaned.m in Sources */ = {isa = PBXBuildFile; fileRef = BE73CDC619E062AC00441443 /* NSString+cleaned.m */; };
 		BE7EF23B1B3350E4002037B1 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = BE7EF2391B3350E4002037B1 /* Localizable.strings */; };
@@ -451,7 +450,6 @@
 		BE5E55A41B1B9EBB0025CFD3 /* LGAutoPkgRepo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGAutoPkgRepo.m; sourceTree = "<group>"; };
 		BE67E8721A44E10500484151 /* LGRecipeSearch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGRecipeSearch.h; sourceTree = "<group>"; };
 		BE67E8731A44E10500484151 /* LGRecipeSearch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGRecipeSearch.m; sourceTree = "<group>"; };
-		BE67E8741A44E10500484151 /* LGRecipeSearchPanel.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LGRecipeSearchPanel.xib; sourceTree = "<group>"; };
 		BE6815D31A0B18DE004AD310 /* LGUserNotification.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGUserNotification.h; sourceTree = "<group>"; };
 		BE6815D41A0B18DE004AD310 /* LGUserNotification.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGUserNotification.m; sourceTree = "<group>"; };
 		BE73CDC519E062AC00441443 /* NSString+cleaned.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+cleaned.h"; sourceTree = "<group>"; };
@@ -1104,7 +1102,6 @@
 				BE67E8721A44E10500484151 /* LGRecipeSearch.h */,
 				BE67E8731A44E10500484151 /* LGRecipeSearch.m */,
 				BEDA5D541B4429E300DCC022 /* LGRecipeSearchResultsPanel.xib */,
-				BE67E8741A44E10500484151 /* LGRecipeSearchPanel.xib */,
 				BE38EA741B0B8DF7009FCBEB /* LGRecipeInfoView.h */,
 				BE38EA751B0B8DF7009FCBEB /* LGRecipeInfoView.m */,
 				BE38EA761B0B8DF7009FCBEB /* LGRecipeInfoView.xib */,
@@ -1344,7 +1341,6 @@
 				BE38EA791B0B8DF7009FCBEB /* LGRecipeInfoView.xib in Resources */,
 				BEBC18351C1686990085B9D5 /* LGSelectNotificationsWindowController.xib in Resources */,
 				BE0BACD21A2560AE00554989 /* LGJSSDistributionPointsPrefPanel.xib in Resources */,
-				BE67E8761A44E10500484151 /* LGRecipeSearchPanel.xib in Resources */,
 				BE38EA9E1B0CFEA6009FCBEB /* LGScheduleViewController.xib in Resources */,
 				BE3D942D1C14E9CB001763D0 /* LGTemplateRenderWindowController.xib in Resources */,
 				BECDABA91B254E5900544388 /* LGAbsoluteManageIntegrationView.xib in Resources */,

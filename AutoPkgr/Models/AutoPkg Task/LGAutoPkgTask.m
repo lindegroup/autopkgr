@@ -48,6 +48,28 @@ static NSString *const autopkg()
     return @"/usr/local/bin/autopkg";
 }
 
+static NSDictionary *AutoPkgVerbStringToEnum(){
+    static dispatch_once_t onceToken;
+    __strong static NSDictionary *verbDict = nil;
+    dispatch_once(&onceToken, ^{
+        verbDict = @{
+                    @"run": @(kLGAutoPkgRun),
+                    @"list-recipes": @(kLGAutoPkgListRecipes),
+                    @"make-override": @(kLGAutoPkgMakeOverride),
+                    @"search": @(kLGAutoPkgSearch),
+                    @"info" : @(kLGAutoPkgInfo),
+                    @"repo-add" : @(kLGAutoPkgRepoAdd),
+                    @"repo-delete": @(kLGAutoPkgRepoDelete),
+                    @"repo-update": @(kLGAutoPkgRepoUpdate),
+                    @"repo-list": @(kLGAutoPkgRepoList),
+                    @"processor-info": @(kLGAutoPkgProcessorInfo),
+                    @"list-processors": @(kLGAutoPkgListProcessors),
+                    @"version": @(kLGAutoPkgVersion),
+                    };
+    });
+    return verbDict;
+}
+
 static NSString *const kLGAutoPkgTaskLock = @"com.lindegroup.autopkg.task.lock";
 static NSString *const AUTOPKG_GITHUB_API_TOKEN_FILE = @"~/.autopkg_gh_token";
 
@@ -436,11 +458,8 @@ typedef void (^AutoPkgReplyErrorBlock)(NSError *error);
     if (arguments.count) {
         [self.internalArgs addObjectsFromArray:arguments];
     }
-
-    NSString *verbString = [_arguments firstObject];
-    if ([verbString isEqualToString:@"version"]) {
-        _verb = kLGAutoPkgVersion;
-    } else if ([verbString isEqualToString:@"run"]) {
+    _verb = [AutoPkgVerbStringToEnum()[_arguments.firstObject] integerValue];
+    if (_verb == kLGAutoPkgRun){
         _verb = kLGAutoPkgRun;
         if (([_version version_isGreaterThanOrEqualTo:AUTOPKG_0_4_0])) {
             [self.internalArgs addObject:self.reportPlistFile];
@@ -449,33 +468,13 @@ typedef void (^AutoPkgReplyErrorBlock)(NSError *error);
 
         [self configurePreProcessors];
         [self configurePostProcessors];
-
-    } else if ([verbString isEqualToString:@"list-recipes"]) {
-        _verb = kLGAutoPkgListRecipes;
-    } else if ([verbString isEqualToString:@"make-override"]) {
-        _verb = kLGAutoPkgMakeOverride;
-    } else if ([verbString isEqualToString:@"search"]) {
+    } else if (_verb == kLGAutoPkgSearch){
         _verb = kLGAutoPkgSearch;
         // If the api token file exists update the args.
         if ([[self class] apiTokenFileExists:nil]) {
             [self.internalArgs addObject:@"-t"];
         }
-    } else if ([verbString isEqualToString:@"info"]) {
-        _verb = kLGAutoPkgInfo;
-    } else if ([verbString isEqualToString:@"repo-add"]) {
-        _verb = kLGAutoPkgRepoAdd;
-    } else if ([verbString isEqualToString:@"repo-delete"]) {
-        _verb = kLGAutoPkgRepoDelete;
-    } else if ([verbString isEqualToString:@"repo-update"]) {
-        _verb = kLGAutoPkgRepoUpdate;
-    } else if ([verbString isEqualToString:@"repo-list"]) {
-        _verb = kLGAutoPkgRepoList;
-    } else if ([verbString isEqualToString:@"list-processors"]) {
-        _verb = kLGAutoPkgListProcessors;
-    } else if ([verbString isEqualToString:@"processor-info"]) {
-        _verb = kLGAutoPkgProcessorInfo;
     }
-
     [self.taskLock unlock];
 }
 

@@ -100,6 +100,7 @@
 {
     return quick_formatString(@"%@%@", NSStringFromSelector(@selector(reportTemplate)).uppercaseString, [self className]);
 }
+
 + (NSString *)_reportTemplateFile
 {
     NSString *className = [self className];
@@ -115,8 +116,11 @@
     NSError *error = nil;
     NSString *reportTemplate = nil;
     if ([[self class] templateIsFile]) {
-        reportTemplate = [NSString stringWithContentsOfFile:[self _reportTemplateFile]
-                                                   encoding:NSUTF8StringEncoding error:&error];
+        NSString *file = [self _reportTemplateFile];
+        if([[NSFileManager defaultManager] fileExistsAtPath:file]){
+            reportTemplate = [NSString stringWithContentsOfFile:file
+                                                       encoding:NSUTF8StringEncoding error:&error];
+        }
     } else {
         reportTemplate = [[NSUserDefaults standardUserDefaults] stringForKey:[self _reportTemplateKey]];
     }
