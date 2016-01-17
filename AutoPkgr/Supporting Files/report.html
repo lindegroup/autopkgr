@@ -70,7 +70,7 @@
     <body>
         <!-- Upated Applications -->
         {{# updated_applications.count }}
-        <H3>New software available for testing:</H3>
+        <H3>New software was downloaded:</H3>
         <table>
             <tr><th>name</th><th>version</th></tr>
             {{# updated_applications }}
@@ -186,6 +186,7 @@
         {{/ munki_importer.data_rows.count }}
         
         <!-- JSSImporter -->
+        <!-- "report_fields": ["Package", "Categories", "Groups", "Scripts", "Extension Attributes", "Policy", "Icon"] -->
         {{# jss_importer.data_rows.count }}
         <H3>{{ jss_importer.summary_text }}</H3>
         <ul>
@@ -194,10 +195,40 @@
             {{/ jss_importer.data_rows }}
         </ul>
         {{/ jss_importer.data_rows.count }}
-        <!-- TODO: Filewave -->
-        <!-- TODO: AbsoluteManage -->
-        <!-- TODO: Mac Patch -->
-        
+
+        <!-- Filewave -->
+        <!-- 'report_fields': ['fw_fileset_id', 'fw_fileset_group', 'fw_fileset_name'] -->
+        {{# filewave.data_rows.count }}
+        <H3>{{ filewave.summary_text }}</H3>
+        <ul>
+            {{# filewave.data_rows }}
+            <li>{{ fw_fileset_name }}</li>
+            {{/ filewave.data_rows }}
+        </ul>
+        {{/ filewave.data_rows.count }}
+
+        <!-- AbsoluteManage -->
+        <!-- 'report_fields': ['server', 'package', 'id' ] -->
+        {{# absolute_manage_export.data_rows.count }}
+        <H3>{{ absolute_manage_export.summary_text }}</H3>
+        <ul>
+            {{# absolute_manage_export.data_rows }}
+            <li>{{ Package }}</li>
+            {{/ absolute_manage_export.data_rows }}
+        </ul>
+        {{/ absolute_manage_export.data_rows.count }}
+
+        <!-- Mac Patch -->
+        <!-- 'report_fields': ['bundle_id', 'name', 'version', 'puuid'] -->
+        {{# macpatch_importer.data_rows.count }}
+        <H3>{{ macpatch_importer.summary_text }}</H3>
+        <ul>
+            {{# macpatch_importer.data_rows }}
+            <li>{{ name }} Version: {{ version}}</li>
+            {{/ macpatch_importer.data_rows }}
+        </ul>
+        {{/ macpatch_importer.data_rows.count }}
+
         <!-- End summary results-->
         {{/ has_summary_results }}
         

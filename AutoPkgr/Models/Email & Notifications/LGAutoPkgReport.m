@@ -86,8 +86,10 @@ static NSString *const kReportProcessorPKGCopier = @"pkg_copier_summary_result";
 @end
 
 @implementation LGAutoPkgReport {
+@private
     NSDictionary *_reportDictionary;
     NSArray *_includedProcessorSummaryResults;
+    NSNumber * _integrationsUpdatesToReport;
 }
 
 @synthesize updatedApplications = _updatedApplications;
@@ -111,7 +113,6 @@ static NSString *const kReportProcessorPKGCopier = @"pkg_copier_summary_result";
     _autoPkgReport = autoPkgReport;
 }
 
-
 - (BOOL)updatesToReport
 {
     BOOL failureCount = [_reportDictionary[kReportKeyFailures] count];
@@ -131,19 +132,20 @@ static NSString *const kReportProcessorPKGCopier = @"pkg_copier_summary_result";
 - (NSString *)reportSubject
 {
     NSString *subject = nil;
-    if ([_reportDictionary[kReportKeySummaryResults][kReportProcessorURLDownloader] count] > 0) {
-        subject = NSLocalizedString(@"New software available for testing", nil);
-    } else if ([_reportDictionary[kReportKeyFailures] count] > 0) {
+    if ([_reportDictionary[kReportKeyFailures] count] > 0) {
         subject = NSLocalizedString(@"Failures occurred while running AutoPkg", nil);
-    } else if (self.error) {
-        subject =  NSLocalizedString(@"An error occurred while running AutoPkg", nil);
-    } else if (_integrations) {
-        for (LGIntegration *integration in _integrations) {
-            if (integration.info.status == kLGIntegrationUpdateAvailable) {
-                subject = NSLocalizedString(@"Update to helper components available", nil);
-            }
-        }
     }
+    else if (self.error) {
+        subject =  NSLocalizedString(@"An error occurred while running AutoPkg", nil);
+    }
+    else if ([self.updatedApplications count] > 0) {
+        subject = NSLocalizedString(@"New software available for testing", nil);
+    }
+    else if ([self integrationsUpdatesToReport]) {
+        subject = NSLocalizedString(@"Update to helper components available", nil);
+    }
+
+    // Construct the full subject string...
     if (subject) {
         return quick_formatString(@"%@ on %@", subject, [NSHost currentHost].localizedName);
     }
@@ -155,6 +157,7 @@ static NSString *const kReportProcessorPKGCopier = @"pkg_copier_summary_result";
     __block NSMutableDictionary *data = [[NSMutableDictionary alloc ] init];
     NSArray *results = [self includedProcessorSummaryResults];
     data[@"has_summary_results"] = @(results.count);
+
     if (results.count){
         [[self includedProcessorSummaryResults] enumerateObjectsUsingBlock:^(NSString *key, NSUInteger idx, BOOL *stop) {
             NSString *strippedKey = [key stringByReplacingOccurrencesOfString:@"_summary_result" withString:@""];
@@ -338,6 +341,10 @@ static NSString *const kReportProcessorPKGCopier = @"pkg_copier_summary_result";
 
 - (BOOL)integrationsUpdatesToReport
 {
+    if (_integrationsUpdatesToReport) {
+        return [_integrationsUpdatesToReport boolValue];
+    }
+
     /* Determine if updates to integrations should be reported. */
     LGDefaults *defaults = [LGDefaults standardUserDefaults];
 
@@ -357,6 +364,8 @@ static NSString *const kReportProcessorPKGCopier = @"pkg_copier_summary_result";
 
                     if ([availableVersion version_isGreaterThan:lastReportedVersion]) {
                         [defaults setObject:availableVersion forKey:reportedVersionKey];
+
+                        _integrationsUpdatesToReport = @(YES);
                         return YES;
                     }
                 } else {
@@ -384,12 +393,15 @@ static NSString *const kReportProcessorPKGCopier = @"pkg_copier_summary_result";
                     NSComparisonResult comp = [compareDate compare:lastReportDate];
                     if (comp != NSOrderedAscending) {
                         [defaults setObject:now forKey:reportedDateSentKey];
+
+                        _integrationsUpdatesToReport = @(YES);
                         return YES;
                     }
                 }
             }
         }
     }
+    _integrationsUpdatesToReport = @(NO);
     return NO;
 }
 
@@ -409,30 +421,37 @@ static NSString *const kReportProcessorPKGCopier = @"pkg_copier_summary_result";
     }
 
     NSMutableArray *itemArray = [[NSMutableArray alloc] init];
-    if (_reportedItemFlags == kLGReportItemsAll) {
-        [_reportDictionary[kReportKeySummaryResults] enumerateKeysAndObjectsUsingBlock:^(NSString *key, id obj, BOOL *stop) {
+    [_reportDictionary[kReportKeySummaryResults] enumerateKeysAndObjectsUsingBlock:^(NSString *key, id obj, BOOL *stop) {
+        if (_reportedItemFlags == kLGReportItemsAll) {
             [itemArray addObject:key];
-        }];
-    } else {
-        if (_reportedItemFlags & kLGReportItemsNewDownloads) {
-            [itemArray addObject:kReportProcessorURLDownloader];
-        }
-        if (_reportedItemFlags & kLGReportItemsNewInstalls) {
-            [itemArray addObject:kReportProcessorInstaller];
-        }
-        if (_reportedItemFlags & kLGReportItemsNewPackages) {
-            [itemArray addObject:kReportProcessorPKGCreator];
-        }
-        if (_reportedItemFlags & kLGReportItemsIntegrationImports) {
-            [self.integrations enumerateObjectsUsingBlock:^(LGIntegration *obj, NSUInteger idx, BOOL *stop) {
-                if ([[obj class] respondsToSelector:@selector(summaryResultKey)]) {
-                    id key = [[obj class] summaryResultKey];
-                    if(key){
-                        [itemArray addObject:key];
-                    }
+        } else {
+            if ([key isEqualToString:kReportProcessorInstaller]){
+                if(_reportedItemFlags & kLGReportItemsNewInstalls) {
+                    [itemArray addObject:key];
                 }
-            }];
+            }
+            else if([key isEqualToString:kReportProcessorPKGCreator]){
+                if(_reportedItemFlags & kLGReportItemsNewPackages) {
+                    [itemArray addObject:key];
+                }
+            }
+            else if ([key isEqualToString:kReportProcessorURLDownloader]){
+                if(_reportedItemFlags & kLGReportItemsNewDownloads) {
+                    [itemArray addObject:key];
+                }
+            }
         }
+    }];
+
+    if (_reportedItemFlags & kLGReportItemsIntegrationImports && [self integrationsUpdatesToReport]) {
+        [self.integrations enumerateObjectsUsingBlock:^(LGIntegration *obj, NSUInteger idx, BOOL *stop) {
+            if ([[obj class] respondsToSelector:@selector(summaryResultKey)]) {
+                id key = [[obj class] summaryResultKey];
+                if(key){
+                    [itemArray addObject:key];
+                }
+            }
+        }];
     }
     _includedProcessorSummaryResults = [itemArray copy];
     return _includedProcessorSummaryResults;
