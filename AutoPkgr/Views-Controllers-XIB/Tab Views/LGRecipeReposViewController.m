@@ -181,14 +181,11 @@
         [_searchProgressIndicator setDoubleValue:100.0];
 
         if (results.count) {
-            if (!_searchPanel) {
-                _searchPanel = [[LGRecipeSearch alloc] initWithSearchResults:results installedRepos:_popRepoTableViewHandler.repos];
-            }
-            [NSApp beginSheet:_searchPanel.window
-               modalForWindow:self.modalWindow
-                modalDelegate:self
-               didEndSelector:@selector(didCloseSearchPanel)
-                  contextInfo:NULL];
+            _searchPanel = [[LGRecipeSearch alloc] initWithSearchResults:results installedRepos:_popRepoTableViewHandler.repos];
+
+            [_searchPanel openSheetOnWindow:self.modalWindow complete:^(LGWindowController *windowController) {
+                _searchPanel = nil;
+            }];
             
             [_searchProgressIndicator setDoubleValue:0.0];
             [_searchProgressIndicator stopAnimation:self];
@@ -196,14 +193,6 @@
         } else {
             [_recipeSearchResultsErrorTF fadeOut_withString:error.localizedDescription ?: @"No matching recipes found."];
         }
-    }];
-}
-
-- (void)didCloseSearchPanel
-{
-    [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-        [_searchPanel.window close];
-        _searchPanel = nil;
     }];
 }
 
