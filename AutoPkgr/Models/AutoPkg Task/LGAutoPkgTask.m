@@ -1063,7 +1063,7 @@ typedef void (^AutoPkgReplyErrorBlock)(NSError *error);
     LGAutoPkgTask *task = [[LGAutoPkgTask alloc] initWithArguments:@[ @"repo-list" ]];
     [task launch];
     id results = [task results];
-    return [results isKindOfClass:[NSArray class]] ? results : nil;
+    return [results isKindOfClass:[NSArray class]] ? results : @[];
 }
 
 #pragma mark--Processor Methods--
@@ -1072,7 +1072,7 @@ typedef void (^AutoPkgReplyErrorBlock)(NSError *error);
     LGAutoPkgTask *task = [[LGAutoPkgTask alloc] initWithArguments:@[ @"list-processors" ]];
     [task launch];
     id results = [task results];
-    return [results isKindOfClass:[NSArray class]] ? results : nil;
+    return [results isKindOfClass:[NSArray class]] ? results : @[];
 }
 
 + (NSString *)processorInfo:(NSString *)processor
