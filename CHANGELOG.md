@@ -27,7 +27,7 @@ All notable changes to this project will be documented in this file. This projec
 - Totally redesigned and simplified the JSSImporter settings sheet.
 - JSSImporter configuration UI now supports cloud distribution points (CDP) and local distribution points. (#463)
 - Updated "AutoPkgr" link in footer of notification emails to point to [AutoPkgr information page](http://www.lindegroup.com/autopkgr) instead of [GitHub repo](https://github.com/lindegroup/autopkgr).
-
+- Moved Recipe/Override chooser out of contextual menu and into AutoPkg preference panel.
 
 ## [1.3.2] - 2015-09-16
 
