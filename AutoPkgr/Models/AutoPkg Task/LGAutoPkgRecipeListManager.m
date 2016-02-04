@@ -52,7 +52,7 @@
             return list;
         }
     }
-    return nil;
+    return quick_formatString(@"%@/recipe_list.txt", _appSupportDir);
 }
 
 - (NSString *)currentListName
@@ -80,10 +80,12 @@
 
     NSPredicate *pathExtensionPredicate = [NSPredicate predicateWithFormat:@"pathExtension == 'txt'"];
 
-    return [[recipeLists filteredArrayUsingPredicate:pathExtensionPredicate]
+    NSArray *lists =  [[recipeLists filteredArrayUsingPredicate:pathExtensionPredicate]
         mapObjectsUsingBlock:^id(NSString *obj, NSUInteger idx) {
             return obj.stringByDeletingPathExtension;
         }];
+    
+    return lists.count ? lists : @[@"recipe_list"];
 }
 
 - (BOOL)addRecipeList:(NSString *)list error:(NSError *__autoreleasing *)error
