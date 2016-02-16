@@ -2,11 +2,11 @@
 
 ![autopkgr_logo.png](doc-images/autopkgr_logo.png)
 
-AutoPkgr is a free Mac app that makes it easy to install and configure [AutoPkg](https://autopkg.github.io/autopkg/).
+__AutoPkgr is a free Mac app that makes it easy to install and configure [AutoPkg](https://autopkg.github.io/autopkg/).__
 
-AutoPkg is an awesomely powerful tool for automating OS X software packaging and distribution, but it requires its users to be comfortable with command-line tools and methods.
+AutoPkg is an awesomely powerful tool for automating OS X software packaging and distribution, but it requires its users to be comfortable with command-line tools and methods. If you're not yet comfortable with the command-line, or if you just want to get AutoPkg set up from scratch quickly and reliably, AutoPkgr is for you.
 
-If you're not yet comfortable with the command-line, or if you just want to get AutoPkg set up from scratch quickly and reliably, AutoPkgr is for you. You can find the latest release [here](https://github.com/lindegroup/autopkgr/releases/latest).
+To get started, download the [latest release](https://github.com/lindegroup/autopkgr/releases/latest), [install](#installation) and [configure](#basic-usage) AutoPkgr, [search for and add](#searching-for-recipes) the recipes you need, and (optionally) [integrate](integrations) AutoPkgr with your software distribution tool. If you need help, check out the [Troubleshooting](#troubleshooting) section.
 
 ![divider](doc-images/divider.png)
 
@@ -18,13 +18,14 @@ If you're not yet comfortable with the command-line, or if you just want to get 
 - [Searching for Recipes](#searching-for-recipes)
 - [Running individual recipes](#running-individual-recipes)
 - [Creating/Editing Recipe Overrides](#creatingediting-recipe-overrides)
+- [Customizing notifications](#customizing-notifications)
+- [Using a Proxy](#using-a-proxy)
 - [Integrations](#integrations)
     - [Integration with Munki](#integration-with-munki)
     - [Integration with Casper](#integration-with-casper)
     - [Integration with Absolute Manage](#integration-with-absolute-manage)
     - [Integration with MacPatch](#integration-with-macpatch)
     - [Integration with FileWave](#integration-with-filewave)
-- [Using a Proxy](#using-a-proxy)
 - [Troubleshooting](#troubleshooting)
 - [Credits](#credits)
 
@@ -37,13 +38,13 @@ If you're not yet comfortable with the command-line, or if you just want to get 
 AutoPkgr makes these tasks a piece of cake:
 
 - Installation of AutoPkg itself.
-- Installation of Git, which AutoPkg requires.
+- Installation of Git, which AutoPkg uses.
 - Discovery of and subscription to the repositories and recipes you need.
 - Automatic scheduled checks of the recipes you choose.
 - Email, Slack, or HipChat notifications when new software is packaged.
 - Ability to easily create and edit AutoPkg recipe overrides.
-- One-click access to common folders that AutoPkg admins need.
-- Basic integration of AutoPkg with popular software distribution frameworks like [Munki](https://www.munki.org/munki/), [Casper Suite](http://www.jamfsoftware.com/products/), [Absolute Manage](https://www.absolute.com/en/products/absolute-manage), and [MacPatch](https://macpatch.github.io/).
+- Easy access to common folders that AutoPkg admins need.
+- Basic integration of AutoPkg with popular software distribution frameworks like [Munki](https://www.munki.org/munki/), [Casper Suite](http://www.jamfsoftware.com/products/), [Absolute Manage](https://www.absolute.com/en/products/absolute-manage), [FileWave](https://www.filewave.com/), and [MacPatch](https://macpatch.github.io/).
 
 ![divider](doc-images/divider.png)
 
@@ -63,9 +64,9 @@ Download the [latest release](https://github.com/lindegroup/autopkgr/releases/la
 
     ![Install](doc-images/config_tab1.png)
 
-1.  Click the button to __Install Git__ if it's not already installed.
-
 1.  Click the button to __Install AutoPkg__ if it's not already installed.
+
+1.  Click the button to __Install Git__ if it's not already installed.
 
 1.  Switch to the __Repos & Recipes__ tab.
 
@@ -79,7 +80,7 @@ Download the [latest release](https://github.com/lindegroup/autopkgr/releases/la
 
     ![Add a repo manually](doc-images/repo_manual.png)
 
-1.  Select any recipes you wish to subscribe to.
+1.  Select any recipes you wish to include in scheduled recipe runs.
 
     You can search for recipes using the "Search for a recipe on GitHub" field.
 
@@ -87,9 +88,9 @@ Download the [latest release](https://github.com/lindegroup/autopkgr/releases/la
 
     ![Schedule](doc-images/config_tab3.png)
 
-1.  Set your automatic update checking preferences. Most people like to check about once per day.
+1.  Set the schedule for automatically running recipes. Many people like to set this for once per day.
 
-    :warning: &nbsp; Only choose "Update all repos before each AutoPkg run" if you know and trust the authors of the recipes you subscribe to.
+    :warning: &nbsp; Selecting "Update all repos before each AutoPkg run" exposes you to some risk, and isn't generally recommended unless you unconditionally trust the contributors to the repos you subscribe to.
 
 1.  Switch to the __Notifications__ tab.
 
@@ -101,7 +102,7 @@ That's it! AutoPkgr will now check for the latest app updates you specified, and
 
 &nbsp;
 
-Anytime you'd like to make changes to AutoPkgr's configuration, just click on the AutoPkgr icon in the menu bar (![Menu bar icon](doc-images/menulet.png)), and choose __AutoPkgr Preferences...__
+Anytime you'd like to make changes to AutoPkgr's configuration, click on AutoPkgr's icon in the Dock, or click on the AutoPkgr icon in the menu bar (![Menu bar icon](doc-images/menulet.png)), and choose __AutoPkgr Preferences...__
 
 You'll also find some useful shortcuts on the __Folders & Integration__ tab, which will take you directly to several convenient AutoPkg folders. On that tab, you can also configure integration with Munki, Casper, and other software deployment systems (see below).
 
@@ -123,7 +124,7 @@ Click __Close__ to return to the recipe list. Then you should see the newly-adde
 
 ![Add the Recipe](doc-images/recipe_search3.png)
 
-Don't see a recipe for an app you use? [Write one](https://github.com/autopkg/autopkg/wiki/Recipe-Format)!
+Don't see a recipe for an app you use? Use [Recipe Robot](https://github.com/homebysix/recipe-robot) or [write one manually](https://github.com/autopkg/autopkg/wiki/Recipe-Format)!
 
 ![divider](doc-images/divider.png)
 
@@ -133,13 +134,43 @@ If you want to run a single recipe once, simply right-click on a recipe and choo
 
 ![Running individual recipes](doc-images/individual_recipe_run.png)
 
+If the recipe you're running is a .munki recipe, MakeCatalogs.munki will also run.
+
 ![divider](doc-images/divider.png)
 
 ## Creating/Editing Recipe Overrides
 
-We've tried to simplify the process of creating and editing AutoPkg recipe overrides for you. Just right-click on a recipe in the list, and you'll see options for creating an override, editing an existing override, and choosing which text editor you prefer to use.
+Recipe overrides allow you to tailor recipes' input variables to your organization's needs.
+
+We've tried to simplify the process of creating and editing AutoPkg recipe overrides. Just right-click on a recipe in the list, and you'll see options for creating an override or editing an existing override.
 
 ![Override creation and editing](doc-images/overrides.png)
+
+To select which text editor to use when editing overrides, go to __Folders & Integration > Configure AutoPkg > Recipe/Override Editor__.
+
+![Text editor preference](doc-images/text_editor.png)
+
+![divider](doc-images/divider.png)
+
+## Customizing notifications
+
+To avoid unwanted notifications, you can customize which AutoPkg events trigger a notification to be sent. To do this, go to the Notifications tab and click the __Customize...__ button next to __Choose which actions trigger notification.__
+
+![Custom notification button](doc-images/custom_notification_button.png)
+
+You can choose to be notified on all events, or you can select a subset of events you care about and ignore the rest.
+
+![Custom notification options](doc-images/custom_notification_options.png)
+
+When you're done, click Close.
+
+![divider](doc-images/divider.png)
+
+## Using a Proxy
+
+If your network uses a proxy, you may need to navigate to the __Folders & Integration__ tab and click on the __Configure AutoPkg__ button. Adjust the proxy settings as necessary.
+
+![proxy](doc-images/proxy.png)
 
 ![divider](doc-images/divider.png)
 
@@ -155,7 +186,7 @@ To configure AutoPkgr to add updates directly into your Munki repository, follow
 
 1. Click on the __Folders & Integration__ tab.
 1. If Munki tools are not already installed, click on the __Install Munki tools__ button. Enter your password if prompted.
-1. If your Munki repo is not located at `/Users/Shared/munki_repo`, click on the __Configure Munki tools...__ button, click __Choose__, and browse to your munki_repo.
+1. Click on the __Configure Munki tools...__ button, click __Choose__, and browse to your munki_repo (which can be on a mounted volume).
 
     ![Munki repo](doc-images/integration_munki.png)
 
@@ -261,14 +292,6 @@ To configure AutoPkgr to add updates directly into your FileWave server, follow 
 
 ![divider](doc-images/divider.png)
 
-## Using a Proxy
-
-If your network uses a proxy, you may need to navigate to the __Folders & Integration__ tab and click on the __Configure AutoPkg__ button. Adjust the proxy settings as necessary.
-
-![proxy](doc-images/proxy.png)
-
-![divider](doc-images/divider.png)
-
 ## Troubleshooting
 
 #### Step 1: Check for simple errors
@@ -324,8 +347,6 @@ The simplest way to view the logs is to filter for "AutoPkgr" in the Console app
 If you're still stuck, you may want to post a message (and relevant sections of the Console logs, after removing any sensitive information) to our [Google Group](https://groups.google.com/forum/#!forum/autopkgr-discuss). And if it's a reproducible bug, please do submit an [issue](https://github.com/lindegroup/autopkgr/issues) on GitHub. We do our best to investigate bug reports and release fixes.
 
 We also welcome feature requests on GitHub! Some of our best features have come from community suggestions.
-
-![New GitHub issue](doc-images/github_new_issue.png)
 
 ![divider](doc-images/divider.png)
 
