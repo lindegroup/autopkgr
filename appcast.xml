@@ -42,6 +42,7 @@
                 <p>Have a great day.</p>
                 ]]>
             </description>
+            <sparkle:minimumSystemVersion>10.8</sparkle:minimumSystemVersion>
             <pubDate>Fri, 18 September 2015 11:00:00 -0700</pubDate>
             <enclosure url="https://github.com/lindegroup/autopkgr/releases/download/v1.3.2/AutoPkgr-1.3.2.dmg" sparkle:version="1104" sparkle:shortVersionString="1.3.2" type="application/octet-stream" />
         </item>
