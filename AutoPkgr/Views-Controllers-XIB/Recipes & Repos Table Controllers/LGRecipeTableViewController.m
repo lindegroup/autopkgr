@@ -427,25 +427,6 @@ static NSString *const kLGAutoPkgRecipeCurrentStatusKey = @"currentStatus";
         [menu addItemWithTitle:parent action:nil keyEquivalent:@""];
     }
 
-    // Setup the recipe editor menu ...
-    NSString *currentEditor = [[LGDefaults standardUserDefaults] objectForKey:@"RecipeEditor"];
-    NSMenu *recipeEditorMenu = [[NSMenu alloc] init];
-    NSMenuItem *recipeEditorMenuItem = [[NSMenuItem alloc] initWithTitle:@"Set Recipe Editor" action:nil keyEquivalent:@""];
-
-    for (NSString *editor in [LGRecipeOverrides recipeEditors]) {
-        NSMenuItem *editorItem = [[NSMenuItem alloc] initWithTitle:editor action:@selector(setRecipeEditor:) keyEquivalent:@""];
-        if ([editor isEqualToString:currentEditor]) {
-            [editorItem setState:NSOnState];
-        }
-        editorItem.target = [LGRecipeOverrides class];
-        [recipeEditorMenu addItem:editorItem];
-    }
-
-    NSMenuItem *otherEditorItem = [[NSMenuItem alloc] initWithTitle:@"Other..." action:@selector(setRecipeEditor:) keyEquivalent:@""];
-    otherEditorItem.target = [LGRecipeOverrides class];
-
-    [recipeEditorMenu addItem:otherEditorItem];
-
     // Setup menu items for overrides.
 
     if ([LGRecipeOverrides overrideExistsForRecipe:recipe]) {
@@ -473,10 +454,6 @@ static NSString *const kLGAutoPkgRecipeCurrentStatusKey = @"currentStatus";
         openRecipeItem.target = [LGRecipeOverrides class];
         [menu addItem:openRecipeItem];
     }
-
-    // Add the editor menu last.
-    [menu addItem:recipeEditorMenuItem];
-    [menu setSubmenu:recipeEditorMenu forItem:recipeEditorMenuItem];
 
     return menu;
 }
