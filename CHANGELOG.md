@@ -20,6 +20,7 @@ All notable changes to this project will be documented in this file. This projec
 
 ### Fixed
 - Fixed a bug that caused progress spinners to incorrectly display on multiple recipes if they share the same name. (#447)
+- Fixed a bug that caused AutoPkgr to freeze when adding a custom repo with a trailing space in the URL. (#486)
 - Fixed a minor counting error in log output. (#446)
 - Fixed crash that occurred if Git was not reinstalled after an OS X upgrade. (#458)
 - Fixed a bug that resulted in unreliable "Run This Only Recipe Only" selection. (#456)
