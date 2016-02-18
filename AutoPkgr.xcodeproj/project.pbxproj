@@ -1220,7 +1220,6 @@
 				1AC6954B195B59ED00D2BD81 /* Resources */,
 				BE05CE7419DAF4C30089068B /* Copy Files: Helper Tool */,
 				C97E222596F14727B875BF98 /* Copy Pods Resources */,
-				1A56282C19CC01D600980AB9 /* Run Script: Deeper sign */,
 				CFE982FF7A3B93455731A62B /* Embed Pods Frameworks */,
 			);
 			buildRules = (
@@ -1392,20 +1391,6 @@
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-AutoPkgrTests/Pods-AutoPkgrTests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
-		};
-		1A56282C19CC01D600980AB9 /* Run Script: Deeper sign */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Run Script: Deeper sign";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PROJECT_DIR}/scripts/codesign.py\"";
 		};
 		26170D597736193FA7397F5E /* Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
