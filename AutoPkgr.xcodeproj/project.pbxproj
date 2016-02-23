@@ -29,7 +29,7 @@
 		8B1AF8521BED81440013BE37 /* LGFileWaveIntegrationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B1AF8501BED81440013BE37 /* LGFileWaveIntegrationView.m */; };
 		8B1AF8531BED81440013BE37 /* LGFileWaveIntegrationView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8B1AF8511BED81440013BE37 /* LGFileWaveIntegrationView.xib */; };
 		8B1AF8561BED81540013BE37 /* LGFileWaveIntegration.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B1AF8551BED81540013BE37 /* LGFileWaveIntegration.m */; };
-		8B8844221C7CD02A00F1013B /* LGLANrevIntegration.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B8844211C7CD02A00F1013B /* LGLANrevIntegration.m */; };
+		8B22B6AF1C7CF2B500B647C2 /* LGLANrevIntegration.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B22B6AE1C7CF2B500B647C2 /* LGLANrevIntegration.m */; };
 		8B8844261C7CD04300F1013B /* LGLANrevIntegrationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B8844241C7CD04300F1013B /* LGLANrevIntegrationView.m */; };
 		8B8844271C7CD04300F1013B /* LGLANrevIntegrationView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8B8844251C7CD04300F1013B /* LGLANrevIntegrationView.xib */; };
 		8BB217F619709A2C00EF8B93 /* AutoPkgrIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 8BB217F519709A2C00EF8B93 /* AutoPkgrIcon.png */; };
@@ -326,8 +326,8 @@
 		8B1AF8511BED81440013BE37 /* LGFileWaveIntegrationView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LGFileWaveIntegrationView.xib; sourceTree = "<group>"; };
 		8B1AF8541BED81540013BE37 /* LGFileWaveIntegration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGFileWaveIntegration.h; sourceTree = "<group>"; };
 		8B1AF8551BED81540013BE37 /* LGFileWaveIntegration.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGFileWaveIntegration.m; sourceTree = "<group>"; };
-		8B8844201C7CD02A00F1013B /* LGLANrevIntegration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGLANrevIntegration.h; sourceTree = "<group>"; };
-		8B8844211C7CD02A00F1013B /* LGLANrevIntegration.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGLANrevIntegration.m; sourceTree = "<group>"; };
+		8B22B6AD1C7CF2B500B647C2 /* LGLANrevIntegration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGLANrevIntegration.h; sourceTree = "<group>"; };
+		8B22B6AE1C7CF2B500B647C2 /* LGLANrevIntegration.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGLANrevIntegration.m; sourceTree = "<group>"; };
 		8B8844231C7CD04300F1013B /* LGLANrevIntegrationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGLANrevIntegrationView.h; sourceTree = "<group>"; };
 		8B8844241C7CD04300F1013B /* LGLANrevIntegrationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGLANrevIntegrationView.m; sourceTree = "<group>"; };
 		8B8844251C7CD04300F1013B /* LGLANrevIntegrationView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LGLANrevIntegrationView.xib; sourceTree = "<group>"; };
@@ -1190,8 +1190,8 @@
 				BE81F2221B20EFF2007D16C4 /* LGAbsoluteManageIntegration.m */,
 				BEEFE6C81AEC760700882C89 /* LGAutoPkgIntegration.h */,
 				BEEFE6C91AEC760700882C89 /* LGAutoPkgIntegration.m */,
-				8B8844201C7CD02A00F1013B /* LGLANrevIntegration.h */,
-				8B8844211C7CD02A00F1013B /* LGLANrevIntegration.m */,
+				8B22B6AD1C7CF2B500B647C2 /* LGLANrevIntegration.h */,
+				8B22B6AE1C7CF2B500B647C2 /* LGLANrevIntegration.m */,
 				8B1AF8541BED81540013BE37 /* LGFileWaveIntegration.h */,
 				8B1AF8551BED81540013BE37 /* LGFileWaveIntegration.m */,
 				BEEFE6C51AEBEB1000882C89 /* LGGitIntegration.h */,
@@ -1568,7 +1568,6 @@
 				BE59D8971B61998D0037F3CA /* BSDProcessInfo.m in Sources */,
 				BEC1258919F046FA006696C4 /* main.m in Sources */,
 				BED136B71AC3BE04003EBF0F /* NSArray+html_report.m in Sources */,
-				8B8844221C7CD02A00F1013B /* LGLANrevIntegration.m in Sources */,
 				BEEFE6BB1AE9E8A600882C89 /* LGLogger.m in Sources */,
 				BE4DD53E1B11743700854FD8 /* LGMunkiIntegration.m in Sources */,
 				BE38EAB01B0D0CF1009FCBEB /* LGTabViewControllerBase.m in Sources */,
@@ -1651,6 +1650,7 @@
 				BECDAB8C1B249C0400544388 /* NSButton+colored.m in Sources */,
 				BE8A06BC1AF8FAFD006C2571 /* NSData+taskData.m in Sources */,
 				BE38EA771B0B8DF7009FCBEB /* LGRecipeInfoView.m in Sources */,
+				8B22B6AF1C7CF2B500B647C2 /* LGLANrevIntegration.m in Sources */,
 				BEE8CF1319E0E7F400981C4B /* NSTextField+safeStringValue.m in Sources */,
 				BE1C810319E8224000EF77F3 /* NSImage+statusLight.m in Sources */,
 				BE81F2301B22340D007D16C4 /* LGBaseIntegrationViewController.m in Sources */,
