@@ -35,15 +35,15 @@
 #pragma mark - Class overrides
 + (NSString *)name
 {
-    return @"LANrevImporterExport";
+    return @"LANrevImporter";
 }
 
 + (NSString *)shortName
 {
-    return @"AMExport";
+    return @"LANrevImporter";
 }
 + (NSString *)credits {
-    return @"Copyright 2014 Thomas Burgin\nhttp://www.apache.org/licenses/LICENSE-2.0";
+    return @"Copyright 2016 Jeremy Baker\nhttp://www.apache.org/licenses/LICENSE-2.0";
 }
 
 + (NSURL *)homePage {
@@ -69,7 +69,7 @@
 
 + (NSString *)binary
 {
-    return @"/Library/AutoPkg/autopkglib/LANrevImporterExport.py";
+    return @"/Library/AutoPkg/autopkglib/LANrevImporter.py";
 }
 
 + (NSArray *)packageIdentifiers
