@@ -5,7 +5,7 @@
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="9532"/>
     </dependencies>
     <objects>
-        <customObject id="-2" userLabel="File's Owner" customClass="LGLANrevImporterIntegrationView">
+        <customObject id="-2" userLabel="File's Owner" customClass="LGLANrevIntegrationView">
             <connections>
                 <outlet property="enableExternalUploadBT" destination="T5V-NE-iRF" id="3Hm-z3-yoW"/>
                 <outlet property="view" destination="Hz6-mo-xeY" id="0bl-1N-x8E"/>

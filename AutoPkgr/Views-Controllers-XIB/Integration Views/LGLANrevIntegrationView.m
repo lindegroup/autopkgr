@@ -1,5 +1,5 @@
 //
-//  LGLANrevImporterIntegrationView.h
+//  LGLANrevIntegrationView.m
 //  AutoPkgr
 //
 //  Created by Elliot Jordan on 2/23/2016.
@@ -18,8 +18,28 @@
 //  limitations under the License.
 //
 
-#import "LGBaseIntegrationViewController.h"
+#import "LGLANrevIntegrationView.h"
+#import "LGLANrevIntegration.h"
 
-@interface LGLANrevImporterIntegrationView : LGBaseIntegrationViewController
+@interface LGLANrevIntegrationView ()
+@property (weak) IBOutlet NSButton *enableExternalUploadBT;
+
+@end
+
+@implementation LGLANrevIntegrationView
+
+- (void)awakeFromNib {
+    _enableExternalUploadBT.state = [LGLANrevDefaults new].AllowURLSDPackageImport;
+}
+
+- (IBAction)enableExternalSDPackageUpload:(NSButton *)sender
+{
+    [LGLANrevDefaults new].AllowURLSDPackageImport = sender.state;
+}
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    // Do view setup here.
+}
 
 @end

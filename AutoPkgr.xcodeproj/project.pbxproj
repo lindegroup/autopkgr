@@ -30,8 +30,8 @@
 		8B1AF8531BED81440013BE37 /* LGFileWaveIntegrationView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8B1AF8511BED81440013BE37 /* LGFileWaveIntegrationView.xib */; };
 		8B1AF8561BED81540013BE37 /* LGFileWaveIntegration.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B1AF8551BED81540013BE37 /* LGFileWaveIntegration.m */; };
 		8B8844221C7CD02A00F1013B /* LGLANrevIntegration.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B8844211C7CD02A00F1013B /* LGLANrevIntegration.m */; };
-		8B8844261C7CD04300F1013B /* LGLANrevImporterIntegrationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B8844241C7CD04300F1013B /* LGLANrevImporterIntegrationView.m */; };
-		8B8844271C7CD04300F1013B /* LGLANrevImporterIntegrationView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8B8844251C7CD04300F1013B /* LGLANrevImporterIntegrationView.xib */; };
+		8B8844261C7CD04300F1013B /* LGLANrevIntegrationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B8844241C7CD04300F1013B /* LGLANrevIntegrationView.m */; };
+		8B8844271C7CD04300F1013B /* LGLANrevIntegrationView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8B8844251C7CD04300F1013B /* LGLANrevIntegrationView.xib */; };
 		8BB217F619709A2C00EF8B93 /* AutoPkgrIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 8BB217F519709A2C00EF8B93 /* AutoPkgrIcon.png */; };
 		9D2C8D4C186E66B3303DD645 /* libPods-com.lindegroup.AutoPkgr.helper.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00A11C97CD6260BB5679DA1A /* libPods-com.lindegroup.AutoPkgr.helper.a */; };
 		B8D45ABF903D8E3083FBEFAC /* libPods-AutoPkgrTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7EF915ABFCFD78F7257B58CD /* libPods-AutoPkgrTests.a */; };
@@ -328,9 +328,9 @@
 		8B1AF8551BED81540013BE37 /* LGFileWaveIntegration.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGFileWaveIntegration.m; sourceTree = "<group>"; };
 		8B8844201C7CD02A00F1013B /* LGLANrevIntegration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGLANrevIntegration.h; sourceTree = "<group>"; };
 		8B8844211C7CD02A00F1013B /* LGLANrevIntegration.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGLANrevIntegration.m; sourceTree = "<group>"; };
-		8B8844231C7CD04300F1013B /* LGLANrevImporterIntegrationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGLANrevImporterIntegrationView.h; sourceTree = "<group>"; };
-		8B8844241C7CD04300F1013B /* LGLANrevImporterIntegrationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGLANrevImporterIntegrationView.m; sourceTree = "<group>"; };
-		8B8844251C7CD04300F1013B /* LGLANrevImporterIntegrationView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LGLANrevImporterIntegrationView.xib; sourceTree = "<group>"; };
+		8B8844231C7CD04300F1013B /* LGLANrevIntegrationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGLANrevIntegrationView.h; sourceTree = "<group>"; };
+		8B8844241C7CD04300F1013B /* LGLANrevIntegrationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGLANrevIntegrationView.m; sourceTree = "<group>"; };
+		8B8844251C7CD04300F1013B /* LGLANrevIntegrationView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LGLANrevIntegrationView.xib; sourceTree = "<group>"; };
 		8BB217F519709A2C00EF8B93 /* AutoPkgrIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = AutoPkgrIcon.png; sourceTree = "<group>"; };
 		8FDCE77563036A319CDEEBF5 /* libPods-autopkgr.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-autopkgr.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		906DD048439B1EC0FBD74F69 /* Pods-AutoPkgr.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AutoPkgr.release.xcconfig"; path = "Pods/Target Support Files/Pods-AutoPkgr/Pods-AutoPkgr.release.xcconfig"; sourceTree = "<group>"; };
@@ -1043,9 +1043,9 @@
 				BECDABA51B254E5900544388 /* LGAbsoluteManageIntegrationView.m */,
 				BECDABA61B254E5900544388 /* LGAbsoluteManageIntegrationView.xib */,
 				BE09F6581B2694ED00EE4AA7 /* LGAutoPkgIntegrationView.h */,
-				8B8844231C7CD04300F1013B /* LGLANrevImporterIntegrationView.h */,
-				8B8844241C7CD04300F1013B /* LGLANrevImporterIntegrationView.m */,
-				8B8844251C7CD04300F1013B /* LGLANrevImporterIntegrationView.xib */,
+				8B8844231C7CD04300F1013B /* LGLANrevIntegrationView.h */,
+				8B8844241C7CD04300F1013B /* LGLANrevIntegrationView.m */,
+				8B8844251C7CD04300F1013B /* LGLANrevIntegrationView.xib */,
 				BE09F6591B2694ED00EE4AA7 /* LGAutoPkgIntegrationView.m */,
 				BE09F65A1B2694ED00EE4AA7 /* LGAutoPkgIntegrationView.xib */,
 				8B1AF84F1BED81440013BE37 /* LGFileWaveIntegrationView.h */,
@@ -1334,7 +1334,7 @@
 				BE3D94321C15FCFA001763D0 /* example_data.plist in Resources */,
 				1AC98429195DF6DE0071CAB3 /* autopkgr_alt.png in Resources */,
 				1AC98427195DF6350071CAB3 /* autopkgr.png in Resources */,
-				8B8844271C7CD04300F1013B /* LGLANrevImporterIntegrationView.xib in Resources */,
+				8B8844271C7CD04300F1013B /* LGLANrevIntegrationView.xib in Resources */,
 				8BB217F619709A2C00EF8B93 /* AutoPkgrIcon.png in Resources */,
 				BED3882A1A85E2C100DA8970 /* autopkgr_error.png in Resources */,
 				1AC69569195B59EE00D2BD81 /* Images.xcassets in Resources */,
@@ -1583,7 +1583,7 @@
 				BE91A06C1B2F298900ED7501 /* AHHelpPopover.m in Sources */,
 				8B1AF8521BED81440013BE37 /* LGFileWaveIntegrationView.m in Sources */,
 				BE0BB0F71B3C68A3007F9DA5 /* LGEmailNotification.m in Sources */,
-				8B8844261C7CD04300F1013B /* LGLANrevImporterIntegrationView.m in Sources */,
+				8B8844261C7CD04300F1013B /* LGLANrevIntegrationView.m in Sources */,
 				BEC1258619F0465C006696C4 /* LGConfigurationWindowController.m in Sources */,
 				1AC9840A195CE7D60071CAB3 /* LGConstants.m in Sources */,
 				BE87994B1995BA410082472B /* LGDefaults.m in Sources */,

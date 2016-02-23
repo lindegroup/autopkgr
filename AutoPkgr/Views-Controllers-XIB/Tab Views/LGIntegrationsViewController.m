@@ -19,7 +19,7 @@
 //
 
 #import "LGAbsoluteManageIntegrationView.h"
-#import "LGLANrevImporterIntegrationView.h"
+#import "LGLANrevIntegrationView.h"
 #import "LGAutoPkgIntegrationView.h"
 #import "LGFileWaveIntegrationView.h"
 #import "LGGitIntegrationView.h"
