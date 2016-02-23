@@ -141,6 +141,17 @@
 </ul>
 {{/ absolute_manage_export.data_rows.count }}
 
+<!-- LANrev -->
+<!-- 'report_fields': ['server', 'package', 'id' ] -->
+{{# lanrev_importer.data_rows.count }}
+<H3>{{ lanrev_importer.summary_text }}</H3>
+<ul>
+    {{# lanrev_importer.data_rows }}
+    <li>{{ package }}</li>
+    {{/ lanrev_importer.data_rows }}
+</ul>
+{{/ lanrev_importer.data_rows.count }}
+
 <!-- Mac Patch -->
 <!-- 'report_fields': ['bundle_id', 'name', 'version', 'puuid'] -->
 {{# macpatch_importer.data_rows.count }}

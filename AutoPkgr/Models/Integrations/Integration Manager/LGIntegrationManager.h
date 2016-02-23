@@ -20,6 +20,7 @@
 #import <Foundation/Foundation.h>
 
 #import "LGAbsoluteManageIntegration.h"
+#import "LGLANrevImporterIntegration.h"
 #import "LGAutoPkgIntegration.h"
 #import "LGFileWaveIntegration.h"
 #import "LGGitIntegration.h"
