@@ -19,14 +19,14 @@
 //
 
 #import "LGAbsoluteManageIntegrationView.h"
-#import "LGLANrevIntegrationView.h"
 #import "LGAutoPkgIntegrationView.h"
 #import "LGFileWaveIntegrationView.h"
 #import "LGGitIntegrationView.h"
 #import "LGIntegrationManager.h"
-#import "LGIntegrationsViewController.h"
 #import "LGIntegrationWindowController.h"
+#import "LGIntegrationsViewController.h"
 #import "LGJSSImporterIntegrationView.h"
+#import "LGLANrevIntegrationView.h"
 #import "LGMacPatchIntegrationView.h"
 #import "LGMunkiIntegrationView.h"
 #import "LGTableCellViews.h"
