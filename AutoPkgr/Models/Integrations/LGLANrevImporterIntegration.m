@@ -47,18 +47,18 @@
 }
 
 + (NSURL *)homePage {
-    return [NSURL URLWithString:@"https://github.com/tburgin/LANrevImporterExport"];
+    return [NSURL URLWithString:@"https://github.com/jbaker10/LANrevImporter"];
 }
 
 + (NSString *)gitHubURL
 {
-    return @"https://api.github.com/repos/tburgin/LANrevImporterExport/releases";
+    return @"https://api.github.com/repos/jbaker10/LANrevImporter/releases";
 }
 
 + (NSString *)defaultRepository
 {
     // Not sure what the "Official" default repo is yet.
-    return @"https://github.com/tburgin/LANrevImporterExport.git";
+    return @"https://github.com/jbaker10/LANrevImporter.git";
 }
 
 + (NSArray *)components
@@ -74,7 +74,7 @@
 
 + (NSArray *)packageIdentifiers
 {
-    return @[ @"com.github.tburgin.LANrevImporterExport" ];
+    return @[ @"com.github.jbaker10.LANrevImporterInstaller" ];
 }
 
 + (BOOL)isUninstallable {
@@ -82,7 +82,7 @@
 }
 
 + (NSString *)summaryResultKey {
-    return @"absolute_manage_export_summary_result";
+    return @"lanrev_importer_summary_result";
 }
 
 + (BOOL)meetsRequirements:(NSError *__autoreleasing *)error {
@@ -108,7 +108,7 @@
 #pragma mark - Instance overrides
 - (NSString *)installedVersion
 {
-    NSString *receipt = @"/private/var/db/receipts/com.github.tburgin.LANrevImporterExport.plist";
+    NSString *receipt = @"/private/var/db/receipts/com.github.jbaker10.LANrevImporterInstaller.plist";
     return [NSDictionary dictionaryWithContentsOfFile:receipt][@"PackageVersion"];
 }
 
@@ -124,7 +124,7 @@
 static NSString *const kLGLANrevImporterDomain = @"com.poleposition-sw.lanrev_admin";
 
 - (NSString *)DatabaseDirectory {
-    return [self absoluteManageDomainObject:
+    return [self LANrevDomainObject:
              NSStringFromSelector(@selector(DatabaseDirectory))];
 }
 
@@ -136,11 +136,11 @@ static NSString *const kLGLANrevImporterDomain = @"com.poleposition-sw.lanrev_ad
 
 - (BOOL)AllowURLSDPackageImport
 {
-    return [[self absoluteManageDomainObject:
+    return [[self LANrevDomainObject:
                       NSStringFromSelector(@selector(AllowURLSDPackageImport))] boolValue];
 }
 
-- (id)absoluteManageDomainObject:(NSString *)key
+- (id)LANrevDomainObject:(NSString *)key
 {
     id value = CFBridgingRelease(
         CFPreferencesCopyAppValue((__bridge CFStringRef)(key),
