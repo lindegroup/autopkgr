@@ -23,7 +23,7 @@ To get started, download the [latest release](https://github.com/lindegroup/auto
 - [Integrations](#integrations)
     - [Integration with Munki](#integration-with-munki)
     - [Integration with Casper](#integration-with-casper)
-    - [Integration with Absolute Manage](#integration-with-absolute-manage)
+    - [Integration with HEAT LANrev](#integration-with-heat-lanrev)
     - [Integration with MacPatch](#integration-with-macpatch)
     - [Integration with FileWave](#integration-with-filewave)
 - [Troubleshooting](#troubleshooting)
@@ -44,7 +44,7 @@ AutoPkgr makes these tasks a piece of cake:
 - Email, Slack, or HipChat notifications when new software is packaged.
 - Ability to easily create and edit AutoPkg recipe overrides.
 - Easy access to common folders that AutoPkg admins need.
-- Basic integration of AutoPkg with popular software distribution frameworks like [Munki](https://www.munki.org/munki/), [Casper Suite](http://www.jamfsoftware.com/products/), [Absolute Manage](https://www.absolute.com/en/products/absolute-manage), [FileWave](https://www.filewave.com/), and [MacPatch](https://macpatch.github.io/).
+- Basic integration of AutoPkg with popular software distribution frameworks like [Munki](https://www.munki.org/munki/), [Casper Suite](http://www.jamfsoftware.com/products/), [HEAT LANrev](https://heatsoftware.com/lanrev/), [FileWave](https://www.filewave.com/), and [MacPatch](https://macpatch.github.io/).
 
 ![divider](doc-images/divider.png)
 
@@ -226,28 +226,30 @@ When a `.jss` recipe runs, the package is uploaded to your distribution points, 
 
 For detailed information on JSS recipe behavior, check out the [README for jss-recipes](https://github.com/autopkg/jss-recipes), and for some examples of advanced worfklows, see [Auto Update Magic](https://github.com/homebysix/auto-update-magic).
 
-### Integration with Absolute Manage
+### Integration with HEAT LANrev
 
-:warning: &nbsp; _Absolute Manage integration is still in beta. We welcome [your feedback](https://github.com/lindegroup/autopkgr/issues/new)._
+:warning: &nbsp; _LANrev integration is still in beta. We welcome [your feedback](https://github.com/lindegroup/autopkgr/issues/new)._
 
-:bulb: &nbsp; _Notes and requirements for Absolute Manage integration:_
+:warning: If you previously used Tom Burgin's [AbsoluteManageExport](https://github.com/tburgin/AbsoluteManageExport) processor and .absolute recipes, please see the [LANrevImporter documentation](https://github.com/jbaker10/LANrevImporter#) for information about how to transition to LANrevImporter.
 
-- _Absolute Manage version 6.5 or newer is required._
-- _The Absolute Manage Admin app should be installed in your Applications folder._
-- _Launch Absolute Manage Admin and connect the app to your Absolute Manage server._
-- _In order to run `.absolute` recipes, your Mac needs to be logged in and the Absolute Manage Admin app needs to be running._
+:bulb: &nbsp; _Notes and requirements for LANrev integration:_
 
-To configure AutoPkgr to add updates directly into your Absolute Manage server, follow these steps:
+- _LANrev version 6.5 or newer is required._
+- _The LANrev Admin app should be installed in your Applications folder._
+- _Launch LANrev Admin and connect the app to your LANrev server._
+- _In order to run `.lanrev` recipes, your Mac needs to be logged in and the LANrev Admin app needs to be running._
+
+To configure AutoPkgr to add updates directly into your LANrev server, follow these steps:
 
 1. Click on the __Folders & Integration__ tab.
-1. Click on the __Install AMExporter__ button. Enter your password when prompted.
-1. Click on the __Configure AMExporter...__ button. Select the __Enable External SD Package Upload__ option if desired.
+1. Click on the __Install LANrevImporter__ button. Enter your password when prompted.
+1. Click on the __Configure LANrevImporter...__ button. Select the __Enable External SD Package Upload__ option if desired.
 
-    ![Absolute Manage Settings](doc-images/integration_absolute.png)
+    ![LANrev Settings](doc-images/integration_lanrev.png)
 
 1. Click __Save and Close__.
 
-You'll also want to make sure you have a few `.absolute` recipes selected. There is no official repository for Absolute Manage recipes yet, but if you add the `seansgm-recipes` repository, you'll see a few to get you started.
+You'll also want to make sure you have a few `.lanrev` recipes selected. There is no official repository for LANrev recipes yet, but if you add the [seansgm-recipes](https://github.com/autopkg/seansgm-recipes) repository, you'll see a few to get you started.
 
 ### Integration with MacPatch
 
