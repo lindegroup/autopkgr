@@ -230,7 +230,7 @@ For detailed information on JSS recipe behavior, check out the [README for jss-r
 
 :warning: &nbsp; _LANrev integration is still in beta. We welcome [your feedback](https://github.com/lindegroup/autopkgr/issues/new)._
 
-:warning: &nbsp; If you previously used Tom Burgin's [AbsoluteManageExport](https://github.com/tburgin/AbsoluteManageExport) processor and .absolute recipes, please see the [LANrevImporter documentation](https://github.com/jbaker10/LANrevImporter#) for information about how to transition to LANrevImporter.
+:warning: &nbsp; If you previously used Tom Burgin's [AbsoluteManageExport](https://github.com/tburgin/AbsoluteManageExport) processor and .absolute recipes, please see the [LANrevImporter documentation](https://github.com/jbaker10/LANrevImporter/wiki/Switching-from-AbsoluteManageExport-to-LANrevImporter) for information about how to transition to LANrevImporter.
 
 :bulb: &nbsp; _Notes and requirements for LANrev integration:_
 
