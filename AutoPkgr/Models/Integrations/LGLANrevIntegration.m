@@ -121,7 +121,7 @@
 #pragma mark - Defaults
 @implementation LGLANrevDefaults
 
-static NSString *const kLGLANrevImporterDomain = @"com.poleposition-sw.lanrev_admin";
+static NSString *const kLGLANrevDomain = @"com.poleposition-sw.lanrev_admin";
 
 - (NSString *)DatabaseDirectory {
     return [self LANrevDomainObject:
@@ -130,7 +130,7 @@ static NSString *const kLGLANrevImporterDomain = @"com.poleposition-sw.lanrev_ad
 
 - (void)setAllowURLSDPackageImport:(BOOL)AllowURLSDPackageImport
 {
-    [self setLANrevImporterDomainObject:@(AllowURLSDPackageImport)
+    [self setLANrevDomainObject:@(AllowURLSDPackageImport)
                                  forKey:NSStringFromSelector(@selector(AllowURLSDPackageImport))];
 }
 
@@ -144,15 +144,15 @@ static NSString *const kLGLANrevImporterDomain = @"com.poleposition-sw.lanrev_ad
 {
     id value = CFBridgingRelease(
         CFPreferencesCopyAppValue((__bridge CFStringRef)(key),
-                                  (__bridge CFStringRef)(kLGLANrevImporterDomain)));
+                                  (__bridge CFStringRef)(kLGLANrevDomain)));
     return value;
 }
 
-- (void)setLANrevImporterDomainObject:(id)object forKey:(NSString *)key
+- (void)setLANrevDomainObject:(id)object forKey:(NSString *)key
 {
     CFPreferencesSetAppValue((__bridge CFStringRef)(key),
                              (__bridge CFTypeRef)(object),
-                             (__bridge CFStringRef)(kLGLANrevImporterDomain));
+                             (__bridge CFStringRef)(kLGLANrevDomain));
 }
 
 @end
