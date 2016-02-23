@@ -37,7 +37,7 @@ static void *XXInfoStatusChange = &XXInfoStatusChange;
         // As needed add additional integrations to this array.
         __integrationClasses = @[
                           [LGAbsoluteManageIntegration class],
-                          [LGLANrevImporterIntegration class],
+                          [LGLANrevIntegration class],
                           [LGAutoPkgIntegration class],
                           [LGFileWaveIntegration class],
                           [LGGitIntegration class],

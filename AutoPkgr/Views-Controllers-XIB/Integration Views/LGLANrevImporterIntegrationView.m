@@ -19,7 +19,7 @@
 //
 
 #import "LGLANrevImporterIntegrationView.h"
-#import "LGLANrevImporterIntegration.h"
+#import "LGLANrevIntegration.h"
 
 @interface LGLANrevImporterIntegrationView ()
 @property (weak) IBOutlet NSButton *enableExternalUploadBT;
@@ -29,12 +29,12 @@
 @implementation LGLANrevImporterIntegrationView
 
 - (void)awakeFromNib {
-    _enableExternalUploadBT.state = [LGLANrevImporterDefaults new].AllowURLSDPackageImport;
+    _enableExternalUploadBT.state = [LGLANrevDefaults new].AllowURLSDPackageImport;
 }
 
 - (IBAction)enableExternalSDPackageUpload:(NSButton *)sender
 {
-    [LGLANrevImporterDefaults new].AllowURLSDPackageImport = sender.state;
+    [LGLANrevDefaults new].AllowURLSDPackageImport = sender.state;
 }
 
 - (void)viewDidLoad {

@@ -1,5 +1,5 @@
 //
-//  LGLANrevImporterIntegration.m
+//  LGLANrevIntegration.m
 //  AutoPkgr
 //
 //  Created by Elliot Jordan on 2/23/2016.
@@ -18,15 +18,15 @@
 //  limitations under the License.
 //
 
-#import "LGLANrevImporterIntegration.h"
+#import "LGLANrevIntegration.h"
 #import "LGIntegration+Protocols.h"
 
 // Define the protocols you intend to conform to...
-@interface LGLANrevImporterIntegration () <LGIntegrationPackageInstaller, LGIntegrationSharedProcessor>
+@interface LGLANrevIntegration () <LGIntegrationPackageInstaller, LGIntegrationSharedProcessor>
 @end
 
 #pragma mark - Integration overrides
-@implementation LGLANrevImporterIntegration
+@implementation LGLANrevIntegration
 
 // Since this is defined using a protocol, it needs to be synthesized...
 // If not conforming to LGIntegrationPackageInstaller remove it.
@@ -89,7 +89,7 @@
     NSFileManager *manager = [NSFileManager defaultManager];
     NSString *lanRev = @"/Applications/LANrev Admin.app";
 
-    LGLANrevImporterDefaults *defaults = [LGLANrevImporterDefaults new];
+    LGLANrevDefaults *defaults = [LGLANrevDefaults new];
 
     NSString *dataBase = defaults.DatabaseDirectory ?: @"~/Library/Application Support/LANrev Admin/Database/".stringByExpandingTildeInPath;
 
@@ -113,13 +113,13 @@
 }
 
 - (void)customInstallActions {
-    [[LGLANrevImporterDefaults new] setAllowURLSDPackageImport:YES];
+    [[LGLANrevDefaults new] setAllowURLSDPackageImport:YES];
 }
 
 @end
 
 #pragma mark - Defaults
-@implementation LGLANrevImporterDefaults
+@implementation LGLANrevDefaults
 
 static NSString *const kLGLANrevImporterDomain = @"com.poleposition-sw.lanrev_admin";
 

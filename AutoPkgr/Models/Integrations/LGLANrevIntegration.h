@@ -1,5 +1,5 @@
 //
-//  LGLANrevImporterIntegration.h
+//  LGLANrevIntegration.h
 //  AutoPkgr
 //
 //  Created by Elliot Jordan on 2/23/2016.
@@ -21,11 +21,11 @@
 #import "LGIntegration.h"
 #import "LGDefaults.h"
 
-@interface LGLANrevImporterIntegration : LGIntegration
+@interface LGLANrevIntegration : LGIntegration
 @end
 
 // This is also a good place to add custom defaults
-@interface LGLANrevImporterDefaults : LGDefaults
+@interface LGLANrevDefaults : LGDefaults
 
 @property (copy, nonatomic, readonly) NSString *DatabaseDirectory;
 
