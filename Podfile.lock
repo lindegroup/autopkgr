@@ -24,7 +24,7 @@ PODS:
   - GRMustache (7.3.2):
     - JRSwizzle (~> 1.0)
   - JRSwizzle (1.0)
-  - mailcore2-osx (0.5.2)
+  - mailcore2-osx (0.6.3)
   - MMMarkdown (0.5.1)
   - RNCryptor (2.2)
   - Sparkle (1.13.1)
@@ -60,7 +60,7 @@ SPEC CHECKSUMS:
   AHProxySettings: 1f882780699d7765aca9377660ba280306d30910
   GRMustache: ebe6104fd30a6d22c1f36af131e19e2dbf7cd292
   JRSwizzle: dd5ead5d913a0f29e7f558200165849f006bb1e3
-  mailcore2-osx: b4380c33f2e155006db3f97b638b7a0d52344b15
+  mailcore2-osx: 53e4be9c882653d194f7767fce0172ad4067a985
   MMMarkdown: 06f7989e0350d10a7de50516af6c812402ce554b
   RNCryptor: c68678461a2c7474a55db9a6a98834c22d51f535
   Sparkle: 2fbd47b869621d1e679c7554e3e19dda02104818

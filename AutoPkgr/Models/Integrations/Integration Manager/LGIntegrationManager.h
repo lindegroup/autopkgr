@@ -25,6 +25,7 @@
 #import "LGGitIntegration.h"
 #import "LGIntegration.h"
 #import "LGJSSImporterIntegration.h"
+#import "LGLANrevIntegration.h"
 #import "LGMacPatchIntegration.h"
 #import "LGMunkiIntegration.h"
 

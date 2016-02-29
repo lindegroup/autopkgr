@@ -6,6 +6,7 @@ All notable changes to this project will be documented in this file. This projec
 
 ### Added
 - Ability to edit notification templates. (#341)
+- Integration with new [LANrevImporter](https://github.com/jbaker10/LANrevImporter) processor. (#488) See the [LANrevImporter wiki](https://github.com/jbaker10/LANrevImporter/wiki/Switching-from-AbsoluteManageExport-to-LANrevImporter) for information on migrating from AbsoluteManageExport.
 
 ## [1.4] - pending release
 

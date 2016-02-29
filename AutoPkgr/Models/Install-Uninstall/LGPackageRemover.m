@@ -356,6 +356,7 @@ static dispatch_queue_t autopkgr_pkg_remover_queue()
         packages = @[@"com.github.sheagcraig.jssimporter",
                      @"com.github.sheagcraig.jss-autopkg-addon",
                      @"com.github.tburgin.AbsoluteManageExport",
+                     @"com.github.jbaker10.LANrevImporterInstaller",
                      ];
     });
     return packages;
