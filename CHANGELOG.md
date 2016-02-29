@@ -2,12 +2,6 @@
 
 All notable changes to this project will be documented in this file. This project adheres to [Semantic Versioning](http://semver.org/).
 
-## [Unreleased][unreleased]
-
-### Added
-- Ability to edit notification templates. (#341)
-- Integration with new [LANrevImporter](https://github.com/jbaker10/LANrevImporter) processor. (#488) See the [LANrevImporter wiki](https://github.com/jbaker10/LANrevImporter/wiki/Switching-from-AbsoluteManageExport-to-LANrevImporter) for information on migrating from AbsoluteManageExport.
-
 ## [1.4] - pending release
 
 ### Added
@@ -15,6 +9,7 @@ All notable changes to this project will be documented in this file. This projec
 - Ability to select multiple repos and then update, add, or remove the selected repos. (#434)
 - Ability to select multiple recipes and then run, enable, or disable the selected recipes. (#434)
 - Built-in integration with FileWave version 10 and higher, via the new [FileWaveImporter](https://github.com/autopkg/filewave) processor. (#339, with thanks to @johncclayton.)
+- Integration with new [LANrevImporter](https://github.com/jbaker10/LANrevImporter) processor. (#488) See the [LANrevImporter wiki](https://github.com/jbaker10/LANrevImporter/wiki/Switching-from-AbsoluteManageExport-to-LANrevImporter) for information on migrating from AbsoluteManageExport.
 - Ability to switch between multiple recipe lists. (#263)
 - Ability to specify pre/post processors. (#346, #384)
 - MakeCatalogs.munki will be included when .munki recipes are run from the contextual menu.
