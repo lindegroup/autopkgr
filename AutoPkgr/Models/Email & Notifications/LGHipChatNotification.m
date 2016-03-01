@@ -62,6 +62,14 @@ static NSString *const HipChatNotificationNotifyKey = @"HipChatNotificationNotif
     return [NSURL URLWithString:HipChatLink];
 }
 
++ (BOOL)templateIsFile {
+    return NO;
+}
+
++ (NSString *)defaultTemplate {
+    return [self templateWithName:@"web_report" type:@"html"];
+}
+
 #pragma mark - Send
 - (void)send:(void (^)(NSError *))complete
 {
@@ -73,10 +81,9 @@ static NSString *const HipChatNotificationNotifyKey = @"HipChatNotificationNotif
     } else {
         color = @"green";
     }
-
-    NSDictionary *parameters = @{ @"message" : self.report.webChannelMessageString,
+    NSString *message = [self.report renderWithTemplate:[[self class] reportTemplate] error:nil];
+    NSDictionary *parameters = @{ @"message" : message,
                                   @"color" : color,
-                                  @"message_format" : @"text"
                                   };
 
     [self sendMessageWithParameters:[self baseRoomPostParameters:parameters]];
@@ -88,9 +95,17 @@ static NSString *const HipChatNotificationNotifyKey = @"HipChatNotificationNotif
     NSString *message = NSLocalizedString(@"Testing HipChat notifications!",
                                           @"Hipchat testing message");
 
-    NSDictionary *parameters = @{ @"message" : message };
+    NSDictionary *parameters = @{ @"message" : message, @"message_format": @"text"};
 
     [self sendMessageWithParameters:[self baseRoomPostParameters:parameters]];
+}
+
+- (void)sendMessage:(NSString *)message title:(NSString *)title complete:(void (^)(NSError *))complete {
+    self.notificatonComplete = complete;
+    NSDictionary *parameters = @{ @"message" : message,
+                                  @"message_format": @"html"};
+    [self sendMessageWithParameters:[self baseRoomPostParameters:parameters]];
+
 }
 
 #pragma mark - Private

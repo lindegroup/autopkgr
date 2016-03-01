@@ -180,6 +180,7 @@ static NSArray *knownGitPaths()
     NSString *binary = [self binary];
     if (access(binary.UTF8String, X_OK) != 0) {
         reply(nil, [self gitErrorWithMessage:@"Could not locate the git binary, or it was not executable" repo:repoPath code:kLGGitErrorNotInstalled]);
+        return;
     }
 
     __block NSMutableData *outData = [[NSMutableData alloc] init];

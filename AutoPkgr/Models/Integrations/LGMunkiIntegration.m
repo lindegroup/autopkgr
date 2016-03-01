@@ -81,6 +81,10 @@ static NSString *const kLGMunkiimportDomain = @"com.googlecode.munki.munkiimport
     return NO;
 }
 
++ (NSString *)summaryResultKey {
+    return @"munki_importer_summary_result";
+}
+
 - (void)customInstallActions {
     // TODO: Possibly setup a basic folder structure for munki.
 }

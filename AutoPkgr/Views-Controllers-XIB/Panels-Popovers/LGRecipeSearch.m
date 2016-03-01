@@ -121,11 +121,6 @@
     }];
 }
 
-- (IBAction)closePanel:(id)sender
-{
-    [NSApp endSheet:self.window];
-}
-
 #pragma mark - Table View Delegate / Data Source
 - (NSInteger)numberOfRowsInTableView:(NSTableView *)tableView
 {

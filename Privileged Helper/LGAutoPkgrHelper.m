@@ -56,7 +56,7 @@ static dispatch_queue_t autopkgr_kc_access_synchronizer_queue()
     return dispatch_queue;
 }
 
-@interface LGAutoPkgrHelper () <HelperAgent, NSXPCListenerDelegate>
+@interface LGAutoPkgrHelper () <AutoPkgrHelperAgent, NSXPCListenerDelegate>
 @property (atomic, strong, readwrite) NSXPCListener *listener;
 @property (readonly) NSXPCConnection *connection;
 @property (weak) NSXPCConnection *relayConnection;
@@ -102,7 +102,7 @@ static dispatch_queue_t autopkgr_kc_access_synchronizer_queue()
     BOOL valid = [self newConnectionIsValid:newConnection];
 
     if (valid) {
-        NSXPCInterface *exportedInterface = [NSXPCInterface interfaceWithProtocol:@protocol(HelperAgent)];
+        NSXPCInterface *exportedInterface = [NSXPCInterface interfaceWithProtocol:@protocol(AutoPkgrHelperAgent)];
         newConnection.exportedInterface = exportedInterface;
         newConnection.exportedObject = self;
 
@@ -110,20 +110,22 @@ static dispatch_queue_t autopkgr_kc_access_synchronizer_queue()
         NSSet *acceptedClasses = [NSSet setWithObjects:[AHLaunchJobSchedule class],
                                                        [NSNumber class], nil];
 
-        [newConnection.exportedInterface setClasses:acceptedClasses forSelector:@selector(scheduleRun:user:program:authorization:reply:) argumentIndex:0 ofReply:NO];
+        [newConnection.exportedInterface setClasses:acceptedClasses
+                                        forSelector:@selector(scheduleRun:user:program:authorization:reply:)
+                                      argumentIndex:0 ofReply:NO];
 
         __weak typeof(newConnection) weakConnection = newConnection;
         // If all connections are invalidated on the remote side, shutdown the helper.
         newConnection.invalidationHandler = ^() {
-          if ([weakConnection isEqualTo:self.relayConnection] && _resign) {
-              _resign(YES);
-          }
+            if ([weakConnection isEqualTo:self.relayConnection] && _resign) {
+                _resign(YES);
+            }
 
-          [self.connections removeObject:weakConnection];
-          if (!self.connections.count) {
-              [self quitHelper:^(BOOL success){
-              }];
-          }
+            [self.connections removeObject:weakConnection];
+
+            if (self.connections.count == 0) {
+                [self quitHelper:^(BOOL success) {}];
+            }
         };
 
         [self.connections addObject:newConnection];
@@ -145,14 +147,13 @@ static dispatch_queue_t autopkgr_kc_access_synchronizer_queue()
 #pragma mark - Password
 - (void)getKeychainKey:(void (^)(NSString *, NSError *))reply
 {
-    dispatch_queue_t replyQueueu = dispatch_get_current_queue();
+    dispatch_queue_t replyQueue = dispatch_get_current_queue();
     NSXPCConnection *connection = self.connection;
 
     dispatch_sync(autopkgr_kc_access_synchronizer_queue(), ^{
-        // 10.8 has displayed instability on some systems when accessing the system keychain
-        // in rapid succession. So reluctantly we need to bypass direct calls to direct calls
-        // to the Security framewor in this method, and simply store the keyChain data in memory
-        // for the life of the helper.
+        // 10.8 has displayed instability on some systems when accessing the system keychain in
+        // rapid succession. So reluctantly we need to bypass direct calls to the Security framework
+        // in this method, and simply store the keyChain data in memory  for the life of the helper.
         // @note the getKeychain: call is still protected by codesign checking done when accepting new connecions so has "almost" the same level of security.
         if (floor(NSFoundationVersionNumber) < NSFoundationVersionNumber10_9) {
             if (_keyChainKey) {
@@ -194,18 +195,18 @@ static dispatch_queue_t autopkgr_kc_access_synchronizer_queue()
 
         // Attributes used to set permissions on the keyFile and it's parent directory.
         NSDictionary *const attributes = @{
-                                           NSFilePosixPermissions : [NSNumber numberWithShort:0700], // Owner read-write, others no access.
-                                           NSFileOwnerAccountID : @(0), // Root
-                                           NSFileGroupOwnerAccountID : @(0), // Wheel
-                                           };
+            NSFilePosixPermissions : [NSNumber numberWithShort:0700], // Owner read-write, others no access.
+            NSFileOwnerAccountID : @(0), // Root
+            NSFileGroupOwnerAccountID : @(0), // Wheel
+        };
 
         NSFileManager *manager = [NSFileManager defaultManager];
 
         encryptedKeyFile = [NSString stringWithFormat:@"%@/UID_%d", kLGEncryptedKeysParentDirectory, euid];
 
-        /*///////////////////////////////////////////////////////////////
-         //  Get the encryption password from the System.keychain       //
-         ///////////////////////////////////////////////////////////////*/
+        /////////////////////////////////////////////////////////////////
+        //  Get the encryption password from the System.keychain       //
+        /////////////////////////////////////////////////////////////////
         AHKeychainItem *item = [self commonDecryptionKeychainItem];
 
         BOOL newEncryptionPassword = NO;
@@ -260,9 +261,9 @@ static dispatch_queue_t autopkgr_kc_access_synchronizer_queue()
             }
         }
 
-        /*////////////////////////////////////////////////////////////////////
-         //   Decrypt the keyFile in a root protected space                  //
-         ////////////////////////////////////////////////////////////////////*/
+        //////////////////////////////////////////////////////////////////////
+        //   Decrypt the keyFile in a root protected space                  //
+        //////////////////////////////////////////////////////////////////////
         if (![manager fileExistsAtPath:encryptedKeyFile]) {
             // The keyFile does not exist, create one now.
 
@@ -298,32 +299,32 @@ static dispatch_queue_t autopkgr_kc_access_synchronizer_queue()
 
             // Read in the encrypted data of the keyFile.
             encryptedKeyFileData = [NSData dataWithContentsOfFile:encryptedKeyFile];
-            
+
             // Decrypt the data.
             passwordData = [RNDecryptor decryptData:encryptedKeyFileData
                                        withSettings:kRNCryptorAES256Settings
                                            password:encryptionPassword
                                               error:&error];
         }
-        
+
         // Reset the attributes of the file to root only access.
         if (![manager setAttributes:attributes ofItemAtPath:encryptedKeyFile error:nil]) {
             syslog(LOG_ALERT, "[ERROR] A problem was encountered updating keyFile's permissions.");
         }
-        
+
         if (passwordData) {
             // set the password as the data description.
             password = passwordData.description;
         }
-        
-    helper_reply:
+
+helper_reply:
         if (floor(NSFoundationVersionNumber) < NSFoundationVersionNumber10_9) {
             if (password) {
                 _keyChainKey = password;
             }
         }
 
-        dispatch_async(replyQueueu, ^{
+        dispatch_async(replyQueue, ^{
             syslog(LOG_ALERT, "Sending keychain key to AutoPkgr.");
             reply(password, error);
         });
@@ -346,8 +347,9 @@ static dispatch_queue_t autopkgr_kc_access_synchronizer_queue()
     // If authorization was successful continue,
     if (error == nil) {
         if ([self launchPathIsValid:program error:&error] &&
-            [self userIsValid:user error:&error]) {
-            
+            [self userIsValid:user
+                        error:&error]) {
+
             AHLaunchJob *job = [AHLaunchJob new];
             job.Program = program;
             job.Label = kLGAutoPkgrLaunchDaemonPlist;
@@ -364,7 +366,7 @@ static dispatch_queue_t autopkgr_kc_access_synchronizer_queue()
 
             /* Setting __CFPREFERENCES_AVOID_DAEMON helps preferences sync
              * between the background run managed by launchd and the main
-             * app running in a Acqua session. */
+             * app running in an Aqua session. */
             job.EnvironmentVariables = @{ @"__CFPREFERENCES_AVOID_DAEMON" : @"1" };
 
             if (jobIsRunning(job.Label, kAHGlobalLaunchDaemon)) {
@@ -382,10 +384,6 @@ static dispatch_queue_t autopkgr_kc_access_synchronizer_queue()
 - (void)removeScheduleWithAuthorization:(NSData *)authData reply:(void (^)(NSError *))reply
 {
     NSError *error = nil;
-
-    //    NSError *error = [LGAutoPkgrAuthorizer checkAuthorization:authData
-    //                                                      command:_cmd];
-
     if (!error) {
         [[AHLaunchCtl sharedController] remove:kLGAutoPkgrLaunchDaemonPlist fromDomain:kAHGlobalLaunchDaemon error:&error];
     }
@@ -398,16 +396,14 @@ static dispatch_queue_t autopkgr_kc_access_synchronizer_queue()
                  authorization:(NSData *)authData
                          reply:(void (^)(NSError *error))reply;
 {
-    NSError *error;
+    NSError *error = nil;
     NSXPCConnection *connection = self.connection;
 
-    error = [LGAutoPkgrAuthorizer checkAuthorization:authData command:_cmd];
-    if (error != nil) {
+    if ((error = [LGAutoPkgrAuthorizer checkAuthorization:authData command:_cmd])) {
         return reply(error);
     }
 
     connection.remoteObjectInterface = [NSXPCInterface interfaceWithProtocol:@protocol(LGProgressDelegate)];
-
     [connection.remoteObjectProxy bringAutoPkgrToFront];
 
     __block double progress = 75.00;
@@ -416,24 +412,27 @@ static dispatch_queue_t autopkgr_kc_access_synchronizer_queue()
     task.launchPath = @"/usr/sbin/installer";
     task.arguments = @[ @"-verbose", @"-pkg", path, @"-target", @"/" ];
 
-    task.standardOutput = [NSPipe pipe];
-    task.standardError = task.standardOutput;
+    NSPipe *pipe = [NSPipe pipe];
+    task.standardOutput = pipe;
+    task.standardError = pipe;
 
-    [[task.standardOutput fileHandleForReading] setReadabilityHandler:^(NSFileHandle *fh) {
-      NSData *data = fh.availableData;
-      if (data.length) {
-          progress++;
-          NSString *message = data.taskData_splitLines.firstObject;
-          if (message.length && ![message isEqualToString:@"#"]) {
-              [connection.remoteObjectProxy updateProgress:[message stringByReplacingOccurrencesOfString:@"installer: " withString:@""]
-                                                  progress:progress];
-          }
-      }
+    [[pipe fileHandleForReading] setReadabilityHandler:^(NSFileHandle *fh) {
+        NSData *data = fh.availableData;
+        if (data.length) {
+            progress++;
+            NSString *message = data.taskData_splitLines.firstObject;
+            if (message.length && ![message isEqualToString:@"#"]) {
+                message = [message stringByReplacingOccurrencesOfString:@"installer: " withString:@""];
+
+                [connection.remoteObjectProxy updateProgress:message
+                                                    progress:progress];
+            }
+        }
     }];
 
     [task setTerminationHandler:^(NSTask *endTask) {
-      NSError *error = [LGError errorFromTask:endTask];
-      reply(error);
+        NSError *error = [LGError errorFromTask:endTask];
+        reply(error);
     }];
 
     [task launch];
@@ -443,10 +442,8 @@ static dispatch_queue_t autopkgr_kc_access_synchronizer_queue()
 {
 
     NSError *error;
-    error = [LGAutoPkgrAuthorizer checkAuthorization:authData command:_cmd];
-    if (error != nil) {
-        reply(nil, nil, error);
-        return;
+    if ((error = [LGAutoPkgrAuthorizer checkAuthorization:authData command:_cmd])) {
+        return reply(nil, nil, error);
     }
 
     LGPackageRemover *remover = [[LGPackageRemover alloc] init];
@@ -455,9 +452,9 @@ static dispatch_queue_t autopkgr_kc_access_synchronizer_queue()
     [remover removePackagesWithIdentifiers:identifiers
                                   progress:^(NSString *message, double progress) {
 #if DEBUG
-                                    syslog(LOG_INFO, "[UNINSTALLER]: %s", message.UTF8String);
+                                      syslog(LOG_INFO, "[UNINSTALLER]: %s", message.UTF8String);
 #endif
-                                    // TODO: send progress updates
+                                      // TODO: send progress updates
                                   } reply:reply];
 }
 
@@ -466,18 +463,17 @@ static dispatch_queue_t autopkgr_kc_access_synchronizer_queue()
 {
     // This will cause the run-loop to exit. You should call it
     // from the main app during applicationShouldTerminate:.
-    for (NSXPCConnection *connection in self.connections) {
-        [connection invalidate];
-    }
-
     if (_resign) {
         _resign(YES);
     }
 
+    for (NSXPCConnection *connection in self.connections) {
+        [connection invalidate];
+    }
     [self.connections removeAllObjects];
 
     self.helperToolShouldQuit = YES;
-    reply(YES);
+    reply(!self.connection);
 }
 
 - (void)uninstall:(NSData *)authData reply:(void (^)(NSError *))reply;
@@ -522,7 +518,7 @@ static dispatch_queue_t autopkgr_kc_access_synchronizer_queue()
                                                                     self.connection.effectiveUserIdentifier];
             if (keyFiles.count == 1) {
                 /* If the count is 1 there's only one user
-                 * remove the whole directory & common encryption key */
+                   remove the whole directory & common encryption key */
                 if ([manager fileExistsAtPath:encryptedKeyFile]) {
                     if ([manager removeItemAtPath:kLGEncryptedKeysParentDirectory error:nil]) {
                         /* Remove keychain item. */
@@ -531,17 +527,18 @@ static dispatch_queue_t autopkgr_kc_access_synchronizer_queue()
                     }
                 }
             } else {
-                /* More than one user encryptedKeyFile exists. Just remove the current user's */
+                /* More than one user encryptedKeyFile exists. 
+                   Just remove the current user's */
                 [manager removeItemAtPath:encryptedKeyFile error:&error];
             }
         }
     }
 
-    /*////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////
     //   Remove Integrations                                            //
-    ////////////////////////////////////////////////////////////////////*/
-    // TODO: remove selected packages...
+    //////////////////////////////////////////////////////////////////////
 
+    // TODO: remove selected packages...
     reply(error);
 }
 
@@ -597,14 +594,15 @@ static dispatch_queue_t autopkgr_kc_access_synchronizer_queue()
     BOOL launchPathIsValid = [selfCS signingInformationMatches:remoteCS];
     if (!launchPathIsValid) {
         if (error) {
-            NSString *suggestionFormat = NSLocalizedString( @"The code signature of the AutoPkgr executable was not valid or did not match the registry. The offending application's code signing credentials are %@ for the binary located at %@.", nil);
+            NSString *suggestionFormat = NSLocalizedString(@"The code signature of the AutoPkgr executable was not valid or did not match the registry. The offending application's code signing credentials are %@ for the binary located at %@.", nil);
 
             NSString *recoverySuggestion = [NSString stringWithFormat:suggestionFormat, remoteCS.description, path];
 
             NSDictionary *errorDict = @{ NSLocalizedDescriptionKey : @"Invalid binary for a scheduled run.",
-                                         NSLocalizedRecoverySuggestionErrorKey :  recoverySuggestion};
+                                         NSLocalizedRecoverySuggestionErrorKey : recoverySuggestion };
             *error = [NSError errorWithDomain:kLGApplicationName code:1 userInfo:errorDict];
-        }    }
+        }
+    }
 
     return launchPathIsValid;
 }
@@ -620,7 +618,7 @@ static dispatch_queue_t autopkgr_kc_access_synchronizer_queue()
     NSString *effectiveUserName = [NSString stringWithUTF8String:pw->pw_name];
     NSString *ghPrefs = [NSString stringWithFormat:@"%s/Library/Preferences/com.github.autopkg.plist", pw->pw_dir];
 
-    if ( [user isEqualToString:effectiveUserName] && access(ghPrefs.UTF8String, F_OK) == 0) {
+    if ([user isEqualToString:effectiveUserName] && access(ghPrefs.UTF8String, F_OK) == 0) {
         return YES;
     } else {
         if (error) {

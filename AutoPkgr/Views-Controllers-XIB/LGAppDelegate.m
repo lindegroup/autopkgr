@@ -81,13 +81,10 @@
     }
 
     // Register to get background progress updates...
-    LGAutoPkgrHelperConnection *backgroundMonitor = [LGAutoPkgrHelperConnection new];
+    LGAutoPkgrHelperConnection *backgroundMonitor = [[LGAutoPkgrHelperConnection alloc] initWithProgressDelegate:self];
 
-    [backgroundMonitor connectToHelper];
-    backgroundMonitor.connection.exportedObject = self;
-    backgroundMonitor.connection.exportedInterface = [NSXPCInterface interfaceWithProtocol:@protocol(LGProgressDelegate)];
 
-    [[backgroundMonitor.connection remoteObjectProxy] registerMainApplication:^(BOOL resign) {
+    [backgroundMonitor.remoteObjectProxy registerMainApplication:^(BOOL resign) {
         DLog(@"No longer monitoring scheduled autopkg run");
     }];
 
@@ -132,16 +129,14 @@
 - (NSApplicationTerminateReply)applicationShouldTerminate:(NSApplication *)sender
 {
     if (jobIsRunning(kLGAutoPkgrHelperToolName, kAHGlobalLaunchDaemon)) {
-        LGAutoPkgrHelperConnection *helper = [LGAutoPkgrHelperConnection new];
-        [helper connectToHelper];
-
+        LGAutoPkgrHelperConnection *helperConnection = [LGAutoPkgrHelperConnection new];
         DLog(@"Sending quit signal to helper tool...");
-        [[helper.connection remoteObjectProxyWithErrorHandler:^(NSError *error) {
-            [[NSApplication sharedApplication] replyToApplicationShouldTerminate:YES];
-        }] quitHelper:^(BOOL success) {
+
+        [helperConnection connectionError:^(NSError *error) {
             [[NSApplication sharedApplication] replyToApplicationShouldTerminate:YES];
         }];
-
+    
+        [helperConnection.remoteObjectProxy quitHelper:^(BOOL success){}];
         return NSTerminateLater;
     }
     return NSTerminateNow;

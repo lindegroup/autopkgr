@@ -6,9 +6,12 @@ AutoPkgr = ["AutoPkgr", "AutoPkgrTests"]
 AutoPkgr.each { |t|
     target t do
         pod 'AFNetworking', '~> 2.5.4'
-        pod 'Sparkle', '1.8'
+        pod 'Sparkle', '~> 1.13.1'
         pod 'XMLDictionary', '~> 1.4'
         pod 'mailcore2-osx', '~> 0.5'
+        pod 'GRMustache', '~> 7.3.2'
+        pod 'ACEView', '~> 0.0.5'
+        pod 'MMMarkdown', '~> 0.5.1'
         pod 'AHProxySettings', '~> 0.1.1'
         pod 'AHKeychain', '~> 0.2.1'
         pod 'AHLaunchCtl', :git => 'https://github.com/eahrold/AHLaunchCtl.git'

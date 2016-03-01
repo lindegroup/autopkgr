@@ -81,6 +81,12 @@
 /* Generic error during port testing (NSLocalizedRecoverySuggestionErrorKey) */
 "kLGErrorTestingPortSuggestion" = "Please verify server and port are correct.";
 
+/* Error accessing the recipe list file. */
+"kLGErrorRecipeListFileAccessSuggestion" = "There was a problem accessing the recipe list file";
+
+/* Error accessing the recipe list file. (NSLocalizedRecoverySuggestionErrorKey) */
+"kLGErrorRecipeListFileAccessDescription" = "Please check premissions on the ~/Library/Application Support/AutoPkg/";
+
 /* Unknown error */
 "kLGErrorUnknownDescription" = "An unknown error occurred.";
 

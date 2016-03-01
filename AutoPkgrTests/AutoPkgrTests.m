@@ -24,10 +24,12 @@
 #import "LGAutoPkgr.h"
 #import "LGIntegrationManager.h"
 #import "LGJSSImporterIntegration.h"
+#import "LGJSSDistributionPoint.h"
 
 #import "LGAutoPkgTask.h"
 #import "LGAutoPkgReport.h"
 #import "LGAutoPkgErrorHandler.h"
+#import "LGAutoPkgRecipeListManager.h"
 
 #import "LGPasswords.h"
 #import "LGServerCredentials.h"
@@ -62,12 +64,50 @@ static const BOOL _TEST_PRIVILEGED_HELPER = YES;
 
 
 #pragma mark - LGAutoPkgTask
+- (void)testDP
+{
+
+    LGJSSImporterDefaults *defaults  = [[LGJSSImporterDefaults alloc] init];
+    NSArray *arr = [LGJSSDistributionPoint enabledDistributionPoints];
+
+    [arr enumerateObjectsUsingBlock:^(LGJSSDistributionPoint *obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        [obj remove];
+    }];
+    NSLog(@"%@", defaults.JSSRepos);
+
+    [arr enumerateObjectsUsingBlock:^(LGJSSDistributionPoint *obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        [obj save];
+    }];
+
+    NSLog(@"%@", defaults.JSSRepos);
+}
+
 - (void)testSyncMethods
 {
     XCTAssertNotNil([LGAutoPkgTask repoList], @"Failed test");
     XCTAssertNotNil([LGAutoPkgTask listProcessors], @"Failed test");
     XCTAssertNotNil([LGAutoPkgTask listRecipes], @"Failed test");
     XCTAssertNotNil([LGAutoPkgTask processorInfo:@"Installer"], @"Failed test");
+}
+
+- (void)testRecipeLists {
+    LGAutoPkgRecipeListManager *listManager = [[LGAutoPkgRecipeListManager alloc] init];
+    NSString *newList = @"bilbo";
+
+    NSLog(@"%@", listManager.currentListName);
+    NSLog(@"%@", listManager.currentListPath);
+    listManager.currentListName = newList;
+
+
+    NSLog(@"%@", listManager.currentListName);
+
+    [listManager addRecipeList:newList error:nil];
+    listManager.currentListName = newList;
+
+    NSLog(newList, listManager.currentListName);
+    NSLog(@"%@", listManager.recipeLists);
+
+    [listManager removeRecipeList:newList error:nil];
 }
 
 #pragma mark - LGIntegrations
@@ -289,10 +329,10 @@ static const BOOL _TEST_PRIVILEGED_HELPER = YES;
     [self runReportTestWithResourceNamed:@"report_0.4.3" flags:kLGReportItemsAll];
 }
 
-- (void)test0_4_3_reportLimited
-{
-    [self runReportTestWithResourceNamed:@"report_0.4.3" flags:kLGReportItemsJSSImports | kLGReportItemsNewInstalls];
-}
+//- (void)test0_4_3_reportLimited
+//{
+//    [self runReportTestWithResourceNamed:@"report_0.4.3" flags:kLGReportItemsJSSImports | kLGReportItemsNewInstalls];
+//}
 
 - (void)test_report_none
 {
@@ -326,13 +366,22 @@ static const BOOL _TEST_PRIVILEGED_HELPER = YES;
         [[NSFileManager defaultManager] removeItemAtPath:htmlFile error:nil];
     }
 
-
     LGAutoPkgReport *report = [[LGAutoPkgReport alloc] initWithReportDictionary:dict];
     report.error = [self reportError];
 
     report.reportedItemFlags = flags;
+    //    [report.emailMessageString writeToFile:htmlFile atomically:YES encoding:NSUTF8StringEncoding error:nil];
 
-    [report.emailMessageString writeToFile:htmlFile atomically:YES encoding:NSUTF8StringEncoding error:nil];
+    NSDictionary *d = report.templateData;
+
+    if(![d writeToFile:@"/tmp/example_data.plist" atomically:YES]){
+        NSLog(@"error writing %@", d);
+    }
+
+    NSBundle *bundle = [NSBundle bundleForClass:[self class]];
+    NSString *template = [bundle pathForResource:@"report" ofType:@"html"];
+    
+    [[report renderWithTemplate:template error:nil] writeToFile:htmlFile atomically:YES encoding:NSUTF8StringEncoding error:nil];
 
     [[NSWorkspace sharedWorkspace] openFile:htmlFile];
 }
@@ -342,12 +391,10 @@ static const BOOL _TEST_PRIVILEGED_HELPER = YES;
     NSString *htmlFile = @"/tmp/report.html";
     NSBundle *bundle = [NSBundle bundleForClass:[self class]];
 
-    NSString *reportFile = [bundle pathForResource:@"report_0.4.2" ofType:@"plist"];
-    //        NSString *reportFile = [bundle pathForResource:@"report_0.4.3" ofType:@"plist"];
+//    NSString *reportFile = [bundle pathForResource:@"report_0.4.2" ofType:@"plist"];
+    NSString *reportFile = [bundle pathForResource:@"report_0.4.3" ofType:@"plist"];
 
     NSDictionary *reportDict = [NSDictionary dictionaryWithContentsOfFile:reportFile];
-
-
 
     LGAutoPkgReport *report = [[LGAutoPkgReport alloc] initWithReportDictionary:reportDict];
     report.error = [self reportError];
@@ -356,9 +403,10 @@ static const BOOL _TEST_PRIVILEGED_HELPER = YES;
 
     report.reportedItemFlags = kLGReportItemsAll;
 
-    [report.emailMessageString writeToFile:htmlFile atomically:YES encoding:NSUTF8StringEncoding error:nil];
+//    [report.emailMessageString writeToFile:htmlFile atomically:YES encoding:NSUTF8StringEncoding error:nil];
 
-    NSLog(@"%@", report.webChannelMessageString);
+    NSString *template = [bundle pathForResource:@"report" ofType:@"html"];
+    [[report renderWithTemplate:template error:nil] writeToFile:htmlFile atomically:YES encoding:NSUTF8StringEncoding error:nil];
 
     [[NSWorkspace sharedWorkspace] openFile:htmlFile];
 }
@@ -374,9 +422,10 @@ static const BOOL _TEST_PRIVILEGED_HELPER = YES;
     LGAutoPkgReport *report = [[LGAutoPkgReport alloc] initWithReportDictionary:reportDict];
     report.reportedItemFlags = kLGReportItemsAll;
 
-    [report.emailMessageString writeToFile:htmlFile atomically:YES encoding:NSUTF8StringEncoding error:nil];
+    NSString *htmlTemplate = [NSString stringWithContentsOfFile:[bundle pathForResource:@"report" ofType:@"html"] encoding:NSUTF8StringEncoding error:nil];
 
-    NSLog(@"%@", report.webChannelMessageString);
+    NSString *renderedHtml = [report renderWithTemplate:htmlTemplate error:nil];
+    [renderedHtml writeToFile:htmlFile atomically:YES encoding:NSUTF8StringEncoding error:nil];
 
     [[NSWorkspace sharedWorkspace] openFile:htmlFile];
 }

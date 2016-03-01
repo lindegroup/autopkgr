@@ -46,7 +46,7 @@ NSString *launchAgentFilePath()
 + (void)startAutoPkgSchedule:(BOOL)start scheduleOrInterval:(id)scheduleOrInterval isForced:(BOOL)forced reply:(void (^)(NSError *error))reply
 {
     BOOL scheduleIsRunning = jobIsRunning(kLGAutoPkgrLaunchDaemonPlist, kAHGlobalLaunchDaemon);
-    
+
     BOOL scheduleIsNumber = [scheduleOrInterval isKindOfClass:[NSNumber class]];
 
     if (start && scheduleIsNumber && ([scheduleOrInterval integerValue] == 0)) {
@@ -58,13 +58,13 @@ NSString *launchAgentFilePath()
     NSData *authorization = [LGAutoPkgrAuthorizer authorizeHelper];
     assert(authorization != nil);
 
-    LGAutoPkgrHelperConnection *helper = [LGAutoPkgrHelperConnection new];
-    [helper connectToHelper];
-
+    LGAutoPkgrHelperConnection *helperConnection = [[LGAutoPkgrHelperConnection alloc] init ];
     /* Check for two conditions, first that start was the desired action
      * And second that either the schedule is not running or we want to 
      * force a reload of the schedule such as when the interval is changed
      */
+    [helperConnection connectionError:reply];
+
     if (start && (!scheduleIsRunning || forced)) {
 
         if (scheduleIsNumber) {
@@ -74,38 +74,37 @@ NSString *launchAgentFilePath()
 
         NSString *program = [[NSProcessInfo processInfo] arguments].firstObject;
 
-        [[helper.connection remoteObjectProxyWithErrorHandler:^(NSError *error) {
-            NSLog(@"[%@] %@ ",[self class], error);
-            reply(error);
-        }] scheduleRun:scheduleOrInterval
-                     user:NSUserName()
-                  program:program
-            authorization:authorization
-                    reply:^(NSError *error) {
-                        if (!error && scheduleIsNumber) {
-                            NSDate *date = [NSDate dateWithTimeIntervalSinceNow:[scheduleOrInterval integerValue]];
-                            NSDateFormatter *fomatter = [NSDateFormatter new];
-                            [fomatter setDateStyle:NSDateFormatterShortStyle];
-                            [fomatter setTimeStyle:NSDateFormatterShortStyle];
-                            NSLog(@"Next scheduled AutoPkg run will occur at %@",[fomatter stringFromDate:date]);
-                        }
+
+        [helperConnection.remoteObjectProxy
+                scheduleRun:scheduleOrInterval
+                       user:NSUserName()
+                    program:program
+              authorization:authorization
+                      reply:^(NSError *error) {
+                          if (!error && scheduleIsNumber) {
+                              NSDate *date = [NSDate dateWithTimeIntervalSinceNow:[scheduleOrInterval integerValue]];
+                              NSDateFormatter *fomatter = [NSDateFormatter new];
+                              [fomatter setDateStyle:NSDateFormatterShortStyle];
+                              [fomatter setTimeStyle:NSDateFormatterShortStyle];
+                              NSLog(@"Next scheduled AutoPkg run will occur at %@", [fomatter stringFromDate:date]);
+                          }
+                          [[NSApplication sharedApplication] activateIgnoringOtherApps:YES];
+                          reply(error);
+                          [helperConnection closeConnection];
+                }];
+    } else if (scheduleIsRunning) {
+        [helperConnection.remoteObjectProxy removeScheduleWithAuthorization:authorization
+                reply:^(NSError *error) {
                         [[NSApplication sharedApplication] activateIgnoringOtherApps:YES];
                         reply(error);
-                    }];
-    } else if (scheduleIsRunning) {
-        [[helper.connection remoteObjectProxyWithErrorHandler:^(NSError *error) {
-            reply(error);
-        }] removeScheduleWithAuthorization:authorization
-                                      reply:^(NSError *error) {
-                                          [[NSApplication sharedApplication] activateIgnoringOtherApps:YES];
-                                        reply(error);
-                                      }];
+                        [helperConnection closeConnection];
+                }];
     } else {
         reply(nil);
     }
 }
 
-+ (BOOL)updateAppsIsScheduled:(id __autoreleasing*)scheduleInterval
++ (BOOL)updateAppsIsScheduled:(id __autoreleasing *)scheduleInterval
 {
     AHLaunchJob *job = nil;
     if ((job = [AHLaunchCtl jobFromFileNamed:kLGAutoPkgrLaunchDaemonPlist inDomain:kAHGlobalLaunchDaemon])) {

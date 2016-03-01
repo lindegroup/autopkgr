@@ -85,6 +85,10 @@
     return @[ @"com.github.package.identifier" ];
 }
 
++ (NSString *)summaryResultKey {
+    // This is the key the processor uses to populate the report-plist
+    return @"your_processor_summary_result";
+}
 #pragma mark - Instance overrides
 - (NSString *)installedVersion
 {

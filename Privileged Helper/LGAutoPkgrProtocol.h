@@ -31,7 +31,7 @@ typedef NS_ENUM(NSInteger, LGBackgroundTaskProgressState) {
 
 typedef void (^uninstallPackageReplyBlock)(NSArray *removed, NSArray *remain, NSError *error);
 
-@protocol HelperAgent <NSObject>
+@protocol AutoPkgrHelperAgent <NSObject>
 
 # pragma mark - Password / KeyFile
 - (void)getKeychainKey:(void (^)(NSString *key, NSError *error))reply;

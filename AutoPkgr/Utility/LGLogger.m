@@ -31,6 +31,23 @@ NSString *quick_formatString(NSString *format, ...){
     return string ?: format;
 }
 
+NSString *quick_pathJoin(NSArray *components){
+    if (components.count) {
+        NSMutableString *path = [[NSMutableString alloc] init];
+        [components enumerateObjectsUsingBlock:^(NSString* obj, NSUInteger idx, BOOL *stop) {
+            if(obj.length){
+                if(![[obj substringToIndex:0] isEqualToString:@"/"]){
+                    [path appendString:@"/"];
+                }
+                [path appendString:obj];
+            }
+        }];
+        return path.copy;
+    }
+    return nil;
+}
+
+
 // Debug Logging Method
 void DLog(NSString *format, ...)
 {

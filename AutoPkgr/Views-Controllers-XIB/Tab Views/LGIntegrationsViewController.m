@@ -18,15 +18,17 @@
 //  limitations under the License.
 //
 
-#import "LGIntegrationsViewController.h"
-#import "LGIntegrationManager.h"
-#import "LGAutoPkgIntegrationView.h"
-#import "LGGitIntegrationView.h"
-#import "LGJSSImporterIntegrationView.h"
-#import "LGMunkiIntegrationView.h"
 #import "LGAbsoluteManageIntegrationView.h"
-#import "LGMacPatchIntegrationView.h"
+#import "LGAutoPkgIntegrationView.h"
+#import "LGFileWaveIntegrationView.h"
+#import "LGGitIntegrationView.h"
+#import "LGIntegrationManager.h"
 #import "LGIntegrationWindowController.h"
+#import "LGIntegrationsViewController.h"
+#import "LGJSSImporterIntegrationView.h"
+#import "LGLANrevIntegrationView.h"
+#import "LGMacPatchIntegrationView.h"
+#import "LGMunkiIntegrationView.h"
 #import "LGTableCellViews.h"
 
 #import "NSOpenPanel+typeChooser.h"
@@ -121,11 +123,11 @@
 
         statusCell.configureButton.target = integration;
         statusCell.configureButton.tag = row;
+        statusCell.configureButton.enabled = NO;
 
         /* Set the name of the identifier's cooresponding view class as the identifier
          * in the `- config:` method this is used to create an instance of the viewClass */
         statusCell.configureButton.identifier = [[integration className] stringByAppendingString:@"View"];
-        statusCell.configureButton.enabled = statusCell.configureButton.identifier != nil;
 
         statusCell.configureButton.title = quick_formatString(@"%@ %@",
                                                               NSLocalizedString(@"Install", nil),
@@ -147,6 +149,8 @@
 
             statusCell.configureButton.title = info.configureButtonTitle;
             statusCell.configureButton.action = info.configureButtonTargetAction;
+            statusCell.configureButton.enabled = YES;
+
             if (info.status != kLGIntegrationNotInstalled) {
                 statusCell.configureButton.target = self;
             } else {

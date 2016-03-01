@@ -56,26 +56,38 @@ static NSString *const SlacksNotificationsEnabledKey = @"SlackNotificationsEnabl
     return [NSURL URLWithString:SlackLink];
 }
 
++ (BOOL)templateIsFile
+{
+    return NO;
+}
+
++ (NSString *)defaultTemplate
+{
+    return [self templateWithName:@"slack_report" type:@"md"];
+}
+
++ (ACEMode)tempateFormat {
+    return ACEModeMarkdown;
+}
+
 #pragma mark - Send
 - (void)send:(void (^)(NSError *))complete
 {
-    if (complete && !self.notificatonComplete) {
-        self.notificatonComplete = complete;
-    }
-
-    NSDictionary *slackParameters = @{ @"text" :  self.report.webChannelMessageString };
-    [self sendMessageWithParameters:slackParameters];
+    NSString *message = [self.report renderWithTemplate:[[self class] reportTemplate] error:nil];
+    [self sendMessage:message title:nil complete:complete];
 }
 
 - (void)sendTest:(void (^)(NSError *))complete
 {
+    [self sendMessage:NSLocalizedString(@"You are now set up to receive notifications on your Slack channel!", nil) title:nil complete:complete];
+}
+
+- (void)sendMessage:(NSString *)message title:(NSString *)title complete:(void (^)(NSError *))complete
+{
     if (complete && !self.notificatonComplete) {
         self.notificatonComplete = complete;
     }
-
-    NSDictionary *testParameters = @{ @"text" : NSLocalizedString(@"You are now set up to receive notifications on your Slack channel!", nil) };
-
-    [self sendMessageWithParameters:testParameters];
+    [self sendMessageWithParameters:@{ @"text" : message }];
 }
 
 #pragma mark - Private
@@ -116,12 +128,15 @@ static NSString *const SlacksNotificationsEnabledKey = @"SlackNotificationsEnabl
         if (error) {
             self.notificatonComplete(error);
         } else {
-            [manager POST:webHookURL parameters:[self baseParameters:parameters] success:^(AFHTTPRequestOperation *operation, id responseObject) {
-                self.notificatonComplete(nil);
-            } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                NSLog(@"Error sending Slack notification: %@", operation.responseString);
-                self.notificatonComplete([LGError errorWithResponse:operation.response]);
-            }];
+            [manager POST:webHookURL
+                parameters:[self baseParameters:parameters]
+                success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                    self.notificatonComplete(nil);
+                }
+                failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                    NSLog(@"Error sending Slack notification: %@", operation.responseString);
+                    self.notificatonComplete([LGError errorWithResponse:operation.response]);
+                }];
         }
     }];
 }

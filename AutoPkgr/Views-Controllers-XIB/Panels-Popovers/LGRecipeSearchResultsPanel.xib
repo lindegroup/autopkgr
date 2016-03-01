@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="7706" systemVersion="14E46" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="9059" systemVersion="14F27" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="7706"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="9059"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="LGRecipeSearch">
@@ -124,7 +124,7 @@ DQ
 </string>
                         </buttonCell>
                         <connections>
-                            <action selector="addRecipeAndRepo:" target="-2" id="1F6-ya-zk6"/>
+                            <action selector="addRecipeAndRepo:" target="-2" id="wOK-YX-qQY"/>
                         </connections>
                     </button>
                     <progressIndicator horizontalHuggingPriority="750" verticalHuggingPriority="750" maxValue="100" displayedWhenStopped="NO" bezeled="NO" indeterminate="YES" controlSize="small" style="spinning" translatesAutoresizingMaskIntoConstraints="NO" id="HB6-k0-YL0">
@@ -143,7 +143,7 @@ Gw
 </string>
                         </buttonCell>
                         <connections>
-                            <action selector="closePanel:" target="-2" id="efx-N4-DL4"/>
+                            <action selector="closeSheet:" target="-2" id="eLb-2T-6Va"/>
                         </connections>
                     </button>
                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="spL-Ab-OCc">

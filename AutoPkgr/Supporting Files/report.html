@@ -1,0 +1,248 @@
+<html>
+    <head>
+        <style>
+            * {
+                font-family: "Helvetica Neue", Helvetica, sans-serif;
+                font-size: 11pt;
+            }
+
+        a {
+            color: #157463;
+            text-decoration: underline;
+        }
+
+        a:hover {
+            color: #0d332a;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0 5px 5px 0;
+            margin: 0;
+            margin-left: 50px;
+        }
+
+        h3 {
+            padding: 0 5px 5px 0;
+            font-weight: bold;
+        }
+
+        h4 {
+            font-size: 9pt;
+            text-align: center;
+            margin: 30px 0;
+        }
+
+        p {
+            padding: 0 5px 5px 0;
+        }
+
+        table {
+            margin-left: 50px;
+        }
+
+        td, th {
+            padding: 0 15px 5px 0;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        th {
+            color: #acacac;
+            font-size: 0.85em;
+            font-weight: normal;
+            text-transform: uppercase;
+        }
+
+        .status, .pkgname {
+            font-weight: bold;
+        }
+
+        .indented {
+            margin-left: 50px;
+        }
+
+        .footer {
+
+        }
+        </style>
+    </head>
+    <body>
+        <!-- Upated Applications -->
+        {{# updated_applications.count }}
+        <H3>New software was downloaded:</H3>
+        <table>
+            <tr><th>name</th><th>version</th></tr>
+            {{# updated_applications }}
+            <tr><td class='pkgname'>{{ name }}</td><td>{{ version }}</td></tr>
+            {{/ updated_applications }}
+        </table>
+        {{/ updated_applications.count }}
+
+        <!-- Integration Updates -->
+        {{# integration_updates.count }}
+        <H3>Update to core components available: </H3>
+        <ul>
+            {{# integration_updates }}
+            <li>{{ . }}</li>
+            {{/ integration_updates }}
+        </ul>
+        <br/><br/>
+        {{/ integration_updates.count }}
+        <!-- Failures -->
+        {{# failures.count }}
+        <H3>The following failures occurred:</H3>
+        <table>
+            <tr><th>recipe</th><th>message</th></tr>
+            {{# failures }}
+            <tr><td>{{ recipe }}</td><td>{{ message }}</td></tr>
+            {{/ failures }}
+        </table>
+        {{/ failures.count }}
+
+        <!-- Errors -->
+        {{# error }}
+        <H3>The following errors occurred: </H3>
+        <ul>
+            <li>{{ error.suggestion }}</li>
+        </ul>
+        {{/ error }}
+
+        {{# has_summary_results }}
+        {{# notes }}
+        <!--
+         Notes about summary results:
+         Most known _summary_results have been popped out of the raw autopkg report.plist dictionary and cleaned.
+         For example, if the actual report.plist was passed in, to access the URLDownloader processor results you
+         would need to access the data_rows like this
+         With them popped you can access the same data like this
+
+         That being said, the full report IS additionally passed in so, if your template needs access to a key not
+         being sanitized by autopkgr, you can access that using the above `summary_result.xyz_summary_result..` syntax.
+         -->
+        {{/ notes }}
+
+
+        <!-- Downloads -->
+        {{# url_downloader.data_rows.count }}
+        <H3>{{ url_downloader.summary_text }}</H3>
+        <ul>
+            {{# url_downloader.data_rows }}
+            <li>{{ download_path }}</li>
+            {{/ url_downloader.data_rows }}
+        </ul>
+        {{/ url_downloader.data_rows.count }}
+
+        <!-- DMG Installer -->
+        {{# install_from_dmg.data_rows.count }}
+        <H3>{{ install_from_dmg.summary_text }}</H3>
+        <ul>
+            {{# install_from_dmg.data_rows }}
+            <li>{{ dmg_path }}</li>
+            {{/ install_from_dmg.data_rows }}
+        </ul>
+        {{/ install_from_dmg.data_rows.count }}
+
+        <!-- Pkg Installer -->
+        {{# installer.data_rows.count }}
+        <H3>{{ installer.summary_text }}</H3>
+        <ul>
+            {{# installer.data_rows }}
+            <li>{{ pkg_path }}</li>
+            {{/ installer.data_rows }}
+        </ul>
+        {{/ installer.data_rows.count }}
+
+        <!-- Pkg Copied -->
+        {{# pkg_copier.data_rows.count }}
+        <H3>{{ pkg_copier.summary_text }}</H3>
+        <ul>
+            {{# pkg_copier.data_rows }}
+            <li>{{ pkg_path }}</li>
+            {{/ pkg_copier.data_rows }}
+        </ul>
+        {{/ pkg_copier.data_rows.count }}
+
+        <!-- Package Creator -->
+        {{# pkg_creator.data_rows.count }}
+        <H3>{{ pkg_creator.summary_text }}</H3>
+        <table>
+            <tr><th>identifier</th><th>version</th><th>pkg_path</th></tr>
+            {{# pkg_creator.data_rows }}
+            <tr><td>{{ identifier }}</td><td>{{ version }}</td><td>{{ pkg_path }}</td></tr>
+            {{/ pkg_creator.data_rows }}
+        </table>
+        {{/ pkg_creator.data_rows.count }}
+
+        <!-- MunkiImporter -->
+        {{# munki_importer.data_rows.count }}
+        <H3>{{ munki_importer.summary_text }}</H3>
+        <table>
+            <tr><th>Name</th><th>Version</th><th>Catalog</th><th>Pkginfo Path</th><th>Pkg Repo Path</th></tr>
+            {{# munki_importer.data_rows }}
+            <tr><td>{{ name }}</td><td>{{ version }}</td><td>{{ catalogs }}</td><td>{{ pkginfo_path }} </td><td>{{ pkg_repo_path }}</td></tr>
+            {{/ munki_importer.data_rows }}
+        </table>
+        {{/ munki_importer.data_rows.count }}
+
+        <!-- JSSImporter -->
+        <!-- "report_fields": ["Package", "Categories", "Groups", "Scripts", "Extension Attributes", "Policy", "Icon"] -->
+        {{# jss_importer.data_rows.count }}
+        <H3>{{ jss_importer.summary_text }}</H3>
+        <ul>
+            {{# jss_importer.data_rows }}
+            <li>{{ Package }}</li>
+            {{/ jss_importer.data_rows }}
+        </ul>
+        {{/ jss_importer.data_rows.count }}
+
+        <!-- Filewave -->
+        <!-- 'report_fields': ['fw_fileset_id', 'fw_fileset_group', 'fw_fileset_name'] -->
+        {{# filewave.data_rows.count }}
+        <H3>{{ filewave.summary_text }}</H3>
+        <ul>
+            {{# filewave.data_rows }}
+            <li>{{ fw_fileset_name }}</li>
+            {{/ filewave.data_rows }}
+        </ul>
+        {{/ filewave.data_rows.count }}
+
+        <!-- AbsoluteManage -->
+        <!-- 'report_fields': ['server', 'package', 'id' ] -->
+        {{# absolute_manage_export.data_rows.count }}
+        <H3>{{ absolute_manage_export.summary_text }}</H3>
+        <ul>
+            {{# absolute_manage_export.data_rows }}
+            <li>{{ Package }}</li>
+            {{/ absolute_manage_export.data_rows }}
+        </ul>
+        {{/ absolute_manage_export.data_rows.count }}
+
+        <!-- LANrev -->
+        <!-- 'report_fields': ['server', 'package', 'id' ] -->
+        {{# lanrev_importer.data_rows.count }}
+        <H3>{{ lanrev_importer.summary_text }}</H3>
+        <ul>
+            {{# lanrev_importer.data_rows }}
+            <li>{{ Package }}</li>
+            {{/ lanrev_importer.data_rows }}
+        </ul>
+        {{/ lanrev_importer.data_rows.count }}
+
+        <!-- Mac Patch -->
+        <!-- 'report_fields': ['bundle_id', 'name', 'version', 'puuid'] -->
+        {{# macpatch_importer.data_rows.count }}
+        <H3>{{ macpatch_importer.summary_text }}</H3>
+        <ul>
+            {{# macpatch_importer.data_rows }}
+            <li>{{ name }} Version: {{ version}}</li>
+            {{/ macpatch_importer.data_rows }}
+        </ul>
+        {{/ macpatch_importer.data_rows.count }}
+
+        <!-- End summary results-->
+        {{/ has_summary_results }}
+
+        <H4>This report was generated by <a href='http://www.lindegroup.com/autopkgr'>AutoPkgr</a></H4>
+    </body>
+</html>

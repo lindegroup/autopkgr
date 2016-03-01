@@ -22,6 +22,7 @@
 
 // Shorter NSString stringWithFormat:
 NSString *quick_formatString(NSString *format, ...)NS_FORMAT_FUNCTION(1, 2);
+NSString *quick_pathJoin(NSArray *components);
 
 //
 void DLog(NSString *format, ...) NS_FORMAT_FUNCTION(1, 2);

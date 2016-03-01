@@ -225,13 +225,15 @@ NSString *appKeychainPath()
 + (void)getKeychainKey:(void (^)(NSString *, NSError *))reply
 {
     [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-        LGAutoPkgrHelperConnection *helper = [LGAutoPkgrHelperConnection new];
-        [helper connectToHelper];
+        LGAutoPkgrHelperConnection *helperConnection = [[LGAutoPkgrHelperConnection alloc] init];
 
-        [[helper.connection remoteObjectProxyWithErrorHandler:^(NSError *error) {
+        [helperConnection connectionError:^(NSError *error) {
             reply(nil, error);
-        }] getKeychainKey:^(NSString *key, NSError *error) {
+        }];
+
+        [helperConnection.remoteObjectProxy getKeychainKey:^(NSString *key, NSError *error) {
             reply(key, error);
+            [helperConnection closeConnection];
         }];
     }];
 }

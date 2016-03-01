@@ -2,8 +2,38 @@
 
 All notable changes to this project will be documented in this file. This project adheres to [Semantic Versioning](http://semver.org/).
 
-## [Unreleased][unreleased]
+## [1.4] - 2016-03-01
 
+### Added
+- You can now select which events trigger a notification. For example, you can receive only Munki import notifications, and ignore download notifications. In other words, no more daily emails about VLC downloading! (#184)
+- Ability to select multiple repos and then update, add, or remove the selected repos. (#434)
+- Ability to select multiple recipes and then run, enable, or disable the selected recipes. (#434)
+- Built-in integration with FileWave version 10 and higher, via the new [FileWaveImporter](https://github.com/autopkg/filewave) processor. (#339, with thanks to @johncclayton.)
+- Integration with new [LANrevImporter](https://github.com/jbaker10/LANrevImporter) processor. (#488) See the [LANrevImporter wiki](https://github.com/jbaker10/LANrevImporter/wiki/Switching-from-AbsoluteManageExport-to-LANrevImporter) for information on migrating from AbsoluteManageExport.
+- Ability to switch between multiple recipe lists. (#263)
+- Ability to specify pre/post processors. (#346, #384)
+- MakeCatalogs.munki will be included when .munki recipes are run from the contextual menu. (#485)
+
+### Fixed
+- Fixed a bug that caused progress spinners to incorrectly display on multiple recipes if they share the same name. (#447)
+- Fixed a bug that caused AutoPkgr to freeze when adding a custom repo with a trailing space in the URL. (#486)
+- Fixed a minor counting error in log output. (#446)
+- Fixed crash that occurred if Git was not reinstalled after an OS X upgrade. (#458)
+- Fixed a bug that resulted in unreliable "Run This Only Recipe Only" selection. (#456)
+- XPC connections to helper tool are now explicitly closed on process completion.
+
+### Changed
+- Totally redesigned and simplified the JSSImporter settings sheet.
+- JSSImporter configuration UI now supports cloud distribution points (CDP) and local distribution points. (#463, #309)
+- MakeCatalogs.munki recipe is now added by name rather than by identifier. An override with the same name will now be used, if one exists. (Hat tip to @grahampugh.)
+- General improvements to integration performance. No longer makes duplicate GitHub API calls when "releases" don't exist.
+- Updated "AutoPkgr" link in footer of notification emails to point to [AutoPkgr information page](http://www.lindegroup.com/autopkgr) instead of [GitHub repo](https://github.com/lindegroup/autopkgr).
+- Moved Recipe/Override chooser out of contextual menu and into AutoPkg preference panel.
+- Widened images in readme.md so they'll look awesome with GitHub.com's new repo layout.
+- Updated bundled version of Sparkle auto-update framework.
+- The "Add Repo" button and associated text field now work with any supported URL, not just HTTPS.
+- When you right-click and run a single Munki recipe, AutoPkgr will now run MakeCatalogs.munki too.
+- Made width of tab views more consistent.
 
 ## [1.3.2] - 2015-09-16
 
@@ -331,7 +361,8 @@ All notable changes to this project will be documented in this file. This projec
 - Initial public release of AutoPkgr.
 
 
-[unreleased]: https://github.com/lindegroup/autopkgr/compare/v1.3.2...HEAD
+[unreleased]: https://github.com/lindegroup/autopkgr/compare/v1.4...HEAD
+[1.4]: https://github.com/lindegroup/autopkgr/compare/v1.3.2...v1.4
 [1.3.2]: https://github.com/lindegroup/autopkgr/compare/v1.3.1...v1.3.2
 [1.3.1]: https://github.com/lindegroup/autopkgr/compare/v1.3...v1.3.1
 [1.3]: https://github.com/lindegroup/autopkgr/compare/v1.2.3...v1.3

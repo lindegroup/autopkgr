@@ -37,34 +37,33 @@ int main(int argc, const char *argv[])
 
         LGAutoPkgTaskManager *manager = [[LGAutoPkgTaskManager alloc] init];
 
-        LGAutoPkgrHelperConnection *helper = [LGAutoPkgrHelperConnection new];
-        [helper connectToHelper];
-
-        [[helper.connection remoteObjectProxy] sendMessageToMainApplication:@"Scheduled AutoPkg run in progress..."
-                                                                   progress:0
-                                                                      error:nil
-                                                                      state:kLGAutoPkgProgressStart];
-
+        LGAutoPkgrHelperConnection *helperConnection = [LGAutoPkgrHelperConnection new];
+        [helperConnection.remoteObjectProxy sendMessageToMainApplication:@"Scheduled AutoPkg run in progress..."
+                                                                progress:0
+                                                                   error:nil
+                                                                   state:kLGAutoPkgProgressStart];
 
         [manager setProgressUpdateBlock:^(NSString *message, double progress) {
-            [[helper.connection remoteObjectProxy] sendMessageToMainApplication:message
-                                                                       progress:progress
-                                                                          error:nil
+            [helperConnection.remoteObjectProxy sendMessageToMainApplication:message
+                                                                    progress:progress
+                                                                       error:nil
                                                                        state:kLGAutoPkgProgressProcessing];
         }];
 
         [manager runRecipeList:[LGAutoPkgRecipe defaultRecipeList]
                     updateRepo:update
                          reply:^(NSDictionary *report, NSError *error) {
-                             [[helper.connection remoteObjectProxy] sendMessageToMainApplication:nil
-                                                                                        progress:100
-                                                                                           error:error
-                                                                                        state:kLGAutoPkgProgressComplete];
+                             [[helperConnection remoteObjectProxy] sendMessageToMainApplication:nil
+                                                                                       progress:100
+                                                                                          error:error
+                                                                                          state:kLGAutoPkgProgressComplete];
                              // Wrap up the progress messaging...
                              completionMessageSent = YES;
+                             [helperConnection closeConnection];
 
                              LGNotificationManager *notifier = [[LGNotificationManager alloc]
-                                                                initWithReportDictionary:report errors:error];
+                                 initWithReportDictionary:report
+                                                   errors:error];
 
                              [notifier sendEnabledNotifications:^(NSError *error) {
                                  NSLog(@"AutoPkgr background run complete.");

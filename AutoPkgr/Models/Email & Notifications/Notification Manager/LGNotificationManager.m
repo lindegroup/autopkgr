@@ -27,18 +27,20 @@
 #import "LGPasswords.h"
 #import "LGIntegrationManager.h"
 
+#import "NSArray+mapped.h"
+
 @interface LGNotificationService ()<LGNotificationServiceProtocol>
 @end
 
-static NSArray *serviceClasses()
+const NSArray *NotificationServiceClasses()
 {
     static dispatch_once_t onceToken;
     __strong static NSArray *classes = nil;
     dispatch_once(&onceToken, ^{
-        classes =  @[ [LGUserNotification class],
-                      [LGEmailNotification class],
+        classes =  @[ [LGEmailNotification class],
                       [LGSlackNotification class],
                       [LGHipChatNotification class],
+                      [LGUserNotification class]
                       ];
     });
     return classes;
@@ -63,23 +65,20 @@ static NSArray *serviceClasses()
 
     NSOperationQueue *queue = [[NSOperationQueue alloc] init];
     [queue addOperationWithBlock:^{
-        NSMutableArray *enabledServices = [NSMutableArray
-                                           arrayWithCapacity:serviceClasses().count];
 
         __block BOOL reportsIntegrations = NO;
         LGAutoPkgReport *report = [[LGAutoPkgReport alloc] initWithReportDictionary:self.reportDictionary];
         report.error = _runError;
 
-        [serviceClasses() enumerateObjectsUsingBlock:^(Class noteClass, NSUInteger idx, BOOL *stop) {
+        NSArray *enabledServices = [NotificationServiceClasses() mapObjectsUsingBlock:^id(Class noteClass, NSUInteger idx) {
+            LGNotificationService *service = nil;
             if ([noteClass isEnabled]) {
-                LGNotificationService *service = [[noteClass alloc] initWithReport:report];
-                if (enabledServices != nil) {
-                    [enabledServices addObject:service];
-                    if ([[service class] reportsIntegrations]) {
-                        reportsIntegrations = YES;
-                    }
+                service = [[noteClass alloc] initWithReport:report];
+                if ([[service class] reportsIntegrations]) {
+                    reportsIntegrations = YES;
                 }
             }
+            return service;
         }];
 
         NSInteger expectedServices = enabledServices.count;

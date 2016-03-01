@@ -181,14 +181,11 @@
         [_searchProgressIndicator setDoubleValue:100.0];
 
         if (results.count) {
-            if (!_searchPanel) {
-                _searchPanel = [[LGRecipeSearch alloc] initWithSearchResults:results installedRepos:_popRepoTableViewHandler.repos];
-            }
-            [NSApp beginSheet:_searchPanel.window
-               modalForWindow:self.modalWindow
-                modalDelegate:self
-               didEndSelector:@selector(didCloseSearchPanel)
-                  contextInfo:NULL];
+            _searchPanel = [[LGRecipeSearch alloc] initWithSearchResults:results installedRepos:_popRepoTableViewHandler.repos];
+
+            [_searchPanel openSheetOnWindow:self.modalWindow complete:^(LGWindowController *windowController) {
+                _searchPanel = nil;
+            }];
             
             [_searchProgressIndicator setDoubleValue:0.0];
             [_searchProgressIndicator stopAnimation:self];
@@ -199,26 +196,18 @@
     }];
 }
 
-- (void)didCloseSearchPanel
-{
-    [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-        [_searchPanel.window close];
-        _searchPanel = nil;
-    }];
-}
-
 #pragma mark - Text delegate
 - (void)controlTextDidChange:(NSNotification *)note {
     NSString *string = [note.object stringValue];
 
     if([note.object isEqualTo:_repoURLToAdd]){
-        _addRepoButton.enabled = [string hasPrefix:@"http"];
+        _addRepoButton.enabled = [LGAutoPkgRepo stringIsValidRepoURL:string];
     }
 
     else if([note.object isEqualTo:_recipeSearchTF]){
         _recipeSearchButton.enabled = string.length;
     }
-
 }
+
 
 @end

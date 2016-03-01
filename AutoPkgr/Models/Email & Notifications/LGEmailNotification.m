@@ -65,6 +65,14 @@
     return kLGAutoPkgrPreferenceDomain;
 }
 
++ (BOOL)templateIsFile {
+    return YES;
+}
+
++ (NSString *)defaultTemplate {
+    return [self templateWithName:@"report" type:@"html"];
+}
+
 #pragma mark - Init
 - (instancetype)init
 {
@@ -83,8 +91,8 @@
 
     NSAssert(self.notificatonComplete, @"A completion block must be set for %@", self);
 
-    NSString *subject = self.report.emailSubjectString;
-    NSString *message = self.report.emailMessageString;
+    NSString *subject = self.report.reportSubject;
+    NSString *message = [self.report renderWithTemplate:[[self class] reportTemplate] error:nil];
 
     // Send the email.
     [self sendEmailNotification:subject message:message test:NO];
@@ -101,6 +109,13 @@
 
     // Send the email/
     [self sendEmailNotification:subject message:message test:YES];
+}
+
+- (void)sendMessage:(NSString *)message title:(NSString *)title complete:(void (^)(NSError *))complete {
+    if (complete && !self.notificatonComplete) {
+        self.notificatonComplete = complete;
+    }
+    [self sendEmailNotification:title message:message test:YES];
 }
 
 #pragma mark - Credentials

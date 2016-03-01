@@ -21,34 +21,33 @@
 #import "LGAutoPkgReport.h"
 #import "LGAutoPkgRecipe.h"
 #import "LGIntegrationManager.h"
+#import "LGIntegration+Protocols.h"
 
+#import "NSArray+mapped.h"
 #import "HTMLCategories.h"
+#import <GRMustache/GRMustache.h>
 
 // Key for AutoPkg 0.4.3 report summary
-NSString *const kReportKeySummaryResults = @"summary_results";
+static NSString *const kReportKeySummaryResults = @"summary_results";
 
 // Key used to check for AutoPkg version
-NSString *const kReportKeyReportVersion = @"report_version";
+static NSString *const kReportKeyReportVersion = @"report_version";
 
 // Other Top level keys
-NSString *const kReportKeyFailures = @"failures";
-NSString *const kReportKeyDetectedVersions = @"detected_versions";
+static NSString *const kReportKeyFailures = @"failures";
+static NSString *const kReportKeyDetectedVersions = @"detected_versions";
 
 // _summary_result level keys for AutoPkg report
-NSString *const kReportKeySummaryText = @"summary_text";
-NSString *const kReportKeyDataRows = @"data_rows";
-NSString *const kReportKeyHeaders = @"header";
+static NSString *const kReportKeySummaryText = @"summary_text";
+static NSString *const kReportKeyDataRows = @"data_rows";
+static NSString *const kReportKeyHeaders = @"header";
 
 // _summary_result processor keys
-NSString *const kReportProcessorInstaller = @"installer_summary_result";
-NSString *const kReportProcessorURLDownloader = @"url_downloader_summary_result";
-NSString *const kReportProcessorInstallFromDMG = @"install_from_dmg_summary_result";
-NSString *const kReportProcessorMunkiImporter = @"munki_importer_summary_result";
-NSString *const kReportProcessorPKGCreator = @"pkg_creator_summary_result";
-NSString *const kReportProcessorJSSImporter = @"jss_importer_summary_result";
-NSString *const kReportProcessorPKGCopier = @"pkg_copier_summary_result";
-
-NSString *const fallback_reportCSS = @"<style type='text/css'>*{font-family:'Helvetica Neue',Helvetica,sans-serif;font-size:11pt}a{color:#157463;text-decoration:underline}a:hover{color:#0d332a}h1{background-color:#eaf6f4;color:#157463;font-weight:700;font-size:14pt;margin:30px 0 0;padding:5px;text-transform:uppercase;text-align:center}ul{list-style-type:none;padding:0;margin:0;margin-left:1em}p{padding:5px}td,th{padding:5px 15px;text-align:left}th{background-color:#eaf6f4;color:#157463;font-weight:400;text-transform:uppercase}.status,.pkgname{font-weight:700}.footer{font-size:10pt;text-align:center;margin:30px 0 10px}</style>";
+static NSString *const kReportProcessorInstaller = @"installer_summary_result";
+static NSString *const kReportProcessorURLDownloader = @"url_downloader_summary_result";
+static NSString *const kReportProcessorInstallFromDMG = @"install_from_dmg_summary_result";
+static NSString *const kReportProcessorPKGCreator = @"pkg_creator_summary_result";
+static NSString *const kReportProcessorPKGCopier = @"pkg_copier_summary_result";
 
 #pragma mark - LGUpdatedApplication
 @implementation LGUpdatedApplication {
@@ -78,10 +77,19 @@ NSString *const fallback_reportCSS = @"<style type='text/css'>*{font-family:'Hel
 {
     return _dictionary[NSStringFromSelector(_cmd)];
 }
+
+- (NSDictionary *)dictionaryRepresentation {
+    return @{ NSStringFromSelector(@selector(path)): self.path,
+              NSStringFromSelector(@selector(name)): self.name,
+              NSStringFromSelector(@selector(version)): self.version };
+}
 @end
 
 @implementation LGAutoPkgReport {
+@private
     NSDictionary *_reportDictionary;
+    NSArray *_includedProcessorSummaryResults;
+    NSNumber * _integrationsUpdatesToReport;
 }
 
 @synthesize updatedApplications = _updatedApplications;
@@ -89,10 +97,8 @@ NSString *const fallback_reportCSS = @"<style type='text/css'>*{font-family:'Hel
 - (instancetype)initWithReportDictionary:(NSDictionary *)dictionary
 {
     if (self = [super init]) {
-        _reportDictionary = [self normalizedAutoPkgReport:dictionary];
-        _autoPkgReport = dictionary;
+        [self setAutoPkgReport:dictionary];
         _reportedItemFlags = kLGReportItemsNone;
-
 #if DEBUG
         [_reportDictionary writeToFile:@"/tmp/report.plist"
                             atomically:YES];
@@ -109,254 +115,92 @@ NSString *const fallback_reportCSS = @"<style type='text/css'>*{font-family:'Hel
 
 - (BOOL)updatesToReport
 {
-    if (([_reportDictionary[kReportKeySummaryResults][kReportProcessorURLDownloader] count] > 0)) {
+    BOOL failureCount = [_reportDictionary[kReportKeyFailures] count];
+    BOOL summaryCount = [[self includedProcessorSummaryResults] count];
+
+    if ((_reportedItemFlags & kLGReportItemsFailures && failureCount) ||
+        (_reportedItemFlags & kLGReportItemsErrors && _error) ||
+         summaryCount || [self integrationsUpdatesToReport])
+    {
+        return YES;
+    } else if (_reportedItemFlags == kLGReportItemsAll && (failureCount || summaryCount || _error )) {
         return YES;
     }
-    return (([_reportDictionary[kReportKeyFailures] count] > 0) || _error ||
-            [self integrationsUpdateAvailable]);
+    return NO;
 }
 
-- (NSString *)emailSubjectString
+- (NSString *)reportSubject
 {
     NSString *subject = nil;
-    if ([_reportDictionary[kReportKeySummaryResults][kReportProcessorURLDownloader] count] > 0) {
-        subject = NSLocalizedString(@"New software available for testing", nil);
-    } else if ([_reportDictionary[kReportKeyFailures] count] > 0) {
+    if ([_reportDictionary[kReportKeyFailures] count] > 0) {
         subject = NSLocalizedString(@"Failures occurred while running AutoPkg", nil);
-    } else if (self.error) {
+    }
+    else if (self.error) {
         subject =  NSLocalizedString(@"An error occurred while running AutoPkg", nil);
-    } else if (_integrations) {
-        for (LGIntegration *integration in _integrations) {
-            if (integration.info.status == kLGIntegrationUpdateAvailable) {
-                subject = NSLocalizedString(@"Update to helper components available", nil);
-            }
-        }
+    }
+    else if ([self.updatedApplications count] > 0) {
+        subject = NSLocalizedString(@"New software available for testing", nil);
+    }
+    else if ([self integrationsUpdatesToReport]) {
+        subject = NSLocalizedString(@"Update to helper components available", nil);
     }
 
+    // Construct the full subject string...
     if (subject) {
         return quick_formatString(@"%@ on %@", subject, [NSHost currentHost].localizedName);
     }
-
     return nil;
 }
 
-- (NSString *)emailMessageString
-{
-    NSString *overviewString;
-    NSString *detailsString;
+#pragma mark - Templating
+- (NSDictionary *)templateData {
+    __block NSMutableDictionary *data = [[NSMutableDictionary alloc ] init];
+    NSArray *results = [self includedProcessorSummaryResults];
+    data[@"has_summary_results"] = @(results.count);
 
-    NSMutableString *message = [@"<html>\n<head>\n" mutableCopy];
-
-    NSString *cssString = [NSString html_cssStringFromResourceNamed:@"report"
-                                                             bundle:[NSBundle bundleForClass:[self class]]];
-
-    if (!cssString) {
-        // If there's a problem getting the bundle resource revert to the hard coded CSS string.
-        cssString = fallback_reportCSS;
-    }
-
-    [message appendString:cssString];
-
-    [message appendString:@"</head>\n<body>"];
-
-    if ((overviewString = [self overviewString])) {
-        [message appendString:overviewString];
-    }
-
-    if ((detailsString = [self detailsString])) {
-        [message appendString:html_breakTwice];
-        [message appendString:detailsString];
-    }
-
-    NSString *autoPkgrLink = quick_formatString(NSLocalizedString(@"This report was generated by %@", nil),
-                                                [@"AutoPkgr" html_link:@"https://github.com/lindegroup/autopkgr"]);
-
-    [message appendString:[autoPkgrLink html_H4]];
-
-    [message appendString:@"\n</body></html>"];
-
-    return [message copy];
-}
-
-- (NSString *)webChannelMessageString {
-    NSMutableString *message = self.emailSubjectString.mutableCopy;
-    [message appendString:@":\n"];
-
-    [self.updatedApplications enumerateObjectsUsingBlock:^(LGUpdatedApplication *app, NSUInteger idx, BOOL *stop) {
-        [message appendFormat:@"  * %@ [%@]\n", app.name, app.version]; // Format howerver
-    }];
-
-    NSError *error = self.failureError;
-    if (error) {
-        [message appendFormat:@"\n%@\n%@", error.localizedDescription, error.localizedRecoverySuggestion];
-    }
-
-    return message.copy ?: @"";
-}
-#pragma mark - Private
-- (NSString *)overviewString
-{
-    NSMutableString *overview = [[NSMutableString alloc] init];
-    NSInteger initialLength = overview.length;
-
-    NSString *newSoftware;
-    NSString *runFailures;
-    NSString *errorsString;
-    NSString *integrationString;
-
-    if ((newSoftware = [self newSoftwareString])) {
-        [overview appendString:newSoftware];
-    }
-
-    if ((integrationString = [self integrationStatusString])) {
-        [overview appendString:integrationString];
-    }
-
-    if ((runFailures = [self runFailuresString])) {
-        [overview appendString:runFailures];
-    }
-
-    if ((errorsString = [self errorString])) {
-        [overview appendString:errorsString];
-    }
-
-    if (initialLength == overview.length) {
-        [overview appendString:NSLocalizedString(@"Nothing new to report.", nil)];
-    }
-
-    return [overview copy];
-}
-
-- (NSString *)newSoftwareString
-{
-    NSMutableString *string = nil;
-
-    if (self.updatedApplications.count) {
-        NSMutableArray *dictArray = [NSMutableArray new];
-        string = [NSLocalizedString(@"New software available for testing:", nil).html_H3 mutableCopy];
-
-        for (LGUpdatedApplication *application in _updatedApplications) {
-            [dictArray addObject:@{ @"name" : application.name,
-                                    @"version" : application.version
-            }];
-        }
-
-        NSString *table = [dictArray html_tableWithHeaders:@[ @"name", @"version" ] cssClassForColumns:@{ @"name" : @"pkgname" }];
-        [string appendString:table];
-    }
-    return [string copy];
-}
-
-- (NSString *)runFailuresString
-{
-    NSArray *failures = [_reportDictionary[kReportKeyFailures] filtered_ByClass:[NSDictionary class]];
-    NSMutableString *string = nil;
-
-    if (failures.count) {
-        string = [NSLocalizedString(@"The following failures occurred:", nil).html_H3 mutableCopy];
-        [string appendString:[failures html_table]];
-    }
-    return [string copy];
-}
-
-- (NSString *)detailsString
-{
-    NSMutableString *string = nil;
-    NSArray *includedProcessors = [self includedProcessorSummaryResults];
-
-    NSDictionary *summaryResults = _reportDictionary[kReportKeySummaryResults];
-
-    // The includedProcessorSummaryResults method returns nil when intended to show all.
-    // It's this way to be future compatible with autopkg processors that do not
-    // yet exist, or do not currently provide _summary_results
-    if ((!includedProcessors || includedProcessors.count) && summaryResults.count) {
-
-        string = [[NSMutableString alloc] init];
-        [summaryResults enumerateKeysAndObjectsUsingBlock:^(NSString *key, NSDictionary *summary, BOOL *stop) {
-          // If the included processor is nil show everything.
-          if (!includedProcessors || [includedProcessors containsObject:key]) {
-              NSArray *headers = summary[kReportKeyHeaders];
-              NSArray *data_rows = [summary[kReportKeyDataRows] filtered_ByClass:[NSDictionary class]];
-              if (data_rows.count) {
-                  [string appendString:[summary[kReportKeySummaryText] html_H3]];
-                  if (headers.count > 1) {
-                      [string appendString:[data_rows html_tableWithHeaders:headers]];
-                  } else {
-                      [string appendString:html_openListUL];
-                      for (NSDictionary *row in data_rows) {
-                          NSString *value = [[row allValues] firstObject];
-                          [string appendString:[[value stringByAbbreviatingWithTildeInPath] html_listItem]];
-                      }
-                      [string appendString:html_closeListUL];
-                  }
-              }
-          }
+    if (results.count){
+        [[self includedProcessorSummaryResults] enumerateObjectsUsingBlock:^(NSString *key, NSUInteger idx, BOOL *stop) {
+            NSString *strippedKey = [key stringByReplacingOccurrencesOfString:@"_summary_result" withString:@""];
+            data[strippedKey] = _reportDictionary[kReportKeySummaryResults][key];
         }];
     }
-    return [string copy];
-}
 
-- (NSString *)errorString
-{
-    NSMutableString *string = nil;
-    if (_error) {
-
-        NSArray *recoverySuggestions = [_error.localizedRecoverySuggestion
-            componentsSeparatedByCharactersInSet:[NSCharacterSet newlineCharacterSet]];
-
-        NSString *noValidRecipe = @"No valid recipe found for ";
-        NSPredicate *noValidRecipePredicate = [NSPredicate predicateWithFormat:@"SELF BEGINSWITH %@", noValidRecipe];
-
-        NSArray *failures = [_reportDictionary[kReportKeyFailures] filtered_ByClass:[NSDictionary class]];
-        NSMutableOrderedSet *set = [NSMutableOrderedSet new];
-
-        for (NSString *errString in recoverySuggestions.filtered_noEmptyStrings) {
-            NSPredicate *failurePredicate = [NSPredicate predicateWithFormat:@"message CONTAINS[cd] %@", errString];
-
-            // Look over the failures array, if the same string occurred there
-            // Don't bother reporting it a second time here.
-            if (![failures filteredArrayUsingPredicate:failurePredicate].count) {
-                if (!string) {
-                    string = [NSLocalizedString(@"The following errors occurred:", nil).html_H3 mutableCopy];
-                }
-
-                if ([noValidRecipePredicate evaluateWithObject:errString]) {
-                    // Remove Recipe from Recipe.txt
-                    [LGAutoPkgRecipe removeRecipeFromRecipeList:[[errString componentsSeparatedByString:noValidRecipe] lastObject]];
-                    [set addObject:[errString stringByAppendingString:NSLocalizedString(@". It has been automatically removed from your recipe list in order to prevent recurring errors.", nil)]];
-                } else {
-                    [set addObject:errString];
-                }
-            }
-        }
-
-        if (set.count) {
-            [string appendString:[set.array html_list_unordered]];
-        }
+    data[kReportKeyFailures] = _reportDictionary[kReportKeyFailures];
+    if (self.error) {
+        data[@"error"] = @{@"description": _error.localizedDescription,
+                           @"suggestion": _error.localizedRecoverySuggestion
+                           };
     }
-    return [string copy];
+    
+    if (self.updatedApplications) {
+        data[@"updated_applications"] = [_updatedApplications mapObjectsUsingBlock:^id(LGUpdatedApplication *obj, NSUInteger idx) {
+            return [obj dictionaryRepresentation];
+        }];
+    }
+
+    if ([self integrationsUpdatesToReport]){
+        data[@"integration_updates"] = [self integrationUpdates];
+    }
+
+    [data addEntriesFromDictionary:_reportDictionary];
+    return data.copy;
 }
 
-- (NSString *)integrationStatusString
-{
-    NSMutableString *string = nil;
+- (NSString *)renderWithTemplate:(NSString *)templateString error:(NSError *__autoreleasing *)error{
+    GRMustacheTemplate *mTemplate = [GRMustacheTemplate templateFromString:templateString error:error];
+    return mTemplate ? [mTemplate renderObject:self.templateData error:error] : nil;
+}
 
-    for (LGIntegration *integration in _integrations) {
+- (NSArray<NSString *> *)integrationUpdates {
+    return [_integrations mapObjectsUsingBlock:^id(LGIntegration* integration, NSUInteger idx) {
         if ([[integration class] isInstalled] && integration.info.status == kLGIntegrationUpdateAvailable) {
-            if (!string) {
-                string = [NSLocalizedString(@"Updates for integrated components:", nil).html_H3 mutableCopy];
-                [string appendString:html_openListUL];
-            }
-            [string appendString:integration.info.statusString.html_listItem];
+            return integration.info.statusString;
         }
-    }
-    if (string) {
-        [string appendString:html_closeListUL];
-    }
-
-    return [string copy];
+        return nil;
+    }];
 }
 
+#pragma mark - Additional
 - (NSArray *)updatedApplications
 {
     if (!_updatedApplications) {
@@ -391,13 +235,11 @@ NSString *const fallback_reportCSS = @"<style type='text/css'>*{font-family:'Hel
                 };
 
                 LGUpdatedApplication *updatedApp = [[LGUpdatedApplication alloc] initWithDictionary:d];
-
                 [dictArray addObject:updatedApp];
             }
         }
         _updatedApplications = [NSArray arrayWithArray:dictArray];
     }
-
     return _updatedApplications;
 }
 
@@ -486,7 +328,7 @@ NSString *const fallback_reportCSS = @"<style type='text/css'>*{font-family:'Hel
                                 kReportKeyDataRows : dataRows,
                                 kReportKeySummaryText : @"The following new items were imported into Munki:" };
 
-        [summaryResults setObject:dict forKey:kReportProcessorMunkiImporter];
+        [summaryResults setObject:dict forKey:@"munki_importer_summary_result"];
     }
 
     return @{
@@ -497,16 +339,21 @@ NSString *const fallback_reportCSS = @"<style type='text/css'>*{font-family:'Hel
     };
 }
 
-- (BOOL)integrationsUpdateAvailable
+- (BOOL)integrationsUpdatesToReport
 {
+    if (_integrationsUpdatesToReport) {
+        return [_integrationsUpdatesToReport boolValue];
+    }
+
     /* Determine if updates to integrations should be reported. */
     LGDefaults *defaults = [LGDefaults standardUserDefaults];
 
-    /* ReportIntegrationFrequency is bound to the defaults controller in the
-     * LGScheduleViewController.xib. It's bound to the popup button's selectedTag property. */
-    LGReportIntegrationFrequency noteFrequency = [defaults integerForKey:@"ReportIntegrationFrequency"];
-
-    if (noteFrequency > kLGReportIntegrationFrequencyNever) {
+    LGReportItems check = (kLGReportItemsIntegrationUpdates | kLGReportItemsAll);
+    if (defaults.reportedItemFlags & check) {
+        /* ReportIntegrationFrequency is bound to the defaults controller in the
+         * LGScheduleViewController.xib. It's bound to the popup button's selectedTag property. */
+        LGReportIntegrationFrequency noteFrequency = [defaults integerForKey:@"ReportIntegrationFrequency"];
+        
         for (LGIntegration *integration in _integrations) {
             if (integration.info.status == kLGIntegrationUpdateAvailable) {
                 if (noteFrequency == kLGReportIntegrationFrequencyOncePerVersion) {
@@ -517,6 +364,8 @@ NSString *const fallback_reportCSS = @"<style type='text/css'>*{font-family:'Hel
 
                     if ([availableVersion version_isGreaterThan:lastReportedVersion]) {
                         [defaults setObject:availableVersion forKey:reportedVersionKey];
+
+                        _integrationsUpdatesToReport = @(YES);
                         return YES;
                     }
                 } else {
@@ -544,12 +393,15 @@ NSString *const fallback_reportCSS = @"<style type='text/css'>*{font-family:'Hel
                     NSComparisonResult comp = [compareDate compare:lastReportDate];
                     if (comp != NSOrderedAscending) {
                         [defaults setObject:now forKey:reportedDateSentKey];
+
+                        _integrationsUpdatesToReport = @(YES);
                         return YES;
                     }
                 }
             }
         }
     }
+    _integrationsUpdatesToReport = @(NO);
     return NO;
 }
 
@@ -560,32 +412,49 @@ NSString *const fallback_reportCSS = @"<style type='text/css'>*{font-family:'Hel
  */
 - (NSArray *)includedProcessorSummaryResults
 {
+    if (_includedProcessorSummaryResults){
+        return _includedProcessorSummaryResults;
+    }
+
     if (_reportedItemFlags == kLGReportItemsNone) {
         _reportedItemFlags = [[LGDefaults standardUserDefaults] reportedItemFlags];
     }
 
     NSMutableArray *itemArray = [[NSMutableArray alloc] init];
+    [_reportDictionary[kReportKeySummaryResults] enumerateKeysAndObjectsUsingBlock:^(NSString *key, id obj, BOOL *stop) {
+        if (_reportedItemFlags == kLGReportItemsAll) {
+            [itemArray addObject:key];
+        } else {
+            if ([key isEqualToString:kReportProcessorInstaller]){
+                if(_reportedItemFlags & kLGReportItemsNewInstalls) {
+                    [itemArray addObject:key];
+                }
+            }
+            else if([key isEqualToString:kReportProcessorPKGCreator]){
+                if(_reportedItemFlags & kLGReportItemsNewPackages) {
+                    [itemArray addObject:key];
+                }
+            }
+            else if ([key isEqualToString:kReportProcessorURLDownloader]){
+                if(_reportedItemFlags & kLGReportItemsNewDownloads) {
+                    [itemArray addObject:key];
+                }
+            }
+        }
+    }];
 
-    if (_reportedItemFlags & kLGReportItemsAll) {
-        return nil;
-    } else {
-        if (_reportedItemFlags & kLGReportItemsNewDownloads) {
-            [itemArray addObject:kReportProcessorURLDownloader];
-        }
-        if (_reportedItemFlags & kLGReportItemsNewInstalls) {
-            [itemArray addObject:kReportProcessorInstaller];
-        }
-        if (_reportedItemFlags & kLGReportItemsNewPackages) {
-            [itemArray addObject:kReportProcessorPKGCreator];
-        }
-        if (_reportedItemFlags & kLGReportItemsMunkiImports) {
-            [itemArray addObject:kReportProcessorMunkiImporter];
-        }
-        if (_reportedItemFlags & kLGReportItemsJSSImports) {
-            [itemArray addObject:kReportProcessorJSSImporter];
-        }
+    if (_reportedItemFlags & kLGReportItemsIntegrationImports && [self integrationsUpdatesToReport]) {
+        [self.integrations enumerateObjectsUsingBlock:^(LGIntegration *obj, NSUInteger idx, BOOL *stop) {
+            if ([[obj class] respondsToSelector:@selector(summaryResultKey)]) {
+                id key = [[obj class] summaryResultKey];
+                if(key){
+                    [itemArray addObject:key];
+                }
+            }
+        }];
     }
-    return [itemArray copy];
+    _includedProcessorSummaryResults = [itemArray copy];
+    return _includedProcessorSummaryResults;
 }
 
 @end

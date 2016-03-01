@@ -19,8 +19,9 @@
 //
 
 #import <Cocoa/Cocoa.h>
+#import "LGWindowController.h"
 
-@interface LGViewWindowController : NSWindowController
+@interface LGViewWindowController : LGWindowController
 - (instancetype)init __unavailable;
 - (instancetype)initWithViewController:(NSViewController *)viewController;
 

@@ -19,34 +19,12 @@
 //
 
 #import <Cocoa/Cocoa.h>
+@class LGJSSDistributionPoint;
 
 @interface LGJSSDistributionPointsPrefPanel : NSWindowController
 
-- (instancetype)initWithDistPointDictionary:(NSDictionary *)dict;
+- (instancetype)initWithDistPoint:(LGJSSDistributionPoint *)distPoint;
 
-@property (weak) IBOutlet NSTextField *distPointName;
-@property (weak) IBOutlet NSTextField *distPointNameLabel;
-@property (weak) IBOutlet NSTextField *distPointURL;
-@property (weak) IBOutlet NSTextField *distPointURLLabel;
-@property (weak) IBOutlet NSTextField *distPointUserName;
-@property (weak) IBOutlet NSTextField *distPointUserNameLabel;
-@property (weak) IBOutlet NSTextField *distPointPassword;
-@property (weak) IBOutlet NSTextField *distPointPasswordLabel;
-@property (weak) IBOutlet NSTextField *distPointShareName;
-@property (weak) IBOutlet NSTextField *distPointShareNameLabel;
-@property (weak) IBOutlet NSTextField *distPointPort;
-@property (weak) IBOutlet NSTextField *distPointPortLabel;
-@property (weak) IBOutlet NSTextField *distPointDomain;
-@property (weak) IBOutlet NSTextField *distPointDomainLabel;
 
-@property (weak) IBOutlet NSPopUpButton *distPointTypePopupBT;
-@property (weak) IBOutlet NSButton *cancelBT;
-@property (weak) IBOutlet NSButton *addBT;
-@property (weak) IBOutlet NSTextField *infoText;
-
-- (IBAction)addDistPoint:(NSButton *)sender;
-- (IBAction)chooseDistPointType:(NSPopUpButton *)sender;
-
-- (IBAction)closePanel:(id)sender;
 
 @end

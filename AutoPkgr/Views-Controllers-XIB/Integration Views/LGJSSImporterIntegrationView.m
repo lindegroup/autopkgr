@@ -26,24 +26,16 @@
 #import "LGHostInfo.h"
 #import "LGInstaller.h"
 #import "LGJSSDistributionPointsPrefPanel.h"
+#import "LGJSSDistributionPoint.h"
 #import "LGJSSImporterIntegration.h"
 #import "LGServerCredentials.h"
 #import "LGTableView.h"
 #import "LGTestPort.h"
 
-#pragma mark - Class constants
+#import "NSTextField+changeHandle.h"
+#import "NSTableView+Resizing.h"
 
-static NSPredicate *jdsFilterPredicate()
-{
-    static dispatch_once_t onceToken;
-    __strong static NSPredicate *predicate = nil;
-    dispatch_once(&onceToken, ^{
-        predicate = [NSPredicate predicateWithFormat:@"not (type == 'JDS')"];
-    });
-    return predicate;
-}
-
-@interface LGJSSImporterIntegrationView ()<NSTextFieldDelegate>
+@interface LGJSSImporterIntegrationView () <NSTextFieldDelegate>
 @property (strong) IBOutlet LGTableView *jssDistributionPointTableView;
 @property (weak) IBOutlet NSTextField *jssURLTF;
 @property (weak) IBOutlet NSTextField *jssAPIUsernameTF;
@@ -54,7 +46,7 @@ static NSPredicate *jdsFilterPredicate()
 
 @property (weak) IBOutlet NSButton *jssEditDistPointBT;
 @property (weak) IBOutlet NSButton *jssRemoveDistPointBT;
-@property (weak) IBOutlet NSButton *jssUseMasterJDS;
+
 @property (weak) IBOutlet NSButton *jssVerifySSLBT;
 
 @property (weak) NSWindow *modalWindow;
@@ -62,83 +54,83 @@ static NSPredicate *jdsFilterPredicate()
 - (IBAction)addDistributionPoint:(id)sender;
 - (IBAction)removeDistributionPoint:(id)sender;
 - (IBAction)editDistributionPoint:(id)sender;
-- (IBAction)enableMasterJDS:(NSButton *)sender;
 
 @end
 
+#pragma mark - LGJSSImporterIntegrationView
 @implementation LGJSSImporterIntegrationView {
-    LGJSSImporterDefaults *_defaults;
+    NSArray *_distributionPoints;
     LGTestPort *_portTester;
     LGJSSDistributionPointsPrefPanel *_preferencePanel;
-
     BOOL _serverReachable;
 }
 
 - (void)awakeFromNib
 {
-
-    _defaults = [LGJSSImporterDefaults new];
-
+    LGJSSImporterDefaults *defaults = [LGJSSImporterDefaults new];
     // Disable the Add / Remove distPoint buttons
     // until a row is selected
     [_jssEditDistPointBT setEnabled:NO];
     [_jssRemoveDistPointBT setEnabled:NO];
 
-    _jssUseMasterJDS.state = [_defaults.JSSRepos containsObject:@{ @"type" : @"JDS" }];
-
     // .safeStringValue is a NSTextField category that you can pass a nil value into.
-    _jssAPIUsernameTF.safe_stringValue = _defaults.JSSAPIUsername;
-    _jssAPIPasswordTF.safe_stringValue = _defaults.JSSAPIPassword;
-    _jssURLTF.safe_stringValue = _defaults.JSSURL;
+    _jssAPIUsernameTF.safe_stringValue = defaults.JSSAPIUsername;
+    _jssAPIPasswordTF.safe_stringValue = defaults.JSSAPIPassword;
+    _jssURLTF.safe_stringValue = defaults.JSSURL;
 
     _jssReloadServerBT.action = @selector(getDistributionPoints:);
     _jssReloadServerBT.title = @"Connect";
 
-    _jssAPIPasswordTF.delegate = self;
-    _jssAPIUsernameTF.delegate = self;
-    _jssURLTF.delegate = self;
+    __weak typeof(self) weakSelf = self;
+    [self.jssAPIPasswordTF textChanged:^(NSString *newVal) {
+        defaults.JSSAPIPassword = newVal;
+    }];
 
-    _jssVerifySSLBT.state = _defaults.JSSVerifySSL;
+    [_jssAPIUsernameTF textChanged:^(NSString *newVal) {
+        defaults.JSSAPIUsername = newVal;
+    }];
 
+    [[self.jssURLTF textChanged:^(NSString *newVal) {
+        defaults.JSSURL = newVal;
+    }] editingEnded:^(NSTextField *jssURLTF) {
+        [self startStatusUpdate];
+        LGTestPort *tester = [[LGTestPort alloc] init];
+        [tester testServerURL:jssURLTF.stringValue
+                        reply:^(BOOL reachable, NSString *redirectedURL) {
+                            if (redirectedURL) {
+                                [weakSelf warnOfRedirection:redirectedURL];
+                            }
+                            [weakSelf stopStatusUpdate:nil];
+                        }];
+    }];
+
+    _jssVerifySSLBT.state = defaults.JSSVerifySSL;
     [_jssDistributionPointTableView reloadData];
 }
 
 #pragma mark - IBActions
 - (IBAction)verifySSL:(NSButton *)sender
 {
-    _defaults.JSSVerifySSL = _jssVerifySSLBT.state;
-}
-
-- (LGHTTPCredential *)jssCredentials {
-    LGHTTPCredential *credentials = [[LGHTTPCredential alloc] initWithServer:_defaults.JSSURL
-                                                                        user:_defaults.JSSAPIUsername
-                                                                    password:_defaults.JSSAPIPassword];
-
-    credentials.sslTrustSetting = _defaults.JSSVerifySSL ? kLGSSLTrustOSImplicitTrust : kLGSSLTrustUserConfirmedTrust;
-    
-    return credentials;
+    [[LGJSSImporterDefaults new] setJSSVerifySSL:_jssVerifySSLBT.state];
 }
 
 - (IBAction)getDistributionPoints:(id)sender
 {
-    LGHTTPRequest *request = [[LGHTTPRequest alloc] init];
-
-    [request retrieveDistributionPoints2:[self jssCredentials]
-                                   reply:^(NSDictionary *distributionPoints, NSError *error) {
-        [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-            if (!error) {
-                [_jssStatusLight setImage:[NSImage LGStatusAvailable]];
-            } else if (error){
-                [NSApp presentError:error];
+    [sender setEnabled:NO];
+    [LGJSSDistributionPoint getFromRemote:^(NSArray<LGJSSDistributionPoint *> *distPoints, NSError *error) {
+        [sender setEnabled:YES];
+        [self stopStatusUpdate:error];
+        if (error) {
+            [NSApp presentError:error];
+        } else {
+            [_jssStatusLight setImage:[NSImage LGStatusAvailable]];
+            for (LGJSSDistributionPoint *dp in distPoints) {
+                if ((dp.password = [self promptForSharePassword:dp.name]) != nil) {
+                    [dp save];
+                }
             }
-
-            [self stopStatusUpdate:error];
-            NSArray *cleanedArray = [self evaluateJSSRepoDictionaries:distributionPoints];
-            if (cleanedArray) {
-                _defaults.JSSRepos = cleanedArray;
-                [_jssDistributionPointTableView reloadData];
-            }
-        }];
+            [self.jssDistributionPointTableView reloadData];
+        }
     }];
 }
 
@@ -167,74 +159,55 @@ static NSPredicate *jdsFilterPredicate()
 }
 
 #pragma mark - NSTableViewDataSource
-- (NSArray *)filteredData
-{
-    return [_defaults.JSSRepos filteredArrayUsingPredicate:jdsFilterPredicate()];
-}
 
 - (NSInteger)numberOfRowsInTableView:(NSTableView *)tableView
 {
-    return [[self filteredData] count];
+    _distributionPoints = [LGJSSDistributionPoint enabledDistributionPoints];
+    return _distributionPoints.count;
 }
 
 - (id)tableView:(NSTableView *)tableView objectValueForTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row
 {
-    NSDictionary *distributionPoint;
-
-    if ([[self filteredData] count] >= row) {
-        distributionPoint = [self filteredData][row];
-    };
-
-    NSString *identifier = [tableColumn identifier];
-    NSString *setObject = distributionPoint[identifier];
-
-    // if the object is still nil, because the name is not set sub in the url key
-    if (!setObject && [identifier isEqualToString:kLGJSSDistPointNameKey]) {
-        setObject = distributionPoint[kLGJSSDistPointURLKey];
+    if ((row + 1) == tableView.numberOfRows) {
+        [tableView resized_HeightToFit];
     }
-    return setObject;
+    return [_distributionPoints[row] description];
 }
 
 - (void)tableView:(NSTableView *)tableView setObjectValue:(id)object forTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row
 {
-    NSMutableArray *workingArray = [[self filteredData] mutableCopy];
-    NSMutableDictionary *distributionPoint = [NSMutableDictionary dictionaryWithDictionary:workingArray[row]];
 
-    if (!distributionPoint[kLGJSSDistPointTypeKey]) {
-        if (![tableColumn.identifier isEqualToString:kLGJSSDistPointPasswordKey]) {
-            return;
+    LGJSSDistributionPoint *distributionPoint = _distributionPoints[row];
+
+    // Local mounts have slightly different implementation
+    // so we need to hijack this a little bit
+    NSString *identifier = nil;
+    if (distributionPoint.type == kLGJSSTypeLocal) {
+        if ([tableColumn.identifier isEqualToString:@"URL"]) {
+            identifier = kLGJSSDistPointMountPointKey;
+        } else if ([tableColumn.identifier isEqualToString:@"share_name"]) {
+            identifier = kLGJSSDistPointSharePointKey;
         }
+    } else {
+        identifier = tableColumn.identifier;
     }
 
-    [distributionPoint setValue:object forKey:tableColumn.identifier];
-    [workingArray replaceObjectAtIndex:row withObject:distributionPoint];
-
-    if (_jssUseMasterJDS.state) {
-        [workingArray addObject:@{ @"type" : @"JDS" }];
+    if (identifier && [distributionPoint respondsToSelector:NSSelectorFromString(identifier)]) {
+        [distributionPoint setValue:object forKey:identifier];
+        [distributionPoint save];
     }
-    _defaults.JSSRepos = [workingArray copy];
 }
 
 - (void)tableViewSelectionDidChange:(NSNotification *)notification
 {
     NSInteger row = [_jssDistributionPointTableView selectedRow];
     // If nothing in the table is selected the row value is -1 so
-    if (row > -1) {
-        [_jssRemoveDistPointBT setEnabled:YES];
-        // If a type key is not set, then it's from a DP from
-        // the jss server and not editable.
-        if ([[_defaults.JSSRepos objectAtIndex:row] objectForKey:@"type"]) {
-            [_jssEditDistPointBT setEnabled:YES];
-        } else {
-            [_jssEditDistPointBT setEnabled:NO];
-        }
-    } else {
-        [_jssEditDistPointBT setEnabled:NO];
-        [_jssRemoveDistPointBT setEnabled:NO];
-    }
+
+    [_jssRemoveDistPointBT setEnabled:(row > -1)];
+    [_jssEditDistPointBT setEnabled:(row > -1) && [_distributionPoints[row] isEditable]];
 }
 
-#pragma mark - Utility
+#pragma mark - Alerts
 - (void)confirmDisableSSLVerify
 {
     NSString *alertTitle = NSLocalizedStringFromTable(@"Unable to verify the SSL certificate.",
@@ -255,61 +228,7 @@ static NSPredicate *jdsFilterPredicate()
 
     NSAlert *alert = [NSAlert alertWithMessageText:alertTitle defaultButton:defaultButton alternateButton:altButton otherButton:nil informativeTextWithFormat:@"%@", infoText];
 
-    if ([alert runModal] == NSModalResponseOK) {
-        _defaults.JSSVerifySSL = YES;
-    } else {
-        _defaults.JSSVerifySSL = NO;
-    }
-}
-
-- (NSArray *)evaluateJSSRepoDictionaries:(NSDictionary *)distributionPoints
-{
-    id distPoints;
-
-    // If the object was parsed as an XML object the key we're looking for is
-    // distribution_point. If the object is a JSON object the key is distribution_points
-    if ((distPoints = distributionPoints[@"distribution_point"]) == nil && (distPoints = distributionPoints[@"distribution_points"]) == nil) {
-        return nil;
-    }
-
-    NSArray *dictArray;
-    NSMutableArray *newRepos;
-
-    // If there is just one ditribution point distPoint will be a dictionary entry
-    // and we need to normalize it here by wrapping it in an array.
-    if ([distPoints isKindOfClass:[NSDictionary class]]) {
-        dictArray = @[ distPoints ];
-    }
-    // If there are more then one entries distPoint will be an array, so pass it along.
-    else if ([distPoints isKindOfClass:[NSArray class]]) {
-        dictArray = distPoints;
-    }
-
-    // If the "type" key is not set for the DP then it's auto detected via the server
-    // and we'll strip them out here.
-
-    NSPredicate *customDistPointsPredicate = [NSPredicate predicateWithFormat:@"not %K == nil", kLGJSSDistPointTypeKey];
-
-    NSArray *customDistPoints = [_defaults.JSSRepos filteredArrayUsingPredicate:customDistPointsPredicate];
-
-    newRepos = customDistPoints.mutableCopy ?: [NSMutableArray new];
-
-    if (dictArray) {
-        for (NSDictionary *repo in dictArray) {
-            if (!repo[kLGJSSDistPointPasswordKey]) {
-                NSString *name = repo[kLGJSSDistPointNameKey];
-                NSString *password = [self promptForSharePassword:name];
-                if (name.length && password.length) {
-                    [newRepos addObject:@{ kLGJSSDistPointNameKey : name,
-                                           kLGJSSDistPointPasswordKey : password }];
-                }
-            } else {
-                [newRepos addObject:repo];
-            }
-        }
-    }
-
-    return newRepos.copy;
+    [[LGJSSImporterDefaults new] setJSSVerifySSL:([alert runModal] == NSModalResponseOK)];
 }
 
 - (NSString *)promptForSharePassword:(NSString *)shareName
@@ -318,7 +237,7 @@ static NSPredicate *jdsFilterPredicate()
     NSString *password;
     NSString *messageText = NSLocalizedStringFromTable(@"Distribution Point Password Required",
                                                        @"LocalizableJSSImporter",
-                                                       nil) ;
+                                                       nil);
 
     NSString *infoText = NSLocalizedStringFromTable(@"Please enter read/write password for the \"%@\" distribution point. If you intend to configure manually just click \"Cancel\".", @"LocalizableJSSImporter", nil);
 
@@ -340,141 +259,91 @@ static NSPredicate *jdsFilterPredicate()
             return [self promptForSharePassword:shareName];
         }
     }
-
     return password;
 }
 
-#pragma mark - JSS Distribution Point Preference Panel
-- (void)enableMasterJDS:(NSButton *)sender
+- (void)warnOfRedirection:(NSString *)redirectURL
 {
-    NSMutableArray *workingArray = [_defaults.JSSRepos mutableCopy];
-    NSDictionary *JDSDict = @{ @"type" : @"JDS" };
+    NSAlert *alert = [[NSAlert alloc] init];
+    NSString *title = NSLocalizedStringFromTable(@"The server redirected the requested URL.",
+                                                 @"LocalizableJSSImporter",
+                                                 @"alert title when server sends a redirect for JSS");
 
-    NSUInteger index = [workingArray indexOfObjectPassingTest:
-                        ^BOOL(NSDictionary *dict, NSUInteger idx, BOOL *stop) {
-                            return [dict[@"type"] isEqualToString:@"JDS"];
-                        }];
+    NSString *informativeText = NSLocalizedStringFromTable(@"The server redirected the request to\n\n%@\n\nYou should consider using this for the JSS url.",
+                                                           @"LocalizableJSSImporter",
+                                                           @"informativeText when server sends a redirect.");
+    alert.messageText = title;
+    alert.informativeText = quick_formatString(informativeText, redirectURL);
+    [alert addButtonWithTitle:@"Use suggested URL"];
+    [alert addButtonWithTitle:@"Ignore"];
 
-    if (sender.state) {
-        // Add JDS
-        if (index != NSNotFound) {
-            [workingArray replaceObjectAtIndex:index withObject:JDSDict];
-        } else {
-            [workingArray addObject:JDSDict];
-        }
-    } else {
-        if (index != NSNotFound) {
-            [workingArray removeObjectAtIndex:index];
-        }
+    if ([alert runModal] == NSAlertFirstButtonReturn) {
+        _jssURLTF.stringValue = redirectURL;
+        [[LGJSSImporterDefaults new] setJSSURL:redirectURL];
     }
-
-    _defaults.JSSRepos = [workingArray copy];
 }
 
+#pragma mark - JSS Distribution Point Preference Panel
 - (void)addDistributionPoint:(id)sender
 {
-
     if (!_preferencePanel) {
         _preferencePanel = [[LGJSSDistributionPointsPrefPanel alloc] init];
     }
 
-    [NSApp beginSheet:_preferencePanel.window modalForWindow:_modalWindow modalDelegate:self didEndSelector:@selector(didClosePreferencePanel) contextInfo:nil];
+    [NSApp beginSheet:_preferencePanel.window
+        modalForWindow:_modalWindow
+         modalDelegate:self
+        didEndSelector:@selector(didClosePreferencePanel)
+           contextInfo:nil];
 }
 
 - (void)removeDistributionPoint:(id)sender
 {
-    NSDictionary *distPoint = nil;
+    LGJSSDistributionPoint *distPoint = nil;
     if ([sender isKindOfClass:[NSMenuItem class]]) {
         distPoint = [(NSMenuItem *)sender representedObject];
     } else {
         NSInteger row = _jssDistributionPointTableView.selectedRow;
         if (row > -1) {
-            distPoint = [self filteredData][row];
+            distPoint = _distributionPoints[row];
         }
     }
-
-    NSMutableArray *workingArray = _defaults.JSSRepos.mutableCopy;
-    [workingArray removeObject:distPoint];
-    _defaults.JSSRepos = workingArray.copy;
+    [distPoint remove];
     [_jssDistributionPointTableView reloadData];
 }
 
 - (void)editDistributionPoint:(id)sender
 {
-    NSDictionary *distPoint = nil;
+    LGJSSDistributionPoint *distPoint = nil;
     if ([sender isKindOfClass:[NSMenuItem class]]) {
         distPoint = [(NSMenuItem *)sender representedObject];
     } else {
         NSInteger row = _jssDistributionPointTableView.selectedRow;
         if (0 <= row) {
-            distPoint = [self filteredData][row];
+            distPoint = _distributionPoints[row];
         }
     }
 
-    if (distPoint && distPoint[kLGJSSDistPointTypeKey]) {
+    if (distPoint) {
         if (!_preferencePanel) {
-            _preferencePanel = [[LGJSSDistributionPointsPrefPanel alloc] initWithDistPointDictionary:distPoint];
+            _preferencePanel = [[LGJSSDistributionPointsPrefPanel alloc] initWithDistPoint:distPoint];
         }
 
         [NSApp beginSheet:_preferencePanel.window
-           modalForWindow:_modalWindow
-            modalDelegate:self
-           didEndSelector:@selector(didClosePreferencePanel) contextInfo:nil];
-    }
-}
-
-#pragma mark - Text Field delegate
-- (void)controlTextDidChange:(NSNotification *)notification {
-    _jssStatusLight.image = [NSImage LGStatusPartiallyAvailable];
-
-    NSTextField *obj = notification.object;
-    if ([obj isEqualTo:_jssURLTF]) {
-        _defaults.JSSURL = obj.safe_stringValue;
-    } else if ([obj isEqualTo:_jssAPIUsernameTF]) {
-        _defaults.JSSAPIUsername = obj.safe_stringValue;
-    } else if ([obj isEqualTo:_jssAPIPasswordTF]) {
-        _defaults.JSSAPIPassword = obj.safe_stringValue;
-    }
-}
-
-- (void)controlTextDidEndEditing:(NSNotification *)obj {
-    if ([_jssURLTF isEqualTo:obj.object]) {
-        [self startStatusUpdate];
-        LGTestPort *tester = [[LGTestPort alloc] init];
-        [tester testServerURL:_jssURLTF.stringValue reply:^(BOOL reachable, NSString *redirectedURL) {
-            if (redirectedURL) {
-                NSAlert *alert = [[NSAlert alloc] init];
-                NSString *title = NSLocalizedStringFromTable(@"The server redirected the requested URL.",
-                                                             @"LocalizableJSSImporter",
-                                                             @"alert title when server sends a redirect for JSS");
-
-                NSString *informativeText = NSLocalizedStringFromTable(@"The server redirected the request to\n\n%@\n\nYou should consider using this for the JSS url.",
-                                                                       @"LocalizableJSSImporter",
-                                                                       @"informativeText when server sends a redirect.");
-                alert.messageText = title;
-                alert.informativeText = quick_formatString(informativeText, redirectedURL);
-                [alert addButtonWithTitle:@"Use suggested URL"];
-                [alert addButtonWithTitle:@"Ignore"];
-
-                if([alert runModal] == NSAlertFirstButtonReturn){
-                    _jssURLTF.stringValue = redirectedURL;
-                    _defaults.JSSURL = redirectedURL;
-                }
-            }
-            [self stopStatusUpdate:nil];
-        }];
+            modalForWindow:_modalWindow
+             modalDelegate:self
+            didEndSelector:@selector(didClosePreferencePanel)
+               contextInfo:nil];
     }
 }
 
 #pragma mark - Panel didEnd Selectors
 - (void)didClosePreferencePanel
 {
-    if (![NSThread isMainThread]) {
-        return [self performSelectorOnMainThread:@selector(didClosePreferencePanel) withObject:self waitUntilDone:NO];
-    }
-
-    [_preferencePanel.window close];
-    _preferencePanel = nil;
-    [_jssDistributionPointTableView reloadData];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [_preferencePanel.window close];
+        [_jssDistributionPointTableView reloadData];
+        _preferencePanel = nil;
+    });
 }
 @end

@@ -21,15 +21,19 @@
 #import "LGAutoPkgIntegrationView.h"
 #import "LGAutoPkgTask.h"
 #import "AHHelpPopover.h"
+#import "LGRecipeOverrides.h"
+
 
 static NSString *const kLGTokenRevokeButonTitle = @"Revoke API Token";
 static NSString *const kLGTokenGenerateButonTitle = @"Generate API Token";
 
 @interface LGAutoPkgIntegrationView ()
+
 @property (weak) IBOutlet NSTextField *apiUsernameTF;
 @property (weak) IBOutlet NSSecureTextField *apiPasswordTF;
 @property (weak) IBOutlet NSButton *generateAPITokenBT;
 @property (weak) IBOutlet NSButton *apiInfoHelpBT;
+@property (weak) IBOutlet NSPopUpButton *recipeEditorMenu;
 
 @property (weak) IBOutlet NSMatrix *proxySelectionMatrix;
 
@@ -67,6 +71,11 @@ static NSString *const kLGTokenGenerateButonTitle = @"Generate API Token";
     } else {
         [self.proxySelectionMatrix selectCellAtRow:0 column:0];
     }
+
+    NSString *currentEditor = [[LGDefaults standardUserDefaults] objectForKey:@"RecipeEditor"];
+    [_recipeEditorMenu addItemsWithTitles:[LGRecipeOverrides recipeEditors]];
+    [_recipeEditorMenu addItemWithTitle:@"Other..."];
+    [_recipeEditorMenu selectItemWithTitle:currentEditor];
 }
 
 #pragma mark - Proxies
@@ -141,4 +150,10 @@ static NSString *const kLGTokenGenerateButonTitle = @"Generate API Token";
         sender.enabled = YES;
     }];
 }
+
+- (IBAction)chooseRecipeEditor:(NSPopUpButton *)sender {
+    NSMenuItem *item = [LGRecipeOverrides setRecipeEditor:sender.selectedItem];
+    [sender selectItem:item];
+}
+
 @end

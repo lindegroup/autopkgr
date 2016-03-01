@@ -4,21 +4,57 @@
 <dict>
 	<key>summary_results</key>
 	<dict>
-		<key>jss_importer_summary_result</key>
+		<key>url_downloader_summary_result</key>
 		<dict>
 			<key>data_rows</key>
 			<array>
 				<dict>
-					<key>Package</key>
-					<string>AdobeFlashPlayer-17.0.0.134.pkg</string>
+					<key>download_path</key>
+					<string>~/Library/AutoPkg/Cache/com.github.timsutton.download.AutoDMG/downloads/AutoDMG.dmg</string>
+				</dict>
+				<dict>
+					<key>download_path</key>
+					<string>~/Library/AutoPkg/Cache/com.github.jleggat.BatChmod.download/downloads/batchmod_163.zip</string>
+				</dict>
+				<dict>
+					<key>download_path</key>
+					<string>~/Library/AutoPkg/Cache/com.github.jleggat.BonjourBrowser.download/downloads/BonjourBrowser.dmg</string>
+				</dict>
+				<dict>
+					<key>download_path</key>
+					<string>~/Library/AutoPkg/Cache/com.github.jleggat.download.CreateUserPkg/downloads/CreateUserPkg.dmg</string>
+				</dict>
+				<dict>
+					<key>download_path</key>
+					<string>~/Library/AutoPkg/Cache/com.github.jleggat.CreateUserPkg.install/downloads/CreateUserPkg.dmg</string>
+				</dict>
+				<dict>
+					<key>download_path</key>
+					<string>~/Library/AutoPkg/Cache/com.github.jleggat.BonjourBrowser.install/downloads/BonjourBrowser.dmg</string>
+				</dict>
+				<dict>
+					<key>download_path</key>
+					<string>~/Library/AutoPkg/Cache/com.github.jleggat.BatChmod.install/downloads/batchmod_163.zip</string>
+				</dict>
+				<dict>
+					<key>download_path</key>
+					<string>~/Library/AutoPkg/Cache/local.install.AutoDMG/downloads/AutoDMG.dmg</string>
+				</dict>
+				<dict>
+					<key>download_path</key>
+					<string>~/Library/AutoPkg/Cache/com.github.timsutton.munki.AutoDMG/downloads/AutoDMG.dmg</string>
+				</dict>
+				<dict>
+					<key>download_path</key>
+					<string>~/Library/AutoPkg/Cache/com.github.keeleysam.recipes.Caffeine.munki/downloads/Caffeine.zip</string>
 				</dict>
 			</array>
 			<key>header</key>
 			<array>
-				<string>Package</string>
+				<string>download_path</string>
 			</array>
 			<key>summary_text</key>
-			<string>The following items were importerd into the JSS:</string>
+			<string>The following new items were downloaded:</string>
 		</dict>
 		<key>pkg_copier_summary_result</key>
 		<dict>
@@ -35,6 +71,28 @@
 			</array>
 			<key>summary_text</key>
 			<string>The following packages were copied:</string>
+		</dict>
+		<key>pkg_creator_summary_result</key>
+		<dict>
+			<key>data_rows</key>
+			<array>
+				<dict>
+					<key>identifier</key>
+					<string>se.gu.it.AutoDMG.pkg</string>
+					<key>pkg_path</key>
+					<string>~/Library/AutoPkg/Cache/local.install.AutoDMG/AutoDMG-1.5.2.pkg</string>
+					<key>version</key>
+					<string>1.5.2</string>
+				</dict>
+			</array>
+			<key>header</key>
+			<array>
+				<string>identifier</string>
+				<string>version</string>
+				<string>pkg_path</string>
+			</array>
+			<key>summary_text</key>
+			<string>The following packages were built:</string>
 		</dict>
 		<key>install_from_dmg_summary_result</key>
 		<dict>
@@ -116,79 +174,21 @@
 			<key>summary_text</key>
 			<string>The following new items were imported into Munki:</string>
 		</dict>
-		<key>pkg_creator_summary_result</key>
+		<key>jss_importer_summary_result</key>
 		<dict>
 			<key>data_rows</key>
 			<array>
 				<dict>
-					<key>identifier</key>
-					<string>se.gu.it.AutoDMG.pkg</string>
-					<key>pkg_path</key>
-					<string>~/Library/AutoPkg/Cache/local.install.AutoDMG/AutoDMG-1.5.2.pkg</string>
-					<key>version</key>
-					<string>1.5.2</string>
+					<key>Package</key>
+					<string>AdobeFlashPlayer-17.0.0.134.pkg</string>
 				</dict>
 			</array>
 			<key>header</key>
 			<array>
-				<string>identifier</string>
-				<string>version</string>
-				<string>pkg_path</string>
+				<string>Package</string>
 			</array>
 			<key>summary_text</key>
-			<string>The following packages were built:</string>
-		</dict>
-		<key>url_downloader_summary_result</key>
-		<dict>
-			<key>data_rows</key>
-			<array>
-				<dict>
-					<key>download_path</key>
-					<string>~/Library/AutoPkg/Cache/com.github.timsutton.download.AutoDMG/downloads/AutoDMG.dmg</string>
-				</dict>
-				<dict>
-					<key>download_path</key>
-					<string>~/Library/AutoPkg/Cache/com.github.jleggat.BatChmod.download/downloads/batchmod_163.zip</string>
-				</dict>
-				<dict>
-					<key>download_path</key>
-					<string>~/Library/AutoPkg/Cache/com.github.jleggat.BonjourBrowser.download/downloads/BonjourBrowser.dmg</string>
-				</dict>
-				<dict>
-					<key>download_path</key>
-					<string>~/Library/AutoPkg/Cache/com.github.jleggat.download.CreateUserPkg/downloads/CreateUserPkg.dmg</string>
-				</dict>
-				<dict>
-					<key>download_path</key>
-					<string>~/Library/AutoPkg/Cache/com.github.jleggat.CreateUserPkg.install/downloads/CreateUserPkg.dmg</string>
-				</dict>
-				<dict>
-					<key>download_path</key>
-					<string>~/Library/AutoPkg/Cache/com.github.jleggat.BonjourBrowser.install/downloads/BonjourBrowser.dmg</string>
-				</dict>
-				<dict>
-					<key>download_path</key>
-					<string>~/Library/AutoPkg/Cache/com.github.jleggat.BatChmod.install/downloads/batchmod_163.zip</string>
-				</dict>
-				<dict>
-					<key>download_path</key>
-					<string>~/Library/AutoPkg/Cache/local.install.AutoDMG/downloads/AutoDMG.dmg</string>
-				</dict>
-				<dict>
-					<key>download_path</key>
-					<string>~/Library/AutoPkg/Cache/com.github.timsutton.munki.AutoDMG/downloads/AutoDMG.dmg</string>
-				</dict>
-				<dict>
-					<key>download_path</key>
-					<string>~/Library/AutoPkg/Cache/com.github.keeleysam.recipes.Caffeine.munki/downloads/Caffeine.zip</string>
-				</dict>
-			</array>
-			<key>header</key>
-			<array>
-				<string>download_path</string>
-			</array>
-			<key>summary_text</key>
-			<string>The following new items were downloaded:</string>
+			<string>The following items were importerd into the JSS:</string>
 		</dict>
 	</dict>
 	<key>failures</key>

@@ -20,6 +20,9 @@
 
 #import <Cocoa/Cocoa.h>
 
+@interface LGClearTable : NSTableView
+@end
+
 @protocol LGTableViewDataSource <NSTableViewDataSource>
 - (NSMenu *)contextualMenuForRow:(NSInteger)row;
 @end
@@ -30,5 +33,5 @@
 
 @end
 
-@interface LGInstallTableView : NSTableView
+@interface LGInstallTableView : LGClearTable
 @end

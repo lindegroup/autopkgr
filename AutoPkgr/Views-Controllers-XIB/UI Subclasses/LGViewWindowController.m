@@ -64,8 +64,8 @@
 
     NSRect rect = NSMakeRect(0,
                              0,
-                             minSize.width,
-                             minSize.height);
+                             minSize.width * 1.1,
+                             minSize.height * 1.1);
 
     [self.window setFrame:rect display:YES];
     [self.window setMinSize:minSize];
@@ -81,7 +81,12 @@
 
 - (IBAction)close:(id)sender
 {
-    [self.window close];
+    if ([self.window isKindOfClass:[NSWindow class]]) {
+        if([self.window makeFirstResponder:nil]){
+            [self.window orderOut:nil];
+            [NSApp endSheet:self.window];
+        }
+    }
 }
 
 - (void)configureLinkButtonForURL:(NSURL *)url

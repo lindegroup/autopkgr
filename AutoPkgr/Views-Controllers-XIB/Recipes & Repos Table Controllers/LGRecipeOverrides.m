@@ -37,7 +37,13 @@ const CFStringRef kUTTypePropertyList = CFSTR("com.apple.property-list");
 
     NSString *recipeName = recipe.Name;
     NSString *recipeIdentifier = recipe.Identifier;
-    NSString *overrideName = [self promptForOverrideName:recipeName];
+
+    NSString *overrideName = nil;
+    if ([recipe.Name isEqualToString:@"MakeCatalogs.munki"]){
+        overrideName = recipe.Name;
+    } else {
+        overrideName = [self promptForOverrideName:recipeName];
+    }
 
     if (overrideName && recipeIdentifier) {
         DevLog(@"Creating override for %@", recipeName);
@@ -136,7 +142,7 @@ const CFStringRef kUTTypePropertyList = CFSTR("com.apple.property-list");
 + (void)revealInFinder:(NSMenuItem *)sender
 {
     NSString *recipePath = [(LGAutoPkgRecipe *)sender.representedObject FilePath];
-    [[NSWorkspace sharedWorkspace] selectFile:recipePath inFileViewerRootedAtPath:nil];
+    [[NSWorkspace sharedWorkspace] selectFile:recipePath inFileViewerRootedAtPath:@"/"];
 }
 
 + (BOOL)overrideExistsForRecipe:(LGAutoPkgRecipe *)recipe
@@ -145,9 +151,10 @@ const CFStringRef kUTTypePropertyList = CFSTR("com.apple.property-list");
 }
 
 #pragma mark - Recipe Editor
-+ (void)setRecipeEditor:(NSMenuItem *)item
++ (NSMenuItem *)setRecipeEditor:(NSMenuItem *)item
 {
     NSString *newEditor;
+    NSMenu *menu = item.menu;
     if ([item.title isEqual:@"Other..."]) {
         NSOpenPanel *panel = [NSOpenPanel openPanel];
         panel.canChooseDirectories = NO;
@@ -158,10 +165,11 @@ const CFStringRef kUTTypePropertyList = CFSTR("com.apple.property-list");
         NSInteger button = [panel runModal];
         if (button == NSFileHandlingPanelOKButton) {
             newEditor = [[[panel.URL pathComponents] lastObject] stringByDeletingPathExtension];
+            item = [[NSMenuItem alloc] initWithTitle:newEditor action:nil keyEquivalent:@""];
+            [menu insertItem:item atIndex:0];
         } else {
-            return;
+            return item;
         }
-
     } else {
         newEditor = item.title;
     }
@@ -172,6 +180,7 @@ const CFStringRef kUTTypePropertyList = CFSTR("com.apple.property-list");
         [oldItem setState:NSOffState];
     }
     [item setState:NSOnState];
+    return item;
 }
 
 + (NSArray *)recipeEditors

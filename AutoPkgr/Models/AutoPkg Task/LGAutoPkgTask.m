@@ -48,6 +48,28 @@ static NSString *const autopkg()
     return @"/usr/local/bin/autopkg";
 }
 
+static NSDictionary *AutoPkgVerbStringToEnum(){
+    static dispatch_once_t onceToken;
+    __strong static NSDictionary *verbDict = nil;
+    dispatch_once(&onceToken, ^{
+        verbDict = @{
+                    @"run": @(kLGAutoPkgRun),
+                    @"list-recipes": @(kLGAutoPkgListRecipes),
+                    @"make-override": @(kLGAutoPkgMakeOverride),
+                    @"search": @(kLGAutoPkgSearch),
+                    @"info" : @(kLGAutoPkgInfo),
+                    @"repo-add" : @(kLGAutoPkgRepoAdd),
+                    @"repo-delete": @(kLGAutoPkgRepoDelete),
+                    @"repo-update": @(kLGAutoPkgRepoUpdate),
+                    @"repo-list": @(kLGAutoPkgRepoList),
+                    @"processor-info": @(kLGAutoPkgProcessorInfo),
+                    @"list-processors": @(kLGAutoPkgListProcessors),
+                    @"version": @(kLGAutoPkgVersion),
+                    };
+    });
+    return verbDict;
+}
+
 static NSString *const kLGAutoPkgTaskLock = @"com.lindegroup.autopkg.task.lock";
 static NSString *const AUTOPKG_GITHUB_API_TOKEN_FILE = @"~/.autopkg_gh_token";
 
@@ -76,6 +98,11 @@ NSString *const kLGAutoPkgRecipePathKey = @"Path";
 NSString *const kLGAutoPkgRepoNameKey = @"RepoName";
 NSString *const kLGAutoPkgRepoPathKey = @"RepoPath";
 NSString *const kLGAutoPkgRepoURLKey = @"RepoURL";
+
+
+NSString *const kLGMunkiSetDefaultCatalogEnabledKey = @"MunkiSetDefaultCatalogPreProcessorEnabled";
+NSString *const kLGPreProcessorDefaultsKey = @"PreProcessors";
+NSString *const kLGPostProcessorDefaultsKey = @"PostProcessors";
 
 // Reply blocks
 typedef void (^AutoPkgReplyResultsBlock)(NSArray *results, NSError *error);
@@ -431,42 +458,23 @@ typedef void (^AutoPkgReplyErrorBlock)(NSError *error);
     if (arguments.count) {
         [self.internalArgs addObjectsFromArray:arguments];
     }
-
-    NSString *verbString = [_arguments firstObject];
-    if ([verbString isEqualToString:@"version"]) {
-        _verb = kLGAutoPkgVersion;
-    } else if ([verbString isEqualToString:@"run"]) {
+    _verb = [AutoPkgVerbStringToEnum()[_arguments.firstObject] integerValue];
+    if (_verb == kLGAutoPkgRun){
         _verb = kLGAutoPkgRun;
         if (([_version version_isGreaterThanOrEqualTo:AUTOPKG_0_4_0])) {
             [self.internalArgs addObject:self.reportPlistFile];
         }
         [self.internalArgs addObject:@"-v"];
-    } else if ([verbString isEqualToString:@"list-recipes"]) {
-        _verb = kLGAutoPkgListRecipes;
-    } else if ([verbString isEqualToString:@"make-override"]) {
-        _verb = kLGAutoPkgMakeOverride;
-    } else if ([verbString isEqualToString:@"search"]) {
+
+        [self configurePreProcessors];
+        [self configurePostProcessors];
+    } else if (_verb == kLGAutoPkgSearch){
         _verb = kLGAutoPkgSearch;
         // If the api token file exists update the args.
         if ([[self class] apiTokenFileExists:nil]) {
             [self.internalArgs addObject:@"-t"];
         }
-    } else if ([verbString isEqualToString:@"info"]) {
-        _verb = kLGAutoPkgInfo;
-    } else if ([verbString isEqualToString:@"repo-add"]) {
-        _verb = kLGAutoPkgRepoAdd;
-    } else if ([verbString isEqualToString:@"repo-delete"]) {
-        _verb = kLGAutoPkgRepoDelete;
-    } else if ([verbString isEqualToString:@"repo-update"]) {
-        _verb = kLGAutoPkgRepoUpdate;
-    } else if ([verbString isEqualToString:@"repo-list"]) {
-        _verb = kLGAutoPkgRepoList;
-    } else if ([verbString isEqualToString:@"list-processors"]) {
-        _verb = kLGAutoPkgListProcessors;
-    } else if ([verbString isEqualToString:@"processor-info"]) {
-        _verb = kLGAutoPkgProcessorInfo;
     }
-
     [self.taskLock unlock];
 }
 
@@ -501,7 +509,7 @@ typedef void (^AutoPkgReplyErrorBlock)(NSError *error);
         self.task.standardInput = standardInput;
     }
 
-    if (_verb & (kLGAutoPkgRun | kLGAutoPkgRepoUpdate)) {
+    if (_verb & (kLGAutoPkgRun | kLGAutoPkgRepoUpdate | kLGAutoPkgRepoAdd)) {
 
         if (([_version version_isGreaterThanOrEqualTo:AUTOPKG_0_4_0])) {
             /* As of 0.4.0 AutoPkg saves the report.plist to a file rather than stdout,
@@ -519,6 +527,9 @@ typedef void (^AutoPkgReplyErrorBlock)(NSError *error);
             } else if (_verb == kLGAutoPkgRepoUpdate) {
                 progressPredicate = [NSPredicate predicateWithFormat:@"SELF CONTAINS[cd] '.git'"];
                 total = [[[self class] repoList] count];
+            } else if (_verb == kLGAutoPkgRepoAdd){
+                progressPredicate = [NSPredicate predicateWithFormat:@"SELF BEGINSWITH[CD] 'Attempting git'"];
+                total = self.arguments.count - 1;
             }
 
             BOOL verbose = [[NSUserDefaults standardUserDefaults] boolForKey:@"verboseAutoPkgRun"];
@@ -544,7 +555,11 @@ typedef void (^AutoPkgReplyErrorBlock)(NSError *error);
                       } else {
                           int cntStr = (int)round(count) + 1;
                           int totStr = (int)round(total);
-                          fullMessage = [[NSString stringWithFormat:@"(%d/%d) %@", cntStr, totStr, message] stringByTrimmingCharactersInSet:[NSCharacterSet newlineCharacterSet]];
+                          if (total){
+                              fullMessage = [[NSString stringWithFormat:@"(%d/%d) %@", cntStr, totStr, message] stringByTrimmingCharactersInSet:[NSCharacterSet newlineCharacterSet]];
+                          } else {
+                              fullMessage = message.trimmed;
+                          }
                       }
 
                       double progress = ((count / total) * 100);
@@ -628,6 +643,58 @@ typedef void (^AutoPkgReplyErrorBlock)(NSError *error);
         // To get status from autopkg set NSUnbufferedIO environment key to YES
         // Thanks to help from -- http://stackoverflow.com/questions/8251010
         [self addEnvironmentVariable:@"YES" forKey:@"NSUnbufferedIO"];
+    }
+}
+
+- (void)configurePreProcessors {
+    // If an autopkg run has been setup using a custom implementation
+    // that includes explicitly declared preprocessors don't override
+    // those settings.
+    if([self.internalArgs containsObject:@"--pre"] ||
+       [self.internalArgs containsObject:@"--preprocessor"]){
+        return;
+    }
+
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+
+    // Since the MunkiSetDefaultCatalog is part of the core autopkg lib,
+    // we've included an explicit default to check for that.
+    NSString *msdcKey = @"MunkiSetDefaultCatalog";
+    if (![self.internalArgs containsObject:msdcKey]) {
+        if ([defaults boolForKey:kLGMunkiSetDefaultCatalogEnabledKey]) {
+            [self.internalArgs addObjectsFromArray:@[@"--pre", msdcKey]];
+        }
+    }
+
+    NSArray *preprocessors = [defaults arrayForKey:kLGPreProcessorDefaultsKey];
+    if (preprocessors.count) {
+        [preprocessors enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+            // Prevent adding a duplicate entry.
+            if (![self.internalArgs containsObject:obj]) {
+                [self.internalArgs addObjectsFromArray:@[@"--pre", obj]];
+            }
+        }];
+    }
+}
+
+- (void)configurePostProcessors {
+    // If an autopkg run has been setup using a custom implementation
+    // that includes explicitly declared postprocessors don't override
+    // those settings.
+    if([self.internalArgs containsObject:@"--post"] ||
+       [self.internalArgs containsObject:@"--postprocessor"]){
+        return;
+    }
+
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSArray *postprocessors = [defaults arrayForKey:kLGPostProcessorDefaultsKey];
+    if (postprocessors.count) {
+        [postprocessors enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+            // Prevent adding a duplicate entry.
+            if (![self.internalArgs containsObject:obj]) {
+                [self.internalArgs addObjectsFromArray:@[@"--post", obj]];
+            }
+        }];
     }
 }
 
@@ -996,7 +1063,7 @@ typedef void (^AutoPkgReplyErrorBlock)(NSError *error);
     LGAutoPkgTask *task = [[LGAutoPkgTask alloc] initWithArguments:@[ @"repo-list" ]];
     [task launch];
     id results = [task results];
-    return [results isKindOfClass:[NSArray class]] ? results : nil;
+    return [results isKindOfClass:[NSArray class]] ? results : @[];
 }
 
 #pragma mark--Processor Methods--
@@ -1005,7 +1072,7 @@ typedef void (^AutoPkgReplyErrorBlock)(NSError *error);
     LGAutoPkgTask *task = [[LGAutoPkgTask alloc] initWithArguments:@[ @"list-processors" ]];
     [task launch];
     id results = [task results];
-    return [results isKindOfClass:[NSArray class]] ? results : nil;
+    return [results isKindOfClass:[NSArray class]] ? results : @[];
 }
 
 + (NSString *)processorInfo:(NSString *)processor

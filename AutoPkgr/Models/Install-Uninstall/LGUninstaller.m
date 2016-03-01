@@ -35,16 +35,13 @@
         NSData *authorization = [LGAutoPkgrAuthorizer authorizeHelper];
         assert(authorization != nil);
 
-        LGAutoPkgrHelperConnection *helper = [LGAutoPkgrHelperConnection new];
-        [helper connectToHelper];
+        LGAutoPkgrHelperConnection *helperConnection = [[LGAutoPkgrHelperConnection alloc] initWithProgressDelegate:_progressDelegate];
 
-        helper.connection.exportedObject = _progressDelegate;
-        helper.connection.exportedInterface = [NSXPCInterface interfaceWithProtocol:@protocol(LGProgressDelegate)];
-
-        [[helper.connection remoteObjectProxyWithErrorHandler:^(NSError *error) {
-            DLog(@"%@",error);
+        [helperConnection connectionError:^(NSError *error) {
             reply(error);
-        }] uninstallPackagesWithIdentifiers:packageIdentifiers authorization:authorization reply:^(NSArray *removed, NSArray *remain, NSError *error) {
+        }];
+
+        [[helperConnection remoteObjectProxy] uninstallPackagesWithIdentifiers:packageIdentifiers authorization:authorization reply:^(NSArray *removed, NSArray *remain, NSError *error) {
             if (removed.count) {
                 DLog(@"Successfully removed \t%@", [removed componentsJoinedByString:@"\n\t"]);
             }
@@ -52,6 +49,7 @@
                 DLog(@"Failed to removed \t%@", [remain componentsJoinedByString:@"\n\t"]);
             }
             reply(error);
+            [helperConnection closeConnection];
         }];
     }];
 }
@@ -122,19 +120,21 @@
         });
     };
 
-    LGAutoPkgrHelperConnection *helper = [LGAutoPkgrHelperConnection new];
     NSData *authorization = [LGAutoPkgrAuthorizer authorizeHelper];
     assert(authorization != nil);
 
-    [helper connectToHelper];
+    LGAutoPkgrHelperConnection *helperConnection = [[LGAutoPkgrHelperConnection alloc] init];
 
-    [[helper.connection remoteObjectProxyWithErrorHandler:^(NSError *error) {
+    [helperConnection connectionError:^(NSError *error) {
         didComplete(error);
-    }] uninstall:authorization
-        removeKeychains:removeKeychain
-               packages:nil
-                  reply:^(NSError *error) {
-                      didComplete(error);
+    }];
+
+    [[helperConnection remoteObjectProxy] uninstall:authorization
+                                    removeKeychains:removeKeychain
+                                           packages:nil
+                                              reply:^(NSError *error) {
+                                                  didComplete(error);
+                                                  [helperConnection closeConnection];
     }];
 }
 

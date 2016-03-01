@@ -35,10 +35,9 @@
  */
 @property (assign, nonatomic, readonly) BOOL isExpired;
 /**
- *  the interval of time before the validity the release info should be reloaded.
+ *  The interval of time before the validity the release info should be reloaded.
  */
 @property (assign, nonatomic, readonly) NSTimeInterval lifespan;
-
 
 @end
 

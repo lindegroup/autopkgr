@@ -29,7 +29,7 @@ extern NSString *const kLGNotificationOverrideDeleted;
 
 + (BOOL)overrideExistsForRecipe:(LGAutoPkgRecipe *)recipe;
 + (NSArray *)recipeEditors;
-+ (void)setRecipeEditor:(NSMenuItem *)item;
++ (NSMenuItem *)setRecipeEditor:(NSMenuItem *)item;
 + (void)createOverride:(NSMenuItem *)sender;
 + (void)deleteOverride:(NSMenuItem *)sender;
 + (void)revealInFinder:(NSMenuItem *)sender;

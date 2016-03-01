@@ -36,7 +36,7 @@
     [self resetCredentials];
 }
 
-- (void)retrieveDistributionPoints2:(LGHTTPCredential *)credential
+- (void)retrieveDistributionPoints:(LGHTTPCredential *)credential
                               reply:(void (^)(NSDictionary *distributionPoints, NSError *error))reply;
 {
     NSLog(@"server = %@", credential.serverURL);
@@ -70,74 +70,16 @@
     [manager GET:fullPath parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
         reply(responseObject, nil);
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        reply(nil, error);
+        NSError *responseError = [LGError errorWithResponse:operation.response];
+        reply(nil, responseError ?: error);
     }];
-}
-
-- (void)retrieveDistributionPoints:(LGHTTPCredential *)credential
-                             reply:(void (^)(NSDictionary *distributionPoints, NSError *error))reply
-{
-    NSMutableString *distPointAddress = [credential.server.trailingSlashRemoved mutableCopy];
-    [ distPointAddress appendString:@"/JSSResource/distributionpoints" ];
-
-    NSURL *url = [NSURL URLWithString:distPointAddress];
-
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
-
-    [request setValue:@"application/xml" forHTTPHeaderField:@"Accept"];
-    request.timeoutInterval = 5.0;
-
-    // Set up the operation
-    AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
-
-    operation.credential = credential.credential;
-    AFSecurityPolicy *policy = [AFSecurityPolicy defaultPolicy];
-
-    if (credential.sslTrustSetting & (kLGSSLTrustUserExplicitTrust | kLGSSLTrustUserConfirmedTrust)) {
-        // Even in the event the user has the certificate set to trust in their keychain
-        // that setting doesn't seem to get picked up by python-jss' request module so set verify to NO
-        policy.allowInvalidCertificates = YES;
-        policy.validatesCertificateChain = YES;
-    }
-
-    operation.securityPolicy = policy;
-
-    [operation setWillSendRequestForAuthenticationChallengeBlock:^(NSURLConnection *connection, NSURLAuthenticationChallenge *challenge) {
-        if ([challenge.protectionSpace.authenticationMethod isEqualToString:NSURLAuthenticationMethodServerTrust]){
-            [credential handleCertificateTrustChallenge:challenge reply:^(LGSSLTrustSettings trust) {}];
-        } else if (credential.credential && challenge.previousFailureCount < 1) {
-            [challenge.sender useCredential:credential.credential forAuthenticationChallenge:challenge];
-        } else {
-            [[challenge sender] continueWithoutCredentialForAuthenticationChallenge:challenge];
-        }
-    }];
-    
-    [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
-        NSError *error = nil;
-
-        NSDictionary *responseDictionary = [self xmlToDictionary:responseObject];
-
-        if (!responseDictionary) error = [LGError errorWithCode:kLGErrorJSSXMLSerializerError];
-        reply(responseDictionary,error);
-        
-        [self resetCache];
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        DLog(@"Response: %@",operation.response);
-        NSLog(@"Error: %@",error.localizedDescription);
-        if (operation.response) error = [LGError errorWithResponse:operation.response];
-        reply(nil,error);
-    }];
-
-    [operation start];
 }
 
 #pragma mark - Object Conversion
-
 - (NSDictionary *)xmlToDictionary:(id)xmlObject;
 {
     NSDictionary *dictionary = nil;
     NSError *error;
-
     if (xmlObject) {
         XMLDictionaryParser *xmlParser = [[XMLDictionaryParser alloc] init];
         if ([xmlObject isKindOfClass:[NSXMLParser class]]) {
