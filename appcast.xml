@@ -1,10 +1,65 @@
 <?xml version="1.0" encoding="utf-8"?>
-<rss version="2.0" xmlns:sparkle="http://www.andymatuschak.org/xml-namespaces/sparkle"  xmlns:dc="http://purl.org/dc/elements/1.1/">
+<rss version="2.0" xmlns:sparkle="http://www.andymatuschak.org/xml-namespaces/sparkle" xmlns:dc="http://purl.org/dc/elements/1.1/">
     <channel>
         <title>AutoPkgr Changelog</title>
         <link>https://raw.githubusercontent.com/lindegroup/autopkgr/appcast/appcast.xml</link>
         <description>Most recent changes with links to updates.</description>
         <language>en</language>
+        <item>
+            <title>Version 1.4</title>
+            <description>
+                <![CDATA[
+                <p>There's a little something for everybody in this major AutoPkgr release! We especially think you'll love the ability to mute certain types of notifications, the new simplified JSSImporter interface (with CDP support), and the much-requested ability to add/remove repos and recipes in bulk using multi-selection.</p>
+
+                <p>As always, get in touch with us if you have questions! Questions are welcome in our <a href="https://groups.google.com/forum/#!forum/autopkgr-discuss">Google Group</a>, and if you find a reproducible problem, please <a href="https://github.com/lindegroup/autopkgr/issues">submit an issue</a> on GitHub. The #autopkg channel on the <a href="http://macadmins.org/">MacAdmins Slack team</a> is also an excellent place to get real-time support for AutoPkg and AutoPkgr.</p>
+
+                <p>We hope you love it! <img class="emoji" title=":+1:" alt=":+1:" src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f44d.png" height="20" width="20" align="absmiddle"> </p>
+
+                <h3>Added</h3>
+
+                <ul>
+                    <li>You can now select which events trigger a notification. For example, you can receive only Munki import notifications, and ignore download notifications. In other words, no more daily emails about VLC downloading! (<a href="https://github.com/lindegroup/autopkgr/issues/184" class="issue-link js-issue-link" data-url="https://github.com/lindegroup/autopkgr/issues/184" data-id="47985403" data-error-text="Failed to load issue title" data-permission-text="Issue title is private">#184</a>)</li>
+                    <li>Ability to select multiple repos and then update, add, or remove the selected repos. (<a href="https://github.com/lindegroup/autopkgr/issues/434" class="issue-link js-issue-link" data-url="https://github.com/lindegroup/autopkgr/issues/434" data-id="102175472" data-error-text="Failed to load issue title" data-permission-text="Issue title is private">#434</a>)</li>
+                    <li>Ability to select multiple recipes and then run, enable, or disable the selected recipes. (<a href="https://github.com/lindegroup/autopkgr/issues/434" class="issue-link js-issue-link" data-url="https://github.com/lindegroup/autopkgr/issues/434" data-id="102175472" data-error-text="Failed to load issue title" data-permission-text="Issue title is private">#434</a>)</li>
+                    <li>Built-in integration with FileWave version 10 and higher, via the new <a href="https://github.com/autopkg/filewave">FileWaveImporter</a> processor. (<a href="https://github.com/lindegroup/autopkgr/issues/339" class="issue-link js-issue-link" data-url="https://github.com/lindegroup/autopkgr/issues/339" data-id="70773536" data-error-text="Failed to load issue title" data-permission-text="Issue title is private">#339</a>, with thanks to <a href="https://github.com/johncclayton" class="user-mention">@johncclayton</a>.)</li>
+                    <li>Integration with new <a href="https://github.com/jbaker10/LANrevImporter">LANrevImporter</a> processor. (<a href="https://github.com/lindegroup/autopkgr/issues/488" class="issue-link js-issue-link" data-url="https://github.com/lindegroup/autopkgr/issues/488" data-id="135764087" data-error-text="Failed to load issue title" data-permission-text="Issue title is private">#488</a>) See the <a href="https://github.com/jbaker10/LANrevImporter/wiki/Switching-from-AbsoluteManageExport-to-LANrevImporter">LANrevImporter wiki</a> for information on migrating from AbsoluteManageExport.</li>
+                    <li>Ability to switch between multiple recipe lists. (<a href="https://github.com/lindegroup/autopkgr/issues/263" class="issue-link js-issue-link" data-url="https://github.com/lindegroup/autopkgr/issues/263" data-id="56890158" data-error-text="Failed to load issue title" data-permission-text="Issue title is private">#263</a>)</li>
+                    <li>Ability to specify pre/post processors. (<a href="https://github.com/lindegroup/autopkgr/issues/346" class="issue-link js-issue-link" data-url="https://github.com/lindegroup/autopkgr/issues/346" data-id="72481274" data-error-text="Failed to load issue title" data-permission-text="Issue title is private">#346</a>, <a href="https://github.com/lindegroup/autopkgr/issues/384" class="issue-link js-issue-link" data-url="https://github.com/lindegroup/autopkgr/issues/384" data-id="96518739" data-error-text="Failed to load issue title" data-permission-text="Issue title is private">#384</a>)</li>
+                    <li>MakeCatalogs.munki will be included when .munki recipes are run from the contextual menu. (<a href="https://github.com/lindegroup/autopkgr/issues/485" class="issue-link js-issue-link" data-url="https://github.com/lindegroup/autopkgr/issues/485" data-id="132856369" data-error-text="Failed to load issue title" data-permission-text="Issue title is private">#485</a>)</li>
+                </ul>
+
+                <h3>Fixed</h3>
+
+                <ul>
+                    <li>Fixed a bug that caused progress spinners to incorrectly display on multiple recipes if they share the same name. (<a href="https://github.com/lindegroup/autopkgr/issues/447" class="issue-link js-issue-link" data-url="https://github.com/lindegroup/autopkgr/issues/447" data-id="106171954" data-error-text="Failed to load issue title" data-permission-text="Issue title is private">#447</a>)</li>
+                    <li>Fixed a bug that caused AutoPkgr to freeze when adding a custom repo with a trailing space in the URL. (<a href="https://github.com/lindegroup/autopkgr/issues/486" class="issue-link js-issue-link" data-url="https://github.com/lindegroup/autopkgr/issues/486" data-id="134169920" data-error-text="Failed to load issue title" data-permission-text="Issue title is private">#486</a>)</li>
+                    <li>Fixed a minor counting error in log output. (<a href="https://github.com/lindegroup/autopkgr/issues/446" class="issue-link js-issue-link" data-url="https://github.com/lindegroup/autopkgr/issues/446" data-id="106171724" data-error-text="Failed to load issue title" data-permission-text="Issue title is private">#446</a>)</li>
+                    <li>Fixed crash that occurred if Git was not reinstalled after an OS X upgrade. (<a href="https://github.com/lindegroup/autopkgr/issues/458" class="issue-link js-issue-link" data-url="https://github.com/lindegroup/autopkgr/issues/458" data-id="112072051" data-error-text="Failed to load issue title" data-permission-text="Issue title is private">#458</a>)</li>
+                    <li>Fixed a bug that resulted in unreliable "Run This Only Recipe Only" selection. (<a href="https://github.com/lindegroup/autopkgr/issues/456" class="issue-link js-issue-link" data-url="https://github.com/lindegroup/autopkgr/issues/456" data-id="110283417" data-error-text="Failed to load issue title" data-permission-text="Issue title is private">#456</a>)</li>
+                    <li>XPC connections to helper tool are now explicitly closed on process completion.</li>
+                </ul>
+
+                <h3>Changed</h3>
+
+                <ul>
+                    <li>Totally redesigned and simplified the JSSImporter settings sheet.</li>
+                    <li>JSSImporter configuration UI now supports cloud distribution points (CDP) and local distribution points. (<a href="https://github.com/lindegroup/autopkgr/issues/463" class="issue-link js-issue-link" data-url="https://github.com/lindegroup/autopkgr/issues/463" data-id="115878479" data-error-text="Failed to load issue title" data-permission-text="Issue title is private">#463</a>, <a href="https://github.com/lindegroup/autopkgr/issues/309" class="issue-link js-issue-link" data-url="https://github.com/lindegroup/autopkgr/issues/309" data-id="60235783" data-error-text="Failed to load issue title" data-permission-text="Issue title is private">#309</a>)</li>
+                    <li>MakeCatalogs.munki recipe is now added by name rather than by identifier. An override with the same name will now be used, if one exists. (Hat tip to <a href="https://github.com/grahampugh" class="user-mention">@grahampugh</a>.)</li>
+                    <li>General improvements to integration performance. No longer makes duplicate GitHub API calls when "releases" don't exist.</li>
+                    <li>Updated "AutoPkgr" link in footer of notification emails to point to <a href="http://www.lindegroup.com/autopkgr">AutoPkgr information page</a> instead of <a href="https://github.com/lindegroup/autopkgr">GitHub repo</a>.</li>
+                    <li>Moved Recipe/Override chooser out of contextual menu and into AutoPkg preference panel.</li>
+                    <li>Widened images in readme.md so they'll look awesome with GitHub.com's new repo layout.</li>
+                    <li>Updated bundled version of Sparkle auto-update framework.</li>
+                    <li>The "Add Repo" button and associated text field now work with any supported URL, not just HTTPS.</li>
+                    <li>When you right-click and run a single Munki recipe, AutoPkgr will now run MakeCatalogs.munki too.</li>
+                    <li>Made width of tab views more consistent.</li>
+                </ul>
+                ]]>
+            </description>
+            <sparkle:minimumSystemVersion>10.8</sparkle:minimumSystemVersion>
+            <pubDate>Tue, 1 March 2016 14:00:00 -0700</pubDate>
+            <enclosure url="https://github.com/lindegroup/autopkgr/releases/download/v1.4/AutoPkgr-1.4.dmg" sparkle:version="1235" sparkle:shortVersionString="1.4" type="application/octet-stream" />
+        </item>
         <item>
             <title>Version 1.3.2</title>
             <description>
