@@ -12,7 +12,7 @@ All notable changes to this project will be documented in this file. This projec
 - Integration with new [LANrevImporter](https://github.com/jbaker10/LANrevImporter) processor. (#488) See the [LANrevImporter wiki](https://github.com/jbaker10/LANrevImporter/wiki/Switching-from-AbsoluteManageExport-to-LANrevImporter) for information on migrating from AbsoluteManageExport.
 - Ability to switch between multiple recipe lists. (#263)
 - Ability to specify pre/post processors. (#346, #384)
-- MakeCatalogs.munki will be included when .munki recipes are run from the contextual menu.
+- MakeCatalogs.munki will be included when .munki recipes are run from the contextual menu. (#485)
 
 ### Fixed
 - Fixed a bug that caused progress spinners to incorrectly display on multiple recipes if they share the same name. (#447)
@@ -24,7 +24,7 @@ All notable changes to this project will be documented in this file. This projec
 
 ### Changed
 - Totally redesigned and simplified the JSSImporter settings sheet.
-- JSSImporter configuration UI now supports cloud distribution points (CDP) and local distribution points. (#463)
+- JSSImporter configuration UI now supports cloud distribution points (CDP) and local distribution points. (#463, #309)
 - MakeCatalogs.munki recipe is now added by name rather than by identifier. An override with the same name will now be used, if one exists. (Hat tip to @grahampugh.)
 - General improvements to integration performance. No longer makes duplicate GitHub API calls when "releases" don't exist.
 - Updated "AutoPkgr" link in footer of notification emails to point to [AutoPkgr information page](http://www.lindegroup.com/autopkgr) instead of [GitHub repo](https://github.com/lindegroup/autopkgr).
