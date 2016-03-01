@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file. This project adheres to [Semantic Versioning](http://semver.org/).
 
-## [1.4] - pending release
+## [1.4] - 2016-03-01
 
 ### Added
 - You can now select which events trigger a notification. For example, you can receive only Munki import notifications, and ignore download notifications. In other words, no more daily emails about VLC downloading! (#184)
