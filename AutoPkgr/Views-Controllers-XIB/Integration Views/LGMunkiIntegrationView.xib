@@ -87,12 +87,12 @@
                         <font key="font" metaFont="smallSystem"/>
                     </buttonCell>
                 </button>
-                <button hidden="YES" translatesAutoresizingMaskIntoConstraints="NO" id="dUZ-nf-rmK">
+                <button translatesAutoresizingMaskIntoConstraints="NO" id="dUZ-nf-rmK">
                     <rect key="frame" x="18" y="25" width="258" height="18"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="254" id="zLo-1b-xag"/>
                     </constraints>
-                    <buttonCell key="cell" type="check" title="Check for Munki development releases" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="zrd-q4-IIc">
+                    <buttonCell key="cell" type="check" title="Check for Munki development releases" bezelStyle="regularSquare" imagePosition="left" inset="2" id="zrd-q4-IIc">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                         <font key="font" metaFont="system"/>
                     </buttonCell>
