@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file. This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [Unreleased](unreleased)
+
+### Added
+- We added a checkbox that allows you to specify whether you want to check for development Munki tools releases, in addition to official production-ready Munki tools releases. (#493)
+- AutoPkgr now allows you to customize the template used to generate notifications when new actions have occurred. Check it out at the bottom of the Notifications tab. (#184)
+
 ## [1.4] - 2016-03-01
 
 ### Added
