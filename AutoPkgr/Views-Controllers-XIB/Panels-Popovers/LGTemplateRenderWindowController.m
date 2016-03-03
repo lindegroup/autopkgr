@@ -3,7 +3,7 @@
 //  AutoPkgr
 //
 //  Created by Eldon on 12/6/15.
-//  Copyright © 2015 The Linde Group, Inc. All rights reserved.
+//  Copyright © 2015-2016 The Linde Group, Inc. All rights reserved.
 //
 
 #import "LGTemplateRenderWindowController.h"
@@ -28,7 +28,7 @@
 @property (unsafe_unretained) IBOutlet NSTextField *errorReport;
 
 @property (weak) IBOutlet NSOutlineView *exampleDataOutlineView;
-@property (weak) IBOutlet NSTextField *unsavedChanges;
+@property (weak) IBOutlet NSButton *unsavedChanges;
 
 @end
 
@@ -43,7 +43,7 @@
     [super windowDidLoad];
     // Implement this method to handle any initialization after your
     // window controller's window has been loaded from its nib file.
-    // 
+    //
 }
 
 - (void)awakeFromNib {
@@ -112,7 +112,7 @@
 
 - (IBAction)save:(id)sender {
     if ([self renderToView:_inputView.string]) {
-        _unsavedChanges.hidden = YES;
+        [_unsavedChanges setEnabled:NO];
         [_serviceClass setReportTemplate:_inputView.string];
     } else {
         NSInteger line = [self errorLine];
@@ -139,7 +139,7 @@
 
 - (void)textDidChange:(NSNotification *)notification {
     [self renderToView:_inputView.string];
-    _unsavedChanges.hidden = NO;
+    [_unsavedChanges setEnabled:YES];
 }
 
 - (NSString *)renderedText:(NSError *__autoreleasing*)error {
