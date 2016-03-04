@@ -37,6 +37,7 @@
     GRMustacheTemplate *_template;
     NSString *_templateString;
     ACEMode _currentMode;
+    BOOL _textDidChangeDidDefer;
 }
 
 - (void)windowDidLoad {
@@ -48,6 +49,7 @@
 
 - (void)awakeFromNib {
     self.inputView.delegate = self;
+    self.unsavedChanges.enabled = NO;
 
     ACETheme theme = [[NSUserDefaults standardUserDefaults] integerForKey:@"SyntaxEditorTheme"];
     [self.inputView setTheme:theme];
@@ -112,7 +114,7 @@
 
 - (IBAction)save:(id)sender {
     if ([self renderToView:_inputView.string]) {
-        [_unsavedChanges setEnabled:NO];
+        self.unsavedChanges.enabled = NO;
         [_serviceClass setReportTemplate:_inputView.string];
     } else {
         NSInteger line = [self errorLine];
@@ -139,7 +141,12 @@
 
 - (void)textDidChange:(NSNotification *)notification {
     [self renderToView:_inputView.string];
-    [_unsavedChanges setEnabled:YES];
+
+    // Defer once...
+    if(_textDidChangeDidDefer){
+        self.unsavedChanges.enabled = YES;
+    }
+    _textDidChangeDidDefer = YES;
 }
 
 - (NSString *)renderedText:(NSError *__autoreleasing*)error {
