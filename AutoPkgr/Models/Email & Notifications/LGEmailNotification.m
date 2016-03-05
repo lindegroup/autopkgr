@@ -130,6 +130,10 @@
     credential.server = _defaults.SMTPServer;
     credential.port = _defaults.SMTPPort;
 
+    if(!credential.server || !credential.port){
+        return reply(nil, [LGError errorWithCode:kLGErrorSendingEmail]);
+    }
+    
     if (_defaults.SMTPAuthenticationEnabled) {
         [[self class] infoFromKeychain:^(NSString *infoOrPassword, NSError *error) {
             credential.user = [[self class] account];
