@@ -46,7 +46,7 @@
 }
 
 + (NSString *)summaryResultKey {
-    return @"virustotalanalyzer_summary_result";
+    return @"virus_total_analyzer_summary_result";
 }
 
 - (void)customUninstallActions:(void (^)(NSError *))reply {
