@@ -54,7 +54,7 @@
     _MacPatchPasswordTF.delegate = self;
     _MacPatchPasswordTF.safe_stringValue = _defaults.MP_PASSWORD;
 
-    // This will return nil the first time (register defaults equivelant.)
+    // This will return nil the first time (register defaults equivalent).
     if(![_defaults autoPkgDomainObject:NSStringFromSelector(@selector(MP_SSL_VERIFY))]){
         _defaults.MP_SSL_VERIFY = YES;
     }

@@ -1,5 +1,5 @@
 //
-//  LGLANrevIntegrationView.h
+//  LGVirusTotalAnalyzerIntegration.h
 //  AutoPkgr
 //
 //  Copyright 2016 Elliot Jordan
@@ -17,8 +17,20 @@
 //  limitations under the License.
 //
 
-#import "LGBaseIntegrationViewController.h"
+#import "LGIntegration.h"
+#import "LGDefaults.h"
+#import "LGIntegration+Protocols.h"
 
-@interface LGLANrevIntegrationView : LGBaseIntegrationViewController
+@interface LGVirusTotalAnalyzerIntegration : LGIntegration<LGIntegrationSharedProcessor>
+
+@end
+
+@interface LGVirusTotalAnalyzerDefaults : LGDefaults
+
+@property (copy, nonatomic) NSString *VIRUSTOTAL_API_KEY;
+@property (nonatomic) BOOL VIRUSTOTAL_ALWAYS_REPORT;
+@property (nonatomic) BOOL VIRUSTOTAL_AUTO_SUBMIT;
+@property (nonatomic) NSInteger VIRUSTOTAL_AUTO_SUBMIT_MAX_SIZE;
+@property (nonatomic) NSInteger VIRUSTOTAL_SLEEP_SECONDS;
 
 @end
