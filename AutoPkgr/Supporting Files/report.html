@@ -206,6 +206,7 @@ value using the above `summary_result.foo_summary_result` syntax.
             {{/ pkg_creator.data_rows.count }}
 
             <!-- Imported to Munki -->
+            <!-- "report_fields": ["name", "version", "catalogs", "pkginfo_path", "pkg_repo_path"] -->
             {{# munki_importer.data_rows.count }}
                 <h3>{{ munki_importer.summary_text }}</h3>
                 <table>
@@ -280,7 +281,7 @@ value using the above `summary_result.foo_summary_result` syntax.
                     {{# macpatch_importer.data_rows }}
                         <li>{{ name }}
                             Version:
-                            {{ version}}</li>
+                            {{ version }}</li>
                     {{/ macpatch_importer.data_rows }}
                 </ul>
             {{/ macpatch_importer.data_rows.count }}
