@@ -47,11 +47,18 @@
 
     _VirusTotalApiKeyTF.delegate = self;
     _VirusTotalApiKeyTF.safe_stringValue = _defaults.VIRUSTOTAL_API_KEY;
+
+    // If we're using the default API key, this should be disabled.
+    // If we're using our own API key, this should be enabled and inherit whatever value is in VIRUSTOTAL_API_KEY.
     _VirusTotalApiKeyTF.enabled = NO;
 
     _VirusTotalAutoSubmitMaxSizeTF.delegate = self;
+
+    // If VIRUSTOTAL_AUTO_SUBMIT is set to NO, this field should be disabled.
+    // If VIRUSTOTAL_AUTO_SUBMIT is set to YES, this should be enabled and inherit whatever value is in VIRUSTOTAL_AUTO_SUBMIT_MAX_SIZE.
     _VirusTotalAutoSubmitMaxSizeTF.enabled = NO;
 
+    // If there is no VIRUSTOTAL_SLEEP_SECONDS preference, this defaults to 15.
     _VirusTotalSleepSecondsTF.delegate = self;
 }
 
