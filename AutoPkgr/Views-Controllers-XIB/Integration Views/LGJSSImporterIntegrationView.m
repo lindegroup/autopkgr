@@ -248,6 +248,7 @@
                          informativeTextWithFormat:infoText, shareName];
 
     NSSecureTextField *input = [[NSSecureTextField alloc] init];
+    [input setLineBreakMode:NSLineBreakByClipping];
     [input setFrame:NSMakeRect(0, 0, 300, 24)];
     [alert setAccessoryView:input];
 
