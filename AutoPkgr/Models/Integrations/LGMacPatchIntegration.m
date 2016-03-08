@@ -36,7 +36,7 @@
     return @"https://github.com/SMSG-MAC-DEV/MacPatch-AutoPKG.git";
 }
 
-+(NSURL *)homePage
++ (NSURL *)homePage
 {
     return [NSURL URLWithString: @"https://github.com/SMSG-MAC-DEV/MacPatch-AutoPKG"];
 }

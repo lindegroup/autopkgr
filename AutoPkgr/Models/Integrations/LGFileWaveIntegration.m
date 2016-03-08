@@ -38,7 +38,7 @@
     return @"https://github.com/autopkg/filewave.git";
 }
 
-+(NSURL *)homePage
++ (NSURL *)homePage
 {
     return [NSURL URLWithString: @"https://github.com/autopkg/filewave"];
 }

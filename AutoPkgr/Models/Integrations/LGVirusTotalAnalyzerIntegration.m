@@ -36,7 +36,7 @@
     return @"https://github.com/hjuutilainen/autopkg-virustotalanalyzer.git";
 }
 
-+(NSURL *)homePage
++ (NSURL *)homePage
 {
     return [NSURL URLWithString: @"https://github.com/hjuutilainen/autopkg-virustotalanalyzer"];
 }
