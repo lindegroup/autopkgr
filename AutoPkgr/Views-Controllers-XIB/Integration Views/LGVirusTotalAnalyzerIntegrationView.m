@@ -47,6 +47,12 @@
 
     _VirusTotalApiKeyTF.delegate = self;
     _VirusTotalApiKeyTF.safe_stringValue = _defaults.VIRUSTOTAL_API_KEY;
+    _VirusTotalApiKeyTF.enabled = NO;
+
+    _VirusTotalAutoSubmitMaxSizeTF.delegate = self;
+    _VirusTotalAutoSubmitMaxSizeTF.enabled = NO;
+
+    _VirusTotalSleepSecondsTF.delegate = self;
 }
 
 - (void)controlTextDidChange:(NSNotification *)notification {
@@ -55,6 +61,26 @@
     // VIRUSTOTAL_API_KEY
     if ([notification.object isEqualTo:_VirusTotalApiKeyTF]) {
         _defaults.VIRUSTOTAL_API_KEY = string;
+    }
+
+    // VIRUSTOTAL_ALWAYS_REPORT
+    if ([notification.object isEqualTo:_VirusTotalAlwaysReportBT]) {
+        _defaults.VIRUSTOTAL_ALWAYS_REPORT = NO;
+    }
+
+    // VIRUSTOTAL_AUTO_SUBMIT
+    if ([notification.object isEqualTo:_VirusTotalAutoSubmitBT]) {
+        _defaults.VIRUSTOTAL_AUTO_SUBMIT = NO;
+    }
+
+    // VIRUSTOTAL_AUTO_SUBMIT_MAX_SIZE
+    if ([notification.object isEqualTo:_VirusTotalAutoSubmitMaxSizeTF]) {
+        _defaults.VIRUSTOTAL_AUTO_SUBMIT_MAX_SIZE = 419430400;
+    }
+
+    // VIRUSTOTAL_SLEEP_SECONDS
+    if ([notification.object isEqualTo:_VirusTotalSleepSecondsTF]) {
+        _defaults.VIRUSTOTAL_SLEEP_SECONDS = 15;
     }
 }
 @end

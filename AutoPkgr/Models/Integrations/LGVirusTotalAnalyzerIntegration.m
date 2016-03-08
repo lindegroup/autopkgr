@@ -101,7 +101,7 @@
 // VIRUSTOTAL_AUTO_SUBMIT_MAX_SIZE
 
 - (NSInteger)VIRUSTOTAL_AUTO_SUBMIT_MAX_SIZE {
-    return [self autoPkgDomainObject:NSStringFromSelector(@selector(VIRUSTOTAL_AUTO_SUBMIT_MAX_SIZE))];
+    return [self integerForKey:NSStringFromSelector(@selector(VIRUSTOTAL_AUTO_SUBMIT_MAX_SIZE))];
 }
 
 -(void)setVIRUSTOTAL_AUTO_SUBMIT_MAX_SIZE:(NSInteger)VIRUSTOTAL_AUTO_SUBMIT_MAX_SIZE {
@@ -111,7 +111,7 @@
 // VIRUSTOTAL_SLEEP_SECONDS
 
 - (NSInteger)VIRUSTOTAL_SLEEP_SECONDS {
-    return [self autoPkgDomainObject:NSStringFromSelector(@selector(VIRUSTOTAL_SLEEP_SECONDS))];
+    return [self integerForKey:NSStringFromSelector(@selector(VIRUSTOTAL_SLEEP_SECONDS))];
 }
 
 -(void)setVIRUSTOTAL_SLEEP_SECONDS:(NSInteger)VIRUSTOTAL_SLEEP_SECONDS {
