@@ -163,5 +163,17 @@
 </ul>
 {{/ macpatch_importer.data_rows.count }}
 
+<!-- Scanned by VirusTotalAnalyzer -->
+<!-- 'report_fields': ['name', 'ratio', 'permalink'] -->
+{{# virus_total_analyzer.data_rows.count }}
+<h3>{{ virus_total_analyzer.summary_text }}</h3>
+<ul>
+    {{# virus_total_analyzer.data_rows }}
+    <li>{{ name }}
+        {{ ratio }}
+        {{ permalink }}</li>
+    {{/ virus_total_analyzer.data_rows }}
+</ul>
+{{/ virus_total_analyzer.data_rows.count }}
 
 <!-- End summary results-->
