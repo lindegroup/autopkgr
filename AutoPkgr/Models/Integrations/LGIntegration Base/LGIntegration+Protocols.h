@@ -90,7 +90,7 @@
 
 
 @interface LGIntegration () <LGProgressDelegate>
--(NSString *)remoteVersion; // This is just here to so subclasses have access to the super's implementation.
+- (NSString *)remoteVersion; // This is just here to so subclasses have access to the super's implementation.
 
 #pragma mark - Instance methods to override
 

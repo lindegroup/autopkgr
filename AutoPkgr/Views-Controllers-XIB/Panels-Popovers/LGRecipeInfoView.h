@@ -23,6 +23,6 @@
 
 @interface LGRecipeInfoView : NSViewController
 
--(instancetype)initWithRecipe:(LGAutoPkgRecipe *)recipe;
+- (instancetype)initWithRecipe:(LGAutoPkgRecipe *)recipe;
 
 @end

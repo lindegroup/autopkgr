@@ -91,7 +91,7 @@
     return [self autoPkgDomainObject:NSStringFromSelector(@selector(FW_SERVER_HOST))];
 }
 
--(void)setFW_SERVER_HOST:(NSString *)FW_SERVER_HOST {
+- (void)setFW_SERVER_HOST:(NSString *)FW_SERVER_HOST {
     [self setAutoPkgDomainObject:FW_SERVER_HOST forKey:NSStringFromSelector(@selector(FW_SERVER_HOST))];
 }
 
@@ -100,17 +100,17 @@
     return [self autoPkgDomainObject:NSStringFromSelector(@selector(FW_SERVER_PORT))];
 }
 
--(void)setFW_SERVER_PORT:(NSString *)FW_SERVER_PORT {
+- (void)setFW_SERVER_PORT:(NSString *)FW_SERVER_PORT {
     [self setAutoPkgDomainObject:FW_SERVER_PORT forKey:NSStringFromSelector(@selector(FW_SERVER_PORT))];
 }
 
 // USER
--(NSString *)FW_ADMIN_USER{
+- (NSString *)FW_ADMIN_USER{
     return [self autoPkgDomainObject:NSStringFromSelector(@selector(FW_ADMIN_USER))];
 
 }
 
--(void)setFW_ADMIN_USER:(NSString *)FW_ADMIN_USER {
+- (void)setFW_ADMIN_USER:(NSString *)FW_ADMIN_USER {
     [self setAutoPkgDomainObject:FW_ADMIN_USER forKey:NSStringFromSelector(@selector(FW_ADMIN_USER))];
 }
 

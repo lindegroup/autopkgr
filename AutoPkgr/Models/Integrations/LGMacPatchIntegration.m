@@ -69,17 +69,17 @@
     return [self autoPkgDomainObject:NSStringFromSelector(@selector(MP_URL))];
 }
 
--(void)setMP_URL:(NSString *)MP_URL {
+- (void)setMP_URL:(NSString *)MP_URL {
     [self setAutoPkgDomainObject:MP_URL forKey:NSStringFromSelector(@selector(MP_URL))];
 }
 
 // USER
--(NSString *)MP_USER{
+- (NSString *)MP_USER{
     return [self autoPkgDomainObject:NSStringFromSelector(@selector(MP_USER))];
 
 }
 
--(void)setMP_USER:(NSString *)MP_USER {
+- (void)setMP_USER:(NSString *)MP_USER {
     [self setAutoPkgDomainObject:MP_USER forKey:NSStringFromSelector(@selector(MP_USER))];
 }
 

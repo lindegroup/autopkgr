@@ -72,7 +72,7 @@
     return [self autoPkgDomainObject:NSStringFromSelector(@selector(VIRUSTOTAL_API_KEY))];
 }
 
--(void)setVIRUSTOTAL_API_KEY:(NSString *)VIRUSTOTAL_API_KEY {
+- (void)setVIRUSTOTAL_API_KEY:(NSString *)VIRUSTOTAL_API_KEY {
     [self setAutoPkgDomainObject:VIRUSTOTAL_API_KEY forKey:NSStringFromSelector(@selector(VIRUSTOTAL_API_KEY))];
 }
 
@@ -104,7 +104,7 @@
     return [self integerForKey:NSStringFromSelector(@selector(VIRUSTOTAL_AUTO_SUBMIT_MAX_SIZE))];
 }
 
--(void)setVIRUSTOTAL_AUTO_SUBMIT_MAX_SIZE:(NSInteger)VIRUSTOTAL_AUTO_SUBMIT_MAX_SIZE {
+- (void)setVIRUSTOTAL_AUTO_SUBMIT_MAX_SIZE:(NSInteger)VIRUSTOTAL_AUTO_SUBMIT_MAX_SIZE {
     [self setAutoPkgDomainObject:@(VIRUSTOTAL_AUTO_SUBMIT_MAX_SIZE) forKey:NSStringFromSelector(@selector(VIRUSTOTAL_AUTO_SUBMIT_MAX_SIZE))];
 }
 
@@ -114,7 +114,7 @@
     return [self integerForKey:NSStringFromSelector(@selector(VIRUSTOTAL_SLEEP_SECONDS))];
 }
 
--(void)setVIRUSTOTAL_SLEEP_SECONDS:(NSInteger)VIRUSTOTAL_SLEEP_SECONDS {
+- (void)setVIRUSTOTAL_SLEEP_SECONDS:(NSInteger)VIRUSTOTAL_SLEEP_SECONDS {
     [self setAutoPkgDomainObject:@(VIRUSTOTAL_SLEEP_SECONDS) forKey:NSStringFromSelector(@selector(VIRUSTOTAL_SLEEP_SECONDS))];
 }
 

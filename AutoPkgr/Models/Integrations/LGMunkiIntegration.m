@@ -111,7 +111,7 @@ static NSString *const kLGMunkiimportDomain = @"com.googlecode.munki.munkiimport
 @implementation LGDefaults (munki)
 
 #pragma mark - Default catalog
--(void)setDefault_catalog:(NSString *)default_catalog {
+- (void)setDefault_catalog:(NSString *)default_catalog {
     [self setMunkiDomainObject:default_catalog forKey:NSStringFromSelector(@selector(default_catalog))];
 }
 
@@ -120,7 +120,7 @@ static NSString *const kLGMunkiimportDomain = @"com.googlecode.munki.munkiimport
 }
 
 #pragma mark - Editor
--(void)setEditor:(NSString *)editor {
+- (void)setEditor:(NSString *)editor {
     [self setMunkiDomainObject:editor forKey:NSStringFromSelector(@selector(editor))];
 }
 
@@ -133,16 +133,16 @@ static NSString *const kLGMunkiimportDomain = @"com.googlecode.munki.munkiimport
     [self setMunkiDomainObject:pkginfo_extension forKey:NSStringFromSelector(@selector(pkginfo_extension))];
 }
 
--(NSString *)pkginfo_extension {
+- (NSString *)pkginfo_extension {
     return [self munkiimporterDomainObject:NSStringFromSelector(_cmd)];
 }
 
 #pragma mark - repo path
--(void)setRepo_path:(NSString *)repo_path {
+- (void)setRepo_path:(NSString *)repo_path {
     [self setMunkiDomainObject:repo_path forKey:NSStringFromSelector(@selector(repo_path))];
 }
 
--(NSString *)repo_path {
+- (NSString *)repo_path {
     return [self munkiimporterDomainObject:NSStringFromSelector(_cmd)];
 }
 
