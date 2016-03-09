@@ -70,7 +70,7 @@
         </style>
     </head>
     <body>
-        <!-- Upated Applications -->
+        <!-- Updated Applications -->
         {{# updated_applications.count }}
             <h3>New software was downloaded:</h3>
             <table>
@@ -134,15 +134,18 @@ report.plist dictionary and cleaned. For example, if the actual report.plist
 was passed in, to access the URLDownloader processor results you would need
 to access the data_rows like this:
 ```
-TODO: example code
-```
-With them popped you can access the same data like this:
-```
-TODO: example code
+{{# url_downloader.data_rows.count }}
+    <h3>{{ url_downloader.summary_text }}</h3>
+    <ul>
+        {{# url_downloader.data_rows }}
+            <li>{{ download_path }}</li>
+        {{/ url_downloader.data_rows }}
+    </ul>
+{{/ url_downloader.data_rows.count }}
 ```
 That being said, the full report IS additionally passed in, so if your template
 needs access to a key not being sanitized by AutoPkgr, you can access that
-value using the above `summary_result.foo_summary_result` syntax.
+value using the `summary_result.foo_summary_result` syntax.
 -->
             {{/ notes }}
 
@@ -251,7 +254,7 @@ value using the above `summary_result.foo_summary_result` syntax.
                 </ul>
             {{/ filewave.data_rows.count }}
 
-            <!-- Imported to AbsoluteManage -->
+            <!-- Imported to Absolute Manage -->
             <!-- 'report_fields': ['server', 'package', 'id' ] -->
             {{# absolute_manage_export.data_rows.count }}
                 <h3>{{ absolute_manage_export.summary_text }}</h3>
