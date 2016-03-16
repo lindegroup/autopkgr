@@ -447,7 +447,7 @@ static NSString *const kReportProcessorPKGCopier = @"pkg_copier_summary_result";
         [self.integrations enumerateObjectsUsingBlock:^(LGIntegration *obj, NSUInteger idx, BOOL *stop) {
             if ([[obj class] respondsToSelector:@selector(summaryResultKey)]) {
                 id key = [[obj class] summaryResultKey];
-                if(key){
+                if([_reportDictionary[kReportKeySummaryResults][key] count]){
                     [itemArray addObject:key];
                 }
             }
