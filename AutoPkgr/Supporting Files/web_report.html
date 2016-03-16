@@ -117,11 +117,28 @@
 <!-- "report_fields": ["Package", "Categories", "Groups", "Scripts", "Extension Attributes", "Policy", "Icon"] -->
 {{# jss_importer.data_rows.count }}
 <strong>{{ jss_importer.summary_text }}</strong>
-<ul>
+<table>
+    <tr>
+        <th>Package</th>
+        <th>Categories</th>
+        <th>Groups</th>
+        <th>Scripts</th>
+        <th>EAs</th>
+        <th>Policy</th>
+        <th>Icon</th>
+    </tr>
     {{# jss_importer.data_rows }}
-    <li>{{ Package }}</li>
+    <tr>
+        <td>{{ Package }}</td>
+        <td>{{ Categories }}</td>
+        <td>{{ Groups }}</td>
+        <td>{{ Scripts }}</td>
+        <td>{{ Extension Attributes }}</td>
+        <td>{{ Policy }}</td>
+        <td>{{ Icon }}</td>
+    </tr>
     {{/ jss_importer.data_rows }}
-</ul>
+</table>
 {{/ jss_importer.data_rows.count }}
 
 <!-- Imported to Filewave -->
