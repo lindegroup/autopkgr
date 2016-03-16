@@ -443,7 +443,7 @@ static NSString *const kReportProcessorPKGCopier = @"pkg_copier_summary_result";
         }
     }];
 
-    if (_reportedItemFlags & kLGReportItemsIntegrationImports && [self integrationsUpdatesToReport]) {
+    if ((_reportedItemFlags & kLGReportItemsIntegrationImports) || [self integrationsUpdatesToReport]) {
         [self.integrations enumerateObjectsUsingBlock:^(LGIntegration *obj, NSUInteger idx, BOOL *stop) {
             if ([[obj class] respondsToSelector:@selector(summaryResultKey)]) {
                 id key = [[obj class] summaryResultKey];
