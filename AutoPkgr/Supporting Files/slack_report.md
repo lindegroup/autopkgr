@@ -60,7 +60,7 @@ Notification services such as Slack don't necessarily use full Markdown formatti
 *{{ pkg_creator.summary_text }}*
 {{# pkg_creator.data_rows }}
 - {{ identifier }}
-Version: {{ version }}
+    Version: {{ version }}
 {{/ pkg_creator.data_rows }}
 {{/ pkg_creator.data_rows.count }}
 
@@ -68,8 +68,8 @@ Version: {{ version }}
 *{{ munki_importer.summary_text }}*
 {{# munki_importer.data_rows }}
 - {{ name }}
-Version: {{ version }}
-Catalog: {{ catalogs }}
+    Version: {{ version }}
+    Catalog: {{ catalogs }}
 {{/ munki_importer.data_rows }}
 {{/ munki_importer.data_rows.count }}
 
@@ -98,7 +98,7 @@ Catalog: {{ catalogs }}
 *{{ macpatch_importer.summary_text }}*
 {{# macpatch_importer.data_rows }}
 - {{ name }}
-Version: {{ version }}
+    Version: {{ version }}
 {{/ macpatch_importer.data_rows }}
 {{/ macpatch_importer.data_rows.count }}
 
@@ -106,7 +106,7 @@ Version: {{ version }}
 *{{ virus_total_analyzer.summary_text }}*
 {{# virus_total_analyzer.data_rows }}
 - {{ name }}
-Ratio: {{ ratio }}
-Link: {{ permalink }}
+    Ratio: {{ ratio }}
+    Link: {{ permalink }}
 {{/ virus_total_analyzer.data_rows }}
 {{/ virus_total_analyzer.data_rows.count }}
