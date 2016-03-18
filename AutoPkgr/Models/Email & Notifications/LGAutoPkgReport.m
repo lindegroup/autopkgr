@@ -43,11 +43,11 @@ static NSString *const kReportKeyDataRows = @"data_rows";
 static NSString *const kReportKeyHeaders = @"header";
 
 // _summary_result processor keys
-static NSString *const kReportProcessorInstaller = @"installer_summary_result";
 static NSString *const kReportProcessorURLDownloader = @"url_downloader_summary_result";
 static NSString *const kReportProcessorInstallFromDMG = @"install_from_dmg_summary_result";
-static NSString *const kReportProcessorPKGCreator = @"pkg_creator_summary_result";
+static NSString *const kReportProcessorInstaller = @"installer_summary_result";
 static NSString *const kReportProcessorPKGCopier = @"pkg_copier_summary_result";
+static NSString *const kReportProcessorPKGCreator = @"pkg_creator_summary_result";
 
 #pragma mark - LGUpdatedApplication
 @implementation LGUpdatedApplication {
@@ -171,7 +171,7 @@ static NSString *const kReportProcessorPKGCopier = @"pkg_copier_summary_result";
                            @"suggestion": _error.localizedRecoverySuggestion
                            };
     }
-    
+
     if (self.updatedApplications) {
         data[@"updated_applications"] = [_updatedApplications mapObjectsUsingBlock:^id(LGUpdatedApplication *obj, NSUInteger idx) {
             return [obj dictionaryRepresentation];
@@ -353,7 +353,7 @@ static NSString *const kReportProcessorPKGCopier = @"pkg_copier_summary_result";
         /* ReportIntegrationFrequency is bound to the defaults controller in the
          * LGScheduleViewController.xib. It's bound to the popup button's selectedTag property. */
         LGReportIntegrationFrequency noteFrequency = [defaults integerForKey:@"ReportIntegrationFrequency"];
-        
+
         for (LGIntegration *integration in _integrations) {
             if (integration.info.status == kLGIntegrationUpdateAvailable) {
                 if (noteFrequency == kLGReportIntegrationFrequencyOncePerVersion) {
@@ -386,7 +386,7 @@ static NSString *const kReportProcessorPKGCopier = @"pkg_copier_summary_result";
                             break;
                         }
                     }
-                    
+
                     NSString *reportedDateSentKey = quick_formatString(@"ReportSentDate%@", integration.name.spaces_removed);
                     NSDate *lastReportDate = [defaults objectForKey:reportedDateSentKey];
 
@@ -443,11 +443,11 @@ static NSString *const kReportProcessorPKGCopier = @"pkg_copier_summary_result";
         }
     }];
 
-    if (_reportedItemFlags & kLGReportItemsIntegrationImports && [self integrationsUpdatesToReport]) {
+    if ((_reportedItemFlags & kLGReportItemsIntegrationImports) || [self integrationsUpdatesToReport]) {
         [self.integrations enumerateObjectsUsingBlock:^(LGIntegration *obj, NSUInteger idx, BOOL *stop) {
             if ([[obj class] respondsToSelector:@selector(summaryResultKey)]) {
                 id key = [[obj class] summaryResultKey];
-                if(key){
+                if([_reportDictionary[kReportKeySummaryResults][key] count]){
                     [itemArray addObject:key];
                 }
             }
