@@ -189,11 +189,18 @@
 <!-- 'report_fields': ['name', 'ratio', 'permalink'] -->
 {{# virus_total_analyzer.data_rows.count }}
 <strong>{{ virus_total_analyzer.summary_text }}</strong>
-<ul>
+<table>
+    <tr>
+        <th>Name</th>
+        <th>Ratio (Click for Details)</th>
+    </tr>
     {{# virus_total_analyzer.data_rows }}
-    <li>{{ name }} {{ ratio }} {{ permalink }}</li>
+    <tr>
+        <td>{{ name }}</td>
+        <td><a href="{{ permalink }}" target="_blank">{{ ratio }}</a></td>
+    </tr>
     {{/ virus_total_analyzer.data_rows }}
-</ul>
+</table>
 {{/ virus_total_analyzer.data_rows.count }}
 
 <!-- End summary results-->
