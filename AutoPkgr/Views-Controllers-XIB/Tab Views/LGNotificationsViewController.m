@@ -103,7 +103,6 @@
     }];
 
     [self getKeychainPassword:_smtpPassword];
-    [LGPasswords lockKeychain];
 }
 
 - (NSString *)tabLabel
@@ -252,7 +251,6 @@
 
 - (void)sendTestEmail:(id)sender
 {
-    [self updateKeychainPassword:self];
     // Send a test email notification when the user
     // clicks "Send Test Email"
 
