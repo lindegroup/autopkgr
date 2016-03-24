@@ -28,6 +28,7 @@
 #import "LGJSSImporterIntegrationView.h"
 #import "LGLANrevIntegrationView.h"
 #import "LGMacPatchIntegrationView.h"
+//#import "LGVirusTotalAnalyzerIntegrationView.h"
 #import "LGMunkiIntegrationView.h"
 #import "LGTableCellViews.h"
 

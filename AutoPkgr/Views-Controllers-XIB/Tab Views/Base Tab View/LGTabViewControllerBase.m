@@ -30,7 +30,7 @@
     return (self = [super initWithNibName:NSStringFromClass([self class]) bundle:nil]);
 }
 
--(instancetype)initWithProgressDelegate:(id<LGProgressDelegate>)progressDelegate {
+- (instancetype)initWithProgressDelegate:(id<LGProgressDelegate>)progressDelegate {
     if (self = [self init]) {
         _progressDelegate = progressDelegate;
     }

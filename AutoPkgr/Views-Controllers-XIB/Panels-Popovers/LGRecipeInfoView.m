@@ -38,7 +38,7 @@
     LGAutoPkgRecipe *_recipe;
 }
 
--(instancetype)initWithRecipe:(LGAutoPkgRecipe *)recipe {
+- (instancetype)initWithRecipe:(LGAutoPkgRecipe *)recipe {
     if (self = [self initWithNibName:NSStringFromClass([self class]) bundle:[NSBundle mainBundle]]){
         _recipe = recipe;
     }

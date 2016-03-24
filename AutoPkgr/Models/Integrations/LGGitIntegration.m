@@ -163,7 +163,7 @@ static NSArray *knownGitPaths()
 }
 
 #pragma mark - Integration Extensions
-+(BOOL)officialGitInstalled
++ (BOOL)officialGitInstalled
 {
     return [[NSFileManager defaultManager] isExecutableFileAtPath:kLGOfficialGit];
 }

@@ -267,7 +267,7 @@
     [uninstaller uninstallAutoPkgr:sender];
 }
 
--(IBAction)reinstallHelperTool:(id)sender
+- (IBAction)reinstallHelperTool:(id)sender
 {
     NSError *error = nil;
     if(![AHLaunchCtl uninstallHelper:kLGAutoPkgrHelperToolName
