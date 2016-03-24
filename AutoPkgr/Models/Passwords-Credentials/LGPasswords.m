@@ -99,7 +99,6 @@ NSString *appKeychainPath()
                     [keychain saveItem:item error:&error];
                     reply(error);
                 }
-                [keychain lock];
             } else {
                 reply([NSError errorWithDomain:kLGApplicationName code:keychain.keychainStatus userInfo:@{NSLocalizedDescriptionKey : keychain.statusDescription}]);
             }
@@ -118,7 +117,6 @@ NSString *appKeychainPath()
     if (!upgradeTried && keychainExists) {
         NSString *oldPass = [LGHostInfo macSerialNumber];
         AHKeychain *keychain = [AHKeychain keychainAtPath:appKeychainPath()];
-        [keychain lock];
 
         if ([keychain unlockWithPassword:oldPass]) {
             // If we successfully unlock the keychain with the old password
