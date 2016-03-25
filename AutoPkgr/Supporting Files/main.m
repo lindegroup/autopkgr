@@ -32,6 +32,11 @@ int main(int argc, const char *argv[])
     if ([args boolForKey:@"runInBackground"]) {
         NSLog(@"Running AutoPkgr in background...");
 
+        NSURLCache *sharedCache = [[NSURLCache alloc] initWithMemoryCapacity:0
+                                                                diskCapacity:0
+                                                                    diskPath:nil];
+        [NSURLCache setSharedURLCache:sharedCache];
+
         __block BOOL completionMessageSent = NO;
         BOOL update = [args boolForKey:kLGCheckForRepoUpdatesAutomaticallyEnabled];
 

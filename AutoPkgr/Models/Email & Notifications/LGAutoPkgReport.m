@@ -118,10 +118,8 @@ static NSString *const kReportProcessorPKGCopier = @"pkg_copier_summary_result";
     BOOL failureCount = [_reportDictionary[kReportKeyFailures] count];
     BOOL summaryCount = [[self includedProcessorSummaryResults] count];
 
-    if ((_reportedItemFlags & kLGReportItemsFailures && failureCount) ||
-        (_reportedItemFlags & kLGReportItemsErrors && _error) ||
-         summaryCount || [self integrationsUpdatesToReport])
-    {
+    if (summaryCount || ((_reportedItemFlags & kLGReportItemsFailures) && failureCount) ||
+        ((_reportedItemFlags & kLGReportItemsErrors) && _error) || [self integrationsUpdatesToReport]){
         return YES;
     } else if (_reportedItemFlags == kLGReportItemsAll && (failureCount || summaryCount || _error )) {
         return YES;

@@ -115,9 +115,9 @@ const NSArray *NotificationServiceClasses()
 
                 /* We're all done sending notifications
                  * so go ahead and re-lock the keychain */
-                [LGPasswords lockKeychain];
                 dispatch_async(dispatch_get_main_queue(), ^{
                     complete(error);
+                    [LGPasswords lockKeychain];
                 });
             }
         };
