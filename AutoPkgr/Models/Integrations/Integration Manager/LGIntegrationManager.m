@@ -44,6 +44,7 @@ static void *XXInfoStatusChange = &XXInfoStatusChange;
                           [LGLANrevIntegration class],
                           [LGMacPatchIntegration class],
                           [LGMunkiIntegration class],
+                          //[LGVirusTotalAnalyzerIntegration class],
                           ];
 
         __requiredIntegrationClasses = @[

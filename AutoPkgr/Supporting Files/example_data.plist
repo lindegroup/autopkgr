@@ -366,6 +366,36 @@ There was an unknown exception which causes autopkg to fail.</string>
 			<key>summary_text</key>
 			<string>The following new items were downloaded:</string>
 		</dict>
+		<key>virus_total_analyzer_summary_result</key>
+		<dict>
+			<key>data_rows</key>
+			<array>
+				<dict>
+					<key>name</key>
+					<string>Firefox.dmg</string>
+					<key>permalink</key>
+					<string>https://www.virustotal.com/file/2eb674c00e35357dcb18a5642f19422cf086e72d42562346ae48aa1e3f29802a/analysis/1457444467/</string>
+					<key>ratio</key>
+					<string>0/55</string>
+				</dict>
+				<dict>
+					<key>name</key>
+					<string>GoogleChrome.dmg</string>
+					<key>permalink</key>
+					<string>https://www.virustotal.com/file/0df5214c8ad8e662dad5bb0ff5f6805e57d0f880a599c2e9ea809ca390a661b2/analysis/1457252047/</string>
+					<key>ratio</key>
+					<string>0/54</string>
+				</dict>
+			</array>
+			<key>header</key>
+			<array>
+				<string>name</string>
+				<string>ratio</string>
+				<string>permalink</string>
+			</array>
+			<key>summary_text</key>
+			<string>The following items were queried from VirusTotal database:</string>
+		</dict>
 	</dict>
 	<key>updated_applications</key>
 	<array>
