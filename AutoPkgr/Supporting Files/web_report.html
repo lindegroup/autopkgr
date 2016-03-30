@@ -119,23 +119,23 @@
 <strong>{{ jss_importer.summary_text }}</strong>
 <table>
     <tr>
-        <th>Package</th>
         <th>Categories</th>
-        <th>Groups</th>
-        <th>Scripts</th>
         <th>EAs</th>
-        <th>Policy</th>
+        <th>Groups</th>
         <th>Icon</th>
+        <th>Package</th>
+        <th>Policy</th>
+        <th>Scripts</th>
     </tr>
     {{# jss_importer.data_rows }}
     <tr>
-        <td>{{ Package }}</td>
         <td>{{ Categories }}</td>
+        <td>{{ ExtensionAttributes }}</td>
         <td>{{ Groups }}</td>
-        <td>{{ Scripts }}</td>
-        <td>{{ Extension Attributes }}</td>
-        <td>{{ Policy }}</td>
         <td>{{ Icon }}</td>
+        <td>{{ Package }}</td>
+        <td>{{ Policy }}</td>
+        <td>{{ Scripts }}</td>
     </tr>
     {{/ jss_importer.data_rows }}
 </table>
