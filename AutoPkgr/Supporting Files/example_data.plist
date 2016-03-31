@@ -39,6 +39,20 @@ There was an unknown exception which causes autopkg to fail.</string>
 			<key>recipe</key>
 			<string>io.github.hjuutilainen.jss.iTerm2</string>
 		</dict>
+		<dict>
+			<key>message</key>
+			<string>Unknown processor 'io.github.hjuutilainen.VirusTotalAnalyzer/VirusTotalAnalyzer'.</string>
+			<key>recipe</key>
+			<string>com.github.autopkg.pkg.Adium</string>
+			<key>traceback</key>
+			<string>Traceback (most recent call last):
+  File "/usr/local/bin/autopkg", line 1460, in run_recipes
+    autopackager.verify(recipe)
+  File "/Library/AutoPkg/autopkglib/__init__.py", line 410, in verify
+    raise AutoPackagerError(msg)
+AutoPackagerError: Unknown processor 'io.github.hjuutilainen.VirusTotalAnalyzer/VirusTotalAnalyzer'.
+</string>
+		</dict>
 	</array>
 	<key>has_summary_results</key>
 	<integer>7</integer>
@@ -46,6 +60,10 @@ There was an unknown exception which causes autopkg to fail.</string>
 	<dict>
 		<key>data_rows</key>
 		<array>
+			<dict>
+				<key>dmg_path</key>
+				<string>~/Library/AutoPkg/Cache/com.github.homebysix.install.coconutBattery/coconutBattery.dmg</string>
+			</dict>
 			<dict>
 				<key>dmg_path</key>
 				<string>~/Library/AutoPkg/Cache/com.github.jleggat.CreateUserPkg.install/downloads/CreateUserPkg.dmg</string>
@@ -88,7 +106,7 @@ There was an unknown exception which causes autopkg to fail.</string>
 		<array>
 			<dict>
 				<key>Package</key>
-				<string>AdobeFlashPlayer-17.0.0.134.pkg</string>
+				<string>AdobeFlashPlayer-21.0.0.197.pkg</string>
 			</dict>
 		</array>
 		<key>header</key>
@@ -144,7 +162,7 @@ There was an unknown exception which causes autopkg to fail.</string>
 		<array>
 			<dict>
 				<key>pkg_path</key>
-				<string>~/Library/AutoPkg/Cache/com.github.autopkg.jss.FlashPlayerExtractPackage/AdobeFlashPlayer-17.0.0.134.pkg</string>
+				<string>~/Library/AutoPkg/Cache/com.github.autopkg.jss.FlashPlayerExtractPackage/AdobeFlashPlayer-21.0.0.197.pkg</string>
 			</dict>
 		</array>
 		<key>header</key>
@@ -225,21 +243,83 @@ There was an unknown exception which causes autopkg to fail.</string>
 			<key>data_rows</key>
 			<array>
 				<dict>
+					<key>Categories</key>
+					<string></string>
+					<key>Extension Attributes</key>
+					<string>AdobeFlashVersion</string>
+					<key>Groups</key>
+					<string>AdobeFlashPlayer-update-smart</string>
+					<key>Icon</key>
+					<string></string>
 					<key>Package</key>
-					<string>AdobeFlashPlayer-17.0.0.134.pkg</string>
+					<string>AdobeFlashPlayer-21.0.0.197.pkg</string>
+					<key>Policy</key>
+					<string>Install Latest AdobeFlashPlayer</string>
+					<key>Scripts</key>
+					<string></string>
+				</dict>
+				<dict>
+					<key>Categories</key>
+					<string></string>
+					<key>Extension Attributes</key>
+					<string></string>
+					<key>Groups</key>
+					<string>Evernote-update-smart</string>
+					<key>Icon</key>
+					<string>Evernote.png</string>
+					<key>Package</key>
+					<string>Evernote-6.6.pkg</string>
+					<key>Policy</key>
+					<string>Install Latest Evernote</string>
+					<key>Scripts</key>
+					<string></string>
+				</dict>
+				<dict>
+					<key>Categories</key>
+					<string></string>
+					<key>Extension Attributes</key>
+					<string></string>
+					<key>Groups</key>
+					<string>1Password-update-smart</string>
+					<key>Icon</key>
+					<string></string>
+					<key>Package</key>
+					<string></string>
+					<key>Policy</key>
+					<string>Install Latest 1Password</string>
+					<key>Scripts</key>
+					<string></string>
 				</dict>
 			</array>
 			<key>header</key>
 			<array>
 				<string>Package</string>
+				<string>Categories</string>
+				<string>Groups</string>
+				<string>Scripts</string>
+				<string>Extension Attributes</string>
+				<string>Policy</string>
+				<string>Icon</string>
 			</array>
 			<key>summary_text</key>
-			<string>The following items were imported into the JSS:</string>
+			<string>The following changes were made to the JSS:</string>
 		</dict>
 		<key>munki_importer_summary_result</key>
 		<dict>
 			<key>data_rows</key>
 			<array>
+				<dict>
+					<key>catalogs</key>
+					<string>testing</string>
+					<key>name</key>
+					<string>Evernote</string>
+					<key>pkg_repo_path</key>
+					<string>apps/Evernote/Evernote-6.6.dmg</string>
+					<key>pkginfo_path</key>
+					<string>apps/Evernote/Evernote-6.6.plist</string>
+					<key>version</key>
+					<string>6.6</string>
+				</dict>
 				<dict>
 					<key>catalogs</key>
 					<string>testing</string>
@@ -282,7 +362,7 @@ There was an unknown exception which causes autopkg to fail.</string>
 			<array>
 				<dict>
 					<key>pkg_path</key>
-					<string>~/Library/AutoPkg/Cache/com.github.autopkg.jss.FlashPlayerExtractPackage/AdobeFlashPlayer-17.0.0.134.pkg</string>
+					<string>~/Library/AutoPkg/Cache/com.github.autopkg.pkg.FlashPlayerExtractPackage/AdobeFlashPlayer-21.0.0.197.pkg</string>
 				</dict>
 			</array>
 			<key>header</key>
@@ -296,6 +376,14 @@ There was an unknown exception which causes autopkg to fail.</string>
 		<dict>
 			<key>data_rows</key>
 			<array>
+				<dict>
+					<key>identifier</key>
+					<string>com.evernote.Evernote</string>
+					<key>pkg_path</key>
+					<string>~/Library/AutoPkg/Cache/com.github.autopkg.pkg.Evernote/Evernote-6.6.pkg</string>
+					<key>version</key>
+					<string>6.6</string>
+				</dict>
 				<dict>
 					<key>identifier</key>
 					<string>se.gu.it.AutoDMG.pkg</string>
