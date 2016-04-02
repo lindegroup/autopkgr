@@ -124,19 +124,18 @@ static NSString *const SlacksNotificationsEnabledKey = @"SlackNotificationsEnabl
 - (void)sendMessageWithParameters:(NSDictionary *)parameters
 {
     AFHTTPRequestOperationManager *manager = [self requestManager];
-    __weak typeof(self) weakSelf = self;
     [[self class] infoFromKeychain:^(NSString *webHookURL, NSError *error) {
         if (error) {
-            weakSelf.notificatonComplete(error);
+            self.notificatonComplete(error);
         } else {
             [manager POST:webHookURL
-                parameters:[weakSelf baseParameters:parameters]
+                parameters:[self baseParameters:parameters]
                 success:^(AFHTTPRequestOperation *operation, id responseObject) {
-                    weakSelf.notificatonComplete(nil);
+                    self.notificatonComplete(nil);
                 }
                 failure:^(AFHTTPRequestOperation *operation, NSError *error) {
                     NSLog(@"Error sending Slack notification: %@", operation.responseString);
-                    weakSelf.notificatonComplete([LGError errorWithResponse:operation.response]);
+                    self.notificatonComplete([LGError errorWithResponse:operation.response]);
                 }];
         }
     }];
