@@ -106,19 +106,19 @@ AutoPackagerError: Unknown processor &apos;io.github.hjuutilainen.VirusTotalAnal
 		<array>
 			<dict>
 				<key>Categories</key>
-				<string></string>
+				<string>Digital Media</string>
 				<key>Extension Attributes</key>
 				<string>AdobeFlashVersion</string>
 				<key>Groups</key>
 				<string>AdobeFlashPlayer-update-smart</string>
 				<key>Icon</key>
-				<string></string>
+				<string>AdobeFlashPlayer.png</string>
 				<key>Package</key>
 				<string>AdobeFlashPlayer-21.0.0.197.pkg</string>
 				<key>Policy</key>
 				<string>Install Latest AdobeFlashPlayer</string>
 				<key>Scripts</key>
-				<string></string>
+				<string>AdobeFlashScript.sh</string>
 			</dict>
 			<dict>
 				<key>Categories</key>
