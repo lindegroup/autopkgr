@@ -130,13 +130,14 @@ static NSString *const kReportProcessorPKGCreator = @"pkg_creator_summary_result
 - (NSString *)reportSubject
 {
     NSString *subject = nil;
-    if ([_reportDictionary[kReportKeyFailures] count] > 0) {
+    if ([_reportDictionary[kReportKeyFailures] count]) {
         subject = NSLocalizedString(@"Failures occurred while running AutoPkg", nil);
     }
     else if (self.error) {
         subject =  NSLocalizedString(@"An error occurred while running AutoPkg", nil);
     }
-    else if ([self.updatedApplications count] > 0) {
+    else if ([self.updatedApplications count] ||
+             [[self includedProcessorSummaryResults] count]) {
         subject = NSLocalizedString(@"New software available for testing", nil);
     }
     else if ([self integrationsUpdatesToReport]) {
