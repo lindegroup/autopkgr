@@ -41,16 +41,16 @@ There was an unknown exception which causes autopkg to fail.</string>
 		</dict>
 		<dict>
 			<key>message</key>
-			<string>Unknown processor 'io.github.hjuutilainen.VirusTotalAnalyzer/VirusTotalAnalyzer'.</string>
+			<string>Unknown processor &apos;io.github.hjuutilainen.VirusTotalAnalyzer/VirusTotalAnalyzer&apos;.</string>
 			<key>recipe</key>
 			<string>com.github.autopkg.pkg.Adium</string>
 			<key>traceback</key>
 			<string>Traceback (most recent call last):
-  File "/usr/local/bin/autopkg", line 1460, in run_recipes
+  File &quot;/usr/local/bin/autopkg&quot;, line 1460, in run_recipes
     autopackager.verify(recipe)
-  File "/Library/AutoPkg/autopkglib/__init__.py", line 410, in verify
+  File &quot;/Library/AutoPkg/autopkglib/__init__.py&quot;, line 410, in verify
     raise AutoPackagerError(msg)
-AutoPackagerError: Unknown processor 'io.github.hjuutilainen.VirusTotalAnalyzer/VirusTotalAnalyzer'.
+AutoPackagerError: Unknown processor &apos;io.github.hjuutilainen.VirusTotalAnalyzer/VirusTotalAnalyzer&apos;.
 </string>
 		</dict>
 	</array>
@@ -105,16 +105,66 @@ AutoPackagerError: Unknown processor 'io.github.hjuutilainen.VirusTotalAnalyzer/
 		<key>data_rows</key>
 		<array>
 			<dict>
+				<key>Categories</key>
+				<string></string>
+				<key>Extension Attributes</key>
+				<string>AdobeFlashVersion</string>
+				<key>Groups</key>
+				<string>AdobeFlashPlayer-update-smart</string>
+				<key>Icon</key>
+				<string></string>
 				<key>Package</key>
 				<string>AdobeFlashPlayer-21.0.0.197.pkg</string>
+				<key>Policy</key>
+				<string>Install Latest AdobeFlashPlayer</string>
+				<key>Scripts</key>
+				<string></string>
+			</dict>
+			<dict>
+				<key>Categories</key>
+				<string></string>
+				<key>Extension Attributes</key>
+				<string></string>
+				<key>Groups</key>
+				<string>Evernote-update-smart</string>
+				<key>Icon</key>
+				<string>Evernote.png</string>
+				<key>Package</key>
+				<string>Evernote-6.6.pkg</string>
+				<key>Policy</key>
+				<string>Install Latest Evernote</string>
+				<key>Scripts</key>
+				<string></string>
+			</dict>
+			<dict>
+				<key>Categories</key>
+				<string></string>
+				<key>Extension Attributes</key>
+				<string></string>
+				<key>Groups</key>
+				<string>1Password-update-smart</string>
+				<key>Icon</key>
+				<string></string>
+				<key>Package</key>
+				<string></string>
+				<key>Policy</key>
+				<string>Install Latest 1Password</string>
+				<key>Scripts</key>
+				<string></string>
 			</dict>
 		</array>
 		<key>header</key>
 		<array>
 			<string>Package</string>
+			<string>Categories</string>
+			<string>Groups</string>
+			<string>Scripts</string>
+			<string>Extension Attributes</string>
+			<string>Policy</string>
+			<string>Icon</string>
 		</array>
 		<key>summary_text</key>
-		<string>The following items were imported into the JSS:</string>
+		<string>The following changes were made to the JSS:</string>
 	</dict>
 	<key>munki_importer</key>
 	<dict>
@@ -484,6 +534,36 @@ AutoPackagerError: Unknown processor 'io.github.hjuutilainen.VirusTotalAnalyzer/
 			<key>summary_text</key>
 			<string>The following items were queried from VirusTotal database:</string>
 		</dict>
+	</dict>
+	<key>virus_total_analyzer</key>
+	<dict>
+		<key>data_rows</key>
+		<array>
+			<dict>
+				<key>name</key>
+				<string>Firefox.dmg</string>
+				<key>permalink</key>
+				<string>https://www.virustotal.com/file/2eb674c00e35357dcb18a5642f19422cf086e72d42562346ae48aa1e3f29802a/analysis/1457444467/</string>
+				<key>ratio</key>
+				<string>0/55</string>
+			</dict>
+			<dict>
+				<key>name</key>
+				<string>GoogleChrome.dmg</string>
+				<key>permalink</key>
+				<string>https://www.virustotal.com/file/0df5214c8ad8e662dad5bb0ff5f6805e57d0f880a599c2e9ea809ca390a661b2/analysis/1457252047/</string>
+				<key>ratio</key>
+				<string>0/54</string>
+			</dict>
+		</array>
+		<key>header</key>
+		<array>
+			<string>name</string>
+			<string>ratio</string>
+			<string>permalink</string>
+		</array>
+		<key>summary_text</key>
+		<string>The following items were queried from VirusTotal database:</string>
 	</dict>
 	<key>updated_applications</key>
 	<array>
