@@ -155,13 +155,13 @@ AutoPackagerError: Unknown processor &apos;io.github.hjuutilainen.VirusTotalAnal
 		</array>
 		<key>header</key>
 		<array>
-			<string>Package</string>
 			<string>Categories</string>
-			<string>Groups</string>
-			<string>Scripts</string>
 			<string>Extension Attributes</string>
-			<string>Policy</string>
+			<string>Groups</string>
 			<string>Icon</string>
+			<string>Package</string>
+			<string>Policy</string>
+			<string>Scripts</string>
 		</array>
 		<key>summary_text</key>
 		<string>The following changes were made to the JSS:</string>
@@ -343,13 +343,13 @@ AutoPackagerError: Unknown processor &apos;io.github.hjuutilainen.VirusTotalAnal
 			</array>
 			<key>header</key>
 			<array>
-				<string>Package</string>
 				<string>Categories</string>
-				<string>Groups</string>
-				<string>Scripts</string>
 				<string>Extension Attributes</string>
-				<string>Policy</string>
+				<string>Groups</string>
 				<string>Icon</string>
+				<string>Package</string>
+				<string>Policy</string>
+				<string>Scripts</string>
 			</array>
 			<key>summary_text</key>
 			<string>The following changes were made to the JSS:</string>
