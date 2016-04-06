@@ -423,7 +423,8 @@ static NSString *const kReportProcessorPKGCreator = @"pkg_creator_summary_result
         if (_reportedItemFlags == kLGReportItemsAll) {
             [itemArray addObject:key];
         } else {
-            if ([key isEqualToString:kReportProcessorInstaller]){
+            if ([key isEqualToString:kReportProcessorInstaller] ||
+                [key isEqualToString:kReportProcessorInstallFromDMG]){
                 if(_reportedItemFlags & kLGReportItemsNewInstalls) {
                     [itemArray addObject:key];
                 }
