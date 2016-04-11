@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="9532" systemVersion="15D21" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="10116" systemVersion="15E65" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="9532"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="10116"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="LGMunkiIntegrationView">
@@ -87,7 +87,7 @@
                         <font key="font" metaFont="smallSystem"/>
                     </buttonCell>
                 </button>
-                <button translatesAutoresizingMaskIntoConstraints="NO" id="dUZ-nf-rmK">
+                <button hidden="YES" translatesAutoresizingMaskIntoConstraints="NO" id="dUZ-nf-rmK">
                     <rect key="frame" x="18" y="25" width="258" height="18"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="254" id="zLo-1b-xag"/>
