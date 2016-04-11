@@ -6,14 +6,17 @@ All notable changes to this project will be documented in this file. This projec
 
 ### Added
 - AutoPkgr now allows you to customize the template used to generate notifications when new actions have occurred. Check it out at the bottom of the Notifications tab. (#184)
-- Added a checkbox that allows you to specify whether you want to check for development Munki tools releases, in addition to official production-ready Munki tools releases. (#493)
 
 ### Fixed
-- Fixed an incorrect prompt for the AutoPkgr keychain password. (#469)
+- Fixed a long-standing issue that caused an incorrect prompt for the AutoPkgr keychain password! (#469)
+- Addressed several issues that may have prevented notifications from working reliably in version 1.4. (#508, #515)
 - Fixed a crash caused by the SMTP server setting being blank. (#502)
 
 ### Changed
-- Adjusted default formatting of email and Slack notifications.
+- Adjusted default formatting of email and Slack notifications. (#507)
+- Added logging for SMTP operations.
+- Prevented password field from wrapping to a "new line." (#481)
+- Increased width of active recipe list picker.
 
 
 ## [1.4] - 2016-03-01
