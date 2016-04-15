@@ -18,6 +18,23 @@ All notable changes to this project will be documented in this file. This projec
 - Prevented password field from wrapping to a "new line." (#481)
 - Increased width of active recipe list picker.
 
+### Security
+- A note on keychain security in AutoPkgr 1.4.1:
+
+    The fix for [issue #469](https://github.com/lindegroup/autopkgr/issues/469) requires AutoPkgr to be less aggressive when locking the AutoPkgr keychain (a separate keychain stored in ~/Library/Keychains that stores your SMTP credentials for email notifications). It's possible for somebody with access to your AutoPkgr Mac to obtain your SMTP password using the `security` command while the AutoPkgr keychain is unlocked.
+
+    Here's why AutoPkgr exceeds our security requirements, even with less aggressive keychain locking:
+
+    - AutoPkgr's locking behavior is still _more_ restrictive than your login keychain's behavior.
+    - Physical access or VNC to your AutoPkgr Mac is necessary to use the `security` command to obtain the SMTP password.
+    - AutoPkgr goes to great lengths to keep the actual AutoPkgr keychain password both unknown and unnecessary to know, which prevents password exposure via the Keychain Access app.
+
+    Taking common sense security steps should mitigate any risks introduced by this change. Here are three to consider:
+
+    - Use an SMTP account dedicated to AutoPkgr for email notifications.
+    - Run AutoPkgr on a dedicated Mac or VM, rather than using one shared by other services.
+    - Unless necessary, don't leave the Mac logged in. AutoPkgr works great at the login window (which is why it has its own keychain in the first place), and a Mac at the login window is magnitudes safer than one with an active user session.
+
 
 ## [1.4] - 2016-03-01
 
@@ -51,6 +68,7 @@ All notable changes to this project will be documented in this file. This projec
 - The "Add Repo" button and associated text field now work with any supported URL, not just HTTPS.
 - When you right-click and run a single Munki recipe, AutoPkgr will now run MakeCatalogs.munki too.
 - Made width of tab views more consistent.
+
 
 ## [1.3.2] - 2015-09-16
 
