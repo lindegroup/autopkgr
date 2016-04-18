@@ -33,7 +33,7 @@
 				<string>pkg_path</string>
 			</array>
 			<key>summary_text</key>
-			<string>The following pkgs were successfully installed:</string>
+			<string>The following packages were successfully installed:</string>
 		</dict>
 		<key>munki_importer_summary_result</key>
 		<dict>

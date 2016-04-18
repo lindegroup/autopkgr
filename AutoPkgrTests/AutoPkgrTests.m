@@ -491,7 +491,7 @@ static const BOOL _TEST_PRIVILEGED_HELPER = YES;
 }
 
 
--(void)testSlackNotification {
+- (void)testSlackNotification {
     id<LGNotificationServiceProtocol>notification = [[LGSlackNotification alloc] initWithReport:[self notificationReport]];
     XCTestExpectation *expectation = [self expectationWithDescription:quick_formatString(@"Test %@", [notification.class serviceDescription])];
 

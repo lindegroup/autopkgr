@@ -62,7 +62,7 @@
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {
     NSLog(@"Welcome to AutoPkgr!");
-    DLog(@"Verbose logging is active. To deactivate, option-click the AutoPkgr menu icon and uncheck Verbose Logs.");
+    DLog(@"Verbose logging is active. To deactivate, click the AutoPkgr menu icon and uncheck Verbose Logs.");
 
     // Setup the status item
     [self setupStatusItem];
@@ -85,7 +85,7 @@
 
 
     [backgroundMonitor.remoteObjectProxy registerMainApplication:^(BOOL resign) {
-        DLog(@"No longer monitoring scheduled autopkg run");
+        DLog(@"No longer monitoring scheduled AutoPkg runs.");
     }];
 
     if (![LGAutoPkgRecipe migrateToIdentifiers:nil]) {
@@ -267,7 +267,7 @@
     [uninstaller uninstallAutoPkgr:sender];
 }
 
--(IBAction)reinstallHelperTool:(id)sender
+- (IBAction)reinstallHelperTool:(id)sender
 {
     NSError *error = nil;
     if(![AHLaunchCtl uninstallHelper:kLGAutoPkgrHelperToolName

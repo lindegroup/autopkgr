@@ -2,6 +2,50 @@
 
 All notable changes to this project will be documented in this file. This project adheres to [Semantic Versioning](http://semver.org/).
 
+
+## [Unreleased](unreleased)
+
+Nothing yet.
+
+
+## [1.4.1] - 2016-04-18
+
+### Added
+- AutoPkgr now allows you to customize the template used to generate notifications when new actions have occurred. Check it out at the bottom of the Notifications tab. (#184)
+
+### Fixed
+- Fixed a long-standing issue that caused an incorrect prompt for the AutoPkgr keychain password! (#469)
+- Addressed several issues that may have prevented notifications from working reliably in version 1.4. (#508, #515)
+- Fixed a crash caused by the SMTP server setting being blank. (#502)
+- AutoPkgr launches a bit faster now. (#500)
+- AutoPkgr now reports [InstallFromDMG](https://github.com/autopkg/autopkg/wiki/Processor-InstallFromDMG) processor results in addition to [Installer](https://github.com/autopkg/autopkg/wiki/Processor-Installer) processor results.
+- Fixed an issue that would cause the email notification subject to be blank.
+
+### Changed
+- Adjusted default formatting of email and Slack notifications. (#507)
+- Added logging for SMTP operations.
+- Prevented password field from wrapping to a "new line." (#481)
+- Increased width of active recipe list picker.
+- Updated versions of MMMarkdown and MailCore2 used in AutoPkgr.
+
+### Security
+- A note on keychain security in AutoPkgr 1.4.1:
+
+    The fix for [issue #469](https://github.com/lindegroup/autopkgr/issues/469) requires AutoPkgr to be less aggressive when locking the AutoPkgr keychain (a separate keychain stored in ~/Library/Keychains that stores your SMTP credentials for email notifications). It's possible for somebody with access to your AutoPkgr Mac to obtain your SMTP password using the `security` command while the AutoPkgr keychain is unlocked.
+
+    Here's why AutoPkgr exceeds our security requirements, even with less aggressive keychain locking:
+
+    - AutoPkgr's locking behavior is still _more_ restrictive than your login keychain's behavior.
+    - Physical access or VNC to your AutoPkgr Mac is necessary to use the `security` command to obtain the SMTP password.
+    - AutoPkgr goes to great lengths to keep the actual AutoPkgr keychain password both unknown and unnecessary to know, which prevents password exposure via the Keychain Access app.
+
+    Taking common sense security steps should mitigate any risks introduced by this change. Here are three to consider:
+
+    - Use an SMTP account dedicated to AutoPkgr for email notifications.
+    - Run AutoPkgr on a dedicated Mac or VM, rather than using one shared by other services.
+    - Unless necessary, don't leave the Mac logged in. AutoPkgr works great at the login window (which is why it has its own keychain in the first place), and a Mac at the login window is magnitudes safer than one with an active user session.
+
+
 ## [1.4] - 2016-03-01
 
 ### Added
@@ -34,6 +78,7 @@ All notable changes to this project will be documented in this file. This projec
 - The "Add Repo" button and associated text field now work with any supported URL, not just HTTPS.
 - When you right-click and run a single Munki recipe, AutoPkgr will now run MakeCatalogs.munki too.
 - Made width of tab views more consistent.
+
 
 ## [1.3.2] - 2015-09-16
 
@@ -361,7 +406,8 @@ All notable changes to this project will be documented in this file. This projec
 - Initial public release of AutoPkgr.
 
 
-[unreleased]: https://github.com/lindegroup/autopkgr/compare/v1.4...HEAD
+[unreleased]: https://github.com/lindegroup/autopkgr/compare/v1.4.1...HEAD
+[1.4.1]: https://github.com/lindegroup/autopkgr/compare/v1.4...v1.4.1
 [1.4]: https://github.com/lindegroup/autopkgr/compare/v1.3.2...v1.4
 [1.3.2]: https://github.com/lindegroup/autopkgr/compare/v1.3.1...v1.3.2
 [1.3.1]: https://github.com/lindegroup/autopkgr/compare/v1.3...v1.3.1

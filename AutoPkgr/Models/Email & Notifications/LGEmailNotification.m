@@ -130,13 +130,19 @@
     credential.server = _defaults.SMTPServer;
     credential.port = _defaults.SMTPPort;
 
+    if(!credential.server || !credential.port){
+        return reply(nil, [LGError errorWithCode:kLGErrorSendingEmail]);
+    }
+    
     if (_defaults.SMTPAuthenticationEnabled) {
         [[self class] infoFromKeychain:^(NSString *infoOrPassword, NSError *error) {
             credential.user = [[self class] account];
             credential.password = infoOrPassword ?: @"";
+            DLog(@"SMTP credentials retrieved.");
             reply(credential, error);
         }];
     } else {
+        DLog(@"Not using SMTP authentication.");
         reply(credential, nil);
     }
 }
@@ -173,7 +179,8 @@
 
     [self getMailCredentials:^(LGHTTPCredential *credential, NSError *error) {
         if (error) {
-            /* And error here means there was a problem getting the password */
+            /* An error here means there was a problem getting the password */
+            NSLog(@"There was a problem getting the SMTP credentials: %@", error);
             return didCompleteSendOperation(error);
         }
 

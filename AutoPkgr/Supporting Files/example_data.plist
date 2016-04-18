@@ -39,6 +39,20 @@ There was an unknown exception which causes autopkg to fail.</string>
 			<key>recipe</key>
 			<string>io.github.hjuutilainen.jss.iTerm2</string>
 		</dict>
+		<dict>
+			<key>message</key>
+			<string>Unknown processor &apos;io.github.hjuutilainen.VirusTotalAnalyzer/VirusTotalAnalyzer&apos;.</string>
+			<key>recipe</key>
+			<string>com.github.autopkg.pkg.Adium</string>
+			<key>traceback</key>
+			<string>Traceback (most recent call last):
+  File &quot;/usr/local/bin/autopkg&quot;, line 1460, in run_recipes
+    autopackager.verify(recipe)
+  File &quot;/Library/AutoPkg/autopkglib/__init__.py&quot;, line 410, in verify
+    raise AutoPackagerError(msg)
+AutoPackagerError: Unknown processor &apos;io.github.hjuutilainen.VirusTotalAnalyzer/VirusTotalAnalyzer&apos;.
+</string>
+		</dict>
 	</array>
 	<key>has_summary_results</key>
 	<integer>7</integer>
@@ -46,6 +60,10 @@ There was an unknown exception which causes autopkg to fail.</string>
 	<dict>
 		<key>data_rows</key>
 		<array>
+			<dict>
+				<key>dmg_path</key>
+				<string>~/Library/AutoPkg/Cache/com.github.homebysix.install.coconutBattery/coconutBattery.dmg</string>
+			</dict>
 			<dict>
 				<key>dmg_path</key>
 				<string>~/Library/AutoPkg/Cache/com.github.jleggat.CreateUserPkg.install/downloads/CreateUserPkg.dmg</string>
@@ -80,23 +98,73 @@ There was an unknown exception which causes autopkg to fail.</string>
 			<string>pkg_path</string>
 		</array>
 		<key>summary_text</key>
-		<string>The following pkgs were successfully installed:</string>
+		<string>The following packages were successfully installed:</string>
 	</dict>
 	<key>jss_importer</key>
 	<dict>
 		<key>data_rows</key>
 		<array>
 			<dict>
+				<key>Categories</key>
+				<string>Digital Media</string>
+				<key>Extension Attributes</key>
+				<string>AdobeFlashVersion</string>
+				<key>Groups</key>
+				<string>AdobeFlashPlayer-update-smart</string>
+				<key>Icon</key>
+				<string>AdobeFlashPlayer.png</string>
 				<key>Package</key>
-				<string>AdobeFlashPlayer-17.0.0.134.pkg</string>
+				<string>AdobeFlashPlayer-21.0.0.197.pkg</string>
+				<key>Policy</key>
+				<string>Install Latest AdobeFlashPlayer</string>
+				<key>Scripts</key>
+				<string>AdobeFlashScript.sh</string>
+			</dict>
+			<dict>
+				<key>Categories</key>
+				<string></string>
+				<key>Extension Attributes</key>
+				<string></string>
+				<key>Groups</key>
+				<string>Evernote-update-smart</string>
+				<key>Icon</key>
+				<string>Evernote.png</string>
+				<key>Package</key>
+				<string>Evernote-6.6.pkg</string>
+				<key>Policy</key>
+				<string>Install Latest Evernote</string>
+				<key>Scripts</key>
+				<string></string>
+			</dict>
+			<dict>
+				<key>Categories</key>
+				<string></string>
+				<key>Extension Attributes</key>
+				<string></string>
+				<key>Groups</key>
+				<string>1Password-update-smart</string>
+				<key>Icon</key>
+				<string></string>
+				<key>Package</key>
+				<string></string>
+				<key>Policy</key>
+				<string>Install Latest 1Password</string>
+				<key>Scripts</key>
+				<string></string>
 			</dict>
 		</array>
 		<key>header</key>
 		<array>
+			<string>Categories</string>
+			<string>Extension Attributes</string>
+			<string>Groups</string>
+			<string>Icon</string>
 			<string>Package</string>
+			<string>Policy</string>
+			<string>Scripts</string>
 		</array>
 		<key>summary_text</key>
-		<string>The following items were importerd into the JSS:</string>
+		<string>The following changes were made to the JSS:</string>
 	</dict>
 	<key>munki_importer</key>
 	<dict>
@@ -144,7 +212,7 @@ There was an unknown exception which causes autopkg to fail.</string>
 		<array>
 			<dict>
 				<key>pkg_path</key>
-				<string>~/Library/AutoPkg/Cache/com.github.autopkg.jss.FlashPlayerExtractPackage/AdobeFlashPlayer-17.0.0.134.pkg</string>
+				<string>~/Library/AutoPkg/Cache/com.github.autopkg.jss.FlashPlayerExtractPackage/AdobeFlashPlayer-21.0.0.197.pkg</string>
 			</dict>
 		</array>
 		<key>header</key>
@@ -218,28 +286,90 @@ There was an unknown exception which causes autopkg to fail.</string>
 				<string>pkg_path</string>
 			</array>
 			<key>summary_text</key>
-			<string>The following pkgs were successfully installed:</string>
+			<string>The following packages were successfully installed:</string>
 		</dict>
 		<key>jss_importer_summary_result</key>
 		<dict>
 			<key>data_rows</key>
 			<array>
 				<dict>
+					<key>Categories</key>
+					<string></string>
+					<key>Extension Attributes</key>
+					<string>AdobeFlashVersion</string>
+					<key>Groups</key>
+					<string>AdobeFlashPlayer-update-smart</string>
+					<key>Icon</key>
+					<string></string>
 					<key>Package</key>
-					<string>AdobeFlashPlayer-17.0.0.134.pkg</string>
+					<string>AdobeFlashPlayer-21.0.0.197.pkg</string>
+					<key>Policy</key>
+					<string>Install Latest AdobeFlashPlayer</string>
+					<key>Scripts</key>
+					<string></string>
+				</dict>
+				<dict>
+					<key>Categories</key>
+					<string></string>
+					<key>Extension Attributes</key>
+					<string></string>
+					<key>Groups</key>
+					<string>Evernote-update-smart</string>
+					<key>Icon</key>
+					<string>Evernote.png</string>
+					<key>Package</key>
+					<string>Evernote-6.6.pkg</string>
+					<key>Policy</key>
+					<string>Install Latest Evernote</string>
+					<key>Scripts</key>
+					<string></string>
+				</dict>
+				<dict>
+					<key>Categories</key>
+					<string></string>
+					<key>Extension Attributes</key>
+					<string></string>
+					<key>Groups</key>
+					<string>1Password-update-smart</string>
+					<key>Icon</key>
+					<string></string>
+					<key>Package</key>
+					<string></string>
+					<key>Policy</key>
+					<string>Install Latest 1Password</string>
+					<key>Scripts</key>
+					<string></string>
 				</dict>
 			</array>
 			<key>header</key>
 			<array>
+				<string>Categories</string>
+				<string>Extension Attributes</string>
+				<string>Groups</string>
+				<string>Icon</string>
 				<string>Package</string>
+				<string>Policy</string>
+				<string>Scripts</string>
 			</array>
 			<key>summary_text</key>
-			<string>The following items were importerd into the JSS:</string>
+			<string>The following changes were made to the JSS:</string>
 		</dict>
 		<key>munki_importer_summary_result</key>
 		<dict>
 			<key>data_rows</key>
 			<array>
+				<dict>
+					<key>catalogs</key>
+					<string>testing</string>
+					<key>name</key>
+					<string>Evernote</string>
+					<key>pkg_repo_path</key>
+					<string>apps/Evernote/Evernote-6.6.dmg</string>
+					<key>pkginfo_path</key>
+					<string>apps/Evernote/Evernote-6.6.plist</string>
+					<key>version</key>
+					<string>6.6</string>
+				</dict>
 				<dict>
 					<key>catalogs</key>
 					<string>testing</string>
@@ -282,7 +412,7 @@ There was an unknown exception which causes autopkg to fail.</string>
 			<array>
 				<dict>
 					<key>pkg_path</key>
-					<string>~/Library/AutoPkg/Cache/com.github.autopkg.jss.FlashPlayerExtractPackage/AdobeFlashPlayer-17.0.0.134.pkg</string>
+					<string>~/Library/AutoPkg/Cache/com.github.autopkg.pkg.FlashPlayerExtractPackage/AdobeFlashPlayer-21.0.0.197.pkg</string>
 				</dict>
 			</array>
 			<key>header</key>
@@ -296,6 +426,14 @@ There was an unknown exception which causes autopkg to fail.</string>
 		<dict>
 			<key>data_rows</key>
 			<array>
+				<dict>
+					<key>identifier</key>
+					<string>com.evernote.Evernote</string>
+					<key>pkg_path</key>
+					<string>~/Library/AutoPkg/Cache/com.github.autopkg.pkg.Evernote/Evernote-6.6.pkg</string>
+					<key>version</key>
+					<string>6.6</string>
+				</dict>
 				<dict>
 					<key>identifier</key>
 					<string>se.gu.it.AutoDMG.pkg</string>
@@ -366,6 +504,66 @@ There was an unknown exception which causes autopkg to fail.</string>
 			<key>summary_text</key>
 			<string>The following new items were downloaded:</string>
 		</dict>
+		<key>virus_total_analyzer_summary_result</key>
+		<dict>
+			<key>data_rows</key>
+			<array>
+				<dict>
+					<key>name</key>
+					<string>Firefox.dmg</string>
+					<key>permalink</key>
+					<string>https://www.virustotal.com/file/2eb674c00e35357dcb18a5642f19422cf086e72d42562346ae48aa1e3f29802a/analysis/1457444467/</string>
+					<key>ratio</key>
+					<string>0/55</string>
+				</dict>
+				<dict>
+					<key>name</key>
+					<string>GoogleChrome.dmg</string>
+					<key>permalink</key>
+					<string>https://www.virustotal.com/file/0df5214c8ad8e662dad5bb0ff5f6805e57d0f880a599c2e9ea809ca390a661b2/analysis/1457252047/</string>
+					<key>ratio</key>
+					<string>0/54</string>
+				</dict>
+			</array>
+			<key>header</key>
+			<array>
+				<string>name</string>
+				<string>ratio</string>
+				<string>permalink</string>
+			</array>
+			<key>summary_text</key>
+			<string>The following items were queried from VirusTotal database:</string>
+		</dict>
+	</dict>
+	<key>virus_total_analyzer</key>
+	<dict>
+		<key>data_rows</key>
+		<array>
+			<dict>
+				<key>name</key>
+				<string>Firefox.dmg</string>
+				<key>permalink</key>
+				<string>https://www.virustotal.com/file/2eb674c00e35357dcb18a5642f19422cf086e72d42562346ae48aa1e3f29802a/analysis/1457444467/</string>
+				<key>ratio</key>
+				<string>0/55</string>
+			</dict>
+			<dict>
+				<key>name</key>
+				<string>GoogleChrome.dmg</string>
+				<key>permalink</key>
+				<string>https://www.virustotal.com/file/0df5214c8ad8e662dad5bb0ff5f6805e57d0f880a599c2e9ea809ca390a661b2/analysis/1457252047/</string>
+				<key>ratio</key>
+				<string>0/54</string>
+			</dict>
+		</array>
+		<key>header</key>
+		<array>
+			<string>name</string>
+			<string>ratio</string>
+			<string>permalink</string>
+		</array>
+		<key>summary_text</key>
+		<string>The following items were queried from VirusTotal database:</string>
 	</dict>
 	<key>updated_applications</key>
 	<array>

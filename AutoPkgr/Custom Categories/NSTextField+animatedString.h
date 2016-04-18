@@ -23,6 +23,6 @@
 @interface NSTextField (animatedString)
 @property (nonatomic, assign) BOOL fadeOut_string;
 
--(void)fadeOut_withString:(NSString *)aString;
--(void)fadeOut_withDuration:(NSTimeInterval)duration delay:(NSTimeInterval)delay;
+- (void)fadeOut_withString:(NSString *)aString;
+- (void)fadeOut_withDuration:(NSTimeInterval)duration delay:(NSTimeInterval)delay;
 @end

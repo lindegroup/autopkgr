@@ -96,7 +96,7 @@
     }];
 }
 
-+(void)executableChooser_WithStartingPath:(NSString *)path reply:(void (^)(NSString *))reply {
++ (void)executableChooser_WithStartingPath:(NSString *)path reply:(void (^)(NSString *))reply {
     [self executableChooser_WithStartingPath:path modalWindow:nil reply:reply];
 }
 

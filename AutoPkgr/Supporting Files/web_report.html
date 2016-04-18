@@ -1,11 +1,16 @@
-
-<!-- Upated Applications -->
+<!-- Updated Applications -->
 {{# updated_applications.count }}
 <strong>New software was downloaded:</strong>
 <table>
-    <tr><th>name</th><th>version</th></tr>
+    <tr>
+        <th>name</th>
+        <th>version</th>
+    </tr>
     {{# updated_applications }}
-    <tr><td>{{ name }}</td><td>{{ version }}</td></tr>
+    <tr>
+        <td>{{ name }}</td>
+        <td>{{ version }}</td>
+    </tr>
     {{/ updated_applications }}
 </table>
 {{/ updated_applications.count }}
@@ -19,11 +24,10 @@
     {{/ integration_updates }}
 </ul>
 {{/ integration_updates.count }}
-<br/><br/>
-{{# failures.count }}
 
 <!-- Failures -->
-<strong>Failures occurred in these recipes:</strong>
+{{# failures.count }}
+<strong>The following failures occurred:</strong>
 <ul>
     {{# failures }}
     <li>{{ recipe }}</li>
@@ -31,18 +35,16 @@
 </ul>
 {{/ failures.count }}
 
-{{# error }}
-
 <!-- Errors -->
+{{# error }}
 <strong>The following errors occurred: </strong>
 <ul>
     <li>{{ error.suggestion }}</li>
 </ul>
 {{/ error }}
 
-{{# url_downloader.data_rows.count }}
-
 <!-- Downloads -->
+{{# url_downloader.data_rows.count }}
 <strong>{{ url_downloader.summary_text }}</strong>
 <ul>
     {{# url_downloader.data_rows }}
@@ -51,9 +53,8 @@
 </ul>
 {{/ url_downloader.data_rows.count }}
 
+<!-- Installs from DMG -->
 {{# install_from_dmg.data_rows.count }}
-
-<!-- DMG Installer -->
 <strong>{{ install_from_dmg.summary_text }}</strong>
 <ul>
     {{# install_from_dmg.data_rows }}
@@ -62,9 +63,8 @@
 </ul>
 {{/ install_from_dmg.data_rows.count }}
 
+<!-- Packages installed -->
 {{# installer.data_rows.count }}
-
-<!-- Pkg Installer -->
 <strong>{{ installer.summary_text }}</strong>
 <ul>
     {{# installer.data_rows }}
@@ -73,9 +73,8 @@
 </ul>
 {{/ installer.data_rows.count }}
 
+<!-- Packages copied -->
 {{# pkg_copier.data_rows.count }}
-
-<!-- Pkg Copied -->
 <strong>{{ pkg_copier.summary_text }}</strong>
 <ul>
     {{# pkg_copier.data_rows }}
@@ -84,21 +83,27 @@
 </ul>
 {{/ pkg_copier.data_rows.count }}
 
+<!-- Packages created -->
 {{# pkg_creator.data_rows.count }}
-
-<!-- Package Creator -->
 <strong>{{ pkg_creator.summary_text }}</strong>
 <table>
-    <tr><th>identifier</th><th>version</th><th>pkg_path</th></tr>
+    <tr>
+        <th>identifier</th>
+        <th>version</th>
+        <th>pkg_path</th>
+    </tr>
     {{# pkg_creator.data_rows }}
-    <tr><td>{{ identifier }}</td><td>{{ version }}</td><td>{{ pkg_path }}</td></tr>
+    <tr>
+        <td>{{ identifier }}</td>
+        <td>{{ version }}</td>
+        <td>{{ pkg_path }}</td>
+    </tr>
     {{/ pkg_creator.data_rows }}
 </table>
 {{/ pkg_creator.data_rows.count }}
 
+<!-- Imported to Munki -->
 {{# munki_importer.data_rows.count }}
-
-<!-- MunkiImporter -->
 <strong>{{ munki_importer.summary_text }}</strong>
 <ul>
     {{# munki_importer.data_rows }}
@@ -108,21 +113,36 @@
 {{/ munki_importer.data_rows.count }}
 
 
-<!-- JSSImporter -->
+<!-- Imported to JSS (Casper) -->
 <!-- "report_fields": ["Package", "Categories", "Groups", "Scripts", "Extension Attributes", "Policy", "Icon"] -->
 {{# jss_importer.data_rows.count }}
 <strong>{{ jss_importer.summary_text }}</strong>
-<ul>
+<table>
+    <tr>
+        <th>Categories</th>
+        <th>Groups</th>
+        <th>Icon</th>
+        <th>Package</th>
+        <th>Policy</th>
+        <th>Scripts</th>
+    </tr>
     {{# jss_importer.data_rows }}
-    <li>{{ Package }}</li>
+    <tr>
+        <td>{{ Categories }}</td>
+        <td>{{ Groups }}</td>
+        <td>{{ Icon }}</td>
+        <td>{{ Package }}</td>
+        <td>{{ Policy }}</td>
+        <td>{{ Scripts }}</td>
+    </tr>
     {{/ jss_importer.data_rows }}
-</ul>
+</table>
 {{/ jss_importer.data_rows.count }}
 
-<!-- Filewave -->
+<!-- Imported to Filewave -->
 <!-- 'report_fields': ['fw_fileset_id', 'fw_fileset_group', 'fw_fileset_name'] -->
 {{# filewave.data_rows.count }}
-<H3>{{ filewave.summary_text }}</H3>
+<strong>{{ filewave.summary_text }}</strong>
 <ul>
     {{# filewave.data_rows }}
     <li>{{ fw_fileset_name }}</li>
@@ -130,10 +150,10 @@
 </ul>
 {{/ filewave.data_rows.count }}
 
-<!-- AbsoluteManage -->
+<!-- Imported to Absolute Manage -->
 <!-- 'report_fields': ['server', 'package', 'id' ] -->
 {{# absolute_manage_export.data_rows.count }}
-<H3>{{ absolute_manage_export.summary_text }}</H3>
+<strong>{{ absolute_manage_export.summary_text }}</strong>
 <ul>
     {{# absolute_manage_export.data_rows }}
     <li>{{ package }}</li>
@@ -141,10 +161,10 @@
 </ul>
 {{/ absolute_manage_export.data_rows.count }}
 
-<!-- LANrev -->
+<!-- Imported to LANrev -->
 <!-- 'report_fields': ['server', 'package', 'id' ] -->
 {{# lanrev_importer.data_rows.count }}
-<H3>{{ lanrev_importer.summary_text }}</H3>
+<strong>{{ lanrev_importer.summary_text }}</strong>
 <ul>
     {{# lanrev_importer.data_rows }}
     <li>{{ package }}</li>
@@ -152,10 +172,10 @@
 </ul>
 {{/ lanrev_importer.data_rows.count }}
 
-<!-- Mac Patch -->
+<!-- Imported to MacPatch -->
 <!-- 'report_fields': ['bundle_id', 'name', 'version', 'puuid'] -->
 {{# macpatch_importer.data_rows.count }}
-<H3>{{ macpatch_importer.summary_text }}</H3>
+<strong>{{ macpatch_importer.summary_text }}</strong>
 <ul>
     {{# macpatch_importer.data_rows }}
     <li>{{ name }} Version: {{ version }}</li>
@@ -163,5 +183,22 @@
 </ul>
 {{/ macpatch_importer.data_rows.count }}
 
+<!-- Scanned by VirusTotalAnalyzer -->
+<!-- 'report_fields': ['name', 'ratio', 'permalink'] -->
+{{# virus_total_analyzer.data_rows.count }}
+<strong>{{ virus_total_analyzer.summary_text }}</strong>
+<table>
+    <tr>
+        <th>Name</th>
+        <th>Ratio (Click for Details)</th>
+    </tr>
+    {{# virus_total_analyzer.data_rows }}
+    <tr>
+        <td>{{ name }}</td>
+        <td><a href="{{ permalink }}" target="_blank">{{ ratio }}</a></td>
+    </tr>
+    {{/ virus_total_analyzer.data_rows }}
+</table>
+{{/ virus_total_analyzer.data_rows.count }}
 
 <!-- End summary results-->

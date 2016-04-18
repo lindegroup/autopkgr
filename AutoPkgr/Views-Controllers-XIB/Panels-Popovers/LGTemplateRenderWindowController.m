@@ -3,7 +3,7 @@
 //  AutoPkgr
 //
 //  Created by Eldon on 12/6/15.
-//  Copyright © 2015 The Linde Group, Inc. All rights reserved.
+//  Copyright © 2015-2016 The Linde Group, Inc. All rights reserved.
 //
 
 #import "LGTemplateRenderWindowController.h"
@@ -28,7 +28,7 @@
 @property (unsafe_unretained) IBOutlet NSTextField *errorReport;
 
 @property (weak) IBOutlet NSOutlineView *exampleDataOutlineView;
-@property (weak) IBOutlet NSTextField *unsavedChanges;
+@property (weak) IBOutlet NSButton *unsavedChanges;
 
 @end
 
@@ -37,17 +37,19 @@
     GRMustacheTemplate *_template;
     NSString *_templateString;
     ACEMode _currentMode;
+    BOOL _textDidChangeDidDefer;
 }
 
 - (void)windowDidLoad {
     [super windowDidLoad];
     // Implement this method to handle any initialization after your
     // window controller's window has been loaded from its nib file.
-    // 
+    //
 }
 
 - (void)awakeFromNib {
     self.inputView.delegate = self;
+    self.unsavedChanges.enabled = NO;
 
     ACETheme theme = [[NSUserDefaults standardUserDefaults] integerForKey:@"SyntaxEditorTheme"];
     [self.inputView setTheme:theme];
@@ -112,7 +114,7 @@
 
 - (IBAction)save:(id)sender {
     if ([self renderToView:_inputView.string]) {
-        _unsavedChanges.hidden = YES;
+        self.unsavedChanges.enabled = NO;
         [_serviceClass setReportTemplate:_inputView.string];
     } else {
         NSInteger line = [self errorLine];
@@ -139,7 +141,12 @@
 
 - (void)textDidChange:(NSNotification *)notification {
     [self renderToView:_inputView.string];
-    _unsavedChanges.hidden = NO;
+
+    // Defer once...
+    if(_textDidChangeDidDefer){
+        self.unsavedChanges.enabled = YES;
+    }
+    _textDidChangeDidDefer = YES;
 }
 
 - (NSString *)renderedText:(NSError *__autoreleasing*)error {

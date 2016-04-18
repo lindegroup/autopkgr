@@ -1,5 +1,5 @@
 //
-//  LGLANrevIntegrationView.h
+//  LGVirusTotalAnalyzerIntegrationView.h
 //  AutoPkgr
 //
 //  Copyright 2016 Elliot Jordan
@@ -19,6 +19,6 @@
 
 #import "LGBaseIntegrationViewController.h"
 
-@interface LGLANrevIntegrationView : LGBaseIntegrationViewController
+@interface LGVirusTotalAnalyzerIntegrationView : LGBaseIntegrationViewController
 
 @end
