@@ -18,12 +18,15 @@ Nothing yet.
 - Addressed several issues that may have prevented notifications from working reliably in version 1.4. (#508, #515)
 - Fixed a crash caused by the SMTP server setting being blank. (#502)
 - AutoPkgr launches a bit faster now. (#500)
+- AutoPkgr now reports [InstallFromDMG](https://github.com/autopkg/autopkg/wiki/Processor-InstallFromDMG) processor results in addition to [Installer](https://github.com/autopkg/autopkg/wiki/Processor-Installer) processor results.
+- Fixed an issue that would cause the email notification subject to be blank.
 
 ### Changed
 - Adjusted default formatting of email and Slack notifications. (#507)
 - Added logging for SMTP operations.
 - Prevented password field from wrapping to a "new line." (#481)
 - Increased width of active recipe list picker.
+- Updated versions of MMMarkdown and MailCore2 used in AutoPkgr.
 
 ### Security
 - A note on keychain security in AutoPkgr 1.4.1:
