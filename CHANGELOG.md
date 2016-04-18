@@ -2,7 +2,13 @@
 
 All notable changes to this project will be documented in this file. This project adheres to [Semantic Versioning](http://semver.org/).
 
+
 ## [Unreleased](unreleased)
+
+Nothing yet.
+
+
+## [1.4.1] - 2016-04-18
 
 ### Added
 - AutoPkgr now allows you to customize the template used to generate notifications when new actions have occurred. Check it out at the bottom of the Notifications tab. (#184)
@@ -11,6 +17,7 @@ All notable changes to this project will be documented in this file. This projec
 - Fixed a long-standing issue that caused an incorrect prompt for the AutoPkgr keychain password! (#469)
 - Addressed several issues that may have prevented notifications from working reliably in version 1.4. (#508, #515)
 - Fixed a crash caused by the SMTP server setting being blank. (#502)
+- AutoPkgr launches a bit faster now. (#500)
 
 ### Changed
 - Adjusted default formatting of email and Slack notifications. (#507)
@@ -396,7 +403,8 @@ All notable changes to this project will be documented in this file. This projec
 - Initial public release of AutoPkgr.
 
 
-[unreleased]: https://github.com/lindegroup/autopkgr/compare/v1.4...HEAD
+[unreleased]: https://github.com/lindegroup/autopkgr/compare/v1.4.1...HEAD
+[1.4.1]: https://github.com/lindegroup/autopkgr/compare/v1.4...v1.4.1
 [1.4]: https://github.com/lindegroup/autopkgr/compare/v1.3.2...v1.4
 [1.3.2]: https://github.com/lindegroup/autopkgr/compare/v1.3.1...v1.3.2
 [1.3.1]: https://github.com/lindegroup/autopkgr/compare/v1.3...v1.3.1
