@@ -83,6 +83,8 @@ static NSString *const AUTOPKG_0_4_2 = @"0.4.2";
 static NSString *const AUTOPKG_0_5_0 = @"0.5.0";
 static NSString *const AUTOPKG_0_5_1 = @"0.5.1";
 static NSString *const AUTOPKG_0_5_2 = @"0.5.2";
+static NSString *const AUTOPKG_0_6_0 = @"0.6.0";
+static NSString *const AUTOPKG_0_6_1 = @"0.6.1";
 
 
 // Autopkg Task Result keys
