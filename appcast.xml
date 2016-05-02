@@ -6,6 +6,76 @@
         <description>Most recent changes with links to updates.</description>
         <language>en</language>
         <item>
+            <title>Version 1.4.1</title>
+            <description>
+                <![CDATA[
+                <p>Version 1.4.1 of AutoPkgr is now available, and it has a larger-than-your-average-point-release number of improvements and changes. Take a look:</p>
+
+                <h3>Added</h3>
+
+                <ul>
+                <li>AutoPkgr now allows you to customize the template used to generate notifications when new actions have occurred. Check it out at the bottom of the Notifications tab. (<a href="https://github.com/lindegroup/autopkgr/issues/184" class="issue-link js-issue-link" data-url="https://github.com/lindegroup/autopkgr/issues/184" data-id="47985403" data-error-text="Failed to load issue title" data-permission-text="Issue title is private">#184</a>)
+                <a href="https://cloud.githubusercontent.com/assets/7801391/14446302/3dea07e4-0009-11e6-98b4-c3c8842a78aa.png" target="_blank"><img src="https://cloud.githubusercontent.com/assets/7801391/14446302/3dea07e4-0009-11e6-98b4-c3c8842a78aa.png" alt="Custom notification template editor" style="max-width:100%;"></a>
+                </li>
+                </ul>
+
+                <h3>Fixed</h3>
+
+                <ul>
+                <li>Fixed a long-standing issue that caused an incorrect prompt for the AutoPkgr keychain password! (<a href="https://github.com/lindegroup/autopkgr/issues/469" class="issue-link js-issue-link" data-url="https://github.com/lindegroup/autopkgr/issues/469" data-id="122754404" data-error-text="Failed to load issue title" data-permission-text="Issue title is private">#469</a>)</li>
+                <li>Addressed several issues that may have prevented notifications from working reliably in version 1.4. (<a href="https://github.com/lindegroup/autopkgr/issues/508" class="issue-link js-issue-link" data-url="https://github.com/lindegroup/autopkgr/issues/508" data-id="140030668" data-error-text="Failed to load issue title" data-permission-text="Issue title is private">#508</a>, <a href="https://github.com/lindegroup/autopkgr/issues/515" class="issue-link js-issue-link" data-url="https://github.com/lindegroup/autopkgr/issues/515" data-id="143106170" data-error-text="Failed to load issue title" data-permission-text="Issue title is private">#515</a>)</li>
+                <li>Fixed a crash caused by the SMTP server setting being blank. (<a href="https://github.com/lindegroup/autopkgr/issues/502" class="issue-link js-issue-link" data-url="https://github.com/lindegroup/autopkgr/issues/502" data-id="138627859" data-error-text="Failed to load issue title" data-permission-text="Issue title is private">#502</a>)</li>
+                <li>AutoPkgr launches a bit faster now. (<a href="https://github.com/lindegroup/autopkgr/issues/500" class="issue-link js-issue-link" data-url="https://github.com/lindegroup/autopkgr/issues/500" data-id="138040566" data-error-text="Failed to load issue title" data-permission-text="Issue title is private">#500</a>)</li>
+                <li>AutoPkgr now reports <a href="https://github.com/autopkg/autopkg/wiki/Processor-InstallFromDMG">InstallFromDMG</a> processor results in addition to <a href="https://github.com/autopkg/autopkg/wiki/Processor-Installer">Installer</a> processor results.</li>
+                <li>Fixed an issue that would cause the email notification subject to be blank.</li>
+                </ul>
+
+                <h3>Changed</h3>
+
+                <ul>
+                <li>Adjusted default formatting of email and Slack notifications. (<a href="https://github.com/lindegroup/autopkgr/issues/507" class="issue-link js-issue-link" data-url="https://github.com/lindegroup/autopkgr/issues/507" data-id="139983548" data-error-text="Failed to load issue title" data-permission-text="Issue title is private">#507</a>)</li>
+                <li>Added logging for SMTP operations.</li>
+                <li>Prevented password field from wrapping to a "new line." (<a href="https://github.com/lindegroup/autopkgr/issues/481" class="issue-link js-issue-link" data-url="https://github.com/lindegroup/autopkgr/issues/481" data-id="130847203" data-error-text="Failed to load issue title" data-permission-text="Issue title is private">#481</a>)</li>
+                <li>Increased width of active recipe list picker.</li>
+                <li>Updated versions of MMMarkdown and MailCore2 used in AutoPkgr.</li>
+                </ul>
+
+                <h3>Security</h3>
+
+                <ul>
+                <li>
+                <p>A note on keychain security in AutoPkgr 1.4.1:</p>
+
+                <p>The fix for <a href="https://github.com/lindegroup/autopkgr/issues/469">issue #469</a> requires AutoPkgr to be less aggressive when locking the AutoPkgr keychain (a separate keychain stored in ~/Library/Keychains that stores your SMTP credentials for email notifications). It's possible for somebody with access to your AutoPkgr Mac to obtain your SMTP password using the <code>security</code> command while the AutoPkgr keychain is unlocked.</p>
+
+                <p>Here's why AutoPkgr exceeds our security requirements, even with less aggressive keychain locking:</p>
+
+                <ul>
+                <li>AutoPkgr's locking behavior is still <em>more</em> restrictive than your login keychain's behavior.</li>
+                <li>Physical access or VNC to your AutoPkgr Mac is necessary to use the <code>security</code> command to obtain the SMTP password.</li>
+                <li>AutoPkgr goes to great lengths to keep the actual AutoPkgr keychain password both unknown and unnecessary to know, which prevents password exposure via the Keychain Access app.</li>
+                </ul>
+
+                <p>Taking common sense security steps should mitigate any risks introduced by this change. Here are three to consider:</p>
+
+                <ul>
+                <li>Use an SMTP account dedicated to AutoPkgr for email notifications.</li>
+                <li>Run AutoPkgr on a dedicated Mac or VM, rather than using one shared by other services.</li>
+                <li>Unless necessary, don't leave the Mac logged in. AutoPkgr works great at the login window (which is why it has its own keychain in the first place), and a Mac at the login window is magnitudes safer than one with an active user session.</li>
+                </ul>
+                </li>
+                </ul>
+
+                <p>&nbsp;</p>
+
+                <p>As always, please <a href="https://github.com/lindegroup/autopkgr/issues">submit</a> any issues you find on GitHub, or find us on <a href="http://macadmins.org/">Slack</a> or <a href="https://groups.google.com/forum/#!forum/autopkgr-discuss">Google Groups</a> if you have questions. Have a great week!</p>
+                ]]>
+            </description>
+            <sparkle:minimumSystemVersion>10.8</sparkle:minimumSystemVersion>
+            <pubDate>Mon, 2 May 2016 10:00:00 -0700</pubDate>
+            <enclosure url="https://github.com/lindegroup/autopkgr/releases/download/v1.4.1/AutoPkgr-1.4.1.dmg" sparkle:version="1308" sparkle:shortVersionString="1.4.1" type="application/octet-stream" />
+        </item>
+        <item>
             <title>Version 1.4</title>
             <description>
                 <![CDATA[
