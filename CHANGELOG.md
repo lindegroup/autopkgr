@@ -5,7 +5,8 @@ All notable changes to this project will be documented in this file. This projec
 
 ## [Unreleased](unreleased)
 
-Nothing yet.
+### Changed
+- Updated versions of MMMarkdown and MailCore2 used in AutoPkgr.
 
 
 ## [1.4.1] - 2016-04-18
@@ -26,7 +27,6 @@ Nothing yet.
 - Added logging for SMTP operations.
 - Prevented password field from wrapping to a "new line." (#481)
 - Increased width of active recipe list picker.
-- Updated versions of MMMarkdown and MailCore2 used in AutoPkgr.
 
 ### Security
 - A note on keychain security in AutoPkgr 1.4.1:
