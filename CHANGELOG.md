@@ -8,6 +8,8 @@ All notable changes to this project will be documented in this file. This projec
 ### Changed
 - Updated versions of MMMarkdown and MailCore2 used in AutoPkgr.
 
+### Fixed
+- Fixed the AutoPkgr Slack bot icon URL. (#527)
 
 ## [1.4.1] - 2016-04-18
 
