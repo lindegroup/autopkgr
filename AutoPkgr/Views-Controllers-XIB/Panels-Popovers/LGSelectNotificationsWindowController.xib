@@ -18,7 +18,7 @@
             <windowStyleMask key="styleMask" closable="YES" miniaturizable="YES" resizable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="196" y="240" width="481" height="299"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1600" height="877"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1920" height="1057"/>
             <view key="contentView" id="se5-gp-TjO">
                 <rect key="frame" x="0.0" y="0.0" width="481" height="299"/>
                 <autoresizingMask key="autoresizingMask"/>
@@ -30,7 +30,7 @@
                             <constraint firstAttribute="width" constant="302" id="vIH-da-5bP"/>
                         </constraints>
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                        <size key="cellSize" width="123" height="18"/>
+                        <size key="cellSize" width="127" height="18"/>
                         <size key="intercellSpacing" width="4" height="5"/>
                         <buttonCell key="prototype" type="radio" title="Radio" imagePosition="left" alignment="left" inset="2" id="Jry-qd-bkO" userLabel="Schedule Radio Buttons">
                             <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
@@ -38,14 +38,14 @@
                         </buttonCell>
                         <cells>
                             <column>
-                                <buttonCell type="radio" title="All actions" imagePosition="left" alignment="left" state="on" inset="2" id="eQW-08-MtI">
+                                <buttonCell type="radio" title="Any action" imagePosition="left" alignment="left" state="on" inset="2" id="eQW-08-MtI">
                                     <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                     <font key="font" metaFont="system"/>
                                     <connections>
                                         <action selector="updateFlags:" target="-2" id="CvC-4V-DSv"/>
                                     </connections>
                                 </buttonCell>
-                                <buttonCell type="radio" title="Selected actions" imagePosition="left" alignment="left" tag="1" inset="2" id="qPY-Ac-9c8">
+                                <buttonCell type="radio" title="Selected actions:" imagePosition="left" alignment="left" tag="1" inset="2" id="qPY-Ac-9c8">
                                     <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                     <font key="font" metaFont="system"/>
                                     <connections>
@@ -133,7 +133,7 @@
                     </popUpButton>
                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="PZg-h6-oPd">
                         <rect key="frame" x="11" y="267" width="412" height="17"/>
-                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="left" title="Select which actions will trigger an AutoPkgr notification:" id="JV4-ur-ef3">
+                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="left" title="Actions that will cause a full AutoPkgr notification to be sent:" id="JV4-ur-ef3">
                             <font key="font" metaFont="system"/>
                             <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                             <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
