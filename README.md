@@ -144,11 +144,7 @@ Recipe overrides allow you to tailor recipes' input variables to your organizati
 
 We've tried to simplify the process of creating and editing AutoPkg recipe overrides. Just right-click on a recipe in the list, and you'll see options for creating an override or editing an existing override.
 
-![Override creation and editing](doc-images/overrides.png)
-
 To select which text editor to use when editing overrides, go to __Folders & Integration > Configure AutoPkg > Recipe/Override Editor__.
-
-![Text editor preference](doc-images/text_editor.png)
 
 ![divider](doc-images/divider.png)
 
@@ -156,13 +152,9 @@ To select which text editor to use when editing overrides, go to __Folders & Int
 
 To avoid unwanted notifications, you can customize which AutoPkg events trigger a notification to be sent. To do this, go to the Notifications tab and click the __Customize...__ button next to __Choose which actions trigger notification.__
 
-![Custom notification button](doc-images/custom_notification_button.png)
-
 You can choose to be notified on all events, or you can select a subset of events you care about and ignore the rest.
 
-![Custom notification options](doc-images/custom_notification_options.png)
-
-When you're done, click Close.
+When you're done, click __Close__.
 
 ![divider](doc-images/divider.png)
 
