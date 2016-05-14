@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="9532" systemVersion="15D21" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="9531" systemVersion="14F27" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="9532"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="9531"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="LGVirusTotalAnalyzerIntegrationView">
@@ -35,6 +35,9 @@
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                         <font key="font" metaFont="system"/>
                     </buttonCell>
+                    <connections>
+                        <action selector="checkBoxChanged:" target="-2" id="C6A-AM-tef"/>
+                    </connections>
                 </button>
                 <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="fkp-HH-zz3">
                     <rect key="frame" x="18" y="62" width="356" height="18"/>
@@ -42,6 +45,9 @@
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                         <font key="font" metaFont="system"/>
                     </buttonCell>
+                    <connections>
+                        <action selector="checkBoxChanged:" target="-2" id="qsc-sQ-Orv"/>
+                    </connections>
                 </button>
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Sql-BX-PMe">
                     <rect key="frame" x="49" y="42" width="116" height="14"/>
@@ -94,7 +100,7 @@
                 <matrix verticalHuggingPriority="750" fixedFrame="YES" allowsEmptySelection="NO" autorecalculatesCellSize="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Ye0-7D-cch">
                     <rect key="frame" x="20" y="174" width="110" height="38"/>
                     <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                    <size key="cellSize" width="110" height="18"/>
+                    <size key="cellSize" width="91" height="18"/>
                     <size key="intercellSpacing" width="4" height="2"/>
                     <buttonCell key="prototype" type="radio" title="Use proxy settings defined in System Preferences" imagePosition="left" alignment="left" controlSize="small" state="on" tag="1" inset="2" id="oUv-h4-uUP">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
@@ -112,6 +118,10 @@
                             </buttonCell>
                         </column>
                     </cells>
+                    <connections>
+                        <action selector="tokenTypeChanged:" target="-2" id="M6G-Xu-TOf"/>
+                        <binding destination="-2" name="selectedIndex" keyPath="self.customTokenEnabled" id="Tdw-YA-oqw"/>
+                    </connections>
                 </matrix>
                 <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="HsX-r7-oue">
                     <rect key="frame" x="113" y="174" width="347" height="19"/>
@@ -120,9 +130,13 @@
                         <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
                         <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
+                    <connections>
+                        <binding destination="-2" name="enabled" keyPath="self.customTokenEnabled" id="yyu-XL-yKE"/>
+                    </connections>
                 </textField>
             </subviews>
             <point key="canvasLocation" x="143" y="146.5"/>
         </customView>
+        <userDefaultsController representsSharedInstance="YES" id="btA-CQ-ilR"/>
     </objects>
 </document>
