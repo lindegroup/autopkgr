@@ -29,11 +29,11 @@
 @property (weak) IBOutlet NSTextField *VirusTotalAutoSubmitMaxSizeTF;
 @property (weak) IBOutlet NSTextField *VirusTotalSleepSecondsTF;
 
+@property (strong) LGVirusTotalAnalyzerDefaults *defaults;
+
 @end
 
-@implementation LGVirusTotalAnalyzerIntegrationView {
-    LGVirusTotalAnalyzerDefaults *_defaults;
-}
+@implementation LGVirusTotalAnalyzerIntegrationView
 
 - (void)viewDidLoad
 {

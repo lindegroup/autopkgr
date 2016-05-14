@@ -20,6 +20,7 @@
 #import "LGVirusTotalAnalyzerIntegration.h"
 
 @implementation LGVirusTotalAnalyzerIntegration
+
 + (NSString *)name {
     return @"VirusTotalAnalyzer";
 }
@@ -49,6 +50,21 @@
     return @"virus_total_analyzer_summary_result";
 }
 
+/**
+ *  Any custom install actions that need to be taken.
+ */
+- (void)customInstallActions:(void(^)(NSError *error))reply {
+
+    LGDefaults *defaults = [[LGDefaults alloc] init];
+    NSMutableSet *postProcessors = [[defaults objectForKey:@"PostProcessors"] mutableCopy] ?: [NSMutableSet new];
+    
+    [postProcessors addObject:@"io.github.hjuutilainen.VirusTotalAnalyzer/VirusTotalAnalyzer"];
+
+    [defaults setObject:[postProcessors allObjects] forKey:@"PostProcessors"];
+
+    reply(nil);
+}
+
 - (void)customUninstallActions:(void (^)(NSError *))reply {
     LGVirusTotalAnalyzerDefaults *defaults = [LGVirusTotalAnalyzerDefaults new];
     defaults.VIRUSTOTAL_API_KEY = nil;
@@ -56,6 +72,11 @@
     defaults.VIRUSTOTAL_AUTO_SUBMIT = NO;
     defaults.VIRUSTOTAL_AUTO_SUBMIT_MAX_SIZE = 419430400;
     defaults.VIRUSTOTAL_SLEEP_SECONDS = 15;
+
+
+    NSMutableArray *postProcessors = [[defaults objectForKey:@"PostProcessors"] mutableCopy];
+    [postProcessors removeObject:@"io.github.hjuutilainen.VirusTotalAnalyzer/VirusTotalAnalyzer"];
+    [defaults setObject:postProcessors forKey:@"PostProcessors"];
 
     // Don't forget to reply...
     reply(nil);
@@ -101,7 +122,7 @@
 // VIRUSTOTAL_AUTO_SUBMIT_MAX_SIZE
 
 - (NSInteger)VIRUSTOTAL_AUTO_SUBMIT_MAX_SIZE {
-    return [self integerForKey:NSStringFromSelector(@selector(VIRUSTOTAL_AUTO_SUBMIT_MAX_SIZE))];
+    return [[self autoPkgDomainObject:NSStringFromSelector(@selector(VIRUSTOTAL_AUTO_SUBMIT_MAX_SIZE))] integerValue];
 }
 
 - (void)setVIRUSTOTAL_AUTO_SUBMIT_MAX_SIZE:(NSInteger)VIRUSTOTAL_AUTO_SUBMIT_MAX_SIZE {
@@ -111,7 +132,7 @@
 // VIRUSTOTAL_SLEEP_SECONDS
 
 - (NSInteger)VIRUSTOTAL_SLEEP_SECONDS {
-    return [self integerForKey:NSStringFromSelector(@selector(VIRUSTOTAL_SLEEP_SECONDS))];
+    return [[self autoPkgDomainObject:NSStringFromSelector(@selector(VIRUSTOTAL_SLEEP_SECONDS))] integerValue];
 }
 
 - (void)setVIRUSTOTAL_SLEEP_SECONDS:(NSInteger)VIRUSTOTAL_SLEEP_SECONDS {
