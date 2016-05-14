@@ -24,6 +24,7 @@
 @interface LGVirusTotalAnalyzerIntegrationView ()<NSTextFieldDelegate>
 
 @property (weak) IBOutlet NSTextField *VirusTotalApiKeyTF;
+
 @property (weak) IBOutlet NSButton *VirusTotalAlwaysReportBT;
 @property (weak) IBOutlet NSButton *VirusTotalAutoSubmitBT;
 @property (weak) IBOutlet NSTextField *VirusTotalAutoSubmitMaxSizeTF;
@@ -49,14 +50,10 @@
     _VirusTotalApiKeyTF.delegate = self;
     _VirusTotalApiKeyTF.safe_stringValue = _defaults.VIRUSTOTAL_API_KEY;
 
-    // If we're using the default API key, this should be disabled.
-    // If we're using our own API key, this should be enabled and inherit whatever value is in VIRUSTOTAL_API_KEY.
-    _VirusTotalApiKeyTF.enabled = NO;
-
 
     // If there is no VIRUSTOTAL_SLEEP_SECONDS preference, this defaults to 15.
     _VirusTotalSleepSecondsTF.delegate = self;
-    if(_defaults.VIRUSTOTAL_AUTO_SUBMIT_MAX_SIZE != 0){
+    if(_defaults.VIRUSTOTAL_SLEEP_SECONDS != 0){
         _VirusTotalSleepSecondsTF.integerValue = _defaults.VIRUSTOTAL_SLEEP_SECONDS;
     }
 
@@ -77,6 +74,8 @@
 - (IBAction)tokenTypeChanged:(NSMatrix *)matrix {
     if(matrix.selectedRow == 0){
         _defaults.VIRUSTOTAL_API_KEY = nil;
+    } else {
+        _defaults.VIRUSTOTAL_API_KEY = _VirusTotalApiKeyTF.stringValue;
     }
 }
 

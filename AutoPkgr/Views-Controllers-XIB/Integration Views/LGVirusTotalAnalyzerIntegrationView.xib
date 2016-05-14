@@ -120,7 +120,7 @@
                     </cells>
                     <connections>
                         <action selector="tokenTypeChanged:" target="-2" id="M6G-Xu-TOf"/>
-                        <binding destination="-2" name="selectedIndex" keyPath="self.customTokenEnabled" id="Tdw-YA-oqw"/>
+                        <binding destination="btA-CQ-ilR" name="selectedIndex" keyPath="values.UseCustomVirusTotalAnalyzerToken" id="aJI-ya-weT"/>
                     </connections>
                 </matrix>
                 <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="HsX-r7-oue">
@@ -131,7 +131,11 @@
                         <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                     <connections>
-                        <binding destination="-2" name="enabled" keyPath="self.customTokenEnabled" id="yyu-XL-yKE"/>
+                        <binding destination="btA-CQ-ilR" name="enabled" keyPath="values.UseCustomVirusTotalAnalyzerToken" id="XDw-yX-kaz">
+                            <dictionary key="options">
+                                <integer key="NSMultipleValuesPlaceholder" value="0"/>
+                            </dictionary>
+                        </binding>
                     </connections>
                 </textField>
             </subviews>
