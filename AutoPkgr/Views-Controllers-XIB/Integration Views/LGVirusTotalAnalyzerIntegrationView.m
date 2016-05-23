@@ -106,7 +106,14 @@
 
     // VIRUSTOTAL_SLEEP_SECONDS
     if ([notification.object isEqualTo:_VirusTotalSleepSecondsTF]) {
-        _defaults.VIRUSTOTAL_SLEEP_SECONDS = [notification.object integerValue];
+        if ([[notification.object stringValue] isEqualTo:@""]) {
+            // TODO: Something like this:
+            // [_defaults removeObjectForKey:@"VIRUSTOTAL_SLEEP_SECONDS"];
+            _defaults.VIRUSTOTAL_SLEEP_SECONDS = 15;
+        } else {
+            _defaults.VIRUSTOTAL_SLEEP_SECONDS = [notification.object integerValue];
+        }
+
     }
 }
 @end
