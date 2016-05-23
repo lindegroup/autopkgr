@@ -101,7 +101,13 @@
 
     // VIRUSTOTAL_AUTO_SUBMIT_MAX_SIZE
     if ([notification.object isEqualTo:_VirusTotalAutoSubmitMaxSizeTF]) {
-        _defaults.VIRUSTOTAL_AUTO_SUBMIT_MAX_SIZE = [notification.object integerValue];
+        if ([[notification.object stringValue] isEqualTo:@""]) {
+            // TODO: Something like this:
+            // [_defaults removeObjectForKey:@"VIRUSTOTAL_AUTO_SUBMIT_MAX_SIZE"];
+            _defaults.VIRUSTOTAL_AUTO_SUBMIT_MAX_SIZE = 419430400;
+        } else {
+            _defaults.VIRUSTOTAL_AUTO_SUBMIT_MAX_SIZE = [notification.object integerValue];
+        }
     }
 
     // VIRUSTOTAL_SLEEP_SECONDS
@@ -113,7 +119,6 @@
         } else {
             _defaults.VIRUSTOTAL_SLEEP_SECONDS = [notification.object integerValue];
         }
-
     }
 }
 @end
