@@ -10,7 +10,7 @@ All notable changes to this project will be documented in this file. This projec
 
 ### Changed
 - Updated versions of MMMarkdown and MailCore2 used in AutoPkgr.
-- Clarified wording on the selective notifications picker (thanks to @poundbangbash for the wordsmithing).
+- Clarified wording on the selective notifications picker (thanks to [@poundbangbash](https://github.com/poundbangbash) for the wordsmithing).
 
 ### Fixed
 - Fixed the AutoPkgr Slack bot icon URL. (#527)
@@ -58,7 +58,7 @@ All notable changes to this project will be documented in this file. This projec
 - You can now select which events trigger a notification. For example, you can receive only Munki import notifications, and ignore download notifications. In other words, no more daily emails about VLC downloading! (#184)
 - Ability to select multiple repos and then update, add, or remove the selected repos. (#434)
 - Ability to select multiple recipes and then run, enable, or disable the selected recipes. (#434)
-- Built-in integration with FileWave version 10 and higher, via the new [FileWaveImporter](https://github.com/autopkg/filewave) processor. (#339, with thanks to @johncclayton.)
+- Built-in integration with FileWave version 10 and higher, via the new [FileWaveImporter](https://github.com/autopkg/filewave) processor. (#339, with thanks to [@johncclayton](https://github.com/johncclayton).)
 - Integration with new [LANrevImporter](https://github.com/jbaker10/LANrevImporter) processor. (#488) See the [LANrevImporter wiki](https://github.com/jbaker10/LANrevImporter/wiki/Switching-from-AbsoluteManageExport-to-LANrevImporter) for information on migrating from AbsoluteManageExport.
 - Ability to switch between multiple recipe lists. (#263)
 - Ability to specify pre/post processors. (#346, #384)
@@ -75,7 +75,7 @@ All notable changes to this project will be documented in this file. This projec
 ### Changed
 - Totally redesigned and simplified the JSSImporter settings sheet.
 - JSSImporter configuration UI now supports cloud distribution points (CDP) and local distribution points. (#463, #309)
-- MakeCatalogs.munki recipe is now added by name rather than by identifier. An override with the same name will now be used, if one exists. (Hat tip to @grahampugh.)
+- MakeCatalogs.munki recipe is now added by name rather than by identifier. An override with the same name will now be used, if one exists. (Hat tip to [@grahampugh](https://github.com/grahampugh).)
 - General improvements to integration performance. No longer makes duplicate GitHub API calls when "releases" don't exist.
 - Updated "AutoPkgr" link in footer of notification emails to point to [AutoPkgr information page](http://www.lindegroup.com/autopkgr) instead of [GitHub repo](https://github.com/lindegroup/autopkgr).
 - Moved Recipe/Override chooser out of contextual menu and into AutoPkg preference panel.
@@ -236,7 +236,7 @@ All notable changes to this project will be documented in this file. This projec
 - You can now set how AutoPgkr is displayed, either as a menu item, Dock item, or both. (#10)
 - You can now set AutoPkgr to launch at login. (#11)
 - If the "check for repo updates" option is enabled, it will now perform the repo update prior to each `autopkg run`, rather than just when AutoPkgr is launched. This should help next time the AdobeFlashPlayer recipe changes rapidly.
-- AutoPkgr now passes the recipe and override identifier into AutoPkg to avoid naming clashes when multiple repos have recipes with the same name. Thanks to @rtrouton for the suggestion. (#208)
+- AutoPkgr now passes the recipe and override identifier into AutoPkg to avoid naming clashes when multiple repos have recipes with the same name. Thanks to [@rtrouton](https://github.com/rtrouton) for the suggestion. (#208)
 - The AutoPkgr menu has been redesigned and enhanced with new menu options.
 - Progress is now displayed during repo-update.
 - We now use OS X's Notifications feature to display test email success. More notifications coming soon!
@@ -248,13 +248,13 @@ All notable changes to this project will be documented in this file. This projec
 
 ### Changed
 - New keychain item for AutoPkgr located at `~/Library/Keychains/AutoPkgr.keychain`. It can be unlocked and examined using the computer's serial number as the password.
-- Using master JDS is now set with a checkbox. Thanks to @everetteallen for this suggestion. ([#174](https://github.com/lindegroup/autopkgr/issues/174#issuecomment-64712310))
+- Using master JDS is now set with a checkbox. Thanks to [@everetteallen](https://github.com/everetteallen) for this suggestion. ([#174](https://github.com/lindegroup/autopkgr/issues/174#issuecomment-64712310))
 
 ### Fixed
 - Fixed a condition that could cause preferences to be erased if an error occurs during launch.
 - Fixed a condition that could cause AutoPkg to hang due to Python stdout buffer not getting flushed.
 - Fixed a condition where keychain was queried for email password even when authentication was not enabled.
-- Automatically removes trailing slash from JSS_URL which could cause 404 errors. Thanks to @acodega for getting to the bottom of this! ([#221](https://github.com/lindegroup/autopkgr/issues/221#issuecomment-66159456))
+- Automatically removes trailing slash from JSS_URL which could cause 404 errors. Thanks to [@acodega](https://github.com/acodega) for getting to the bottom of this! ([#221](https://github.com/lindegroup/autopkgr/issues/221#issuecomment-66159456))
 - Minor typo fixes and additional log entries, as always.
 
 
@@ -278,7 +278,7 @@ All notable changes to this project will be documented in this file. This projec
 ### Changed
 - If using JSS integration, python-jss now automatically "URL encodes" the distribution point passwords (#177).
 - Updated readme to clarify that Casper 9 or newer is required for JSS integration.
-- AutoPkgr now does not remove @sheagcraig's jss-recipes repository when the JSS settings have been cleared.
+- AutoPkgr now does not remove [@sheagcraig](https://github.com/sheagcraig)'s jss-recipes repository when the JSS settings have been cleared.
 
 ### Fixed
 - Fixed a bug which would set `SSL_VERIFY` incorrectly for Casper environments with self-signed certificates.
@@ -373,11 +373,11 @@ All notable changes to this project will be documented in this file. This projec
 - Version 1.0.2 is only compatible with Mac OS X 10.9 and higher.
 
 ### Fixed
-- AutoPkgr's configuration window is now correctly brought to front (thanks to @MitchelSBlake). (#93)
+- AutoPkgr's configuration window is now correctly brought to front (thanks to [@MitchelSBlake](https://github.com/MitchelSBlake)). (#93)
 - Git install is now working. (#61)
 - Both the recipes and repos table views scale proportionally as the window resizes.
 - The configuration window is now displayed each time AutoPkgr is launched, (rather than just the first time).
-- AutoPkg is now downloaded and installed using the release `.pkg` per feedback from @timsutton.
+- AutoPkg is now downloaded and installed using the release `.pkg` per feedback from [@timsutton](https://github.com/timsutton).
 - RecipeRepos are now populated from the GitHub API and sorted by star count. (#108)
 - The default state of the "Install Git" and "Install AutoPkg" buttons, status indicators, and labels now default to _not_ installed.
 
@@ -393,7 +393,7 @@ All notable changes to this project will be documented in this file. This projec
 ### Changed
 - Adjusted precedence for determining local Munki repo path. It is now 1) AutoPkgr preferenece domain, 2) AutoPkg preference domain, 3) Munki preference domain, 4) "default" value.
 - Less alarming log output.
-- Replaced references to "Apps" with "Recipes" per @gregneagle's feedback.
+- Replaced references to "Apps" with "Recipes" per [@gregneagle](https://github.com/gregneagle)'s feedback.
 
 ### Removed
 - Removed "Save and Close" button. Changes are now saved immediately.
