@@ -26,6 +26,7 @@ To get started, download the [latest release](https://github.com/lindegroup/auto
     - [Integration with HEAT LANrev](#integration-with-heat-lanrev)
     - [Integration with MacPatch](#integration-with-macpatch)
     - [Integration with FileWave](#integration-with-filewave)
+    - [Integration with VirusTotalAnalyzer](#integration-with-virustotalanalyzer)
 - [Troubleshooting](#troubleshooting)
 - [Credits](#credits)
 
@@ -291,6 +292,18 @@ To configure AutoPkgr to add updates directly into your FileWave server, follow 
     ![FileWave Settings](doc-images/integration_filewave.png)
 
 1. If verification succeeds, click __Save and Close__.
+
+![divider](doc-images/divider.png)
+
+### Integration with VirusTotalAnalyzer
+
+[VirusTotalAnalyzer](https://github.com/hjuutilainen/autopkg-virustotalanalyzer) is a processor that automatically checks downloaded packages against the VirusTotal database. AutoPkgr makes using this processor dead simple:
+
+1. Click on the __Folders & Integration__ tab.
+1. Click on the __Install VirusTotalAnalyzer__ button.
+1. (Optional) Once it's finished installing, click on the __Configure VirusTotalAnalyzer__ button and adjust settings as necessary. (e.g. enter your VirusTotal API key, if you have one)
+
+Now all downloaded files will be checked against VirusTotal's database.
 
 ![divider](doc-images/divider.png)
 
