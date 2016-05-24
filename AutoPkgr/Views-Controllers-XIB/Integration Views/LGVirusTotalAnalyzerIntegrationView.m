@@ -103,7 +103,7 @@
     if ([notification.object isEqualTo:_VirusTotalAutoSubmitMaxSizeTF]) {
         if ([[notification.object stringValue] isEqualTo:@""]) {
             // TODO: Something like this:
-            // [_defaults removeObjectForKey:@"VIRUSTOTAL_AUTO_SUBMIT_MAX_SIZE"];
+            // _defaults.VIRUSTOTAL_AUTO_SUBMIT_MAX_SIZE = nil;
             _defaults.VIRUSTOTAL_AUTO_SUBMIT_MAX_SIZE = 419430400;
         } else {
             _defaults.VIRUSTOTAL_AUTO_SUBMIT_MAX_SIZE = [notification.object integerValue];
@@ -114,7 +114,7 @@
     if ([notification.object isEqualTo:_VirusTotalSleepSecondsTF]) {
         if ([[notification.object stringValue] isEqualTo:@""]) {
             // TODO: Something like this:
-            // [_defaults removeObjectForKey:@"VIRUSTOTAL_SLEEP_SECONDS"];
+            // _defaults.VIRUSTOTAL_SLEEP_SECONDS = nil;
             _defaults.VIRUSTOTAL_SLEEP_SECONDS = 15;
         } else {
             _defaults.VIRUSTOTAL_SLEEP_SECONDS = [notification.object integerValue];
