@@ -5,6 +5,9 @@ All notable changes to this project will be documented in this file. This projec
 
 ## [Unreleased](unreleased)
 
+### Added
+- One-click integration with [@hjuutilainen](https://github.com/hjuutilainen/autopkg-virustotalanalyzer)'s [VirusTotalAnalyzer](https://github.com/hjuutilainen/autopkg-virustotalanalyzer) processor.
+
 ### Changed
 - Updated versions of MMMarkdown and MailCore2 used in AutoPkgr.
 - Clarified wording on the selective notifications picker (thanks to @poundbangbash for the wordsmithing).
