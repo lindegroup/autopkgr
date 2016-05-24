@@ -2,7 +2,7 @@
 //  LGIntegrationTemplate.m
 //  AutoPkgr
 //
-//  Copyright 2014-2015 The Linde Group, Inc.
+//  Copyright 2014-2016 The Linde Group, Inc.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
 #import "LGIntegrationTemplate.h"
 #import "LGIntegration+Protocols.h"
 
-// Define the protocols you intend to conform to...
+// Define the protocols you intend to conform to.
 @interface LGIntegrationTemplate () <LGIntegrationPackageInstaller,
                                             LGIntegrationSharedProcessor>
 @end
@@ -28,7 +28,7 @@
 #pragma mark - Integration overrides
 @implementation LGIntegrationTemplate
 
-// Since this is defined using a protocol, it needs to be synthesized...
+// Since this is defined using a protocol, it needs to be synthesized.
 // If not conforming to LGTOOLPackageInstaller remove it.
 @synthesize gitHubInfo = _gitHubInfo;
 
@@ -67,9 +67,9 @@
 
 + (NSArray *)components
 {
-    // If there's not a binary don't include it here!!
-    // Also, if the binary is determined dynamicaly handle
-    // nil values if using the literal syntax!!!
+    /* If there's not a binary don't include it here.
+     * Also, if the binary is determined dynamicaly, be sure to
+     * handle nil values if using the literal syntax. */
     return @[ [self binary],
               @"/path/to/another/file",
     ];
@@ -86,7 +86,7 @@
 }
 
 + (NSString *)summaryResultKey {
-    // This is the key the processor uses to populate the report-plist
+    // This is the key the processor uses to populate the report-plist.
     return @"your_processor_summary_result";
 }
 #pragma mark - Instance overrides

@@ -23,7 +23,7 @@
 @interface LGLANrevIntegration : LGIntegration
 @end
 
-// This is also a good place to add custom defaults
+// This is also a good place to add custom defaults.
 @interface LGLANrevDefaults : LGDefaults
 
 @property (copy, nonatomic, readonly) NSString *DatabaseDirectory;

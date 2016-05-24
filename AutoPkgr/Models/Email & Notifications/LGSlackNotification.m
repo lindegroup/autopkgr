@@ -100,8 +100,8 @@ static NSString *const SlacksNotificationsEnabledKey = @"SlackNotificationsEnabl
     [manager.requestSerializer setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
     [manager.requestSerializer setValue:@"application/json" forHTTPHeaderField:@"Accept"];
 
-    // Set up the request serializer with any additional criteria for slack
-    //[manager.requestSerializer setAuthorizationHeaderFieldWithUsername:@"" password:@""]; <- probably don't need this.
+    // Set up the request serializer with any additional criteria for Slack.
+    // [manager.requestSerializer setAuthorizationHeaderFieldWithUsername:@"" password:@""]; <- probably don't need this.
 
     manager.responseSerializer = [AFHTTPResponseSerializer serializer];
 

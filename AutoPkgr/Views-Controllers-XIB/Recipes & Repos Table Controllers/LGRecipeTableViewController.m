@@ -3,7 +3,7 @@
 //  AutoPkgr
 //
 //  Created by Eldon Ahrold on 6/3/2015.
-//  Copyright 2015 Eldon Ahrold.
+//  Copyright 2015 Eldon Ahrold
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -75,8 +75,7 @@ static NSString *const kLGAutoPkgRecipeCurrentStatusKey = @"currentStatus";
 {
     dispatch_async(dispatch_get_main_queue(), ^{
         // Reload is used to rebuilt the index.
-        // nil out _recipes here so when the self.recipes accessor is called
-        // it will actually get reconstructed.
+        // nil out _recipes here so when the self.recipes accessor is called it will actually get reconstructed.
         _recipes = nil;
         [self executeAppSearch:self];
         [self refreshRecipeList];
@@ -152,12 +151,12 @@ static NSString *const kLGAutoPkgRecipeCurrentStatusKey = @"currentStatus";
 
 - (void)updateRecipes:(NSMenuItem *)sender {
     NSArray *recipes = sender.representedObject;
-    // Start spinning //
+    // Start spinning.
 
     [LGAutoPkgTask runRecipes:recipes
                      progress:nil
                         reply:^(NSDictionary *report, NSError *error) {
-        // Remove from run dict...
+        // Remove from run dict.
                         }
      ];
 
@@ -229,7 +228,7 @@ static NSString *const kLGAutoPkgRecipeCurrentStatusKey = @"currentStatus";
     } else {
         NSString *searchString = _recipeSearchField.stringValue;
 
-        // Execute search both on Name and Identifier keys
+        // Execute search both on Name and Identifier keys.
         NSMutableArray *predicates = [[NSMutableArray alloc] init];
         for (NSString *key in @[kLGAutoPkgRecipeNameKey, kLGAutoPkgRecipeIdentifierKey]) {
             [predicates addObject:[NSPredicate predicateWithFormat:@"%K CONTAINS[cd] %@", key, searchString]];
@@ -285,7 +284,7 @@ static NSString *const kLGAutoPkgRecipeCurrentStatusKey = @"currentStatus";
         [_runTaskDictionary setObject:runTask forKey:recipes];
     }];
 
-    // This runs a recipe from the Table's contextual menu...
+    // This runs a recipe from the table's contextual menu.
     runTask.progressUpdateBlock = ^(NSString *message, double progress) {
         NSLog(@"Run status: %@", message);
     };
@@ -325,7 +324,7 @@ static NSString *const kLGAutoPkgRecipeCurrentStatusKey = @"currentStatus";
         [_runTaskDictionary removeObjectsForKeys:recipes];
         [_recipeTableView reloadDataForRowIndexes:recipeRows columnIndexes:colIdxSet];
 
-        // If there are no more run tasks don't keep the dictioanry around...
+        // If there are no more run tasks, don't keep the dictionary around.
         if (_runTaskDictionary.count == 0) {
             _runTaskDictionary = nil;
         }
@@ -427,7 +426,7 @@ static NSString *const kLGAutoPkgRecipeCurrentStatusKey = @"currentStatus";
         [menu addItemWithTitle:parent action:nil keyEquivalent:@""];
     }
 
-    // Setup menu items for overrides.
+    // Set up menu items for overrides.
 
     if ([LGRecipeOverrides overrideExistsForRecipe:recipe]) {
         NSMenuItem *openRecipeItem = [[NSMenuItem alloc] initWithTitle:@"Open Recipe Override" action:@selector(openFile:) keyEquivalent:@""];
@@ -435,13 +434,13 @@ static NSString *const kLGAutoPkgRecipeCurrentStatusKey = @"currentStatus";
         openRecipeItem.representedObject = recipe;
         [menu addItem:openRecipeItem];
 
-        // Reveal in finder menu item
+        // "Reveal in Finder" menu item.
         NSMenuItem *showInFinderItem = [[NSMenuItem alloc] initWithTitle:@"Reveal in Finder" action:@selector(revealInFinder:) keyEquivalent:@""];
         showInFinderItem.representedObject = recipe;
         showInFinderItem.target = [LGRecipeOverrides class];
         [menu addItem:showInFinderItem];
 
-        // "Delete Override" menu item
+        // "Delete Override" menu item.
         NSMenuItem *removeOverrideItem = [[NSMenuItem alloc] initWithTitle:@"Remove Override" action:@selector(deleteOverride:) keyEquivalent:@""];
 
         removeOverrideItem.representedObject = recipe;

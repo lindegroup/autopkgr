@@ -2,7 +2,7 @@
 //  LGUserNotification.m
 //  AutoPkgr
 //
-//  Copyright 2014-2015 The Linde Group, Inc.
+//  Copyright 2014-2016 The Linde Group, Inc.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -77,8 +77,7 @@
             [notification setHasActionButton:NO];
             [[NSUserNotificationCenter defaultUserNotificationCenter] deliverNotification:notification];
         } else {
-            // Currently there's a modal window displayed for errors, in th future we could
-            // present the error here instead
+            // Currently there's a modal window displayed for errors, in th future we could present the error here instead.
             if (error) {
                 [notification setUserInfo:error.userInfo];
                 [notification setActionButtonTitle:@"Show Error"];

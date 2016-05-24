@@ -20,14 +20,14 @@
 #import "LGLANrevIntegration.h"
 #import "LGIntegration+Protocols.h"
 
-// Define the protocols you intend to conform to...
+// Define the protocols you intend to conform to.
 @interface LGLANrevIntegration () <LGIntegrationPackageInstaller, LGIntegrationSharedProcessor>
 @end
 
 #pragma mark - Integration overrides
 @implementation LGLANrevIntegration
 
-// Since this is defined using a protocol, it needs to be synthesized...
+// Since this is defined using a protocol, it needs to be synthesized.
 // If not conforming to LGIntegrationPackageInstaller remove it.
 @synthesize gitHubInfo = _gitHubInfo;
 
@@ -62,7 +62,6 @@
 
 + (NSArray *)components
 {
-    // If there's not a binary don't include it here!!
     return @[[self binary]];
 }
 

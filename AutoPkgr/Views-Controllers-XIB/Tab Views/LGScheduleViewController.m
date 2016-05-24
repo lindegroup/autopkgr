@@ -3,7 +3,7 @@
 //  AutoPkgr
 //
 //  Created by Eldon Ahrold on 5/20/15.
-//  Copyright 2015 Eldon Ahrold.
+//  Copyright 2015 Eldon Ahrold
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -41,7 +41,7 @@
 
 - (void)awakeFromNib
 {
-    // Set up schedule settings
+    // Set up schedule settings.
     id currentSchedule;
     _scheduleEnabledBT.state = [LGAutoPkgSchedule updateAppsIsScheduled:&currentSchedule];
     _scheduleMenuItem.state = _scheduleEnabledBT.state;
@@ -73,15 +73,15 @@
     id proposedSchedule = nil;
     switch (_scheduleTypeMatrix.selectedTag) {
     case 0:
-        // Set it up to run every hour
+        // Set it up to run every hour.
         proposedSchedule = @(_scheduleIntervalTF.integerValue);
         break;
     case 1:
-        // Set it up as a daily run at xx
+        // Set it up as a daily run at ___.
         proposedSchedule = [AHLaunchJobSchedule dailyRunAtHour:_dailyHourPopupBT.selectedItem.tag minute:00];
         break;
     case 2:
-        // Set it up to run weekly on xx at xx
+        // Set it up to run weekly on ___ at ___.
         proposedSchedule = [AHLaunchJobSchedule weeklyRunOnWeekday:_weeklyDayPopupBT.selectedItem.tag hour:_weeklyHourPopupBT.selectedItem.tag];
         break;
     default:
@@ -140,17 +140,16 @@
 
 - (IBAction)changeSchedule:(id)sender
 {
-    // Determine whether to start or stop the schedule...
+    // Determine whether to start or stop the schedule.
     BOOL start;
     if ([sender isEqualTo:_scheduleMenuItem]) {
-        // The status menu's `state` property isn't updated until after the
-        // action is completed so use the inverse of the state property here.
+        // The status menu's `state` property isn't updated until after the action is completed so use the inverse of the state property here.
         start = !_scheduleMenuItem.state;
     } else {
         start = _scheduleEnabledBT.state;
     }
 
-    // First check for a few conditions that should just be returned from...
+    // First check for a few conditions that should just be returned from.
     if (start) {
         if ([self.currentSchedule isEqualTo:self.proposedSchedule]) {
             return;
@@ -165,12 +164,10 @@
         }
     }
 
-    /* Force a change if the action was triggered by changing a setting in
-     * them matrix, or a schedule interval. */
+    // Force a change if the action was triggered by changing a setting in the matrix or a schedule interval.
     BOOL force = (![sender isEqualTo:_scheduleEnabledBT] && (![sender isEqualTo:_scheduleMenuItem]));
 
-    /* If not enabled and the sender is from the the matrix
-     * just update the IBOutlet settings. */
+    // If not enabled and the sender is from the matrix just update the IBOutlet settings.
     if (!start && force) {
         return [self updateIBOutletsWithSchedule:self.proposedSchedule];
     }
@@ -186,7 +183,7 @@
             [self updateIBOutletsWithSchedule:_currentSchedule];
 
             if (error) {
-                // If error, reset the state to it's pre-modified status
+                // If error, reset the state to its previous state.
 
                 // If the authorization was canceled by user, don't present error.
                 if (error.code != errAuthorizationCanceled) {

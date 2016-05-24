@@ -24,13 +24,13 @@
 @class LGIntegration;
 
 typedef NS_ENUM(NSInteger, LGReportIntegrationFrequency) {
-    // Send a report for any give update once a week (Default)
+    // Send a report for any give update once a week (default).
     kLGReportIntegrationFrequencyWeekly = 0,
 
-    // Send a report for any give update once a day
+    // Send a report for any give update once a day.
     kLGReportIntegrationFrequencyDaily,
 
-    // Send a report only once per version
+    // Send a report only once per version.
     kLGReportIntegrationFrequencyOncePerVersion,
 };
 /**
@@ -39,7 +39,7 @@ typedef NS_ENUM(NSInteger, LGReportIntegrationFrequency) {
 @interface LGAutoPkgReport : NSObject
 
 /**
- *  Initialize the report with an AutoPkg(r) --report-plist dictionary
+ *  Initialize the report with an AutoPkg(r) --report-plist dictionary.
  *
  *  @param dictionary Dictionary representation of --report-plist output
  *
@@ -48,27 +48,27 @@ typedef NS_ENUM(NSInteger, LGReportIntegrationFrequency) {
 - (instancetype)initWithReportDictionary:(NSDictionary *)dictionary;
 
 /**
- *  Dictionary representation of --report-plist output
+ *  Dictionary representation of --report-plist output.
  */
 @property (copy, nonatomic) NSDictionary *autoPkgReport;
 
 /**
- *  Error object to parse
+ *  Error object to parse.
  */
 @property (copy, nonatomic) NSError *error;
 
 /**
- *  Array of LGIntegrations
+ *  Array of LGIntegrations.
  */
 @property (copy, nonatomic) NSArray<LGIntegration *> *integrations;
 
 /**
- *  Flags to define what to display in the report
+ *  Flags to define what to display in the report.
  */
 @property (assign, nonatomic) LGReportItems reportedItemFlags;
 
 /**
- *  Check to determine if there is anything to report
+ *  Check to determine if there is anything to report.
  */
 @property (nonatomic, readonly) BOOL updatesToReport;
 
@@ -95,7 +95,7 @@ typedef NS_ENUM(NSInteger, LGReportIntegrationFrequency) {
 
 #pragma mark - Additional
 /**
- *  Array of LGUpdatedApplications
+ *  Array of LGUpdatedApplications.
  */
 @property (copy, nonatomic, readonly) NSArray *updatedApplications;
 

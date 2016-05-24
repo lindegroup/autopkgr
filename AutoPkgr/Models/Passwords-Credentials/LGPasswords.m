@@ -119,8 +119,7 @@ NSString *appKeychainPath()
         AHKeychain *keychain = [AHKeychain keychainAtPath:appKeychainPath()];
 
         if ([keychain unlockWithPassword:oldPass]) {
-            // If we successfully unlock the keychain with the old password
-            // it needs migration.
+            // If we successfully unlock the keychain with the old password, the keychain needs migration.
 
             [self getKeychainKey:^(NSString *key, NSError *error) {
                 if(!error){

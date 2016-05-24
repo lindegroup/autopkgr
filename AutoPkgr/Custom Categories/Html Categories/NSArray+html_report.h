@@ -31,7 +31,7 @@
 @property (copy, nonatomic, readonly) NSString *html_table;
 
 /**
- *  Generate a table from an array of dictionaries and the cooresponding headers.
+ *  Generate a table from an array of dictionaries and the corresponding headers.
  *
  *  @param headers Array of dictionaries
  *
@@ -41,11 +41,11 @@
 - (NSString *)html_tableWithHeaders:(NSArray *)headers cssClass:(NSString *)cssClass;
 
 /**
- *  Generate a table from an array of dictionaries and set the class of a column using the cooresponding header key.
+ *  Generate a table from an array of dictionaries and set the class of a column using the corresponding header key.
  *
  *  @param headers Array of dictionaries
  *
- *  @param cssClassForColumn dictionary with the collumn class for the cooresponding header key
+ *  @param cssClassForColumn dictionary with the collumn class for the corresponding header key
  *
  *  @return HTML Table string
  */

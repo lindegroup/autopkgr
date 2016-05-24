@@ -144,7 +144,7 @@ static NSString *const kReportProcessorPKGCreator = @"pkg_creator_summary_result
         subject = NSLocalizedString(@"Update to helper components available", nil);
     }
 
-    // Construct the full subject string...
+    // Construct the full subject string.
     if (subject) {
         return quick_formatString(@"%@ on %@", subject, [NSHost currentHost].localizedName);
     }

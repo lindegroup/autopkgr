@@ -3,7 +3,7 @@
 //  AutoPkgr
 //
 //  Created by Eldon Ahrold on 8/30/14.
-//  Copyright 2014-2015 The Linde Group, Inc.
+//  Copyright 2014-2016 The Linde Group, Inc.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -329,8 +329,7 @@ typedef void (^AutoPkgReplyErrorBlock)(NSError *error);
 
         self.task.currentDirectoryPath = NSTemporaryDirectory();
 
-        // If an instance of autopkg is running,
-        // and we're trying to do a run, exit.
+        // If an instance of AutoPkg is already running and we're trying to start a run, exit.
         if (_verb == kLGAutoPkgRun && [[self class] instanceIsRunning]) {
             self.error = [LGError errorWithCode:kLGErrorMultipleRunsOfAutopkg];
             [self didCompleteTaskExecution];
@@ -349,8 +348,7 @@ typedef void (^AutoPkgReplyErrorBlock)(NSError *error);
           [weakSelf didCompleteTaskExecution];
         }];
 
-        // Since NSTask can raise for unexpected reasons,
-        // put it in a try-catch block
+        // Since NSTask can raise for unexpected reasons, put it in a try-catch block.
         @try {
             [self.task launch];
         }
@@ -452,10 +450,9 @@ typedef void (^AutoPkgReplyErrorBlock)(NSError *error);
 - (void)setArguments:(NSArray *)arguments
 {
     [self.taskLock lock];
-    /** _arguments is the externally set values
+    /* _arguments is the externally set values
      * _internalArguments is the mutable array that has
-     *  the path to autopkg set as the first object during init
-     */
+     * the path to autopkg set as the first object during init. */
     _arguments = arguments;
     if (arguments.count) {
         [self.internalArgs addObjectsFromArray:arguments];
@@ -472,7 +469,7 @@ typedef void (^AutoPkgReplyErrorBlock)(NSError *error);
         [self configurePostProcessors];
     } else if (_verb == kLGAutoPkgSearch){
         _verb = kLGAutoPkgSearch;
-        // If the api token file exists update the args.
+        // If the API token file exists, update the args.
         if ([[self class] apiTokenFileExists:nil]) {
             [self.internalArgs addObject:@"-t"];
         }
@@ -491,22 +488,21 @@ typedef void (^AutoPkgReplyErrorBlock)(NSError *error);
 #pragma mark - Task config helpers
 - (void)configureFileHandles
 {
-    // Place holder for stdin
+    // Placeholder for stdin.
     NSPipe *standardInput;
 
-    // Set up stdout
+    // Set up stdout.
     NSPipe *standardOutput = [NSPipe pipe];
     self.task.standardOutput = standardOutput;
 
-    // Set up stderr
+    // Set up stderr.
     // The Error handler class creates a the pipe to process the stderr messages.
     _errorHandler = [[LGAutoPkgErrorHandler alloc] initWithVerb:_verb];
     self.task.standardError = _errorHandler.pipe;
 
     BOOL isInteractive = [self isInteractiveOperation];
     if (isInteractive) {
-        /* As of AutoPkg 0.4.3 there is an interactive search feature
-         * so setup stdin */
+        // As of AutoPkg 0.4.3 there is an interactive search feature, so set up stdin.
         standardInput = [NSPipe pipe];
         self.task.standardInput = standardInput;
     }
@@ -514,8 +510,7 @@ typedef void (^AutoPkgReplyErrorBlock)(NSError *error);
     if (_verb & (kLGAutoPkgRun | kLGAutoPkgRepoUpdate | kLGAutoPkgRepoAdd)) {
 
         if (([_version version_isGreaterThanOrEqualTo:AUTOPKG_0_4_0])) {
-            /* As of 0.4.0 AutoPkg saves the report.plist to a file rather than stdout,
-             * so we can send progress messages */
+            // As of 0.4.0 AutoPkg saves the report.plist to a file rather than stdout, so we can send progress messages.
 
             __block double count = 0.0;
             __block double total;
@@ -544,8 +539,7 @@ typedef void (^AutoPkgReplyErrorBlock)(NSError *error);
                   if (isInteractive && data.taskData_isInteractive) {
                       DevLog(@"Prompting for interaction: %@", message);
 
-                      // ATTN: the "return" here only returns from the FH readability block,
-                      // not the `-configureFileHandles:` method
+                      // ATTN: the "return" here only returns from the FH readability block, not the `-configureFileHandles:` method.
                       return [self interactiveAlertWithMessage:message];
                   }
 
@@ -586,8 +580,7 @@ typedef void (^AutoPkgReplyErrorBlock)(NSError *error);
             }];
         }
     } else {
-        // In order to prevent maxing out the stdout buffer collect the data progressively
-        // even thought the data returned is usually small.
+        // In order to prevent maxing out the stdout buffer, collect the data progressively, even though the data returned is usually small.
         [[standardOutput fileHandleForReading] setReadabilityHandler:^(NSFileHandle *fh) {
           NSData *data = [fh availableData];
           if (data.length) {
@@ -606,7 +599,7 @@ typedef void (^AutoPkgReplyErrorBlock)(NSError *error);
 
 - (void)configureEnvironment
 {
-    // If the task is a network operation set proxies
+    // If the task is a network operation, set proxies.
     if ([self isNetworkOperation]) {
 
         LGDefaults *defaults = [[LGDefaults alloc] init];
@@ -615,7 +608,7 @@ typedef void (^AutoPkgReplyErrorBlock)(NSError *error);
             AHProxySettings *settings = [[AHProxySettings alloc] initWithDestination:@"https://github.com"];
             if (settings.taskDictionary) {
                 DLog(@"Using System Proxies: %@", settings.taskDictionary);
-                // This will just initialize the _internalEnvironment
+                // This will just initialize the _internalEnvironment.
                 [self addEnvironmentVariable:nil forKey:nil];
                 [_internalEnvironment addEntriesFromDictionary:settings.taskDictionary];
             }
@@ -642,15 +635,15 @@ typedef void (^AutoPkgReplyErrorBlock)(NSError *error);
     }
 
     if (_verb & (kLGAutoPkgRun | kLGAutoPkgRepoUpdate)) {
-        // To get status from autopkg set NSUnbufferedIO environment key to YES
+        // To get status from autopkg set NSUnbufferedIO environment key to YES.
         // Thanks to help from -- http://stackoverflow.com/questions/8251010
         [self addEnvironmentVariable:@"YES" forKey:@"NSUnbufferedIO"];
     }
 }
 
 - (void)configurePreProcessors {
-    // If an autopkg run has been setup using a custom implementation
-    // that includes explicitly declared preprocessors don't override
+    // If an autopkg run has been set up using a custom implementation
+    // that includes explicitly declared preprocessors, don't override
     // those settings.
     if([self.internalArgs containsObject:@"--pre"] ||
        [self.internalArgs containsObject:@"--preprocessor"]){
@@ -680,8 +673,8 @@ typedef void (^AutoPkgReplyErrorBlock)(NSError *error);
 }
 
 - (void)configurePostProcessors {
-    // If an autopkg run has been setup using a custom implementation
-    // that includes explicitly declared postprocessors don't override
+    // If an autopkg run has been set up using a custom implementation
+    // that includes explicitly declared postprocessors, don't override
     // those settings.
     if([self.internalArgs containsObject:@"--post"] ||
        [self.internalArgs containsObject:@"--postprocessor"]){
@@ -737,7 +730,7 @@ typedef void (^AutoPkgReplyErrorBlock)(NSError *error);
     if (!_standardOutString && !self.task.isRunning) {
         NSData *data;
         if ([self.task.standardOutput isKindOfClass:[NSPipe class]]) {
-            // If standardOutData exists then the sdtout was gathered progressively
+            // If standardOutData exists, then the sdtout was gathered progressively.
             if (self.standardOutData) {
                 data = [self.standardOutData copy];
             } else {
@@ -767,10 +760,10 @@ typedef void (^AutoPkgReplyErrorBlock)(NSError *error);
         NSString *reportPlistFile = self.reportPlistFile;
 
         if (reportPlistFile && [fm fileExistsAtPath:reportPlistFile]) {
-            // Create dictionary from the tmp file
+            // Create dictionary from the tmp file.
             workingReport = [NSMutableDictionary dictionaryWithContentsOfFile:reportPlistFile];
 
-            // Cleanup the tmp file (unless debugging is enabled)
+            // Clean up the tmp file (unless debugging is enabled).
             if (![[LGDefaults standardUserDefaults] debug]) {
                 NSError *error;
                 if (![fm removeItemAtPath:reportPlistFile error:&error]) {
@@ -779,8 +772,7 @@ typedef void (^AutoPkgReplyErrorBlock)(NSError *error);
             }
         }
     } else {
-        // For AutoPkg earlier than 0.4.0 the report plist was piped to stdout
-        // so convert that string to an NSDictionary
+        // For AutoPkg earlier than 0.4.0 the report plist was piped to stdout, so convert that string to an NSDictionary.
         workingReport = [[self serializePropertyListString:self.standardOutString] mutableCopy];
     }
 
@@ -823,7 +815,7 @@ typedef void (^AutoPkgReplyErrorBlock)(NSError *error);
             if ([self.task.standardOutput isKindOfClass:[NSPipe class]]) {
                 data = [[self.task.standardOutput fileHandleForReading] readDataToEndOfFile];
 
-                // If standardOutData exists then the sdtout was gathered progressively
+                // If standardOutData exists, then the sdtout was gathered progressively.
                 if (self.standardOutData) {
                     [self.standardOutData appendData:data];
                     data = [self.standardOutData copy];
@@ -852,8 +844,7 @@ typedef void (^AutoPkgReplyErrorBlock)(NSError *error);
             isInteractiveOperation = YES;
         } else if (_verb == kLGAutoPkgRun){
              /* AutoPkg 0.5.0 had a small bug with make_suggestions when the `load_recipe()`
-              * is called for a parent recipe. Addressed by PR https://github.com/autopkg/autopkg/pull/224
-              * Slated for 0.5.2 release */
+              * is called for a parent recipe. Addressed by PR https://github.com/autopkg/autopkg/pull/224 */
             if ([_version version_isGreaterThanOrEqualTo:AUTOPKG_0_5_2]){
                 if (![_arguments containsObject:@"--recipe-list"]) {
                     isInteractiveOperation = YES;
@@ -898,16 +889,15 @@ typedef void (^AutoPkgReplyErrorBlock)(NSError *error);
 {
     /*
      * TODO: As of 9/16/2015 AutoPkg's search feature is not designed to 
-     * successfully locate parent recipes by identifier, the primary use case
-     * for AutoPkgr. So we just pipe in "n" (no) to trigger the end of run.
-     */
+     * successfully locate parent recipes by identifier. So we just pipe
+     * in "n" (no) to trigger the end of run. */
     if (self.task.isRunning) {
         DevLog(@"Declining AutoPkg GitHub search request");
         [[self.task.standardInput fileHandleForWriting] writeData:[@"n\n" dataUsingEncoding:NSUTF8StringEncoding]];
         return;
     }
 
-    /* Eventually there may be more ways to interact, for now it's only to search github for a recipe's repo */
+    // Eventually there may be more ways to interact, for now it's only to search GitHub for a recipe's repo.
     [[NSOperationQueue mainQueue] addOperationWithBlock:^{
         NSString *title = LGAutoPkgLocalizedString(@"Could not find the parent recipe", nil);
 
@@ -1159,7 +1149,7 @@ typedef void (^AutoPkgReplyErrorBlock)(NSError *error);
     [manager GET:@"/authorizations"
         parameters:nil
         success:^(AFHTTPRequestOperation *operation, NSArray *responseObject) {
-          // Get Auth ID
+          // Get Auth ID.
           __block NSDictionary *autoPkgTokenDict = nil;
           NSString *token = [self apiToken];
           NSString *tokenLastEight = [token substringFromIndex:token.length - 8];
@@ -1175,11 +1165,11 @@ typedef void (^AutoPkgReplyErrorBlock)(NSError *error);
           if (autoPkgTokenDict) {
               NSString *delete = [NSString stringWithFormat:@"/authorizations/%@", autoPkgTokenDict[@"id"]];
 
-              /* Delete the token from the remote */
+              // Delete the token from the remote.
               [manager DELETE:delete
                   parameters:@{}
                   success:^(AFHTTPRequestOperation *operation, id responseObject) {
-                    // remove the file
+                    // Remove the file.
                     NSString *tokenFile = nil;
                     NSError *error = nil;
                     if ([self apiTokenFileExists:&tokenFile]) {
@@ -1198,7 +1188,7 @@ typedef void (^AutoPkgReplyErrorBlock)(NSError *error);
 
           NSDictionary *headers = operation.response.allHeaderFields;
           if (operation.response.statusCode == 401 && [headers[@"X-GitHub-OTP"] hasPrefix:@"required"]) {
-              // GitHub only seems to send 2FA with POST request, not GET (as of7/25/15 )
+              // GitHub only seems to send 2FA with POST request, not GET (as of 7/25/15)
               // Do the request again this time specifying POST.
               [manager POST:@"/authorizations"
                   parameters:nil

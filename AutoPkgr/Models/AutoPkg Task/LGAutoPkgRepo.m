@@ -40,7 +40,7 @@ static NSArray *_popularRepos;
 #pragma mark - Initializers
 
 /* initWithGithHubDictionary is used to create objects
- * from repos pulled from the GitHub api */
+ * from repos pulled from the GitHub API */
 - (instancetype)initWithGitHubDictionary:(NSDictionary *)dictionary
 {
     if (self = [super init]) {
@@ -191,7 +191,7 @@ static NSArray *_popularRepos;
     if (_checkStatusTimeStamp && [_checkStatusTimeStamp timeIntervalSinceNow] <= 0) {
         return reply(_status);
     }
-    // So we don't constantly hit the network at the exact same time, space it out the git calls.
+    // So we don't constantly hit the network at the exact same time, space out the git calls.
     NSTimeInterval interval = arc4random_uniform(600) + 300;
     _checkStatusTimeStamp = [NSDate dateWithTimeIntervalSinceNow:interval];
     NSString *path = self.path;
@@ -292,9 +292,9 @@ static NSArray *_popularRepos;
             NSMutableString *normalizedRepo = repoURL.mutableCopy;
 
             if (![normalizedRepo.pathExtension isEqualToString:@"git"]) {
-                // Using -stringByAppendingPathComponent: on a url here
-                // results in the scheme getting mangled from https://xxx to https:/xxx
-                // so just use -stringByAppendingString: string.
+                /* Using -stringByAppendingPathComponent: on a URL here
+                 * results in the scheme getting mangled from https://xxx to https:/xxx
+                 * so just use -stringByAppendingString: string. */
                 [normalizedRepo appendString:@".git"];
             }
 
@@ -398,7 +398,7 @@ static NSArray *_popularRepos;
 {
 
     if (access(urlString.UTF8String, W_OK) == 0) {
-        // Local folder, check if it's a git repo...
+        // Local folder; check if it's a git repo.
         NSString *gitCheck = [urlString stringByAppendingPathComponent:@".git"];
         return (access(gitCheck.UTF8String, W_OK) == 0);
     };
@@ -406,15 +406,14 @@ static NSArray *_popularRepos;
     NSString *host = nil;
     NSString *path = nil;
 
-    // Get the first occurence of the characters using .location
-    // Otherwise it returns NSNotFound
+    // Get the first occurence of the characters using .location. Otherwise it returns NSNotFound.
     NSInteger sep1_idx = [urlString rangeOfString:@":/"].location;
     NSInteger sep2_idx = [urlString rangeOfString:@":"].location;
     NSInteger sep3_idx = [urlString rangeOfString:@"."].location;
 
-    // Check if it conforms to scp like syntax such as git@github.com:autopkg/recipes
+    // Check if it conforms to scp-like syntax such as git@github.com:autopkg/recipes
     if ((sep2_idx != NSNotFound && sep1_idx == NSNotFound) || (sep1_idx > sep2_idx) || (sep2_idx > sep3_idx)) {
-        // If s username is found before the : strip it off
+        // If a username is found before the ":" strip it off.
         NSInteger location = NSNotFound;
         if ((location = [urlString rangeOfString:@"@"].location) < sep2_idx) {
             urlString = [urlString substringFromIndex:location + 1];

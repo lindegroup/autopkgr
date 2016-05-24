@@ -131,13 +131,13 @@
 
     __weak typeof(self) weakSelf = self;
     dispatch_source_set_event_handler(_source, ^{
-        // run query for all events...
+        // Run query for all events.
         if (changeHandler) {
             changeHandler(weakSelf.recipeLists);
         }
         unsigned long flags = dispatch_source_get_data(_source);
         if (flags & DISPATCH_VNODE_DELETE) {
-            // restart event if file was deleted
+            // Restart event if file was deleted.
             dispatch_source_cancel(_source);
         }
     });

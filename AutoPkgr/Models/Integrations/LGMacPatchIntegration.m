@@ -56,7 +56,6 @@
     defaults.MP_USER = nil;
     defaults.MP_SSL_VERIFY = YES;
 
-    // Don't forget to reply...
     reply(nil);
 }
 

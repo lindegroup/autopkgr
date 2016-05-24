@@ -2,8 +2,8 @@
 //  LGTemplateRenderPanel.m
 //  AutoPkgr
 //
-//  Created by Eldon on 12/6/15.
-//  Copyright © 2015-2016 The Linde Group, Inc. All rights reserved.
+//  Created by Eldon Ahrold on 12/6/15.
+//  Copyright 2015-2016 The Linde Group, Inc.
 //
 
 #import "LGTemplateRenderWindowController.h"
@@ -142,7 +142,7 @@
 - (void)textDidChange:(NSNotification *)notification {
     [self renderToView:_inputView.string];
 
-    // Defer once...
+    // Defer once.
     if(_textDidChangeDidDefer){
         self.unsavedChanges.enabled = YES;
     }

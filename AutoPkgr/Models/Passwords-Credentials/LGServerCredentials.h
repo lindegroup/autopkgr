@@ -44,7 +44,7 @@ typedef NS_ENUM(OSStatus, LGCredentialChallengeCode) {
  */
 typedef NS_ENUM(OSStatus, LGSSLTrustSettings) {
 
-    // The trust setting is unknown
+    // The trust setting is unknown.
     kLGSSLTrustStatusUnknown = 0,
 
     // Do not trust the SSL.
@@ -53,7 +53,7 @@ typedef NS_ENUM(OSStatus, LGSSLTrustSettings) {
     // The user confirmed trust as a result of a trust panel interaction.
     kLGSSLTrustUserConfirmedTrust = 1 << 1,
 
-    // The user has explicitly told the OS to trust the certificate (set in Keychain)
+    // The user has explicitly told the OS to trust the certificate (set in Keychain).
     kLGSSLTrustUserExplicitTrust = 1 << 2,
 
     // The OS implicitly trusts this certificate. It is globaly valid.
@@ -73,7 +73,7 @@ typedef NS_ENUM(OSStatus, LGSSLTrustSettings) {
 - (void)save;
 
 /**
- *The block to be executed  when `-save` is called. This block has no return value and takes one arguments: the receiver credential. This block can only be set once
+ *The block to be executed  when `-save` is called. This block has no return value and takes one arguments: the receiver credential. This block can only be set once.
  */
 @property (copy, nonatomic) void (^saveBlock)(id aCredential);
 
@@ -83,18 +83,18 @@ typedef NS_ENUM(OSStatus, LGSSLTrustSettings) {
 @property (copy, nonatomic) NSString *user;
 
 /**
- *  Password used for authentication
+ *  Password used for authentication.
  */
 @property (copy, nonatomic) NSString *password;
 
 /**
- *  Server address used for authentication
+ *  Server address used for authentication.
  *  @note This should be a fully formed url string including protocol and port.
  */
 @property (copy, nonatomic) NSString *server;
 
 /**
- *  The server property converted into an NSURL
+ *  The server property converted into an NSURL.
  */
 @property (copy, nonatomic, readonly) NSURL *serverURL;
 
@@ -111,7 +111,7 @@ typedef NS_ENUM(OSStatus, LGSSLTrustSettings) {
 @property (copy, nonatomic, readonly) NSString *host;
 
 /**
- *  The port for the server
+ *  The port for the server.
  *  @note The `server` property must first be set. If no port is explicitly defined, this will attempt to guess the port based on default ports.
  */
 @property (nonatomic) NSInteger port;
@@ -130,23 +130,23 @@ typedef NS_ENUM(OSStatus, LGSSLTrustSettings) {
 @property (copy, nonatomic, readonly) NSURLCredential *credential;
 
 /**
- *  validity level of SSL certificates and certificate chains.
+ *  Validity level of SSL certificates and certificate chains.
  */
 @property (assign, nonatomic) LGSSLTrustSettings sslTrustSetting;
 
 /**
- *  Handle a authentication challenge by presenting a dialog asking to verify an untrusted certificate
+ *  Handle a authentication challenge by presenting a dialog asking to verify an untrusted certificate.
  *
- *  @param challenge challenge from the request
- *  @param reply reply block that takes one parameter, verifySSL, to indicate the result of the challenge.
+ *  @param challenge  Challenge from the request
+ *  @param reply      Reply block that takes one parameter, verifySSL, to indicate the result of the challenge.
  */
 - (void)handleCertificateTrustChallenge:(NSURLAuthenticationChallenge *)challenge reply:(void (^)(LGSSLTrustSettings trust))reply;
 
 /**
  *  Check the credentials for a specified path
  *
- *  @param path  URL path to test credentials for.
- *  @param reply reply block that takes three parameters, the original credential, the response code, and an error if one should occur.
+ *  @param path   URL path to test credentials for.
+ *  @param reply  Reply block that takes three parameters, the original credential, the response code, and an error if one should occur.
  */
 - (void)checkCredentialsForPath:(NSString *)path reply:(void (^)(LGHTTPCredential *aCredential, LGCredentialChallengeCode code, NSError *error))reply;
 @end
@@ -157,10 +157,10 @@ typedef NS_ENUM(OSStatus, LGSSLTrustSettings) {
  */
 @interface LGNetMountCredential : LGServerCredentials
 /**
- *  Check the credentials for a specified share
+ *  Check the credentials for a specified share.
  *
  *  @param share  Server share point to test credentials for.
- *  @param reply reply block that takes three parameters, the original credential, the response code, and an error if one should occur.
+ *  @param reply  Reply block that takes three parameters, the original credential, the response code, and an error if one should occur.
  */
 - (void)checkCredentialsForShare:(NSString *)share reply:(void (^)(LGNetMountCredential *aCredential, LGCredentialChallengeCode code, NSError *error))reply;
 @end

@@ -3,7 +3,7 @@
 //  AutoPkgr
 //
 //  Created by Eldon Ahrold on 6/7/15.
-//  Copyright 2015 Eldon Ahrold.
+//  Copyright 2015 Eldon Ahrold
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -58,10 +58,10 @@
 {
     DevLog(@"Showing dialog for selecting Munki repo location.");
 
-    // Set the default directory to the current setting for munkiRepo, else /Users/Shared
+    // Set the default directory to the current setting for munkiRepo, else /Users/Shared.
     NSString *path = [[LGDefaults standardUserDefaults] munkiRepo] ?: @"/Users/Shared";
 
-    // Display the dialog. If the "Choose" button was (This is a custom category)
+    // Display the folder picker dialog.
     [NSOpenPanel folderChooser_WithStartingPath:path reply:^(NSString *selectedFolder) {
         if (selectedFolder) {
             DevLog(@"%@ selected for Munki repo location.", selectedFolder);

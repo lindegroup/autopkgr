@@ -81,7 +81,7 @@ typedef NS_ENUM(OSStatus, LGAutoPkgRepoStatus) {
 - (void)viewCommitsOnGitHub:(id)sender;
 
 /**
- *  Get an array of installed repos and repos hosted on autopkg's github page.
+ *  Get an array of installed repos and repos hosted on AutoPkg's GitHub page.
  *
  *  @param reply block object that takes one parameter, an array of LGAutoPkgRepo Ojbects.
  */

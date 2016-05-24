@@ -3,7 +3,7 @@
 //  AutoPkgr
 //
 //  Created by James Barclay on 7/18/14.
-//  Copyright 2014-2015 The Linde Group, Inc.
+//  Copyright 2014-2016 The Linde Group, Inc.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -31,11 +31,11 @@
 @property (copy, nonatomic, readonly) NSArray *latestReleaseDownloads;
 
 /**
- *  Whether the info object's init time has outlived it's lifeSpan.
+ *  Whether the info object's init time has outlived its lifespan.
  */
 @property (assign, nonatomic, readonly) BOOL isExpired;
 /**
- *  The interval of time before the validity the release info should be reloaded.
+ *  The interval of time before the release info should be reloaded.
  */
 @property (assign, nonatomic, readonly) NSTimeInterval lifespan;
 
@@ -49,7 +49,7 @@
 
 - (void)getReleaseInfo:(void (^)(LGGitHubReleaseInfo *info, NSError *error))info;
 
-// Synchronously get raw data from GitHub URL
+// Synchronously get raw data from GitHub URL.
 + (NSArray *)getJSONFromURL:(NSString *)url;
 + (NSArray *)getAutoPkgRecipeRepos;
 
