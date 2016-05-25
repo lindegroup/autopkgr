@@ -2,7 +2,7 @@
 //  LGUninstaller.m
 //  AutoPkgr
 //
-//  Copyright 2015 Eldon Ahrold.
+//  Copyright 2015 Eldon Ahrold
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -78,7 +78,7 @@
     // TODO: Prompt for components.
     BOOL removeKeychain = NO;
 
-    // Setup completion block.
+    // Set up completion block.
     void (^didComplete)(NSError *) = ^(NSError *error) {
         if (![AHLaunchCtl uninstallHelper:kLGAutoPkgrHelperToolName
                                    prompt:NSLocalizedString(@"Remove AutoPkgr's components.", nil)
@@ -89,7 +89,7 @@
             [LGAutoPkgSchedule launchAtLogin:NO];
 
             if (removeKeychain) {
-                // Remove AutoPkgr.keychain file
+                // Remove AutoPkgr.keychain file.
                 NSString *keychainFile = appKeychainPath();
                 NSFileManager *manager = [NSFileManager defaultManager];
                 if ([manager fileExistsAtPath:appKeychainPath() ]) {

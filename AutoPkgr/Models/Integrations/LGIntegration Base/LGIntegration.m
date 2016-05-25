@@ -2,7 +2,7 @@
 //  LGIntegration.m
 //  AutoPkgr
 //
-//  Copyright 2015 Eldon Ahrold.
+//  Copyright 2015 Eldon Ahrold
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -92,7 +92,7 @@ void subclassMustConformToProtocol(id className)
     // We only need to check subclasses (and should ignore the super).
     if ((self != [LGIntegration class]) && [self isSubclassOfClass:[LGIntegration class]]) {
 
-        // The subclasses must conform to at least one of the protocols
+        // The subclasses must conform to at least one of the protocols.
         if (([self conformsToProtocol:@protocol(LGIntegrationSharedProcessor)] ||
              [self conformsToProtocol:@protocol(LGIntegrationPackageInstaller)]) == NO) {
             subclassMustConformToProtocol(self);
@@ -134,8 +134,6 @@ void subclassMustConformToProtocol(id className)
 #pragma mark - Init / Dealloc
 - (void)dealloc
 {
-    //    DevLog(@"Dealloc %@", self);
-
     // nil out the blocks to break retain cycles.
     _progressUpdateBlock = nil;
     _replyErrorBlock = nil;

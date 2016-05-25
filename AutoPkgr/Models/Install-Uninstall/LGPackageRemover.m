@@ -2,7 +2,7 @@
 //  LGPackageRemover.m
 //  AutoPkgr
 //
-//  Copyright 2015 Eldon Ahrold.
+//  Copyright 2015 Eldon Ahrold
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -126,7 +126,7 @@ static dispatch_queue_t autopkgr_pkg_remover_queue()
             [files addObjectsFromArray:valideIdentifiers];
         }
 
-        // Remove the files...
+        // Remove the files.
         double count = 0.0;
         double total = files.count;
 
@@ -136,7 +136,7 @@ static dispatch_queue_t autopkgr_pkg_remover_queue()
         NSFileManager *fm = [NSFileManager defaultManager];
         [files sortUsingSelector:@selector(localizedStandardCompare:)];
 
-        // Now go through and remove the directories in our list...
+        // Now go through and remove the directories in our list.
         for (NSString *path in [[files reverseObjectEnumerator] allObjects]){
             count++;
             double p = ((count/total) * 100);
@@ -148,14 +148,14 @@ static dispatch_queue_t autopkgr_pkg_remover_queue()
                     if (dryRun) {
                         progressMessage = [NSString stringWithFormat:@"Will try to remove dir:  %@", path];
                     } else if ( [[fm contentsOfDirectoryAtPath:path error:&error] count] || error) {
-                        // The directory is not empty...
+                        // The directory is not empty.
                         progressMessage = [NSString stringWithFormat:@"Could not remove non-empty directory %@", path];
                     } else if ([fm removeItemAtPath:path error:&error]) {
                         progressMessage = [NSString stringWithFormat:@"Removed dir:  %@", path];
                         [removed addObject:path];
                     }
                 } else {
-                    // It's a file
+                    // It's a file.
                     if (dryRun) {
                         progressMessage = [NSString stringWithFormat:@"Will try to remove file: %@", path];
                     } else if ([fm removeItemAtPath:path error:&error]) {
@@ -229,7 +229,7 @@ static dispatch_queue_t autopkgr_pkg_remover_queue()
     NSFileManager *fm = [NSFileManager defaultManager];
 
     for (NSString *identifier in identifiers) {
-        // Get the installer base path from.
+        // Get the installer base path.
         NSDictionary *recieptDictionary = [[[self class] pkgutilTaskWithArgs:@[ @"--pkg-info-plist", identifier ] error:error] taskData_serializedDictionary];
 
         NSString *installerBasePath = [recieptDictionary[@"volume"] stringByAppendingPathComponent:recieptDictionary[@"install-location"]];
@@ -252,8 +252,7 @@ static dispatch_queue_t autopkgr_pkg_remover_queue()
         }
     }
 
-    // Go over the directory array and see if it will be empty once all of the
-    // files in the file array are removed
+    // Go over the directory array and see if it will be empty once all of the files in the file array are removed.
     for (NSString *dir in [directories copy]) {
         NSArray *dirContents = [fm contentsOfDirectoryAtPath:dir error:nil];
 
@@ -266,7 +265,7 @@ static dispatch_queue_t autopkgr_pkg_remover_queue()
 
                 // If there is a file in the current dir array that is not represented
                 // in the fileArray the directory will not be empty so
-                // remove the current dir from the array of directories to purge
+                // remove the current dir from the array of directories to purge.
                 if (![files containsObject:filePath] && ![directories containsObject:filePath]) {
                     [directories removeObject:dir];
                     break;
@@ -298,8 +297,7 @@ static dispatch_queue_t autopkgr_pkg_remover_queue()
 {
 
     // Collect the data into a mutable container.
-    // NSTask's stdout buffer isn't unlimited and there are enough
-    // Cases where the task can stall when to much data is sent.
+    // NSTask's stdout buffer isn't unlimited and there are enough cases where the task can stall when to much data is sent.
     NSRecursiveLock *lock = [[NSRecursiveLock alloc] init];
     NSMutableData *outData = [[NSMutableData alloc] init];
     NSMutableData *errData = [[NSMutableData alloc] init];

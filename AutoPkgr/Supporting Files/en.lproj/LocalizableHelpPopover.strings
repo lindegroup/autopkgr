@@ -23,5 +23,5 @@
 "hipChatHelpInfoURL" = "https://hipchat.com/rooms/";
 
 "MunkiSetDefaultCatalogInfoTitle" = "MunkiSetDefaultCatalog Preprocessor";
-"MunkiSetDefaultCatalogInfo" = "This preprocessor will edit the current munki pkginfo to set the 'catalog' key to the default catalog preference for munkiimport (com.googlecode.munki.munkiimport), if one has been set.";
+"MunkiSetDefaultCatalogInfo" = "This preprocessor will edit the current Munki pkginfo to set the 'catalog' key to the default catalog preference for MunkiImport (com.googlecode.munki.munkiimport), if one has been set.";
 "MunkiSetDefaultCatalogInfoURL" = "https://github.com/autopkg/autopkg/blob/master/Code/autopkglib/MunkiSetDefaultCatalog.py";

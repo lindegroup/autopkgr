@@ -2,8 +2,8 @@
 //  LGMenuItems.m
 //  AutoPkgr
 //
-//  Created by Eldon on 7/23/15.
-//  Copyright (c) 2015 The Linde Group, Inc. All rights reserved.
+//  Created by Eldon Ahrold on 7/23/15.
+//  Copyright 2015-2016 The Linde Group, Inc.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.

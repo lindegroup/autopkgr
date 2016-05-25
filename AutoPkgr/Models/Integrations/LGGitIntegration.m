@@ -2,7 +2,7 @@
 //  LGGitIntegration.m
 //  AutoPkgr
 //
-//  Copyright 2015 Eldon Ahrold.
+//  Copyright 2015 Eldon Ahrold
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -256,7 +256,7 @@ static NSArray *knownGitPaths()
                 reply(stdOut, error);
             });
 
-            // Clean up...
+            // Clean up.
             outHandle.readabilityHandler = nil;
             outData = nil;
 

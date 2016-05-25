@@ -3,7 +3,7 @@
 //  AutoPkgr
 //
 //  Created by Eldon Ahrold on 5/14/15.
-//  Copyright 2015 Eldon Ahrold.
+//  Copyright 2015 Eldon Ahrold
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -24,11 +24,11 @@
 
 - (NSComparisonResult)compareToVersion:(NSString *)version
 {
-    // Break version into fields (separated by '.')
+    // Break version into fields (separated by '.').
     NSMutableArray *selfArray = [[self componentsSeparatedByString:@"."] mutableCopy];
     NSMutableArray *versionArray = [[version componentsSeparatedByString:@"."] mutableCopy];
 
-    // Balence the number of digits to compare
+    // Balence the number of digits to compare.
     if (selfArray.count < versionArray.count) {
         while ([selfArray count] != [versionArray count]) {
             [selfArray addObject:@"0"];

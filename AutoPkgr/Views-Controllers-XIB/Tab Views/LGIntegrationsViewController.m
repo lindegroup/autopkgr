@@ -3,7 +3,7 @@
 //  AutoPkgr
 //
 //  Created by Eldon Ahrold on 5/20/15.
-//  Copyright 2015 Eldon Ahrold.
+//  Copyright 2015 Eldon Ahrold
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -126,7 +126,7 @@
         statusCell.configureButton.tag = row;
         statusCell.configureButton.enabled = NO;
 
-        /* Set the name of the identifier's cooresponding view class as the identifier
+        /* Set the name of the identifier's corresponding view class as the identifier
          * in the `- config:` method this is used to create an instance of the viewClass */
         statusCell.configureButton.identifier = [[integration className] stringByAppendingString:@"View"];
 

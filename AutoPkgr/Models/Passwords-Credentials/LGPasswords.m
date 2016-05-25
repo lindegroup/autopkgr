@@ -3,7 +3,7 @@
 //  AutoPkgr
 //
 //  Created by Eldon Ahrold on 2/14/15.
-//  Copyright 2015 The Linde Group, Inc.
+//  Copyright 2015-2016 The Linde Group, Inc.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -119,8 +119,7 @@ NSString *appKeychainPath()
         AHKeychain *keychain = [AHKeychain keychainAtPath:appKeychainPath()];
 
         if ([keychain unlockWithPassword:oldPass]) {
-            // If we successfully unlock the keychain with the old password
-            // it needs migration.
+            // If we successfully unlock the keychain with the old password, the keychain needs migration.
 
             [self getKeychainKey:^(NSString *key, NSError *error) {
                 if(!error){

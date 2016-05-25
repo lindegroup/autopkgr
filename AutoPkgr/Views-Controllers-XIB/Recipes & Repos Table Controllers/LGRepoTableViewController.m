@@ -3,7 +3,7 @@
 //  AutoPkgr
 //
 //  Created by Eldon Ahrold on 6/3/2015.
-//  Copyright 2015 Eldon Ahrold.
+//  Copyright 2015 Eldon Ahrold
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -258,14 +258,14 @@
 {
     NSMenu *menu = [[NSMenu alloc] init];
 
-    // Update repo
+    // Update repo.
     NSIndexSet *set = _popularRepositoriesTableView.selectedRowIndexes;
 
     if (set.count > 1) {
-        // Creat the Add / Remove repos menu. We construct the full args that are passed into the AutoPkg task.
-        // With both repo-add and repo-delete multiple repos can be passed in, so start with the command
-        // and append the recipes that are considered. That is the array ultimately set as the menu item's
-        // represented object.
+        /* Create the Add/Remove Repos menu. We construct the full args that are passed into the AutoPkg task.
+         * With both repo-add and repo-delete, multiple repos can be passed in, so start with the command
+         * and append the recipes that are considered. That is the array ultimately set as the menu item's
+         * represented object. */
         __block NSMutableArray *update = @[ @"repo-update" ].mutableCopy,
                                *enabled = @[ @"repo-delete" ].mutableCopy,
                                *disabled = @[ @"repo-add" ].mutableCopy;
@@ -310,7 +310,7 @@
         [menu addItem:updateItem];
     }
 
-    // Commits ...
+    // Commits.
     if (repo.commitsURL) {
         NSMenuItem *commitsItem = [[NSMenuItem alloc] initWithTitle:@"Open GitHub Commits Page"
                                                              action:@selector(viewCommitsOnGitHub:)

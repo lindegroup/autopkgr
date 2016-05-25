@@ -2,8 +2,8 @@
 //  LGSelectNotificationsWindow.m
 //  AutoPkgr
 //
-//  Created by Eldon on 12/7/15.
-//  Copyright © 2015 The Linde Group, Inc. All rights reserved.
+//  Created by Eldon Ahrold on 12/7/15.
+//  Copyright 2015-2016 The Linde Group, Inc.
 //
 
 #import "LGSelectNotificationsWindowController.h"
@@ -25,7 +25,7 @@
     [super windowDidLoad];
 
     LGReportItems flags = [[LGDefaults standardUserDefaults] reportedItemFlags];
-    // All of the button tags have been setup in XIB with a cooresponding LGReportItems flag
+    // All of the button tags have been setup in XIB with a corresponding LGReportItems flag
     // this allows us to enumerate & update flag values.
     _buttons = [[self.window.contentView subviews] mapObjectsUsingBlock:^id(id obj, NSUInteger idx) {
         if ([obj isMemberOfClass:[NSMatrix class]]) {

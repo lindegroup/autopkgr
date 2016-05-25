@@ -2,8 +2,8 @@
 //  LGJSSDistributionPoint.m
 //  AutoPkgr
 //
-//  Created by Eldon on 11/9/15.
-//  Copyright © 2015 The Linde Group, Inc. All rights reserved.
+//  Created by Eldon Ahrold on 11/9/15.
+//  Copyright 2015-2016 The Linde Group, Inc.
 //
 
 #import "LGJSSDistributionPoint.h"

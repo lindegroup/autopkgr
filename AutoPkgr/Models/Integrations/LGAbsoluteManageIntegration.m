@@ -2,7 +2,7 @@
 //  LGAbsoluteManageIntegration.m
 //  AutoPkgr
 //
-//  Copyright 2014-2015 The Linde Group, Inc.
+//  Copyright 2014-2016 The Linde Group, Inc.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -20,14 +20,14 @@
 #import "LGAbsoluteManageIntegration.h"
 #import "LGIntegration+Protocols.h"
 
-// Define the protocols you intend to conform to...
+// Define the protocols you intend to conform to.
 @interface LGAbsoluteManageIntegration () <LGIntegrationPackageInstaller, LGIntegrationSharedProcessor>
 @end
 
 #pragma mark - Integration overrides
 @implementation LGAbsoluteManageIntegration
 
-// Since this is defined using a protocol, it needs to be synthesized...
+// Since this is defined using a protocol, it needs to be synthesized.
 // If not conforming to LGIntegrationPackageInstaller remove it.
 @synthesize gitHubInfo = _gitHubInfo;
 
@@ -42,7 +42,7 @@
     return @"AMExport";
 }
 + (NSString *)credits {
-    return @"Copyright 2014 Thomas Burgin\nhttp://www.apache.org/licenses/LICENSE-2.0";
+    return @"Copyright 2016 Thomas Burgin\nhttp://www.apache.org/licenses/LICENSE-2.0";
 }
 
 + (NSURL *)homePage {
@@ -62,7 +62,6 @@
 
 + (NSArray *)components
 {
-    // If there's not a binary don't include it here!!
     return @[[self binary]];
 }
 

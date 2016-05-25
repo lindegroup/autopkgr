@@ -14,6 +14,7 @@ All notable changes to this project will be documented in this file. This projec
 
 ### Fixed
 - Fixed the AutoPkgr Slack bot icon URL. (#527)
+- Some typos found and corrected.
 
 ## [1.4.1] - 2016-04-18
 

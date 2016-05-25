@@ -3,7 +3,7 @@
 //  AutoPkgr
 //
 //  Created by Eldon Ahrold on 4/23/15.
-//  Copyright 2015 Eldon Ahrold.
+//  Copyright 2015 Eldon Ahrold
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -208,7 +208,7 @@ NSString *maskPasswordInString(NSString *string)
 
             errorDetails = [NSString stringWithString:recombinedErrorDetails];
 
-            // Otherwise continue...
+            // Otherwise continue.
         } else {
             // AutoPkg's rc on a failed repo-update / add / delete is 0, but we want it reported back to the UI so set it to kLGAutoPkgErrorRepoModification.
             if (_verb == kLGAutoPkgRepoUpdate || _verb == kLGAutoPkgRepoDelete || _verb == kLGAutoPkgRepoAdd) {
@@ -216,20 +216,20 @@ NSString *maskPasswordInString(NSString *string)
                     exitCode = kLGAutoPkgErrorRepoModification;
                 }
             }
-            // autopkg run exits 255 if no recipe specified
+            // `autopkg run` exits 255 if no recipe specified.
             else if (_verb == kLGAutoPkgRun && exitCode == kLGAutoPkgErrorNoRecipes) {
                 errorDetails = LGAutoPkgLocalizedString(@"No recipes specified.", nil);
             }
         }
 
-        // Otherwise we can just use the termination status
+        // Otherwise we can just use the termination status.
         if (exitCode != kLGAutoPkgErrorSuccess) {
             error = [NSError errorWithDomain:[[NSBundle mainBundle] bundleIdentifier] ?: @"autopkg"
                                         code:exitCode
                                     userInfo:@{ NSLocalizedDescriptionKey : errorMsg,
                                                 NSLocalizedRecoverySuggestionErrorKey : errorDetails ?: @"" }];
 
-            // If Debugging is enabled, log the error message
+            // If bebugging is enabled, log the error message.
             if ([[NSUserDefaults standardUserDefaults] boolForKey:@"debug"]) {
                 NSLog(@"Error [%ld] %@ \n %@", (long)exitCode, errorMsg, errorDetails);
             }
