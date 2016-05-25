@@ -67,6 +67,8 @@
 
 - (void)customUninstallActions:(void (^)(NSError *))reply {
     LGVirusTotalAnalyzerDefaults *defaults = [LGVirusTotalAnalyzerDefaults new];
+    // Set VirusTotalAnalyzer preferences back to their default settings.
+    // TODO: Better to remove these entirely (set to nil) but Elliot doesn't yet know how.
     defaults.VIRUSTOTAL_API_KEY = nil;
     defaults.VIRUSTOTAL_ALWAYS_REPORT = NO;
     defaults.VIRUSTOTAL_AUTO_SUBMIT = NO;
@@ -78,7 +80,6 @@
     [postProcessors removeObject:@"io.github.hjuutilainen.VirusTotalAnalyzer/VirusTotalAnalyzer"];
     [defaults setObject:postProcessors forKey:@"PostProcessors"];
 
-    // Don't forget to reply...
     reply(nil);
 }
 

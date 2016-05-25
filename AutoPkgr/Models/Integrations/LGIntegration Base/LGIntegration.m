@@ -390,7 +390,7 @@ void subclassMustConformToProtocol(id className)
     void (^addRepo)() = ^void() {
         NSString *name = self.name;
         if (self.progressDelegate) {
-            [self.progressDelegate startProgressWithMessage:[NSString stringWithFormat:@"Adding default AutoPkg repo for %@", name]];
+            [self.progressDelegate startProgressWithMessage:[NSString stringWithFormat:@"Adding default AutoPkg repo for %@...", name]];
         }
         if(_repo.isInstalled){
             [_repo update:^(NSError *error) {

@@ -887,8 +887,7 @@ typedef void (^AutoPkgReplyErrorBlock)(NSError *error);
 
 - (void)interactiveAlertWithMessage:(NSString *)message
 {
-    /*
-     * TODO: As of 9/16/2015 AutoPkg's search feature is not designed to 
+    /* TODO: As of 9/16/2015 AutoPkg's search feature is not designed to
      * successfully locate parent recipes by identifier. So we just pipe
      * in "n" (no) to trigger the end of run. */
     if (self.task.isRunning) {
