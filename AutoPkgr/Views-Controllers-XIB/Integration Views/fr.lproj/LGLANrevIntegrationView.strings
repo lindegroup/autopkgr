@@ -1,0 +1,6 @@
+
+/* Class = "NSTextFieldCell"; title = "Note: While AutoPkgr supports running at the login window, .lanrev recipes require LANrev Admin.app to be open, so your machine must remain logged in to utilize this processor."; ObjectID = "Lrs-9e-sMd"; */
+"Lrs-9e-sMd.title" = "Note: Bien que AutoPkgr prend en charge en cours d'exécution au loginwindow, recettes .lanrev exigent LANrev Admin.app soit ouvert, afin que votre appareil doit rester connecté pour utiliser ce processeur.";
+
+/* Class = "NSButtonCell"; title = "Enable External SD Package Upload"; ObjectID = "PiW-KV-hIG"; */
+"PiW-KV-hIG.title" = "Activer SD Externe Package Upload";

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="9532" systemVersion="15D21" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="10117" systemVersion="15F34" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="9532"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="10117"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="LGFileWaveIntegrationView">
@@ -25,7 +25,6 @@
             <subviews>
                 <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="yRa-44-e8a">
                     <rect key="frame" x="208" y="177" width="285" height="22"/>
-                    <animations/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="ZFA-IW-McZ">
                         <font key="font" metaFont="system"/>
                         <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
@@ -37,7 +36,6 @@
                     <constraints>
                         <constraint firstAttribute="width" constant="180" id="jZr-T3-iLy"/>
                     </constraints>
-                    <animations/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="FileWave Server Hostname:" id="PWR-ok-oY7">
                         <font key="font" metaFont="system"/>
                         <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -46,7 +44,6 @@
                 </textField>
                 <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="EHv-BV-WGq">
                     <rect key="frame" x="208" y="145" width="285" height="22"/>
-                    <animations/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" title="20016" drawsBackground="YES" id="hgm-TZ-yGN">
                         <font key="font" metaFont="system"/>
                         <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
@@ -58,7 +55,6 @@
                     <constraints>
                         <constraint firstAttribute="width" constant="180" id="kdx-p4-3Ae"/>
                     </constraints>
-                    <animations/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="FileWave Server Port:" id="cPZ-Tn-8JV">
                         <font key="font" metaFont="system"/>
                         <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -67,7 +63,6 @@
                 </textField>
                 <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Tjf-aD-P4A">
                     <rect key="frame" x="208" y="113" width="285" height="22"/>
-                    <animations/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" title="fwadmin" drawsBackground="YES" id="IwY-8t-4ra">
                         <font key="font" metaFont="system"/>
                         <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
@@ -79,7 +74,6 @@
                     <constraints>
                         <constraint firstAttribute="width" constant="180" id="9Zx-Pm-niG"/>
                     </constraints>
-                    <animations/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Username:" id="Aq0-20-9LL">
                         <font key="font" metaFont="system"/>
                         <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -88,7 +82,6 @@
                 </textField>
                 <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="4OS-cf-Fch" customClass="NSSecureTextField">
                     <rect key="frame" x="208" y="81" width="285" height="22"/>
-                    <animations/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="iP7-68-fqO">
                         <font key="font" metaFont="system"/>
                         <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
@@ -100,7 +93,6 @@
                     <constraints>
                         <constraint firstAttribute="width" constant="180" id="rVO-X8-HU4"/>
                     </constraints>
-                    <animations/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Password:" id="6Gk-Op-HAD">
                         <font key="font" metaFont="system"/>
                         <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -112,7 +104,6 @@
                     <constraints>
                         <constraint firstAttribute="width" constant="135" id="8bf-Yz-Uaw"/>
                     </constraints>
-                    <animations/>
                     <buttonCell key="cell" type="push" title="Verify" bezelStyle="rounded" alignment="center" controlSize="small" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Cpt-g9-6qH">
                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                         <font key="font" metaFont="smallSystem"/>
@@ -127,7 +118,6 @@
                         <constraint firstAttribute="width" constant="16" id="BPj-Fl-M2f"/>
                         <constraint firstAttribute="height" constant="16" id="Kbh-VO-jqB"/>
                     </constraints>
-                    <animations/>
                 </progressIndicator>
                 <imageView translatesAutoresizingMaskIntoConstraints="NO" id="nCR-dN-Nut">
                     <rect key="frame" x="477" y="43" width="16" height="23"/>
@@ -135,7 +125,6 @@
                         <constraint firstAttribute="width" constant="16" id="2bZ-Hr-cYB"/>
                         <constraint firstAttribute="height" constant="23" id="cj9-kG-VtC"/>
                     </constraints>
-                    <animations/>
                     <imageCell key="cell" refusesFirstResponder="YES" alignment="left" animates="YES" imageScaling="proportionallyDown" image="NSStatusNone" id="MP1-Qb-Bwf"/>
                 </imageView>
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Bfq-xl-brG">
@@ -143,7 +132,6 @@
                     <constraints>
                         <constraint firstAttribute="height" constant="14" id="jO8-qg-ijl"/>
                     </constraints>
-                    <animations/>
                     <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" id="IFp-ZL-CbF">
                         <font key="font" metaFont="smallSystem"/>
                         <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -183,7 +171,6 @@
                 <constraint firstItem="JEr-CG-Pgl" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="20" id="wgI-rv-oJj"/>
                 <constraint firstItem="LdN-lb-Mxz" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="54" id="xxI-Jn-tXk"/>
             </constraints>
-            <animations/>
             <point key="canvasLocation" x="148.5" y="126"/>
         </customView>
     </objects>
