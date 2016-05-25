@@ -25,7 +25,7 @@ PODS:
     - JRSwizzle (~> 1.0)
   - JRSwizzle (1.0)
   - mailcore2-osx (0.6.4)
-  - MMMarkdown (0.5.2)
+  - MMMarkdown (0.5.4)
   - RNCryptor (2.2)
   - Sparkle (1.13.1)
   - XMLDictionary (1.4)
@@ -61,7 +61,7 @@ SPEC CHECKSUMS:
   GRMustache: ebe6104fd30a6d22c1f36af131e19e2dbf7cd292
   JRSwizzle: dd5ead5d913a0f29e7f558200165849f006bb1e3
   mailcore2-osx: 56890045e50f3b09b6530f5bd008eda67e1f6b82
-  MMMarkdown: cecb051181988f4f1f23b91c97b2bde3a9bac40f
+  MMMarkdown: 754f9154136d224178f51f2b2ba67a66a89d96ea
   RNCryptor: c68678461a2c7474a55db9a6a98834c22d51f535
   Sparkle: 2fbd47b869621d1e679c7554e3e19dda02104818
   XMLDictionary: f9f51601ba76678b594ab485f2b00ec1fed23724
