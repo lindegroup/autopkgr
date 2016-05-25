@@ -1,0 +1,21 @@
+﻿/* button title to disable ssl verificaiton */
+"Disable SSL Verification" = "Disable SSL Verification";
+
+/* No comment provided by engineer. */
+"Distribution Point Password Required" = "Distribution Point Password Required";
+
+/* No comment provided by engineer. */
+"Edit Distribution Point" = "Edit Distribution Point";
+
+/* button title for alert when ssl verification should remain enabled. */
+"Keep SSL Verification" = "Keep SSL Verification";
+
+/* No comment provided by engineer. */
+"Please enter read/write password for the \"%@\" distribution point. If you intend to configure manually just click \"Cancel\"." = "Please enter read/write password for the \"%@\" distribution point. If you intend to configure manually just click \"Cancel\".";
+
+/* No comment provided by engineer. */
+"This is most likely due to the certificate being self signed. Choosing \"Disable SSL Verification\" may be required for JSSImporter to function properly." = "This is most likely due to the certificate being self signed. Choosing \"Disable SSL Verification\" may be required for JSSImporter to function properly.";
+
+/* message when JSS cannot be verified */
+"Unable to verify the SSL certificate." = "Unable to verify the SSL certificate.";
+
