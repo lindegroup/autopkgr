@@ -29,7 +29,7 @@
                         <constraint firstAttribute="width" constant="302" id="HBg-Vp-Xtc"/>
                     </constraints>
                     <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                    <size key="cellSize" width="76" height="18"/>
+                    <size key="cellSize" width="80" height="18"/>
                     <size key="intercellSpacing" width="4" height="5"/>
                     <buttonCell key="prototype" type="radio" title="Radio" imagePosition="left" alignment="left" controlSize="small" inset="2" id="Y8l-6c-rJR" userLabel="Schedule Radio Buttons">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
@@ -37,21 +37,21 @@
                     </buttonCell>
                     <cells>
                         <column>
-                            <buttonCell type="radio" title="Every" imagePosition="left" alignment="left" controlSize="small" state="on" inset="2" id="rxf-Wp-7b6">
+                            <buttonCell type="radio" title="Every:" imagePosition="left" alignment="left" controlSize="small" state="on" inset="2" id="rxf-Wp-7b6">
                                 <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                 <font key="font" metaFont="smallSystem"/>
                                 <connections>
                                     <action selector="changeSchedule:" target="-2" id="MJ3-L5-CmM"/>
                                 </connections>
                             </buttonCell>
-                            <buttonCell type="radio" title="Daily at" imagePosition="left" alignment="left" controlSize="small" tag="1" inset="2" id="9UX-C6-xHW">
+                            <buttonCell type="radio" title="Daily at:" imagePosition="left" alignment="left" controlSize="small" tag="1" inset="2" id="9UX-C6-xHW">
                                 <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                 <font key="font" metaFont="smallSystem"/>
                                 <connections>
                                     <action selector="changeSchedule:" target="-2" id="IHe-OV-WIp"/>
                                 </connections>
                             </buttonCell>
-                            <buttonCell type="radio" title="Weekly on" imagePosition="left" alignment="left" controlSize="small" tag="2" inset="2" id="8bh-SR-q0v">
+                            <buttonCell type="radio" title="Weekly on:" imagePosition="left" alignment="left" controlSize="small" tag="2" inset="2" id="8bh-SR-q0v">
                                 <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                 <font key="font" metaFont="smallSystem"/>
                                 <connections>
@@ -61,91 +61,6 @@
                         </column>
                     </cells>
                 </matrix>
-                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="cHq-LH-gnB">
-                    <rect key="frame" x="139" y="207" width="40" height="14"/>
-                    <constraints>
-                        <constraint firstAttribute="width" constant="36" id="LhG-vR-ozG"/>
-                    </constraints>
-                    <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="hours" id="t9N-Fo-Q3T">
-                        <font key="font" metaFont="smallSystem"/>
-                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
-                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                    </textFieldCell>
-                </textField>
-                <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="oZ2-P7-4IE">
-                    <rect key="frame" x="104" y="205" width="29" height="19"/>
-                    <constraints>
-                        <constraint firstAttribute="width" constant="29" id="Lde-Pl-R5L"/>
-                    </constraints>
-                    <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" title="24" placeholderString="" drawsBackground="YES" id="9xE-ZL-3gu">
-                        <font key="font" metaFont="smallSystem"/>
-                        <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
-                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                    </textFieldCell>
-                    <connections>
-                        <action selector="changeSchedule:" target="-2" id="4cI-Dn-akZ"/>
-                        <outlet property="delegate" destination="-2" id="lxX-Di-pxh"/>
-                    </connections>
-                </textField>
-                <popUpButton verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Jpf-1J-Qbr" userLabel="DailyAt">
-                    <rect key="frame" x="111" y="185" width="85" height="15"/>
-                    <constraints>
-                        <constraint firstAttribute="width" constant="82" id="qi3-Py-7uI"/>
-                    </constraints>
-                    <popUpButtonCell key="cell" type="push" bezelStyle="rounded" alignment="left" controlSize="mini" lineBreakMode="truncatingTail" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" id="wdV-7F-Ugw">
-                        <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
-                        <font key="font" metaFont="miniSystem"/>
-                        <menu key="menu" id="S7C-zh-IzY" customClass="LGHourPickerMenu"/>
-                    </popUpButtonCell>
-                    <connections>
-                        <action selector="changeSchedule:" target="-2" id="hiH-q0-NTa"/>
-                    </connections>
-                </popUpButton>
-                <popUpButton verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="RXR-0C-bng" userLabel="DailyAt">
-                    <rect key="frame" x="230" y="162" width="85" height="15"/>
-                    <constraints>
-                        <constraint firstAttribute="width" constant="82" id="CZf-Ai-wsv"/>
-                    </constraints>
-                    <popUpButtonCell key="cell" type="push" bezelStyle="rounded" alignment="left" controlSize="mini" lineBreakMode="truncatingTail" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" id="QSZ-3n-UUg">
-                        <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
-                        <font key="font" metaFont="miniSystem"/>
-                        <menu key="menu" id="AyE-fh-7LI" customClass="LGHourPickerMenu">
-                            <items>
-                                <menuItem title="Item 1" id="nrP-fH-hiZ"/>
-                                <menuItem title="Item 2" id="Y6U-hi-G8e"/>
-                                <menuItem title="Item 3" id="mnb-aa-Xkb"/>
-                            </items>
-                        </menu>
-                    </popUpButtonCell>
-                    <connections>
-                        <action selector="changeSchedule:" target="-2" id="jVS-Nt-Xjz"/>
-                    </connections>
-                </popUpButton>
-                <popUpButton verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Vo5-wL-2B2" userLabel="Weekday">
-                    <rect key="frame" x="125" y="162" width="83" height="15"/>
-                    <constraints>
-                        <constraint firstAttribute="width" constant="80" id="F9X-zl-TEX"/>
-                    </constraints>
-                    <popUpButtonCell key="cell" type="push" bezelStyle="rounded" alignment="left" controlSize="mini" lineBreakMode="truncatingTail" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" id="f0t-uA-HJ7" userLabel="Pop Up Button Cell">
-                        <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
-                        <font key="font" metaFont="miniSystem"/>
-                        <menu key="menu" title="Weekday Chooser" id="3K4-Lb-7CJ" customClass="LGDayPickerMenu"/>
-                    </popUpButtonCell>
-                    <connections>
-                        <action selector="changeSchedule:" target="-2" id="b8g-gR-dNg"/>
-                    </connections>
-                </popUpButton>
-                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="2BQ-ga-rjR">
-                    <rect key="frame" x="212" y="163" width="20" height="14"/>
-                    <constraints>
-                        <constraint firstAttribute="width" constant="16" id="YeN-eu-M8f"/>
-                    </constraints>
-                    <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="at" id="qd6-CR-v7F">
-                        <font key="font" metaFont="smallSystem"/>
-                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
-                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                    </textFieldCell>
-                </textField>
                 <button translatesAutoresizingMaskIntoConstraints="NO" id="K6Q-1C-fKu">
                     <rect key="frame" x="18" y="115" width="364" height="18"/>
                     <constraints>
@@ -179,26 +94,111 @@
                         <action selector="changeSchedule:" target="-2" id="I7H-ie-fbO"/>
                     </connections>
                 </button>
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="cHq-LH-gnB">
+                    <rect key="frame" x="191" y="207" width="40" height="14"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="36" id="LhG-vR-ozG"/>
+                    </constraints>
+                    <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="hours" id="t9N-Fo-Q3T">
+                        <font key="font" metaFont="smallSystem"/>
+                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
+                <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="oZ2-P7-4IE">
+                    <rect key="frame" x="159" y="205" width="29" height="19"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="29" id="Lde-Pl-R5L"/>
+                    </constraints>
+                    <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" title="24" placeholderString="" drawsBackground="YES" id="9xE-ZL-3gu">
+                        <font key="font" metaFont="smallSystem"/>
+                        <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                    <connections>
+                        <action selector="changeSchedule:" target="-2" id="4cI-Dn-akZ"/>
+                        <outlet property="delegate" destination="-2" id="lxX-Di-pxh"/>
+                    </connections>
+                </textField>
+                <popUpButton verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Jpf-1J-Qbr" userLabel="DailyAt">
+                    <rect key="frame" x="158" y="184" width="83" height="15"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="80" id="qi3-Py-7uI"/>
+                    </constraints>
+                    <popUpButtonCell key="cell" type="push" bezelStyle="rounded" alignment="left" controlSize="mini" lineBreakMode="truncatingTail" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" id="wdV-7F-Ugw">
+                        <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
+                        <font key="font" metaFont="miniSystem"/>
+                        <menu key="menu" id="S7C-zh-IzY" customClass="LGHourPickerMenu"/>
+                    </popUpButtonCell>
+                    <connections>
+                        <action selector="changeSchedule:" target="-2" id="hiH-q0-NTa"/>
+                    </connections>
+                </popUpButton>
+                <popUpButton verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="RXR-0C-bng" userLabel="DailyAt">
+                    <rect key="frame" x="263" y="162" width="85" height="15"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="82" id="CZf-Ai-wsv"/>
+                    </constraints>
+                    <popUpButtonCell key="cell" type="push" bezelStyle="rounded" alignment="left" controlSize="mini" lineBreakMode="truncatingTail" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" id="QSZ-3n-UUg">
+                        <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
+                        <font key="font" metaFont="miniSystem"/>
+                        <menu key="menu" id="AyE-fh-7LI" customClass="LGHourPickerMenu">
+                            <items>
+                                <menuItem title="Item 1" id="nrP-fH-hiZ"/>
+                                <menuItem title="Item 2" id="Y6U-hi-G8e"/>
+                                <menuItem title="Item 3" id="mnb-aa-Xkb"/>
+                            </items>
+                        </menu>
+                    </popUpButtonCell>
+                    <connections>
+                        <action selector="changeSchedule:" target="-2" id="jVS-Nt-Xjz"/>
+                    </connections>
+                </popUpButton>
+                <popUpButton verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Vo5-wL-2B2" userLabel="Weekday">
+                    <rect key="frame" x="158" y="163" width="83" height="15"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="80" id="F9X-zl-TEX"/>
+                    </constraints>
+                    <popUpButtonCell key="cell" type="push" bezelStyle="rounded" alignment="left" controlSize="mini" lineBreakMode="truncatingTail" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" id="f0t-uA-HJ7" userLabel="Pop Up Button Cell">
+                        <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
+                        <font key="font" metaFont="miniSystem"/>
+                        <menu key="menu" title="Weekday Chooser" id="3K4-Lb-7CJ" customClass="LGDayPickerMenu"/>
+                    </popUpButtonCell>
+                    <connections>
+                        <action selector="changeSchedule:" target="-2" id="b8g-gR-dNg"/>
+                    </connections>
+                </popUpButton>
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="2BQ-ga-rjR">
+                    <rect key="frame" x="245" y="163" width="20" height="14"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="16" id="YeN-eu-M8f"/>
+                    </constraints>
+                    <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="at" id="qd6-CR-v7F">
+                        <font key="font" metaFont="smallSystem"/>
+                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
             </subviews>
             <constraints>
                 <constraint firstItem="UxE-SU-fts" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="46" id="1Cs-QK-QSB"/>
-                <constraint firstItem="cHq-LH-gnB" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="141" id="1HJ-uh-Z8n"/>
+                <constraint firstItem="cHq-LH-gnB" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="193" id="1HJ-uh-Z8n"/>
                 <constraint firstItem="cHq-LH-gnB" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="45" id="3gT-H3-hV9"/>
-                <constraint firstItem="Jpf-1J-Qbr" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="112" id="DU5-1w-PWn"/>
+                <constraint firstItem="Jpf-1J-Qbr" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="159" id="DU5-1w-PWn"/>
                 <constraint firstItem="UxE-SU-fts" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="42" id="Enw-wS-7SD"/>
                 <constraint firstItem="J8d-qW-trQ" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="20" id="FDa-ST-ssF"/>
-                <constraint firstItem="oZ2-P7-4IE" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="104" id="a84-Nx-QDV"/>
-                <constraint firstItem="Jpf-1J-Qbr" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="66" id="aMo-qG-xub"/>
+                <constraint firstItem="oZ2-P7-4IE" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="159" id="a84-Nx-QDV"/>
+                <constraint firstItem="Jpf-1J-Qbr" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="67" id="aMo-qG-xub"/>
                 <constraint firstItem="K6Q-1C-fKu" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="135" id="aQL-8Y-Q8K"/>
                 <constraint firstItem="K6Q-1C-fKu" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="20" id="d5Q-ff-LLS"/>
-                <constraint firstItem="Vo5-wL-2B2" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="126" id="de1-Ld-NdN"/>
-                <constraint firstItem="Vo5-wL-2B2" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="89" id="gvz-H1-V1R"/>
+                <constraint firstItem="Vo5-wL-2B2" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="159" id="de1-Ld-NdN"/>
+                <constraint firstItem="Vo5-wL-2B2" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="88" id="gvz-H1-V1R"/>
                 <constraint firstItem="J8d-qW-trQ" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="20" id="hLp-xr-wCF"/>
                 <constraint firstItem="2BQ-ga-rjR" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="89" id="lLs-wA-xIu"/>
                 <constraint firstItem="RXR-0C-bng" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="89" id="mzg-R5-3A4"/>
                 <constraint firstItem="oZ2-P7-4IE" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="42" id="rfX-Ah-Ux2"/>
-                <constraint firstItem="RXR-0C-bng" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="231" id="sIj-OF-Ahf"/>
-                <constraint firstItem="2BQ-ga-rjR" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="214" id="zLg-Yd-44r"/>
+                <constraint firstItem="RXR-0C-bng" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="264" id="sIj-OF-Ahf"/>
+                <constraint firstItem="2BQ-ga-rjR" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="247" id="zLg-Yd-44r"/>
             </constraints>
             <point key="canvasLocation" x="140.5" y="233"/>
         </customView>

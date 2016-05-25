@@ -9,10 +9,10 @@
 "7rF-ef-zEP.title" = "Enable scheduled AutoPkg runs";
 
 /* Class = "NSButtonCell"; title = "Weekly on"; ObjectID = "8bh-SR-q0v"; */
-"8bh-SR-q0v.title" = "Weekly on";
+"8bh-SR-q0v.title" = "Weekly on:";
 
 /* Class = "NSButtonCell"; title = "Daily at"; ObjectID = "9UX-C6-xHW"; */
-"9UX-C6-xHW.title" = "Daily at";
+"9UX-C6-xHW.title" = "Daily at:";
 
 /* Class = "NSTextFieldCell"; title = "24"; ObjectID = "9xE-ZL-3gu"; */
 "9xE-ZL-3gu.title" = "24";
@@ -33,7 +33,7 @@
 "qd6-CR-v7F.title" = "at";
 
 /* Class = "NSButtonCell"; title = "Every"; ObjectID = "rxf-Wp-7b6"; */
-"rxf-Wp-7b6.title" = "Every";
+"rxf-Wp-7b6.title" = "Every:";
 
 /* Class = "NSTextFieldCell"; title = "hours"; ObjectID = "t9N-Fo-Q3T"; */
 "t9N-Fo-Q3T.title" = "hours";

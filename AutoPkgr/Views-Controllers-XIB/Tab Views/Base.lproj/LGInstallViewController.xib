@@ -28,9 +28,9 @@
                     <imageCell key="cell" refusesFirstResponder="YES" alignment="left" animates="YES" imageScaling="proportionallyDown" image="AutoPkgrIcon" id="bdC-Ay-5Db"/>
                 </imageView>
                 <button autoresizesSubviews="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gCc-Bk-Xo8">
-                    <rect key="frame" x="222" y="55" width="203" height="18"/>
+                    <rect key="frame" x="222" y="55" width="377" height="18"/>
                     <constraints>
-                        <constraint firstAttribute="width" constant="199" id="MYt-zq-JXx"/>
+                        <constraint firstAttribute="width" constant="373" id="MYt-zq-JXx"/>
                     </constraints>
                     <buttonCell key="cell" type="check" title="Launch AutoPkgr at login" bezelStyle="regularSquare" imagePosition="left" alignment="left" state="on" inset="2" id="FsQ-sy-cGX">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
@@ -41,9 +41,9 @@
                     </connections>
                 </button>
                 <button verticalCompressionResistancePriority="749" translatesAutoresizingMaskIntoConstraints="NO" id="D8f-jS-Mfo">
-                    <rect key="frame" x="222" y="33" width="203" height="18"/>
+                    <rect key="frame" x="222" y="33" width="377" height="18"/>
                     <constraints>
-                        <constraint firstAttribute="width" constant="199" id="cAw-1X-qVc"/>
+                        <constraint firstAttribute="width" constant="373" id="cAw-1X-qVc"/>
                     </constraints>
                     <buttonCell key="cell" type="check" title="Show AutoPkgr menu icon" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="bif-9b-TSQ">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
@@ -54,9 +54,9 @@
                     </connections>
                 </button>
                 <button translatesAutoresizingMaskIntoConstraints="NO" id="2vH-Ks-iBq">
-                    <rect key="frame" x="222" y="11" width="203" height="18"/>
+                    <rect key="frame" x="222" y="11" width="377" height="18"/>
                     <constraints>
-                        <constraint firstAttribute="width" constant="199" id="pXK-Qc-NTE"/>
+                        <constraint firstAttribute="width" constant="373" id="pXK-Qc-NTE"/>
                     </constraints>
                     <buttonCell key="cell" type="check" title="Hide AutoPkgr in Dock" bezelStyle="regularSquare" imagePosition="left" inset="2" id="BN7-80-SnJ">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
@@ -188,14 +188,14 @@
                 <constraint firstAttribute="centerX" secondItem="geX-ws-F4Z" secondAttribute="centerX" id="J1d-Ei-yPM"/>
                 <constraint firstItem="geX-ws-F4Z" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="25" id="WhW-bG-c0I"/>
                 <constraint firstAttribute="bottom" secondItem="2vH-Ks-iBq" secondAttribute="bottom" constant="13" id="XlB-0r-3Ge"/>
-                <constraint firstAttribute="centerX" secondItem="gCc-Bk-Xo8" secondAttribute="centerX" constant="-15" id="YHd-39-sxs"/>
+                <constraint firstAttribute="centerX" secondItem="gCc-Bk-Xo8" secondAttribute="centerX" constant="-102" id="YHd-39-sxs"/>
                 <constraint firstAttribute="trailing" secondItem="Uju-WV-dwO" secondAttribute="trailing" constant="10" id="aOB-hA-hiB"/>
-                <constraint firstAttribute="centerX" secondItem="2vH-Ks-iBq" secondAttribute="centerX" constant="-15" id="gUe-vC-T0u"/>
-                <constraint firstAttribute="centerX" secondItem="D8f-jS-Mfo" secondAttribute="centerX" constant="-15" id="lgr-df-QvX"/>
+                <constraint firstAttribute="centerX" secondItem="2vH-Ks-iBq" secondAttribute="centerX" constant="-102" id="gUe-vC-T0u"/>
+                <constraint firstAttribute="centerX" secondItem="D8f-jS-Mfo" secondAttribute="centerX" constant="-102" id="lgr-df-QvX"/>
                 <constraint firstAttribute="bottom" secondItem="D8f-jS-Mfo" secondAttribute="bottom" constant="35" id="qJx-NC-Lf7"/>
                 <constraint firstItem="Esk-cg-7GW" firstAttribute="baseline" secondItem="2vH-Ks-iBq" secondAttribute="baseline" id="rJL-oX-MAi"/>
                 <constraint firstItem="Uju-WV-dwO" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="173" id="y14-Fo-pDm"/>
-                <constraint firstItem="Esk-cg-7GW" firstAttribute="leading" secondItem="2vH-Ks-iBq" secondAttribute="trailing" constant="-33" id="yjG-Xv-srv"/>
+                <constraint firstItem="Esk-cg-7GW" firstAttribute="leading" secondItem="2vH-Ks-iBq" secondAttribute="trailing" constant="-207" id="yjG-Xv-srv"/>
             </constraints>
             <point key="canvasLocation" x="140.5" y="154"/>
         </customView>
