@@ -3,7 +3,7 @@
 //  AutoPkgr
 //
 //  Created by James Barclay on 6/26/14.
-//  Copyright 2014-2015 The Linde Group, Inc.
+//  Copyright 2014-2016 The Linde Group, Inc.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -72,11 +72,11 @@
 - (void)awakeFromNib
 {
     if (!_awake) {
-        // Awake from nib can get called multiple times, but happens early,
-        // So add code here that you want executed prior to the window showing.
+        // awakeFromNib can get called multiple times, but happens early.
+        // Add code here that you want executed prior to the window showing.
         _awake = YES;
 
-        /* Set up all of the tabs. */
+        // Set up all of the tabs.
         NSAssert(_installView, @"Install tab view not initialized");
         NSAssert(_recipeRepoView, @"Recipe & Repo tab view not initialized");
         NSAssert(_scheduleView, @"Schedule tab view not initialized");
@@ -97,10 +97,9 @@
             [_tabViews addTabViewItem:tabItem];
         }
 
-        /* Make any modifications needed for specific integrations*/
+        // Make any modifications needed for specific integrations.
 
-        /* The Cancel button is part of the progress panel
-         * but the _scheduleView should controll it. */
+        // The Cancel button is part of the progress panel but the _scheduleView should control it.
         _recipeRepoView.cancelButton = _cancelAutoPkgRunButton;
 
         _integrationsView.modalWindow = self.window;
@@ -113,7 +112,7 @@
 - (void)tabView:(NSTabView *)tabView didSelectTabViewItem:(NSTabViewItem *)tabViewItem
 {
     if (![tabViewItem.view isEqual:_installView.view] && ![LGIntegrationManager requiredItemsInstalled]) {
-        // Reset the tab view back to the install Tab.
+        // Reset the tab view back to the install tab.
         [tabView selectFirstTabViewItem:self];
         [LGIntegrationManager displayRequirementsAlertOnWindow:self.window];
         return;
@@ -141,10 +140,10 @@
 
 - (void)stopProgress:(NSError *)error
 {
-    /* Stop the progress panel, and if an error was sent do a sheet modal */
+    // Stop the progress panel, and if an error was sent do a sheet modal.
 
     [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-        // Give the progress panel a second to got to 100%
+        // Give the progress panel a second to get to 100%.
         [self.progressIndicator setDoubleValue:100.0];
         [[NSRunLoop currentRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:1]];
 
@@ -170,14 +169,13 @@
             NSAlert *alert = [NSAlert alertWithMessageText:error.localizedDescription defaultButton:@"OK" alternateButton:nil otherButton:nil informativeTextWithFormat:@"%@", truncatedString ];
             alert.alertStyle = NSCriticalAlertStyle;
 
-            // If AutoPkg exits -1 it may be misconfigured
+            // If AutoPkg exits -1 it may be misconfigured.
             if (error.code == kLGErrorAutoPkgConfig) {
                 [alert addButtonWithTitle:@"Try to repair settings"];
                 selector = @selector(didEndWithPreferenceRepairRequest:returnCode:);
             }
 
-            /* Set accessory view so the size of the alert
-             * more closely matches the size of the window. */
+            // Set accessory view so the size of the alert more closely matches the size of the window.
             NSInteger width = self.window.frame.size.width * 0.75;
             alert.accessoryView = [[NSView alloc]
                                    initWithFrame:NSMakeRect(0, 0, width, FLT_MIN)];

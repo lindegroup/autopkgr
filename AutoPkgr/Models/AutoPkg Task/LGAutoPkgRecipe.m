@@ -2,7 +2,7 @@
 //  LGAutoPkgRecipe.m
 //  AutoPkgr
 //
-//  Copyright 2015 The Linde Group, Inc.
+//  Copyright 2015-2016 The Linde Group, Inc.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -23,11 +23,11 @@
 
 #import <glob.h>
 
-// MakeCatalogs recipe identifier string
+// MakeCatalogs recipe identifier string.
 static NSString *const kLGMakeCatalogsRecipeName = @"MakeCatalogs.munki";
 static NSString *const kLGMakeCatalogsIdentifier = @"com.github.autopkg.munki.makecatalogs";
 
-// Dispatch queue for enabling / disabling recipe
+// Dispatch queue for enabling / disabling recipe.
 static dispatch_queue_t autopkgr_recipe_write_queue()
 {
     static dispatch_queue_t autopkgr_recipe_write_queue;
@@ -65,7 +65,7 @@ static NSMutableDictionary *_identifierURLStore = nil;
 
 - (instancetype)initWithRecipeFile:(NSURL *)recipeFile isOverride:(BOOL)isOverride
 {
-    // Don't Initialize anything if we can't determine a recipe identifier.
+    // Don't initialize anything if we can't determine a recipe identifier.
     NSDictionary *reciptPlist = [NSDictionary dictionaryWithContentsOfURL:recipeFile];
     NSString *identifier = reciptPlist[kLGAutoPkgRecipeIdentifierKey] ?: reciptPlist[@"Input"][@"IDENTIFIER"];
 
@@ -174,14 +174,14 @@ static NSMutableDictionary *_identifierURLStore = nil;
 
 - (void)setEnabled:(BOOL)enabled
 {
-    /* We automatically handle the enabling of the makecatalogs recipe
+    /* We automatically handle the enabling of the MakeCatalogs recipe
      * so don't do anything if that's the one getting enabled. */
     if ([self.Name isEqualToString:kLGMakeCatalogsRecipeName]) {
         return;
     }
 
-    /* This is all dispatched to a serial queue so a race condition doesn't arise
-     * when multiple recipes are added or removed in rapid succession */
+    /* This is all dispatched to a serial queue so a race condition doesn't raise
+     * when multiple recipes are added or removed in rapid succession. */
     dispatch_sync(autopkgr_recipe_write_queue(), ^{
         NSError *error;
 
@@ -190,13 +190,13 @@ static NSMutableDictionary *_identifierURLStore = nil;
         NSString *recipeListFile = [[self class] defaultRecipeList];
         NSString *fileContents = [NSString stringWithContentsOfFile:recipeListFile encoding:NSUTF8StringEncoding error:nil];
 
-        /* Get the recipe list and split it by lines and turn it into an array */
+        /* Get the recipe list, split it by lines, and turn it into an array. */
         NSArray *existingList;
         if ((existingList = fileContents.split_byLine.filtered_noEmptyStrings)) {
             [currentList addObjectsFromArray:existingList];
         }
 
-        /* Start by removing any instance of makecatalogs from the list, it's added back in later */
+        /* Start by removing any instance of MakeCatalogs from the list. It's added back in later. */
          NSPredicate *makeCatalogPredicate = [NSPredicate predicateWithFormat:@"SELF contains[cd] 'MakeCatalogs'"];
         [currentList enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
             if ([makeCatalogPredicate evaluateWithObject:obj]) {
@@ -213,7 +213,7 @@ static NSMutableDictionary *_identifierURLStore = nil;
         }
 
         /* Enumerate over the list to see if there are any .munki recipes
-         * now listed. If so re-add the makecatalogs recipe. */
+         * now listed. If so re-add the MakeCatalogs recipe. */
         [currentList enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
             if ([obj rangeOfString:@"munki"].location != NSNotFound ) {
                 [currentList addObject:kLGMakeCatalogsRecipeName];
@@ -313,7 +313,7 @@ static NSMutableDictionary *_identifierURLStore = nil;
     NSMutableArray *validOverrides = [[NSMutableArray alloc] init];
 
     for (LGAutoPkgRecipe *override in overrideArray) {
-        // Only consider the recipe valid if the parent exists
+        // Only consider the recipe valid if the parent exists.
         NSPredicate *parentExistsPredicate = [NSPredicate predicateWithFormat:@"%K contains %@", kLGAutoPkgRecipeIdentifierKey, override.ParentRecipe];
 
         if ([parentExistsPredicate evaluateWithObject:allRecipes]) {
@@ -326,19 +326,19 @@ static NSMutableDictionary *_identifierURLStore = nil;
             /* Filter the array by removing the parent recipe if an override is found that matches
              * BOTH conditions: the value for the "Name" key of the override is same as the value
              * for the "Name" key of the Parent AND the value for the Parent Recipe's "Identifier" key
-             * is the same as the value for override's "ParentRecipe" key */
+             * is the same as the value for override's "ParentRecipe" key. */
             NSPredicate *overridePreferedPredicate = [NSPredicate predicateWithFormat:@"not (%K == %@ AND %K == %@)", kLGAutoPkgRecipeNameKey, override.Name, kLGAutoPkgRecipeIdentifierKey, override.ParentRecipe];
 
             [allRecipes filterUsingPredicate:overridePreferedPredicate];
         }
     }
 
-    // Now add the valid overrides into the recipeArray
+    // Now add the valid overrides into the recipeArray.
     if (validOverrides.count) {
         [allRecipes addObjectsFromArray:validOverrides];
     }
 
-    // Make a sorted array using the recipe Name as the sort key.
+    // Make a sorted array using the recipe name as the sort key.
     NSSortDescriptor *descriptor = [[NSSortDescriptor alloc] initWithKey:kLGAutoPkgRecipeNameKey
                                                                ascending:YES];
 
@@ -457,8 +457,8 @@ static NSMutableDictionary *_identifierURLStore = nil;
             [manager copyItemAtPath:orig toPath:bak error:nil];
         }
 
-        // Migrate Preferences
-        __block int i = 0; // number of changed recipes
+        // Migrate preferences.
+        __block int i = 0; // Number of changed recipes.
         NSArray *recipes = [self allRecipes];
         NSArray *activeRecipes = [[self activeRecipes] copy];
 
@@ -473,7 +473,7 @@ static NSMutableDictionary *_identifierURLStore = nil;
 
         BOOL success = (i == activeRecipes.count);
         [defaults setBool:YES forKey:@"MigratedToIdentifiers"];
-        // return NO if any were unable to be converted
+        // Return NO if any were unable to be converted.
         if (!success) {
             NSLog(@"An error may have occurred while converting the recipe list. We successfully converted %d out of %lu recipes. However it's also possible your recipe list was already converted. Please double check your enabled recipes now.", i, (unsigned long)activeRecipes.count);
         } else {

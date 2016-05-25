@@ -2,7 +2,7 @@
 //  LGFileWaveIntegration.m
 //  AutoPkgr
 //
-//  Copyright 2015 Elliot Jordan.
+//  Copyright 2015 Elliot Jordan
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -78,7 +78,6 @@
     defaults.FW_ADMIN_USER = nil;
     defaults.FW_ADMIN_PASSWORD = nil;
 
-    // Don't forget to reply...
     reply(nil);
 }
 

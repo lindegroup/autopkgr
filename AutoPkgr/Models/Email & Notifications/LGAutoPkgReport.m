@@ -3,7 +3,7 @@
 //  AutoPkgr
 //
 //  Created by Eldon Ahrold on 3/22/15.
-//  Copyright 2015 The Linde Group, Inc.
+//  Copyright 2015-2016 The Linde Group, Inc.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -144,7 +144,7 @@ static NSString *const kReportProcessorPKGCreator = @"pkg_creator_summary_result
         subject = NSLocalizedString(@"Update to helper components available", nil);
     }
 
-    // Construct the full subject string...
+    // Construct the full subject string.
     if (subject) {
         return quick_formatString(@"%@ on %@", subject, [NSHost currentHost].localizedName);
     }

@@ -2,7 +2,7 @@
 //  LGIntegration+Protocols.h
 //  AutoPkgr
 //
-//  Copyright 2015 Eldon Ahrold.
+//  Copyright 2015 Eldon Ahrold
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -80,7 +80,7 @@
 + (NSString *)defaultRepository;
 
 /**
- *  Key cooresponding to the report plist's "xxx_summary_results"
+ *  Key corresponding to the report plist's "xxx_summary_results"
  *
  *  @return full key for the integration's summary results.
  */

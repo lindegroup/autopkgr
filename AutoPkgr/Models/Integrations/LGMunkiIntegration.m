@@ -2,7 +2,7 @@
 //  LGMunkiIntegration.m
 //  AutoPkgr
 //
-//  Copyright 2015 Eldon Ahrold.
+//  Copyright 2015 Eldon Ahrold
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -21,14 +21,14 @@
 #import "LGIntegration+Protocols.h"
 
 static NSString *const kLGMunkiimportDomain = @"com.googlecode.munki.munkiimport";
-// Define the protocols you intend to conform to...
+// Define the protocols you intend to conform to.
 @interface LGMunkiIntegration ()<LGIntegrationPackageInstaller, LGIntegrationSharedProcessor>
 @end
 
 #pragma mark - Tool overrides
 @implementation LGMunkiIntegration
 
-// Since this is defined using a protocol, it needs to be synthesized...
+// Since this is defined using a protocol, it needs to be synthesized.
 // If not conforming to LGToolPackageInstaller remove it.
 @synthesize gitHubInfo = _gitHubInfo;
 
@@ -57,7 +57,6 @@ static NSString *const kLGMunkiimportDomain = @"com.googlecode.munki.munkiimport
 
 + (NSArray *)components
 {
-    // If there's not a binary don't include it here!!
     return @[[self binary]
               ];
 }
@@ -77,7 +76,7 @@ static NSString *const kLGMunkiimportDomain = @"com.googlecode.munki.munkiimport
 }
 
 + (BOOL)isUninstallable {
-    // There are just too many parts to try and uninstall munki
+    // There are just too many parts to try and uninstall Munki tools.
     return NO;
 }
 
@@ -86,7 +85,7 @@ static NSString *const kLGMunkiimportDomain = @"com.googlecode.munki.munkiimport
 }
 
 - (void)customInstallActions {
-    // TODO: Possibly setup a basic folder structure for munki.
+    // TODO: Possibly setup a basic folder structure for Munki.
 }
 
 #pragma mark - Instance overrides
@@ -99,7 +98,7 @@ static NSString *const kLGMunkiimportDomain = @"com.googlecode.munki.munkiimport
     // Since the tag version is a short version, we need to use the string from the download package.
     NSString *pkgString = self.gitHubInfo.latestReleaseDownload.lastPathComponent;
 
-    // This is where we start:  munkitools-2.2.4.2431.pkg
+    // Example input: munkitools-2.7.0.2753.pkg
     return [pkgString.stringByDeletingPathExtension stringByReplacingOccurrencesOfString:@"munkitools-" withString:@""];
 
 }

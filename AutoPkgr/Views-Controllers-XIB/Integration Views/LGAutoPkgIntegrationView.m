@@ -3,7 +3,7 @@
 //  AutoPkgr
 //
 //  Created by Eldon Ahrold on 6/8/15.
-//  Copyright 2015 The Linde Group, Inc.
+//  Copyright 2015-2016 The Linde Group, Inc.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -134,7 +134,7 @@ static NSString *const kLGTokenGenerateButonTitle = @"Generate API Token";
     NSString *settingsLink = @"https://github.com/settings/tokens";
 
     NSString *message = NSLocalizedString(@"helpInfoAutoPkgAPIToken",
-                                    @"message presented to user with info about generating GitHub api token");
+                                    @"message presented to user with info about generating GitHub API token");
 
     NSMutableAttributedString *attributedHelpText = [NSString stringWithFormat:message, settingsLink, tokenFile].attributed_mutableCopy;
 

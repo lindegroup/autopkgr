@@ -3,7 +3,7 @@
 //  AutoPkgr
 //
 //  Created by Eldon Ahrold on 9/9/14.
-//  Copyright 2014-2015 The Linde Group, Inc.
+//  Copyright 2014-2016 The Linde Group, Inc.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -47,7 +47,7 @@ typedef NS_ENUM(NSInteger, LGInstallType) {
         progressMessage = [NSString stringWithFormat:@"Getting latest release info from GitHub..."];
         [_progressDelegate updateProgress:progressMessage progress:5.0];
 
-        // Get the latest download URL from the GitHub API URL
+        // Get the latest download URL from the GitHub API URL.
         LGGitHubReleaseInfo *info = [[LGGitHubReleaseInfo alloc] initWithURL:githubAPI];
         _downloadURL = info.latestReleaseDownload;
     }
@@ -58,18 +58,18 @@ typedef NS_ENUM(NSInteger, LGInstallType) {
 - (void)runInstaller:(NSString *)installerName
                reply:(void (^)(NSError *error))reply
 {
-    NSAssert([_progressDelegate conformsToProtocol:@protocol(LGProgressDelegate)], @"An approperiate progress delegate is not set for installer");
+    NSAssert([_progressDelegate conformsToProtocol:@protocol(LGProgressDelegate)], @"An appropriate progress delegate is not set for installer");
 
     __block NSString *progressMessage;
 
-    // Get tmp file path for downloaded file
+    // Get tmp file path for downloaded file.
     NSString *tmpFileLocation = [NSTemporaryDirectory() stringByAppendingPathComponent:_downloadURL.lastPathComponent];
 
     progressMessage = [NSString stringWithFormat:@"Downloading %@ installer...", installerName];
     [_progressDelegate updateProgress:progressMessage progress:25.0];
 
-    // Download to the temporary directory
-    // Create the NSURLRequest object with the given URL
+    // Download to the temporary directory.
+    // Create the NSURLRequest object with the given URL.
     NSURL *url = [NSURL URLWithString:_downloadURL];
     NSURLRequest *request = [NSURLRequest requestWithURL:url
                                              cachePolicy:NSURLRequestReloadIgnoringLocalAndRemoteCacheData
@@ -102,11 +102,11 @@ typedef NS_ENUM(NSInteger, LGInstallType) {
             return;
         case kLGInstallerTypeDMG:
             if ([self mountDMG:tmpFileLocation] && _mountPoint) {
-                // install Pkg
+                // Install pkg.
                 NSArray *contents = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:_mountPoint error:nil];
                 DLog(@"Contents of DMG %@ ", contents);
 
-                // The predicate here is "CONTAINS" so we get both .pkg and .mpkg files
+                // The predicate here is "CONTAINS" so we get both .pkg and .mpkg files.
                 NSPredicate *predicate = [NSPredicate predicateWithFormat:@"pathExtension CONTAINS[cd] 'pkg'"];
                 NSString *pkg = [[contents filteredArrayUsingPredicate:predicate] firstObject];
 
@@ -126,8 +126,8 @@ typedef NS_ENUM(NSInteger, LGInstallType) {
         }
 
         if (type != kLGInstallerTypeUnknown && pkgFile) {
-            // Set the `installer` command
-            // Install the pkg as root
+            // Set the `installer` command.
+            // Install the pkg as root.
             NSData *authorization = [LGAutoPkgrAuthorizer authorizeHelper];
             assert(authorization != nil);
 

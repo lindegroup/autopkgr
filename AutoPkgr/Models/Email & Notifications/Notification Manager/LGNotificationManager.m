@@ -2,7 +2,7 @@
 //  LGNotificationManager.m
 //  AutoPkgr
 //
-//  Copyright 2015 Eldon Ahrold.
+//  Copyright 2015 Eldon Ahrold
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -103,7 +103,7 @@ const NSArray *NotificationServiceClasses()
             return complete(nil);
         }
 
-        /* Setup a completion callback block to keep track
+        /* Set up a completion callback block to keep track
          * of the number of enabled services vs. the number
          * of services that are done sending a message. Once
          * everything has checked back in from their send

@@ -3,7 +3,7 @@
 //  AutoPkgr
 //
 //  Created by Eldon Ahrold on 6/7/15.
-//  Copyright 2015 Eldon Ahrold.
+//  Copyright 2015 Eldon Ahrold
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -24,19 +24,19 @@
 + (void)folderChooser_WithStartingPath:(NSString *)path modalWindow:(NSWindow *)window reply:(void (^)(NSString *))reply
 {
     NSOpenPanel *panel = [NSOpenPanel openPanel];
-    // Disable the selection of files in the dialog
+    // Disable the selection of files in the dialog.
     panel.canChooseFiles = NO;
 
-    // Enable the selection of directories in the dialog
+    // Enable the selection of directories in the dialog.
     panel.canChooseDirectories = YES;
 
-    // Enable the creation of directories in the dialog
+    // Enable the creation of directories in the dialog.
     panel.canCreateDirectories = YES;
 
-    // Disable multiple selection
+    // Disable multiple selection.
     panel.allowsMultipleSelection = NO;
 
-    // Set the prompt to "Choose" instead of "Open"
+    // Set the prompt to "Choose" instead of "Open".
     panel.prompt = @"Choose";
 
     panel.directoryURL = [NSURL fileURLWithPath:path];
@@ -46,9 +46,9 @@
             BOOL isDir = NO;
 
             if (panel.URL.isFileURL) {
-                // Verify that the file exists and is a directory
+                // Verify that the file exists and is a directory.
                 if ([[NSFileManager defaultManager] fileExistsAtPath:panel.URL.path isDirectory:&isDir] && isDir) {
-                    // Here we can be certain the URL exists and it is a directory
+                    // Here we can be certain the URL exists and it is a directory.
                     reply(panel.URL.path);
                 }
             }
@@ -63,19 +63,19 @@
 
 + (void)executableChooser_WithStartingPath:(NSString *)path modalWindow:(NSWindow *)window reply:(void (^)(NSString *))reply {
     NSOpenPanel *panel = [NSOpenPanel openPanel];
-    // Disable the selection of files in the dialog
+    // Disable the selection of files in the dialog.
     panel.canChooseFiles = YES;
 
-    // Enable the selection of directories in the dialog
+    // Enable the selection of directories in the dialog.
     panel.canChooseDirectories = NO;
 
-    // Enable the creation of directories in the dialog
+    // Enable the creation of directories in the dialog.
     panel.canCreateDirectories = NO;
 
-    // Disable multiple selection
+    // Disable multiple selection.
     panel.allowsMultipleSelection = NO;
 
-    // Set the prompt to "Choose" instead of "Open"
+    // Set the prompt to "Choose" instead of "Open".
     panel.prompt = @"Choose";
 
     panel.directoryURL = [NSURL fileURLWithPath:path];

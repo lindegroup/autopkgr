@@ -3,7 +3,7 @@
 //  AutoPkgr
 //
 //  Created by Eldon Ahrold on 8/14/14.
-//  Copyright 2014-2015 The Linde Group, Inc.
+//  Copyright 2014-2016 The Linde Group, Inc.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -55,8 +55,7 @@ const CFStringRef kUTTypePropertyList = CFSTR("com.apple.property-list");
                  LGAutoPkgRecipe *override = [[LGAutoPkgRecipe alloc] initWithRecipeFile:[NSURL fileURLWithPath:path] isOverride:YES];
                 assert([[NSFileManager defaultManager] fileExistsAtPath:path]);
 
-                // if they have the same Name mark the override as enabled,
-                // and the old recipe as disabled.
+                // If they have the same NAME, mark the override as enabled and the old recipe as disabled.
                 if (recipe.enabled && [recipe.Name isEqualToString:override.Name]) {
                     recipe.enabled = NO;
                     override.enabled = YES;
@@ -217,8 +216,7 @@ const CFStringRef kUTTypePropertyList = CFSTR("com.apple.property-list");
         }
     }
 
-    // In the event that the specified app is not registered in the LS database, we keep
-    // record of it in the user preferences
+    // If the specified app is not registered in the LS database, we keep record of it in the user preferences.
     NSString *currentEditor = [[LGDefaults standardUserDefaults] objectForKey:@"RecipeEditor"];
     if (currentEditor) {
         [editorsNames addObject:currentEditor];

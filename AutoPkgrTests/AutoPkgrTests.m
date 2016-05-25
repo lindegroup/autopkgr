@@ -215,7 +215,7 @@ static const BOOL _TEST_PRIVILEGED_HELPER = YES;
 #pragma mark - LGGitHubJSONLoader
 - (void)testLatestReleases
 {
-    XCTestExpectation *expectation = [self expectationWithDescription:@"Github Release Async"];
+    XCTestExpectation *expectation = [self expectationWithDescription:@"GitHub Release Async"];
 
     LGGitHubJSONLoader *loader = [[LGGitHubJSONLoader alloc] initWithGitHubURL:kLGAutoPkgReleasesJSONURL];
 
@@ -287,7 +287,7 @@ static const BOOL _TEST_PRIVILEGED_HELPER = YES;
 
 - (void)testLoader
 {
-    XCTestExpectation *expectation = [self expectationWithDescription:@"Github Release Async"];
+    XCTestExpectation *expectation = [self expectationWithDescription:@"GitHub Release Async"];
 
     LGGitHubJSONLoader *loader = [[LGGitHubJSONLoader alloc] initWithGitHubURL:kLGAutoPkgReleasesJSONURL];
     [loader getReleaseInfo:^(LGGitHubReleaseInfo *info, NSError *error) {
@@ -443,7 +443,7 @@ static const BOOL _TEST_PRIVILEGED_HELPER = YES;
 }
 
 - (void)testNotificationManager {
-    // Setup User Notification Delegate
+    // Set up User Notification Delegate
     _noteDelegate = [[LGUserNotificationsDelegate alloc] initAsDefaultCenterDelegate];
     XCTestExpectation *expectation = [self expectationWithDescription:@"Notification manager test"];
 

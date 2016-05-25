@@ -2,7 +2,7 @@
 //  LGIntegrationManager.h
 //  AutoPkgr
 //
-//  Copyright 2015 Eldon Ahrold.
+//  Copyright 2015 Eldon Ahrold
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -27,7 +27,7 @@
 #import "LGJSSImporterIntegration.h"
 #import "LGLANrevIntegration.h"
 #import "LGMacPatchIntegration.h"
-//#import "LGVirusTotalAnalyzerIntegration.h"
+#import "LGVirusTotalAnalyzerIntegration.h"
 #import "LGMunkiIntegration.h"
 
 @class LGIntegration;

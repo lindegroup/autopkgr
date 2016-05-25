@@ -2,7 +2,7 @@
 //  LGJSSImporterIntegration.m
 //  AutoPkgr
 //
-//  Copyright 2015 Eldon Ahrold.
+//  Copyright 2015 Eldon Ahrold
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -40,7 +40,7 @@
 }
 
 + (NSString *)credits {
-   return @"Copyright 2014 Shea Craig\nhttp://www.apache.org/licenses/LICENSE-2.0";
+   return @"Copyright 2014, 2015 Shea Craig\nhttp://www.apache.org/licenses/LICENSE-2.0";
 }
 
 + (NSString *)gitHubURL
@@ -109,14 +109,13 @@
 }
 
 - (void)customUninstallActions:(void (^)(NSError *))reply {
-    // Clear out the defaults...
+    // Clear out the defaults.
     LGJSSImporterDefaults *defaults = [[LGJSSImporterDefaults alloc] init];
     defaults.JSSAPIPassword = nil;
     defaults.JSSAPIUsername = nil;
     defaults.JSSRepos = nil;
     defaults.JSSURL = nil;
 
-    // Don't forget to reply...
     reply(nil);
 }
 

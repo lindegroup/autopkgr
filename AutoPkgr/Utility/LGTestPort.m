@@ -3,7 +3,7 @@
 //  AutoPkgr
 //
 //  Created by Josh Senick on 7/29/14.
-//  Copyright 2014-2015 The Linde Group, Inc.
+//  Copyright 2014-2016 The Linde Group, Inc.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -109,11 +109,10 @@
     request.timeoutInterval = 5.0;
     request.cachePolicy = NSURLRequestReloadIgnoringLocalCacheData;
 
-    // Set up the operation
+    // Set up the operation.
     AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
 
-    // Since this is just a server test, we don't care about certificate validation here
-    // so set up a policy that will ignore certificate trust issues.
+    // Since this is just a server test, we don't care about certificate validation here. Ignore certificate trust issues.
     AFSecurityPolicy *policy = [[AFSecurityPolicy alloc] init];
     policy.allowInvalidCertificates = YES;
     policy.validatesCertificateChain = NO;

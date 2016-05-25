@@ -2,7 +2,7 @@
 //  LGSlackNotification.m
 //  AutoPkgr
 //
-//  Copyright 2015 The Linde Group, Inc.
+//  Copyright 2015-2016 The Linde Group, Inc.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -100,8 +100,8 @@ static NSString *const SlacksNotificationsEnabledKey = @"SlackNotificationsEnabl
     [manager.requestSerializer setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
     [manager.requestSerializer setValue:@"application/json" forHTTPHeaderField:@"Accept"];
 
-    // Set up the request serializer with any additional criteria for slack
-    //[manager.requestSerializer setAuthorizationHeaderFieldWithUsername:@"" password:@""]; <- probably don't need this.
+    // Set up the request serializer with any additional criteria for Slack.
+    // [manager.requestSerializer setAuthorizationHeaderFieldWithUsername:@"" password:@""]; <- probably don't need this.
 
     manager.responseSerializer = [AFHTTPResponseSerializer serializer];
 

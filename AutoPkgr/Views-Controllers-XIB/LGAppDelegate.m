@@ -3,7 +3,7 @@
 //  AutoPkgr
 //
 //  Created by James Barclay on 6/25/14.
-//  Copyright 2014-2015 The Linde Group, Inc.
+//  Copyright 2014-2016 The Linde Group, Inc.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -51,7 +51,7 @@
 - (void)applicationWillFinishLaunching:(NSNotification *)notification
 {
 
-    // Setup activation policy. By default set as menubar only.
+    // Set up activation policy. By default set as menubar only.
     [[LGDefaults standardUserDefaults] registerDefaults:@{ kLGApplicationDisplayStyle : @(kLGDisplayStyleShowMenu | kLGDisplayStyleShowDock)}];
 
     if (([[LGDefaults standardUserDefaults] applicationDisplayStyle] & kLGDisplayStyleShowDock)) {
@@ -64,11 +64,10 @@
     NSLog(@"Welcome to AutoPkgr!");
     DLog(@"Verbose logging is active. To deactivate, click the AutoPkgr menu icon and uncheck Verbose Logs.");
 
-    // Setup the status item
+    // Set up the status item.
     [self setupStatusItem];
 
-    // Check if we're authorized to install helper tool,
-    // if not just quit
+    // Check if we're authorized to install helper tool. If not just quit.
     NSError *error;
 
     if (![AHLaunchCtl installHelper:kLGAutoPkgrHelperToolName prompt:@"" error:&error]) {
@@ -80,7 +79,7 @@
         [[NSApplication sharedApplication] terminate:self];
     }
 
-    // Register to get background progress updates...
+    // Register to get background progress updates.
     LGAutoPkgrHelperConnection *backgroundMonitor = [[LGAutoPkgrHelperConnection alloc] initWithProgressDelegate:self];
 
 
@@ -103,11 +102,10 @@
         [[NSApplication sharedApplication] terminate:self];
     }
 
-    // Setup User Notification Delegate
+    // Set up User Notification Delegate
     _notificationDelegate = [[LGUserNotificationsDelegate alloc] initAsDefaultCenterDelegate];
 
-    // calling stopProgress: here is an easy way to get the
-    // menu reset to its default configuration
+    // Calling stopProgress: here is an easy way to get the menu reset to its default configuration.
     [self stopProgress:nil];
 
     [self showConfigurationWindow:self];
@@ -144,7 +142,7 @@
 
 - (void)applicationWillTerminate:(NSNotification *)notification
 {
-    // Stop observing...
+    // Stop observing.
     [[NSDistributedNotificationCenter defaultCenter] removeObserver:self name:kLGNotificationProgressMessageUpdate object:nil];
 }
 
@@ -167,7 +165,7 @@
     LGApplicationDisplayStyle style = [[LGDefaults standardUserDefaults] applicationDisplayStyle];
 
     if (!self.statusItem && (style & kLGDisplayStyleShowMenu)) {
-        // Setup the systemStatusBar
+        // Set up the systemStatusBar
         DLog(@"Starting AutoPkgr menu bar icon...");
         self.statusItem = [[NSStatusBar systemStatusBar] statusItemWithLength:NSVariableStatusItemLength];
         [self.statusItem setMenu:self.statusMenu];
@@ -354,7 +352,7 @@
 {
     // The preferences set via the background run are not picked up
     // despite aggressive synchronization, so we need to pull the value from
-    // the actual preference file until a better work around is found...
+    // the actual preference file until a better work around is found.
 
     if (!_taskManager || _taskManager.operationCount == 0) {
         NSDictionary *dict = [NSDictionary dictionaryWithContentsOfFile:[@"~/Library/Preferences/com.lindegroup.AutoPkgr.plist" stringByExpandingTildeInPath]];

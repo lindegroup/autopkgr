@@ -3,7 +3,7 @@
 //  AutoPkgr
 //
 //  Created by James Barclay on 7/18/14.
-//  Copyright 2014-2015 The Linde Group, Inc.
+//  Copyright 2014-2016 The Linde Group, Inc.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -83,7 +83,7 @@
 - (NSArray *)jsonObject
 {
     if (!_jsonObject && _repoURL) {
-        // this is a backup synchronous method to pull the information.
+        // This is a backup synchronous method to pull the information.
         _jsonObject = [LGGitHubJSONLoader getJSONFromURL:_repoURL];
         _infoRetrievedDate = [NSDate date];
     }
@@ -180,7 +180,7 @@
     [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, NSArray *responseObject) {
         LGGitHubReleaseInfo *info = [[LGGitHubReleaseInfo alloc] initWithJSON:responseObject];
         complete(info, nil);
-//        DevLog(@"Remaining calls/hour to GitHub API: %@/%@ (used Cache = %@)",
+//        DevLog(@"Remaining calls per hour to GitHub API: %@/%@ (used Cache = %@)",
 //               operation.response.allHeaderFields[@"X-RateLimit-Remaining"],
 //               operation.response.allHeaderFields[@"X-RateLimit-Limit"],
 //               [operation.response.allHeaderFields[@"Status"] isEqualToString:@"304 Not Modified"] ? @"YES": @"NO");
@@ -195,16 +195,16 @@
 {
     NSURL *url = [NSURL URLWithString:aUrl];
 
-    // Create the NSURLRequest object with the given URL
+    // Create the NSURLRequest object with the given URL.
     NSURLRequest *req = [NSURLRequest requestWithURL:url
                                          cachePolicy:NSURLRequestUseProtocolCachePolicy
                                      timeoutInterval:5.0];
 
-    // Initialize our response and error objects
+    // Initialize our response and error objects.
     NSHTTPURLResponse *resp;
     NSError *error = nil;
 
-    // Get the JSON data
+    // Get the JSON data.
     NSData *reqData = [NSURLConnection sendSynchronousRequest:req
                                             returningResponse:&resp
                                                         error:&error];
@@ -215,13 +215,13 @@
     }
 
     if (reqData != nil) {
-        // Initialize our error object
+        // Initialize our error object.
         NSError *error = nil;
 
-        // get the JSON object out of the data
+        // Get the JSON object out of the data.
         id jsonObject = [NSJSONSerialization JSONObjectWithData:reqData options:NSJSONReadingMutableContainers error:&error];
 
-        // Check that the object is an array, and if so return it
+        // Check that the object is an array, and if so return it.
         if ([jsonObject isKindOfClass:[NSArray class]]) {
             return jsonObject;
         } else if (error) {
@@ -233,21 +233,21 @@
 
 + (NSArray *)getAutoPkgRecipeRepos
 {
-    // Assign the keys we'll be using
+    // Assign the keys we'll be using.
     NSString *cloneURL = @"clone_url";
     NSString *fullName = @"full_name";
     NSString *stargazersCount = @"stargazers_count";
 
-    // Get the JSON data
+    // Get the JSON data.
     NSArray *reposArray = [self getJSONFromURL:kLGAutoPkgRepositoriesJSONURL];
 
     NSMutableArray *mutableArray = [[NSMutableArray alloc] init];
 
     for (NSDictionary *dct in reposArray) {
-        // Create a mutable dictionary for our repo and star count
+        // Create a mutable dictionary for our repo and star count.
         NSMutableDictionary *mutableDict = [[NSMutableDictionary alloc] init];
 
-        // Skip adding the clone URL and stargazers count if it's not a recipe repo
+        // Skip adding the clone URL and stargazers count if it's not a recipe repo in the AutoPkg organization.
         if ([[dct objectForKey:fullName] isEqual:@"autopkg/autopkg"]) {
             continue;
         }
