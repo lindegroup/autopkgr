@@ -40,7 +40,7 @@
 }
 
 + (NSString *)credits {
-   return @"Copyright 2014 Shea Craig\nhttp://www.apache.org/licenses/LICENSE-2.0";
+   return @"Copyright 2014, 2015 Shea Craig\nhttp://www.apache.org/licenses/LICENSE-2.0";
 }
 
 + (NSString *)gitHubURL

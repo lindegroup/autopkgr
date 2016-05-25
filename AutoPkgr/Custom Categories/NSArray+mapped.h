@@ -3,7 +3,7 @@
 //  AutoPkgr
 //
 //  Created by Eldon Ahrold on 11/5/15.
-//  Copyright 2015 The Linde Group, Inc.
+//  Copyright 2015-2016 The Linde Group, Inc.
 //
 
 #import <Foundation/Foundation.h>

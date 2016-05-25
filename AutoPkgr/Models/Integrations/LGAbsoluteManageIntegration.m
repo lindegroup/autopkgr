@@ -42,7 +42,7 @@
     return @"AMExport";
 }
 + (NSString *)credits {
-    return @"Copyright 2014 Thomas Burgin\nhttp://www.apache.org/licenses/LICENSE-2.0";
+    return @"Copyright 2016 Thomas Burgin\nhttp://www.apache.org/licenses/LICENSE-2.0";
 }
 
 + (NSURL *)homePage {
