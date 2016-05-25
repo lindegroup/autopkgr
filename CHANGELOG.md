@@ -6,7 +6,7 @@ All notable changes to this project will be documented in this file. This projec
 ## [Unreleased](unreleased)
 
 ### Added
-- One-click integration with [@hjuutilainen](https://github.com/hjuutilainen/autopkg-virustotalanalyzer)'s [VirusTotalAnalyzer](https://github.com/hjuutilainen/autopkg-virustotalanalyzer) processor.
+- One-click integration with [@hjuutilainen](https://github.com/hjuutilainen/autopkg-virustotalanalyzer)'s [VirusTotalAnalyzer](https://github.com/hjuutilainen/autopkg-virustotalanalyzer) processor. (#503)
 
 ### Changed
 - Updated versions of MMMarkdown and MailCore2 used in AutoPkgr.
