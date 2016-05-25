@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="9532" systemVersion="15D21" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="10117" systemVersion="15F34" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="9532"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="10117"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="LGHipChatNotificationView">
@@ -19,7 +19,6 @@
             <subviews>
                 <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="pNP-fk-i1q">
                     <rect key="frame" x="94" y="114" width="366" height="22"/>
-                    <animations/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="e9M-Yd-EkI">
                         <font key="font" metaFont="system"/>
                         <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
@@ -31,7 +30,6 @@
                 </textField>
                 <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="LSx-DB-QaI">
                     <rect key="frame" x="94" y="82" width="366" height="22"/>
-                    <animations/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" alignment="left" placeholderString="O5gSDQXoiVGUpLDTOWjNGOyFYPmfsl2AKVoZoRb3" drawsBackground="YES" id="nj4-jw-VWw">
                         <font key="font" metaFont="system"/>
                         <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
@@ -43,7 +41,6 @@
                     <constraints>
                         <constraint firstAttribute="width" constant="66" id="hQb-WD-fgT"/>
                     </constraints>
-                    <animations/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Room:" id="kRf-ML-4vZ">
                         <font key="font" metaFont="system"/>
                         <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -55,7 +52,6 @@
                     <constraints>
                         <constraint firstAttribute="width" constant="66" id="dBM-VA-qI8"/>
                     </constraints>
-                    <animations/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="API Token:" id="Esn-sI-g97">
                         <font key="font" metaFont="system"/>
                         <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -67,7 +63,6 @@
                     <constraints>
                         <constraint firstAttribute="width" constant="440" id="OU8-2X-E8Q"/>
                     </constraints>
-                    <animations/>
                     <buttonCell key="cell" type="check" title="Send user notifications to room members." bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="VyB-Uw-2h5">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                         <font key="font" metaFont="system"/>
@@ -78,7 +73,6 @@
                 </button>
                 <button identifier="hipChatHelpInfo" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="yel-bg-4UO" customClass="AHHelpPopoverButton">
                     <rect key="frame" x="437" y="17" width="25" height="25"/>
-                    <animations/>
                     <buttonCell key="cell" type="help" bezelStyle="helpButton" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="GNB-Kg-Sfv">
                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                         <font key="font" metaFont="system"/>
@@ -99,7 +93,6 @@
                 <constraint firstItem="pNP-fk-i1q" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="94" id="qxp-6k-zdN"/>
                 <constraint firstItem="pNP-fk-i1q" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="20" id="xKc-On-Ldx"/>
             </constraints>
-            <animations/>
             <point key="canvasLocation" x="140" y="96"/>
         </customView>
         <userDefaultsController representsSharedInstance="YES" id="hh1-pO-ufe"/>

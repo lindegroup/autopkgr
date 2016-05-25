@@ -1,0 +1,15 @@
+
+/* Class = "NSBox"; title = "Box"; ObjectID = "57I-Ql-Dza"; */
+"57I-Ql-Dza.title" = "Box";
+
+/* Class = "NSWindow"; title = "Window"; ObjectID = "F0z-JX-Cv5"; */
+"F0z-JX-Cv5.title" = "Window";
+
+/* Class = "NSButtonCell"; title = "http://github.com/repo/"; ObjectID = "bXg-lF-zhk"; */
+"bXg-lF-zhk.title" = "http://github.com/repo/";
+
+/* Class = "NSButtonCell"; title = "altButton"; ObjectID = "fNM-hE-k0Q"; */
+"fNM-hE-k0Q.title" = "altButton";
+
+/* Class = "NSButtonCell"; title = "Save and Close"; ObjectID = "rIk-Vw-aLG"; */
+"rIk-Vw-aLG.title" = "Enregistrer et Fermer";

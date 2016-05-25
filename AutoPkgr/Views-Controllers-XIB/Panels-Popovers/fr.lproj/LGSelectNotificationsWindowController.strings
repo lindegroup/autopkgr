@@ -1,0 +1,51 @@
+
+/* Class = "NSButtonCell"; title = "New software is downloaded"; ObjectID = "93b-UK-JQ9"; */
+"93b-UK-JQ9.title" = "Un nouveau logiciel est téléchargé";
+
+/* Class = "NSWindow"; title = "Configure"; ObjectID = "F0z-JX-Cv5"; */
+"F0z-JX-Cv5.title" = "Configurer";
+
+/* Class = "NSMenuItem"; title = "Once per version"; ObjectID = "Fdo-BA-Js6"; */
+"Fdo-BA-Js6.title" = "Une fois par version";
+
+/* Class = "NSButtonCell"; title = "Close"; ObjectID = "Gc0-DJ-Bkt"; */
+"Gc0-DJ-Bkt.title" = "Fermer";
+
+/* Class = "NSTextFieldCell"; title = "Actions that will cause a full AutoPkgr notification to be sent:"; ObjectID = "JV4-ur-ef3"; */
+"JV4-ur-ef3.title" = "Actions qui vont entraîner une notification complète AutoPkgr à envoyer:";
+
+/* Class = "NSButtonCell"; title = "Radio"; ObjectID = "Jry-qd-bkO"; */
+"Jry-qd-bkO.title" = "Radio";
+
+/* Class = "NSButtonCell"; title = "Errors"; ObjectID = "MGr-wA-mKE"; */
+"MGr-wA-mKE.title" = "Les erreurs";
+
+/* Class = "NSButtonCell"; title = "Updates for integrated tools, at most:"; ObjectID = "OEp-t0-mfM"; */
+"OEp-t0-mfM.title" = "Mises à jour pour les outils intégrés, au plus:";
+
+/* Class = "NSTextFieldCell"; title = "This includes AutoPkg, Git, Munki tools, etc."; ObjectID = "Q6A-On-Dwg"; */
+"Q6A-On-Dwg.title" = "Cela inclut AutoPkg, Git, outils Munki, etc.";
+
+/* Class = "NSButtonCell"; title = "New package is built"; ObjectID = "Rrw-eM-Kne"; */
+"Rrw-eM-Kne.title" = "Nouveau paquet est construit";
+
+/* Class = "NSButtonCell"; title = "Failures"; ObjectID = "VXM-yd-Y5e"; */
+"VXM-yd-Y5e.title" = "Les échecs";
+
+/* Class = "NSButtonCell"; title = "Any action"; ObjectID = "eQW-08-MtI"; */
+"eQW-08-MtI.title" = "Toutes les actions";
+
+/* Class = "NSButtonCell"; title = "New software imported to Munki, JSS, or other server"; ObjectID = "iUL-bU-gWt"; */
+"iUL-bU-gWt.title" = "Nouveau logiciel importé Munki, JSS, ou un autre serveur";
+
+/* Class = "NSButtonCell"; title = "Selected actions:"; ObjectID = "qPY-Ac-9c8"; */
+"qPY-Ac-9c8.title" = "Des actions sélectionnées:";
+
+/* Class = "NSButtonCell"; title = "New software is installed"; ObjectID = "vpW-70-0of"; */
+"vpW-70-0of.title" = "Un nouveau logiciel est installé";
+
+/* Class = "NSMenuItem"; title = "Once a week"; ObjectID = "yE4-Cq-TFS"; */
+"yE4-Cq-TFS.title" = "Une fois par semaine";
+
+/* Class = "NSMenuItem"; title = "Once a day"; ObjectID = "yLO-ap-fGm"; */
+"yLO-ap-fGm.title" = "Une fois par jour";

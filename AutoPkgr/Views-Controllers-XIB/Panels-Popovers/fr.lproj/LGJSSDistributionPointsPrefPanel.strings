@@ -1,0 +1,30 @@
+
+/* Class = "NSMenuItem"; title = "SMB"; ObjectID = "3qb-HP-cZN"; */
+"3qb-HP-cZN.title" = "SMB";
+
+/* Class = "NSMenuItem"; title = "Local"; ObjectID = "9nu-E1-IoD"; */
+"9nu-E1-IoD.title" = "Locale";
+
+/* Class = "NSWindow"; title = "Configure New Distribution Point"; ObjectID = "F0z-JX-Cv5"; */
+"F0z-JX-Cv5.title" = "Configurer un nouveau point de distribution";
+
+/* Class = "NSTextFieldCell"; title = "Type:"; ObjectID = "PN1-qf-ov3"; */
+"PN1-qf-ov3.title" = "Type:";
+
+/* Class = "NSButtonCell"; title = "Cancel"; ObjectID = "XRF-WC-Yxd"; */
+"XRF-WC-Yxd.title" = "Annuler";
+
+/* Class = "NSMenuItem"; title = "AFP"; ObjectID = "fZx-9Q-VwR"; */
+"fZx-9Q-VwR.title" = "AFP";
+
+/* Class = "NSButtonCell"; title = "Add"; ObjectID = "h2l-rM-dTd"; */
+"h2l-rM-dTd.title" = "Ajouter";
+
+/* Class = "NSTextFieldCell"; title = "Description:   "; ObjectID = "l6b-qW-y5i"; */
+"l6b-qW-y5i.title" = "La Description:   ";
+
+/* Class = "NSTextFieldCell"; title = "Configure New Distribution Point"; ObjectID = "rVl-Ma-hxC"; */
+"rVl-Ma-hxC.title" = "Configurer un nouveau point de distribution";
+
+/* Class = "NSTextFieldCell"; title = "Text Cell"; ObjectID = "vJ1-sm-8i0"; */
+"vJ1-sm-8i0.title" = "Text Cell";

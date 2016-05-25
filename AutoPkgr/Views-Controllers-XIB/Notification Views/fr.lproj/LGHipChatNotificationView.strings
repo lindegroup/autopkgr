@@ -1,0 +1,12 @@
+
+/* Class = "NSTextFieldCell"; title = "API Token:"; ObjectID = "Esn-sI-g97"; */
+"Esn-sI-g97.title" = "Jeton API:";
+
+/* Class = "NSButtonCell"; title = "Send user notifications to room members."; ObjectID = "VyB-Uw-2h5"; */
+"VyB-Uw-2h5.title" = "Envoyer des notifications de l'utilisateur aux membres de la chambre.";
+
+/* Class = "NSTextFieldCell"; title = "Room:"; ObjectID = "kRf-ML-4vZ"; */
+"kRf-ML-4vZ.title" = "Chambre:";
+
+/* Class = "NSTextFieldCell"; placeholderString = "O5gSDQXoiVGUpLDTOWjNGOyFYPmfsl2AKVoZoRb3"; ObjectID = "nj4-jw-VWw"; */
+"nj4-jw-VWw.placeholderString" = "O5gSDQXoiVGUpLDTOWjNGOyFYPmfsl2AKVoZoRb3";

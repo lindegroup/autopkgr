@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="9532" systemVersion="15D21" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="10117" systemVersion="15F34" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="9532"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="10117"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="LGSlackNotificationView">
@@ -22,7 +22,6 @@
                     <constraints>
                         <constraint firstAttribute="width" constant="93" id="ecX-Mb-Lhp"/>
                     </constraints>
-                    <animations/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Webhook URL:" id="wUT-Ey-E1F">
                         <font key="font" metaFont="system"/>
                         <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -31,7 +30,6 @@
                 </textField>
                 <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="QSi-iQ-e1A">
                     <rect key="frame" x="113" y="77" width="347" height="22"/>
-                    <animations/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="L6M-9U-VSV">
                         <font key="font" metaFont="system"/>
                         <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
@@ -40,7 +38,6 @@
                 </textField>
                 <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="rT7-KI-ie2">
                     <rect key="frame" x="113" y="49" width="347" height="22"/>
-                    <animations/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" title="AutoPkgr" placeholderString="" drawsBackground="YES" id="MkV-Zf-cdC">
                         <font key="font" metaFont="system"/>
                         <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
@@ -60,7 +57,6 @@
                     <constraints>
                         <constraint firstAttribute="width" constant="93" id="Ukm-yw-Cp5"/>
                     </constraints>
-                    <animations/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Bot Name:" id="w0b-FV-FBc">
                         <font key="font" metaFont="system"/>
                         <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -69,7 +65,6 @@
                 </textField>
                 <button identifier="slackHelpInfo" horizontalHuggingPriority="750" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="KkN-I1-9tF" customClass="AHHelpPopoverButton">
                     <rect key="frame" x="437" y="17" width="25" height="25"/>
-                    <animations/>
                     <buttonCell key="cell" type="help" bezelStyle="helpButton" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="kpU-Na-RRR">
                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                         <font key="font" metaFont="system"/>
@@ -90,7 +85,6 @@
                 <constraint firstItem="uGQ-hH-paE" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="51" id="rDL-4B-spx"/>
                 <constraint firstAttribute="trailing" secondItem="QSi-iQ-e1A" secondAttribute="trailing" constant="20" id="vmD-8E-Nh9"/>
             </constraints>
-            <animations/>
             <point key="canvasLocation" x="152" y="77.5"/>
         </customView>
         <userDefaultsController representsSharedInstance="YES" id="cIJ-zl-KaW"/>

@@ -1,0 +1,45 @@
+
+/* Class = "NSTextFieldCell"; title = "Label"; ObjectID = "01U-Oc-pjY"; */
+"01U-Oc-pjY.title" = "Label";
+
+/* Class = "NSTextFieldCell"; title = "Identifier:"; ObjectID = "81z-0C-dfy"; */
+"81z-0C-dfy.title" = "Identifier:";
+
+/* Class = "NSTextFieldCell"; placeholderString = "<Identifier>"; ObjectID = "NDR-Ja-maK"; */
+"NDR-Ja-maK.placeholderString" = "<Identifier>";
+
+/* Class = "NSTextFieldCell"; title = "Builds Package:"; ObjectID = "PCP-wS-HNx"; */
+"PCP-wS-HNx.title" = "Builds Package:";
+
+/* Class = "NSTextFieldCell"; title = "Min. AutoPkg Version:"; ObjectID = "SNn-pW-jvN"; */
+"SNn-pW-jvN.title" = "Min. AutoPkg Version:";
+
+/* Class = "NSTextFieldCell"; title = "Label"; ObjectID = "Ykk-Ir-JW6"; */
+"Ykk-Ir-JW6.title" = "Label";
+
+/* Class = "NSTextFieldCell"; title = "File Path:"; ObjectID = "cBb-BU-peO"; */
+"cBb-BU-peO.title" = "File Path:";
+
+/* Class = "NSTextFieldCell"; title = "Name:"; ObjectID = "dvh-uJ-LKz"; */
+"dvh-uJ-LKz.title" = "Name:";
+
+/* Class = "NSTextFieldCell"; title = "Has Check Phase:"; ObjectID = "eze-8Q-wgb"; */
+"eze-8Q-wgb.title" = "Has Check Phase:";
+
+/* Class = "NSTextFieldCell"; placeholderString = "Top level recipe"; ObjectID = "glN-nd-xEJ"; */
+"glN-nd-xEJ.placeholderString" = "Top level recipe";
+
+/* Class = "NSTextFieldCell"; title = "Description:"; ObjectID = "kP3-Ys-TJX"; */
+"kP3-Ys-TJX.title" = "Description:";
+
+/* Class = "NSTextFieldCell"; placeholderString = "No mininum version"; ObjectID = "mtN-V7-fQj"; */
+"mtN-V7-fQj.placeholderString" = "No mininum version";
+
+/* Class = "NSTextFieldCell"; placeholderString = "<Name>"; ObjectID = "uGB-qF-4iv"; */
+"uGB-qF-4iv.placeholderString" = "<Name>";
+
+/* Class = "NSTextFieldCell"; title = "Parent(s):"; ObjectID = "vH2-8o-PcS"; */
+"vH2-8o-PcS.title" = "Parent(s):";
+
+/* Class = "NSTextFieldCell"; placeholderString = "<File Path>"; ObjectID = "vVc-m6-Vbu"; */
+"vVc-m6-Vbu.placeholderString" = "<File Path>";
