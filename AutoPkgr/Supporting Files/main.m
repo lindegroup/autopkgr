@@ -29,6 +29,9 @@ int main(int argc, const char *argv[])
 {
     NSUserDefaults *args = [NSUserDefaults standardUserDefaults];
 
+    NSString *reportItemKey = NSStringFromSelector(@selector(reportedItemFlags));
+    [args registerDefaults:@{reportItemKey : @(kLGReportItemsAll)}];
+
     if ([args boolForKey:@"runInBackground"]) {
         NSLog(@"Running AutoPkgr in background...");
 
