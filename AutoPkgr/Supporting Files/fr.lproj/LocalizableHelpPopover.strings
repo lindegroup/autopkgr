@@ -1,27 +1,27 @@
-/* 
+/*
   LocalizableHelpPopover.strings
   AutoPkgr
 
-  Created by Eldon Ahrold on 6/12/15.
-  Copyright 2015 Eldon Ahrold.
+  Created by Elliot Jordan on 2016-05-25.
+  Copyright 2016 The Linde Group, Inc.
 */
 
-"repoTableInfoTitle" = "Repo List";
-"repoTableInfo" = "In order to run an AutoPkg recipe, you must first add the repository that contains the recipe. To add a repo, Check the box next to its URL.\n\nIf the repository you need is not listed here, you can add it manually by entering its URL into the \"Add a repo manually\" field below, then clicking the Add button.\n\nClick the \"Update Repos Now\" button to get the latest changes for all selected repos.\n\nControl-click on a repo to access options to update a single repo or open its GitHub commits page.\n\nThe colored indicator indicates the current status of the repo. Green means the repo is up-to-date, and yellow means commits are available from the remote repository.";
+"repoTableInfoTitle" = "Liste Des Dépôts";
+"repoTableInfo" = "Afin d'exécuter une recette AutoPkg, vous devez d'abord ajouter le dépôt qui contient la recette. Pour ajouter un dépôt, Cochez la case à côté de son URL.\n\nSi le dépôt dont vous avez besoin ne figure pas ici, vous pouvez l'ajouter manuellement en entrant son URL dans le champ \"Ajouter un dépôt manuellement» ci-dessous, puis en cliquant sur le bouton Ajouter.\n\nCliquez sur \"Mise à jour Repos maintenant\" pour obtenir les dernières modifications pour tous les dépôts sélectionnés.\n\nContrôle-cliquez sur un dépôt pour accéder aux options pour mettre à jour un seul dépôt ou ouvrir son histoire GitHub.\n\nL'indicateur coloré indique l'état actuel du dépôt. Vert signifie le dépôt est mis à jour, et le jaune signifie des mises à jour sont disponibles sur le dépôt distant.";
 
-"recipeTableInfoTitle" = "Recipe List";
-"recipeTableInfo" = "Check the box next to the name of a recipe in order to add the recipe to your AutoPkg run schedule.\n\nControl-click on a recipe to bring up a contextual menu with options to get info, run the recipe, or create an override. You can also set the preferred recipe editor.\n\nIf a caution icon is present in the status column, there is an issue with the recipe. (The most likely cause is a missing parent recipe.)";
+"recipeTableInfoTitle" = "Liste De Recettes";
+"recipeTableInfo" = "Cochez la case à côté du nom d'une recette afin d'ajouter la recette vos calendrier AutoPkg de l'exécution.\n\nContrôle-clic sur une recette pour faire apparaître un menu contextuel avec des options pour obtenir des informations, exécuter la recette, ou créez un override. Vous pouvez également définir l'éditeur de recette préférée.\n\nSi une icône d'avertissement est présent dans la colonne d'état, il y a un problème avec la recette. (La cause la plus probable est une recette manquante de parent.)";
 
-"slackHelpInfoTitle" = "Slack Notifications";
-"slackHelpInfo" = "Incoming Webhooks are a simple way to post messages from external sources into Slack. Slack admins can generate the Webhook URL that is used to post messages to a specific room. Visit the Slack webhooks documentation (linked below) for more information.";
+"slackHelpInfoTitle" = "Notifications Slack";
+"slackHelpInfo" = "Webhooks entrants sont un moyen simple d'envoyer des messages à partir de sources externes dans Slack. Admins Slack peuvent générer l'URL Webhook qui est utilisé pour envoyer des messages à une pièce spécifique. Consultez la documentation de webhooks Slack (lien ci-dessous) pour plus d'informations.";
 
 "slackHelpInfoURL" = "https://api.slack.com/incoming-webhooks";
 
-"hipChatHelpInfoTitle" = "HipChat Notifications";
-"hipChatHelpInfo" = "To create the necessary API token, log into HipChat and navigate to the room you want to send messages to. Click 'Tokens' on the left hand side. Next create a token with the scope of 'Send Notification' and click 'Create'.\n\nThe 'Send user notifications to room members' check box on this pane determines whether the message triggers a user notification (change the tab color, play a sound, notify mobile phones, etc). Each recipient's individual notification preferences are taken into account.";
+"hipChatHelpInfoTitle" = "Notifications HipChat";
+"hipChatHelpInfo" = "Pour créer l'API jeton nécessaire, connectez-vous à HipChat et accédez à la salle à laquelle vous voulez envoyer des messages. Cliquez sur «Jetons» sur le côté gauche. Créez ensuite un jeton à la portée de «Envoyer notification» et cliquez sur «Créer».\n\nLa case à cocher «Envoyer des notifications de l'utilisateur aux membres de la chambre» sur ce volet détermine si le message déclenche une notification de l'utilisateur (changer la couleur de l'onglet, jouer un son, informer les téléphones mobiles, etc.). Les préférences de notification de chaque destinataire sont considérés.";
 
 "hipChatHelpInfoURL" = "https://hipchat.com/rooms/";
 
-"MunkiSetDefaultCatalogInfoTitle" = "MunkiSetDefaultCatalog Preprocessor";
-"MunkiSetDefaultCatalogInfo" = "This preprocessor will edit the current Munki pkginfo to set the 'catalog' key to the default catalog preference for MunkiImport (com.googlecode.munki.munkiimport), if one has been set.";
+"MunkiSetDefaultCatalogInfoTitle" = "MunkiSetDefaultCatalog Préprocesseur";
+"MunkiSetDefaultCatalogInfo" = "Ce préprocesseur éditera le pkginfo de Munki en cours pour définir la clé «catalogue» à la préférence de catalogue par défaut pour MunkiImport (com.googlecode.munki.munkiimport), si l'on a été défini.";
 "MunkiSetDefaultCatalogInfoURL" = "https://github.com/autopkg/autopkg/blob/master/Code/autopkglib/MunkiSetDefaultCatalog.py";

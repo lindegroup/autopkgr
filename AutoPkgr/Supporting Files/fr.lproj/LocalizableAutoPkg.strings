@@ -1,30 +1,29 @@
 ﻿/* No comment provided by engineer. */
-"AutoPkgr encountered an error" = "AutoPkgr encountered an error";
+"AutoPkgr encountered an error" = "AutoPkgr a rencontré une erreur";
 
 /* No comment provided by engineer. */
-"Error adding repo" = "Error adding repo";
+"Error adding repo" = "Erreur d'ajout de dépôt.";
 
 /* No comment provided by engineer. */
-"Error creating recipe override file" = "Error creating recipe override file";
+"Error creating recipe override file" = "Erreur de création de fichier override de recette";
 
 /* No comment provided by engineer. */
-"Error encountered listing recipes" = "Error encountered listing recipes";
+"Error encountered listing recipes" = "Erreur liste recettes rencontrées";
 
 /* No comment provided by engineer. */
-"Error encountered listing repos" = "Error encountered listing repos";
+"Error encountered listing repos" = "Erreur rencontrée liste des dépôts";
 
 /* No comment provided by engineer. */
-"Error encountered searching for recipe" = "Error encountered searching for recipe";
+"Error encountered searching for recipe" = "Erreur rencontrée la recherche de la recette";
 
 /* No comment provided by engineer. */
-"Error getting AutoPkg version" = "Error getting AutoPkg version";
+"Error getting AutoPkg version" = "Erreur lors de l'obtention de la version de AutoPkg";
 
 /* No comment provided by engineer. */
-"Error removing repo" = "Error removing repo";
+"Error removing repo" = "Erreur suppression de dépôt";
 
 /* No comment provided by engineer. */
-"Error running recipes" = "Error running recipes";
+"Error running recipes" = "Recettes d'erreur en cours d'exécution";
 
 /* No comment provided by engineer. */
-"Error updating repo" = "Error updating repo";
-
+"Error updating repo" = "Erreur de mise à jour de dépôt";
