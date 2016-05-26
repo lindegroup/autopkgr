@@ -39,7 +39,7 @@
 "AutoPkgr is trying to remove the autopkg run schedule. " = "AutoPkgr is trying to remove the autopkg run schedule. ";
 
 /* NSUserNotification posted after test email is complete. */
-"Email test completed." = "Email test completed.";
+"Email test completed" = "Email test completed";
 
 /* NSUserNotification text when email is successfully sent. */
 "Successfully sent test email." = "Successfully sent test email.";

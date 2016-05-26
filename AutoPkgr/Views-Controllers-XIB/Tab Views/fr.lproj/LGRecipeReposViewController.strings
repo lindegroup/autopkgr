@@ -9,7 +9,7 @@
 "7va-qK-S1L.title" = "Rechercher";
 
 /* Class = "NSButtonCell"; title = "Update Repos Now"; ObjectID = "8gs-7z-68M"; */
-"8gs-7z-68M.title" = "Mettre à jour les dépôts maintenant";
+"8gs-7z-68M.title" = "Mettre Á Jour Les Dépôts Maintenant";
 
 /* Class = "NSTableColumn"; headerCell.title = "Repo Clone URL"; ObjectID = "A4c-aN-okl"; */
 "A4c-aN-okl.headerCell.title" = "Dépôt Clone URL";
@@ -39,7 +39,7 @@
 "Uar-43-QQ0.title" = "recipe_list";
 
 /* Class = "NSTableColumn"; headerCell.title = "Recipe Identifier"; ObjectID = "Uhk-Q9-hWI"; */
-"Uhk-Q9-hWI.headerCell.title" = "Recette Identificateur";
+"Uhk-Q9-hWI.headerCell.title" = "Identifiant De Recette";
 
 /* Class = "NSTextFieldCell"; title = "Text Cell"; ObjectID = "Uxa-gI-PLb"; */
 "Uxa-gI-PLb.title" = "Cell Texte";
