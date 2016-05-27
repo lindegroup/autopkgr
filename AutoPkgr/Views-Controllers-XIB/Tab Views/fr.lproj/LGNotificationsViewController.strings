@@ -27,7 +27,7 @@
 "HLR-S4-ckM.title" = "Utiliser Secure Sockets Layer (SSL)";
 
 /* Class = "NSButtonCell"; title = "Send Test Email"; ObjectID = "IRF-p5-PAm"; */
-"IRF-p5-PAm.title" = "Envoyer un email test";
+"IRF-p5-PAm.title" = "Envoyer un e-mail test";
 
 /* Class = "NSTextFieldCell"; title = "Customize notification templates:"; ObjectID = "IS5-1H-Zuy"; */
 "IS5-1H-Zuy.title" = "Personnalisez les modèles de notification:";
@@ -60,7 +60,7 @@
 "aHL-d7-Or8.placeholderString" = "sender@example.com";
 
 /* Class = "NSButtonCell"; title = "Send notifications to an email address"; ObjectID = "ag4-TF-sgm"; */
-"ag4-TF-sgm.title" = "Envoyer des notifications à une adresse email";
+"ag4-TF-sgm.title" = "Envoyer des notifications à une adresse e-mail";
 
 /* Class = "NSTextFieldCell"; title = "SMTP server:"; ObjectID = "dIA-je-2nB"; */
 "dIA-je-2nB.title" = "Serveur SMTP:";

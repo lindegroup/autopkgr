@@ -3,7 +3,7 @@
 "F4X-CJ-CjA.title" = "Fermer";
 
 /* Class = "NSTextFieldCell"; title = "This panel will only add the recipe repo. Enable individual recipes back in the main window."; ObjectID = "LmF-Ex-z1i"; */
-"LmF-Ex-z1i.title" = "Ce panneau ajoutera seulement le dépôt de recette. Activer recettes individuelles de retour dans la fenêtre principale.";
+"LmF-Ex-z1i.title" = "Ce panneau ajoutera seulement le dépôt de recette. Activez les recettes individuelles dans la fenêtre principale.";
 
 /* Class = "NSWindow"; title = "Window"; ObjectID = "QvC-M9-y7g"; */
 "QvC-M9-y7g.title" = "Fenêtre";

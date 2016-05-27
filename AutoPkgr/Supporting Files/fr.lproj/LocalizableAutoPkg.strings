@@ -8,22 +8,22 @@
 "Error creating recipe override file" = "Erreur de création de fichier override de recette";
 
 /* No comment provided by engineer. */
-"Error encountered listing recipes" = "Erreur liste recettes rencontrées";
+"Error encountered listing recipes" = "Erreur lors de l'établissement de la liste de recettes";
 
 /* No comment provided by engineer. */
-"Error encountered listing repos" = "Erreur rencontrée liste des dépôts";
+"Error encountered listing repos" = "Erreur lors de la liste des dépôts";
 
 /* No comment provided by engineer. */
-"Error encountered searching for recipe" = "Erreur rencontrée la recherche de la recette";
+"Error encountered searching for recipe" = "Erreur lors de la recherche de la recette";
 
 /* No comment provided by engineer. */
 "Error getting AutoPkg version" = "Erreur lors de l'obtention de la version de AutoPkg";
 
 /* No comment provided by engineer. */
-"Error removing repo" = "Erreur suppression de dépôt";
+"Error removing repo" = "Erreur lors de la suppression du dépôt";
 
 /* No comment provided by engineer. */
-"Error running recipes" = "Recettes d'erreur en cours d'exécution";
+"Error running recipes" = "Erreur lors de l'exécution des recettes";
 
 /* No comment provided by engineer. */
 "Error updating repo" = "Erreur de mise à jour de dépôt";

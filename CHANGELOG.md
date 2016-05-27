@@ -11,6 +11,7 @@ All notable changes to this project will be documented in this file. This projec
 ### Changed
 - Updated versions of MMMarkdown and MailCore2 used in AutoPkgr.
 - Clarified wording on the selective notifications picker (thanks to [@poundbangbash](https://github.com/poundbangbash) for the wordsmithing).
+- Started preparing for localization. (#537)
 
 ### Fixed
 - Fixed the AutoPkgr Slack bot icon URL. (#527)

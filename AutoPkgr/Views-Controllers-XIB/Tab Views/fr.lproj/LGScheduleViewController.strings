@@ -1,6 +1,6 @@
 
 /* Class = "NSButtonCell"; title = "Update all repos before each AutoPkg run"; ObjectID = "2Rc-4D-cra"; */
-"2Rc-4D-cra.title" = "Mettre à jour tous les dépôts avant chaque exécution AutoPkg";
+"2Rc-4D-cra.title" = "Mettre à jour tous les dépôts avant chaque exécution d'AutoPkg";
 
 /* Class = "NSMenu"; title = "Weekday Chooser"; ObjectID = "3K4-Lb-7CJ"; */
 "3K4-Lb-7CJ.title" = "Jour de choix de la semaine";

@@ -3,7 +3,7 @@
 "3qb-HP-cZN.title" = "SMB";
 
 /* Class = "NSMenuItem"; title = "Local"; ObjectID = "9nu-E1-IoD"; */
-"9nu-E1-IoD.title" = "Locale";
+"9nu-E1-IoD.title" = "Local";
 
 /* Class = "NSWindow"; title = "Configure New Distribution Point"; ObjectID = "F0z-JX-Cv5"; */
 "F0z-JX-Cv5.title" = "Configurer un nouveau point de distribution";
@@ -21,7 +21,7 @@
 "h2l-rM-dTd.title" = "Ajouter";
 
 /* Class = "NSTextFieldCell"; title = "Description:   "; ObjectID = "l6b-qW-y5i"; */
-"l6b-qW-y5i.title" = "La Description:   ";
+"l6b-qW-y5i.title" = "Description:   ";
 
 /* Class = "NSTextFieldCell"; title = "Configure New Distribution Point"; ObjectID = "rVl-Ma-hxC"; */
 "rVl-Ma-hxC.title" = "Configurer un nouveau point de distribution";

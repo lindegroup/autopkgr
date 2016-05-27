@@ -15,22 +15,22 @@
 "8FQ-1P-GWZ.placeholderString" = ".local,10.0.0.0/24,.mylocaldomain.com";
 
 /* Class = "NSBox"; title = "GitHub API token generator"; ObjectID = "9m9-DU-jpF"; */
-"9m9-DU-jpF.title" = "GitHub API générateur de jetons";
+"9m9-DU-jpF.title" = "Générateur de jetons d'API GitHub";
 
 /* Class = "NSTextFieldCell"; placeholderString = "GitHub username"; ObjectID = "BOa-ar-cgf"; */
-"BOa-ar-cgf.placeholderString" = "GitHub nom d'utilisateur";
+"BOa-ar-cgf.placeholderString" = "Nom d'utilisateur GitHub";
 
 /* Class = "NSTextFieldCell"; title = "Proxy Bypass:"; ObjectID = "KQa-Dn-SVx"; */
-"KQa-Dn-SVx.title" = "By-pass proxy:";
+"KQa-Dn-SVx.title" = "Contournement du proxy:";
 
 /* Class = "NSTextFieldCell"; title = "Generating a GitHub API token will increase the number of recipe searches you can perform per hour."; ObjectID = "OLM-io-jIc"; */
-"OLM-io-jIc.title" = "Génération d'un jeton API GitHub va augmenter le nombre de recherches recette vous pouvez effectuer par heure.";
+"OLM-io-jIc.title" = "La génération d'un jeton d'API GitHub va augmenter le nombre de recherches de recettes que vous pouvez effectuer par heure.";
 
 /* Class = "NSBox"; title = "Recipe/Override Editor"; ObjectID = "Opa-Cl-skm"; */
-"Opa-Cl-skm.title" = "Editor Recette/Override";
+"Opa-Cl-skm.title" = "Éditeur de Recette/Override";
 
 /* Class = "NSTextFieldCell"; title = "WARNING: This requires storing the above information in clear text, and is not recommended."; ObjectID = "Ovo-Ez-myb"; */
-"Ovo-Ez-myb.title" = "AVERTISSEMENT: Ceci nécessite le stockage des informations ci-dessus en texte clair, et il est recommandé de ne pas.";
+"Ovo-Ez-myb.title" = "AVERTISSEMENT: Ceci nécessite de stocker les informations ci-dessus en clair, et n'est clairement pas recommandé.";
 
 /* Class = "NSBox"; title = "Pre/Post Processors"; ObjectID = "SMi-ml-B6d"; */
 "SMi-ml-B6d.title" = "Pre/Post Processeurs";
@@ -42,7 +42,7 @@
 "X7S-tL-0U0.title" = "Préprocesseurs";
 
 /* Class = "NSTextFieldCell"; title = "Defining your proxy here will allow AutoPkg to work over your proxy even when no user is logged in."; ObjectID = "Z6Z-la-ERa"; */
-"Z6Z-la-ERa.title" = "La définition de votre proxy ici permettra AutoPkg de travailler sur votre proxy même si aucun utilisateur est connecté.";
+"Z6Z-la-ERa.title" = "La définition de votre proxy ici permettra à AutoPkg de fonctionner avec votre proxy même si aucun utilisateur n'est connecté.";
 
 /* Class = "BindingConnection"; ibShadowedIsNilPlaceholder = "http://username:password@proxy:8080"; ObjectID = "Zpn-pz-ra4"; */
 "Zpn-pz-ra4.ibShadowedIsNilPlaceholder" = "http://username:password@proxy:8080";
@@ -63,7 +63,7 @@
 "mN7-lS-7SX.placeholderString" = "http://username:password@proxy:8080";
 
 /* Class = "NSTextFieldCell"; title = "HTTPS Proxy:"; ObjectID = "qqx-yH-R4g"; */
-"qqx-yH-R4g.title" = "HTTPS Proxy:";
+"qqx-yH-R4g.title" = "Proxy HTTPS:";
 
 /* Class = "NSTextFieldCell"; title = "Postprocessors"; ObjectID = "spM-7Y-gtD"; */
 "spM-7Y-gtD.title" = "Postprocesseurs";
@@ -75,4 +75,4 @@
 "xL9-cT-bfZ.ibShadowedIsNilPlaceholder" = ".local,10.0.0.0/24,.mylocaldomain.com";
 
 /* Class = "NSButtonCell"; title = "Verbose AutoPkg run"; ObjectID = "y5a-2Y-hgq"; */
-"y5a-2Y-hgq.title" = "Verbose exécution du AutoPkg";
+"y5a-2Y-hgq.title" = "Exécution verbeuse d'AutoPkg";

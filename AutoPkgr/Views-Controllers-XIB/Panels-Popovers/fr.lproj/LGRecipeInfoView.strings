@@ -9,10 +9,10 @@
 "NDR-Ja-maK.placeholderString" = "<Identificateur>";
 
 /* Class = "NSTextFieldCell"; title = "Builds Package:"; ObjectID = "PCP-wS-HNx"; */
-"PCP-wS-HNx.title" = "Construit paquet:";
+"PCP-wS-HNx.title" = "Construit un paquet:";
 
 /* Class = "NSTextFieldCell"; title = "Min. AutoPkg Version:"; ObjectID = "SNn-pW-jvN"; */
-"SNn-pW-jvN.title" = "La version minimale de AutoPkg:";
+"SNn-pW-jvN.title" = "Version minimale de AutoPkg:";
 
 /* Class = "NSTextFieldCell"; title = "Label"; ObjectID = "Ykk-Ir-JW6"; */
 "Ykk-Ir-JW6.title" = "Étiquette";
@@ -27,10 +27,10 @@
 "eze-8Q-wgb.title" = "A une phase de vérification:";
 
 /* Class = "NSTextFieldCell"; placeholderString = "Top level recipe"; ObjectID = "glN-nd-xEJ"; */
-"glN-nd-xEJ.placeholderString" = "Recette du plus haut niveau:";
+"glN-nd-xEJ.placeholderString" = "Recette au plus haut niveau:";
 
 /* Class = "NSTextFieldCell"; title = "Description:"; ObjectID = "kP3-Ys-TJX"; */
-"kP3-Ys-TJX.title" = "La Description:";
+"kP3-Ys-TJX.title" = "Description:";
 
 /* Class = "NSTextFieldCell"; placeholderString = "No mininum version"; ObjectID = "mtN-V7-fQj"; */
 "mtN-V7-fQj.placeholderString" = "Aucune version minimale";

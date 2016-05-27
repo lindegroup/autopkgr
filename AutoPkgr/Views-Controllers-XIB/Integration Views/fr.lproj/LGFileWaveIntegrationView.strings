@@ -12,10 +12,10 @@
 "IwY-8t-4ra.title" = "fwadmin";
 
 /* Class = "NSTextFieldCell"; title = "FileWave Server Hostname:"; ObjectID = "PWR-ok-oY7"; */
-"PWR-ok-oY7.title" = "Hostname FileWave Serveur:";
+"PWR-ok-oY7.title" = "Nom d'hôte du serveur FileWave:";
 
 /* Class = "NSTextFieldCell"; title = "FileWave Server Port:"; ObjectID = "cPZ-Tn-8JV"; */
-"cPZ-Tn-8JV.title" = "Port FileWave Serveur:";
+"cPZ-Tn-8JV.title" = "Port du serveur FileWave:";
 
 /* Class = "NSTextFieldCell"; title = "20016"; ObjectID = "hgm-TZ-yGN"; */
 "hgm-TZ-yGN.title" = "20016";

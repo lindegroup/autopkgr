@@ -27,10 +27,10 @@
 "f3y-zI-ucB.title" = "Utiliser ma propre:";
 
 /* Class = "NSButtonCell"; title = "Always scan downloads (even if not new)"; ObjectID = "iCS-x9-MoY"; */
-"iCS-x9-MoY.title" = "Toujours téléchargements scan (même si pas nouveau)";
+"iCS-x9-MoY.title" = "Toujours contrôler les téléchargements (même s'il n'y en a pas de nouveau)";
 
 /* Class = "NSButtonCell"; title = "Use proxy settings defined in System Preferences"; ObjectID = "oUv-h4-uUP"; */
 "oUv-h4-uUP.title" = "Utilisez les paramètres de proxy de Préférences Système";
 
 /* Class = "NSButtonCell"; title = "Automatically submit downloads to VirusTotal database"; ObjectID = "sk4-fn-26r"; */
-"sk4-fn-26r.title" = "Soumettre automatiquement les téléchargements de base de données VirusTotal";
+"sk4-fn-26r.title" = "Soumettre automatiquement les téléchargements à la base de données VirusTotal";
