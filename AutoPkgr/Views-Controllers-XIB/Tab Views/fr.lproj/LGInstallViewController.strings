@@ -1,0 +1,21 @@
+
+/* Class = "NSTextFieldCell"; title = "Text Cell"; ObjectID = "9WF-sQ-q4c"; */
+"9WF-sQ-q4c.title" = "Text Cell";
+
+/* Class = "NSButtonCell"; title = "Hide AutoPkgr in Dock"; ObjectID = "BN7-80-SnJ"; */
+"BN7-80-SnJ.title" = "Masquer l'icône AutoPkgr dans le Dock";
+
+/* Class = "NSButtonCell"; title = "Launch AutoPkgr at login"; ObjectID = "FsQ-sy-cGX"; */
+"FsQ-sy-cGX.title" = "Lancer AutoPkgr lors de l'ouverture de session";
+
+/* Class = "NSTextFieldCell"; title = "Relaunch required to take effect."; ObjectID = "TzN-FL-hol"; */
+"TzN-FL-hol.title" = "Relancer l'application pour appliquer ce réglage.";
+
+/* Class = "NSButtonCell"; title = "Show AutoPkgr menu icon"; ObjectID = "bif-9b-TSQ"; */
+"bif-9b-TSQ.title" = "Afficher l'icône AutoPkgr dans la barre de menu";
+
+/* Class = "NSButtonCell"; title = "Install"; ObjectID = "pCi-Pe-NYX"; */
+"pCi-Pe-NYX.title" = "Installer";
+
+/* Class = "NSTextFieldCell"; placeholderString = "Checking installed status..."; ObjectID = "wFr-iu-0JG"; */
+"wFr-iu-0JG.placeholderString" = "Vérification de l'état d'installation...";

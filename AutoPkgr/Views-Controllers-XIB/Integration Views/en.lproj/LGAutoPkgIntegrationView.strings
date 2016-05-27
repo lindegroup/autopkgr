@@ -1,0 +1,78 @@
+
+/* Class = "NSTextFieldCell"; placeholderString = "https://username:password@proxy:8080"; ObjectID = "2DM-Pk-cEe"; */
+"2DM-Pk-cEe.placeholderString" = "https://username:password@proxy:8080";
+
+/* Class = "NSButtonCell"; title = "Use custom proxy settings:"; ObjectID = "2iB-pp-6MS"; */
+"2iB-pp-6MS.title" = "Use custom proxy settings:";
+
+/* Class = "NSBox"; title = "Proxy settings"; ObjectID = "3nH-ob-ob4"; */
+"3nH-ob-ob4.title" = "Proxy settings";
+
+/* Class = "NSButtonCell"; title = "Use proxy settings defined in System Preferences"; ObjectID = "460-FS-hUS"; */
+"460-FS-hUS.title" = "Use proxy settings defined in System Preferences";
+
+/* Class = "NSTextFieldCell"; placeholderString = ".local,10.0.0.0/24,.mylocaldomain.com"; ObjectID = "8FQ-1P-GWZ"; */
+"8FQ-1P-GWZ.placeholderString" = ".local,10.0.0.0/24,.mylocaldomain.com";
+
+/* Class = "NSBox"; title = "GitHub API token generator"; ObjectID = "9m9-DU-jpF"; */
+"9m9-DU-jpF.title" = "GitHub API token generator";
+
+/* Class = "NSTextFieldCell"; placeholderString = "GitHub username"; ObjectID = "BOa-ar-cgf"; */
+"BOa-ar-cgf.placeholderString" = "GitHub username";
+
+/* Class = "NSTextFieldCell"; title = "Proxy Bypass:"; ObjectID = "KQa-Dn-SVx"; */
+"KQa-Dn-SVx.title" = "Proxy Bypass:";
+
+/* Class = "NSTextFieldCell"; title = "Generating a GitHub API token will increase the number of recipe searches you can perform per hour."; ObjectID = "OLM-io-jIc"; */
+"OLM-io-jIc.title" = "Generating a GitHub API token will increase the number of recipe searches you can perform per hour.";
+
+/* Class = "NSBox"; title = "Recipe/Override Editor"; ObjectID = "Opa-Cl-skm"; */
+"Opa-Cl-skm.title" = "Recipe/Override Editor";
+
+/* Class = "NSTextFieldCell"; title = "WARNING: This requires storing the above information in clear text, and is not recommended."; ObjectID = "Ovo-Ez-myb"; */
+"Ovo-Ez-myb.title" = "WARNING: This requires storing the above information in clear text, and is not recommended.";
+
+/* Class = "NSBox"; title = "Pre/Post Processors"; ObjectID = "SMi-ml-B6d"; */
+"SMi-ml-B6d.title" = "Pre/Post Processors";
+
+/* Class = "BindingConnection"; ibShadowedIsNilPlaceholder = "http://username:password@proxy:8080"; ObjectID = "Vf8-4E-bKf"; */
+"Vf8-4E-bKf.ibShadowedIsNilPlaceholder" = "http://username:password@proxy:8080";
+
+/* Class = "NSTextFieldCell"; title = "Preprocessors"; ObjectID = "X7S-tL-0U0"; */
+"X7S-tL-0U0.title" = "Preprocessors";
+
+/* Class = "NSTextFieldCell"; title = "Defining your proxy here will allow AutoPkg to work over your proxy even when no user is logged in."; ObjectID = "Z6Z-la-ERa"; */
+"Z6Z-la-ERa.title" = "Defining your proxy here will allow AutoPkg to work over your proxy even when no user is logged in.";
+
+/* Class = "BindingConnection"; ibShadowedIsNilPlaceholder = "http://username:password@proxy:8080"; ObjectID = "Zpn-pz-ra4"; */
+"Zpn-pz-ra4.ibShadowedIsNilPlaceholder" = "http://username:password@proxy:8080";
+
+/* Class = "NSButtonCell"; title = "Generate API Token"; ObjectID = "e8M-Qy-3C2"; */
+"e8M-Qy-3C2.title" = "Generate API Token";
+
+/* Class = "NSButtonCell"; title = "Do not use proxies"; ObjectID = "ggi-49-F33"; */
+"ggi-49-F33.title" = "Do not use proxies";
+
+/* Class = "NSTextFieldCell"; title = "HTTP Proxy:"; ObjectID = "h4b-fR-6Sb"; */
+"h4b-fR-6Sb.title" = "HTTP Proxy:";
+
+/* Class = "NSButtonCell"; title = "Use proxy settings defined in System Preferences"; ObjectID = "mE5-pR-bgw"; */
+"mE5-pR-bgw.title" = "Use proxy settings defined in System Preferences";
+
+/* Class = "NSTextFieldCell"; placeholderString = "http://username:password@proxy:8080"; ObjectID = "mN7-lS-7SX"; */
+"mN7-lS-7SX.placeholderString" = "http://username:password@proxy:8080";
+
+/* Class = "NSTextFieldCell"; title = "HTTPS Proxy:"; ObjectID = "qqx-yH-R4g"; */
+"qqx-yH-R4g.title" = "HTTPS Proxy:";
+
+/* Class = "NSTextFieldCell"; title = "Postprocessors"; ObjectID = "spM-7Y-gtD"; */
+"spM-7Y-gtD.title" = "Postprocessors";
+
+/* Class = "NSSecureTextFieldCell"; placeholderString = "GitHub password"; ObjectID = "xHZ-hf-yEN"; */
+"xHZ-hf-yEN.placeholderString" = "GitHub password";
+
+/* Class = "BindingConnection"; ibShadowedIsNilPlaceholder = ".local,10.0.0.0/24,.mylocaldomain.com"; ObjectID = "xL9-cT-bfZ"; */
+"xL9-cT-bfZ.ibShadowedIsNilPlaceholder" = ".local,10.0.0.0/24,.mylocaldomain.com";
+
+/* Class = "NSButtonCell"; title = "Verbose AutoPkg run"; ObjectID = "y5a-2Y-hgq"; */
+"y5a-2Y-hgq.title" = "Verbose AutoPkg run";

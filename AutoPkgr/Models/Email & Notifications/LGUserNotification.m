@@ -69,7 +69,7 @@
 {
     if ([[self class] isEnabled]) {
         NSUserNotification *notification = [[NSUserNotification alloc] init];
-        notification.title = NSLocalizedString(@"Email test completed.", @"NSUserNotification posted after test email is complete.");
+        notification.title = NSLocalizedString(@"Email test completed", @"NSUserNotification posted after test email is complete.");
 
         notification.informativeText = success ? NSLocalizedString(@"Successfully sent test email.", @"NSUserNotification text when email is successfully sent.") : NSLocalizedString(@"There was a problem sending test email. Double-check the SMTP settings you specified in AutoPkgr.", @"NSUserNotification text when email fails.");
 

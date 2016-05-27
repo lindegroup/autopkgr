@@ -27,15 +27,34 @@
 		1AC98429195DF6DE0071CAB3 /* autopkgr_alt.png in Resources */ = {isa = PBXBuildFile; fileRef = 1AC98428195DF6DE0071CAB3 /* autopkgr_alt.png */; };
 		6A53625D1988BE59008A949C /* LGTestPort.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A53625C1988BE59008A949C /* LGTestPort.m */; };
 		8B1AF8521BED81440013BE37 /* LGFileWaveIntegrationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B1AF8501BED81440013BE37 /* LGFileWaveIntegrationView.m */; };
-		8B1AF8531BED81440013BE37 /* LGFileWaveIntegrationView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8B1AF8511BED81440013BE37 /* LGFileWaveIntegrationView.xib */; };
 		8B1AF8561BED81540013BE37 /* LGFileWaveIntegration.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B1AF8551BED81540013BE37 /* LGFileWaveIntegration.m */; };
 		8B22B6AF1C7CF2B500B647C2 /* LGLANrevIntegration.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B22B6AE1C7CF2B500B647C2 /* LGLANrevIntegration.m */; };
+		8B8654801CF64A9600B0A3FD /* LGInstallViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8B8654821CF64A9600B0A3FD /* LGInstallViewController.xib */; };
+		8B8654871CF64CA400B0A3FD /* LGRecipeReposViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8B8654891CF64CA400B0A3FD /* LGRecipeReposViewController.xib */; };
+		8B86548E1CF64EE500B0A3FD /* LGScheduleViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8B8654901CF64EE500B0A3FD /* LGScheduleViewController.xib */; };
+		8B8654951CF6500400B0A3FD /* LGNotificationsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8B8654971CF6500400B0A3FD /* LGNotificationsViewController.xib */; };
+		8B86549C1CF652A600B0A3FD /* LGIntegrationsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8B86549E1CF652A600B0A3FD /* LGIntegrationsViewController.xib */; };
+		8B8654A51CF665DF00B0A3FD /* LGAbsoluteManageIntegrationView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8B8654A71CF665DF00B0A3FD /* LGAbsoluteManageIntegrationView.xib */; };
+		8B8654AC1CF6673F00B0A3FD /* LGLANrevIntegrationView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8B8654AE1CF6673F00B0A3FD /* LGLANrevIntegrationView.xib */; };
+		8B8654B31CF6679900B0A3FD /* LGAutoPkgIntegrationView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8B8654B51CF6679900B0A3FD /* LGAutoPkgIntegrationView.xib */; };
+		8B8654BA1CF6695F00B0A3FD /* LGFileWaveIntegrationView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8B8654BC1CF6695F00B0A3FD /* LGFileWaveIntegrationView.xib */; };
+		8B8654C11CF669A100B0A3FD /* LGVirusTotalAnalyzerIntegrationView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8B8654C31CF669A100B0A3FD /* LGVirusTotalAnalyzerIntegrationView.xib */; };
+		8B8654C81CF66B0F00B0A3FD /* LGGitIntegrationView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8B8654CA1CF66B0F00B0A3FD /* LGGitIntegrationView.xib */; };
+		8B8654CF1CF66B8E00B0A3FD /* LGJSSImporterIntegrationView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8B8654D11CF66B8E00B0A3FD /* LGJSSImporterIntegrationView.xib */; };
+		8B8654D61CF66CDA00B0A3FD /* LGMacPatchIntegrationView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8B8654D81CF66CDA00B0A3FD /* LGMacPatchIntegrationView.xib */; };
+		8B8654DD1CF66D1C00B0A3FD /* LGMunkiIntegrationView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8B8654DF1CF66D1C00B0A3FD /* LGMunkiIntegrationView.xib */; };
+		8B8654E41CF66DFA00B0A3FD /* LGHipChatNotificationView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8B8654E61CF66DFA00B0A3FD /* LGHipChatNotificationView.xib */; };
+		8B8654EB1CF66E5C00B0A3FD /* LGSlackNotificationView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8B8654ED1CF66E5C00B0A3FD /* LGSlackNotificationView.xib */; };
+		8B8654F21CF66EB500B0A3FD /* LGTemplateRenderWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8B8654F41CF66EB500B0A3FD /* LGTemplateRenderWindowController.xib */; };
+		8B8654F91CF66F1800B0A3FD /* LGJSSDistributionPointsPrefPanel.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8B8654FB1CF66F1800B0A3FD /* LGJSSDistributionPointsPrefPanel.xib */; };
+		8B8655001CF66F7400B0A3FD /* LGRecipeSearchResultsPanel.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8B8655021CF66F7400B0A3FD /* LGRecipeSearchResultsPanel.xib */; };
+		8B8655071CF66FE200B0A3FD /* LGRecipeInfoView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8B8655091CF66FE200B0A3FD /* LGRecipeInfoView.xib */; };
+		8B86550E1CF670DA00B0A3FD /* LGSelectNotificationsWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8B8655101CF670DA00B0A3FD /* LGSelectNotificationsWindowController.xib */; };
+		8B8655151CF6719F00B0A3FD /* LGViewWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8B8655171CF6719F00B0A3FD /* LGViewWindowController.xib */; };
 		8B8844261C7CD04300F1013B /* LGLANrevIntegrationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B8844241C7CD04300F1013B /* LGLANrevIntegrationView.m */; };
-		8B8844271C7CD04300F1013B /* LGLANrevIntegrationView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8B8844251C7CD04300F1013B /* LGLANrevIntegrationView.xib */; };
 		8BB217F619709A2C00EF8B93 /* AutoPkgrIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 8BB217F519709A2C00EF8B93 /* AutoPkgrIcon.png */; };
 		8BD9E78F1C8E16F000BCB399 /* LGVirusTotalAnalyzerIntegration.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BD9E78E1C8E16F000BCB399 /* LGVirusTotalAnalyzerIntegration.m */; };
 		8BD9E7901C8E170000BCB399 /* LGVirusTotalAnalyzerIntegration.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BD9E78E1C8E16F000BCB399 /* LGVirusTotalAnalyzerIntegration.m */; };
-		8BD9E7951C8E1A5900BCB399 /* LGVirusTotalAnalyzerIntegrationView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8BD9E7931C8E1A5900BCB399 /* LGVirusTotalAnalyzerIntegrationView.xib */; };
 		8BD9E7981C8E296A00BCB399 /* LGVirusTotalAnalyzerIntegrationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BD9E7971C8E296A00BCB399 /* LGVirusTotalAnalyzerIntegrationView.m */; };
 		8BE86AB41C84CA4100EB1748 /* LGLANrevIntegration.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B22B6AE1C7CF2B500B647C2 /* LGLANrevIntegration.m */; };
 		9D2C8D4C186E66B3303DD645 /* libPods-com.lindegroup.AutoPkgr.helper.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00A11C97CD6260BB5679DA1A /* libPods-com.lindegroup.AutoPkgr.helper.a */; };
@@ -57,13 +76,11 @@
 		BE05CE9119DB380F0089068B /* LGConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 1AC98409195CE7D60071CAB3 /* LGConstants.m */; };
 		BE05CE9219DB38180089068B /* LGError.m in Sources */ = {isa = PBXBuildFile; fileRef = BEFC931C1995F0710074C938 /* LGError.m */; };
 		BE09F65B1B2694ED00EE4AA7 /* LGAutoPkgIntegrationView.m in Sources */ = {isa = PBXBuildFile; fileRef = BE09F6591B2694ED00EE4AA7 /* LGAutoPkgIntegrationView.m */; };
-		BE09F65D1B2694ED00EE4AA7 /* LGAutoPkgIntegrationView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BE09F65A1B2694ED00EE4AA7 /* LGAutoPkgIntegrationView.xib */; };
 		BE0A75491B04EC7400F70C9E /* NSString+versionCompare.m in Sources */ = {isa = PBXBuildFile; fileRef = BE0A75481B04EC7400F70C9E /* NSString+versionCompare.m */; };
 		BE0A754A1B04EC7400F70C9E /* NSString+versionCompare.m in Sources */ = {isa = PBXBuildFile; fileRef = BE0A75481B04EC7400F70C9E /* NSString+versionCompare.m */; };
 		BE0A8BEA1BF18D1E004DDB5E /* LGJSSDistributionPoint.m in Sources */ = {isa = PBXBuildFile; fileRef = BE0A8BE91BF18D1E004DDB5E /* LGJSSDistributionPoint.m */; };
 		BE0A8BEB1BF18D1E004DDB5E /* LGJSSDistributionPoint.m in Sources */ = {isa = PBXBuildFile; fileRef = BE0A8BE91BF18D1E004DDB5E /* LGJSSDistributionPoint.m */; };
 		BE0BACD11A2560AE00554989 /* LGJSSDistributionPointsPrefPanel.m in Sources */ = {isa = PBXBuildFile; fileRef = BE0BACCF1A2560AE00554989 /* LGJSSDistributionPointsPrefPanel.m */; };
-		BE0BACD21A2560AE00554989 /* LGJSSDistributionPointsPrefPanel.xib in Resources */ = {isa = PBXBuildFile; fileRef = BE0BACD01A2560AE00554989 /* LGJSSDistributionPointsPrefPanel.xib */; };
 		BE0BB0F21B3C2311007F9DA5 /* LGNotificationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = BE0BB0F11B3C2311007F9DA5 /* LGNotificationManager.m */; };
 		BE0BB0F41B3C5CDB007F9DA5 /* LGNotificationService.m in Sources */ = {isa = PBXBuildFile; fileRef = BEDAFBB31B3B8AA500CCE9AC /* LGNotificationService.m */; };
 		BE0BB0F71B3C68A3007F9DA5 /* LGEmailNotification.m in Sources */ = {isa = PBXBuildFile; fileRef = BE0BB0F61B3C68A3007F9DA5 /* LGEmailNotification.m */; };
@@ -78,7 +95,6 @@
 		BE2337CA1B3E42EC00256F85 /* LGMacPatchIntegration.m in Sources */ = {isa = PBXBuildFile; fileRef = BE2337C91B3E42EC00256F85 /* LGMacPatchIntegration.m */; };
 		BE2337CB1B3E42EC00256F85 /* LGMacPatchIntegration.m in Sources */ = {isa = PBXBuildFile; fileRef = BE2337C91B3E42EC00256F85 /* LGMacPatchIntegration.m */; };
 		BE2337CF1B3E482100256F85 /* LGMacPatchIntegrationView.m in Sources */ = {isa = PBXBuildFile; fileRef = BE2337CD1B3E482100256F85 /* LGMacPatchIntegrationView.m */; };
-		BE2337D11B3E482100256F85 /* LGMacPatchIntegrationView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BE2337CE1B3E482100256F85 /* LGMacPatchIntegrationView.xib */; };
 		BE25FE071C0E7A14006039BA /* NSTextField+changeHandle.m in Sources */ = {isa = PBXBuildFile; fileRef = BE25FE061C0E7A14006039BA /* NSTextField+changeHandle.m */; };
 		BE2867A61BEB88D8009891A0 /* LGAutoPkgRecipeListManager.m in Sources */ = {isa = PBXBuildFile; fileRef = BE2867A51BEB88D8009891A0 /* LGAutoPkgRecipeListManager.m */; };
 		BE2867A71BEB88D8009891A0 /* LGAutoPkgRecipeListManager.m in Sources */ = {isa = PBXBuildFile; fileRef = BE2867A51BEB88D8009891A0 /* LGAutoPkgRecipeListManager.m */; };
@@ -86,36 +102,26 @@
 		BE2D58791B32EF110042EF1E /* LocalizableAutoPkg.strings in Resources */ = {isa = PBXBuildFile; fileRef = BE2D58761B32EF110042EF1E /* LocalizableAutoPkg.strings */; };
 		BE32178B19ED9ACA00A92E5A /* LGRecipeOverrides.m in Sources */ = {isa = PBXBuildFile; fileRef = BE32178A19ED9ACA00A92E5A /* LGRecipeOverrides.m */; };
 		BE32B0381B2735DF0071778B /* LGGitIntegrationView.m in Sources */ = {isa = PBXBuildFile; fileRef = BE32B0361B2735DF0071778B /* LGGitIntegrationView.m */; };
-		BE32B03A1B2735DF0071778B /* LGGitIntegrationView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BE32B0371B2735DF0071778B /* LGGitIntegrationView.xib */; };
 		BE344F551ABFBEAB00500AAE /* LGAutoPkgReport.m in Sources */ = {isa = PBXBuildFile; fileRef = BE344F541ABFBEAB00500AAE /* LGAutoPkgReport.m */; };
 		BE38EA771B0B8DF7009FCBEB /* LGRecipeInfoView.m in Sources */ = {isa = PBXBuildFile; fileRef = BE38EA751B0B8DF7009FCBEB /* LGRecipeInfoView.m */; };
-		BE38EA791B0B8DF7009FCBEB /* LGRecipeInfoView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BE38EA761B0B8DF7009FCBEB /* LGRecipeInfoView.xib */; };
 		BE38EA8E1B0CFE68009FCBEB /* LGInstallViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE38EA8C1B0CFE68009FCBEB /* LGInstallViewController.m */; };
-		BE38EA901B0CFE68009FCBEB /* LGInstallViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BE38EA8D1B0CFE68009FCBEB /* LGInstallViewController.xib */; };
 		BE38EA951B0CFE95009FCBEB /* LGRecipeReposViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE38EA931B0CFE95009FCBEB /* LGRecipeReposViewController.m */; };
-		BE38EA971B0CFE95009FCBEB /* LGRecipeReposViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BE38EA941B0CFE95009FCBEB /* LGRecipeReposViewController.xib */; };
 		BE38EA9C1B0CFEA6009FCBEB /* LGScheduleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE38EA9A1B0CFEA6009FCBEB /* LGScheduleViewController.m */; };
-		BE38EA9E1B0CFEA6009FCBEB /* LGScheduleViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BE38EA9B1B0CFEA6009FCBEB /* LGScheduleViewController.xib */; };
 		BE38EAA31B0CFEBB009FCBEB /* LGIntegrationsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE38EAA11B0CFEBB009FCBEB /* LGIntegrationsViewController.m */; };
-		BE38EAA51B0CFEBB009FCBEB /* LGIntegrationsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BE38EAA21B0CFEBB009FCBEB /* LGIntegrationsViewController.xib */; };
 		BE38EAAA1B0CFECE009FCBEB /* LGNotificationsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE38EAA81B0CFECE009FCBEB /* LGNotificationsViewController.m */; };
-		BE38EAAC1B0CFECE009FCBEB /* LGNotificationsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BE38EAA91B0CFECE009FCBEB /* LGNotificationsViewController.xib */; };
 		BE38EAB01B0D0CF1009FCBEB /* LGTabViewControllerBase.m in Sources */ = {isa = PBXBuildFile; fileRef = BE38EAAF1B0D0CF1009FCBEB /* LGTabViewControllerBase.m */; };
 		BE3D94251C138E7E001763D0 /* report.html in Resources */ = {isa = PBXBuildFile; fileRef = BE3D94241C138E7E001763D0 /* report.html */; };
 		BE3D94261C139894001763D0 /* report.html in Resources */ = {isa = PBXBuildFile; fileRef = BE3D94241C138E7E001763D0 /* report.html */; };
-		BE3D942D1C14E9CB001763D0 /* LGTemplateRenderWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BE3D942B1C14E9CB001763D0 /* LGTemplateRenderWindowController.xib */; };
 		BE3D942F1C14F32F001763D0 /* LGTemplateRenderWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE3D942A1C14E9CB001763D0 /* LGTemplateRenderWindowController.m */; };
 		BE3D94321C15FCFA001763D0 /* example_data.plist in Resources */ = {isa = PBXBuildFile; fileRef = BE3D94311C15FCFA001763D0 /* example_data.plist */; };
 		BE3D94341C160F59001763D0 /* web_report.html in Resources */ = {isa = PBXBuildFile; fileRef = BE3D94331C160F59001763D0 /* web_report.html */; };
 		BE3D94351C160F59001763D0 /* web_report.html in Resources */ = {isa = PBXBuildFile; fileRef = BE3D94331C160F59001763D0 /* web_report.html */; };
-		BE3D94391C162EA2001763D0 /* slack_report.md in Sources */ = {isa = PBXBuildFile; fileRef = BE3D94361C1627F8001763D0 /* slack_report.md */; };
 		BE3D943B1C162F3C001763D0 /* slack_report.md in Resources */ = {isa = PBXBuildFile; fileRef = BE3D94361C1627F8001763D0 /* slack_report.md */; };
 		BE46D98B1B40E46F00004B41 /* LGBaseNotificationServiceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE46D98A1B40E46F00004B41 /* LGBaseNotificationServiceViewController.m */; };
 		BE46D9911B40E67500004B41 /* LGNotificationServiceWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE46D9901B40E67500004B41 /* LGNotificationServiceWindowController.m */; };
 		BE46D9951B40EBF800004B41 /* LGHipChatNotification.m in Sources */ = {isa = PBXBuildFile; fileRef = BE46D9941B40EBF800004B41 /* LGHipChatNotification.m */; };
 		BE46D9961B40EBF800004B41 /* LGHipChatNotification.m in Sources */ = {isa = PBXBuildFile; fileRef = BE46D9941B40EBF800004B41 /* LGHipChatNotification.m */; };
 		BE46D99A1B40EE2D00004B41 /* LGHipChatNotificationView.m in Sources */ = {isa = PBXBuildFile; fileRef = BE46D9981B40EE2D00004B41 /* LGHipChatNotificationView.m */; };
-		BE46D99C1B40EE2D00004B41 /* LGHipChatNotificationView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BE46D9991B40EE2D00004B41 /* LGHipChatNotificationView.xib */; };
 		BE4985381AFE61C1006E5EDA /* LGServerCredentials.m in Sources */ = {isa = PBXBuildFile; fileRef = BE4985371AFE61C1006E5EDA /* LGServerCredentials.m */; };
 		BE4985391AFE61C1006E5EDA /* LGServerCredentials.m in Sources */ = {isa = PBXBuildFile; fileRef = BE4985371AFE61C1006E5EDA /* LGServerCredentials.m */; };
 		BE4DD53E1B11743700854FD8 /* LGMunkiIntegration.m in Sources */ = {isa = PBXBuildFile; fileRef = BE4DD53D1B11743700854FD8 /* LGMunkiIntegration.m */; };
@@ -139,8 +145,6 @@
 		BE81F2241B20EFF2007D16C4 /* LGAbsoluteManageIntegration.m in Sources */ = {isa = PBXBuildFile; fileRef = BE81F2221B20EFF2007D16C4 /* LGAbsoluteManageIntegration.m */; };
 		BE81F22A1B2232ED007D16C4 /* LGJSSImporterIntegrationView.m in Sources */ = {isa = PBXBuildFile; fileRef = BE81F2281B2232ED007D16C4 /* LGJSSImporterIntegrationView.m */; };
 		BE81F2301B22340D007D16C4 /* LGBaseIntegrationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE81F22F1B22340D007D16C4 /* LGBaseIntegrationViewController.m */; };
-		BE81F23A1B22A29E007D16C4 /* LGJSSImporterIntegrationView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BE81F2391B22A29E007D16C4 /* LGJSSImporterIntegrationView.xib */; };
-		BE81F2441B22C211007D16C4 /* LGViewWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BE81F2411B22C211007D16C4 /* LGViewWindowController.xib */; };
 		BE81F2471B22C30D007D16C4 /* LGViewWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE81F2401B22C211007D16C4 /* LGViewWindowController.m */; };
 		BE8526B219D5F641007DFA9E /* SecurityInterface.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BE8526B119D5F641007DFA9E /* SecurityInterface.framework */; };
 		BE87994B1995BA410082472B /* LGDefaults.m in Sources */ = {isa = PBXBuildFile; fileRef = BE87994A1995BA410082472B /* LGDefaults.m */; };
@@ -160,11 +164,9 @@
 		BEB7BF7D1BEBAFDB009386C1 /* NSArray+mapped.m in Sources */ = {isa = PBXBuildFile; fileRef = BEB7BF7B1BEBAFDB009386C1 /* NSArray+mapped.m */; };
 		BEB9AF271B419F0900016D98 /* LGNotificationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = BE0BB0F11B3C2311007F9DA5 /* LGNotificationManager.m */; };
 		BEB9AF2B1B41A01900016D98 /* LGSlackNotificationView.m in Sources */ = {isa = PBXBuildFile; fileRef = BEB9AF291B41A01900016D98 /* LGSlackNotificationView.m */; };
-		BEB9AF2D1B41A01900016D98 /* LGSlackNotificationView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BEB9AF2A1B41A01900016D98 /* LGSlackNotificationView.xib */; };
 		BEBC182C1C167F1A0085B9D5 /* LGWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = BEBC182A1C167F1A0085B9D5 /* LGWindowController.m */; };
 		BEBC182D1C167F1A0085B9D5 /* LGWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BEBC182B1C167F1A0085B9D5 /* LGWindowController.xib */; };
 		BEBC18341C1686990085B9D5 /* LGSelectNotificationsWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = BEBC18321C1686990085B9D5 /* LGSelectNotificationsWindowController.m */; };
-		BEBC18351C1686990085B9D5 /* LGSelectNotificationsWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BEBC18331C1686990085B9D5 /* LGSelectNotificationsWindowController.xib */; };
 		BEBC18361C168BD50085B9D5 /* slack_report.md in Resources */ = {isa = PBXBuildFile; fileRef = BE3D94361C1627F8001763D0 /* slack_report.md */; };
 		BEBC18371C168CD70085B9D5 /* LGTwoFactorAuthAlert.m in Sources */ = {isa = PBXBuildFile; fileRef = BEC949781B63FDA3005641EB /* LGTwoFactorAuthAlert.m */; };
 		BEBDDCF31C0F5E4200BD1C55 /* NSTableView+Resizing.m in Sources */ = {isa = PBXBuildFile; fileRef = BEBDDCF21C0F5E4200BD1C55 /* NSTableView+Resizing.m */; };
@@ -182,11 +184,9 @@
 		BECDAB8C1B249C0400544388 /* NSButton+colored.m in Sources */ = {isa = PBXBuildFile; fileRef = BECDAB891B249A2900544388 /* NSButton+colored.m */; };
 		BECDAB8D1B249C0B00544388 /* NSButton+colored.m in Sources */ = {isa = PBXBuildFile; fileRef = BECDAB891B249A2900544388 /* NSButton+colored.m */; };
 		BECDAB951B24C29600544388 /* LGMunkiIntegrationView.m in Sources */ = {isa = PBXBuildFile; fileRef = BECDAB931B24C29600544388 /* LGMunkiIntegrationView.m */; };
-		BECDAB971B24C29600544388 /* LGMunkiIntegrationView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BECDAB941B24C29600544388 /* LGMunkiIntegrationView.xib */; };
 		BECDAB9B1B24DBBC00544388 /* LGIntegrationWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = BECDAB9A1B24DBBC00544388 /* LGIntegrationWindowController.m */; };
 		BECDABA21B252B3900544388 /* NSOpenPanel+typeChooser.m in Sources */ = {isa = PBXBuildFile; fileRef = BECDABA11B252B3900544388 /* NSOpenPanel+typeChooser.m */; };
 		BECDABA71B254E5900544388 /* LGAbsoluteManageIntegrationView.m in Sources */ = {isa = PBXBuildFile; fileRef = BECDABA51B254E5900544388 /* LGAbsoluteManageIntegrationView.m */; };
-		BECDABA91B254E5900544388 /* LGAbsoluteManageIntegrationView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BECDABA61B254E5900544388 /* LGAbsoluteManageIntegrationView.xib */; };
 		BED02ADC1A194F9C00714CC2 /* NSArray+filtered.m in Sources */ = {isa = PBXBuildFile; fileRef = BED02ADB1A194F9C00714CC2 /* NSArray+filtered.m */; };
 		BED136AA1AC0593A003EBF0F /* report_0.4.3.plist in Resources */ = {isa = PBXBuildFile; fileRef = BED136A91AC058F8003EBF0F /* report_0.4.3.plist */; };
 		BED136AB1AC05B1D003EBF0F /* LGAutoPkgReport.m in Sources */ = {isa = PBXBuildFile; fileRef = BE344F541ABFBEAB00500AAE /* LGAutoPkgReport.m */; };
@@ -198,7 +198,6 @@
 		BED136B71AC3BE04003EBF0F /* NSArray+html_report.m in Sources */ = {isa = PBXBuildFile; fileRef = BED136B61AC3BE04003EBF0F /* NSArray+html_report.m */; };
 		BED136B81AC3BE04003EBF0F /* NSArray+html_report.m in Sources */ = {isa = PBXBuildFile; fileRef = BED136B61AC3BE04003EBF0F /* NSArray+html_report.m */; };
 		BED3882A1A85E2C100DA8970 /* autopkgr_error.png in Resources */ = {isa = PBXBuildFile; fileRef = BED388291A85E2C100DA8970 /* autopkgr_error.png */; };
-		BEDA5D551B4429E300DCC022 /* LGRecipeSearchResultsPanel.xib in Resources */ = {isa = PBXBuildFile; fileRef = BEDA5D541B4429E300DCC022 /* LGRecipeSearchResultsPanel.xib */; };
 		BEDAFBB41B3B8AA500CCE9AC /* LGNotificationService.m in Sources */ = {isa = PBXBuildFile; fileRef = BEDAFBB31B3B8AA500CCE9AC /* LGNotificationService.m */; };
 		BEE211231AF9D6E500A3C2E1 /* LGIntegrationTemplate.m in Sources */ = {isa = PBXBuildFile; fileRef = BEA2F0B41AF1672600781274 /* LGIntegrationTemplate.m */; };
 		BEE211261AF9DCBB00A3C2E1 /* LGUninstaller.m in Sources */ = {isa = PBXBuildFile; fileRef = BEE211251AF9DCBB00A3C2E1 /* LGUninstaller.m */; };
@@ -328,18 +327,91 @@
 		82E1025CEEB73A7B5A709EE0 /* Pods-helper.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-helper.release.xcconfig"; path = "Pods/Target Support Files/Pods-helper/Pods-helper.release.xcconfig"; sourceTree = "<group>"; };
 		8B1AF84F1BED81440013BE37 /* LGFileWaveIntegrationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGFileWaveIntegrationView.h; sourceTree = "<group>"; };
 		8B1AF8501BED81440013BE37 /* LGFileWaveIntegrationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGFileWaveIntegrationView.m; sourceTree = "<group>"; };
-		8B1AF8511BED81440013BE37 /* LGFileWaveIntegrationView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LGFileWaveIntegrationView.xib; sourceTree = "<group>"; };
 		8B1AF8541BED81540013BE37 /* LGFileWaveIntegration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGFileWaveIntegration.h; sourceTree = "<group>"; };
 		8B1AF8551BED81540013BE37 /* LGFileWaveIntegration.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGFileWaveIntegration.m; sourceTree = "<group>"; };
 		8B22B6AD1C7CF2B500B647C2 /* LGLANrevIntegration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGLANrevIntegration.h; sourceTree = "<group>"; };
 		8B22B6AE1C7CF2B500B647C2 /* LGLANrevIntegration.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGLANrevIntegration.m; sourceTree = "<group>"; };
+		8B8654771CF6475F00B0A3FD /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/MainMenu.strings; sourceTree = "<group>"; };
+		8B8654781CF6475F00B0A3FD /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		8B8654791CF6475F00B0A3FD /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
+		8B86547A1CF6476000B0A3FD /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/LocalizableError.strings; sourceTree = "<group>"; };
+		8B86547B1CF6476000B0A3FD /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/LocalizableAutoPkg.strings; sourceTree = "<group>"; };
+		8B86547C1CF6476000B0A3FD /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/LocalizableJSSImporter.strings; sourceTree = "<group>"; };
+		8B86547D1CF6476000B0A3FD /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/LocalizableHelpPopover.strings; sourceTree = "<group>"; };
+		8B86547E1CF6476000B0A3FD /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; name = fr; path = fr.lproj/Credits.rtf; sourceTree = "<group>"; };
+		8B86547F1CF6476000B0A3FD /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		8B8654811CF64A9600B0A3FD /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LGInstallViewController.xib; sourceTree = "<group>"; };
+		8B8654841CF64AD800B0A3FD /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/LGInstallViewController.strings; sourceTree = "<group>"; };
+		8B8654861CF64AE000B0A3FD /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/LGInstallViewController.strings; sourceTree = "<group>"; };
+		8B8654881CF64CA400B0A3FD /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LGRecipeReposViewController.xib; sourceTree = "<group>"; };
+		8B86548B1CF64CB200B0A3FD /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/LGRecipeReposViewController.strings; sourceTree = "<group>"; };
+		8B86548D1CF64CB600B0A3FD /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/LGRecipeReposViewController.strings; sourceTree = "<group>"; };
+		8B86548F1CF64EE500B0A3FD /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LGScheduleViewController.xib; sourceTree = "<group>"; };
+		8B8654921CF64EE700B0A3FD /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/LGScheduleViewController.strings; sourceTree = "<group>"; };
+		8B8654941CF64EE900B0A3FD /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/LGScheduleViewController.strings; sourceTree = "<group>"; };
+		8B8654961CF6500400B0A3FD /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LGNotificationsViewController.xib; sourceTree = "<group>"; };
+		8B8654991CF6501900B0A3FD /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/LGNotificationsViewController.strings; sourceTree = "<group>"; };
+		8B86549B1CF6501B00B0A3FD /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/LGNotificationsViewController.strings; sourceTree = "<group>"; };
+		8B86549D1CF652A600B0A3FD /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LGIntegrationsViewController.xib; sourceTree = "<group>"; };
+		8B8654A01CF652AB00B0A3FD /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/LGIntegrationsViewController.strings; sourceTree = "<group>"; };
+		8B8654A21CF652AD00B0A3FD /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/LGIntegrationsViewController.strings; sourceTree = "<group>"; };
+		8B8654A41CF6537800B0A3FD /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/MainMenu.strings; sourceTree = "<group>"; };
+		8B8654A61CF665DF00B0A3FD /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LGAbsoluteManageIntegrationView.xib; sourceTree = "<group>"; };
+		8B8654A91CF665E100B0A3FD /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/LGAbsoluteManageIntegrationView.strings; sourceTree = "<group>"; };
+		8B8654AB1CF665E300B0A3FD /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/LGAbsoluteManageIntegrationView.strings; sourceTree = "<group>"; };
+		8B8654AD1CF6673F00B0A3FD /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LGLANrevIntegrationView.xib; sourceTree = "<group>"; };
+		8B8654B01CF6674300B0A3FD /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/LGLANrevIntegrationView.strings; sourceTree = "<group>"; };
+		8B8654B21CF6674500B0A3FD /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/LGLANrevIntegrationView.strings; sourceTree = "<group>"; };
+		8B8654B41CF6679900B0A3FD /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LGAutoPkgIntegrationView.xib; sourceTree = "<group>"; };
+		8B8654B71CF6679B00B0A3FD /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/LGAutoPkgIntegrationView.strings; sourceTree = "<group>"; };
+		8B8654B91CF6679D00B0A3FD /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/LGAutoPkgIntegrationView.strings; sourceTree = "<group>"; };
+		8B8654BB1CF6695F00B0A3FD /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LGFileWaveIntegrationView.xib; sourceTree = "<group>"; };
+		8B8654BE1CF6696100B0A3FD /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/LGFileWaveIntegrationView.strings; sourceTree = "<group>"; };
+		8B8654C01CF6696300B0A3FD /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/LGFileWaveIntegrationView.strings; sourceTree = "<group>"; };
+		8B8654C21CF669A100B0A3FD /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LGVirusTotalAnalyzerIntegrationView.xib; sourceTree = "<group>"; };
+		8B8654C51CF669A500B0A3FD /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/LGVirusTotalAnalyzerIntegrationView.strings; sourceTree = "<group>"; };
+		8B8654C71CF669A700B0A3FD /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/LGVirusTotalAnalyzerIntegrationView.strings; sourceTree = "<group>"; };
+		8B8654C91CF66B0F00B0A3FD /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LGGitIntegrationView.xib; sourceTree = "<group>"; };
+		8B8654CC1CF66B1100B0A3FD /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/LGGitIntegrationView.strings; sourceTree = "<group>"; };
+		8B8654CE1CF66B1200B0A3FD /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/LGGitIntegrationView.strings; sourceTree = "<group>"; };
+		8B8654D01CF66B8E00B0A3FD /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LGJSSImporterIntegrationView.xib; sourceTree = "<group>"; };
+		8B8654D31CF66B9100B0A3FD /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/LGJSSImporterIntegrationView.strings; sourceTree = "<group>"; };
+		8B8654D51CF66B9900B0A3FD /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/LGJSSImporterIntegrationView.strings; sourceTree = "<group>"; };
+		8B8654D71CF66CDA00B0A3FD /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LGMacPatchIntegrationView.xib; sourceTree = "<group>"; };
+		8B8654DA1CF66CDC00B0A3FD /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/LGMacPatchIntegrationView.strings; sourceTree = "<group>"; };
+		8B8654DC1CF66CDE00B0A3FD /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/LGMacPatchIntegrationView.strings; sourceTree = "<group>"; };
+		8B8654DE1CF66D1C00B0A3FD /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LGMunkiIntegrationView.xib; sourceTree = "<group>"; };
+		8B8654E11CF66D1E00B0A3FD /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/LGMunkiIntegrationView.strings; sourceTree = "<group>"; };
+		8B8654E31CF66D2100B0A3FD /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/LGMunkiIntegrationView.strings; sourceTree = "<group>"; };
+		8B8654E51CF66DFA00B0A3FD /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LGHipChatNotificationView.xib; sourceTree = "<group>"; };
+		8B8654E81CF66DFC00B0A3FD /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/LGHipChatNotificationView.strings; sourceTree = "<group>"; };
+		8B8654EA1CF66DFF00B0A3FD /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/LGHipChatNotificationView.strings; sourceTree = "<group>"; };
+		8B8654EC1CF66E5C00B0A3FD /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LGSlackNotificationView.xib; sourceTree = "<group>"; };
+		8B8654EF1CF66E6200B0A3FD /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/LGSlackNotificationView.strings; sourceTree = "<group>"; };
+		8B8654F11CF66E6300B0A3FD /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/LGSlackNotificationView.strings; sourceTree = "<group>"; };
+		8B8654F31CF66EB500B0A3FD /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LGTemplateRenderWindowController.xib; sourceTree = "<group>"; };
+		8B8654F61CF66EB700B0A3FD /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/LGTemplateRenderWindowController.strings; sourceTree = "<group>"; };
+		8B8654F81CF66EB900B0A3FD /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/LGTemplateRenderWindowController.strings; sourceTree = "<group>"; };
+		8B8654FA1CF66F1800B0A3FD /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LGJSSDistributionPointsPrefPanel.xib; sourceTree = "<group>"; };
+		8B8654FD1CF66F1A00B0A3FD /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/LGJSSDistributionPointsPrefPanel.strings; sourceTree = "<group>"; };
+		8B8654FF1CF66F1B00B0A3FD /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/LGJSSDistributionPointsPrefPanel.strings; sourceTree = "<group>"; };
+		8B8655011CF66F7400B0A3FD /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LGRecipeSearchResultsPanel.xib; sourceTree = "<group>"; };
+		8B8655041CF66F7700B0A3FD /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/LGRecipeSearchResultsPanel.strings; sourceTree = "<group>"; };
+		8B8655061CF66F7800B0A3FD /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/LGRecipeSearchResultsPanel.strings; sourceTree = "<group>"; };
+		8B8655081CF66FE200B0A3FD /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LGRecipeInfoView.xib; sourceTree = "<group>"; };
+		8B86550B1CF66FE600B0A3FD /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/LGRecipeInfoView.strings; sourceTree = "<group>"; };
+		8B86550D1CF66FE800B0A3FD /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/LGRecipeInfoView.strings; sourceTree = "<group>"; };
+		8B86550F1CF670DA00B0A3FD /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LGSelectNotificationsWindowController.xib; sourceTree = "<group>"; };
+		8B8655121CF670DD00B0A3FD /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/LGSelectNotificationsWindowController.strings; sourceTree = "<group>"; };
+		8B8655141CF670DF00B0A3FD /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/LGSelectNotificationsWindowController.strings; sourceTree = "<group>"; };
+		8B8655161CF6719F00B0A3FD /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LGViewWindowController.xib; sourceTree = "<group>"; };
+		8B8655191CF671A100B0A3FD /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/LGViewWindowController.strings; sourceTree = "<group>"; };
+		8B86551B1CF671A300B0A3FD /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/LGViewWindowController.strings; sourceTree = "<group>"; };
 		8B8844231C7CD04300F1013B /* LGLANrevIntegrationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGLANrevIntegrationView.h; sourceTree = "<group>"; };
 		8B8844241C7CD04300F1013B /* LGLANrevIntegrationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGLANrevIntegrationView.m; sourceTree = "<group>"; };
-		8B8844251C7CD04300F1013B /* LGLANrevIntegrationView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LGLANrevIntegrationView.xib; sourceTree = "<group>"; };
 		8BB217F519709A2C00EF8B93 /* AutoPkgrIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = AutoPkgrIcon.png; sourceTree = "<group>"; };
 		8BD9E78D1C8E16F000BCB399 /* LGVirusTotalAnalyzerIntegration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGVirusTotalAnalyzerIntegration.h; sourceTree = "<group>"; };
 		8BD9E78E1C8E16F000BCB399 /* LGVirusTotalAnalyzerIntegration.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGVirusTotalAnalyzerIntegration.m; sourceTree = "<group>"; };
-		8BD9E7931C8E1A5900BCB399 /* LGVirusTotalAnalyzerIntegrationView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LGVirusTotalAnalyzerIntegrationView.xib; sourceTree = "<group>"; };
 		8BD9E7961C8E296A00BCB399 /* LGVirusTotalAnalyzerIntegrationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGVirusTotalAnalyzerIntegrationView.h; sourceTree = "<group>"; };
 		8BD9E7971C8E296A00BCB399 /* LGVirusTotalAnalyzerIntegrationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGVirusTotalAnalyzerIntegrationView.m; sourceTree = "<group>"; };
 		8FDCE77563036A319CDEEBF5 /* libPods-autopkgr.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-autopkgr.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -371,7 +443,6 @@
 		BE05CE8F19DB37E50089068B /* ServiceManagement.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ServiceManagement.framework; path = System/Library/Frameworks/ServiceManagement.framework; sourceTree = SDKROOT; };
 		BE09F6581B2694ED00EE4AA7 /* LGAutoPkgIntegrationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGAutoPkgIntegrationView.h; sourceTree = "<group>"; };
 		BE09F6591B2694ED00EE4AA7 /* LGAutoPkgIntegrationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGAutoPkgIntegrationView.m; sourceTree = "<group>"; };
-		BE09F65A1B2694ED00EE4AA7 /* LGAutoPkgIntegrationView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LGAutoPkgIntegrationView.xib; sourceTree = "<group>"; };
 		BE0A75471B04EC7400F70C9E /* NSString+versionCompare.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+versionCompare.h"; sourceTree = "<group>"; };
 		BE0A75481B04EC7400F70C9E /* NSString+versionCompare.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+versionCompare.m"; sourceTree = "<group>"; };
 		BE0A8BDF1BF13F62004DDB5E /* AutoPkgr-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "AutoPkgr-Bridging-Header.h"; sourceTree = "<group>"; };
@@ -380,7 +451,6 @@
 		BE0A8BE91BF18D1E004DDB5E /* LGJSSDistributionPoint.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LGJSSDistributionPoint.m; path = AutoPkgr/Models/Other/LGJSSDistributionPoint.m; sourceTree = SOURCE_ROOT; };
 		BE0BACCE1A2560AE00554989 /* LGJSSDistributionPointsPrefPanel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGJSSDistributionPointsPrefPanel.h; sourceTree = "<group>"; };
 		BE0BACCF1A2560AE00554989 /* LGJSSDistributionPointsPrefPanel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGJSSDistributionPointsPrefPanel.m; sourceTree = "<group>"; };
-		BE0BACD01A2560AE00554989 /* LGJSSDistributionPointsPrefPanel.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LGJSSDistributionPointsPrefPanel.xib; sourceTree = "<group>"; };
 		BE0BB0F01B3C2311007F9DA5 /* LGNotificationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGNotificationManager.h; sourceTree = "<group>"; };
 		BE0BB0F11B3C2311007F9DA5 /* LGNotificationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGNotificationManager.m; sourceTree = "<group>"; };
 		BE0BB0F51B3C68A3007F9DA5 /* LGEmailNotification.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGEmailNotification.h; sourceTree = "<group>"; };
@@ -398,7 +468,6 @@
 		BE2337C91B3E42EC00256F85 /* LGMacPatchIntegration.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGMacPatchIntegration.m; sourceTree = "<group>"; };
 		BE2337CC1B3E482100256F85 /* LGMacPatchIntegrationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGMacPatchIntegrationView.h; sourceTree = "<group>"; };
 		BE2337CD1B3E482100256F85 /* LGMacPatchIntegrationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGMacPatchIntegrationView.m; sourceTree = "<group>"; };
-		BE2337CE1B3E482100256F85 /* LGMacPatchIntegrationView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LGMacPatchIntegrationView.xib; sourceTree = "<group>"; };
 		BE25FE051C0E7A14006039BA /* NSTextField+changeHandle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSTextField+changeHandle.h"; sourceTree = "<group>"; };
 		BE25FE061C0E7A14006039BA /* NSTextField+changeHandle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSTextField+changeHandle.m"; sourceTree = "<group>"; };
 		BE2867A41BEB88D8009891A0 /* LGAutoPkgRecipeListManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LGAutoPkgRecipeListManager.h; path = "AutoPkgr/Models/AutoPkg Task/LGAutoPkgRecipeListManager.h"; sourceTree = SOURCE_ROOT; };
@@ -410,34 +479,26 @@
 		BE32178D19EDA15400A92E5A /* LGTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGTableView.m; sourceTree = "<group>"; };
 		BE32B0351B2735DF0071778B /* LGGitIntegrationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGGitIntegrationView.h; sourceTree = "<group>"; };
 		BE32B0361B2735DF0071778B /* LGGitIntegrationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGGitIntegrationView.m; sourceTree = "<group>"; };
-		BE32B0371B2735DF0071778B /* LGGitIntegrationView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LGGitIntegrationView.xib; sourceTree = "<group>"; };
 		BE344F531ABFBEAB00500AAE /* LGAutoPkgReport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGAutoPkgReport.h; sourceTree = "<group>"; };
 		BE344F541ABFBEAB00500AAE /* LGAutoPkgReport.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGAutoPkgReport.m; sourceTree = "<group>"; };
 		BE34DF2B19AA21E200DC2FAF /* LGAutoPkgr.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = LGAutoPkgr.h; path = AutoPkgr/LGAutoPkgr.h; sourceTree = "<group>"; };
 		BE38EA741B0B8DF7009FCBEB /* LGRecipeInfoView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGRecipeInfoView.h; sourceTree = "<group>"; };
 		BE38EA751B0B8DF7009FCBEB /* LGRecipeInfoView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGRecipeInfoView.m; sourceTree = "<group>"; };
-		BE38EA761B0B8DF7009FCBEB /* LGRecipeInfoView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LGRecipeInfoView.xib; sourceTree = "<group>"; };
 		BE38EA8B1B0CFE68009FCBEB /* LGInstallViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGInstallViewController.h; sourceTree = "<group>"; };
 		BE38EA8C1B0CFE68009FCBEB /* LGInstallViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGInstallViewController.m; sourceTree = "<group>"; };
-		BE38EA8D1B0CFE68009FCBEB /* LGInstallViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LGInstallViewController.xib; sourceTree = "<group>"; };
 		BE38EA921B0CFE95009FCBEB /* LGRecipeReposViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGRecipeReposViewController.h; sourceTree = "<group>"; };
 		BE38EA931B0CFE95009FCBEB /* LGRecipeReposViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGRecipeReposViewController.m; sourceTree = "<group>"; };
-		BE38EA941B0CFE95009FCBEB /* LGRecipeReposViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LGRecipeReposViewController.xib; sourceTree = "<group>"; };
 		BE38EA991B0CFEA6009FCBEB /* LGScheduleViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGScheduleViewController.h; sourceTree = "<group>"; };
 		BE38EA9A1B0CFEA6009FCBEB /* LGScheduleViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGScheduleViewController.m; sourceTree = "<group>"; };
-		BE38EA9B1B0CFEA6009FCBEB /* LGScheduleViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LGScheduleViewController.xib; sourceTree = "<group>"; };
 		BE38EAA01B0CFEBB009FCBEB /* LGIntegrationsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGIntegrationsViewController.h; sourceTree = "<group>"; };
 		BE38EAA11B0CFEBB009FCBEB /* LGIntegrationsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGIntegrationsViewController.m; sourceTree = "<group>"; };
-		BE38EAA21B0CFEBB009FCBEB /* LGIntegrationsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LGIntegrationsViewController.xib; sourceTree = "<group>"; };
 		BE38EAA71B0CFECE009FCBEB /* LGNotificationsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGNotificationsViewController.h; sourceTree = "<group>"; };
 		BE38EAA81B0CFECE009FCBEB /* LGNotificationsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGNotificationsViewController.m; sourceTree = "<group>"; };
-		BE38EAA91B0CFECE009FCBEB /* LGNotificationsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LGNotificationsViewController.xib; sourceTree = "<group>"; };
 		BE38EAAE1B0D0CF1009FCBEB /* LGTabViewControllerBase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGTabViewControllerBase.h; sourceTree = "<group>"; };
 		BE38EAAF1B0D0CF1009FCBEB /* LGTabViewControllerBase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGTabViewControllerBase.m; sourceTree = "<group>"; };
 		BE3D94241C138E7E001763D0 /* report.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = report.html; sourceTree = "<group>"; };
 		BE3D94291C14E9CB001763D0 /* LGTemplateRenderWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGTemplateRenderWindowController.h; sourceTree = "<group>"; };
 		BE3D942A1C14E9CB001763D0 /* LGTemplateRenderWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGTemplateRenderWindowController.m; sourceTree = "<group>"; };
-		BE3D942B1C14E9CB001763D0 /* LGTemplateRenderWindowController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LGTemplateRenderWindowController.xib; sourceTree = "<group>"; };
 		BE3D94311C15FCFA001763D0 /* example_data.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = example_data.plist; sourceTree = "<group>"; };
 		BE3D94331C160F59001763D0 /* web_report.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = web_report.html; sourceTree = "<group>"; };
 		BE3D94361C1627F8001763D0 /* slack_report.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = slack_report.md; sourceTree = "<group>"; };
@@ -450,7 +511,6 @@
 		BE46D9941B40EBF800004B41 /* LGHipChatNotification.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGHipChatNotification.m; sourceTree = "<group>"; };
 		BE46D9971B40EE2D00004B41 /* LGHipChatNotificationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGHipChatNotificationView.h; sourceTree = "<group>"; };
 		BE46D9981B40EE2D00004B41 /* LGHipChatNotificationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGHipChatNotificationView.m; sourceTree = "<group>"; };
-		BE46D9991B40EE2D00004B41 /* LGHipChatNotificationView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LGHipChatNotificationView.xib; sourceTree = "<group>"; };
 		BE4985361AFE61C1006E5EDA /* LGServerCredentials.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGServerCredentials.h; sourceTree = "<group>"; };
 		BE4985371AFE61C1006E5EDA /* LGServerCredentials.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGServerCredentials.m; sourceTree = "<group>"; };
 		BE4DD53A1B11740900854FD8 /* LGMunkiIntegration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGMunkiIntegration.h; sourceTree = "<group>"; };
@@ -480,10 +540,8 @@
 		BE81F2281B2232ED007D16C4 /* LGJSSImporterIntegrationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGJSSImporterIntegrationView.m; sourceTree = "<group>"; };
 		BE81F22E1B22340D007D16C4 /* LGBaseIntegrationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGBaseIntegrationViewController.h; sourceTree = "<group>"; };
 		BE81F22F1B22340D007D16C4 /* LGBaseIntegrationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGBaseIntegrationViewController.m; sourceTree = "<group>"; };
-		BE81F2391B22A29E007D16C4 /* LGJSSImporterIntegrationView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LGJSSImporterIntegrationView.xib; sourceTree = "<group>"; };
 		BE81F23F1B22C211007D16C4 /* LGViewWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGViewWindowController.h; sourceTree = "<group>"; };
 		BE81F2401B22C211007D16C4 /* LGViewWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGViewWindowController.m; sourceTree = "<group>"; };
-		BE81F2411B22C211007D16C4 /* LGViewWindowController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LGViewWindowController.xib; sourceTree = "<group>"; };
 		BE8526B119D5F641007DFA9E /* SecurityInterface.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SecurityInterface.framework; path = System/Library/Frameworks/SecurityInterface.framework; sourceTree = SDKROOT; };
 		BE8799491995BA410082472B /* LGDefaults.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGDefaults.h; sourceTree = "<group>"; };
 		BE87994A1995BA410082472B /* LGDefaults.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGDefaults.m; sourceTree = "<group>"; };
@@ -506,13 +564,11 @@
 		BEB7BF7B1BEBAFDB009386C1 /* NSArray+mapped.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSArray+mapped.m"; sourceTree = "<group>"; };
 		BEB9AF281B41A01900016D98 /* LGSlackNotificationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGSlackNotificationView.h; sourceTree = "<group>"; };
 		BEB9AF291B41A01900016D98 /* LGSlackNotificationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGSlackNotificationView.m; sourceTree = "<group>"; };
-		BEB9AF2A1B41A01900016D98 /* LGSlackNotificationView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LGSlackNotificationView.xib; sourceTree = "<group>"; };
 		BEBC18291C167F1A0085B9D5 /* LGWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGWindowController.h; sourceTree = "<group>"; };
 		BEBC182A1C167F1A0085B9D5 /* LGWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGWindowController.m; sourceTree = "<group>"; };
 		BEBC182B1C167F1A0085B9D5 /* LGWindowController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LGWindowController.xib; sourceTree = "<group>"; };
 		BEBC18311C1686990085B9D5 /* LGSelectNotificationsWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGSelectNotificationsWindowController.h; sourceTree = "<group>"; };
 		BEBC18321C1686990085B9D5 /* LGSelectNotificationsWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGSelectNotificationsWindowController.m; sourceTree = "<group>"; };
-		BEBC18331C1686990085B9D5 /* LGSelectNotificationsWindowController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LGSelectNotificationsWindowController.xib; sourceTree = "<group>"; };
 		BEBDDCF11C0F5E4200BD1C55 /* NSTableView+Resizing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSTableView+Resizing.h"; sourceTree = "<group>"; };
 		BEBDDCF21C0F5E4200BD1C55 /* NSTableView+Resizing.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSTableView+Resizing.m"; sourceTree = "<group>"; };
 		BEBF7B151A4894AC00E9967F /* LGVersioner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGVersioner.h; sourceTree = "<group>"; };
@@ -524,14 +580,12 @@
 		BECDAB891B249A2900544388 /* NSButton+colored.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSButton+colored.m"; sourceTree = "<group>"; };
 		BECDAB921B24C29600544388 /* LGMunkiIntegrationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGMunkiIntegrationView.h; sourceTree = "<group>"; };
 		BECDAB931B24C29600544388 /* LGMunkiIntegrationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGMunkiIntegrationView.m; sourceTree = "<group>"; };
-		BECDAB941B24C29600544388 /* LGMunkiIntegrationView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LGMunkiIntegrationView.xib; sourceTree = "<group>"; };
 		BECDAB991B24DBBC00544388 /* LGIntegrationWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGIntegrationWindowController.h; sourceTree = "<group>"; };
 		BECDAB9A1B24DBBC00544388 /* LGIntegrationWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGIntegrationWindowController.m; sourceTree = "<group>"; };
 		BECDABA01B252B3900544388 /* NSOpenPanel+typeChooser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSOpenPanel+typeChooser.h"; sourceTree = "<group>"; };
 		BECDABA11B252B3900544388 /* NSOpenPanel+typeChooser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSOpenPanel+typeChooser.m"; sourceTree = "<group>"; };
 		BECDABA41B254E5900544388 /* LGAbsoluteManageIntegrationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGAbsoluteManageIntegrationView.h; sourceTree = "<group>"; };
 		BECDABA51B254E5900544388 /* LGAbsoluteManageIntegrationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGAbsoluteManageIntegrationView.m; sourceTree = "<group>"; };
-		BECDABA61B254E5900544388 /* LGAbsoluteManageIntegrationView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LGAbsoluteManageIntegrationView.xib; sourceTree = "<group>"; };
 		BED02ADA1A194F9C00714CC2 /* NSArray+filtered.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSArray+filtered.h"; sourceTree = "<group>"; };
 		BED02ADB1A194F9C00714CC2 /* NSArray+filtered.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSArray+filtered.m"; sourceTree = "<group>"; };
 		BED136A91AC058F8003EBF0F /* report_0.4.3.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = report_0.4.3.plist; sourceTree = "<group>"; };
@@ -542,7 +596,6 @@
 		BED136B61AC3BE04003EBF0F /* NSArray+html_report.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSArray+html_report.m"; sourceTree = "<group>"; };
 		BED136B91AC3BEE1003EBF0F /* HTMLCategories.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HTMLCategories.h; sourceTree = "<group>"; };
 		BED388291A85E2C100DA8970 /* autopkgr_error.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = autopkgr_error.png; sourceTree = "<group>"; };
-		BEDA5D541B4429E300DCC022 /* LGRecipeSearchResultsPanel.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LGRecipeSearchResultsPanel.xib; sourceTree = "<group>"; };
 		BEDAFBB21B3B8AA500CCE9AC /* LGNotificationService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGNotificationService.h; sourceTree = "<group>"; };
 		BEDAFBB31B3B8AA500CCE9AC /* LGNotificationService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGNotificationService.m; sourceTree = "<group>"; };
 		BEE211241AF9DCBB00A3C2E1 /* LGUninstaller.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGUninstaller.h; sourceTree = "<group>"; };
@@ -834,19 +887,19 @@
 				BE9FD4BC1B15760000BB2DA9 /* Base Tab View */,
 				BE38EA8B1B0CFE68009FCBEB /* LGInstallViewController.h */,
 				BE38EA8C1B0CFE68009FCBEB /* LGInstallViewController.m */,
-				BE38EA8D1B0CFE68009FCBEB /* LGInstallViewController.xib */,
+				8B8654821CF64A9600B0A3FD /* LGInstallViewController.xib */,
 				BE38EA921B0CFE95009FCBEB /* LGRecipeReposViewController.h */,
 				BE38EA931B0CFE95009FCBEB /* LGRecipeReposViewController.m */,
-				BE38EA941B0CFE95009FCBEB /* LGRecipeReposViewController.xib */,
+				8B8654891CF64CA400B0A3FD /* LGRecipeReposViewController.xib */,
 				BE38EA991B0CFEA6009FCBEB /* LGScheduleViewController.h */,
 				BE38EA9A1B0CFEA6009FCBEB /* LGScheduleViewController.m */,
-				BE38EA9B1B0CFEA6009FCBEB /* LGScheduleViewController.xib */,
+				8B8654901CF64EE500B0A3FD /* LGScheduleViewController.xib */,
 				BE38EAA71B0CFECE009FCBEB /* LGNotificationsViewController.h */,
 				BE38EAA81B0CFECE009FCBEB /* LGNotificationsViewController.m */,
-				BE38EAA91B0CFECE009FCBEB /* LGNotificationsViewController.xib */,
+				8B8654971CF6500400B0A3FD /* LGNotificationsViewController.xib */,
 				BE38EAA01B0CFEBB009FCBEB /* LGIntegrationsViewController.h */,
 				BE38EAA11B0CFEBB009FCBEB /* LGIntegrationsViewController.m */,
-				BE38EAA21B0CFEBB009FCBEB /* LGIntegrationsViewController.xib */,
+				8B86549E1CF652A600B0A3FD /* LGIntegrationsViewController.xib */,
 			);
 			path = "Tab Views";
 			sourceTree = "<group>";
@@ -953,10 +1006,10 @@
 				BE46D98D1B40E5D900004B41 /* Base View Controller (Notification) */,
 				BE46D9971B40EE2D00004B41 /* LGHipChatNotificationView.h */,
 				BE46D9981B40EE2D00004B41 /* LGHipChatNotificationView.m */,
-				BE46D9991B40EE2D00004B41 /* LGHipChatNotificationView.xib */,
+				8B8654E61CF66DFA00B0A3FD /* LGHipChatNotificationView.xib */,
 				BEB9AF281B41A01900016D98 /* LGSlackNotificationView.h */,
 				BEB9AF291B41A01900016D98 /* LGSlackNotificationView.m */,
-				BEB9AF2A1B41A01900016D98 /* LGSlackNotificationView.xib */,
+				8B8654ED1CF66E5C00B0A3FD /* LGSlackNotificationView.xib */,
 			);
 			path = "Notification Views";
 			sourceTree = "<group>";
@@ -1051,31 +1104,31 @@
 				BECDAB871B234F0200544388 /* Base View Controller (Integration) */,
 				BECDABA41B254E5900544388 /* LGAbsoluteManageIntegrationView.h */,
 				BECDABA51B254E5900544388 /* LGAbsoluteManageIntegrationView.m */,
-				BECDABA61B254E5900544388 /* LGAbsoluteManageIntegrationView.xib */,
+				8B8654A71CF665DF00B0A3FD /* LGAbsoluteManageIntegrationView.xib */,
 				BE09F6581B2694ED00EE4AA7 /* LGAutoPkgIntegrationView.h */,
 				8B8844231C7CD04300F1013B /* LGLANrevIntegrationView.h */,
 				8B8844241C7CD04300F1013B /* LGLANrevIntegrationView.m */,
-				8B8844251C7CD04300F1013B /* LGLANrevIntegrationView.xib */,
+				8B8654AE1CF6673F00B0A3FD /* LGLANrevIntegrationView.xib */,
 				BE09F6591B2694ED00EE4AA7 /* LGAutoPkgIntegrationView.m */,
-				BE09F65A1B2694ED00EE4AA7 /* LGAutoPkgIntegrationView.xib */,
+				8B8654B51CF6679900B0A3FD /* LGAutoPkgIntegrationView.xib */,
 				8B1AF84F1BED81440013BE37 /* LGFileWaveIntegrationView.h */,
 				8B1AF8501BED81440013BE37 /* LGFileWaveIntegrationView.m */,
-				8B1AF8511BED81440013BE37 /* LGFileWaveIntegrationView.xib */,
+				8B8654BC1CF6695F00B0A3FD /* LGFileWaveIntegrationView.xib */,
 				BE32B0351B2735DF0071778B /* LGGitIntegrationView.h */,
 				BE32B0361B2735DF0071778B /* LGGitIntegrationView.m */,
 				8BD9E7961C8E296A00BCB399 /* LGVirusTotalAnalyzerIntegrationView.h */,
 				8BD9E7971C8E296A00BCB399 /* LGVirusTotalAnalyzerIntegrationView.m */,
-				8BD9E7931C8E1A5900BCB399 /* LGVirusTotalAnalyzerIntegrationView.xib */,
-				BE32B0371B2735DF0071778B /* LGGitIntegrationView.xib */,
+				8B8654C31CF669A100B0A3FD /* LGVirusTotalAnalyzerIntegrationView.xib */,
+				8B8654CA1CF66B0F00B0A3FD /* LGGitIntegrationView.xib */,
 				BE81F2271B2232ED007D16C4 /* LGJSSImporterIntegrationView.h */,
 				BE81F2281B2232ED007D16C4 /* LGJSSImporterIntegrationView.m */,
-				BE81F2391B22A29E007D16C4 /* LGJSSImporterIntegrationView.xib */,
+				8B8654D11CF66B8E00B0A3FD /* LGJSSImporterIntegrationView.xib */,
 				BE2337CC1B3E482100256F85 /* LGMacPatchIntegrationView.h */,
 				BE2337CD1B3E482100256F85 /* LGMacPatchIntegrationView.m */,
-				BE2337CE1B3E482100256F85 /* LGMacPatchIntegrationView.xib */,
+				8B8654D81CF66CDA00B0A3FD /* LGMacPatchIntegrationView.xib */,
 				BECDAB921B24C29600544388 /* LGMunkiIntegrationView.h */,
 				BECDAB931B24C29600544388 /* LGMunkiIntegrationView.m */,
-				BECDAB941B24C29600544388 /* LGMunkiIntegrationView.xib */,
+				8B8654DF1CF66D1C00B0A3FD /* LGMunkiIntegrationView.xib */,
 				BE0A8BDF1BF13F62004DDB5E /* AutoPkgr-Bridging-Header.h */,
 				BE0A8BE01BF13F62004DDB5E /* AutoPkgrTests-Bridging-Header.h */,
 			);
@@ -1088,7 +1141,7 @@
 				BEBC182B1C167F1A0085B9D5 /* LGWindowController.xib */,
 				BEBC18291C167F1A0085B9D5 /* LGWindowController.h */,
 				BEBC182A1C167F1A0085B9D5 /* LGWindowController.m */,
-				BE81F2411B22C211007D16C4 /* LGViewWindowController.xib */,
+				8B8655171CF6719F00B0A3FD /* LGViewWindowController.xib */,
 				BE81F23F1B22C211007D16C4 /* LGViewWindowController.h */,
 				BE81F2401B22C211007D16C4 /* LGViewWindowController.m */,
 				BE32178C19EDA15400A92E5A /* LGTableView.h */,
@@ -1119,19 +1172,19 @@
 			children = (
 				BE3D94291C14E9CB001763D0 /* LGTemplateRenderWindowController.h */,
 				BE3D942A1C14E9CB001763D0 /* LGTemplateRenderWindowController.m */,
-				BE3D942B1C14E9CB001763D0 /* LGTemplateRenderWindowController.xib */,
+				8B8654F41CF66EB500B0A3FD /* LGTemplateRenderWindowController.xib */,
 				BE0BACCE1A2560AE00554989 /* LGJSSDistributionPointsPrefPanel.h */,
 				BE0BACCF1A2560AE00554989 /* LGJSSDistributionPointsPrefPanel.m */,
-				BE0BACD01A2560AE00554989 /* LGJSSDistributionPointsPrefPanel.xib */,
+				8B8654FB1CF66F1800B0A3FD /* LGJSSDistributionPointsPrefPanel.xib */,
 				BE67E8721A44E10500484151 /* LGRecipeSearch.h */,
 				BE67E8731A44E10500484151 /* LGRecipeSearch.m */,
-				BEDA5D541B4429E300DCC022 /* LGRecipeSearchResultsPanel.xib */,
+				8B8655021CF66F7400B0A3FD /* LGRecipeSearchResultsPanel.xib */,
 				BE38EA741B0B8DF7009FCBEB /* LGRecipeInfoView.h */,
 				BE38EA751B0B8DF7009FCBEB /* LGRecipeInfoView.m */,
-				BE38EA761B0B8DF7009FCBEB /* LGRecipeInfoView.xib */,
+				8B8655091CF66FE200B0A3FD /* LGRecipeInfoView.xib */,
 				BEBC18311C1686990085B9D5 /* LGSelectNotificationsWindowController.h */,
 				BEBC18321C1686990085B9D5 /* LGSelectNotificationsWindowController.m */,
-				BEBC18331C1686990085B9D5 /* LGSelectNotificationsWindowController.xib */,
+				8B8655101CF670DA00B0A3FD /* LGSelectNotificationsWindowController.xib */,
 			);
 			path = "Panels-Popovers";
 			sourceTree = "<group>";
@@ -1323,6 +1376,7 @@
 			knownRegions = (
 				en,
 				Base,
+				fr,
 			);
 			mainGroup = 1AC69544195B59ED00D2BD81;
 			productRefGroup = 1AC6954E195B59ED00D2BD81 /* Products */;
@@ -1349,38 +1403,38 @@
 				BE3D94321C15FCFA001763D0 /* example_data.plist in Resources */,
 				1AC98429195DF6DE0071CAB3 /* autopkgr_alt.png in Resources */,
 				1AC98427195DF6350071CAB3 /* autopkgr.png in Resources */,
-				8B8844271C7CD04300F1013B /* LGLANrevIntegrationView.xib in Resources */,
+				8B8654AC1CF6673F00B0A3FD /* LGLANrevIntegrationView.xib in Resources */,
 				8BB217F619709A2C00EF8B93 /* AutoPkgrIcon.png in Resources */,
 				BED3882A1A85E2C100DA8970 /* autopkgr_error.png in Resources */,
 				1AC69569195B59EE00D2BD81 /* Images.xcassets in Resources */,
-				BECDAB971B24C29600544388 /* LGMunkiIntegrationView.xib in Resources */,
-				BE81F23A1B22A29E007D16C4 /* LGJSSImporterIntegrationView.xib in Resources */,
-				BE38EA971B0CFE95009FCBEB /* LGRecipeReposViewController.xib in Resources */,
-				BEDA5D551B4429E300DCC022 /* LGRecipeSearchResultsPanel.xib in Resources */,
-				BE81F2441B22C211007D16C4 /* LGViewWindowController.xib in Resources */,
-				BE38EA901B0CFE68009FCBEB /* LGInstallViewController.xib in Resources */,
-				BE32B03A1B2735DF0071778B /* LGGitIntegrationView.xib in Resources */,
-				8B1AF8531BED81440013BE37 /* LGFileWaveIntegrationView.xib in Resources */,
-				BE38EAA51B0CFEBB009FCBEB /* LGIntegrationsViewController.xib in Resources */,
-				BE46D99C1B40EE2D00004B41 /* LGHipChatNotificationView.xib in Resources */,
+				8B8654DD1CF66D1C00B0A3FD /* LGMunkiIntegrationView.xib in Resources */,
+				8B8654CF1CF66B8E00B0A3FD /* LGJSSImporterIntegrationView.xib in Resources */,
+				8B8654871CF64CA400B0A3FD /* LGRecipeReposViewController.xib in Resources */,
+				8B8655001CF66F7400B0A3FD /* LGRecipeSearchResultsPanel.xib in Resources */,
+				8B8655151CF6719F00B0A3FD /* LGViewWindowController.xib in Resources */,
+				8B8654801CF64A9600B0A3FD /* LGInstallViewController.xib in Resources */,
+				8B8654C81CF66B0F00B0A3FD /* LGGitIntegrationView.xib in Resources */,
+				8B8654BA1CF6695F00B0A3FD /* LGFileWaveIntegrationView.xib in Resources */,
+				8B86549C1CF652A600B0A3FD /* LGIntegrationsViewController.xib in Resources */,
+				8B8654E41CF66DFA00B0A3FD /* LGHipChatNotificationView.xib in Resources */,
 				1AC98420195CEC360071CAB3 /* LGConfigurationWindowController.xib in Resources */,
 				BEBC182D1C167F1A0085B9D5 /* LGWindowController.xib in Resources */,
-				BE2337D11B3E482100256F85 /* LGMacPatchIntegrationView.xib in Resources */,
-				BE38EA791B0B8DF7009FCBEB /* LGRecipeInfoView.xib in Resources */,
-				BEBC18351C1686990085B9D5 /* LGSelectNotificationsWindowController.xib in Resources */,
-				BE0BACD21A2560AE00554989 /* LGJSSDistributionPointsPrefPanel.xib in Resources */,
-				BE38EA9E1B0CFEA6009FCBEB /* LGScheduleViewController.xib in Resources */,
-				BE3D942D1C14E9CB001763D0 /* LGTemplateRenderWindowController.xib in Resources */,
-				BECDABA91B254E5900544388 /* LGAbsoluteManageIntegrationView.xib in Resources */,
-				BE09F65D1B2694ED00EE4AA7 /* LGAutoPkgIntegrationView.xib in Resources */,
-				BEB9AF2D1B41A01900016D98 /* LGSlackNotificationView.xib in Resources */,
-				BE38EAAC1B0CFECE009FCBEB /* LGNotificationsViewController.xib in Resources */,
+				8B8654D61CF66CDA00B0A3FD /* LGMacPatchIntegrationView.xib in Resources */,
+				8B8655071CF66FE200B0A3FD /* LGRecipeInfoView.xib in Resources */,
+				8B86550E1CF670DA00B0A3FD /* LGSelectNotificationsWindowController.xib in Resources */,
+				8B8654F91CF66F1800B0A3FD /* LGJSSDistributionPointsPrefPanel.xib in Resources */,
+				8B86548E1CF64EE500B0A3FD /* LGScheduleViewController.xib in Resources */,
+				8B8654F21CF66EB500B0A3FD /* LGTemplateRenderWindowController.xib in Resources */,
+				8B8654A51CF665DF00B0A3FD /* LGAbsoluteManageIntegrationView.xib in Resources */,
+				8B8654B31CF6679900B0A3FD /* LGAutoPkgIntegrationView.xib in Resources */,
+				8B8654EB1CF66E5C00B0A3FD /* LGSlackNotificationView.xib in Resources */,
+				8B8654951CF6500400B0A3FD /* LGNotificationsViewController.xib in Resources */,
 				1AC69567195B59EE00D2BD81 /* MainMenu.xib in Resources */,
 				BE7EF23B1B3350E4002037B1 /* Localizable.strings in Resources */,
 				BE57AC2A19BA3BBC00BB17B1 /* LocalizableError.strings in Resources */,
 				BE2D58781B32EF110042EF1E /* LocalizableAutoPkg.strings in Resources */,
 				BE7EF2431B3381A7002037B1 /* LocalizableHelpPopover.strings in Resources */,
-				8BD9E7951C8E1A5900BCB399 /* LGVirusTotalAnalyzerIntegrationView.xib in Resources */,
+				8B8654C11CF669A100B0A3FD /* LGVirusTotalAnalyzerIntegrationView.xib in Resources */,
 				BEC2024B1B600FF100F3BC2A /* LocalizableJSSImporter.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1590,7 +1644,6 @@
 				BEE211261AF9DCBB00A3C2E1 /* LGUninstaller.m in Sources */,
 				BE5E55A11B1B59D50025CFD3 /* LGTableCellViews.m in Sources */,
 				BE3D942F1C14F32F001763D0 /* LGTemplateRenderWindowController.m in Sources */,
-				BE3D94391C162EA2001763D0 /* slack_report.md in Sources */,
 				BEB7BF7C1BEBAFDB009386C1 /* NSArray+mapped.m in Sources */,
 				BED02ADC1A194F9C00714CC2 /* NSArray+filtered.m in Sources */,
 				BE2867A61BEB88D8009891A0 /* LGAutoPkgRecipeListManager.m in Sources */,
@@ -1783,6 +1836,7 @@
 			isa = PBXVariantGroup;
 			children = (
 				1AC6955A195B59ED00D2BD81 /* en */,
+				8B8654781CF6475F00B0A3FD /* fr */,
 			);
 			name = InfoPlist.strings;
 			path = .;
@@ -1792,6 +1846,7 @@
 			isa = PBXVariantGroup;
 			children = (
 				1AC69560195B59EE00D2BD81 /* en */,
+				8B86547E1CF6476000B0A3FD /* fr */,
 			);
 			name = Credits.rtf;
 			path = .;
@@ -1801,6 +1856,8 @@
 			isa = PBXVariantGroup;
 			children = (
 				1AC69566195B59EE00D2BD81 /* Base */,
+				8B8654771CF6475F00B0A3FD /* fr */,
+				8B8654A41CF6537800B0A3FD /* en */,
 			);
 			name = MainMenu.xib;
 			path = .;
@@ -1810,15 +1867,237 @@
 			isa = PBXVariantGroup;
 			children = (
 				1AC69578195B59EE00D2BD81 /* en */,
+				8B86547F1CF6476000B0A3FD /* fr */,
 			);
 			name = InfoPlist.strings;
 			path = .;
+			sourceTree = "<group>";
+		};
+		8B8654821CF64A9600B0A3FD /* LGInstallViewController.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				8B8654811CF64A9600B0A3FD /* Base */,
+				8B8654841CF64AD800B0A3FD /* en */,
+				8B8654861CF64AE000B0A3FD /* fr */,
+			);
+			name = LGInstallViewController.xib;
+			sourceTree = "<group>";
+		};
+		8B8654891CF64CA400B0A3FD /* LGRecipeReposViewController.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				8B8654881CF64CA400B0A3FD /* Base */,
+				8B86548B1CF64CB200B0A3FD /* en */,
+				8B86548D1CF64CB600B0A3FD /* fr */,
+			);
+			name = LGRecipeReposViewController.xib;
+			sourceTree = "<group>";
+		};
+		8B8654901CF64EE500B0A3FD /* LGScheduleViewController.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				8B86548F1CF64EE500B0A3FD /* Base */,
+				8B8654921CF64EE700B0A3FD /* en */,
+				8B8654941CF64EE900B0A3FD /* fr */,
+			);
+			name = LGScheduleViewController.xib;
+			sourceTree = "<group>";
+		};
+		8B8654971CF6500400B0A3FD /* LGNotificationsViewController.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				8B8654961CF6500400B0A3FD /* Base */,
+				8B8654991CF6501900B0A3FD /* en */,
+				8B86549B1CF6501B00B0A3FD /* fr */,
+			);
+			name = LGNotificationsViewController.xib;
+			sourceTree = "<group>";
+		};
+		8B86549E1CF652A600B0A3FD /* LGIntegrationsViewController.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				8B86549D1CF652A600B0A3FD /* Base */,
+				8B8654A01CF652AB00B0A3FD /* en */,
+				8B8654A21CF652AD00B0A3FD /* fr */,
+			);
+			name = LGIntegrationsViewController.xib;
+			sourceTree = "<group>";
+		};
+		8B8654A71CF665DF00B0A3FD /* LGAbsoluteManageIntegrationView.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				8B8654A61CF665DF00B0A3FD /* Base */,
+				8B8654A91CF665E100B0A3FD /* en */,
+				8B8654AB1CF665E300B0A3FD /* fr */,
+			);
+			name = LGAbsoluteManageIntegrationView.xib;
+			sourceTree = "<group>";
+		};
+		8B8654AE1CF6673F00B0A3FD /* LGLANrevIntegrationView.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				8B8654AD1CF6673F00B0A3FD /* Base */,
+				8B8654B01CF6674300B0A3FD /* en */,
+				8B8654B21CF6674500B0A3FD /* fr */,
+			);
+			name = LGLANrevIntegrationView.xib;
+			sourceTree = "<group>";
+		};
+		8B8654B51CF6679900B0A3FD /* LGAutoPkgIntegrationView.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				8B8654B41CF6679900B0A3FD /* Base */,
+				8B8654B71CF6679B00B0A3FD /* en */,
+				8B8654B91CF6679D00B0A3FD /* fr */,
+			);
+			name = LGAutoPkgIntegrationView.xib;
+			sourceTree = "<group>";
+		};
+		8B8654BC1CF6695F00B0A3FD /* LGFileWaveIntegrationView.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				8B8654BB1CF6695F00B0A3FD /* Base */,
+				8B8654BE1CF6696100B0A3FD /* en */,
+				8B8654C01CF6696300B0A3FD /* fr */,
+			);
+			name = LGFileWaveIntegrationView.xib;
+			sourceTree = "<group>";
+		};
+		8B8654C31CF669A100B0A3FD /* LGVirusTotalAnalyzerIntegrationView.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				8B8654C21CF669A100B0A3FD /* Base */,
+				8B8654C51CF669A500B0A3FD /* en */,
+				8B8654C71CF669A700B0A3FD /* fr */,
+			);
+			name = LGVirusTotalAnalyzerIntegrationView.xib;
+			sourceTree = "<group>";
+		};
+		8B8654CA1CF66B0F00B0A3FD /* LGGitIntegrationView.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				8B8654C91CF66B0F00B0A3FD /* Base */,
+				8B8654CC1CF66B1100B0A3FD /* en */,
+				8B8654CE1CF66B1200B0A3FD /* fr */,
+			);
+			name = LGGitIntegrationView.xib;
+			sourceTree = "<group>";
+		};
+		8B8654D11CF66B8E00B0A3FD /* LGJSSImporterIntegrationView.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				8B8654D01CF66B8E00B0A3FD /* Base */,
+				8B8654D31CF66B9100B0A3FD /* en */,
+				8B8654D51CF66B9900B0A3FD /* fr */,
+			);
+			name = LGJSSImporterIntegrationView.xib;
+			sourceTree = "<group>";
+		};
+		8B8654D81CF66CDA00B0A3FD /* LGMacPatchIntegrationView.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				8B8654D71CF66CDA00B0A3FD /* Base */,
+				8B8654DA1CF66CDC00B0A3FD /* en */,
+				8B8654DC1CF66CDE00B0A3FD /* fr */,
+			);
+			name = LGMacPatchIntegrationView.xib;
+			sourceTree = "<group>";
+		};
+		8B8654DF1CF66D1C00B0A3FD /* LGMunkiIntegrationView.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				8B8654DE1CF66D1C00B0A3FD /* Base */,
+				8B8654E11CF66D1E00B0A3FD /* en */,
+				8B8654E31CF66D2100B0A3FD /* fr */,
+			);
+			name = LGMunkiIntegrationView.xib;
+			sourceTree = "<group>";
+		};
+		8B8654E61CF66DFA00B0A3FD /* LGHipChatNotificationView.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				8B8654E51CF66DFA00B0A3FD /* Base */,
+				8B8654E81CF66DFC00B0A3FD /* en */,
+				8B8654EA1CF66DFF00B0A3FD /* fr */,
+			);
+			name = LGHipChatNotificationView.xib;
+			sourceTree = "<group>";
+		};
+		8B8654ED1CF66E5C00B0A3FD /* LGSlackNotificationView.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				8B8654EC1CF66E5C00B0A3FD /* Base */,
+				8B8654EF1CF66E6200B0A3FD /* en */,
+				8B8654F11CF66E6300B0A3FD /* fr */,
+			);
+			name = LGSlackNotificationView.xib;
+			sourceTree = "<group>";
+		};
+		8B8654F41CF66EB500B0A3FD /* LGTemplateRenderWindowController.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				8B8654F31CF66EB500B0A3FD /* Base */,
+				8B8654F61CF66EB700B0A3FD /* en */,
+				8B8654F81CF66EB900B0A3FD /* fr */,
+			);
+			name = LGTemplateRenderWindowController.xib;
+			sourceTree = "<group>";
+		};
+		8B8654FB1CF66F1800B0A3FD /* LGJSSDistributionPointsPrefPanel.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				8B8654FA1CF66F1800B0A3FD /* Base */,
+				8B8654FD1CF66F1A00B0A3FD /* en */,
+				8B8654FF1CF66F1B00B0A3FD /* fr */,
+			);
+			name = LGJSSDistributionPointsPrefPanel.xib;
+			sourceTree = "<group>";
+		};
+		8B8655021CF66F7400B0A3FD /* LGRecipeSearchResultsPanel.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				8B8655011CF66F7400B0A3FD /* Base */,
+				8B8655041CF66F7700B0A3FD /* en */,
+				8B8655061CF66F7800B0A3FD /* fr */,
+			);
+			name = LGRecipeSearchResultsPanel.xib;
+			sourceTree = "<group>";
+		};
+		8B8655091CF66FE200B0A3FD /* LGRecipeInfoView.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				8B8655081CF66FE200B0A3FD /* Base */,
+				8B86550B1CF66FE600B0A3FD /* en */,
+				8B86550D1CF66FE800B0A3FD /* fr */,
+			);
+			name = LGRecipeInfoView.xib;
+			sourceTree = "<group>";
+		};
+		8B8655101CF670DA00B0A3FD /* LGSelectNotificationsWindowController.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				8B86550F1CF670DA00B0A3FD /* Base */,
+				8B8655121CF670DD00B0A3FD /* en */,
+				8B8655141CF670DF00B0A3FD /* fr */,
+			);
+			name = LGSelectNotificationsWindowController.xib;
+			sourceTree = "<group>";
+		};
+		8B8655171CF6719F00B0A3FD /* LGViewWindowController.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				8B8655161CF6719F00B0A3FD /* Base */,
+				8B8655191CF671A100B0A3FD /* en */,
+				8B86551B1CF671A300B0A3FD /* fr */,
+			);
+			name = LGViewWindowController.xib;
 			sourceTree = "<group>";
 		};
 		BE2D58761B32EF110042EF1E /* LocalizableAutoPkg.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
 				BE2D58771B32EF110042EF1E /* en */,
+				8B86547B1CF6476000B0A3FD /* fr */,
 			);
 			name = LocalizableAutoPkg.strings;
 			path = .;
@@ -1828,6 +2107,7 @@
 			isa = PBXVariantGroup;
 			children = (
 				BE57AC2B19BA3BBC00BB17B1 /* en */,
+				8B86547A1CF6476000B0A3FD /* fr */,
 			);
 			name = LocalizableError.strings;
 			path = .;
@@ -1837,6 +2117,7 @@
 			isa = PBXVariantGroup;
 			children = (
 				BE7EF23A1B3350E4002037B1 /* en */,
+				8B8654791CF6475F00B0A3FD /* fr */,
 			);
 			name = Localizable.strings;
 			path = .;
@@ -1846,6 +2127,7 @@
 			isa = PBXVariantGroup;
 			children = (
 				BE7EF2451B3381A7002037B1 /* en */,
+				8B86547D1CF6476000B0A3FD /* fr */,
 			);
 			name = LocalizableHelpPopover.strings;
 			path = .;
@@ -1855,6 +2137,7 @@
 			isa = PBXVariantGroup;
 			children = (
 				BEC2024A1B600FF100F3BC2A /* en */,
+				8B86547C1CF6476000B0A3FD /* fr */,
 			);
 			name = LocalizableJSSImporter.strings;
 			sourceTree = "<group>";

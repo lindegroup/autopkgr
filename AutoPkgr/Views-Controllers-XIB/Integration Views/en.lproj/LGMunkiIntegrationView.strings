@@ -1,0 +1,18 @@
+
+/* Class = "NSTextFieldCell"; placeholderString = "/Users/Shared/munki_repo"; ObjectID = "25F-Lj-I0v"; */
+"25F-Lj-I0v.placeholderString" = "/Users/Shared/munki_repo";
+
+/* Class = "NSButtonCell"; title = "Enable MunkiSetDefaultCatalog preprocessor"; ObjectID = "B41-Jj-tN4"; */
+"B41-Jj-tN4.title" = "Enable MunkiSetDefaultCatalog preprocessor";
+
+/* Class = "NSButtonCell"; title = "Open In Finder"; ObjectID = "dZQ-y3-qfS"; */
+"dZQ-y3-qfS.title" = "Open In Finder";
+
+/* Class = "NSButtonCell"; title = "Choose..."; ObjectID = "srz-Tz-wvA"; */
+"srz-Tz-wvA.title" = "Choose...";
+
+/* Class = "NSTextFieldCell"; title = "Munki Repo:"; ObjectID = "xlY-TY-p8w"; */
+"xlY-TY-p8w.title" = "Munki Repo:";
+
+/* Class = "NSButtonCell"; title = "Check for Munki development releases"; ObjectID = "zrd-q4-IIc"; */
+"zrd-q4-IIc.title" = "Check for Munki development releases";

@@ -1,0 +1,78 @@
+
+/* Class = "NSTextFieldCell"; title = "Add a repo URL manually:"; ObjectID = "1IN-jG-Kev"; */
+"1IN-jG-Kev.title" = "Ajouter un dépôt manuellement:";
+
+/* Class = "NSTableColumn"; headerCell.title = "Stars"; ObjectID = "4oe-V6-ZKw"; */
+"4oe-V6-ZKw.headerCell.title" = "Étoiles";
+
+/* Class = "NSButtonCell"; title = "Search"; ObjectID = "7va-qK-S1L"; */
+"7va-qK-S1L.title" = "Rechercher";
+
+/* Class = "NSButtonCell"; title = "Update Repos Now"; ObjectID = "8gs-7z-68M"; */
+"8gs-7z-68M.title" = "Mettre à jour les dépôts maintenant";
+
+/* Class = "NSTableColumn"; headerCell.title = "Repo Clone URL"; ObjectID = "A4c-aN-okl"; */
+"A4c-aN-okl.headerCell.title" = "URL de clone de dépôt";
+
+/* Class = "NSTableColumn"; headerCell.title = "Recipe Name"; ObjectID = "BlP-un-SwO"; */
+"BlP-un-SwO.headerCell.title" = "Nom de la recette";
+
+/* Class = "NSTableColumn"; headerCell.title = "Status"; ObjectID = "CvB-pT-7JW"; */
+"CvB-pT-7JW.headerCell.title" = "État";
+
+/* Class = "NSTextFieldCell"; title = "Text Cell"; ObjectID = "DUf-VS-jVi"; */
+"DUf-VS-jVi.title" = "Text Cell";
+
+/* Class = "NSButtonCell"; title = "Check"; ObjectID = "E3V-vd-4b3"; */
+"E3V-vd-4b3.title" = "Vérifier";
+
+/* Class = "NSTextFieldCell"; title = "Table View Cell"; ObjectID = "EZH-eb-njv"; */
+"EZH-eb-njv.title" = "Table View Cell";
+
+/* Class = "NSTextFieldCell"; title = "Table View Cell"; ObjectID = "NbP-w7-SGj"; */
+"NbP-w7-SGj.title" = "Table View Cell";
+
+/* Class = "NSTextFieldCell"; title = "Search for a recipe on GitHub:"; ObjectID = "UJ1-V3-PPp"; */
+"UJ1-V3-PPp.title" = "Rechercher une recette sur GitHub:";
+
+/* Class = "NSMenuItem"; title = "recipe_list"; ObjectID = "Uar-43-QQ0"; */
+"Uar-43-QQ0.title" = "recipe_list";
+
+/* Class = "NSTableColumn"; headerCell.title = "Recipe Identifier"; ObjectID = "Uhk-Q9-hWI"; */
+"Uhk-Q9-hWI.headerCell.title" = "Identifiant de recette";
+
+/* Class = "NSTextFieldCell"; title = "Text Cell"; ObjectID = "Uxa-gI-PLb"; */
+"Uxa-gI-PLb.title" = "Text Cell";
+
+/* Class = "NSTableColumn"; headerCell.title = "Status"; ObjectID = "XTp-YI-Hx6"; */
+"XTp-YI-Hx6.headerCell.title" = "État";
+
+/* Class = "NSTextFieldCell"; title = "Table View Cell"; ObjectID = "a1O-2f-lb3"; */
+"a1O-2f-lb3.title" = "Table View Cell";
+
+/* Class = "NSTextFieldCell"; title = "Active recipe list:"; ObjectID = "bUp-YT-2gp"; */
+"bUp-YT-2gp.title" = "Liste de recettes active:";
+
+/* Class = "NSTextFieldCell"; placeholderString = "http://git.git.git.git/git.git"; ObjectID = "dJo-7R-RpK"; */
+"dJo-7R-RpK.placeholderString" = "http://git.git.git.git/git.git";
+
+/* Class = "NSTextFieldCell"; title = "http://git.git.git.git/git.git"; ObjectID = "dJo-7R-RpK"; */
+"dJo-7R-RpK.title" = "http://git.git.git.git/git.git";
+
+/* Class = "NSButtonCell"; title = "Run Recipes Now"; ObjectID = "hfF-7L-UC7"; */
+"hfF-7L-UC7.title" = "Exécuter les recettes maintenant";
+
+/* Class = "NSSearchFieldCell"; placeholderString = "Filter repos"; ObjectID = "kxU-o8-COd"; */
+"kxU-o8-COd.placeholderString" = "Filtrer les dépôts";
+
+/* Class = "NSTextFieldCell"; placeholderString = "http://git.git.git.git/git.git"; ObjectID = "mGk-yU-97G"; */
+"mGk-yU-97G.placeholderString" = "http://git.git.git.git/git.git";
+
+/* Class = "NSTextFieldCell"; title = "http://git.git.git.git/git.git"; ObjectID = "mGk-yU-97G"; */
+"mGk-yU-97G.title" = "http://git.git.git.git/git.git";
+
+/* Class = "NSSearchFieldCell"; placeholderString = "Filter recipes"; ObjectID = "oqD-5E-S2C"; */
+"oqD-5E-S2C.placeholderString" = "Filtrer les recettes";
+
+/* Class = "NSButtonCell"; title = "Add"; ObjectID = "wxI-F8-DuU"; */
+"wxI-F8-DuU.title" = "Ajouter";

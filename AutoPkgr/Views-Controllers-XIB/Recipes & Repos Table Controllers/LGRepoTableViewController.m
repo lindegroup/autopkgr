@@ -176,7 +176,7 @@
         }
     };
 
-    NSString *message = [NSString stringWithFormat:@"%@ %@", add ? @"Adding" : @"Removing", repo.cloneURL];
+    NSString *message = [NSString stringWithFormat:@"%@ %@...", add ? @"Adding" : @"Removing", repo.cloneURL];
 
     NSLog(@"%@", message);
     [_progressDelegate startProgressWithMessage:message];
@@ -192,7 +192,7 @@
     _updateRepoInternally = YES;
     if ([sender isKindOfClass:[NSMenuItem class]]) {
         LGAutoPkgRepo *repo = [sender representedObject];
-        NSString *message = [NSString stringWithFormat:@"Updating %@", repo.cloneURL];
+        NSString *message = [NSString stringWithFormat:@"Updating %@...", repo.cloneURL];
 
         [_progressDelegate startProgressWithMessage:message];
         [repo update:^(NSError *error) {

@@ -1,0 +1,140 @@
+/*
+  LocalizableError.strings
+  AutoPkgr
+
+  Created by Elliot Jordan on 2016-05-25.
+  Copyright 2016 The Linde Group, Inc.
+*/
+
+/**
+ *  AutoPkgr related Error code strings
+ *  keys ending in Description are intended for NSLocalizedDescriptionKey
+ *  keys ending in Suggestion are intended for NSLocalizedRecoverySuggestionErrorKey
+ */
+
+/* No comment provided by engineer. */
+"An error occurred." = "Une erreur est survenue.";
+
+/* Error when authorization fails */
+"kLGErrorAuthChallenge" = "Erreur de création d'autorisation";
+
+/* Error when authorization fails (NSLocalizedRecoverySuggestionErrorKey) */
+"kLGErrorAuthChallenge" = "Vous n'êtes pas autorisé à effectuer cette action";
+
+/* Error trying to install privileged helper tool. */
+"kLGErrorInstallingPrivilegedHelperToolDescription" = "L'outil d'aide associé ne peut pas être installé. Nous devons arrêter maintenant.";
+
+/* Error trying to install privileged helper tool. (NSLocalizedRecoverySuggestionErrorKey) */
+"kLGErrorInstallingPrivilegedHelperToolSuggestion" = "";
+
+/* Error when AutoPkgr schedule timer interval is not valid */
+"kLGErrorIncorrectScheduleTimerIntervalDescription" = "La minuterie ne peut être réglée";
+
+/* Error when AutoPkgr schedule timer interval is not valid (NSLocalizedRecoverySuggestionErrorKey) */
+"kLGErrorIncorrectScheduleTimerIntervalSuggestion" = "L'intervalle de minuterie de démarrage pour des courses programmées n'est pas correcte. Il doit être un nombre et non 0.";
+
+/* Generic install error description */
+"kLGErrorInstallingGenericDescription" = "Une erreur est survenue lors de l'installation.";
+
+/* Generic install error (NSLocalizedRecoverySuggestionErrorKey) */
+"kLGErrorInstallingGenericSuggestion" = "Merci de consulter les journaux pour plus d'informations";
+
+/* Error serializing JSS response data. */
+"kLGErrorJSSXMLSerializerErrorDescription" = "Erreur lors de l'obtention des points de distribution.";
+
+/* Error serializing JSS response data. (NSLocalizedRecoverySuggestionErrorKey) */
+"kLGErrorJSSXMLSerializerErrorSuggestion" = "La réponse du serveur Casper ne peut pas être interprétée correctement.";
+
+/* Error when recipe is missing parent recipe */
+"kLGErrorMissingParentRecipeDescription" = "Recette parent non disponible";
+
+/* Error when recipe is missing parent recipe (NSLocalizedRecoverySuggestionErrorKey) */
+"kLGErrorMissingParentRecipeSuggestion" = "La recette mère pour cette recette n'a pu être inclus dans aucun des dépôts actifs. Vous devrez déterminer quel dépôt la contient et l'ajouter.";
+
+/* Error when trying to run multiple instances of AutoPkg */
+"kLGErrorMultipleRunsOfAutopkgDescription" = "Une seule instance simultanée de AutoPkg peut être exécuté.";
+
+/* Error when trying to run multiple instances of AutoPkg (NSLocalizedRecoverySuggestionErrorKey) */
+"kLGErrorMultipleRunsOfAutopkgSuggestion" = "Une instance d'AutoPkg prévue est en cours d'exécution en arrière-plan. Merci d'attendre qu'elle se termine.";
+
+/* Error repairing autopkg preferences file. */
+"kLGErrorReparingAutoPkgPrefsDescription" = "Impossible de résoudre certains problèmes avec les préférences AutoPkg";
+
+/* Error repairing autopkg preferences file. (NSLocalizedRecoverySuggestionErrorKey) */
+"kLGErrorReparingAutoPkgPrefsSuggestion" = "Si le problème persiste, merci de vérifier le fichier de préférence com.github.autopkg manuellement des paramètres incorrects.";
+
+/* Generic error when sending email */
+"kLGErrorSendingEmailDescription" = "Erreur lors de l'envoi d'e-mail";
+
+/* Generic error when sending email. (NSLocalizedRecoverySuggestionErrorKey) */
+"kLGErrorSendingEmailSuggestion" = "Merci de vérifier que le nom d'utilisateur, mot de passe, le serveur et le port sont corrects.";
+
+/* Success, no error occurred */
+"kLGErrorSuccessDescription" = "Succès!";
+
+/* (NSLocalizedRecoverySuggestionErrorKey) */
+"kLGErrorSuccessSuggestion" = "";
+
+/* Generic error during port testing */
+"kLGErrorTestingPortDescription" = "Erreur de vérification du serveur et du port";
+
+/* Generic error during port testing (NSLocalizedRecoverySuggestionErrorKey) */
+"kLGErrorTestingPortSuggestion" = "Merci de vérifier que le serveur et le port sont corrects.";
+
+/* Error accessing the recipe list file. */
+"kLGErrorRecipeListFileAccessSuggestion" = "Il y avait un problème d'accès au fichier de liste de recettes";
+
+/* Error accessing the recipe list file. (NSLocalizedRecoverySuggestionErrorKey) */
+"kLGErrorRecipeListFileAccessDescription" = "Merci de vérifier les autorisations de ~/Library/Application Support/AutoPkg/";
+
+/* Unknown error */
+"kLGErrorUnknownDescription" = "Une erreur inconnue est survenue.";
+
+/* Unknown error (NSLocalizedRecoverySuggestionErrorKey) */
+"kLGErrorUnknownSuggestion" = "Il est possible que le fichier system.log contient plus d'informations.";
+
+/**
+ *  Networking request related errors.
+ */
+
+/* Bad Request response 400 */
+"kLGHTTPErrorBadRequestDescription" = "Mauvaise requête";
+
+/* Bad Request (NSLocalizedRecoverySuggestionErrorKey) */
+"kLGHTTPErrorBadRequestSuggestion" = "La requête vers le serveur n'a pas été formatée correctement. Merci de vérifier les informations que vous avez fournies.";
+
+/* Forbidden 403 */
+"kLGHTTPErrorForbiddenDescription" = "Accès interdit";
+
+/* Forbidden 403 (NSLocalizedRecoverySuggestionErrorKey) */
+"kLGHTTPErrorForbiddenSuggestion" = "L'utilisateur spécifié n'est pas autorisé à accéder à cette zone sur le serveur. Merci de vérifier le nom d'utilisateur saisi.";
+
+/* Not Found 404 */
+"kLGHTTPErrorNotFoundDescription" = "Ressource introuvable";
+
+/* Not Found 404 (NSLocalizedRecoverySuggestionErrorKey) */
+"kLGHTTPErrorNotFoundSuggestion" = "La ressource demandée n'a pu être trouvée. Merci de vérifier que vous avez entré le bon protocole, le nom d'hôte, et le port.";
+
+/* Success */
+"kLGHTTPErrorSuccessDescription" = "Connexion réussie!";
+
+/* success (NSLocalizedRecoverySuggestionErrorKey) */
+"kLGHTTPErrorSuccessSuggestion" = "";
+
+/* Time Out 408 */
+"kLGHTTPErrorTimeoutDescription" = "Connexion interrompue";
+
+/* Time Out 408 (NSLocalizedRecoverySuggestionErrorKey) */
+"kLGHTTPErrorTimeoutSuggestion" = "Merci de vous assurez que vous disposez d'une connexion réseau active et que le serveur est correctement renseigné.";
+
+/* Unauthorized 401 */
+"kLGHTTPErrorUnauthorizedDescription" = "L'autorisation a échoué.";
+
+/* Unauthorized 401 (NSLocalizedRecoverySuggestionErrorKey) */
+"kLGHTTPErrorUnauthorizedSuggestion" = "Merci de confirmer que vous avez entré le nom d'utilisateur et mot de passe ou jeton API pour la connexion.";
+
+/* Unknown */
+"kLGHTTPErrorUnknownDescription" = "Problème de connexion au serveur";
+
+/* Unknown (NSLocalizedRecoverySuggestionErrorKey) */
+"kLGHTTPErrorUnknownSuggestion" = "Une erreur inconnue est survenue. Si vous obtenez ce message à plusieurs reprises, merci de signaler le problème sur la page AutoPkgr GitHub.";

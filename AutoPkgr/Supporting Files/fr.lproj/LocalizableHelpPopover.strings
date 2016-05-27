@@ -1,0 +1,27 @@
+/*
+  LocalizableHelpPopover.strings
+  AutoPkgr
+
+  Created by Elliot Jordan on 2016-05-25.
+  Copyright 2016 The Linde Group, Inc.
+*/
+
+"repoTableInfoTitle" = "Liste Des Dépôts";
+"repoTableInfo" = "Afin d'exécuter une recette AutoPkg, vous devez d'abord ajouter le dépôt qui contient la recette. Pour ajouter un dépôt, cochez la case à côté de son URL.\n\nSi le dépôt dont vous avez besoin ne figure pas ici, vous pouvez l'ajouter manuellement en entrant son URL dans le champ «Ajouter un dépôt manuellement» ci-dessous, puis en cliquant sur le bouton Ajouter.\n\nCliquez sur « Mettre à jour les dépôts maintenant » pour obtenir les dernières modifications pour tous les dépôts sélectionnés.\n\nContrôle-cliquez sur un dépôt pour accéder aux options pour mettre à jour un seul dépôt ou ouvrir son historique GitHub.\n\nL'indicateur coloré indique l'état actuel du dépôt. Vert signifie que le dépôt est mis à jour, et jaune signifie que des mises à jour sont disponibles sur le dépôt distant.";
+
+"recipeTableInfoTitle" = "Liste De Recettes";
+"recipeTableInfo" = "Cochez la case à côté du nom d'une recette pour l'ajouter la recette à vos programmes d'exécution de AutoPkg .\n\nContrôle-clic sur une recette fait apparaître un menu contextuel avec des options pour obtenir des informations, exécuter la recette, ou créer un override. Vous pouvez également définir l'éditeur de recette préférée.\n\nUne icône d'avertissement présente dans la colonne d'état indique un problème avec la recette (la cause la plus probable étant une recette sans recette parente).";
+
+"slackHelpInfoTitle" = "Notifications Slack";
+"slackHelpInfo" = "Les Webhooks entrants sont un moyen simple d'envoyer des messages à partir de sources externes dans Slack. Les admins Slack peuvent générer l'URL Webhook qui est utilisée pour envoyer des messages à une pièce spécifique. Consultez la documentation de webhooks Slack (lien ci-dessous) pour plus d'informations.";
+
+"slackHelpInfoURL" = "https://api.slack.com/incoming-webhooks";
+
+"hipChatHelpInfoTitle" = "Notifications HipChat";
+"hipChatHelpInfo" = "Pour créer le jeton d'API nécessaire, connectez-vous à HipChat et accédez à la salle à laquelle vous voulez envoyer des messages. Cliquez sur «Jetons» sur le côté gauche. Créez ensuite un jeton à la portée de «Envoyer notification» et cliquez sur «Créer».\n\nLa case à cocher «Envoyer des notifications de l'utilisateur aux membres de la chambre» sur ce volet détermine si le message déclenche une notification de l'utilisateur (changer la couleur de l'onglet, jouer un son, informer les téléphones mobiles, etc.). Les préférences de notification de chaque destinataire sont considérés.";
+
+"hipChatHelpInfoURL" = "https://hipchat.com/rooms/";
+
+"MunkiSetDefaultCatalogInfoTitle" = "MunkiSetDefaultCatalog Préprocesseur";
+"MunkiSetDefaultCatalogInfo" = "Ce préprocesseur éditera le pkginfo de Munki en cours pour définir la clé «catalogue» à la préférence de catalogue par défaut pour MunkiImport (com.googlecode.munki.munkiimport), si elle été définie.";
+"MunkiSetDefaultCatalogInfoURL" = "https://github.com/autopkg/autopkg/blob/master/Code/autopkglib/MunkiSetDefaultCatalog.py";

@@ -802,7 +802,8 @@ void subclassMustConformToProtocol(id className)
         title = @"Configure ";
         break;
     }
-    return [title stringByAppendingString:_shortName ?: _name];
+    title = [title stringByAppendingString:_shortName ?: _name];
+    return [title stringByAppendingString:@"..."];
 }
 
 - (BOOL)configureButtonEnabled

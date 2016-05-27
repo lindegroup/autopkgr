@@ -1,0 +1,21 @@
+
+/* Class = "NSTextFieldCell"; title = "Password:"; ObjectID = "6Gk-Op-HAD"; */
+"6Gk-Op-HAD.title" = "Password:";
+
+/* Class = "NSTextFieldCell"; title = "Username:"; ObjectID = "Aq0-20-9LL"; */
+"Aq0-20-9LL.title" = "Username:";
+
+/* Class = "NSButtonCell"; title = "Verify"; ObjectID = "Cpt-g9-6qH"; */
+"Cpt-g9-6qH.title" = "Verify";
+
+/* Class = "NSTextFieldCell"; title = "fwadmin"; ObjectID = "IwY-8t-4ra"; */
+"IwY-8t-4ra.title" = "fwadmin";
+
+/* Class = "NSTextFieldCell"; title = "FileWave Server Hostname:"; ObjectID = "PWR-ok-oY7"; */
+"PWR-ok-oY7.title" = "FileWave Server Hostname:";
+
+/* Class = "NSTextFieldCell"; title = "FileWave Server Port:"; ObjectID = "cPZ-Tn-8JV"; */
+"cPZ-Tn-8JV.title" = "FileWave Server Port:";
+
+/* Class = "NSTextFieldCell"; title = "20016"; ObjectID = "hgm-TZ-yGN"; */
+"hgm-TZ-yGN.title" = "20016";

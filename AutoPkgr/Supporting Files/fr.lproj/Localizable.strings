@@ -1,0 +1,170 @@
+/* Tab labels. */
+"Install" = "Installer";
+"Repos & Recipes" = "Dépôts & Recettes";
+"Schedule" = "Calendrier";
+"Notifications" = "Notifications";
+"Folders & Integration" = "Dossiers & Intégration";
+
+﻿/* Status when an integration is installed. */
+"%@ %@ installed." = "%1$@ %2$@ installé.";
+
+/* Status message when an integration update is available. */
+"%@ %@ update available." = "Mise à jour disponible %1$@ %2$@.";
+
+/* Status message when not integration is not installed. */
+"%@ not installed." = "%@ non installé.";
+
+/* prompt shown when user is required to authorize to install a package */
+"AutoPkgr needs to run a package installer. " = "AutoPkgr a besoin d'exécuter un programme d'installation de package. ";
+
+/* Requirements for an installation aren't met. */
+"Requirements for %@ are not met." = "Les pré-requis pour %@ ne sont pas remplis.";
+
+/* Warning message shown prior to removing recipe overrides. */
+"Are you sure you want to remove the %@ recipe override? Any changes made to the file will be lost." = "Etes-vous sûr de vouloir supprimer la recette override %@? Toutes les modifications apportées au fichier seront perdues.";
+
+/* AutoPkgr trying to remove a recipe override. */
+"AutoPkgr is trying to remove a recipe override." = "AutoPkgr tente de retirer une recette override.";
+
+/* Choose a default override editor. */
+"Choose an editor for AutoPkgr recipe overrides" = "Choisissez un éditeur pour les overrides de recette AutoPkgr";
+
+/* Progress panel message when running recipes. */
+"Running selected AutoPkg recipes..." = "Exécution de recettes AutoPkg sélectionnés...";
+
+/* Prompt for unique override name. */
+"Would you like to give the override a unique name?" = "Aimeriez-vous donner un nom unique à la recette override?";
+
+/* Prompt shown when user is required to authorize removing schedule */
+"AutoPkgr is trying to remove the autopkg run schedule. " = "AutoPkgr tente de supprimer le calendrier d'exécution AutoPkg. ";
+
+/* NSUserNotification posted after test email is complete. */
+"Email test completed" = "Test e-mail terminée";
+
+/* NSUserNotification text when email is successfully sent. */
+"Successfully sent test email." = "Envoi réussi de l'e-mail de test.";
+
+/* Test notification email subject. */
+"Test notification from AutoPkgr" = "Notification de test de AutoPkgr.";
+
+/* html test email body */
+"This is a test notification from <strong>AutoPkgr</strong>." = "Ceci est une notification de test à partir de <strong>AutoPkgr</strong>.";
+
+/* NSUserNotification text when email fails. */
+"There was a problem sending the test email. Double-check the SMTP settings you specified in AutoPkgr." = "Il y avait un problème d'envoi du e-mail de test. Vérifiez les paramètres SMTP spécifiés dans AutoPkgr.";
+
+/* Alert informative text when various folders can't be located. */
+"%@ could not find the %@ folder located in %@. Please verify that this folder exists." = "%1$@ impossible de trouver le dossier %2$@ situé dans %3$@. Merci de vérifier que ce dossier existe.";
+"%@ could not find the Munki repository located in %@. Please verify that this folder exists." = "%1$@ impossible de trouver le dépôt Munki situé dans %2$@. Merci de vérifier que ce dossier existe.";
+
+/* prompt shown when user is required to authorize to uninstall a package */
+"AutoPkgr is trying to uninstall a package. " = "AutoPkgr tente de désinstaller un paquet. ";
+
+/* Error that appears when Munki repository can't be found. */
+"Cannot find the Munki repository." = "Dépôt Munki introuvable.";
+
+/* Status message shown while AutoPkgr checks integration status. */
+"checking status" = "vérification de l'état";
+
+/* message presented to user with info about generating GitHub api token */
+"helpInfoAutoPkgAPIToken" = "La création d'un jeton API GitHub augmentera votre limite de fréquence de recherche de 60 par heure à 5000 par heure. Le jeton n'a qu'une portée «public», ce qui signifie qu'il ne peut pas être utilisé pour récupérer des informations personnelles de votre compte, ou pousser à tous les dépôts auxquels vous pourriez avoir accès. Vous pouvez vérifier ce jeton au sein de votre page de profil à \n\n%1$@\n\nVous pouvez révoquer ce jeton à tout moment. Il sera stocké dans le dossier d'accueil de votre utilisateur au %2$@. \n\nPour plus d'informations sur les jetons OAuth de GitHub visiter developer.github.com";
+
+/* The button title when requesting a GitHub API Token */
+"Requesting Token" = "Demander un jeton.";
+
+/* Last AutoPkg Run status in menu extra. */
+"Last AutoPkg Run: %@" = "Dernière exécution de AutoPkg: %@";
+
+/* Menu extra status if AutoPkgr has never run AutoPkg. */
+"Never by AutoPkgr" = "Jamais par AutoPkgr";
+
+/* Various schedule-related strings for menu extra. */
+"Run AutoPkg %@s at %@" = "Exécuter AutoPkg %1$@s at %2$@";
+"Run AutoPkg Daily at %@" = "Exécuter AutoPkg tous les jours à %@";
+"Run AutoPkg Every %@ Hours" = "Exécuter AutoPkg toutes les %@ heures";
+
+/* Run AutoPkg Now menu item. */
+"Run AutoPkg Now" = "Exécutez AutoPkg Maintenant";
+
+/* Prompt shown when user is required to authorize removing schedule */
+"AutoPkgr wants to remove the helper tool and associated files. " = "AutoPkgr veut supprimer l'outil d'aide et les fichiers associés. ";
+
+/* Explanation of what will be removed upon uninstalling AutoPkgr. */
+"This includes the helper tool, launchd schedule, and other launchd plist. You can safely remove it from your Applications folder." = "Cela inclut l'outil d'aide, le calendrier launchd, et d'autres plists launchd. Vous pouvez le retirer en toute sécurité de votre dossier Applications.";
+
+/* Thank you message shown after uninstallation. */
+"Thanks for using AutoPkgr" = "Merci d'utiliser AutoPkgr";
+
+/* Self-quit message after uninstallation. */
+"AutoPkgr will now quit." = "AutoPkgr va maintenant quitter.";
+
+/* Remove AutoPkgr components. */
+"Remove AutoPkgr components." = "Retirer les composants AutoPkgr.";
+
+/* Removed AutoPkgr associated files. */
+"Removed AutoPkgr associated files." = "Fichiers supprimés associés à AutoPkgr.";
+
+/* Removing default AutoPkg repo. */
+"Removing default AutoPkg repo for %@" = "Suppression du repo AutoPkg par défaut pour %@";
+
+/* The button title when removing the GitHub API Token */
+"Removing Token" = "Suppression du jeton.";
+
+/* Prompts shown when user is required to authorize various tasks. */
+"AutoPkgr is trying to add an autopkg run schedule. " = "AutoPkgr tente d'ajouter un calendrier d'exécution de AutoPkg. ";
+
+/* Error shown when errors are found in the AutoPkg preference file. */
+"%ld problems were found in the AutoPkg preference file" = "%ld problèmes ont été trouvés dans le fichier de préférences AutoPkg";
+
+/* Message shown when user chooses not to upgrade recipe_list.txt after upgrading to AutoPkgr 1.2+ from an earlier version. */
+"You've chosen not to upgrade your recipe list. Either relaunch AutoPkgr to restart the migration process, or downgrade to an older 1.1.x AutoPkgr release." = "Vous avez choisi de ne pas mettre à jour votre liste de recettes. Relancez AutoPkgr pour redémarrer le processus de migration, ou rétrogradez vers une ancienne version 1.1.x de AutoPkgr.";
+
+/* Error shown when preference file errors were successfully repaired. */
+"AutoPkgr was able to repair the AutoPkg preference file. No further action is required." = "AutoPkgr a pu réparer le fichier de préférences AutoPkg. Aucune autre action est nécessaire.";
+
+/* Error shown when preference file errors couldn't be repaired. */
+"AutoPkgr could not repair the AutoPkg preference file. If the problem persists open an issue on the AutoPkgr GitHub page." = "AutoPkgr n'a pas pu réparer le fichier de préférences AutoPkg. Si le problème persiste, signalez-le sur la page GitHub de AutoPkgr.";
+
+/* Warning shown when a recipe is removed to prevent recurring errors. */
+". It has been automatically removed from your recipe list in order to prevent recurring errors." = ". Il a été automatiquement supprimé de votre liste de recettes afin d'éviter des erreurs récurrentes.";
+
+/* Results of AutoPkg runs. */
+"[%@] New software available for testing:" = "[%@] Nouveau logiciel disponible pour les tests:";
+"[%@] Failures occurred while running AutoPkg" = "[%@] Des échecs se sont produits lors de l'exécution AutoPkg";
+"[%@] Error occurred while running AutoPkg" = "[%@] Une erreur est survenue lors de l'exécution d'AutoPkg";
+
+/* Default subject line for AutoPkgr emails. */
+"New software available for testing:" = "Nouveau logiciel disponible pour les tests:";
+
+/* Nothing new to report. */
+"Nothing new to report." = "Rien de nouveau à signaler.";
+
+/* Run error. */
+"AutoPkg Run Error on: %@" = "AutoPkg erreur d'exécution: %@";
+
+/* Errors. */
+"The following errors occurred:" = "Ces erreurs se sont produites:";
+
+/* Failures. */
+"The following failures occurred:" = "Ces échecs ont eu lieu:";
+
+/* Cancel. */
+"Cancel AutoPkg Run" = "Annuler l'exécution d'AutoPkg";
+
+/* alert message when a folder is not located */
+"Cannot find the %@ folder." = "Le dossier %@ est introuvable.";
+
+/* Email footer. */
+"This report was generated by %@" = "Ce rapport a été généré par %@";
+
+/* message when integration begins uninstalling */
+"Uninstalling %@..." = "Désinstaller %@...";
+
+/* Update to helper components. */
+"Update to helper components available" = "Mise à jour des composants auxiliaires disponibles";
+
+/* Update to integrated components. */
+"Updates for integrated components:" = "Mises à jour pour les composants intégrés:";
+
+/* Progress panel message when updating repos. */
+"Updating AutoPkg recipe repos..." = "Mise à jour des dépôts de recettes d'AutoPkg...";
