@@ -24,13 +24,13 @@
 "KQa-Dn-SVx.title" = "Contournement du proxy:";
 
 /* Class = "NSTextFieldCell"; title = "Generating a GitHub API token will increase the number of recipe searches you can perform per hour."; ObjectID = "OLM-io-jIc"; */
-"OLM-io-jIc.title" = "La génération d'un jeton d'API GitHub va augmenter le nombre de recherches de recettes que vous pouvez effectuer par heure.";
+"OLM-io-jIc.title" = "Va augmenter le nombre de recherches de recettes que vous pouvez effectuer par heure.";
 
 /* Class = "NSBox"; title = "Recipe/Override Editor"; ObjectID = "Opa-Cl-skm"; */
 "Opa-Cl-skm.title" = "Éditeur de Recette/Override";
 
 /* Class = "NSTextFieldCell"; title = "WARNING: This requires storing the above information in clear text, and is not recommended."; ObjectID = "Ovo-Ez-myb"; */
-"Ovo-Ez-myb.title" = "AVERTISSEMENT: Ceci nécessite de stocker les informations ci-dessus en clair, et n'est clairement pas recommandé.";
+"Ovo-Ez-myb.title" = "Ceci nécessite de stocker les informations ci-dessus en clair, et n'est clairement pas recommandé.";
 
 /* Class = "NSBox"; title = "Pre/Post Processors"; ObjectID = "SMi-ml-B6d"; */
 "SMi-ml-B6d.title" = "Pre/Post Processeurs";
@@ -42,7 +42,7 @@
 "X7S-tL-0U0.title" = "Préprocesseurs";
 
 /* Class = "NSTextFieldCell"; title = "Defining your proxy here will allow AutoPkg to work over your proxy even when no user is logged in."; ObjectID = "Z6Z-la-ERa"; */
-"Z6Z-la-ERa.title" = "La définition de votre proxy ici permettra à AutoPkg de fonctionner avec votre proxy même si aucun utilisateur n'est connecté.";
+"Z6Z-la-ERa.title" = "Permettra à AutoPkg de fonctionner avec votre proxy même si aucun utilisateur n'est connecté.";
 
 /* Class = "BindingConnection"; ibShadowedIsNilPlaceholder = "http://username:password@proxy:8080"; ObjectID = "Zpn-pz-ra4"; */
 "Zpn-pz-ra4.ibShadowedIsNilPlaceholder" = "http://username:password@proxy:8080";

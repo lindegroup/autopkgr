@@ -18,9 +18,9 @@
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="jHv-WS-Qfj">
-                    <rect key="frame" x="18" y="63" width="96" height="17"/>
+                    <rect key="frame" x="18" y="63" width="126" height="17"/>
                     <constraints>
-                        <constraint firstAttribute="width" constant="92" id="r9o-mb-WD0"/>
+                        <constraint firstAttribute="width" constant="122" id="r9o-mb-WD0"/>
                     </constraints>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Use Git binary:" id="0nt-Ir-the">
                         <font key="font" metaFont="system"/>
@@ -29,7 +29,7 @@
                     </textFieldCell>
                 </textField>
                 <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Jkl-K2-Upr">
-                    <rect key="frame" x="120" y="59" width="250" height="22"/>
+                    <rect key="frame" x="150" y="59" width="220" height="22"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="d1H-a2-Hh7">
                         <font key="font" metaFont="system"/>
                         <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
@@ -61,7 +61,7 @@
                 <constraint firstItem="UHV-aU-vdM" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="20" id="Plj-UA-0cM"/>
                 <constraint firstAttribute="trailing" secondItem="Jkl-K2-Upr" secondAttribute="trailing" constant="110" id="mbH-Oo-zgk"/>
                 <constraint firstAttribute="trailing" secondItem="UHV-aU-vdM" secondAttribute="trailing" constant="20" id="oXi-eQ-uJX"/>
-                <constraint firstItem="Jkl-K2-Upr" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="120" id="tjb-60-RmB"/>
+                <constraint firstItem="Jkl-K2-Upr" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="150" id="tjb-60-RmB"/>
             </constraints>
             <point key="canvasLocation" x="101" y="68.5"/>
         </customView>

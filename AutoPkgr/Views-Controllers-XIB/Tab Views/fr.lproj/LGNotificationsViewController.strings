@@ -48,7 +48,7 @@
 "Y1U-72-3fd.title" = "Envoyer des notifications à une chambre HipChat";
 
 /* Class = "NSTextFieldCell"; title = "port"; ObjectID = "Yxg-J9-3du"; */
-"Yxg-J9-3du.title" = "port réseau";
+"Yxg-J9-3du.title" = "port";
 
 /* Class = "NSButtonCell"; title = "Configure..."; ObjectID = "ZMw-5W-IgF"; */
 "ZMw-5W-IgF.title" = "Configurer...";

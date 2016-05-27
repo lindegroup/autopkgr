@@ -19,9 +19,9 @@
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="dy1-cL-L9S">
-                    <rect key="frame" x="16" y="94" width="84" height="17"/>
+                    <rect key="frame" x="16" y="94" width="104" height="17"/>
                     <constraints>
-                        <constraint firstAttribute="width" constant="80" id="Pq3-tn-ezy"/>
+                        <constraint firstAttribute="width" constant="100" id="Pq3-tn-ezy"/>
                     </constraints>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Munki Repo:" id="xlY-TY-p8w">
                         <font key="font" metaFont="system"/>
@@ -30,7 +30,7 @@
                     </textFieldCell>
                 </textField>
                 <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="LxW-1c-3jQ">
-                    <rect key="frame" x="106" y="92" width="230" height="22"/>
+                    <rect key="frame" x="126" y="92" width="190" height="22"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" placeholderString="/Users/Shared/munki_repo" drawsBackground="YES" id="25F-Lj-I0v">
                         <font key="font" metaFont="system"/>
                         <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
@@ -38,9 +38,9 @@
                     </textFieldCell>
                 </textField>
                 <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="rOJ-48-FyU">
-                    <rect key="frame" x="437" y="86" width="134" height="32"/>
+                    <rect key="frame" x="417" y="86" width="154" height="32"/>
                     <constraints>
-                        <constraint firstAttribute="width" constant="122" id="yN8-NE-8EK"/>
+                        <constraint firstAttribute="width" constant="142" id="yN8-NE-8EK"/>
                     </constraints>
                     <buttonCell key="cell" type="push" title="Open In Finder" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="dZQ-y3-qfS">
                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
@@ -51,7 +51,7 @@
                     </connections>
                 </button>
                 <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="wR9-Cr-nxI">
-                    <rect key="frame" x="338" y="86" width="99" height="32"/>
+                    <rect key="frame" x="318" y="86" width="99" height="32"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="87" id="PZB-c0-y7z"/>
                     </constraints>
@@ -64,9 +64,9 @@
                     </connections>
                 </button>
                 <button translatesAutoresizingMaskIntoConstraints="NO" id="9Hs-E8-hnF">
-                    <rect key="frame" x="18" y="45" width="303" height="18"/>
+                    <rect key="frame" x="18" y="45" width="336" height="18"/>
                     <constraints>
-                        <constraint firstAttribute="width" constant="299" id="zbd-8J-dEm"/>
+                        <constraint firstAttribute="width" constant="332" id="zbd-8J-dEm"/>
                     </constraints>
                     <buttonCell key="cell" type="check" title="Enable MunkiSetDefaultCatalog preprocessor" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="B41-Jj-tN4">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
@@ -80,13 +80,6 @@
                         </binding>
                     </connections>
                 </button>
-                <button identifier="MunkiSetDefaultCatalogInfo" horizontalHuggingPriority="750" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="MaG-XT-xK8" customClass="AHHelpPopoverButton">
-                    <rect key="frame" x="328" y="42" width="22" height="22"/>
-                    <buttonCell key="cell" type="help" bezelStyle="helpButton" alignment="center" controlSize="small" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="pWD-fA-iJu">
-                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                        <font key="font" metaFont="smallSystem"/>
-                    </buttonCell>
-                </button>
                 <button hidden="YES" translatesAutoresizingMaskIntoConstraints="NO" id="dUZ-nf-rmK">
                     <rect key="frame" x="18" y="25" width="258" height="18"/>
                     <constraints>
@@ -97,20 +90,27 @@
                         <font key="font" metaFont="system"/>
                     </buttonCell>
                 </button>
+                <button identifier="MunkiSetDefaultCatalogInfo" horizontalHuggingPriority="750" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="MaG-XT-xK8" customClass="AHHelpPopoverButton">
+                    <rect key="frame" x="358" y="42" width="22" height="22"/>
+                    <buttonCell key="cell" type="help" bezelStyle="helpButton" alignment="center" controlSize="small" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="pWD-fA-iJu">
+                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                        <font key="font" metaFont="smallSystem"/>
+                    </buttonCell>
+                </button>
             </subviews>
             <constraints>
-                <constraint firstItem="LxW-1c-3jQ" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="106" id="6Xg-K7-ZVc"/>
+                <constraint firstItem="LxW-1c-3jQ" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="126" id="6Xg-K7-ZVc"/>
                 <constraint firstItem="dy1-cL-L9S" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="18" id="ADx-1c-0vd"/>
                 <constraint firstItem="dy1-cL-L9S" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="30" id="Ats-GT-kvv"/>
                 <constraint firstItem="9Hs-E8-hnF" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="20" symbolic="YES" id="B2m-2D-HoR"/>
                 <constraint firstItem="rOJ-48-FyU" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="27" id="MpV-ur-jys"/>
-                <constraint firstAttribute="trailing" secondItem="wR9-Cr-nxI" secondAttribute="trailing" constant="154" id="Qd1-WT-9aa"/>
+                <constraint firstAttribute="trailing" secondItem="wR9-Cr-nxI" secondAttribute="trailing" constant="174" id="Qd1-WT-9aa"/>
                 <constraint firstItem="LxW-1c-3jQ" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="27" id="W0H-fZ-Dbz"/>
-                <constraint firstItem="MaG-XT-xK8" firstAttribute="leading" secondItem="9Hs-E8-hnF" secondAttribute="trailing" constant="11" id="Ymy-Eg-PlY"/>
+                <constraint firstItem="MaG-XT-xK8" firstAttribute="leading" secondItem="9Hs-E8-hnF" secondAttribute="trailing" constant="8" id="Ymy-Eg-PlY"/>
                 <constraint firstItem="dUZ-nf-rmK" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="20" id="but-Ea-3Iz"/>
                 <constraint firstItem="MaG-XT-xK8" firstAttribute="top" secondItem="9Hs-E8-hnF" secondAttribute="top" constant="-2" id="da2-tA-PmK"/>
                 <constraint firstItem="wR9-Cr-nxI" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="27" id="gXn-mV-3va"/>
-                <constraint firstAttribute="trailing" secondItem="LxW-1c-3jQ" secondAttribute="trailing" constant="249" id="gdW-Sm-mli"/>
+                <constraint firstAttribute="trailing" secondItem="LxW-1c-3jQ" secondAttribute="trailing" constant="269" id="gdW-Sm-mli"/>
                 <constraint firstAttribute="trailing" secondItem="rOJ-48-FyU" secondAttribute="trailing" constant="20" id="hvo-py-EH1"/>
                 <constraint firstItem="9Hs-E8-hnF" firstAttribute="top" secondItem="LxW-1c-3jQ" secondAttribute="bottom" constant="31" id="t4y-7L-rtM"/>
                 <constraint firstItem="dUZ-nf-rmK" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="100" id="xQs-6c-nst"/>

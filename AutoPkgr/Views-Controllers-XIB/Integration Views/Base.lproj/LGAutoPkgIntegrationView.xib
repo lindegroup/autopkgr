@@ -43,7 +43,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="pO2-1p-Ljw">
-                                <rect key="frame" x="124" y="102" width="366" height="19"/>
+                                <rect key="frame" x="164" y="102" width="326" height="19"/>
                                 <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" placeholderString="http://username:password@proxy:8080" drawsBackground="YES" id="mN7-lS-7SX">
                                     <font key="font" metaFont="smallSystem"/>
                                     <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
@@ -60,7 +60,7 @@
                                 </connections>
                             </textField>
                             <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="w7R-0D-KM9">
-                                <rect key="frame" x="124" y="76" width="366" height="19"/>
+                                <rect key="frame" x="164" y="76" width="326" height="19"/>
                                 <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" placeholderString="https://username:password@proxy:8080" drawsBackground="YES" id="2DM-Pk-cEe">
                                     <font key="font" metaFont="smallSystem"/>
                                     <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
@@ -77,7 +77,7 @@
                                 </connections>
                             </textField>
                             <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="SFt-NM-BBm">
-                                <rect key="frame" x="124" y="49" width="366" height="19"/>
+                                <rect key="frame" x="164" y="49" width="326" height="19"/>
                                 <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" placeholderString=".local,10.0.0.0/24,.mylocaldomain.com" drawsBackground="YES" id="8FQ-1P-GWZ">
                                     <font key="font" metaFont="smallSystem"/>
                                     <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
@@ -94,9 +94,9 @@
                                 </connections>
                             </textField>
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="xlM-7v-Sva">
-                                <rect key="frame" x="18" y="105" width="104" height="14"/>
+                                <rect key="frame" x="18" y="105" width="144" height="14"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="100" id="ibi-gl-6LP"/>
+                                    <constraint firstAttribute="width" constant="140" id="ibi-gl-6LP"/>
                                 </constraints>
                                 <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="HTTP Proxy:" id="h4b-fR-6Sb">
                                     <font key="font" metaFont="smallSystem"/>
@@ -108,9 +108,9 @@
                                 </connections>
                             </textField>
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="QPR-qj-EIH">
-                                <rect key="frame" x="18" y="79" width="104" height="14"/>
+                                <rect key="frame" x="18" y="79" width="144" height="14"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="100" id="VlG-24-dbq"/>
+                                    <constraint firstAttribute="width" constant="140" id="VlG-24-dbq"/>
                                 </constraints>
                                 <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="HTTPS Proxy:" id="qqx-yH-R4g">
                                     <font key="font" metaFont="smallSystem"/>
@@ -122,9 +122,9 @@
                                 </connections>
                             </textField>
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="iUt-wZ-Ea8">
-                                <rect key="frame" x="18" y="52" width="104" height="14"/>
+                                <rect key="frame" x="18" y="52" width="144" height="14"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="100" id="gbV-Lm-FVN"/>
+                                    <constraint firstAttribute="width" constant="140" id="gbV-Lm-FVN"/>
                                 </constraints>
                                 <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Proxy Bypass:" id="KQa-Dn-SVx">
                                     <font key="font" metaFont="smallSystem"/>
@@ -135,8 +135,11 @@
                                     <binding destination="-2" name="enabled" keyPath="self.useCustomProxies" id="Q55-9j-Vgu"/>
                                 </connections>
                             </textField>
-                            <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" misplaced="YES" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="WxI-zU-hdX">
+                            <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="WxI-zU-hdX">
                                 <rect key="frame" x="16" y="29" width="476" height="12"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="12" id="nXx-uV-tcM"/>
+                                </constraints>
                                 <textFieldCell key="cell" controlSize="mini" sendsActionOnEndEditing="YES" alignment="center" title="Defining your proxy here will allow AutoPkg to work over your proxy even when no user is logged in." id="Z6Z-la-ERa">
                                     <font key="font" metaFont="miniSystem"/>
                                     <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -145,6 +148,9 @@
                             </textField>
                             <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="wQJ-CB-Rb9">
                                 <rect key="frame" x="16" y="15" width="476" height="11"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="11" id="XqZ-rf-oyU"/>
+                                </constraints>
                                 <textFieldCell key="cell" controlSize="mini" sendsActionOnEndEditing="YES" alignment="center" title="WARNING: This requires storing the above information in clear text, and is not recommended." id="Ovo-Ez-myb">
                                     <font key="font" metaFont="miniSystemBold"/>
                                     <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -186,7 +192,7 @@
                         <constraint firstItem="wQJ-CB-Rb9" firstAttribute="leading" secondItem="3nH-ob-ob4" secondAttribute="leading" constant="16" id="2bJ-l4-Kgj"/>
                         <constraint firstAttribute="trailing" secondItem="SFt-NM-BBm" secondAttribute="trailing" constant="16" id="AC3-Sr-HbP"/>
                         <constraint firstItem="Hq3-ek-hGA" firstAttribute="leading" secondItem="3nH-ob-ob4" secondAttribute="leading" constant="16" id="EKJ-zf-xg4"/>
-                        <constraint firstItem="w7R-0D-KM9" firstAttribute="leading" secondItem="3nH-ob-ob4" secondAttribute="leading" constant="122" id="Ed2-t0-s4t"/>
+                        <constraint firstItem="w7R-0D-KM9" firstAttribute="leading" secondItem="3nH-ob-ob4" secondAttribute="leading" constant="162" id="Ed2-t0-s4t"/>
                         <constraint firstAttribute="trailing" secondItem="WxI-zU-hdX" secondAttribute="trailing" constant="16" id="Fru-rt-tYb"/>
                         <constraint firstAttribute="height" constant="203" id="HzJ-ph-hSn"/>
                         <constraint firstItem="WxI-zU-hdX" firstAttribute="top" secondItem="3nH-ob-ob4" secondAttribute="top" constant="165" id="IwQ-2W-sSE"/>
@@ -195,11 +201,11 @@
                         <constraint firstItem="iUt-wZ-Ea8" firstAttribute="top" secondItem="3nH-ob-ob4" secondAttribute="top" constant="140" id="PxI-OP-lkr"/>
                         <constraint firstAttribute="trailing" secondItem="w7R-0D-KM9" secondAttribute="trailing" constant="16" id="S1R-iB-9yy"/>
                         <constraint firstAttribute="trailing" secondItem="Hq3-ek-hGA" secondAttribute="trailing" constant="16" id="ViB-C7-dUM"/>
-                        <constraint firstItem="pO2-1p-Ljw" firstAttribute="leading" secondItem="3nH-ob-ob4" secondAttribute="leading" constant="122" id="atc-jC-Rmg"/>
+                        <constraint firstItem="pO2-1p-Ljw" firstAttribute="leading" secondItem="3nH-ob-ob4" secondAttribute="leading" constant="162" id="atc-jC-Rmg"/>
                         <constraint firstItem="wQJ-CB-Rb9" firstAttribute="top" secondItem="3nH-ob-ob4" secondAttribute="top" constant="180" id="bw3-nX-sy4"/>
                         <constraint firstItem="WxI-zU-hdX" firstAttribute="leading" secondItem="3nH-ob-ob4" secondAttribute="leading" constant="16" id="cC0-w3-xfT"/>
                         <constraint firstItem="pO2-1p-Ljw" firstAttribute="top" secondItem="3nH-ob-ob4" secondAttribute="top" constant="85" id="ihQ-5b-vBP"/>
-                        <constraint firstItem="SFt-NM-BBm" firstAttribute="leading" secondItem="3nH-ob-ob4" secondAttribute="leading" constant="122" id="mti-Fe-7sP"/>
+                        <constraint firstItem="SFt-NM-BBm" firstAttribute="leading" secondItem="3nH-ob-ob4" secondAttribute="leading" constant="162" id="mti-Fe-7sP"/>
                         <constraint firstItem="Hq3-ek-hGA" firstAttribute="top" secondItem="3nH-ob-ob4" secondAttribute="top" constant="22" id="okT-jc-b7z"/>
                         <constraint firstAttribute="trailing" secondItem="wQJ-CB-Rb9" secondAttribute="trailing" constant="16" id="pdC-LO-awN"/>
                         <constraint firstItem="xlM-7v-Sva" firstAttribute="top" secondItem="3nH-ob-ob4" secondAttribute="top" constant="87" id="qlY-1E-qQh"/>

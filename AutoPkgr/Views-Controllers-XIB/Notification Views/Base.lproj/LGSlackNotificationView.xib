@@ -18,9 +18,9 @@
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="wgb-zQ-52W">
-                    <rect key="frame" x="10" y="79" width="97" height="17"/>
+                    <rect key="frame" x="10" y="79" width="116" height="17"/>
                     <constraints>
-                        <constraint firstAttribute="width" constant="93" id="ecX-Mb-Lhp"/>
+                        <constraint firstAttribute="width" constant="112" id="ecX-Mb-Lhp"/>
                     </constraints>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Webhook URL:" id="wUT-Ey-E1F">
                         <font key="font" metaFont="system"/>
@@ -29,7 +29,7 @@
                     </textFieldCell>
                 </textField>
                 <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="QSi-iQ-e1A">
-                    <rect key="frame" x="113" y="77" width="347" height="22"/>
+                    <rect key="frame" x="132" y="77" width="328" height="22"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="L6M-9U-VSV">
                         <font key="font" metaFont="system"/>
                         <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
@@ -37,7 +37,7 @@
                     </textFieldCell>
                 </textField>
                 <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="rT7-KI-ie2">
-                    <rect key="frame" x="113" y="49" width="347" height="22"/>
+                    <rect key="frame" x="132" y="49" width="328" height="22"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" title="AutoPkgr" placeholderString="" drawsBackground="YES" id="MkV-Zf-cdC">
                         <font key="font" metaFont="system"/>
                         <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
@@ -53,9 +53,9 @@
                     </connections>
                 </textField>
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="uGQ-hH-paE">
-                    <rect key="frame" x="10" y="51" width="97" height="17"/>
+                    <rect key="frame" x="10" y="51" width="116" height="17"/>
                     <constraints>
-                        <constraint firstAttribute="width" constant="93" id="Ukm-yw-Cp5"/>
+                        <constraint firstAttribute="width" constant="112" id="Ukm-yw-Cp5"/>
                     </constraints>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Bot Name:" id="w0b-FV-FBc">
                         <font key="font" metaFont="system"/>
@@ -73,11 +73,11 @@
             </subviews>
             <constraints>
                 <constraint firstAttribute="trailing" secondItem="rT7-KI-ie2" secondAttribute="trailing" constant="20" id="2FR-Xa-X7S"/>
-                <constraint firstItem="QSi-iQ-e1A" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="113" id="Ff2-76-FNq"/>
+                <constraint firstItem="QSi-iQ-e1A" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="132" id="Ff2-76-FNq"/>
                 <constraint firstItem="wgb-zQ-52W" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="12" id="KaW-vo-894"/>
                 <constraint firstAttribute="trailing" secondItem="KkN-I1-9tF" secondAttribute="trailing" constant="20" id="PJG-RV-ipE"/>
                 <constraint firstItem="uGQ-hH-paE" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="12" id="WYl-nw-n08"/>
-                <constraint firstItem="rT7-KI-ie2" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="113" id="aIV-49-2Re"/>
+                <constraint firstItem="rT7-KI-ie2" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="132" id="aIV-49-2Re"/>
                 <constraint firstItem="wgb-zQ-52W" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="23" id="cWy-iO-pI9"/>
                 <constraint firstItem="KkN-I1-9tF" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="78" id="iCq-3Z-k3B"/>
                 <constraint firstItem="QSi-iQ-e1A" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="20" id="jUk-8D-yu5"/>

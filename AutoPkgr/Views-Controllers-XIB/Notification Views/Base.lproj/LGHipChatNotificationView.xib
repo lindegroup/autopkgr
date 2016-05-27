@@ -18,7 +18,7 @@
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
                 <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="pNP-fk-i1q">
-                    <rect key="frame" x="94" y="114" width="366" height="22"/>
+                    <rect key="frame" x="140" y="114" width="320" height="22"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="e9M-Yd-EkI">
                         <font key="font" metaFont="system"/>
                         <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
@@ -29,17 +29,17 @@
                     </connections>
                 </textField>
                 <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="LSx-DB-QaI">
-                    <rect key="frame" x="94" y="82" width="366" height="22"/>
-                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" alignment="left" placeholderString="O5gSDQXoiVGUpLDTOWjNGOyFYPmfsl2AKVoZoRb3" drawsBackground="YES" id="nj4-jw-VWw">
+                    <rect key="frame" x="140" y="82" width="320" height="22"/>
+                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" alignment="left" placeholderString="" drawsBackground="YES" id="nj4-jw-VWw">
                         <font key="font" metaFont="system"/>
                         <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
                         <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                 </textField>
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="t7N-Th-c2L">
-                    <rect key="frame" x="18" y="117" width="70" height="17"/>
+                    <rect key="frame" x="18" y="117" width="116" height="17"/>
                     <constraints>
-                        <constraint firstAttribute="width" constant="66" id="hQb-WD-fgT"/>
+                        <constraint firstAttribute="width" constant="112" id="hQb-WD-fgT"/>
                     </constraints>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Room:" id="kRf-ML-4vZ">
                         <font key="font" metaFont="system"/>
@@ -48,9 +48,9 @@
                     </textFieldCell>
                 </textField>
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="pg2-fK-0Wr">
-                    <rect key="frame" x="18" y="85" width="70" height="17"/>
+                    <rect key="frame" x="18" y="85" width="116" height="17"/>
                     <constraints>
-                        <constraint firstAttribute="width" constant="66" id="dBM-VA-qI8"/>
+                        <constraint firstAttribute="width" constant="112" id="dBM-VA-qI8"/>
                     </constraints>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="API Token:" id="Esn-sI-g97">
                         <font key="font" metaFont="system"/>
@@ -63,7 +63,7 @@
                     <constraints>
                         <constraint firstAttribute="width" constant="440" id="OU8-2X-E8Q"/>
                     </constraints>
-                    <buttonCell key="cell" type="check" title="Send user notifications to room members." bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="VyB-Uw-2h5">
+                    <buttonCell key="cell" type="check" title="Send user notifications to room members" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="VyB-Uw-2h5">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                         <font key="font" metaFont="system"/>
                     </buttonCell>
@@ -85,12 +85,12 @@
                 <constraint firstItem="0Uf-HM-nzD" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="89" id="Q37-Dt-awZ"/>
                 <constraint firstItem="0Uf-HM-nzD" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="20" id="Zu5-IQ-bDo"/>
                 <constraint firstItem="pg2-fK-0Wr" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="54" id="eXf-ZC-vVs"/>
-                <constraint firstItem="LSx-DB-QaI" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="94" id="fAW-3B-8oO"/>
+                <constraint firstItem="LSx-DB-QaI" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="140" id="fAW-3B-8oO"/>
                 <constraint firstItem="t7N-Th-c2L" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="20" id="gni-Oh-gla"/>
                 <constraint firstItem="t7N-Th-c2L" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="22" id="hjk-Ch-Cmx"/>
                 <constraint firstAttribute="trailing" secondItem="pNP-fk-i1q" secondAttribute="trailing" constant="20" id="i1Y-j8-FjR"/>
                 <constraint firstItem="LSx-DB-QaI" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="52" id="mpF-jp-qW6"/>
-                <constraint firstItem="pNP-fk-i1q" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="94" id="qxp-6k-zdN"/>
+                <constraint firstItem="pNP-fk-i1q" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="140" id="qxp-6k-zdN"/>
                 <constraint firstItem="pNP-fk-i1q" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="20" id="xKc-On-Ldx"/>
             </constraints>
             <point key="canvasLocation" x="140" y="96"/>
