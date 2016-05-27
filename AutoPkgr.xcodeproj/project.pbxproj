@@ -116,7 +116,6 @@
 		BE3D94321C15FCFA001763D0 /* example_data.plist in Resources */ = {isa = PBXBuildFile; fileRef = BE3D94311C15FCFA001763D0 /* example_data.plist */; };
 		BE3D94341C160F59001763D0 /* web_report.html in Resources */ = {isa = PBXBuildFile; fileRef = BE3D94331C160F59001763D0 /* web_report.html */; };
 		BE3D94351C160F59001763D0 /* web_report.html in Resources */ = {isa = PBXBuildFile; fileRef = BE3D94331C160F59001763D0 /* web_report.html */; };
-		BE3D94391C162EA2001763D0 /* slack_report.md in Sources */ = {isa = PBXBuildFile; fileRef = BE3D94361C1627F8001763D0 /* slack_report.md */; };
 		BE3D943B1C162F3C001763D0 /* slack_report.md in Resources */ = {isa = PBXBuildFile; fileRef = BE3D94361C1627F8001763D0 /* slack_report.md */; };
 		BE46D98B1B40E46F00004B41 /* LGBaseNotificationServiceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE46D98A1B40E46F00004B41 /* LGBaseNotificationServiceViewController.m */; };
 		BE46D9911B40E67500004B41 /* LGNotificationServiceWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE46D9901B40E67500004B41 /* LGNotificationServiceWindowController.m */; };
@@ -1645,7 +1644,6 @@
 				BEE211261AF9DCBB00A3C2E1 /* LGUninstaller.m in Sources */,
 				BE5E55A11B1B59D50025CFD3 /* LGTableCellViews.m in Sources */,
 				BE3D942F1C14F32F001763D0 /* LGTemplateRenderWindowController.m in Sources */,
-				BE3D94391C162EA2001763D0 /* slack_report.md in Sources */,
 				BEB7BF7C1BEBAFDB009386C1 /* NSArray+mapped.m in Sources */,
 				BED02ADC1A194F9C00714CC2 /* NSArray+filtered.m in Sources */,
 				BE2867A61BEB88D8009891A0 /* LGAutoPkgRecipeListManager.m in Sources */,
