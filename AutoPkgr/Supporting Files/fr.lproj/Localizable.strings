@@ -167,4 +167,4 @@
 "Updates for integrated components:" = "Mises à jour pour les composants intégrés:";
 
 /* Progress panel message when updating repos. */
-"Updating AutoPkg recipe repos." = "Mise à jour des dépôts de recettes d'AutoPkg.";
+"Updating AutoPkg recipe repos..." = "Mise à jour des dépôts de recettes d'AutoPkg...";

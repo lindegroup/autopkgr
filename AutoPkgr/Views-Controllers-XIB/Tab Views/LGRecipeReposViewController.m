@@ -98,7 +98,7 @@
 - (IBAction)updateReposNow:(id)sender
 {
     _cancelButton.hidden = NO;
-    [self.progressDelegate startProgressWithMessage:NSLocalizedString(@"Updating AutoPkg recipe repos.",
+    [self.progressDelegate startProgressWithMessage:NSLocalizedString(@"Updating AutoPkg recipe repos...",
                                                                       @"Progress panel message when updating repos.")];
 
     [_updateRepoNowButton setEnabled:NO];
