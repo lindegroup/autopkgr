@@ -5,7 +5,7 @@
 "Notifications" = "Notifications";
 "Folders & Integration" = "Folders & Integration";
 
-﻿/* Status when an integration is installed. */
+/* Status when an integration is installed. */
 "%@ %@ installed." = "%1$@ %2$@ installed.";
 
 /* Status message when an integration update is available. */
