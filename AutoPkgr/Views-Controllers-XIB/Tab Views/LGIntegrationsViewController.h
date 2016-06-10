@@ -18,8 +18,8 @@
 //  limitations under the License.
 //
 
-#import <Cocoa/Cocoa.h>
 #import "LGTabViewControllerBase.h"
+#import <Cocoa/Cocoa.h>
 
 @class LGIntegrationManager;
 
@@ -31,19 +31,19 @@
 - (void)enableFolders;
 
 #pragma mark - AutoPkg
-#pragma mark -- Repo Dir --
+#pragma mark-- Repo Dir --
 @property (weak) IBOutlet NSButton *openAutoPkgRecipeReposFolderButton;
 @property (weak) IBOutlet NSTextField *autoPkgRecipeRepoDir;
 - (IBAction)openAutoPkgRecipeReposFolder:(id)sender;
 - (IBAction)chooseAutoPkgReciepRepoDir:(id)sender;
 
-#pragma mark -- Cache Dir --
+#pragma mark-- Cache Dir --
 @property (weak) IBOutlet NSButton *openAutoPkgCacheFolderButton;
 @property (weak) IBOutlet NSTextField *autoPkgCacheDir;
 - (IBAction)openAutoPkgCacheFolder:(id)sender;
 - (IBAction)chooseAutoPkgCacheDir:(id)sender;
 
-#pragma mark -- Overrides Dir --
+#pragma mark-- Overrides Dir --
 @property (weak) IBOutlet NSButton *openAutoPkgRecipeOverridesFolderButton;
 @property (weak) IBOutlet NSTextField *autoPkgRecipeOverridesDir;
 - (IBAction)openAutoPkgRecipeOverridesFolder:(id)sender;

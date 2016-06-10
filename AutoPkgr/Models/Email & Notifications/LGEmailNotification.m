@@ -17,10 +17,10 @@
 //  limitations under the License.
 //
 
-#import "LGEmailNotification.h"
 #import "LGAutoPkgr.h"
-#import "LGServerCredentials.h"
+#import "LGEmailNotification.h"
 #import "LGPasswords.h"
+#import "LGServerCredentials.h"
 #import "LGUserNotification.h"
 
 #import <MailCore/MailCore.h>
@@ -65,11 +65,13 @@
     return kLGAutoPkgrPreferenceDomain;
 }
 
-+ (BOOL)templateIsFile {
++ (BOOL)templateIsFile
+{
     return YES;
 }
 
-+ (NSString *)defaultTemplate {
++ (NSString *)defaultTemplate
+{
     return [self templateWithName:@"report" type:@"html"];
 }
 
@@ -111,7 +113,8 @@
     [self sendEmailNotification:subject message:message test:YES];
 }
 
-- (void)sendMessage:(NSString *)message title:(NSString *)title complete:(void (^)(NSError *))complete {
+- (void)sendMessage:(NSString *)message title:(NSString *)title complete:(void (^)(NSError *))complete
+{
     if (complete && !self.notificatonComplete) {
         self.notificatonComplete = complete;
     }
@@ -130,10 +133,10 @@
     credential.server = _defaults.SMTPServer;
     credential.port = _defaults.SMTPPort;
 
-    if(!credential.server || !credential.port){
+    if (!credential.server || !credential.port) {
         return reply(nil, [LGError errorWithCode:kLGErrorSendingEmail]);
     }
-    
+
     if (_defaults.SMTPAuthenticationEnabled) {
         [[self class] infoFromKeychain:^(NSString *infoOrPassword, NSError *error) {
             credential.user = [[self class] account];
@@ -141,7 +144,8 @@
             DLog(@"SMTP credentials retrieved.");
             reply(credential, error);
         }];
-    } else {
+    }
+    else {
         DLog(@"Not using SMTP authentication.");
         reply(credential, nil);
     }
@@ -208,10 +212,12 @@
             // If the SMTP port is 465, use MCOConnectionTypeTLS. Otherwise use MCOConnectionTypeStartTLS.
             if (session.port == 465) {
                 session.connectionType = MCOConnectionTypeTLS;
-            } else {
+            }
+            else {
                 session.connectionType = MCOConnectionTypeStartTLS;
             }
-        } else {
+        }
+        else {
             DLog(@"SSL/TLS is _not_ enabled for %@.", _defaults.SMTPServer);
             session.connectionType = MCOConnectionTypeClear;
         }
@@ -219,7 +225,7 @@
         MCOSMTPSendOperation *sendOperation = [session sendOperationWithData:builder.data];
         [sendOperation start:^(NSError *error) {
             if (test) {
-                [LGUserNotification sendNotificationOfTestEmailSuccess:error ? NO:YES error:error];
+                [LGUserNotification sendNotificationOfTestEmailSuccess:error ? NO : YES error:error];
             }
 
             // Call completed operation.

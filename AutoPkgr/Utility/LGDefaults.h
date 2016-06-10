@@ -38,7 +38,6 @@ typedef NS_OPTIONS(NSInteger, LGReportItems) {
     kLGReportItemsIntegrationUpdates = 1 << 7,
 };
 
-
 @interface LGDefaults : NSUserDefaults
 
 #pragma mark - Singletons

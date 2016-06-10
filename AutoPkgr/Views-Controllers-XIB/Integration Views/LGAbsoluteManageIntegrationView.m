@@ -18,8 +18,8 @@
 //  limitations under the License.
 //
 
-#import "LGAbsoluteManageIntegrationView.h"
 #import "LGAbsoluteManageIntegration.h"
+#import "LGAbsoluteManageIntegrationView.h"
 
 @interface LGAbsoluteManageIntegrationView ()
 @property (weak) IBOutlet NSButton *enableExternalUploadBT;
@@ -28,7 +28,8 @@
 
 @implementation LGAbsoluteManageIntegrationView
 
-- (void)awakeFromNib {
+- (void)awakeFromNib
+{
     _enableExternalUploadBT.state = [LGAbsoluteManageDefaults new].AllowURLSDPackageImport;
 }
 
@@ -37,7 +38,8 @@
     [LGAbsoluteManageDefaults new].AllowURLSDPackageImport = sender.state;
 }
 
-- (void)viewDidLoad {
+- (void)viewDidLoad
+{
     [super viewDidLoad];
     // Do view setup here.
 }

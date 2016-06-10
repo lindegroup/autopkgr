@@ -152,7 +152,8 @@ static NSArray *_popularRepos;
             }
             reply(error);
         }];
-    } else {
+    }
+    else {
         reply([self errorWithMessage:@"Repo is not installed." code:kLGAutoPkgRepoNotInstalled]);
     }
 };
@@ -169,7 +170,8 @@ static NSArray *_popularRepos;
                              }
                              reply(error);
                          }];
-    } else {
+    }
+    else {
         reply(nil);
     }
 }
@@ -226,9 +228,11 @@ static NSArray *_popularRepos;
                                                                               if (!remoteSHA1) {
                                                                                   _status = kLGAutoPkgRepoUpToDate;
                                                                                   _checkStatusTimeStamp = [NSDate dateWithTimeIntervalSinceNow:10];
-                                                                              } else if ([localSHA1 isEqualToString:remoteSHA1]) {
+                                                                              }
+                                                                              else if ([localSHA1 isEqualToString:remoteSHA1]) {
                                                                                   _status = kLGAutoPkgRepoUpToDate;
-                                                                              } else {
+                                                                              }
+                                                                              else {
                                                                                   _status = kLGAutoPkgRepoUpdateAvailable;
                                                                               }
                                                                               reply(_status);
@@ -327,7 +331,8 @@ static NSArray *_popularRepos;
 
     if (_popularRepos) {
         constructCommonRepos();
-    } else {
+    }
+    else {
         NSURL *url = [NSURL URLWithString:kLGAutoPkgRepositoriesJSONURL];
         NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:5.0];
 
@@ -351,45 +356,46 @@ static NSArray *_popularRepos;
             }];
             _popularRepos = [popularRepos copy];
             constructCommonRepos();
-        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-            NSArray *fallbackRepos = @[
-                @"https://github.com/autopkg/recipes.git",
-                @"https://github.com/autopkg/keeleysam-recipes.git",
-                @"https://github.com/autopkg/hjuutilainen-recipes.git",
-                @"https://github.com/autopkg/timsutton-recipes.git",
-                @"https://github.com/autopkg/nmcspadden-recipes.git",
-                @"https://github.com/autopkg/jleggat-recipes.git",
-                @"https://github.com/autopkg/jaharmi-recipes.git",
-                @"https://github.com/autopkg/jessepeterson-recipes.git",
-                @"https://github.com/autopkg/dankeller-recipes.git",
-                @"https://github.com/autopkg/hansen-m-recipes.git",
-                @"https://github.com/autopkg/scriptingosx-recipes.git",
-                @"https://github.com/autopkg/derak-recipes.git",
-                @"https://github.com/autopkg/sheagcraig-recipes.git",
-                @"https://github.com/autopkg/arubdesu-recipes.git",
-                @"https://github.com/autopkg/jps3-recipes.git",
-                @"https://github.com/autopkg/joshua-d-miller-recipes.git",
-                @"https://github.com/autopkg/gerardkok-recipes.git",
-                @"https://github.com/autopkg/swy-recipes.git",
-                @"https://github.com/autopkg/lashomb-recipes.git",
-                @"https://github.com/autopkg/rustymyers-recipes.git",
-                @"https://github.com/autopkg/luisgiraldo-recipes.git",
-                @"https://github.com/autopkg/justinrummel-recipes.git",
-                @"https://github.com/autopkg/n8felton-recipes.git",
-                @"https://github.com/autopkg/groob-recipes.git",
-                @"https://github.com/autopkg/jazzace-recipes.git",
-            ];
+        }
+            failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                NSArray *fallbackRepos = @[
+                    @"https://github.com/autopkg/recipes.git",
+                    @"https://github.com/autopkg/keeleysam-recipes.git",
+                    @"https://github.com/autopkg/hjuutilainen-recipes.git",
+                    @"https://github.com/autopkg/timsutton-recipes.git",
+                    @"https://github.com/autopkg/nmcspadden-recipes.git",
+                    @"https://github.com/autopkg/jleggat-recipes.git",
+                    @"https://github.com/autopkg/jaharmi-recipes.git",
+                    @"https://github.com/autopkg/jessepeterson-recipes.git",
+                    @"https://github.com/autopkg/dankeller-recipes.git",
+                    @"https://github.com/autopkg/hansen-m-recipes.git",
+                    @"https://github.com/autopkg/scriptingosx-recipes.git",
+                    @"https://github.com/autopkg/derak-recipes.git",
+                    @"https://github.com/autopkg/sheagcraig-recipes.git",
+                    @"https://github.com/autopkg/arubdesu-recipes.git",
+                    @"https://github.com/autopkg/jps3-recipes.git",
+                    @"https://github.com/autopkg/joshua-d-miller-recipes.git",
+                    @"https://github.com/autopkg/gerardkok-recipes.git",
+                    @"https://github.com/autopkg/swy-recipes.git",
+                    @"https://github.com/autopkg/lashomb-recipes.git",
+                    @"https://github.com/autopkg/rustymyers-recipes.git",
+                    @"https://github.com/autopkg/luisgiraldo-recipes.git",
+                    @"https://github.com/autopkg/justinrummel-recipes.git",
+                    @"https://github.com/autopkg/n8felton-recipes.git",
+                    @"https://github.com/autopkg/groob-recipes.git",
+                    @"https://github.com/autopkg/jazzace-recipes.git",
+                ];
 
-            NSMutableArray *popularRepos = [[NSMutableArray alloc] initWithCapacity:fallbackRepos.count];
-            [fallbackRepos enumerateObjectsUsingBlock:^(NSString *obj, NSUInteger idx, BOOL *stop) {
-                LGAutoPkgRepo *repo = nil;
-                if ((repo = [[LGAutoPkgRepo alloc] initWithCloneURL:obj])) {
-                    [popularRepos addObject:repo];
-                }
+                NSMutableArray *popularRepos = [[NSMutableArray alloc] initWithCapacity:fallbackRepos.count];
+                [fallbackRepos enumerateObjectsUsingBlock:^(NSString *obj, NSUInteger idx, BOOL *stop) {
+                    LGAutoPkgRepo *repo = nil;
+                    if ((repo = [[LGAutoPkgRepo alloc] initWithCloneURL:obj])) {
+                        [popularRepos addObject:repo];
+                    }
+                }];
+                _popularRepos = [popularRepos copy];
+                constructCommonRepos();
             }];
-            _popularRepos = [popularRepos copy];
-            constructCommonRepos();
-        }];
         [op start];
     }
 }
@@ -424,7 +430,8 @@ static NSArray *_popularRepos;
         if (split.count) {
             path = [[split subarrayWithRange:NSMakeRange(1, split.count - 1)] componentsJoinedByString:@":"];
         }
-    } else {
+    }
+    else {
         NSURL *url = [[NSURL alloc] initWithString:urlString];
         host = [url host];
         path = [url path];

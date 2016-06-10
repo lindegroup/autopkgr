@@ -17,8 +17,8 @@
 //  limitations under the License.
 //
 
-#import "LGUserNotification.h"
 #import "LGAutoPkgr.h"
+#import "LGUserNotification.h"
 
 @implementation LGUserNotification {
     NSError *_currentError;
@@ -39,11 +39,13 @@
     return NO;
 }
 
-+ (BOOL)templateIsFile {
++ (BOOL)templateIsFile
+{
     return NO;
 }
 
-+ (NSString *)defaultTemplate {
++ (NSString *)defaultTemplate
+{
     return @"Updates occurred.";
 };
 
@@ -58,7 +60,8 @@
     [self sendMessage:message title:nil complete:complete];
 }
 
-- (void)sendMessage:(NSString *)message title:(NSString *)title complete:(void (^)(NSError *))complete {
+- (void)sendMessage:(NSString *)message title:(NSString *)title complete:(void (^)(NSError *))complete
+{
     NSUserNotification *notification = [[NSUserNotification alloc] init];
     notification.informativeText = message;
     [[NSUserNotificationCenter defaultUserNotificationCenter] deliverNotification:notification];
@@ -76,7 +79,8 @@
         if (success) {
             [notification setHasActionButton:NO];
             [[NSUserNotificationCenter defaultUserNotificationCenter] deliverNotification:notification];
-        } else {
+        }
+        else {
             // Currently there's a modal window displayed for errors, in th future we could present the error here instead.
             if (error) {
                 [notification setUserInfo:error.userInfo];

@@ -82,7 +82,7 @@
 - (IBAction)close:(id)sender
 {
     if ([self.window isKindOfClass:[NSWindow class]]) {
-        if([self.window makeFirstResponder:nil]){
+        if ([self.window makeFirstResponder:nil]) {
             [self.window orderOut:nil];
             [NSApp endSheet:self.window];
         }
@@ -97,7 +97,8 @@
 
         self.urlLinkButton.target = self;
         self.urlLinkButton.action = @selector(openLinkedURL:);
-    } else {
+    }
+    else {
         self.urlLinkButton.hidden = YES;
     }
 }

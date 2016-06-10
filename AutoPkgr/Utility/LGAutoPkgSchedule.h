@@ -18,8 +18,8 @@
 //  limitations under the License.
 //
 
-#import <Foundation/Foundation.h>
 #import "LGProgressDelegate.h"
+#import <Foundation/Foundation.h>
 
 @class AHLaunchJobSchedule;
 

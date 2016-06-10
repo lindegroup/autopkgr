@@ -18,18 +18,18 @@
 //  limitations under the License.
 //
 
+#import "LGAutoPkgRecipe.h"
+#import "LGAutoPkgRepo.h"
+#import "LGAutoPkgTask.h"
+#import "LGNotificationManager.h"
 #import "LGRecipeReposViewController.h"
+#import "LGRecipeSearch.h"
 #import "LGRecipeTableViewController.h"
 #import "LGRepoTableViewController.h"
-#import "LGAutoPkgTask.h"
-#import "LGAutoPkgRepo.h"
-#import "LGAutoPkgRecipe.h"
-#import "LGRecipeSearch.h"
-#import "LGNotificationManager.h"
 
 #import "NSTextField+animatedString.h"
 
-@interface LGRecipeReposViewController ()<NSTextFieldDelegate>
+@interface LGRecipeReposViewController () <NSTextFieldDelegate>
 @property (weak) IBOutlet NSTextField *repoURLToAdd;
 @property (weak) IBOutlet NSButton *addRepoButton;
 
@@ -41,8 +41,6 @@
 @property (weak) IBOutlet NSProgressIndicator *repoAddProgressIndicator;
 
 @property (strong, nonatomic) LGAutoPkgTaskManager *taskManager;
-
-
 
 @end
 
@@ -127,19 +125,20 @@
                                                                       @"Progress panel message when running recipes.")];
 
     [_taskManager runRecipeList:recipeList
-                         updateRepo:NO
-                              reply:^(NSDictionary *report, NSError *error) {
-                                  NSAssert([NSThread isMainThread], @"Reply not on main thread!");
-                                  [self.progressDelegate stopProgress:error];
-                                  LGNotificationManager *notifier = [[LGNotificationManager alloc]
-                                                                     initWithReportDictionary:report errors:error];
+                     updateRepo:NO
+                          reply:^(NSDictionary *report, NSError *error) {
+                              NSAssert([NSThread isMainThread], @"Reply not on main thread!");
+                              [self.progressDelegate stopProgress:error];
+                              LGNotificationManager *notifier = [[LGNotificationManager alloc]
+                                  initWithReportDictionary:report
+                                                    errors:error];
 
-                                  [notifier sendEnabledNotifications:^(NSError *error) {
-                                      dispatch_async(dispatch_get_main_queue(), ^{
-                                          [self.progressDelegate stopProgress:error];
-                                      });
-                                  }];
+                              [notifier sendEnabledNotifications:^(NSError *error) {
+                                  dispatch_async(dispatch_get_main_queue(), ^{
+                                      [self.progressDelegate stopProgress:error];
+                                  });
                               }];
+                          }];
 }
 
 - (IBAction)cancelAutoPkgRun:(id)sender
@@ -168,7 +167,7 @@
 - (IBAction)openSearchPanel:(NSButton *)sender
 {
     NSString *origTitle = sender.title;
-    
+
     sender.enabled = NO;
     sender.title = @"Searching...";
 
@@ -186,28 +185,29 @@
             [_searchPanel openSheetOnWindow:self.modalWindow complete:^(LGWindowController *windowController) {
                 _searchPanel = nil;
             }];
-            
+
             [_searchProgressIndicator setDoubleValue:0.0];
             [_searchProgressIndicator stopAnimation:self];
             _searchProgressIndicator.hidden = YES;
-        } else {
+        }
+        else {
             [_recipeSearchResultsErrorTF fadeOut_withString:error.localizedDescription ?: @"No matching recipes found."];
         }
     }];
 }
 
 #pragma mark - Text delegate
-- (void)controlTextDidChange:(NSNotification *)note {
+- (void)controlTextDidChange:(NSNotification *)note
+{
     NSString *string = [note.object stringValue];
 
-    if([note.object isEqualTo:_repoURLToAdd]){
+    if ([note.object isEqualTo:_repoURLToAdd]) {
         _addRepoButton.enabled = [LGAutoPkgRepo stringIsValidRepoURL:string];
     }
 
-    else if([note.object isEqualTo:_recipeSearchTF]){
+    else if ([note.object isEqualTo:_recipeSearchTF]) {
         _recipeSearchButton.enabled = string.length;
     }
 }
-
 
 @end

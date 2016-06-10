@@ -26,7 +26,7 @@
 {
 
     NSMutableAttributedString *attrString = [[NSMutableAttributedString alloc]
-                                             initWithString:title];
+        initWithString:title];
 
     [self setTitle:attrString withColor:color];
 }
@@ -43,8 +43,8 @@
     NSRange range = NSMakeRange(0, len);
 
     [string addAttribute:NSForegroundColorAttributeName
-                      value:color
-                      range:range];
+                   value:color
+                   range:range];
 
     [string fixAttributesInRange:range];
 

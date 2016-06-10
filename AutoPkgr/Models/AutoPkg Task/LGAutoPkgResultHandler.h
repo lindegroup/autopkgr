@@ -18,8 +18,8 @@
 //  limitations under the License.
 //
 
-#import <Foundation/Foundation.h>
 #import "LGAutoPkgErrorHandler.h"
+#import <Foundation/Foundation.h>
 
 @interface LGAutoPkgResultHandler : NSObject
 

@@ -18,15 +18,15 @@
 //  limitations under the License.
 //
 
-#import <Cocoa/Cocoa.h>
 #import "LGProgressDelegate.h"
+#import <Cocoa/Cocoa.h>
 
 // Tab Views.
 #import "LGInstallViewController.h"
+#import "LGIntegrationsViewController.h"
+#import "LGNotificationsViewController.h"
 #import "LGRecipeReposViewController.h"
 #import "LGScheduleViewController.h"
-#import "LGNotificationsViewController.h"
-#import "LGIntegrationsViewController.h"
 
 @class LGRepoTableViewController, LGRecipeTableViewController;
 

@@ -69,7 +69,8 @@ static const NSTimeInterval defaultDuration = 0.2f;
         context.duration = 0.2f;
         context.allowsImplicitAnimation = YES;
         [constraint.animator setConstant:size];
-    } completionHandler:^{
-    }];
+    }
+        completionHandler:^{
+        }];
 }
 @end

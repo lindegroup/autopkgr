@@ -18,8 +18,8 @@
 //  limitations under the License.
 //
 
-#import "LGError.h"
 #import "LGConstants.h"
+#import "LGError.h"
 #import "LGLogger.h"
 
 static NSDictionary *userInfoFromCode(LGErrorCodes code)
@@ -153,7 +153,6 @@ static NSDictionary *userInfoFromCode(LGErrorCodes code)
                                                 @"LocalizableError",
                                                 @"Unknown error (NSLocalizedRecoverySuggestionErrorKey)");
         break;
-
     }
 
     return @{
@@ -237,7 +236,6 @@ static NSDictionary *userInfoFromHTTPResponse(NSHTTPURLResponse *response)
                                                 @"LocalizableError",
                                                 @"Unknown (NSLocalizedRecoverySuggestionErrorKey)");
         break;
-
     }
 
     return @{

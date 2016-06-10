@@ -25,7 +25,6 @@
 - (instancetype)init __unavailable;
 - (instancetype)initWithURL:(NSString *)gitHubURL;
 
-
 @property (copy, nonatomic, readonly) NSString *latestVersion;
 @property (copy, nonatomic, readonly) NSString *latestReleaseDownload;
 @property (copy, nonatomic, readonly) NSArray *latestReleaseDownloads;

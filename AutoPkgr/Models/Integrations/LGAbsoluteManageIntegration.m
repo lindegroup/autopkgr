@@ -41,11 +41,13 @@
 {
     return @"AMExport";
 }
-+ (NSString *)credits {
++ (NSString *)credits
+{
     return @"Copyright 2016 Thomas Burgin\nhttp://www.apache.org/licenses/LICENSE-2.0";
 }
 
-+ (NSURL *)homePage {
++ (NSURL *)homePage
+{
     return [NSURL URLWithString:@"https://github.com/tburgin/AbsoluteManageExport"];
 }
 
@@ -62,7 +64,7 @@
 
 + (NSArray *)components
 {
-    return @[[self binary]];
+    return @[ [self binary] ];
 }
 
 + (NSString *)binary
@@ -75,15 +77,18 @@
     return @[ @"com.github.tburgin.AbsoluteManageExport" ];
 }
 
-+ (BOOL)isUninstallable {
++ (BOOL)isUninstallable
+{
     return YES;
 }
 
-+ (NSString *)summaryResultKey {
++ (NSString *)summaryResultKey
+{
     return @"absolute_manage_export_summary_result";
 }
 
-+ (BOOL)meetsRequirements:(NSError *__autoreleasing *)error {
++ (BOOL)meetsRequirements:(NSError *__autoreleasing *)error
+{
     NSFileManager *manager = [NSFileManager defaultManager];
     NSString *lanRev = @"/Applications/LANrev Admin.app";
 
@@ -91,7 +96,7 @@
 
     NSString *dataBase = defaults.DatabaseDirectory ?: @"~/Library/Application Support/LANrev Admin/Database/".stringByExpandingTildeInPath;
 
-    for (NSString* path in @[lanRev, dataBase]) {
+    for (NSString *path in @[ lanRev, dataBase ]) {
         if (![manager fileExistsAtPath:path]) {
             if (error) {
                 *error = [[self class] requirementsError:[NSString stringWithFormat:@"Please check that %@ exists.", path]];
@@ -110,7 +115,8 @@
     return [NSDictionary dictionaryWithContentsOfFile:receipt][@"PackageVersion"];
 }
 
-- (void)customInstallActions {
+- (void)customInstallActions
+{
     [[LGAbsoluteManageDefaults new] setAllowURLSDPackageImport:YES];
 }
 
@@ -121,9 +127,10 @@
 
 static NSString *const kLGAbsoluteManageDomain = @"com.poleposition-sw.lanrev_admin";
 
-- (NSString *)DatabaseDirectory {
+- (NSString *)DatabaseDirectory
+{
     return [self absoluteManageDomainObject:
-             NSStringFromSelector(@selector(DatabaseDirectory))];
+                     NSStringFromSelector(@selector(DatabaseDirectory))];
 }
 
 - (void)setAllowURLSDPackageImport:(BOOL)AllowURLSDPackageImport

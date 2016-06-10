@@ -18,9 +18,9 @@
 //  limitations under the License.
 //
 
-#import <Foundation/Foundation.h>
 #import "LGAutoPkgrProtocol.h"
 #import "LGProgressDelegate.h"
+#import <Foundation/Foundation.h>
 
 @interface LGAutoPkgrHelperConnection : NSObject
 
@@ -31,7 +31,7 @@
 /**
  *  @return proxy connection to Priviledged Helper
  */
-@property (copy, nonatomic, readonly) id<AutoPkgrHelperAgent>remoteObjectProxy;
+@property (copy, nonatomic, readonly) id<AutoPkgrHelperAgent> remoteObjectProxy;
 
 /**
  *  @return proxy connection to the Priviledged Helper plus error handler block

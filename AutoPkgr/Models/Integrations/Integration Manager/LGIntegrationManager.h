@@ -27,8 +27,8 @@
 #import "LGJSSImporterIntegration.h"
 #import "LGLANrevIntegration.h"
 #import "LGMacPatchIntegration.h"
-#import "LGVirusTotalAnalyzerIntegration.h"
 #import "LGMunkiIntegration.h"
+#import "LGVirusTotalAnalyzerIntegration.h"
 
 @class LGIntegration;
 

@@ -34,9 +34,9 @@ extern NSString *appKeychainPath();
                         label:(NSString *)label
                         reply:(void (^)(NSString *password, NSError *error))reply;
 
-
 + (void)savePassword:(NSString *)password
-          forAccount:(NSString *)account reply:(void (^)(NSError *error))reply __deprecated_msg("use savePassword:forAccount:service:label:reply instead.");
+          forAccount:(NSString *)account
+               reply:(void (^)(NSError *error))reply __deprecated_msg("use savePassword:forAccount:service:label:reply instead.");
 
 + (void)savePassword:(NSString *)password
           forAccount:(NSString *)account

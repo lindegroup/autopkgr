@@ -18,8 +18,8 @@
 //  limitations under the License.
 //
 
-#import "LGTestPort.h"
 #import "LGAutoPkgr.h"
+#import "LGTestPort.h"
 
 #import <AFNetworking/AFNetworking.h>
 
@@ -46,8 +46,9 @@
         if ([self.inputStream streamStatus] == NSStreamStatusError ||
             [self.outputStream streamStatus] == NSStreamStatusError) {
             [self portTestDidCompletedWithSuccess:NO];
-        } else if ([self.inputStream streamStatus] == NSStreamStatusOpen &&
-                   [self.outputStream streamStatus] == NSStreamStatusOpen) {
+        }
+        else if ([self.inputStream streamStatus] == NSStreamStatusOpen &&
+                 [self.outputStream streamStatus] == NSStreamStatusOpen) {
             [self portTestDidCompletedWithSuccess:YES];
         }
     }
@@ -95,7 +96,8 @@
 
         [self.inputStream scheduleInRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
         [self.outputStream scheduleInRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
-    } else {
+    }
+    else {
         [self portTestDidCompletedWithSuccess:NO];
     }
 }
@@ -119,10 +121,10 @@
 
     operation.securityPolicy = policy;
     operation.shouldUseCredentialStorage = NO;
-    
-    [operation setRedirectResponseBlock:^NSURLRequest * (NSURLConnection * connection, NSURLRequest * request, NSURLResponse * redirectResponse) {
+
+    [operation setRedirectResponseBlock:^NSURLRequest *(NSURLConnection *connection, NSURLRequest *request, NSURLResponse *redirectResponse) {
         if (redirectResponse) {
-            DLog(@"redirected %@",redirectResponse);
+            DLog(@"redirected %@", redirectResponse);
         }
         redirectedURL = [(NSHTTPURLResponse *)redirectResponse allHeaderFields][@"Location"];
         return request;
@@ -131,10 +133,11 @@
     [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
         [[NSURLCache sharedURLCache] removeCachedResponseForRequest:request];
         reply(YES, redirectedURL);
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        [[NSURLCache sharedURLCache] removeCachedResponseForRequest:request];
-        reply(operation.response ? YES:NO, redirectedURL);
-    }];
+    }
+        failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+            [[NSURLCache sharedURLCache] removeCachedResponseForRequest:request];
+            reply(operation.response ? YES : NO, redirectedURL);
+        }];
 
     [operation start];
 }

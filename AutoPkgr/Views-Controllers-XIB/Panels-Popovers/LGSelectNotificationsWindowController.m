@@ -6,8 +6,8 @@
 //  Copyright 2015-2016 The Linde Group, Inc.
 //
 
-#import "LGSelectNotificationsWindowController.h"
 #import "LGDefaults.h"
+#import "LGSelectNotificationsWindowController.h"
 #import "NSArray+mapped.h"
 
 @interface LGSelectNotificationsWindowController ()
@@ -21,7 +21,8 @@
     NSArray *_buttons;
 }
 
-- (void)windowDidLoad {
+- (void)windowDidLoad
+{
     [super windowDidLoad];
 
     LGReportItems flags = [[LGDefaults standardUserDefaults] reportedItemFlags];
@@ -34,22 +35,24 @@
         return ([obj isMemberOfClass:[NSButton class]] && [obj tag]) ? obj : nil;
     }];
 
-    [_buttons enumerateObjectsUsingBlock:^(NSButton *button, NSUInteger idx, BOOL * _Nonnull stop) {
+    [_buttons enumerateObjectsUsingBlock:^(NSButton *button, NSUInteger idx, BOOL *_Nonnull stop) {
         button.state = (flags & button.tag);
     }];
     [self updateEnabled:flags];
 }
 
-- (IBAction)updateFlags:(id)sender {
+- (IBAction)updateFlags:(id)sender
+{
     LGReportItems flags = [[LGDefaults standardUserDefaults] reportedItemFlags];
     NSInteger tag;
     BOOL state;
 
-    if([sender isKindOfClass:[NSMatrix class]]){
+    if ([sender isKindOfClass:[NSMatrix class]]) {
         tag = kLGReportItemsAll;
         // The first row represents "Report All Items"
         state = ([sender selectedRow] == 0);
-    } else {
+    }
+    else {
         state = [sender state];
         tag = [sender tag];
     }
@@ -57,23 +60,26 @@
     if (state) {
         flags |= tag;
         [[LGDefaults standardUserDefaults] setReportedItemFlags:flags];
-    } else {
+    }
+    else {
         flags ^= tag;
         [[LGDefaults standardUserDefaults] setReportedItemFlags:flags];
     }
     [self updateEnabled:flags];
 }
 
-- (void)updateEnabled:(LGReportItems)flags {
+- (void)updateEnabled:(LGReportItems)flags
+{
     self.integrationUpdateState = flags & kLGReportItemsIntegrationUpdates;
-    self.integrationDescription.textColor = (flags & kLGReportItemsAll) ?[NSColor lightGrayColor] : [NSColor blackColor];
+    self.integrationDescription.textColor = (flags & kLGReportItemsAll) ? [NSColor lightGrayColor] : [NSColor blackColor];
 
-    [_buttons enumerateObjectsUsingBlock:^(NSButton *button, NSUInteger idx, BOOL * _Nonnull stop) {
+    [_buttons enumerateObjectsUsingBlock:^(NSButton *button, NSUInteger idx, BOOL *_Nonnull stop) {
         button.enabled = (button.tag == kLGReportItemsAll) || !(flags & kLGReportItemsAll);
     }];
 }
 
-- (IBAction)changeIntegrationUpdateState:(NSButton *)sender {
+- (IBAction)changeIntegrationUpdateState:(NSButton *)sender
+{
     self.integrationUpdateState = [sender state];
 }
 

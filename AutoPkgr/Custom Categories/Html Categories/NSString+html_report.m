@@ -123,7 +123,8 @@ NSString *const html_breakTwice = @"<br/><br/>\n";
     return [self html_tag:@"span" withCSSClass:cssClass];
 }
 
-- (NSString *)html_paragraphWithCSSClass:(NSString *)cssClass {
+- (NSString *)html_paragraphWithCSSClass:(NSString *)cssClass
+{
     return [self html_tag:@"p" withCSSClass:cssClass];
 }
 

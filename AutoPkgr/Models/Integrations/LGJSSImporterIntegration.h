@@ -17,8 +17,8 @@
 //  limitations under the License.
 //
 
-#import "LGIntegration.h"
 #import "LGDefaults.h"
+#import "LGIntegration.h"
 
 @class LGHTTPCredential;
 
@@ -38,4 +38,3 @@
 @property (assign, nonatomic) BOOL JSSVerifySSL;
 
 @end
-

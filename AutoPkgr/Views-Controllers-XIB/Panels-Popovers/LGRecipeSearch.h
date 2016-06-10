@@ -18,8 +18,8 @@
 //  limitations under the License.
 //
 
-#import <Cocoa/Cocoa.h>
 #import "LGWindowController.h"
+#import <Cocoa/Cocoa.h>
 
 @interface LGRecipeSearch : LGWindowController <NSTableViewDataSource, NSTableViewDelegate>
 

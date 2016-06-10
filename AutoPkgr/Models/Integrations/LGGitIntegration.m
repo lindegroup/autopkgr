@@ -17,12 +17,12 @@
 //  limitations under the License.
 //
 
+#import "LGDefaults.h"
 #import "LGGitIntegration.h"
 #import "LGIntegration+Protocols.h"
-#import "LGDefaults.h"
 
-#import "NSData+taskData.h"
 #import "LGLogger.h"
+#import "NSData+taskData.h"
 #import <AHProxySettings/NSTask+useSystemProxies.h>
 
 static NSString *const kLGOfficialGit = @"/usr/local/git/bin/git";
@@ -31,17 +31,18 @@ static NSString *const kLGXcodeGit = @"/Applications/Xcode.app/Contents/Develope
 static NSString *const kLGHomeBrewGit = @"/usr/local/bin/git";
 static NSString *const kLGBoxenBrewGit = @"/opt/boxen/homebrew/bin/git";
 
-@interface LGGitIntegration ()<LGIntegrationPackageInstaller>
+@interface LGGitIntegration () <LGIntegrationPackageInstaller>
 @end
 
 static NSArray *knownGitPaths()
 {
-    return @[ kLGOfficialGit,
-              kLGBoxenBrewGit,
-              kLGHomeBrewGit,
-              kLGXcodeGit,
-              kLGCLIToolsGit,
-              ];
+    return @[
+        kLGOfficialGit,
+        kLGBoxenBrewGit,
+        kLGHomeBrewGit,
+        kLGXcodeGit,
+        kLGCLIToolsGit,
+    ];
 }
 
 @implementation LGGitIntegration
@@ -57,17 +58,19 @@ static NSArray *knownGitPaths()
     return @"Git";
 }
 
-+ (NSString *)credits {
++ (NSString *)credits
+{
     return @"The GNU General Public License (GPL-2.0)";
 }
 
-+ (NSURL *)homePage {
++ (NSURL *)homePage
+{
     return [NSURL URLWithString:@"https://git-scm.com"];
 }
 
 + (NSArray *)components
 {
-    return @[[self binary] ?: kLGOfficialGit];
+    return @[ [self binary] ?: kLGOfficialGit ];
 }
 
 + (NSString *)binary
@@ -86,7 +89,8 @@ static NSArray *knownGitPaths()
         if ([fm isExecutableFileAtPath:currentGit]) {
             binary = currentGit;
         }
-    } else {
+    }
+    else {
         // If nothing is set, then iterate through the list
         // of known git paths trying to locate one.
         for (NSString *path in knownGitPaths()) {
@@ -109,12 +113,13 @@ static NSArray *knownGitPaths()
 + (NSArray *)packageIdentifiers
 {
     if ([[[LGDefaults standardUserDefaults] gitPath] isEqualToString:kLGOfficialGit]) {
-        return @[@"GitOSX.Installer.git221Universal.git.pkg"];
+        return @[ @"GitOSX.Installer.git221Universal.git.pkg" ];
     }
     return nil;
 }
 
-+ (BOOL)isUninstallable {
++ (BOOL)isUninstallable
+{
     return NO;
 }
 
@@ -152,7 +157,7 @@ static NSArray *knownGitPaths()
         BOOL OVER_10_8 = floor(NSAppKitVersionNumber) > NSAppKitVersionNumber10_8;
 
         NSPredicate *match = [NSPredicate predicateWithFormat:@"SELF ENDSWITH[CD] %@",
-                              OVER_10_8 ? @"-mavericks.dmg" : @"-snow-leopard.dmg"];
+                                                              OVER_10_8 ? @"-mavericks.dmg" : @"-snow-leopard.dmg"];
 
         _downloadURL = [[self.gitHubInfo.latestReleaseDownloads filteredArrayUsingPredicate:match] firstObject];
 #if DEBUG
@@ -168,11 +173,11 @@ static NSArray *knownGitPaths()
     return [[NSFileManager defaultManager] isExecutableFileAtPath:kLGOfficialGit];
 }
 
-+ (void)gitTaskWithArguments:(NSArray *)args repoPath:(NSString *)repoPath reply:(void (^)(NSString *, NSError *))reply {
-
++ (void)gitTaskWithArguments:(NSArray *)args repoPath:(NSString *)repoPath reply:(void (^)(NSString *, NSError *))reply
+{
 
     // Dispatch queue for writing data.
-    __block dispatch_queue_t git_data_queue = dispatch_queue_create("com.lindegroup.git.data.queue", DISPATCH_QUEUE_SERIAL );
+    __block dispatch_queue_t git_data_queue = dispatch_queue_create("com.lindegroup.git.data.queue", DISPATCH_QUEUE_SERIAL);
 
     // Dispatch quque to send the reply back on.
     __block dispatch_queue_t git_callback_queue = dispatch_get_current_queue();
@@ -190,7 +195,7 @@ static NSArray *knownGitPaths()
     task.launchPath = binary;
     task.arguments = args;
 
-    if (access(repoPath.UTF8String,F_OK) == 0) {
+    if (access(repoPath.UTF8String, F_OK) == 0) {
         task.currentDirectoryPath = repoPath;
     }
 
@@ -200,7 +205,8 @@ static NSArray *knownGitPaths()
     LGDefaults *defaults = [LGDefaults standardUserDefaults];
     if ([defaults boolForKey:@"useSystemProxies"]) {
         [task useSystemProxiesForDestination:@"https://github.com"];
-    } else {
+    }
+    else {
         NSString *httpProxy = [defaults objectForKey:@"HTTP_PROXY"];
         NSString *httpsProxy = [defaults objectForKey:@"HTTPS_PROXY"];
         NSString *noProxy = [defaults objectForKey:@"NO_PROXY"];
@@ -236,7 +242,7 @@ static NSArray *knownGitPaths()
         });
     }];
 
-    task.terminationHandler = ^(NSTask *aTask){
+    task.terminationHandler = ^(NSTask *aTask) {
         dispatch_sync(git_data_queue, ^{
             NSString *stdOut = nil;
 
@@ -244,7 +250,7 @@ static NSArray *knownGitPaths()
             [outData appendData:[outHandle readDataToEndOfFile]];
             [errData appendData:[errHandle readDataToEndOfFile]];
 
-            if(outData.length){
+            if (outData.length) {
                 stdOut = outData.taskData_string;
             }
 
@@ -269,17 +275,17 @@ static NSArray *knownGitPaths()
     [task launch];
 }
 
-+ (NSError *)gitErrorWithMessage:(NSString *)message repo:(NSString *)repo code:(NSInteger)code {
++ (NSError *)gitErrorWithMessage:(NSString *)message repo:(NSString *)repo code:(NSInteger)code
+{
     NSError *error = nil;
     if (code != 0) {
 
         error = [NSError errorWithDomain:@"AutoPkgr Git"
                                     code:code
-                                userInfo:@{NSLocalizedDescriptionKey: quick_formatString( @"There was a problem executing git on %@", repo),
-                                           NSLocalizedRecoverySuggestionErrorKey:message ?: @""}];
+                                userInfo:@{ NSLocalizedDescriptionKey : quick_formatString(@"There was a problem executing git on %@", repo),
+                                            NSLocalizedRecoverySuggestionErrorKey : message ?: @"" }];
     }
     return error;
 }
-
 
 @end

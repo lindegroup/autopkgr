@@ -17,19 +17,19 @@
 //  limitations under the License.
 //
 
+#import "LGEmailNotification.h"
+#import "LGHipChatNotification.h"
 #import "LGNotificationManager.h"
 #import "LGNotificationService.h"
-#import "LGUserNotification.h"
-#import "LGEmailNotification.h"
 #import "LGSlackNotification.h"
-#import "LGHipChatNotification.h"
+#import "LGUserNotification.h"
 
-#import "LGPasswords.h"
 #import "LGIntegrationManager.h"
+#import "LGPasswords.h"
 
 #import "NSArray+mapped.h"
 
-@interface LGNotificationService ()<LGNotificationServiceProtocol>
+@interface LGNotificationService () <LGNotificationServiceProtocol>
 @end
 
 const NSArray *NotificationServiceClasses()
@@ -37,11 +37,10 @@ const NSArray *NotificationServiceClasses()
     static dispatch_once_t onceToken;
     __strong static NSArray *classes = nil;
     dispatch_once(&onceToken, ^{
-        classes =  @[ [LGEmailNotification class],
-                      [LGSlackNotification class],
-                      [LGHipChatNotification class],
-                      [LGUserNotification class]
-                      ];
+        classes = @[ [LGEmailNotification class],
+                     [LGSlackNotification class],
+                     [LGHipChatNotification class],
+                     [LGUserNotification class] ];
     });
     return classes;
 }
@@ -108,8 +107,8 @@ const NSArray *NotificationServiceClasses()
          * of services that are done sending a message. Once
          * everything has checked back in from their send
          * operation call our `complete()` block. */
-        void (^completedService)() = ^(){
-            completedCounter ++;
+        void (^completedService)() = ^() {
+            completedCounter++;
             if (completedCounter >= expectedServices) {
                 NSError *error = [self processedError];
 
@@ -128,7 +127,7 @@ const NSArray *NotificationServiceClasses()
                     if (!_reportedErrors) {
                         _reportedErrors = [NSMutableArray arrayWithCapacity:enabledServices.count];
                     }
-                    [_reportedErrors addObject:@{[[service class] serviceDescription] : error}];
+                    [_reportedErrors addObject:@{ [[service class] serviceDescription] : error }];
                 }
                 completedService();
             }];
@@ -144,8 +143,8 @@ const NSArray *NotificationServiceClasses()
         __block NSInteger code = 0;
 
         [_reportedErrors enumerateObjectsUsingBlock:^(NSDictionary *dict, NSUInteger idx, BOOL *stop) {
-            [dict enumerateKeysAndObjectsUsingBlock:^(NSString * serviceName, NSError *err, BOOL *stop) {
-                [errorDescription appendFormat:@"*%@: %@\n", serviceName, err.localizedRecoverySuggestion ?: err.localizedDescription ];
+            [dict enumerateKeysAndObjectsUsingBlock:^(NSString *serviceName, NSError *err, BOOL *stop) {
+                [errorDescription appendFormat:@"*%@: %@\n", serviceName, err.localizedRecoverySuggestion ?: err.localizedDescription];
                 code = err.code;
             }];
         }];

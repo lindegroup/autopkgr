@@ -18,8 +18,8 @@
 //  limitations under the License.
 //
 
-#import <Cocoa/Cocoa.h>
 #import "LGTabViewControllerBase.h"
+#import <Cocoa/Cocoa.h>
 
 @interface LGScheduleViewController : LGTabViewControllerBase
 
@@ -33,8 +33,6 @@
 @property (weak) IBOutlet NSPopUpButton *weeklyHourPopupBT;
 @property (weak) IBOutlet NSPopUpButton *weeklyDayPopupBT;
 
-
-
 /* These are set externally and not part of the
  * LGScheduleViewController.xib. Currently the cancel button
  * is referenced by LGConfigurationWindowController's progress panel.
@@ -43,6 +41,5 @@
 
 #pragma mark-- IBActions --
 - (IBAction)changeSchedule:(id)sender;
-
 
 @end

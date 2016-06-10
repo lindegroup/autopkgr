@@ -18,8 +18,8 @@
 //  limitations under the License.
 //
 
-#import <Cocoa/Cocoa.h>
 #import "LGTabViewControllerBase.h"
+#import <Cocoa/Cocoa.h>
 
 @class LGRepoTableViewController, LGRecipeTableViewController;
 
@@ -28,7 +28,6 @@
 // Objects
 @property (strong) IBOutlet LGRepoTableViewController *popRepoTableViewHandler;
 @property (strong) IBOutlet LGRecipeTableViewController *recipeTableViewHandler;
-
 
 @property (weak) IBOutlet NSButton *runAutoPkgNowButton;
 @property (weak) IBOutlet NSButton *updateRepoNowButton;

@@ -55,7 +55,8 @@
 {
     if ([sender isKindOfClass:[NSTextField class]]) {
         if ([[self.service class] storesInfoInKeychain]) {
-            [[self.service class] saveInfoToKeychain:self.infoOrPasswordTextField.stringValue reply:^(NSError *error) {}];
+            [[self.service class] saveInfoToKeychain:self.infoOrPasswordTextField.stringValue reply:^(NSError *error){
+            }];
         }
     }
 }

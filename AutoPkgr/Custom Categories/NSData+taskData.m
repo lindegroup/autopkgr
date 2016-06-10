@@ -60,16 +60,19 @@
     return nil;
 }
 
-- (BOOL)taskData_isInteractive {
-    NSArray *defaultMatches = @[@" [y/n]:",
-                                @" [YES/NO]:",
-                                @" Password:",
-                                ];
+- (BOOL)taskData_isInteractive
+{
+    NSArray *defaultMatches = @[
+        @" [y/n]:",
+        @" [YES/NO]:",
+        @" Password:",
+    ];
 
     return [self taskData_isInteractiveWithStrings:defaultMatches];
 }
 
-- (BOOL)taskData_isInteractiveWithStrings:(NSArray *)interactiveStrings {
+- (BOOL)taskData_isInteractiveWithStrings:(NSArray *)interactiveStrings
+{
     NSString *message = [[[NSString alloc] initWithData:self encoding:NSUTF8StringEncoding] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
 
     NSMutableArray *predicates = [NSMutableArray arrayWithCapacity:interactiveStrings.count];

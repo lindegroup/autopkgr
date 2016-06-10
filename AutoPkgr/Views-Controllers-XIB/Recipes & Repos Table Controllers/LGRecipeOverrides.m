@@ -18,10 +18,10 @@
 //  limitations under the License.
 //
 
-#import "LGRecipeOverrides.h"
 #import "LGAutoPkgRecipe.h"
-#import "LGDefaults.h"
 #import "LGAutoPkgTask.h"
+#import "LGDefaults.h"
+#import "LGRecipeOverrides.h"
 
 NSString *const kLGNotificationOverrideCreated = @"com.lindegroup.AutoPkgr.notification.override.created";
 NSString *const kLGNotificationOverrideDeleted = @"com.lindegroup.AutoPkgr.notification.override.deleted";
@@ -39,9 +39,10 @@ const CFStringRef kUTTypePropertyList = CFSTR("com.apple.property-list");
     NSString *recipeIdentifier = recipe.Identifier;
 
     NSString *overrideName = nil;
-    if ([recipe.Name isEqualToString:@"MakeCatalogs.munki"]){
+    if ([recipe.Name isEqualToString:@"MakeCatalogs.munki"]) {
         overrideName = recipe.Name;
-    } else {
+    }
+    else {
         overrideName = [self promptForOverrideName:recipeName];
     }
 
@@ -49,10 +50,11 @@ const CFStringRef kUTTypePropertyList = CFSTR("com.apple.property-list");
         DevLog(@"Creating override for %@", recipeName);
         [LGAutoPkgTask makeOverride:recipeIdentifier name:overrideName reply:^(NSString *path, NSError *error) {
             if (error) {
-                DLog(@"%@",error.localizedDescription);
+                DLog(@"%@", error.localizedDescription);
                 [NSApp presentError:error];
-            } else {
-                 LGAutoPkgRecipe *override = [[LGAutoPkgRecipe alloc] initWithRecipeFile:[NSURL fileURLWithPath:path] isOverride:YES];
+            }
+            else {
+                LGAutoPkgRecipe * override = [[LGAutoPkgRecipe alloc] initWithRecipeFile:[NSURL fileURLWithPath:path] isOverride:YES];
                 assert([[NSFileManager defaultManager] fileExistsAtPath:path]);
 
                 // If they have the same NAME, mark the override as enabled and the old recipe as disabled.
@@ -62,10 +64,10 @@ const CFStringRef kUTTypePropertyList = CFSTR("com.apple.property-list");
                 }
 
                 [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-                    [[NSNotificationCenter defaultCenter]postNotificationName:kLGNotificationOverrideCreated
-                                                                       object:nil
-                                                                     userInfo:@{@"new": override,
-                                                                                @"old": recipe}];
+                    [[NSNotificationCenter defaultCenter] postNotificationName:kLGNotificationOverrideCreated
+                                                                        object:nil
+                                                                      userInfo:@{ @"new" : override,
+                                                                                  @"old" : recipe }];
                 }];
             }
         }];
@@ -92,9 +94,9 @@ const CFStringRef kUTTypePropertyList = CFSTR("com.apple.property-list");
             overrideToRemove.enabled = NO;
 
             [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-            [[NSNotificationCenter defaultCenter] postNotificationName:kLGNotificationOverrideDeleted
-                                                                object:nil
-                                                              userInfo:@{@"removed" : overrideToRemove}];
+                [[NSNotificationCenter defaultCenter] postNotificationName:kLGNotificationOverrideDeleted
+                                                                    object:nil
+                                                                  userInfo:@{ @"removed" : overrideToRemove }];
             }];
         }
     }
@@ -133,7 +135,8 @@ const CFStringRef kUTTypePropertyList = CFSTR("com.apple.property-list");
     NSString *recipePath = [(LGAutoPkgRecipe *)sender.representedObject FilePath];
     if (recipePath) {
         [[NSWorkspace sharedWorkspace] openFile:recipePath];
-    } else {
+    }
+    else {
         NSLog(@"There was a problem opening the Recipe override file");
     }
 }
@@ -157,8 +160,8 @@ const CFStringRef kUTTypePropertyList = CFSTR("com.apple.property-list");
     if ([item.title isEqual:@"Other..."]) {
         NSOpenPanel *panel = [NSOpenPanel openPanel];
         panel.canChooseDirectories = NO;
-        panel.allowedFileTypes =  @[ @"app" ];
-        panel.title =  NSLocalizedString(@"Choose an editor for AutoPkgr recipe overrides", nil);
+        panel.allowedFileTypes = @[ @"app" ];
+        panel.title = NSLocalizedString(@"Choose an editor for AutoPkgr recipe overrides", nil);
         panel.defaultButtonCell.title = @"Choose";
 
         NSInteger button = [panel runModal];
@@ -166,10 +169,12 @@ const CFStringRef kUTTypePropertyList = CFSTR("com.apple.property-list");
             newEditor = [[[panel.URL pathComponents] lastObject] stringByDeletingPathExtension];
             item = [[NSMenuItem alloc] initWithTitle:newEditor action:nil keyEquivalent:@""];
             [menu insertItem:item atIndex:0];
-        } else {
+        }
+        else {
             return item;
         }
-    } else {
+    }
+    else {
         newEditor = item.title;
     }
 

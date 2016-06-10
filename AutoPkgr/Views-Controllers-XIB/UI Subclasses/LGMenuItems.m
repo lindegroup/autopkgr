@@ -30,7 +30,8 @@
     [super awakeFromNib];
 }
 
-- (BOOL)isEnabled {
+- (BOOL)isEnabled
+{
     return NO;
 }
 

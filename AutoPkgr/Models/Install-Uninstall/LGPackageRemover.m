@@ -17,8 +17,8 @@
 //  limitations under the License.
 //
 
-#import "LGPackageRemover.h"
 #import "LGConstants.h"
+#import "LGPackageRemover.h"
 
 #import "NSData+taskData.h"
 #import <syslog.h>
@@ -70,12 +70,11 @@ static dispatch_queue_t autopkgr_pkg_remover_queue()
     static dispatch_queue_t autopkgr_recipe_write_queue;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        autopkgr_recipe_write_queue = dispatch_queue_create("com.lindegroup.autopkgr.pkg.remover.queue", DISPATCH_QUEUE_SERIAL );
+        autopkgr_recipe_write_queue = dispatch_queue_create("com.lindegroup.autopkgr.pkg.remover.queue", DISPATCH_QUEUE_SERIAL);
     });
 
     return autopkgr_recipe_write_queue;
 }
-
 
 @implementation LGPackageRemover
 
@@ -112,7 +111,8 @@ static dispatch_queue_t autopkgr_pkg_remover_queue()
             if (![installedPackages containsObject:identifier]) {
                 [validIdentifiers removeObject:identifier];
                 syslog(LOG_ALERT, "%s is not currently installed, removing it from the list of pkgs to consider.", identifier.UTF8String);
-            } else if (![validRemovablePackages containsObject:identifier]) {
+            }
+            else if (![validRemovablePackages containsObject:identifier]) {
                 error = [[self class] errorWithCode:kLGPackageInstallerErrorPackageNotRemovable identifier:identifier];
                 return reply(nil, nil, error);
             }
@@ -137,9 +137,9 @@ static dispatch_queue_t autopkgr_pkg_remover_queue()
         [files sortUsingSelector:@selector(localizedStandardCompare:)];
 
         // Now go through and remove the directories in our list.
-        for (NSString *path in [[files reverseObjectEnumerator] allObjects]){
+        for (NSString *path in [[files reverseObjectEnumerator] allObjects]) {
             count++;
-            double p = ((count/total) * 100);
+            double p = ((count / total) * 100);
             NSString *progressMessage;
             BOOL isDir;
             if ([fm fileExistsAtPath:path isDirectory:&isDir]) {
@@ -147,18 +147,22 @@ static dispatch_queue_t autopkgr_pkg_remover_queue()
                 if (isDir) {
                     if (dryRun) {
                         progressMessage = [NSString stringWithFormat:@"Will try to remove dir:  %@", path];
-                    } else if ( [[fm contentsOfDirectoryAtPath:path error:&error] count] || error) {
+                    }
+                    else if ([[fm contentsOfDirectoryAtPath:path error:&error] count] || error) {
                         // The directory is not empty.
                         progressMessage = [NSString stringWithFormat:@"Could not remove non-empty directory %@", path];
-                    } else if ([fm removeItemAtPath:path error:&error]) {
+                    }
+                    else if ([fm removeItemAtPath:path error:&error]) {
                         progressMessage = [NSString stringWithFormat:@"Removed dir:  %@", path];
                         [removed addObject:path];
                     }
-                } else {
+                }
+                else {
                     // It's a file.
                     if (dryRun) {
                         progressMessage = [NSString stringWithFormat:@"Will try to remove file: %@", path];
-                    } else if ([fm removeItemAtPath:path error:&error]) {
+                    }
+                    else if ([fm removeItemAtPath:path error:&error]) {
                         progressMessage = [NSString stringWithFormat:@"Removing file: %@", path];
                         [removed addObject:path];
                     }
@@ -178,7 +182,6 @@ static dispatch_queue_t autopkgr_pkg_remover_queue()
             });
         }
 
-
         for (NSString *identifier in validIdentifiers) {
             [self forget:identifier error:&error];
         }
@@ -187,7 +190,6 @@ static dispatch_queue_t autopkgr_pkg_remover_queue()
             reply(removed, remain, error);
         });
     });
-
 }
 
 - (BOOL)forget:(NSString *)identifer error:(NSError *__autoreleasing *)error
@@ -214,13 +216,13 @@ static dispatch_queue_t autopkgr_pkg_remover_queue()
     if ([[[self class] validRemovablePackages] containsObject:identifer]) {
         [[self class] pkgutilTaskWithArgs:@[ @"--forget", identifer ] error:error];
         forgot = YES;
-    } else {
+    }
+    else {
         forgot = NO;
     }
 
     return forgot;
 }
-
 
 - (NSMutableOrderedSet *)bomForIdentifiers:(NSArray *)identifiers error:(NSError *__autoreleasing *)error
 {
@@ -244,7 +246,8 @@ static dispatch_queue_t autopkgr_pkg_remover_queue()
                 if ([fm fileExistsAtPath:normalizedFile isDirectory:&isDir]) {
                     if (isDir) {
                         [directories addObject:normalizedFile];
-                    } else {
+                    }
+                    else {
                         [files addObject:normalizedFile];
                     }
                 }
@@ -261,7 +264,8 @@ static dispatch_queue_t autopkgr_pkg_remover_queue()
             // If it's marked as a file type to be auto removed add it to the files array.
             if ([self evalAutoRemove:fileName]) {
                 [files addObject:filePath];
-            } else {
+            }
+            else {
 
                 // If there is a file in the current dir array that is not represented
                 // in the fileArray the directory will not be empty so
@@ -286,7 +290,8 @@ static dispatch_queue_t autopkgr_pkg_remover_queue()
     BOOL autoRemove = NO;
     if ([fileName isEqualToString:DS_STORE]) {
         autoRemove = YES;
-    } else if ([[[self class] autoRemoveFileExtensions] containsObject:fileName.pathExtension]) {
+    }
+    else if ([[[self class] autoRemoveFileExtensions] containsObject:fileName.pathExtension]) {
         autoRemove = YES;
     }
     return autoRemove;
@@ -351,11 +356,12 @@ static dispatch_queue_t autopkgr_pkg_remover_queue()
     static NSArray *packages;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        packages = @[@"com.github.sheagcraig.jssimporter",
-                     @"com.github.sheagcraig.jss-autopkg-addon",
-                     @"com.github.tburgin.AbsoluteManageExport",
-                     @"com.github.jbaker10.LANrevImporterInstaller",
-                     ];
+        packages = @[
+            @"com.github.sheagcraig.jssimporter",
+            @"com.github.sheagcraig.jss-autopkg-addon",
+            @"com.github.tburgin.AbsoluteManageExport",
+            @"com.github.jbaker10.LANrevImporterInstaller",
+        ];
     });
     return packages;
 }
@@ -365,9 +371,10 @@ static dispatch_queue_t autopkgr_pkg_remover_queue()
     static NSArray *extensions;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        extensions = @[DS_STORE,
-                       PYTHON_BYTECODE_EXTENSION,
-                       ];
+        extensions = @[
+            DS_STORE,
+            PYTHON_BYTECODE_EXTENSION,
+        ];
     });
     return extensions;
 }

@@ -18,10 +18,10 @@
 //  limitations under the License.
 //
 
-#import "LGRecipeSearch.h"
-#import "LGAutoPkgr.h"
-#import "LGAutoPkgTask.h"
 #import "LGAutoPkgRecipe.h"
+#import "LGAutoPkgTask.h"
+#import "LGAutoPkgr.h"
+#import "LGRecipeSearch.h"
 #import "LGRecipeTableViewController.h"
 #import "NSTextField+animatedString.h"
 
@@ -55,7 +55,8 @@
     return [self initWithWindowNibName:@"LGRecipeSearchPanel"];
 }
 
-- (instancetype)initWithSearchResults:(NSArray *)results installedRepos:(NSArray *)installedRepos {
+- (instancetype)initWithSearchResults:(NSArray *)results installedRepos:(NSArray *)installedRepos
+{
     if (self = [self initWithWindowNibName:@"LGRecipeSearchResultsPanel"]) {
         _searchResults = results;
         _currentlyInstalledRepos = installedRepos;
@@ -88,8 +89,9 @@
                             [_progressIndicator setHidden:YES];
                             if (error) {
                                 _limitMessage.hidden = NO;
-                                NSLog(@"Search error: %@",error);
-                            } else {
+                                NSLog(@"Search error: %@", error);
+                            }
+                            else {
                                 _limitMessage.hidden = YES;
                                 _searchResults = results;
                                 [_searchTable reloadData];
@@ -114,7 +116,8 @@
         if (error) {
             [self.limitMessage fadeOut_withString:error.localizedDescription];
             NSLog(@"Error adding repo: %@", error.localizedDescription);
-        } else {
+        }
+        else {
             _currentlyInstalledRepos = [LGAutoPkgTask repoList];
             [_searchTable reloadData];
         }
@@ -135,7 +138,8 @@
             NSPredicate *predicate = [self repoMatchPredicate:match];
 
             return ([_currentlyInstalledRepos filteredArrayUsingPredicate:predicate].count) ? [NSImage LGStatusAvailable] : [NSImage LGStatusNone];
-        } else {
+        }
+        else {
             return [[_searchResults objectAtIndex:row] objectForKey:[tableColumn identifier]];
         }
     }
@@ -151,7 +155,8 @@
 
         if ([_currentlyInstalledRepos filteredArrayUsingPredicate:predicate].count) {
             [_addBT setEnabled:NO];
-        } else {
+        }
+        else {
             [_addBT setEnabled:YES];
         }
     }

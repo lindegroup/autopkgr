@@ -33,7 +33,7 @@ static dispatch_queue_t autopkgr_recipe_write_queue()
     static dispatch_queue_t autopkgr_recipe_write_queue;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        autopkgr_recipe_write_queue = dispatch_queue_create("com.lindegroup.autopkgr.recipe.write.queue", DISPATCH_QUEUE_SERIAL );
+        autopkgr_recipe_write_queue = dispatch_queue_create("com.lindegroup.autopkgr.recipe.write.queue", DISPATCH_QUEUE_SERIAL);
     });
 
     return autopkgr_recipe_write_queue;
@@ -119,7 +119,8 @@ static NSMutableDictionary *_identifierURLStore = nil;
                 if (parentRecipeID) {
                     [parents addObject:parentRecipeID];
                 }
-            } else {
+            }
+            else {
                 break;
             }
         }
@@ -197,7 +198,7 @@ static NSMutableDictionary *_identifierURLStore = nil;
         }
 
         /* Start by removing any instance of MakeCatalogs from the list. It's added back in later. */
-         NSPredicate *makeCatalogPredicate = [NSPredicate predicateWithFormat:@"SELF contains[cd] 'MakeCatalogs'"];
+        NSPredicate *makeCatalogPredicate = [NSPredicate predicateWithFormat:@"SELF contains[cd] 'MakeCatalogs'"];
         [currentList enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
             if ([makeCatalogPredicate evaluateWithObject:obj]) {
                 [currentList removeObject:obj];
@@ -208,14 +209,15 @@ static NSMutableDictionary *_identifierURLStore = nil;
             if (![currentList containsObject:self.Identifier]) {
                 [currentList insertObject:self.Identifier atIndex:0];
             }
-        } else {
+        }
+        else {
             [currentList removeObject:self.Identifier];
         }
 
         /* Enumerate over the list to see if there are any .munki recipes
          * now listed. If so re-add the MakeCatalogs recipe. */
         [currentList enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-            if ([obj rangeOfString:@"munki"].location != NSNotFound ) {
+            if ([obj rangeOfString:@"munki"].location != NSNotFound) {
                 [currentList addObject:kLGMakeCatalogsRecipeName];
                 *stop = YES;
             }
@@ -248,8 +250,9 @@ static NSMutableDictionary *_identifierURLStore = nil;
         NSArray *processes = plist[kLGAutoPkgRecipeProcessKey];
         if (processes) {
             if ([processes indexOfObjectPassingTest:^BOOL(NSDictionary *obj, NSUInteger idx, BOOL *stop) {
-                return [obj[@"Processor"] isEqualToString:step];
-                }] != NSNotFound) {
+                    return [obj[@"Processor"] isEqualToString:step];
+                }]
+                != NSNotFound) {
                 return YES;
             }
         }
@@ -312,7 +315,7 @@ static NSMutableDictionary *_identifierURLStore = nil;
     NSArray *overrideArray = [self findRecipesRecursivelyAtPath:recipeOverridePath isOverride:YES activeRecipes:activeRecipes];
     NSMutableArray *validOverrides = [[NSMutableArray alloc] init];
 
-    for (LGAutoPkgRecipe *override in overrideArray) {
+    for (LGAutoPkgRecipe * override in overrideArray) {
         // Only consider the recipe valid if the parent exists.
         NSPredicate *parentExistsPredicate = [NSPredicate predicateWithFormat:@"%K contains %@", kLGAutoPkgRecipeIdentifierKey, override.ParentRecipe];
 
@@ -322,7 +325,7 @@ static NSMutableDictionary *_identifierURLStore = nil;
     }
 
     if (filterOverlaps) {
-        for (LGAutoPkgRecipe *override in validOverrides) {
+        for (LGAutoPkgRecipe * override in validOverrides) {
             /* Filter the array by removing the parent recipe if an override is found that matches
              * BOTH conditions: the value for the "Name" key of the override is same as the value
              * for the "Name" key of the Parent AND the value for the Parent Recipe's "Identifier" key
@@ -370,7 +373,8 @@ static NSMutableDictionary *_identifierURLStore = nil;
                     if (activeRecipes) {
                         if ([activeRecipes containsObject:recipe.Identifier]) {
                             recipe->_enabledInitialized = YES;
-                        } else {
+                        }
+                        else {
                             recipe->_enabledInitialized = NO;
                         }
                     }
@@ -393,7 +397,8 @@ static NSMutableDictionary *_identifierURLStore = nil;
         NSString *autoPkgrRecipeList = [NSString stringWithContentsOfFile:recipeList encoding:NSUTF8StringEncoding error:&error];
         if (error) {
             NSLog(@"Error reading %@.", autoPkgrRecipeList);
-        } else {
+        }
+        else {
             NSArray *recipes = autoPkgrRecipeList.split_byLine;
             if (recipes.count) {
                 [activeRecipes addObjectsFromArray:recipes];
@@ -476,7 +481,8 @@ static NSMutableDictionary *_identifierURLStore = nil;
         // Return NO if any were unable to be converted.
         if (!success) {
             NSLog(@"An error may have occurred while converting the recipe list. We successfully converted %d out of %lu recipes. However it's also possible your recipe list was already converted. Please double check your enabled recipes now.", i, (unsigned long)activeRecipes.count);
-        } else {
+        }
+        else {
             NSLog(@"The recipe list was upgraded successfully.");
         }
         return YES;

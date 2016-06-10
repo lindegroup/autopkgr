@@ -18,10 +18,10 @@
 //  limitations under the License.
 //
 
-#import "LGScheduleViewController.h"
-#import "LGPasswords.h"
-#import "LGAutoPkgr.h"
 #import "LGAutoPkgSchedule.h"
+#import "LGAutoPkgr.h"
+#import "LGPasswords.h"
+#import "LGScheduleViewController.h"
 #import "LGTestPort.h"
 
 #import <AHLaunchCtl/AHLaunchJobSchedule.h>
@@ -117,23 +117,23 @@
             [_scheduleTypeMatrix selectCellWithTag:1];
             [_dailyHourPopupBT selectItemWithTag:[(AHLaunchJobSchedule *)scheduleOrInterval hour]];
             menuTitleString = [NSString stringWithFormat:NSLocalizedString(@"Run AutoPkg Daily at %@", nil), _dailyHourPopupBT.selectedItem.title];
-
-        } else {
+        }
+        else {
             [_scheduleTypeMatrix selectCellWithTag:2];
             [_weeklyHourPopupBT selectItemWithTag:[(AHLaunchJobSchedule *)scheduleOrInterval hour]];
             [_weeklyDayPopupBT selectItemWithTag:[(AHLaunchJobSchedule *)scheduleOrInterval weekday]];
             menuTitleString = [NSString stringWithFormat:NSLocalizedString(@"Run AutoPkg %@s at %@", nil), _weeklyDayPopupBT.selectedItem.title, _weeklyHourPopupBT.selectedItem.title];
         }
         _scheduleMenuItem.title = menuTitleString;
-
-    } else if ([scheduleOrInterval isKindOfClass:[NSNumber class]]) {
+    }
+    else if ([scheduleOrInterval isKindOfClass:[NSNumber class]]) {
         //
         [_scheduleTypeMatrix selectCellWithTag:0];
         _scheduleIntervalTF.stringValue = [scheduleOrInterval stringValue];
 
         _scheduleMenuItem.title = [NSString stringWithFormat:NSLocalizedString(@"Run AutoPkg Every %@ Hours", nil), scheduleOrInterval];
-
-    } else if (scheduleOrInterval) {
+    }
+    else if (scheduleOrInterval) {
         NSAssert(NO, @"The schedule is not correctly formatted and cannot be handled.");
     }
 }
@@ -145,7 +145,8 @@
     if ([sender isEqualTo:_scheduleMenuItem]) {
         // The status menu's `state` property isn't updated until after the action is completed so use the inverse of the state property here.
         start = !_scheduleMenuItem.state;
-    } else {
+    }
+    else {
         start = _scheduleEnabledBT.state;
     }
 
@@ -153,11 +154,14 @@
     if (start) {
         if ([self.currentSchedule isEqualTo:self.proposedSchedule]) {
             return;
-        } else if ([sender isEqualTo:_scheduleIntervalTF] && _scheduleTypeMatrix.selectedTag != 0) {
+        }
+        else if ([sender isEqualTo:_scheduleIntervalTF] && _scheduleTypeMatrix.selectedTag != 0) {
             return;
-        } else if ([sender isEqualTo:_dailyHourPopupBT] && _scheduleTypeMatrix.selectedTag != 1) {
+        }
+        else if ([sender isEqualTo:_dailyHourPopupBT] && _scheduleTypeMatrix.selectedTag != 1) {
             return;
-        } else if ([sender isEqualTo:_weeklyHourPopupBT] || [sender isEqualTo:_weeklyDayPopupBT]) {
+        }
+        else if ([sender isEqualTo:_weeklyHourPopupBT] || [sender isEqualTo:_weeklyDayPopupBT]) {
             if (_scheduleTypeMatrix.selectedTag != 2) {
                 return;
             }

@@ -18,8 +18,8 @@
 //  limitations under the License.
 //
 
-#import "LGDefaults.h"
 #import "LGConstants.h"
+#import "LGDefaults.h"
 #import "LGError.h"
 
 @interface LGDefaults ()
@@ -40,7 +40,6 @@
     });
 
     return _sharedObject;
-
 }
 
 - (void)dealloc
@@ -51,14 +50,14 @@
 - (BOOL)synchronize
 {
     [super synchronize];
-    BOOL success =
-        (CFPreferencesSynchronize(kCFPreferencesCurrentApplication,
-                                  kCFPreferencesCurrentUser,
-                                  kCFPreferencesAnyHost) &&
+    BOOL success = (CFPreferencesSynchronize(kCFPreferencesCurrentApplication,
+                                             kCFPreferencesCurrentUser,
+                                             kCFPreferencesAnyHost)
+                    &&
 
-         CFPreferencesSynchronize((__bridge CFStringRef)(kLGAutoPkgPreferenceDomain),
-                                  kCFPreferencesCurrentUser,
-                                  kCFPreferencesAnyHost));
+                    CFPreferencesSynchronize((__bridge CFStringRef)(kLGAutoPkgPreferenceDomain),
+                                             kCFPreferencesCurrentUser,
+                                             kCFPreferencesAnyHost));
     return success;
 }
 
@@ -120,10 +119,10 @@
     id date = [self objectForKey:NSStringFromSelector(@selector(LastAutoPkgRun))];
 
     NSString *setVal;
-    if ([date isKindOfClass:[NSDate class]]){
+    if ([date isKindOfClass:[NSDate class]]) {
         setVal = [[self class] formattedDate:date];
-
-    } else if ([date isKindOfClass:[NSString class]] ) {
+    }
+    else if ([date isKindOfClass:[NSString class]]) {
         setVal = date;
     }
 
@@ -135,11 +134,13 @@
     [self setObject:LastAutoPkgRun forKey:NSStringFromSelector(@selector(LastAutoPkgRun))];
 }
 
-- (LGReportItems)reportedItemFlags {
+- (LGReportItems)reportedItemFlags
+{
     return [self integerForKey:NSStringFromSelector(@selector(reportedItemFlags))];
 }
 
-- (void)setReportedItemFlags:(LGReportItems)reportedItemFlags {
+- (void)setReportedItemFlags:(LGReportItems)reportedItemFlags
+{
     [self setInteger:reportedItemFlags forKey:NSStringFromSelector(@selector(reportedItemFlags))];
 }
 
@@ -332,7 +333,7 @@
         formatter.doesRelativeDateFormatting = YES;
         formatter.locale = [NSLocale currentLocale];
         formatter.timeZone = [NSTimeZone defaultTimeZone];
-        
+
         return [formatter stringFromDate:date];
     }
     return nil;
@@ -361,7 +362,8 @@
         if (splitDir.count > 1) {
             // Take the last item in the array and append that to the home directory.
             repairedDir = [NSHomeDirectory() stringByAppendingString:splitDir.lastObject];
-        } else {
+        }
+        else {
             repairedDir = dir;
         }
         BOOL isDir;
@@ -369,7 +371,8 @@
         if ([manager fileExistsAtPath:dir isDirectory:&isDir] && isDir) {
             [newRecipeSearchDirs addObject:repairedDir];
             pathRepaired++;
-        } else {
+        }
+        else {
             errorEncountered = YES;
         }
     }
@@ -388,7 +391,8 @@
                 repairedKey = nil;
                 errorEncountered = YES;
             }
-        } else {
+        }
+        else {
             repairedKey = key;
         }
         BOOL isDir;
@@ -397,7 +401,8 @@
                 [newRecipeRepos setObject:defaults.autoPkgRecipeRepos[key] forKey:repairedKey];
                 pathRepaired++;
             }
-        } else {
+        }
+        else {
             errorEncountered = YES;
         }
     }
@@ -425,7 +430,8 @@
                 [toPath rangeOfString:@"recipes"].location != NSNotFound) {
                 NSLog(@"We found an item at %@ that needs to be removed.", toPath);
                 [manager removeItemAtPath:toPath error:nil];
-            } else {
+            }
+            else {
                 // There is something really wrong with the destination, abort.
                 NSLog(@"Somthing is wrong with the RECIPE_REPO path: %@.", toPath);
                 NSLog(@"The folder exists, but does not look like an actual recipe repo.");

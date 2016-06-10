@@ -17,11 +17,11 @@
 //  limitations under the License.
 //
 
-#import "LGVirusTotalAnalyzerIntegrationView.h"
 #import "LGVirusTotalAnalyzerIntegration.h"
+#import "LGVirusTotalAnalyzerIntegrationView.h"
 
 #import "NSTextField+safeStringValue.h"
-@interface LGVirusTotalAnalyzerIntegrationView ()<NSTextFieldDelegate>
+@interface LGVirusTotalAnalyzerIntegrationView () <NSTextFieldDelegate>
 
 @property (weak) IBOutlet NSTextField *VirusTotalApiKeyTF;
 
@@ -31,7 +31,7 @@
 @property (weak) IBOutlet NSTextField *VirusTotalSleepSecondsTF;
 
 @property (strong) LGVirusTotalAnalyzerDefaults *defaults;
-@property BOOL  customTokenEnabled;
+@property BOOL customTokenEnabled;
 
 @end
 
@@ -50,10 +50,9 @@
     _VirusTotalApiKeyTF.delegate = self;
     _VirusTotalApiKeyTF.safe_stringValue = _defaults.VIRUSTOTAL_API_KEY;
 
-
     // If there is no VIRUSTOTAL_SLEEP_SECONDS preference, this defaults to 15.
     _VirusTotalSleepSecondsTF.delegate = self;
-    if(_defaults.VIRUSTOTAL_SLEEP_SECONDS != 0){
+    if (_defaults.VIRUSTOTAL_SLEEP_SECONDS != 0) {
         _VirusTotalSleepSecondsTF.integerValue = _defaults.VIRUSTOTAL_SLEEP_SECONDS;
     }
 
@@ -65,21 +64,23 @@
     // If VIRUSTOTAL_AUTO_SUBMIT is set to YES, this should be enabled and inherit whatever value is in VIRUSTOTAL_AUTO_SUBMIT_MAX_SIZE.
     _VirusTotalAutoSubmitMaxSizeTF.enabled = _VirusTotalAlwaysReportBT.state;
     _VirusTotalAutoSubmitMaxSizeTF.delegate = self;
-    if(_VirusTotalAlwaysReportBT.state){
+    if (_VirusTotalAlwaysReportBT.state) {
         _VirusTotalAutoSubmitMaxSizeTF.integerValue = _defaults.VIRUSTOTAL_AUTO_SUBMIT_MAX_SIZE;
     }
-
 }
 
-- (IBAction)tokenTypeChanged:(NSMatrix *)matrix {
-    if(matrix.selectedRow == 0){
+- (IBAction)tokenTypeChanged:(NSMatrix *)matrix
+{
+    if (matrix.selectedRow == 0) {
         _defaults.VIRUSTOTAL_API_KEY = nil;
-    } else {
+    }
+    else {
         _defaults.VIRUSTOTAL_API_KEY = _VirusTotalApiKeyTF.stringValue;
     }
 }
 
-- (IBAction)checkBoxChanged:(NSButton *)button{
+- (IBAction)checkBoxChanged:(NSButton *)button
+{
     // VIRUSTOTAL_ALWAYS_REPORT
     if ([button isEqualTo:_VirusTotalAlwaysReportBT]) {
         _defaults.VIRUSTOTAL_ALWAYS_REPORT = button.state;
@@ -92,7 +93,8 @@
     }
 }
 
-- (void)controlTextDidChange:(NSNotification *)notification {
+- (void)controlTextDidChange:(NSNotification *)notification
+{
 
     // VIRUSTOTAL_API_KEY
     if ([notification.object isEqualTo:_VirusTotalApiKeyTF]) {
@@ -105,7 +107,8 @@
             // TODO: Something like this:
             // _defaults.VIRUSTOTAL_AUTO_SUBMIT_MAX_SIZE = nil;
             _defaults.VIRUSTOTAL_AUTO_SUBMIT_MAX_SIZE = 419430400;
-        } else {
+        }
+        else {
             _defaults.VIRUSTOTAL_AUTO_SUBMIT_MAX_SIZE = [notification.object integerValue];
         }
     }
@@ -116,7 +119,8 @@
             // TODO: Something like this:
             // _defaults.VIRUSTOTAL_SLEEP_SECONDS = nil;
             _defaults.VIRUSTOTAL_SLEEP_SECONDS = 15;
-        } else {
+        }
+        else {
             _defaults.VIRUSTOTAL_SLEEP_SECONDS = [notification.object integerValue];
         }
     }

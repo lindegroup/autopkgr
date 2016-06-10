@@ -17,12 +17,12 @@
 //  limitations under the License.
 //
 
-#import "LGMunkiIntegration.h"
 #import "LGIntegration+Protocols.h"
+#import "LGMunkiIntegration.h"
 
 static NSString *const kLGMunkiimportDomain = @"com.googlecode.munki.munkiimport";
 // Define the protocols you intend to conform to.
-@interface LGMunkiIntegration ()<LGIntegrationPackageInstaller, LGIntegrationSharedProcessor>
+@interface LGMunkiIntegration () <LGIntegrationPackageInstaller, LGIntegrationSharedProcessor>
 @end
 
 #pragma mark - Tool overrides
@@ -38,7 +38,8 @@ static NSString *const kLGMunkiimportDomain = @"com.googlecode.munki.munkiimport
     return @"Munki tools";
 }
 
-+ (NSString *)credits {
++ (NSString *)credits
+{
     return @"Copyright 2008-2014 Greg Neagle.\nhttp://www.apache.org/licenses/LICENSE-2.0";
 }
 
@@ -47,18 +48,19 @@ static NSString *const kLGMunkiimportDomain = @"com.googlecode.munki.munkiimport
     return @"https://api.github.com/repos/munki/munki/releases";
 }
 
-+ (NSURL *)homePage {
++ (NSURL *)homePage
+{
     return [NSURL URLWithString:@"https://www.munki.org/"];
 }
 
-+ (NSString *)defaultRepository {
++ (NSString *)defaultRepository
+{
     return @"https://github.com/autopkg/recipes.git";
 }
 
 + (NSArray *)components
 {
-    return @[[self binary]
-              ];
+    return @[ [self binary] ];
 }
 
 + (NSString *)binary
@@ -68,23 +70,26 @@ static NSString *const kLGMunkiimportDomain = @"com.googlecode.munki.munkiimport
 
 + (NSArray *)packageIdentifiers
 {
-    return @[@"com.googlecode.munki.admin",
-             @"com.googlecode.munki.app",
-             @"com.googlecode.munki.core",
-             @"com.googlecode.munki.launchd",
-             @"com.googlecode.munki.munkiwebadmin-scripts"];
+    return @[ @"com.googlecode.munki.admin",
+              @"com.googlecode.munki.app",
+              @"com.googlecode.munki.core",
+              @"com.googlecode.munki.launchd",
+              @"com.googlecode.munki.munkiwebadmin-scripts" ];
 }
 
-+ (BOOL)isUninstallable {
++ (BOOL)isUninstallable
+{
     // There are just too many parts to try and uninstall Munki tools.
     return NO;
 }
 
-+ (NSString *)summaryResultKey {
++ (NSString *)summaryResultKey
+{
     return @"munki_importer_summary_result";
 }
 
-- (void)customInstallActions {
+- (void)customInstallActions
+{
     // TODO: Possibly setup a basic folder structure for Munki.
 }
 
@@ -94,80 +99,88 @@ static NSString *const kLGMunkiimportDomain = @"com.googlecode.munki.munkiimport
     return [[self versionTaskWithExec:[[self class] binary] arguments:@[ @"--version" ]] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
 }
 
-- (NSString *)remoteVersion {
+- (NSString *)remoteVersion
+{
     // Since the tag version is a short version, we need to use the string from the download package.
     NSString *pkgString = self.gitHubInfo.latestReleaseDownload.lastPathComponent;
 
     // Example input: munkitools-2.7.0.2753.pkg
     return [pkgString.stringByDeletingPathExtension stringByReplacingOccurrencesOfString:@"munkitools-" withString:@""];
-
 }
 
 @end
-
 
 #pragma mark - Defaults
 @implementation LGDefaults (munki)
 
 #pragma mark - Default catalog
-- (void)setDefault_catalog:(NSString *)default_catalog {
+- (void)setDefault_catalog:(NSString *)default_catalog
+{
     [self setMunkiDomainObject:default_catalog forKey:NSStringFromSelector(@selector(default_catalog))];
 }
 
-- (NSString *)default_catalog {
+- (NSString *)default_catalog
+{
     return [self munkiimporterDomainObject:NSStringFromSelector(_cmd)];
 }
 
 #pragma mark - Editor
-- (void)setEditor:(NSString *)editor {
+- (void)setEditor:(NSString *)editor
+{
     [self setMunkiDomainObject:editor forKey:NSStringFromSelector(@selector(editor))];
 }
 
-- (NSString *)editor {
+- (NSString *)editor
+{
     return [self munkiimporterDomainObject:NSStringFromSelector(_cmd)];
 }
 
 #pragma mark - Pkginfo extension
-- (void)setPkginfo_extension:(NSString *)pkginfo_extension {
+- (void)setPkginfo_extension:(NSString *)pkginfo_extension
+{
     [self setMunkiDomainObject:pkginfo_extension forKey:NSStringFromSelector(@selector(pkginfo_extension))];
 }
 
-- (NSString *)pkginfo_extension {
+- (NSString *)pkginfo_extension
+{
     return [self munkiimporterDomainObject:NSStringFromSelector(_cmd)];
 }
 
 #pragma mark - repo path
-- (void)setRepo_path:(NSString *)repo_path {
+- (void)setRepo_path:(NSString *)repo_path
+{
     [self setMunkiDomainObject:repo_path forKey:NSStringFromSelector(@selector(repo_path))];
 }
 
-- (NSString *)repo_path {
+- (NSString *)repo_path
+{
     return [self munkiimporterDomainObject:NSStringFromSelector(_cmd)];
 }
 
 #pragma mark - repo url
-- (void)setRepo_url:(NSString *)repo_url {
+- (void)setRepo_url:(NSString *)repo_url
+{
     [self setMunkiDomainObject:repo_url forKey:NSStringFromSelector(@selector(repo_url))];
-
 }
 
-- (NSString *)repo_url {
+- (NSString *)repo_url
+{
     return [self munkiimporterDomainObject:NSStringFromSelector(_cmd)];
 }
 
-# pragma mark - CFPrefs
-- (id)munkiimporterDomainObject:(NSString *)key {
+#pragma mark - CFPrefs
+- (id)munkiimporterDomainObject:(NSString *)key
+{
     id value = CFBridgingRelease(CFPreferencesCopyAppValue((__bridge CFStringRef)(key),
                                                            (__bridge CFStringRef)(kLGMunkiimportDomain)));
     return value;
-
 }
 
-- (void)setMunkiDomainObject:(id)object forKey:(NSString *)key {
+- (void)setMunkiDomainObject:(id)object forKey:(NSString *)key
+{
     CFPreferencesSetAppValue((__bridge CFStringRef)(key),
                              (__bridge CFTypeRef)(object),
                              (__bridge CFStringRef)(kLGMunkiimportDomain));
-
 }
 
 @end

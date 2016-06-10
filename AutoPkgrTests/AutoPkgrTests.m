@@ -18,25 +18,25 @@
 //  limitations under the License.
 //
 
-#import <XCTest/XCTest.h>
-#import "LGInstaller.h"
-#import "LGGitHubJSONLoader.h"
 #import "LGAutoPkgr.h"
+#import "LGGitHubJSONLoader.h"
+#import "LGInstaller.h"
 #import "LGIntegrationManager.h"
-#import "LGJSSImporterIntegration.h"
 #import "LGJSSDistributionPoint.h"
+#import "LGJSSImporterIntegration.h"
+#import <XCTest/XCTest.h>
 
-#import "LGAutoPkgTask.h"
-#import "LGAutoPkgReport.h"
 #import "LGAutoPkgErrorHandler.h"
 #import "LGAutoPkgRecipeListManager.h"
+#import "LGAutoPkgReport.h"
+#import "LGAutoPkgTask.h"
 
 #import "LGPasswords.h"
 #import "LGServerCredentials.h"
 
+#import "LGHipChatNotification.h"
 #import "LGNotificationManager.h"
 #import "LGSlackNotification.h"
-#import "LGHipChatNotification.h"
 
 #import "LGUserNotification.h"
 
@@ -62,20 +62,19 @@ static const BOOL _TEST_PRIVILEGED_HELPER = YES;
     [super tearDown];
 }
 
-
 #pragma mark - LGAutoPkgTask
 - (void)testDP
 {
 
-    LGJSSImporterDefaults *defaults  = [[LGJSSImporterDefaults alloc] init];
+    LGJSSImporterDefaults *defaults = [[LGJSSImporterDefaults alloc] init];
     NSArray *arr = [LGJSSDistributionPoint enabledDistributionPoints];
 
-    [arr enumerateObjectsUsingBlock:^(LGJSSDistributionPoint *obj, NSUInteger idx, BOOL * _Nonnull stop) {
+    [arr enumerateObjectsUsingBlock:^(LGJSSDistributionPoint *obj, NSUInteger idx, BOOL *_Nonnull stop) {
         [obj remove];
     }];
     NSLog(@"%@", defaults.JSSRepos);
 
-    [arr enumerateObjectsUsingBlock:^(LGJSSDistributionPoint *obj, NSUInteger idx, BOOL * _Nonnull stop) {
+    [arr enumerateObjectsUsingBlock:^(LGJSSDistributionPoint *obj, NSUInteger idx, BOOL *_Nonnull stop) {
         [obj save];
     }];
 
@@ -90,14 +89,14 @@ static const BOOL _TEST_PRIVILEGED_HELPER = YES;
     XCTAssertNotNil([LGAutoPkgTask processorInfo:@"Installer"], @"Failed test");
 }
 
-- (void)testRecipeLists {
+- (void)testRecipeLists
+{
     LGAutoPkgRecipeListManager *listManager = [[LGAutoPkgRecipeListManager alloc] init];
     NSString *newList = @"bilbo";
 
     NSLog(@"%@", listManager.currentListName);
     NSLog(@"%@", listManager.currentListPath);
     listManager.currentListName = newList;
-
 
     NSLog(@"%@", listManager.currentListName);
 
@@ -133,17 +132,17 @@ static const BOOL _TEST_PRIVILEGED_HELPER = YES;
         if (!fufillExpectation1) {
             [expectation1 fulfill];
             fufillExpectation1 = YES;
-        } else {
+        }
+        else {
             [expectation2 fulfill];
         };
     }];
-    
+
     [integration refresh];
     [integration install:nil];
 
     [self waitForExpectationsWithTimeout:300 handler:^(NSError *error) {
-        if(error)
-        {
+        if (error) {
             XCTFail(@"Expectation Failed with error: %@", error);
         }
     }];
@@ -157,7 +156,7 @@ static const BOOL _TEST_PRIVILEGED_HELPER = YES;
      * The code for this has never been committed to ensure it's never released into the wild.
      */
 
-    if (_TEST_PRIVILEGED_HELPER){
+    if (_TEST_PRIVILEGED_HELPER) {
         NSArray *integrations = [[LGIntegrationManager new] allIntegrations];
         NSMutableArray *expectations = [[NSMutableArray alloc] init];
 
@@ -171,16 +170,16 @@ static const BOOL _TEST_PRIVILEGED_HELPER = YES;
             [integration install:^(NSString *message, double progress) {
                 NSLog(@"Progress: %@", message);
                 XCTAssert([NSThread isMainThread], @"Not main thread");
-            } reply:^(NSError *error) {
-                XCTAssert([NSThread isMainThread], @"Not main thread");
-                XCTAssertNil(error, @"error %@", error.localizedDescription);
-                [expectations[i] fulfill];
-            }];
+            }
+                reply:^(NSError *error) {
+                    XCTAssert([NSThread isMainThread], @"Not main thread");
+                    XCTAssertNil(error, @"error %@", error.localizedDescription);
+                    [expectations[i] fulfill];
+                }];
         }
 
         [self waitForExpectationsWithTimeout:300 handler:^(NSError *error) {
-            if(error)
-            {
+            if (error) {
                 XCTFail(@"Expectation Failed with error: %@", error);
             }
         }];
@@ -205,8 +204,7 @@ static const BOOL _TEST_PRIVILEGED_HELPER = YES;
     [integration refresh];
 
     [self waitForExpectationsWithTimeout:300 handler:^(NSError *error) {
-        if(error)
-        {
+        if (error) {
             XCTFail(@"Expectation Failed with error: %@", error);
         }
     }];
@@ -225,16 +223,14 @@ static const BOOL _TEST_PRIVILEGED_HELPER = YES;
     }];
 
     [self waitForExpectationsWithTimeout:300 handler:^(NSError *error) {
-        if(error)
-        {
+        if (error) {
             XCTFail(@"Expectation Failed with error: %@", error);
         }
     }];
 }
 
-
-
-- (void)testVersionCompare {
+- (void)testVersionCompare
+{
     // GT
     XCTAssertTrue([@"0.4.2" version_isGreaterThan:@"0.4.1"], @"wrong");
     XCTAssertTrue([@"0.4.2" version_isGreaterThan:@"0.4.1"], @"wrong");
@@ -266,7 +262,8 @@ static const BOOL _TEST_PRIVILEGED_HELPER = YES;
     XCTAssertTrue([@"0.4.1" version_isLessThanOrEqualTo:@"0.4.2"], @"wrong");
 }
 
-- (void)testCredentials {
+- (void)testCredentials
+{
 
     XCTestExpectation *wait = [self expectationWithDescription:@"Web Credential Test"];
 
@@ -296,8 +293,7 @@ static const BOOL _TEST_PRIVILEGED_HELPER = YES;
     }];
 
     [self waitForExpectationsWithTimeout:300 handler:^(NSError *error) {
-        if(error)
-        {
+        if (error) {
             XCTFail(@"Expectation Failed with error: %@", error);
         }
     }];
@@ -347,7 +343,7 @@ static const BOOL _TEST_PRIVILEGED_HELPER = YES;
 - (NSError *)reportError
 {
     return [NSError errorWithDomain:@"AutoPkgr" code:1 userInfo:@{ NSLocalizedDescriptionKey : @"Error running recipes",
-                                                                             NSLocalizedRecoverySuggestionErrorKey : @"Code signature verification failed. Note that all verifications can be disabled by setting the variable DISABLE_CODE_SIGNATURE_VERIFICATION to a non-empty value.\nThere was an unknown exception which causes autopkg to fail." }];
+                                                                   NSLocalizedRecoverySuggestionErrorKey : @"Code signature verification failed. Note that all verifications can be disabled by setting the variable DISABLE_CODE_SIGNATURE_VERIFICATION to a non-empty value.\nThere was an unknown exception which causes autopkg to fail." }];
 }
 
 - (void)runReportTestWithResourceNamed:(NSString *)resource flags:(LGReportItems)flags
@@ -374,13 +370,13 @@ static const BOOL _TEST_PRIVILEGED_HELPER = YES;
 
     NSDictionary *d = report.templateData;
 
-    if(![d writeToFile:@"/tmp/example_data.plist" atomically:YES]){
+    if (![d writeToFile:@"/tmp/example_data.plist" atomically:YES]) {
         NSLog(@"error writing %@", d);
     }
 
     NSBundle *bundle = [NSBundle bundleForClass:[self class]];
     NSString *template = [bundle pathForResource:@"report" ofType:@"html"];
-    
+
     [[report renderWithTemplate:template error:nil] writeToFile:htmlFile atomically:YES encoding:NSUTF8StringEncoding error:nil];
 
     [[NSWorkspace sharedWorkspace] openFile:htmlFile];
@@ -391,7 +387,7 @@ static const BOOL _TEST_PRIVILEGED_HELPER = YES;
     NSString *htmlFile = @"/tmp/report.html";
     NSBundle *bundle = [NSBundle bundleForClass:[self class]];
 
-//    NSString *reportFile = [bundle pathForResource:@"report_0.4.2" ofType:@"plist"];
+    //    NSString *reportFile = [bundle pathForResource:@"report_0.4.2" ofType:@"plist"];
     NSString *reportFile = [bundle pathForResource:@"report_0.4.3" ofType:@"plist"];
 
     NSDictionary *reportDict = [NSDictionary dictionaryWithContentsOfFile:reportFile];
@@ -403,7 +399,7 @@ static const BOOL _TEST_PRIVILEGED_HELPER = YES;
 
     report.reportedItemFlags = kLGReportItemsAll;
 
-//    [report.emailMessageString writeToFile:htmlFile atomically:YES encoding:NSUTF8StringEncoding error:nil];
+    //    [report.emailMessageString writeToFile:htmlFile atomically:YES encoding:NSUTF8StringEncoding error:nil];
 
     NSString *template = [bundle pathForResource:@"report" ofType:@"html"];
     [[report renderWithTemplate:template error:nil] writeToFile:htmlFile atomically:YES encoding:NSUTF8StringEncoding error:nil];
@@ -442,7 +438,8 @@ static const BOOL _TEST_PRIVILEGED_HELPER = YES;
     return report;
 }
 
-- (void)testNotificationManager {
+- (void)testNotificationManager
+{
     // Set up User Notification Delegate
     _noteDelegate = [[LGUserNotificationsDelegate alloc] initAsDefaultCenterDelegate];
     XCTestExpectation *expectation = [self expectationWithDescription:@"Notification manager test"];
@@ -455,15 +452,14 @@ static const BOOL _TEST_PRIVILEGED_HELPER = YES;
     }];
 
     [self waitForExpectationsWithTimeout:300 handler:^(NSError *error) {
-        if(error)
-        {
+        if (error) {
             XCTFail(@"Expectation Failed with error: %@", error);
         }
     }];
-
 }
 
-- (void)testIsNetworkOpCheck {
+- (void)testIsNetworkOpCheck
+{
     // Are
     XCTAssertTrue([self isNetworkOperation:kLGAutoPkgRun], @"Run should be ");
     XCTAssertTrue([self isNetworkOperation:kLGAutoPkgSearch], @"Search should be");
@@ -483,16 +479,16 @@ static const BOOL _TEST_PRIVILEGED_HELPER = YES;
 
 - (BOOL)isNetworkOperation:(LGAutoPkgVerb)verb
 {
-    NSInteger ck = (kLGAutoPkgRepoAdd | kLGAutoPkgRepoUpdate | kLGAutoPkgRun | kLGAutoPkgSearch );
+    NSInteger ck = (kLGAutoPkgRepoAdd | kLGAutoPkgRepoUpdate | kLGAutoPkgRun | kLGAutoPkgSearch);
 
     BOOL isNetworkOperation = verb & ck;
 
     return isNetworkOperation;
 }
 
-
-- (void)testSlackNotification {
-    id<LGNotificationServiceProtocol>notification = [[LGSlackNotification alloc] initWithReport:[self notificationReport]];
+- (void)testSlackNotification
+{
+    id<LGNotificationServiceProtocol> notification = [[LGSlackNotification alloc] initWithReport:[self notificationReport]];
     XCTestExpectation *expectation = [self expectationWithDescription:quick_formatString(@"Test %@", [notification.class serviceDescription])];
 
     [notification send:^(NSError *error) {
@@ -503,13 +499,14 @@ static const BOOL _TEST_PRIVILEGED_HELPER = YES;
     }];
 
     [self waitForExpectationsWithTimeout:300 handler:^(NSError *error) {
-        XCTAssertNil(error,@"Expectation Failed with error: %@", error);
+        XCTAssertNil(error, @"Expectation Failed with error: %@", error);
     }];
 }
 
-- (void)testHipChatNotification {
-    id<LGNotificationServiceProtocol>notification = [[LGHipChatNotification alloc] initWithReport:[self notificationReport]];
-    
+- (void)testHipChatNotification
+{
+    id<LGNotificationServiceProtocol> notification = [[LGHipChatNotification alloc] initWithReport:[self notificationReport]];
+
     XCTestExpectation *expectation = [self expectationWithDescription:quick_formatString(@"Test %@", [notification.class serviceDescription])];
 
     [notification send:^(NSError *error) {
@@ -520,12 +517,13 @@ static const BOOL _TEST_PRIVILEGED_HELPER = YES;
     }];
 
     [self waitForExpectationsWithTimeout:300 handler:^(NSError *error) {
-        XCTAssertNil(error,@"Expectation Failed with error: %@", error);
+        XCTAssertNil(error, @"Expectation Failed with error: %@", error);
     }];
 }
 
 #pragma mark - Utility
-- (void)testErrorAlerts {
+- (void)testErrorAlerts
+{
     for (int i = 1; i < kLGErrorAuthChallenge; i++) {
         NSError *error = [LGError errorWithCode:i];
         XCTAssertNotNil(error.localizedDescription, @"Error description for code % is nil", i);
@@ -535,11 +533,14 @@ static const BOOL _TEST_PRIVILEGED_HELPER = YES;
 }
 
 #pragma mark - Progress delegate
-- (void)startProgressWithMessage:(NSString *)message{}
-- (void)stopProgress:(NSError *)error{}
-- (void)bringAutoPkgrToFront{}
+- (void)startProgressWithMessage:(NSString *)message
+{
+}
+- (void)stopProgress:(NSError *)error {}
+- (void)bringAutoPkgrToFront {}
 
-- (void)updateProgress:(NSString *)message progress:(double)progress{
+- (void)updateProgress:(NSString *)message progress:(double)progress
+{
     NSLog(@"%@", message);
 }
 @end

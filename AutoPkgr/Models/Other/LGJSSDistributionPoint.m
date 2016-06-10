@@ -6,10 +6,10 @@
 //  Copyright 2015-2016 The Linde Group, Inc.
 //
 
+#import "LGHTTPRequest.h"
 #import "LGJSSDistributionPoint.h"
 #import "LGJSSImporterIntegration.h"
 #import "LGLogger.h"
-#import "LGHTTPRequest.h"
 #import "LGServerCredentials.h"
 
 #import "NSArray+mapped.h"
@@ -212,7 +212,8 @@ NSDictionary *keyInfoDict()
     if ([self validKeyForType:key]) {
         if (value) {
             [_dpDict setObject:value forKey:key];
-        } else {
+        }
+        else {
             [_dpDict removeObjectForKey:key];
         }
     }
@@ -272,7 +273,8 @@ NSDictionary *keyInfoDict()
 {
     if (self.type == kLGJSSTypeLocal) {
         return self.share_name;
-    } else {
+    }
+    else {
         return [self getValueForKey:NSStringFromSelector(@selector(name))];
     }
 }
@@ -281,7 +283,8 @@ NSDictionary *keyInfoDict()
 {
     if (self.type == kLGJSSTypeLocal) {
         self.share_name = name;
-    } else {
+    }
+    else {
         [self updateValue:name forKey:NSStringFromSelector(@selector(name))];
     }
 }
@@ -290,7 +293,8 @@ NSDictionary *keyInfoDict()
 {
     if (self.type == kLGJSSTypeLocal) {
         return self.mount_point;
-    } else {
+    }
+    else {
         return [self getValueForKey:NSStringFromSelector(@selector(URL))];
     }
 }
@@ -299,7 +303,8 @@ NSDictionary *keyInfoDict()
 {
     if (self.type == kLGJSSTypeLocal) {
         self.mount_point = URL;
-    } else {
+    }
+    else {
         [self updateValue:URL forKey:NSStringFromSelector(@selector(URL))];
     }
 }
@@ -387,7 +392,8 @@ NSDictionary *keyInfoDict()
 
     if (index == NSNotFound) {
         [repos addObject:self.representation];
-    } else {
+    }
+    else {
         [repos replaceObjectAtIndex:index withObject:self.representation];
     }
     defaults.JSSRepos = repos.array;

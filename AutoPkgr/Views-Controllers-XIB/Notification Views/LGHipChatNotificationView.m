@@ -18,15 +18,16 @@
 //  limitations under the License.
 //
 
-#import "LGHipChatNotificationView.h"
 #import "LGHipChatNotification.h"
+#import "LGHipChatNotificationView.h"
 
 @interface LGHipChatNotificationView ()
 @end
 
 @implementation LGHipChatNotificationView
 
-- (void)viewDidLoad {
+- (void)viewDidLoad
+{
     [super viewDidLoad];
     // Do view setup here.
 }

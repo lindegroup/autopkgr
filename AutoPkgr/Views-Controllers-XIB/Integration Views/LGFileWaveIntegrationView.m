@@ -17,15 +17,14 @@
 //  limitations under the License.
 //
 
-
-#import "LGFileWaveIntegrationView.h"
-#import "LGFileWaveIntegration.h"
 #import "LGAutoPkgTask.h"
+#import "LGFileWaveIntegration.h"
+#import "LGFileWaveIntegrationView.h"
 #import "NSImage+statusLight.h"
-#import "NSTextField+safeStringValue.h"
 #import "NSTextField+animatedString.h"
+#import "NSTextField+safeStringValue.h"
 
-@interface LGFileWaveIntegrationView ()<NSTextFieldDelegate>
+@interface LGFileWaveIntegrationView () <NSTextFieldDelegate>
 
 @property (weak) IBOutlet NSTextField *FW_SERVER_HOST;
 @property (weak) IBOutlet NSTextField *FW_SERVER_PORT;
@@ -65,30 +64,33 @@
     _statusImage.hidden = NO;
 }
 
-- (IBAction)FWToolVerify:(NSButton *)sender {
+- (IBAction)FWToolVerify:(NSButton *)sender
+{
     // Run `autopkg run FWTool.recipe` and make sure that it verifies.
     sender.state = NSOffState;
     [self.progressSpinner startAnimation:nil];
     _statusImage.hidden = YES;
-    [LGAutoPkgTask runRecipes:@[@"FWTool.filewave.recipe"]
+    [LGAutoPkgTask runRecipes:@[ @"FWTool.filewave.recipe" ]
                      progress:nil
                         reply:^(NSDictionary *results, NSError *error) {
                             sender.state = NSOnState;
                             _statusImage.hidden = NO;
-                            if (error){
+                            if (error) {
                                 _statusImage.image = [NSImage LGStatusUnavailable];
                                 [_statusLabel fadeOut_withString:error.localizedRecoverySuggestion];
-                            } else {
+                            }
+                            else {
                                 _statusImage.image = [NSImage LGStatusAvailable];
                                 [_statusLabel fadeOut_withString:NSLocalizedString(@"Successfully verified FileWave settings", nil)];
                             }
 
                             [self.progressSpinner stopAnimation:nil];
 
-    }];
+                        }];
 }
 
-- (void)controlTextDidChange:(NSNotification *)notification {
+- (void)controlTextDidChange:(NSNotification *)notification
+{
     NSString *string = [notification.object stringValue];
 
     // URL

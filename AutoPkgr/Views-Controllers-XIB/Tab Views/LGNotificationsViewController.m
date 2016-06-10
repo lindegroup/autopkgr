@@ -18,18 +18,18 @@
 //  limitations under the License.
 //
 
-#import "LGNotificationsViewController.h"
 #import "LGAutoPkgr.h"
-#import "LGPasswords.h"
-#import "LGTestPort.h"
 #import "LGEmailNotification.h"
-#import "LGSlackNotification.h"
 #import "LGHipChatNotification.h"
+#import "LGNotificationsViewController.h"
+#import "LGPasswords.h"
+#import "LGSlackNotification.h"
+#import "LGTestPort.h"
 
 #import "LGBaseNotificationServiceViewController.h"
 #import "LGNotificationServiceWindowController.h"
-#import "LGTemplateRenderWindowController.h"
 #import "LGSelectNotificationsWindowController.h"
+#import "LGTemplateRenderWindowController.h"
 
 @interface LGNotificationsViewController ()
 #pragma mark - Email
@@ -122,7 +122,8 @@
                 [self configure:self.configureSlackButton];
                 [[LGDefaults standardUserDefaults] setBool:YES forKey:@"SlackConfigured"];
             }
-        } else if ([sender.identifier isEqualToString:@"enableHipChatCheckBox"]) {
+        }
+        else if ([sender.identifier isEqualToString:@"enableHipChatCheckBox"]) {
             configured = [[LGDefaults standardUserDefaults] boolForKey:@"HipChatConfigured"];
             if (!configured) {
                 [self configure:self.configureHipChatButton];
@@ -144,12 +145,13 @@
             NSString *enabledKey = nil;
             if (serviceClass == [LGSlackNotification class]) {
                 enabledKey = @"Slack";
-            } else if (serviceClass == [LGHipChatNotification class]){
+            }
+            else if (serviceClass == [LGHipChatNotification class]) {
                 enabledKey = @"HipChat";
             }
             if (enabledKey.length) {
                 id controller = (LGBaseNotificationServiceViewController *)_serviceWindow.viewController;
-                if([controller respondsToSelector:@selector(didConfigure)] && ![controller didConfigure]){
+                if ([controller respondsToSelector:@selector(didConfigure)] && ![controller didConfigure]) {
                     [[NSUserDefaults standardUserDefaults] setBool:NO forKey:[enabledKey stringByAppendingString:@"NotificationsEnabled"]];
                     [[NSUserDefaults standardUserDefaults] setBool:NO forKey:[enabledKey stringByAppendingString:@"Configured"]];
                 }
@@ -159,7 +161,8 @@
     }
 }
 
-- (IBAction)configureNotificationsFlags:(id)sender {
+- (IBAction)configureNotificationsFlags:(id)sender
+{
     _flagConfigureWindow = [[LGSelectNotificationsWindowController alloc] init];
     [_flagConfigureWindow openSheetOnWindow:self.modalWindow complete:^(LGWindowController *windowController) {
         _flagConfigureWindow = nil;
@@ -169,7 +172,7 @@
 - (IBAction)openTemplateEditor:(id)sender
 {
     _templateRenderWindow = [[LGTemplateRenderWindowController alloc] init];
-    [_templateRenderWindow open:^(LGWindowController *renderer){
+    [_templateRenderWindow open:^(LGWindowController *renderer) {
         _templateRenderWindow = nil;
     }];
 }
@@ -180,7 +183,8 @@
     [LGEmailNotification infoFromKeychain:^(NSString *infoOrPassword, NSError *error) {
         if (error) {
             NSLog(@"Error getting password for %@ [%ld]: %@", [LGEmailNotification account], error.code, error.localizedDescription);
-        } else {
+        }
+        else {
             _smtpPassword.safe_stringValue = infoOrPassword;
         }
     }];
@@ -206,17 +210,20 @@
                     [LGPasswords resetKeychainPrompt:^(NSError *error) {
                         if (!error) {
                             [self updateKeychainPassword:nil];
-                        } else {
+                        }
+                        else {
                             NSLog(@"Error resetting password [%ld]: %@", error.code, error.localizedDescription);
                         }
                     }];
-                } else {
+                }
+                else {
                     NSLog(@"Error setting password [%ld]: %@", error.code, error.localizedDescription);
                 }
             }
         }];
-    } else {
-        if(reply){
+    }
+    else {
+        if (reply) {
             reply(nil);
         }
     }
@@ -244,7 +251,8 @@
 
         [tester testHost:[NSHost hostWithName:[_smtpServer stringValue]]
                 withPort:[_smtpPort integerValue]];
-    } else {
+    }
+    else {
         NSLog(@"Cannot test SMTP. Either host is blank or port is unreadable.");
     }
 }
@@ -295,9 +303,11 @@
     NSString *status = notification.userInfo[kLGNotificationUserInfoSuccess];
     if ([status isEqualTo:@NO]) {
         [_testSmtpServerStatus setImage:[NSImage LGStatusUnavailable]];
-    } else if ([status isEqualTo:@YES]) {
+    }
+    else if ([status isEqualTo:@YES]) {
         [_testSmtpServerStatus setImage:[NSImage LGStatusAvailable]];
-    } else {
+    }
+    else {
         NSLog(@"Unexpected result for received from port test.");
         [_testSmtpServerStatus setImage:[NSImage LGStatusPartiallyAvailable]];
     }

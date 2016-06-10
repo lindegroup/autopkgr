@@ -18,14 +18,14 @@
 //  limitations under the License.
 //
 
-#import <Cocoa/Cocoa.h>
-#import "LGProgressDelegate.h"
 #import "LGAutoPkgr.h"
+#import "LGProgressDelegate.h"
+#import <Cocoa/Cocoa.h>
 
 @interface LGTabViewControllerBase : NSViewController
 
 - (instancetype)initWithProgressDelegate:(id<LGProgressDelegate>)progressDelegate;
-@property (weak) id<LGProgressDelegate>progressDelegate;
+@property (weak) id<LGProgressDelegate> progressDelegate;
 @property (unsafe_unretained) NSWindow *modalWindow;
 
 @property (copy, readonly) NSString *tabLabel;

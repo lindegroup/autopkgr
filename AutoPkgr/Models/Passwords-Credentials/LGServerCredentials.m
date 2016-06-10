@@ -17,13 +17,13 @@
 //  limitations under the License.
 //
 
-#import "LGServerCredentials.h"
 #import "LGConstants.h"
 #import "LGDefaults.h"
 #import "LGLogger.h"
+#import "LGServerCredentials.h"
 
-#import <SecurityInterface/SFCertificateTrustPanel.h>
 #import <NetFS/NetFS.h>
+#import <SecurityInterface/SFCertificateTrustPanel.h>
 #include <sys/mount.h>
 
 #import <AFNetworking/AFNetworking.h>
@@ -130,11 +130,13 @@
     return _serverURL;
 }
 
-- (NSString *)host {
+- (NSString *)host
+{
     return self.serverURL.host;
 }
 
-- (NSString *)protocol {
+- (NSString *)protocol
+{
     return self.serverURL.scheme;
 }
 
@@ -175,38 +177,38 @@
         SecTrustResultType secresult = kSecTrustResultInvalid;
         if (SecTrustEvaluate(challenge.protectionSpace.serverTrust, &secresult) == errSecSuccess) {
             switch (secresult) {
-                case kSecTrustResultProceed: {
-                    // The user told the OS to trust the cert
-                    DevLog(@"User has explicitly told the OS to trust the certificate");
-                    _sslTrustSetting = kLGSSLTrustUserExplicitTrust;
-                    proceed = YES;
-                    break;
+            case kSecTrustResultProceed: {
+                // The user told the OS to trust the cert
+                DevLog(@"User has explicitly told the OS to trust the certificate");
+                _sslTrustSetting = kLGSSLTrustUserExplicitTrust;
+                proceed = YES;
+                break;
+            }
+            case kSecTrustResultUnspecified: {
+                // The OS trusts this certificate implicitly.
+                DevLog(@"OS implicitly trusts the certificate");
+                _sslTrustSetting = kLGSSLTrustOSImplicitTrust;
+                proceed = YES;
+                break;
+            }
+
+            default: {
+                SFCertificateTrustPanel *panel = [SFCertificateTrustPanel sharedCertificateTrustPanel];
+                [panel setAlternateButtonTitle:@"Cancel"];
+
+                NSString *info = [NSString stringWithFormat:@"The certificate for this server is invalid. You might be connecting to a server pretending to be \"%@\" which could put your confidential information at risk. Would you like to connect to the server anyway?", self.serverURL.host];
+
+                [panel setInformativeText:info];
+
+                proceed = [panel runModalForTrust:challenge.protectionSpace.serverTrust
+                                          message:@"AutoPkgr can't verify the identity of the server"];
+
+                if (proceed) {
+                    _sslTrustSetting = kLGSSLTrustUserConfirmedTrust;
                 }
-                case kSecTrustResultUnspecified: {
-                    // The OS trusts this certificate implicitly.
-                    DevLog(@"OS implicitly trusts the certificate");
-                    _sslTrustSetting = kLGSSLTrustOSImplicitTrust;
-                    proceed = YES;
-                    break;
-                }
 
-                default: {
-                    SFCertificateTrustPanel *panel = [SFCertificateTrustPanel sharedCertificateTrustPanel];
-                    [panel setAlternateButtonTitle:@"Cancel"];
-
-                    NSString *info = [NSString stringWithFormat:@"The certificate for this server is invalid. You might be connecting to a server pretending to be \"%@\" which could put your confidential information at risk. Would you like to connect to the server anyway?", self.serverURL.host];
-
-                    [panel setInformativeText:info];
-
-                    proceed = [panel runModalForTrust:challenge.protectionSpace.serverTrust
-                                              message:@"AutoPkgr can't verify the identity of the server"];
-
-                    if (proceed) {
-                        _sslTrustSetting = kLGSSLTrustUserConfirmedTrust;
-                    }
-
-                    panel = nil;
-                }
+                panel = nil;
+            }
             }
         }
 
@@ -218,8 +220,8 @@
             [challenge.sender useCredential:credential forAuthenticationChallenge:challenge];
 
             [[LGCertificateStore sharedStorage] setChallenge:challenge forHost:self.host];
-
-        } else {
+        }
+        else {
             [challenge.sender cancelAuthenticationChallenge:challenge];
         };
 
@@ -264,16 +266,18 @@
     };
 
     [op setWillSendRequestForAuthenticationChallengeBlock:^(NSURLConnection *connection, NSURLAuthenticationChallenge *challenge) {
-        if ([challenge.protectionSpace.authenticationMethod isEqualToString:NSURLAuthenticationMethodServerTrust]){
+        if ([challenge.protectionSpace.authenticationMethod isEqualToString:NSURLAuthenticationMethodServerTrust]) {
             __weak typeof(self) w_self = self;
             [self handleCertificateTrustChallenge:challenge reply:^(LGSSLTrustSettings trust) {
                 [w_self save];
             }];
-        } else if (self.credential && challenge.previousFailureCount < 1) {
+        }
+        else if (self.credential && challenge.previousFailureCount < 1) {
             authWasChallenged = YES;
             [challenge.sender useCredential:self.credential forAuthenticationChallenge:challenge];
             [protectedSpaces addObject:challenge.protectionSpace];
-        } else {
+        }
+        else {
             [[challenge sender] continueWithoutCredentialForAuthenticationChallenge:challenge];
         }
     }];
@@ -282,11 +286,12 @@
         DLog(@"Successfully checked credentials for %@ at %@", self.user, self.server);
         purgeProtectedSpace();
         reply(self, authWasChallenged ? kLGCredentialChallengeSuccess : kLGCredentialsNotChallenged, nil);
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        purgeProtectedSpace();
-        DLog(@"Credential verification failed for %@ at %@. Error: %@", self.user, self.server, error.localizedDescription);
-        reply(self, kLGCredentialChallengeFailed, error);
-    }];
+    }
+        failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+            purgeProtectedSpace();
+            DLog(@"Credential verification failed for %@ at %@. Error: %@", self.user, self.server, error.localizedDescription);
+            reply(self, kLGCredentialChallengeFailed, error);
+        }];
 
     [op start];
 }
@@ -335,15 +340,16 @@
                                     &requestID,
                                     myQueue,
                                     ^(int status, AsyncRequestID requestID, CFArrayRef mountpoints) {
-                                    NSError *error;
-                                    if (status != 0) {
-                                        unmount(mountPath.fileSystemRepresentation, 0);
-                                    } else {
-                                        error = [self errorWithMountCode:status];
-                                    }
+                                        NSError *error;
+                                        if (status != 0) {
+                                            unmount(mountPath.fileSystemRepresentation, 0);
+                                        }
+                                        else {
+                                            error = [self errorWithMountCode:status];
+                                        }
 
-                                    reply(self, (status == 0 || status == 17), error);
-    });
+                                        reply(self, (status == 0 || status == 17), error);
+                                    });
 
     if (status != 0) {
         reply(self, NO, [self errorWithMountCode:status]);

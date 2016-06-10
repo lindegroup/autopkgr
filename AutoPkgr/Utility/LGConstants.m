@@ -27,7 +27,6 @@ NSString *const kLGAutoPkgrPreferenceDomain = @"com.lindegroup.AutoPkgr";
 NSString *const kLGAutoPkgrHelperToolName = @"com.lindegroup.AutoPkgr.helper";
 NSString *const kLGAutoPkgrLaunchDaemonPlist = @"com.lindegroup.AutoPkgr.schedule";
 
-
 #pragma mark - Static URLs
 #pragma mark-- GitHub
 NSString *const kLGAutoPkgReleasesJSONURL = @"https://api.github.com/repos/autopkg/autopkg/releases";

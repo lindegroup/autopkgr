@@ -16,7 +16,7 @@
 ///  SNTCertificate wraps a @c SecCertificateRef to provide Objective-C accessors to
 ///  commonly used certificate data. Accessors cache data for repeated access.
 ///
-@interface SNTCertificate : NSObject<NSSecureCoding>
+@interface SNTCertificate : NSObject <NSSecureCoding>
 
 ///
 ///  Initialize a SNTCertificate object with a valid SecCertificateRef. Designated initializer.
@@ -53,59 +53,59 @@
 ///
 ///  Access the underlying certificate ref.
 ///
-@property(readonly) SecCertificateRef certRef;
+@property (readonly) SecCertificateRef certRef;
 
 ///
 ///  SHA-1 hash of the certificate data.
 ///
-@property(readonly) NSString *SHA1;
+@property (readonly) NSString *SHA1;
 
 ///
 ///  SHA-256 hash of the certificate data.
 ///
-@property(readonly) NSString *SHA256;
+@property (readonly) NSString *SHA256;
 
 ///
 ///  Certificate data.
 ///
-@property(readonly) NSData *certData;
+@property (readonly) NSData *certData;
 
 ///
 ///  Common Name e.g: "Software Signing"
 ///
-@property(readonly) NSString *commonName;
+@property (readonly) NSString *commonName;
 
 ///
 ///  Country Name e.g: "US"
 ///
-@property(readonly) NSString *countryName;
+@property (readonly) NSString *countryName;
 
 ///
 ///  Organizational Name e.g: "Apple Inc."
 ///
-@property(readonly) NSString *orgName;
+@property (readonly) NSString *orgName;
 
 ///
 ///  Organizational Unit Name e.g: "Apple Software"
 ///
-@property(readonly) NSString *orgUnit;
+@property (readonly) NSString *orgUnit;
 
 ///
 ///  Issuer details, same fields as above.
 ///
-@property(readonly) NSString *issuerCommonName;
-@property(readonly) NSString *issuerCountryName;
-@property(readonly) NSString *issuerOrgName;
-@property(readonly) NSString *issuerOrgUnit;
+@property (readonly) NSString *issuerCommonName;
+@property (readonly) NSString *issuerCountryName;
+@property (readonly) NSString *issuerOrgName;
+@property (readonly) NSString *issuerOrgUnit;
 
 ///
 ///  Validity Not Before
 ///
-@property(readonly) NSDate *validFrom;
+@property (readonly) NSDate *validFrom;
 
 ///
 ///  Validity Not After
 ///
-@property(readonly) NSDate *validUntil;
+@property (readonly) NSDate *validUntil;
 
 @end

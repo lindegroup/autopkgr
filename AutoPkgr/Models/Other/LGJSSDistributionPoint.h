@@ -17,15 +17,15 @@ typedef NS_OPTIONS(NSInteger, JSSDistributionPointType) {
     kLGJSSTypeLocal = 1 << 5
 };
 
-extern NSString* const kLGJSSDistPointNameKey;
-extern NSString* const kLGJSSDistPointURLKey;
-extern NSString* const kLGJSSDistPointSharePointKey;
+extern NSString *const kLGJSSDistPointNameKey;
+extern NSString *const kLGJSSDistPointURLKey;
+extern NSString *const kLGJSSDistPointSharePointKey;
 extern NSString *const kLGJSSDistPointMountPointKey;
-extern NSString* const kLGJSSDistPointPortKey;
-extern NSString* const kLGJSSDistPointUserNameKey;
-extern NSString* const kLGJSSDistPointPasswordKey;
-extern NSString* const kLGJSSDistPointWorkgroupDomainKey;
-extern NSString* const kLGJSSDistPointTypeKey;
+extern NSString *const kLGJSSDistPointPortKey;
+extern NSString *const kLGJSSDistPointUserNameKey;
+extern NSString *const kLGJSSDistPointPasswordKey;
+extern NSString *const kLGJSSDistPointWorkgroupDomainKey;
+extern NSString *const kLGJSSDistPointTypeKey;
 
 // Corresponding type string in keyInfoDict().
 extern const NSString *kTypeString;
@@ -34,7 +34,6 @@ extern const NSString *kRequired;
 // Key used to indicate the array of optional keys for a DP.
 extern const NSString *kOptional;
 
-
 @interface LGJSSDistributionPoint : NSObject
 // Dictionary to query for type string.
 // Corresponding values can be looked up using an NSNumber representation of JSSDistributionPointType as the key.
@@ -42,7 +41,7 @@ extern const NSString *kOptional;
 
 + (NSArray<LGJSSDistributionPoint *> *)enabledDistributionPoints;
 
-+ (void)getFromRemote:(void(^)(NSArray<LGJSSDistributionPoint *> *distPoints, NSError *error))distPoints;
++ (void)getFromRemote:(void (^)(NSArray<LGJSSDistributionPoint *> *distPoints, NSError *error))distPoints;
 
 // The Dictionary representation of the Distribution Point object, suitable for writing to defaults.
 @property (copy, readonly) NSDictionary *representation;

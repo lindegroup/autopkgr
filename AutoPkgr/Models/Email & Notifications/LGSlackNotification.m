@@ -66,7 +66,8 @@ static NSString *const SlacksNotificationsEnabledKey = @"SlackNotificationsEnabl
     return [self templateWithName:@"slack_report" type:@"md"];
 }
 
-+ (ACEMode)tempateFormat {
++ (ACEMode)tempateFormat
+{
     return ACEModeMarkdown;
 }
 
@@ -127,7 +128,8 @@ static NSString *const SlacksNotificationsEnabledKey = @"SlackNotificationsEnabl
     [[self class] infoFromKeychain:^(NSString *webHookURL, NSError *error) {
         if (error) {
             self.notificatonComplete(error);
-        } else {
+        }
+        else {
             [manager POST:webHookURL
                 parameters:[self baseParameters:parameters]
                 success:^(AFHTTPRequestOperation *operation, id responseObject) {

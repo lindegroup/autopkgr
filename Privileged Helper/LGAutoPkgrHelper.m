@@ -19,10 +19,10 @@
 //
 
 #import "LGAutoPkgrHelper.h"
-#import "LGError.h"
 #import "LGAutoPkgrProtocol.h"
-#import "LGProgressDelegate.h"
+#import "LGError.h"
 #import "LGPackageRemover.h"
+#import "LGProgressDelegate.h"
 
 #import "SNTCodesignChecker.h"
 
@@ -30,15 +30,15 @@
 #import <AHLaunchCtl/AHServiceManagement.h>
 
 #import <AHKeychain/AHKeychain.h>
-#import <RNCryptor/RNEncryptor.h>
 #import <RNCryptor/RNDecryptor.h>
+#import <RNCryptor/RNEncryptor.h>
 
+#import <SystemConfiguration/SystemConfiguration.h>
 #import <pwd.h>
 #import <syslog.h>
-#import <SystemConfiguration/SystemConfiguration.h>
 
-#import "NSString+split.h"
 #import "NSData+taskData.h"
+#import "NSString+split.h"
 
 static const NSTimeInterval kHelperCheckInterval = 1.0; // how often to check whether to quit
 
@@ -112,7 +112,8 @@ static dispatch_queue_t autopkgr_kc_access_synchronizer_queue()
 
         [newConnection.exportedInterface setClasses:acceptedClasses
                                         forSelector:@selector(scheduleRun:user:program:authorization:reply:)
-                                      argumentIndex:0 ofReply:NO];
+                                      argumentIndex:0
+                                            ofReply:NO];
 
         __weak typeof(newConnection) weakConnection = newConnection;
         // If all connections are invalidated on the remote side, shutdown the helper.
@@ -124,7 +125,8 @@ static dispatch_queue_t autopkgr_kc_access_synchronizer_queue()
             [self.connections removeObject:weakConnection];
 
             if (self.connections.count == 0) {
-                [self quitHelper:^(BOOL success) {}];
+                [self quitHelper:^(BOOL success){
+                }];
             }
         };
 
@@ -217,7 +219,8 @@ static dispatch_queue_t autopkgr_kc_access_synchronizer_queue()
         if (getSuccess) {
             // We found the encryption password.
             encryptionPassword = item.password;
-        } else if (error.code == errSecItemNotFound) {
+        }
+        else if (error.code == errSecItemNotFound) {
             // The item was not found in the keychain. Create it now.
 
             // Reset the error so it doesn't inadvertently pass back the wrong message.
@@ -230,11 +233,13 @@ static dispatch_queue_t autopkgr_kc_access_synchronizer_queue()
             if ([[AHKeychain systemKeychain] saveItem:item error:&error]) {
                 // Success, a new common encryption was generated.
                 newEncryptionPassword = YES;
-            } else {
+            }
+            else {
                 // If we can't create the keychain return now. There's nothing more to be done.
                 goto helper_reply;
             }
-        } else {
+        }
+        else {
             // some other error occurred when trying to find the item ???
             goto helper_reply;
         }
@@ -276,7 +281,8 @@ static dispatch_queue_t autopkgr_kc_access_synchronizer_queue()
                     syslog(LOG_ALERT, "[ERROR] Could not create the parent directory for the encrypted key files.");
                     goto helper_reply;
                 }
-            } else if (directoryExists && !isDir) {
+            }
+            else if (directoryExists && !isDir) {
                 // The path exists but is not a directory, escape!.
                 syslog(LOG_ALERT, "[ERROR] The %s exists, but it is not a directory, it needs to be repaired.", kLGEncryptedKeysParentDirectory.UTF8String);
                 goto helper_reply;
@@ -293,8 +299,8 @@ static dispatch_queue_t autopkgr_kc_access_synchronizer_queue()
 
             // Write the encrypted data to the keyFile.
             [encryptedKeyFileData writeToFile:encryptedKeyFile atomically:YES];
-
-        } else {
+        }
+        else {
             // The keyFile is there.
 
             // Read in the encrypted data of the keyFile.
@@ -317,7 +323,7 @@ static dispatch_queue_t autopkgr_kc_access_synchronizer_queue()
             password = passwordData.description;
         }
 
-helper_reply:
+    helper_reply:
         if (floor(NSFoundationVersionNumber) < NSFoundationVersionNumber10_9) {
             if (password) {
                 _keyChainKey = password;
@@ -357,7 +363,8 @@ helper_reply:
 
             if ([scheduleOrInterval isKindOfClass:[AHLaunchJobSchedule class]]) {
                 job.StartCalendarInterval = scheduleOrInterval;
-            } else if ([scheduleOrInterval isKindOfClass:[NSNumber class]]) {
+            }
+            else if ([scheduleOrInterval isKindOfClass:[NSNumber class]]) {
                 job.StartInterval = [(NSNumber *)scheduleOrInterval integerValue];
             }
 
@@ -455,7 +462,8 @@ helper_reply:
                                       syslog(LOG_INFO, "[UNINSTALLER]: %s", message.UTF8String);
 #endif
                                       // TODO: send progress updates
-                                  } reply:reply];
+                                  }
+                                     reply:reply];
 }
 
 #pragma mark - Life Cycle
@@ -526,7 +534,8 @@ helper_reply:
                         [[AHKeychain systemKeychain] deleteItem:item error:&error];
                     }
                 }
-            } else {
+            }
+            else {
                 /* More than one user encryptedKeyFile exists. 
                    Just remove the current user's */
                 [manager removeItemAtPath:encryptedKeyFile error:&error];
@@ -550,7 +559,8 @@ helper_reply:
         self.relayConnection = connection;
         self.relayConnection.remoteObjectInterface = [NSXPCInterface interfaceWithProtocol:@protocol(LGProgressDelegate)];
         _resign = resign;
-    } else {
+    }
+    else {
         resign(YES);
     }
 }
@@ -620,7 +630,8 @@ helper_reply:
 
     if ([user isEqualToString:effectiveUserName] && access(ghPrefs.UTF8String, F_OK) == 0) {
         return YES;
-    } else {
+    }
+    else {
         if (error) {
             NSDictionary *errorDict = @{ NSLocalizedDescriptionKey : @"Invalid user for scheduling autopkg run",
                                          NSLocalizedRecoverySuggestionErrorKey : @"There was a problem either verifying the user or with the user's configuration. The user must be have a home directory set, and valid com.github.autopkg preferences." };
@@ -643,7 +654,8 @@ helper_reply:
         syslog(LOG_ALERT, "[ERROR] The codesigning signature of one of the following items could not be verified. If either of the following messages displays NULL, please quit AutoPkgr, and manually remove the helper tool binary at %s.", selfCS.binaryPath.UTF8String);
         syslog(LOG_ALERT, "[ERROR] AutoPkgr codesign stats: %s", remoteCS.description.UTF8String);
         syslog(LOG_ALERT, "[ERROR] Helper Tool codesign stats: %s", selfCS.description.UTF8String);
-    } else {
+    }
+    else {
 #if DEBUG
         syslog(LOG_ALERT, "[DEBUG] AutoPkgr codesign stats: %s", remoteCS.description.UTF8String);
         syslog(LOG_ALERT, "[DEBUG] Helper Tool codesign stats: %s", selfCS.description.UTF8String);

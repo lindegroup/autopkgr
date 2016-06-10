@@ -17,8 +17,8 @@
 //  limitations under the License.
 //
 
-#import <Cocoa/Cocoa.h>
 #import "LGNotificationService.h"
+#import <Cocoa/Cocoa.h>
 
 @interface LGBaseNotificationServiceViewController : NSViewController <NSWindowDelegate>
 

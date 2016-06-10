@@ -18,8 +18,8 @@
 //  limitations under the License.
 //
 
-#import <Foundation/Foundation.h>
 #import "LGBaseIntegrationViewController.h"
+#import <Foundation/Foundation.h>
 
 @class LGJSSImporterIntegration, LGTableView;
 

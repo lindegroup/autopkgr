@@ -18,9 +18,9 @@
 //  limitations under the License.
 //
 
-#import <Foundation/Foundation.h>
-#import "LGRecipeTableViewController.h"
 #import "LGProgressDelegate.h"
+#import "LGRecipeTableViewController.h"
+#import <Foundation/Foundation.h>
 
 @interface LGRepoTableViewController : NSObject <NSApplicationDelegate, NSTableViewDelegate, LGTableViewDataSource>
 

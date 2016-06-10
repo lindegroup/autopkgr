@@ -36,45 +36,40 @@ static NSString *kCommandKeyAuthRightDesc = @"authRightDescription";
     dispatch_once(&dOnceToken, ^{
         dCommandInfo = @{
             NSStringFromSelector(@selector(installPackageFromPath:authorization:reply:)) : @{
-                kCommandKeyAuthRightName    : @"com.lindegroup.autopkgr.pkg.installer",
+                kCommandKeyAuthRightName : @"com.lindegroup.autopkgr.pkg.installer",
                 kCommandKeyAuthRightDefault : @kAuthorizationRuleAuthenticateAsAdmin,
-                kCommandKeyAuthRightDesc    : NSLocalizedString(
-                                                                @"AutoPkgr needs to run a package installer. ",
-                                                                @"prompt shown when user is required to authorize to install a package"
-                                                                )
-                },
+                kCommandKeyAuthRightDesc : NSLocalizedString(
+                    @"AutoPkgr needs to run a package installer. ",
+                    @"prompt shown when user is required to authorize to install a package")
+            },
             NSStringFromSelector(@selector(uninstallPackagesWithIdentifiers:authorization:reply:)) : @{
-                    kCommandKeyAuthRightName    : @"com.lindegroup.autopkgr.pkg.uninstaller",
-                    kCommandKeyAuthRightDefault : @kAuthorizationRuleAuthenticateAsAdmin,
-                    kCommandKeyAuthRightDesc    : NSLocalizedString(
-                                                                    @"AutoPkgr is trying to uninstall a package. ",
-                                                                    @"prompt shown when user is required to authorize to uninstall a package"
-                                                                    )
-                    },
+                kCommandKeyAuthRightName : @"com.lindegroup.autopkgr.pkg.uninstaller",
+                kCommandKeyAuthRightDefault : @kAuthorizationRuleAuthenticateAsAdmin,
+                kCommandKeyAuthRightDesc : NSLocalizedString(
+                    @"AutoPkgr is trying to uninstall a package. ",
+                    @"prompt shown when user is required to authorize to uninstall a package")
+            },
             NSStringFromSelector(@selector(scheduleRun:user:program:authorization:reply:)) : @{
-                kCommandKeyAuthRightName    : @"com.lindegroup.autopkgr.add.scheduled.run",
+                kCommandKeyAuthRightName : @"com.lindegroup.autopkgr.add.scheduled.run",
                 kCommandKeyAuthRightDefault : @kAuthorizationRuleAuthenticateAsAdmin,
-                kCommandKeyAuthRightDesc    : NSLocalizedString(
-                                                                @"AutoPkgr is trying to add an autopkg run schedule. ",
-                                                                @"Prompt shown when user is required to authorize adding schedule"
-                                                                )
-                },
+                kCommandKeyAuthRightDesc : NSLocalizedString(
+                    @"AutoPkgr is trying to add an autopkg run schedule. ",
+                    @"Prompt shown when user is required to authorize adding schedule")
+            },
             NSStringFromSelector(@selector(removeScheduleWithAuthorization:reply:)) : @{
-                kCommandKeyAuthRightName    : @"com.lindegroup.autopkgr.remove.schedule.run",
+                kCommandKeyAuthRightName : @"com.lindegroup.autopkgr.remove.schedule.run",
                 kCommandKeyAuthRightDefault : @kAuthorizationRuleAuthenticateAsAdmin,
-                kCommandKeyAuthRightDesc    : NSLocalizedString(
-                                                                @"AutoPkgr is trying to remove the autopkg run schedule. ",
-                                                                @"Prompt shown when user is required to authorize removing schedule"
-                                                                )
-                },
+                kCommandKeyAuthRightDesc : NSLocalizedString(
+                    @"AutoPkgr is trying to remove the autopkg run schedule. ",
+                    @"Prompt shown when user is required to authorize removing schedule")
+            },
             NSStringFromSelector(@selector(uninstall:reply:)) : @{
-                    kCommandKeyAuthRightName    : @"com.lindegroup.autopkgr.uninstall.helper.tool",
-                    kCommandKeyAuthRightDefault : @kAuthorizationRuleAuthenticateAsAdmin,
-                    kCommandKeyAuthRightDesc    : NSLocalizedString(
-                                                                    @"AutoPkgr wants to remove the helper tool and associated files. ",
-                                                                    @"Prompt shown when user is required to authorize removing schedule"
-                                                                    )
-                    },
+                kCommandKeyAuthRightName : @"com.lindegroup.autopkgr.uninstall.helper.tool",
+                kCommandKeyAuthRightDefault : @kAuthorizationRuleAuthenticateAsAdmin,
+                kCommandKeyAuthRightDesc : NSLocalizedString(
+                    @"AutoPkgr wants to remove the helper tool and associated files. ",
+                    @"Prompt shown when user is required to authorize removing schedule")
+            },
         };
     });
     return dCommandInfo;
@@ -91,12 +86,11 @@ static NSString *kCommandKeyAuthRightDesc = @"authRightDescription";
 #pragma unused(key)
 #pragma unused(stop)
         NSDictionary *commandDict;
-        NSString     *authRightName;
-        id           authRightDefault;
-        NSString     *authRightDesc;
+        NSString *authRightName;
+        id authRightDefault;
+        NSString *authRightDesc;
 
-
-        commandDict = (NSDictionary *) obj;
+        commandDict = (NSDictionary *)obj;
         assert([commandDict isKindOfClass:[NSDictionary class]]);
 
         authRightName = [commandDict objectForKey:kCommandKeyAuthRightName];
@@ -116,19 +110,20 @@ static NSString *kCommandKeyAuthRightDesc = @"authRightDescription";
 {
     assert(authRef != NULL);
     [[self class] enumerateRightsUsingBlock:^(NSString *authRightName, id authRightDefault, NSString *authRightDesc) {
-        OSStatus    blockErr;
+        OSStatus blockErr;
         blockErr = AuthorizationRightGet([authRightName UTF8String], NULL);
         if (blockErr == errAuthorizationDenied) {
             blockErr = AuthorizationRightSet(
-                *authRef,                                   // authRef
-                [authRightName UTF8String],                 // rightName
-                (__bridge CFTypeRef) authRightDefault,      // rightDefinition
-                (__bridge CFStringRef) authRightDesc,       // descriptionKey
-                NULL,                                       // bundle (NULL implies main bundle)
-                CFSTR("Common")                             // localeTableName
-            );
+                *authRef, // authRef
+                [authRightName UTF8String], // rightName
+                (__bridge CFTypeRef)authRightDefault, // rightDefinition
+                (__bridge CFStringRef)authRightDesc, // descriptionKey
+                NULL, // bundle (NULL implies main bundle)
+                CFSTR("Common") // localeTableName
+                );
             assert(blockErr == errAuthorizationSuccess);
-        } else {
+        }
+        else {
         }
     }];
 }

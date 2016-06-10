@@ -18,13 +18,13 @@
 //  limitations under the License.
 //
 
-#import "LGJSSDistributionPointsPrefPanel.h"
-#import "LGJSSDistributionPoint.h"
-#import "LGJSSImporterIntegration.h"
 #import "LGAutoPkgr.h"
+#import "LGJSSDistributionPoint.h"
+#import "LGJSSDistributionPointsPrefPanel.h"
+#import "LGJSSImporterIntegration.h"
 
-#import "NSTextField+changeHandle.h"
 #import "NSTableView+Resizing.h"
+#import "NSTextField+changeHandle.h"
 #import <Quartz/Quartz.h>
 
 #pragma mark - Table View Cell
@@ -89,7 +89,8 @@
         _infoText.stringValue = quick_formatString(@"Edit %@", _distPoint.name ?: @"Distribution Point");
 
         [self chooseDistributionPointType:_distPoint.type];
-    } else {
+    }
+    else {
         [self populatePopupButton:_distPointTypePopupBT];
         [self chooseDistPointType:_distPointTypePopupBT];
     }
@@ -100,7 +101,8 @@
     // Save distpoint to defaults.
     if ([_distPoint save]) {
         [self closePanel:nil];
-    } else {
+    }
+    else {
         [self hilightRequiredTypes];
     }
 }

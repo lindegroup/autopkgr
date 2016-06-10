@@ -138,16 +138,16 @@ NSString *maskPasswordInString(NSString *string)
         _pipe = pipe;
 
         [pipe.fileHandleForReading setReadabilityHandler:^(NSFileHandle *fh) {
-          NSData *data = fh.availableData;
-          if (data) {
-              NSString *str = [[NSMutableString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+            NSData *data = fh.availableData;
+            if (data) {
+                NSString *str = [[NSMutableString alloc] initWithData:data encoding:NSUTF8StringEncoding];
 
-              if (!_errorStrings) {
-                  _errorStrings = [[NSMutableOrderedSet alloc] init];
-              }
+                if (!_errorStrings) {
+                    _errorStrings = [[NSMutableOrderedSet alloc] init];
+                }
 
-              [_errorStrings addObject:str];
-          }
+                [_errorStrings addObject:str];
+            }
         }];
     }
     return self;
@@ -209,7 +209,8 @@ NSString *maskPasswordInString(NSString *string)
             errorDetails = [NSString stringWithString:recombinedErrorDetails];
 
             // Otherwise continue.
-        } else {
+        }
+        else {
             // AutoPkg's rc on a failed repo-update / add / delete is 0, but we want it reported back to the UI so set it to kLGAutoPkgErrorRepoModification.
             if (_verb == kLGAutoPkgRepoUpdate || _verb == kLGAutoPkgRepoDelete || _verb == kLGAutoPkgRepoAdd) {
                 if (errorDetails.length) {

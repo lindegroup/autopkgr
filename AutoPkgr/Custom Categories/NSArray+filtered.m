@@ -27,12 +27,13 @@
     return [self filteredArrayUsingPredicate:predicate];
 }
 
-- (NSArray *)filtered_ByClass:(Class)class{
+- (NSArray *)filtered_ByClass:(Class) class
+{
     NSPredicate *classPredicate = [NSPredicate predicateWithFormat:@"SELF isKindOfClass: %@", class];
     return [self filteredArrayUsingPredicate:classPredicate];
 }
 
-- (BOOL)filtered_containsOnlyItemsOfClass:(Class)class
+- (BOOL)filtered_containsOnlyItemsOfClass:(Class) class
 {
     return ([[self filtered_ByClass:class] count] == self.count);
 }
