@@ -29,5 +29,4 @@
 
 @property (copy, nonatomic) NSString *safe_stringValue;
 
-
 @end

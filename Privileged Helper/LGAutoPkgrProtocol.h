@@ -18,9 +18,9 @@
 //  limitations under the License.
 //
 
-#import <Foundation/Foundation.h>
-#import "LGConstants.h"
 #import "LGAutoPkgrAuthorizer.h"
+#import "LGConstants.h"
+#import <Foundation/Foundation.h>
 @class AHLaunchJobSchedule;
 
 typedef NS_ENUM(NSInteger, LGBackgroundTaskProgressState) {
@@ -33,7 +33,7 @@ typedef void (^uninstallPackageReplyBlock)(NSArray *removed, NSArray *remain, NS
 
 @protocol AutoPkgrHelperAgent <NSObject>
 
-# pragma mark - Password / KeyFile
+#pragma mark - Password / KeyFile
 - (void)getKeychainKey:(void (^)(NSString *key, NSError *error))reply;
 
 #pragma mark - Schedule
@@ -44,8 +44,7 @@ typedef void (^uninstallPackageReplyBlock)(NSArray *removed, NSArray *remain, NS
       authorization:(NSData *)authData
               reply:(void (^)(NSError *error))reply;
 
-
-#pragma mark -- Remove
+#pragma mark-- Remove
 - (void)removeScheduleWithAuthorization:(NSData *)authData
                                   reply:(void (^)(NSError *error))reply;
 
@@ -71,6 +70,6 @@ typedef void (^uninstallPackageReplyBlock)(NSArray *removed, NSArray *remain, NS
 - (void)sendMessageToMainApplication:(NSString *)message
                             progress:(double)progress
                                error:(NSError *)error
-                            state:(LGBackgroundTaskProgressState)state;
+                               state:(LGBackgroundTaskProgressState)state;
 
 @end

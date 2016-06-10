@@ -18,13 +18,12 @@
 //  limitations under the License.
 //
 
-#import <Foundation/Foundation.h>
 #import "LGAutoPkgrHelper.h"
+#import <Foundation/Foundation.h>
 
 int main(int argc, const char *argv[])
 {
-    @autoreleasepool
-    {
+    @autoreleasepool {
         LGAutoPkgrHelper *helper = [LGAutoPkgrHelper new];
         [helper run];
     }

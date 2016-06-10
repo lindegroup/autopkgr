@@ -34,5 +34,4 @@
 + (instancetype)LGStatusUpdateAvailable;
 + (instancetype)LGStatusUnknown;
 
-
 @end

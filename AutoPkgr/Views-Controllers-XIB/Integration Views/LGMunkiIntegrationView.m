@@ -18,8 +18,8 @@
 //  limitations under the License.
 //
 
-#import "LGMunkiIntegrationView.h"
 #import "LGAutoPkgr.h"
+#import "LGMunkiIntegrationView.h"
 
 #import "NSOpenPanel+typeChooser.h"
 
@@ -49,7 +49,8 @@
     if ([[NSFileManager defaultManager] fileExistsAtPath:munkiRepo isDirectory:&isDir] && isDir) {
         _openLocalMunkiRepoFolderButton.enabled = YES;
         _localMunkiRepo.stringValue = munkiRepo;
-    } else {
+    }
+    else {
         _openLocalMunkiRepoFolderButton.enabled = NO;
     }
 }
@@ -82,7 +83,8 @@
     if ([[NSFileManager defaultManager] fileExistsAtPath:munkiRepoFolder isDirectory:&isDir] && isDir) {
         NSURL *localMunkiRepoFolderURL = [NSURL fileURLWithPath:munkiRepoFolder];
         [[NSWorkspace sharedWorkspace] openURL:localMunkiRepoFolderURL];
-    } else {
+    }
+    else {
         NSLog(@"%@ does not exist.", munkiRepoFolder);
         NSAlert *alert = [[NSAlert alloc] init];
         [alert addButtonWithTitle:@"OK"];

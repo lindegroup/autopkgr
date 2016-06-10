@@ -17,11 +17,11 @@
 //  limitations under the License.
 //
 
-#import "LGUninstaller.h"
-#import "LGLogger.h"
-#import "LGAutoPkgrHelperConnection.h"
 #import "LGAutoPkgSchedule.h"
+#import "LGAutoPkgrHelperConnection.h"
+#import "LGLogger.h"
 #import "LGPasswords.h"
+#import "LGUninstaller.h"
 
 #import <AHLaunchCtl/AHLaunchCtl.h>
 @implementation LGUninstaller {
@@ -84,7 +84,8 @@
                                    prompt:NSLocalizedString(@"Remove AutoPkgr's components.", nil)
                                     error:&error]) {
             NSLog(@"A problem occurred uninstalling helper....");
-        } else {
+        }
+        else {
             // Remove launch at login agent.
             [LGAutoPkgSchedule launchAtLogin:NO];
 
@@ -92,12 +93,12 @@
                 // Remove AutoPkgr.keychain file.
                 NSString *keychainFile = appKeychainPath();
                 NSFileManager *manager = [NSFileManager defaultManager];
-                if ([manager fileExistsAtPath:appKeychainPath() ]) {
+                if ([manager fileExistsAtPath:appKeychainPath()]) {
                     [manager removeItemAtPath:keychainFile error:nil];
                 }
             }
         }
-        
+
         dispatch_async(dispatch_get_main_queue(), ^{
             if ([sender respondsToSelector:@selector(enable)]) {
                 [sender setEnabled:YES];
@@ -107,7 +108,8 @@
                 if (error.code != errAuthorizationCanceled) {
                     [NSApp presentError:error];
                 }
-            } else {
+            }
+            else {
                 // Show end alert.
                 NSString *alertText = NSLocalizedString(@"Removed AutoPkgr associated files.", nil);
                 NSString *defaultButton = NSLocalizedString(@"Thanks for using AutoPkgr", nil);
@@ -135,7 +137,7 @@
                                               reply:^(NSError *error) {
                                                   didComplete(error);
                                                   [helperConnection closeConnection];
-    }];
+                                              }];
 }
 
 @end

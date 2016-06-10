@@ -17,8 +17,8 @@
 //  limitations under the License.
 //
 
-#import "LGIntegration.h"
 #import "LGDefaults.h"
+#import "LGIntegration.h"
 
 @interface LGLANrevIntegration : LGIntegration
 @end

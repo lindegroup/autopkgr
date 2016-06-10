@@ -19,16 +19,16 @@
 //
 
 #import "LGAppDelegate.h"
-#import "LGAutoPkgr.h"
-#import "LGAutoPkgTask.h"
-#import "LGAutoPkgSchedule.h"
 #import "LGAutoPkgRecipe.h"
-#import "LGConfigurationWindowController.h"
+#import "LGAutoPkgSchedule.h"
+#import "LGAutoPkgTask.h"
+#import "LGAutoPkgr.h"
 #import "LGAutoPkgrHelperConnection.h"
-#import "LGUserNotification.h"
+#import "LGConfigurationWindowController.h"
 #import "LGDisplayStatusDelegate.h"
 #import "LGNotificationManager.h"
 #import "LGUninstaller.h"
+#import "LGUserNotification.h"
 
 #import <AHLaunchCtl/AHLaunchCtl.h>
 #import <AHLaunchCtl/AHServiceManagement.h>
@@ -52,7 +52,7 @@
 {
 
     // Set up activation policy. By default set as menubar only.
-    [[LGDefaults standardUserDefaults] registerDefaults:@{ kLGApplicationDisplayStyle : @(kLGDisplayStyleShowMenu | kLGDisplayStyleShowDock)}];
+    [[LGDefaults standardUserDefaults] registerDefaults:@{ kLGApplicationDisplayStyle : @(kLGDisplayStyleShowMenu | kLGDisplayStyleShowDock) }];
 
     if (([[LGDefaults standardUserDefaults] applicationDisplayStyle] & kLGDisplayStyleShowDock)) {
         [NSApp setActivationPolicy:NSApplicationActivationPolicyRegular];
@@ -82,7 +82,6 @@
     // Register to get background progress updates.
     LGAutoPkgrHelperConnection *backgroundMonitor = [[LGAutoPkgrHelperConnection alloc] initWithProgressDelegate:self];
 
-
     [backgroundMonitor.remoteObjectProxy registerMainApplication:^(BOOL resign) {
         DLog(@"No longer monitoring scheduled AutoPkg runs.");
     }];
@@ -95,9 +94,9 @@
                    [NSError errorWithDomain:kLGApplicationName
                                        code:-1
                                    userInfo:@{
-                                               NSLocalizedDescriptionKey : message,
-                                               NSLocalizedRecoverySuggestionErrorKey : suggestion
-                                            }]];
+                                       NSLocalizedDescriptionKey : message,
+                                       NSLocalizedRecoverySuggestionErrorKey : suggestion
+                                   }]];
 
         [[NSApplication sharedApplication] terminate:self];
     }
@@ -133,8 +132,9 @@
         [helperConnection connectionError:^(NSError *error) {
             [[NSApplication sharedApplication] replyToApplicationShouldTerminate:YES];
         }];
-    
-        [helperConnection.remoteObjectProxy quitHelper:^(BOOL success){}];
+
+        [helperConnection.remoteObjectProxy quitHelper:^(BOOL success){
+        }];
         return NSTerminateLater;
     }
     return NSTerminateNow;
@@ -190,7 +190,8 @@
 {
     if ([sender boolValue]) {
         [self setupStatusItem];
-    } else {
+    }
+    else {
         self.statusItem = nil;
     }
 }
@@ -268,13 +269,14 @@
 - (IBAction)reinstallHelperTool:(id)sender
 {
     NSError *error = nil;
-    if(![AHLaunchCtl uninstallHelper:kLGAutoPkgrHelperToolName
-                           prompt:NSLocalizedString(@"Begin reinstall process. ", nil)
-                               error:&error]){
-        if(error.code != errAuthorizationCanceled){
+    if (![AHLaunchCtl uninstallHelper:kLGAutoPkgrHelperToolName
+                               prompt:NSLocalizedString(@"Begin reinstall process. ", nil)
+                                error:&error]) {
+        if (error.code != errAuthorizationCanceled) {
             [NSApp presentError:error];
         }
-    } else if (![AHLaunchCtl installHelper:kLGAutoPkgrHelperToolName prompt:@"" error:&error]){
+    }
+    else if (![AHLaunchCtl installHelper:kLGAutoPkgrHelperToolName prompt:@"" error:&error]) {
         [NSApp presentError:[LGError errorWithCode:kLGErrorInstallingPrivilegedHelperTool]];
         [[NSApplication sharedApplication] terminate:self];
     }
@@ -317,11 +319,12 @@
         if (error) {
             self.statusItem.image = [NSImage imageNamed:@"autopkgr_error.png"];
             status = [NSString stringWithFormat:NSLocalizedString(@"AutoPkg Run Error on: %@", nil), lastRunDate
-                      ?: neverRun];
-        } else {
+                                                                                                         ?: neverRun];
+        }
+        else {
             self.statusItem.image = [NSImage imageNamed:@"autopkgr.png"];
             status = [NSString stringWithFormat:NSLocalizedString(@"Last AutoPkg Run: %@", nil), lastRunDate
-                      ?: neverRun];
+                                                                                                     ?: neverRun];
         }
 
         [_progressMenuItem setTitle:status];

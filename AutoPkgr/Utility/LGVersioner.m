@@ -18,8 +18,8 @@
 //  limitations under the License.
 //
 
-#import "LGVersioner.h"
 #import "LGAutoPkgr.h"
+#import "LGVersioner.h"
 
 NSString *const kLGVersionerAppKey = @"pkg_path";
 NSString *const kLGVersionerVersionKey = @"version";

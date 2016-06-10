@@ -18,8 +18,8 @@
 //  limitations under the License.
 //
 
-#import <Foundation/Foundation.h>
 #import "LGTableView.h"
+#import <Foundation/Foundation.h>
 
 @interface LGRecipeTableViewController : NSObject <NSApplicationDelegate, NSTableViewDelegate, LGTableViewDataSource>
 

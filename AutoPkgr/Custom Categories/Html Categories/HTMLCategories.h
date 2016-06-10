@@ -21,6 +21,6 @@
 #ifndef AutoPkgr_HTMLCategores_h
 #define AutoPkgr_HTMLCategores_h
 
-#import "NSString+html_report.h"
 #import "NSArray+html_report.h"
+#import "NSString+html_report.h"
 #endif

@@ -25,6 +25,4 @@
 
 - (instancetype)initWithDistPoint:(LGJSSDistributionPoint *)distPoint;
 
-
-
 @end

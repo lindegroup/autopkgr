@@ -33,7 +33,8 @@
         while ([selfArray count] != [versionArray count]) {
             [selfArray addObject:@"0"];
         }
-    } else if (versionArray.count){
+    }
+    else if (versionArray.count) {
         while ([selfArray count] != [versionArray count]) {
             [versionArray addObject:@"0"];
         };

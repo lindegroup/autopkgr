@@ -18,8 +18,8 @@
 //  limitations under the License.
 //
 
-#import <Cocoa/Cocoa.h>
 #import "LGTabViewControllerBase.h"
+#import <Cocoa/Cocoa.h>
 
 @interface LGNotificationsViewController : LGTabViewControllerBase
 

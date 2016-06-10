@@ -17,12 +17,12 @@
 //  limitations under the License.
 //
 
-#import "LGIntegrationTemplate.h"
 #import "LGIntegration+Protocols.h"
+#import "LGIntegrationTemplate.h"
 
 // Define the protocols you intend to conform to.
 @interface LGIntegrationTemplate () <LGIntegrationPackageInstaller,
-                                            LGIntegrationSharedProcessor>
+                                     LGIntegrationSharedProcessor>
 @end
 
 #pragma mark - Integration overrides
@@ -70,8 +70,9 @@
     /* If there's not a binary don't include it here.
      * Also, if the binary is determined dynamicaly, be sure to
      * handle nil values if using the literal syntax. */
-    return @[ [self binary],
-              @"/path/to/another/file",
+    return @[
+        [self binary],
+        @"/path/to/another/file",
     ];
 }
 
@@ -85,7 +86,8 @@
     return @[ @"com.github.package.identifier" ];
 }
 
-+ (NSString *)summaryResultKey {
++ (NSString *)summaryResultKey
+{
     // This is the key the processor uses to populate the report-plist.
     return @"your_processor_summary_result";
 }

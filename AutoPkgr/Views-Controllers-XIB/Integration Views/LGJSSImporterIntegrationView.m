@@ -20,20 +20,20 @@
 
 #import "LGJSSImporterIntegrationView.h"
 
-#import "LGAutopkgr.h"
 #import "LGAutoPkgTask.h"
+#import "LGAutopkgr.h"
 #import "LGHTTPRequest.h"
 #import "LGHostInfo.h"
 #import "LGInstaller.h"
-#import "LGJSSDistributionPointsPrefPanel.h"
 #import "LGJSSDistributionPoint.h"
+#import "LGJSSDistributionPointsPrefPanel.h"
 #import "LGJSSImporterIntegration.h"
 #import "LGServerCredentials.h"
 #import "LGTableView.h"
 #import "LGTestPort.h"
 
-#import "NSTextField+changeHandle.h"
 #import "NSTableView+Resizing.h"
+#import "NSTextField+changeHandle.h"
 
 @interface LGJSSImporterIntegrationView () <NSTextFieldDelegate>
 @property (strong) IBOutlet LGTableView *jssDistributionPointTableView;
@@ -121,7 +121,8 @@
         [self stopStatusUpdate:error];
         if (error) {
             [NSApp presentError:error];
-        } else {
+        }
+        else {
             [_jssStatusLight setImage:[NSImage LGStatusAvailable]];
             for (LGJSSDistributionPoint *dp in distPoints) {
                 if ((dp.password = [self promptForSharePassword:dp.name]) != nil) {
@@ -183,10 +184,12 @@
     if (distributionPoint.type == kLGJSSTypeLocal) {
         if ([tableColumn.identifier isEqualToString:@"URL"]) {
             identifier = kLGJSSDistPointMountPointKey;
-        } else if ([tableColumn.identifier isEqualToString:@"share_name"]) {
+        }
+        else if ([tableColumn.identifier isEqualToString:@"share_name"]) {
             identifier = kLGJSSDistPointSharePointKey;
         }
-    } else {
+    }
+    else {
         identifier = tableColumn.identifier;
     }
 
@@ -300,7 +303,8 @@
     LGJSSDistributionPoint *distPoint = nil;
     if ([sender isKindOfClass:[NSMenuItem class]]) {
         distPoint = [(NSMenuItem *)sender representedObject];
-    } else {
+    }
+    else {
         NSInteger row = _jssDistributionPointTableView.selectedRow;
         if (row > -1) {
             distPoint = _distributionPoints[row];
@@ -315,7 +319,8 @@
     LGJSSDistributionPoint *distPoint = nil;
     if ([sender isKindOfClass:[NSMenuItem class]]) {
         distPoint = [(NSMenuItem *)sender representedObject];
-    } else {
+    }
+    else {
         NSInteger row = _jssDistributionPointTableView.selectedRow;
         if (0 <= row) {
             distPoint = _distributionPoints[row];

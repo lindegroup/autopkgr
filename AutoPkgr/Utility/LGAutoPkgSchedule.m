@@ -58,7 +58,7 @@ NSString *launchAgentFilePath()
     NSData *authorization = [LGAutoPkgrAuthorizer authorizeHelper];
     assert(authorization != nil);
 
-    LGAutoPkgrHelperConnection *helperConnection = [[LGAutoPkgrHelperConnection alloc] init ];
+    LGAutoPkgrHelperConnection *helperConnection = [[LGAutoPkgrHelperConnection alloc] init];
     /* Check for two conditions, first that start was the desired action,
      * and second that either the schedule is not running or we want to
      * force a reload of the schedule (such as when the interval is changed).
@@ -74,32 +74,33 @@ NSString *launchAgentFilePath()
 
         NSString *program = [[NSProcessInfo processInfo] arguments].firstObject;
 
-
         [helperConnection.remoteObjectProxy
-                scheduleRun:scheduleOrInterval
-                       user:NSUserName()
-                    program:program
-              authorization:authorization
-                      reply:^(NSError *error) {
-                          if (!error && scheduleIsNumber) {
-                              NSDate *date = [NSDate dateWithTimeIntervalSinceNow:[scheduleOrInterval integerValue]];
-                              NSDateFormatter *fomatter = [NSDateFormatter new];
-                              [fomatter setDateStyle:NSDateFormatterShortStyle];
-                              [fomatter setTimeStyle:NSDateFormatterShortStyle];
-                              NSLog(@"Next scheduled AutoPkg run will occur at %@", [fomatter stringFromDate:date]);
-                          }
-                          [[NSApplication sharedApplication] activateIgnoringOtherApps:YES];
-                          reply(error);
-                          [helperConnection closeConnection];
-                }];
-    } else if (scheduleIsRunning) {
-        [helperConnection.remoteObjectProxy removeScheduleWithAuthorization:authorization
-                reply:^(NSError *error) {
+              scheduleRun:scheduleOrInterval
+                     user:NSUserName()
+                  program:program
+            authorization:authorization
+                    reply:^(NSError *error) {
+                        if (!error && scheduleIsNumber) {
+                            NSDate *date = [NSDate dateWithTimeIntervalSinceNow:[scheduleOrInterval integerValue]];
+                            NSDateFormatter *fomatter = [NSDateFormatter new];
+                            [fomatter setDateStyle:NSDateFormatterShortStyle];
+                            [fomatter setTimeStyle:NSDateFormatterShortStyle];
+                            NSLog(@"Next scheduled AutoPkg run will occur at %@", [fomatter stringFromDate:date]);
+                        }
                         [[NSApplication sharedApplication] activateIgnoringOtherApps:YES];
                         reply(error);
                         [helperConnection closeConnection];
-                }];
-    } else {
+                    }];
+    }
+    else if (scheduleIsRunning) {
+        [helperConnection.remoteObjectProxy removeScheduleWithAuthorization:authorization
+                                                                      reply:^(NSError *error) {
+                                                                          [[NSApplication sharedApplication] activateIgnoringOtherApps:YES];
+                                                                          reply(error);
+                                                                          [helperConnection closeConnection];
+                                                                      }];
+    }
+    else {
         reply(nil);
     }
 }
@@ -111,7 +112,8 @@ NSString *launchAgentFilePath()
         AHLaunchJobSchedule *startInterval = job.StartCalendarInterval;
         if (startInterval) {
             *scheduleInterval = startInterval;
-        } else {
+        }
+        else {
             // If the interval is 0 set it to 24, else convert it from seconds to hours.
             NSInteger interval = (job.StartInterval == 0) ? 24 : (job.StartInterval / 60 / 60);
             if (scheduleInterval) {

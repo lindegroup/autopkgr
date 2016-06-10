@@ -18,9 +18,9 @@
 //  limitations under the License.
 //
 
-#import "LGIntegrationWindowController.h"
-#import "LGBaseIntegrationViewController.h"
 #import "LGAutoPkgr.h"
+#import "LGBaseIntegrationViewController.h"
+#import "LGIntegrationWindowController.h"
 
 @interface LGIntegrationWindowController ()
 @property (strong, nonatomic, readonly) LGBaseIntegrationViewController *viewController;
@@ -34,7 +34,8 @@
     return [super initWithViewController:(NSViewController *)viewController];
 }
 
-- (void)windowDidLoad {
+- (void)windowDidLoad
+{
     [super windowDidLoad];
 
     self.configBox.title = [self.viewController.integration.name stringByAppendingString:@" Integration"] ?: @"";
@@ -44,7 +45,8 @@
         self.accessoryButton.target = self;
         self.accessoryButton.action = @selector(uninstall:);
         self.accessoryButton.title = @"Uninstall...";
-    } else {
+    }
+    else {
         self.accessoryButton.hidden = YES;
     }
 
@@ -55,24 +57,24 @@
     self.infoTextField.safe_stringValue = credits;
 }
 
-
-
 - (void)uninstall:(id)sender
 {
     __weak typeof(self) weakSelf = self;
     [self.viewController.integration.progressDelegate startProgressWithMessage:@"Uninstalling..."];
 
     [self.progressSpinner startAnimation:nil];
-    [self.viewController.integration uninstall:^(NSString *message, double progress) {} reply:^(NSError *error) {
-        __strong typeof(self) strongSelf = weakSelf;
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [strongSelf.progressSpinner stopAnimation:nil];
-            if (!error) {
-                [[(LGBaseIntegrationViewController *)strongSelf.viewController integration].progressDelegate stopProgress:error];
-                [strongSelf.window close];
-            }
-        });
-    }];
+    [self.viewController.integration uninstall:^(NSString *message, double progress) {
+    }
+        reply:^(NSError *error) {
+            __strong typeof(self) strongSelf = weakSelf;
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [strongSelf.progressSpinner stopAnimation:nil];
+                if (!error) {
+                    [[(LGBaseIntegrationViewController *)strongSelf.viewController integration].progressDelegate stopProgress:error];
+                    [strongSelf.window close];
+                }
+            });
+        }];
 }
 
 @end

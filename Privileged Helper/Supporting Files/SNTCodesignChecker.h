@@ -23,27 +23,27 @@
 ///
 ///  The SecStaticCodeRef that this SNTCodesignChecker is working around
 ///
-@property(readonly) SecStaticCodeRef codeRef;
+@property (readonly) SecStaticCodeRef codeRef;
 
 ///
 ///  Returns a dictionary of raw signing information
 ///
-@property(readonly) NSDictionary *signingInformation;
+@property (readonly) NSDictionary *signingInformation;
 
 ///
 ///  Returns an array of @c SNTCertificate objects representing the chain that signed this binary.
 ///
-@property(readonly) NSArray *certificates;
+@property (readonly) NSArray *certificates;
 
 ///
 ///  Returns the leaf certificate that this binary was signed with
 ///
-@property(readonly) SNTCertificate *leafCertificate;
+@property (readonly) SNTCertificate *leafCertificate;
 
 ///
 ///  Returns the on-disk path of this binary.
 ///
-@property(readonly) NSString *binaryPath;
+@property (readonly) NSString *binaryPath;
 
 ///
 ///  Designated initializer

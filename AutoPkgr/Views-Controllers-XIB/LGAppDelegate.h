@@ -18,8 +18,8 @@
 //  limitations under the License.
 //
 
-#import <Cocoa/Cocoa.h>
 #import "LGProgressDelegate.h"
+#import <Cocoa/Cocoa.h>
 
 @class LGConfigurationWindowController;
 

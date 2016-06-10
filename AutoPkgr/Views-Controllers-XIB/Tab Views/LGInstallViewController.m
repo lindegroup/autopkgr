@@ -18,11 +18,11 @@
 //  limitations under the License.
 //
 
-#import "LGInstallViewController.h"
-#import "LGAutoPkgr.h"
 #import "LGAutoPkgSchedule.h"
-#import "LGIntegrationManager.h"
+#import "LGAutoPkgr.h"
 #import "LGDisplayStatusDelegate.h"
+#import "LGInstallViewController.h"
+#import "LGIntegrationManager.h"
 #import "LGTableCellViews.h"
 
 @interface LGInstallViewController () <NSTableViewDataSource, NSTableViewDelegate>
@@ -101,7 +101,7 @@
 
     if (!_integrationManager.installStatusDidChangeHandler) {
         _integrationManager.installStatusDidChangeHandler = ^(LGIntegrationManager *aManager, LGIntegration *integration) {
-            
+
             assert([NSThread isMainThread]);
 
             [tableView beginUpdates];
@@ -114,37 +114,39 @@
 
                 [tableView reloadDataForRowIndexes:idxSet
                                      columnIndexes:[NSIndexSet
-                                                    indexSetWithIndexesInRange:
-                                                    NSMakeRange(0, tableView.numberOfColumns)]];
-
-            } else if (integration.isInstalled) {
+                                                       indexSetWithIndexesInRange:
+                                                           NSMakeRange(0, tableView.numberOfColumns)]];
+            }
+            else if (integration.isInstalled) {
                 /* If the integration is now installed, check that it was NOT previously
                  * listed as installed by checking the `currentIntegrations` array
                  * and add in a row to the table if not found. */
                 NSInteger previousIndex = [currentIntegrations indexOfObject:integration];
-                if ( previousIndex == NSNotFound) {
+                if (previousIndex == NSNotFound) {
                     // NSNotFound means that the integration was previously not installed.
                     NSInteger index = [aManager.installedOrRequiredIntegrations indexOfObject:integration];
                     if (index != NSNotFound) {
                         NSIndexSet *idxSet = [NSIndexSet indexSetWithIndex:index];
-                        [tableView insertRowsAtIndexes:idxSet  withAnimation:NSTableViewAnimationEffectFade];
+                        [tableView insertRowsAtIndexes:idxSet withAnimation:NSTableViewAnimationEffectFade];
 
                         [tableView reloadDataForRowIndexes:idxSet
                                              columnIndexes:[NSIndexSet
-                                                            indexSetWithIndexesInRange:
-                                                            NSMakeRange(0, tableView.numberOfColumns)]];
+                                                               indexSetWithIndexesInRange:
+                                                                   NSMakeRange(0, tableView.numberOfColumns)]];
                         // Reset the currentIntegrations.
                         currentIntegrations = aManager.installedOrRequiredIntegrations;
                     }
-                } else {
+                }
+                else {
                     // The integration is being updated, reload the row.
                     [tableView reloadDataForRowIndexes:[NSIndexSet
-                                                        indexSetWithIndex:previousIndex]
+                                                           indexSetWithIndex:previousIndex]
                                          columnIndexes:[NSIndexSet
-                                                        indexSetWithIndexesInRange:
-                                                        NSMakeRange(0, tableView.numberOfColumns)]];
+                                                           indexSetWithIndexesInRange:
+                                                               NSMakeRange(0, tableView.numberOfColumns)]];
                 }
-            } else {
+            }
+            else {
                 /* Otherwise it's no longer installed, and we want to remove
                  * the row from the table that's represented by the index of
                  * of the integration in the 'currentIntegrations' array. */

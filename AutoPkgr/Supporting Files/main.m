@@ -18,19 +18,19 @@
 //  limitations under the License.
 //
 
-#import <Cocoa/Cocoa.h>
-#import "LGAutoPkgTask.h"
 #import "LGAutoPkgRecipe.h"
-#import "LGNotificationManager.h"
+#import "LGAutoPkgTask.h"
 #import "LGAutoPkgr.h"
 #import "LGAutoPkgrHelperConnection.h"
+#import "LGNotificationManager.h"
+#import <Cocoa/Cocoa.h>
 
 int main(int argc, const char *argv[])
 {
     NSUserDefaults *args = [NSUserDefaults standardUserDefaults];
 
     NSString *reportItemKey = NSStringFromSelector(@selector(reportedItemFlags));
-    [args registerDefaults:@{reportItemKey : @(kLGReportItemsAll)}];
+    [args registerDefaults:@{ reportItemKey : @(kLGReportItemsAll) }];
 
     if ([args boolForKey:@"runInBackground"]) {
         NSLog(@"Running AutoPkgr in background...");
@@ -82,7 +82,8 @@ int main(int argc, const char *argv[])
 
         [[NSRunLoop currentRunLoop] run];
         return 0;
-    } else {
+    }
+    else {
         return NSApplicationMain(argc, argv);
     }
 }

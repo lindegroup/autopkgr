@@ -18,10 +18,10 @@
 //  limitations under the License.
 //
 
-#import "LGConfigurationWindowController.h"
 #import "LGAutoPkgr.h"
-#import "LGProgressDelegate.h"
+#import "LGConfigurationWindowController.h"
 #import "LGIntegrationManager.h"
+#import "LGProgressDelegate.h"
 
 @interface LGConfigurationWindowController () {
     LGIntegrationManager *_integrationManager;
@@ -59,7 +59,7 @@
     if (self = [self init]) {
         /* In the main init method, the progress delegate is set as self by default,
          * but with the installView and schedule view want their progress delegate  */
-//        _scheduleView.progressDelegate = progressDelegate;
+        //        _scheduleView.progressDelegate = progressDelegate;
     }
     return self;
 }
@@ -166,7 +166,7 @@
                 NSLog(@"%@", error.localizedRecoverySuggestion);
             }
 
-            NSAlert *alert = [NSAlert alertWithMessageText:error.localizedDescription defaultButton:@"OK" alternateButton:nil otherButton:nil informativeTextWithFormat:@"%@", truncatedString ];
+            NSAlert *alert = [NSAlert alertWithMessageText:error.localizedDescription defaultButton:@"OK" alternateButton:nil otherButton:nil informativeTextWithFormat:@"%@", truncatedString];
             alert.alertStyle = NSCriticalAlertStyle;
 
             // If AutoPkg exits -1 it may be misconfigured.
@@ -178,7 +178,7 @@
             // Set accessory view so the size of the alert more closely matches the size of the window.
             NSInteger width = self.window.frame.size.width * 0.75;
             alert.accessoryView = [[NSView alloc]
-                                   initWithFrame:NSMakeRect(0, 0, width, FLT_MIN)];
+                initWithFrame:NSMakeRect(0, 0, width, FLT_MIN)];
 
             [alert beginSheetModalForWindow:self.window
                               modalDelegate:self
@@ -191,13 +191,14 @@
 - (void)updateProgress:(NSString *)message progress:(double)progress
 {
     [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-            [self.progressIndicator setIndeterminate:NO];
-            [self.progressDetailsMessage setStringValue:[message truncateToLength:100]];
-            [self.progressIndicator setDoubleValue:progress > 5.0 ? progress:5.0 ];
+        [self.progressIndicator setIndeterminate:NO];
+        [self.progressDetailsMessage setStringValue:[message truncateToLength:100]];
+        [self.progressIndicator setDoubleValue:progress > 5.0 ? progress : 5.0];
     }];
 }
 
-- (void)bringAutoPkgrToFront {
+- (void)bringAutoPkgrToFront
+{
     [[NSRunningApplication currentApplication] activateWithOptions:NSApplicationActivateAllWindows | NSApplicationActivateIgnoringOtherApps];
 }
 
@@ -212,15 +213,14 @@
             NSAlert *alert = [NSAlert new];
             alert.messageText = [NSString stringWithFormat:NSLocalizedString(@"%ld problems were found in the AutoPkg preference file", nil), neededFixing];
 
-            alert.informativeText = rc ?
-            NSLocalizedString(@"AutoPkgr was able to repair the AutoPkg preference file. No further action is required.", nil) :
-            NSLocalizedString(@"AutoPkgr could not repair the AutoPkg preference file. If the problem persists open an issue on the AutoPkgr GitHub page.", nil);
+            alert.informativeText = rc ? NSLocalizedString(@"AutoPkgr was able to repair the AutoPkg preference file. No further action is required.", nil) : NSLocalizedString(@"AutoPkgr could not repair the AutoPkg preference file. If the problem persists open an issue on the AutoPkgr GitHub page.", nil);
 
             [alert beginSheetModalForWindow:self.window
                               modalDelegate:self
                              didEndSelector:nil
                                 contextInfo:nil];
-        } else {
+        }
+        else {
             DLog(@"No problems were detected in the AutoPkg preference file.");
         }
     }

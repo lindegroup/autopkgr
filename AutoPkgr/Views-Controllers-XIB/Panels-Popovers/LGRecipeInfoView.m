@@ -18,8 +18,8 @@
 //  limitations under the License.
 //
 
-#import "LGRecipeInfoView.h"
 #import "LGAutoPkgRecipe.h"
+#import "LGRecipeInfoView.h"
 #import "NSTextField+safeStringValue.h"
 
 @interface LGRecipeInfoView ()
@@ -38,26 +38,28 @@
     LGAutoPkgRecipe *_recipe;
 }
 
-- (instancetype)initWithRecipe:(LGAutoPkgRecipe *)recipe {
-    if (self = [self initWithNibName:NSStringFromClass([self class]) bundle:[NSBundle mainBundle]]){
+- (instancetype)initWithRecipe:(LGAutoPkgRecipe *)recipe
+{
+    if (self = [self initWithNibName:NSStringFromClass([self class]) bundle:[NSBundle mainBundle]]) {
         _recipe = recipe;
     }
     return self;
 }
 
-- (void)awakeFromNib {
+- (void)awakeFromNib
+{
     /* Since the recipe description can be rather long, we use
      * we're using a textView with scrolling capabilities */
     _descriptionTextView.backgroundColor = [NSColor clearColor];
 
-    NSMutableDictionary *attrs = @{NSFontAttributeName : [NSFont systemFontOfSize:11.0]}.mutableCopy;
+    NSMutableDictionary *attrs = @{ NSFontAttributeName : [NSFont systemFontOfSize:11.0] }.mutableCopy;
     NSString *description = _recipe.Description;
     if (!description) {
         [attrs setObject:[NSColor grayColor] forKey:NSForegroundColorAttributeName];
         description = @"<No description provided>";
     }
     NSAttributedString *attrString = [[NSAttributedString alloc] initWithString:description
-                                                                      attributes:attrs];
+                                                                     attributes:attrs];
 
     [_descriptionTextView.textStorage appendAttributedString:attrString];
 
@@ -79,13 +81,14 @@
     _buildsPackageTF.safe_stringValue = [self stringForBool:_recipe.buildsPackage];
 }
 
-- (void)viewDidLoad {
+- (void)viewDidLoad
+{
     [super viewDidLoad];
     // Do view setup here.
-
 }
 
-- (NSString *)stringForBool:(BOOL)value{
-    return value ? @"True":@"False";
+- (NSString *)stringForBool:(BOOL)value
+{
+    return value ? @"True" : @"False";
 }
 @end

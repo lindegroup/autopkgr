@@ -27,7 +27,8 @@
     return [self stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
 }
 
-- (NSString *)spaces_removed {
+- (NSString *)spaces_removed
+{
     return [self stringByReplacingOccurrencesOfString:@" " withString:@""];
 }
 
@@ -41,7 +42,6 @@
     }
 
     return [self substringToIndex:(self.length - i)];
-
 }
 
 - (NSString *)blankIsNil

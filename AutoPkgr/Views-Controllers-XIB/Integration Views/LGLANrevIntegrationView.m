@@ -17,8 +17,8 @@
 //  limitations under the License.
 //
 
-#import "LGLANrevIntegrationView.h"
 #import "LGLANrevIntegration.h"
+#import "LGLANrevIntegrationView.h"
 
 @interface LGLANrevIntegrationView ()
 @property (weak) IBOutlet NSButton *enableExternalUploadBT;
@@ -27,7 +27,8 @@
 
 @implementation LGLANrevIntegrationView
 
-- (void)awakeFromNib {
+- (void)awakeFromNib
+{
     _enableExternalUploadBT.state = [LGLANrevDefaults new].AllowURLSDPackageImport;
 }
 
@@ -36,7 +37,8 @@
     [LGLANrevDefaults new].AllowURLSDPackageImport = sender.state;
 }
 
-- (void)viewDidLoad {
+- (void)viewDidLoad
+{
     [super viewDidLoad];
     // Do view setup here.
 }

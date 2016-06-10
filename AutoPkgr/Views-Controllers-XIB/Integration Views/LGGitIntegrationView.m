@@ -18,12 +18,12 @@
 //  limitations under the License.
 //
 
-#import "LGGitIntegrationView.h"
-#import "LGGitIntegration.h"
 #import "LGDefaults.h"
+#import "LGGitIntegration.h"
+#import "LGGitIntegrationView.h"
 
-#import "NSString+cleaned.h"
 #import "NSOpenPanel+typeChooser.h"
+#import "NSString+cleaned.h"
 #import "NSTextField+safeStringValue.h"
 
 @interface LGGitIntegrationView () <NSTextFieldDelegate>
@@ -57,23 +57,24 @@
     LGDefaults *defaults = [LGDefaults standardUserDefaults];
     NSString *initialGitPath = defaults.gitPath;
 
-    BOOL (^validExecutable)(NSString * path, NSTextField *) = ^BOOL(NSString *path, NSTextField *textField) {
+    BOOL (^validExecutable)
+    (NSString *path, NSTextField *) = ^BOOL(NSString *path, NSTextField *textField) {
         BOOL success = NO;
         BOOL isDir;
-        if (([[NSFileManager defaultManager] fileExistsAtPath:path isDirectory:&isDir] && !isDir) &&
-            ([[NSFileManager defaultManager] isExecutableFileAtPath:path]) &&
+        if (([[NSFileManager defaultManager] fileExistsAtPath:path isDirectory:&isDir] && !isDir) && ([[NSFileManager defaultManager] isExecutableFileAtPath:path]) &&
             [path.lastPathComponent isEqualToString:@"git"]) {
             [textField setTextColor:[NSColor blackColor]];
-            success =  YES;
+            success = YES;
             if (![initialGitPath isEqualToString:path]) {
                 /* Here trigger the refresh, but also call post a notification
                  * that the status changed so the integration's manager updates
                  * it's status change handler.
                  */
-                 [self.integration refresh];
+                [self.integration refresh];
                 [[NSNotificationCenter defaultCenter] postNotificationName:kLGNotificationIntegrationStatusDidChange object:self.integration];
             }
-        } else {
+        }
+        else {
             [textField setTextColor:[NSColor redColor]];
         }
         return success;
@@ -81,13 +82,13 @@
 
     if ([sender isKindOfClass:[NSButton class]]) {
         [NSOpenPanel executableChooser_WithStartingPath:defaults.gitPath reply:^(NSString *selectedExecutable) {
-            if(validExecutable(selectedExecutable, nil)){
+            if (validExecutable(selectedExecutable, nil)) {
                 _githPathTF.stringValue = selectedExecutable;
                 defaults.gitPath = selectedExecutable.stringByExpandingTildeInPath;
             }
         }];
-
-    } else if ([sender isEqualTo:_githPathTF]) {
+    }
+    else if ([sender isEqualTo:_githPathTF]) {
         NSString *path = [sender stringValue];
 
         if (validExecutable(path, sender)) {

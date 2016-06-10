@@ -18,9 +18,9 @@
 //  limitations under the License.
 //
 
-#import "LGGitHubJSONLoader.h"
-#import "LGConstants.h"
 #import "LGAutoPkgr.h"
+#import "LGConstants.h"
+#import "LGGitHubJSONLoader.h"
 
 #import <AFNetworking/AFNetworking.h>
 
@@ -74,7 +74,8 @@
     if (_infoRetrievedDate == nil) {
         _infoRetrievedDate = [NSDate date];
         return YES;
-    } else if (_lifespan <= -(_infoRetrievedDate.timeIntervalSinceNow)){
+    }
+    else if (_lifespan <= -(_infoRetrievedDate.timeIntervalSinceNow)) {
         return YES;
     }
     return NO;
@@ -98,7 +99,8 @@
             if (prerelease.boolValue == NO) {
                 _latestReleaseDictionary = releaseDict;
                 *stop = YES;
-            } else {
+            }
+            else {
                 NSLog(@"Skipping prerelease version of %@", self.repoURL);
             }
         }];
@@ -167,9 +169,9 @@
     NSURL *url = [NSURL URLWithString:_gitHubURL];
 
     NSMutableURLRequest *req = [NSMutableURLRequest requestWithURL:url
-                                         cachePolicy:NSURLRequestUseProtocolCachePolicy
-                                     timeoutInterval:15.0];
-    
+                                                       cachePolicy:NSURLRequestUseProtocolCachePolicy
+                                                   timeoutInterval:15.0];
+
     if (_apiToken) {
         [req setValue:[@"token " stringByAppendingString:_apiToken] forHTTPHeaderField:@"Authorization"];
     };
@@ -180,13 +182,14 @@
     [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, NSArray *responseObject) {
         LGGitHubReleaseInfo *info = [[LGGitHubReleaseInfo alloc] initWithJSON:responseObject];
         complete(info, nil);
-//        DevLog(@"Remaining calls per hour to GitHub API: %@/%@ (used Cache = %@)",
-//               operation.response.allHeaderFields[@"X-RateLimit-Remaining"],
-//               operation.response.allHeaderFields[@"X-RateLimit-Limit"],
-//               [operation.response.allHeaderFields[@"Status"] isEqualToString:@"304 Not Modified"] ? @"YES": @"NO");
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        complete(nil, error);
-    }];
+        //        DevLog(@"Remaining calls per hour to GitHub API: %@/%@ (used Cache = %@)",
+        //               operation.response.allHeaderFields[@"X-RateLimit-Remaining"],
+        //               operation.response.allHeaderFields[@"X-RateLimit-Limit"],
+        //               [operation.response.allHeaderFields[@"Status"] isEqualToString:@"304 Not Modified"] ? @"YES": @"NO");
+    }
+        failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+            complete(nil, error);
+        }];
 
     [operation start];
 }
@@ -224,7 +227,8 @@
         // Check that the object is an array, and if so return it.
         if ([jsonObject isKindOfClass:[NSArray class]]) {
             return jsonObject;
-        } else if (error) {
+        }
+        else if (error) {
             NSLog(@"NSJSONSerialization error when attempting to serialize JSON data from the GitHub API: Error: %@.", error);
         }
     }

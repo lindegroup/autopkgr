@@ -39,7 +39,7 @@
 // Is the report template a file? Return YES if a file, NO if it's a string.
 + (BOOL)templateIsFile;
 
-// Default notification template. 
+// Default notification template.
 + (NSString *)defaultTemplate;
 
 // Send the notification.

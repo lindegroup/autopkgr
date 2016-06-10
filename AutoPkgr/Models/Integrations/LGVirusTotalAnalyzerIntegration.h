@@ -17,11 +17,11 @@
 //  limitations under the License.
 //
 
-#import "LGIntegration.h"
 #import "LGDefaults.h"
 #import "LGIntegration+Protocols.h"
+#import "LGIntegration.h"
 
-@interface LGVirusTotalAnalyzerIntegration : LGIntegration<LGIntegrationSharedProcessor>
+@interface LGVirusTotalAnalyzerIntegration : LGIntegration <LGIntegrationSharedProcessor>
 
 @end
 

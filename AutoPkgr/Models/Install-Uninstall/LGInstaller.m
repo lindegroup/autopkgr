@@ -18,11 +18,11 @@
 //  limitations under the License.
 //
 
-#import "LGInstaller.h"
 #import "LGAutoPkgr.h"
-#import "LGHostInfo.h"
-#import "LGGitHubJSONLoader.h"
 #import "LGAutoPkgrHelperConnection.h"
+#import "LGGitHubJSONLoader.h"
+#import "LGHostInfo.h"
+#import "LGInstaller.h"
 
 #import <AFNetworking/AFNetworking.h>
 
@@ -113,7 +113,8 @@ typedef NS_ENUM(NSInteger, LGInstallType) {
                 if (pkg) {
                     DLog(@"Found installer package: %@", pkg);
                     pkgFile = [_mountPoint stringByAppendingPathComponent:pkg];
-                } else {
+                }
+                else {
                     DLog(@"Could not locate .pkg file.");
                 }
             }
@@ -155,12 +156,14 @@ typedef NS_ENUM(NSInteger, LGInstallType) {
                                                                          [helperConnection closeConnection];
                                                                      }];
             });
-        } else {
+        }
+        else {
             reply([LGError errorWithCode:kLGErrorInstallingGeneric]);
         }
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        reply(error);
-    }];
+    }
+        failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+            reply(error);
+        }];
 
     [operation start];
 }
@@ -175,7 +178,8 @@ typedef NS_ENUM(NSInteger, LGInstallType) {
 
     if ([pkgPredicate evaluateWithObject:_downloadURL]) {
         type = kLGInstallerTypePKG;
-    } else if ([dmgPredicate evaluateWithObject:_downloadURL]) {
+    }
+    else if ([dmgPredicate evaluateWithObject:_downloadURL]) {
         type = kLGInstallerTypeDMG;
     }
 
@@ -214,7 +218,8 @@ typedef NS_ENUM(NSInteger, LGInstallType) {
 
         if (errorStr) {
             DLog(@"Error creating plist %@", errorStr);
-        } else {
+        }
+        else {
             DLog(@"hdiutil output dictionary: %@", dict);
         }
 
@@ -227,8 +232,8 @@ typedef NS_ENUM(NSInteger, LGInstallType) {
         }
 
         NSLog(@"Mounting installer DMG to %@", _mountPoint);
-
-    } else {
+    }
+    else {
         DLog(@"There was a problem retrieving the standard output of the hdiutil process");
     }
 

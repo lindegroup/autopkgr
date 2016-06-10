@@ -37,7 +37,8 @@
     static id image;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        image = [self imageNamed:@"NSCaution"];;
+        image = [self imageNamed:@"NSCaution"];
+        ;
     });
     return image;
 }
@@ -81,6 +82,5 @@
 {
     return [self LGStatusNone];
 }
-
 
 @end

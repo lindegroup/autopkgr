@@ -18,9 +18,9 @@
 //  limitations under the License.
 //
 
-#import "LGPasswords.h"
-#import "LGAutoPkgrHelperConnection.h"
 #import "LGAutoPkgr.h"
+#import "LGAutoPkgrHelperConnection.h"
+#import "LGPasswords.h"
 
 #import <AHKeychain/AHKeychain.h>
 
@@ -52,7 +52,8 @@ NSString *appKeychainPath()
 
                 [keychain getItem:item error:&error];
                 reply(item.password, error);
-            } else {
+            }
+            else {
                 reply(nil, [LGError errorWithCode:kLGErrorKeychainAccess]);
             }
         }];
@@ -94,13 +95,15 @@ NSString *appKeychainPath()
                 if (password.length == 0) {
                     [keychain deleteItem:item error:&error];
                     reply(error);
-                } else {
+                }
+                else {
                     item.password = password;
                     [keychain saveItem:item error:&error];
                     reply(error);
                 }
-            } else {
-                reply([NSError errorWithDomain:kLGApplicationName code:keychain.keychainStatus userInfo:@{NSLocalizedDescriptionKey : keychain.statusDescription}]);
+            }
+            else {
+                reply([NSError errorWithDomain:kLGApplicationName code:keychain.keychainStatus userInfo:@{ NSLocalizedDescriptionKey : keychain.statusDescription }]);
             }
         }];
     }];
@@ -122,8 +125,8 @@ NSString *appKeychainPath()
             // If we successfully unlock the keychain with the old password, the keychain needs migration.
 
             [self getKeychainKey:^(NSString *key, NSError *error) {
-                if(!error){
-                    if([keychain changeKeychainPassword:oldPass to:key error:&error]){
+                if (!error) {
+                    if ([keychain changeKeychainPassword:oldPass to:key error:&error]) {
                         NSString *account = [[LGDefaults standardUserDefaults] SMTPUsername];
 
                         NSLog(@"Successfully migrated keychain.");
@@ -137,7 +140,8 @@ NSString *appKeychainPath()
                             reply(item.password, error);
                         }
                     }
-                } else {
+                }
+                else {
                     reply(nil, error);
                 }
             }];
@@ -163,7 +167,8 @@ NSString *appKeychainPath()
             NSError *error = nil;
             if ([[AHKeychain keychainAtPath:appKeychainPath()] deleteKeychain:&error]) {
                 DLog(@"Removed old keychain...");
-            } else {
+            }
+            else {
                 NSLog(@"There was a problem removing your old keychain.");
             }
             reply(error);
@@ -180,7 +185,8 @@ NSString *appKeychainPath()
 
     if (![[NSFileManager defaultManager] fileExistsAtPath:appKeychainPath()]) {
         keychain = [[AHKeychain alloc] initCreatingNewKeychain:appKeychain password:key];
-    } else {
+    }
+    else {
         keychain = [[AHKeychain alloc] initWithKeychain:appKeychain];
         if (![keychain unlockWithPassword:key]) {
             DLog(@"[%d] %@", keychain.keychainStatus, keychain.statusDescription);
@@ -207,12 +213,14 @@ NSString *appKeychainPath()
     [[self class] getKeychainKey:^(NSString *key, NSError *error) {
         if (!error && key) {
             AHKeychain *keychain = [self appKeychain:key];
-            if(keychain){
+            if (keychain) {
                 reply(keychain);
-            } else {
+            }
+            else {
                 reply(nil);
             }
-        } else {
+        }
+        else {
             DLog(@"%@", error.localizedDescription);
             reply(nil);
         }

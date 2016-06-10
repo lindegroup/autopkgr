@@ -19,10 +19,10 @@
 
 #import "BSDProcessInfo.h"
 
-#import <pwd.h>
 #import <libproc.h>
-#import <sys/sysctl.h>
+#import <pwd.h>
 #import <sys/proc_info.h>
+#import <sys/sysctl.h>
 
 #define PID_TERMINATED -9
 typedef struct kinfo_proc kinfo_proc;
@@ -47,7 +47,8 @@ typedef struct kinfo_proc kinfo_proc;
 @synthesize argumentString = _argumentString;
 @synthesize environment = _environment;
 
-- (NSString *)description {
+- (NSString *)description
+{
     NSMutableString *string = [[NSMutableString alloc] init];
     [string appendFormat:@"PID: %d Name %@ User:%@\n",
                          self.pid,
@@ -57,7 +58,8 @@ typedef struct kinfo_proc kinfo_proc;
     [string appendString:@"Command: "];
     if (self.launchPath) {
         [string appendFormat:@"%@ %@", _launchPath, self.argumentString];
-    } else {
+    }
+    else {
         [string appendString:self.executablePath];
     }
 
@@ -65,7 +67,8 @@ typedef struct kinfo_proc kinfo_proc;
 }
 
 #pragma mark - init / dealloc
-- (instancetype)initWithkInfoProc:(kinfo_proc *)proc {
+- (instancetype)initWithkInfoProc:(kinfo_proc *)proc
+{
     if (self = [super init]) {
         // PID
         self->_pid = proc->kp_proc.p_pid;
@@ -86,7 +89,8 @@ typedef struct kinfo_proc kinfo_proc;
          * likely too long to be correct, so use the executable path. */
         if (strlen(proc->kp_proc.p_comm) >= 16 && _executablePath.length) {
             self->_name = _executablePath.lastPathComponent;
-        } else {
+        }
+        else {
             self->_name = [NSString stringWithUTF8String:proc->kp_proc.p_comm];
         }
 
@@ -108,9 +112,8 @@ typedef struct kinfo_proc kinfo_proc;
         if (realUser) {
             self->_realUserID = rUid;
             self->_realUser =
-            [NSString stringWithFormat:@"%s", realUser->pw_name];
+                [NSString stringWithFormat:@"%s", realUser->pw_name];
         }
-
 
         // Private
         _envReadPermission = (getuid() == 0) || (rUid == getuid());
@@ -119,7 +122,8 @@ typedef struct kinfo_proc kinfo_proc;
     return self;
 }
 
-- (instancetype)initWithPid:(pid_t)pid {
+- (instancetype)initWithPid:(pid_t)pid
+{
     struct kinfo_proc proc;
     size_t buffer = sizeof(proc);
 
@@ -138,15 +142,17 @@ typedef struct kinfo_proc kinfo_proc;
 
 #pragma mark - Accessors
 
-- (NSString *)startDateString {
-    NSDateFormatter* dateFormatter = [[NSDateFormatter alloc] init];
+- (NSString *)startDateString
+{
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
     [dateFormatter setTimeStyle:NSDateFormatterLongStyle];
     [dateFormatter setLocale:[NSLocale currentLocale]];
     return [dateFormatter stringFromDate:_startDate];
 }
 
-- (NSString *)launchPath {
+- (NSString *)launchPath
+{
     if (!_launchPath) {
         if (![self arguments]) {
             /* _invokedExecutable is set during `-arguments`
@@ -157,7 +163,8 @@ typedef struct kinfo_proc kinfo_proc;
     return _launchPath;
 };
 
-- (NSArray *)arguments {
+- (NSArray *)arguments
+{
     /* Adapted from ps source code.
      * http://www.opensource.apple.com/source/adv_cmds/adv_cmds-158/ps/ps.c */
 
@@ -296,14 +303,13 @@ typedef struct kinfo_proc kinfo_proc;
                             componentsSeparatedByString:@"="];
                         if (a.count == 2) {
                             NSCharacterSet *cs = [NSCharacterSet
-                                    whitespaceAndNewlineCharacterSet];
+                                whitespaceAndNewlineCharacterSet];
                             [environment
                                 addObject:
                                     @{
-                                           [a[0] stringByTrimmingCharactersInSet
-                                            : cs] : [a[1]
-                                               stringByTrimmingCharactersInSet:
-                                                   cs]
+                                       [a[0] stringByTrimmingCharactersInSet:cs] : [a[1]
+                                           stringByTrimmingCharactersInSet:
+                                               cs]
                                     }];
                         }
                     }
@@ -330,14 +336,16 @@ ERROR_A:
     return _arguments;
 }
 
-- (NSString *)argumentString {
+- (NSString *)argumentString
+{
     if (!_argumentString && self.arguments) {
         _argumentString = [_arguments componentsJoinedByString:@" "] ?: @"";
     }
     return _argumentString;
 }
 
-- (NSArray *)environment {
+- (NSArray *)environment
+{
     if (!_environment) {
         /* The environment is constructed during the `-arguments` method. */
         [self arguments];
@@ -345,7 +353,8 @@ ERROR_A:
     return _environment;
 }
 
-- (NSString *)cpuTime {
+- (NSString *)cpuTime
+{
     unsigned int unitFlags = NSDayCalendarUnit | NSHourCalendarUnit | NSMinuteCalendarUnit | NSSecondCalendarUnit;
 
     NSDateComponents *components =
@@ -360,19 +369,21 @@ ERROR_A:
     }
 
     [cpuTime appendFormat:@"%ld:%ld:%ld",
-     (long)[components hour],
-     (long)[components minute],
-     (long)[components second]];
+                          (long)[components hour],
+                          (long)[components minute],
+                          (long)[components second]];
 
     return cpuTime;
 }
 
-- (BOOL)isRunning {
+- (BOOL)isRunning
+{
     return (kill(_pid, 0) == 0);
 }
 
 #pragma mark - Methods
-- (int)kill:(int)sig {
+- (int)kill:(int)sig
+{
     int rc = 0;
     if ((_pid != PID_TERMINATED) && ((rc = kill(_pid, sig)) == 0)) {
         _pid = PID_TERMINATED;
@@ -383,7 +394,8 @@ ERROR_A:
 #pragma mark - Getting Filtered Processes
 #pragma mark-- Name
 
-+ (NSArray *)allProcessesWithName:(NSString *)name {
++ (NSArray *)allProcessesWithName:(NSString *)name
+{
     NSPredicate *predicate =
         [NSPredicate predicateWithFormat:@"%K == %@",
                                          NSStringFromSelector(@selector(name)),
@@ -392,11 +404,13 @@ ERROR_A:
     return [[self __allProcesses] filteredArrayUsingPredicate:predicate];
 }
 
-+ (BSDProcessInfo *)processWithName:(NSString *)name {
++ (BSDProcessInfo *)processWithName:(NSString *)name
+{
     return [[self allProcessesWithName:name] firstObject];
 }
 
-+ (NSArray *)allUserProcessesWithName:(NSString *)name {
++ (NSArray *)allUserProcessesWithName:(NSString *)name
+{
     NSPredicate *predicate = [NSPredicate
         predicateWithFormat:@"%K == %@",
                             NSStringFromSelector(@selector(effectiveUser)),
@@ -405,13 +419,15 @@ ERROR_A:
     return [[self __userProcesses] filteredArrayUsingPredicate:predicate];
 }
 
-+ (BSDProcessInfo *)userProcessWithName:(NSString *)name {
++ (BSDProcessInfo *)userProcessWithName:(NSString *)name
+{
     return [[self allUserProcessesWithName:name] firstObject];
 }
 
 #pragma mark-- Name and Args
 + (NSArray *)allProcessesWithName:(NSString *)name
-                matchingArguments:(NSArray *)arguments {
+                matchingArguments:(NSArray *)arguments
+{
     NSMutableArray *procArray = [self __allProcesses];
     NSMutableArray *tmpArray =
         [NSMutableArray arrayWithCapacity:procArray.count];
@@ -425,7 +441,8 @@ ERROR_A:
                     break;
                 }
             }
-        } else {
+        }
+        else {
             addItem = NO;
         }
 
@@ -438,13 +455,15 @@ ERROR_A:
 }
 
 + (BSDProcessInfo *)processWithName:(NSString *)name
-                  matchingArguments:(NSArray *)arguments {
+                  matchingArguments:(NSArray *)arguments
+{
     return [[self allProcessesWithName:name
                      matchingArguments:arguments] firstObject];
 }
 
 #pragma mark-- Executable Path
-+ (NSArray *)allProcessesWithExecutablePath:(NSString *)executablePath {
++ (NSArray *)allProcessesWithExecutablePath:(NSString *)executablePath
+{
     NSPredicate *predicate = [NSPredicate
         predicateWithFormat:@"%K == %@",
                             NSStringFromSelector(@selector(executablePath)),
@@ -453,24 +472,29 @@ ERROR_A:
     return [[self __allProcesses] filteredArrayUsingPredicate:predicate];
 }
 
-+ (BSDProcessInfo *)processWithExecutablePath:(NSString *)executablePath {
++ (BSDProcessInfo *)processWithExecutablePath:(NSString *)executablePath
+{
     return [[self allProcessesWithExecutablePath:executablePath] firstObject];
 }
 
 #pragma mark - Getting Processes
-+ (BSDProcessInfo *)processWithPid:(pid_t)pid {
++ (BSDProcessInfo *)processWithPid:(pid_t)pid
+{
     return [[[self class] alloc] initWithPid:pid];
 }
 
-+ (NSArray *)allUserProcesses {
++ (NSArray *)allUserProcesses
+{
     return [[self __userProcesses] copy];
 }
 
-+ (NSArray *)allProcesses {
++ (NSArray *)allProcesses
+{
     return [[self __allProcesses] copy];
 }
 
-+ (NSMutableArray *)__userProcesses {
++ (NSMutableArray *)__userProcesses
+{
     NSPredicate *predicate = [NSPredicate
         predicateWithFormat:@"%K == %@",
                             NSStringFromSelector(@selector(effectiveUser)),
@@ -481,7 +505,8 @@ ERROR_A:
     return array;
 }
 
-+ (NSMutableArray *)__allProcesses {
++ (NSMutableArray *)__allProcesses
+{
     // This is simply an Objective-c wrapper for this:
     // http://psutil.googlecode.com/svn/trunk/psutil/arch/bsd/process_info.c
     // Copyright 2009, Jay Loden, Giampaolo Rodola'.
@@ -559,7 +584,8 @@ ERROR_A:
             }
             if (err == 0) {
                 done = true;
-            } else if (err == ENOMEM) {
+            }
+            else if (err == ENOMEM) {
                 assert(result != NULL);
                 free(result);
                 result = NULL;
@@ -595,11 +621,13 @@ ERROR_A:
 
 #pragma mark - Secure coding
 
-+ (BOOL)supportsSecureCoding {
++ (BOOL)supportsSecureCoding
+{
     return YES;
 }
 
-- (id)initWithCoder:(NSCoder *)decoder {
+- (id)initWithCoder:(NSCoder *)decoder
+{
     if (self = [super init]) {
         // PID
         self->_pid =
@@ -650,7 +678,8 @@ ERROR_A:
     return self;
 }
 
-- (void)encodeWithCoder:(NSCoder *)coder {
+- (void)encodeWithCoder:(NSCoder *)coder
+{
     // PID
     [coder encodeInt32:self.pid forKey:NSStringFromSelector(@selector(pid))];
     [coder encodeInt32:self.parentPid
@@ -683,7 +712,6 @@ ERROR_A:
                  forKey:NSStringFromSelector(@selector(realUser))];
     [coder encodeInt32:self.realUserID
                 forKey:NSStringFromSelector(@selector(realUserID))];
-
 }
 
 @end

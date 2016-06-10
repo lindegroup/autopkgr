@@ -26,21 +26,23 @@
 
 @implementation LGTabViewControllerBase
 
-- (instancetype)init {
+- (instancetype)init
+{
     return (self = [super initWithNibName:NSStringFromClass([self class]) bundle:nil]);
 }
 
-- (instancetype)initWithProgressDelegate:(id<LGProgressDelegate>)progressDelegate {
+- (instancetype)initWithProgressDelegate:(id<LGProgressDelegate>)progressDelegate
+{
     if (self = [self init]) {
         _progressDelegate = progressDelegate;
     }
     return self;
 }
 
-- (void)viewDidLoad {
+- (void)viewDidLoad
+{
     [super viewDidLoad];
     // Do view setup here.
 }
-
 
 @end

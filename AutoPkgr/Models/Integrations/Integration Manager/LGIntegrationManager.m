@@ -36,27 +36,26 @@ static void *XXInfoStatusChange = &XXInfoStatusChange;
     dispatch_once(&token, ^{
         // As needed add additional integrations to this array.
         __integrationClasses = @[
-                          [LGAbsoluteManageIntegration class],
-                          [LGAutoPkgIntegration class],
-                          [LGFileWaveIntegration class],
-                          [LGGitIntegration class],
-                          [LGJSSImporterIntegration class],
-                          [LGLANrevIntegration class],
-                          [LGMacPatchIntegration class],
-                          [LGMunkiIntegration class],
-                          [LGVirusTotalAnalyzerIntegration class],
-                          ];
+            [LGAbsoluteManageIntegration class],
+            [LGAutoPkgIntegration class],
+            [LGFileWaveIntegration class],
+            [LGGitIntegration class],
+            [LGJSSImporterIntegration class],
+            [LGLANrevIntegration class],
+            [LGMacPatchIntegration class],
+            [LGMunkiIntegration class],
+            [LGVirusTotalAnalyzerIntegration class],
+        ];
 
         __requiredIntegrationClasses = @[
-                            [LGGitIntegration class],
-                            [LGAutoPkgIntegration class],
-                            ];
-
+            [LGGitIntegration class],
+            [LGAutoPkgIntegration class],
+        ];
 
         /* The optional integrations will be everything after the first two
          * This should grow as AutoPkgr starts handling a wider scope
          * of integrations and this should eliminate having to continuously modifying this. */
-        NSIndexSet *idxSet = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(__requiredIntegrationClasses.count, (__integrationClasses.count)-(__requiredIntegrationClasses.count))];
+        NSIndexSet *idxSet = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(__requiredIntegrationClasses.count, (__integrationClasses.count) - (__requiredIntegrationClasses.count))];
 
         __optionalIntegrationClasses = [__integrationClasses objectsAtIndexes:idxSet];
     });
@@ -68,7 +67,8 @@ static void *XXInfoStatusChange = &XXInfoStatusChange;
         @try {
             [integration removeObserver:self forKeyPath:NSStringFromSelector(@selector(info)) context:XXInfoStatusChange];
         }
-        @catch (NSException *__unused exception) {}
+        @catch (NSException *__unused exception) {
+        }
     }
 }
 

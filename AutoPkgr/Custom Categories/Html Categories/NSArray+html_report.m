@@ -88,7 +88,8 @@
             for (NSString *header in headers) {
                 [string appendFormat:@"<th>%@</th>", header];
             }
-        } else {
+        }
+        else {
             headers = [self.firstObject allKeys];
         }
 
@@ -102,7 +103,8 @@
                 if (td) {
                     if (cssClass.length) {
                         [string appendFormat:@"<td class='%@'>", cssClass];
-                    } else {
+                    }
+                    else {
                         [string appendFormat:@"<td>"];
                     }
                     [string appendFormat:@"%@</td>", td];

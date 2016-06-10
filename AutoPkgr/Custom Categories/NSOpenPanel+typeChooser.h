@@ -28,7 +28,7 @@
  *  @param reply reply block that takes one parameter, an NSString, that if the selected path is invalid will return nil.
  */
 + (void)folderChooser_WithStartingPath:(NSString *)path
-                                reply:(void (^)(NSString *selectedFolder))reply;
+                                 reply:(void (^)(NSString *selectedFolder))reply;
 
 /**
  *  Open a panel specifically designed to choose a folder
@@ -38,9 +38,8 @@
  *  @param reply reply block that takes one parameter, an NSString, that if the selected path is invalid will return nil.
  */
 + (void)folderChooser_WithStartingPath:(NSString *)path
-                          modalWindow:(NSWindow *)window
-                                reply:(void (^)(NSString *selectedFolder))reply;
-
+                           modalWindow:(NSWindow *)window
+                                 reply:(void (^)(NSString *selectedFolder))reply;
 
 /**
  *  Open a panel specifically designed to choose an executable
@@ -49,7 +48,7 @@
  *  @param reply reply block that takes one parameter, an NSString, that if the selected path is invalid will return nil.
  */
 + (void)executableChooser_WithStartingPath:(NSString *)path
-                                 reply:(void (^)(NSString *selectedExecutable))reply;
+                                     reply:(void (^)(NSString *selectedExecutable))reply;
 
 /**
  *  Open a panel specifically designed to choose an executable
@@ -59,6 +58,6 @@
  *  @param reply reply block that takes one parameter, an NSString, that if the selected path is invalid will return nil.
  */
 + (void)executableChooser_WithStartingPath:(NSString *)path
-                           modalWindow:(NSWindow *)window
-                                 reply:(void (^)(NSString *selectedExecutable))reply;
+                               modalWindow:(NSWindow *)window
+                                     reply:(void (^)(NSString *selectedExecutable))reply;
 @end

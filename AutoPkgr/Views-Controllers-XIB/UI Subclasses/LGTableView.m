@@ -40,7 +40,8 @@
 @end
 
 @implementation LGClearTable
-- (NSTableViewSelectionHighlightStyle)selectionHighlightStyle {
+- (NSTableViewSelectionHighlightStyle)selectionHighlightStyle
+{
     return NSTableViewSelectionHighlightStyleNone;
 }
 - (NSColor *)backgroundColor

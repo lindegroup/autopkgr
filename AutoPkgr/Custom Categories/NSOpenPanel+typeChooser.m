@@ -57,11 +57,13 @@
     }];
 }
 
-+ (void)folderChooser_WithStartingPath:(NSString *)path reply:(void (^)(NSString *))reply {
++ (void)folderChooser_WithStartingPath:(NSString *)path reply:(void (^)(NSString *))reply
+{
     [self folderChooser_WithStartingPath:path modalWindow:nil reply:reply];
 }
 
-+ (void)executableChooser_WithStartingPath:(NSString *)path modalWindow:(NSWindow *)window reply:(void (^)(NSString *))reply {
++ (void)executableChooser_WithStartingPath:(NSString *)path modalWindow:(NSWindow *)window reply:(void (^)(NSString *))reply
+{
     NSOpenPanel *panel = [NSOpenPanel openPanel];
     // Disable the selection of files in the dialog.
     panel.canChooseFiles = YES;
@@ -86,8 +88,7 @@
             if (panel.URL.isFileURL) {
                 BOOL isDir;
                 // Verify that the file exists is not a directory, and is executable.
-                if (([[NSFileManager defaultManager] fileExistsAtPath:path isDirectory:&isDir] && !isDir) &&
-                    ([[NSFileManager defaultManager] isExecutableFileAtPath:panel.URL.path])) {
+                if (([[NSFileManager defaultManager] fileExistsAtPath:path isDirectory:&isDir] && !isDir) && ([[NSFileManager defaultManager] isExecutableFileAtPath:panel.URL.path])) {
                     reply(panel.URL.path);
                 }
             }
@@ -96,9 +97,9 @@
     }];
 }
 
-+ (void)executableChooser_WithStartingPath:(NSString *)path reply:(void (^)(NSString *))reply {
++ (void)executableChooser_WithStartingPath:(NSString *)path reply:(void (^)(NSString *))reply
+{
     [self executableChooser_WithStartingPath:path modalWindow:nil reply:reply];
 }
-
 
 @end

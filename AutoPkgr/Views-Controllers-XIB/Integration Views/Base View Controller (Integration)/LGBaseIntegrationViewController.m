@@ -22,7 +22,8 @@
 
 @implementation LGBaseIntegrationViewController
 
-- (instancetype)init {
+- (instancetype)init
+{
     return (self = [super initWithNibName:NSStringFromClass([self class]) bundle:nil]);
 }
 
@@ -34,10 +35,10 @@
     return self;
 }
 
-- (void)viewDidLoad {
+- (void)viewDidLoad
+{
     [super viewDidLoad];
     // Do view setup here.
 }
-
 
 @end

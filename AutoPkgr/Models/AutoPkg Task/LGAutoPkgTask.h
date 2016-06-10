@@ -86,7 +86,6 @@ extern NSString *const kLGPreProcessorDefaultsKey;
  */
 extern NSString *const kLGPostProcessorDefaultsKey;
 
-
 #pragma mark Task Status Delegate
 @protocol LGTaskStatusDelegate <NSObject>
 - (void)didReceiveStatusUpdate:(LGAutoPkgTaskResponseObject *)object;
@@ -382,7 +381,7 @@ extern NSString *const kLGPostProcessorDefaultsKey;
  *
  *  @return YES if it exists, NO otherwise.
  */
-+ (BOOL)apiTokenFileExists:(NSString *__autoreleasing*)file;
++ (BOOL)apiTokenFileExists:(NSString *__autoreleasing *)file;
 
 /**
  *  AutoPkg API Token
