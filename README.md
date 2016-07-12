@@ -312,6 +312,7 @@ Now all downloaded files will be checked against VirusTotal's database.
 #### Step 1: Check for simple errors
 
 - __Missing parent recipes__
+
     If the recipe you're trying to run has a :warning: icon next to it, the most likely problem is that its parent recipe is missing.
 
     ![Recipe missing parent](doc-images/recipe_missing_parent.png)
@@ -323,12 +324,15 @@ Now all downloaded files will be checked against VirusTotal's database.
     You don't need to add the parent recipe itself to your list, but you _do_ need to make sure that the repository that the parent recipe belongs to is checked in the repo list.
 
 - __Out of date components__
+
     Quit and relaunch AutoPkgr to check for new versions of installed components, including AutoPkg, Git, and AutoPkgr itself. We recommend updating to the latest version of these tools as a first step when troubleshooting.
 
 - __Temporarily broken recipes__
+
     Because software manufacturers frequently change their feeds, recipes that used to work sometimes stop working. Wait a day or so, then update your repos and try running the recipe again. Also see the troubleshooting steps [here](https://github.com/autopkg/autopkg/wiki/FAQ#this-recipe-used-to-work-but-now-it-doesnt-what-should-i-try).
 
 - __AutoPkg is already running__
+
     If you get an error that says "A scheduled AutoPkg run may be running in the background," try running this command in the Terminal:
 
     ```
