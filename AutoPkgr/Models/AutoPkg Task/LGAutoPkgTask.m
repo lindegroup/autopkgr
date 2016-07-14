@@ -395,6 +395,10 @@ typedef void (^AutoPkgReplyErrorBlock)(NSError *error);
 #pragma mark
 - (void)didCompleteTaskExecution
 {
+    if((_verb & kLGAutoPkgRun) && !_userCanceled){
+        [self executePostRunScript];
+    }
+    
     if ([self.task.standardOutput isKindOfClass:[NSPipe class]]) {
         [self.task.standardOutput fileHandleForReading].readabilityHandler = nil;
     }
@@ -840,6 +844,30 @@ typedef void (^AutoPkgReplyErrorBlock)(NSError *error);
     return _results;
 }
 
+- (void)executePostRunScript {
+    NSString *script = [[LGDefaults standardUserDefaults] stringForKey:@"PostRunScript"];
+    NSFileManager *manager = [NSFileManager defaultManager];
+    if(script && [manager isExecutableFileAtPath:script]){
+        NSTask *task = [[NSTask alloc] init];
+        NSPipe *pipe = [NSPipe pipe];
+        pipe.fileHandleForReading.readabilityHandler = ^(NSFileHandle *fh) {
+            // This is done to make sure the data buffer doesn't fill up.
+            NSData *d = [fh availableData];
+            if(d.length){
+                NSLog(@"%@", d.taskData_string);
+            }
+        };
+        
+        task.launchPath = script;
+        
+        task.standardOutput = pipe;
+        task.standardError = pipe;
+        
+        [task launch];
+        [task waitUntilExit];
+    }
+}
+
 #pragma mark - Utility
 - (BOOL)isNetworkOperation
 {
@@ -936,6 +964,8 @@ typedef void (^AutoPkgReplyErrorBlock)(NSError *error);
 
 #pragma mark - Class Methods
 #pragma mark-- Recipe Methods --
+
+
 + (void)runRecipes:(NSArray *)recipes
           progress:(void (^)(NSString *, double))progress
              reply:(void (^)(NSDictionary *, NSError *))reply
