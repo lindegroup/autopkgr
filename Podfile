@@ -18,7 +18,7 @@ AutoPkgr.each { |t|
     end
 }
 
-target "com.lindegroup.AutoPkgr.helper", :exclusive => true do
+target "com.lindegroup.AutoPkgr.helper" do
     pod 'AHLaunchCtl', :git => 'https://github.com/eahrold/AHLaunchCtl.git'
     pod 'AHKeychain', '~> 0.2.1'
     pod 'RNCryptor', '~> 2.2'
