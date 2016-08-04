@@ -289,7 +289,7 @@ static NSMutableDictionary *_identifierURLStore = nil;
 #pragma mark - Class Methods;
 + (NSArray *)allRecipes
 {
-    return [[self class] allRecipesFilteringOverlaps:YES];
+    return [[self class] allRecipesFilteringOverlaps:NO];
 }
 
 + (NSArray *)allRecipesFilteringOverlaps:(BOOL)filterOverlaps
