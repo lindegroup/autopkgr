@@ -1,5 +1,5 @@
 source 'https://github.com/CocoaPods/Specs.git'
-platform :osx, "10.8"
+platform :osx, "10.9"
 
 AutoPkgr = ["AutoPkgr", "AutoPkgrTests"]
 
@@ -13,13 +13,13 @@ AutoPkgr.each { |t|
         pod 'ACEView', '~> 0.0.5'
         pod 'MMMarkdown', '~> 0.5.1'
         pod 'AHProxySettings', '~> 0.1.1'
-        pod 'AHKeychain', '~> 0.2.1'
+        pod 'AHKeychain', '~> 0.3.0'
         pod 'AHLaunchCtl', :git => 'https://github.com/eahrold/AHLaunchCtl.git'
     end
 }
 
 target "com.lindegroup.AutoPkgr.helper" do
     pod 'AHLaunchCtl', :git => 'https://github.com/eahrold/AHLaunchCtl.git'
-    pod 'AHKeychain', '~> 0.2.1'
+    pod 'AHKeychain', '~> 0.3.0'
     pod 'RNCryptor', '~> 2.2'
 end

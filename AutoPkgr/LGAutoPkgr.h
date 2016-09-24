@@ -35,5 +35,6 @@
 #import "NSString+split.h"
 #import "NSButton+colored.h"
 #import "NSString+attributedString.h"
+#import "LGSharedConts.h"
 
 #endif

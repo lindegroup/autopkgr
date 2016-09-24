@@ -26,15 +26,14 @@
 
 @implementation LGPasswords
 
-NSString *appKeychainPath()
+NSString *AppKeychainPath()
 {
-    return [@"~/Library/Keychains/AutoPkgr.keychain" stringByExpandingTildeInPath];
+    return  [AUTOPKGR_KEYCHAIN_PATH stringByExpandingTildeInPath];
 }
 
 + (void)lockKeychain
 {
-    NSString *appKeychain = @"AutoPkgr.keychain";
-    [[[AHKeychain alloc] initWithKeychain:appKeychain] lock];
+    [[[AHKeychain alloc] initWithKeychain:AUTOPKGR_KEYCHAIN_NAME] lock];
 }
 
 + (void)getPasswordForAccount:(NSString *)account
@@ -114,12 +113,12 @@ NSString *appKeychainPath()
     NSString *upgradeTriedKey = @"KeychainUpgrade_1_2_1_Tried";
 
     BOOL upgradeTried = [[LGDefaults standardUserDefaults] boolForKey:upgradeTriedKey];
-    BOOL keychainExists = [[NSFileManager defaultManager] fileExistsAtPath:appKeychainPath()];
+    BOOL keychainExists = [[NSFileManager defaultManager] fileExistsAtPath:AppKeychainPath()];
 
     // Only try to upgrade once if the keychain exists.
     if (!upgradeTried && keychainExists) {
         NSString *oldPass = [LGHostInfo macSerialNumber];
-        AHKeychain *keychain = [AHKeychain keychainAtPath:appKeychainPath()];
+        AHKeychain *keychain = [AHKeychain keychainAtPath:AppKeychainPath()];
 
         if ([keychain unlockWithPassword:oldPass]) {
             // If we successfully unlock the keychain with the old password, the keychain needs migration.
@@ -165,7 +164,7 @@ NSString *appKeychainPath()
         NSInteger button = [alert runModal];
         if (button == NSAlertDefaultReturn) {
             NSError *error = nil;
-            if ([[AHKeychain keychainAtPath:appKeychainPath()] deleteKeychain:&error]) {
+            if ([[AHKeychain keychainAtPath:AppKeychainPath()] deleteKeychain:&error]) {
                 DLog(@"Removed old keychain...");
             }
             else {
@@ -180,14 +179,14 @@ NSString *appKeychainPath()
 + (AHKeychain *)appKeychain:(NSString *)key
 {
     AHKeychain *keychain = nil;
+    NSString *path = AppKeychainPath();
 
-    NSString *appKeychain = @"AutoPkgr.keychain";
-
-    if (![[NSFileManager defaultManager] fileExistsAtPath:appKeychainPath()]) {
-        keychain = [[AHKeychain alloc] initCreatingNewKeychain:appKeychain password:key];
+    if (![AHKeychain keychainExistsAtPath:path]) {
+        keychain = [[AHKeychain alloc] initCreatingNewKeychainAtPath:path
+                                                            password:key];
     }
     else {
-        keychain = [[AHKeychain alloc] initWithKeychain:appKeychain];
+        keychain = [AHKeychain keychainAtPath:path];
         if (![keychain unlockWithPassword:key]) {
             DLog(@"[%d] %@", keychain.keychainStatus, keychain.statusDescription);
         }
@@ -238,7 +237,7 @@ NSString *appKeychainPath()
 
         [helperConnection.remoteObjectProxy getKeychainKey:^(NSString *key, NSError *error) {
             reply(key, error);
-            [helperConnection closeConnection];
+//            [helperConnection closeConnection];
         }];
     }];
 }
