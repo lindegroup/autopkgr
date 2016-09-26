@@ -15,6 +15,7 @@ All notable changes to this project will be documented in this file. This projec
 - Left-aligned results of recipe searches.
 
 ### Fixed
+- Fixed issues with storing notification credentials in the AutoPkgr keychain in macOS Sierra. (#554, #555)
 - Fixed the AutoPkgr Slack bot icon URL. (#527)
 - Fixed a bug that caused the width of the AutoPkgr window to snap back to defaults when clicking on the Notifications tab. (#499)
 - Some typos found and corrected.
