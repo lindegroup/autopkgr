@@ -20,7 +20,7 @@
 
 #import <Foundation/Foundation.h>
 
-extern NSString *appKeychainPath();
+extern NSString *AppKeychainPath();
 
 @interface LGPasswords : NSObject
 

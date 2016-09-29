@@ -91,9 +91,9 @@
 
             if (removeKeychain) {
                 // Remove AutoPkgr.keychain file.
-                NSString *keychainFile = appKeychainPath();
+                NSString *keychainFile = AppKeychainPath();
                 NSFileManager *manager = [NSFileManager defaultManager];
-                if ([manager fileExistsAtPath:appKeychainPath()]) {
+                if ([manager fileExistsAtPath:AppKeychainPath()]) {
                     [manager removeItemAtPath:keychainFile error:nil];
                 }
             }
