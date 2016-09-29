@@ -5,6 +5,11 @@ All notable changes to this project will be documented in this file. This projec
 
 ## [Unreleased](unreleased)
 
+- Nothing yet.
+
+
+## [1.4.2] - 2016-09-29
+
 ### Added
 - One-click integration with [@hjuutilainen](https://github.com/hjuutilainen/autopkg-virustotalanalyzer)'s [VirusTotalAnalyzer](https://github.com/hjuutilainen/autopkg-virustotalanalyzer) processor. (#503)
 
@@ -13,12 +18,17 @@ All notable changes to this project will be documented in this file. This projec
 - Clarified wording on the selective notifications picker (thanks to [@poundbangbash](https://github.com/poundbangbash) for the wordsmithing).
 - Started preparing for localization. (#537)
 - Left-aligned results of recipe searches.
+- Updated hard-coded default list of AutoPkg repos used when GitHub is not accessible.
 
 ### Fixed
 - Fixed issues with storing notification credentials in the AutoPkgr keychain in macOS Sierra. (#554, #555)
 - Fixed the AutoPkgr Slack bot icon URL. (#527)
+- Fixed a bug that would prevent notifications from being sent if the notification trigger actions were never customized. (#533)
 - Fixed a bug that caused the width of the AutoPkgr window to snap back to defaults when clicking on the Notifications tab. (#499)
 - Some typos found and corrected.
+
+### Removed
+- Removed 10.8 support. AutoPkgr now requires Mac OS X 10.9 or higher.
 
 
 ## [1.4.1] - 2016-04-18
@@ -418,7 +428,8 @@ All notable changes to this project will be documented in this file. This projec
 - Initial public release of AutoPkgr.
 
 
-[unreleased]: https://github.com/lindegroup/autopkgr/compare/v1.4.1...HEAD
+[unreleased]: https://github.com/lindegroup/autopkgr/compare/v1.4.2...HEAD
+[1.4.2]: https://github.com/lindegroup/autopkgr/compare/v1.4.1...v1.4.2
 [1.4.1]: https://github.com/lindegroup/autopkgr/compare/v1.4...v1.4.1
 [1.4]: https://github.com/lindegroup/autopkgr/compare/v1.3.2...v1.4
 [1.3.2]: https://github.com/lindegroup/autopkgr/compare/v1.3.1...v1.3.2
