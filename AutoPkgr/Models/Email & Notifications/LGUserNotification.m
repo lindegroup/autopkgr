@@ -2,7 +2,7 @@
 //  LGUserNotification.m
 //  AutoPkgr
 //
-//  Copyright 2014-2015 The Linde Group, Inc.
+//  Copyright 2014-2016 The Linde Group, Inc.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -17,8 +17,8 @@
 //  limitations under the License.
 //
 
-#import "LGUserNotification.h"
 #import "LGAutoPkgr.h"
+#import "LGUserNotification.h"
 
 @implementation LGUserNotification {
     NSError *_currentError;
@@ -39,11 +39,13 @@
     return NO;
 }
 
-+ (BOOL)templateIsFile {
++ (BOOL)templateIsFile
+{
     return NO;
 }
 
-+ (NSString *)defaultTemplate {
++ (NSString *)defaultTemplate
+{
     return @"Updates occurred.";
 };
 
@@ -58,7 +60,8 @@
     [self sendMessage:message title:nil complete:complete];
 }
 
-- (void)sendMessage:(NSString *)message title:(NSString *)title complete:(void (^)(NSError *))complete {
+- (void)sendMessage:(NSString *)message title:(NSString *)title complete:(void (^)(NSError *))complete
+{
     NSUserNotification *notification = [[NSUserNotification alloc] init];
     notification.informativeText = message;
     [[NSUserNotificationCenter defaultUserNotificationCenter] deliverNotification:notification];
@@ -69,16 +72,16 @@
 {
     if ([[self class] isEnabled]) {
         NSUserNotification *notification = [[NSUserNotification alloc] init];
-        notification.title = NSLocalizedString(@"Email test completed.", @"NSUserNotification posted after test email is complete.");
+        notification.title = NSLocalizedString(@"Email test completed", @"NSUserNotification posted after test email is complete.");
 
         notification.informativeText = success ? NSLocalizedString(@"Successfully sent test email.", @"NSUserNotification text when email is successfully sent.") : NSLocalizedString(@"There was a problem sending test email. Double-check the SMTP settings you specified in AutoPkgr.", @"NSUserNotification text when email fails.");
 
         if (success) {
             [notification setHasActionButton:NO];
             [[NSUserNotificationCenter defaultUserNotificationCenter] deliverNotification:notification];
-        } else {
-            // Currently there's a modal window displayed for errors, in th future we could
-            // present the error here instead
+        }
+        else {
+            // Currently there's a modal window displayed for errors, in th future we could present the error here instead.
             if (error) {
                 [notification setUserInfo:error.userInfo];
                 [notification setActionButtonTitle:@"Show Error"];

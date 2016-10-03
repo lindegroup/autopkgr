@@ -3,7 +3,7 @@
 //  AutoPkgr
 //
 //  Created by James Barclay on 6/26/14.
-//  Copyright 2014-2015 The Linde Group, Inc.
+//  Copyright 2014-2016 The Linde Group, Inc.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -18,15 +18,15 @@
 //  limitations under the License.
 //
 
-#import <Cocoa/Cocoa.h>
 #import "LGProgressDelegate.h"
+#import <Cocoa/Cocoa.h>
 
 // Tab Views.
 #import "LGInstallViewController.h"
+#import "LGIntegrationsViewController.h"
+#import "LGNotificationsViewController.h"
 #import "LGRecipeReposViewController.h"
 #import "LGScheduleViewController.h"
-#import "LGNotificationsViewController.h"
-#import "LGIntegrationsViewController.h"
 
 @class LGRepoTableViewController, LGRecipeTableViewController;
 

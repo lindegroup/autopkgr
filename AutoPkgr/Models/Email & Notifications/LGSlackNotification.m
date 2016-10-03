@@ -2,7 +2,7 @@
 //  LGSlackNotification.m
 //  AutoPkgr
 //
-//  Copyright 2015 The Linde Group, Inc.
+//  Copyright 2015-2016 The Linde Group, Inc.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -66,7 +66,8 @@ static NSString *const SlacksNotificationsEnabledKey = @"SlackNotificationsEnabl
     return [self templateWithName:@"slack_report" type:@"md"];
 }
 
-+ (ACEMode)tempateFormat {
++ (ACEMode)tempateFormat
+{
     return ACEModeMarkdown;
 }
 
@@ -100,8 +101,8 @@ static NSString *const SlacksNotificationsEnabledKey = @"SlackNotificationsEnabl
     [manager.requestSerializer setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
     [manager.requestSerializer setValue:@"application/json" forHTTPHeaderField:@"Accept"];
 
-    // Set up the request serializer with any additional criteria for slack
-    //[manager.requestSerializer setAuthorizationHeaderFieldWithUsername:@"" password:@""]; <- probably don't need this.
+    // Set up the request serializer with any additional criteria for Slack.
+    // [manager.requestSerializer setAuthorizationHeaderFieldWithUsername:@"" password:@""]; <- probably don't need this.
 
     manager.responseSerializer = [AFHTTPResponseSerializer serializer];
 
@@ -116,7 +117,7 @@ static NSString *const SlacksNotificationsEnabledKey = @"SlackNotificationsEnabl
         dict[@"username"] = [[NSUserDefaults standardUserDefaults] objectForKey:@"SlackBotName"] ?: @"AutoPkgr";
     }
 
-    dict[@"icon_url"] = @"https://raw.githubusercontent.com/lindegroup/autopkgr/master/AutoPkgr/Images.xcassets/AppIcon.appiconset/icon_32x32%402x.png";
+    dict[@"icon_url"] = @"https://raw.githubusercontent.com/lindegroup/autopkgr/master/AutoPkgr/Resources/autopkgr_slack.png";
 
     return [dict copy];
 }
@@ -127,7 +128,8 @@ static NSString *const SlacksNotificationsEnabledKey = @"SlackNotificationsEnabl
     [[self class] infoFromKeychain:^(NSString *webHookURL, NSError *error) {
         if (error) {
             self.notificatonComplete(error);
-        } else {
+        }
+        else {
             [manager POST:webHookURL
                 parameters:[self baseParameters:parameters]
                 success:^(AFHTTPRequestOperation *operation, id responseObject) {

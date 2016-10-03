@@ -3,7 +3,7 @@
 //  AutoPkgr
 //
 //  Created by Eldon Ahrold on 11/5/14.
-//  Copyright 2014-2015 The Linde Group, Inc.
+//  Copyright 2014-2016 The Linde Group, Inc.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -18,13 +18,13 @@
 //  limitations under the License.
 //
 
-#import "LGJSSDistributionPointsPrefPanel.h"
-#import "LGJSSDistributionPoint.h"
-#import "LGJSSImporterIntegration.h"
 #import "LGAutoPkgr.h"
+#import "LGJSSDistributionPoint.h"
+#import "LGJSSDistributionPointsPrefPanel.h"
+#import "LGJSSImporterIntegration.h"
 
-#import "NSTextField+changeHandle.h"
 #import "NSTableView+Resizing.h"
+#import "NSTextField+changeHandle.h"
 #import <Quartz/Quartz.h>
 
 #pragma mark - Table View Cell
@@ -78,8 +78,7 @@
 
     [_distPointTypePopupBT removeAllItems];
 
-    // We need to do this dance because it seems that when the class is initialized
-    // the NSTextFields are nil until the window is loaded.
+    // We need to do this dance because it seems that when the class is initialized the NSTextFields are nil until the window is loaded.
 
     if (_distPoint) {
         _distPointTypePopupBT.hidden = YES;
@@ -90,7 +89,8 @@
         _infoText.stringValue = quick_formatString(@"Edit %@", _distPoint.name ?: @"Distribution Point");
 
         [self chooseDistributionPointType:_distPoint.type];
-    } else {
+    }
+    else {
         [self populatePopupButton:_distPointTypePopupBT];
         [self chooseDistPointType:_distPointTypePopupBT];
     }
@@ -98,10 +98,11 @@
 
 - (void)addDistPoint:(NSButton *)sender
 {
-    // Save distpoint to defaults...
+    // Save distpoint to defaults.
     if ([_distPoint save]) {
         [self closePanel:nil];
-    } else {
+    }
+    else {
         [self hilightRequiredTypes];
     }
 }
@@ -197,8 +198,7 @@
 {
     NSMutableDictionary *keyInfoDict = [[LGJSSDistributionPoint keyInfoDict] mutableCopy];
 
-    // Enumerate over the enabled dict to see if there are any dp types
-    // that can only have one instance, and remove them if that is the case.
+    // Enumerate over the enabled dict to see if there are any distribution point types that can only have one instance, and remove them.
     NSArray *enabled = [LGJSSDistributionPoint enabledDistributionPoints];
     [enabled enumerateObjectsUsingBlock:^(LGJSSDistributionPoint *dp, NSUInteger idx, BOOL *stop) {
         switch (dp.type) {
@@ -263,17 +263,17 @@
     switch (type) {
     case kLGJSSTypeAFP: {
         port = @"548 (optional)";
-        url = @"afp://casper.pretendo.com";
+        url = @"afp://casper.example.com";
         break;
     }
     case kLGJSSTypeSMB: {
         port = @"139 or 445 (optional)";
-        url = @"smb://casper.pretendo.com";
+        url = @"smb://casper.example.com";
         break;
     }
     case kLGJSSTypeLocal: {
         label = @"Mount Point";
-        share = @"JAMFdistrib";
+        share = @"CasperShare";
         break;
     }
     default: {
@@ -284,7 +284,7 @@
               kLGJSSDistPointURLKey : url,
               kLGJSSDistPointNameKey : label,
               kLGJSSDistPointSharePointKey : share,
-              kLGJSSDistPointMountPointKey : @"/Users/Shared/JAMFdistrib",
+              kLGJSSDistPointMountPointKey : @"/Users/Shared/CasperShare",
               kLGJSSDistPointUserNameKey : @"rwuser",
               kLGJSSDistPointWorkgroupDomainKey : @"WORKGROUP",
               kLGJSSDistPointPasswordKey : @"Password",

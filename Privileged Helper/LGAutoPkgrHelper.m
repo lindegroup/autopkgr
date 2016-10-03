@@ -19,26 +19,24 @@
 //
 
 #import "LGAutoPkgrHelper.h"
-#import "LGError.h"
 #import "LGAutoPkgrProtocol.h"
-#import "LGProgressDelegate.h"
+#import "LGEncryptedKeychainHelper.h"
+
+#import "LGError.h"
 #import "LGPackageRemover.h"
+#import "LGProgressDelegate.h"
+#import "LGSharedConts.h"
 
 #import "SNTCodesignChecker.h"
 
 #import <AHLaunchCtl/AHLaunchCtl.h>
 #import <AHLaunchCtl/AHServiceManagement.h>
-
-#import <AHKeychain/AHKeychain.h>
-#import <RNCryptor/RNEncryptor.h>
-#import <RNCryptor/RNDecryptor.h>
-
+#import <SystemConfiguration/SystemConfiguration.h>
 #import <pwd.h>
 #import <syslog.h>
-#import <SystemConfiguration/SystemConfiguration.h>
 
-#import "NSString+split.h"
 #import "NSData+taskData.h"
+#import "NSString+split.h"
 
 static const NSTimeInterval kHelperCheckInterval = 1.0; // how often to check whether to quit
 
@@ -112,7 +110,8 @@ static dispatch_queue_t autopkgr_kc_access_synchronizer_queue()
 
         [newConnection.exportedInterface setClasses:acceptedClasses
                                         forSelector:@selector(scheduleRun:user:program:authorization:reply:)
-                                      argumentIndex:0 ofReply:NO];
+                                      argumentIndex:0
+                                            ofReply:NO];
 
         __weak typeof(newConnection) weakConnection = newConnection;
         // If all connections are invalidated on the remote side, shutdown the helper.
@@ -124,7 +123,8 @@ static dispatch_queue_t autopkgr_kc_access_synchronizer_queue()
             [self.connections removeObject:weakConnection];
 
             if (self.connections.count == 0) {
-                [self quitHelper:^(BOOL success) {}];
+                [self quitHelper:^(BOOL success){
+                }];
             }
         };
 
@@ -147,7 +147,6 @@ static dispatch_queue_t autopkgr_kc_access_synchronizer_queue()
 #pragma mark - Password
 - (void)getKeychainKey:(void (^)(NSString *, NSError *))reply
 {
-    dispatch_queue_t replyQueue = dispatch_get_current_queue();
     NSXPCConnection *connection = self.connection;
 
     dispatch_sync(autopkgr_kc_access_synchronizer_queue(), ^{
@@ -164,167 +163,26 @@ static dispatch_queue_t autopkgr_kc_access_synchronizer_queue()
 #if DEBUG
         syslog(LOG_ALERT, "Connection querying keychain %s : EUID: %d", connection.description.UTF8String, connection.effectiveUserIdentifier);
 #endif
+
         // Effective user id used to determine location of the user's AutoPkgr keychain.
         uid_t euid = connection.effectiveUserIdentifier;
-        struct passwd *pw = getpwuid(euid);
         if (euid == 0) {
             [connection invalidate];
             return;
         }
 
-        // Password used to decrypt the keyFile. This password is stored in the System.keychain.
-        NSString *encryptionPassword = nil;
 
-        // Path to current user's keyFile. Encoded with AES256 using the encryption password.
-        NSString *encryptedKeyFile = nil;
-
-        // Data representing the keyFile. This data is encoded
-        NSData *encryptedKeyFileData = nil;
-
-        // The decoded raw data from the keyFile representing the password for the user's keychain.
-        NSData *passwordData = nil;
-
-        // The password for the user's keychain (in string form).
-        NSString *password = nil;
-
-        // Path to the user's AutoPkgr keychain. Located at ~/Library/Keychain/AutoPkgr.keychain.
-        NSString *appKeychainPath = nil;
-
-        // Error.
         NSError *error = nil;
+        NSString *password = [LGEncryptedKeychainHelper getKeychainPassword:connection
+                                                                      error:&error];
 
-        // Attributes used to set permissions on the keyFile and it's parent directory.
-        NSDictionary *const attributes = @{
-            NSFilePosixPermissions : [NSNumber numberWithShort:0700], // Owner read-write, others no access.
-            NSFileOwnerAccountID : @(0), // Root
-            NSFileGroupOwnerAccountID : @(0), // Wheel
-        };
-
-        NSFileManager *manager = [NSFileManager defaultManager];
-
-        encryptedKeyFile = [NSString stringWithFormat:@"%@/UID_%d", kLGEncryptedKeysParentDirectory, euid];
-
-        /////////////////////////////////////////////////////////////////
-        //  Get the encryption password from the System.keychain       //
-        /////////////////////////////////////////////////////////////////
-        AHKeychainItem *item = [self commonDecryptionKeychainItem];
-
-        BOOL newEncryptionPassword = NO;
-
-        AHKeychain *keychain = [AHKeychain systemKeychain];
-        BOOL getSuccess = [keychain getItem:item error:&error];
-
-        if (getSuccess) {
-            // We found the encryption password.
-            encryptionPassword = item.password;
-        } else if (error.code == errSecItemNotFound) {
-            // The item was not found in the keychain. Create it now.
-
-            // Reset the error so it doesn't inadvertently pass back the wrong message.
-            error = nil;
-
-            // Generate a new encryption password.
-            encryptionPassword = [[NSProcessInfo processInfo] globallyUniqueString];
-            item.password = encryptionPassword;
-
-            if ([[AHKeychain systemKeychain] saveItem:item error:&error]) {
-                // Success, a new common encryption was generated.
-                newEncryptionPassword = YES;
-            } else {
-                // If we can't create the keychain return now. There's nothing more to be done.
-                goto helper_reply;
-            }
-        } else {
-            // some other error occurred when trying to find the item ???
-            goto helper_reply;
-        }
-
-        appKeychainPath = [NSString stringWithFormat:@"%s/Library/Keychains/AutoPkgr.keychain", pw->pw_dir];
-
-        // Check for an old version of the keychainKey.
-        BOOL keyFileExists = [manager fileExistsAtPath:encryptedKeyFile];
-
-        // Check to see if user's AutoPkgr keychain exists.
-        BOOL usersKeychainExists = [manager fileExistsAtPath:appKeychainPath];
-
-        // If the user's AutoPkgr keychain has been deleted, try to remove the keyFile and start fresh.
-        BOOL check1 = !usersKeychainExists && keyFileExists;
-
-        // If a new encryption key was generated, but an old keyFile exists.
-        BOOL check2 = keyFileExists && newEncryptionPassword;
-
-        // If either condition is true, remove the old keyFile.
-        if (check1 || check2) {
-            syslog(LOG_ALERT, "Removing unusable keyFile...");
-            if (![manager removeItemAtPath:encryptedKeyFile error:nil]) {
-                syslog(LOG_ALERT, "There was a problem removing the encrypted key file");
-            }
-        }
-
-        //////////////////////////////////////////////////////////////////////
-        //   Decrypt the keyFile in a root protected space                  //
-        //////////////////////////////////////////////////////////////////////
-        if (![manager fileExistsAtPath:encryptedKeyFile]) {
-            // The keyFile does not exist, create one now.
-
-            BOOL isDir;
-            BOOL directoryExists = [manager fileExistsAtPath:kLGEncryptedKeysParentDirectory isDirectory:&isDir];
-
-            if (!directoryExists) {
-                if (![manager createDirectoryAtPath:kLGEncryptedKeysParentDirectory withIntermediateDirectories:NO attributes:attributes error:&error]) {
-                    // If we can't create this directory something is wrong, return now.
-                    syslog(LOG_ALERT, "[ERROR] Could not create the parent directory for the encrypted key files.");
-                    goto helper_reply;
-                }
-            } else if (directoryExists && !isDir) {
-                // The path exists but is not a directory, escape!.
-                syslog(LOG_ALERT, "[ERROR] The %s exists, but it is not a directory, it needs to be repaired.", kLGEncryptedKeysParentDirectory.UTF8String);
-                goto helper_reply;
-            }
-
-            // Generate some random data to use as the password for the user's keychain.
-            passwordData = [RNCryptor randomDataOfLength:48];
-
-            // Encrypt the random data into AES256.
-            encryptedKeyFileData = [RNEncryptor encryptData:passwordData
-                                               withSettings:kRNCryptorAES256Settings
-                                                   password:encryptionPassword
-                                                      error:&error];
-
-            // Write the encrypted data to the keyFile.
-            [encryptedKeyFileData writeToFile:encryptedKeyFile atomically:YES];
-
-        } else {
-            // The keyFile is there.
-
-            // Read in the encrypted data of the keyFile.
-            encryptedKeyFileData = [NSData dataWithContentsOfFile:encryptedKeyFile];
-
-            // Decrypt the data.
-            passwordData = [RNDecryptor decryptData:encryptedKeyFileData
-                                       withSettings:kRNCryptorAES256Settings
-                                           password:encryptionPassword
-                                              error:&error];
-        }
-
-        // Reset the attributes of the file to root only access.
-        if (![manager setAttributes:attributes ofItemAtPath:encryptedKeyFile error:nil]) {
-            syslog(LOG_ALERT, "[ERROR] A problem was encountered updating keyFile's permissions.");
-        }
-
-        if (passwordData) {
-            // set the password as the data description.
-            password = passwordData.description;
-        }
-
-helper_reply:
         if (floor(NSFoundationVersionNumber) < NSFoundationVersionNumber10_9) {
             if (password) {
                 _keyChainKey = password;
             }
         }
 
-        dispatch_async(replyQueue, ^{
+        dispatch_async(dispatch_get_main_queue(), ^{
             syslog(LOG_ALERT, "Sending keychain key to AutoPkgr.");
             reply(password, error);
         });
@@ -357,7 +215,8 @@ helper_reply:
 
             if ([scheduleOrInterval isKindOfClass:[AHLaunchJobSchedule class]]) {
                 job.StartCalendarInterval = scheduleOrInterval;
-            } else if ([scheduleOrInterval isKindOfClass:[NSNumber class]]) {
+            }
+            else if ([scheduleOrInterval isKindOfClass:[NSNumber class]]) {
                 job.StartInterval = [(NSNumber *)scheduleOrInterval integerValue];
             }
 
@@ -455,7 +314,8 @@ helper_reply:
                                       syslog(LOG_INFO, "[UNINSTALLER]: %s", message.UTF8String);
 #endif
                                       // TODO: send progress updates
-                                  } reply:reply];
+                                  }
+                                     reply:reply];
 }
 
 #pragma mark - Life Cycle
@@ -505,33 +365,8 @@ helper_reply:
     //   Remove Keychain items                                          //
     ////////////////////////////////////////////////////////////////////*/
     if (removeKeychains) {
-        NSFileManager *manager = [NSFileManager defaultManager];
-        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"SELF == .DS_Store"];
-
-        NSArray *keyFiles = [[manager contentsOfDirectoryAtPath:kLGEncryptedKeysParentDirectory
-                                                          error:nil]
-            filteredArrayUsingPredicate:predicate];
-
-        if (keyFiles.count) {
-            NSString *encryptedKeyFile = [NSString stringWithFormat:@"%@/UID_%d",
-                                                                    kLGEncryptedKeysParentDirectory,
-                                                                    self.connection.effectiveUserIdentifier];
-            if (keyFiles.count == 1) {
-                /* If the count is 1 there's only one user
-                   remove the whole directory & common encryption key */
-                if ([manager fileExistsAtPath:encryptedKeyFile]) {
-                    if ([manager removeItemAtPath:kLGEncryptedKeysParentDirectory error:nil]) {
-                        /* Remove keychain item. */
-                        AHKeychainItem *item = [self commonDecryptionKeychainItem];
-                        [[AHKeychain systemKeychain] deleteItem:item error:&error];
-                    }
-                }
-            } else {
-                /* More than one user encryptedKeyFile exists. 
-                   Just remove the current user's */
-                [manager removeItemAtPath:encryptedKeyFile error:&error];
-            }
-        }
+        [LGEncryptedKeychainHelper purge:self.connection
+                                   error:&error];
     }
 
     //////////////////////////////////////////////////////////////////////
@@ -550,7 +385,8 @@ helper_reply:
         self.relayConnection = connection;
         self.relayConnection.remoteObjectInterface = [NSXPCInterface interfaceWithProtocol:@protocol(LGProgressDelegate)];
         _resign = resign;
-    } else {
+    }
+    else {
         resign(YES);
     }
 }
@@ -572,15 +408,6 @@ helper_reply:
             break;
         }
     }
-}
-
-#pragma mark - Private
-- (AHKeychainItem *)commonDecryptionKeychainItem
-{
-    AHKeychainItem *item = [[AHKeychainItem alloc] init];
-    item.service = @"AutoPkgr Common Decryption";
-    item.account = @"com.lindegroup.AutoPkgr.decryption.key";
-    return item;
 }
 
 - (BOOL)launchPathIsValid:(NSString *)path error:(NSError *__autoreleasing *)error;
@@ -620,7 +447,8 @@ helper_reply:
 
     if ([user isEqualToString:effectiveUserName] && access(ghPrefs.UTF8String, F_OK) == 0) {
         return YES;
-    } else {
+    }
+    else {
         if (error) {
             NSDictionary *errorDict = @{ NSLocalizedDescriptionKey : @"Invalid user for scheduling autopkg run",
                                          NSLocalizedRecoverySuggestionErrorKey : @"There was a problem either verifying the user or with the user's configuration. The user must be have a home directory set, and valid com.github.autopkg preferences." };
@@ -643,7 +471,8 @@ helper_reply:
         syslog(LOG_ALERT, "[ERROR] The codesigning signature of one of the following items could not be verified. If either of the following messages displays NULL, please quit AutoPkgr, and manually remove the helper tool binary at %s.", selfCS.binaryPath.UTF8String);
         syslog(LOG_ALERT, "[ERROR] AutoPkgr codesign stats: %s", remoteCS.description.UTF8String);
         syslog(LOG_ALERT, "[ERROR] Helper Tool codesign stats: %s", selfCS.description.UTF8String);
-    } else {
+    }
+    else {
 #if DEBUG
         syslog(LOG_ALERT, "[DEBUG] AutoPkgr codesign stats: %s", remoteCS.description.UTF8String);
         syslog(LOG_ALERT, "[DEBUG] Helper Tool codesign stats: %s", selfCS.description.UTF8String);

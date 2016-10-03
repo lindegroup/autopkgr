@@ -3,7 +3,7 @@
 //  AutoPkgr
 //
 //  Created by Eldon Ahrold on 3/25/15.
-//  Copyright 2015 The Linde Group, Inc.
+//  Copyright 2015-2016 The Linde Group, Inc.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -88,7 +88,8 @@
             for (NSString *header in headers) {
                 [string appendFormat:@"<th>%@</th>", header];
             }
-        } else {
+        }
+        else {
             headers = [self.firstObject allKeys];
         }
 
@@ -102,7 +103,8 @@
                 if (td) {
                     if (cssClass.length) {
                         [string appendFormat:@"<td class='%@'>", cssClass];
-                    } else {
+                    }
+                    else {
                         [string appendFormat:@"<td>"];
                     }
                     [string appendFormat:@"%@</td>", td];

@@ -3,7 +3,7 @@
 //  AutoPkgr
 //
 //  Created by Eldon Ahrold on 4/23/15.
-//  Copyright 2015 The Linde Group, Inc.
+//  Copyright 2015-2016 The Linde Group, Inc.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -20,7 +20,8 @@
 
 #include "LGLogger.h"
 
-NSString *quick_formatString(NSString *format, ...){
+NSString *quick_formatString(NSString *format, ...)
+{
     NSString *string = nil;
     if (format) {
         va_list args;
@@ -31,12 +32,13 @@ NSString *quick_formatString(NSString *format, ...){
     return string ?: format;
 }
 
-NSString *quick_pathJoin(NSArray *components){
+NSString *quick_pathJoin(NSArray *components)
+{
     if (components.count) {
         NSMutableString *path = [[NSMutableString alloc] init];
-        [components enumerateObjectsUsingBlock:^(NSString* obj, NSUInteger idx, BOOL *stop) {
-            if(obj.length){
-                if(![[obj substringToIndex:0] isEqualToString:@"/"]){
+        [components enumerateObjectsUsingBlock:^(NSString *obj, NSUInteger idx, BOOL *stop) {
+            if (obj.length) {
+                if (![[obj substringToIndex:0] isEqualToString:@"/"]) {
                     [path appendString:@"/"];
                 }
                 [path appendString:obj];
@@ -46,7 +48,6 @@ NSString *quick_pathJoin(NSArray *components){
     }
     return nil;
 }
-
 
 // Debug Logging Method
 void DLog(NSString *format, ...)

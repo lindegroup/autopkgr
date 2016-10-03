@@ -1,0 +1,6 @@
+
+/* Class = "NSTextFieldCell"; title = "Note: While AutoPkgr supports running at the login window, .absolute recipes require Absolute Manage Admin.app to be open, so your machine must remain logged in to utilize this processor."; ObjectID = "Lrs-9e-sMd"; */
+"Lrs-9e-sMd.title" = "Note: While AutoPkgr supports running at the login window, .absolute recipes require Absolute Manage Admin.app to be open, so your machine must remain logged in to utilize this processor.";
+
+/* Class = "NSButtonCell"; title = "Enable External SD Package Upload"; ObjectID = "PiW-KV-hIG"; */
+"PiW-KV-hIG.title" = "Enable External SD Package Upload";

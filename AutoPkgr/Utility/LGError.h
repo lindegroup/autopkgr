@@ -3,7 +3,7 @@
 //  AutoPkgr
 //
 //  Created by Eldon Ahrold on 8/9/14.
-//  Copyright 2014-2015 The Linde Group, Inc.
+//  Copyright 2014-2016 The Linde Group, Inc.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -28,7 +28,7 @@ typedef NS_ENUM(NSInteger, LGErrorCodes) {
     /** Success */
     kLGErrorSuccess,
     /** Error when trying to install privileged helper tool */
-    kLGErrorInstallingPrivilegedHelperTool, 
+    kLGErrorInstallingPrivilegedHelperTool,
     /** Error when sending email fails */
     kLGErrorSendingEmail,
     /** Error when testing port failed */
@@ -61,7 +61,6 @@ typedef NS_ENUM(NSInteger, LGErrorAutoPkgCodes) {
     /** AutoPkg returns 255 if no recipe is specified */
     kLGErrorAutoPkgNoRecipes = 255,
 
-    
 };
 
 @interface LGError : NSObject
@@ -104,7 +103,6 @@ typedef NS_ENUM(NSInteger, LGErrorAutoPkgCodes) {
  *  @return populated NSError object if task's exit code != 0;
  */
 + (NSError *)errorFromTask:(NSTask *)task;
-
 
 #pragma mark - NSURLConnection response Error
 + (BOOL)errorWithResponse:(NSHTTPURLResponse *)response error:(NSError **)error;

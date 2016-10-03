@@ -3,7 +3,7 @@
 //  AutoPkgr
 //
 //  Created by Eldon Ahrold on 5/20/15.
-//  Copyright 2015 Eldon Ahrold.
+//  Copyright 2015 Eldon Ahrold
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -18,18 +18,18 @@
 //  limitations under the License.
 //
 
-#import "LGNotificationsViewController.h"
 #import "LGAutoPkgr.h"
-#import "LGPasswords.h"
-#import "LGTestPort.h"
 #import "LGEmailNotification.h"
-#import "LGSlackNotification.h"
 #import "LGHipChatNotification.h"
+#import "LGNotificationsViewController.h"
+#import "LGPasswords.h"
+#import "LGSlackNotification.h"
+#import "LGTestPort.h"
 
 #import "LGBaseNotificationServiceViewController.h"
 #import "LGNotificationServiceWindowController.h"
-#import "LGTemplateRenderWindowController.h"
 #import "LGSelectNotificationsWindowController.h"
+#import "LGTemplateRenderWindowController.h"
 
 @interface LGNotificationsViewController ()
 #pragma mark - Email
@@ -113,7 +113,7 @@
 #pragma mark - Open Config Panel
 - (IBAction)configure:(NSButton *)sender
 {
-    // Handle first time checkboxes...
+    // Handle first time checkboxes.
     if (sender.state) {
         BOOL configured = NO;
         if ([sender.identifier isEqualToString:@"enableSlackCheckBox"]) {
@@ -122,7 +122,8 @@
                 [self configure:self.configureSlackButton];
                 [[LGDefaults standardUserDefaults] setBool:YES forKey:@"SlackConfigured"];
             }
-        } else if ([sender.identifier isEqualToString:@"enableHipChatCheckBox"]) {
+        }
+        else if ([sender.identifier isEqualToString:@"enableHipChatCheckBox"]) {
             configured = [[LGDefaults standardUserDefaults] boolForKey:@"HipChatConfigured"];
             if (!configured) {
                 [self configure:self.configureHipChatButton];
@@ -144,12 +145,13 @@
             NSString *enabledKey = nil;
             if (serviceClass == [LGSlackNotification class]) {
                 enabledKey = @"Slack";
-            } else if (serviceClass == [LGHipChatNotification class]){
+            }
+            else if (serviceClass == [LGHipChatNotification class]) {
                 enabledKey = @"HipChat";
             }
             if (enabledKey.length) {
                 id controller = (LGBaseNotificationServiceViewController *)_serviceWindow.viewController;
-                if([controller respondsToSelector:@selector(didConfigure)] && ![controller didConfigure]){
+                if ([controller respondsToSelector:@selector(didConfigure)] && ![controller didConfigure]) {
                     [[NSUserDefaults standardUserDefaults] setBool:NO forKey:[enabledKey stringByAppendingString:@"NotificationsEnabled"]];
                     [[NSUserDefaults standardUserDefaults] setBool:NO forKey:[enabledKey stringByAppendingString:@"Configured"]];
                 }
@@ -159,7 +161,8 @@
     }
 }
 
-- (IBAction)configureNotificationsFlags:(id)sender {
+- (IBAction)configureNotificationsFlags:(id)sender
+{
     _flagConfigureWindow = [[LGSelectNotificationsWindowController alloc] init];
     [_flagConfigureWindow openSheetOnWindow:self.modalWindow complete:^(LGWindowController *windowController) {
         _flagConfigureWindow = nil;
@@ -169,7 +172,7 @@
 - (IBAction)openTemplateEditor:(id)sender
 {
     _templateRenderWindow = [[LGTemplateRenderWindowController alloc] init];
-    [_templateRenderWindow open:^(LGWindowController *renderer){
+    [_templateRenderWindow open:^(LGWindowController *renderer) {
         _templateRenderWindow = nil;
     }];
 }
@@ -180,7 +183,8 @@
     [LGEmailNotification infoFromKeychain:^(NSString *infoOrPassword, NSError *error) {
         if (error) {
             NSLog(@"Error getting password for %@ [%ld]: %@", [LGEmailNotification account], error.code, error.localizedDescription);
-        } else {
+        }
+        else {
             _smtpPassword.safe_stringValue = infoOrPassword;
         }
     }];
@@ -206,17 +210,20 @@
                     [LGPasswords resetKeychainPrompt:^(NSError *error) {
                         if (!error) {
                             [self updateKeychainPassword:nil];
-                        } else {
+                        }
+                        else {
                             NSLog(@"Error resetting password [%ld]: %@", error.code, error.localizedDescription);
                         }
                     }];
-                } else {
+                }
+                else {
                     NSLog(@"Error setting password [%ld]: %@", error.code, error.localizedDescription);
                 }
             }
         }];
-    } else {
-        if(reply){
+    }
+    else {
+        if (reply) {
             reply(nil);
         }
     }
@@ -230,7 +237,7 @@
         DLog(@"Testing SMTP server and port settings.");
         NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
 
-        // Set up the UI
+        // Set up the UI.
         [_testSmtpServerStatus setHidden:YES];
         [_testSmtpServerSpinner setHidden:NO];
         [_testSmtpServerSpinner startAnimation:self];
@@ -244,24 +251,24 @@
 
         [tester testHost:[NSHost hostWithName:[_smtpServer stringValue]]
                 withPort:[_smtpPort integerValue]];
-    } else {
+    }
+    else {
         NSLog(@"Cannot test SMTP. Either host is blank or port is unreadable.");
     }
 }
 
 - (void)sendTestEmail:(id)sender
 {
-    // Send a test email notification when the user
-    // clicks "Send Test Email"
+    // Send a test email notification when the user clicks "Send Test Email".
 
     DevLog(@"'Send Test Email' button clicked.");
 
-    // Handle UI
+    // Handle UI.
     [sender setEnabled:NO]; // disable button
     [_sendTestEmailSpinner setHidden:NO]; // show spinner
     [_sendTestEmailSpinner startAnimation:self]; // animate spinner
 
-    // Setup a completion block
+    // Set up a completion block.
     void (^didComplete)(NSError *) = ^void(NSError *error) {
         [sender setEnabled:YES]; // enable button
         [_sendTestEmailSpinner setHidden:YES]; // hide spinner
@@ -271,13 +278,12 @@
     };
 
     [self savePassword:^(NSError *error) {
-        // If the save password method has an error stop emailing,
-        // The emailer would get the same error.
+        // If the save password method has an error, stop emailing. The emailer would get the same error.
         if (error) {
             return didComplete(error);
         }
 
-        // Create an instance of the LGEmailer class
+        // Create an instance of the LGEmailer class.
         LGEmailNotification *emailer = [[LGEmailNotification alloc] init];
         [emailer sendTest:didComplete];
     }];
@@ -285,7 +291,7 @@
 
 - (void)testSmtpServerPortNotificationReceived:(NSNotification *)notification
 {
-    // Set up the spinner and show the status image
+    // Set up the spinner and show the status image.
     [_testSmtpServerSpinner setHidden:YES];
     [_testSmtpServerSpinner stopAnimation:self];
     [_testSmtpServerStatus setHidden:NO];
@@ -297,9 +303,11 @@
     NSString *status = notification.userInfo[kLGNotificationUserInfoSuccess];
     if ([status isEqualTo:@NO]) {
         [_testSmtpServerStatus setImage:[NSImage LGStatusUnavailable]];
-    } else if ([status isEqualTo:@YES]) {
+    }
+    else if ([status isEqualTo:@YES]) {
         [_testSmtpServerStatus setImage:[NSImage LGStatusAvailable]];
-    } else {
+    }
+    else {
         NSLog(@"Unexpected result for received from port test.");
         [_testSmtpServerStatus setImage:[NSImage LGStatusPartiallyAvailable]];
     }

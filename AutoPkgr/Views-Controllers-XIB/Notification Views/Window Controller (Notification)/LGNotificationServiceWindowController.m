@@ -2,7 +2,7 @@
 //  LGNotificationServiceWindowController.m
 //  AutoPkgr
 //
-//  Copyright 2015 The Linde Group, Inc.
+//  Copyright 2015-2016 The Linde Group, Inc.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -17,9 +17,9 @@
 //  limitations under the License.
 //
 
-#import "LGNotificationServiceWindowController.h"
 #import "LGBaseNotificationServiceViewController.h"
 #import "LGNotificationService.h"
+#import "LGNotificationServiceWindowController.h"
 #import "NSTextField+animatedString.h"
 
 @interface LGNotificationServiceWindowController ()
@@ -54,10 +54,11 @@
     self.infoTextField.stringValue = @"";
     self.accessoryButton.enabled = NO;
 
-    void (^didComplete)(NSError *) = ^(NSError *error){
+    void (^didComplete)(NSError *) = ^(NSError *error) {
         if (error) {
             [NSApp presentError:error];
-        } else {
+        }
+        else {
             [self.infoTextField fadeOut_withString:NSLocalizedString(@"Successfully sent test notification.", nil)];
         }
 
@@ -71,7 +72,8 @@
 
         if (error) {
             didComplete(error);
-        } else {
+        }
+        else {
             [strongSelf.viewController.service sendTest:^(NSError *error) {
                 didComplete(error);
             }];
@@ -81,7 +83,7 @@
 
 - (IBAction)close:(id)sender
 {
-    __weak typeof(self)weakSelf = self;
+    __weak typeof(self) weakSelf = self;
     [[self.viewController.service class] saveInfoToKeychain:self.viewController.infoOrPasswordTextField.stringValue reply:^(NSError *error) {
         [weakSelf.window close];
     }];

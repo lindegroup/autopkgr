@@ -3,7 +3,7 @@
 //  AutoPkgr
 //
 //  Created by Eldon Ahrold on 6/7/15.
-//  Copyright 2015 Eldon Ahrold.
+//  Copyright 2015 Eldon Ahrold
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -26,7 +26,7 @@
 {
 
     NSMutableAttributedString *attrString = [[NSMutableAttributedString alloc]
-                                             initWithString:title];
+        initWithString:title];
 
     [self setTitle:attrString withColor:color];
 }
@@ -43,8 +43,8 @@
     NSRange range = NSMakeRange(0, len);
 
     [string addAttribute:NSForegroundColorAttributeName
-                      value:color
-                      range:range];
+                   value:color
+                   range:range];
 
     [string fixAttributesInRange:range];
 

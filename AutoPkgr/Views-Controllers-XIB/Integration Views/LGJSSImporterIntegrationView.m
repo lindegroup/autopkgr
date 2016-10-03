@@ -3,7 +3,7 @@
 //  AutoPkgr
 //
 //  Created by Eldon Ahrold on 9/25/14.
-//  Copyright 2014-2015 The Linde Group, Inc.
+//  Copyright 2014-2016 The Linde Group, Inc.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -20,20 +20,20 @@
 
 #import "LGJSSImporterIntegrationView.h"
 
-#import "LGAutopkgr.h"
 #import "LGAutoPkgTask.h"
+#import "LGAutopkgr.h"
 #import "LGHTTPRequest.h"
 #import "LGHostInfo.h"
 #import "LGInstaller.h"
-#import "LGJSSDistributionPointsPrefPanel.h"
 #import "LGJSSDistributionPoint.h"
+#import "LGJSSDistributionPointsPrefPanel.h"
 #import "LGJSSImporterIntegration.h"
 #import "LGServerCredentials.h"
 #import "LGTableView.h"
 #import "LGTestPort.h"
 
-#import "NSTextField+changeHandle.h"
 #import "NSTableView+Resizing.h"
+#import "NSTextField+changeHandle.h"
 
 @interface LGJSSImporterIntegrationView () <NSTextFieldDelegate>
 @property (strong) IBOutlet LGTableView *jssDistributionPointTableView;
@@ -68,8 +68,7 @@
 - (void)awakeFromNib
 {
     LGJSSImporterDefaults *defaults = [LGJSSImporterDefaults new];
-    // Disable the Add / Remove distPoint buttons
-    // until a row is selected
+    // Disable the Add / Remove buttons until a row is selected.
     [_jssEditDistPointBT setEnabled:NO];
     [_jssRemoveDistPointBT setEnabled:NO];
 
@@ -122,7 +121,8 @@
         [self stopStatusUpdate:error];
         if (error) {
             [NSApp presentError:error];
-        } else {
+        }
+        else {
             [_jssStatusLight setImage:[NSImage LGStatusAvailable]];
             for (LGJSSDistributionPoint *dp in distPoints) {
                 if ((dp.password = [self promptForSharePassword:dp.name]) != nil) {
@@ -179,16 +179,17 @@
 
     LGJSSDistributionPoint *distributionPoint = _distributionPoints[row];
 
-    // Local mounts have slightly different implementation
-    // so we need to hijack this a little bit
+    // Local mounts have slightly different implementation so we need to hijack this a little bit.
     NSString *identifier = nil;
     if (distributionPoint.type == kLGJSSTypeLocal) {
         if ([tableColumn.identifier isEqualToString:@"URL"]) {
             identifier = kLGJSSDistPointMountPointKey;
-        } else if ([tableColumn.identifier isEqualToString:@"share_name"]) {
+        }
+        else if ([tableColumn.identifier isEqualToString:@"share_name"]) {
             identifier = kLGJSSDistPointSharePointKey;
         }
-    } else {
+    }
+    else {
         identifier = tableColumn.identifier;
     }
 
@@ -201,8 +202,7 @@
 - (void)tableViewSelectionDidChange:(NSNotification *)notification
 {
     NSInteger row = [_jssDistributionPointTableView selectedRow];
-    // If nothing in the table is selected the row value is -1 so
-
+    // If nothing in the table is selected, the row value is -1.
     [_jssRemoveDistPointBT setEnabled:(row > -1)];
     [_jssEditDistPointBT setEnabled:(row > -1) && [_distributionPoints[row] isEditable]];
 }
@@ -303,7 +303,8 @@
     LGJSSDistributionPoint *distPoint = nil;
     if ([sender isKindOfClass:[NSMenuItem class]]) {
         distPoint = [(NSMenuItem *)sender representedObject];
-    } else {
+    }
+    else {
         NSInteger row = _jssDistributionPointTableView.selectedRow;
         if (row > -1) {
             distPoint = _distributionPoints[row];
@@ -318,7 +319,8 @@
     LGJSSDistributionPoint *distPoint = nil;
     if ([sender isKindOfClass:[NSMenuItem class]]) {
         distPoint = [(NSMenuItem *)sender representedObject];
-    } else {
+    }
+    else {
         NSInteger row = _jssDistributionPointTableView.selectedRow;
         if (0 <= row) {
             distPoint = _distributionPoints[row];

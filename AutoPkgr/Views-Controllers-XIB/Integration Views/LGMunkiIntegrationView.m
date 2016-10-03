@@ -3,7 +3,7 @@
 //  AutoPkgr
 //
 //  Created by Eldon Ahrold on 6/7/15.
-//  Copyright 2015 Eldon Ahrold.
+//  Copyright 2015 Eldon Ahrold
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -18,8 +18,8 @@
 //  limitations under the License.
 //
 
-#import "LGMunkiIntegrationView.h"
 #import "LGAutoPkgr.h"
+#import "LGMunkiIntegrationView.h"
 
 #import "NSOpenPanel+typeChooser.h"
 
@@ -49,7 +49,8 @@
     if ([[NSFileManager defaultManager] fileExistsAtPath:munkiRepo isDirectory:&isDir] && isDir) {
         _openLocalMunkiRepoFolderButton.enabled = YES;
         _localMunkiRepo.stringValue = munkiRepo;
-    } else {
+    }
+    else {
         _openLocalMunkiRepoFolderButton.enabled = NO;
     }
 }
@@ -58,10 +59,10 @@
 {
     DevLog(@"Showing dialog for selecting Munki repo location.");
 
-    // Set the default directory to the current setting for munkiRepo, else /Users/Shared
+    // Set the default directory to the current setting for munkiRepo, else /Users/Shared.
     NSString *path = [[LGDefaults standardUserDefaults] munkiRepo] ?: @"/Users/Shared";
 
-    // Display the dialog. If the "Choose" button was (This is a custom category)
+    // Display the folder picker dialog.
     [NSOpenPanel folderChooser_WithStartingPath:path reply:^(NSString *selectedFolder) {
         if (selectedFolder) {
             DevLog(@"%@ selected for Munki repo location.", selectedFolder);
@@ -82,7 +83,8 @@
     if ([[NSFileManager defaultManager] fileExistsAtPath:munkiRepoFolder isDirectory:&isDir] && isDir) {
         NSURL *localMunkiRepoFolderURL = [NSURL fileURLWithPath:munkiRepoFolder];
         [[NSWorkspace sharedWorkspace] openURL:localMunkiRepoFolderURL];
-    } else {
+    }
+    else {
         NSLog(@"%@ does not exist.", munkiRepoFolder);
         NSAlert *alert = [[NSAlert alloc] init];
         [alert addButtonWithTitle:@"OK"];

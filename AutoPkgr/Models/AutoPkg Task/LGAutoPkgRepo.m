@@ -2,7 +2,7 @@
 //  LGAutoPkgRepo.m
 //  AutoPkgr
 //
-//  Copyright 2015 The Linde Group, Inc.
+//  Copyright 2015-2016 The Linde Group, Inc.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -40,7 +40,7 @@ static NSArray *_popularRepos;
 #pragma mark - Initializers
 
 /* initWithGithHubDictionary is used to create objects
- * from repos pulled from the GitHub api */
+ * from repos pulled from the GitHub API */
 - (instancetype)initWithGitHubDictionary:(NSDictionary *)dictionary
 {
     if (self = [super init]) {
@@ -152,7 +152,8 @@ static NSArray *_popularRepos;
             }
             reply(error);
         }];
-    } else {
+    }
+    else {
         reply([self errorWithMessage:@"Repo is not installed." code:kLGAutoPkgRepoNotInstalled]);
     }
 };
@@ -169,7 +170,8 @@ static NSArray *_popularRepos;
                              }
                              reply(error);
                          }];
-    } else {
+    }
+    else {
         reply(nil);
     }
 }
@@ -191,7 +193,7 @@ static NSArray *_popularRepos;
     if (_checkStatusTimeStamp && [_checkStatusTimeStamp timeIntervalSinceNow] <= 0) {
         return reply(_status);
     }
-    // So we don't constantly hit the network at the exact same time, space it out the git calls.
+    // So we don't constantly hit the network at the exact same time, space out the git calls.
     NSTimeInterval interval = arc4random_uniform(600) + 300;
     _checkStatusTimeStamp = [NSDate dateWithTimeIntervalSinceNow:interval];
     NSString *path = self.path;
@@ -226,9 +228,11 @@ static NSArray *_popularRepos;
                                                                               if (!remoteSHA1) {
                                                                                   _status = kLGAutoPkgRepoUpToDate;
                                                                                   _checkStatusTimeStamp = [NSDate dateWithTimeIntervalSinceNow:10];
-                                                                              } else if ([localSHA1 isEqualToString:remoteSHA1]) {
+                                                                              }
+                                                                              else if ([localSHA1 isEqualToString:remoteSHA1]) {
                                                                                   _status = kLGAutoPkgRepoUpToDate;
-                                                                              } else {
+                                                                              }
+                                                                              else {
                                                                                   _status = kLGAutoPkgRepoUpdateAvailable;
                                                                               }
                                                                               reply(_status);
@@ -292,9 +296,9 @@ static NSArray *_popularRepos;
             NSMutableString *normalizedRepo = repoURL.mutableCopy;
 
             if (![normalizedRepo.pathExtension isEqualToString:@"git"]) {
-                // Using -stringByAppendingPathComponent: on a url here
-                // results in the scheme getting mangled from https://xxx to https:/xxx
-                // so just use -stringByAppendingString: string.
+                /* Using -stringByAppendingPathComponent: on a URL here
+                 * results in the scheme getting mangled from https://xxx to https:/xxx
+                 * so just use -stringByAppendingString: string. */
                 [normalizedRepo appendString:@".git"];
             }
 
@@ -327,7 +331,8 @@ static NSArray *_popularRepos;
 
     if (_popularRepos) {
         constructCommonRepos();
-    } else {
+    }
+    else {
         NSURL *url = [NSURL URLWithString:kLGAutoPkgRepositoriesJSONURL];
         NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:5.0];
 
@@ -351,45 +356,65 @@ static NSArray *_popularRepos;
             }];
             _popularRepos = [popularRepos copy];
             constructCommonRepos();
-        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-            NSArray *fallbackRepos = @[
-                @"https://github.com/autopkg/recipes.git",
-                @"https://github.com/autopkg/keeleysam-recipes.git",
-                @"https://github.com/autopkg/hjuutilainen-recipes.git",
-                @"https://github.com/autopkg/timsutton-recipes.git",
-                @"https://github.com/autopkg/nmcspadden-recipes.git",
-                @"https://github.com/autopkg/jleggat-recipes.git",
-                @"https://github.com/autopkg/jaharmi-recipes.git",
-                @"https://github.com/autopkg/jessepeterson-recipes.git",
-                @"https://github.com/autopkg/dankeller-recipes.git",
-                @"https://github.com/autopkg/hansen-m-recipes.git",
-                @"https://github.com/autopkg/scriptingosx-recipes.git",
-                @"https://github.com/autopkg/derak-recipes.git",
-                @"https://github.com/autopkg/sheagcraig-recipes.git",
-                @"https://github.com/autopkg/arubdesu-recipes.git",
-                @"https://github.com/autopkg/jps3-recipes.git",
-                @"https://github.com/autopkg/joshua-d-miller-recipes.git",
-                @"https://github.com/autopkg/gerardkok-recipes.git",
-                @"https://github.com/autopkg/swy-recipes.git",
-                @"https://github.com/autopkg/lashomb-recipes.git",
-                @"https://github.com/autopkg/rustymyers-recipes.git",
-                @"https://github.com/autopkg/luisgiraldo-recipes.git",
-                @"https://github.com/autopkg/justinrummel-recipes.git",
-                @"https://github.com/autopkg/n8felton-recipes.git",
-                @"https://github.com/autopkg/groob-recipes.git",
-                @"https://github.com/autopkg/jazzace-recipes.git",
-            ];
+        }
+            failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                NSArray *fallbackRepos = @[
+                    @"https://github.com/autopkg/arubdesu-recipes.git",
+                    @"https://github.com/autopkg/bochoven-recipes.git",
+                    @"https://github.com/autopkg/bradclare-recipes.git",
+                    @"https://github.com/autopkg/cgerke-recipes.git",
+                    @"https://github.com/autopkg/clburlison-recipes.git",
+                    @"https://github.com/autopkg/dankeller-recipes.git",
+                    @"https://github.com/autopkg/derak-recipes.git",
+                    @"https://github.com/autopkg/filewave.git",
+                    @"https://github.com/autopkg/foigus-recipes.git",
+                    @"https://github.com/autopkg/gerardkok-recipes.git",
+                    @"https://github.com/autopkg/grahamgilbert-recipes.git",
+                    @"https://github.com/autopkg/gregneagle-recipes.git",
+                    @"https://github.com/autopkg/hansen-m-recipes.git",
+                    @"https://github.com/autopkg/hjuutilainen-recipes.git",
+                    @"https://github.com/autopkg/homebysix-recipes.git",
+                    @"https://github.com/autopkg/jaharmi-recipes.git",
+                    @"https://github.com/autopkg/jazzace-recipes.git",
+                    @"https://github.com/autopkg/jessepeterson-recipes.git",
+                    @"https://github.com/autopkg/jleggat-recipes.git",
+                    @"https://github.com/autopkg/joshua-d-miller-recipes.git",
+                    @"https://github.com/autopkg/jps3-recipes.git",
+                    @"https://github.com/autopkg/jss-recipes.git",
+                    @"https://github.com/autopkg/justinrummel-recipes.git",
+                    @"https://github.com/autopkg/keeleysam-recipes.git",
+                    @"https://github.com/autopkg/kitzy-recipes.git",
+                    @"https://github.com/autopkg/lashomb-recipes.git",
+                    @"https://github.com/autopkg/luisgiraldo-recipes.git",
+                    @"https://github.com/autopkg/mosen-recipes.git",
+                    @"https://github.com/autopkg/munkireport-recipes.git",
+                    @"https://github.com/autopkg/n8felton-recipes.git",
+                    @"https://github.com/autopkg/nmcspadden-recipes.git",
+                    @"https://github.com/autopkg/novaksam-recipes.git",
+                    @"https://github.com/autopkg/patgmac-recipes.git",
+                    @"https://github.com/autopkg/recipes.git",
+                    @"https://github.com/autopkg/robperc-recipes.git",
+                    @"https://github.com/autopkg/rtrouton-recipes.git",
+                    @"https://github.com/autopkg/rustymyers-recipes.git",
+                    @"https://github.com/autopkg/scriptingosx-recipes.git",
+                    @"https://github.com/autopkg/seansgm-recipes.git",
+                    @"https://github.com/autopkg/sheagcraig-recipes.git",
+                    @"https://github.com/autopkg/swy-recipes.git",
+                    @"https://github.com/autopkg/timsutton-recipes.git",
+                    @"https://github.com/autopkg/valdore86-recipes.git",
+                    @"https://github.com/autopkg/watchmanmonitoring-recipes.git",
+                ];
 
-            NSMutableArray *popularRepos = [[NSMutableArray alloc] initWithCapacity:fallbackRepos.count];
-            [fallbackRepos enumerateObjectsUsingBlock:^(NSString *obj, NSUInteger idx, BOOL *stop) {
-                LGAutoPkgRepo *repo = nil;
-                if ((repo = [[LGAutoPkgRepo alloc] initWithCloneURL:obj])) {
-                    [popularRepos addObject:repo];
-                }
+                NSMutableArray *popularRepos = [[NSMutableArray alloc] initWithCapacity:fallbackRepos.count];
+                [fallbackRepos enumerateObjectsUsingBlock:^(NSString *obj, NSUInteger idx, BOOL *stop) {
+                    LGAutoPkgRepo *repo = nil;
+                    if ((repo = [[LGAutoPkgRepo alloc] initWithCloneURL:obj])) {
+                        [popularRepos addObject:repo];
+                    }
+                }];
+                _popularRepos = [popularRepos copy];
+                constructCommonRepos();
             }];
-            _popularRepos = [popularRepos copy];
-            constructCommonRepos();
-        }];
         [op start];
     }
 }
@@ -398,7 +423,7 @@ static NSArray *_popularRepos;
 {
 
     if (access(urlString.UTF8String, W_OK) == 0) {
-        // Local folder, check if it's a git repo...
+        // Local folder; check if it's a git repo.
         NSString *gitCheck = [urlString stringByAppendingPathComponent:@".git"];
         return (access(gitCheck.UTF8String, W_OK) == 0);
     };
@@ -406,15 +431,14 @@ static NSArray *_popularRepos;
     NSString *host = nil;
     NSString *path = nil;
 
-    // Get the first occurence of the characters using .location
-    // Otherwise it returns NSNotFound
+    // Get the first occurence of the characters using .location. Otherwise it returns NSNotFound.
     NSInteger sep1_idx = [urlString rangeOfString:@":/"].location;
     NSInteger sep2_idx = [urlString rangeOfString:@":"].location;
     NSInteger sep3_idx = [urlString rangeOfString:@"."].location;
 
-    // Check if it conforms to scp like syntax such as git@github.com:autopkg/recipes
+    // Check if it conforms to scp-like syntax such as git@github.com:autopkg/recipes
     if ((sep2_idx != NSNotFound && sep1_idx == NSNotFound) || (sep1_idx > sep2_idx) || (sep2_idx > sep3_idx)) {
-        // If s username is found before the : strip it off
+        // If a username is found before the ":" strip it off.
         NSInteger location = NSNotFound;
         if ((location = [urlString rangeOfString:@"@"].location) < sep2_idx) {
             urlString = [urlString substringFromIndex:location + 1];
@@ -425,7 +449,8 @@ static NSArray *_popularRepos;
         if (split.count) {
             path = [[split subarrayWithRange:NSMakeRange(1, split.count - 1)] componentsJoinedByString:@":"];
         }
-    } else {
+    }
+    else {
         NSURL *url = [[NSURL alloc] initWithString:urlString];
         host = [url host];
         path = [url path];

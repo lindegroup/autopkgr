@@ -3,7 +3,7 @@
 //  AutoPkgr
 //
 //  Created by Eldon Ahrold on 2/14/15.
-//  Copyright 2015 The Linde Group, Inc.
+//  Copyright 2015-2016 The Linde Group, Inc.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -18,23 +18,22 @@
 //  limitations under the License.
 //
 
-#import "LGPasswords.h"
-#import "LGAutoPkgrHelperConnection.h"
 #import "LGAutoPkgr.h"
+#import "LGAutoPkgrHelperConnection.h"
+#import "LGPasswords.h"
 
 #import <AHKeychain/AHKeychain.h>
 
 @implementation LGPasswords
 
-NSString *appKeychainPath()
+NSString *AppKeychainPath()
 {
-    return [@"~/Library/Keychains/AutoPkgr.keychain" stringByExpandingTildeInPath];
+    return  [AUTOPKGR_KEYCHAIN_PATH stringByExpandingTildeInPath];
 }
 
 + (void)lockKeychain
 {
-    NSString *appKeychain = @"AutoPkgr.keychain";
-    [[[AHKeychain alloc] initWithKeychain:appKeychain] lock];
+    [[[AHKeychain alloc] initWithKeychain:AUTOPKGR_KEYCHAIN_NAME] lock];
 }
 
 + (void)getPasswordForAccount:(NSString *)account
@@ -52,7 +51,8 @@ NSString *appKeychainPath()
 
                 [keychain getItem:item error:&error];
                 reply(item.password, error);
-            } else {
+            }
+            else {
                 reply(nil, [LGError errorWithCode:kLGErrorKeychainAccess]);
             }
         }];
@@ -94,13 +94,15 @@ NSString *appKeychainPath()
                 if (password.length == 0) {
                     [keychain deleteItem:item error:&error];
                     reply(error);
-                } else {
+                }
+                else {
                     item.password = password;
                     [keychain saveItem:item error:&error];
                     reply(error);
                 }
-            } else {
-                reply([NSError errorWithDomain:kLGApplicationName code:keychain.keychainStatus userInfo:@{NSLocalizedDescriptionKey : keychain.statusDescription}]);
+            }
+            else {
+                reply([NSError errorWithDomain:kLGApplicationName code:keychain.keychainStatus userInfo:@{ NSLocalizedDescriptionKey : keychain.statusDescription }]);
             }
         }];
     }];
@@ -111,20 +113,19 @@ NSString *appKeychainPath()
     NSString *upgradeTriedKey = @"KeychainUpgrade_1_2_1_Tried";
 
     BOOL upgradeTried = [[LGDefaults standardUserDefaults] boolForKey:upgradeTriedKey];
-    BOOL keychainExists = [[NSFileManager defaultManager] fileExistsAtPath:appKeychainPath()];
+    BOOL keychainExists = [[NSFileManager defaultManager] fileExistsAtPath:AppKeychainPath()];
 
     // Only try to upgrade once if the keychain exists.
     if (!upgradeTried && keychainExists) {
         NSString *oldPass = [LGHostInfo macSerialNumber];
-        AHKeychain *keychain = [AHKeychain keychainAtPath:appKeychainPath()];
+        AHKeychain *keychain = [AHKeychain keychainAtPath:AppKeychainPath()];
 
         if ([keychain unlockWithPassword:oldPass]) {
-            // If we successfully unlock the keychain with the old password
-            // it needs migration.
+            // If we successfully unlock the keychain with the old password, the keychain needs migration.
 
             [self getKeychainKey:^(NSString *key, NSError *error) {
-                if(!error){
-                    if([keychain changeKeychainPassword:oldPass to:key error:&error]){
+                if (!error) {
+                    if ([keychain changeKeychainPassword:oldPass to:key error:&error]) {
                         NSString *account = [[LGDefaults standardUserDefaults] SMTPUsername];
 
                         NSLog(@"Successfully migrated keychain.");
@@ -138,7 +139,8 @@ NSString *appKeychainPath()
                             reply(item.password, error);
                         }
                     }
-                } else {
+                }
+                else {
                     reply(nil, error);
                 }
             }];
@@ -162,9 +164,10 @@ NSString *appKeychainPath()
         NSInteger button = [alert runModal];
         if (button == NSAlertDefaultReturn) {
             NSError *error = nil;
-            if ([[AHKeychain keychainAtPath:appKeychainPath()] deleteKeychain:&error]) {
+            if ([[AHKeychain keychainAtPath:AppKeychainPath()] deleteKeychain:&error]) {
                 DLog(@"Removed old keychain...");
-            } else {
+            }
+            else {
                 NSLog(@"There was a problem removing your old keychain.");
             }
             reply(error);
@@ -176,13 +179,14 @@ NSString *appKeychainPath()
 + (AHKeychain *)appKeychain:(NSString *)key
 {
     AHKeychain *keychain = nil;
+    NSString *path = AppKeychainPath();
 
-    NSString *appKeychain = @"AutoPkgr.keychain";
-
-    if (![[NSFileManager defaultManager] fileExistsAtPath:appKeychainPath()]) {
-        keychain = [[AHKeychain alloc] initCreatingNewKeychain:appKeychain password:key];
-    } else {
-        keychain = [[AHKeychain alloc] initWithKeychain:appKeychain];
+    if (![AHKeychain keychainExistsAtPath:path]) {
+        keychain = [[AHKeychain alloc] initCreatingNewKeychainAtPath:path
+                                                            password:key];
+    }
+    else {
+        keychain = [AHKeychain keychainAtPath:path];
         if (![keychain unlockWithPassword:key]) {
             DLog(@"[%d] %@", keychain.keychainStatus, keychain.statusDescription);
         }
@@ -208,12 +212,14 @@ NSString *appKeychainPath()
     [[self class] getKeychainKey:^(NSString *key, NSError *error) {
         if (!error && key) {
             AHKeychain *keychain = [self appKeychain:key];
-            if(keychain){
+            if (keychain) {
                 reply(keychain);
-            } else {
+            }
+            else {
                 reply(nil);
             }
-        } else {
+        }
+        else {
             DLog(@"%@", error.localizedDescription);
             reply(nil);
         }
@@ -231,7 +237,7 @@ NSString *appKeychainPath()
 
         [helperConnection.remoteObjectProxy getKeychainKey:^(NSString *key, NSError *error) {
             reply(key, error);
-            [helperConnection closeConnection];
+//            [helperConnection closeConnection];
         }];
     }];
 }

@@ -2,7 +2,7 @@
 //  LGNotificationService.m
 //  AutoPkgr
 //
-//  Copyright 2015 Eldon Ahrold.
+//  Copyright 2015 Eldon Ahrold
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -17,9 +17,9 @@
 //  limitations under the License.
 //
 
+#import "LGError.h"
 #import "LGNotificationService.h"
 #import "LGPasswords.h"
-#import "LGError.h"
 
 @implementation LGNotificationService
 
@@ -78,7 +78,8 @@
         NSString *label = [[self class] keychainServiceLabel];
         NSString *account = [[self class] account];
         [LGPasswords getPasswordForAccount:account service:service label:label reply:reply];
-    } else {
+    }
+    else {
         return reply(nil, nil);
     }
 }
@@ -90,7 +91,8 @@
         NSString *label = [[self class] keychainServiceLabel];
         NSString *account = [[self class] account];
         [LGPasswords savePassword:info forAccount:account service:service label:label reply:reply];
-    } else {
+    }
+    else {
         return reply(nil);
     }
 }
@@ -117,11 +119,13 @@
     NSString *reportTemplate = nil;
     if ([[self class] templateIsFile]) {
         NSString *file = [self _reportTemplateFile];
-        if([[NSFileManager defaultManager] fileExistsAtPath:file]){
+        if ([[NSFileManager defaultManager] fileExistsAtPath:file]) {
             reportTemplate = [NSString stringWithContentsOfFile:file
-                                                       encoding:NSUTF8StringEncoding error:&error];
+                                                       encoding:NSUTF8StringEncoding
+                                                          error:&error];
         }
-    } else {
+    }
+    else {
         reportTemplate = [[NSUserDefaults standardUserDefaults] stringForKey:[self _reportTemplateKey]];
     }
     if (error) {
@@ -136,10 +140,12 @@
     if ([[self class] templateIsFile]) {
         if (!reportTemplate) {
             [[NSFileManager defaultManager] removeItemAtPath:[self _reportTemplateFile] error:&error];
-        } else  {
+        }
+        else {
             [reportTemplate writeToFile:[self _reportTemplateFile] atomically:YES encoding:NSUTF8StringEncoding error:&error];
         }
-    } else {
+    }
+    else {
         [[NSUserDefaults standardUserDefaults] setValue:reportTemplate forKey:[self _reportTemplateKey]];
     }
     if (error) {
@@ -147,14 +153,15 @@
     }
 }
 
-+ (ACEMode)tempateFormat {
++ (ACEMode)tempateFormat
+{
     return ACEModeHTML;
 }
 
 + (NSString *)templateWithName:(NSString *)name type:(NSString *)type
 {
     NSString *dataFile = [[NSBundle mainBundle] pathForResource:name ofType:type];
-    return  [NSString stringWithContentsOfFile:dataFile encoding:NSUTF8StringEncoding error:nil];
+    return [NSString stringWithContentsOfFile:dataFile encoding:NSUTF8StringEncoding error:nil];
 }
 
 #pragma mark - Send
@@ -168,7 +175,8 @@
     subclassMustImplement(self, _cmd);
 }
 
-- (void)sendMessage:(NSString *)message title:(NSString *)title complete:(void (^)(NSError *))complete {
+- (void)sendMessage:(NSString *)message title:(NSString *)title complete:(void (^)(NSError *))complete
+{
     subclassMustImplement(self, _cmd);
 }
 

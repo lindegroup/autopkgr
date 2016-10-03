@@ -2,7 +2,7 @@
 //  LGAutoPkgRepo.h
 //  AutoPkgr
 //
-//  Copyright 2015 The Linde Group, Inc.
+//  Copyright 2015-2016 The Linde Group, Inc.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -81,7 +81,7 @@ typedef NS_ENUM(OSStatus, LGAutoPkgRepoStatus) {
 - (void)viewCommitsOnGitHub:(id)sender;
 
 /**
- *  Get an array of installed repos and repos hosted on autopkg's github page.
+ *  Get an array of installed repos and repos hosted on AutoPkg's GitHub page.
  *
  *  @param reply block object that takes one parameter, an array of LGAutoPkgRepo Ojbects.
  */

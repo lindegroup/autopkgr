@@ -2,7 +2,7 @@
 //  LGMacPatchIntegration.h
 //  AutoPkgr
 //
-//  Copyright 2015 The Linde Group, Inc.
+//  Copyright 2015-2016 The Linde Group, Inc.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -17,11 +17,11 @@
 //  limitations under the License.
 //
 
-#import "LGIntegration.h"
 #import "LGDefaults.h"
 #import "LGIntegration+Protocols.h"
+#import "LGIntegration.h"
 
-@interface LGMacPatchIntegration : LGIntegration<LGIntegrationSharedProcessor>
+@interface LGMacPatchIntegration : LGIntegration <LGIntegrationSharedProcessor>
 
 @end
 

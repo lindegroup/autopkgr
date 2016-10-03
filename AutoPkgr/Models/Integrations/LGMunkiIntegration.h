@@ -2,7 +2,7 @@
 //  LGMunkiIntegration.h
 //  AutoPkgr
 //
-//  Copyright 2015 Eldon Ahrold.
+//  Copyright 2015 Eldon Ahrold
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -17,13 +17,13 @@
 //  limitations under the License.
 //
 
-#import "LGIntegration.h"
 #import "LGDefaults.h"
+#import "LGIntegration.h"
 
 @interface LGMunkiIntegration : LGIntegration
 @end
 
-// This is also a good place to add custom defaults
+// This is also a good place to add custom defaults.
 @interface LGDefaults (munki)
 @property (copy, nonatomic) NSString *default_catalog;
 @property (copy, nonatomic) NSString *editor;

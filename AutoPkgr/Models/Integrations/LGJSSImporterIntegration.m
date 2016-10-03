@@ -2,7 +2,7 @@
 //  LGJSSImporterIntegration.m
 //  AutoPkgr
 //
-//  Copyright 2015 Eldon Ahrold.
+//  Copyright 2015 Eldon Ahrold
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -17,14 +17,13 @@
 //  limitations under the License.
 //
 
-#import "LGJSSImporterIntegration.h"
 #import "LGIntegration+Protocols.h"
-#import "LGServerCredentials.h"
+#import "LGJSSImporterIntegration.h"
 #import "LGLogger.h"
+#import "LGServerCredentials.h"
 
-@interface LGJSSImporterIntegration ()<LGIntegrationPackageInstaller, LGIntegrationSharedProcessor>
+@interface LGJSSImporterIntegration () <LGIntegrationPackageInstaller, LGIntegrationSharedProcessor>
 @end
-
 
 @implementation LGJSSImporterIntegration
 @synthesize installedVersion = _installedVersion;
@@ -35,12 +34,14 @@
     return @"JSSImporter";
 }
 
-+ (NSURL *)homePage {
++ (NSURL *)homePage
+{
     return [NSURL URLWithString:@"https://github.com/sheagcraig/JSSImporter"];
 }
 
-+ (NSString *)credits {
-   return @"Copyright 2014 Shea Craig\nhttp://www.apache.org/licenses/LICENSE-2.0";
++ (NSString *)credits
+{
+    return @"Copyright 2014, 2015 Shea Craig\nhttp://www.apache.org/licenses/LICENSE-2.0";
 }
 
 + (NSString *)gitHubURL
@@ -48,8 +49,9 @@
     return @"https://api.github.com/repos/sheagcraig/JSSImporter/releases";
 }
 
-+ (NSString *)defaultRepository {
-   return @"https://github.com/autopkg/jss-recipes.git";
++ (NSString *)defaultRepository
+{
+    return @"https://github.com/autopkg/jss-recipes.git";
 }
 
 + (NSString *)binary
@@ -59,25 +61,28 @@
 
 + (NSArray *)components
 {
-    return @[[self binary],
-             ];
+    return @[
+        [self binary],
+    ];
 }
 
 + (NSArray *)packageIdentifiers
 {
-    return @[@"com.github.sheagcraig.jssimporter",
-             @"com.github.sheagcraig.jss-autopkg-addon"];
+    return @[ @"com.github.sheagcraig.jssimporter",
+              @"com.github.sheagcraig.jss-autopkg-addon" ];
 }
 
-+ (BOOL)isUninstallable {
++ (BOOL)isUninstallable
+{
     return YES;
 }
 
-+ (NSString *)summaryResultKey {
++ (NSString *)summaryResultKey
+{
     return @"jss_importer_summary_result";
 }
 
-# pragma mark - Instance overrides.
+#pragma mark - Instance overrides.
 - (NSString *)installedVersion
 {
     NSFileManager *fm = [NSFileManager defaultManager];
@@ -90,7 +95,8 @@
         NSDictionary *receiptDict;
         if ([fm fileExistsAtPath:jssImporterReceipt]) {
             receiptDict = [NSDictionary dictionaryWithContentsOfFile:jssImporterReceipt];
-        } else if ([fm fileExistsAtPath:jssAddonReceipt]) {
+        }
+        else if ([fm fileExistsAtPath:jssAddonReceipt]) {
             receiptDict = [NSDictionary dictionaryWithContentsOfFile:jssAddonReceipt];
         }
         _installedVersion = receiptDict[@"PackageVersion"];
@@ -99,7 +105,8 @@
     return _installedVersion;
 }
 
-- (void)customInstallActions:(void (^)(NSError *))reply {
+- (void)customInstallActions:(void (^)(NSError *))reply
+{
     LGJSSImporterDefaults *defaults = [[LGJSSImporterDefaults alloc] init];
     NSNumber *verifySSL = [defaults autoPkgDomainObject:@"JSS_VERIFY_SSL"];
     if (!verifySSL) {
@@ -108,15 +115,15 @@
     reply(nil);
 }
 
-- (void)customUninstallActions:(void (^)(NSError *))reply {
-    // Clear out the defaults...
+- (void)customUninstallActions:(void (^)(NSError *))reply
+{
+    // Clear out the defaults.
     LGJSSImporterDefaults *defaults = [[LGJSSImporterDefaults alloc] init];
     defaults.JSSAPIPassword = nil;
     defaults.JSSAPIUsername = nil;
     defaults.JSSRepos = nil;
     defaults.JSSURL = nil;
 
-    // Don't forget to reply...
     reply(nil);
 }
 
@@ -182,7 +189,7 @@
 
 - (void)setJSSVerifySSL:(BOOL)JSSVerifySSL
 {
-    DevLog(@"Setting JSS_SSL_VERIFY to %@", JSSVerifySSL ? @"YES":@"NO");
+    DevLog(@"Setting JSS_SSL_VERIFY to %@", JSSVerifySSL ? @"YES" : @"NO");
     [self setAutoPkgDomainObject:@(JSSVerifySSL) forKey:@"JSS_VERIFY_SSL"];
 }
 

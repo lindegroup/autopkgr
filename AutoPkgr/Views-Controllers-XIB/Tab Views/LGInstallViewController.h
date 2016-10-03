@@ -3,7 +3,7 @@
 //  AutoPkgr
 //
 //  Created by Eldon Ahrold on 5/20/15.
-//  Copyright 2015 Eldon Ahrold.
+//  Copyright 2015 Eldon Ahrold
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -18,8 +18,8 @@
 //  limitations under the License.
 //
 
-#import <Cocoa/Cocoa.h>
 #import "LGTabViewControllerBase.h"
+#import <Cocoa/Cocoa.h>
 
 @class LGIntegrationManager;
 

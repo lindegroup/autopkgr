@@ -2,7 +2,7 @@
 //  LGJSSImporterIntegration.h
 //  AutoPkgr
 //
-//  Copyright 2015 Eldon Ahrold.
+//  Copyright 2015 Eldon Ahrold
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -17,8 +17,8 @@
 //  limitations under the License.
 //
 
-#import "LGIntegration.h"
 #import "LGDefaults.h"
+#import "LGIntegration.h"
 
 @class LGHTTPCredential;
 
@@ -38,4 +38,3 @@
 @property (assign, nonatomic) BOOL JSSVerifySSL;
 
 @end
-

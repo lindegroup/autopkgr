@@ -3,7 +3,7 @@
 //  AutoPkgr
 //
 //  Created by Eldon Ahrold on 6/3/2015.
-//  Copyright 2015 Eldon Ahrold.
+//  Copyright 2015 Eldon Ahrold
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -18,13 +18,13 @@
 //  limitations under the License.
 //
 
-#import "LGRepoTableViewController.h"
-#import "LGTableCellViews.h"
-#import "LGAutoPkgr.h"
-#import "LGRecipeSearch.h"
 #import "LGAutoPkgRepo.h"
 #import "LGAutoPkgTask.h"
+#import "LGAutoPkgr.h"
 #import "LGGitHubJSONLoader.h"
+#import "LGRecipeSearch.h"
+#import "LGRepoTableViewController.h"
+#import "LGTableCellViews.h"
 
 @interface LGRepoTableViewController ()
 
@@ -68,7 +68,8 @@
             NSArray *sortDescriptors = nil;
             if (self.popularRepositoriesTableView.sortDescriptors.count) {
                 sortDescriptors = self.popularRepositoriesTableView.sortDescriptors;
-            } else {
+            }
+            else {
                 sortDescriptors = @[ [NSSortDescriptor sortDescriptorWithKey:NSStringFromSelector(@selector(stars))
                                                                    ascending:NO] ];
             }
@@ -93,7 +94,8 @@
     if (_fetchingRepoData) {
         if ([tableColumn.identifier isEqualToString:NSStringFromSelector(@selector(cloneURL))]) {
             statusCell.textField.stringValue = @"Fetching remote data...";
-        } else if ([[tableColumn identifier] isEqualToString:@"status"]) {
+        }
+        else if ([[tableColumn identifier] isEqualToString:@"status"]) {
             [statusCell.progressIndicator startAnimation:self];
         }
         return statusCell;
@@ -105,22 +107,26 @@
         statusCell.enabledCheckBox.tag = row;
         statusCell.enabledCheckBox.action = @selector(enableRepo:);
         statusCell.enabledCheckBox.target = self;
-
-    } else if ([[tableColumn identifier] isEqualToString:NSStringFromSelector(@selector(cloneURL))]) {
+    }
+    else if ([[tableColumn identifier] isEqualToString:NSStringFromSelector(@selector(cloneURL))]) {
         NSString *cloneURL = repo.cloneURL.absoluteString;
         if (cloneURL) {
             statusCell.textField.stringValue = repo.cloneURL.absoluteString;
-        } else {
+        }
+        else {
             statusCell.textField.placeholderString = @"<Could not find clone URL>";
         }
-    } else if ([[tableColumn identifier] isEqualToString:NSStringFromSelector(@selector(stars))]) {
+    }
+    else if ([[tableColumn identifier] isEqualToString:NSStringFromSelector(@selector(stars))]) {
         if (repo.homeURL && (repo.stars > 0)) {
             // u2650 is the star symbol.
             statusCell.textField.stringValue = [@"\u2605 " stringByAppendingString:@(repo.stars).stringValue];
-        } else {
+        }
+        else {
             statusCell.textField.stringValue = @"";
         }
-    } else if ([[tableColumn identifier] isEqualToString:@"status"]) {
+    }
+    else if ([[tableColumn identifier] isEqualToString:@"status"]) {
         statusCell.imageView.hidden = YES;
         repo.statusChangeBlock = ^(LGAutoPkgRepoStatus status) {
             switch (status) {
@@ -176,13 +182,14 @@
         }
     };
 
-    NSString *message = [NSString stringWithFormat:@"%@ %@", add ? @"Adding" : @"Removing", repo.cloneURL];
+    NSString *message = [NSString stringWithFormat:@"%@ %@...", add ? @"Adding" : @"Removing", repo.cloneURL];
 
     NSLog(@"%@", message);
     [_progressDelegate startProgressWithMessage:message];
     if (add) {
         [repo install:repoModified];
-    } else {
+    }
+    else {
         [repo remove:repoModified];
     }
 }
@@ -192,7 +199,7 @@
     _updateRepoInternally = YES;
     if ([sender isKindOfClass:[NSMenuItem class]]) {
         LGAutoPkgRepo *repo = [sender representedObject];
-        NSString *message = [NSString stringWithFormat:@"Updating %@", repo.cloneURL];
+        NSString *message = [NSString stringWithFormat:@"Updating %@...", repo.cloneURL];
 
         [_progressDelegate startProgressWithMessage:message];
         [repo update:^(NSError *error) {
@@ -209,7 +216,8 @@
 
     if (_repoSearch.stringValue.length == 0) {
         _searchedRepos = [_repos mutableCopy];
-    } else {
+    }
+    else {
         NSPredicate *searchPredicate = [NSPredicate predicateWithFormat:@"%K.absoluteString CONTAINS[CD] %@", NSStringFromSelector(@selector(cloneURL)), _repoSearch.stringValue];
         _searchedRepos = [[_repos filteredArrayUsingPredicate:searchPredicate] mutableCopy];
     }
@@ -239,9 +247,11 @@
     NSString *action = nil;
     if ([taskArgs.firstObject isEqualToString:@"repo-add"]) {
         action = @"Adding";
-    } else if ([taskArgs.firstObject isEqualToString:@"repo-delete"]) {
+    }
+    else if ([taskArgs.firstObject isEqualToString:@"repo-delete"]) {
         action = @"Removing";
-    } else if ([taskArgs.firstObject isEqualToString:@"repo-update"]) {
+    }
+    else if ([taskArgs.firstObject isEqualToString:@"repo-update"]) {
         action = @"Updating";
     }
 
@@ -258,14 +268,14 @@
 {
     NSMenu *menu = [[NSMenu alloc] init];
 
-    // Update repo
+    // Update repo.
     NSIndexSet *set = _popularRepositoriesTableView.selectedRowIndexes;
 
     if (set.count > 1) {
-        // Creat the Add / Remove repos menu. We construct the full args that are passed into the AutoPkg task.
-        // With both repo-add and repo-delete multiple repos can be passed in, so start with the command
-        // and append the recipes that are considered. That is the array ultimately set as the menu item's
-        // represented object.
+        /* Create the Add/Remove Repos menu. We construct the full args that are passed into the AutoPkg task.
+         * With both repo-add and repo-delete, multiple repos can be passed in, so start with the command
+         * and append the recipes that are considered. That is the array ultimately set as the menu item's
+         * represented object. */
         __block NSMutableArray *update = @[ @"repo-update" ].mutableCopy,
                                *enabled = @[ @"repo-delete" ].mutableCopy,
                                *disabled = @[ @"repo-add" ].mutableCopy;
@@ -276,7 +286,8 @@
                 if (cell.enabledCheckBox.state) {
                     [update addObject:[_searchedRepos[idx] path]];
                     [enabled addObject:[_searchedRepos[idx] cloneURL].absoluteString];
-                } else {
+                }
+                else {
                     [disabled addObject:[_searchedRepos[idx] cloneURL].absoluteString];
                 }
             }
@@ -310,7 +321,7 @@
         [menu addItem:updateItem];
     }
 
-    // Commits ...
+    // Commits.
     if (repo.commitsURL) {
         NSMenuItem *commitsItem = [[NSMenuItem alloc] initWithTitle:@"Open GitHub Commits Page"
                                                              action:@selector(viewCommitsOnGitHub:)

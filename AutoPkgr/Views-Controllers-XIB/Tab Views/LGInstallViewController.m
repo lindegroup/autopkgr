@@ -3,7 +3,7 @@
 //  AutoPkgr
 //
 //  Created by Eldon Ahrold on 5/20/15.
-//  Copyright 2015 Eldon Ahrold.
+//  Copyright 2015 Eldon Ahrold
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -18,11 +18,11 @@
 //  limitations under the License.
 //
 
-#import "LGInstallViewController.h"
-#import "LGAutoPkgr.h"
 #import "LGAutoPkgSchedule.h"
-#import "LGIntegrationManager.h"
+#import "LGAutoPkgr.h"
 #import "LGDisplayStatusDelegate.h"
+#import "LGInstallViewController.h"
+#import "LGIntegrationManager.h"
 #import "LGTableCellViews.h"
 
 @interface LGInstallViewController () <NSTableViewDataSource, NSTableViewDelegate>
@@ -40,10 +40,10 @@
 {
     if (!self.awake) {
         self.awake = YES;
-        // Set launch at login button
+        // Set launch at login button.
         _launchAtLoginButton.state = [LGAutoPkgSchedule willLaunchAtLogin];
 
-        // Set display mode button
+        // Set display mode button.
         LGDefaults *defaults = [LGDefaults standardUserDefaults];
         LGApplicationDisplayStyle displayStyle = defaults.applicationDisplayStyle;
 
@@ -101,59 +101,61 @@
 
     if (!_integrationManager.installStatusDidChangeHandler) {
         _integrationManager.installStatusDidChangeHandler = ^(LGIntegrationManager *aManager, LGIntegration *integration) {
-            
+
             assert([NSThread isMainThread]);
 
             [tableView beginUpdates];
 
             if ([aManager.requiredIntegrations containsObject:integration]) {
-                /* If the integration is required, we don't need to add/remove any rows
-                 * simply reload the data for the row */
+                /* If the integration is required, we don't need to add/remove any rows.
+                 * Simply reload the data for this row. */
                 NSInteger index = [aManager.installedOrRequiredIntegrations indexOfObject:integration];
                 NSIndexSet *idxSet = [NSIndexSet indexSetWithIndex:index];
 
                 [tableView reloadDataForRowIndexes:idxSet
                                      columnIndexes:[NSIndexSet
-                                                    indexSetWithIndexesInRange:
-                                                    NSMakeRange(0, tableView.numberOfColumns)]];
-
-            } else if (integration.isInstalled) {
+                                                       indexSetWithIndexesInRange:
+                                                           NSMakeRange(0, tableView.numberOfColumns)]];
+            }
+            else if (integration.isInstalled) {
                 /* If the integration is now installed, check that it was NOT previously
                  * listed as installed by checking the `currentIntegrations` array
-                 * and add in a row to the table if not found */
+                 * and add in a row to the table if not found. */
                 NSInteger previousIndex = [currentIntegrations indexOfObject:integration];
-                if ( previousIndex == NSNotFound) {
+                if (previousIndex == NSNotFound) {
                     // NSNotFound means that the integration was previously not installed.
                     NSInteger index = [aManager.installedOrRequiredIntegrations indexOfObject:integration];
                     if (index != NSNotFound) {
                         NSIndexSet *idxSet = [NSIndexSet indexSetWithIndex:index];
-                        [tableView insertRowsAtIndexes:idxSet  withAnimation:NSTableViewAnimationEffectFade];
+                        [tableView insertRowsAtIndexes:idxSet withAnimation:NSTableViewAnimationEffectFade];
 
                         [tableView reloadDataForRowIndexes:idxSet
                                              columnIndexes:[NSIndexSet
-                                                            indexSetWithIndexesInRange:
-                                                            NSMakeRange(0, tableView.numberOfColumns)]];
-                        // Reset the currentIntegrations
+                                                               indexSetWithIndexesInRange:
+                                                                   NSMakeRange(0, tableView.numberOfColumns)]];
+                        // Reset the currentIntegrations.
                         currentIntegrations = aManager.installedOrRequiredIntegrations;
                     }
-                } else {
-                    /* The integration is being updated, reload the row */
-                    [tableView reloadDataForRowIndexes:[NSIndexSet
-                                                        indexSetWithIndex:previousIndex]
-                                         columnIndexes:[NSIndexSet
-                                                        indexSetWithIndexesInRange:
-                                                        NSMakeRange(0, tableView.numberOfColumns)]];
                 }
-            } else {
+                else {
+                    // The integration is being updated, reload the row.
+                    [tableView reloadDataForRowIndexes:[NSIndexSet
+                                                           indexSetWithIndex:previousIndex]
+                                         columnIndexes:[NSIndexSet
+                                                           indexSetWithIndexesInRange:
+                                                               NSMakeRange(0, tableView.numberOfColumns)]];
+                }
+            }
+            else {
                 /* Otherwise it's no longer installed, and we want to remove
-                 * the row from the table that's represended by the index of
-                 * of the integration in the 'currentIntegrations' array */
+                 * the row from the table that's represented by the index of
+                 * of the integration in the 'currentIntegrations' array. */
                 NSInteger index = [currentIntegrations indexOfObject:integration];
                 if (index != NSNotFound) {
                     [tableView removeRowsAtIndexes:[NSIndexSet indexSetWithIndex:index]
                                      withAnimation:NSTableViewAnimationEffectFade];
 
-                    // Reset the currentIntegrations
+                    // Reset the currentIntegrations.
                     currentIntegrations = aManager.installedOrRequiredIntegrations;
                 }
             }

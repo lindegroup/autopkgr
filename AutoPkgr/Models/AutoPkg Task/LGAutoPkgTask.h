@@ -3,7 +3,7 @@
 //  AutoPkgr
 //
 //  Created by Eldon Ahrold on 8/30/14.
-//  Copyright 2014-2015 The Linde Group, Inc.
+//  Copyright 2014-2016 The Linde Group, Inc.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -85,7 +85,6 @@ extern NSString *const kLGPreProcessorDefaultsKey;
  *  NSUserDefaults key used to get the array of postprocessors that should included in the autopkg run. The array should only include the processor names, not the --post optargs.
  */
 extern NSString *const kLGPostProcessorDefaultsKey;
-
 
 #pragma mark Task Status Delegate
 @protocol LGTaskStatusDelegate <NSObject>
@@ -382,7 +381,7 @@ extern NSString *const kLGPostProcessorDefaultsKey;
  *
  *  @return YES if it exists, NO otherwise.
  */
-+ (BOOL)apiTokenFileExists:(NSString *__autoreleasing*)file;
++ (BOOL)apiTokenFileExists:(NSString *__autoreleasing *)file;
 
 /**
  *  AutoPkg API Token

@@ -26,6 +26,7 @@ To get started, download the [latest release](https://github.com/lindegroup/auto
     - [Integration with HEAT LANrev](#integration-with-heat-lanrev)
     - [Integration with MacPatch](#integration-with-macpatch)
     - [Integration with FileWave](#integration-with-filewave)
+    - [Integration with VirusTotalAnalyzer](#integration-with-virustotalanalyzer)
 - [Troubleshooting](#troubleshooting)
 - [Credits](#credits)
 
@@ -286,11 +287,24 @@ To configure AutoPkgr to add updates directly into your FileWave server, follow 
 
 ![divider](doc-images/divider.png)
 
+### Integration with VirusTotalAnalyzer
+
+[VirusTotalAnalyzer](https://github.com/hjuutilainen/autopkg-virustotalanalyzer) is a processor that automatically checks downloaded packages against the VirusTotal database. AutoPkgr makes using this processor dead simple:
+
+1. Click on the __Folders & Integration__ tab.
+1. Click on the __Install VirusTotalAnalyzer__ button.
+1. (Optional) Once it's finished installing, click on the __Configure VirusTotalAnalyzer__ button and adjust settings as necessary. (e.g. enter your VirusTotal API key, if you have one)
+
+Now all downloaded files will be checked against VirusTotal's database.
+
+![divider](doc-images/divider.png)
+
 ## Troubleshooting
 
 #### Step 1: Check for simple errors
 
 - __Missing parent recipes__
+
     If the recipe you're trying to run has a :warning: icon next to it, the most likely problem is that its parent recipe is missing.
 
     ![Recipe missing parent](doc-images/recipe_missing_parent.png)
@@ -302,12 +316,15 @@ To configure AutoPkgr to add updates directly into your FileWave server, follow 
     You don't need to add the parent recipe itself to your list, but you _do_ need to make sure that the repository that the parent recipe belongs to is checked in the repo list.
 
 - __Out of date components__
+
     Quit and relaunch AutoPkgr to check for new versions of installed components, including AutoPkg, Git, and AutoPkgr itself. We recommend updating to the latest version of these tools as a first step when troubleshooting.
 
 - __Temporarily broken recipes__
+
     Because software manufacturers frequently change their feeds, recipes that used to work sometimes stop working. Wait a day or so, then update your repos and try running the recipe again. Also see the troubleshooting steps [here](https://github.com/autopkg/autopkg/wiki/FAQ#this-recipe-used-to-work-but-now-it-doesnt-what-should-i-try).
 
 - __AutoPkg is already running__
+
     If you get an error that says "A scheduled AutoPkg run may be running in the background," try running this command in the Terminal:
 
     ```
@@ -330,11 +347,21 @@ For problems with email notifications, try sending an email using the same SMTP 
 
 #### Step 3: Check the logs
 
+AutoPkgr outputs log information to the standard /var/log/system.log file.
+
 If you've determined the issue is with AutoPkgr and not a specific recipe or repo, you may find it useful to enable AutoPkgr's verbose logging feature. To do that, click the AutoPkgr icon in the menu bar (![Menu bar icon](doc-images/menulet.png)). Then select __Verbose Logs__.
 
-The simplest way to view the logs is to filter for "AutoPkgr" in the Console app on your Mac.
+If you enable Verbose Logs for AutoPkgr, you may also want to enable the __Verbose AutoPkg Run__ option. You can find this option in __Folders & Integration > Configure AutoPkg__.
+
+Once you've set the verbosity as desired, the simplest way to view the log output is to filter for "AutoPkgr" in the Console app on your Mac.
 
 ![Check the logs](doc-images/console_logs.png)
+
+If you prefer to view the log output in Terminal, you could use this command instead:
+
+```
+tail -f /var/log/system.log | grep AutoPkgr
+```
 
 #### Step 4: Reach out for help
 

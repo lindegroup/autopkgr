@@ -2,7 +2,7 @@
 //  LGIntegration.h
 //  AutoPkgr
 //
-//  Copyright 2015 Eldon Ahrold.
+//  Copyright 2015 Eldon Ahrold
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -17,8 +17,8 @@
 //  limitations under the License.
 //
 
-#import <Foundation/Foundation.h>
 #import "LGProgressDelegate.h"
+#import <Foundation/Foundation.h>
 
 @class LGIntegrationInfo;
 
@@ -109,12 +109,12 @@ typedef NS_ENUM(OSStatus, LGIntegrationInstallStatus) {
 /**
  *  Any custom install actions that need to be taken.
  */
-- (void)customInstallActions:(void(^)(NSError *error))reply;
+- (void)customInstallActions:(void (^)(NSError *error))reply;
 
 /**
  *  Any custom uninstall actions that need to be taken.
  */
-- (void)customUninstallActions:(void(^)(NSError *error))reply;
+- (void)customUninstallActions:(void (^)(NSError *error))reply;
 
 /**
  *  By default this looks for the version in the receipt for an installed package with the name specified in packageIdentifier. Override this to customize the technique.

@@ -3,7 +3,7 @@
 //  AutoPkgr
 //
 //  Created by Eldon Ahrold on 12/19/14.
-//  Copyright 2014-2015 The Linde Group, Inc.
+//  Copyright 2014-2016 The Linde Group, Inc.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -18,10 +18,10 @@
 //  limitations under the License.
 //
 
-#import "LGRecipeSearch.h"
-#import "LGAutoPkgr.h"
-#import "LGAutoPkgTask.h"
 #import "LGAutoPkgRecipe.h"
+#import "LGAutoPkgTask.h"
+#import "LGAutoPkgr.h"
+#import "LGRecipeSearch.h"
 #import "LGRecipeTableViewController.h"
 #import "NSTextField+animatedString.h"
 
@@ -43,9 +43,9 @@
 #pragma mark - Init / Load
 - (void)dealloc
 {
-    // On dealloc nil out the dataSource and delegate to prevent
-    // KVO messages getting sent to the searchTable after
-    // deallocation of the LGRecipeSearch object
+    /* On dealloc nil out the dataSource and delegate to prevent
+     * KVO messages getting sent to the searchTable after
+     * deallocation of the LGRecipeSearch object. (Whatever that means.) */
     _searchTable.dataSource = nil;
     _searchTable.delegate = nil;
 }
@@ -55,7 +55,8 @@
     return [self initWithWindowNibName:@"LGRecipeSearchPanel"];
 }
 
-- (instancetype)initWithSearchResults:(NSArray *)results installedRepos:(NSArray *)installedRepos {
+- (instancetype)initWithSearchResults:(NSArray *)results installedRepos:(NSArray *)installedRepos
+{
     if (self = [self initWithWindowNibName:@"LGRecipeSearchResultsPanel"]) {
         _searchResults = results;
         _currentlyInstalledRepos = installedRepos;
@@ -88,8 +89,9 @@
                             [_progressIndicator setHidden:YES];
                             if (error) {
                                 _limitMessage.hidden = NO;
-                                NSLog(@"Search error: %@",error);
-                            } else {
+                                NSLog(@"Search error: %@", error);
+                            }
+                            else {
                                 _limitMessage.hidden = YES;
                                 _searchResults = results;
                                 [_searchTable reloadData];
@@ -114,7 +116,8 @@
         if (error) {
             [self.limitMessage fadeOut_withString:error.localizedDescription];
             NSLog(@"Error adding repo: %@", error.localizedDescription);
-        } else {
+        }
+        else {
             _currentlyInstalledRepos = [LGAutoPkgTask repoList];
             [_searchTable reloadData];
         }
@@ -135,7 +138,8 @@
             NSPredicate *predicate = [self repoMatchPredicate:match];
 
             return ([_currentlyInstalledRepos filteredArrayUsingPredicate:predicate].count) ? [NSImage LGStatusAvailable] : [NSImage LGStatusNone];
-        } else {
+        }
+        else {
             return [[_searchResults objectAtIndex:row] objectForKey:[tableColumn identifier]];
         }
     }
@@ -151,7 +155,8 @@
 
         if ([_currentlyInstalledRepos filteredArrayUsingPredicate:predicate].count) {
             [_addBT setEnabled:NO];
-        } else {
+        }
+        else {
             [_addBT setEnabled:YES];
         }
     }
@@ -160,9 +165,9 @@
 #pragma mark - Text View Delegate
 - (void)controlTextDidEndEditing:(NSNotification *)notification
 {
-    // Though a subclass of NSTextField, the NSSearchField isn't respecting
-    // "Send on enter only" set in the XIB, or even programatically , so we're
-    //  using the TextView delegate here to do force that behavior.
+    /* Though a subclass of NSTextField, the NSSearchField isn't respecting
+     * "Send on enter only" set in the XIB, or even programatically, so we're
+     * using the TextView delegate here to force that behavior. */
     if ([notification.object isEqualTo:_searchField]) {
         if ([notification.userInfo[@"NSTextMovement"] intValue] == NSReturnTextMovement) {
             [self searchNow:notification.object];

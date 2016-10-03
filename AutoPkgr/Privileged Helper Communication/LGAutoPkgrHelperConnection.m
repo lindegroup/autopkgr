@@ -3,7 +3,7 @@
 //  AutoPkgr
 //
 //  Created by Eldon Ahrold on 7/28/14.
-//  Copyright 2014-2015 The Linde Group, Inc.
+//  Copyright 2014-2016 The Linde Group, Inc.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -19,8 +19,8 @@
 //
 
 #import "LGAutoPkgrHelperConnection.h"
-#import <AHLaunchCtl/AHLaunchJobSchedule.h>
 #import "LGLogger.h"
+#import <AHLaunchCtl/AHLaunchJobSchedule.h>
 
 @interface LGAutoPkgrHelperConnection ()
 @property (atomic, strong, readwrite) NSXPCConnection *connection;
@@ -30,17 +30,18 @@
 
 @implementation LGAutoPkgrHelperConnection
 
-- (void)dealloc {
+- (void)dealloc
+{
     DevLog(@"Invalidating connection");
 }
 
 - (instancetype)init
 {
     assert([NSThread isMainThread]);
-    if ( self = [super init] ) {
+    if (self = [super init]) {
 
         self.connection = [[NSXPCConnection alloc] initWithMachServiceName:kLGAutoPkgrHelperToolName
-                                                           options:NSXPCConnectionPrivileged];
+                                                                   options:NSXPCConnectionPrivileged];
 
         self.connection.remoteObjectInterface = [NSXPCInterface
             interfaceWithProtocol:@protocol(AutoPkgrHelperAgent)];
@@ -49,7 +50,8 @@
 
         [self.connection.remoteObjectInterface setClasses:acceptedClasses
                                               forSelector:@selector(scheduleRun:user:program:authorization:reply:)
-                                            argumentIndex:0 ofReply:NO];
+                                            argumentIndex:0
+                                                  ofReply:NO];
 
         self.connection.invalidationHandler = ^{
 #pragma clang diagnostic push
@@ -64,31 +66,35 @@
     return self;
 }
 
-- (instancetype)initWithProgressDelegate:(id)delegate {
-    if (self = [self init]){
+- (instancetype)initWithProgressDelegate:(id)delegate
+{
+    if (self = [self init]) {
         self.connection.exportedObject = delegate;
         self.connection.exportedInterface = [NSXPCInterface interfaceWithProtocol:@protocol(LGProgressDelegate)];
     }
     return self;
 }
 
-- (id<AutoPkgrHelperAgent>)connectionError:(void (^)(NSError *))handler {
+- (id<AutoPkgrHelperAgent>)connectionError:(void (^)(NSError *))handler
+{
     self.proxyErrorHandler = handler;
     return self.remoteObjectProxy;
 }
 
-- (id<AutoPkgrHelperAgent>)remoteObjectProxy {
-    return [self.connection remoteObjectProxyWithErrorHandler:^(NSError * _Nonnull error) {
-        if (_proxyErrorHandler){
+- (id<AutoPkgrHelperAgent>)remoteObjectProxy
+{
+    return [self.connection remoteObjectProxyWithErrorHandler:^(NSError *_Nonnull error) {
+        if (_proxyErrorHandler) {
             _proxyErrorHandler(error);
         }
-        if (error.code != 4097){
+        if (error.code != 4097) {
             DevLog(@"%@", error);
         }
     }];
 }
 
-- (void)closeConnection {
+- (void)closeConnection
+{
     [self.connection invalidate];
 }
 

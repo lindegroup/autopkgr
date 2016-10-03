@@ -3,7 +3,7 @@
 //  AutoPkgr
 //
 //  Created by Josh Senick on 7/29/14.
-//  Copyright 2014-2015 The Linde Group, Inc.
+//  Copyright 2014-2016 The Linde Group, Inc.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -18,8 +18,8 @@
 //  limitations under the License.
 //
 
-#import "LGTestPort.h"
 #import "LGAutoPkgr.h"
+#import "LGTestPort.h"
 
 #import <AFNetworking/AFNetworking.h>
 
@@ -46,8 +46,9 @@
         if ([self.inputStream streamStatus] == NSStreamStatusError ||
             [self.outputStream streamStatus] == NSStreamStatusError) {
             [self portTestDidCompletedWithSuccess:NO];
-        } else if ([self.inputStream streamStatus] == NSStreamStatusOpen &&
-                   [self.outputStream streamStatus] == NSStreamStatusOpen) {
+        }
+        else if ([self.inputStream streamStatus] == NSStreamStatusOpen &&
+                 [self.outputStream streamStatus] == NSStreamStatusOpen) {
             [self portTestDidCompletedWithSuccess:YES];
         }
     }
@@ -95,7 +96,8 @@
 
         [self.inputStream scheduleInRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
         [self.outputStream scheduleInRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
-    } else {
+    }
+    else {
         [self portTestDidCompletedWithSuccess:NO];
     }
 }
@@ -109,21 +111,20 @@
     request.timeoutInterval = 5.0;
     request.cachePolicy = NSURLRequestReloadIgnoringLocalCacheData;
 
-    // Set up the operation
+    // Set up the operation.
     AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
 
-    // Since this is just a server test, we don't care about certificate validation here
-    // so set up a policy that will ignore certificate trust issues.
+    // Since this is just a server test, we don't care about certificate validation here. Ignore certificate trust issues.
     AFSecurityPolicy *policy = [[AFSecurityPolicy alloc] init];
     policy.allowInvalidCertificates = YES;
     policy.validatesCertificateChain = NO;
 
     operation.securityPolicy = policy;
     operation.shouldUseCredentialStorage = NO;
-    
-    [operation setRedirectResponseBlock:^NSURLRequest * (NSURLConnection * connection, NSURLRequest * request, NSURLResponse * redirectResponse) {
+
+    [operation setRedirectResponseBlock:^NSURLRequest *(NSURLConnection *connection, NSURLRequest *request, NSURLResponse *redirectResponse) {
         if (redirectResponse) {
-            DLog(@"redirected %@",redirectResponse);
+            DLog(@"redirected %@", redirectResponse);
         }
         redirectedURL = [(NSHTTPURLResponse *)redirectResponse allHeaderFields][@"Location"];
         return request;
@@ -132,10 +133,11 @@
     [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
         [[NSURLCache sharedURLCache] removeCachedResponseForRequest:request];
         reply(YES, redirectedURL);
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        [[NSURLCache sharedURLCache] removeCachedResponseForRequest:request];
-        reply(operation.response ? YES:NO, redirectedURL);
-    }];
+    }
+        failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+            [[NSURLCache sharedURLCache] removeCachedResponseForRequest:request];
+            reply(operation.response ? YES : NO, redirectedURL);
+        }];
 
     [operation start];
 }

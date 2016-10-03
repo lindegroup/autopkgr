@@ -3,7 +3,7 @@
 //  AutoPkgr
 //
 //  Created by Eldon Ahrold on 5/5/15.
-//  Copyright 2015 The Linde Group, Inc.
+//  Copyright 2015-2016 The Linde Group, Inc.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -60,16 +60,19 @@
     return nil;
 }
 
-- (BOOL)taskData_isInteractive {
-    NSArray *defaultMatches = @[@" [y/n]:",
-                                @" [YES/NO]:",
-                                @" Password:",
-                                ];
+- (BOOL)taskData_isInteractive
+{
+    NSArray *defaultMatches = @[
+        @" [y/n]:",
+        @" [YES/NO]:",
+        @" Password:",
+    ];
 
     return [self taskData_isInteractiveWithStrings:defaultMatches];
 }
 
-- (BOOL)taskData_isInteractiveWithStrings:(NSArray *)interactiveStrings {
+- (BOOL)taskData_isInteractiveWithStrings:(NSArray *)interactiveStrings
+{
     NSString *message = [[[NSString alloc] initWithData:self encoding:NSUTF8StringEncoding] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
 
     NSMutableArray *predicates = [NSMutableArray arrayWithCapacity:interactiveStrings.count];

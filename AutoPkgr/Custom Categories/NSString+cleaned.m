@@ -3,7 +3,7 @@
 //  AutoPkgr
 //
 //  Created by Eldon Ahrold on 10/4/14.
-//  Copyright 2014-2015 The Linde Group, Inc.
+//  Copyright 2014-2016 The Linde Group, Inc.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -27,7 +27,8 @@
     return [self stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
 }
 
-- (NSString *)spaces_removed {
+- (NSString *)spaces_removed
+{
     return [self stringByReplacingOccurrencesOfString:@" " withString:@""];
 }
 
@@ -41,7 +42,6 @@
     }
 
     return [self substringToIndex:(self.length - i)];
-
 }
 
 - (NSString *)blankIsNil
@@ -67,7 +67,7 @@
 {
     if (self.length) {
         NSArray *lines = [self componentsSeparatedByCharactersInSet:[NSCharacterSet newlineCharacterSet]];
-        // If the count is less, we don't need to do anything just send self back
+        // If the count is less, just send self back.
         if (lines.count > count) {
             NSIndexSet *idxSet = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, count)];
             return [[lines objectsAtIndexes:idxSet] componentsJoinedByString:@"\n"];

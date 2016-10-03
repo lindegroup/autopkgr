@@ -3,7 +3,7 @@
 //  AutoPkgr
 //
 //  Created by Eldon Ahrold on 3/22/15.
-//  Copyright 2015 The Linde Group, Inc.
+//  Copyright 2015-2016 The Linde Group, Inc.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -18,13 +18,13 @@
 //  limitations under the License.
 //
 
-#import "LGAutoPkgReport.h"
 #import "LGAutoPkgRecipe.h"
-#import "LGIntegrationManager.h"
+#import "LGAutoPkgReport.h"
 #import "LGIntegration+Protocols.h"
+#import "LGIntegrationManager.h"
 
-#import "NSArray+mapped.h"
 #import "HTMLCategories.h"
+#import "NSArray+mapped.h"
 #import <GRMustache/GRMustache.h>
 
 // Key for AutoPkg 0.4.3 report summary
@@ -78,10 +78,11 @@ static NSString *const kReportProcessorPKGCreator = @"pkg_creator_summary_result
     return _dictionary[NSStringFromSelector(_cmd)];
 }
 
-- (NSDictionary *)dictionaryRepresentation {
-    return @{ NSStringFromSelector(@selector(path)): self.path,
-              NSStringFromSelector(@selector(name)): self.name,
-              NSStringFromSelector(@selector(version)): self.version };
+- (NSDictionary *)dictionaryRepresentation
+{
+    return @{ NSStringFromSelector(@selector(path)) : self.path,
+              NSStringFromSelector(@selector(name)) : self.name,
+              NSStringFromSelector(@selector(version)) : self.version };
 }
 @end
 
@@ -89,7 +90,7 @@ static NSString *const kReportProcessorPKGCreator = @"pkg_creator_summary_result
 @private
     NSDictionary *_reportDictionary;
     NSArray *_includedProcessorSummaryResults;
-    NSNumber * _integrationsUpdatesToReport;
+    NSNumber *_integrationsUpdatesToReport;
 }
 
 @synthesize updatedApplications = _updatedApplications;
@@ -118,10 +119,10 @@ static NSString *const kReportProcessorPKGCreator = @"pkg_creator_summary_result
     BOOL failureCount = [_reportDictionary[kReportKeyFailures] count];
     BOOL summaryCount = [[self includedProcessorSummaryResults] count];
 
-    if (summaryCount || ((_reportedItemFlags & kLGReportItemsFailures) && failureCount) ||
-        ((_reportedItemFlags & kLGReportItemsErrors) && _error) || [self integrationsUpdatesToReport]){
+    if (summaryCount || ((_reportedItemFlags & kLGReportItemsFailures) && failureCount) || ((_reportedItemFlags & kLGReportItemsErrors) && _error) || [self integrationsUpdatesToReport]) {
         return YES;
-    } else if (_reportedItemFlags == kLGReportItemsAll && (failureCount || summaryCount || _error )) {
+    }
+    else if (_reportedItemFlags == kLGReportItemsAll && (failureCount || summaryCount || _error)) {
         return YES;
     }
     return NO;
@@ -134,7 +135,7 @@ static NSString *const kReportProcessorPKGCreator = @"pkg_creator_summary_result
         subject = NSLocalizedString(@"Failures occurred while running AutoPkg", nil);
     }
     else if (self.error) {
-        subject =  NSLocalizedString(@"An error occurred while running AutoPkg", nil);
+        subject = NSLocalizedString(@"An error occurred while running AutoPkg", nil);
     }
     else if ([self.updatedApplications count] ||
              [[self includedProcessorSummaryResults] count]) {
@@ -144,7 +145,7 @@ static NSString *const kReportProcessorPKGCreator = @"pkg_creator_summary_result
         subject = NSLocalizedString(@"Update to helper components available", nil);
     }
 
-    // Construct the full subject string...
+    // Construct the full subject string.
     if (subject) {
         return quick_formatString(@"%@ on %@", subject, [NSHost currentHost].localizedName);
     }
@@ -152,12 +153,13 @@ static NSString *const kReportProcessorPKGCreator = @"pkg_creator_summary_result
 }
 
 #pragma mark - Templating
-- (NSDictionary *)templateData {
-    __block NSMutableDictionary *data = [[NSMutableDictionary alloc ] init];
+- (NSDictionary *)templateData
+{
+    __block NSMutableDictionary *data = [[NSMutableDictionary alloc] init];
     NSArray *results = [self includedProcessorSummaryResults];
     data[@"has_summary_results"] = @(results.count);
 
-    if (results.count){
+    if (results.count) {
         [[self includedProcessorSummaryResults] enumerateObjectsUsingBlock:^(NSString *key, NSUInteger idx, BOOL *stop) {
             NSString *strippedKey = [key stringByReplacingOccurrencesOfString:@"_summary_result" withString:@""];
             data[strippedKey] = _reportDictionary[kReportKeySummaryResults][key];
@@ -166,9 +168,9 @@ static NSString *const kReportProcessorPKGCreator = @"pkg_creator_summary_result
 
     data[kReportKeyFailures] = _reportDictionary[kReportKeyFailures];
     if (self.error) {
-        data[@"error"] = @{@"description": _error.localizedDescription,
-                           @"suggestion": _error.localizedRecoverySuggestion
-                           };
+        data[@"error"] = @{ @"description" : _error.localizedDescription,
+                            @"suggestion" : _error.localizedRecoverySuggestion
+        };
     }
 
     if (self.updatedApplications) {
@@ -177,7 +179,7 @@ static NSString *const kReportProcessorPKGCreator = @"pkg_creator_summary_result
         }];
     }
 
-    if ([self integrationsUpdatesToReport]){
+    if ([self integrationsUpdatesToReport]) {
         data[@"integration_updates"] = [self integrationUpdates];
     }
 
@@ -185,13 +187,15 @@ static NSString *const kReportProcessorPKGCreator = @"pkg_creator_summary_result
     return data.copy;
 }
 
-- (NSString *)renderWithTemplate:(NSString *)templateString error:(NSError *__autoreleasing *)error{
+- (NSString *)renderWithTemplate:(NSString *)templateString error:(NSError *__autoreleasing *)error
+{
     GRMustacheTemplate *mTemplate = [GRMustacheTemplate templateFromString:templateString error:error];
     return mTemplate ? [mTemplate renderObject:self.templateData error:error] : nil;
 }
 
-- (NSArray<NSString *> *)integrationUpdates {
-    return [_integrations mapObjectsUsingBlock:^id(LGIntegration* integration, NSUInteger idx) {
+- (NSArray<NSString *> *)integrationUpdates
+{
+    return [_integrations mapObjectsUsingBlock:^id(LGIntegration *integration, NSUInteger idx) {
         if ([[integration class] isInstalled] && integration.info.status == kLGIntegrationUpdateAvailable) {
             return integration.info.statusString;
         }
@@ -316,7 +320,8 @@ static NSString *const kReportProcessorPKGCreator = @"pkg_creator_summary_result
                 id object = row[key];
                 if ([object isKindOfClass:[NSArray class]]) {
                     [row_data setObject:[object componentsJoinedByString:@", "] forKey:key];
-                } else {
+                }
+                else {
                     [row_data setObject:object forKey:key];
                 }
             }
@@ -367,23 +372,24 @@ static NSString *const kReportProcessorPKGCreator = @"pkg_creator_summary_result
                         _integrationsUpdatesToReport = @(YES);
                         return YES;
                     }
-                } else {
+                }
+                else {
                     // For all other types, the frequency is a date comparison.
                     NSDate *now = [NSDate date];
                     NSDate *compareDate = nil;
 
                     switch (noteFrequency) {
-                        case kLGReportIntegrationFrequencyDaily: {
-                            // 60 Sec * 60 Min * 24Hr = 86400
-                            compareDate = [now dateByAddingTimeInterval:-86400];
-                            break;
-                        }
-                        case kLGReportIntegrationFrequencyWeekly:
-                        default: {
-                            // 60 Sec * 60 Min * 24 Hr * 7 Day = 604800
-                            compareDate = [now dateByAddingTimeInterval:-604800];
-                            break;
-                        }
+                    case kLGReportIntegrationFrequencyDaily: {
+                        // 60 Sec * 60 Min * 24Hr = 86400
+                        compareDate = [now dateByAddingTimeInterval:-86400];
+                        break;
+                    }
+                    case kLGReportIntegrationFrequencyWeekly:
+                    default: {
+                        // 60 Sec * 60 Min * 24 Hr * 7 Day = 604800
+                        compareDate = [now dateByAddingTimeInterval:-604800];
+                        break;
+                    }
                     }
 
                     NSString *reportedDateSentKey = quick_formatString(@"ReportSentDate%@", integration.name.spaces_removed);
@@ -411,7 +417,7 @@ static NSString *const kReportProcessorPKGCreator = @"pkg_creator_summary_result
  */
 - (NSArray *)includedProcessorSummaryResults
 {
-    if (_includedProcessorSummaryResults){
+    if (_includedProcessorSummaryResults) {
         return _includedProcessorSummaryResults;
     }
 
@@ -423,20 +429,21 @@ static NSString *const kReportProcessorPKGCreator = @"pkg_creator_summary_result
     [_reportDictionary[kReportKeySummaryResults] enumerateKeysAndObjectsUsingBlock:^(NSString *key, id obj, BOOL *stop) {
         if (_reportedItemFlags == kLGReportItemsAll) {
             [itemArray addObject:key];
-        } else {
+        }
+        else {
             if ([key isEqualToString:kReportProcessorInstaller] ||
-                [key isEqualToString:kReportProcessorInstallFromDMG]){
-                if(_reportedItemFlags & kLGReportItemsNewInstalls) {
+                [key isEqualToString:kReportProcessorInstallFromDMG]) {
+                if (_reportedItemFlags & kLGReportItemsNewInstalls) {
                     [itemArray addObject:key];
                 }
             }
-            else if([key isEqualToString:kReportProcessorPKGCreator]){
-                if(_reportedItemFlags & kLGReportItemsNewPackages) {
+            else if ([key isEqualToString:kReportProcessorPKGCreator]) {
+                if (_reportedItemFlags & kLGReportItemsNewPackages) {
                     [itemArray addObject:key];
                 }
             }
-            else if ([key isEqualToString:kReportProcessorURLDownloader]){
-                if(_reportedItemFlags & kLGReportItemsNewDownloads) {
+            else if ([key isEqualToString:kReportProcessorURLDownloader]) {
+                if (_reportedItemFlags & kLGReportItemsNewDownloads) {
                     [itemArray addObject:key];
                 }
             }
@@ -447,7 +454,7 @@ static NSString *const kReportProcessorPKGCreator = @"pkg_creator_summary_result
         [self.integrations enumerateObjectsUsingBlock:^(LGIntegration *obj, NSUInteger idx, BOOL *stop) {
             if ([[obj class] respondsToSelector:@selector(summaryResultKey)]) {
                 id key = [[obj class] summaryResultKey];
-                if([_reportDictionary[kReportKeySummaryResults][key] count]){
+                if ([_reportDictionary[kReportKeySummaryResults][key] count]) {
                     [itemArray addObject:key];
                 }
             }

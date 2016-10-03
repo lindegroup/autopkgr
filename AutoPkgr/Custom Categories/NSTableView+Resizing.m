@@ -2,7 +2,7 @@
 //  NSTableView+Resizing.m
 //
 //  Created by Eldon Ahrold on 12/2/15.
-//  Copyright © 2015 EEAAPPS, Inc. All rights reserved.
+//  Copyright 2015 Eldon Ahrold, Inc.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -69,7 +69,8 @@ static const NSTimeInterval defaultDuration = 0.2f;
         context.duration = 0.2f;
         context.allowsImplicitAnimation = YES;
         [constraint.animator setConstant:size];
-    } completionHandler:^{
-    }];
+    }
+        completionHandler:^{
+        }];
 }
 @end

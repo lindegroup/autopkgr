@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="10117" systemVersion="15F34" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+    <dependencies>
+        <deployment identifier="macosx"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="10117"/>
+    </dependencies>
+    <objects>
+        <customObject id="-2" userLabel="File's Owner" customClass="LGSelectNotificationsWindowController">
+            <connections>
+                <outlet property="enabledMatrix" destination="tDx-Nc-PaM" id="yCJ-Qr-wIn"/>
+                <outlet property="integrationDescription" destination="xeJ-hP-MvA" id="qb1-gi-2HP"/>
+                <outlet property="window" destination="F0z-JX-Cv5" id="gIp-Ho-8D9"/>
+            </connections>
+        </customObject>
+        <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
+        <customObject id="-3" userLabel="Application" customClass="NSObject"/>
+        <window title="Configure" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" oneShot="NO" visibleAtLaunch="NO" animationBehavior="default" id="F0z-JX-Cv5">
+            <windowStyleMask key="styleMask" closable="YES" miniaturizable="YES" resizable="YES"/>
+            <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
+            <rect key="contentRect" x="196" y="240" width="481" height="299"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1920" height="1057"/>
+            <view key="contentView" id="se5-gp-TjO">
+                <rect key="frame" x="0.0" y="0.0" width="481" height="299"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <matrix verticalHuggingPriority="750" selectionByRect="NO" allowsEmptySelection="NO" autorecalculatesCellSize="YES" translatesAutoresizingMaskIntoConstraints="NO" id="tDx-Nc-PaM" userLabel="Enabled Matrix">
+                        <rect key="frame" x="36" y="214" width="302" height="43"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="43" id="ThQ-PP-4rr"/>
+                            <constraint firstAttribute="width" constant="302" id="vIH-da-5bP"/>
+                        </constraints>
+                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                        <size key="cellSize" width="127" height="18"/>
+                        <size key="intercellSpacing" width="4" height="5"/>
+                        <buttonCell key="prototype" type="radio" title="Radio" imagePosition="left" alignment="left" inset="2" id="Jry-qd-bkO" userLabel="Schedule Radio Buttons">
+                            <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                            <font key="font" metaFont="system"/>
+                        </buttonCell>
+                        <cells>
+                            <column>
+                                <buttonCell type="radio" title="Any action" imagePosition="left" alignment="left" state="on" inset="2" id="eQW-08-MtI">
+                                    <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                    <connections>
+                                        <action selector="updateFlags:" target="-2" id="CvC-4V-DSv"/>
+                                    </connections>
+                                </buttonCell>
+                                <buttonCell type="radio" title="Selected actions:" imagePosition="left" alignment="left" tag="1" inset="2" id="qPY-Ac-9c8">
+                                    <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                    <connections>
+                                        <action selector="updateFlags:" target="-2" id="xwb-QP-DRz"/>
+                                    </connections>
+                                </buttonCell>
+                            </column>
+                        </cells>
+                    </matrix>
+                    <button tag="2" translatesAutoresizingMaskIntoConstraints="NO" id="kHJ-8E-Jr6">
+                        <rect key="frame" x="58" y="193" width="389" height="18"/>
+                        <buttonCell key="cell" type="check" title="New software is downloaded" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="93b-UK-JQ9">
+                            <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                            <font key="font" metaFont="system"/>
+                        </buttonCell>
+                        <connections>
+                            <action selector="updateFlags:" target="-2" id="CU5-cj-IyZ"/>
+                        </connections>
+                    </button>
+                    <button tag="4" translatesAutoresizingMaskIntoConstraints="NO" id="AAi-Ly-vw6">
+                        <rect key="frame" x="58" y="173" width="389" height="18"/>
+                        <buttonCell key="cell" type="check" title="New package is built" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="Rrw-eM-Kne">
+                            <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                            <font key="font" metaFont="system"/>
+                        </buttonCell>
+                        <connections>
+                            <action selector="updateFlags:" target="-2" id="ceE-Ay-DO3"/>
+                        </connections>
+                    </button>
+                    <button tag="64" translatesAutoresizingMaskIntoConstraints="NO" id="PTz-bS-pZc">
+                        <rect key="frame" x="58" y="133" width="389" height="18"/>
+                        <buttonCell key="cell" type="check" title="New software imported to Munki, JSS, or other server" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="iUL-bU-gWt">
+                            <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                            <font key="font" metaFont="system"/>
+                        </buttonCell>
+                        <connections>
+                            <action selector="updateFlags:" target="-2" id="42A-tn-dQK"/>
+                        </connections>
+                    </button>
+                    <button tag="16" translatesAutoresizingMaskIntoConstraints="NO" id="ad9-qn-QW0">
+                        <rect key="frame" x="58" y="113" width="389" height="18"/>
+                        <buttonCell key="cell" type="check" title="Errors" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="MGr-wA-mKE">
+                            <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                            <font key="font" metaFont="system"/>
+                        </buttonCell>
+                        <connections>
+                            <action selector="updateFlags:" target="-2" id="bfa-1q-0v6"/>
+                        </connections>
+                    </button>
+                    <button tag="32" translatesAutoresizingMaskIntoConstraints="NO" id="jGs-I5-LQa">
+                        <rect key="frame" x="58" y="93" width="389" height="18"/>
+                        <buttonCell key="cell" type="check" title="Failures" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="VXM-yd-Y5e">
+                            <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                            <font key="font" metaFont="system"/>
+                        </buttonCell>
+                        <connections>
+                            <action selector="updateFlags:" target="-2" id="fUe-4y-JvK"/>
+                        </connections>
+                    </button>
+                    <popUpButton horizontalHuggingPriority="249" verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="A1h-qg-Hik">
+                        <rect key="frame" x="316" y="68" width="148" height="26"/>
+                        <popUpButtonCell key="cell" type="push" title="Once per version" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" tag="2" imageScaling="proportionallyDown" inset="2" selectedItem="Fdo-BA-Js6" id="Xqj-mT-15z">
+                            <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" metaFont="menu"/>
+                            <menu key="menu" id="MsK-px-fRu">
+                                <items>
+                                    <menuItem title="Once a week" id="yE4-Cq-TFS"/>
+                                    <menuItem title="Once a day" tag="1" id="yLO-ap-fGm"/>
+                                    <menuItem title="Once per version" state="on" tag="2" id="Fdo-BA-Js6"/>
+                                </items>
+                            </menu>
+                        </popUpButtonCell>
+                        <connections>
+                            <binding destination="-2" name="enabled2" keyPath="self.enabledMatrix.selectedRow" previousBinding="9if-vB-7JC" id="yEr-YF-L0X">
+                                <dictionary key="options">
+                                    <integer key="NSMultipleValuesPlaceholder" value="-1"/>
+                                    <integer key="NSNoSelectionPlaceholder" value="-1"/>
+                                    <integer key="NSNotApplicablePlaceholder" value="-1"/>
+                                    <integer key="NSNullPlaceholder" value="-1"/>
+                                </dictionary>
+                            </binding>
+                            <binding destination="-2" name="enabled" keyPath="self.integrationUpdateState" id="9if-vB-7JC"/>
+                            <binding destination="Ikb-58-MlX" name="selectedTag" keyPath="values.ReportIntegrationFrequency" id="8ib-mG-LQX"/>
+                        </connections>
+                    </popUpButton>
+                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="PZg-h6-oPd">
+                        <rect key="frame" x="11" y="267" width="412" height="17"/>
+                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="left" title="Actions that will cause a full AutoPkgr notification to be sent:" id="JV4-ur-ef3">
+                            <font key="font" metaFont="system"/>
+                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                    </textField>
+                    <button misplaced="YES" tag="128" translatesAutoresizingMaskIntoConstraints="NO" id="wN4-tS-lbz">
+                        <rect key="frame" x="58" y="73" width="254" height="18"/>
+                        <buttonCell key="cell" type="check" title="Updates for integrated tools, at most:" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="OEp-t0-mfM">
+                            <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                            <font key="font" metaFont="system"/>
+                        </buttonCell>
+                        <connections>
+                            <action selector="updateFlags:" target="-2" id="nG7-b5-LQ2"/>
+                        </connections>
+                    </button>
+                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="xeJ-hP-MvA">
+                        <rect key="frame" x="77" y="57" width="251" height="14"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="247" id="cJX-Yz-vJX"/>
+                        </constraints>
+                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="This includes AutoPkg, Git, Munki tools, etc." id="Q6A-On-Dwg">
+                            <font key="font" metaFont="smallSystem"/>
+                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                            <connections>
+                                <binding destination="-2" name="enabled" keyPath="self.integrationUpdateState" id="lh2-u2-zzK"/>
+                            </connections>
+                        </textFieldCell>
+                    </textField>
+                    <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="LdM-NS-cWD">
+                        <rect key="frame" x="357" y="13" width="110" height="32"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="98" id="5Kq-Fz-pdF"/>
+                        </constraints>
+                        <buttonCell key="cell" type="push" title="Close" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Gc0-DJ-Bkt">
+                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" metaFont="system"/>
+                            <string key="keyEquivalent" base64-UTF8="YES">
+Gw
+</string>
+                        </buttonCell>
+                        <connections>
+                            <action selector="closeSheet:" target="-2" id="VNE-5G-ju4"/>
+                        </connections>
+                    </button>
+                    <button tag="8" translatesAutoresizingMaskIntoConstraints="NO" id="mXz-OA-1lG">
+                        <rect key="frame" x="58" y="153" width="389" height="18"/>
+                        <buttonCell key="cell" type="check" title="New software is installed" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="vpW-70-0of">
+                            <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                            <font key="font" metaFont="system"/>
+                        </buttonCell>
+                        <connections>
+                            <action selector="updateFlags:" target="-2" id="JEE-2F-Geg"/>
+                        </connections>
+                    </button>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="A1h-qg-Hik" firstAttribute="top" secondItem="jGs-I5-LQa" secondAttribute="bottom" constant="3" id="0fX-kZ-a8E"/>
+                    <constraint firstItem="A1h-qg-Hik" firstAttribute="trailing" secondItem="LdM-NS-cWD" secondAttribute="trailing" id="1m0-QL-rQw"/>
+                    <constraint firstAttribute="trailing" secondItem="LdM-NS-cWD" secondAttribute="trailing" constant="20" id="2pT-hb-iAm"/>
+                    <constraint firstItem="wN4-tS-lbz" firstAttribute="leading" secondItem="jGs-I5-LQa" secondAttribute="leading" id="3ao-ax-ouX"/>
+                    <constraint firstAttribute="bottom" secondItem="LdM-NS-cWD" secondAttribute="bottom" constant="20" id="4l3-7K-G8H"/>
+                    <constraint firstItem="ad9-qn-QW0" firstAttribute="leading" secondItem="jGs-I5-LQa" secondAttribute="leading" id="7dJ-AK-hki"/>
+                    <constraint firstItem="wN4-tS-lbz" firstAttribute="top" secondItem="jGs-I5-LQa" secondAttribute="bottom" constant="6" id="8hL-u2-kTf"/>
+                    <constraint firstItem="PZg-h6-oPd" firstAttribute="trailing" secondItem="kHJ-8E-Jr6" secondAttribute="trailing" constant="-24" id="Ao5-r1-WoL"/>
+                    <constraint firstItem="PTz-bS-pZc" firstAttribute="top" secondItem="mXz-OA-1lG" secondAttribute="bottom" constant="6" id="Hgd-by-tez"/>
+                    <constraint firstItem="PZg-h6-oPd" firstAttribute="trailing" secondItem="ad9-qn-QW0" secondAttribute="trailing" constant="-24" id="L68-bb-UDa"/>
+                    <constraint firstItem="PZg-h6-oPd" firstAttribute="trailing" secondItem="jGs-I5-LQa" secondAttribute="trailing" constant="-24" id="LBO-uv-NuN"/>
+                    <constraint firstItem="PZg-h6-oPd" firstAttribute="trailing" secondItem="mXz-OA-1lG" secondAttribute="trailing" constant="-24" id="MjP-pP-FOu"/>
+                    <constraint firstItem="PZg-h6-oPd" firstAttribute="trailing" secondItem="AAi-Ly-vw6" secondAttribute="trailing" constant="-24" id="Nn7-BS-cNH"/>
+                    <constraint firstItem="kHJ-8E-Jr6" firstAttribute="top" secondItem="PZg-h6-oPd" secondAttribute="bottom" constant="58" id="PGp-SU-mGL"/>
+                    <constraint firstItem="PZg-h6-oPd" firstAttribute="top" secondItem="se5-gp-TjO" secondAttribute="top" constant="15" id="T0i-yG-qL8"/>
+                    <constraint firstItem="A1h-qg-Hik" firstAttribute="leading" secondItem="wN4-tS-lbz" secondAttribute="trailing" constant="8" id="VOB-4M-ylo"/>
+                    <constraint firstItem="PZg-h6-oPd" firstAttribute="trailing" secondItem="PTz-bS-pZc" secondAttribute="trailing" constant="-24" id="Wq6-xd-Wd3"/>
+                    <constraint firstItem="PTz-bS-pZc" firstAttribute="leading" secondItem="mXz-OA-1lG" secondAttribute="leading" id="YhT-gn-S9t"/>
+                    <constraint firstItem="jGs-I5-LQa" firstAttribute="top" secondItem="ad9-qn-QW0" secondAttribute="bottom" constant="6" id="aYg-PB-ytd"/>
+                    <constraint firstItem="xeJ-hP-MvA" firstAttribute="top" secondItem="A1h-qg-Hik" secondAttribute="bottom" id="bRN-ip-OR2"/>
+                    <constraint firstItem="mXz-OA-1lG" firstAttribute="leading" secondItem="AAi-Ly-vw6" secondAttribute="leading" id="byI-P1-Kn5"/>
+                    <constraint firstItem="ad9-qn-QW0" firstAttribute="top" secondItem="PTz-bS-pZc" secondAttribute="bottom" constant="6" id="fx6-6M-psI"/>
+                    <constraint firstItem="kHJ-8E-Jr6" firstAttribute="top" secondItem="tDx-Nc-PaM" secondAttribute="bottom" constant="5" id="glr-YW-gYA"/>
+                    <constraint firstItem="PZg-h6-oPd" firstAttribute="leading" secondItem="se5-gp-TjO" secondAttribute="leading" constant="13" id="gmc-mX-fuG"/>
+                    <constraint firstItem="xeJ-hP-MvA" firstAttribute="leading" secondItem="se5-gp-TjO" secondAttribute="leading" constant="79" id="jtU-HE-pC1"/>
+                    <constraint firstItem="ad9-qn-QW0" firstAttribute="leading" secondItem="PTz-bS-pZc" secondAttribute="leading" id="ldZ-Sx-Y2h"/>
+                    <constraint firstItem="kHJ-8E-Jr6" firstAttribute="leading" secondItem="AAi-Ly-vw6" secondAttribute="leading" id="nui-bp-mFq"/>
+                    <constraint firstAttribute="trailing" secondItem="PZg-h6-oPd" secondAttribute="trailing" constant="60" id="rMZ-FJ-oJg"/>
+                    <constraint firstItem="kHJ-8E-Jr6" firstAttribute="leading" secondItem="se5-gp-TjO" secondAttribute="leading" constant="60" id="sxQ-Bv-sJj"/>
+                    <constraint firstItem="mXz-OA-1lG" firstAttribute="top" secondItem="AAi-Ly-vw6" secondAttribute="bottom" constant="6" id="sxj-Hv-au1"/>
+                    <constraint firstItem="AAi-Ly-vw6" firstAttribute="top" secondItem="kHJ-8E-Jr6" secondAttribute="bottom" constant="6" id="wAc-RJ-Crl"/>
+                    <constraint firstItem="tDx-Nc-PaM" firstAttribute="leading" secondItem="se5-gp-TjO" secondAttribute="leading" constant="36" id="ycu-Fr-PnX"/>
+                </constraints>
+            </view>
+            <connections>
+                <outlet property="delegate" destination="-2" id="0bl-1N-AYu"/>
+            </connections>
+            <point key="canvasLocation" x="180.5" y="211.5"/>
+        </window>
+        <userDefaultsController representsSharedInstance="YES" id="Ikb-58-MlX"/>
+    </objects>
+</document>

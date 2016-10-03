@@ -3,7 +3,7 @@
 //  AutoPkgr
 //
 //  Created by Eldon Ahrold on 8/9/14.
-//  Copyright 2014-2015 The Linde Group, Inc.
+//  Copyright 2014-2016 The Linde Group, Inc.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -18,8 +18,8 @@
 //  limitations under the License.
 //
 
-#import "LGHTTPRequest.h"
 #import "LGAutoPkgr.h"
+#import "LGHTTPRequest.h"
 #import "LGJSSImporterIntegration.h"
 #import "LGServerCredentials.h"
 
@@ -37,10 +37,10 @@
 }
 
 - (void)retrieveDistributionPoints:(LGHTTPCredential *)credential
-                              reply:(void (^)(NSDictionary *distributionPoints, NSError *error))reply;
+                             reply:(void (^)(NSDictionary *distributionPoints, NSError *error))reply;
 {
     NSLog(@"server = %@", credential.serverURL);
-    
+
     AFHTTPRequestOperationManager *manager = [[AFHTTPRequestOperationManager alloc] initWithBaseURL:credential.serverURL];
 
     manager.requestSerializer = [AFJSONRequestSerializer serializer];
@@ -49,30 +49,28 @@
     manager.requestSerializer.timeoutInterval = 5.0;
     manager.securityPolicy = [AFSecurityPolicy defaultPolicy];
     if (credential.sslTrustSetting & (kLGSSLTrustUserExplicitTrust | kLGSSLTrustUserConfirmedTrust)) {
-        // Even in the event the user has the certificate set to trust in their keychain
-        // that setting doesn't seem to get picked up by python-jss' request module so set verify to NO
+        // Even if the user has the certificate set to trust in their keychain, that setting doesn't seem to get picked up by python-jss's request module, so set verify to NO.
         manager.securityPolicy.allowInvalidCertificates = YES;
         manager.securityPolicy.validatesCertificateChain = NO;
     }
     manager.credential = credential.credential;
     manager.responseSerializer = [AFJSONResponseSerializer serializer];
 
-    // As of 7/29/15 JAMF cloud is returning json data as text/plain
-    // But add `application/json` to be future ready, for more approperiate
-    // Content-Types
+    // As of 7/29/15 JAMF Cloud is returning JSON data as text/plain. But add `application/json` to be future ready, for more appropriate Content-Types.
     [manager.responseSerializer setAcceptableContentTypes:[NSSet setWithObjects:
-                                                           @"application/json",
-                                                           @"text/plain", nil]];
+                                                                     @"application/json",
+                                                                     @"text/plain", nil]];
 
     NSString *fullPath = [credential.serverURL.path
-                          stringByAppendingPathComponent:@"JSSResource/distributionpoints"];
+        stringByAppendingPathComponent:@"JSSResource/distributionpoints"];
 
     [manager GET:fullPath parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
         reply(responseObject, nil);
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        NSError *responseError = [LGError errorWithResponse:operation.response];
-        reply(nil, responseError ?: error);
-    }];
+    }
+        failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+            NSError *responseError = [LGError errorWithResponse:operation.response];
+            reply(nil, responseError ?: error);
+        }];
 }
 
 #pragma mark - Object Conversion
@@ -84,13 +82,15 @@
         XMLDictionaryParser *xmlParser = [[XMLDictionaryParser alloc] init];
         if ([xmlObject isKindOfClass:[NSXMLParser class]]) {
             dictionary = [xmlParser dictionaryWithParser:xmlObject];
-        } else if ([xmlObject isKindOfClass:[NSData class]]) {
+        }
+        else if ([xmlObject isKindOfClass:[NSData class]]) {
             if ((dictionary = [xmlParser dictionaryWithData:xmlObject]) == nil)
                 // If the data doesn't parse as XML also try to parse as JSON.
                 if ((dictionary = [NSJSONSerialization JSONObjectWithData:xmlObject options:0 error:&error]) == nil) {
                     DLog(@"%@", error);
                 }
-        } else if ([xmlObject isKindOfClass:[NSString class]]) {
+        }
+        else if ([xmlObject isKindOfClass:[NSString class]]) {
             dictionary = [xmlParser dictionaryWithString:xmlObject];
         }
     }

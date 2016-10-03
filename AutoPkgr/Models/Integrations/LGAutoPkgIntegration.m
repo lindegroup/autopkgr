@@ -2,7 +2,7 @@
 //  LGAutoPkgIntegration.m
 //  AutoPkgr
 //
-//  Copyright 2015 Eldon Ahrold.
+//  Copyright 2015 Eldon Ahrold
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -18,8 +18,8 @@
 //
 
 #import "LGAutoPkgIntegration.h"
-#import "LGIntegration+Protocols.h"
 #import "LGAutoPkgTask.h"
+#import "LGIntegration+Protocols.h"
 
 @interface LGAutoPkgIntegration () <LGIntegrationPackageInstaller>
 @end
@@ -33,7 +33,8 @@
     return @"AutoPkg";
 }
 
-+ (NSString *)credits {
++ (NSString *)credits
+{
     return @"Greg Neagle, Tim Sutton, Per Olofsson\nhttp://www.apache.org/licenses/LICENSE-2.0";
 }
 

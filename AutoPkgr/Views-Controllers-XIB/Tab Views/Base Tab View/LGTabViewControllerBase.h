@@ -3,7 +3,7 @@
 //  AutoPkgr
 //
 //  Created by Eldon Ahrold on 5/20/15.
-//  Copyright 2015 The Linde Group, Inc.
+//  Copyright 2015-2016 The Linde Group, Inc.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -18,14 +18,14 @@
 //  limitations under the License.
 //
 
-#import <Cocoa/Cocoa.h>
-#import "LGProgressDelegate.h"
 #import "LGAutoPkgr.h"
+#import "LGProgressDelegate.h"
+#import <Cocoa/Cocoa.h>
 
 @interface LGTabViewControllerBase : NSViewController
 
 - (instancetype)initWithProgressDelegate:(id<LGProgressDelegate>)progressDelegate;
-@property (weak) id<LGProgressDelegate>progressDelegate;
+@property (weak) id<LGProgressDelegate> progressDelegate;
 @property (unsafe_unretained) NSWindow *modalWindow;
 
 @property (copy, readonly) NSString *tabLabel;

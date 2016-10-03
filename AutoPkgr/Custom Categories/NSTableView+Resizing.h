@@ -2,7 +2,7 @@
 //  NSTableView+Resizing.h
 //
 //  Created by Eldon Ahrold on 12/2/15.
-//  Copyright © 2015 EEAAPPS
+//  Copyright 2015 Eldon Ahrold
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.

@@ -3,7 +3,7 @@
 //  AutoPkgr
 //
 //  Created by Eldon Ahrold on 5/20/15.
-//  Copyright 2015 Eldon Ahrold.
+//  Copyright 2015 Eldon Ahrold
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -28,9 +28,9 @@
 #import "LGJSSImporterIntegrationView.h"
 #import "LGLANrevIntegrationView.h"
 #import "LGMacPatchIntegrationView.h"
-//#import "LGVirusTotalAnalyzerIntegrationView.h"
 #import "LGMunkiIntegrationView.h"
 #import "LGTableCellViews.h"
+#import "LGVirusTotalAnalyzerIntegrationView.h"
 
 #import "NSOpenPanel+typeChooser.h"
 
@@ -126,7 +126,7 @@
         statusCell.configureButton.tag = row;
         statusCell.configureButton.enabled = NO;
 
-        /* Set the name of the identifier's cooresponding view class as the identifier
+        /* Set the name of the identifier's corresponding view class as the identifier
          * in the `- config:` method this is used to create an instance of the viewClass */
         statusCell.configureButton.identifier = [[integration className] stringByAppendingString:@"View"];
 
@@ -154,7 +154,8 @@
 
             if (info.status != kLGIntegrationNotInstalled) {
                 statusCell.configureButton.target = self;
-            } else {
+            }
+            else {
                 statusCell.configureButton.target = weakIntegration;
             }
         };
@@ -199,12 +200,11 @@
     NSString *path = _defaults.autoPkgRecipeRepoDir ?: @"~/Library/AutoPkg".stringByExpandingTildeInPath;
 
     [NSOpenPanel folderChooser_WithStartingPath:path modalWindow:self.modalWindow reply:^(NSString *selectedFolder) {
-        if(selectedFolder){
+        if (selectedFolder) {
             DLog(@"AutoPkg RecipeRepos location selected.");
             _openAutoPkgRecipeReposFolderButton.enabled = YES;
             _autoPkgRecipeRepoDir.stringValue = selectedFolder.stringByAbbreviatingWithTildeInPath;
             _defaults.autoPkgRecipeRepoDir = selectedFolder;
-
         }
     }];
 }
@@ -214,7 +214,6 @@
     NSString *path = [_defaults autoPkgRecipeRepoDir] ?: [@"~/Library/AutoPkg/RecipeRepos" stringByExpandingTildeInPath];
     [self openFolderAtPath:path withDescription:@"Recipe Repos"];
 }
-
 
 #pragma mark - AutoPkg Overrides Actions
 - (IBAction)chooseAutoPkgRecipeOverridesDir:(id)sender
@@ -240,20 +239,22 @@
     [self openFolderAtPath:overridesFolder withDescription:@"Recipe Overrides"];
 }
 
-
 #pragma mark - Shared
-- (IBAction)saveAutoPkgFolderPath:(NSTextField *)sender {
+- (IBAction)saveAutoPkgFolderPath:(NSTextField *)sender
+{
 
     NSString *path = sender.stringValue.stringByExpandingTildeInPath;
 
-    BOOL (^validFolder)(NSTextField *) = ^BOOL (NSTextField *textField) {
+    BOOL (^validFolder)
+    (NSTextField *) = ^BOOL(NSTextField *textField) {
         BOOL isDir;
         BOOL success = NO;
         if (path.length && ([[NSFileManager defaultManager] fileExistsAtPath:path isDirectory:&isDir] && isDir)) {
             [sender setTextColor:[NSColor blackColor]];
             sender.stringValue = path.stringByAbbreviatingWithTildeInPath;
-            success =  YES;
-        } else {
+            success = YES;
+        }
+        else {
             // possibly present error.
             [sender setTextColor:[NSColor redColor]];
         }
@@ -262,9 +263,11 @@
 
     if ([sender isEqualTo:_autoPkgCacheDir] && validFolder(sender)) {
         _defaults.autoPkgCacheDir = path;
-    } else if ([sender isEqualTo:_autoPkgRecipeRepoDir] && validFolder(sender)) {
+    }
+    else if ([sender isEqualTo:_autoPkgRecipeRepoDir] && validFolder(sender)) {
         _defaults.autoPkgRecipeRepoDir = path;
-    } else if ([sender isEqualTo:_autoPkgRecipeOverridesDir] && validFolder(sender)){
+    }
+    else if ([sender isEqualTo:_autoPkgRecipeOverridesDir] && validFolder(sender)) {
         _defaults.autoPkgRecipeOverridesDir = path;
     }
 }
@@ -275,8 +278,9 @@
         BOOL isDir;
         if ([[NSFileManager defaultManager] fileExistsAtPath:path isDirectory:&isDir] && isDir) {
             button.enabled = YES;
-        } else {
-            DevLog(@"Could not locate %@ disabling 'Open Folder' button", path );
+        }
+        else {
+            DevLog(@"Could not locate %@ disabling 'Open Folder' button", path);
             button.enabled = NO;
         }
     };
@@ -292,7 +296,8 @@
 }
 
 #pragma mark - Util
-- (void)openFolderAtPath:(NSString *)path withDescription:(NSString *)folderDescription {
+- (void)openFolderAtPath:(NSString *)path withDescription:(NSString *)folderDescription
+{
 
     DevLog(@"Opening %@ folder...", folderDescription);
     BOOL isDir;
@@ -300,7 +305,8 @@
     if ([[NSFileManager defaultManager] fileExistsAtPath:path isDirectory:&isDir] && isDir) {
         NSURL *autoPkgCacheFolderURL = [NSURL fileURLWithPath:path];
         [[NSWorkspace sharedWorkspace] openURL:autoPkgCacheFolderURL];
-    } else {
+    }
+    else {
         NSLog(@"%@ does not exist.", path);
         NSAlert *alert = [[NSAlert alloc] init];
         [alert addButtonWithTitle:@"OK"];
@@ -310,7 +316,7 @@
 
         NSString *infoTextFormat = NSLocalizedString(@"%@ could not find the %@ folder located in %@. Please verify that this folder exists.", @"alert informativeText when a folder can't be located");
 
-        alert.informativeText = quick_formatString(infoTextFormat, kLGApplicationName,  path);
+        alert.informativeText = quick_formatString(infoTextFormat, kLGApplicationName, path);
 
         [alert setAlertStyle:NSWarningAlertStyle];
         [alert beginSheetModalForWindow:self.modalWindow

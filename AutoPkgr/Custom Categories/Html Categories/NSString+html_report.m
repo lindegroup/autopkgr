@@ -3,7 +3,7 @@
 //  AutoPkgr
 //
 //  Created by Eldon Ahrold on 3/24/15.
-//  Copyright 2015 The Linde Group, Inc.
+//  Copyright 2015-2016 The Linde Group, Inc.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -123,7 +123,8 @@ NSString *const html_breakTwice = @"<br/><br/>\n";
     return [self html_tag:@"span" withCSSClass:cssClass];
 }
 
-- (NSString *)html_paragraphWithCSSClass:(NSString *)cssClass {
+- (NSString *)html_paragraphWithCSSClass:(NSString *)cssClass
+{
     return [self html_tag:@"p" withCSSClass:cssClass];
 }
 

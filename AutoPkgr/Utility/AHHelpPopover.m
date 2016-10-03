@@ -29,24 +29,27 @@ static const int HELP_POPOVER_FRAME_PADDING = 20;
 static NSString *const BUTTON_URL_KEY = @"URL";
 static NSString *const BUTTON_TITLE_KEY = @"Title";
 
-NSString * AHHPLocalizedString(NSString *key, NSString *comment)
+NSString *AHHPLocalizedString(NSString *key, NSString *comment)
 {
     return [[NSBundle mainBundle] localizedStringForKey:key
                                                   value:key
                                                   table:@"LocalizableHelpPopover"];
 }
 
-static NSString *NO_HELP_AVAILABLE() {
+static NSString *NO_HELP_AVAILABLE()
+{
     /* This is a function so the string can be localized if you so choose */
     static dispatch_once_t onceToken;
     __strong static NSString *string = nil;
     dispatch_once(&onceToken,
-                  ^{ string = AHHPLocalizedString(@"No help available", nil); });
+                  ^{
+                      string = AHHPLocalizedString(@"No help available", nil);
+                  });
     return string;
 };
 
 #pragma mark - AHHelpPopover
-@interface AHHelpPopover ()<NSTextFieldDelegate>
+@interface AHHelpPopover () <NSTextFieldDelegate>
 @end
 
 @implementation AHHelpPopover {
@@ -54,7 +57,8 @@ static NSString *NO_HELP_AVAILABLE() {
 }
 
 #pragma mark - Init / Dealloc
-- (void)dealloc {
+- (void)dealloc
+{
     if (_isInternallyObservingClose) {
         [[NSNotificationCenter defaultCenter]
             removeObserver:self
@@ -63,7 +67,8 @@ static NSString *NO_HELP_AVAILABLE() {
     }
 }
 
-- (instancetype)init {
+- (instancetype)init
+{
     if (self = [super init]) {
         _width = HELP_POPOVER_WIDTH;
         _senderEdge = HELP_POPOVER_PREFERRED_EDGE;
@@ -72,7 +77,8 @@ static NSString *NO_HELP_AVAILABLE() {
     return self;
 }
 
-- (instancetype)initWithSender:(NSView *)sender {
+- (instancetype)initWithSender:(NSView *)sender
+{
     if (self = [self init]) {
         _sender = sender;
     }
@@ -80,7 +86,8 @@ static NSString *NO_HELP_AVAILABLE() {
 }
 
 #pragma mark - Open Popopver
-- (void)openPopover {
+- (void)openPopover
+{
     if (!self.isShown) {
 
         // Always be transient.
@@ -112,31 +119,31 @@ static NSString *NO_HELP_AVAILABLE() {
 
                 NSInteger fontSize = [NSFont systemFontSize];
 
-                if((currentFont = [textStorage attribute:NSFontAttributeName
-                                                                 atIndex:1
-                                                          effectiveRange:nil])) {
+                if ((currentFont = [textStorage attribute:NSFontAttributeName
+                                                  atIndex:1
+                                           effectiveRange:nil])) {
 
-                NSDictionary *attrs = currentFont.fontDescriptor.fontAttributes;
+                    NSDictionary *attrs = currentFont.fontDescriptor.fontAttributes;
 
-                if (attrs[NSFontSizeAttribute]) {
-                    fontSize = [attrs[NSFontSizeAttribute] integerValue];
+                    if (attrs[NSFontSizeAttribute]) {
+                        fontSize = [attrs[NSFontSizeAttribute] integerValue];
+                    }
+
+                    NSInteger titleSize = fontSize * HELP_POPOVER_TITLE_FACTOR;
+                    _helpTitleFont = [NSFont fontWithDescriptor:currentFont.fontDescriptor
+                                                           size:titleSize];
+
+                    _helpTitleFont = [[NSFontManager sharedFontManager] convertFont:_helpTitleFont
+                                                                        toHaveTrait:NSBoldFontMask];
                 }
-
-                NSInteger titleSize = fontSize * HELP_POPOVER_TITLE_FACTOR;
-                _helpTitleFont = [NSFont fontWithDescriptor:currentFont.fontDescriptor
-                                                  size:titleSize];
-
-                _helpTitleFont = [[NSFontManager sharedFontManager] convertFont:_helpTitleFont
-                                                                toHaveTrait:NSBoldFontMask];
-
-                } else {
-                    _helpTitleFont = [NSFont boldSystemFontOfSize:fontSize * HELP_POPOVER_TITLE_FACTOR];  // suitable default.
+                else {
+                    _helpTitleFont = [NSFont boldSystemFontOfSize:fontSize * HELP_POPOVER_TITLE_FACTOR]; // suitable default.
                 }
             }
 
             NSDictionary *attributes = @{
-                                         NSFontAttributeName : _helpTitleFont,
-                                         };
+                NSFontAttributeName : _helpTitleFont,
+            };
 
             NSAttributedString *title = [[NSAttributedString alloc] initWithString:[_helpTitle stringByAppendingString:@"\n\n"]
                                                                         attributes:attributes];
@@ -147,7 +154,7 @@ static NSString *NO_HELP_AVAILABLE() {
         // Append a link.
         if (_helpURL) {
             NSString *helpLinkString = [@"\n\n" stringByAppendingString:_helpURL.absoluteString];
-            NSAttributedString *urlString = [[NSAttributedString alloc] initWithString:helpLinkString attributes:@{NSLinkAttributeName : _helpURL}];
+            NSAttributedString *urlString = [[NSAttributedString alloc] initWithString:helpLinkString attributes:@{ NSLinkAttributeName : _helpURL }];
 
             [textStorage appendAttributedString:urlString];
         }
@@ -163,7 +170,7 @@ static NSString *NO_HELP_AVAILABLE() {
         [layoutManager glyphRangeForTextContainer:textContainer];
 
         NSRect viewFrame = [layoutManager usedRectForTextContainer:textContainer];
-        viewFrame.size.height += 10;  // Pad the height by 10.
+        viewFrame.size.height += 10; // Pad the height by 10.
 
         /* We want to use NSTextView rather than the textContainer
          * created above to allow for a clickable URL link */
@@ -186,14 +193,12 @@ static NSString *NO_HELP_AVAILABLE() {
 
         /* Calculate the frameOrigin to center the helpTextField inside of the parent view. */
         NSPoint centerPoint = NSMakePoint(
-                                (viewFrame.size.width - helpTextView.frame.size.width) / 2,
-                                (viewFrame.size.height - helpTextView.frame.size.height) / 2);
+            (viewFrame.size.width - helpTextView.frame.size.width) / 2,
+            (viewFrame.size.height - helpTextView.frame.size.height) / 2);
 
         [helpTextView setFrameOrigin:centerPoint];
 
-        [helpTextView setAutoresizingMask:NSViewMinXMargin | NSViewMaxXMargin |
-                                          NSViewMinYMargin | NSViewMaxYMargin];
-
+        [helpTextView setAutoresizingMask:NSViewMinXMargin | NSViewMaxXMargin | NSViewMinYMargin | NSViewMaxYMargin];
 
         popoverViewController.view = view;
         self.contentViewController = popoverViewController;
@@ -206,7 +211,8 @@ static NSString *NO_HELP_AVAILABLE() {
     }
 }
 
-- (void)openPopoverWithCompletionHandler:(void (^)())complete {
+- (void)openPopoverWithCompletionHandler:(void (^)())complete
+{
     if (complete) {
         self.completionHandler = complete;
     }
@@ -214,14 +220,16 @@ static NSString *NO_HELP_AVAILABLE() {
 }
 
 - (void)openPopoverFromButton:(NSButton *)sender
-         witAttributeHelpText:(NSAttributedString *)helpText {
+         witAttributeHelpText:(NSAttributedString *)helpText
+{
     _sender = sender;
     _attributedHelpText = helpText;
     [self openPopover];
 }
 
 - (void)openPopoverFromButton:(NSButton *)sender
-            witHelpTextFormat:(NSString *)format, ... {
+            witHelpTextFormat:(NSString *)format, ...
+{
     va_list args;
     va_start(args, format);
     NSString *helpText = [[NSString alloc] initWithFormat:format
@@ -233,26 +241,29 @@ static NSString *NO_HELP_AVAILABLE() {
     [self openPopover];
 }
 
-# pragma mark - Accessors
-- (NSAttributedString *)attributedHelpText {
+#pragma mark - Accessors
+- (NSAttributedString *)attributedHelpText
+{
     if (!_attributedHelpText && _helpText) {
         _attributedHelpText = [[NSAttributedString alloc] initWithString:_helpText
-                                                              attributes:@{NSFontAttributeName : _helpTextFont}];
+                                                              attributes:@{ NSFontAttributeName : _helpTextFont }];
     }
     return _attributedHelpText;
 }
 
-#pragma  mark - Observing
-- (void)startObserving {
+#pragma mark - Observing
+- (void)startObserving
+{
     _isInternallyObservingClose = YES;
     [[NSNotificationCenter defaultCenter]
-     addObserver:self
-     selector:@selector(executeCompletionHandler:)
-     name:NSPopoverDidCloseNotification
-     object:self];
+        addObserver:self
+           selector:@selector(executeCompletionHandler:)
+               name:NSPopoverDidCloseNotification
+             object:self];
 }
 
-- (void)executeCompletionHandler:(NSNotification *)notification {
+- (void)executeCompletionHandler:(NSNotification *)notification
+{
     if (_completionHandler) {
         _completionHandler();
         _completionHandler = nil;
@@ -265,12 +276,14 @@ static NSString *NO_HELP_AVAILABLE() {
 #pragma mark AHHelpPopoverButton
 
 @implementation AHHelpPopoverButton
-- (void)awakeFromNib {
+- (void)awakeFromNib
+{
     self.target = self;
     self.action = @selector(openPopover);
 }
 
-- (void)openPopover {
+- (void)openPopover
+{
     AHHelpPopover *popover = [[AHHelpPopover alloc] initWithSender:self];
     popover.helpText = self.helpText;
 
@@ -290,10 +303,10 @@ static NSString *NO_HELP_AVAILABLE() {
     [popover openPopover];
 }
 
-# pragma mark - Accessors
-- (NSString *)helpText {
-    if (!_helpText && (_helpText = [self localizedStringValueForIvar:_helpText
-                                              appendingIdentifierKey:nil]).length == 0) {
+#pragma mark - Accessors
+- (NSString *)helpText
+{
+    if (!_helpText && (_helpText = [self localizedStringValueForIvar:_helpText appendingIdentifierKey:nil]).length == 0) {
         /* If the help text is the same as the identifier no
          * value was found in the Localizable.strings file,
          * so set it to a "No help available" message */
@@ -302,7 +315,8 @@ static NSString *NO_HELP_AVAILABLE() {
     return _helpText;
 }
 
-- (void)helpTextWithFormat:(NSString *)format, ... {
+- (void)helpTextWithFormat:(NSString *)format, ...
+{
     va_list args;
     va_start(args, format);
     _helpText = [[NSString alloc] initWithFormat:format
@@ -310,20 +324,22 @@ static NSString *NO_HELP_AVAILABLE() {
     va_end(args);
 }
 
-- (NSString *)helpLink {
+- (NSString *)helpLink
+{
     return (_helpLink ?: (_helpLink = [self localizedStringValueForIvar:_helpLink
                                                  appendingIdentifierKey:BUTTON_URL_KEY]));
 }
 
-- (NSString *)helpTitle {
+- (NSString *)helpTitle
+{
     return (_helpTitle ?: (_helpTitle = [self localizedStringValueForIvar:_helpTitle
                                                    appendingIdentifierKey:BUTTON_TITLE_KEY]));
 }
 
-
 #pragma mark - Util
 - (NSString *)localizedStringValueForIvar:(NSString *)iVar
-                   appendingIdentifierKey:(NSString *)keyVal {
+                   appendingIdentifierKey:(NSString *)keyVal
+{
     if (!iVar) {
         NSString *key = [self.identifier stringByAppendingString:keyVal ?: @""];
         NSString *title = AHHPLocalizedString(key, nil);

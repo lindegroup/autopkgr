@@ -2,7 +2,7 @@
 //  LGIntegration+Protocols.h
 //  AutoPkgr
 //
-//  Copyright 2015 Eldon Ahrold.
+//  Copyright 2015 Eldon Ahrold
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -17,8 +17,8 @@
 //  limitations under the License.
 //
 
-#import "LGIntegration.h"
 #import "LGGitHubJSONLoader.h"
+#import "LGIntegration.h"
 
 /* Integration protocols are used as a base line to determine how the integration is insatlled and configured.
  * you should conform to as many as necissary to correctly describe the integration.
@@ -27,8 +27,6 @@
 #pragma mark - Protocols
 #pragma mark - General integration protocol
 @class LGGitHubReleaseInfo;
-
-
 
 #pragma mark - Package Installer Protocol
 /**
@@ -51,7 +49,6 @@
  *  The package identifier for the integration. Primarily used to determine items during uninstall:
  */
 + (NSArray *)packageIdentifiers;
-
 
 @optional
 /**
@@ -80,14 +77,12 @@
 + (NSString *)defaultRepository;
 
 /**
- *  Key cooresponding to the report plist's "xxx_summary_results"
+ *  Key corresponding to the report plist's "xxx_summary_results"
  *
  *  @return full key for the integration's summary results.
  */
 + (NSString *)summaryResultKey;
 @end
-
-
 
 @interface LGIntegration () <LGProgressDelegate>
 - (NSString *)remoteVersion; // This is just here to so subclasses have access to the super's implementation.

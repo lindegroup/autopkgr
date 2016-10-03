@@ -3,7 +3,7 @@
 //  AutoPkgr
 //
 //  Created by Eldon Ahrold on 9/6/14.
-//  Copyright 2014-2015 The Linde Group, Inc.
+//  Copyright 2014-2016 The Linde Group, Inc.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -54,52 +54,53 @@ NSString *launchAgentFilePath()
         return;
     }
 
-    // Create the external form authorization data for the helper
+    // Create the external form authorization data for the helper.
     NSData *authorization = [LGAutoPkgrAuthorizer authorizeHelper];
     assert(authorization != nil);
 
-    LGAutoPkgrHelperConnection *helperConnection = [[LGAutoPkgrHelperConnection alloc] init ];
-    /* Check for two conditions, first that start was the desired action
-     * And second that either the schedule is not running or we want to 
-     * force a reload of the schedule such as when the interval is changed
+    LGAutoPkgrHelperConnection *helperConnection = [[LGAutoPkgrHelperConnection alloc] init];
+    /* Check for two conditions, first that start was the desired action,
+     * and second that either the schedule is not running or we want to
+     * force a reload of the schedule (such as when the interval is changed).
      */
     [helperConnection connectionError:reply];
 
     if (start && (!scheduleIsRunning || forced)) {
 
         if (scheduleIsNumber) {
-            // Convert seconds to hours for our time interval
+            // Convert seconds to hours for our time interval.
             scheduleOrInterval = @([scheduleOrInterval integerValue] * 60 * 60);
         }
 
         NSString *program = [[NSProcessInfo processInfo] arguments].firstObject;
 
-
         [helperConnection.remoteObjectProxy
-                scheduleRun:scheduleOrInterval
-                       user:NSUserName()
-                    program:program
-              authorization:authorization
-                      reply:^(NSError *error) {
-                          if (!error && scheduleIsNumber) {
-                              NSDate *date = [NSDate dateWithTimeIntervalSinceNow:[scheduleOrInterval integerValue]];
-                              NSDateFormatter *fomatter = [NSDateFormatter new];
-                              [fomatter setDateStyle:NSDateFormatterShortStyle];
-                              [fomatter setTimeStyle:NSDateFormatterShortStyle];
-                              NSLog(@"Next scheduled AutoPkg run will occur at %@", [fomatter stringFromDate:date]);
-                          }
-                          [[NSApplication sharedApplication] activateIgnoringOtherApps:YES];
-                          reply(error);
-                          [helperConnection closeConnection];
-                }];
-    } else if (scheduleIsRunning) {
-        [helperConnection.remoteObjectProxy removeScheduleWithAuthorization:authorization
-                reply:^(NSError *error) {
+              scheduleRun:scheduleOrInterval
+                     user:NSUserName()
+                  program:program
+            authorization:authorization
+                    reply:^(NSError *error) {
+                        if (!error && scheduleIsNumber) {
+                            NSDate *date = [NSDate dateWithTimeIntervalSinceNow:[scheduleOrInterval integerValue]];
+                            NSDateFormatter *fomatter = [NSDateFormatter new];
+                            [fomatter setDateStyle:NSDateFormatterShortStyle];
+                            [fomatter setTimeStyle:NSDateFormatterShortStyle];
+                            NSLog(@"Next scheduled AutoPkg run will occur at %@", [fomatter stringFromDate:date]);
+                        }
                         [[NSApplication sharedApplication] activateIgnoringOtherApps:YES];
                         reply(error);
                         [helperConnection closeConnection];
-                }];
-    } else {
+                    }];
+    }
+    else if (scheduleIsRunning) {
+        [helperConnection.remoteObjectProxy removeScheduleWithAuthorization:authorization
+                                                                      reply:^(NSError *error) {
+                                                                          [[NSApplication sharedApplication] activateIgnoringOtherApps:YES];
+                                                                          reply(error);
+                                                                          [helperConnection closeConnection];
+                                                                      }];
+    }
+    else {
         reply(nil);
     }
 }
@@ -111,8 +112,9 @@ NSString *launchAgentFilePath()
         AHLaunchJobSchedule *startInterval = job.StartCalendarInterval;
         if (startInterval) {
             *scheduleInterval = startInterval;
-        } else {
-            // If the interval is 0 set it to 24, else convert it from seconds to hours by
+        }
+        else {
+            // If the interval is 0 set it to 24, else convert it from seconds to hours.
             NSInteger interval = (job.StartInterval == 0) ? 24 : (job.StartInterval / 60 / 60);
             if (scheduleInterval) {
                 *scheduleInterval = @(interval);

@@ -17,17 +17,17 @@
 //  limitations under the License.
 //
 
-#import "LGLANrevIntegration.h"
 #import "LGIntegration+Protocols.h"
+#import "LGLANrevIntegration.h"
 
-// Define the protocols you intend to conform to...
+// Define the protocols you intend to conform to.
 @interface LGLANrevIntegration () <LGIntegrationPackageInstaller, LGIntegrationSharedProcessor>
 @end
 
 #pragma mark - Integration overrides
 @implementation LGLANrevIntegration
 
-// Since this is defined using a protocol, it needs to be synthesized...
+// Since this is defined using a protocol, it needs to be synthesized.
 // If not conforming to LGIntegrationPackageInstaller remove it.
 @synthesize gitHubInfo = _gitHubInfo;
 
@@ -41,11 +41,13 @@
 {
     return @"LANrevImporter";
 }
-+ (NSString *)credits {
++ (NSString *)credits
+{
     return @"Copyright 2016 Jeremy Baker\nhttp://www.apache.org/licenses/LICENSE-2.0";
 }
 
-+ (NSURL *)homePage {
++ (NSURL *)homePage
+{
     return [NSURL URLWithString:@"https://github.com/jbaker10/LANrevImporter"];
 }
 
@@ -62,8 +64,7 @@
 
 + (NSArray *)components
 {
-    // If there's not a binary don't include it here!!
-    return @[[self binary]];
+    return @[ [self binary] ];
 }
 
 + (NSString *)binary
@@ -76,15 +77,18 @@
     return @[ @"com.github.jbaker10.LANrevImporterInstaller" ];
 }
 
-+ (BOOL)isUninstallable {
++ (BOOL)isUninstallable
+{
     return YES;
 }
 
-+ (NSString *)summaryResultKey {
++ (NSString *)summaryResultKey
+{
     return @"lanrev_importer_summary_result";
 }
 
-+ (BOOL)meetsRequirements:(NSError *__autoreleasing *)error {
++ (BOOL)meetsRequirements:(NSError *__autoreleasing *)error
+{
     NSFileManager *manager = [NSFileManager defaultManager];
     NSString *lanRev = @"/Applications/LANrev Admin.app";
 
@@ -92,7 +96,7 @@
 
     NSString *dataBase = defaults.DatabaseDirectory ?: @"~/Library/Application Support/LANrev Admin/Database/".stringByExpandingTildeInPath;
 
-    for (NSString* path in @[lanRev, dataBase]) {
+    for (NSString *path in @[ lanRev, dataBase ]) {
         if (![manager fileExistsAtPath:path]) {
             if (error) {
                 *error = [[self class] requirementsError:[NSString stringWithFormat:@"Please check that %@ exists.", path]];
@@ -111,7 +115,8 @@
     return [NSDictionary dictionaryWithContentsOfFile:receipt][@"PackageVersion"];
 }
 
-- (void)customInstallActions {
+- (void)customInstallActions
+{
     [[LGLANrevDefaults new] setAllowURLSDPackageImport:YES];
 }
 
@@ -122,15 +127,16 @@
 
 static NSString *const kLGLANrevDomain = @"com.poleposition-sw.lanrev_admin";
 
-- (NSString *)DatabaseDirectory {
+- (NSString *)DatabaseDirectory
+{
     return [self LANrevDomainObject:
-             NSStringFromSelector(@selector(DatabaseDirectory))];
+                     NSStringFromSelector(@selector(DatabaseDirectory))];
 }
 
 - (void)setAllowURLSDPackageImport:(BOOL)AllowURLSDPackageImport
 {
     [self setLANrevDomainObject:@(AllowURLSDPackageImport)
-                                 forKey:NSStringFromSelector(@selector(AllowURLSDPackageImport))];
+                         forKey:NSStringFromSelector(@selector(AllowURLSDPackageImport))];
 }
 
 - (BOOL)AllowURLSDPackageImport

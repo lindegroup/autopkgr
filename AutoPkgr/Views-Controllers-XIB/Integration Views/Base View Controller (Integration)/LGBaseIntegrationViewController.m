@@ -3,7 +3,7 @@
 //  AutoPkgr
 //
 //  Created by Eldon Ahrold on 6/5/15.
-//  Copyright 2015 Eldon Ahrold.
+//  Copyright 2015 Eldon Ahrold
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -22,7 +22,8 @@
 
 @implementation LGBaseIntegrationViewController
 
-- (instancetype)init {
+- (instancetype)init
+{
     return (self = [super initWithNibName:NSStringFromClass([self class]) bundle:nil]);
 }
 
@@ -34,10 +35,10 @@
     return self;
 }
 
-- (void)viewDidLoad {
+- (void)viewDidLoad
+{
     [super viewDidLoad];
     // Do view setup here.
 }
-
 
 @end

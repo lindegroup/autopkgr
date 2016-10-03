@@ -3,7 +3,7 @@
 //  AutoPkgr
 //
 //  Created by Eldon Ahrold on 8/5/14.
-//  Copyright 2014-2015 The Linde Group, Inc.
+//  Copyright 2014-2016 The Linde Group, Inc.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -18,12 +18,12 @@
 //  limitations under the License.
 //
 
-#import "LGDefaults.h"
 #import "LGConstants.h"
+#import "LGDefaults.h"
 #import "LGError.h"
 
 @interface LGDefaults ()
-// Make these readwrite here so we can use these with methods
+// Make these readwrite here so we can use these with methods.
 @property (copy, nonatomic, readwrite) NSArray *autoPkgRecipeSearchDirs;
 @property (copy, nonatomic, readwrite) NSDictionary *autoPkgRecipeRepos;
 @end
@@ -40,7 +40,6 @@
     });
 
     return _sharedObject;
-
 }
 
 - (void)dealloc
@@ -51,14 +50,14 @@
 - (BOOL)synchronize
 {
     [super synchronize];
-    BOOL success =
-        (CFPreferencesSynchronize(kCFPreferencesCurrentApplication,
-                                  kCFPreferencesCurrentUser,
-                                  kCFPreferencesAnyHost) &&
+    BOOL success = (CFPreferencesSynchronize(kCFPreferencesCurrentApplication,
+                                             kCFPreferencesCurrentUser,
+                                             kCFPreferencesAnyHost)
+                    &&
 
-         CFPreferencesSynchronize((__bridge CFStringRef)(kLGAutoPkgPreferenceDomain),
-                                  kCFPreferencesCurrentUser,
-                                  kCFPreferencesAnyHost));
+                    CFPreferencesSynchronize((__bridge CFStringRef)(kLGAutoPkgPreferenceDomain),
+                                             kCFPreferencesCurrentUser,
+                                             kCFPreferencesAnyHost));
     return success;
 }
 
@@ -120,10 +119,10 @@
     id date = [self objectForKey:NSStringFromSelector(@selector(LastAutoPkgRun))];
 
     NSString *setVal;
-    if ([date isKindOfClass:[NSDate class]]){
+    if ([date isKindOfClass:[NSDate class]]) {
         setVal = [[self class] formattedDate:date];
-
-    } else if ([date isKindOfClass:[NSString class]] ) {
+    }
+    else if ([date isKindOfClass:[NSString class]]) {
         setVal = date;
     }
 
@@ -135,11 +134,13 @@
     [self setObject:LastAutoPkgRun forKey:NSStringFromSelector(@selector(LastAutoPkgRun))];
 }
 
-- (LGReportItems)reportedItemFlags {
+- (LGReportItems)reportedItemFlags
+{
     return [self integerForKey:NSStringFromSelector(@selector(reportedItemFlags))];
 }
 
-- (void)setReportedItemFlags:(LGReportItems)reportedItemFlags {
+- (void)setReportedItemFlags:(LGReportItems)reportedItemFlags
+{
     [self setInteger:reportedItemFlags forKey:NSStringFromSelector(@selector(reportedItemFlags))];
 }
 
@@ -323,16 +324,16 @@
     if ([date isKindOfClass:[NSDate class]]) {
         NSDateFormatter *formatter = [NSDateFormatter new];
 
-        // Set the date style...
+        // Set the date style.
 
         formatter.timeStyle = NSDateFormatterShortStyle;
         formatter.dateStyle = NSDateFormatterShortStyle;
 
-        // Set up relative date formatting...
+        // Set up relative date formatting.
         formatter.doesRelativeDateFormatting = YES;
         formatter.locale = [NSLocale currentLocale];
         formatter.timeZone = [NSTimeZone defaultTimeZone];
-        
+
         return [formatter stringFromDate:date];
     }
     return nil;
@@ -345,31 +346,33 @@
     NSInteger errorEncountered = 0;
 
     NSFileManager *manager = [NSFileManager new];
-    // Check the RECIPE_REPO_DIR key
+    // Check the RECIPE_REPO_DIR key.
     if ([[defaults.autoPkgRecipeRepoDir pathComponents].firstObject isEqualToString:@"~"]) {
         defaults.autoPkgRecipeRepoDir = defaults.autoPkgRecipeRepoDir.stringByExpandingTildeInPath;
         pathRepaired++;
     }
 
-    // Check the RECIPE_SEARCH_DIRS array
+    // Check the RECIPE_SEARCH_DIRS array.
     // NSSet is used here so that only unique items are listed in the array.
     NSMutableSet *newRecipeSearchDirs = [NSMutableSet new];
     for (NSString *dir in defaults.autoPkgRecipeSearchDirs) {
         NSString *repairedDir;
         NSArray *splitDir = [dir componentsSeparatedByString:@"~"];
-        // If we've got a count that's greater than 1 we found a ~
+        // If we've got a count that's greater than 1 we found a "~".
         if (splitDir.count > 1) {
-            // Take the last item in the array and just append that to the home directory
+            // Take the last item in the array and append that to the home directory.
             repairedDir = [NSHomeDirectory() stringByAppendingString:splitDir.lastObject];
-        } else {
+        }
+        else {
             repairedDir = dir;
         }
         BOOL isDir;
-        // Check to make sure the new directory actually exists
+        // Check to make sure the new directory actually exists.
         if ([manager fileExistsAtPath:dir isDirectory:&isDir] && isDir) {
             [newRecipeSearchDirs addObject:repairedDir];
             pathRepaired++;
-        } else {
+        }
+        else {
             errorEncountered = YES;
         }
     }
@@ -379,16 +382,17 @@
     for (NSString *key in defaults.autoPkgRecipeRepos.allKeys) {
         NSString *repairedKey;
         NSArray *splitKey = [key componentsSeparatedByString:@"~"];
-        // If we've got a count that's greater than 1 we found a ~
+        // If we've got a count that's greater than 1 we found a "~".
         if (splitKey.count > 1) {
-            // Take the last item in the array and just append that to the home directory
+            // Take the last item in the array and append that to the home directory.
             repairedKey = [NSHomeDirectory() stringByAppendingString:splitKey.lastObject];
             if (![self moveRepoFrom:key to:repairedKey]) {
                 // If a bad repo was found but could not be moved, do not add it to the list.
                 repairedKey = nil;
                 errorEncountered = YES;
             }
-        } else {
+        }
+        else {
             repairedKey = key;
         }
         BOOL isDir;
@@ -397,14 +401,15 @@
                 [newRecipeRepos setObject:defaults.autoPkgRecipeRepos[key] forKey:repairedKey];
                 pathRepaired++;
             }
-        } else {
+        }
+        else {
             errorEncountered = YES;
         }
     }
     defaults.autoPkgRecipeRepos = newRecipeRepos;
     [defaults synchronize];
 
-    // Populate the pointers if needed
+    // Populate the pointers if needed.
     if (neededFixing)
         *neededFixing = pathRepaired;
     if (errorEncountered) {
@@ -416,18 +421,18 @@
 + (BOOL)moveRepoFrom:(NSString *)fromPath to:(NSString *)toPath
 {
     NSFileManager *manager = [NSFileManager new];
-    // If the dest is a git repo everything is most likely fine
+    // If the destination is a git repo, everything is most likely fine.
     if (![manager fileExistsAtPath:[toPath stringByAppendingPathComponent:@".git"]]) {
-        // If the source is a git repo try and move it to the dest
+        // If the source is a git repo try and move it to the destination.
         if ([manager fileExistsAtPath:[fromPath stringByAppendingPathComponent:@".git"]]) {
-            // If the folder exists and looks like a recipe repo
-            // try and remove it
+            // If the folder exists and looks like a recipe repo, try and remove it.
             if ([manager fileExistsAtPath:toPath] &&
                 [toPath rangeOfString:@"recipes"].location != NSNotFound) {
                 NSLog(@"We found an item at %@ that needs to be removed.", toPath);
                 [manager removeItemAtPath:toPath error:nil];
-            } else {
-                // There is something really wrong with the toPath, abort
+            }
+            else {
+                // There is something really wrong with the destination, abort.
                 NSLog(@"Somthing is wrong with the RECIPE_REPO path: %@.", toPath);
                 NSLog(@"The folder exists, but does not look like an actual recipe repo.");
                 return NO;
@@ -436,7 +441,7 @@
 
             return [manager moveItemAtPath:fromPath toPath:toPath error:nil];
         }
-        // However if the source is not a git repo return NO so it won't get added to the repo list
+        // However if the source is not a git repo, return NO so it won't get added to the repo list.
         else {
             return NO;
         }

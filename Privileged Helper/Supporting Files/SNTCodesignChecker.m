@@ -18,7 +18,6 @@
 
 #import "SNTCertificate.h"
 
-
 /**
  *  kStaticSigningFlags are the flags used when validating signatures on disk.
  *
@@ -47,7 +46,6 @@ const SecCSFlags kStaticSigningFlags = kSecCSDoNotValidateResources | kSecCSChec
  */
 const SecCSFlags kSigningFlags = kSecCSDefaultFlags;
 
-
 @interface SNTCodesignChecker ()
 /// Array of @c SNTCertificate's representing the chain of certs this executable was signed with.
 @property NSMutableArray *certificates;
@@ -57,139 +55,163 @@ const SecCSFlags kSigningFlags = kSecCSDefaultFlags;
 
 #pragma mark Init/dealloc
 
-- (instancetype)initWithSecStaticCodeRef:(SecStaticCodeRef)codeRef {
-  self = [super init];
+- (instancetype)initWithSecStaticCodeRef:(SecStaticCodeRef)codeRef
+{
+    self = [super init];
 
-  if (self) {
-    // First check the signing is valid
-    if (CFGetTypeID(codeRef) == SecStaticCodeGetTypeID()) {
-      if (SecStaticCodeCheckValidity(codeRef, kStaticSigningFlags, NULL) != errSecSuccess) {
-        return nil;
-      }
-    } else if (CFGetTypeID(codeRef) == SecCodeGetTypeID()) {
-      if (SecCodeCheckValidity((SecCodeRef)codeRef, kSigningFlags, NULL) != errSecSuccess) {
-        return nil;
-      }
-    } else {
-      return nil;
+    if (self) {
+        // First check the signing is valid
+        if (CFGetTypeID(codeRef) == SecStaticCodeGetTypeID()) {
+            if (SecStaticCodeCheckValidity(codeRef, kStaticSigningFlags, NULL) != errSecSuccess) {
+                return nil;
+            }
+        }
+        else if (CFGetTypeID(codeRef) == SecCodeGetTypeID()) {
+            if (SecCodeCheckValidity((SecCodeRef)codeRef, kSigningFlags, NULL) != errSecSuccess) {
+                return nil;
+            }
+        }
+        else {
+            return nil;
+        }
+
+        // Get CFDictionary of signing information for binary
+        OSStatus status = errSecSuccess;
+        CFDictionaryRef signingDict = NULL;
+        status = SecCodeCopySigningInformation(codeRef, kSecCSSigningInformation, &signingDict);
+        _signingInformation = CFBridgingRelease(signingDict);
+        if (status != errSecSuccess)
+            return nil;
+
+        // Get array of certificates.
+        NSArray *certs = _signingInformation[(id)kSecCodeInfoCertificates];
+        if (!certs)
+            return nil;
+
+        // Wrap SecCertificateRef objects in SNTCertificate and put in a new NSArray
+        NSMutableArray *mutableCerts = [[NSMutableArray alloc] initWithCapacity:certs.count];
+        for (int i = 0; i < certs.count; ++i) {
+            SecCertificateRef certRef = (__bridge SecCertificateRef)certs[i];
+            SNTCertificate *newCert = [[SNTCertificate alloc] initWithSecCertificateRef:certRef];
+            [mutableCerts addObject:newCert];
+        }
+        _certificates = [mutableCerts copy];
+
+        _codeRef = codeRef;
+        CFRetain(_codeRef);
     }
 
-    // Get CFDictionary of signing information for binary
-    OSStatus status = errSecSuccess;
-    CFDictionaryRef signingDict = NULL;
-    status = SecCodeCopySigningInformation(codeRef, kSecCSSigningInformation, &signingDict);
-    _signingInformation = CFBridgingRelease(signingDict);
-    if (status != errSecSuccess) return nil;
+    return self;
+}
 
-    // Get array of certificates.
-    NSArray *certs = _signingInformation[(id)kSecCodeInfoCertificates];
-    if (!certs) return nil;
+- (instancetype)initWithBinaryPath:(NSString *)binaryPath
+{
+    SecStaticCodeRef codeRef = NULL;
 
-    // Wrap SecCertificateRef objects in SNTCertificate and put in a new NSArray
-    NSMutableArray *mutableCerts = [[NSMutableArray alloc] initWithCapacity:certs.count];
-    for (int i = 0; i < certs.count; ++i) {
-      SecCertificateRef certRef = (__bridge SecCertificateRef)certs[i];
-      SNTCertificate *newCert = [[SNTCertificate alloc] initWithSecCertificateRef:certRef];
-      [mutableCerts addObject:newCert];
+    // Get SecStaticCodeRef for binary
+    if (SecStaticCodeCreateWithPath((__bridge CFURLRef)[NSURL fileURLWithPath:binaryPath
+                                                                  isDirectory:NO],
+                                    kSecCSDefaultFlags,
+                                    &codeRef)
+        == errSecSuccess) {
+        self = [self initWithSecStaticCodeRef:codeRef];
     }
-    _certificates = [mutableCerts copy];
+    else {
+        self = nil;
+    }
 
-    _codeRef = codeRef;
-    CFRetain(_codeRef);
-  }
-
-  return self;
+    if (codeRef)
+        CFRelease(codeRef);
+    return self;
 }
 
-- (instancetype)initWithBinaryPath:(NSString *)binaryPath {
-  SecStaticCodeRef codeRef = NULL;
+- (instancetype)initWithPID:(pid_t)PID
+{
+    SecCodeRef codeRef = NULL;
+    NSDictionary *attributes = @{(__bridge NSString *)kSecGuestAttributePid : @(PID) };
 
-  // Get SecStaticCodeRef for binary
-  if (SecStaticCodeCreateWithPath((__bridge CFURLRef)[NSURL fileURLWithPath:binaryPath
-                                                                isDirectory:NO],
-                                  kSecCSDefaultFlags,
-                                  &codeRef) == errSecSuccess) {
-    self = [self initWithSecStaticCodeRef:codeRef];
-  } else {
-    self = nil;
-  }
+    if (SecCodeCopyGuestWithAttributes(NULL,
+                                       (__bridge CFDictionaryRef)attributes,
+                                       kSecCSDefaultFlags,
+                                       &codeRef)
+        == errSecSuccess) {
+        self = [self initWithSecStaticCodeRef:codeRef];
+    }
+    else {
+        self = nil;
+    }
 
-  if (codeRef) CFRelease(codeRef);
-  return self;
+    if (codeRef)
+        CFRelease(codeRef);
+    return self;
 }
 
-- (instancetype)initWithPID:(pid_t)PID {
-  SecCodeRef codeRef = NULL;
-  NSDictionary *attributes = @{(__bridge NSString *)kSecGuestAttributePid: @(PID)};
+- (instancetype)initWithSelf
+{
+    SecCodeRef codeSelf = NULL;
+    if (SecCodeCopySelf(kSecCSDefaultFlags, &codeSelf) == errSecSuccess) {
+        self = [self initWithSecStaticCodeRef:codeSelf];
+    }
+    else {
+        self = nil;
+    }
 
-  if (SecCodeCopyGuestWithAttributes(NULL,
-                                     (__bridge CFDictionaryRef)attributes,
-                                     kSecCSDefaultFlags,
-                                     &codeRef) == errSecSuccess) {
-    self = [self initWithSecStaticCodeRef:codeRef];
-  } else {
-    self = nil;
-  }
-
-  if (codeRef) CFRelease(codeRef);
-  return self;
+    if (codeSelf)
+        CFRelease(codeSelf);
+    return self;
 }
 
-- (instancetype)initWithSelf {
-  SecCodeRef codeSelf = NULL;
-  if (SecCodeCopySelf(kSecCSDefaultFlags, &codeSelf) == errSecSuccess) {
-    self = [self initWithSecStaticCodeRef:codeSelf];
-  } else {
-    self = nil;
-  }
-
-  if (codeSelf) CFRelease(codeSelf);
-  return self;
+- (instancetype)init
+{
+    [self doesNotRecognizeSelector:_cmd];
+    return nil;
 }
 
-- (instancetype)init {
-  [self doesNotRecognizeSelector:_cmd];
-  return nil;
-}
-
-- (void)dealloc {
-  if (_codeRef) {
-    CFRelease(_codeRef);
-    _codeRef = NULL;
-  }
+- (void)dealloc
+{
+    if (_codeRef) {
+        CFRelease(_codeRef);
+        _codeRef = NULL;
+    }
 }
 
 #pragma mark Description
 
-- (NSString *)description {
-  NSString *binarySource;
-  if (CFGetTypeID(self.codeRef) == SecStaticCodeGetTypeID()) {
-    binarySource = @"On-disk";
-  } else {
-    binarySource = @"In-memory";
-  }
+- (NSString *)description
+{
+    NSString *binarySource;
+    if (CFGetTypeID(self.codeRef) == SecStaticCodeGetTypeID()) {
+        binarySource = @"On-disk";
+    }
+    else {
+        binarySource = @"In-memory";
+    }
 
-  return [NSString stringWithFormat:@"%@ binary, signed by %@, located at: %@",
-             binarySource,
-             self.leafCertificate.orgName,
-             self.binaryPath];
+    return [NSString stringWithFormat:@"%@ binary, signed by %@, located at: %@",
+                                      binarySource,
+                                      self.leafCertificate.orgName,
+                                      self.binaryPath];
 }
 
 #pragma mark Public accessors
 
-- (SNTCertificate *)leafCertificate {
-  return [self.certificates firstObject];
+- (SNTCertificate *)leafCertificate
+{
+    return [self.certificates firstObject];
 }
 
-- (NSString *)binaryPath {
-  CFURLRef path;
-  OSStatus status = SecCodeCopyPath(_codeRef, kSecCSDefaultFlags, &path);
-  NSURL *pathURL = CFBridgingRelease(path);
-  if (status != errSecSuccess) return nil;
-  return [pathURL path];
+- (NSString *)binaryPath
+{
+    CFURLRef path;
+    OSStatus status = SecCodeCopyPath(_codeRef, kSecCSDefaultFlags, &path);
+    NSURL *pathURL = CFBridgingRelease(path);
+    if (status != errSecSuccess)
+        return nil;
+    return [pathURL path];
 }
 
-- (BOOL)signingInformationMatches:(SNTCodesignChecker *)otherChecker {
+- (BOOL)signingInformationMatches:(SNTCodesignChecker *)otherChecker
+{
     if (self.certificates && otherChecker.certificates) {
         return [self.certificates isEqual:otherChecker.certificates];
     }

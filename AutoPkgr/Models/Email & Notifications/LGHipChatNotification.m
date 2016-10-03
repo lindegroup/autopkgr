@@ -2,7 +2,7 @@
 //  LGHipChatNotification.m
 //  AutoPkgr
 //
-//  Copyright 2015 The Linde Group, Inc.
+//  Copyright 2015-2016 The Linde Group, Inc.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -17,8 +17,8 @@
 //  limitations under the License.
 //
 
-#import "LGHipChatNotification.h"
 #import "LGDefaults.h"
+#import "LGHipChatNotification.h"
 
 #import <AFNetworking/AFHTTPRequestOperationManager.h>
 
@@ -27,7 +27,6 @@ static NSString *const HipChatLink = @"https://hipchat.com/rooms";
 static NSString *const HipChatNotificationEnabledKey = @"HipChatNotificationsEnabled";
 static NSString *const HipChatNotificationRoomKey = @"HipChatNotificationRoom";
 static NSString *const HipChatNotificationNotifyKey = @"HipChatNotificationNotify";
-
 
 @implementation LGHipChatNotification
 
@@ -62,11 +61,13 @@ static NSString *const HipChatNotificationNotifyKey = @"HipChatNotificationNotif
     return [NSURL URLWithString:HipChatLink];
 }
 
-+ (BOOL)templateIsFile {
++ (BOOL)templateIsFile
+{
     return NO;
 }
 
-+ (NSString *)defaultTemplate {
++ (NSString *)defaultTemplate
+{
     return [self templateWithName:@"web_report" type:@"html"];
 }
 
@@ -78,13 +79,14 @@ static NSString *const HipChatNotificationNotifyKey = @"HipChatNotificationNotif
     NSString *color;
     if (self.report.error) {
         color = @"red";
-    } else {
+    }
+    else {
         color = @"green";
     }
     NSString *message = [self.report renderWithTemplate:[[self class] reportTemplate] error:nil];
     NSDictionary *parameters = @{ @"message" : message,
                                   @"color" : color,
-                                  };
+    };
 
     [self sendMessageWithParameters:[self baseRoomPostParameters:parameters]];
 }
@@ -95,17 +97,18 @@ static NSString *const HipChatNotificationNotifyKey = @"HipChatNotificationNotif
     NSString *message = NSLocalizedString(@"Testing HipChat notifications!",
                                           @"Hipchat testing message");
 
-    NSDictionary *parameters = @{ @"message" : message, @"message_format": @"text"};
+    NSDictionary *parameters = @{ @"message" : message,
+                                  @"message_format" : @"text" };
 
     [self sendMessageWithParameters:[self baseRoomPostParameters:parameters]];
 }
 
-- (void)sendMessage:(NSString *)message title:(NSString *)title complete:(void (^)(NSError *))complete {
+- (void)sendMessage:(NSString *)message title:(NSString *)title complete:(void (^)(NSError *))complete
+{
     self.notificatonComplete = complete;
     NSDictionary *parameters = @{ @"message" : message,
-                                  @"message_format": @"html"};
+                                  @"message_format" : @"html" };
     [self sendMessageWithParameters:[self baseRoomPostParameters:parameters]];
-
 }
 
 #pragma mark - Private
@@ -140,13 +143,14 @@ static NSString *const HipChatNotificationNotifyKey = @"HipChatNotificationNotif
     [[self class] infoFromKeychain:^(NSString *token, NSError *error) {
         if (error) {
             reply(nil, error);
-        } else {
+        }
+        else {
             AFHTTPRequestOperationManager *manager = [[AFHTTPRequestOperationManager alloc] initWithBaseURL:[self hipChatURL]];
 
             manager.requestSerializer = [AFJSONRequestSerializer serializer];
             manager.requestSerializer.timeoutInterval = 5;
             [manager.requestSerializer setValue:[@"Bearer " stringByAppendingString:token]
-                         forHTTPHeaderField:@"Authorization"];
+                             forHTTPHeaderField:@"Authorization"];
 
             manager.responseSerializer = [AFJSONResponseSerializer serializer];
             reply(manager, nil);
@@ -160,16 +164,18 @@ static NSString *const HipChatNotificationNotifyKey = @"HipChatNotificationNotif
         if (error) {
             // Error here means there was a problem getting the password.
             self.notificatonComplete(error);
-        } else {
-            NSString *urlString  = [[self sendNotificationPath] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-            
+        }
+        else {
+            NSString *urlString = [[self sendNotificationPath] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+
             [manager POST:urlString parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
                 //
                 self.notificatonComplete(nil);
-            } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                //
-                self.notificatonComplete([LGError errorWithResponse:operation.response]);
-            }];
+            }
+                failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                    //
+                    self.notificatonComplete([LGError errorWithResponse:operation.response]);
+                }];
         }
     }];
 }

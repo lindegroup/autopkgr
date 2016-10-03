@@ -3,7 +3,7 @@
 //  AutoPkgr
 //
 //  Created by Eldon Ahrold on 10/6/14.
-//  Copyright 2014-2015 The Linde Group, Inc.
+//  Copyright 2014-2016 The Linde Group, Inc.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -37,7 +37,8 @@
     static id image;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        image = [self imageNamed:@"NSCaution"];;
+        image = [self imageNamed:@"NSCaution"];
+        ;
     });
     return image;
 }
@@ -81,6 +82,5 @@
 {
     return [self LGStatusNone];
 }
-
 
 @end

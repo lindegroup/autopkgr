@@ -3,7 +3,7 @@
 //  AutoPkgr
 //
 //  Created by Eldon Ahrold on 7/28/14.
-//  Copyright 2015 The Linde Group, Inc.
+//  Copyright 2015-2016 The Linde Group, Inc.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -18,9 +18,9 @@
 //  limitations under the License.
 //
 
-#import <Foundation/Foundation.h>
 #import "LGAutoPkgrProtocol.h"
 #import "LGProgressDelegate.h"
+#import <Foundation/Foundation.h>
 
 @interface LGAutoPkgrHelperConnection : NSObject
 
@@ -31,7 +31,7 @@
 /**
  *  @return proxy connection to Priviledged Helper
  */
-@property (copy, nonatomic, readonly) id<AutoPkgrHelperAgent>remoteObjectProxy;
+@property (copy, nonatomic, readonly) id<AutoPkgrHelperAgent> remoteObjectProxy;
 
 /**
  *  @return proxy connection to the Priviledged Helper plus error handler block

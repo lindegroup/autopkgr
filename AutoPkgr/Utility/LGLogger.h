@@ -3,7 +3,7 @@
 //  AutoPkgr
 //
 //  Created by Eldon Ahrold on 4/23/15.
-//  Copyright 2015 The Linde Group, Inc.
+//  Copyright 2015-2016 The Linde Group, Inc.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -21,7 +21,7 @@
 #import <Foundation/Foundation.h>
 
 // Shorter NSString stringWithFormat:
-NSString *quick_formatString(NSString *format, ...)NS_FORMAT_FUNCTION(1, 2);
+NSString *quick_formatString(NSString *format, ...) NS_FORMAT_FUNCTION(1, 2);
 NSString *quick_pathJoin(NSArray *components);
 
 //

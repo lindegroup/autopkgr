@@ -2,7 +2,7 @@
 //  LGBaseNotificationServiceViewController.m
 //  AutoPkgr
 //
-//  Copyright 2015 The Linde Group, Inc.
+//  Copyright 2015-2016 The Linde Group, Inc.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -55,7 +55,8 @@
 {
     if ([sender isKindOfClass:[NSTextField class]]) {
         if ([[self.service class] storesInfoInKeychain]) {
-            [[self.service class] saveInfoToKeychain:self.infoOrPasswordTextField.stringValue reply:^(NSError *error) {}];
+            [[self.service class] saveInfoToKeychain:self.infoOrPasswordTextField.stringValue reply:^(NSError *error){
+            }];
         }
     }
 }

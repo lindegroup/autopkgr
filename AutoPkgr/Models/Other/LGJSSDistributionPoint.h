@@ -2,8 +2,8 @@
 //  LGJSSDistributionPoint.h
 //  AutoPkgr
 //
-//  Created by Eldon on 11/9/15.
-//  Copyright © 2015 The Linde Group, Inc. All rights reserved.
+//  Created by Eldon Ahrold on 11/9/15.
+//  Copyright 2015-2016 The Linde Group, Inc.
 //
 
 #import <Foundation/Foundation.h>
@@ -17,36 +17,33 @@ typedef NS_OPTIONS(NSInteger, JSSDistributionPointType) {
     kLGJSSTypeLocal = 1 << 5
 };
 
-extern NSString* const kLGJSSDistPointNameKey;
-extern NSString* const kLGJSSDistPointURLKey;
-extern NSString* const kLGJSSDistPointSharePointKey;
+extern NSString *const kLGJSSDistPointNameKey;
+extern NSString *const kLGJSSDistPointURLKey;
+extern NSString *const kLGJSSDistPointSharePointKey;
 extern NSString *const kLGJSSDistPointMountPointKey;
-extern NSString* const kLGJSSDistPointPortKey;
-extern NSString* const kLGJSSDistPointUserNameKey;
-extern NSString* const kLGJSSDistPointPasswordKey;
-extern NSString* const kLGJSSDistPointWorkgroupDomainKey;
-extern NSString* const kLGJSSDistPointTypeKey;
+extern NSString *const kLGJSSDistPointPortKey;
+extern NSString *const kLGJSSDistPointUserNameKey;
+extern NSString *const kLGJSSDistPointPasswordKey;
+extern NSString *const kLGJSSDistPointWorkgroupDomainKey;
+extern NSString *const kLGJSSDistPointTypeKey;
 
-// Cooresponding type string in keyInfoDict()
+// Corresponding type string in keyInfoDict().
 extern const NSString *kTypeString;
-// Key used to indicate the array of required keys for a DP
+// Key used to indicate the array of required keys for a DP.
 extern const NSString *kRequired;
-// Key used to indicate the array of optional keys for a DP
+// Key used to indicate the array of optional keys for a DP.
 extern const NSString *kOptional;
 
-
 @interface LGJSSDistributionPoint : NSObject
-// Dictionary to query for type string
-// Cooresponding values can be looked up
-// using an NSNumber representation of JSSDistributionPointType
-// as the key.
+// Dictionary to query for type string.
+// Corresponding values can be looked up using an NSNumber representation of JSSDistributionPointType as the key.
 + (NSDictionary *)keyInfoDict;
 
 + (NSArray<LGJSSDistributionPoint *> *)enabledDistributionPoints;
 
-+ (void)getFromRemote:(void(^)(NSArray<LGJSSDistributionPoint *> *distPoints, NSError *error))distPoints;
++ (void)getFromRemote:(void (^)(NSArray<LGJSSDistributionPoint *> *distPoints, NSError *error))distPoints;
 
-// The Dictionary representation of the Distribution Point object, sutiable for writing to defaults.
+// The Dictionary representation of the Distribution Point object, suitable for writing to defaults.
 @property (copy, readonly) NSDictionary *representation;
 @property (copy) NSString *name;
 @property (copy) NSString *URL;
@@ -61,12 +58,12 @@ extern const NSString *kOptional;
 
 - (BOOL)isEditable;
 
-// Initialize a distribution point using a dictionary
+// Initialize a distribution point using a dictionary.
 - (instancetype)initWithDictionary:(NSDictionary *)dict;
 - (instancetype)initWithType:(JSSDistributionPointType)type;
 - (instancetype)initWithTypeString:(NSString *)typeString;
 
-// Save or modifying and existing distribution point to defaults
+// Save or modify an existing distribution point to defaults.
 - (BOOL)save;
 
 // Remove a distribution point.

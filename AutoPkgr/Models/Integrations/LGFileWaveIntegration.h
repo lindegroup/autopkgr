@@ -2,7 +2,7 @@
 //  LGFileWaveIntegration.h
 //  AutoPkgr
 //
-//  Copyright 2015 Elliot Jordan.
+//  Copyright 2015 Elliot Jordan
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -17,13 +17,13 @@
 //  limitations under the License.
 //
 
-#import "LGIntegration.h"
 #import "LGDefaults.h"
+#import "LGIntegration.h"
 
 @interface LGFileWaveIntegration : LGIntegration
 @end
 
-// This is also a good place to add custom defaults
+// This is also a good place to add custom defaults.
 @interface LGFileWaveDefaults : LGDefaults
 
 @property (copy, nonatomic) NSString *FW_SERVER_HOST;

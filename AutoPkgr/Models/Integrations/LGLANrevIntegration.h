@@ -17,13 +17,13 @@
 //  limitations under the License.
 //
 
-#import "LGIntegration.h"
 #import "LGDefaults.h"
+#import "LGIntegration.h"
 
 @interface LGLANrevIntegration : LGIntegration
 @end
 
-// This is also a good place to add custom defaults
+// This is also a good place to add custom defaults.
 @interface LGLANrevDefaults : LGDefaults
 
 @property (copy, nonatomic, readonly) NSString *DatabaseDirectory;

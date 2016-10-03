@@ -2,7 +2,7 @@
 //  LGIntegration.m
 //  AutoPkgr
 //
-//  Copyright 2015 Eldon Ahrold.
+//  Copyright 2015 Eldon Ahrold
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -17,15 +17,15 @@
 //  limitations under the License.
 //
 
-#import "LGIntegration.h"
-#import "LGIntegration+Protocols.h"
-#import "LGAutoPkgr.h"
 #import "LGAutoPkgRepo.h"
+#import "LGAutoPkgr.h"
+#import "LGIntegration+Protocols.h"
+#import "LGIntegration.h"
 
-#import "LGInstaller.h"
-#import "LGUninstaller.h"
 #import "LGAutoPkgTask.h"
 #import "LGHostInfo.h"
+#import "LGInstaller.h"
+#import "LGUninstaller.h"
 
 #ifndef LGINTEGRATION_SUBCLASS
 #define LGINTEGRATION_SUBCLASS
@@ -75,7 +75,7 @@ void subclassMustConformToProtocol(id className)
 @synthesize gitHubInfo = _gitHubInfo;
 
 // Dispatch queue for synchronizing infoHandler setter and refresh.
-+ (dispatch_queue_t )synchronizerQueue
++ (dispatch_queue_t)synchronizerQueue
 {
     NSString *queueName = quick_formatString(@"com.lindegroup.autopkgr.integration.%@.synchronizer.queue", self.className);
     static dispatch_queue_t dispatch_queue;
@@ -92,9 +92,10 @@ void subclassMustConformToProtocol(id className)
     // We only need to check subclasses (and should ignore the super).
     if ((self != [LGIntegration class]) && [self isSubclassOfClass:[LGIntegration class]]) {
 
-        // The subclasses must conform to at least one of the protocols
+        // The subclasses must conform to at least one of the protocols.
         if (([self conformsToProtocol:@protocol(LGIntegrationSharedProcessor)] ||
-             [self conformsToProtocol:@protocol(LGIntegrationPackageInstaller)]) == NO) {
+             [self conformsToProtocol:@protocol(LGIntegrationPackageInstaller)])
+            == NO) {
             subclassMustConformToProtocol(self);
         }
     }
@@ -106,7 +107,8 @@ void subclassMustConformToProtocol(id className)
     if ((self.typeFlags & kLGIntegrationTypeAutoPkgSharedProcessor) && (![self components])) {
         NSPredicate *match = [NSPredicate predicateWithFormat:@"%K == %@", kLGAutoPkgRepoURLKey, [[self class] defaultRepository]];
         return [[LGAutoPkgTask repoList] filteredArrayUsingPredicate:match].count;
-    } else {
+    }
+    else {
         NSFileManager *fm = [NSFileManager defaultManager];
         for (NSString *file in self.components) {
             if (![fm fileExistsAtPath:file]) {
@@ -117,7 +119,8 @@ void subclassMustConformToProtocol(id className)
     return YES;
 }
 
-+ (NSString *)summaryResultKey {
++ (NSString *)summaryResultKey
+{
     return nil;
 }
 
@@ -134,8 +137,6 @@ void subclassMustConformToProtocol(id className)
 #pragma mark - Init / Dealloc
 - (void)dealloc
 {
-    //    DevLog(@"Dealloc %@", self);
-
     // nil out the blocks to break retain cycles.
     _progressUpdateBlock = nil;
     _replyErrorBlock = nil;
@@ -153,7 +154,7 @@ void subclassMustConformToProtocol(id className)
 {
     if (self = [super init]) {
         LGIntegrationTypeFlags flags = [[self class] typeFlags];
-        if ( flags & kLGIntegrationTypeInstalledPackage) {
+        if (flags & kLGIntegrationTypeInstalledPackage) {
             self.gitHubInfo = [[LGGitHubReleaseInfo alloc] initWithURL:[[self class] gitHubURL]];
         }
         NSString *cloneURL = nil;
@@ -293,15 +294,16 @@ void subclassMustConformToProtocol(id className)
         // If there's no URL, check for a default repo. The _repo iVar is
         // initialized during this object's init if it. The repo's status can then
         // be used as the criteria for the integration's status.
-        if (_repo && !_repo.status){
+        if (_repo && !_repo.status) {
             [_repo getRepoStatus:^(LGAutoPkgRepoStatus status) {
                 updateInfoHandlers();
             }];
-        } else {
+        }
+        else {
             updateInfoHandlers();
         }
-
-    } else if (!self.gitHubInfo || self.gitHubInfo.isExpired) {
+    }
+    else if (!self.gitHubInfo || self.gitHubInfo.isExpired) {
         DevLog(@"Getting remote GitHub info for %@", self.class);
 
         LGGitHubJSONLoader *loader = [[LGGitHubJSONLoader alloc] initWithGitHubURL:url];
@@ -311,7 +313,8 @@ void subclassMustConformToProtocol(id className)
             self.gitHubInfo = gitHubInfo;
             updateInfoHandlers();
         }];
-    } else {
+    }
+    else {
         DevLog(@"Using cached GitHub info for %@", self.class);
         updateInfoHandlers();
     }
@@ -355,7 +358,8 @@ void subclassMustConformToProtocol(id className)
                 _installedVersion = receiptDict[@"PackageVersion"];
             }
         }
-    } else if (typeFlags & kLGIntegrationTypeAutoPkgSharedProcessor) {
+    }
+    else if (typeFlags & kLGIntegrationTypeAutoPkgSharedProcessor) {
         _installedVersion = @"";
     }
 
@@ -392,13 +396,14 @@ void subclassMustConformToProtocol(id className)
     void (^addRepo)() = ^void() {
         NSString *name = self.name;
         if (self.progressDelegate) {
-            [self.progressDelegate startProgressWithMessage:[NSString stringWithFormat:@"Adding default AutoPkg repo for %@", name]];
+            [self.progressDelegate startProgressWithMessage:[NSString stringWithFormat:@"Adding default AutoPkg repo for %@...", name]];
         }
-        if(_repo.isInstalled){
+        if (_repo.isInstalled) {
             [_repo update:^(NSError *error) {
                 complete(error);
             }];
-        } else {
+        }
+        else {
             [_repo install:^(NSError *error) {
                 complete(error);
             }];
@@ -409,7 +414,8 @@ void subclassMustConformToProtocol(id className)
     NSError *error = nil;
     if (![[self class] meetsRequirements:&error]) {
         [self didCompleteInstallAction:sender error:error];
-    } else if (flags & kLGIntegrationTypeInstalledPackage) {
+    }
+    else if (flags & kLGIntegrationTypeInstalledPackage) {
         NSString *name = [[self class] name];
         NSString *installMessage = [NSString stringWithFormat:@"Installing %@...", [[self class] name]];
         [self.progressDelegate startProgressWithMessage:installMessage];
@@ -422,11 +428,13 @@ void subclassMustConformToProtocol(id className)
                           reply:^(NSError *error) {
                               if (!error && _repo) {
                                   addRepo();
-                              } else {
+                              }
+                              else {
                                   complete(error);
                               }
                           }];
-    } else if (flags & kLGIntegrationTypeAutoPkgSharedProcessor) {
+    }
+    else if (flags & kLGIntegrationTypeAutoPkgSharedProcessor) {
         addRepo();
     }
 }
@@ -496,7 +504,8 @@ void subclassMustConformToProtocol(id className)
             [task launchInBackground:^(NSError *error) {
                 complete(error);
             }];
-        } else {
+        }
+        else {
             complete(nil);
         }
     };
@@ -521,11 +530,13 @@ void subclassMustConformToProtocol(id className)
                                                     reply:^(NSError *error) {
                                                         if (!error && (typeFlags & kLGIntegrationTypeAutoPkgSharedProcessor)) {
                                                             removeRepo();
-                                                        } else {
+                                                        }
+                                                        else {
                                                             complete(error);
                                                         }
                                                     }];
-        } else if (typeFlags & kLGIntegrationTypeAutoPkgSharedProcessor) {
+        }
+        else if (typeFlags & kLGIntegrationTypeAutoPkgSharedProcessor) {
             removeRepo();
         }
     }
@@ -614,7 +625,7 @@ void subclassMustConformToProtocol(id className)
         NSLocalizedRecoverySuggestionErrorKey : reason ?: @"",
     };
 
-    return [NSError errorWithDomain:kLGApplicationName code:(4 << 1)userInfo:userInfo];
+    return [NSError errorWithDomain:kLGApplicationName code:(4 << 1) userInfo:userInfo];
 }
 
 #pragma mark - LGProgress Delegate
@@ -671,28 +682,31 @@ void subclassMustConformToProtocol(id className)
 - (LGIntegrationInstallStatus)status
 {
     _status = kLGIntegrationUpToDate;
-    if (!_installed){
+    if (!_installed) {
         _status = kLGIntegrationNotInstalled;
-    } else if (!_installedVersion.length) {
-        if (_repoStatus){
+    }
+    else if (!_installedVersion.length) {
+        if (_repoStatus) {
             switch (_repoStatus) {
-                case kLGAutoPkgRepoNotInstalled: {
-                    _status = kLGIntegrationNotInstalled;
-                    break;
-                }
-                case kLGAutoPkgRepoUpdateAvailable: {
-                    _status = kLGIntegrationUpdateAvailable;
-                    break;
-                }
-                case kLGAutoPkgRepoUpToDate: {
-                    _status = kLGIntegrationUpToDate;
-                    break;
-                }
+            case kLGAutoPkgRepoNotInstalled: {
+                _status = kLGIntegrationNotInstalled;
+                break;
             }
-        } else {
+            case kLGAutoPkgRepoUpdateAvailable: {
+                _status = kLGIntegrationUpdateAvailable;
+                break;
+            }
+            case kLGAutoPkgRepoUpToDate: {
+                _status = kLGIntegrationUpToDate;
+                break;
+            }
+            }
+        }
+        else {
             _status = kLGIntegrationNotInstalled;
         }
-    } else if (_installedVersion && _remoteVersion) {
+    }
+    else if (_installedVersion && _remoteVersion) {
         if ([_remoteVersion version_isGreaterThan:_installedVersion]) {
             _status = kLGIntegrationUpdateAvailable;
         }
@@ -726,17 +740,17 @@ void subclassMustConformToProtocol(id className)
     case kLGIntegrationNotInstalled:
         statusString = quick_formatString(NSLocalizedString(@"%@ not installed.",
                                                             @"status message when not integration is not installed"),
-                                                            _name);
+                                          _name);
         break;
     case kLGIntegrationUpdateAvailable:
         statusString = quick_formatString(NSLocalizedString(@"%@ %@ update now available.",
                                                             @"Status message when integration update is available."),
-                                                            _name, self.remoteVersion ?: @"");
+                                          _name, self.remoteVersion ?: @"");
         break;
     case kLGIntegrationUpToDate:
         statusString = quick_formatString(NSLocalizedString(@"%@ %@ installed.",
                                                             @"Status message when integration is up to date."),
-                                                            _name, self.installedVersion ?: @"");
+                                          _name, self.installedVersion ?: @"");
         break;
     }
     return [statusString stringByReplacingOccurrencesOfString:@"  " withString:@" "];
@@ -787,7 +801,8 @@ void subclassMustConformToProtocol(id className)
 {
     if ((self.status == kLGIntegrationUpToDate) && (_typeFlags | kLGIntegrationTypeUninstallableIntegration)) {
         return @selector(uninstall:);
-    } else {
+    }
+    else {
         return @selector(install:);
     }
 }
@@ -804,7 +819,8 @@ void subclassMustConformToProtocol(id className)
         title = @"Configure ";
         break;
     }
-    return [title stringByAppendingString:_shortName ?: _name];
+    title = [title stringByAppendingString:_shortName ?: _name];
+    return [title stringByAppendingString:@"..."];
 }
 
 - (BOOL)configureButtonEnabled
@@ -818,7 +834,8 @@ void subclassMustConformToProtocol(id className)
 
     if (self.status != kLGIntegrationNotInstalled) {
         selector = NSSelectorFromString(@"configure:");
-    } else {
+    }
+    else {
         selector = @selector(install:);
     }
     return selector;

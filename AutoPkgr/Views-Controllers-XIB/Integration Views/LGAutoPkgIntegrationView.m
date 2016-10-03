@@ -3,7 +3,7 @@
 //  AutoPkgr
 //
 //  Created by Eldon Ahrold on 6/8/15.
-//  Copyright 2015 The Linde Group, Inc.
+//  Copyright 2015-2016 The Linde Group, Inc.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -18,11 +18,10 @@
 //  limitations under the License.
 //
 
+#import "AHHelpPopover.h"
 #import "LGAutoPkgIntegrationView.h"
 #import "LGAutoPkgTask.h"
-#import "AHHelpPopover.h"
 #import "LGRecipeOverrides.h"
-
 
 static NSString *const kLGTokenRevokeButonTitle = @"Revoke API Token";
 static NSString *const kLGTokenGenerateButonTitle = @"Generate API Token";
@@ -65,10 +64,12 @@ static NSString *const kLGTokenGenerateButonTitle = @"Generate API Token";
 
     if (systemProxyCheck) {
         [self.proxySelectionMatrix selectCellAtRow:1 column:0];
-    } else if(proxyCheck || proxyCheck2){
+    }
+    else if (proxyCheck || proxyCheck2) {
         [self.proxySelectionMatrix selectCellAtRow:2 column:0];
         self.useCustomProxies = YES;
-    } else {
+    }
+    else {
         [self.proxySelectionMatrix selectCellAtRow:0 column:0];
     }
 
@@ -79,9 +80,10 @@ static NSString *const kLGTokenGenerateButonTitle = @"Generate API Token";
 }
 
 #pragma mark - Proxies
-- (IBAction)changeProxySelection:(NSMatrix *)sender{
+- (IBAction)changeProxySelection:(NSMatrix *)sender
+{
     self.useCustomProxies = sender.selectedTag;
-    
+
     LGDefaults *defaults = [LGDefaults standardUserDefaults];
 
     [defaults setBool:(sender.selectedRow == 1) forKey:@"useSystemProxies"];
@@ -102,7 +104,8 @@ static NSString *const kLGTokenGenerateButonTitle = @"Generate API Token";
         if (error) {
             [NSApp presentError:error];
             sender.title = kLGTokenGenerateButonTitle;
-        } else {
+        }
+        else {
             sender.title = kLGTokenRevokeButonTitle;
             sender.action = @selector(deleteAPIToken:);
         }
@@ -119,7 +122,8 @@ static NSString *const kLGTokenGenerateButonTitle = @"Generate API Token";
         if (error) {
             [NSApp presentError:error];
             sender.title = kLGTokenRevokeButonTitle;
-        } else {
+        }
+        else {
             sender.title = kLGTokenGenerateButonTitle;
             sender.action = @selector(generateAPIToken:);
         }
@@ -134,7 +138,7 @@ static NSString *const kLGTokenGenerateButonTitle = @"Generate API Token";
     NSString *settingsLink = @"https://github.com/settings/tokens";
 
     NSString *message = NSLocalizedString(@"helpInfoAutoPkgAPIToken",
-                                    @"message presented to user with info about generating GitHub api token");
+                                          @"message presented to user with info about generating GitHub API token");
 
     NSMutableAttributedString *attributedHelpText = [NSString stringWithFormat:message, settingsLink, tokenFile].attributed_mutableCopy;
 
@@ -151,7 +155,8 @@ static NSString *const kLGTokenGenerateButonTitle = @"Generate API Token";
     }];
 }
 
-- (IBAction)chooseRecipeEditor:(NSPopUpButton *)sender {
+- (IBAction)chooseRecipeEditor:(NSPopUpButton *)sender
+{
     NSMenuItem *item = [LGRecipeOverrides setRecipeEditor:sender.selectedItem];
     [sender selectItem:item];
 }

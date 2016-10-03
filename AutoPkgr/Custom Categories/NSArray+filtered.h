@@ -3,7 +3,7 @@
 //  AutoPkgr
 //
 //  Created by Eldon Ahrold on 11/16/14.
-//  Copyright 2014-2015 The Linde Group, Inc.
+//  Copyright 2014-2016 The Linde Group, Inc.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -21,14 +21,13 @@
 #import <Foundation/Foundation.h>
 
 @interface NSArray (filtered)
-// Returns an array with empty strings removed
+// Returns an array with empty strings removed.
 - (NSArray *)filtered_noEmptyStrings;
 
 // Returns an array with only items of the specified class.
-- (NSArray *)filtered_ByClass:(Class)class;
+- (NSArray *)filtered_ByClass:(Class) class;
 
 // Verifies that an array only contains items of a specified class.
-- (BOOL)filtered_containsOnlyItemsOfClass:(Class)class;
+- (BOOL)filtered_containsOnlyItemsOfClass:(Class) class;
 
 @end
-

@@ -28,8 +28,9 @@
 
 @synthesize changeHandler = _changeHandler;
 
-- (void)dealloc {
-    if (_source){
+- (void)dealloc
+{
+    if (_source) {
         dispatch_source_cancel(_source);
     }
 }
@@ -62,7 +63,8 @@
     BOOL isDir;
     if ([_fm fileExistsAtPath:check isDirectory:&isDir] && !isDir) {
         return list;
-    } else {
+    }
+    else {
         return @"recipe_list";
     }
 }
@@ -80,12 +82,12 @@
 
     NSPredicate *pathExtensionPredicate = [NSPredicate predicateWithFormat:@"pathExtension == 'txt'"];
 
-    NSArray *lists =  [[recipeLists filteredArrayUsingPredicate:pathExtensionPredicate]
+    NSArray *lists = [[recipeLists filteredArrayUsingPredicate:pathExtensionPredicate]
         mapObjectsUsingBlock:^id(NSString *obj, NSUInteger idx) {
             return obj.stringByDeletingPathExtension;
         }];
-    
-    return lists.count ? lists : @[@"recipe_list"];
+
+    return lists.count ? lists : @[ @"recipe_list" ];
 }
 
 - (BOOL)addRecipeList:(NSString *)list error:(NSError *__autoreleasing *)error
@@ -97,7 +99,8 @@
             return YES;
         }
         return NO;
-    } else {
+    }
+    else {
         return [LGError errorWithCode:kLGErrorRecipeListFileAccess error:error];
     }
 }
@@ -107,7 +110,8 @@
     NSString *recipeList = quick_formatString(@"%@/%@.txt", _appSupportDir, list);
     if (access(recipeList.UTF8String, F_OK) == 0) {
         return [list isEqualToString:@"recipe_list"] ? YES : [_fm removeItemAtPath:recipeList error:error];
-    } else {
+    }
+    else {
         return [LGError errorWithCode:kLGErrorRecipeListFileAccess error:error];
     }
 }
@@ -127,17 +131,17 @@
     unsigned long mask = DISPATCH_VNODE_DELETE | DISPATCH_VNODE_WRITE | DISPATCH_VNODE_EXTEND | DISPATCH_VNODE_ATTRIB | DISPATCH_VNODE_LINK | DISPATCH_VNODE_RENAME | DISPATCH_VNODE_REVOKE;
 
     _source = dispatch_source_create(DISPATCH_SOURCE_TYPE_VNODE, fd,
-                                                              mask, queue);
+                                     mask, queue);
 
     __weak typeof(self) weakSelf = self;
     dispatch_source_set_event_handler(_source, ^{
-        // run query for all events...
+        // Run query for all events.
         if (changeHandler) {
             changeHandler(weakSelf.recipeLists);
         }
         unsigned long flags = dispatch_source_get_data(_source);
         if (flags & DISPATCH_VNODE_DELETE) {
-            // restart event if file was deleted
+            // Restart event if file was deleted.
             dispatch_source_cancel(_source);
         }
     });

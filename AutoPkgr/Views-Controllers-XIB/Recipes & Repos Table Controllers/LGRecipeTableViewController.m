@@ -3,7 +3,7 @@
 //  AutoPkgr
 //
 //  Created by Eldon Ahrold on 6/3/2015.
-//  Copyright 2015 Eldon Ahrold.
+//  Copyright 2015 Eldon Ahrold
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -18,15 +18,15 @@
 //  limitations under the License.
 //
 
-#import "LGRecipeTableViewController.h"
-#import "LGTableCellViews.h"
-#import "LGRecipeInfoView.h"
-#import "LGAutoPkgr.h"
 #import "LGAutoPkgRecipe.h"
 #import "LGAutoPkgRecipeListManager.h"
-#import "LGAutoPkgTask.h"
-#import "LGRecipeOverrides.h"
 #import "LGAutoPkgReport.h"
+#import "LGAutoPkgTask.h"
+#import "LGAutoPkgr.h"
+#import "LGRecipeInfoView.h"
+#import "LGRecipeOverrides.h"
+#import "LGRecipeTableViewController.h"
+#import "LGTableCellViews.h"
 
 @interface LGRecipeTableViewController () <NSWindowDelegate, NSPopoverDelegate>
 
@@ -75,8 +75,7 @@ static NSString *const kLGAutoPkgRecipeCurrentStatusKey = @"currentStatus";
 {
     dispatch_async(dispatch_get_main_queue(), ^{
         // Reload is used to rebuilt the index.
-        // nil out _recipes here so when the self.recipes accessor is called
-        // it will actually get reconstructed.
+        // nil out _recipes here so when the self.recipes accessor is called it will actually get reconstructed.
         _recipes = nil;
         [self executeAppSearch:self];
         [self refreshRecipeList];
@@ -108,25 +107,30 @@ static NSString *const kLGAutoPkgRecipeCurrentStatusKey = @"currentStatus";
         if (_runTaskDictionary[recipe.Identifier]) {
             [statusCell.progressIndicator startAnimation:tableView];
             statusCell.imageView.hidden = YES;
-        } else {
+        }
+        else {
             [statusCell.progressIndicator stopAnimation:tableView];
             statusCell.imageView.hidden = NO;
 
             if ([[recipe valueForKey:NSStringFromSelector(@selector(isMissingParent))] boolValue]) {
                 statusCell.imageView.image = [NSImage LGCaution];
-            } else {
+            }
+            else {
                 statusCell.imageView.image = [NSImage LGNoImage];
             }
         }
-    } else if ([tableColumn.identifier isEqualToString:NSStringFromSelector(@selector(isEnabled))]) {
+    }
+    else if ([tableColumn.identifier isEqualToString:NSStringFromSelector(@selector(isEnabled))]) {
         statusCell.enabledCheckBox.state = [[recipe valueForKey:tableColumn.identifier] boolValue];
         statusCell.enabledCheckBox.target = recipe;
         statusCell.enabledCheckBox.action = @selector(enableRecipe:);
-    } else {
+    }
+    else {
         NSString *string = [recipe valueForKey:tableColumn.identifier];
         if (string) {
             statusCell.textField.stringValue = string;
-        } else {
+        }
+        else {
             statusCell.textField.placeholderString = @"<Missing>";
         }
     }
@@ -140,7 +144,8 @@ static NSString *const kLGAutoPkgRecipeCurrentStatusKey = @"currentStatus";
 }
 
 #pragma mark - IBActions
-- (void)enableRecipes:(NSMenuItem *)sender {
+- (void)enableRecipes:(NSMenuItem *)sender
+{
     NSArray *recipes = sender.representedObject;
     BOOL state = [recipes.firstObject isEnabled];
     [recipes enumerateObjectsUsingBlock:^(LGAutoPkgRecipe *recipe, NSUInteger idx, BOOL *stop) {
@@ -150,27 +155,27 @@ static NSString *const kLGAutoPkgRecipeCurrentStatusKey = @"currentStatus";
     [self.recipeTableView reloadData];
 }
 
-- (void)updateRecipes:(NSMenuItem *)sender {
+- (void)updateRecipes:(NSMenuItem *)sender
+{
     NSArray *recipes = sender.representedObject;
-    // Start spinning //
+    // Start spinning.
 
     [LGAutoPkgTask runRecipes:recipes
                      progress:nil
-                        reply:^(NSDictionary *report, NSError *error) {
-        // Remove from run dict...
-                        }
-     ];
-
+                        reply:^(NSDictionary *report, NSError *error){
+                            // Remove from run dict.
+                        }];
 }
 
 - (IBAction)addRecipeList:(NSButton *)sender
 {
     NSError *error;
     NSString *str;
-    if ((str = [self promptForRecipeListName])){
-        if(![_recipeList addRecipeList:str error:&error]){
+    if ((str = [self promptForRecipeListName])) {
+        if (![_recipeList addRecipeList:str error:&error]) {
             [NSApp presentError:error];
-        } else {
+        }
+        else {
             [self reload];
         }
     }
@@ -179,9 +184,10 @@ static NSString *const kLGAutoPkgRecipeCurrentStatusKey = @"currentStatus";
 - (IBAction)removeRecipeList:(NSButton *)sender
 {
     NSError *error;
-    if (![_recipeList removeRecipeList:_recipeListButton.title error:&error]){
+    if (![_recipeList removeRecipeList:_recipeListButton.title error:&error]) {
         [NSApp presentError:error];
-    } else {
+    }
+    else {
         [self reload];
     }
 }
@@ -226,12 +232,13 @@ static NSString *const kLGAutoPkgRecipeCurrentStatusKey = @"currentStatus";
 
     if (_recipeSearchField.stringValue.length == 0) {
         _searchedRecipes = self.recipes;
-    } else {
+    }
+    else {
         NSString *searchString = _recipeSearchField.stringValue;
 
-        // Execute search both on Name and Identifier keys
+        // Execute search both on Name and Identifier keys.
         NSMutableArray *predicates = [[NSMutableArray alloc] init];
-        for (NSString *key in @[kLGAutoPkgRecipeNameKey, kLGAutoPkgRecipeIdentifierKey]) {
+        for (NSString *key in @[ kLGAutoPkgRecipeNameKey, kLGAutoPkgRecipeIdentifierKey ]) {
             [predicates addObject:[NSPredicate predicateWithFormat:@"%K CONTAINS[cd] %@", key, searchString]];
         }
 
@@ -266,26 +273,26 @@ static NSString *const kLGAutoPkgRecipeCurrentStatusKey = @"currentStatus";
 
     __block BOOL runMakeCatalogs = NO;
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"SELF.Identifier contains[cd] '.munki'"];
-    NSMutableArray* recipes = [[NSMutableArray alloc] initWithCapacity:recipeRows.count];
+    NSMutableArray *recipes = [[NSMutableArray alloc] initWithCapacity:recipeRows.count];
 
     [recipeRows enumerateIndexesUsingBlock:^(NSUInteger idx, BOOL *stop) {
         LGAutoPkgRecipe *recipe = _searchedRecipes[idx];
         [recipes addObject:recipe.Identifier];
-        if([predicate evaluateWithObject:recipe]){
+        if ([predicate evaluateWithObject:recipe]) {
             runMakeCatalogs = YES;
         }
     }];
 
-    if (runMakeCatalogs){
+    if (runMakeCatalogs) {
         [recipes addObject:@"MakeCatalogs.munki"];
     }
 
     LGAutoPkgTask *runTask = [LGAutoPkgTask runRecipesTask:recipes];
-    [recipes enumerateObjectsUsingBlock:^(id  recipes, NSUInteger idx, BOOL * _Nonnull stop) {
+    [recipes enumerateObjectsUsingBlock:^(id recipes, NSUInteger idx, BOOL *_Nonnull stop) {
         [_runTaskDictionary setObject:runTask forKey:recipes];
     }];
 
-    // This runs a recipe from the Table's contextual menu...
+    // This runs a recipe from the table's contextual menu.
     runTask.progressUpdateBlock = ^(NSString *message, double progress) {
         NSLog(@"Run status: %@", message);
     };
@@ -300,19 +307,21 @@ static NSString *const kLGAutoPkgRecipeCurrentStatusKey = @"currentStatus";
 
         LGAutoPkgReport *report = [[LGAutoPkgReport alloc] initWithReportDictionary:strongTask.report];
         NSError *failureError = report.failureError;
-        
+
         if (error || failureError) {
             [[NSAlert alertWithError:error ?: failureError] runModal];
-        }  else {
+        }
+        else {
             LGUpdatedApplication *updatedApplication = report.updatedApplications.firstObject;
             if (updatedApplication) {
                 NSUserNotification *notification = [[NSUserNotification alloc] init];
                 NSString *informativeTextFormat = NSLocalizedString(@"%@ of %@ was downloaded.",
-                                                           @"NSUserNotification info message presented after single recipe run.");
+                                                                    @"NSUserNotification info message presented after single recipe run.");
                 NSString *versionString;
                 if (!updatedApplication.version || [updatedApplication.version.lowercaseString isEqualToString:@"Unknown version".lowercaseString]) {
                     versionString = @"A newer version";
-                } else {
+                }
+                else {
                     versionString = quick_formatString(@"Version %@", updatedApplication.version);
                 }
 
@@ -325,7 +334,7 @@ static NSString *const kLGAutoPkgRecipeCurrentStatusKey = @"currentStatus";
         [_runTaskDictionary removeObjectsForKeys:recipes];
         [_recipeTableView reloadDataForRowIndexes:recipeRows columnIndexes:colIdxSet];
 
-        // If there are no more run tasks don't keep the dictioanry around...
+        // If there are no more run tasks, don't keep the dictionary around.
         if (_runTaskDictionary.count == 0) {
             _runTaskDictionary = nil;
         }
@@ -370,20 +379,21 @@ static NSString *const kLGAutoPkgRecipeCurrentStatusKey = @"currentStatus";
 
     NSMutableIndexSet *update = [[NSMutableIndexSet alloc] init];
     NSMutableArray *enable = [[NSMutableArray alloc] init],
-    *disable = [[NSMutableArray alloc] init];
+                   *disable = [[NSMutableArray alloc] init];
 
     [set enumerateIndexesUsingBlock:^(NSUInteger idx, BOOL *stop) {
         LGAutoPkgRecipe *recipe = _searchedRecipes[idx];
-        if (recipe.isEnabled){
+        if (recipe.isEnabled) {
             [disable addObject:recipe];
-        } else {
+        }
+        else {
             [enable addObject:recipe];
         }
         [update addIndex:idx];
     }];
 
     id task = _runTaskDictionary[recipe.Identifier];
-    if (!task && update.count){
+    if (!task && update.count) {
         NSString *title = update.count > 1 ? @"Run Selected Recipes" : @"Run This Recipe Only";
         NSMenuItem *item = [[NSMenuItem alloc] initWithTitle:title action:@selector(runRecipesFromMenu:) keyEquivalent:@""];
         item.target = self;
@@ -397,15 +407,15 @@ static NSString *const kLGAutoPkgRecipeCurrentStatusKey = @"currentStatus";
         [menu addItem:cancelItem];
     }
 
-    if (set.count > 1 ){
-        if (enable.count){
+    if (set.count > 1) {
+        if (enable.count) {
             NSMenuItem *item = [[NSMenuItem alloc] initWithTitle:@"Enable Selected Recipes" action:@selector(enableRecipes:) keyEquivalent:@""];
             item.target = self;
             item.representedObject = enable;
             [menu addItem:item];
         }
 
-        if (disable.count){
+        if (disable.count) {
             NSMenuItem *item = [[NSMenuItem alloc] initWithTitle:@"Disable Selected Recipes" action:@selector(enableRecipes:) keyEquivalent:@""];
             item.target = self;
             item.representedObject = disable;
@@ -427,7 +437,7 @@ static NSString *const kLGAutoPkgRecipeCurrentStatusKey = @"currentStatus";
         [menu addItemWithTitle:parent action:nil keyEquivalent:@""];
     }
 
-    // Setup menu items for overrides.
+    // Set up menu items for overrides.
 
     if ([LGRecipeOverrides overrideExistsForRecipe:recipe]) {
         NSMenuItem *openRecipeItem = [[NSMenuItem alloc] initWithTitle:@"Open Recipe Override" action:@selector(openFile:) keyEquivalent:@""];
@@ -435,20 +445,20 @@ static NSString *const kLGAutoPkgRecipeCurrentStatusKey = @"currentStatus";
         openRecipeItem.representedObject = recipe;
         [menu addItem:openRecipeItem];
 
-        // Reveal in finder menu item
+        // "Reveal in Finder" menu item.
         NSMenuItem *showInFinderItem = [[NSMenuItem alloc] initWithTitle:@"Reveal in Finder" action:@selector(revealInFinder:) keyEquivalent:@""];
         showInFinderItem.representedObject = recipe;
         showInFinderItem.target = [LGRecipeOverrides class];
         [menu addItem:showInFinderItem];
 
-        // "Delete Override" menu item
+        // "Delete Override" menu item.
         NSMenuItem *removeOverrideItem = [[NSMenuItem alloc] initWithTitle:@"Remove Override" action:@selector(deleteOverride:) keyEquivalent:@""];
 
         removeOverrideItem.representedObject = recipe;
         removeOverrideItem.target = [LGRecipeOverrides class];
         [menu addItem:removeOverrideItem];
-
-    } else {
+    }
+    else {
         NSMenuItem *openRecipeItem = [[NSMenuItem alloc] initWithTitle:@"Create Override" action:@selector(createOverride:) keyEquivalent:@""];
         openRecipeItem.representedObject = recipe;
         openRecipeItem.target = [LGRecipeOverrides class];

@@ -3,7 +3,7 @@
 //  AutoPkgr
 //
 //  Created by James Barclay on 6/25/14.
-//  Copyright 2014-2015 The Linde Group, Inc.
+//  Copyright 2014-2016 The Linde Group, Inc.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -19,16 +19,16 @@
 //
 
 #import "LGAppDelegate.h"
-#import "LGAutoPkgr.h"
-#import "LGAutoPkgTask.h"
-#import "LGAutoPkgSchedule.h"
 #import "LGAutoPkgRecipe.h"
-#import "LGConfigurationWindowController.h"
+#import "LGAutoPkgSchedule.h"
+#import "LGAutoPkgTask.h"
+#import "LGAutoPkgr.h"
 #import "LGAutoPkgrHelperConnection.h"
-#import "LGUserNotification.h"
+#import "LGConfigurationWindowController.h"
 #import "LGDisplayStatusDelegate.h"
 #import "LGNotificationManager.h"
 #import "LGUninstaller.h"
+#import "LGUserNotification.h"
 
 #import <AHLaunchCtl/AHLaunchCtl.h>
 #import <AHLaunchCtl/AHServiceManagement.h>
@@ -50,9 +50,9 @@
 #pragma mark-- Launching --
 - (void)applicationWillFinishLaunching:(NSNotification *)notification
 {
-    // Setup activation policy. By default set as menubar only.
-    [[LGDefaults standardUserDefaults] registerDefaults:@{ kLGApplicationDisplayStyle : @(kLGDisplayStyleShowMenu | kLGDisplayStyleShowDock),
-                                                           NSStringFromSelector(@selector(reportedItemFlags)) : @(kLGReportItemsAll) }];
+
+    // Set up activation policy. By default set as menubar only.
+    [[LGDefaults standardUserDefaults] registerDefaults:@{ kLGApplicationDisplayStyle : @(kLGDisplayStyleShowMenu | kLGDisplayStyleShowDock) }];
 
     if (([[LGDefaults standardUserDefaults] applicationDisplayStyle] & kLGDisplayStyleShowDock)) {
         [NSApp setActivationPolicy:NSApplicationActivationPolicyRegular];
@@ -64,11 +64,10 @@
     NSLog(@"Welcome to AutoPkgr!");
     DLog(@"Verbose logging is active. To deactivate, click the AutoPkgr menu icon and uncheck Verbose Logs.");
 
-    // Setup the status item
+    // Set up the status item.
     [self setupStatusItem];
 
-    // Check if we're authorized to install helper tool,
-    // if not just quit
+    // Check if we're authorized to install helper tool. If not just quit.
     NSError *error;
 
     if (![AHLaunchCtl installHelper:kLGAutoPkgrHelperToolName prompt:@"" error:&error]) {
@@ -80,9 +79,8 @@
         [[NSApplication sharedApplication] terminate:self];
     }
 
-    // Register to get background progress updates...
+    // Register to get background progress updates.
     LGAutoPkgrHelperConnection *backgroundMonitor = [[LGAutoPkgrHelperConnection alloc] initWithProgressDelegate:self];
-
 
     [backgroundMonitor.remoteObjectProxy registerMainApplication:^(BOOL resign) {
         DLog(@"No longer monitoring scheduled AutoPkg runs.");
@@ -96,18 +94,17 @@
                    [NSError errorWithDomain:kLGApplicationName
                                        code:-1
                                    userInfo:@{
-                                               NSLocalizedDescriptionKey : message,
-                                               NSLocalizedRecoverySuggestionErrorKey : suggestion
-                                            }]];
+                                       NSLocalizedDescriptionKey : message,
+                                       NSLocalizedRecoverySuggestionErrorKey : suggestion
+                                   }]];
 
         [[NSApplication sharedApplication] terminate:self];
     }
 
-    // Setup User Notification Delegate
+    // Set up User Notification Delegate
     _notificationDelegate = [[LGUserNotificationsDelegate alloc] initAsDefaultCenterDelegate];
 
-    // calling stopProgress: here is an easy way to get the
-    // menu reset to its default configuration
+    // Calling stopProgress: here is an easy way to get the menu reset to its default configuration.
     [self stopProgress:nil];
 
     [self showConfigurationWindow:self];
@@ -135,8 +132,9 @@
         [helperConnection connectionError:^(NSError *error) {
             [[NSApplication sharedApplication] replyToApplicationShouldTerminate:YES];
         }];
-    
-        [helperConnection.remoteObjectProxy quitHelper:^(BOOL success){}];
+
+        [helperConnection.remoteObjectProxy quitHelper:^(BOOL success){
+        }];
         return NSTerminateLater;
     }
     return NSTerminateNow;
@@ -144,7 +142,7 @@
 
 - (void)applicationWillTerminate:(NSNotification *)notification
 {
-    // Stop observing...
+    // Stop observing.
     [[NSDistributedNotificationCenter defaultCenter] removeObserver:self name:kLGNotificationProgressMessageUpdate object:nil];
 }
 
@@ -167,7 +165,7 @@
     LGApplicationDisplayStyle style = [[LGDefaults standardUserDefaults] applicationDisplayStyle];
 
     if (!self.statusItem && (style & kLGDisplayStyleShowMenu)) {
-        // Setup the systemStatusBar
+        // Set up the systemStatusBar
         DLog(@"Starting AutoPkgr menu bar icon...");
         self.statusItem = [[NSStatusBar systemStatusBar] statusItemWithLength:NSVariableStatusItemLength];
         [self.statusItem setMenu:self.statusMenu];
@@ -192,7 +190,8 @@
 {
     if ([sender boolValue]) {
         [self setupStatusItem];
-    } else {
+    }
+    else {
         self.statusItem = nil;
     }
 }
@@ -270,13 +269,14 @@
 - (IBAction)reinstallHelperTool:(id)sender
 {
     NSError *error = nil;
-    if(![AHLaunchCtl uninstallHelper:kLGAutoPkgrHelperToolName
-                           prompt:NSLocalizedString(@"Begin reinstall process. ", nil)
-                               error:&error]){
-        if(error.code != errAuthorizationCanceled){
+    if (![AHLaunchCtl uninstallHelper:kLGAutoPkgrHelperToolName
+                               prompt:NSLocalizedString(@"Begin reinstall process. ", nil)
+                                error:&error]) {
+        if (error.code != errAuthorizationCanceled) {
             [NSApp presentError:error];
         }
-    } else if (![AHLaunchCtl installHelper:kLGAutoPkgrHelperToolName prompt:@"" error:&error]){
+    }
+    else if (![AHLaunchCtl installHelper:kLGAutoPkgrHelperToolName prompt:@"" error:&error]) {
         [NSApp presentError:[LGError errorWithCode:kLGErrorInstallingPrivilegedHelperTool]];
         [[NSApplication sharedApplication] terminate:self];
     }
@@ -319,11 +319,12 @@
         if (error) {
             self.statusItem.image = [NSImage imageNamed:@"autopkgr_error.png"];
             status = [NSString stringWithFormat:NSLocalizedString(@"AutoPkg Run Error on: %@", nil), lastRunDate
-                      ?: neverRun];
-        } else {
+                                                                                                         ?: neverRun];
+        }
+        else {
             self.statusItem.image = [NSImage imageNamed:@"autopkgr.png"];
             status = [NSString stringWithFormat:NSLocalizedString(@"Last AutoPkg Run: %@", nil), lastRunDate
-                      ?: neverRun];
+                                                                                                     ?: neverRun];
         }
 
         [_progressMenuItem setTitle:status];
@@ -354,7 +355,7 @@
 {
     // The preferences set via the background run are not picked up
     // despite aggressive synchronization, so we need to pull the value from
-    // the actual preference file until a better work around is found...
+    // the actual preference file until a better work around is found.
 
     if (!_taskManager || _taskManager.operationCount == 0) {
         NSDictionary *dict = [NSDictionary dictionaryWithContentsOfFile:[@"~/Library/Preferences/com.lindegroup.AutoPkgr.plist" stringByExpandingTildeInPath]];

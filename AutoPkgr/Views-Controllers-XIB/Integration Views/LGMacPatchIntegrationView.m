@@ -3,7 +3,7 @@
 //  AutoPkgr
 //
 //  Created by Eldon Ahrold on 6/26/15.
-//  Copyright 2015 The Linde Group, Inc.
+//  Copyright 2015-2016 The Linde Group, Inc.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -18,11 +18,11 @@
 //  limitations under the License.
 //
 
-#import "LGMacPatchIntegrationView.h"
 #import "LGMacPatchIntegration.h"
+#import "LGMacPatchIntegrationView.h"
 
 #import "NSTextField+safeStringValue.h"
-@interface LGMacPatchIntegrationView ()<NSTextFieldDelegate>
+@interface LGMacPatchIntegrationView () <NSTextFieldDelegate>
 
 @property (weak) IBOutlet NSTextField *MacPatchURL;
 @property (weak) IBOutlet NSTextField *MacPatchUserNameTF;
@@ -55,7 +55,7 @@
     _MacPatchPasswordTF.safe_stringValue = _defaults.MP_PASSWORD;
 
     // This will return nil the first time (register defaults equivalent).
-    if(![_defaults autoPkgDomainObject:NSStringFromSelector(@selector(MP_SSL_VERIFY))]){
+    if (![_defaults autoPkgDomainObject:NSStringFromSelector(@selector(MP_SSL_VERIFY))]) {
         _defaults.MP_SSL_VERIFY = YES;
     }
 
@@ -66,11 +66,13 @@
     _MacPatchAllowSelfSignedCertsBT.state = !_defaults.MP_SSL_VERIFY;
 }
 
-- (void)changeSSLVerify:(NSButton *)sender {
+- (void)changeSSLVerify:(NSButton *)sender
+{
     _defaults.MP_SSL_VERIFY = !sender.state;
 }
 
-- (void)controlTextDidChange:(NSNotification *)notification {
+- (void)controlTextDidChange:(NSNotification *)notification
+{
     NSString *string = [notification.object stringValue];
 
     // URL
@@ -82,7 +84,7 @@
     else if ([notification.object isEqualTo:_MacPatchUserNameTF]) {
         _defaults.MP_USER = string;
     }
-    
+
     // Password
     else if ([notification.object isEqualTo:_MacPatchPasswordTF]) {
         _defaults.MP_PASSWORD = string;

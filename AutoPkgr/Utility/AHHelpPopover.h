@@ -80,7 +80,6 @@
  */
 @property (copy) void (^completionHandler)();
 
-
 /**
  *  Initialize help popover with reference to an NSView
  *
@@ -108,7 +107,7 @@
  *  @param sender Button on which to anchor the popover
  *  @param format Format string for the help text.
  */
-- (void)openPopoverFromButton:(NSButton *)sender witHelpTextFormat:(NSString *)format,... NS_FORMAT_FUNCTION(2, 3);
+- (void)openPopoverFromButton:(NSButton *)sender witHelpTextFormat:(NSString *)format, ... NS_FORMAT_FUNCTION(2, 3);
 
 /**
  *  Open the popover.
@@ -130,7 +129,6 @@
  */
 @property (copy, nonatomic) NSString *helpText;
 - (void)helpTextWithFormat:(NSString *)format, ... NS_FORMAT_FUNCTION(1, 2);
-
 
 /**
  *  Title for the help, shown in bold. (optional)

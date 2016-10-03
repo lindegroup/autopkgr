@@ -2,7 +2,7 @@
 //  LGUninstaller.h
 //  AutoPkgr
 //
-//  Copyright 2015 Eldon Ahrold.
+//  Copyright 2015 Eldon Ahrold
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -17,8 +17,8 @@
 //  limitations under the License.
 //
 
-#import <Foundation/Foundation.h>
 #import "LGProgressDelegate.h"
+#import <Foundation/Foundation.h>
 
 @interface LGUninstaller : NSObject
 
@@ -31,7 +31,7 @@
                      reply:(void (^)(NSError *error))reply;
 
 - (void)removePrivilegedFilesAtPaths:(NSArray *)fileList
-                                reply:(void (^)(NSError *error))reply;
+                               reply:(void (^)(NSError *error))reply;
 
 // Prompt for uninstall and remove selected components.
 - (void)uninstallAutoPkgr:(id)sender;

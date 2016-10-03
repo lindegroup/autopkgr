@@ -3,7 +3,7 @@
 //  AutoPkgr
 //
 //  Created by Eldon Ahrold on 12/9/14.
-//  Copyright 2014-2015 The Linde Group, Inc.
+//  Copyright 2014-2016 The Linde Group, Inc.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -18,8 +18,8 @@
 //  limitations under the License.
 //
 
-#import "LGVersioner.h"
 #import "LGAutoPkgr.h"
+#import "LGVersioner.h"
 
 NSString *const kLGVersionerAppKey = @"pkg_path";
 NSString *const kLGVersionerVersionKey = @"version";
@@ -38,8 +38,7 @@ NSString *const kLGVersionerVersionKey = @"version";
 - (void)parseString:(NSString *)rawString
 {
     for (NSString *string in rawString.split_byLine) {
-        // if string begins with "Processing" we've started a new app, so
-        // reset the current values
+        // If string begins with "Processing" we've started a new app, so reset the current values.
 
         NSPredicate *predicate = [NSPredicate
             predicateWithFormat:@"SELF BEGINSWITH 'Processing'"];
@@ -53,8 +52,7 @@ NSString *const kLGVersionerVersionKey = @"version";
         if (isNew) {
             [self evaluateApplication:string];
             [self evaluateVersion:string];
-            // If there is a new application detected, check if we've successfully
-            // found a version string, and write it to our working array.
+            // If there is a new application detected, check if we've successfully found a version string, and write it to our working array.
             if (_currentVersion && _currentApplication) {
                 if (!_workingSet) {
                     _workingSet = [[NSMutableSet alloc] init];
@@ -95,8 +93,7 @@ NSString *const kLGVersionerVersionKey = @"version";
     NSArray *possibleProcessors = @[ @"URLDownloader" ];
 
     // Construct a predicate string from the above values.
-    // This will make it easy to adjust in the future, as more processors are
-    // used to retrieved apps
+    // This will make it easy to adjust in the future, as more processors are used to retrieve apps.
     NSMutableString *predicateString = [[NSMutableString alloc] initWithString:@"("];
     for (int i = 0; i < validPathExtensions.count; i++) {
         [predicateString appendFormat:@"SELF CONTAINS[CD] '.%@' ", validPathExtensions[i]];
@@ -116,9 +113,9 @@ NSString *const kLGVersionerVersionKey = @"version";
 
     NSPredicate *predicate = [NSPredicate predicateWithFormat:[predicateString copy]];
 
-    // Look for .dmg or .zip or,
+    // Look for .dmg or .zip.
     if ([predicate evaluateWithObject:rawString]) {
-        // split by "/", filter array by .dmg, remove file extension
+        // Split by "/", filter array by .dmg, remove file extension.
         NSArray *splitArray = [rawString componentsSeparatedByString:@"/"];
         for (NSString *cmp in splitArray) {
             if ([validPathExtensions containsObject:cmp.pathExtension]) {

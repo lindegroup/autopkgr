@@ -3,7 +3,7 @@
 //  AutoPkgr
 //
 //  Created by James Barclay on 6/25/14.
-//  Copyright 2014-2015 The Linde Group, Inc.
+//  Copyright 2014-2016 The Linde Group, Inc.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -18,8 +18,8 @@
 //  limitations under the License.
 //
 
-#import <Cocoa/Cocoa.h>
 #import "LGProgressDelegate.h"
+#import <Cocoa/Cocoa.h>
 
 @class LGConfigurationWindowController;
 
@@ -29,7 +29,7 @@
 @property (strong, nonatomic) IBOutlet NSMenu *statusMenu;
 @property (strong, nonatomic) NSStatusItem *statusItem;
 
-// Links to status menu items
+// Links to status menu items.
 @property (weak, nonatomic) IBOutlet NSMenuItem *progressMenuItem;
 @property (weak, nonatomic) IBOutlet NSMenuItem *runUpdatesNowMenuItem;
 @property (weak, nonatomic) IBOutlet NSMenuItem *autoCheckForUpdatesMenuItem;
@@ -37,7 +37,7 @@
 - (IBAction)checkNowFromMenu:(id)sender;
 - (IBAction)showConfigurationWindow:(id)sender;
 
-// Links to AutoPkgr Website and support site.
+// Links to AutoPkgr website and support site.
 - (IBAction)openHelpSite:(id)sender;
 - (IBAction)openHomeSite:(id)sender;
 

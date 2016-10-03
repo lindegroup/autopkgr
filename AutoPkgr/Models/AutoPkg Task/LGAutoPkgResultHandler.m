@@ -3,7 +3,7 @@
 //  AutoPkgr
 //
 //  Created by Eldon Ahrold on 5/15/15.
-//  Copyright 2015 Eldon Ahrold.
+//  Copyright 2015 Eldon Ahrold
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -76,7 +76,7 @@
         }
 #pragma mark List Recipe
         case kLGAutoPkgListRecipes: {
-            // Try to serialize the stdout, if that fails continue
+            // Try to serialize the stdout. If that fails, continue.
             if ((_results = _data.taskData_serializePropertyList)) {
                 return _results;
             }

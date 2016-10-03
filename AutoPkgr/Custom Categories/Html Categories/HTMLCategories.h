@@ -3,7 +3,7 @@
 //  AutoPkgr
 //
 //  Created by Eldon Ahrold on 3/25/15.
-//  Copyright 2015 The Linde Group, Inc.
+//  Copyright 2015-2016 The Linde Group, Inc.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -21,6 +21,6 @@
 #ifndef AutoPkgr_HTMLCategores_h
 #define AutoPkgr_HTMLCategores_h
 
-#import "NSString+html_report.h"
 #import "NSArray+html_report.h"
+#import "NSString+html_report.h"
 #endif

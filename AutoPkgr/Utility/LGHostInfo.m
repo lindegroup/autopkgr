@@ -3,7 +3,7 @@
 //  AutoPkgr
 //
 //  Created by James Barclay on 6/27/14.
-//  Copyright 2014-2015 The Linde Group, Inc.
+//  Copyright 2014-2016 The Linde Group, Inc.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -18,14 +18,13 @@
 //  limitations under the License.
 //
 
-#import "LGHostInfo.h"
-#import "LGConstants.h"
 #import "LGAutoPkgr.h"
-#import "LGGitHubJSONLoader.h"
 #import "LGAutoPkgrHelperConnection.h"
+#import "LGConstants.h"
+#import "LGGitHubJSONLoader.h"
+#import "LGHostInfo.h"
 
 #import <AHKeychain/AHKeychain.h>
-
 
 @implementation LGHostInfo
 
@@ -62,14 +61,15 @@
                 NSLog(@"%@ is a file, and it cannot be deleted.", autoPkgrSupportDirectory);
                 return @"";
             }
-            
+
             [fm createDirectoryAtPath:autoPkgrSupportDirectory withIntermediateDirectories:NO attributes:nil error:&error];
             if (error) {
                 NSLog(@"Error when creating directory %@", autoPkgrSupportDirectory);
                 return @"";
             }
         }
-    } else {
+    }
+    else {
         [fm createDirectoryAtPath:autoPkgrSupportDirectory withIntermediateDirectories:NO attributes:nil error:&error];
         if (error) {
             NSLog(@"Error when creating directory %@", autoPkgrSupportDirectory);
@@ -79,8 +79,6 @@
 
     return autoPkgrSupportDirectory;
 }
-
-
 
 + (NSString *)macSerialNumber
 {

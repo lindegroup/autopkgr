@@ -3,7 +3,7 @@
 //  AutoPkgr
 //
 //  Created by Eldon Ahrold on 2/14/15.
-//  Copyright 2015 The Linde Group, Inc.
+//  Copyright 2015-2016 The Linde Group, Inc.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
 
 #import <Foundation/Foundation.h>
 
-extern NSString *appKeychainPath();
+extern NSString *AppKeychainPath();
 
 @interface LGPasswords : NSObject
 
@@ -34,9 +34,9 @@ extern NSString *appKeychainPath();
                         label:(NSString *)label
                         reply:(void (^)(NSString *password, NSError *error))reply;
 
-
 + (void)savePassword:(NSString *)password
-          forAccount:(NSString *)account reply:(void (^)(NSError *error))reply __deprecated_msg("use savePassword:forAccount:service:label:reply instead.");
+          forAccount:(NSString *)account
+               reply:(void (^)(NSError *error))reply __deprecated_msg("use savePassword:forAccount:service:label:reply instead.");
 
 + (void)savePassword:(NSString *)password
           forAccount:(NSString *)account
