@@ -8,7 +8,7 @@ All notable changes to this project will be documented in this file. This projec
 - Nothing yet.
 
 
-## [1.4.2] - 2016-09-29
+## [1.4.2] - 2016-10-03
 
 ### Added
 - One-click integration with [@hjuutilainen](https://github.com/hjuutilainen/autopkg-virustotalanalyzer)'s [VirusTotalAnalyzer](https://github.com/hjuutilainen/autopkg-virustotalanalyzer) processor. (#503)
@@ -16,7 +16,7 @@ All notable changes to this project will be documented in this file. This projec
 ### Changed
 - Updated versions of MMMarkdown and MailCore2 used in AutoPkgr.
 - Clarified wording on the selective notifications picker (thanks to [@poundbangbash](https://github.com/poundbangbash) for the wordsmithing).
-- Started preparing for localization. (#537)
+- Prepared for localization, starting with French. (#537, big thanks to [Guillaume Gete](https://twitter.com/ggete))
 - Left-aligned results of recipe searches.
 - Updated hard-coded default list of AutoPkg repos used when GitHub is not accessible.
 
