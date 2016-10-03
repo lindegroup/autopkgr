@@ -52,7 +52,7 @@
             </description>
             <sparkle:minimumSystemVersion>10.9</sparkle:minimumSystemVersion>
             <pubDate>Mon, 3 Oct 2016 10:00:00 -0700</pubDate>
-            <enclosure url="https://github.com/lindegroup/autopkgr/releases/download/v1.4.2/AutoPkgr-1.4.2.dmg" sparkle:version="1308" sparkle:shortVersionString="1.4.2" type="application/octet-stream"/>
+            <enclosure url="https://github.com/lindegroup/autopkgr/releases/download/v1.4.2/AutoPkgr-1.4.2.dmg" sparkle:version="1375" sparkle:shortVersionString="1.4.2" type="application/octet-stream"/>
         </item>
         <item>
             <title>Version 1.4.1</title>
