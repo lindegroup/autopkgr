@@ -6,6 +6,55 @@
         <description>Most recent changes with links to updates.</description>
         <language>en</language>
         <item>
+            <title>Version 1.4.2</title>
+            <description>
+                <![CDATA[
+                <p>Fresh off the release of macOS Sierra, we've got a new version of AutoPkgr that includes some important fixes for 10.12 compatibility. We've also added amazingly easy one-click integration with the great new VirusTotalAnalyzer processor from Hannes Juutilainen, which checks downloaded files against the VirusTotal database.</p>
+
+                <p><strong>Important note: this version of AutoPkgr no longer supports OS X Mountain Lion (10.8).</strong></p>
+
+                <p>If you have any questions, find us on <a href="http://macadmins.org/">Slack</a> or <a href="https://groups.google.com/forum/#!forum/autopkgr-discuss">Google Groups</a>. If you find a reproducible bug, we'd love it if you'd <a href="https://github.com/lindegroup/autopkgr/issues">open an issue on GitHub</a>. Thanks!</p>
+
+                <p>&nbsp;</p>
+
+                <h3>Added</h3>
+
+                <ul>
+                <li>One-click integration with <a href="https://github.com/hjuutilainen/autopkg-virustotalanalyzer">@hjuutilainen</a>'s <a href="https://github.com/hjuutilainen/autopkg-virustotalanalyzer">VirusTotalAnalyzer</a> processor. (<a href="https://github.com/lindegroup/autopkgr/issues/503" class="issue-link js-issue-link" data-url="https://github.com/lindegroup/autopkgr/issues/503" data-id="139079101">#503</a>)</li>
+                </ul>
+
+                <h3>Changed</h3>
+
+                <ul>
+                <li>Updated versions of MMMarkdown and MailCore2 used in AutoPkgr.</li>
+                <li>Clarified wording on the selective notifications picker (thanks to <a href="https://github.com/poundbangbash">@poundbangbash</a> for the wordsmithing).</li>
+                <li>Prepared for localization, starting with French. (<a href="https://github.com/lindegroup/autopkgr/issues/537" class="issue-link js-issue-link" data-url="https://github.com/lindegroup/autopkgr/issues/537" data-id="156876408">#537</a>, big thanks to <a href="https://twitter.com/ggete">Guillaume Gete</a>)</li>
+                <li>Left-aligned results of recipe searches.</li>
+                <li>Updated hard-coded default list of AutoPkg repos used when GitHub is not accessible.</li>
+                </ul>
+
+                <h3>Fixed</h3>
+
+                <ul>
+                <li>Fixed issues with storing notification credentials in the AutoPkgr keychain in macOS Sierra. (<a href="https://github.com/lindegroup/autopkgr/issues/554" class="issue-link js-issue-link" data-url="https://github.com/lindegroup/autopkgr/issues/554" data-id="177841498">#554</a>, <a href="https://github.com/lindegroup/autopkgr/issues/555" class="issue-link js-issue-link" data-url="https://github.com/lindegroup/autopkgr/issues/555" data-id="177845786">#555</a>)</li>
+                <li>Fixed the AutoPkgr Slack bot icon URL. (<a href="https://github.com/lindegroup/autopkgr/issues/527" class="issue-link js-issue-link" data-url="https://github.com/lindegroup/autopkgr/issues/527" data-id="154190151">#527</a>)</li>
+                <li>Fixed a bug that would prevent notifications from being sent if the notification trigger actions were never customized. (<a href="https://github.com/lindegroup/autopkgr/issues/533" class="issue-link js-issue-link" data-url="https://github.com/lindegroup/autopkgr/issues/533" data-id="155887757">#533</a>)</li>
+                <li>Fixed a bug that caused the width of the AutoPkgr window to snap back to defaults when clicking on the Notifications tab. (<a href="https://github.com/lindegroup/autopkgr/issues/499" class="issue-link js-issue-link" data-url="https://github.com/lindegroup/autopkgr/issues/499" data-id="137997766">#499</a>)</li>
+                <li>Some typos found and corrected.</li>
+                </ul>
+
+                <h3>Removed</h3>
+
+                <ul>
+                <li>Removed 10.8 support. AutoPkgr now requires Mac OS X 10.9 or higher.</li>
+                </ul>
+                ]]>
+            </description>
+            <sparkle:minimumSystemVersion>10.9</sparkle:minimumSystemVersion>
+            <pubDate>Mon, 3 Oct 2016 10:00:00 -0700</pubDate>
+            <enclosure url="https://github.com/lindegroup/autopkgr/releases/download/v1.4.2/AutoPkgr-1.4.2.dmg" sparkle:version="1308" sparkle:shortVersionString="1.4.2" type="application/octet-stream"/>
+        </item>
+        <item>
             <title>Version 1.4.1</title>
             <description>
                 <![CDATA[
@@ -14,7 +63,7 @@
                 <h3>Added</h3>
 
                 <ul>
-                <li>AutoPkgr now allows you to customize the template used to generate notifications when new actions have occurred. Check it out at the bottom of the Notifications tab. (<a href="https://github.com/lindegroup/autopkgr/issues/184" class="issue-link js-issue-link" data-url="https://github.com/lindegroup/autopkgr/issues/184" data-id="47985403" data-error-text="Failed to load issue title" data-permission-text="Issue title is private">#184</a>)
+                <li>AutoPkgr now allows you to customize the template used to generate notifications when new actions have occurred. Check it out at the bottom of the Notifications tab. (<a href="https://github.com/lindegroup/autopkgr/issues/184" class="issue-link js-issue-link" data-url="https://github.com/lindegroup/autopkgr/issues/184" data-id="47985403">#184</a>)
                 <a href="https://cloud.githubusercontent.com/assets/7801391/14446302/3dea07e4-0009-11e6-98b4-c3c8842a78aa.png" target="_blank"><img src="https://cloud.githubusercontent.com/assets/7801391/14446302/3dea07e4-0009-11e6-98b4-c3c8842a78aa.png" alt="Custom notification template editor" style="max-width:100%;"></a>
                 </li>
                 </ul>
@@ -22,10 +71,10 @@
                 <h3>Fixed</h3>
 
                 <ul>
-                <li>Fixed a long-standing issue that caused an incorrect prompt for the AutoPkgr keychain password! (<a href="https://github.com/lindegroup/autopkgr/issues/469" class="issue-link js-issue-link" data-url="https://github.com/lindegroup/autopkgr/issues/469" data-id="122754404" data-error-text="Failed to load issue title" data-permission-text="Issue title is private">#469</a>)</li>
-                <li>Addressed several issues that may have prevented notifications from working reliably in version 1.4. (<a href="https://github.com/lindegroup/autopkgr/issues/508" class="issue-link js-issue-link" data-url="https://github.com/lindegroup/autopkgr/issues/508" data-id="140030668" data-error-text="Failed to load issue title" data-permission-text="Issue title is private">#508</a>, <a href="https://github.com/lindegroup/autopkgr/issues/515" class="issue-link js-issue-link" data-url="https://github.com/lindegroup/autopkgr/issues/515" data-id="143106170" data-error-text="Failed to load issue title" data-permission-text="Issue title is private">#515</a>)</li>
-                <li>Fixed a crash caused by the SMTP server setting being blank. (<a href="https://github.com/lindegroup/autopkgr/issues/502" class="issue-link js-issue-link" data-url="https://github.com/lindegroup/autopkgr/issues/502" data-id="138627859" data-error-text="Failed to load issue title" data-permission-text="Issue title is private">#502</a>)</li>
-                <li>AutoPkgr launches a bit faster now. (<a href="https://github.com/lindegroup/autopkgr/issues/500" class="issue-link js-issue-link" data-url="https://github.com/lindegroup/autopkgr/issues/500" data-id="138040566" data-error-text="Failed to load issue title" data-permission-text="Issue title is private">#500</a>)</li>
+                <li>Fixed a long-standing issue that caused an incorrect prompt for the AutoPkgr keychain password! (<a href="https://github.com/lindegroup/autopkgr/issues/469" class="issue-link js-issue-link" data-url="https://github.com/lindegroup/autopkgr/issues/469" data-id="122754404">#469</a>)</li>
+                <li>Addressed several issues that may have prevented notifications from working reliably in version 1.4. (<a href="https://github.com/lindegroup/autopkgr/issues/508" class="issue-link js-issue-link" data-url="https://github.com/lindegroup/autopkgr/issues/508" data-id="140030668">#508</a>, <a href="https://github.com/lindegroup/autopkgr/issues/515" class="issue-link js-issue-link" data-url="https://github.com/lindegroup/autopkgr/issues/515" data-id="143106170">#515</a>)</li>
+                <li>Fixed a crash caused by the SMTP server setting being blank. (<a href="https://github.com/lindegroup/autopkgr/issues/502" class="issue-link js-issue-link" data-url="https://github.com/lindegroup/autopkgr/issues/502" data-id="138627859">#502</a>)</li>
+                <li>AutoPkgr launches a bit faster now. (<a href="https://github.com/lindegroup/autopkgr/issues/500" class="issue-link js-issue-link" data-url="https://github.com/lindegroup/autopkgr/issues/500" data-id="138040566">#500</a>)</li>
                 <li>AutoPkgr now reports <a href="https://github.com/autopkg/autopkg/wiki/Processor-InstallFromDMG">InstallFromDMG</a> processor results in addition to <a href="https://github.com/autopkg/autopkg/wiki/Processor-Installer">Installer</a> processor results.</li>
                 <li>Fixed an issue that would cause the email notification subject to be blank.</li>
                 </ul>
@@ -33,9 +82,9 @@
                 <h3>Changed</h3>
 
                 <ul>
-                <li>Adjusted default formatting of email and Slack notifications. (<a href="https://github.com/lindegroup/autopkgr/issues/507" class="issue-link js-issue-link" data-url="https://github.com/lindegroup/autopkgr/issues/507" data-id="139983548" data-error-text="Failed to load issue title" data-permission-text="Issue title is private">#507</a>)</li>
+                <li>Adjusted default formatting of email and Slack notifications. (<a href="https://github.com/lindegroup/autopkgr/issues/507" class="issue-link js-issue-link" data-url="https://github.com/lindegroup/autopkgr/issues/507" data-id="139983548">#507</a>)</li>
                 <li>Added logging for SMTP operations.</li>
-                <li>Prevented password field from wrapping to a "new line." (<a href="https://github.com/lindegroup/autopkgr/issues/481" class="issue-link js-issue-link" data-url="https://github.com/lindegroup/autopkgr/issues/481" data-id="130847203" data-error-text="Failed to load issue title" data-permission-text="Issue title is private">#481</a>)</li>
+                <li>Prevented password field from wrapping to a "new line." (<a href="https://github.com/lindegroup/autopkgr/issues/481" class="issue-link js-issue-link" data-url="https://github.com/lindegroup/autopkgr/issues/481" data-id="130847203">#481</a>)</li>
                 <li>Increased width of active recipe list picker.</li>
                 <li>Updated versions of MMMarkdown and MailCore2 used in AutoPkgr.</li>
                 </ul>
@@ -88,24 +137,24 @@
                 <h3>Added</h3>
 
                 <ul>
-                    <li>You can now select which events trigger a notification. For example, you can receive only Munki import notifications, and ignore download notifications. In other words, no more daily emails about VLC downloading! (<a href="https://github.com/lindegroup/autopkgr/issues/184" class="issue-link js-issue-link" data-url="https://github.com/lindegroup/autopkgr/issues/184" data-id="47985403" data-error-text="Failed to load issue title" data-permission-text="Issue title is private">#184</a>)</li>
-                    <li>Ability to select multiple repos and then update, add, or remove the selected repos. (<a href="https://github.com/lindegroup/autopkgr/issues/434" class="issue-link js-issue-link" data-url="https://github.com/lindegroup/autopkgr/issues/434" data-id="102175472" data-error-text="Failed to load issue title" data-permission-text="Issue title is private">#434</a>)</li>
-                    <li>Ability to select multiple recipes and then run, enable, or disable the selected recipes. (<a href="https://github.com/lindegroup/autopkgr/issues/434" class="issue-link js-issue-link" data-url="https://github.com/lindegroup/autopkgr/issues/434" data-id="102175472" data-error-text="Failed to load issue title" data-permission-text="Issue title is private">#434</a>)</li>
-                    <li>Built-in integration with FileWave version 10 and higher, via the new <a href="https://github.com/autopkg/filewave">FileWaveImporter</a> processor. (<a href="https://github.com/lindegroup/autopkgr/issues/339" class="issue-link js-issue-link" data-url="https://github.com/lindegroup/autopkgr/issues/339" data-id="70773536" data-error-text="Failed to load issue title" data-permission-text="Issue title is private">#339</a>, with thanks to <a href="https://github.com/johncclayton" class="user-mention">@johncclayton</a>.)</li>
-                    <li>Integration with new <a href="https://github.com/jbaker10/LANrevImporter">LANrevImporter</a> processor. (<a href="https://github.com/lindegroup/autopkgr/issues/488" class="issue-link js-issue-link" data-url="https://github.com/lindegroup/autopkgr/issues/488" data-id="135764087" data-error-text="Failed to load issue title" data-permission-text="Issue title is private">#488</a>) See the <a href="https://github.com/jbaker10/LANrevImporter/wiki/Switching-from-AbsoluteManageExport-to-LANrevImporter">LANrevImporter wiki</a> for information on migrating from AbsoluteManageExport.</li>
-                    <li>Ability to switch between multiple recipe lists. (<a href="https://github.com/lindegroup/autopkgr/issues/263" class="issue-link js-issue-link" data-url="https://github.com/lindegroup/autopkgr/issues/263" data-id="56890158" data-error-text="Failed to load issue title" data-permission-text="Issue title is private">#263</a>)</li>
-                    <li>Ability to specify pre/post processors. (<a href="https://github.com/lindegroup/autopkgr/issues/346" class="issue-link js-issue-link" data-url="https://github.com/lindegroup/autopkgr/issues/346" data-id="72481274" data-error-text="Failed to load issue title" data-permission-text="Issue title is private">#346</a>, <a href="https://github.com/lindegroup/autopkgr/issues/384" class="issue-link js-issue-link" data-url="https://github.com/lindegroup/autopkgr/issues/384" data-id="96518739" data-error-text="Failed to load issue title" data-permission-text="Issue title is private">#384</a>)</li>
-                    <li>MakeCatalogs.munki will be included when .munki recipes are run from the contextual menu. (<a href="https://github.com/lindegroup/autopkgr/issues/485" class="issue-link js-issue-link" data-url="https://github.com/lindegroup/autopkgr/issues/485" data-id="132856369" data-error-text="Failed to load issue title" data-permission-text="Issue title is private">#485</a>)</li>
+                    <li>You can now select which events trigger a notification. For example, you can receive only Munki import notifications, and ignore download notifications. In other words, no more daily emails about VLC downloading! (<a href="https://github.com/lindegroup/autopkgr/issues/184" class="issue-link js-issue-link" data-url="https://github.com/lindegroup/autopkgr/issues/184" data-id="47985403">#184</a>)</li>
+                    <li>Ability to select multiple repos and then update, add, or remove the selected repos. (<a href="https://github.com/lindegroup/autopkgr/issues/434" class="issue-link js-issue-link" data-url="https://github.com/lindegroup/autopkgr/issues/434" data-id="102175472">#434</a>)</li>
+                    <li>Ability to select multiple recipes and then run, enable, or disable the selected recipes. (<a href="https://github.com/lindegroup/autopkgr/issues/434" class="issue-link js-issue-link" data-url="https://github.com/lindegroup/autopkgr/issues/434" data-id="102175472">#434</a>)</li>
+                    <li>Built-in integration with FileWave version 10 and higher, via the new <a href="https://github.com/autopkg/filewave">FileWaveImporter</a> processor. (<a href="https://github.com/lindegroup/autopkgr/issues/339" class="issue-link js-issue-link" data-url="https://github.com/lindegroup/autopkgr/issues/339" data-id="70773536">#339</a>, with thanks to <a href="https://github.com/johncclayton" class="user-mention">@johncclayton</a>.)</li>
+                    <li>Integration with new <a href="https://github.com/jbaker10/LANrevImporter">LANrevImporter</a> processor. (<a href="https://github.com/lindegroup/autopkgr/issues/488" class="issue-link js-issue-link" data-url="https://github.com/lindegroup/autopkgr/issues/488" data-id="135764087">#488</a>) See the <a href="https://github.com/jbaker10/LANrevImporter/wiki/Switching-from-AbsoluteManageExport-to-LANrevImporter">LANrevImporter wiki</a> for information on migrating from AbsoluteManageExport.</li>
+                    <li>Ability to switch between multiple recipe lists. (<a href="https://github.com/lindegroup/autopkgr/issues/263" class="issue-link js-issue-link" data-url="https://github.com/lindegroup/autopkgr/issues/263" data-id="56890158">#263</a>)</li>
+                    <li>Ability to specify pre/post processors. (<a href="https://github.com/lindegroup/autopkgr/issues/346" class="issue-link js-issue-link" data-url="https://github.com/lindegroup/autopkgr/issues/346" data-id="72481274">#346</a>, <a href="https://github.com/lindegroup/autopkgr/issues/384" class="issue-link js-issue-link" data-url="https://github.com/lindegroup/autopkgr/issues/384" data-id="96518739">#384</a>)</li>
+                    <li>MakeCatalogs.munki will be included when .munki recipes are run from the contextual menu. (<a href="https://github.com/lindegroup/autopkgr/issues/485" class="issue-link js-issue-link" data-url="https://github.com/lindegroup/autopkgr/issues/485" data-id="132856369">#485</a>)</li>
                 </ul>
 
                 <h3>Fixed</h3>
 
                 <ul>
-                    <li>Fixed a bug that caused progress spinners to incorrectly display on multiple recipes if they share the same name. (<a href="https://github.com/lindegroup/autopkgr/issues/447" class="issue-link js-issue-link" data-url="https://github.com/lindegroup/autopkgr/issues/447" data-id="106171954" data-error-text="Failed to load issue title" data-permission-text="Issue title is private">#447</a>)</li>
-                    <li>Fixed a bug that caused AutoPkgr to freeze when adding a custom repo with a trailing space in the URL. (<a href="https://github.com/lindegroup/autopkgr/issues/486" class="issue-link js-issue-link" data-url="https://github.com/lindegroup/autopkgr/issues/486" data-id="134169920" data-error-text="Failed to load issue title" data-permission-text="Issue title is private">#486</a>)</li>
-                    <li>Fixed a minor counting error in log output. (<a href="https://github.com/lindegroup/autopkgr/issues/446" class="issue-link js-issue-link" data-url="https://github.com/lindegroup/autopkgr/issues/446" data-id="106171724" data-error-text="Failed to load issue title" data-permission-text="Issue title is private">#446</a>)</li>
-                    <li>Fixed crash that occurred if Git was not reinstalled after an OS X upgrade. (<a href="https://github.com/lindegroup/autopkgr/issues/458" class="issue-link js-issue-link" data-url="https://github.com/lindegroup/autopkgr/issues/458" data-id="112072051" data-error-text="Failed to load issue title" data-permission-text="Issue title is private">#458</a>)</li>
-                    <li>Fixed a bug that resulted in unreliable "Run This Only Recipe Only" selection. (<a href="https://github.com/lindegroup/autopkgr/issues/456" class="issue-link js-issue-link" data-url="https://github.com/lindegroup/autopkgr/issues/456" data-id="110283417" data-error-text="Failed to load issue title" data-permission-text="Issue title is private">#456</a>)</li>
+                    <li>Fixed a bug that caused progress spinners to incorrectly display on multiple recipes if they share the same name. (<a href="https://github.com/lindegroup/autopkgr/issues/447" class="issue-link js-issue-link" data-url="https://github.com/lindegroup/autopkgr/issues/447" data-id="106171954">#447</a>)</li>
+                    <li>Fixed a bug that caused AutoPkgr to freeze when adding a custom repo with a trailing space in the URL. (<a href="https://github.com/lindegroup/autopkgr/issues/486" class="issue-link js-issue-link" data-url="https://github.com/lindegroup/autopkgr/issues/486" data-id="134169920">#486</a>)</li>
+                    <li>Fixed a minor counting error in log output. (<a href="https://github.com/lindegroup/autopkgr/issues/446" class="issue-link js-issue-link" data-url="https://github.com/lindegroup/autopkgr/issues/446" data-id="106171724">#446</a>)</li>
+                    <li>Fixed crash that occurred if Git was not reinstalled after an OS X upgrade. (<a href="https://github.com/lindegroup/autopkgr/issues/458" class="issue-link js-issue-link" data-url="https://github.com/lindegroup/autopkgr/issues/458" data-id="112072051">#458</a>)</li>
+                    <li>Fixed a bug that resulted in unreliable "Run This Only Recipe Only" selection. (<a href="https://github.com/lindegroup/autopkgr/issues/456" class="issue-link js-issue-link" data-url="https://github.com/lindegroup/autopkgr/issues/456" data-id="110283417">#456</a>)</li>
                     <li>XPC connections to helper tool are now explicitly closed on process completion.</li>
                 </ul>
 
@@ -113,7 +162,7 @@
 
                 <ul>
                     <li>Totally redesigned and simplified the JSSImporter settings sheet.</li>
-                    <li>JSSImporter configuration UI now supports cloud distribution points (CDP) and local distribution points. (<a href="https://github.com/lindegroup/autopkgr/issues/463" class="issue-link js-issue-link" data-url="https://github.com/lindegroup/autopkgr/issues/463" data-id="115878479" data-error-text="Failed to load issue title" data-permission-text="Issue title is private">#463</a>, <a href="https://github.com/lindegroup/autopkgr/issues/309" class="issue-link js-issue-link" data-url="https://github.com/lindegroup/autopkgr/issues/309" data-id="60235783" data-error-text="Failed to load issue title" data-permission-text="Issue title is private">#309</a>)</li>
+                    <li>JSSImporter configuration UI now supports cloud distribution points (CDP) and local distribution points. (<a href="https://github.com/lindegroup/autopkgr/issues/463" class="issue-link js-issue-link" data-url="https://github.com/lindegroup/autopkgr/issues/463" data-id="115878479">#463</a>, <a href="https://github.com/lindegroup/autopkgr/issues/309" class="issue-link js-issue-link" data-url="https://github.com/lindegroup/autopkgr/issues/309" data-id="60235783">#309</a>)</li>
                     <li>MakeCatalogs.munki recipe is now added by name rather than by identifier. An override with the same name will now be used, if one exists. (Hat tip to <a href="https://github.com/grahampugh" class="user-mention">@grahampugh</a>.)</li>
                     <li>General improvements to integration performance. No longer makes duplicate GitHub API calls when "releases" don't exist.</li>
                     <li>Updated "AutoPkgr" link in footer of notification emails to point to <a href="http://www.lindegroup.com/autopkgr">AutoPkgr information page</a> instead of <a href="https://github.com/lindegroup/autopkgr">GitHub repo</a>.</li>
