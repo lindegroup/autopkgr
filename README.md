@@ -22,7 +22,7 @@ To get started, download the [latest release](https://github.com/lindegroup/auto
 - [Using a Proxy](#using-a-proxy)
 - [Integrations](#integrations)
     - [Integration with Munki](#integration-with-munki)
-    - [Integration with Casper](#integration-with-casper)
+    - [Integration with Jamf Pro](#integration-with-jamf-pro)
     - [Integration with HEAT LANrev](#integration-with-heat-lanrev)
     - [Integration with MacPatch](#integration-with-macpatch)
     - [Integration with FileWave](#integration-with-filewave)
@@ -45,13 +45,13 @@ AutoPkgr makes these tasks a piece of cake:
 - Email, Slack, or HipChat notifications when new software is packaged.
 - Ability to easily create and edit AutoPkg recipe overrides.
 - Easy access to common folders that AutoPkg admins need.
-- Basic integration of AutoPkg with popular software distribution frameworks like [Munki](https://www.munki.org/munki/), [Casper Suite](http://www.jamfsoftware.com/products/), [HEAT LANrev](https://heatsoftware.com/lanrev/), [FileWave](https://www.filewave.com/), and [MacPatch](https://macpatch.github.io/).
+- Basic integration of AutoPkg with popular software distribution frameworks like [Munki](https://www.munki.org/munki/), [Jamf Pro](https://www.jamf.com/products/jamf-pro/), [HEAT LANrev](https://heatsoftware.com/software-solutions/unified-endpoint-management/lanrev/), [FileWave](https://www.filewave.com/), and [MacPatch](https://macpatch.github.io/).
 
 ![divider](doc-images/divider.png)
 
 ## Installation
 
-AutoPkgr requires Mac OS X 10.8 or higher. If you plan on integrating with Munki, Casper, or other tools, additional requirements may apply. (See the [Integrations](#integrations) section for details.)
+AutoPkgr requires Mac OS X 10.8 or higher. If you plan on integrating with Munki, Jamf Pro, or other tools, additional requirements may apply. (See the [Integrations](#integrations) section for details.)
 
 Download the [latest release](https://github.com/lindegroup/autopkgr/releases/latest), and drag the AutoPkgr app to your Applications folder. Then launch it.
 
@@ -105,7 +105,7 @@ That's it! AutoPkgr will now check for the latest app updates you specified, and
 
 Anytime you'd like to make changes to AutoPkgr's configuration, click on AutoPkgr's icon in the Dock, or click on the AutoPkgr icon in the menu bar (![Menu bar icon](doc-images/menulet.png)), and choose __AutoPkgr Preferences...__
 
-You'll also find some useful shortcuts on the __Folders & Integration__ tab, which will take you directly to several convenient AutoPkg folders. On that tab, you can also configure integration with Munki, Casper, and other software deployment systems (see below).
+You'll also find some useful shortcuts on the __Folders & Integration__ tab, which will take you directly to several convenient AutoPkg folders. On that tab, you can also configure integration with Munki, Jamf Pro, and other software deployment systems (see below).
 
 ![Folders & Integration](doc-images/config_tab5.png)
 
@@ -187,11 +187,13 @@ To configure AutoPkgr to add updates directly into your Munki repository, follow
 
 You'll also want to make sure you have `.munki` recipes selected for each app you want to import. Once the new versions of apps appear in your Munki repo, you can add them to the appropriate catalogs and manifests to deploy them.
 
-### Integration with Casper
+### Integration with Jamf Pro
 
-:bulb: &nbsp; _Note: Requires Casper version 9 or newer._
+:bulb: &nbsp; _Note: Requires Jamf Pro version 9 or newer._
 
-To configure AutoPkgr to create Self Service policies in Casper for new app updates, follow these steps:
+(Jamf Pro was formerly known as JAMF Casper Suite.)
+
+To configure AutoPkgr to create Self Service policies in Jamf Pro for new app updates, follow these steps:
 
 1. Create a static computer group on your JSS called __Testing__. Add one or more test computers to the group.
 1. Create an account on your JSS with __Create__, __Read__, and __Update__ access to the following objects:
@@ -208,7 +210,7 @@ To configure AutoPkgr to create Self Service policies in Casper for new app upda
 1. Click on __Configure JSSImporter__.
 1. Enter your JSS URL, API username, and API password. Then click __Connect__.
 
-    ![Casper Settings](doc-images/integration_casper.png)
+    ![Jamf Pro Settings](doc-images/integration_casper.png)
 
 1. When prompted, enter the read/write password for each distribution point.
 1. Click __Save and Close__.
