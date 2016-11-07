@@ -1,0 +1,39 @@
+
+/* Class = "NSButtonCell"; title = "Update all repos before each AutoPkg run"; ObjectID = "2Rc-4D-cra"; */
+"2Rc-4D-cra.title" = "Update all repos before each AutoPkg run";
+
+/* Class = "NSMenu"; title = "Weekday Chooser"; ObjectID = "3K4-Lb-7CJ"; */
+"3K4-Lb-7CJ.title" = "Weekday Chooser";
+
+/* Class = "NSButtonCell"; title = "Enable scheduled AutoPkg runs"; ObjectID = "7rF-ef-zEP"; */
+"7rF-ef-zEP.title" = "Enable scheduled AutoPkg runs";
+
+/* Class = "NSButtonCell"; title = "Weekly on:"; ObjectID = "8bh-SR-q0v"; */
+"8bh-SR-q0v.title" = "Weekly on:";
+
+/* Class = "NSButtonCell"; title = "Daily at:"; ObjectID = "9UX-C6-xHW"; */
+"9UX-C6-xHW.title" = "Daily at:";
+
+/* Class = "NSTextFieldCell"; title = "24"; ObjectID = "9xE-ZL-3gu"; */
+"9xE-ZL-3gu.title" = "24";
+
+/* Class = "NSMenuItem"; title = "Item 2"; ObjectID = "Y6U-hi-G8e"; */
+"Y6U-hi-G8e.title" = "Item 2";
+
+/* Class = "NSButtonCell"; title = "Radio"; ObjectID = "Y8l-6c-rJR"; */
+"Y8l-6c-rJR.title" = "Radio";
+
+/* Class = "NSMenuItem"; title = "Item 3"; ObjectID = "mnb-aa-Xkb"; */
+"mnb-aa-Xkb.title" = "Item 3";
+
+/* Class = "NSMenuItem"; title = "Item 1"; ObjectID = "nrP-fH-hiZ"; */
+"nrP-fH-hiZ.title" = "Item 1";
+
+/* Class = "NSTextFieldCell"; title = "at"; ObjectID = "qd6-CR-v7F"; */
+"qd6-CR-v7F.title" = "at";
+
+/* Class = "NSButtonCell"; title = "Every:"; ObjectID = "rxf-Wp-7b6"; */
+"rxf-Wp-7b6.title" = "Every:";
+
+/* Class = "NSTextFieldCell"; title = "hours"; ObjectID = "t9N-Fo-Q3T"; */
+"t9N-Fo-Q3T.title" = "hours";

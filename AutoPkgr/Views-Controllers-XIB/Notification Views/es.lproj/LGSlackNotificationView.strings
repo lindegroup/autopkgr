@@ -1,0 +1,12 @@
+
+/* Class = "NSTextFieldCell"; title = "AutoPkgr"; ObjectID = "MkV-Zf-cdC"; */
+"MkV-Zf-cdC.title" = "AutoPkgr";
+
+/* Class = "CocoaBindingsConnection"; ibShadowedIsNilPlaceholder = "AutoPkgr"; ObjectID = "N84-cj-yTh"; */
+"N84-cj-yTh.ibShadowedIsNilPlaceholder" = "AutoPkgr";
+
+/* Class = "NSTextFieldCell"; title = "Bot Name:"; ObjectID = "w0b-FV-FBc"; */
+"w0b-FV-FBc.title" = "Bot Name:";
+
+/* Class = "NSTextFieldCell"; title = "Webhook URL:"; ObjectID = "wUT-Ey-E1F"; */
+"wUT-Ey-E1F.title" = "Webhook URL:";
