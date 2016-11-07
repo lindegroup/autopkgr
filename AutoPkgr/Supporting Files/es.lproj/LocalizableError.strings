@@ -13,85 +13,85 @@
  */
 
 /* No comment provided by engineer. */
-"An error occurred." = "An error occurred.";
+"An error occurred." = "Ocurrió un error.";
 
 /* Error when authorization fails */
-"kLGErrorAuthChallenge" = "Error creating authorization";
+"kLGErrorAuthChallenge" = "Error creando autorización";
 
 /* Error when authorization fails (NSLocalizedRecoverySuggestionErrorKey) */
-"kLGErrorAuthChallenge" = "You are not authorized to perform this action";
+"kLGErrorAuthChallenge" = "Usted no está autorizado para ejecutar esta acción";
 
 /* Error trying to install privileged helper tool. */
-"kLGErrorInstallingPrivilegedHelperToolDescription" = "The associated helper tool could not be installed, we must quit now.";
+"kLGErrorInstallingPrivilegedHelperToolDescription" = "El helper tool asociado no pudo ser instalado, saldremos ahora.";
 
 /* Error trying to install privileged helper tool. (NSLocalizedRecoverySuggestionErrorKey) */
 "kLGErrorInstallingPrivilegedHelperToolSuggestion" = "";
 
 /* Error when AutoPkgr schedule timer interval is not valid */
-"kLGErrorIncorrectScheduleTimerIntervalDescription" = "Error setting timer";
+"kLGErrorIncorrectScheduleTimerIntervalDescription" = "Error configurando temporizador";
 
 /* Error when AutoPkgr schedule timer interval is not valid (NSLocalizedRecoverySuggestionErrorKey) */
-"kLGErrorIncorrectScheduleTimerIntervalSuggestion" = "The start timer interval for scheduled runs is not correct, it must be a number and not 0.";
+"kLGErrorIncorrectScheduleTimerIntervalSuggestion" = "El intervalo de inicio del temporizador para ejecuciones programadas está incorrecto, debe ser un número, pero no 0.";
 
 /* Generic install error description */
-"kLGErrorInstallingGenericDescription" = "An error occurred during installation.";
+"kLGErrorInstallingGenericDescription" = "Ocurrió un error durante la instalación.";
 
 /* Generic install error (NSLocalizedRecoverySuggestionErrorKey) */
-"kLGErrorInstallingGenericSuggestion" = "Please check the logs for more information";
+"kLGErrorInstallingGenericSuggestion" = "Revise los archivos de registro para más información";
 
 /* Error serializing JSS response data. */
-"kLGErrorJSSXMLSerializerErrorDescription" = "Error getting distribution points";
+"kLGErrorJSSXMLSerializerErrorDescription" = "Error obteniendo puntos de distribución";
 
 /* Error serializing JSS response data. (NSLocalizedRecoverySuggestionErrorKey) */
-"kLGErrorJSSXMLSerializerErrorSuggestion" = "The Casper server's response could not be correctly interpreted.";
+"kLGErrorJSSXMLSerializerErrorSuggestion" = "La respuesta del servidor Jamf Pro no pudo ser interpretada correctamente.";
 
 /* Error when recipe is missing parent recipe */
-"kLGErrorMissingParentRecipeDescription" = "Parent Recipe not available";
+"kLGErrorMissingParentRecipeDescription" = "Receta matriz no disponible";
 
 /* Error when recipe is missing parent recipe (NSLocalizedRecoverySuggestionErrorKey) */
-"kLGErrorMissingParentRecipeSuggestion" = "The parent recipe for that recipe is not included in any of the active repos. You will need to determine which repo it's included with and enable that repo.";
+"kLGErrorMissingParentRecipeSuggestion" = "La receta matriz de esta receta no está incluida en ninguno de los repositorios. Usted deberá determinar en cuál repositorio se encuentra, y habilitarlo.";
 
 /* Error when trying to run multiple instances of AutoPkg */
-"kLGErrorMultipleRunsOfAutopkgDescription" = "Only one instance of AutoPkg can be run at a time";
+"kLGErrorMultipleRunsOfAutopkgDescription" = "Sólo una instancia de AutoPkg puede ejecutarse a la vez";
 
 /* Error when trying to run multiple instances of AutoPkg (NSLocalizedRecoverySuggestionErrorKey) */
-"kLGErrorMultipleRunsOfAutopkgSuggestion" = "A scheduled AutoPkg run may be running in the background. Please wait for it to complete.";
+"kLGErrorMultipleRunsOfAutopkgSuggestion" = "Una ejecución programada de AutoPkg puede estar activa en el fondo. Por favor espere a que termine.";
 
 /* Error repairing autopkg preferences file. */
-"kLGErrorReparingAutoPkgPrefsDescription" = "Unable to resolve some issues with the AutoPkg preferences";
+"kLGErrorReparingAutoPkgPrefsDescription" = "Incapaz de resolver algunos problemas con las preferencias de AutoPkg";
 
 /* Error repairing autopkg preferences file. (NSLocalizedRecoverySuggestionErrorKey) */
-"kLGErrorReparingAutoPkgPrefsSuggestion" = "If the problem persists please inspect the com.github.autopkg preference file manually for incorrect values.";
+"kLGErrorReparingAutoPkgPrefsSuggestion" = "Si el problema persiste, por favor inspeccione el archivo de preferencias com.github.autopkg para encontrar valores equivocados.";
 
 /* Generic error when sending email */
-"kLGErrorSendingEmailDescription" = "Error sending email";
+"kLGErrorSendingEmailDescription" = "Error enviando mensaje";
 
 /* Generic error when sending email. (NSLocalizedRecoverySuggestionErrorKey) */
-"kLGErrorSendingEmailSuggestion" = "Please verify the username, password, server and port are correct.";
+"kLGErrorSendingEmailSuggestion" = "Por favor verifique que el nombre de usuario, contraseña, servidor, y puerto de red estén correctos.";
 
 /* Success, no error occurred */
-"kLGErrorSuccessDescription" = "Success!";
+"kLGErrorSuccessDescription" = "Éxito!";
 
 /* (NSLocalizedRecoverySuggestionErrorKey) */
 "kLGErrorSuccessSuggestion" = "";
 
 /* Generic error during port testing */
-"kLGErrorTestingPortDescription" = "Error verifying server and port";
+"kLGErrorTestingPortDescription" = "Error verificando servidor y puerto de red";
 
 /* Generic error during port testing (NSLocalizedRecoverySuggestionErrorKey) */
-"kLGErrorTestingPortSuggestion" = "Please verify server and port are correct.";
+"kLGErrorTestingPortSuggestion" = "Por favor verifique que el servidor y puerto de red estén correctos.";
 
 /* Error accessing the recipe list file. */
-"kLGErrorRecipeListFileAccessSuggestion" = "There was a problem accessing the recipe list file";
+"kLGErrorRecipeListFileAccessSuggestion" = "Hubo un problema accediendo el archivo de la lista de recetas";
 
 /* Error accessing the recipe list file. (NSLocalizedRecoverySuggestionErrorKey) */
-"kLGErrorRecipeListFileAccessDescription" = "Please check premissions on the ~/Library/Application Support/AutoPkg/";
+"kLGErrorRecipeListFileAccessDescription" = "Por favor revise los permisos de la carpeta ~/Library/Application Support/AutoPkg/";
 
 /* Unknown error */
-"kLGErrorUnknownDescription" = "An unknown error occurred.";
+"kLGErrorUnknownDescription" = "Un error indeterminado ha ocurrido.";
 
 /* Unknown error (NSLocalizedRecoverySuggestionErrorKey) */
-"kLGErrorUnknownSuggestion" = "It's possible the system log contains more information.";
+"kLGErrorUnknownSuggestion" = "Es posible que el archivo de registros del sistema contenga más información.";
 
 /**
  *  Networking request related errors.
@@ -101,41 +101,41 @@
 "kLGHTTPErrorBadRequestDescription" = "Bad Request";
 
 /* Bad Request (NSLocalizedRecoverySuggestionErrorKey) */
-"kLGHTTPErrorBadRequestSuggestion" = "The request to the server was not formatted correctly. Please check the information you supplied.";
+"kLGHTTPErrorBadRequestSuggestion" = "El formato de la solicitud al servidor está incorrecto. Por favor revise la información suministrada.";
 
 /* Forbidden 403 */
-"kLGHTTPErrorForbiddenDescription" = "Access forbidden";
+"kLGHTTPErrorForbiddenDescription" = "Acceso prohibido";
 
 /* Forbidden 403 (NSLocalizedRecoverySuggestionErrorKey) */
-"kLGHTTPErrorForbiddenSuggestion" = "The specified user is not authorized to access this area on the server. Please check that the username you've entered is correct.";
+"kLGHTTPErrorForbiddenSuggestion" = "El usuario indicado no está autorizado para acceder esta área del servidor. Por favor revise que el noombre de usuario suministrado esté correcto.";
 
 /* Not Found 404 */
-"kLGHTTPErrorNotFoundDescription" = "Resource not found";
+"kLGHTTPErrorNotFoundDescription" = "Recurso no encontrado";
 
 /* Not Found 404 (NSLocalizedRecoverySuggestionErrorKey) */
-"kLGHTTPErrorNotFoundSuggestion" = "The requested resource could not be found. Please make sure you've entered the correct protocol, hostname, and port.";
+"kLGHTTPErrorNotFoundSuggestion" = "No encontramos el recurso solicitado. Por favor asegúrese de haber suministrado el protocolo, nombre de dominio, y puerto de red correctos.";
 
 /* Success */
-"kLGHTTPErrorSuccessDescription" = "Connection Success!";
+"kLGHTTPErrorSuccessDescription" = "Conexión exitosa!";
 
 /* success (NSLocalizedRecoverySuggestionErrorKey) */
 "kLGHTTPErrorSuccessSuggestion" = "";
 
 /* Time Out 408 */
-"kLGHTTPErrorTimeoutDescription" = "Connection timed out";
+"kLGHTTPErrorTimeoutDescription" = "Agotado el tiempo de espera para la conexión";
 
 /* Time Out 408 (NSLocalizedRecoverySuggestionErrorKey) */
-"kLGHTTPErrorTimeoutSuggestion" = "Please make sure you have an active network connection and the server you've entered is correct.";
+"kLGHTTPErrorTimeoutSuggestion" = "Asegúrese de tener una conexión de red activa, y que el nombre de domino del servidor esté correcta.";
 
 /* Unauthorized 401 */
-"kLGHTTPErrorUnauthorizedDescription" = "Authorization failed.";
+"kLGHTTPErrorUnauthorizedDescription" = "Autorización fallida.";
 
 /* Unauthorized 401 (NSLocalizedRecoverySuggestionErrorKey) */
-"kLGHTTPErrorUnauthorizedSuggestion" = "Please confirm you have entered the correct username and password or API Token for the connection.";
+"kLGHTTPErrorUnauthorizedSuggestion" = "Por favor verifique el haber suministrado el nombre de usuario y contraseña, o el API token correctos para la conexión.";
 
 /* Unknown */
-"kLGHTTPErrorUnknownDescription" = "There was a problem connecting to the server";
+"kLGHTTPErrorUnknownDescription" = "Hubo un problema conectándonos al servidor";
 
 /* Unknown (NSLocalizedRecoverySuggestionErrorKey) */
-"kLGHTTPErrorUnknownSuggestion" = "An unknown error occurred. If you get this message repeatedly please create an issue on the AutoPkgr GitHub page. Thanks.";
+"kLGHTTPErrorUnknownSuggestion" = "Ha ocurrido un error no identificado. Si se presenta este mensaje repetidamente, por favor abra una cuestión en la página GitHub de AutoPkgr, gracias.";
 

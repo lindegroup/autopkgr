@@ -1,21 +1,21 @@
 /* button title to disable ssl verification */
-"Disable SSL Verification" = "Disable SSL Verification";
+"Disable SSL Verification" = "Desactivar verificación SSL";
 
 /* No comment provided by engineer. */
-"Distribution Point Password Required" = "Distribution Point Password Required";
+"Distribution Point Password Required" = "Contraseña requerida para el punto de distribución";
 
 /* No comment provided by engineer. */
-"Edit Distribution Point" = "Edit Distribution Point";
+"Edit Distribution Point" = "Modificar punto de distribución";
 
 /* button title for alert when ssl verification should remain enabled. */
-"Keep SSL Verification" = "Keep SSL Verification";
+"Keep SSL Verification" = "Mantener verificación SSL";
 
 /* No comment provided by engineer. */
-"Please enter read/write password for the \"%@\" distribution point. If you intend to configure manually just click \"Cancel\"." = "Please enter read/write password for the \"%@\" distribution point. If you intend to configure manually just click \"Cancel\".";
+"Please enter read/write password for the \"%@\" distribution point. If you intend to configure manually just click \"Cancel\"." = "Digite contraseña de lectura/escritura para el punto de distribución \"%@\". Si pretende configurarlo manualmente, haga clic en \"Cancelar\".";
 
 /* No comment provided by engineer. */
-"This is most likely due to the certificate being self signed. Choosing \"Disable SSL Verification\" may be required for JSSImporter to function properly." = "This is most likely due to the certificate being self signed. Choosing \"Disable SSL Verification\" may be required for JSSImporter to function properly.";
+"This is most likely due to the certificate being self signed. Choosing \"Disable SSL Verification\" may be required for JSSImporter to function properly." = "Esto probablemente se debe a un certificado SSL autofirmado. Eligiendo \"Desactivar verificación SSL\" puede ser requerido para el funcionamiento adecuado del JSSImporter.";
 
 /* message when JSS cannot be verified */
-"Unable to verify the SSL certificate." = "Unable to verify the SSL certificate.";
+"Unable to verify the SSL certificate." = "No se puede verificar el certificado SSL.";
 
