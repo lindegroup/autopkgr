@@ -355,15 +355,39 @@ If you've determined the issue is with AutoPkgr and not a specific recipe or rep
 
 If you enable Verbose Logs for AutoPkgr, you may also want to enable the __Verbose AutoPkg Run__ option. You can find this option in __Folders & Integration > Configure AutoPkg__.
 
-Once you've set the verbosity as desired, the simplest way to view the log output is to filter for "AutoPkgr" in the Console app on your Mac.
+Once you've set the verbosity as desired, you'll want to view the logs.
 
-![Check the logs](doc-images/console_logs.png)
+In OS X 10.9 through 10.11, it's as simple as entering "AutoPkgr" into the filter field of the Console app:
 
-If you prefer to view the log output in Terminal, you could use this command instead:
+![Console in El Cap](doc-images/console_logs.png)
 
-```
-tail -f /var/log/system.log | grep AutoPkgr
-```
+In macOS 10.12, we recommend filtering for the "AutoPkgr" process:
+
+![Console in Sierra](doc-images/console_sierra1.png)
+
+If you like, you can save this filter for future reference:
+
+1. Click the __Save__ button.
+
+    ![Save filter in Sierra](doc-images/console_sierra2.png)
+
+2. Type a name for the saved filter. Perhaps "AutoPkgr." Click __Save__.
+
+    ![Save filter in Sierra](doc-images/console_sierra3.png)
+
+3. From now on, simply click on the __AutoPkgr__ saved search in the toolbar to see AutoPkgr's log events.
+
+    ![Save filter in Sierra](doc-images/console_sierra4.png)
+
+If you prefer to view the log output in Terminal instead of Console, you could use this command in OS X 10.9 through 10.11:
+
+    tail -f /var/log/system.log | grep "AutoPkgr"
+
+Or this command in macOS 10.12:
+
+    log stream --style syslog --process "AutoPkgr" --type log
+
+Make sure to run the above commands _before_ you start AutoPkgr, because it will show you live output, not historical log entries.
 
 #### Step 4: Reach out for help
 
