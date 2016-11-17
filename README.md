@@ -404,7 +404,6 @@ If you decide AutoPkgr isn't for you, we've made it easy to remove. Hold down th
 
 This will remove the following files:
 
-- __/Applications/AutoPkgr.app__
 - __/Library/LaunchDaemons/com.lindegroup.AutoPkgr.helper.plist__
 - __/Library/LaunchDaemons/com.lindegroup.AutoPkgr.schedule.plist__
 - __/Library/PrivilegedHelperTools/com.lindegroup.AutoPkgr.helper__
@@ -412,11 +411,16 @@ This will remove the following files:
 The uninstall feature does _not_ remove the following:
 
 - AutoPkgr preferences, stored at __~/Library/Preferences/com.lindegroup.AutoPkgr.plist__
-- Your recipe list(s), typically at __~/Library/Application Support/AutoPkgr/recipe_list.txt__
+- AutoPkgr's keychain, stored at __~/Library/Keychains/AutoPkgr.keychain-db__
+- Your recipe list(s), stored at __~/Library/Application Support/AutoPkgr/recipe_list.txt__
 - AutoPkg, stored in __/Library/AutoPkg__
 - The AutoPkg cache, recipe repositories, and overrides, typically stored in __~/Library/AutoPkg__
 - Munki tools
 - JSSImporter or other integration tools
+
+After uninstalling, you can drag the AutoPkgr app from your Applications folder to the Trash.
+
+![divider](doc-images/divider.png)
 
 ## Credits
 
