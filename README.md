@@ -424,6 +424,8 @@ AutoPkgr was created at the [Linde Group](http://www.lindegroup.com) in Emeryvil
 
 James Barclay, Elliot Jordan, and Josh Senick originally created AutoPkgr in June 2014, and ongoing development is led by Eldon Ahrold, Elliot Jordan, and James Barclay.
 
+Thanks to Guillaume Gete for helping with the French localization, and to Luis Giraldo for the Spanish localization.
+
 Briefcase icon from [FontAwesome](http://fontawesome.io/).
 
 [![Linde Group](doc-images/linde_logo.png)](http://www.lindegroup.com/)
