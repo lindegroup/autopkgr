@@ -113,7 +113,7 @@
                 // Show end alert.
                 NSString *alertText = NSLocalizedString(@"Removed AutoPkgr associated files.", nil);
                 NSString *defaultButton = NSLocalizedString(@"Thanks for using AutoPkgr", nil);
-                NSString *infoText = NSLocalizedString(@"This includes the helper tool, launchd schedule, and other launchd plist. You can safely remove it from your Applications folder.", nil);
+                NSString *infoText = NSLocalizedString(@"uninstall_includes", nil);
 
                 NSAlert *alert = [NSAlert alertWithMessageText:alertText defaultButton:defaultButton alternateButton:nil otherButton:nil informativeTextWithFormat:@"%@", infoText];
                 [alert runModal];
