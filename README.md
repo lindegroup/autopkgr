@@ -28,6 +28,7 @@ To get started, download the [latest release](https://github.com/lindegroup/auto
     - [Integration with FileWave](#integration-with-filewave)
     - [Integration with VirusTotalAnalyzer](#integration-with-virustotalanalyzer)
 - [Troubleshooting](#troubleshooting)
+- [Uninstalling](#uninstalling)
 - [Credits](#credits)
 
 <!-- /MarkdownTOC -->
@@ -219,7 +220,7 @@ You'll also want to make sure you have a few `.jss` recipes selected. AutoPkgr w
 
 When a `.jss` recipe runs, the package is uploaded to your distribution points, a Self Service policy is created and scoped to a new smart group. As a result, computers in the Testing group with less than the latest version of the app should now be able to install the latest version through Self Service.
 
-For detailed information on JSS recipe behavior, check out the [README for jss-recipes](https://github.com/autopkg/jss-recipes), and for some examples of advanced worfklows, see [Auto Update Magic](https://github.com/homebysix/auto-update-magic).
+For detailed information on JSS recipe behavior, check out the [README for jss-recipes](https://github.com/autopkg/jss-recipes), and for some examples of advanced workflows, see [Auto Update Magic](https://github.com/homebysix/auto-update-magic).
 
 ### Integration with HEAT LANrev
 
@@ -396,6 +397,26 @@ If you're still stuck, you may want to post a message (and relevant sections of 
 We also welcome feature requests on GitHub! Some of our best features have come from community suggestions.
 
 ![divider](doc-images/divider.png)
+
+## Uninstalling
+
+If you decide AutoPkgr isn't for you, we've made it easy to remove. Hold down the __Option__ key while clicking the AutoPkgr icon in the menu bar (![Menu bar icon](doc-images/menulet.png)), then choose __Uninstall__.
+
+This will remove the following files:
+
+- __/Applications/AutoPkgr.app__
+- __/Library/LaunchDaemons/com.lindegroup.AutoPkgr.helper.plist__
+- __/Library/LaunchDaemons/com.lindegroup.AutoPkgr.schedule.plist__
+- __/Library/PrivilegedHelperTools/com.lindegroup.AutoPkgr.helper__
+
+The uninstall feature does _not_ remove the following:
+
+- AutoPkgr preferences, stored at __~/Library/Preferences/com.lindegroup.AutoPkgr.plist__
+- Your recipe list(s), typically at __~/Library/Application Support/AutoPkgr/recipe_list.txt__
+- AutoPkg, stored in __/Library/AutoPkg__
+- The AutoPkg cache, recipe repositories, and overrides, typically stored in __~/Library/AutoPkg__
+- Munki tools
+- JSSImporter or other integration tools
 
 ## Credits
 
