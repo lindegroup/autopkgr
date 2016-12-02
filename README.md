@@ -14,12 +14,12 @@ To get started, download the [latest release](https://github.com/lindegroup/auto
 
 - [Features](#features)
 - [Installation](#installation)
-- [Basic Usage](#basic-usage)
-- [Searching for Recipes](#searching-for-recipes)
+- [Basic usage](#basic-usage)
+- [Searching for recipes](#searching-for-recipes)
 - [Running individual recipes](#running-individual-recipes)
-- [Creating/Editing Recipe Overrides](#creatingediting-recipe-overrides)
+- [Creating/editing recipe overrides](#creatingediting-recipe-overrides)
 - [Customizing notifications](#customizing-notifications)
-- [Using a Proxy](#using-a-proxy)
+- [Using a proxy](#using-a-proxy)
 - [Integrations](#integrations)
     - [Integration with Munki](#integration-with-munki)
     - [Integration with Jamf Pro](#integration-with-jamf-pro)
@@ -58,7 +58,7 @@ Download the [latest release](https://github.com/lindegroup/autopkgr/releases/la
 
 ![divider](doc-images/divider.png)
 
-## Basic Usage
+## Basic usage
 
 1.  Launch the AutoPkgr app.
 
@@ -112,7 +112,7 @@ You'll also find some useful shortcuts on the __Folders & Integration__ tab, whi
 
 ![divider](doc-images/divider.png)
 
-## Searching for Recipes
+## Searching for recipes
 
 AutoPkgr can help you find recipes for the apps you want. In the __Recipes & Repos__ tab, enter the name of the app into the "Search for a recipe on GitHub" field, and click __Search__.
 
@@ -136,17 +136,19 @@ If you want to run a single recipe once, simply right-click on a recipe and choo
 
 ![Running individual recipes](doc-images/individual_recipe_run.png)
 
-If the recipe you're running is a .munki recipe, MakeCatalogs.munki will also run.
+If any recipe you're running is a .munki recipe, AutoPkgr will also run the MakeCatalogs.munki recipe. (See the [Integration with Munki](#integration-with-munki) section below for details on MakeCatalogs.munki.)
 
 ![divider](doc-images/divider.png)
 
-## Creating/Editing Recipe Overrides
+## Creating/editing recipe overrides
 
-Recipe overrides allow you to tailor recipes' input variables to your organization's needs.
+Recipe overrides allow you to tailor recipes' input variables to your organization's needs. __For production use, it's generally recommended to include recipe overrides instead of actual recipes.__
 
 We've tried to simplify the process of creating and editing AutoPkg recipe overrides. Just right-click on a recipe in the list, and you'll see options for creating an override or editing an existing override.
 
 To select which text editor to use when editing overrides, go to __Folders & Integration > Configure AutoPkg > Recipe/Override Editor__.
+
+AutoPkgr does not currently provide a way to add trust information to existing recipe overrides, so we recommend manually using the `update-trust-info` verb in AutoPkg 1.0+ for that purpose. [You can read more about recipe trust information on the AutoPkg wiki](https://github.com/autopkg/autopkg/wiki/Autopkg-and-recipe-parent-trust-info).
 
 ![divider](doc-images/divider.png)
 
@@ -160,7 +162,7 @@ When you're done, click __Close__.
 
 ![divider](doc-images/divider.png)
 
-## Using a Proxy
+## Using a proxy
 
 If your network uses a proxy, you may need to navigate to the __Folders & Integration__ tab and click on the __Configure AutoPkg__ button. Adjust the proxy settings as necessary.
 
@@ -187,6 +189,18 @@ To configure AutoPkgr to add updates directly into your Munki repository, follow
 1. Click __Save and Close__.
 
 You'll also want to make sure you have `.munki` recipes selected for each app you want to import. Once the new versions of apps appear in your Munki repo, you can add them to the appropriate catalogs and manifests to deploy them.
+
+When you select any `.munki` recipes selected, AutoPkgr will automatically add MakeCatalogs.munki to the end of your recipe list. MakeCatalogs is a special recipe that rebuilds your Munki catalogs after any items are imported.
+
+Since the introduction of [recipe trust information](https://github.com/autopkg/autopkg/wiki/Autopkg-and-recipe-parent-trust-info) in AutoPkg 1.0, we recommend that you create an override of MakeCatalogs instead of running the recipe itself. To do this, follow these steps:
+
+1. Filter the recipe list for `MakeCatalogs`.
+1. Right-click on the recipe shown, and choose __Create Override__.
+
+    ![MakeCatalogs Override](doc-images/makecatalogs_override.png)
+
+That's it! You only need to create that override once. And you do _not_ need to check the box to include MakeCatalogs.munki in your schedule. It will be included automatically.
+
 
 ### Integration with Jamf Pro
 
@@ -317,6 +331,17 @@ Now all downloaded files will be checked against VirusTotal's database.
     ![View parent recipe identifier](doc-images/recipe_view_parent.png)
 
     You don't need to add the parent recipe itself to your list, but you _do_ need to make sure that the repository that the parent recipe belongs to is checked in the repo list.
+
+- __Missing or invalid recipe trust info__
+
+    Since AutoPkg 1.0, you may be seeing warnings like this appear in your notifications:
+
+    > WARNING: MakeCatalogs.munki is missing trust info and FAIL_RECIPES_WITHOUT_TRUST_INFO is not set. Proceeding...
+
+    In order to prevent these errors, we recommend two things:
+
+    - Create and use recipe overrides instead of the actual recipes themselves. See the [Creating/editing recipe overrides](#creatingediting-recipe-overrides) section for instructions on how to do this.
+    - If these overrides were created before updating to AutoPkg 1.0, you'll need to use `autopkg update-trust-info` to add trust information to them. See [this page](https://github.com/autopkg/autopkg/wiki/Autopkg-and-recipe-parent-trust-info) on the AutoPkg wiki for details.
 
 - __Out of date components__
 
