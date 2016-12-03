@@ -1,0 +1,12 @@
+
+/* Class = "NSTextFieldCell"; title = "Username:"; ObjectID = "Tct-A0-4Yt"; */
+"Tct-A0-4Yt.title" = "Usuario:";
+
+/* Class = "NSTextFieldCell"; title = "Password:"; ObjectID = "VFu-Ik-77P"; */
+"VFu-Ik-77P.title" = "Contraseña:";
+
+/* Class = "NSButtonCell"; title = "Allow Self-Signed Certificate"; ObjectID = "ebp-wM-ziW"; */
+"ebp-wM-ziW.title" = "Permitir certificado autofirmado";
+
+/* Class = "NSTextFieldCell"; title = "URL:"; ObjectID = "pLg-Ha-1TB"; */
+"pLg-Ha-1TB.title" = "URL:";

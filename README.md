@@ -14,12 +14,12 @@ To get started, download the [latest release](https://github.com/lindegroup/auto
 
 - [Features](#features)
 - [Installation](#installation)
-- [Basic Usage](#basic-usage)
-- [Searching for Recipes](#searching-for-recipes)
+- [Basic usage](#basic-usage)
+- [Searching for recipes](#searching-for-recipes)
 - [Running individual recipes](#running-individual-recipes)
-- [Creating/Editing Recipe Overrides](#creatingediting-recipe-overrides)
+- [Creating/editing recipe overrides](#creatingediting-recipe-overrides)
 - [Customizing notifications](#customizing-notifications)
-- [Using a Proxy](#using-a-proxy)
+- [Using a proxy](#using-a-proxy)
 - [Integrations](#integrations)
     - [Integration with Munki](#integration-with-munki)
     - [Integration with Jamf Pro](#integration-with-jamf-pro)
@@ -28,6 +28,7 @@ To get started, download the [latest release](https://github.com/lindegroup/auto
     - [Integration with FileWave](#integration-with-filewave)
     - [Integration with VirusTotalAnalyzer](#integration-with-virustotalanalyzer)
 - [Troubleshooting](#troubleshooting)
+- [Uninstalling](#uninstalling)
 - [Credits](#credits)
 
 <!-- /MarkdownTOC -->
@@ -57,7 +58,7 @@ Download the [latest release](https://github.com/lindegroup/autopkgr/releases/la
 
 ![divider](doc-images/divider.png)
 
-## Basic Usage
+## Basic usage
 
 1.  Launch the AutoPkgr app.
 
@@ -111,7 +112,7 @@ You'll also find some useful shortcuts on the __Folders & Integration__ tab, whi
 
 ![divider](doc-images/divider.png)
 
-## Searching for Recipes
+## Searching for recipes
 
 AutoPkgr can help you find recipes for the apps you want. In the __Recipes & Repos__ tab, enter the name of the app into the "Search for a recipe on GitHub" field, and click __Search__.
 
@@ -135,17 +136,19 @@ If you want to run a single recipe once, simply right-click on a recipe and choo
 
 ![Running individual recipes](doc-images/individual_recipe_run.png)
 
-If the recipe you're running is a .munki recipe, MakeCatalogs.munki will also run.
+If any recipe you're running is a .munki recipe, AutoPkgr will also run the MakeCatalogs.munki recipe. (See the [Integration with Munki](#integration-with-munki) section below for details on MakeCatalogs.munki.)
 
 ![divider](doc-images/divider.png)
 
-## Creating/Editing Recipe Overrides
+## Creating/editing recipe overrides
 
-Recipe overrides allow you to tailor recipes' input variables to your organization's needs.
+Recipe overrides allow you to tailor recipes' input variables to your organization's needs. __For production use, it's generally recommended to include recipe overrides instead of actual recipes.__
 
 We've tried to simplify the process of creating and editing AutoPkg recipe overrides. Just right-click on a recipe in the list, and you'll see options for creating an override or editing an existing override.
 
 To select which text editor to use when editing overrides, go to __Folders & Integration > Configure AutoPkg > Recipe/Override Editor__.
+
+AutoPkgr does not currently provide a way to add trust information to existing recipe overrides, so we recommend manually using the `update-trust-info` verb in AutoPkg 1.0+ for that purpose. [You can read more about recipe trust information on the AutoPkg wiki](https://github.com/autopkg/autopkg/wiki/Autopkg-and-recipe-parent-trust-info).
 
 ![divider](doc-images/divider.png)
 
@@ -159,7 +162,7 @@ When you're done, click __Close__.
 
 ![divider](doc-images/divider.png)
 
-## Using a Proxy
+## Using a proxy
 
 If your network uses a proxy, you may need to navigate to the __Folders & Integration__ tab and click on the __Configure AutoPkg__ button. Adjust the proxy settings as necessary.
 
@@ -186,6 +189,18 @@ To configure AutoPkgr to add updates directly into your Munki repository, follow
 1. Click __Save and Close__.
 
 You'll also want to make sure you have `.munki` recipes selected for each app you want to import. Once the new versions of apps appear in your Munki repo, you can add them to the appropriate catalogs and manifests to deploy them.
+
+When you select any `.munki` recipes selected, AutoPkgr will automatically add MakeCatalogs.munki to the end of your recipe list. MakeCatalogs is a special recipe that rebuilds your Munki catalogs after any items are imported.
+
+Since the introduction of [recipe trust information](https://github.com/autopkg/autopkg/wiki/Autopkg-and-recipe-parent-trust-info) in AutoPkg 1.0, we recommend that you create an override of MakeCatalogs instead of running the recipe itself. To do this, follow these steps:
+
+1. Filter the recipe list for `MakeCatalogs`.
+1. Right-click on the recipe shown, and choose __Create Override__.
+
+    ![MakeCatalogs Override](doc-images/makecatalogs_override.png)
+
+That's it! You only need to create that override once. And you do _not_ need to check the box to include MakeCatalogs.munki in your schedule. It will be included automatically.
+
 
 ### Integration with Jamf Pro
 
@@ -219,7 +234,7 @@ You'll also want to make sure you have a few `.jss` recipes selected. AutoPkgr w
 
 When a `.jss` recipe runs, the package is uploaded to your distribution points, a Self Service policy is created and scoped to a new smart group. As a result, computers in the Testing group with less than the latest version of the app should now be able to install the latest version through Self Service.
 
-For detailed information on JSS recipe behavior, check out the [README for jss-recipes](https://github.com/autopkg/jss-recipes), and for some examples of advanced worfklows, see [Auto Update Magic](https://github.com/homebysix/auto-update-magic).
+For detailed information on JSS recipe behavior, check out the [README for jss-recipes](https://github.com/autopkg/jss-recipes), and for some examples of advanced workflows, see [Auto Update Magic](https://github.com/homebysix/auto-update-magic).
 
 ### Integration with HEAT LANrev
 
@@ -317,6 +332,17 @@ Now all downloaded files will be checked against VirusTotal's database.
 
     You don't need to add the parent recipe itself to your list, but you _do_ need to make sure that the repository that the parent recipe belongs to is checked in the repo list.
 
+- __Missing or invalid recipe trust info__
+
+    Since AutoPkg 1.0, you may be seeing warnings like this appear in your notifications:
+
+    > WARNING: MakeCatalogs.munki is missing trust info and FAIL_RECIPES_WITHOUT_TRUST_INFO is not set. Proceeding...
+
+    In order to prevent these errors, we recommend two things:
+
+    - Create and use recipe overrides instead of the actual recipes themselves. See the [Creating/editing recipe overrides](#creatingediting-recipe-overrides) section for instructions on how to do this.
+    - If these overrides were created before updating to AutoPkg 1.0, you'll need to use `autopkg update-trust-info` to add trust information to them. See [this page](https://github.com/autopkg/autopkg/wiki/Autopkg-and-recipe-parent-trust-info) on the AutoPkg wiki for details.
+
 - __Out of date components__
 
     Quit and relaunch AutoPkgr to check for new versions of installed components, including AutoPkg, Git, and AutoPkgr itself. We recommend updating to the latest version of these tools as a first step when troubleshooting.
@@ -355,15 +381,39 @@ If you've determined the issue is with AutoPkgr and not a specific recipe or rep
 
 If you enable Verbose Logs for AutoPkgr, you may also want to enable the __Verbose AutoPkg Run__ option. You can find this option in __Folders & Integration > Configure AutoPkg__.
 
-Once you've set the verbosity as desired, the simplest way to view the log output is to filter for "AutoPkgr" in the Console app on your Mac.
+Once you've set the verbosity as desired, you'll want to view the logs.
 
-![Check the logs](doc-images/console_logs.png)
+In OS X 10.9 through 10.11, it's as simple as entering "AutoPkgr" into the filter field of the Console app:
 
-If you prefer to view the log output in Terminal, you could use this command instead:
+![Console in El Cap](doc-images/console_logs.png)
 
-```
-tail -f /var/log/system.log | grep AutoPkgr
-```
+In macOS 10.12, we recommend filtering for the "AutoPkgr" process:
+
+![Console in Sierra](doc-images/console_sierra1.png)
+
+If you like, you can save this filter for future reference:
+
+1. Click the __Save__ button.
+
+    ![Save filter in Sierra](doc-images/console_sierra2.png)
+
+2. Type a name for the saved filter. Perhaps "AutoPkgr." Click __Save__.
+
+    ![Save filter in Sierra](doc-images/console_sierra3.png)
+
+3. From now on, simply click on the __AutoPkgr__ saved search in the toolbar to see AutoPkgr's log events.
+
+    ![Save filter in Sierra](doc-images/console_sierra4.png)
+
+If you prefer to view the log output in Terminal instead of Console, you could use this command in OS X 10.9 through 10.11:
+
+    tail -f /var/log/system.log | grep "AutoPkgr"
+
+Or this command in macOS 10.12:
+
+    log stream --style syslog --process "AutoPkgr" --type log
+
+Make sure to run the above commands _before_ you start AutoPkgr, because it will show you live output, not historical log entries.
 
 #### Step 4: Reach out for help
 
@@ -373,11 +423,37 @@ We also welcome feature requests on GitHub! Some of our best features have come 
 
 ![divider](doc-images/divider.png)
 
+## Uninstalling
+
+If you decide AutoPkgr isn't for you, we've made it easy to remove. Hold down the __Option__ key while clicking the AutoPkgr icon in the menu bar (![Menu bar icon](doc-images/menulet.png)), then choose __Uninstall__.
+
+This will remove the following files:
+
+- __/Library/LaunchDaemons/com.lindegroup.AutoPkgr.helper.plist__
+- __/Library/LaunchDaemons/com.lindegroup.AutoPkgr.schedule.plist__
+- __/Library/PrivilegedHelperTools/com.lindegroup.AutoPkgr.helper__
+
+The uninstall feature does _not_ remove the following:
+
+- AutoPkgr preferences, stored at __~/Library/Preferences/com.lindegroup.AutoPkgr.plist__
+- AutoPkgr's keychain, stored at __~/Library/Keychains/AutoPkgr.keychain-db__
+- Your recipe list(s), stored at __~/Library/Application Support/AutoPkgr/recipe_list.txt__
+- AutoPkg, stored in __/Library/AutoPkg__
+- The AutoPkg cache, recipe repositories, and overrides, typically stored in __~/Library/AutoPkg__
+- Munki tools
+- JSSImporter or other integration tools
+
+After uninstalling, you can drag the AutoPkgr app from your Applications folder to the Trash.
+
+![divider](doc-images/divider.png)
+
 ## Credits
 
 AutoPkgr was created at the [Linde Group](http://www.lindegroup.com) in Emeryville, California. If you're a talented Mac admin looking for a job in the Bay Area, [check out our job listings](http://www.lindegroup.com/careers/). We've got a wonderful team of people and fantastic clients.
 
 James Barclay, Elliot Jordan, and Josh Senick originally created AutoPkgr in June 2014, and ongoing development is led by Eldon Ahrold, Elliot Jordan, and James Barclay.
+
+Thanks to Guillaume Gete for helping with the French localization, and to Luis Giraldo for the Spanish localization.
 
 Briefcase icon from [FontAwesome](http://fontawesome.io/).
 

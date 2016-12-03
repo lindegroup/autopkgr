@@ -1,0 +1,27 @@
+/* 
+  LocalizableHelpPopover.strings
+  AutoPkgr
+
+  Creado por Eldon Ahrold en 6/12/15.
+  Copyright 2015 Eldon Ahrold.
+*/
+
+"repoTableInfoTitle" = "Lista de Repositorios";
+"repoTableInfo" = "Para ejecutar una receta de AutoPkg, primero debe agregar un repositorio que contenga la receta. Para agregar un repositorio, seleccione el cuadro al lado de su URL.\n\nSi no encuentra el repositorio necesario, puede agregarlo manualmente suministrando su URL dentro de la casilla \"Agregar repositorio manualmente\" a continuación, y haciendo clic en el botón Agregar.\n\nHaga clic en el botón \"Actualizar repositorios ahora\" para obtener los cambios más recientes para los repositorios seleccionados.\n\nHaga control-clic sobre un repositorio para acceder la opción de actualizarlo o de abrir su página de commits en GitHub.\n\nEl indicador de color muestra el estatus del repositorio. Verde significa que el repositorio está actualizado, y amarillo significa que existen commits disponibles en el repositorio remoto.";
+
+"recipeTableInfoTitle" = "Lista de Recetas";
+"recipeTableInfo" = "Seleccione el cuadro al lado del nombre de una receta para agregar la receta al horario de ejecución de AutoPkg\n\nHaga Control-clic sobre la receta para abrir un menú contextual con opciones para obtener información, correr la receta, o crear una receta adaptada. También puede elegir su editor de recetas preferido.\n\nSi hay un ícono de cautela presente en la columna de estatus, hay un problema con la receta (la causa más probable es la falta de una receta matriz).";
+
+"slackHelpInfoTitle" = "Notificaciones Slack";
+"slackHelpInfo" = "Webhooks entrantes son una manera simple de publicar mensajes provenientes de fuentes externas dentro de Slack. Administradores de Slack pueden generar el URL del webhook que se requiere para publicar mensajes dentro de ambientes específicos. Visite la documentación de webhooks Slack (enlace a continuación) para obtener más información.";
+
+"slackHelpInfoURL" = "https://api.slack.com/incoming-webhooks";
+
+"hipChatHelpInfoTitle" = "Notificaciones HipChat";
+"hipChatHelpInfo" = "Para crear el API token necesario, entre a HipChat y navegue al ambientes al cual desea mandar mensajes. Haga clic en 'Tokens' al lado izquierdo. A continuación cree un token con el ámbito de 'Send Notification' y haga clic en 'Create'.\n\nEl cuadro 'Send user notifications to room members' en ésta página determina si el mensaje provoca un mensaje al usuario (cambiar color de lengüeta, tocar un sonido, notificar teléfonos móviles, etc). Serán consideradas las preferencias de notificaciones de cada destinatario.";
+
+"hipChatHelpInfoURL" = "https://hipchat.com/rooms/";
+
+"MunkiSetDefaultCatalogInfoTitle" = "MunkiSetDefaultCatalog Preprocessor";
+"MunkiSetDefaultCatalogInfo" = "This preprocessor will edit the current Munki pkginfo to set the 'catalog' key to the default catalog preference for MunkiImport (com.googlecode.munki.munkiimport), if one has been set.";
+"MunkiSetDefaultCatalogInfoURL" = "https://github.com/autopkg/autopkg/blob/master/Code/autopkglib/MunkiSetDefaultCatalog.py";

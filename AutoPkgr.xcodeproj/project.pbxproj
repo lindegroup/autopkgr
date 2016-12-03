@@ -324,6 +324,37 @@
 		8B1AF8551BED81540013BE37 /* LGFileWaveIntegration.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGFileWaveIntegration.m; sourceTree = "<group>"; };
 		8B22B6AD1C7CF2B500B647C2 /* LGLANrevIntegration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGLANrevIntegration.h; sourceTree = "<group>"; };
 		8B22B6AE1C7CF2B500B647C2 /* LGLANrevIntegration.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGLANrevIntegration.m; sourceTree = "<group>"; };
+		8B7048AC1DD1163E0087BDB7 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/MainMenu.strings; sourceTree = "<group>"; };
+		8B7048AD1DD1163E0087BDB7 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/LGInstallViewController.strings; sourceTree = "<group>"; };
+		8B7048AE1DD1163E0087BDB7 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/LGRecipeReposViewController.strings; sourceTree = "<group>"; };
+		8B7048AF1DD1163E0087BDB7 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/LGScheduleViewController.strings; sourceTree = "<group>"; };
+		8B7048B01DD1163E0087BDB7 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/LGNotificationsViewController.strings; sourceTree = "<group>"; };
+		8B7048B11DD1163E0087BDB7 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/LGIntegrationsViewController.strings; sourceTree = "<group>"; };
+		8B7048B21DD1163E0087BDB7 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/LGAbsoluteManageIntegrationView.strings; sourceTree = "<group>"; };
+		8B7048B31DD1163E0087BDB7 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/LGLANrevIntegrationView.strings; sourceTree = "<group>"; };
+		8B7048B41DD1163E0087BDB7 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/LGAutoPkgIntegrationView.strings; sourceTree = "<group>"; };
+		8B7048B51DD1163E0087BDB7 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/LGFileWaveIntegrationView.strings; sourceTree = "<group>"; };
+		8B7048B61DD1163E0087BDB7 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/LGVirusTotalAnalyzerIntegrationView.strings; sourceTree = "<group>"; };
+		8B7048B71DD1163E0087BDB7 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/LGGitIntegrationView.strings; sourceTree = "<group>"; };
+		8B7048B81DD1163E0087BDB7 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/LGJSSImporterIntegrationView.strings; sourceTree = "<group>"; };
+		8B7048B91DD1163F0087BDB7 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/LGMacPatchIntegrationView.strings; sourceTree = "<group>"; };
+		8B7048BA1DD1163F0087BDB7 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/LGMunkiIntegrationView.strings; sourceTree = "<group>"; };
+		8B7048BB1DD1163F0087BDB7 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/LGHipChatNotificationView.strings; sourceTree = "<group>"; };
+		8B7048BC1DD1163F0087BDB7 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/LGSlackNotificationView.strings; sourceTree = "<group>"; };
+		8B7048BD1DD1163F0087BDB7 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/LGTemplateRenderWindowController.strings; sourceTree = "<group>"; };
+		8B7048BE1DD1163F0087BDB7 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/LGJSSDistributionPointsPrefPanel.strings; sourceTree = "<group>"; };
+		8B7048BF1DD1163F0087BDB7 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/LGRecipeSearchResultsPanel.strings; sourceTree = "<group>"; };
+		8B7048C01DD1163F0087BDB7 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/LGRecipeInfoView.strings; sourceTree = "<group>"; };
+		8B7048C11DD1163F0087BDB7 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/LGSelectNotificationsWindowController.strings; sourceTree = "<group>"; };
+		8B7048C21DD1163F0087BDB7 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/LGViewWindowController.strings; sourceTree = "<group>"; };
+		8B7048C31DD1163F0087BDB7 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		8B7048C41DD1163F0087BDB7 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/Localizable.strings; sourceTree = "<group>"; };
+		8B7048C51DD1163F0087BDB7 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/LocalizableError.strings; sourceTree = "<group>"; };
+		8B7048C61DD1163F0087BDB7 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/LocalizableAutoPkg.strings; sourceTree = "<group>"; };
+		8B7048C71DD116400087BDB7 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/LocalizableJSSImporter.strings; sourceTree = "<group>"; };
+		8B7048C81DD116400087BDB7 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/LocalizableHelpPopover.strings; sourceTree = "<group>"; };
+		8B7048C91DD116400087BDB7 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; name = es; path = es.lproj/Credits.rtf; sourceTree = "<group>"; };
+		8B7048CA1DD116400087BDB7 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		8B8654771CF6475F00B0A3FD /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/MainMenu.strings; sourceTree = "<group>"; };
 		8B8654781CF6475F00B0A3FD /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		8B8654791CF6475F00B0A3FD /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -1372,6 +1403,7 @@
 				en,
 				Base,
 				fr,
+				es,
 			);
 			mainGroup = 1AC69544195B59ED00D2BD81;
 			productRefGroup = 1AC6954E195B59ED00D2BD81 /* Products */;
@@ -1834,6 +1866,7 @@
 			children = (
 				1AC6955A195B59ED00D2BD81 /* en */,
 				8B8654781CF6475F00B0A3FD /* fr */,
+				8B7048C31DD1163F0087BDB7 /* es */,
 			);
 			name = InfoPlist.strings;
 			path = .;
@@ -1844,6 +1877,7 @@
 			children = (
 				1AC69560195B59EE00D2BD81 /* en */,
 				8B86547E1CF6476000B0A3FD /* fr */,
+				8B7048C91DD116400087BDB7 /* es */,
 			);
 			name = Credits.rtf;
 			path = .;
@@ -1855,6 +1889,7 @@
 				1AC69566195B59EE00D2BD81 /* Base */,
 				8B8654771CF6475F00B0A3FD /* fr */,
 				8B8654A41CF6537800B0A3FD /* en */,
+				8B7048AC1DD1163E0087BDB7 /* es */,
 			);
 			name = MainMenu.xib;
 			path = .;
@@ -1865,6 +1900,7 @@
 			children = (
 				1AC69578195B59EE00D2BD81 /* en */,
 				8B86547F1CF6476000B0A3FD /* fr */,
+				8B7048CA1DD116400087BDB7 /* es */,
 			);
 			name = InfoPlist.strings;
 			path = .;
@@ -1876,6 +1912,7 @@
 				8B8654811CF64A9600B0A3FD /* Base */,
 				8B8654841CF64AD800B0A3FD /* en */,
 				8B8654861CF64AE000B0A3FD /* fr */,
+				8B7048AD1DD1163E0087BDB7 /* es */,
 			);
 			name = LGInstallViewController.xib;
 			sourceTree = "<group>";
@@ -1886,6 +1923,7 @@
 				8B8654881CF64CA400B0A3FD /* Base */,
 				8B86548B1CF64CB200B0A3FD /* en */,
 				8B86548D1CF64CB600B0A3FD /* fr */,
+				8B7048AE1DD1163E0087BDB7 /* es */,
 			);
 			name = LGRecipeReposViewController.xib;
 			sourceTree = "<group>";
@@ -1896,6 +1934,7 @@
 				8B86548F1CF64EE500B0A3FD /* Base */,
 				8B8654921CF64EE700B0A3FD /* en */,
 				8B8654941CF64EE900B0A3FD /* fr */,
+				8B7048AF1DD1163E0087BDB7 /* es */,
 			);
 			name = LGScheduleViewController.xib;
 			sourceTree = "<group>";
@@ -1906,6 +1945,7 @@
 				8B8654961CF6500400B0A3FD /* Base */,
 				8B8654991CF6501900B0A3FD /* en */,
 				8B86549B1CF6501B00B0A3FD /* fr */,
+				8B7048B01DD1163E0087BDB7 /* es */,
 			);
 			name = LGNotificationsViewController.xib;
 			sourceTree = "<group>";
@@ -1916,6 +1956,7 @@
 				8B86549D1CF652A600B0A3FD /* Base */,
 				8B8654A01CF652AB00B0A3FD /* en */,
 				8B8654A21CF652AD00B0A3FD /* fr */,
+				8B7048B11DD1163E0087BDB7 /* es */,
 			);
 			name = LGIntegrationsViewController.xib;
 			sourceTree = "<group>";
@@ -1926,6 +1967,7 @@
 				8B8654A61CF665DF00B0A3FD /* Base */,
 				8B8654A91CF665E100B0A3FD /* en */,
 				8B8654AB1CF665E300B0A3FD /* fr */,
+				8B7048B21DD1163E0087BDB7 /* es */,
 			);
 			name = LGAbsoluteManageIntegrationView.xib;
 			sourceTree = "<group>";
@@ -1936,6 +1978,7 @@
 				8B8654AD1CF6673F00B0A3FD /* Base */,
 				8B8654B01CF6674300B0A3FD /* en */,
 				8B8654B21CF6674500B0A3FD /* fr */,
+				8B7048B31DD1163E0087BDB7 /* es */,
 			);
 			name = LGLANrevIntegrationView.xib;
 			sourceTree = "<group>";
@@ -1946,6 +1989,7 @@
 				8B8654B41CF6679900B0A3FD /* Base */,
 				8B8654B71CF6679B00B0A3FD /* en */,
 				8B8654B91CF6679D00B0A3FD /* fr */,
+				8B7048B41DD1163E0087BDB7 /* es */,
 			);
 			name = LGAutoPkgIntegrationView.xib;
 			sourceTree = "<group>";
@@ -1956,6 +2000,7 @@
 				8B8654BB1CF6695F00B0A3FD /* Base */,
 				8B8654BE1CF6696100B0A3FD /* en */,
 				8B8654C01CF6696300B0A3FD /* fr */,
+				8B7048B51DD1163E0087BDB7 /* es */,
 			);
 			name = LGFileWaveIntegrationView.xib;
 			sourceTree = "<group>";
@@ -1966,6 +2011,7 @@
 				8B8654C21CF669A100B0A3FD /* Base */,
 				8B8654C51CF669A500B0A3FD /* en */,
 				8B8654C71CF669A700B0A3FD /* fr */,
+				8B7048B61DD1163E0087BDB7 /* es */,
 			);
 			name = LGVirusTotalAnalyzerIntegrationView.xib;
 			sourceTree = "<group>";
@@ -1976,6 +2022,7 @@
 				8B8654C91CF66B0F00B0A3FD /* Base */,
 				8B8654CC1CF66B1100B0A3FD /* en */,
 				8B8654CE1CF66B1200B0A3FD /* fr */,
+				8B7048B71DD1163E0087BDB7 /* es */,
 			);
 			name = LGGitIntegrationView.xib;
 			sourceTree = "<group>";
@@ -1986,6 +2033,7 @@
 				8B8654D01CF66B8E00B0A3FD /* Base */,
 				8B8654D31CF66B9100B0A3FD /* en */,
 				8B8654D51CF66B9900B0A3FD /* fr */,
+				8B7048B81DD1163E0087BDB7 /* es */,
 			);
 			name = LGJSSImporterIntegrationView.xib;
 			sourceTree = "<group>";
@@ -1996,6 +2044,7 @@
 				8B8654D71CF66CDA00B0A3FD /* Base */,
 				8B8654DA1CF66CDC00B0A3FD /* en */,
 				8B8654DC1CF66CDE00B0A3FD /* fr */,
+				8B7048B91DD1163F0087BDB7 /* es */,
 			);
 			name = LGMacPatchIntegrationView.xib;
 			sourceTree = "<group>";
@@ -2006,6 +2055,7 @@
 				8B8654DE1CF66D1C00B0A3FD /* Base */,
 				8B8654E11CF66D1E00B0A3FD /* en */,
 				8B8654E31CF66D2100B0A3FD /* fr */,
+				8B7048BA1DD1163F0087BDB7 /* es */,
 			);
 			name = LGMunkiIntegrationView.xib;
 			sourceTree = "<group>";
@@ -2016,6 +2066,7 @@
 				8B8654E51CF66DFA00B0A3FD /* Base */,
 				8B8654E81CF66DFC00B0A3FD /* en */,
 				8B8654EA1CF66DFF00B0A3FD /* fr */,
+				8B7048BB1DD1163F0087BDB7 /* es */,
 			);
 			name = LGHipChatNotificationView.xib;
 			sourceTree = "<group>";
@@ -2026,6 +2077,7 @@
 				8B8654EC1CF66E5C00B0A3FD /* Base */,
 				8B8654EF1CF66E6200B0A3FD /* en */,
 				8B8654F11CF66E6300B0A3FD /* fr */,
+				8B7048BC1DD1163F0087BDB7 /* es */,
 			);
 			name = LGSlackNotificationView.xib;
 			sourceTree = "<group>";
@@ -2036,6 +2088,7 @@
 				8B8654F31CF66EB500B0A3FD /* Base */,
 				8B8654F61CF66EB700B0A3FD /* en */,
 				8B8654F81CF66EB900B0A3FD /* fr */,
+				8B7048BD1DD1163F0087BDB7 /* es */,
 			);
 			name = LGTemplateRenderWindowController.xib;
 			sourceTree = "<group>";
@@ -2046,6 +2099,7 @@
 				8B8654FA1CF66F1800B0A3FD /* Base */,
 				8B8654FD1CF66F1A00B0A3FD /* en */,
 				8B8654FF1CF66F1B00B0A3FD /* fr */,
+				8B7048BE1DD1163F0087BDB7 /* es */,
 			);
 			name = LGJSSDistributionPointsPrefPanel.xib;
 			sourceTree = "<group>";
@@ -2056,6 +2110,7 @@
 				8B8655011CF66F7400B0A3FD /* Base */,
 				8B8655041CF66F7700B0A3FD /* en */,
 				8B8655061CF66F7800B0A3FD /* fr */,
+				8B7048BF1DD1163F0087BDB7 /* es */,
 			);
 			name = LGRecipeSearchResultsPanel.xib;
 			sourceTree = "<group>";
@@ -2066,6 +2121,7 @@
 				8B8655081CF66FE200B0A3FD /* Base */,
 				8B86550B1CF66FE600B0A3FD /* en */,
 				8B86550D1CF66FE800B0A3FD /* fr */,
+				8B7048C01DD1163F0087BDB7 /* es */,
 			);
 			name = LGRecipeInfoView.xib;
 			sourceTree = "<group>";
@@ -2076,6 +2132,7 @@
 				8B86550F1CF670DA00B0A3FD /* Base */,
 				8B8655121CF670DD00B0A3FD /* en */,
 				8B8655141CF670DF00B0A3FD /* fr */,
+				8B7048C11DD1163F0087BDB7 /* es */,
 			);
 			name = LGSelectNotificationsWindowController.xib;
 			sourceTree = "<group>";
@@ -2086,6 +2143,7 @@
 				8B8655161CF6719F00B0A3FD /* Base */,
 				8B8655191CF671A100B0A3FD /* en */,
 				8B86551B1CF671A300B0A3FD /* fr */,
+				8B7048C21DD1163F0087BDB7 /* es */,
 			);
 			name = LGViewWindowController.xib;
 			sourceTree = "<group>";
@@ -2095,6 +2153,7 @@
 			children = (
 				BE2D58771B32EF110042EF1E /* en */,
 				8B86547B1CF6476000B0A3FD /* fr */,
+				8B7048C61DD1163F0087BDB7 /* es */,
 			);
 			name = LocalizableAutoPkg.strings;
 			path = .;
@@ -2105,6 +2164,7 @@
 			children = (
 				BE57AC2B19BA3BBC00BB17B1 /* en */,
 				8B86547A1CF6476000B0A3FD /* fr */,
+				8B7048C51DD1163F0087BDB7 /* es */,
 			);
 			name = LocalizableError.strings;
 			path = .;
@@ -2115,6 +2175,7 @@
 			children = (
 				BE7EF23A1B3350E4002037B1 /* en */,
 				8B8654791CF6475F00B0A3FD /* fr */,
+				8B7048C41DD1163F0087BDB7 /* es */,
 			);
 			name = Localizable.strings;
 			path = .;
@@ -2125,6 +2186,7 @@
 			children = (
 				BE7EF2451B3381A7002037B1 /* en */,
 				8B86547D1CF6476000B0A3FD /* fr */,
+				8B7048C81DD116400087BDB7 /* es */,
 			);
 			name = LocalizableHelpPopover.strings;
 			path = .;
@@ -2135,6 +2197,7 @@
 			children = (
 				BEC2024A1B600FF100F3BC2A /* en */,
 				8B86547C1CF6476000B0A3FD /* fr */,
+				8B7048C71DD116400087BDB7 /* es */,
 			);
 			name = LocalizableJSSImporter.strings;
 			sourceTree = "<group>";

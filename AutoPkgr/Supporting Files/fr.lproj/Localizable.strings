@@ -90,7 +90,7 @@
 "AutoPkgr wants to remove the helper tool and associated files. " = "AutoPkgr veut supprimer l'outil d'aide et les fichiers associés. ";
 
 /* Explanation of what will be removed upon uninstalling AutoPkgr. */
-"This includes the helper tool, launchd schedule, and other launchd plist. You can safely remove it from your Applications folder." = "Cela inclut l'outil d'aide, le calendrier launchd, et d'autres plists launchd. Vous pouvez le retirer en toute sécurité de votre dossier Applications.";
+"uninstall_includes" = "Cela inclut l'outil d'aide, le calendrier launchd, et d'autres plists launchd. Vous pouvez le retirer en toute sécurité de votre dossier Applications.";
 
 /* Thank you message shown after uninstallation. */
 "Thanks for using AutoPkgr" = "Merci d'utiliser AutoPkgr";

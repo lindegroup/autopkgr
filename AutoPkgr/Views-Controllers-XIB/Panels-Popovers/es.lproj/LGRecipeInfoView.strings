@@ -1,0 +1,45 @@
+
+/* Class = "NSTextFieldCell"; title = "Label"; ObjectID = "01U-Oc-pjY"; */
+"01U-Oc-pjY.title" = "Etiqueta";
+
+/* Class = "NSTextFieldCell"; title = "Identifier:"; ObjectID = "81z-0C-dfy"; */
+"81z-0C-dfy.title" = "Identificador:";
+
+/* Class = "NSTextFieldCell"; placeholderString = "<Identifier>"; ObjectID = "NDR-Ja-maK"; */
+"NDR-Ja-maK.placeholderString" = "<Identificador>";
+
+/* Class = "NSTextFieldCell"; title = "Builds Package:"; ObjectID = "PCP-wS-HNx"; */
+"PCP-wS-HNx.title" = "Construye paquete:";
+
+/* Class = "NSTextFieldCell"; title = "Min. AutoPkg Version:"; ObjectID = "SNn-pW-jvN"; */
+"SNn-pW-jvN.title" = "Versión AutoPkg mínima:";
+
+/* Class = "NSTextFieldCell"; title = "Label"; ObjectID = "Ykk-Ir-JW6"; */
+"Ykk-Ir-JW6.title" = "Etiqueta";
+
+/* Class = "NSTextFieldCell"; title = "File Path:"; ObjectID = "cBb-BU-peO"; */
+"cBb-BU-peO.title" = "Ruta al archivo:";
+
+/* Class = "NSTextFieldCell"; title = "Name:"; ObjectID = "dvh-uJ-LKz"; */
+"dvh-uJ-LKz.title" = "Nombre:";
+
+/* Class = "NSTextFieldCell"; title = "Has Check Phase:"; ObjectID = "eze-8Q-wgb"; */
+"eze-8Q-wgb.title" = "Tiene fase de chequeo:";
+
+/* Class = "NSTextFieldCell"; placeholderString = "Top level recipe"; ObjectID = "glN-nd-xEJ"; */
+"glN-nd-xEJ.placeholderString" = "Receta de alto nivel";
+
+/* Class = "NSTextFieldCell"; title = "Description:"; ObjectID = "kP3-Ys-TJX"; */
+"kP3-Ys-TJX.title" = "Descripción:";
+
+/* Class = "NSTextFieldCell"; placeholderString = "No mininum version"; ObjectID = "mtN-V7-fQj"; */
+"mtN-V7-fQj.placeholderString" = "No hay versión mínima";
+
+/* Class = "NSTextFieldCell"; placeholderString = "<Name>"; ObjectID = "uGB-qF-4iv"; */
+"uGB-qF-4iv.placeholderString" = "<Nombre>";
+
+/* Class = "NSTextFieldCell"; title = "Parent(s):"; ObjectID = "vH2-8o-PcS"; */
+"vH2-8o-PcS.title" = "Matriz(ces):";
+
+/* Class = "NSTextFieldCell"; placeholderString = "<File Path>"; ObjectID = "vVc-m6-Vbu"; */
+"vVc-m6-Vbu.placeholderString" = "<Ruta al archivo>";

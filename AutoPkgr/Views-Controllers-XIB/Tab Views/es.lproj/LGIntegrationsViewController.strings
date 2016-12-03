@@ -1,0 +1,51 @@
+
+/* Class = "NSButtonCell"; title = "Open in Finder"; ObjectID = "1ck-Sa-gTO"; */
+"1ck-Sa-gTO.title" = "Abrir en Finder";
+
+/* Class = "NSButtonCell"; title = "Install/Configure"; ObjectID = "8qz-tI-OVK"; */
+"8qz-tI-OVK.title" = "Instalar/configurar";
+
+/* Class = "NSTextFieldCell"; title = "Cache:"; ObjectID = "9Pa-A5-LiR"; */
+"9Pa-A5-LiR.title" = "Cache:";
+
+/* Class = "NSButtonCell"; title = "Choose..."; ObjectID = "HVQ-B9-qFe"; */
+"HVQ-B9-qFe.title" = "Seleccione...";
+
+/* Class = "NSTextFieldCell"; title = "Table View Cell"; ObjectID = "IxD-XN-nM0"; */
+"IxD-XN-nM0.title" = "Casilla de vista de la tabla";
+
+/* Class = "NSBox"; title = "Integrations"; ObjectID = "QM0-hF-4j5"; */
+"QM0-hF-4j5.title" = "Integraciones";
+
+/* Class = "NSButtonCell"; title = "Choose..."; ObjectID = "Tyq-UC-DFc"; */
+"Tyq-UC-DFc.title" = "Seleccione...";
+
+/* Class = "NSBox"; title = "AutoPkg folders"; ObjectID = "Uu3-dg-Ae2"; */
+"Uu3-dg-Ae2.title" = "Carpetas AutoPkg";
+
+/* Class = "NSButtonCell"; title = "Open in Finder"; ObjectID = "aaW-Xo-fdG"; */
+"aaW-Xo-fdG.title" = "Abrir en Finder";
+
+/* Class = "NSTextFieldCell"; title = "Text Cell"; ObjectID = "bQJ-Dd-IV4"; */
+"bQJ-Dd-IV4.title" = "Casilla de texto";
+
+/* Class = "NSTextFieldCell"; title = "Overrides:"; ObjectID = "g8b-Ua-YZE"; */
+"g8b-Ua-YZE.title" = "Recetas adpatadas:";
+
+/* Class = "NSButtonCell"; title = "Open in Finder"; ObjectID = "gTC-Jl-CoB"; */
+"gTC-Jl-CoB.title" = "Abrir en Finder";
+
+/* Class = "NSTextFieldCell"; title = "Repos:"; ObjectID = "l5o-py-X9A"; */
+"l5o-py-X9A.title" = "Repositorios:";
+
+/* Class = "NSTextFieldCell"; placeholderString = "~/Library/AutoPkg/Cache"; ObjectID = "loL-kz-oBg"; */
+"loL-kz-oBg.placeholderString" = "~/Library/AutoPkg/Cache";
+
+/* Class = "NSTextFieldCell"; placeholderString = "~/Library/AutoPkg/RecipeOverrides"; ObjectID = "vHc-Ru-xZa"; */
+"vHc-Ru-xZa.placeholderString" = "~/Library/AutoPkg/RecipeOverrides";
+
+/* Class = "NSButtonCell"; title = "Choose..."; ObjectID = "vam-69-phD"; */
+"vam-69-phD.title" = "Seleccione...";
+
+/* Class = "NSTextFieldCell"; placeholderString = "~/Library/AutoPkg/RecipeRepos"; ObjectID = "viP-T5-kH3"; */
+"viP-T5-kH3.placeholderString" = "~/Library/AutoPkg/RecipeRepos";

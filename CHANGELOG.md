@@ -5,7 +5,11 @@ All notable changes to this project will be documented in this file. This projec
 
 ## [Unreleased](unreleased)
 
-- Nothing yet.
+### Added
+- Spanish localization. (big thanks to [@luisgiraldo](https://github.com/luisgiraldo) for translating!)
+
+### Changed
+- Updated read me to reflect Jamf rebranding.
 
 
 ## [1.4.2] - 2016-10-03
