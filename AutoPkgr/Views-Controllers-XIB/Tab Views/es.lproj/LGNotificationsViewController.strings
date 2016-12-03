@@ -12,46 +12,46 @@
 "7up-e3-Ehs.ibShadowedIsNilPlaceholder" = "sender@yourdomain.example";
 
 /* Class = "NSButtonCell"; title = "Enable Mac OS X notifications"; ObjectID = "Ae9-FU-cso"; */
-"Ae9-FU-cso.title" = "Enable Mac OS X notifications";
+"Ae9-FU-cso.title" = "Habilitar notificaciones Mac OS X";
 
 /* Class = "NSButtonCell"; title = "Send notifications to Slack channel"; ObjectID = "E9P-cr-br5"; */
-"E9P-cr-br5.title" = "Send notifications to Slack channel";
+"E9P-cr-br5.title" = "Mandar notificaciones al canal Slack";
 
 /* Class = "NSTextFieldCell"; placeholderString = "465"; ObjectID = "FHK-oF-M0t"; */
 "FHK-oF-M0t.placeholderString" = "465";
 
 /* Class = "NSTextFieldCell"; title = "From:"; ObjectID = "Gzs-A9-nP6"; */
-"Gzs-A9-nP6.title" = "From:";
+"Gzs-A9-nP6.title" = "De:";
 
 /* Class = "NSButtonCell"; title = "Use Secure Sockets Layer (SSL)"; ObjectID = "HLR-S4-ckM"; */
-"HLR-S4-ckM.title" = "Use Secure Sockets Layer (SSL)";
+"HLR-S4-ckM.title" = "Utilizar Secure Sockets Layer (SSL)";
 
 /* Class = "NSButtonCell"; title = "Send Test Email"; ObjectID = "IRF-p5-PAm"; */
-"IRF-p5-PAm.title" = "Send Test Email";
+"IRF-p5-PAm.title" = "Enviar mensaje de prueba";
 
 /* Class = "NSTextFieldCell"; title = "Customize notification templates:"; ObjectID = "IS5-1H-Zuy"; */
-"IS5-1H-Zuy.title" = "Customize notification templates:";
+"IS5-1H-Zuy.title" = "Personalizar planillas de notificaciones:";
 
 /* Class = "NSButtonCell"; title = "Customize..."; ObjectID = "KyN-ug-8KO"; */
-"KyN-ug-8KO.title" = "Customize...";
+"KyN-ug-8KO.title" = "Personalizar...";
 
 /* Class = "NSButtonCell"; title = "Customize..."; ObjectID = "MDW-7G-UZ4"; */
-"MDW-7G-UZ4.title" = "Customize...";
+"MDW-7G-UZ4.title" = "Personalizar...";
 
 /* Class = "NSTextFieldCell"; title = "Recipients:"; ObjectID = "Vsf-uW-fns"; */
-"Vsf-uW-fns.title" = "Recipients:";
+"Vsf-uW-fns.title" = "Recipientes:";
 
 /* Class = "NSTextFieldCell"; placeholderString = "smtp.gmail.com"; ObjectID = "XrX-VY-sGj"; */
 "XrX-VY-sGj.placeholderString" = "smtp.gmail.com";
 
 /* Class = "NSButtonCell"; title = "Send notifications to HipChat room"; ObjectID = "Y1U-72-3fd"; */
-"Y1U-72-3fd.title" = "Send notifications to HipChat room";
+"Y1U-72-3fd.title" = "Mandar notificaciones a ambiente HipChat";
 
 /* Class = "NSTextFieldCell"; title = "port"; ObjectID = "Yxg-J9-3du"; */
-"Yxg-J9-3du.title" = "port";
+"Yxg-J9-3du.title" = "puerto";
 
 /* Class = "NSButtonCell"; title = "Configure..."; ObjectID = "ZMw-5W-IgF"; */
-"ZMw-5W-IgF.title" = "Configure...";
+"ZMw-5W-IgF.title" = "Configurar...";
 
 /* Class = "CocoaBindingsConnection"; ibShadowedIsNilPlaceholder = "smtp.gmail.com"; ObjectID = "a0S-7A-k2G"; */
 "a0S-7A-k2G.ibShadowedIsNilPlaceholder" = "smtp.gmail.com";
@@ -60,28 +60,28 @@
 "aHL-d7-Or8.placeholderString" = "sender@example.com";
 
 /* Class = "NSButtonCell"; title = "Send notifications to an email address"; ObjectID = "ag4-TF-sgm"; */
-"ag4-TF-sgm.title" = "Send notifications to an email address";
+"ag4-TF-sgm.title" = "Mandar notificaciones a un email";
 
 /* Class = "NSTextFieldCell"; title = "SMTP server:"; ObjectID = "dIA-je-2nB"; */
-"dIA-je-2nB.title" = "SMTP server:";
+"dIA-je-2nB.title" = "Servidor SMTP:";
 
 /* Class = "NSTextFieldCell"; title = "Password:"; ObjectID = "gMF-3J-P98"; */
-"gMF-3J-P98.title" = "Password:";
+"gMF-3J-P98.title" = "Contraseña:";
 
 /* Class = "NSTextFieldCell"; placeholderString = "sender@example.com"; ObjectID = "jrh-l3-iKT"; */
 "jrh-l3-iKT.placeholderString" = "sender@example.com";
 
 /* Class = "NSTextFieldCell"; title = "Username:"; ObjectID = "mPh-pa-Wg4"; */
-"mPh-pa-Wg4.title" = "Username:";
+"mPh-pa-Wg4.title" = "Usuario:";
 
 /* Class = "CocoaBindingsConnection"; ibShadowedIsNilPlaceholder = "465"; ObjectID = "nr1-yh-iKX"; */
 "nr1-yh-iKX.ibShadowedIsNilPlaceholder" = "465";
 
 /* Class = "NSButtonCell"; title = "Use authentication"; ObjectID = "t0c-kT-pxo"; */
-"t0c-kT-pxo.title" = "Use authentication";
+"t0c-kT-pxo.title" = "Utilizar autenticación";
 
 /* Class = "CocoaBindingsConnection"; ibShadowedIsNilPlaceholder = "you@yourdomain.example"; ObjectID = "vDM-A8-E1x"; */
 "vDM-A8-E1x.ibShadowedIsNilPlaceholder" = "you@yourdomain.example";
 
 /* Class = "NSButtonCell"; title = "Configure..."; ObjectID = "vSz-c3-VCx"; */
-"vSz-c3-VCx.title" = "Configure...";
+"vSz-c3-VCx.title" = "Configurar...";

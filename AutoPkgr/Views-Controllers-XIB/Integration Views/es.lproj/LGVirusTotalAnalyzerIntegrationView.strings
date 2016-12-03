@@ -1,18 +1,18 @@
 
 /* Class = "NSButtonCell"; title = "Use default"; ObjectID = "3YD-9U-1yY"; */
-"3YD-9U-1yY.title" = "Use default";
+"3YD-9U-1yY.title" = "Utilizar por defecto";
 
 /* Class = "NSTextFieldCell"; title = "seconds"; ObjectID = "8X3-Cd-5mY"; */
-"8X3-Cd-5mY.title" = "seconds";
+"8X3-Cd-5mY.title" = "segundos";
 
 /* Class = "NSTextFieldCell"; title = "bytes"; ObjectID = "Efg-Vi-9eR"; */
 "Efg-Vi-9eR.title" = "bytes";
 
 /* Class = "NSTextFieldCell"; title = "VirusTotal API Key"; ObjectID = "UeS-Wv-7wa"; */
-"UeS-Wv-7wa.title" = "VirusTotal API Key";
+"UeS-Wv-7wa.title" = "Llave API VirusTotal";
 
 /* Class = "NSTextFieldCell"; title = "Pause between scans:"; ObjectID = "XUa-qe-B0k"; */
-"XUa-qe-B0k.title" = "Pause between scans:";
+"XUa-qe-B0k.title" = "Pausar entre escanéos:";
 
 /* Class = "NSTextFieldCell"; placeholderString = "419430400"; ObjectID = "YeX-jP-6UH"; */
 "YeX-jP-6UH.placeholderString" = "419430400";
@@ -21,16 +21,16 @@
 "ZcM-sn-Nfc.placeholderString" = "15";
 
 /* Class = "NSTextFieldCell"; title = "Maximum file size:"; ObjectID = "ddD-JG-quU"; */
-"ddD-JG-quU.title" = "Maximum file size:";
+"ddD-JG-quU.title" = "Tamaño máximo del archivo:";
 
 /* Class = "NSButtonCell"; title = "Use my own:"; ObjectID = "f3y-zI-ucB"; */
-"f3y-zI-ucB.title" = "Use my own:";
+"f3y-zI-ucB.title" = "Utilizar el mío propio:";
 
 /* Class = "NSButtonCell"; title = "Always scan downloads (even if not new)"; ObjectID = "iCS-x9-MoY"; */
-"iCS-x9-MoY.title" = "Always scan downloads (even if not new)";
+"iCS-x9-MoY.title" = "Escanear descargas siempre (así no sean nuevas)";
 
 /* Class = "NSButtonCell"; title = "Use proxy settings defined in System Preferences"; ObjectID = "oUv-h4-uUP"; */
-"oUv-h4-uUP.title" = "Use proxy settings defined in System Preferences";
+"oUv-h4-uUP.title" = "Utilizar ajustes proxy definidos en Preferencias del Sistema";
 
 /* Class = "NSButtonCell"; title = "Automatically submit downloads to VirusTotal"; ObjectID = "sk4-fn-26r"; */
-"sk4-fn-26r.title" = "Automatically submit downloads to VirusTotal";
+"sk4-fn-26r.title" = "Transmitir descargas a VirusTotal automáticamente";

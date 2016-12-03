@@ -8,13 +8,13 @@
 "Error creating recipe override file" = "Error creando archivo para la receta adaptada";
 
 /* No comment provided by engineer. */
-"Error encountered listing recipes" = "Error encontrado enumerando recetas";
+"Error encountered listing recipes" = "Error enumerando recetas";
 
 /* No comment provided by engineer. */
-"Error encountered listing repos" = "Error encontrado enumerando repositorios";
+"Error encountered listing repos" = "Error enumerando repositorios";
 
 /* No comment provided by engineer. */
-"Error encountered searching for recipe" = "Error encontrado buscando recetas";
+"Error encountered searching for recipe" = "Error buscando recetas";
 
 /* No comment provided by engineer. */
 "Error getting AutoPkg version" = "Error obteniendo versión de AutoPkg";

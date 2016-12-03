@@ -1,21 +1,21 @@
 
 /* Class = "NSTextFieldCell"; title = "Text Cell"; ObjectID = "9WF-sQ-q4c"; */
-"9WF-sQ-q4c.title" = "Text Cell";
+"9WF-sQ-q4c.title" = "Casilla de texto";
 
 /* Class = "NSButtonCell"; title = "Hide AutoPkgr in Dock"; ObjectID = "BN7-80-SnJ"; */
-"BN7-80-SnJ.title" = "Hide AutoPkgr in Dock";
+"BN7-80-SnJ.title" = "Ocultar ícono AutoPkgr en Dock";
 
 /* Class = "NSButtonCell"; title = "Launch AutoPkgr at login"; ObjectID = "FsQ-sy-cGX"; */
-"FsQ-sy-cGX.title" = "Launch AutoPkgr at login";
+"FsQ-sy-cGX.title" = "Abrir AutoPkgr al iniciar sesión";
 
 /* Class = "NSTextFieldCell"; title = "Relaunch required to take effect."; ObjectID = "TzN-FL-hol"; */
-"TzN-FL-hol.title" = "Relaunch required to take effect.";
+"TzN-FL-hol.title" = "Se requiere reapertura para tomar efecto.";
 
 /* Class = "NSButtonCell"; title = "Show AutoPkgr menu icon"; ObjectID = "bif-9b-TSQ"; */
-"bif-9b-TSQ.title" = "Show AutoPkgr menu icon";
+"bif-9b-TSQ.title" = "Mostrar ícono de menú AutoPkgr";
 
 /* Class = "NSButtonCell"; title = "Install"; ObjectID = "pCi-Pe-NYX"; */
-"pCi-Pe-NYX.title" = "Install";
+"pCi-Pe-NYX.title" = "Instalar";
 
 /* Class = "NSTextFieldCell"; placeholderString = "Checking installed status..."; ObjectID = "wFr-iu-0JG"; */
-"wFr-iu-0JG.placeholderString" = "Checking installed status...";
+"wFr-iu-0JG.placeholderString" = "Revisando estatus de instalación...";

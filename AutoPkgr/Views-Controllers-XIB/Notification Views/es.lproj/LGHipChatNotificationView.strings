@@ -1,9 +1,9 @@
 
 /* Class = "NSTextFieldCell"; title = "API Token:"; ObjectID = "Esn-sI-g97"; */
-"Esn-sI-g97.title" = "API Token:";
+"Esn-sI-g97.title" = "Token API:";
 
 /* Class = "NSButtonCell"; title = "Send user notifications to room members"; ObjectID = "VyB-Uw-2h5"; */
-"VyB-Uw-2h5.title" = "Send user notifications to room members";
+"VyB-Uw-2h5.title" = "Mandar notificaciones de usuario a miembros del ambiente";
 
 /* Class = "NSTextFieldCell"; title = "Room:"; ObjectID = "kRf-ML-4vZ"; */
-"kRf-ML-4vZ.title" = "Room:";
+"kRf-ML-4vZ.title" = "Ambiente:";

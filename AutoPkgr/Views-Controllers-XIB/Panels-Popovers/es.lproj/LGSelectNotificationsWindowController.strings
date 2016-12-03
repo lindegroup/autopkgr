@@ -1,51 +1,51 @@
 
 /* Class = "NSButtonCell"; title = "New software is downloaded"; ObjectID = "93b-UK-JQ9"; */
-"93b-UK-JQ9.title" = "New software is downloaded";
+"93b-UK-JQ9.title" = "Nuevo software ha sido descargado";
 
 /* Class = "NSWindow"; title = "Configure"; ObjectID = "F0z-JX-Cv5"; */
-"F0z-JX-Cv5.title" = "Configure";
+"F0z-JX-Cv5.title" = "Configurar";
 
 /* Class = "NSMenuItem"; title = "Once per version"; ObjectID = "Fdo-BA-Js6"; */
-"Fdo-BA-Js6.title" = "Once per version";
+"Fdo-BA-Js6.title" = "Una vez por versión";
 
 /* Class = "NSButtonCell"; title = "Close"; ObjectID = "Gc0-DJ-Bkt"; */
-"Gc0-DJ-Bkt.title" = "Close";
+"Gc0-DJ-Bkt.title" = "Cerrar";
 
 /* Class = "NSTextFieldCell"; title = "Actions that will cause a full AutoPkgr notification to be sent:"; ObjectID = "JV4-ur-ef3"; */
-"JV4-ur-ef3.title" = "Actions that will cause a full AutoPkgr notification to be sent:";
+"JV4-ur-ef3.title" = "Acciones que causarán el envío de una notificación completa de AutoPkgr:";
 
 /* Class = "NSButtonCell"; title = "Radio"; ObjectID = "Jry-qd-bkO"; */
 "Jry-qd-bkO.title" = "Radio";
 
 /* Class = "NSButtonCell"; title = "Errors"; ObjectID = "MGr-wA-mKE"; */
-"MGr-wA-mKE.title" = "Errors";
+"MGr-wA-mKE.title" = "Errores";
 
 /* Class = "NSButtonCell"; title = "Updates for integrated tools, at most:"; ObjectID = "OEp-t0-mfM"; */
-"OEp-t0-mfM.title" = "Updates for integrated tools, at most:";
+"OEp-t0-mfM.title" = "Actualizaciones para herramientas integradas, como máximo:";
 
 /* Class = "NSTextFieldCell"; title = "This includes AutoPkg, Git, Munki tools, etc."; ObjectID = "Q6A-On-Dwg"; */
-"Q6A-On-Dwg.title" = "This includes AutoPkg, Git, Munki tools, etc.";
+"Q6A-On-Dwg.title" = "Esto incluye AutoPkg, Git, Munki tools, etc.";
 
 /* Class = "NSButtonCell"; title = "New package is built"; ObjectID = "Rrw-eM-Kne"; */
-"Rrw-eM-Kne.title" = "New package is built";
+"Rrw-eM-Kne.title" = "Nuevo paquete ha sido construido";
 
 /* Class = "NSButtonCell"; title = "Failures"; ObjectID = "VXM-yd-Y5e"; */
-"VXM-yd-Y5e.title" = "Failures";
+"VXM-yd-Y5e.title" = "Fallas";
 
 /* Class = "NSButtonCell"; title = "Any action"; ObjectID = "eQW-08-MtI"; */
-"eQW-08-MtI.title" = "Any action";
+"eQW-08-MtI.title" = "Cualquier acción";
 
 /* Class = "NSButtonCell"; title = "New software imported to Munki, JSS, or other server"; ObjectID = "iUL-bU-gWt"; */
-"iUL-bU-gWt.title" = "New software imported to Munki, JSS, or other server";
+"iUL-bU-gWt.title" = "Nuevo software importado a Munki, JSS, u otro servidor";
 
 /* Class = "NSButtonCell"; title = "Selected actions:"; ObjectID = "qPY-Ac-9c8"; */
-"qPY-Ac-9c8.title" = "Selected actions:";
+"qPY-Ac-9c8.title" = "Acciones seleccionadas:";
 
 /* Class = "NSButtonCell"; title = "New software is installed"; ObjectID = "vpW-70-0of"; */
-"vpW-70-0of.title" = "New software is installed";
+"vpW-70-0of.title" = "Nuevo software ha sido instalado";
 
 /* Class = "NSMenuItem"; title = "Once a week"; ObjectID = "yE4-Cq-TFS"; */
-"yE4-Cq-TFS.title" = "Once a week";
+"yE4-Cq-TFS.title" = "Una vez a la semana";
 
 /* Class = "NSMenuItem"; title = "Once a day"; ObjectID = "yLO-ap-fGm"; */
-"yLO-ap-fGm.title" = "Once a day";
+"yLO-ap-fGm.title" = "Una vez al día";

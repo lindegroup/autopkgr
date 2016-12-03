@@ -1,24 +1,24 @@
 
 /* Class = "NSButtonCell"; title = "Close"; ObjectID = "F4X-CJ-CjA"; */
-"F4X-CJ-CjA.title" = "Close";
+"F4X-CJ-CjA.title" = "Cerrar";
 
 /* Class = "NSTextFieldCell"; title = "This panel will only add the recipe repo. Enable individual recipes back in the main window."; ObjectID = "LmF-Ex-z1i"; */
-"LmF-Ex-z1i.title" = "This panel will only add the recipe repo. Enable individual recipes back in the main window.";
+"LmF-Ex-z1i.title" = "Este pánel solo agregará el repositorio de la receta. Habilite recetas individuales en la ventana principal.";
 
 /* Class = "NSWindow"; title = "Window"; ObjectID = "QvC-M9-y7g"; */
-"QvC-M9-y7g.title" = "Window";
+"QvC-M9-y7g.title" = "Ventana";
 
 /* Class = "NSTextFieldCell"; title = "Text Cell"; ObjectID = "cRv-TL-746"; */
-"cRv-TL-746.title" = "Text Cell";
+"cRv-TL-746.title" = "Casilla de texto";
 
 /* Class = "NSTableColumn"; headerCell.title = "Repo Installed"; ObjectID = "fUw-fo-hnn"; */
-"fUw-fo-hnn.headerCell.title" = "Repo Installed";
+"fUw-fo-hnn.headerCell.title" = "Repositorio instalado";
 
 /* Class = "NSTextFieldCell"; title = "Recipe search results:"; ObjectID = "h8d-06-AIp"; */
-"h8d-06-AIp.title" = "Recipe search results:";
+"h8d-06-AIp.title" = "Resultado de búsqueda de recetas:";
 
 /* Class = "NSTextFieldCell"; title = "Text Cell"; ObjectID = "jdq-my-v9D"; */
-"jdq-my-v9D.title" = "Text Cell";
+"jdq-my-v9D.title" = "Casilla de texto";
 
 /* Class = "NSButtonCell"; title = "Add Repo"; ObjectID = "oQH-jM-r9h"; */
-"oQH-jM-r9h.title" = "Add Repo";
+"oQH-jM-r9h.title" = "Agregar repositorio";

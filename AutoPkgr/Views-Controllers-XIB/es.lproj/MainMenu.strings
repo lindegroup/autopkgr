@@ -45,7 +45,7 @@
 "9yt-4B-nSM.title" = "Copiado/pegado inteligente";
 
 /* Class = "NSMenuItem"; title = "zero height"; ObjectID = "ASu-MZ-2qe"; */
-"ASu-MZ-2qe.title" = "zero height";
+"ASu-MZ-2qe.title" = "cero altura";
 
 /* Class = "NSMenu"; title = "Main Menu"; ObjectID = "AYu-sK-qS6"; */
 "AYu-sK-qS6.title" = "Menú principal";
@@ -84,7 +84,7 @@
 "LE2-aR-0XJ.title" = "Traer todo al frente";
 
 /* Class = "NSMenuItem"; title = "zero height"; ObjectID = "NA2-5h-P4n"; */
-"NA2-5h-P4n.title" = "zero height";
+"NA2-5h-P4n.title" = "cero altura";
 
 /* Class = "NSMenuItem"; title = "Services"; ObjectID = "NMo-om-nkz"; */
 "NMo-om-nkz.title" = "Servicios";
@@ -204,7 +204,7 @@
 "rgM-f4-ycn.title" = "Guiones inteligentes";
 
 /* Class = "NSMenuItem"; title = "Data Detectors"; ObjectID = "tRr-pd-1PS"; */
-"tRr-pd-1PS.title" = "Data Detectors";
+"tRr-pd-1PS.title" = "Detectores de Datos";
 
 /* Class = "NSMenu"; title = "AutoPkgr"; ObjectID = "uQy-DD-JDr"; */
 "uQy-DD-JDr.title" = "AutoPkgr";

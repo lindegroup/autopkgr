@@ -6,7 +6,7 @@
 "N84-cj-yTh.ibShadowedIsNilPlaceholder" = "AutoPkgr";
 
 /* Class = "NSTextFieldCell"; title = "Bot Name:"; ObjectID = "w0b-FV-FBc"; */
-"w0b-FV-FBc.title" = "Bot Name:";
+"w0b-FV-FBc.title" = "Nombre del bot:";
 
 /* Class = "NSTextFieldCell"; title = "Webhook URL:"; ObjectID = "wUT-Ey-E1F"; */
-"wUT-Ey-E1F.title" = "Webhook URL:";
+"wUT-Ey-E1F.title" = "URL Webhook:";

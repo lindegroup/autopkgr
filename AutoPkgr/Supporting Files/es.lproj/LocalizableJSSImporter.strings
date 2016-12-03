@@ -1,5 +1,5 @@
 /* button title to disable ssl verification */
-"Disable SSL Verification" = "Desactivar verificación SSL";
+"Disable SSL Verification" = "Deshabilitar verificación SSL";
 
 /* No comment provided by engineer. */
 "Distribution Point Password Required" = "Contraseña requerida para el punto de distribución";
@@ -14,7 +14,7 @@
 "Please enter read/write password for the \"%@\" distribution point. If you intend to configure manually just click \"Cancel\"." = "Digite contraseña de lectura/escritura para el punto de distribución \"%@\". Si pretende configurarlo manualmente, haga clic en \"Cancelar\".";
 
 /* No comment provided by engineer. */
-"This is most likely due to the certificate being self signed. Choosing \"Disable SSL Verification\" may be required for JSSImporter to function properly." = "Esto probablemente se debe a un certificado SSL autofirmado. Eligiendo \"Desactivar verificación SSL\" puede ser requerido para el funcionamiento adecuado del JSSImporter.";
+"This is most likely due to the certificate being self signed. Choosing \"Disable SSL Verification\" may be required for JSSImporter to function properly." = "Esto probablemente se debe a un certificado SSL autofirmado. Puede que se requiera \"Deshabilitar verificación SSL\" para el funcionamiento adecuado de JSSImporter.";
 
 /* message when JSS cannot be verified */
 "Unable to verify the SSL certificate." = "No se puede verificar el certificado SSL.";

@@ -25,7 +25,7 @@
 "kLGErrorInstallingPrivilegedHelperToolDescription" = "El helper tool asociado no pudo ser instalado, saldremos ahora.";
 
 /* Error trying to install privileged helper tool. (NSLocalizedRecoverySuggestionErrorKey) */
-"kLGErrorInstallingPrivilegedHelperToolSuggestion" = "";
+"kLGErrorInstallingPrivilegedHelperToolSuggestion" = "El helper tool asociado no pudo ser instalado, saldremos ahora.";
 
 /* Error when AutoPkgr schedule timer interval is not valid */
 "kLGErrorIncorrectScheduleTimerIntervalDescription" = "Error configurando temporizador";
@@ -49,7 +49,7 @@
 "kLGErrorMissingParentRecipeDescription" = "Receta matriz no disponible";
 
 /* Error when recipe is missing parent recipe (NSLocalizedRecoverySuggestionErrorKey) */
-"kLGErrorMissingParentRecipeSuggestion" = "La receta matriz de esta receta no está incluida en ninguno de los repositorios. Usted deberá determinar en cuál repositorio se encuentra, y habilitarlo.";
+"kLGErrorMissingParentRecipeSuggestion" = "La receta matriz de esta receta no está incluida en ninguno de los repositorios. Usted deberá determinar en cuál repositorio se encuentra para habilitarlo.";
 
 /* Error when trying to run multiple instances of AutoPkg */
 "kLGErrorMultipleRunsOfAutopkgDescription" = "Sólo una instancia de AutoPkg puede ejecutarse a la vez";
@@ -125,13 +125,13 @@
 "kLGHTTPErrorTimeoutDescription" = "Agotado el tiempo de espera para la conexión";
 
 /* Time Out 408 (NSLocalizedRecoverySuggestionErrorKey) */
-"kLGHTTPErrorTimeoutSuggestion" = "Asegúrese de tener una conexión de red activa, y que el nombre de domino del servidor esté correcta.";
+"kLGHTTPErrorTimeoutSuggestion" = "Asegúrese de tener una conexión de red activa, y que el nombre de domino del servidor esté correcto.";
 
 /* Unauthorized 401 */
 "kLGHTTPErrorUnauthorizedDescription" = "Autorización fallida.";
 
 /* Unauthorized 401 (NSLocalizedRecoverySuggestionErrorKey) */
-"kLGHTTPErrorUnauthorizedSuggestion" = "Por favor verifique el haber suministrado el nombre de usuario y contraseña, o el API token correctos para la conexión.";
+"kLGHTTPErrorUnauthorizedSuggestion" = "Por favor verifique el nombre de usuario y contraseña, o el API token correctos para la conexión.";
 
 /* Unknown */
 "kLGHTTPErrorUnknownDescription" = "Hubo un problema conectándonos al servidor";

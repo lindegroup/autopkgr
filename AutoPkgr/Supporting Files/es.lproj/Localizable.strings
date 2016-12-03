@@ -67,7 +67,7 @@
 "checking status" = "revisando estatus";
 
 /* message presented to user with info about generating GitHub api token */
-"helpInfoAutoPkgAPIToken" = "Crear un API token de GitHub incrementará el límite de búsquedas por hora de 60 a 5000. El token sólo permite acceso al ámbito público, de manera que no es posible acceder información personal, o empujar cambios a ningún repositorio al cual pueda tener acceso. Usted puede verificar el token dentro de su página de perfil en \n\n%1$@\n\nTambién puede revocar el token en cualquier momento. El token será guardado en su carpeta de inicio en %2$@. \n\nPara más información acerca de los tokens oAuth to GitHub, diríjase a developer.github.com";
+"helpInfoAutoPkgAPIToken" = "Crear un API token de GitHub incrementará el límite de búsquedas por hora de 60 a 5000. El token sólo permite acceso al ámbito público, de manera que no es posible acceder información personal, o empujar cambios a ningún repositorio al cual pueda tener acceso. Usted puede verificar el token dentro de su página de perfil en \n\n%1$@\n\nTambién puede revocar el token en cualquier momento. El token será guardado en su carpeta de inicio en %2$@. \n\nPara más información acerca de los tokens oAuth de GitHub, diríjase a developer.github.com";
 
 /* The button title when requesting a GitHub API Token */
 "Requesting Token" = "Solicitando token";
