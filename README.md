@@ -360,9 +360,7 @@ Now all downloaded files will be checked against VirusTotal's database.
 
     If you get an error that says "A scheduled AutoPkg run may be running in the background," try running this command in the Terminal:
 
-    ```
-    ps ax | grep python | grep autopkg
-    ```
+        ps ax | grep python | grep autopkg
 
     This should reveal the process information for active AutoPkg runs. If it's appropriate to do so, you can then terminate the process(es) by using `kill` or `killall`.
 
