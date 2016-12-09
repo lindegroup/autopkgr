@@ -222,6 +222,11 @@ To configure AutoPkgr to create Self Service policies in Jamf Pro for new app up
     - __Static Computer Groups__
 1. Open AutoPkgr and go to the __Folders & Integration__ tab.
 1. Click the __Install JSSImporter__ button. Enter your password if prompted.
+
+    ⚠️ Note: On Macs with a fresh copy of Sierra, you may additionally need to run the following Terminal command to install the necessary components for JSSImporter:
+
+        sudo easy_install pip && pip install -I --user pyopenssl
+
 1. Click on __Configure JSSImporter__.
 1. Enter your JSS URL, API username, and API password. Then click __Connect__.
 
