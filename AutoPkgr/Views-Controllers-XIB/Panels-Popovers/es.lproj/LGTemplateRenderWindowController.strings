@@ -1,0 +1,24 @@
+
+/* Class = "NSTextFieldCell"; title = "Text Cell"; ObjectID = "5Pn-U7-R6s"; */
+"5Pn-U7-R6s.title" = "Casilla de texto";
+
+/* Class = "NSButtonCell"; title = "Send Example"; ObjectID = "Jaf-KI-LnV"; */
+"Jaf-KI-LnV.title" = "Enviar ejemplo";
+
+/* Class = "NSButtonCell"; title = "Save"; ObjectID = "K3m-15-iKq"; */
+"K3m-15-iKq.title" = "Guardar";
+
+/* Class = "NSButtonCell"; title = "Reset to Default"; ObjectID = "WpN-1D-dZr"; */
+"WpN-1D-dZr.title" = "Reposicionar al por defecto";
+
+/* Class = "NSWindow"; title = "Template Editor"; ObjectID = "hfP-AR-J6Y"; */
+"hfP-AR-J6Y.title" = "Editor de plantilla";
+
+/* Class = "NSTextFieldCell"; title = "Template:"; ObjectID = "jMu-Qi-S31"; */
+"jMu-Qi-S31.title" = "Plantilla:";
+
+/* Class = "NSButtonCell"; title = "Close"; ObjectID = "nU8-fM-Poo"; */
+"nU8-fM-Poo.title" = "Cerrar";
+
+/* Class = "NSTextFieldCell"; title = "Editor Theme:"; ObjectID = "oPo-nf-KmO"; */
+"oPo-nf-KmO.title" = "Tema del editor:";

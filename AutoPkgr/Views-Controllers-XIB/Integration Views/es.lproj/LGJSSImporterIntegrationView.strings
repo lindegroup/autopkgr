@@ -1,0 +1,48 @@
+
+/* Class = "NSButtonCell"; title = "Verify SSL"; ObjectID = "090-OS-0lt"; */
+"090-OS-0lt.title" = "Verificar SSL";
+
+/* Class = "NSBox"; title = "Distribution Points"; ObjectID = "3Vg-rG-eDO"; */
+"3Vg-rG-eDO.title" = "Puntos de distribución";
+
+/* Class = "NSTableColumn"; headerCell.title = "Type"; ObjectID = "Aes-ky-ehx"; */
+"Aes-ky-ehx.headerCell.title" = "Tipo";
+
+/* Class = "NSButtonCell"; title = "Add Distribution Point"; ObjectID = "DpM-oc-aRP"; */
+"DpM-oc-aRP.title" = "Agregar punto de distribución";
+
+/* Class = "NSTextFieldCell"; title = "Password:"; ObjectID = "IuW-QX-s6T"; */
+"IuW-QX-s6T.title" = "Contraseña:";
+
+/* Class = "NSTextFieldCell"; title = "With selected:"; ObjectID = "TtA-1z-Kei"; */
+"TtA-1z-Kei.title" = "Con selección:";
+
+/* Class = "NSSecureTextFieldCell"; placeholderString = "password"; ObjectID = "WYd-vw-GcJ"; */
+"WYd-vw-GcJ.placeholderString" = "contraseña";
+
+/* Class = "NSTextFieldCell"; title = "JSS URL:"; ObjectID = "XEU-IY-bVd"; */
+"XEU-IY-bVd.title" = "URL JSS:";
+
+/* Class = "NSButtonCell"; title = "Remove"; ObjectID = "fuL-d5-v4d"; */
+"fuL-d5-v4d.title" = "Remover";
+
+/* Class = "NSTextFieldCell"; placeholderString = "<Auto>"; ObjectID = "gCk-mr-u4I"; */
+"gCk-mr-u4I.placeholderString" = "<Auto>";
+
+/* Class = "NSTextFieldCell"; title = "Text Cell"; ObjectID = "gCk-mr-u4I"; */
+"gCk-mr-u4I.title" = "Casilla de texto";
+
+/* Class = "NSButtonCell"; title = "Edit"; ObjectID = "gRT-Ok-ryL"; */
+"gRT-Ok-ryL.title" = "Editar";
+
+/* Class = "NSButtonCell"; title = "Connect"; ObjectID = "iV4-Vb-f3s"; */
+"iV4-Vb-f3s.title" = "Conectar";
+
+/* Class = "NSTextFieldCell"; title = "Username:"; ObjectID = "jzV-wM-DAx"; */
+"jzV-wM-DAx.title" = "Usuario:";
+
+/* Class = "NSTextFieldCell"; placeholderString = "autopkgr"; ObjectID = "pCF-bR-PMc"; */
+"pCF-bR-PMc.placeholderString" = "autopkgr";
+
+/* Class = "NSTextFieldCell"; placeholderString = "https://casper.yourdomain.example:8443/"; ObjectID = "xHX-mS-zNQ"; */
+"xHX-mS-zNQ.placeholderString" = "https://casper.sudominio.ejemplo:8443/";

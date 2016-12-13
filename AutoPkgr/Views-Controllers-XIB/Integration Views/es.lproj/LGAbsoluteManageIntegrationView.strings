@@ -1,0 +1,6 @@
+
+/* Class = "NSTextFieldCell"; title = "Note: While AutoPkgr supports running at the login window, .absolute recipes require Absolute Manage Admin.app to be open, so your machine must remain logged in to utilize this processor."; ObjectID = "Lrs-9e-sMd"; */
+"Lrs-9e-sMd.title" = "Nota: Aunque AutoPkgr puede correr sin sesión de usuario, recetas .absolute requieren que Absolute Manage Admin.app esté abierto, de manera que su sistema debe permanecer con una sesión de usuario activa para utilizar este procesador.";
+
+/* Class = "NSButtonCell"; title = "Enable External SD Package Upload"; ObjectID = "PiW-KV-hIG"; */
+"PiW-KV-hIG.title" = "Habilitar Carga de Paquete SD Externo";
