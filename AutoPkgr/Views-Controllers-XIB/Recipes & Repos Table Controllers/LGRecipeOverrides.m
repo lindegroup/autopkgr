@@ -102,6 +102,24 @@ const CFStringRef kUTTypePropertyList = CFSTR("com.apple.property-list");
     }
 }
 
++ (void)trustOverride:(NSMenuItem *)sender
+{
+    LGAutoPkgRecipe *recipe = sender.representedObject;
+
+    NSString *recipeName = recipe.Name;
+    NSString *recipeIdentifier = recipe.Identifier;
+
+    if (recipeIdentifier && ![recipe.Name isEqualToString:@"MakeCatalogs.munki"]) {
+        DevLog(@"Updating trust info for %@", recipeName);
+        [LGAutoPkgTask updateTrustInfo:recipeIdentifier reply:^(NSString *path, NSError *error) {
+            if (error) {
+                DLog(@"%@", error.localizedDescription);
+                [NSApp presentError:error];
+            }
+        }];
+    }
+}
+
 + (NSString *)promptForOverrideName:(NSString *)parentName
 {
     NSString *password;
@@ -137,7 +155,7 @@ const CFStringRef kUTTypePropertyList = CFSTR("com.apple.property-list");
         [[NSWorkspace sharedWorkspace] openFile:recipePath];
     }
     else {
-        NSLog(@"There was a problem opening the Recipe override file");
+        NSLog(@"There was a problem opening the recipe override file.");
     }
 }
 

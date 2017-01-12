@@ -57,6 +57,7 @@ static NSDictionary *AutoPkgVerbStringToEnum()
             @"run" : @(kLGAutoPkgRun),
             @"list-recipes" : @(kLGAutoPkgListRecipes),
             @"make-override" : @(kLGAutoPkgMakeOverride),
+            @"update-trust-info" : @(kLGAutoPkgTrustOverride),
             @"search" : @(kLGAutoPkgSearch),
             @"info" : @(kLGAutoPkgInfo),
             @"repo-add" : @(kLGAutoPkgRepoAdd),
@@ -996,6 +997,28 @@ typedef void (^AutoPkgReplyErrorBlock)(NSError *error);
         if (!error) {
             path = [strongTask.standardOutString.trimmed mutableCopy];
             [path deleteCharactersInRange:[path rangeOfString:@"Override file saved to "]];
+            if ((path.length > 2) && ([path characterAtIndex:path.length - 1] == '.')) {
+                [path deleteCharactersInRange:NSMakeRange(path.length - 1, 1)];
+            }
+        }
+
+        reply(path, error);
+    }];
+}
+
++ (void)updateTrustInfo:(NSString *)recipe reply:(void (^)(NSString *, NSError *))reply
+{
+    LGAutoPkgTask *task = [[LGAutoPkgTask alloc] init];
+    NSMutableArray *args = [@[ @"update-trust-info", recipe ] mutableCopy];
+
+    task.arguments = args;
+    __weak typeof(task) weakTask = task;
+    [task launchInBackground:^(NSError *error) {
+        typeof(task) strongTask = weakTask;
+        NSMutableString *path = nil;
+        if (!error) {
+            path = [strongTask.standardOutString.trimmed mutableCopy];
+            [path deleteCharactersInRange:[path rangeOfString:@"Wrote updated "]];
             if ((path.length > 2) && ([path characterAtIndex:path.length - 1] == '.')) {
                 [path deleteCharactersInRange:NSMakeRange(path.length - 1, 1)];
             }
