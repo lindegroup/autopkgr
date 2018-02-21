@@ -15,7 +15,6 @@
 		1AC69564195B59EE00D2BD81 /* LGAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 1AC69563195B59EE00D2BD81 /* LGAppDelegate.m */; };
 		1AC69567195B59EE00D2BD81 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1AC69565195B59EE00D2BD81 /* MainMenu.xib */; };
 		1AC69569195B59EE00D2BD81 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1AC69568195B59EE00D2BD81 /* Images.xcassets */; };
-		1AC69570195B59EE00D2BD81 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1AC6956F195B59EE00D2BD81 /* XCTest.framework */; };
 		1AC69571195B59EE00D2BD81 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1AC69550195B59ED00D2BD81 /* Cocoa.framework */; };
 		1AC69579195B59EE00D2BD81 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 1AC69577195B59EE00D2BD81 /* InfoPlist.strings */; };
 		1AC6957B195B59EE00D2BD81 /* AutoPkgrTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 1AC6957A195B59EE00D2BD81 /* AutoPkgrTests.m */; };
@@ -241,10 +240,13 @@
 		BEFC3C8E1A3DF16700C789E9 /* NSArray+filtered.m in Sources */ = {isa = PBXBuildFile; fileRef = BED02ADB1A194F9C00714CC2 /* NSArray+filtered.m */; };
 		BEFC931D1995F0710074C938 /* LGError.m in Sources */ = {isa = PBXBuildFile; fileRef = BEFC931C1995F0710074C938 /* LGError.m */; };
 		CB9DAB2318290D94A90ED659 /* libPods-AutoPkgr.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D114B201B860B0A7498C4C71 /* libPods-AutoPkgr.a */; };
-		F22B5E32202A8422002F6FAE /* libPods-AutoPkgr-AHKeychain.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BE05CE8519DB35380089068B /* libPods-AutoPkgr-AHKeychain.a */; };
-		F22B5E35202A8426002F6FAE /* libPods-AutoPkgr-AHLaunchCtl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BE05CE8619DB35380089068B /* libPods-AutoPkgr-AHLaunchCtl.a */; };
+		F229EFA2202E0E84000E7735 /* LGMicrosoftTeamsNotificationView.m in Sources */ = {isa = PBXBuildFile; fileRef = F229EFA0202E0E84000E7735 /* LGMicrosoftTeamsNotificationView.m */; };
+		F229EFA3202E0E84000E7735 /* LGMicrosoftTeamsNotificationView.xib in Resources */ = {isa = PBXBuildFile; fileRef = F229EFA1202E0E84000E7735 /* LGMicrosoftTeamsNotificationView.xib */; };
 		F22B5E38202A842A002F6FAE /* libPods-AutoPkgr.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D114B201B860B0A7498C4C71 /* libPods-AutoPkgr.a */; };
 		F22B5E3B202A842E002F6FAE /* libPods-AutoPkgrTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5AF245A98A15A3600170DC18 /* libPods-AutoPkgrTests.a */; };
+		F23D6EF92035F69C005F86C7 /* LGMicrosoftTeamsNotification.m in Sources */ = {isa = PBXBuildFile; fileRef = F23D6EF72035F69B005F86C7 /* LGMicrosoftTeamsNotification.m */; };
+		F26B6DDB203D401B00956613 /* LGMicrosoftTeamsNotification.m in Sources */ = {isa = PBXBuildFile; fileRef = F23D6EF72035F69B005F86C7 /* LGMicrosoftTeamsNotification.m */; };
+		F26B6DDF203D458800956613 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F26B6DDE203D458800956613 /* XCTest.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -464,8 +466,6 @@
 		BE05CE7F19DAF6320089068B /* LGAutoPkgrAuthorizer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGAutoPkgrAuthorizer.m; sourceTree = "<group>"; };
 		BE05CE8019DAF6320089068B /* LGAutoPkgrHelperConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGAutoPkgrHelperConnection.h; sourceTree = "<group>"; };
 		BE05CE8119DAF6320089068B /* LGAutoPkgrHelperConnection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGAutoPkgrHelperConnection.m; sourceTree = "<group>"; };
-		BE05CE8519DB35380089068B /* libPods-AutoPkgr-AHKeychain.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libPods-AutoPkgr-AHKeychain.a"; path = "../../../../Library/Developer/Xcode/DerivedData/AutoPkgr-gvffmulnnaejibfmmwfptzyobmbb/Build/Products/Debug/libPods-AutoPkgr-AHKeychain.a"; sourceTree = "<group>"; };
-		BE05CE8619DB35380089068B /* libPods-AutoPkgr-AHLaunchCtl.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libPods-AutoPkgr-AHLaunchCtl.a"; path = "../../../../Library/Developer/Xcode/DerivedData/AutoPkgr-gvffmulnnaejibfmmwfptzyobmbb/Build/Products/Debug/libPods-AutoPkgr-AHLaunchCtl.a"; sourceTree = "<group>"; };
 		BE05CE8F19DB37E50089068B /* ServiceManagement.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ServiceManagement.framework; path = System/Library/Frameworks/ServiceManagement.framework; sourceTree = SDKROOT; };
 		BE09F6581B2694ED00EE4AA7 /* LGAutoPkgIntegrationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGAutoPkgIntegrationView.h; sourceTree = "<group>"; };
 		BE09F6591B2694ED00EE4AA7 /* LGAutoPkgIntegrationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGAutoPkgIntegrationView.m; sourceTree = "<group>"; };
@@ -658,6 +658,13 @@
 		D1C393755729ADE331CE085C /* Pods-AutoPkgr.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AutoPkgr.release.xcconfig"; path = "Pods/Target Support Files/Pods-AutoPkgr/Pods-AutoPkgr.release.xcconfig"; sourceTree = "<group>"; };
 		E455E11D546799B2722F32AF /* libPods-com.lindegroup.AutoPkgr.helper.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-com.lindegroup.AutoPkgr.helper.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		F107A65717A3307E0BCA7341 /* Pods-com.lindegroup.AutoPkgr.helper.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-com.lindegroup.AutoPkgr.helper.debug.xcconfig"; path = "Pods/Target Support Files/Pods-com.lindegroup.AutoPkgr.helper/Pods-com.lindegroup.AutoPkgr.helper.debug.xcconfig"; sourceTree = "<group>"; };
+		F229EF9F202E0E84000E7735 /* LGMicrosoftTeamsNotificationView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LGMicrosoftTeamsNotificationView.h; sourceTree = "<group>"; };
+		F229EFA0202E0E84000E7735 /* LGMicrosoftTeamsNotificationView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LGMicrosoftTeamsNotificationView.m; sourceTree = "<group>"; };
+		F229EFA1202E0E84000E7735 /* LGMicrosoftTeamsNotificationView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LGMicrosoftTeamsNotificationView.xib; sourceTree = "<group>"; };
+		F23D6EF72035F69B005F86C7 /* LGMicrosoftTeamsNotification.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGMicrosoftTeamsNotification.m; sourceTree = "<group>"; };
+		F23D6EF82035F69B005F86C7 /* LGMicrosoftTeamsNotification.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGMicrosoftTeamsNotification.h; sourceTree = "<group>"; };
+		F26B6DDE203D458800956613 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Platforms/MacOSX.platform/Developer/Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
+		F26B6DE1203D46F500956613 /* Sparkle.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Sparkle.framework; path = Pods/Sparkle/Sparkle.framework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -676,12 +683,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F22B5E35202A8426002F6FAE /* libPods-AutoPkgr-AHLaunchCtl.a in Frameworks */,
+				F26B6DDF203D458800956613 /* XCTest.framework in Frameworks */,
 				1AC69571195B59EE00D2BD81 /* Cocoa.framework in Frameworks */,
-				1AC69570195B59EE00D2BD81 /* XCTest.framework in Frameworks */,
 				F22B5E38202A842A002F6FAE /* libPods-AutoPkgr.a in Frameworks */,
 				F22B5E3B202A842E002F6FAE /* libPods-AutoPkgrTests.a in Frameworks */,
-				F22B5E32202A8422002F6FAE /* libPods-AutoPkgr-AHKeychain.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -734,8 +739,8 @@
 		1AC6954F195B59ED00D2BD81 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				BE05CE8519DB35380089068B /* libPods-AutoPkgr-AHKeychain.a */,
-				BE05CE8619DB35380089068B /* libPods-AutoPkgr-AHLaunchCtl.a */,
+				F26B6DE1203D46F500956613 /* Sparkle.framework */,
+				F26B6DDE203D458800956613 /* XCTest.framework */,
 				BE05CE8F19DB37E50089068B /* ServiceManagement.framework */,
 				BE8526B119D5F641007DFA9E /* SecurityInterface.framework */,
 				1A0A86B0195CE69300A49434 /* Security.framework */,
@@ -1042,6 +1047,9 @@
 				BEB9AF281B41A01900016D98 /* LGSlackNotificationView.h */,
 				BEB9AF291B41A01900016D98 /* LGSlackNotificationView.m */,
 				8B8654ED1CF66E5C00B0A3FD /* LGSlackNotificationView.xib */,
+				F229EF9F202E0E84000E7735 /* LGMicrosoftTeamsNotificationView.h */,
+				F229EFA0202E0E84000E7735 /* LGMicrosoftTeamsNotificationView.m */,
+				F229EFA1202E0E84000E7735 /* LGMicrosoftTeamsNotificationView.xib */,
 			);
 			path = "Notification Views";
 			sourceTree = "<group>";
@@ -1104,6 +1112,8 @@
 		BE4DD5431B12385C00854FD8 /* Email & Notifications */ = {
 			isa = PBXGroup;
 			children = (
+				F23D6EF82035F69B005F86C7 /* LGMicrosoftTeamsNotification.h */,
+				F23D6EF72035F69B005F86C7 /* LGMicrosoftTeamsNotification.m */,
 				BE46D9871B40C5B500004B41 /* Notification Manager */,
 				BE0BB0EF1B3C2169007F9DA5 /* Base Notificaton Service */,
 				BE344F531ABFBEAB00500AAE /* LGAutoPkgReport.h */,
@@ -1355,6 +1365,7 @@
 				1AC6956C195B59EE00D2BD81 /* Resources */,
 				1B0C3DC2C321F29A7E8C7961 /* [CP] Embed Pods Frameworks */,
 				31B7BD6A4EB151B181C0B9F1 /* [CP] Copy Pods Resources */,
+				F26B6DE0203D460000956613 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -1460,6 +1471,7 @@
 				8B8654BA1CF6695F00B0A3FD /* LGFileWaveIntegrationView.xib in Resources */,
 				8B86549C1CF652A600B0A3FD /* LGIntegrationsViewController.xib in Resources */,
 				8B8654E41CF66DFA00B0A3FD /* LGHipChatNotificationView.xib in Resources */,
+				F229EFA3202E0E84000E7735 /* LGMicrosoftTeamsNotificationView.xib in Resources */,
 				1AC98420195CEC360071CAB3 /* LGConfigurationWindowController.xib in Resources */,
 				BEBC182D1C167F1A0085B9D5 /* LGWindowController.xib in Resources */,
 				8B8654D61CF66CDA00B0A3FD /* LGMacPatchIntegrationView.xib in Resources */,
@@ -2419,6 +2431,19 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-com.lindegroup.AutoPkgr.helper/Pods-com.lindegroup.AutoPkgr.helper-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
+		F26B6DE0203D460000956613 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Autopkgr/Pods-Autopkgr-frameworks.sh\"";
+		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -2438,6 +2463,7 @@
 				BEEFE6BB1AE9E8A600882C89 /* LGLogger.m in Sources */,
 				BE4DD53E1B11743700854FD8 /* LGMunkiIntegration.m in Sources */,
 				BE38EAB01B0D0CF1009FCBEB /* LGTabViewControllerBase.m in Sources */,
+				F229EFA2202E0E84000E7735 /* LGMicrosoftTeamsNotificationView.m in Sources */,
 				BEE211261AF9DCBB00A3C2E1 /* LGUninstaller.m in Sources */,
 				BE5E55A11B1B59D50025CFD3 /* LGTableCellViews.m in Sources */,
 				BE3D942F1C14F32F001763D0 /* LGTemplateRenderWindowController.m in Sources */,
@@ -2472,6 +2498,7 @@
 				BEC1258519F045EB006696C4 /* LGRecipeTableViewController.m in Sources */,
 				BEBDDCF31C0F5E4200BD1C55 /* NSTableView+Resizing.m in Sources */,
 				BECDABA21B252B3900544388 /* NSOpenPanel+typeChooser.m in Sources */,
+				F23D6EF92035F69C005F86C7 /* LGMicrosoftTeamsNotification.m in Sources */,
 				BE46D9911B40E67500004B41 /* LGNotificationServiceWindowController.m in Sources */,
 				BE38EAAA1B0CFECE009FCBEB /* LGNotificationsViewController.m in Sources */,
 				BE46D99A1B40EE2D00004B41 /* LGHipChatNotificationView.m in Sources */,
@@ -2531,6 +2558,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F26B6DDB203D401B00956613 /* LGMicrosoftTeamsNotification.m in Sources */,
 				BEFC3C761A3DF16700C789E9 /* LGUserNotification.m in Sources */,
 				BED136B81AC3BE04003EBF0F /* NSArray+html_report.m in Sources */,
 				8BD9E7901C8E170000BCB399 /* LGVirusTotalAnalyzerIntegration.m in Sources */,
@@ -3209,6 +3237,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(DEVELOPER_FRAMEWORKS_DIR)",
 					"$(inherited)",
+					"$(PROJECT_DIR)/Pods/Sparkle",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "AutoPkgr/Supporting Files/AutoPkgr-Prefix.pch";
@@ -3217,7 +3246,7 @@
 					"$(inherited)",
 				);
 				INFOPLIST_FILE = "AutoPkgrTests/Supporting Files/AutoPkgrTests-Info.plist";
-				LD_RUNPATH_SEARCH_PATHS = "";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.lindegroup.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -3239,11 +3268,12 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(DEVELOPER_FRAMEWORKS_DIR)",
 					"$(inherited)",
+					"$(PROJECT_DIR)/Pods/Sparkle",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "AutoPkgr/Supporting Files/AutoPkgr-Prefix.pch";
 				INFOPLIST_FILE = "AutoPkgrTests/Supporting Files/AutoPkgrTests-Info.plist";
-				LD_RUNPATH_SEARCH_PATHS = "";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.lindegroup.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";

@@ -1,13 +1,15 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="10117" systemVersion="15F34" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="13771" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="10117"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="13771"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="LGNotificationsViewController">
             <connections>
                 <outlet property="configureHipChatButton" destination="1w3-I4-mxd" id="2kY-tk-klb"/>
+                <outlet property="configureMicrosoftTeamsButton" destination="Gwu-Ku-RWL" id="EJO-0E-JfV"/>
                 <outlet property="configureSlackButton" destination="JJm-8E-4nN" id="bIN-4a-dys"/>
                 <outlet property="sendTestEmailSpinner" destination="T27-XK-VY4" id="xJ4-Zo-cgH"/>
                 <outlet property="smtpPassword" destination="aRk-NU-9Jl" id="Y0j-ve-IZ5"/>
@@ -360,21 +362,8 @@
                         <binding destination="ArL-eq-uYl" name="enabled" keyPath="values.HipChatNotificationsEnabled" id="Fr2-2c-EXP"/>
                     </connections>
                 </button>
-                <button translatesAutoresizingMaskIntoConstraints="NO" id="kd3-6Z-D9b">
-                    <rect key="frame" x="18" y="107" width="364" height="18"/>
-                    <constraints>
-                        <constraint firstAttribute="width" constant="360" id="OBx-ju-edo"/>
-                    </constraints>
-                    <buttonCell key="cell" type="check" title="Enable Mac OS X notifications" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="Ae9-FU-cso">
-                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
-                        <font key="font" metaFont="system"/>
-                    </buttonCell>
-                    <connections>
-                        <binding destination="ArL-eq-uYl" name="value" keyPath="values.NSUserNotificatonsEnabled" id="QIJ-pD-dmR"/>
-                    </connections>
-                </button>
-                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="NnB-26-Plu">
-                    <rect key="frame" x="18" y="62" width="364" height="17"/>
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="NnB-26-Plu">
+                    <rect key="frame" x="18" y="49" width="364" height="17"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="360" id="Jhu-tL-mZM"/>
                     </constraints>
@@ -384,8 +373,8 @@
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                 </textField>
-                <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="20B-Il-F8i" userLabel="Notification trigger customize button">
-                    <rect key="frame" x="382" y="53" width="123" height="32"/>
+                <button verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="20B-Il-F8i" userLabel="Notification trigger customize button">
+                    <rect key="frame" x="382" y="40" width="123" height="32"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="111" id="nK7-NQ-3cC"/>
                     </constraints>
@@ -397,8 +386,8 @@
                         <action selector="configureNotificationsFlags:" target="-2" id="Lbk-l4-nlc"/>
                     </connections>
                 </button>
-                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="YNN-gs-kyx">
-                    <rect key="frame" x="18" y="35" width="364" height="17"/>
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="YNN-gs-kyx">
+                    <rect key="frame" x="18" y="22" width="364" height="17"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="360" id="bTh-qr-K1E"/>
                     </constraints>
@@ -408,8 +397,8 @@
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                 </textField>
-                <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="vTZ-5S-fbP" userLabel="Notification template customize button">
-                    <rect key="frame" x="382" y="26" width="123" height="32"/>
+                <button verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="vTZ-5S-fbP" userLabel="Notification template customize button">
+                    <rect key="frame" x="382" y="13" width="123" height="32"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="111" id="f8F-5T-pDM"/>
                     </constraints>
@@ -421,6 +410,46 @@
                         <action selector="openTemplateEditor:" target="-2" id="fOX-QD-Gzq"/>
                     </connections>
                 </button>
+                <button translatesAutoresizingMaskIntoConstraints="NO" id="kd3-6Z-D9b">
+                    <rect key="frame" x="18" y="82" width="364" height="18"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="360" id="OBx-ju-edo"/>
+                    </constraints>
+                    <buttonCell key="cell" type="check" title="Enable Mac OS X notifications" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="Ae9-FU-cso">
+                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                        <font key="font" metaFont="system"/>
+                    </buttonCell>
+                    <connections>
+                        <binding destination="ArL-eq-uYl" name="value" keyPath="values.NSUserNotificatonsEnabled" id="QIJ-pD-dmR"/>
+                    </connections>
+                </button>
+                <button identifier="enableMicrosoftTeamsCheckBox" translatesAutoresizingMaskIntoConstraints="NO" id="iQQ-Qh-1Nw">
+                    <rect key="frame" x="18" y="108" width="364" height="18"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="360" id="L8q-Sg-r6a"/>
+                    </constraints>
+                    <buttonCell key="cell" type="check" title="Send notifications to Microsoft Teams Channel" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="YPh-Od-8Eu">
+                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                        <font key="font" metaFont="system"/>
+                    </buttonCell>
+                    <connections>
+                        <action selector="configure:" target="-2" id="EoF-DI-KW6"/>
+                        <binding destination="ArL-eq-uYl" name="value" keyPath="values.MicrosoftTeamsNotificationsEnabled" id="iSQ-y9-FBt"/>
+                    </connections>
+                </button>
+                <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Gwu-Ku-RWL">
+                    <rect key="frame" x="382" y="99" width="123" height="32"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="111" id="T3K-90-Abx"/>
+                    </constraints>
+                    <buttonCell key="cell" type="push" title="Configure..." bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Mub-ng-FNX">
+                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                        <font key="font" metaFont="system"/>
+                    </buttonCell>
+                    <connections>
+                        <binding destination="ArL-eq-uYl" name="enabled" keyPath="values.MicrosoftTeamsNotificationsEnabled" id="IP5-4O-mR5"/>
+                    </connections>
+                </button>
             </subviews>
             <constraints>
                 <constraint firstItem="RB8-aR-yhY" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="57" id="02s-YC-irP"/>
@@ -429,12 +458,12 @@
                 <constraint firstItem="0MT-rL-IEP" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="111" id="13v-Zl-f6i"/>
                 <constraint firstItem="YNN-gs-kyx" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="20" id="17l-n8-jwK"/>
                 <constraint firstItem="VDb-hs-bB1" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="112" id="34G-NJ-fCH"/>
+                <constraint firstItem="Gwu-Ku-RWL" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="275" id="3IW-uo-JfH"/>
                 <constraint firstItem="Bwp-ds-cik" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="133" id="5ys-5j-Ecp"/>
                 <constraint firstItem="vTZ-5S-fbP" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="348" id="6LG-Tv-MjB"/>
                 <constraint firstItem="aRk-NU-9Jl" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="434" id="6Nb-wE-hg0"/>
                 <constraint firstItem="cUb-Ex-bej" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="111" id="6UR-ph-rQy"/>
                 <constraint firstItem="TPC-Gd-b8O" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="20" id="7eN-zf-Cxu"/>
-                <constraint firstItem="kd3-6Z-D9b" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="279" id="Awq-pY-dge"/>
                 <constraint firstItem="Jki-MF-GcS" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="336" id="BuT-7c-a2a"/>
                 <constraint firstItem="JJm-8E-4nN" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="224" id="ESH-il-w6h"/>
                 <constraint firstItem="ToE-0q-pH2" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="179" id="Ez2-b2-ZYS"/>
@@ -451,6 +480,7 @@
                 <constraint firstItem="SZ2-Hj-GiD" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="401" id="TQs-Jf-ouA"/>
                 <constraint firstItem="vTZ-5S-fbP" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="388" id="TUQ-5Z-L2T"/>
                 <constraint firstItem="HmV-Dc-TUb" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="109" id="Uh9-fK-0mw"/>
+                <constraint firstItem="kd3-6Z-D9b" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="304" id="UsS-yb-niZ"/>
                 <constraint firstItem="zi5-oQ-M5R" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="177" id="UxN-8W-UVh"/>
                 <constraint firstItem="TPC-Gd-b8O" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="20" id="WTT-vu-TOF"/>
                 <constraint firstItem="6ha-Zn-VKa" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="475" id="WeY-cD-wUm"/>
@@ -463,11 +493,13 @@
                 <constraint firstItem="SZ2-Hj-GiD" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="17" id="ddx-9u-aZL"/>
                 <constraint firstItem="0uY-tb-AXy" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="55" id="dpw-qx-3uH"/>
                 <constraint firstItem="ToE-0q-pH2" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="72" id="dvK-Pt-FTr"/>
+                <constraint firstItem="iQQ-Qh-1Nw" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="278" id="ek5-NZ-HRI"/>
                 <constraint firstItem="RB8-aR-yhY" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="51" id="f8F-08-3nq"/>
                 <constraint firstItem="NnB-26-Plu" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="323" id="gzx-VO-XcF"/>
                 <constraint firstItem="T27-XK-VY4" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="20" id="hbI-L2-Ff5"/>
                 <constraint firstItem="lqq-Vv-857" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="151" id="izP-mL-9NB"/>
                 <constraint firstItem="Jki-MF-GcS" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="179" id="lw6-X7-oJg"/>
+                <constraint firstItem="iQQ-Qh-1Nw" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="20" id="mAE-an-oUW"/>
                 <constraint firstItem="20B-Il-F8i" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="388" id="mCU-J4-V11"/>
                 <constraint firstItem="1Co-et-HoO" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="20" id="mNN-OZ-Wb7"/>
                 <constraint firstItem="PIX-o6-vdF" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="84" id="n7r-0E-uxO"/>
@@ -476,11 +508,12 @@
                 <constraint firstItem="0MT-rL-IEP" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="379" id="nky-pQ-Mf3"/>
                 <constraint firstItem="T27-XK-VY4" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="567" id="okH-Cw-Z3x"/>
                 <constraint firstItem="aRk-NU-9Jl" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="177" id="pQ4-A7-tRO"/>
+                <constraint firstItem="Gwu-Ku-RWL" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="388" id="sO4-BK-IRs"/>
                 <constraint firstItem="6N3-g1-fHC" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="51" id="uap-kr-bMU"/>
                 <constraint firstItem="PWE-hu-Wcl" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="20" id="xOE-co-k5l"/>
                 <constraint firstItem="PWE-hu-Wcl" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="227" id="zPa-Hi-BHY"/>
             </constraints>
-            <point key="canvasLocation" x="140.5" y="212"/>
+            <point key="canvasLocation" x="299" y="65"/>
         </customView>
         <userDefaultsController representsSharedInstance="YES" id="ArL-eq-uYl"/>
     </objects>
