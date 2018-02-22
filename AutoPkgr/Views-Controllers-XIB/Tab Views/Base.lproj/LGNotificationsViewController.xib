@@ -362,7 +362,7 @@
                         <binding destination="ArL-eq-uYl" name="enabled" keyPath="values.HipChatNotificationsEnabled" id="Fr2-2c-EXP"/>
                     </connections>
                 </button>
-                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="NnB-26-Plu">
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="NnB-26-Plu">
                     <rect key="frame" x="18" y="49" width="364" height="17"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="360" id="Jhu-tL-mZM"/>
@@ -373,7 +373,7 @@
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                 </textField>
-                <button verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="20B-Il-F8i" userLabel="Notification trigger customize button">
+                <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="20B-Il-F8i" userLabel="Notification trigger customize button">
                     <rect key="frame" x="382" y="40" width="123" height="32"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="111" id="nK7-NQ-3cC"/>
@@ -386,7 +386,7 @@
                         <action selector="configureNotificationsFlags:" target="-2" id="Lbk-l4-nlc"/>
                     </connections>
                 </button>
-                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="YNN-gs-kyx">
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="YNN-gs-kyx">
                     <rect key="frame" x="18" y="22" width="364" height="17"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="360" id="bTh-qr-K1E"/>
@@ -397,7 +397,7 @@
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                 </textField>
-                <button verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="vTZ-5S-fbP" userLabel="Notification template customize button">
+                <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="vTZ-5S-fbP" userLabel="Notification template customize button">
                     <rect key="frame" x="382" y="13" width="123" height="32"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="111" id="f8F-5T-pDM"/>
@@ -454,23 +454,22 @@
             <constraints>
                 <constraint firstItem="RB8-aR-yhY" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="57" id="02s-YC-irP"/>
                 <constraint firstItem="JJm-8E-4nN" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="388" id="0NO-A3-2fy"/>
-                <constraint firstItem="20B-Il-F8i" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="321" id="11g-Ow-ZB2"/>
                 <constraint firstItem="0MT-rL-IEP" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="111" id="13v-Zl-f6i"/>
                 <constraint firstItem="YNN-gs-kyx" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="20" id="17l-n8-jwK"/>
                 <constraint firstItem="VDb-hs-bB1" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="112" id="34G-NJ-fCH"/>
                 <constraint firstItem="Gwu-Ku-RWL" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="275" id="3IW-uo-JfH"/>
                 <constraint firstItem="Bwp-ds-cik" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="133" id="5ys-5j-Ecp"/>
-                <constraint firstItem="vTZ-5S-fbP" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="348" id="6LG-Tv-MjB"/>
                 <constraint firstItem="aRk-NU-9Jl" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="434" id="6Nb-wE-hg0"/>
                 <constraint firstItem="cUb-Ex-bej" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="111" id="6UR-ph-rQy"/>
                 <constraint firstItem="TPC-Gd-b8O" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="20" id="7eN-zf-Cxu"/>
+                <constraint firstItem="20B-Il-F8i" firstAttribute="top" secondItem="Gwu-Ku-RWL" secondAttribute="bottom" constant="38" id="7w3-3l-cU6"/>
+                <constraint firstItem="NnB-26-Plu" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="20" id="AeK-AM-cRH"/>
                 <constraint firstItem="Jki-MF-GcS" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="336" id="BuT-7c-a2a"/>
                 <constraint firstItem="JJm-8E-4nN" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="224" id="ESH-il-w6h"/>
                 <constraint firstItem="ToE-0q-pH2" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="179" id="Ez2-b2-ZYS"/>
                 <constraint firstItem="uO3-QG-q9R" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="151" id="IBp-7C-1Mq"/>
                 <constraint firstItem="6N3-g1-fHC" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="155" id="Ju2-3k-7mq"/>
                 <constraint firstItem="PIX-o6-vdF" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="51" id="Lqc-xA-jB9"/>
-                <constraint firstItem="YNN-gs-kyx" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="350" id="NLN-yX-F3W"/>
                 <constraint firstItem="1Co-et-HoO" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="253" id="NS4-cc-0P1"/>
                 <constraint firstItem="uO3-QG-q9R" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="109" id="PRC-mT-GBB"/>
                 <constraint firstItem="kd3-6Z-D9b" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="20" id="RVW-6B-iC0"/>
@@ -495,9 +494,10 @@
                 <constraint firstItem="ToE-0q-pH2" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="72" id="dvK-Pt-FTr"/>
                 <constraint firstItem="iQQ-Qh-1Nw" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="278" id="ek5-NZ-HRI"/>
                 <constraint firstItem="RB8-aR-yhY" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="51" id="f8F-08-3nq"/>
-                <constraint firstItem="NnB-26-Plu" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="323" id="gzx-VO-XcF"/>
+                <constraint firstItem="YNN-gs-kyx" firstAttribute="top" secondItem="NnB-26-Plu" secondAttribute="bottom" constant="10" id="hKy-6L-5Ai"/>
                 <constraint firstItem="T27-XK-VY4" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="20" id="hbI-L2-Ff5"/>
                 <constraint firstItem="lqq-Vv-857" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="151" id="izP-mL-9NB"/>
+                <constraint firstItem="NnB-26-Plu" firstAttribute="top" secondItem="kd3-6Z-D9b" secondAttribute="bottom" constant="18" id="lfA-dh-R4e"/>
                 <constraint firstItem="Jki-MF-GcS" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="179" id="lw6-X7-oJg"/>
                 <constraint firstItem="iQQ-Qh-1Nw" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="20" id="mAE-an-oUW"/>
                 <constraint firstItem="20B-Il-F8i" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="388" id="mCU-J4-V11"/>
@@ -511,6 +511,7 @@
                 <constraint firstItem="Gwu-Ku-RWL" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="388" id="sO4-BK-IRs"/>
                 <constraint firstItem="6N3-g1-fHC" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="51" id="uap-kr-bMU"/>
                 <constraint firstItem="PWE-hu-Wcl" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="20" id="xOE-co-k5l"/>
+                <constraint firstItem="vTZ-5S-fbP" firstAttribute="top" secondItem="20B-Il-F8i" secondAttribute="bottom" constant="6" id="z3v-5u-2fs"/>
                 <constraint firstItem="PWE-hu-Wcl" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="227" id="zPa-Hi-BHY"/>
             </constraints>
             <point key="canvasLocation" x="299" y="65"/>
