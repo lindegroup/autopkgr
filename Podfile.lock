@@ -26,9 +26,10 @@ PODS:
   - JRSwizzle (1.0)
   - mailcore2-osx (0.6.4)
   - MMMarkdown (0.5.5)
-  - RNCryptor (2.2)
+  - OpenSSL-OSX (1.0.211)
+  - RNCryptor-objc (3.0.5)
   - Sparkle (1.14.0)
-  - XMLDictionary (1.4)
+  - XMLDictionary (1.4.1)
 
 DEPENDENCIES:
   - ACEView (~> 0.0.5)
@@ -39,7 +40,8 @@ DEPENDENCIES:
   - GRMustache (~> 7.3.2)
   - mailcore2-osx (~> 0.5)
   - MMMarkdown (~> 0.5.1)
-  - RNCryptor (~> 2.2)
+  - OpenSSL-OSX
+  - RNCryptor-objc (~> 3.0.5)
   - Sparkle (~> 1.14.0)
   - XMLDictionary (~> 1.4)
 
@@ -62,10 +64,11 @@ SPEC CHECKSUMS:
   JRSwizzle: dd5ead5d913a0f29e7f558200165849f006bb1e3
   mailcore2-osx: 56890045e50f3b09b6530f5bd008eda67e1f6b82
   MMMarkdown: 1af97166ce0f6d6e0cb05695665492195d27c3f1
-  RNCryptor: c68678461a2c7474a55db9a6a98834c22d51f535
+  OpenSSL-OSX: d9226a9b1c4257f41b819da9173a150c6a6fbfd5
+  RNCryptor-objc: a65b15493de05dda4af0f392c70372b7a5625aab
   Sparkle: ccd95233b12a3e3d4eeb55ff01dd4c8bb8188b07
-  XMLDictionary: f9f51601ba76678b594ab485f2b00ec1fed23724
+  XMLDictionary: fa07b6ff422b3a91d47a5de9bc82e3fc04fbd167
 
-PODFILE CHECKSUM: 4c31793892d29109edab1d08d5e3a9a6023a8686
+PODFILE CHECKSUM: 16789b0f189e749cdf76a5fad4bbcd05bb02b248
 
-COCOAPODS: 1.1.0.rc.2
+COCOAPODS: 1.4.0

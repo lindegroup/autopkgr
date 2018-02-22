@@ -39,15 +39,16 @@ static int NUMBER_OF_FIELDS = 6;
 
         [self addButtonWithTitle:@"OK"];
         [self addButtonWithTitle:@"Cancel"];
-
+        
         self.accessoryView = [[NSView alloc] initWithFrame:NSMakeRect(0, 0, 250, TFSIZE + PADDING)];
 
         int position = round((self.accessoryView.frame.size.width - (NUMBER_OF_FIELDS * (PADDING + TFSIZE))) / 2);
 
+        NSTextField *textFields[6];
         for (int i = 0; i < NUMBER_OF_FIELDS; i++) {
             NSTextField *input = [[NSTextField alloc] init];
             input.delegate = self;
-
+            
             input.alignment = NSCenterTextAlignment;
             input.formatter = [[NSNumberFormatter alloc] init];
 
@@ -57,7 +58,17 @@ static int NUMBER_OF_FIELDS = 6;
 
             [self.accessoryView addSubview:input];
             position = (position + TFSIZE + PADDING);
+            
+            textFields[i] = input;
         }
+        
+        // Links text fields to the one that comes afterwards so they can be tabbed between each other
+        for (int i = 0; i < NUMBER_OF_FIELDS; i++) {
+            if(i != NUMBER_OF_FIELDS - 1){
+                textFields[i].nextKeyView = textFields[i + 1];
+            }
+        }
+        
     }
     return self;
 }
