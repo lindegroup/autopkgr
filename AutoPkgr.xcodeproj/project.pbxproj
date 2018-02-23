@@ -1365,7 +1365,6 @@
 				1AC6956C195B59EE00D2BD81 /* Resources */,
 				1B0C3DC2C321F29A7E8C7961 /* [CP] Embed Pods Frameworks */,
 				31B7BD6A4EB151B181C0B9F1 /* [CP] Copy Pods Resources */,
-				F26B6DE0203D460000956613 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -2431,19 +2430,6 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-com.lindegroup.AutoPkgr.helper/Pods-com.lindegroup.AutoPkgr.helper-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		F26B6DE0203D460000956613 /* ShellScript */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Autopkgr/Pods-Autopkgr-frameworks.sh\"";
-		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -3237,7 +3223,6 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(DEVELOPER_FRAMEWORKS_DIR)",
 					"$(inherited)",
-					"$(PROJECT_DIR)/Pods/Sparkle",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "AutoPkgr/Supporting Files/AutoPkgr-Prefix.pch";
@@ -3268,7 +3253,6 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(DEVELOPER_FRAMEWORKS_DIR)",
 					"$(inherited)",
-					"$(PROJECT_DIR)/Pods/Sparkle",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "AutoPkgr/Supporting Files/AutoPkgr-Prefix.pch";
