@@ -15,11 +15,12 @@ AutoPkgr.each { |t|
         pod 'AHProxySettings', '~> 0.1.1'
         pod 'AHKeychain', '~> 0.3.0'
         pod 'AHLaunchCtl', :git => 'https://github.com/eahrold/AHLaunchCtl.git'
+        pod 'OpenSSL-OSX'
     end
 }
 
 target "com.lindegroup.AutoPkgr.helper" do
     pod 'AHLaunchCtl', :git => 'https://github.com/eahrold/AHLaunchCtl.git'
     pod 'AHKeychain', '~> 0.3.0'
-    pod 'RNCryptor', '~> 2.2'
+    pod 'RNCryptor-objc', '~> 3.0.5'
 end
