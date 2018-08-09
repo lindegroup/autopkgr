@@ -217,6 +217,13 @@ NSString *maskPasswordInString(NSString *string)
                     exitCode = kLGAutoPkgErrorRepoModification;
                 }
             }
+            
+            else if (_verb == kLGAutoPkgUpdateTrust) {
+                if (errorDetails.length) {
+                    exitCode = kLGAutoPkgTrustUpdateFailed;
+                }
+            }
+            
             // `autopkg run` exits 255 if no recipe specified.
             else if (_verb == kLGAutoPkgRun && exitCode == kLGAutoPkgErrorNoRecipes) {
                 errorDetails = LGAutoPkgLocalizedString(@"No recipes specified.", nil);
@@ -238,6 +245,19 @@ NSString *maskPasswordInString(NSString *string)
     }
 
     return error;
+}
+
+- (NSError *)checkFromOutput:(NSString *)output
+{
+    if(_verb == kLGAutoPkgUpdateTrust) {
+        if([output containsString:@"does not appear to be a recipe override."]) {
+            return [NSError errorWithDomain:[[NSBundle mainBundle] bundleIdentifier] ?: @"autopkg"
+                               code:kLGAutoPkgTrustUpdateFailed
+                           userInfo:@{ NSLocalizedDescriptionKey : @"Trust verification failed",
+                                       NSLocalizedRecoverySuggestionErrorKey : output ?: @"" }];
+        }
+    }
+    return nil;
 }
 
 + (NSError *)errorWithGitHubAPIErrorCode:(LGAutoPkgGitHubAPIError)statusCode

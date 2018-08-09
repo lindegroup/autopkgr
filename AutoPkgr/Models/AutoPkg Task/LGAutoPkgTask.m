@@ -57,6 +57,8 @@ static NSDictionary *AutoPkgVerbStringToEnum()
             @"run" : @(kLGAutoPkgRun),
             @"list-recipes" : @(kLGAutoPkgListRecipes),
             @"make-override" : @(kLGAutoPkgMakeOverride),
+            @"verify-trust-info" : @(kLGAutoPkgVerifyTrust),
+            @"update-trust-info" : @(kLGAutoPkgUpdateTrust),
             @"search" : @(kLGAutoPkgSearch),
             @"info" : @(kLGAutoPkgInfo),
             @"repo-add" : @(kLGAutoPkgRepoAdd),
@@ -1004,6 +1006,34 @@ typedef void (^AutoPkgReplyErrorBlock)(NSError *error);
         reply(path, error);
     }];
 }
+
+
++ (BOOL)updateTrustInfo:(NSString *)overrideName error:(NSError *__autoreleasing *)error
+{
+    LGAutoPkgTask *task = [[LGAutoPkgTask alloc] initWithArguments:@[ @"update-trust-info", overrideName ]];
+    [task launch];
+    
+    BOOL rc = task.exitCode;
+    
+    if (error) {
+        *error = task.error ?: [task.errorHandler checkFromOutput:task.standardOutString];
+        if(*error) {
+            rc = kLGAutoPkgTrustUpdateFailed;
+        }
+    }
+        
+    return rc == 0;
+}
+
+
++ (BOOL)verifyTrustInfo:(NSString *)recipeName error:(NSError *__autoreleasing *)error
+{
+    LGAutoPkgTask *task = [[LGAutoPkgTask alloc] initWithArguments:@[ @"verify-trust-info", recipeName ]];
+    [task launch];
+    
+    return task.exitCode == 0;
+}
+
 
 + (NSArray *)listRecipes
 {

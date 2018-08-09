@@ -104,6 +104,13 @@ static NSString *const kLGAutoPkgRecipeCurrentStatusKey = @"currentStatus";
     LGRecipeStatusCellView *statusCell = [tableView makeViewWithIdentifier:tableColumn.identifier owner:self];
 
     if ([tableColumn.identifier isEqualToString:kLGAutoPkgRecipeCurrentStatusKey]) {
+        statusCell.createOverrideButton.hidden = recipe.isOverride;
+        
+        if (!recipe.isOverride) {
+            statusCell.createOverrideButton.target = recipe;
+            statusCell.createOverrideButton.action = @selector(createOverride:);
+        }
+        
         if (_runTaskDictionary[recipe.Identifier]) {
             [statusCell.progressIndicator startAnimation:tableView];
             statusCell.imageView.hidden = YES;
@@ -120,8 +127,12 @@ static NSString *const kLGAutoPkgRecipeCurrentStatusKey = @"currentStatus";
             }
         }
     }
+    
+    
     else if ([tableColumn.identifier isEqualToString:NSStringFromSelector(@selector(isEnabled))]) {
         statusCell.enabledCheckBox.state = [[recipe valueForKey:tableColumn.identifier] boolValue];
+        statusCell.enabledCheckBox.hidden = !recipe.isOverride && !recipe.isEnabled;
+        
         statusCell.enabledCheckBox.target = recipe;
         statusCell.enabledCheckBox.action = @selector(enableRecipe:);
     }
@@ -134,6 +145,8 @@ static NSString *const kLGAutoPkgRecipeCurrentStatusKey = @"currentStatus";
             statusCell.textField.placeholderString = @"<Missing>";
         }
     }
+    
+    [statusCell layout];
     return statusCell;
 }
 
@@ -392,21 +405,6 @@ static NSString *const kLGAutoPkgRecipeCurrentStatusKey = @"currentStatus";
         [update addIndex:idx];
     }];
 
-    id task = _runTaskDictionary[recipe.Identifier];
-    if (!task && update.count) {
-        NSString *title = update.count > 1 ? @"Run Selected Recipes" : @"Run This Recipe Only";
-        NSMenuItem *item = [[NSMenuItem alloc] initWithTitle:title action:@selector(runRecipesFromMenu:) keyEquivalent:@""];
-        item.target = self;
-        item.representedObject = update;
-        [menu addItem:item];
-    }
-
-    if (task) {
-        NSMenuItem *cancelItem = [[NSMenuItem alloc] initWithTitle:@"Cancel Run" action:@selector(cancel) keyEquivalent:@""];
-        cancelItem.target = task;
-        [menu addItem:cancelItem];
-    }
-
     if (set.count > 1) {
         if (enable.count) {
             NSMenuItem *item = [[NSMenuItem alloc] initWithTitle:@"Enable Selected Recipes" action:@selector(enableRecipes:) keyEquivalent:@""];
@@ -424,6 +422,11 @@ static NSString *const kLGAutoPkgRecipeCurrentStatusKey = @"currentStatus";
         return menu;
     }
 
+    NSMenuItem *trustOverrideItem = [[NSMenuItem alloc] initWithTitle:@"Update Trust Info" action:@selector(trustOverride:) keyEquivalent:@""];
+    trustOverrideItem.representedObject = recipe;
+    trustOverrideItem.target = [LGRecipeOverrides class];
+    [menu addItem:trustOverrideItem];
+    
     NSMenuItem *infoItem = [[NSMenuItem alloc] initWithTitle:@"Get Info" action:@selector(openInfoPanelFromMenu:) keyEquivalent:@""];
     infoItem.representedObject = recipe;
     infoItem.target = self;
@@ -440,6 +443,21 @@ static NSString *const kLGAutoPkgRecipeCurrentStatusKey = @"currentStatus";
     // Set up menu items for overrides.
 
     if ([LGRecipeOverrides overrideExistsForRecipe:recipe]) {
+        id task = _runTaskDictionary[recipe.Identifier];
+        if (!task && update.count) {
+            NSString *title = update.count > 1 ? @"Run Selected Recipes" : @"Run This Recipe Only";
+            NSMenuItem *item = [[NSMenuItem alloc] initWithTitle:title action:@selector(runRecipesFromMenu:) keyEquivalent:@""];
+            item.target = self;
+            item.representedObject = update;
+            [menu addItem:item];
+        }
+        
+        if (task) {
+            NSMenuItem *cancelItem = [[NSMenuItem alloc] initWithTitle:@"Cancel Run" action:@selector(cancel) keyEquivalent:@""];
+            cancelItem.target = task;
+            [menu addItem:cancelItem];
+        }
+        
         NSMenuItem *openRecipeItem = [[NSMenuItem alloc] initWithTitle:@"Open Recipe Override" action:@selector(openFile:) keyEquivalent:@""];
         openRecipeItem.target = [LGRecipeOverrides class];
         openRecipeItem.representedObject = recipe;
@@ -453,10 +471,11 @@ static NSString *const kLGAutoPkgRecipeCurrentStatusKey = @"currentStatus";
 
         // "Delete Override" menu item.
         NSMenuItem *removeOverrideItem = [[NSMenuItem alloc] initWithTitle:@"Remove Override" action:@selector(deleteOverride:) keyEquivalent:@""];
-
         removeOverrideItem.representedObject = recipe;
         removeOverrideItem.target = [LGRecipeOverrides class];
         [menu addItem:removeOverrideItem];
+        
+
     }
     else {
         NSMenuItem *openRecipeItem = [[NSMenuItem alloc] initWithTitle:@"Create Override" action:@selector(createOverride:) keyEquivalent:@""];

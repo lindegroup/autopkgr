@@ -128,6 +128,7 @@
     }
     else if ([[tableColumn identifier] isEqualToString:@"status"]) {
         statusCell.imageView.hidden = YES;
+        
         repo.statusChangeBlock = ^(LGAutoPkgRepoStatus status) {
             switch (status) {
             case kLGAutoPkgRepoNotInstalled: {

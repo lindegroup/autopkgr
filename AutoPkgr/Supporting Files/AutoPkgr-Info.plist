@@ -42,7 +42,7 @@
 	<key>SMPrivilegedExecutables</key>
 	<dict>
 		<key>com.lindegroup.AutoPkgr.helper</key>
-		<string>identifier "com.lindegroup.AutoPkgr.helper" and anchor apple generic and certificate leaf[subject.CN] = "Mac Developer: ecfann@gmail.com (U5S2H267XL)" and certificate 1[field.1.2.840.113635.100.6.2.1] /* exists */</string>
+		<string>identifier "com.lindegroup.AutoPkgr.helper" and anchor apple generic and certificate leaf[subject.CN] = "Mac Developer: eahrold@bigclubdigital.com (65839UZ32K)" and certificate 1[field.1.2.840.113635.100.6.2.1] /* exists */</string>
 	</dict>
 	<key>SUFeedURL</key>
 	<string>https://raw.githubusercontent.com/lindegroup/autopkgr/appcast/appcast.xml</string>

@@ -37,6 +37,9 @@
  *  @note this is basically a proxy that changes the `enabled` property to the `sender.state`.
  */
 - (IBAction)enableRecipe:(NSButton *)sender;
+- (IBAction)createOverride:(NSButton *)sender;
+- (IBAction)trustRecipe:(NSButton *)sender;
+
 
 @property (copy, nonatomic, readonly) NSDictionary *recipePlist;
 

@@ -1,4 +1,4 @@
-﻿/* No comment provided by engineer. */
+/* No comment provided by engineer. */
 "AutoPkgr encountered an error" = "AutoPkgr encountered an error";
 
 /* No comment provided by engineer. */
@@ -28,3 +28,5 @@
 /* No comment provided by engineer. */
 "Error updating repo" = "Error updating repo";
 
+"Updated Trust Info" = "Updated Trust Info for %@";
+"Advice on Trust Info" = "You will experience failures when any part of the recipe chain changes. When you do, carefully review those changes and re-trust this recipe if approperiate";

@@ -20,6 +20,7 @@
 #import "LGAutoPkgRecipe.h"
 #import "LGAutoPkgRecipeListManager.h"
 #import "LGAutoPkgTask.h"
+#import "LGRecipeOverrides.h"
 
 #import <glob.h>
 
@@ -150,6 +151,29 @@ static NSMutableDictionary *_identifierURLStore = nil;
 {
     return _recipePlist[NSStringFromSelector(_cmd)];
 }
+
+#pragma mark - Trust
+-(void)trustRecipe:(NSButton *)sender
+{
+    NSError *error = nil;
+    BOOL success = [LGAutoPkgTask updateTrustInfo:self.Identifier error:&error];
+    
+    NSString *warning = [NSString stringWithFormat:NSLocalizedStringFromTable(@"Updated Trust Info", @"LocalizableAutoPkg", nil), self.Name];
+    NSString *advice = NSLocalizedStringFromTable(@"Advice on Trust Info", @"LocalizableAutoPkg", nil);
+    
+    NSAlert *alert = error ? [NSAlert alertWithError:error] : [NSAlert alertWithMessageText:warning defaultButton:@"OK" alternateButton:nil otherButton:nil informativeTextWithFormat:@"%@", advice];
+    [alert beginSheetModalForWindow:[NSApplication sharedApplication].mainWindow completionHandler:^(NSModalResponse returnCode) {
+        DLog(@"We did due dillagence on recipe trust");
+    }];
+}
+
+-(void)createOverride:(NSButton *)sender
+{
+    if ([sender isKindOfClass:[NSButton class]]) {
+        [LGRecipeOverrides createOverrideForRecipe:self];
+    }
+}
+
 
 #pragma mark - Enabled
 - (void)enableRecipe:(NSButton *)sender

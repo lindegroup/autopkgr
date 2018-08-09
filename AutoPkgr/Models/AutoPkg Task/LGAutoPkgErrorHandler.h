@@ -29,8 +29,9 @@ typedef NS_ENUM(NSInteger, LGAutoPkgErrorCodes) {
     kLGAutoPkgErrorSuccess = 0,
     kLGAutoPkgErrorNoRecipes = 255,
 
-    kLGAutoPkgErrorRepoModification = -2,
     kLGAutoPkgErrorNeedsRepair = -1,
+    kLGAutoPkgErrorRepoModification = -2,
+    kLGAutoPkgTrustUpdateFailed = -3
 };
 
 typedef NS_ENUM(NSInteger, LGAutoPkgGitHubAPIError) {
@@ -59,6 +60,9 @@ typedef NS_OPTIONS(NSInteger, LGAutoPkgVerb) {
 
     // other verbs
     kLGAutoPkgVersion = 1 << 11,
+    
+    kLGAutoPkgVerifyTrust = 1 << 12,
+    kLGAutoPkgUpdateTrust = 1 << 13,
 };
 
 @interface LGAutoPkgErrorHandler : NSObject
@@ -67,8 +71,9 @@ typedef NS_OPTIONS(NSInteger, LGAutoPkgVerb) {
 @property (nonatomic, readonly) NSString *errorString;
 
 - (instancetype)initWithVerb:(LGAutoPkgVerb)verb;
-- (NSError *)errorWithExitCode:(NSInteger)exitCode;
+- (nullable NSError *)errorWithExitCode:(NSInteger)exitCode;
+- (nullable NSError *)checkFromOutput:(NSString *)output;
 
-+ (NSError *)errorWithGitHubAPIErrorCode:(LGAutoPkgGitHubAPIError)statusCode;
++ (nullable NSError *)errorWithGitHubAPIErrorCode:(LGAutoPkgGitHubAPIError)statusCode;
 
 @end

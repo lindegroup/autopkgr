@@ -1,8 +1,10 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="10117" systemVersion="15F34" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="14113" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="10117"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14113"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+        <capability name="system font weights other than Regular or Bold" minToolsVersion="7.0"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="LGRecipeReposViewController">
@@ -190,7 +192,6 @@
                                 </connections>
                             </tableView>
                         </subviews>
-                        <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                     </clipView>
                     <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="YES" id="zbJ-c5-Mnr">
                         <autoresizingMask key="autoresizingMask"/>
@@ -258,7 +259,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnSelection="YES" columnResizing="NO" autosaveName="MainRecipeTable" rowSizeStyle="automatic" headerView="G9x-hV-Xkq" viewBased="YES" id="HAz-3M-Rgt" customClass="LGTableView">
-                                <rect key="frame" x="0.0" y="0.0" width="581" height="97"/>
+                                <rect key="frame" x="0.0" y="0.0" width="585" height="97"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <size key="intercellSpacing" width="3" height="2"/>
                                 <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -337,7 +338,7 @@
                                             </tableCellView>
                                         </prototypeCellViews>
                                     </tableColumn>
-                                    <tableColumn identifier="Identifier" editable="NO" width="327" minWidth="10" maxWidth="3.4028234663852886e+38" id="Uhk-Q9-hWI">
+                                    <tableColumn identifier="Identifier" editable="NO" width="306" minWidth="10" maxWidth="3.4028234663852886e+38" id="Uhk-Q9-hWI">
                                         <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left" title="Recipe Identifier">
                                             <font key="font" metaFont="smallSystem"/>
                                             <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
@@ -352,11 +353,11 @@
                                         <tableColumnResizingMask key="resizingMask" resizeWithTable="YES"/>
                                         <prototypeCellViews>
                                             <tableCellView id="qrF-hk-S9K">
-                                                <rect key="frame" x="199" y="1" width="327" height="17"/>
+                                                <rect key="frame" x="199" y="1" width="306" height="17"/>
                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                 <subviews>
                                                     <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="jjs-oB-RUI">
-                                                        <rect key="frame" x="0.0" y="0.0" width="325" height="17"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="304" height="17"/>
                                                         <textFieldCell key="cell" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" title="Table View Cell" id="NbP-w7-SGj">
                                                             <font key="font" metaFont="system"/>
                                                             <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -375,9 +376,9 @@
                                             </tableCellView>
                                         </prototypeCellViews>
                                     </tableColumn>
-                                    <tableColumn identifier="currentStatus" editable="NO" width="50" minWidth="50" maxWidth="50" id="XTp-YI-Hx6">
+                                    <tableColumn identifier="currentStatus" editable="NO" width="75" minWidth="75" maxWidth="75" id="XTp-YI-Hx6">
                                         <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left" title="Status">
-                                            <font key="font" metaFont="smallSystem"/>
+                                            <font key="font" metaFont="systemMedium" size="11"/>
                                             <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
                                             <color key="backgroundColor" name="headerColor" catalog="System" colorSpace="catalog"/>
                                         </tableHeaderCell>
@@ -385,27 +386,37 @@
                                         <sortDescriptor key="sortDescriptorPrototype" selector="compare:" sortKey="recipeConfigError"/>
                                         <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                         <prototypeCellViews>
-                                            <tableCellView hidden="YES" id="Nd2-QK-of1" customClass="LGRepoStatusCellView">
-                                                <rect key="frame" x="529" y="1" width="50" height="18"/>
+                                            <tableCellView hidden="YES" id="Nd2-QK-of1" customClass="LGRecipeStatusCellView">
+                                                <rect key="frame" x="508" y="1" width="75" height="18"/>
                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                 <subviews>
                                                     <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="xbA-pI-tvo">
-                                                        <rect key="frame" x="0.0" y="0.0" width="47" height="18"/>
+                                                        <rect key="frame" x="-25" y="0.0" width="97" height="18"/>
                                                         <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyUpOrDown" id="Oh4-Re-cfC"/>
                                                     </imageView>
                                                     <progressIndicator horizontalHuggingPriority="750" verticalHuggingPriority="750" minValue="26" maxValue="26" doubleValue="26" displayedWhenStopped="NO" bezeled="NO" indeterminate="YES" controlSize="small" style="spinning" translatesAutoresizingMaskIntoConstraints="NO" id="KDy-Cc-slz">
                                                         <rect key="frame" x="15" y="1" width="16" height="16"/>
                                                     </progressIndicator>
+                                                    <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="ilh-9i-sW2">
+                                                        <rect key="frame" x="8" y="0.0" width="59" height="17"/>
+                                                        <buttonCell key="cell" type="inline" title="override" bezelStyle="inline" alignment="center" borderStyle="border" inset="2" id="eNP-SW-6yO">
+                                                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                                            <font key="font" metaFont="smallSystemBold"/>
+                                                        </buttonCell>
+                                                    </button>
                                                 </subviews>
                                                 <constraints>
                                                     <constraint firstItem="xbA-pI-tvo" firstAttribute="centerY" secondItem="KDy-Cc-slz" secondAttribute="centerY" id="Cee-3U-uiZ"/>
+                                                    <constraint firstItem="ilh-9i-sW2" firstAttribute="centerX" secondItem="Nd2-QK-of1" secondAttribute="centerX" id="FHS-98-uxJ"/>
                                                     <constraint firstItem="KDy-Cc-slz" firstAttribute="leading" secondItem="Nd2-QK-of1" secondAttribute="leading" constant="15" id="JhU-jZ-NWZ"/>
                                                     <constraint firstItem="xbA-pI-tvo" firstAttribute="top" secondItem="Nd2-QK-of1" secondAttribute="top" id="MAr-Fo-Ygp"/>
+                                                    <constraint firstItem="ilh-9i-sW2" firstAttribute="centerY" secondItem="Nd2-QK-of1" secondAttribute="centerY" id="R3W-nI-cVR"/>
                                                     <constraint firstAttribute="trailing" secondItem="xbA-pI-tvo" secondAttribute="trailing" constant="3" id="dQp-VH-Wcs"/>
                                                     <constraint firstItem="KDy-Cc-slz" firstAttribute="centerX" secondItem="xbA-pI-tvo" secondAttribute="centerX" id="gow-uv-OkM"/>
                                                     <constraint firstItem="xbA-pI-tvo" firstAttribute="centerY" secondItem="Nd2-QK-of1" secondAttribute="centerY" id="jQ8-Xz-fab"/>
                                                 </constraints>
                                                 <connections>
+                                                    <outlet property="createOverrideButton" destination="ilh-9i-sW2" id="xJo-hK-OGq"/>
                                                     <outlet property="imageView" destination="xbA-pI-tvo" id="NgI-Pj-M7d"/>
                                                     <outlet property="progressIndicator" destination="KDy-Cc-slz" id="VCa-j6-uVh"/>
                                                 </connections>
@@ -419,17 +430,16 @@
                                 </connections>
                             </tableView>
                         </subviews>
-                        <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                     </clipView>
-                    <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="YES" id="jol-Dg-6k1">
-                        <rect key="frame" x="1" y="128" width="581" height="16"/>
+                    <scroller key="horizontalScroller" wantsLayer="YES" verticalHuggingPriority="750" horizontal="YES" id="jol-Dg-6k1">
+                        <rect key="frame" x="1" y="104" width="581" height="16"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </scroller>
                     <scroller key="verticalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="NO" id="hH6-fw-9si">
                         <autoresizingMask key="autoresizingMask"/>
                     </scroller>
                     <tableHeaderView key="headerView" id="G9x-hV-Xkq">
-                        <rect key="frame" x="0.0" y="0.0" width="581" height="23"/>
+                        <rect key="frame" x="0.0" y="0.0" width="585" height="23"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </tableHeaderView>
                 </scrollView>

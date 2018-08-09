@@ -130,7 +130,7 @@ extern NSString *const kLGPostProcessorDefaultsKey;
 
 #pragma mark-- Convenience Methods --
 /**
- *  Equivalent to /usr/bin/local/autopkg run --recipe-list=xxx --report-plist=xxx
+ *  Equivalent to /usr/local/bin/autopkg run --recipe-list=xxx --report-plist=xxx
  *
  *  @param recipeList Full path to the recipe list
  *  @param updateRepo whether the repos should be updated prior to run
@@ -142,7 +142,7 @@ extern NSString *const kLGPostProcessorDefaultsKey;
                 reply:(void (^)(NSDictionary *report, NSError *error))reply;
 
 /**
- *  Equivalent to /usr/bin/local/autopkg run recipe1 recipe2 ... recipe(n) --report-plist=xxx
+ *  Equivalent to /usr/local/bin/autopkg run recipe1 recipe2 ... recipe(n) --report-plist=xxx
  *
  *  @param recipes  Array of recipes to run
  *  @param reply The block to be executed on upon task completion. This block has no return value and takes two arguments: NSDictionary (with the report plist data), NSError
@@ -152,7 +152,7 @@ extern NSString *const kLGPostProcessorDefaultsKey;
              reply:(void (^)(NSDictionary *report, NSError *error))reply;
 
 /**
- *  Equivalent to /usr/bin/local/autopkg repo-update all
+ *  Equivalent to /usr/local/bin/autopkg repo-update all
  *
  *  @param reply The block to be executed on upon task completion. This block has no return value and takes one argument: NSError
  *  @note to receive progress messages from this operation the LGProgressDelegate protocol needs to be implemented and the task manager's progressDelegate property set.
@@ -250,7 +250,7 @@ extern NSString *const kLGPostProcessorDefaultsKey;
           progress:(void (^)(NSString *, double taskProgress))progress
              reply:(void (^)(NSDictionary *, NSError *))reply;
 /**
- *  Equivalent to /usr/bin/local/autopkg search [recipe]
+ *  Equivalent to /usr/local/bin/autopkg search [recipe]
  *
  *  @param recipe recipe to search for
  *  @param reply  The block to be executed on upon task completion. This block has no return value and takes two arguments: NSArray, NSError
@@ -260,7 +260,7 @@ extern NSString *const kLGPostProcessorDefaultsKey;
          reply:(void (^)(NSArray *results, NSError *error))reply;
 
 /**
- *  Equivalent to /usr/bin/local/autopkg make-override [recipe]
+ *  Equivalent to /usr/local/bin/autopkg make-override [recipe]
  *
  *  @param recipe Recipe override file to create
  *  @param reply The block to be executed on upon task completion. This block has no return value and takes two arguments: NSString representing the full path the the newly created override and NSError that is populated should an error occur.
@@ -270,15 +270,33 @@ extern NSString *const kLGPostProcessorDefaultsKey;
 
 + (void)makeOverride:(NSString *)recipe name:(NSString *)name
                reply:(void (^)(NSString *newOverrideFile, NSError *error))reply;
+
+
 /**
- *  Equivalent to /usr/bin/local/autopkg list-recipes
+ Equivelant to /usr/local/bin/autopkg update-trust-info override_name
+
+ @param recipe
+ @return BOOL YES if the trust info was updated, NO otherwise
+ */
++ (BOOL)updateTrustInfo:(NSString *)overrideNam error:(NSError *__autoreleasing *)error;
+
+/**
+ Equivelant to /usr/local/bin/autopkg update-trust-info override_name
+ 
+ @param recipe
+ @return BOOL YES if recipe is trusted NO otherwise
+ */
++ (BOOL)verifyTrustInfo:(NSString *)overrideName error:(NSError *__autoreleasing *)error;
+
+/**
+ *  Equivalent to /usr/local/bin/autopkg list-recipes
  *
  *  @return List of recipes
  */
 + (NSArray *)listRecipes;
 
 /**
- *  Equivalent to /usr/bin/local/autopkg info [recipe]
+ *  Equivalent to /usr/local/bin/autopkg info [recipe]
  *
  *  @param recipe recipe you want info for.
  *
@@ -288,7 +306,7 @@ extern NSString *const kLGPostProcessorDefaultsKey;
 
 #pragma mark-- Repo methods --
 /**
- *  Equivalent to /usr/bin/local/autopkg repo-add [recipe_repo_url]
+ *  Equivalent to /usr/local/bin/autopkg repo-add [recipe_repo_url]
  *
  *  @param repo repo to add
  *  @param reply The block to be executed on upon task completion. This block has no return value and takes one argument: NSError
@@ -297,7 +315,7 @@ extern NSString *const kLGPostProcessorDefaultsKey;
           reply:(void (^)(NSError *error))reply;
 
 /**
- *  Equivalent to /usr/bin/local/autopkg repo-remove [repo]
+ *  Equivalent to /usr/local/bin/autopkg repo-remove [repo]
  *
  *  @param repo  repo to remove
  *  @param reply The block to be executed on upon task completion. This block has no return value and takes one argument: NSError
@@ -306,7 +324,7 @@ extern NSString *const kLGPostProcessorDefaultsKey;
              reply:(void (^)(NSError *error))reply;
 
 /**
- *  Equivalent to /usr/bin/local/autopkg repo-update
+ *  Equivalent to /usr/local/bin/autopkg repo-update
  *
  *  @param reply The block to be executed on upon task completion. This block has no return value and takes one argument: NSError
  */
@@ -314,7 +332,7 @@ extern NSString *const kLGPostProcessorDefaultsKey;
              reply:(void (^)(NSError *error))reply;
 
 /**
- *  Equivalent to /usr/bin/local/autopkg repo-list (Synchronous)
+ *  Equivalent to /usr/local/bin/autopkg repo-list (Synchronous)
  *
  *  @return list of installed autopkg repos
  */
@@ -322,14 +340,14 @@ extern NSString *const kLGPostProcessorDefaultsKey;
 
 #pragma mark-- Processor Methods --
 /**
- *  Equivalent to /usr/bin/local/autopkg list-processors
+ *  Equivalent to /usr/local/bin/autopkg list-processors
  *
  *  @return list of installed autopkg repos
  */
 + (NSArray *)listProcessors;
 
 /**
- *  Equivalent to /usr/bin/local/autopkg processor-info [processor]
+ *  Equivalent to /usr/local/bin/autopkg processor-info [processor]
  *
  *  @return list of installed autopkg repos
  */
@@ -352,7 +370,7 @@ extern NSString *const kLGPostProcessorDefaultsKey;
 
 #pragma mark-- Other --
 /**
- *  Equivalent to /usr/bin/local/autopkg version
+ *  Equivalent to /usr/local/bin/autopkg version
  *
  *  @return version string
  */

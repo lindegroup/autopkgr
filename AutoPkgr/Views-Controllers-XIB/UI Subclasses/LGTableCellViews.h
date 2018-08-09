@@ -25,6 +25,7 @@
 
 @property (assign) IBOutlet NSProgressIndicator *progressIndicator;
 @property (assign) IBOutlet NSButton *enabledCheckBox;
+@property (assign) IBOutlet NSButton *createOverrideButton;
 
 @end
 

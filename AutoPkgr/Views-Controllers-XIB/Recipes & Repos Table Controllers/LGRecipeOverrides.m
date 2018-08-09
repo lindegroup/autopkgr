@@ -31,10 +31,8 @@ const CFStringRef kUTTypePropertyList = CFSTR("com.apple.property-list");
 @implementation LGRecipeOverrides
 
 #pragma mark - Override Actions
-+ (void)createOverride:(NSMenuItem *)sender
++ (void)createOverrideForRecipe:(LGAutoPkgRecipe *)recipe
 {
-    LGAutoPkgRecipe *recipe = sender.representedObject;
-
     NSString *recipeName = recipe.Name;
     NSString *recipeIdentifier = recipe.Identifier;
 
@@ -45,33 +43,41 @@ const CFStringRef kUTTypePropertyList = CFSTR("com.apple.property-list");
     else {
         overrideName = [self promptForOverrideName:recipeName];
     }
-
-    if (overrideName && recipeIdentifier) {
-        DevLog(@"Creating override for %@", recipeName);
-        [LGAutoPkgTask makeOverride:recipeIdentifier name:overrideName reply:^(NSString *path, NSError *error) {
-            if (error) {
-                DLog(@"%@", error.localizedDescription);
-                [NSApp presentError:error];
+    
+    [LGAutoPkgTask makeOverride:recipeIdentifier name:overrideName reply:^(NSString *path, NSError *error) {
+        if (error) {
+            DLog(@"%@", error.localizedDescription);
+            [NSApp presentError:error];
+        }
+        else {
+            LGAutoPkgRecipe * override = [[LGAutoPkgRecipe alloc] initWithRecipeFile:[NSURL fileURLWithPath:path] isOverride:YES];
+            assert([[NSFileManager defaultManager] fileExistsAtPath:path]);
+            
+            // If they have the same NAME, mark the override as enabled and the old recipe as disabled.
+            if (recipe.enabled && [recipe.Name isEqualToString:override.Name]) {
+                recipe.enabled = NO;
+                override.enabled = YES;
             }
-            else {
-                LGAutoPkgRecipe * override = [[LGAutoPkgRecipe alloc] initWithRecipeFile:[NSURL fileURLWithPath:path] isOverride:YES];
-                assert([[NSFileManager defaultManager] fileExistsAtPath:path]);
+            
+            [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+                [[NSNotificationCenter defaultCenter] postNotificationName:kLGNotificationOverrideCreated
+                                                                    object:nil
+                                                                  userInfo:@{ @"new" : override,
+                                                                              @"old" : recipe }];
+            }];
+        }
+    }];
+}
 
-                // If they have the same NAME, mark the override as enabled and the old recipe as disabled.
-                if (recipe.enabled && [recipe.Name isEqualToString:override.Name]) {
-                    recipe.enabled = NO;
-                    override.enabled = YES;
-                }
++ (void)createOverride:(NSMenuItem *)sender
+{
+    LGAutoPkgRecipe *recipe = sender.representedObject;
+    [self.class createOverrideForRecipe:recipe];
+}
 
-                [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-                    [[NSNotificationCenter defaultCenter] postNotificationName:kLGNotificationOverrideCreated
-                                                                        object:nil
-                                                                      userInfo:@{ @"new" : override,
-                                                                                  @"old" : recipe }];
-                }];
-            }
-        }];
-    }
++ (void)trustOverride:(NSMenuItem *)sender {
+    LGAutoPkgRecipe *recipeToTrust = sender.representedObject;
+    [recipeToTrust trustRecipe:nil];
 }
 
 + (void)deleteOverride:(NSMenuItem *)sender

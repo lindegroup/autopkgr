@@ -49,7 +49,7 @@ def get_code_sign_certificate_string():
     # Get the signing identity the current build is using.
 
     build_dir = os.getenv('BUILT_PRODUCTS_DIR')
-    identity = os.getenv('CODE_SIGN_IDENTITY')
+    identity = os.getenv('EXPANDED_CODE_SIGN_IDENTITY')
 
     if not identity:
         raise HelperSignError('Could not get the current build identity')
