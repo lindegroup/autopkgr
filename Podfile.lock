@@ -45,6 +45,21 @@ DEPENDENCIES:
   - Sparkle (~> 1.14.0)
   - XMLDictionary (~> 1.4)
 
+SPEC REPOS:
+  https://github.com/cocoapods/specs.git:
+    - ACEView
+    - AFNetworking
+    - AHKeychain
+    - AHProxySettings
+    - GRMustache
+    - JRSwizzle
+    - mailcore2-osx
+    - MMMarkdown
+    - OpenSSL-OSX
+    - RNCryptor-objc
+    - Sparkle
+    - XMLDictionary
+
 EXTERNAL SOURCES:
   AHLaunchCtl:
     :git: https://github.com/eahrold/AHLaunchCtl.git
@@ -71,4 +86,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: 16789b0f189e749cdf76a5fad4bbcd05bb02b248
 
-COCOAPODS: 1.4.0
+COCOAPODS: 1.5.3
