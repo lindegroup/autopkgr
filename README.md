@@ -1,4 +1,5 @@
-# ⚠️ **Please read this important [announcement](https://github.com/lindegroup/autopkgr/wiki/AutoPkgr----past,-present,-and-future) about future AutoPkgr development.** ⚠️
+[![announcement.png](doc-images/announcement.png)
+](https://github.com/lindegroup/autopkgr/wiki/AutoPkgr-1.5)
 
 # AutoPkgr
 
