@@ -6,7 +6,7 @@
 
 __AutoPkgr is a free Mac app that makes it easy to install and configure [AutoPkg](https://autopkg.github.io/autopkg/).__
 
-AutoPkg is an awesomely powerful tool for automating OS X software packaging and distribution, but it requires its users to be comfortable with command-line tools and methods. If you're not yet comfortable with the command-line, or if you just want to get AutoPkg set up from scratch quickly and reliably, AutoPkgr is for you.
+AutoPkg is an awesomely powerful tool for automating macOS software packaging and distribution, but it requires its users to be comfortable with command-line tools and methods. If you're not yet comfortable with the command-line, or if you just want to get AutoPkg set up from scratch quickly and reliably, AutoPkgr is for you.
 
 To get started, download the [latest release](https://github.com/lindegroup/autopkgr/releases/latest), [install](#installation) and [configure](#basic-usage) AutoPkgr, [search for and add](#searching-for-recipes) the recipes you need, and (optionally) [integrate](integrations) AutoPkgr with your software distribution tool. If you need help, check out the [Troubleshooting](#troubleshooting) section.
 
@@ -54,7 +54,7 @@ AutoPkgr makes these tasks a piece of cake:
 
 ## Installation
 
-AutoPkgr requires Mac OS X 10.8 or higher. If you plan on integrating with Munki, Jamf Pro, or other tools, additional requirements may apply. (See the [Integrations](#integrations) section for details.)
+AutoPkgr requires macOS 10.9 or higher. If you plan on integrating with Munki, Jamf Pro, or other tools, additional requirements may apply. (See the [Integrations](#integrations) section for details.)
 
 Download the [latest release](https://github.com/lindegroup/autopkgr/releases/latest), and drag the AutoPkgr app to your Applications folder. Then launch it.
 
@@ -150,7 +150,7 @@ We've tried to simplify the process of creating and editing AutoPkg recipe overr
 
 To select which text editor to use when editing overrides, go to __Folders & Integration > Configure AutoPkg > Recipe/Override Editor__.
 
-AutoPkgr does not currently provide a way to add trust information to existing recipe overrides, so we recommend manually using the `update-trust-info` verb in AutoPkg 1.0+ for that purpose. [You can read more about recipe trust information on the AutoPkg wiki](https://github.com/autopkg/autopkg/wiki/Autopkg-and-recipe-parent-trust-info).
+AutoPkgr now provides a way to add trust information to existing recipe overrides, however, we still recommend manually using the `update-trust-info` verb in AutoPkg 1.0+ for that purpose. Please note that this should only be done after inspecting the changes to the parent recipe. [You can read more about recipe trust information on the AutoPkg wiki](https://github.com/autopkg/autopkg/wiki/Autopkg-and-recipe-parent-trust-info).
 
 ![divider](doc-images/divider.png)
 
@@ -388,7 +388,7 @@ If you enable Verbose Logs for AutoPkgr, you may also want to enable the __Verbo
 
 Once you've set the verbosity as desired, you'll want to view the logs.
 
-In OS X 10.9 through 10.11, it's as simple as entering "AutoPkgr" into the filter field of the Console app:
+In macOS 10.9 through 10.11, it's as simple as entering "AutoPkgr" into the filter field of the Console app:
 
 ![Console in El Cap](doc-images/console_logs.png)
 
@@ -410,7 +410,7 @@ If you like, you can save this filter for future reference:
 
     ![Save filter in Sierra](doc-images/console_sierra4.png)
 
-If you prefer to view the log output in Terminal instead of Console, you could use this command in OS X 10.9 through 10.11:
+If you prefer to view the log output in Terminal instead of Console, you could use this command in macOS 10.9 through 10.11:
 
     tail -f /var/log/system.log | grep "AutoPkgr"
 
@@ -454,9 +454,9 @@ After uninstalling, you can drag the AutoPkgr app from your Applications folder 
 
 ## Credits
 
-AutoPkgr was created at the [Linde Group](http://www.lindegroup.com) in Emeryville, California. If you're a talented Mac admin looking for a job in the Bay Area, [check out our job listings](http://www.lindegroup.com/careers/). We've got a wonderful team of people and fantastic clients.
+AutoPkgr was created at [Linde Group](http://www.lindegroup.com) in Emeryville, California. If you're a talented Mac admin looking for a job in the Bay Area, [check out our job listings](http://www.lindegroup.com/careers/). We've got a wonderful team of people and fantastic clients.
 
-James Barclay, Elliot Jordan, and Josh Senick originally created AutoPkgr in June 2014, and ongoing development is led by Eldon Ahrold, Elliot Jordan, and James Barclay.
+James Barclay, Elliot Jordan, and Josh Senick originally created AutoPkgr in June 2014, and ongoing development is led by Eldon Ahrold and Shawn Honsberger.
 
 Thanks to Guillaume Gete for helping with the French localization, and to Luis Giraldo for the Spanish localization.
 
