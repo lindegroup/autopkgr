@@ -1,14 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
 <rss version="2.0" xmlns:sparkle="http://www.andymatuschak.org/xml-namespaces/sparkle" xmlns:dc="http://purl.org/dc/elements/1.1/">
-    <channel>
-        <title>AutoPkgr Changelog</title>
-        <link>https://raw.githubusercontent.com/lindegroup/autopkgr/appcast/appcast.xml</link>
-        <description>Most recent changes with links to updates.</description>
-        <language>en</language>
-        <item>
-            <title>Version 1.4.2</title>
-            <description>
-                <![CDATA[
+  <channel>
+    <title>AutoPkgr Changelog</title>
+    <link>https://raw.githubusercontent.com/lindegroup/autopkgr/appcast/appcast.xml</link>
+    <description>Most recent changes with links to updates.</description>
+    <language>en</language>
+    <item>
+      <title>Version 1.5</title>
+      <description>
+        <![CDATA[
+                <h3>The True Love Update - It's only mostly dead.</h3>
+                <p>In preparation for the release of macOS Catalina, we've made a new version of AutoPkgr. This release implements Apple's security requirements for macOS 10.15 compatibility: hardened runtime, complete code signing, Notarization with the Apple Notary Service, and stapling of tickets.</p>
+                <p>We've also added support for the awesome Dark mode in macOS 10.14+, an easy right-click action for Update Trust Info for Override, and an updated code signing certificate.</p>
+                <p>AutoPkgr 1.5 enables macOS administrators everywhere to continue using AutoPkgr. Happy autopkg-ing!</p>
+                <h3>Added</h3>
+                <ul>
+                <li>Support for Dark Mode in macOS 10.14+.</li>
+                <li>Hardened Runtime and complete Code Signing to support macOS Catalina.</li>
+                <li>Notarization from Apple to support macOS Catalina.</li>
+                <li>New code signing certificate valid until 2024.</li>
+                <li>"Update Trust Info for Override" right-click action.</li>
+                <li>Spanish localization. (big thanks to <a href="https://github.com/luisgiraldo">@luisgiraldo</a> for translating!)</li>
+                <li>Added OpenSSL-OSX pod in podfile.</li>
+                </ul>
+                <h3>Changed</h3>
+                <ul>
+                <li>Updated credits and copyright information.</li>
+                <li>Updated README.md to reflect Jamf and macOS rebranding.</li>
+                <li>Per Apple's Notarization requirements, the Notarized AutoPkgr-1.5.dmg has been stapled with the tickets from the Apple Notary Service. This allows full compatibility with GateKeeper when installing in macOS Catalina. Due to this, if you build from source code instead of installing AutoPkgr with the dmg, AutoPkgr may not launch in macOS Catalina.</li>
+                </ul>
+                ]]>
+</description>
+      <sparkle:minimumSystemVersion>10.9</sparkle:minimumSystemVersion>
+      <pubDate>Tue, 30 Jul 2019 12:00:00 -0700</pubDate>
+      <enclosure url="https://github.com/lindegroup/autopkgr/releases/download/v1.5/AutoPkgr-1.5.dmg" sparkle:version="1375" sparkle:shortVersionString="1.4.2" type="application/octet-stream" />
+    </item>
+    <item>
+      <title>Version 1.4.2</title>
+      <description>
+        <![CDATA[
                 <p>Fresh off the release of macOS Sierra, we've got a new version of AutoPkgr that includes some important fixes for 10.12 compatibility. We've also added amazingly easy one-click integration with the great new VirusTotalAnalyzer processor from Hannes Juutilainen, which checks downloaded files against the VirusTotal database.</p>
 
                 <p><strong>Important note: this version of AutoPkgr no longer supports OS X Mountain Lion (10.8).</strong></p>
@@ -49,15 +79,15 @@
                 <li>Removed 10.8 support. AutoPkgr now requires Mac OS X 10.9 or higher.</li>
                 </ul>
                 ]]>
-            </description>
-            <sparkle:minimumSystemVersion>10.9</sparkle:minimumSystemVersion>
-            <pubDate>Mon, 3 Oct 2016 10:00:00 -0700</pubDate>
-            <enclosure url="https://github.com/lindegroup/autopkgr/releases/download/v1.4.2/AutoPkgr-1.4.2.dmg" sparkle:version="1375" sparkle:shortVersionString="1.4.2" type="application/octet-stream"/>
-        </item>
-        <item>
-            <title>Version 1.4.1</title>
-            <description>
-                <![CDATA[
+</description>
+      <sparkle:minimumSystemVersion>10.9</sparkle:minimumSystemVersion>
+      <pubDate>Mon, 3 Oct 2016 10:00:00 -0700</pubDate>
+      <enclosure url="https://github.com/lindegroup/autopkgr/releases/download/v1.4.2/AutoPkgr-1.4.2.dmg" sparkle:version="1375" sparkle:shortVersionString="1.4.2" type="application/octet-stream" />
+    </item>
+    <item>
+      <title>Version 1.4.1</title>
+      <description>
+        <![CDATA[
                 <p>Version 1.4.1 of AutoPkgr is now available, and it has a larger-than-your-average-point-release number of improvements and changes. Take a look:</p>
 
                 <h3>Added</h3>
@@ -119,15 +149,15 @@
 
                 <p>As always, please <a href="https://github.com/lindegroup/autopkgr/issues">submit</a> any issues you find on GitHub, or find us on <a href="http://macadmins.org/">Slack</a> or <a href="https://groups.google.com/forum/#!forum/autopkgr-discuss">Google Groups</a> if you have questions. Have a great week!</p>
                 ]]>
-            </description>
-            <sparkle:minimumSystemVersion>10.8</sparkle:minimumSystemVersion>
-            <pubDate>Mon, 2 May 2016 10:00:00 -0700</pubDate>
-            <enclosure url="https://github.com/lindegroup/autopkgr/releases/download/v1.4.1/AutoPkgr-1.4.1.dmg" sparkle:version="1308" sparkle:shortVersionString="1.4.1" type="application/octet-stream" />
-        </item>
-        <item>
-            <title>Version 1.4</title>
-            <description>
-                <![CDATA[
+</description>
+      <sparkle:minimumSystemVersion>10.8</sparkle:minimumSystemVersion>
+      <pubDate>Mon, 2 May 2016 10:00:00 -0700</pubDate>
+      <enclosure url="https://github.com/lindegroup/autopkgr/releases/download/v1.4.1/AutoPkgr-1.4.1.dmg" sparkle:version="1308" sparkle:shortVersionString="1.4.1" type="application/octet-stream" />
+    </item>
+    <item>
+      <title>Version 1.4</title>
+      <description>
+        <![CDATA[
                 <p>There's a little something for everybody in this major AutoPkgr release! We especially think you'll love the ability to mute certain types of notifications, the new simplified JSSImporter interface (with CDP support), and the much-requested ability to add/remove repos and recipes in bulk using multi-selection.</p>
 
                 <p>As always, get in touch with us if you have questions! Questions are welcome in our <a href="https://groups.google.com/forum/#!forum/autopkgr-discuss">Google Group</a>, and if you find a reproducible problem, please <a href="https://github.com/lindegroup/autopkgr/issues">submit an issue</a> on GitHub. The #autopkg channel on the <a href="http://macadmins.org/">MacAdmins Slack team</a> is also an excellent place to get real-time support for AutoPkg and AutoPkgr.</p>
@@ -174,15 +204,15 @@
                     <li>Made width of tab views more consistent.</li>
                 </ul>
                 ]]>
-            </description>
-            <sparkle:minimumSystemVersion>10.8</sparkle:minimumSystemVersion>
-            <pubDate>Tue, 1 March 2016 14:00:00 -0700</pubDate>
-            <enclosure url="https://github.com/lindegroup/autopkgr/releases/download/v1.4/AutoPkgr-1.4.dmg" sparkle:version="1235" sparkle:shortVersionString="1.4" type="application/octet-stream" />
-        </item>
-        <item>
-            <title>Version 1.3.2</title>
-            <description>
-                <![CDATA[
+</description>
+      <sparkle:minimumSystemVersion>10.8</sparkle:minimumSystemVersion>
+      <pubDate>Tue, 1 March 2016 14:00:00 -0700</pubDate>
+      <enclosure url="https://github.com/lindegroup/autopkgr/releases/download/v1.4/AutoPkgr-1.4.dmg" sparkle:version="1235" sparkle:shortVersionString="1.4" type="application/octet-stream" />
+    </item>
+    <item>
+      <title>Version 1.3.2</title>
+      <description>
+        <![CDATA[
                 <p>AutoPkgr 1.3.2 is now available, and fixes a couple bugs that were reported by the community. </p>
 
                 <h3>Added</h3>
@@ -215,15 +245,15 @@
 
                 <p>Have a great day.</p>
                 ]]>
-            </description>
-            <sparkle:minimumSystemVersion>10.8</sparkle:minimumSystemVersion>
-            <pubDate>Fri, 18 September 2015 11:00:00 -0700</pubDate>
-            <enclosure url="https://github.com/lindegroup/autopkgr/releases/download/v1.3.2/AutoPkgr-1.3.2.dmg" sparkle:version="1104" sparkle:shortVersionString="1.3.2" type="application/octet-stream" />
-        </item>
-        <item>
-            <title>Version 1.3.1</title>
-            <description>
-                <![CDATA[
+</description>
+      <sparkle:minimumSystemVersion>10.8</sparkle:minimumSystemVersion>
+      <pubDate>Fri, 18 September 2015 11:00:00 -0700</pubDate>
+      <enclosure url="https://github.com/lindegroup/autopkgr/releases/download/v1.3.2/AutoPkgr-1.3.2.dmg" sparkle:version="1104" sparkle:shortVersionString="1.3.2" type="application/octet-stream" />
+    </item>
+    <item>
+      <title>Version 1.3.1</title>
+      <description>
+        <![CDATA[
                 <p>AutoPkgr 1.3.1 is a minor update that focuses on fixing a couple bugs and adding some small features.</p>
 
                 <h3>Added</h3>
@@ -265,14 +295,14 @@
 
                 <p>Happy packaging.</p>
                 ]]>
-            </description>
-            <pubDate>Wed, 19 August 2015 16:15:00 -0700</pubDate>
-            <enclosure url="https://github.com/lindegroup/autopkgr/releases/download/v1.3.1/AutoPkgr-1.3.1.dmg" sparkle:version="1076" sparkle:shortVersionString="1.3.1" type="application/octet-stream" />
-        </item>
-        <item>
-            <title>Version 1.3</title>
-            <description>
-                <![CDATA[
+</description>
+      <pubDate>Wed, 19 August 2015 16:15:00 -0700</pubDate>
+      <enclosure url="https://github.com/lindegroup/autopkgr/releases/download/v1.3.1/AutoPkgr-1.3.1.dmg" sparkle:version="1076" sparkle:shortVersionString="1.3.1" type="application/octet-stream" />
+    </item>
+    <item>
+      <title>Version 1.3</title>
+      <description>
+        <![CDATA[
                 <p>We're proud to announce AutoPkgr 1.3, with a ton of new features and improvements.</p>
 
                 <p>Along with integration with Absolute Manage and MacPatch, there are new scheduling options (running at a specific time every day) and notification options (notifying a Slack or HipChat channel). We've also polished and refined the interface, and reworked the back-end to more easily support future integration with other AutoPkg processors.</p>
@@ -335,14 +365,14 @@
 
                 <p>Hope you love it!</p>
                 ]]>
-            </description>
-            <pubDate>Fri, 24 July 2015 10:00:00 -0700</pubDate>
-            <enclosure url="https://github.com/lindegroup/autopkgr/releases/download/v1.3/AutoPkgr-1.3.dmg" sparkle:version="1002" sparkle:shortVersionString="1.3" type="application/octet-stream" />
-        </item>
-        <item>
-            <title>Version 1.2.3</title>
-            <description>
-                <![CDATA[
+</description>
+      <pubDate>Fri, 24 July 2015 10:00:00 -0700</pubDate>
+      <enclosure url="https://github.com/lindegroup/autopkgr/releases/download/v1.3/AutoPkgr-1.3.dmg" sparkle:version="1002" sparkle:shortVersionString="1.3" type="application/octet-stream" />
+    </item>
+    <item>
+      <title>Version 1.2.3</title>
+      <description>
+        <![CDATA[
                 <p>Hello friends! We've got a new version of AutoPkgr for you. This has a few small fixes and changes, including more friendly display of the "Last AutoPkg Run" status in the menu and a long-awaited <a href="https://github.com/lindegroup/autopkgr/issues/230#issuecomment-98140076">fix</a> to a problem reported by a few Chrome users.</p>
 
                 <h3>Changed</h3>
@@ -372,14 +402,14 @@
 
                 <p>We're constantly improving AutoPkgr based on community feedback. If you have ideas for future features, if you want to report a bug, or if you just have questions about using AutoPkgr, the best way to get in touch with us is to <a href="https://github.com/lindegroup/autopkgr/issues">submit an issue</a> on GitHub. If you don't have or want a GitHub account, you can also reach us at the <a href="https://groups.google.com/forum/#!forum/autopkgr-discuss">autopkgr-discuss Google group</a>. Thank you!</p>
                 ]]>
-            </description>
-            <pubDate>Fri, 8 May 2015 12:00:00 -0700</pubDate>
-            <enclosure url="https://github.com/lindegroup/autopkgr/releases/download/v1.2.3/AutoPkgr-1.2.3.dmg" sparkle:version="775" sparkle:shortVersionString="1.2.3" type="application/octet-stream" />
-        </item>
-        <item>
-            <title>Version 1.2.2</title>
-            <description>
-                <![CDATA[
+</description>
+      <pubDate>Fri, 8 May 2015 12:00:00 -0700</pubDate>
+      <enclosure url="https://github.com/lindegroup/autopkgr/releases/download/v1.2.3/AutoPkgr-1.2.3.dmg" sparkle:version="775" sparkle:shortVersionString="1.2.3" type="application/octet-stream" />
+    </item>
+    <item>
+      <title>Version 1.2.2</title>
+      <description>
+        <![CDATA[
                 <p>Welcome to AutoPkgr 1.2.2! This is a minor update focused on supporting upcoming changes in how AutoPkg reports its actions.</p>
 
                 <h3>Added</h3>
@@ -400,14 +430,14 @@
 
                 <p>Thank you!</p>
                 ]]>
-            </description>
-            <pubDate>Thu, 16 Apr 2015 12:00:00 -0700</pubDate>
-            <enclosure url="https://github.com/lindegroup/autopkgr/releases/download/v1.2.2/AutoPkgr-1.2.2.dmg" sparkle:version="751" sparkle:shortVersionString="1.2.2" type="application/octet-stream" />
-        </item>
-        <item>
-            <title>Version 1.2.1</title>
-            <description>
-                <![CDATA[
+</description>
+      <pubDate>Thu, 16 Apr 2015 12:00:00 -0700</pubDate>
+      <enclosure url="https://github.com/lindegroup/autopkgr/releases/download/v1.2.2/AutoPkgr-1.2.2.dmg" sparkle:version="751" sparkle:shortVersionString="1.2.2" type="application/octet-stream" />
+    </item>
+    <item>
+      <title>Version 1.2.1</title>
+      <description>
+        <![CDATA[
                 <p>Following up on our big 1.2 release, we've released 1.2.1 with a few bug fixes and enhancements:</p>
 
                 <h3>Added</h3>
@@ -450,14 +480,14 @@
 
                 <p>As always, if you find any bugs or encounter problems, we welcome you to <a href="https://github.com/lindegroup/autopkgr/issues">open a new issue on GitHub</a>. Thank you!</p>
                 ]]>
-            </description>
-            <pubDate>Sun, 8 Mar 2015 17:00:00 -0800</pubDate>
-            <enclosure url="https://github.com/lindegroup/autopkgr/releases/download/v1.2.1/AutoPkgr-1.2.1.dmg" sparkle:version="726" sparkle:shortVersionString="1.2.1" type="application/octet-stream" />
-        </item>
-        <item>
-            <title>Version 1.2</title>
-            <description>
-                <![CDATA[
+</description>
+      <pubDate>Sun, 8 Mar 2015 17:00:00 -0800</pubDate>
+      <enclosure url="https://github.com/lindegroup/autopkgr/releases/download/v1.2.1/AutoPkgr-1.2.1.dmg" sparkle:version="726" sparkle:shortVersionString="1.2.1" type="application/octet-stream" />
+    </item>
+    <item>
+      <title>Version 1.2</title>
+      <description>
+        <![CDATA[
                 <p>We're delighted to introduce you to version 1.2 of AutoPkgr. There are a few major new features in this release, as well as numerous bug fixes.</p>
 
                 <p><strong>Important: After upgrading to version 1.2, you will need to reenter your email password in the AutoPkgr Schedule tab to continue getting email notifications.</strong></p>
@@ -505,14 +535,14 @@
 
                 <p>As always, if you find any bugs or encounter problems, please <a href="https://github.com/lindegroup/autopkgr/issues">open a new issue on GitHub</a> and we'll do our best to help troubleshoot. Thank you!</p>
                 ]]>
-            </description>
-            <pubDate>Thu, 12 Feb 2015 12:00:00 -0800</pubDate>
-            <enclosure url="https://github.com/lindegroup/autopkgr/releases/download/v1.2/AutoPkgr-1.2.dmg" sparkle:version="679" sparkle:shortVersionString="1.2" type="application/octet-stream" />
-        </item>
-        <item>
-            <title>Version 1.1.3</title>
-            <description>
-                <![CDATA[
+</description>
+      <pubDate>Thu, 12 Feb 2015 12:00:00 -0800</pubDate>
+      <enclosure url="https://github.com/lindegroup/autopkgr/releases/download/v1.2/AutoPkgr-1.2.dmg" sparkle:version="679" sparkle:shortVersionString="1.2" type="application/octet-stream" />
+    </item>
+    <item>
+      <title>Version 1.1.3</title>
+      <description>
+        <![CDATA[
                 <p>Our cousin project jss-autopkg-addon is now <a href="https://github.com/sheagcraig/JSSImporter">JSSImporter</a>, so we had to make some changes to the guts of AutoPkgr in order to remain compatible.</p>
 
                 <p>This update is recommended for anybody who is using AutoPkgr to integrate with their JSS.</p>
@@ -534,14 +564,14 @@
 
                 <p>Thank you!</p>
                 ]]>
-            </description>
-            <pubDate>Mon, 15 Dec 2014 17:00:00 +0000</pubDate>
-            <enclosure url="https://github.com/lindegroup/autopkgr/releases/download/v1.1.3/AutoPkgr-1.1.3.dmg" sparkle:version="589" sparkle:shortVersionString="1.1.3" type="application/octet-stream" />
-        </item>
-        <item>
-            <title>Version 1.1.2</title>
-            <description>
-                <![CDATA[
+</description>
+      <pubDate>Mon, 15 Dec 2014 17:00:00 +0000</pubDate>
+      <enclosure url="https://github.com/lindegroup/autopkgr/releases/download/v1.1.3/AutoPkgr-1.1.3.dmg" sparkle:version="589" sparkle:shortVersionString="1.1.3" type="application/octet-stream" />
+    </item>
+    <item>
+      <title>Version 1.1.2</title>
+      <description>
+        <![CDATA[
                 <p>Some small tweaks for 1.1.2, centered mostly around compatibility with the latest version of <a href="https://github.com/sheagcraig/jss-autopkg-addon">jss-autopkg-addon</a>.</p>
 
                 <h4>Important Changes</h4>
@@ -571,14 +601,14 @@
 
                 <p>Thank you!</p>
                 ]]>
-            </description>
-            <pubDate>Mon, 1 Dec 2014 23:00:00 +0000</pubDate>
-            <enclosure url="https://github.com/lindegroup/autopkgr/releases/download/v1.1.2/AutoPkgr-1.1.2.dmg" sparkle:version="560" sparkle:shortVersionString="1.1.2" type="application/octet-stream" />
-        </item>
-        <item>
-            <title>Version 1.1.1</title>
-            <description>
-                <![CDATA[
+</description>
+      <pubDate>Mon, 1 Dec 2014 23:00:00 +0000</pubDate>
+      <enclosure url="https://github.com/lindegroup/autopkgr/releases/download/v1.1.2/AutoPkgr-1.1.2.dmg" sparkle:version="560" sparkle:shortVersionString="1.1.2" type="application/octet-stream" />
+    </item>
+    <item>
+      <title>Version 1.1.1</title>
+      <description>
+        <![CDATA[
                 <p>Version 1.1.1 brings us a few bug fixes and minor improvements:</p>
 
                 <h3>Bug Fixes</h3>
@@ -625,14 +655,14 @@
 
                 <p>As always, if you have any problems with AutoPkgr, please head over to our <a href="https://groups.google.com/forum/#!forum/autopkgr-discuss">Google Group</a> and let us know. If it's a reproducible bug, please <a href="https://github.com/lindegroup/autopkgr/issues/new">open an issue on GitHub</a> with as much detail as possible.</p>
                 ]]>
-            </description>
-            <pubDate>Sat, 15 Nov 2014 16:00:00 +0000</pubDate>
-            <enclosure url="https://github.com/lindegroup/autopkgr/releases/download/v1.1.1/AutoPkgr-1.1.1.dmg" sparkle:version="524" sparkle:shortVersionString="1.1.1" type="application/octet-stream" />
-        </item>
-        <item>
-            <title>Version 1.1</title>
-            <description>
-                <![CDATA[
+</description>
+      <pubDate>Sat, 15 Nov 2014 16:00:00 +0000</pubDate>
+      <enclosure url="https://github.com/lindegroup/autopkgr/releases/download/v1.1.1/AutoPkgr-1.1.1.dmg" sparkle:version="524" sparkle:shortVersionString="1.1.1" type="application/octet-stream" />
+    </item>
+    <item>
+      <title>Version 1.1</title>
+      <description>
+        <![CDATA[
                 <p>We're happy to announce the next major release of AutoPkgr. This one has some major new features and a few minor improvements as well.</p>
 
                 <p>As always, community feedback is welcomed. If you have a question, the <a href="https://groups.google.com/forum/#!aboutgroup/autopkgr-discuss">Google Group</a> is a good place to ask it. If you find a reproducible problem, please open/update an <a href="https://github.com/lindegroup/autopkgr/issues">issue</a> on GitHub.</p>
@@ -697,14 +727,14 @@
                     <li>Fixed bug that prevented certain repos from appearing automatically in the repos list (<a href="https://github.com/lindegroup/autopkgr/issues/148" class="issue-link" title="Recipes table doesn't show new recipes after repo-update">#148</a>).</li>
                 </ul>
                 ]]>
-            </description>
-            <pubDate>Wed, 22 Oct 2014 18:17:45 +0000</pubDate>
-            <enclosure url="https://github.com/lindegroup/autopkgr/releases/download/v1.1/AutoPkgr-1.1.dmg" sparkle:version="490" sparkle:shortVersionString="1.1" type="application/octet-stream" />
-        </item>
-        <item>
-            <title>Version 1.0.4</title>
-            <description>
-                <![CDATA[
+</description>
+      <pubDate>Wed, 22 Oct 2014 18:17:45 +0000</pubDate>
+      <enclosure url="https://github.com/lindegroup/autopkgr/releases/download/v1.1/AutoPkgr-1.1.dmg" sparkle:version="490" sparkle:shortVersionString="1.1" type="application/octet-stream" />
+    </item>
+    <item>
+      <title>Version 1.0.4</title>
+      <description>
+        <![CDATA[
                 <p>Numerous changes and bug fixes this time around, including:</p>
 
                 <ul class="task-list">
@@ -721,9 +751,9 @@
 
                 <p>We rely on community feedback to improve the app and fix bugs. We have a <a href="https://groups.google.com/forum/#!forum/autopkgr-discuss">Google Group</a> for general discussion, and if you find a reproducible bug or have a specific feature request, please <a href="https://github.com/lindegroup/autopkgr/issues/new">open an issue on GitHub</a> with as much detail as possible. Thank you!</p>
                 ]]>
-            </description>
-            <pubDate>Mon, 24 Sep 2014 09:40:00 +0000</pubDate>
-            <enclosure url="https://github.com/lindegroup/autopkgr/releases/download/v1.0.4/AutoPkgr-1.0.4.dmg" sparkle:version="386" sparkle:shortVersionString="1.0.4" type="application/octet-stream" />
-        </item>
-    </channel>
+</description>
+      <pubDate>Mon, 24 Sep 2014 09:40:00 +0000</pubDate>
+      <enclosure url="https://github.com/lindegroup/autopkgr/releases/download/v1.0.4/AutoPkgr-1.0.4.dmg" sparkle:version="386" sparkle:shortVersionString="1.0.4" type="application/octet-stream" />
+    </item>
+  </channel>
 </rss>
