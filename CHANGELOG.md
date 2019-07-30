@@ -2,15 +2,25 @@
 
 All notable changes to this project will be documented in this file. This project adheres to [Semantic Versioning](http://semver.org/).
 
-
-## [Unreleased](unreleased)
+## [1.5] - 2019-07-30
 
 ### Added
+
+- Support for Dark Mode in macOS 10.14+.
+- Hardened Runtime and complete Code Signing to support macOS Catalina.
+- Notarization from Apple to support macOS Catalina.
+- New code signing certificate valid until 2024.
+- "Update Trust Info for Override" right-click action(requires AutoPkg 1.0.0 or higher).
 - Spanish localization. (big thanks to [@luisgiraldo](https://github.com/luisgiraldo) for translating!)
+- Added OpenSSL-OSX pod in podfile.
 
 ### Changed
-- Updated read me to reflect Jamf rebranding.
 
+- Updated credits and copyright information.
+- Updated README.md to reflect Jamf and macOS rebranding.
+- Per Apple’s Notarization requirements, the Notarized AutoPkgr-1.5.dmg has been stapled with the tickets from the Apple Notary Service. This allows full compatibility with GateKeeper when installing in macOS Catalina. Due to this, if you build from source code instead of installing AutoPkgr with the dmg, AutoPkgr may not launch in macOS Catalina.
+
+## [Unreleased](unreleased)
 
 ## [1.4.2] - 2016-10-03
 
@@ -432,7 +442,8 @@ All notable changes to this project will be documented in this file. This projec
 - Initial public release of AutoPkgr.
 
 
-[unreleased]: https://github.com/lindegroup/autopkgr/compare/v1.4.2...HEAD
+[unreleased]: https://github.com/lindegroup/autopkgr/compare/v1.5...HEAD
+[1.5]: https://github.com/lindegroup/autopkgr/compare/v1.4.2...v1.5
 [1.4.2]: https://github.com/lindegroup/autopkgr/compare/v1.4.1...v1.4.2
 [1.4.1]: https://github.com/lindegroup/autopkgr/compare/v1.4...v1.4.1
 [1.4]: https://github.com/lindegroup/autopkgr/compare/v1.3.2...v1.4

@@ -14,6 +14,7 @@ AutoPkgr.each { |t|
         pod 'MMMarkdown', '~> 0.5.1'
         pod 'AHProxySettings', '~> 0.1.1'
         pod 'AHKeychain', '~> 0.3.0'
+        pod 'OpenSSL-OSX'
         pod 'AHLaunchCtl', :git => 'https://github.com/eahrold/AHLaunchCtl.git'
     end
 }
