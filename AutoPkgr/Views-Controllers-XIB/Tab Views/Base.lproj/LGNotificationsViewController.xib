@@ -365,7 +365,7 @@
                     <constraints>
                         <constraint firstAttribute="width" constant="360" id="OBx-ju-edo"/>
                     </constraints>
-                    <buttonCell key="cell" type="check" title="Enable Mac OS X notifications" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="Ae9-FU-cso">
+                    <buttonCell key="cell" type="check" title="Enable macOS notifications" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="Ae9-FU-cso">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                         <font key="font" metaFont="system"/>
                     </buttonCell>

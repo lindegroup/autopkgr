@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [Unreleased](unreleased)
+
+### Changed
+
+- Updated "Mac OS X" to "macOS" in a few places in the app.
+
+
 ## [1.5] - 2019-07-30
 
 ### Added
@@ -20,7 +27,6 @@ All notable changes to this project will be documented in this file. This projec
 - Updated README.md to reflect Jamf and macOS rebranding.
 - Per Apple’s Notarization requirements, the Notarized AutoPkgr-1.5.dmg has been stapled with the tickets from the Apple Notary Service. This allows full compatibility with GateKeeper when installing in macOS Catalina. Due to this, if you build from source code instead of installing AutoPkgr with the dmg, AutoPkgr may not launch in macOS Catalina.
 
-## [Unreleased](unreleased)
 
 ## [1.4.2] - 2016-10-03
 
