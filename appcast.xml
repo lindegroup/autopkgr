@@ -33,7 +33,7 @@
 </description>
       <sparkle:minimumSystemVersion>10.9</sparkle:minimumSystemVersion>
       <pubDate>Tue, 30 Jul 2019 12:00:00 -0700</pubDate>
-      <enclosure url="https://github.com/lindegroup/autopkgr/releases/download/v1.5/AutoPkgr-1.5.dmg" sparkle:version="1375" sparkle:shortVersionString="1.4.2" type="application/octet-stream" />
+      <enclosure url="https://github.com/lindegroup/autopkgr/releases/download/v1.5/AutoPkgr-1.5.dmg" sparkle:version="1395" sparkle:shortVersionString="1.5" type="application/octet-stream" />
     </item>
     <item>
       <title>Version 1.4.2</title>
