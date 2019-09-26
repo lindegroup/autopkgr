@@ -16,7 +16,8 @@ All notable changes to this project will be documented in this file. This projec
 - Updated credits.
 - Updated version to 1.5.1.
 - Updated build number to 1404.
-- Updated change log.
+- Updated CHANGELOG.md.
+- Updated development team in README.md.
 - Per Apple’s Notarization requirements, the Notarized AutoPkgr-1.5.1.dmg has been stapled with the tickets from the Apple Notary Service. This allows full compatibility with GateKeeper when installing in macOS Catalina. Due to this, if you build from source code instead of installing AutoPkgr with the dmg, AutoPkgr may not launch in macOS Catalina.
 
 

@@ -457,7 +457,7 @@ After uninstalling, you can drag the AutoPkgr app from your Applications folder 
 
 AutoPkgr was created at [Linde Group](http://www.lindegroup.com) in Emeryville, California. If you're a talented Mac admin looking for a job in the Bay Area, [check out our job listings](http://www.lindegroup.com/careers/). We've got a wonderful team of people and fantastic clients.
 
-James Barclay, Elliot Jordan, and Josh Senick originally created AutoPkgr in June 2014, and ongoing development is led by Eldon Ahrold and Shawn Honsberger.
+AutoPkgr was originally created by James Barclay, Elliot Jordan, and Josh Senick in June 2014, and development was led by Eldon Ahrold until 2016. Current development is led by Shawn Honsberger and Elliot Jordan.
 
 Thanks to Guillaume Gete for helping with the French localization, and to Luis Giraldo for the Spanish localization.
 
