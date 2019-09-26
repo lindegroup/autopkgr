@@ -4,9 +4,20 @@ All notable changes to this project will be documented in this file. This projec
 
 ## [Unreleased](unreleased)
 
-### Changed
+## [1.5.1] - 2019-10-01
 
-- Updated "Mac OS X" to "macOS" in a few places in the app.
+### Added
+- AutoPkgr now reports and installs the latest release version of JSSImporter (currently v1.0.2).
+
+### Changed
+- Updated all package, identifier, and url references of `sheacraig/jssimporter` to `jssimporter/jssimporter`, and its copyright.
+- Updated example url in AutoPkgr’s Folders  & Integrations tab for JSSimporter to reflect Jamf branding.
+- Updated language in AutoPkgr’s Notifications tab to `macOS` to reflect Apple branding.
+- Updated credits.
+- Updated version to 1.5.1.
+- Updated build number to 1404.
+- Updated change log.
+- Per Apple’s Notarization requirements, the Notarized AutoPkgr-1.5.1.dmg has been stapled with the tickets from the Apple Notary Service. This allows full compatibility with GateKeeper when installing in macOS Catalina. Due to this, if you build from source code instead of installing AutoPkgr with the dmg, AutoPkgr may not launch in macOS Catalina.
 
 
 ## [1.5] - 2019-07-30
