@@ -6,6 +6,35 @@
     <description>Most recent changes with links to updates.</description>
     <language>en</language>
     <item>
+      <title>Version 1.5.1</title>
+      <description>
+        <![CDATA[
+                <h3>Norwegian Blues stun easily, major.</h3>
+                <p>To celebrate the new release of <a href="https://github.com/jssimporter/JSSImporter/releases">JSSImporter</a>, this release now reports and installs the correct current release version of JSSImporter! This release again implements Apple's security requirements for macOS 10.15 compatibility: hardened runtime, complete code signing, Notarization with the Apple Notary Service, and stapling of tickets.</p>
+                <h3>Added</h3>
+                <ul>
+                <li>AutoPkgr now reports and installs the latest release version of JSSImporter (currently v1.0.2).</li>
+                </ul>
+                <h3>Changed</h3>
+                <ul>
+                <li>Updated all package, identifier, and url references of <code>sheacraig/jssimporter</code> to <code>jssimporter/jssimporter</code>, and its copyright for compatibility with <a href="https://github.com/grahampugh">@grahampugh</a>'s release.</li>
+                <li>Updated example url in AutoPkgr's Folders  &amp; Integrations tab for JSSimporter to reflect Jamf branding.</li>
+                <li>Updated language in AutoPkgr's Notifications tab to <code>macOS</code> to reflect Apple branding.</li>
+                <li>Updated credits.</li>
+                <li>Updated version to 1.5.1.</li>
+                <li>Updated build number to 1404.</li>
+                <li>Updated CHANGELOG.md.</li>
+                <li>Updated development team in README.md.</li>
+                <li>Per Apple's Notarization requirements, the Notarized AutoPkgr-1.5.1.dmg has been stapled with the tickets from the Apple Notary Service. This allows full compatibility with GateKeeper for installation and ongoing checks in macOS Catalina. Due to this, if you build from source code instead of installing AutoPkgr with the dmg, AutoPkgr may not launch in macOS Catalina.</li>
+                </ul>
+                ]]>
+</description>
+      <sparkle:minimumSystemVersion>10.9</sparkle:minimumSystemVersion>
+      <pubDate>Tue, 1 Oct 2019 12:00:00 -0700</pubDate>
+      <enclosure url="https://github.com/lindegroup/autopkgr/releases/download/v1.5.1/AutoPkgr-1.5.1.dmg"
+      sparkle:version="1404" sparkle:shortVersionString="1.5.1" type="application/octet-stream" />
+    </item>
+    <item>
       <title>Version 1.5</title>
       <description>
         <![CDATA[
