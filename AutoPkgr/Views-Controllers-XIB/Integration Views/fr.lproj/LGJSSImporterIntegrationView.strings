@@ -44,5 +44,5 @@
 /* Class = "NSTextFieldCell"; placeholderString = "autopkgr"; ObjectID = "pCF-bR-PMc"; */
 "pCF-bR-PMc.placeholderString" = "autopkgr";
 
-/* Class = "NSTextFieldCell"; placeholderString = "https://casper.yourdomain.example:8443/"; ObjectID = "xHX-mS-zNQ"; */
-"xHX-mS-zNQ.placeholderString" = "https://casper.yourdomain.example:8443/";
+/* Class = "NSTextFieldCell"; placeholderString = "https://jamf.example.com:8443/"; ObjectID = "xHX-mS-zNQ"; */
+"xHX-mS-zNQ.placeholderString" = "https://jamf.example.com:8443/";

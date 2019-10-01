@@ -108,6 +108,9 @@
         case kLGAutoPkgMakeOverride: {
             break;
         }
+        case kLGAutoPkgTrustOverride: {
+            break;
+        }
 #pragma mark Search
         case kLGAutoPkgSearch: {
 

@@ -271,6 +271,17 @@ extern NSString *const kLGPostProcessorDefaultsKey;
 + (void)makeOverride:(NSString *)recipe name:(NSString *)name
                reply:(void (^)(NSString *newOverrideFile, NSError *error))reply;
 /**
+ *  Equivalent to /usr/bin/local/autopkg update-trust-info [recipe]
+ *
+ *  @param recipe Recipe override file in which trust information will be added or updated
+ *  @param reply The block to be executed on upon task completion. This block has no return value and takes two arguments: NSString representing the full path the the newly trusted override and NSError that is populated should an error occur.
+ */
++ (void)updateTrustInfo:(NSString *)recipe
+                  reply:(void (^)(NSString *trustedOverride, NSError *error))reply;
+
++ (void)updateTrustInfo:(NSString *)recipe name:(NSString *)name
+                  reply:(void (^)(NSString *trustedOverride, NSError *error))reply;
+/**
  *  Equivalent to /usr/bin/local/autopkg list-recipes
  *
  *  @return List of recipes

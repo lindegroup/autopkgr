@@ -44,21 +44,22 @@ typedef NS_OPTIONS(NSInteger, LGAutoPkgVerb) {
     kLGAutoPkgRun = 1 << 0,
     kLGAutoPkgListRecipes = 1 << 1,
     kLGAutoPkgMakeOverride = 1 << 2,
-    kLGAutoPkgSearch = 1 << 3,
-    kLGAutoPkgInfo = 1 << 4,
+    kLGAutoPkgTrustOverride = 1 << 3,
+    kLGAutoPkgSearch = 1 << 4,
+    kLGAutoPkgInfo = 1 << 5,
 
     // repo verbs
-    kLGAutoPkgRepoAdd = 1 << 5,
-    kLGAutoPkgRepoDelete = 1 << 6,
-    kLGAutoPkgRepoUpdate = 1 << 7,
-    kLGAutoPkgRepoList = 1 << 8,
+    kLGAutoPkgRepoAdd = 1 << 6,
+    kLGAutoPkgRepoDelete = 1 << 7,
+    kLGAutoPkgRepoUpdate = 1 << 8,
+    kLGAutoPkgRepoList = 1 << 9,
 
     // processor verbs
-    kLGAutoPkgProcessorInfo = 1 << 9,
-    kLGAutoPkgListProcessors = 1 << 10,
+    kLGAutoPkgProcessorInfo = 1 << 10,
+    kLGAutoPkgListProcessors = 1 << 11,
 
     // other verbs
-    kLGAutoPkgVersion = 1 << 11,
+    kLGAutoPkgVersion = 1 << 12,
 };
 
 @interface LGAutoPkgErrorHandler : NSObject

@@ -42,6 +42,9 @@ static NSString *errorMessageFromAutoPkgVerb(LGAutoPkgVerb verb)
     case kLGAutoPkgMakeOverride:
         message = NSLocalizedStringFromTable(@"Error creating recipe override file", @"LocalizableAutoPkg", nil);
         break;
+    case kLGAutoPkgTrustOverride:
+        message = NSLocalizedStringFromTable(@"Error updating trust in override file", @"LocalizableAutoPkg", nil);
+        break;
     case kLGAutoPkgSearch:
         message = NSLocalizedStringFromTable(@"Error encountered searching for recipe", @"LocalizableAutoPkg", nil);
         break;

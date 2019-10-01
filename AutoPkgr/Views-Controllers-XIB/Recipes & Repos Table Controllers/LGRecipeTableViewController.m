@@ -440,6 +440,7 @@ static NSString *const kLGAutoPkgRecipeCurrentStatusKey = @"currentStatus";
     // Set up menu items for overrides.
 
     if ([LGRecipeOverrides overrideExistsForRecipe:recipe]) {
+        // "Open Recipe Override" menu item.
         NSMenuItem *openRecipeItem = [[NSMenuItem alloc] initWithTitle:@"Open Recipe Override" action:@selector(openFile:) keyEquivalent:@""];
         openRecipeItem.target = [LGRecipeOverrides class];
         openRecipeItem.representedObject = recipe;
@@ -451,18 +452,23 @@ static NSString *const kLGAutoPkgRecipeCurrentStatusKey = @"currentStatus";
         showInFinderItem.target = [LGRecipeOverrides class];
         [menu addItem:showInFinderItem];
 
+        // "Update Trust Info" menu item.
+        NSMenuItem *trustOverrideItem = [[NSMenuItem alloc] initWithTitle:@"Update Trust Info for Override" action:@selector(trustOverride:) keyEquivalent:@""];
+        trustOverrideItem.representedObject = recipe;
+        trustOverrideItem.target = [LGRecipeOverrides class];
+        [menu addItem:trustOverrideItem];
+
         // "Delete Override" menu item.
         NSMenuItem *removeOverrideItem = [[NSMenuItem alloc] initWithTitle:@"Remove Override" action:@selector(deleteOverride:) keyEquivalent:@""];
-
         removeOverrideItem.representedObject = recipe;
         removeOverrideItem.target = [LGRecipeOverrides class];
         [menu addItem:removeOverrideItem];
     }
     else {
-        NSMenuItem *openRecipeItem = [[NSMenuItem alloc] initWithTitle:@"Create Override" action:@selector(createOverride:) keyEquivalent:@""];
-        openRecipeItem.representedObject = recipe;
-        openRecipeItem.target = [LGRecipeOverrides class];
-        [menu addItem:openRecipeItem];
+        NSMenuItem *createOverrideItem = [[NSMenuItem alloc] initWithTitle:@"Create Override" action:@selector(createOverride:) keyEquivalent:@""];
+        createOverrideItem.representedObject = recipe;
+        createOverrideItem.target = [LGRecipeOverrides class];
+        [menu addItem:createOverrideItem];
     }
 
     return menu;

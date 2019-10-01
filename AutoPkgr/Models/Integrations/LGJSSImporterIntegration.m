@@ -36,17 +36,17 @@
 
 + (NSURL *)homePage
 {
-    return [NSURL URLWithString:@"https://github.com/sheagcraig/JSSImporter"];
+    return [NSURL URLWithString:@"https://github.com/jssimporter/JSSImporter"];
 }
 
 + (NSString *)credits
 {
-    return @"Copyright 2014, 2015 Shea Craig\nhttp://www.apache.org/licenses/LICENSE-2.0";
+    return @"Copyright 2014, 2019 Shea Craig and Graham Pugh\nhttp://www.apache.org/licenses/LICENSE-2.0";
 }
 
 + (NSString *)gitHubURL
 {
-    return @"https://api.github.com/repos/sheagcraig/JSSImporter/releases";
+    return @"https://api.github.com/repos/jssimporter/JSSImporter/releases";
 }
 
 + (NSString *)defaultRepository
@@ -68,7 +68,8 @@
 
 + (NSArray *)packageIdentifiers
 {
-    return @[ @"com.github.sheagcraig.jssimporter",
+    return @[ @"com.github.jssimporter",
+              @"com.github.sheagcraig.jssimporter",
               @"com.github.sheagcraig.jss-autopkg-addon" ];
 }
 
@@ -90,10 +91,15 @@
     NSString *jssAddonReceipt = @"/private/var/db/receipts/com.github.sheagcraig.jss-autopkg-addon.plist";
 
     NSString *jssImporterReceipt = @"/private/var/db/receipts/com.github.sheagcraig.jssimporter.plist";
+    
+    NSString *newJssImporterReceipt = @"/private/var/db/receipts/com.github.jssimporter.plist";
 
     if ([[self class] isInstalled]) {
         NSDictionary *receiptDict;
-        if ([fm fileExistsAtPath:jssImporterReceipt]) {
+        if ([fm fileExistsAtPath:newJssImporterReceipt]) {
+            receiptDict = [NSDictionary dictionaryWithContentsOfFile:newJssImporterReceipt];
+        }
+        else if ([fm fileExistsAtPath:jssImporterReceipt]) {
             receiptDict = [NSDictionary dictionaryWithContentsOfFile:jssImporterReceipt];
         }
         else if ([fm fileExistsAtPath:jssAddonReceipt]) {

@@ -11,8 +11,8 @@
 /* Class = "BindingConnection"; ibShadowedIsNilPlaceholder = "sender@yourdomain.example"; ObjectID = "7up-e3-Ehs"; */
 "7up-e3-Ehs.ibShadowedIsNilPlaceholder" = "sender@yourdomain.example";
 
-/* Class = "NSButtonCell"; title = "Enable Mac OS X notifications"; ObjectID = "Ae9-FU-cso"; */
-"Ae9-FU-cso.title" = "Enable Mac OS X notifications";
+/* Class = "NSButtonCell"; title = "Enable macOS notifications"; ObjectID = "Ae9-FU-cso"; */
+"Ae9-FU-cso.title" = "Enable macOS notifications";
 
 /* Class = "NSButtonCell"; title = "Send notifications to Slack channel"; ObjectID = "E9P-cr-br5"; */
 "E9P-cr-br5.title" = "Send notifications to Slack channel";

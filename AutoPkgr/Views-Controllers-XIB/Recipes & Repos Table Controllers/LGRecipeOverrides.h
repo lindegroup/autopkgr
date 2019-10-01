@@ -31,6 +31,7 @@ extern NSString *const kLGNotificationOverrideDeleted;
 + (NSArray *)recipeEditors;
 + (NSMenuItem *)setRecipeEditor:(NSMenuItem *)item;
 + (void)createOverride:(NSMenuItem *)sender;
++ (void)trustOverride:(NSMenuItem *)sender;
 + (void)deleteOverride:(NSMenuItem *)sender;
 + (void)revealInFinder:(NSMenuItem *)sender;
 
