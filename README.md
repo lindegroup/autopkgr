@@ -367,6 +367,10 @@ Now all downloaded files will be checked against VirusTotal's database.
 
     This should reveal the process information for active AutoPkg runs. If it's appropriate to do so, you can then terminate the process(es) by using `kill` or `killall`.
 
+- __Helper tool/daemon issues__
+
+    Some issues can be resolved by reinstalling AutoPkgr's helper tool. You can do this by holding the Option key while clicking the AutoPkgr icon in the menu bar (![Menu bar icon](doc-images/menulet.png)), then choosing __Reinstall Helper Tool__.
+
 #### Step 2: Is it really AutoPkgr?
 
 If you've eliminated the simple errors above, but AutoPkgr still doesn't do what you expect, the next step is to run your recipes directly using `autopkg` in Terminal. The following command has been helpful for us when troubleshooting. (Triple-click to select the entire line for copying.)
