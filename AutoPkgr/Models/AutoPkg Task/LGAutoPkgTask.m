@@ -3,7 +3,7 @@
 //  AutoPkgr
 //
 //  Created by Eldon Ahrold on 8/30/14.
-//  Copyright 2014-2016 The Linde Group, Inc.
+//  Copyright 2014-2020 The Linde Group, Inc.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -46,6 +46,24 @@ static NSString *const autopkg()
     return @"/usr/local/bin/autopkg_dev";
 #endif
     return @"/usr/local/bin/autopkg";
+}
+
+// Return the correct python path
+static NSString *const python()
+{
+    NSFileManager *fm = [NSFileManager defaultManager];
+    NSString *autopkgReceipt = @"/private/var/db/receipts/com.github.autopkg.autopkg.plist";
+    NSDictionary *receiptDict;
+
+    if ([fm fileExistsAtPath:autopkgReceipt]) {
+        receiptDict = [NSDictionary dictionaryWithContentsOfFile:autopkgReceipt];
+        _autopkgReceiptVersion = receiptDict[@"PackageVersion"];
+        if([_autopkgReceiptVersion hasPrefix:@"2."]) {
+            return @"/usr/local/autopkg/python";
+        }
+    }
+
+    return @"/usr/bin/python";
 }
 
 static NSDictionary *AutoPkgVerbStringToEnum()
@@ -318,7 +336,7 @@ typedef void (^AutoPkgReplyErrorBlock)(NSError *error);
 {
     @autoreleasepool {
         self.task = [[NSTask alloc] init];
-        self.task.launchPath = @"/usr/bin/python";
+        self.task.launchPath = python();
 
         assert(_internalArgs.count);
         assert(_arguments.count);
@@ -1352,7 +1370,7 @@ typedef void (^AutoPkgReplyErrorBlock)(NSError *error);
     NSTask *task = [[NSTask alloc] init];
 
     task = task;
-    task.launchPath = @"/usr/bin/python";
+    task.launchPath = python();
     task.arguments = @[ autopkg(), @"version" ];
     task.standardOutput = [NSPipe pipe];
     [task launch];
