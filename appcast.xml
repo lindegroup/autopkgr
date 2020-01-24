@@ -7,6 +7,23 @@ xmlns:dc="http://purl.org/dc/elements/1.1/">
     <description>Most recent changes with links to updates.</description>
     <language>en</language>
     <item>
+      <title>Version 1.5.2</title>
+      <description>
+        <![CDATA[
+                <h3>Armageddon It!!</h3>
+                <p>To celebrate the upcoming release of <a href="https://github.com/autopkg/autopkg/releases">AutoPkg 2.0</a>, the 1.5.2 release of AutoPkgr now supports the latest release version of the AutoPkg command line utility! If you use <a href="https://github.com/jssimporter/JSSImporter/releases">JSSImporter</a>, or any custom processors, please review the following before installing AutoPkg 2.0: <a href="https://github.com/lindegroup/autopkgr/wiki/AutoPkg-2.0-transition-notes-for-AutoPkgr-users">https://github.com/lindegroup/autopkgr/wiki/AutoPkg-2.0-transition-notes-for-AutoPkgr-users</a>.</p>
+                <h3>Added</h3>
+                <ul>
+                <li>AutoPkgr now supports the latest release version of the AutoPkg command line utility. This adds compatibility with the upcoming version 2.0 of AutoPkg, which runs in Python 3 only. Big thanks to <a href="https://github.com/homebysix">@homebysix</a> for the help!</li>
+                </ul>
+                ]]>
+</description>
+      <sparkle:minimumSystemVersion>10.9</sparkle:minimumSystemVersion>
+      <pubDate>Fri, 24 Jan 2020 12:00:00 -0700</pubDate>
+      <enclosure url="https://github.com/lindegroup/autopkgr/releases/download/v1.5.2/AutoPkgr-1.5.2.dmg"
+      sparkle:version="1415" sparkle:shortVersionString="1.5.2" type="application/octet-stream" />
+    </item>
+    <item>
       <title>Version 1.5.1</title>
       <description>
         <![CDATA[
