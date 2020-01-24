@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file. This projec
 
 ## [Unreleased](unreleased)
 
+## [1.5.2] - 2020-01-24
+
+### Added
+- AutoPkgr now supports the upcoming version 2.0 of the AutoPkg command line utility, which runs in Python 3 only. Big thanks to [@homebysix](https://github.com/homebysix) for the help!
+
+
 ## [1.5.1] - 2019-10-01
 
 ### Added
