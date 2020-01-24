@@ -5,7 +5,7 @@
 
 ![autopkgr_logo.png](doc-images/autopkgr_logo.png)
 
-__AutoPkgr is a free Mac app that makes it easy to install and configure [AutoPkg](https://autopkg.github.io/autopkg/).__
+__AutoPkgr is a free macOS app that makes it easy to install and configure [AutoPkg](https://autopkg.github.io/autopkg/).__
 
 AutoPkg is an awesomely powerful tool for automating macOS software packaging and distribution, but it requires its users to be comfortable with command-line tools and methods. If you're not yet comfortable with the command-line, or if you just want to get AutoPkg set up from scratch quickly and reliably, AutoPkgr is for you.
 
@@ -376,7 +376,7 @@ Now all downloaded files will be checked against VirusTotal's database.
 If you've eliminated the simple errors above, but AutoPkgr still doesn't do what you expect, the next step is to run your recipes directly using `autopkg` in Terminal. The following command has been helpful for us when troubleshooting. (Triple-click to select the entire line for copying.)
 
 ```
-/usr/bin/python /usr/local/bin/autopkg run --recipe-list ~/Library/Application\ Support/AutoPkgr/recipe_list.txt --report-plist /tmp/autopkg-report.xml
+/usr/local/bin/autopkg run --recipe-list ~/Library/Application\ Support/AutoPkgr/recipe_list.txt --report-plist /tmp/autopkg-report.xml
 ```
 
 If the issue repeats itself there, it's likely that the problem is with an AutoPkg recipe or repository, not with AutoPkgr. See if you can see which recipe is failing based on the output of the command above. (Information on troubleshooting individual AutoPkg recipes is [available on the AutoPkg wiki](https://github.com/autopkg/autopkg/wiki/FAQ#this-recipe-used-to-work-but-now-it-doesnt-what-should-i-try).)
