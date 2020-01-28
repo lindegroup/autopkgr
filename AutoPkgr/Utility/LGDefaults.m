@@ -231,12 +231,12 @@
 }
 
 #pragma mark
-- (NSString *)autoPkgRecipeOverridesDir
+- (NSArray *)autoPkgRecipeOverridesDir
 {
     return [self autoPkgDomainObject:@"RECIPE_OVERRIDE_DIRS"];
 }
 
-- (void)setAutoPkgRecipeOverridesDir:(NSString *)autoPkgRecipeOverridesDir
+- (void)setAutoPkgRecipeOverridesDir:(NSArray *)autoPkgRecipeOverridesDir
 {
     [self setAutoPkgDomainObject:autoPkgRecipeOverridesDir forKey:@"RECIPE_OVERRIDE_DIRS"];
 }
