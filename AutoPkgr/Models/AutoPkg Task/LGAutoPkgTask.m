@@ -1025,6 +1025,11 @@ typedef void (^AutoPkgReplyErrorBlock)(NSError *error);
 
 + (void)updateTrustInfo:(NSString *)recipe reply:(void (^)(NSString *, NSError *))reply
 {
+    [[self class] updateTrustInfo:recipe name:nil reply:reply];
+}
+
++ (void)updateTrustInfo:(NSString *)recipe name:(NSString *)name reply:(void (^)(NSString *, NSError *))reply
+{
     LGAutoPkgTask *task = [[LGAutoPkgTask alloc] init];
     NSMutableArray *args = [@[ @"update-trust-info", recipe ] mutableCopy];
 
