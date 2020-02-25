@@ -46,7 +46,7 @@ DEPENDENCIES:
   - XMLDictionary (~> 1.4)
 
 SPEC REPOS:
-  https://github.com/cocoapods/specs.git:
+  https://github.com/CocoaPods/Specs.git:
     - ACEView
     - AFNetworking
     - AHKeychain
@@ -86,4 +86,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: ad3ce1802e4cf005faff45f6d018d73534c50749
 
-COCOAPODS: 1.7.1
+COCOAPODS: 1.8.4
