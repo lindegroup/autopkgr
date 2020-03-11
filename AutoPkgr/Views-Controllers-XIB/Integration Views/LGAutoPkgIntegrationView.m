@@ -99,6 +99,7 @@ static NSString *const kLGTokenGenerateButonTitle = @"Generate API Token";
 {
     sender.enabled = NO;
     sender.title = NSLocalizedString(@"Requesting Token", @"The button title when requesting a GitHub API Token");
+    
     [LGAutoPkgTask generateGitHubAPIToken:_apiUsernameTF.stringValue password:_apiPasswordTF.stringValue reply:^(NSError *error) {
         sender.enabled = YES;
         if (error) {
@@ -139,16 +140,22 @@ static NSString *const kLGTokenGenerateButonTitle = @"Generate API Token";
 
     NSString *message = NSLocalizedString(@"helpInfoAutoPkgAPIToken",
                                           @"message presented to user with info about generating GitHub API token");
-
+    
     NSMutableAttributedString *attributedHelpText = [NSString stringWithFormat:message, settingsLink, tokenFile].attributed_mutableCopy;
-
+    
+    NSColor *color = [NSColor controlTextColor];
+    NSString *string = [NSString stringWithFormat:message, settingsLink, tokenFile];
+    NSDictionary *attrs = @{ NSForegroundColorAttributeName : color };
+    NSMutableAttributedString *attrStr = [[NSMutableAttributedString alloc] initWithString:string attributes:attrs];
+    attributedHelpText = attrStr;
+    
     [attributedHelpText attributed_makeStringALink:settingsLink];
     [attributedHelpText attributed_makeString:@"developer.github.com" linkTo:@"https://developer.github.com/v3/oauth/"];
 
     AHHelpPopover *popover = [[AHHelpPopover alloc] initWithSender:_apiInfoHelpBT];
     popover.attributedHelpText = attributedHelpText;
     popover.helpTitle = @"Creating a GitHub API token";
-
+    
     sender.enabled = NO;
     [popover openPopoverWithCompletionHandler:^{
         sender.enabled = YES;

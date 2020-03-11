@@ -51,11 +51,14 @@
     /* Since the recipe description can be rather long, we use
      * we're using a textView with scrolling capabilities */
     _descriptionTextView.backgroundColor = [NSColor clearColor];
+    _descriptionTextView.textColor = [NSColor controlTextColor];
 
-    NSMutableDictionary *attrs = @{ NSFontAttributeName : [NSFont systemFontOfSize:11.0] }.mutableCopy;
+    NSMutableDictionary *attrs = @{ NSFontAttributeName : [NSFont systemFontOfSize:11.0],
+                                    NSForegroundColorAttributeName : NSColor.controlTextColor,
+    }.mutableCopy;
     NSString *description = _recipe.Description;
     if (!description) {
-        [attrs setObject:[NSColor grayColor] forKey:NSForegroundColorAttributeName];
+        [attrs setObject:[NSColor controlTextColor] forKey:NSForegroundColorAttributeName];
         description = @"<No description provided>";
     }
     NSAttributedString *attrString = [[NSAttributedString alloc] initWithString:description
@@ -68,7 +71,7 @@
 
     _parentRecipesTF.safe_stringValue = [_recipe.ParentRecipes componentsJoinedByString:@"\n"];
     if (_recipe.isMissingParent) {
-        _parentRecipesTF.textColor = [NSColor redColor];
+        _parentRecipesTF.textColor = [NSColor systemRedColor];
     }
 
     _minimumVersionTF.safe_stringValue = _recipe.MinimumVersion;
