@@ -28,7 +28,7 @@
 
 + (NSString *)credits
 {
-    return @"Copyright 2016 Hannes Juutilainen\nApache License Version 2.0";
+    return @"Hannes Juutilainen\nhttp://www.apache.org/licenses/LICENSE-2.0\nhttps://github.com/hjuutilainen/autopkg-virustotalanalyzer";
 }
 
 + (NSArray *)components
@@ -39,11 +39,6 @@
 + (NSString *)defaultRepository
 {
     return @"https://github.com/hjuutilainen/autopkg-virustotalanalyzer.git";
-}
-
-+ (NSURL *)homePage
-{
-    return [NSURL URLWithString:@"https://github.com/hjuutilainen/autopkg-virustotalanalyzer"];
 }
 
 + (BOOL)isUninstallable

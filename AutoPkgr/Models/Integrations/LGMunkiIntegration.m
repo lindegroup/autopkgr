@@ -40,17 +40,12 @@ static NSString *const kLGMunkiimportDomain = @"com.googlecode.munki.munkiimport
 
 + (NSString *)credits
 {
-    return @"Copyright 2008-2014 Greg Neagle.\nhttp://www.apache.org/licenses/LICENSE-2.0";
+    return @"Greg Neagle\nhttp://www.apache.org/licenses/LICENSE-2.0\nhttps://github.com/munki/munki";
 }
 
 + (NSString *)gitHubURL
 {
     return @"https://api.github.com/repos/munki/munki/releases";
-}
-
-+ (NSURL *)homePage
-{
-    return [NSURL URLWithString:@"https://www.munki.org/"];
 }
 
 + (NSString *)defaultRepository

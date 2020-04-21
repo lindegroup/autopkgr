@@ -34,14 +34,9 @@
     return @"JSSImporter";
 }
 
-+ (NSURL *)homePage
-{
-    return [NSURL URLWithString:@"https://github.com/jssimporter/JSSImporter"];
-}
-
 + (NSString *)credits
 {
-    return @"Copyright 2014, 2019 Shea Craig and Graham Pugh\nhttp://www.apache.org/licenses/LICENSE-2.0";
+    return @"Shea Craig, Mosen, Graham Pugh\nhttp://www.apache.org/licenses/LICENSE-2.0\nhttps://github.com/jssimporter/JSSImporter";
 }
 
 + (NSString *)gitHubURL

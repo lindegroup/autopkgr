@@ -27,7 +27,7 @@
 
 + (NSString *)credits
 {
-    return @"LLNL Mac Development\nGNU GENERAL PUBLIC LICENSE Version 2";
+    return @"LLNL Mac Development\nThe GNU General Public License (GPL-2.0)\nhttps://github.com/SMSG-MAC-DEV/MacPatch-AutoPKG";
 }
 
 + (NSArray *)components
@@ -38,11 +38,6 @@
 + (NSString *)defaultRepository
 {
     return @"https://github.com/SMSG-MAC-DEV/MacPatch-AutoPKG.git";
-}
-
-+ (NSURL *)homePage
-{
-    return [NSURL URLWithString:@"https://github.com/SMSG-MAC-DEV/MacPatch-AutoPKG"];
 }
 
 + (BOOL)isUninstallable

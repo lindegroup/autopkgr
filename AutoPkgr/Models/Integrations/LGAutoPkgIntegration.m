@@ -35,12 +35,7 @@
 
 + (NSString *)credits
 {
-    return @"Greg Neagle, Tim Sutton, Per Olofsson\nhttp://www.apache.org/licenses/LICENSE-2.0";
-}
-
-+ (NSURL *)homePage
-{
-    return [NSURL URLWithString:@"http://autopkg.github.io/autopkg/"];
+    return @"Greg Neagle, Tim Sutton, Per Olofsson, Nick McSpadden, Elliot Jordan\nhttp://www.apache.org/licenses/LICENSE-2.0\nhttps://github.com/autopkg/autopkg";
 }
 
 + (NSArray *)components

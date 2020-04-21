@@ -25,6 +25,7 @@
 		1AC98427195DF6350071CAB3 /* autopkgr.png in Resources */ = {isa = PBXBuildFile; fileRef = 1AC98425195DF6350071CAB3 /* autopkgr.png */; };
 		1AC98429195DF6DE0071CAB3 /* autopkgr_alt.png in Resources */ = {isa = PBXBuildFile; fileRef = 1AC98428195DF6DE0071CAB3 /* autopkgr_alt.png */; };
 		21041CE6D520C363DBECB902 /* libPods-com.lindegroup.AutoPkgr.helper.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 62DA66B263080B115E0C6E12 /* libPods-com.lindegroup.AutoPkgr.helper.a */; };
+		291B96B42420162900C446C2 /* autopkgr_slack.png in Resources */ = {isa = PBXBuildFile; fileRef = 291B96B32420162900C446C2 /* autopkgr_slack.png */; };
 		5EF53CBDA5C7106F3847E9FD /* libPods-AutoPkgrTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9B419CA189BE572FD31F74E0 /* libPods-AutoPkgrTests.a */; };
 		6A53625D1988BE59008A949C /* LGTestPort.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A53625C1988BE59008A949C /* LGTestPort.m */; };
 		8B1AF8521BED81440013BE37 /* LGFileWaveIntegrationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B1AF8501BED81440013BE37 /* LGFileWaveIntegrationView.m */; };
@@ -309,6 +310,7 @@
 		1AC9841E195CEC360071CAB3 /* LGConfigurationWindowController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LGConfigurationWindowController.xib; sourceTree = "<group>"; };
 		1AC98425195DF6350071CAB3 /* autopkgr.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = autopkgr.png; sourceTree = "<group>"; };
 		1AC98428195DF6DE0071CAB3 /* autopkgr_alt.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = autopkgr_alt.png; sourceTree = "<group>"; };
+		291B96B32420162900C446C2 /* autopkgr_slack.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = autopkgr_slack.png; sourceTree = "<group>"; };
 		2C6986FE5B41226735CC0A32 /* Pods-AutoPkgr.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AutoPkgr.debug.xcconfig"; path = "Pods/Target Support Files/Pods-AutoPkgr/Pods-AutoPkgr.debug.xcconfig"; sourceTree = "<group>"; };
 		39CF6FA5E75D62254A994C22 /* libPods-AutoPkgr.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-AutoPkgr.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		45E6F02919946C3F73535515 /* Pods-AutoPkgrTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AutoPkgrTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-AutoPkgrTests/Pods-AutoPkgrTests.release.xcconfig"; sourceTree = "<group>"; };
@@ -831,6 +833,7 @@
 				1A2C7FAC19CC9F8300CFF472 /* scripts */,
 				8BB217F519709A2C00EF8B93 /* AutoPkgrIcon.png */,
 				1AC98425195DF6350071CAB3 /* autopkgr.png */,
+				291B96B32420162900C446C2 /* autopkgr_slack.png */,
 				1AC98428195DF6DE0071CAB3 /* autopkgr_alt.png */,
 				BED388291A85E2C100DA8970 /* autopkgr_error.png */,
 			);
@@ -1472,6 +1475,7 @@
 				BE7EF2431B3381A7002037B1 /* LocalizableHelpPopover.strings in Resources */,
 				8B8654C11CF669A100B0A3FD /* LGVirusTotalAnalyzerIntegrationView.xib in Resources */,
 				BEC2024B1B600FF100F3BC2A /* LocalizableJSSImporter.strings in Resources */,
+				291B96B42420162900C446C2 /* autopkgr_slack.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
