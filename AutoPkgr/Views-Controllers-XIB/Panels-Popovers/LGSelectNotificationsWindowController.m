@@ -71,7 +71,7 @@
 - (void)updateEnabled:(LGReportItems)flags
 {
     self.integrationUpdateState = flags & kLGReportItemsIntegrationUpdates;
-    self.integrationDescription.textColor = (flags & kLGReportItemsAll) ? [NSColor lightGrayColor] : [NSColor blackColor];
+    self.integrationDescription.textColor = (flags & kLGReportItemsAll) ? [NSColor systemGrayColor] : [NSColor controlTextColor];
 
     [_buttons enumerateObjectsUsingBlock:^(NSButton *button, NSUInteger idx, BOOL *_Nonnull stop) {
         button.enabled = (button.tag == kLGReportItemsAll) || !(flags & kLGReportItemsAll);
