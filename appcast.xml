@@ -7,6 +7,29 @@ xmlns:dc="http://purl.org/dc/elements/1.1/">
     <description>Most recent changes with links to updates.</description>
     <language>en</language>
     <item>
+      <title>Version 1.5.3</title>
+      <description>
+        <![CDATA[
+                <h2>Darkmode Duck!</h2>
+                <p>Let's get legible. Text in AutoPkgr 1.5.3 is now much more legible in macOS Dark Mode. Semantic colors to the rescue!<br>
+                <a target="_blank" rel="noopener noreferrer" href="https://user-images.githubusercontent.com/20520337/81112755-fea9b580-8ed3-11ea-81ef-05a054cae104.png"><img width="712" alt="get-info-description" src="https://user-images.githubusercontent.com/20520337/81112755-fea9b580-8ed3-11ea-81ef-05a054cae104.png" style="max-width:100%;"></a><br>
+                <a target="_blank" rel="noopener noreferrer" href="https://user-images.githubusercontent.com/20520337/81112877-2e58bd80-8ed4-11ea-93d9-9819d068596c.png"><img width="492" alt="slack-info" src="https://user-images.githubusercontent.com/20520337/81112877-2e58bd80-8ed4-11ea-93d9-9819d068596c.png" style="max-width:100%;"></a><br>
+                <a target="_blank" rel="noopener noreferrer" href="https://user-images.githubusercontent.com/20520337/81112893-344e9e80-8ed4-11ea-8844-d7a8bdbc1bd1.png"><img width="492" alt="repo-list" src="https://user-images.githubusercontent.com/20520337/81112893-344e9e80-8ed4-11ea-8844-d7a8bdbc1bd1.png" style="max-width:100%;"></a><br>
+                <a target="_blank" rel="noopener noreferrer" href="https://user-images.githubusercontent.com/20520337/81112908-3a447f80-8ed4-11ea-974d-8e0520ca035a.png"><img width="492" alt="recipe-list" src="https://user-images.githubusercontent.com/20520337/81112908-3a447f80-8ed4-11ea-974d-8e0520ca035a.png" style="max-width:100%;"></a><br>
+                <a target="_blank" rel="noopener noreferrer" href="https://user-images.githubusercontent.com/20520337/81112972-534d3080-8ed4-11ea-8de0-f5ebdeea2c09.png"><img width="491" alt="github-api-info" src="https://user-images.githubusercontent.com/20520337/81112972-534d3080-8ed4-11ea-8de0-f5ebdeea2c09.png" style="max-width:100%;"></a></p>
+                <h3>Fixed</h3>
+                <ul>
+                <li>AutoPkgr now supports semantic colors in panels and popovers for better compatibility with macOS Dark Mode. Thanks to <a href="https://github.com/apizz">@apizz</a> in issue <a href="https://github.com/lindegroup/autopkgr/issues/633" data-hovercard-type="issue" data-hovercard-url="/lindegroup/autopkgr/issues/633/hovercard">#633</a> for the report.</li>
+                <li>Updated integration credits to support semantic color, updated names, and removed dates.</li>
+                </ul>
+                ]]>
+</description>
+      <sparkle:minimumSystemVersion>10.9</sparkle:minimumSystemVersion>
+      <pubDate>Fri, 08 May 2020 10:00:00 -0700</pubDate>
+      <enclosure url="https://github.com/lindegroup/autopkgr/releases/download/v1.5.3/AutoPkgr-1.5.3.dmg"
+      sparkle:version="1435" sparkle:shortVersionString="1.5.3" type="application/octet-stream" />
+    </item>
+    <item>
       <title>Version 1.5.2</title>
       <description>
         <![CDATA[
