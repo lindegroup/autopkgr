@@ -43,12 +43,7 @@
 }
 + (NSString *)credits
 {
-    return @"Copyright 2016 Thomas Burgin\nhttp://www.apache.org/licenses/LICENSE-2.0";
-}
-
-+ (NSURL *)homePage
-{
-    return [NSURL URLWithString:@"https://github.com/tburgin/AbsoluteManageExport"];
+    return @"Thomas Burgin\nhttp://www.apache.org/licenses/LICENSE-2.0\nhttps://github.com/tburgin/AbsoluteManageExport";
 }
 
 + (NSString *)gitHubURL

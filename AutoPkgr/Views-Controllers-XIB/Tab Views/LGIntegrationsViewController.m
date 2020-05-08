@@ -250,13 +250,13 @@
         BOOL isDir;
         BOOL success = NO;
         if (path.length && ([[NSFileManager defaultManager] fileExistsAtPath:path isDirectory:&isDir] && isDir)) {
-            [sender setTextColor:[NSColor blackColor]];
+            [sender setTextColor:[NSColor controlTextColor]];
             sender.stringValue = path.stringByAbbreviatingWithTildeInPath;
             success = YES;
         }
         else {
             // possibly present error.
-            [sender setTextColor:[NSColor redColor]];
+            [sender setTextColor:[NSColor systemRedColor]];
         }
         return success;
     };

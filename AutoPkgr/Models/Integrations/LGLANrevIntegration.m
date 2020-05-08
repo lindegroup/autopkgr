@@ -43,12 +43,7 @@
 }
 + (NSString *)credits
 {
-    return @"Copyright 2016 Jeremy Baker\nhttp://www.apache.org/licenses/LICENSE-2.0";
-}
-
-+ (NSURL *)homePage
-{
-    return [NSURL URLWithString:@"https://github.com/jbaker10/LANrevImporter"];
+    return @"Jeremy Baker\nhttp://www.apache.org/licenses/LICENSE-2.0\nhttps://github.com/jbaker10/LANrevImporter";
 }
 
 + (NSString *)gitHubURL

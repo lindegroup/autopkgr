@@ -143,6 +143,7 @@ static NSString *NO_HELP_AVAILABLE()
 
             NSDictionary *attributes = @{
                 NSFontAttributeName : _helpTitleFont,
+                NSForegroundColorAttributeName : NSColor.controlTextColor,
             };
 
             NSAttributedString *title = [[NSAttributedString alloc] initWithString:[_helpTitle stringByAppendingString:@"\n\n"]
@@ -177,6 +178,7 @@ static NSString *NO_HELP_AVAILABLE()
         NSTextView *helpTextView = [[NSTextView alloc] initWithFrame:viewFrame];
         helpTextView.editable = NO;
         helpTextView.backgroundColor = [NSColor clearColor];
+        helpTextView.textColor = [NSColor controlTextColor];
         helpTextView.alignment = _textAlignment;
 
         [helpTextView.textStorage setAttributedString:textStorage];
@@ -246,7 +248,9 @@ static NSString *NO_HELP_AVAILABLE()
 {
     if (!_attributedHelpText && _helpText) {
         _attributedHelpText = [[NSAttributedString alloc] initWithString:_helpText
-                                                              attributes:@{ NSFontAttributeName : _helpTextFont }];
+                                                              attributes:@{ NSFontAttributeName : _helpTextFont,
+                                                                NSForegroundColorAttributeName : NSColor.controlTextColor,
+                                                              }];
     }
     return _attributedHelpText;
 }

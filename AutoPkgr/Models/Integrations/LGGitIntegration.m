@@ -60,12 +60,7 @@ static NSArray *knownGitPaths()
 
 + (NSString *)credits
 {
-    return @"The GNU General Public License (GPL-2.0)";
-}
-
-+ (NSURL *)homePage
-{
-    return [NSURL URLWithString:@"https://git-scm.com"];
+    return @"The GNU General Public License (GPL-2.0)\nhttps://git-scm.com";
 }
 
 + (NSArray *)components

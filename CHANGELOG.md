@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file. This projec
 
 ## [Unreleased](unreleased)
 
+## [1.5.3] - 2020-05-08
+
+### Fixed
+- AutoPkgr now supports semantic colors in panels and popovers for better compatibility with macOS Dark Mode. Thanks to [@apizz](https://github.com/apizz) in issue [#633](https://github.com/lindegroup/autopkgr/issues/633) for the report.
+- Updated integration credits to support semantic color, updated names, and removed dates.
+
+
 ## [1.5.2] - 2020-01-24
 
 ### Added
@@ -466,7 +473,10 @@ All notable changes to this project will be documented in this file. This projec
 - Initial public release of AutoPkgr.
 
 
-[unreleased]: https://github.com/lindegroup/autopkgr/compare/v1.5...HEAD
+[unreleased]: https://github.com/lindegroup/autopkgr/compare/v1.5.3...HEAD
+[1.5.3]: https://github.com/lindegroup/autopkgr/compare/v1.5.2...v1.5.3
+[1.5.2]: https://github.com/lindegroup/autopkgr/compare/v1.5.1...v1.5.2
+[1.5.1]: https://github.com/lindegroup/autopkgr/compare/v1.5...v1.5.1
 [1.5]: https://github.com/lindegroup/autopkgr/compare/v1.4.2...v1.5
 [1.4.2]: https://github.com/lindegroup/autopkgr/compare/v1.4.1...v1.4.2
 [1.4.1]: https://github.com/lindegroup/autopkgr/compare/v1.4...v1.4.1

@@ -33,17 +33,12 @@
 
 + (NSString *)credits
 {
-    return @"Copyright 2015 FileWave (Europe) GmbH\nhttp://www.apache.org/licenses/LICENSE-2.0";
+    return @"FileWave (Europe) GmbH\nhttp://www.apache.org/licenses/LICENSE-2.0\nhttps://github.com/autopkg/filewave";
 }
 
 + (NSString *)defaultRepository
 {
     return @"https://github.com/autopkg/filewave.git";
-}
-
-+ (NSURL *)homePage
-{
-    return [NSURL URLWithString:@"https://github.com/autopkg/filewave"];
 }
 
 + (BOOL)isUninstallable
