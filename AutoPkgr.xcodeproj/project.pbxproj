@@ -26,6 +26,9 @@
 		1AC98429195DF6DE0071CAB3 /* autopkgr_alt.png in Resources */ = {isa = PBXBuildFile; fileRef = 1AC98428195DF6DE0071CAB3 /* autopkgr_alt.png */; };
 		21041CE6D520C363DBECB902 /* libPods-com.lindegroup.AutoPkgr.helper.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 62DA66B263080B115E0C6E12 /* libPods-com.lindegroup.AutoPkgr.helper.a */; };
 		291B96B42420162900C446C2 /* autopkgr_slack.png in Resources */ = {isa = PBXBuildFile; fileRef = 291B96B32420162900C446C2 /* autopkgr_slack.png */; };
+		295D7358247336C1008B796A /* LGMicrosoftTeamsNotificationView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 295D7354247336C1008B796A /* LGMicrosoftTeamsNotificationView.xib */; };
+		295D7359247336C1008B796A /* LGMicrosoftTeamsNotificationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 295D7356247336C1008B796A /* LGMicrosoftTeamsNotificationView.m */; };
+		295D735C24733742008B796A /* LGMicrosoftTeamsNotification.m in Sources */ = {isa = PBXBuildFile; fileRef = 295D735A24733742008B796A /* LGMicrosoftTeamsNotification.m */; };
 		5EF53CBDA5C7106F3847E9FD /* libPods-AutoPkgrTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9B419CA189BE572FD31F74E0 /* libPods-AutoPkgrTests.a */; };
 		6A53625D1988BE59008A949C /* LGTestPort.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A53625C1988BE59008A949C /* LGTestPort.m */; };
 		8B1AF8521BED81440013BE37 /* LGFileWaveIntegrationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B1AF8501BED81440013BE37 /* LGFileWaveIntegrationView.m */; };
@@ -311,6 +314,11 @@
 		1AC98425195DF6350071CAB3 /* autopkgr.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = autopkgr.png; sourceTree = "<group>"; };
 		1AC98428195DF6DE0071CAB3 /* autopkgr_alt.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = autopkgr_alt.png; sourceTree = "<group>"; };
 		291B96B32420162900C446C2 /* autopkgr_slack.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = autopkgr_slack.png; sourceTree = "<group>"; };
+		295D7353247336C1008B796A /* LGMicrosoftTeamsNotificationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGMicrosoftTeamsNotificationView.h; sourceTree = "<group>"; };
+		295D7354247336C1008B796A /* LGMicrosoftTeamsNotificationView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LGMicrosoftTeamsNotificationView.xib; sourceTree = "<group>"; };
+		295D7356247336C1008B796A /* LGMicrosoftTeamsNotificationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGMicrosoftTeamsNotificationView.m; sourceTree = "<group>"; };
+		295D735A24733742008B796A /* LGMicrosoftTeamsNotification.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGMicrosoftTeamsNotification.m; sourceTree = "<group>"; };
+		295D735B24733742008B796A /* LGMicrosoftTeamsNotification.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGMicrosoftTeamsNotification.h; sourceTree = "<group>"; };
 		2C6986FE5B41226735CC0A32 /* Pods-AutoPkgr.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AutoPkgr.debug.xcconfig"; path = "Pods/Target Support Files/Pods-AutoPkgr/Pods-AutoPkgr.debug.xcconfig"; sourceTree = "<group>"; };
 		39CF6FA5E75D62254A994C22 /* libPods-AutoPkgr.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-AutoPkgr.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		45E6F02919946C3F73535515 /* Pods-AutoPkgrTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AutoPkgrTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-AutoPkgrTests/Pods-AutoPkgrTests.release.xcconfig"; sourceTree = "<group>"; };
@@ -1036,6 +1044,9 @@
 				BE46D9971B40EE2D00004B41 /* LGHipChatNotificationView.h */,
 				BE46D9981B40EE2D00004B41 /* LGHipChatNotificationView.m */,
 				8B8654E61CF66DFA00B0A3FD /* LGHipChatNotificationView.xib */,
+				295D7353247336C1008B796A /* LGMicrosoftTeamsNotificationView.h */,
+				295D7356247336C1008B796A /* LGMicrosoftTeamsNotificationView.m */,
+				295D7354247336C1008B796A /* LGMicrosoftTeamsNotificationView.xib */,
 				BEB9AF281B41A01900016D98 /* LGSlackNotificationView.h */,
 				BEB9AF291B41A01900016D98 /* LGSlackNotificationView.m */,
 				8B8654ED1CF66E5C00B0A3FD /* LGSlackNotificationView.xib */,
@@ -1107,6 +1118,8 @@
 				BE344F541ABFBEAB00500AAE /* LGAutoPkgReport.m */,
 				BE0BB0F51B3C68A3007F9DA5 /* LGEmailNotification.h */,
 				BE0BB0F61B3C68A3007F9DA5 /* LGEmailNotification.m */,
+				295D735B24733742008B796A /* LGMicrosoftTeamsNotification.h */,
+				295D735A24733742008B796A /* LGMicrosoftTeamsNotification.m */,
 				BE46D9931B40EBF800004B41 /* LGHipChatNotification.h */,
 				BE46D9941B40EBF800004B41 /* LGHipChatNotification.m */,
 				BE6815D31A0B18DE004AD310 /* LGUserNotification.h */,
@@ -1465,6 +1478,7 @@
 				8B86548E1CF64EE500B0A3FD /* LGScheduleViewController.xib in Resources */,
 				8B8654F21CF66EB500B0A3FD /* LGTemplateRenderWindowController.xib in Resources */,
 				8B8654A51CF665DF00B0A3FD /* LGAbsoluteManageIntegrationView.xib in Resources */,
+				295D7358247336C1008B796A /* LGMicrosoftTeamsNotificationView.xib in Resources */,
 				8B8654B31CF6679900B0A3FD /* LGAutoPkgIntegrationView.xib in Resources */,
 				8B8654EB1CF66E5C00B0A3FD /* LGSlackNotificationView.xib in Resources */,
 				8B8654951CF6500400B0A3FD /* LGNotificationsViewController.xib in Resources */,
@@ -2410,6 +2424,7 @@
 			files = (
 				BEBC182C1C167F1A0085B9D5 /* LGWindowController.m in Sources */,
 				BE2337CA1B3E42EC00256F85 /* LGMacPatchIntegration.m in Sources */,
+				295D7359247336C1008B796A /* LGMicrosoftTeamsNotificationView.m in Sources */,
 				BE053D151A8F90920021D97B /* LGPasswords.m in Sources */,
 				BE0BACD11A2560AE00554989 /* LGJSSDistributionPointsPrefPanel.m in Sources */,
 				BECDABA71B254E5900544388 /* LGAbsoluteManageIntegrationView.m in Sources */,
@@ -2436,6 +2451,7 @@
 				BE87994B1995BA410082472B /* LGDefaults.m in Sources */,
 				BE344F551ABFBEAB00500AAE /* LGAutoPkgReport.m in Sources */,
 				BE38EA8E1B0CFE68009FCBEB /* LGInstallViewController.m in Sources */,
+				295D735C24733742008B796A /* LGMicrosoftTeamsNotification.m in Sources */,
 				BE38EA951B0CFE95009FCBEB /* LGRecipeReposViewController.m in Sources */,
 				1AC86D3D195E0AC6006FDD2B /* LGHostInfo.m in Sources */,
 				BEC1258719F0465F006696C4 /* LGAutoPkgTask.m in Sources */,
