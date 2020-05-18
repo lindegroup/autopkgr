@@ -138,6 +138,7 @@ static NSString *const SlacksNotificationsEnabledKey = @"SlackNotificationsEnabl
                 failure:^(AFHTTPRequestOperation *operation, NSError *error) {
                     NSLog(@"Error sending Slack notification: %@", operation.responseString);
                     self.notificatonComplete([LGError errorWithResponse:operation.response]);
+                self.notificatonComplete([LGError errorWithResponse:operation.response orError:error]);
                 }];
         }
     }];
