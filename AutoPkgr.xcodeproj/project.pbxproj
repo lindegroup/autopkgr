@@ -3082,6 +3082,7 @@
 				INFOPLIST_FILE = "AutoPkgr/Supporting Files/AutoPkgr-Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				MARKETING_VERSION = 1.5.4;
 				OTHER_CODE_SIGN_FLAGS = "";
 				"OTHER_CODE_SIGN_FLAGS[sdk=*]" = "--options=runtime";
 				OTHER_LDFLAGS = (
@@ -3145,6 +3146,7 @@
 				INFOPLIST_FILE = "AutoPkgr/Supporting Files/AutoPkgr-Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				MARKETING_VERSION = 1.5.4;
 				OTHER_CODE_SIGN_FLAGS = "";
 				"OTHER_CODE_SIGN_FLAGS[sdk=*]" = "--options=runtime";
 				OTHER_LDFLAGS = (
@@ -3266,6 +3268,7 @@
 				INSTALL_PATH = "";
 				"INSTALL_PATH[sdk=*]" = /Library/PrivilegedHelperTools/;
 				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				MARKETING_VERSION = 1.5.4;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				OTHER_CFLAGS = (
 					"$(inherited)",
@@ -3321,6 +3324,7 @@
 				INSTALL_PATH = "";
 				"INSTALL_PATH[sdk=*]" = /Library/PrivilegedHelperTools/;
 				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				MARKETING_VERSION = 1.5.4;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				OTHER_CFLAGS = (
 					"$(inherited)",
