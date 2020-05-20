@@ -1,8 +1,8 @@
 //
-//  LGMicrosoftTeamsNotification.h
+//  LGGoogleHangoutsNotificationView.m
 //  AutoPkgr
 //
-//  Created by Ethan Fann on 2/9/18.
+//  Created by Shawn Honsberger on 5/19/20.
 //  Copyright © 2020 The Linde Group, Inc.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,9 +18,17 @@
 //  limitations under the License.
 //
 
-#import "LGNotificationService.h"
+#import "LGGoogleHangoutsNotificationView.h"
 
-@interface LGMicrosoftTeamsNotification : LGNotificationService <LGNotificationServiceProtocol>
+@interface LGGoogleHangoutsNotificationView ()
 
 @end
 
+@implementation LGGoogleHangoutsNotificationView
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    // Do view setup here.
+}
+
+@end

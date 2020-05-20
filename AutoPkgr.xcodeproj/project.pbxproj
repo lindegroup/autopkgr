@@ -25,7 +25,12 @@
 		1AC98427195DF6350071CAB3 /* autopkgr.png in Resources */ = {isa = PBXBuildFile; fileRef = 1AC98425195DF6350071CAB3 /* autopkgr.png */; };
 		1AC98429195DF6DE0071CAB3 /* autopkgr_alt.png in Resources */ = {isa = PBXBuildFile; fileRef = 1AC98428195DF6DE0071CAB3 /* autopkgr_alt.png */; };
 		21041CE6D520C363DBECB902 /* libPods-com.lindegroup.AutoPkgr.helper.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 62DA66B263080B115E0C6E12 /* libPods-com.lindegroup.AutoPkgr.helper.a */; };
+		290AD62C247585830086E5FF /* LGGoogleHangoutsNotification.m in Sources */ = {isa = PBXBuildFile; fileRef = 291F369724745F1F00894ECA /* LGGoogleHangoutsNotification.m */; };
+		290AD62D247585AA0086E5FF /* LGGoogleHangoutsNotificationView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 291F369B247460B200894ECA /* LGGoogleHangoutsNotificationView.xib */; };
+		290AD62E247586260086E5FF /* LGMicrosoftTeamsNotification.m in Sources */ = {isa = PBXBuildFile; fileRef = 295D735A24733742008B796A /* LGMicrosoftTeamsNotification.m */; };
+		290AD62F247586320086E5FF /* LGGoogleHangoutsNotification.m in Sources */ = {isa = PBXBuildFile; fileRef = 291F369724745F1F00894ECA /* LGGoogleHangoutsNotification.m */; };
 		291B96B42420162900C446C2 /* autopkgr_slack.png in Resources */ = {isa = PBXBuildFile; fileRef = 291B96B32420162900C446C2 /* autopkgr_slack.png */; };
+		291F369A2474602900894ECA /* LGGoogleHangoutsNotificationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 291F36992474602800894ECA /* LGGoogleHangoutsNotificationView.m */; };
 		295D7358247336C1008B796A /* LGMicrosoftTeamsNotificationView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 295D7354247336C1008B796A /* LGMicrosoftTeamsNotificationView.xib */; };
 		295D7359247336C1008B796A /* LGMicrosoftTeamsNotificationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 295D7356247336C1008B796A /* LGMicrosoftTeamsNotificationView.m */; };
 		295D735C24733742008B796A /* LGMicrosoftTeamsNotification.m in Sources */ = {isa = PBXBuildFile; fileRef = 295D735A24733742008B796A /* LGMicrosoftTeamsNotification.m */; };
@@ -314,6 +319,11 @@
 		1AC98425195DF6350071CAB3 /* autopkgr.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = autopkgr.png; sourceTree = "<group>"; };
 		1AC98428195DF6DE0071CAB3 /* autopkgr_alt.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = autopkgr_alt.png; sourceTree = "<group>"; };
 		291B96B32420162900C446C2 /* autopkgr_slack.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = autopkgr_slack.png; sourceTree = "<group>"; };
+		291F369624745F1A00894ECA /* LGGoogleHangoutsNotification.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LGGoogleHangoutsNotification.h; sourceTree = "<group>"; };
+		291F369724745F1F00894ECA /* LGGoogleHangoutsNotification.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LGGoogleHangoutsNotification.m; sourceTree = "<group>"; };
+		291F36982474602400894ECA /* LGGoogleHangoutsNotificationView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LGGoogleHangoutsNotificationView.h; sourceTree = "<group>"; };
+		291F36992474602800894ECA /* LGGoogleHangoutsNotificationView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LGGoogleHangoutsNotificationView.m; sourceTree = "<group>"; };
+		291F369B247460B200894ECA /* LGGoogleHangoutsNotificationView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LGGoogleHangoutsNotificationView.xib; sourceTree = "<group>"; };
 		295D7353247336C1008B796A /* LGMicrosoftTeamsNotificationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGMicrosoftTeamsNotificationView.h; sourceTree = "<group>"; };
 		295D7354247336C1008B796A /* LGMicrosoftTeamsNotificationView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LGMicrosoftTeamsNotificationView.xib; sourceTree = "<group>"; };
 		295D7356247336C1008B796A /* LGMicrosoftTeamsNotificationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGMicrosoftTeamsNotificationView.m; sourceTree = "<group>"; };
@@ -1045,8 +1055,11 @@
 				BE46D9981B40EE2D00004B41 /* LGHipChatNotificationView.m */,
 				8B8654E61CF66DFA00B0A3FD /* LGHipChatNotificationView.xib */,
 				295D7353247336C1008B796A /* LGMicrosoftTeamsNotificationView.h */,
+				291F36982474602400894ECA /* LGGoogleHangoutsNotificationView.h */,
 				295D7356247336C1008B796A /* LGMicrosoftTeamsNotificationView.m */,
+				291F36992474602800894ECA /* LGGoogleHangoutsNotificationView.m */,
 				295D7354247336C1008B796A /* LGMicrosoftTeamsNotificationView.xib */,
+				291F369B247460B200894ECA /* LGGoogleHangoutsNotificationView.xib */,
 				BEB9AF281B41A01900016D98 /* LGSlackNotificationView.h */,
 				BEB9AF291B41A01900016D98 /* LGSlackNotificationView.m */,
 				8B8654ED1CF66E5C00B0A3FD /* LGSlackNotificationView.xib */,
@@ -1119,7 +1132,9 @@
 				BE0BB0F51B3C68A3007F9DA5 /* LGEmailNotification.h */,
 				BE0BB0F61B3C68A3007F9DA5 /* LGEmailNotification.m */,
 				295D735B24733742008B796A /* LGMicrosoftTeamsNotification.h */,
+				291F369624745F1A00894ECA /* LGGoogleHangoutsNotification.h */,
 				295D735A24733742008B796A /* LGMicrosoftTeamsNotification.m */,
+				291F369724745F1F00894ECA /* LGGoogleHangoutsNotification.m */,
 				BE46D9931B40EBF800004B41 /* LGHipChatNotification.h */,
 				BE46D9941B40EBF800004B41 /* LGHipChatNotification.m */,
 				BE6815D31A0B18DE004AD310 /* LGUserNotification.h */,
@@ -1447,6 +1462,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				290AD62D247585AA0086E5FF /* LGGoogleHangoutsNotificationView.xib in Resources */,
 				1AC6955B195B59ED00D2BD81 /* InfoPlist.strings in Resources */,
 				1AC69561195B59EE00D2BD81 /* Credits.rtf in Resources */,
 				BE3D94341C160F59001763D0 /* web_report.html in Resources */,
@@ -2422,6 +2438,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				290AD62C247585830086E5FF /* LGGoogleHangoutsNotification.m in Sources */,
 				BEBC182C1C167F1A0085B9D5 /* LGWindowController.m in Sources */,
 				BE2337CA1B3E42EC00256F85 /* LGMacPatchIntegration.m in Sources */,
 				295D7359247336C1008B796A /* LGMicrosoftTeamsNotificationView.m in Sources */,
@@ -2448,6 +2465,7 @@
 				8B8844261C7CD04300F1013B /* LGLANrevIntegrationView.m in Sources */,
 				BEC1258619F0465C006696C4 /* LGConfigurationWindowController.m in Sources */,
 				1AC9840A195CE7D60071CAB3 /* LGConstants.m in Sources */,
+				291F369A2474602900894ECA /* LGGoogleHangoutsNotificationView.m in Sources */,
 				BE87994B1995BA410082472B /* LGDefaults.m in Sources */,
 				BE344F551ABFBEAB00500AAE /* LGAutoPkgReport.m in Sources */,
 				BE38EA8E1B0CFE68009FCBEB /* LGInstallViewController.m in Sources */,
@@ -2529,6 +2547,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				290AD62F247586320086E5FF /* LGGoogleHangoutsNotification.m in Sources */,
+				290AD62E247586260086E5FF /* LGMicrosoftTeamsNotification.m in Sources */,
 				BEFC3C761A3DF16700C789E9 /* LGUserNotification.m in Sources */,
 				BED136B81AC3BE04003EBF0F /* NSArray+html_report.m in Sources */,
 				8BD9E7901C8E170000BCB399 /* LGVirusTotalAnalyzerIntegration.m in Sources */,

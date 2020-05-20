@@ -17,6 +17,11 @@
 
 "microsoftTeamsHelpInfoURL" = "https://docs.microsoft.com/en-us/microsoftteams/platform/concepts/connectors#setting-up-a-custom-incoming-webhook";
 
+"googleHangoutsInfoTitle" = "Google Hangouts Notifications";
+"googleHangoutsHelpInfo" = "Incoming Webhooks are a simple way to post messages from external sources into Google Hangouts. Navigate to the link below to view instructions on how to generate a Incoming Webhook URL.";
+
+"googleHangoutsHelpInfoURL" = "https://developers.google.com/hangouts/chat/how-tos/webhooks";
+
 "slackHelpInfoTitle" = "Slack Notifications";
 "slackHelpInfo" = "Incoming Webhooks are a simple way to post messages from external sources into Slack. Slack admins can generate the Webhook URL that is used to post messages to a specific room. Visit the Slack webhooks documentation (linked below) for more information.";
 
