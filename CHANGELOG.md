@@ -8,6 +8,7 @@ All notable changes to this project will be documented in this file. This projec
 
 ### Added
 - AutoPkgr now integrates with Microsoft Teams and Google Hangouts for notifications.
+- For Hangouts, copy the "AutoPkgr Slack Bot" Template into the "AutoPkgr Google Hangouts" Template and select Save.
 ### Fixed
 - Improved notification error handling.
 
