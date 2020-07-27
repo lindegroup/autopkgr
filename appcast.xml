@@ -7,6 +7,32 @@ xmlns:dc="http://purl.org/dc/elements/1.1/">
     <description>Most recent changes with links to updates.</description>
     <language>en</language>
     <item>
+      <title>Version 1.5.4</title>
+      <description>
+        <![CDATA[
+                <h2>The Notification Club</h2>
+                <p>Don't you.. forget about Teams (or Hangouts). Let's get together. AutoPkgr 1.5.4 now integrates notifications with Microsoft Teams and Google Hangouts!</p>
+                <p><a target="_blank" rel="noopener noreferrer" href="https://user-images.githubusercontent.com/20520337/86973806-054de680-c12a-11ea-833e-14da32704489.png"><img width="769" alt="notifications-dark" src="https://user-images.githubusercontent.com/20520337/86973806-054de680-c12a-11ea-833e-14da32704489.png" style="max-width:100%;"></a></p>
+                <p><a target="_blank" rel="noopener noreferrer" href="https://user-images.githubusercontent.com/20520337/86973824-0b43c780-c12a-11ea-8f96-4516212172f6.png"><img width="769" alt="notifications-light" src="https://user-images.githubusercontent.com/20520337/86973824-0b43c780-c12a-11ea-8f96-4516212172f6.png" style="max-width:100%;"></a></p>
+                <p><a target="_blank" rel="noopener noreferrer" href="https://user-images.githubusercontent.com/20520337/86973832-10a11200-c12a-11ea-90de-9c5c2095f8cd.png"><img width="489" alt="teams-dark" src="https://user-images.githubusercontent.com/20520337/86973832-10a11200-c12a-11ea-90de-9c5c2095f8cd.png" style="max-width:100%;"></a></p>
+                <p><a target="_blank" rel="noopener noreferrer" href="https://user-images.githubusercontent.com/20520337/86973910-3201fe00-c12a-11ea-910f-bda531507178.png"><img width="492" alt="hangouts-light" src="https://user-images.githubusercontent.com/20520337/86973910-3201fe00-c12a-11ea-910f-bda531507178.png" style="max-width:100%;"></a></p>
+                <h3>Added</h3>
+                <ul>
+                <li>AutoPkgr now integrates with Microsoft Teams and Google Hangouts for notifications.</li>
+                <li>For Hangouts, copy the "AutoPkgr Slack Bot" Template into the "AutoPkgr Google Hangouts" Template and select Save.</li>
+                </ul>
+                <h3>Fixed</h3>
+                <ul>
+                <li>Improved notification error handling.</li>
+                </ul>
+                ]]>
+</description>
+      <sparkle:minimumSystemVersion>10.9</sparkle:minimumSystemVersion>
+      <pubDate>Tue, 28 July 2020 12:00:00 -0700</pubDate>
+      <enclosure url="https://github.com/lindegroup/autopkgr/releases/download/v1.5.4/AutoPkgr-1.5.4.dmg"
+      sparkle:version="1444" sparkle:shortVersionString="1.5.4" type="application/octet-stream" />
+    </item>
+    <item>
       <title>Version 1.5.3</title>
       <description>
         <![CDATA[
