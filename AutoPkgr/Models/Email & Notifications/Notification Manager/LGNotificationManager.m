@@ -23,6 +23,8 @@
 #import "LGNotificationService.h"
 #import "LGSlackNotification.h"
 #import "LGUserNotification.h"
+#import "LGMicrosoftTeamsNotification.h"
+#import "LGGoogleHangoutsNotification.h"
 
 #import "LGIntegrationManager.h"
 #import "LGPasswords.h"
@@ -40,7 +42,9 @@ const NSArray *NotificationServiceClasses()
         classes = @[ [LGEmailNotification class],
                      [LGSlackNotification class],
                      [LGHipChatNotification class],
-                     [LGUserNotification class] ];
+                     [LGUserNotification class],
+                     [LGMicrosoftTeamsNotification class],
+                     [LGGoogleHangoutsNotification class] ];
     });
     return classes;
 }

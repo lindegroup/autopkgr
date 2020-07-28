@@ -107,5 +107,6 @@ typedef NS_ENUM(NSInteger, LGErrorAutoPkgCodes) {
 #pragma mark - NSURLConnection response Error
 + (BOOL)errorWithResponse:(NSHTTPURLResponse *)response error:(NSError **)error;
 + (NSError *)errorWithResponse:(NSHTTPURLResponse *)response;
++ (NSError *)errorWithResponse:(NSHTTPURLResponse *)response orError:(nullable NSError *)error;
 
 @end

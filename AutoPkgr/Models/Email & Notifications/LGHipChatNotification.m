@@ -175,6 +175,9 @@ static NSString *const HipChatNotificationNotifyKey = @"HipChatNotificationNotif
                 failure:^(AFHTTPRequestOperation *operation, NSError *error) {
                     //
                     self.notificatonComplete([LGError errorWithResponse:operation.response]);
+                self.notificatonComplete(
+                    [LGError errorWithResponse:operation.response orError:error]
+                );
                 }];
         }
     }];

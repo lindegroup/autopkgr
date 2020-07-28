@@ -25,6 +25,8 @@
 #import "LGPasswords.h"
 #import "LGSlackNotification.h"
 #import "LGTestPort.h"
+#import "LGMicrosoftTeamsNotification.h"
+#import "LGGoogleHangoutsNotification.h"
 
 #import "LGBaseNotificationServiceViewController.h"
 #import "LGNotificationServiceWindowController.h"
@@ -60,6 +62,8 @@
 
 @property (weak) IBOutlet NSButton *configureSlackButton;
 @property (weak) IBOutlet NSButton *configureHipChatButton;
+@property (weak) IBOutlet NSButton *configureMicrosoftTeamsButton;
+@property (weak) IBOutlet NSButton *configureGoogleHangoutsButton;
 
 #pragma mark-- IBActions
 - (IBAction)configure:(NSButton *)sender;
@@ -88,6 +92,14 @@
     self.configureSlackButton.action = @selector(configure:);
     self.configureSlackButton.target = self;
     self.configureSlackButton.identifier = NSStringFromClass([LGSlackNotification class]);
+    
+    self.configureMicrosoftTeamsButton.action = @selector(configure:);
+    self.configureMicrosoftTeamsButton.target = self;
+    self.configureMicrosoftTeamsButton.identifier = NSStringFromClass([LGMicrosoftTeamsNotification class]);
+    
+    self.configureGoogleHangoutsButton.action = @selector(configure:);
+    self.configureGoogleHangoutsButton.target = self;
+    self.configureGoogleHangoutsButton.identifier = NSStringFromClass([LGGoogleHangoutsNotification class]);
 
     self.configureSlackButton.wantsLayer = YES;
     self.configureSlackButton.animator.alphaValue = 1.0;
@@ -130,6 +142,20 @@
                 [[LGDefaults standardUserDefaults] setBool:YES forKey:@"HipChatConfigured"];
             }
         }
+        else if ([sender.identifier isEqualToString:@"enableMicrosoftTeamsCheckBox"]) {
+            configured = [[LGDefaults standardUserDefaults] boolForKey:@"MicrosoftTeamsConfigured"];
+            if(!configured) {
+                [self configure:self.configureMicrosoftTeamsButton];
+                [[LGDefaults standardUserDefaults] setBool:YES forKey:@"MicrosoftTeamsConfigured"];
+            }
+        }
+        else if ([sender.identifier isEqualToString:@"enableGoogleHangoutsCheckBox"]) {
+            configured = [[LGDefaults standardUserDefaults] boolForKey:@"GoogleHangoutsConfigured"];
+            if(!configured) {
+                [self configure:self.configureGoogleHangoutsButton];
+                [[LGDefaults standardUserDefaults] setBool:YES forKey:@"GoogleHangoutsConfigured"];
+            }
+        }
     }
 
     Class viewClass = NSClassFromString([sender.identifier stringByAppendingString:@"View"]);
@@ -148,6 +174,12 @@
             }
             else if (serviceClass == [LGHipChatNotification class]) {
                 enabledKey = @"HipChat";
+            }
+            else if (serviceClass == [LGMicrosoftTeamsNotification class]) {
+                enabledKey = @"MicrosoftTeams";
+            }
+            else if (serviceClass == [LGGoogleHangoutsNotification class]) {
+                enabledKey = @"GoogleHangouts";
             }
             if (enabledKey.length) {
                 id controller = (LGBaseNotificationServiceViewController *)_serviceWindow.viewController;

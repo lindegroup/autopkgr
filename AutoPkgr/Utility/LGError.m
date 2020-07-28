@@ -353,6 +353,22 @@ static NSDictionary *userInfoFromHTTPResponse(NSHTTPURLResponse *response)
     return error;
 }
 
++ (NSError *)errorWithResponse:(NSHTTPURLResponse *)response orError:(nullable NSError *)error
+{
+    NSError *aError;
+    NSInteger code = response.statusCode;
+    if (code >= 400) {
+        NSDictionary *userInfo = userInfoFromHTTPResponse(response);
+        aError = [NSError errorWithDomain:kLGApplicationName
+                                    code:response.statusCode
+                                userInfo:userInfo];
+
+        DLog(@"Error [%ld]: %@ \n %@", code, userInfo[NSLocalizedDescriptionKey], userInfo[NSLocalizedRecoverySuggestionErrorKey]);
+        return aError;
+    }
+    return error;
+}
+
 + (BOOL)errorWithResponse:(NSHTTPURLResponse *)response error:(NSError *__autoreleasing *)error
 {
     NSError *err = [self errorWithResponse:response];

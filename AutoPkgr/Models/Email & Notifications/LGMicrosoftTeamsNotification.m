@@ -1,8 +1,9 @@
 //
-//  LGSlackNotification.m
+//  LGMicrosoftTeamsNotification.m
 //  AutoPkgr
 //
-//  Copyright 2015-2016 The Linde Group, Inc.
+//  Created by Ethan Fann on 2/9/18.
+//  Copyright © 2020 The Linde Group, Inc.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -17,18 +18,21 @@
 //  limitations under the License.
 //
 
-#import "LGSlackNotification.h"
+#import "LGMicrosoftTeamsNotification.h"
+
 #import <AFNetworking/AFHTTPRequestOperationManager.h>
 
-static NSString *const SlackLink = @"https://slack.com/channels";
-static NSString *const SlacksNotificationsEnabledKey = @"SlackNotificationsEnabled";
+static NSString *const MicrosoftTeamsLink = @"https://teams.microsoft.com/_#/conversations";
 
-@implementation LGSlackNotification
+static NSString *const MicrosoftTeamsNotificationEnabledKey = @"MicrosoftTeamsNotificationsEnabled";
+
+
+@implementation LGMicrosoftTeamsNotification
 
 #pragma mark - Protocol Conforming
 + (NSString *)serviceDescription
 {
-    return NSLocalizedString(@"AutoPkgr Slack Bot", @"Slack webhook service description");
+    return @"AutoPkgr Microsoft Teams";
 }
 
 + (BOOL)reportsIntegrations
@@ -38,7 +42,7 @@ static NSString *const SlacksNotificationsEnabledKey = @"SlackNotificationsEnabl
 
 + (BOOL)isEnabled
 {
-    return [[NSUserDefaults standardUserDefaults] boolForKey:SlacksNotificationsEnabledKey];
+    return [[NSUserDefaults standardUserDefaults] boolForKey:MicrosoftTeamsNotificationEnabledKey];
 }
 
 + (BOOL)storesInfoInKeychain
@@ -48,12 +52,12 @@ static NSString *const SlacksNotificationsEnabledKey = @"SlackNotificationsEnabl
 
 + (NSString *)account
 {
-    return @"AutoPkgr Slack-Bot";
+    return @"AutoPkgr Microsoft Teams Webhook URL";
 }
 
 + (NSURL *)serviceURL
 {
-    return [NSURL URLWithString:SlackLink];
+    return [NSURL URLWithString:MicrosoftTeamsLink];
 }
 
 + (BOOL)templateIsFile
@@ -63,12 +67,7 @@ static NSString *const SlacksNotificationsEnabledKey = @"SlackNotificationsEnabl
 
 + (NSString *)defaultTemplate
 {
-    return [self templateWithName:@"slack_report" type:@"md"];
-}
-
-+ (ACEMode)tempateFormat
-{
-    return ACEModeMarkdown;
+    return [self templateWithName:@"web_report" type:@"html"];
 }
 
 #pragma mark - Send
@@ -80,7 +79,7 @@ static NSString *const SlacksNotificationsEnabledKey = @"SlackNotificationsEnabl
 
 - (void)sendTest:(void (^)(NSError *))complete
 {
-    [self sendMessage:NSLocalizedString(@"You are now set up to receive notifications on your Slack channel!", nil) title:nil complete:complete];
+    [self sendMessage:NSLocalizedString(@"You are now set up to receive notifications in your Microsoft Teams channel!", nil) title:nil complete:complete];
 }
 
 - (void)sendMessage:(NSString *)message title:(NSString *)title complete:(void (^)(NSError *))complete
@@ -92,6 +91,7 @@ static NSString *const SlacksNotificationsEnabledKey = @"SlackNotificationsEnabl
 }
 
 #pragma mark - Private
+
 - (AFHTTPRequestOperationManager *)requestManager
 {
     AFHTTPRequestOperationManager *manager = [[AFHTTPRequestOperationManager alloc] init];
@@ -101,47 +101,36 @@ static NSString *const SlacksNotificationsEnabledKey = @"SlackNotificationsEnabl
     [manager.requestSerializer setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
     [manager.requestSerializer setValue:@"application/json" forHTTPHeaderField:@"Accept"];
 
-    // Set up the request serializer with any additional criteria for Slack.
-    // [manager.requestSerializer setAuthorizationHeaderFieldWithUsername:@"" password:@""]; <- probably don't need this.
-
     manager.responseSerializer = [AFHTTPResponseSerializer serializer];
-
+    
     return manager;
-}
-
-- (NSDictionary *)baseParameters:(NSDictionary *)parameters
-{
-    NSMutableDictionary *dict = [parameters mutableCopy];
-    if (!parameters[@"username"]) {
-        // "SlackBotName" is bound to TextField in Slack integration view controller.
-        dict[@"username"] = [[NSUserDefaults standardUserDefaults] objectForKey:@"SlackBotName"] ?: @"AutoPkgr";
-    }
-
-    dict[@"icon_url"] = @"https://raw.githubusercontent.com/lindegroup/autopkgr/master/AutoPkgr/Resources/autopkgr_slack.png";
-
-    return [dict copy];
 }
 
 - (void)sendMessageWithParameters:(NSDictionary *)parameters
 {
     AFHTTPRequestOperationManager *manager = [self requestManager];
+
     [[self class] infoFromKeychain:^(NSString *webHookURL, NSError *error) {
         if (error) {
             self.notificatonComplete(error);
         }
         else {
             [manager POST:webHookURL
-                parameters:[self baseParameters:parameters]
-                success:^(AFHTTPRequestOperation *operation, id responseObject) {
-                    self.notificatonComplete(nil);
-                }
-                failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                    NSLog(@"Error sending Slack notification: %@", operation.responseString);
-                    self.notificatonComplete([LGError errorWithResponse:operation.response]);
-                self.notificatonComplete([LGError errorWithResponse:operation.response orError:error]);
-                }];
+                  parameters:parameters
+                  success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                      self.notificatonComplete(nil);
+                  }
+                  failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                      NSLog(@"Error sending Microsoft Teams notification: %@", operation.responseString);
+                      self.notificatonComplete([LGError errorWithResponse:operation.response]);
+                  }];
         }
     }];
+    
+    
+
 }
 
 @end
+
+
