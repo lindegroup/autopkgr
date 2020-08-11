@@ -3117,7 +3117,7 @@
 				GCC_PREFIX_HEADER = "AutoPkgr/Supporting Files/AutoPkgr-Prefix.pch";
 				INFOPLIST_FILE = "AutoPkgr/Supporting Files/AutoPkgr-Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				MARKETING_VERSION = 1.5.5;
 				OTHER_CODE_SIGN_FLAGS = "";
 				"OTHER_CODE_SIGN_FLAGS[sdk=*]" = "--options=runtime";
@@ -3181,7 +3181,7 @@
 				GCC_PREFIX_HEADER = "AutoPkgr/Supporting Files/AutoPkgr-Prefix.pch";
 				INFOPLIST_FILE = "AutoPkgr/Supporting Files/AutoPkgr-Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				MARKETING_VERSION = 1.5.5;
 				OTHER_CODE_SIGN_FLAGS = "";
 				"OTHER_CODE_SIGN_FLAGS[sdk=*]" = "--options=runtime";
