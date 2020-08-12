@@ -177,9 +177,9 @@ static NSMutableDictionary *_identifierURLStore = nil;
 {
     /* We automatically handle the enabling of the MakeCatalogs recipe
      * so don't do anything if that's the one getting enabled. */
-    if ([self.Name isEqualToString:kLGMakeCatalogsRecipeName]) {
-        return;
-    }
+    //if ([self.Name isEqualToString:kLGMakeCatalogsRecipeName]) {
+        //return;
+    //}
 
     /* This is all dispatched to a serial queue so a race condition doesn't raise
      * when multiple recipes are added or removed in rapid succession. */
@@ -218,7 +218,6 @@ static NSMutableDictionary *_identifierURLStore = nil;
          * now listed. If so re-add the MakeCatalogs recipe. */
         [currentList enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
             if ([obj rangeOfString:@"munki"].location != NSNotFound) {
-                [currentList addObject:kLGMakeCatalogsRecipeName];
                 *stop = YES;
             }
         }];
