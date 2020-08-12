@@ -32,7 +32,7 @@ static NSString *const GoogleHangoutsNotificationEnabledKey = @"GoogleHangoutsNo
 #pragma mark - Protocol Conforming
 + (NSString *)serviceDescription
 {
-    return @"AutoPkgr Google Hangouts";
+    return @"AutoPkgr Google Chat";
 }
 
 + (BOOL)reportsIntegrations
@@ -52,7 +52,7 @@ static NSString *const GoogleHangoutsNotificationEnabledKey = @"GoogleHangoutsNo
 
 + (NSString *)account
 {
-    return @"AutoPkgr Google Hangouts Webhook URL";
+    return @"AutoPkgr Google Chat Webhook URL";
 }
 
 + (NSURL *)serviceURL
@@ -79,7 +79,7 @@ static NSString *const GoogleHangoutsNotificationEnabledKey = @"GoogleHangoutsNo
 
 - (void)sendTest:(void (^)(NSError *))complete
 {
-    [self sendMessage:NSLocalizedString(@"You are now set up to receive notifications in your Google Hangouts channel!", nil) title:nil complete:complete];
+    [self sendMessage:NSLocalizedString(@"You are now set up to receive notifications in your Google Chat room!", nil) title:nil complete:complete];
 }
 
 - (void)sendMessage:(NSString *)message title:(NSString *)title complete:(void (^)(NSError *))complete
@@ -121,7 +121,7 @@ static NSString *const GoogleHangoutsNotificationEnabledKey = @"GoogleHangoutsNo
                       self.notificatonComplete(nil);
                   }
                   failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                      NSLog(@"Error sending Google Hangouts notification: %@", operation.responseString);
+                      NSLog(@"Error sending Google notification: %@", operation.responseString);
                       self.notificatonComplete([LGError errorWithResponse:operation.response]);
                   }];
         }
