@@ -70,6 +70,11 @@ static NSString *const GoogleHangoutsNotificationEnabledKey = @"GoogleHangoutsNo
     return [self templateWithName:@"slack_report" type:@"md"];
 }
 
++ (ACEMode)tempateFormat
+{
+    return ACEModeMarkdown;
+}
+
 #pragma mark - Send
 - (void)send:(void (^)(NSError *))complete
 {
