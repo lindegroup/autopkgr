@@ -67,7 +67,7 @@ static NSString *const GoogleHangoutsNotificationEnabledKey = @"GoogleHangoutsNo
 
 + (NSString *)defaultTemplate
 {
-    return [self templateWithName:@"web_report" type:@"html"];
+    return [self templateWithName:@"slack_report" type:@"md"];
 }
 
 #pragma mark - Send
