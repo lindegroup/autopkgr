@@ -279,12 +279,12 @@ static NSString *const kLGAutoPkgRecipeCurrentStatusKey = @"currentStatus";
         LGAutoPkgRecipe *recipe = _searchedRecipes[idx];
         [recipes addObject:recipe.Identifier];
         if ([predicate evaluateWithObject:recipe]) {
-            runMakeCatalogs = YES;
+            runMakeCatalogs = NO;
         }
     }];
 
     if (runMakeCatalogs) {
-        //[recipes addObject:@"MakeCatalogs.munki"];
+        [recipes addObject:@"MakeCatalogs.munki"];
     }
 
     LGAutoPkgTask *runTask = [LGAutoPkgTask runRecipesTask:recipes];
