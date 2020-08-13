@@ -269,7 +269,7 @@ static dispatch_queue_t autopkgr_kc_access_synchronizer_queue()
 
     NSTask *task = [NSTask new];
     task.launchPath = @"/usr/sbin/installer";
-    task.arguments = @[ @"-verbose", @"-pkg", path, @"-target", @"/" ];
+    task.arguments = @[ @"-verbose", @"-applyChoiceChangesXML", @"-pkg", path, @"-target", @"/" ];
 
     NSPipe *pipe = [NSPipe pipe];
     task.standardOutput = pipe;
