@@ -34,6 +34,7 @@
 		295D7358247336C1008B796A /* LGMicrosoftTeamsNotificationView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 295D7354247336C1008B796A /* LGMicrosoftTeamsNotificationView.xib */; };
 		295D7359247336C1008B796A /* LGMicrosoftTeamsNotificationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 295D7356247336C1008B796A /* LGMicrosoftTeamsNotificationView.m */; };
 		295D735C24733742008B796A /* LGMicrosoftTeamsNotification.m in Sources */ = {isa = PBXBuildFile; fileRef = 295D735A24733742008B796A /* LGMicrosoftTeamsNotification.m */; };
+		29EFE49F24E6007600FAFA1E /* munki_installer_choices.xml in Resources */ = {isa = PBXBuildFile; fileRef = 29EFE49E24E6007600FAFA1E /* munki_installer_choices.xml */; };
 		5EF53CBDA5C7106F3847E9FD /* libPods-AutoPkgrTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9B419CA189BE572FD31F74E0 /* libPods-AutoPkgrTests.a */; };
 		6A53625D1988BE59008A949C /* LGTestPort.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A53625C1988BE59008A949C /* LGTestPort.m */; };
 		8B1AF8521BED81440013BE37 /* LGFileWaveIntegrationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B1AF8501BED81440013BE37 /* LGFileWaveIntegrationView.m */; };
@@ -329,6 +330,7 @@
 		295D7356247336C1008B796A /* LGMicrosoftTeamsNotificationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGMicrosoftTeamsNotificationView.m; sourceTree = "<group>"; };
 		295D735A24733742008B796A /* LGMicrosoftTeamsNotification.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGMicrosoftTeamsNotification.m; sourceTree = "<group>"; };
 		295D735B24733742008B796A /* LGMicrosoftTeamsNotification.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGMicrosoftTeamsNotification.h; sourceTree = "<group>"; };
+		29EFE49E24E6007600FAFA1E /* munki_installer_choices.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = munki_installer_choices.xml; sourceTree = "<group>"; };
 		2C6986FE5B41226735CC0A32 /* Pods-AutoPkgr.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AutoPkgr.debug.xcconfig"; path = "Pods/Target Support Files/Pods-AutoPkgr/Pods-AutoPkgr.debug.xcconfig"; sourceTree = "<group>"; };
 		39CF6FA5E75D62254A994C22 /* libPods-AutoPkgr.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-AutoPkgr.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		45E6F02919946C3F73535515 /* Pods-AutoPkgrTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AutoPkgrTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-AutoPkgrTests/Pods-AutoPkgrTests.release.xcconfig"; sourceTree = "<group>"; };
@@ -795,6 +797,7 @@
 				BE3D94331C160F59001763D0 /* web_report.html */,
 				BE3D94361C1627F8001763D0 /* slack_report.md */,
 				BE3D94311C15FCFA001763D0 /* example_data.plist */,
+				29EFE49E24E6007600FAFA1E /* munki_installer_choices.xml */,
 				1AC69558195B59ED00D2BD81 /* AutoPkgr-Info.plist */,
 				1AC69559195B59ED00D2BD81 /* InfoPlist.strings */,
 				BE7EF2391B3350E4002037B1 /* Localizable.strings */,
@@ -1498,6 +1501,7 @@
 				8B8654B31CF6679900B0A3FD /* LGAutoPkgIntegrationView.xib in Resources */,
 				8B8654EB1CF66E5C00B0A3FD /* LGSlackNotificationView.xib in Resources */,
 				8B8654951CF6500400B0A3FD /* LGNotificationsViewController.xib in Resources */,
+				29EFE49F24E6007600FAFA1E /* munki_installer_choices.xml in Resources */,
 				1AC69567195B59EE00D2BD81 /* MainMenu.xib in Resources */,
 				BE7EF23B1B3350E4002037B1 /* Localizable.strings in Resources */,
 				BE57AC2A19BA3BBC00BB17B1 /* LocalizableError.strings in Resources */,
