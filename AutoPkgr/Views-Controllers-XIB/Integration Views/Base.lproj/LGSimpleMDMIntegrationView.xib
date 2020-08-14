@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="16097.2" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+    <dependencies>
+        <deployment identifier="macosx"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="16097.2"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <customObject id="-2" userLabel="File's Owner" customClass="LGSimpleMDMIntegrationView">
+            <connections>
+                <outlet property="SimpleMDMApiKeyTF" destination="HsX-r7-oue" id="Lgd-Xq-Lg5"/>
+                <outlet property="view" destination="Hz6-mo-xeY" id="0bl-1N-x8E"/>
+            </connections>
+        </customObject>
+        <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
+        <customObject id="-3" userLabel="Application" customClass="NSObject"/>
+        <customView id="Hz6-mo-xeY">
+            <rect key="frame" x="0.0" y="0.0" width="520" height="306"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+            <subviews>
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="02f-go-CQL">
+                    <rect key="frame" x="18" y="270" width="484" height="16"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="480" id="R7L-eQ-eyN"/>
+                    </constraints>
+                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="SimpleMDM API Key" id="UeS-Wv-7wa">
+                        <font key="font" metaFont="system"/>
+                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
+                <matrix verticalHuggingPriority="750" allowsEmptySelection="NO" autorecalculatesCellSize="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Ye0-7D-cch">
+                    <rect key="frame" x="20" y="223" width="260" height="38"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="260" id="7Nt-JG-ZDw"/>
+                        <constraint firstAttribute="height" constant="38" id="ebh-s1-hfw"/>
+                    </constraints>
+                    <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                    <size key="cellSize" width="260" height="18"/>
+                    <size key="intercellSpacing" width="4" height="2"/>
+                    <buttonCell key="prototype" type="radio" title="Use proxy settings defined in System Preferences" imagePosition="left" alignment="left" controlSize="small" state="on" tag="1" inset="2" id="oUv-h4-uUP">
+                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                        <font key="font" metaFont="message" size="11"/>
+                    </buttonCell>
+                    <cells>
+                        <column>
+                            <buttonCell type="radio" title="Use default" imagePosition="left" alignment="left" controlSize="small" state="on" inset="2" id="3YD-9U-1yY">
+                                <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                <font key="font" metaFont="message" size="11"/>
+                            </buttonCell>
+                            <buttonCell type="radio" title="Use my own:" imagePosition="left" alignment="left" controlSize="small" inset="2" id="f3y-zI-ucB">
+                                <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                <font key="font" metaFont="message" size="11"/>
+                            </buttonCell>
+                        </column>
+                    </cells>
+                    <connections>
+                        <action selector="tokenTypeChanged:" target="-2" id="M6G-Xu-TOf"/>
+                        <binding destination="btA-CQ-ilR" name="selectedIndex" keyPath="values.UseCustomSimpleMDMToken" id="8AA-8X-sBP"/>
+                    </connections>
+                </matrix>
+                <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="HsX-r7-oue">
+                    <rect key="frame" x="43" y="199" width="457" height="19"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="457" id="GSs-bx-YNb"/>
+                    </constraints>
+                    <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="E9v-XS-78e">
+                        <font key="font" metaFont="message" size="11"/>
+                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                    <connections>
+                        <binding destination="btA-CQ-ilR" name="enabled" keyPath="values.UseCustomSimpleMDMToken" id="o5K-85-LEr">
+                            <dictionary key="options">
+                                <integer key="NSMultipleValuesPlaceholder" value="0"/>
+                            </dictionary>
+                        </binding>
+                    </connections>
+                </textField>
+            </subviews>
+            <constraints>
+                <constraint firstItem="Ye0-7D-cch" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="45" id="6ru-Ek-HQB"/>
+                <constraint firstItem="02f-go-CQL" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="20" id="Rhf-i7-bUs"/>
+                <constraint firstItem="HsX-r7-oue" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="88" id="fGB-q2-gDe"/>
+                <constraint firstItem="Ye0-7D-cch" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="20" id="hgo-bw-krw"/>
+                <constraint firstItem="HsX-r7-oue" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="43" id="ngF-Y2-xsU"/>
+                <constraint firstItem="02f-go-CQL" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="20" id="uoj-bJ-MN8"/>
+            </constraints>
+            <point key="canvasLocation" x="169" y="171"/>
+        </customView>
+        <userDefaultsController representsSharedInstance="YES" id="btA-CQ-ilR"/>
+    </objects>
+</document>
