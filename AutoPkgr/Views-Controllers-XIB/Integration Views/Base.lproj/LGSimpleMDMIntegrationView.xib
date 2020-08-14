@@ -40,17 +40,20 @@
                     <size key="intercellSpacing" width="4" height="2"/>
                     <buttonCell key="prototype" type="radio" title="Use proxy settings defined in System Preferences" imagePosition="left" alignment="left" controlSize="small" state="on" tag="1" inset="2" id="oUv-h4-uUP">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
-                        <font key="font" metaFont="message" size="11"/>
+                        <font key="font" metaFont="menu" size="11"/>
                     </buttonCell>
                     <cells>
                         <column>
-                            <buttonCell type="radio" title="Use default" imagePosition="left" alignment="left" controlSize="small" state="on" inset="2" id="3YD-9U-1yY">
+                            <buttonCell type="radio" title="Do not save my key (requires export)" imagePosition="left" alignment="left" controlSize="small" state="on" inset="2" id="3YD-9U-1yY">
                                 <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
-                                <font key="font" metaFont="message" size="11"/>
+                                <font key="font" metaFont="menu" size="11"/>
+                                <connections>
+                                    <binding destination="btA-CQ-ilR" name="title" keyPath="values" id="gaW-Ep-EHd"/>
+                                </connections>
                             </buttonCell>
-                            <buttonCell type="radio" title="Use my own:" imagePosition="left" alignment="left" controlSize="small" inset="2" id="f3y-zI-ucB">
+                            <buttonCell type="radio" title="Save my key:" imagePosition="left" alignment="left" controlSize="small" inset="2" id="f3y-zI-ucB">
                                 <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
-                                <font key="font" metaFont="message" size="11"/>
+                                <font key="font" metaFont="menu" size="11"/>
                             </buttonCell>
                         </column>
                     </cells>
@@ -65,7 +68,7 @@
                         <constraint firstAttribute="width" constant="457" id="GSs-bx-YNb"/>
                     </constraints>
                     <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="E9v-XS-78e">
-                        <font key="font" metaFont="message" size="11"/>
+                        <font key="font" metaFont="menu" size="11"/>
                         <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                         <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
