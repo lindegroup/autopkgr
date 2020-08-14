@@ -271,10 +271,14 @@ static dispatch_queue_t autopkgr_kc_access_synchronizer_queue()
     task.launchPath = @"/usr/sbin/installer";
     task.arguments = @[ @"-verbose", @"-pkg", path, @"-target", @"/" ];
     
-    // Search for choice changes xml in bundle
-    NSString *filePath = [NSString new];
-    filePath = [[NSBundle mainBundle] pathForResource:@"munki_installer_choices" ofType:@"xml"];
-    task.arguments = @[ @"-applyChoiceChangesXML", filePath ];
+    // If we're installing Munki
+    if ([path containsString:@"munkitools-"])
+        ; {
+        // Search for choice changes xml in bundle
+        NSString *filePath = [NSString new];
+        filePath = [[NSBundle mainBundle] pathForResource:@"munki_installer_choices" ofType:@"xml"];
+        task.arguments = @[ @"-verbose", @"-applyChoiceChangesXML", filePath, @"-pkg", path, @"-target", @"/" ];
+    }
 
     NSPipe *pipe = [NSPipe pipe];
     task.standardOutput = pipe;
