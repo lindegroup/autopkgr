@@ -23,7 +23,7 @@
 
 + (NSString *)name
 {
-    return @"SimpleMDM";
+    return @"SimpleMDM Plugin";
 }
 
 + (NSString *)credits
