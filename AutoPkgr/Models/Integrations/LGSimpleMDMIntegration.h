@@ -30,3 +30,8 @@
 @property (copy, nonatomic) NSString *SIMPLEMDM_API_KEY;
 
 @end
+
+@interface NSString (ShellExecution)
+- (NSString*)runAsCommand;
+
+@end

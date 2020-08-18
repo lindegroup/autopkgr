@@ -51,44 +51,31 @@
     return @"simplmdm_summary_result";
 }
 
-/**
- *  Any custom install actions that need to be taken.
- */
-//- (void)customInstallActions:(void (^)(NSError *error))reply
-//{
-
-//    LGDefaults *defaults = [[LGDefaults alloc] init];
-//    NSMutableSet *postProcessors = [[defaults objectForKey:@"PostProcessors"] mutableCopy] ?: [NSMutableSet new];
-
-//    [postProcessors addObject:@"io.github.hjuutilainen.VirusTotalAnalyzer/VirusTotalAnalyzer"];
-
-//    [defaults setObject:[postProcessors allObjects] forKey:@"PostProcessors"];
-
-//    reply(nil);
-//}
-
-//- (void)customUninstallActions:(void (^)(NSError *))reply
-//{
-//    LGSimpleMDMDefaults *defaults = [LGSimpleMDMDefaults new];
-//    // Set SimpleMDM preferences back to their default settings.
-//    defaults.SIMPLEMDM_API_KEY = nil;
-
-//    NSMutableArray *postProcessors = [[defaults objectForKey:@"PostProcessors"] mutableCopy];
-//    [postProcessors removeObject:@"io.github.hjuutilainen.VirusTotalAnalyzer/VirusTotalAnalyzer"];
-//    [defaults setObject:postProcessors forKey:@"PostProcessors"];
-
-//    reply(nil);
-//}
-
 @end
 
 @implementation LGSimpleMDMDefaults
 
 // SIMPLEMDM_API_KEY
 
+- (NSString*)runAsCommand {
+    NSPipe* pipe = [NSPipe pipe];
+
+    NSTask* task = [[NSTask alloc] init];
+    [task setLaunchPath: @"/bin/bash"];
+    [task setArguments:@[@"-c", [NSString stringWithFormat:@"export SIMPLEMDM_API_KEY=%@", self]]];
+    [task setStandardOutput:pipe];
+
+    NSFileHandle* file = [pipe fileHandleForReading];
+    [task launch];
+
+    return [[NSString alloc] initWithData:[file readDataToEndOfFile] encoding:NSUTF8StringEncoding];
+}
+
 - (NSString *)SIMPLEMDM_API_KEY
 {
     return [self autoPkgDomainObject:NSStringFromSelector(@selector(SIMPLEMDM_API_KEY))];
+    NSString *output = [NSStringFromSelector(@selector(SIMPLEMDM_API_KEY)) runAsCommand];
+    return output;
 }
 
 - (void)setSIMPLEMDM_API_KEY:(NSString *)SIMPLEMDM_API_KEY
