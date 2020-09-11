@@ -17,13 +17,23 @@
 //  limitations under the License.
 //
 
+#import "LGIntegration+Protocols.h"
 #import "LGSimpleMDMIntegration.h"
+#import <Foundation/Foundation.h>
+
+// Define the protocols you intend to conform to.
+@interface LGSimpleMDMIntegration () <LGIntegrationPackageInstaller,
+                                      LGIntegrationSharedProcessor>
+                                     
+@end
 
 @implementation LGSimpleMDMIntegration
+@synthesize installedVersion = _installedVersion;
 
+#pragma mark - Class overrides
 + (NSString *)name
 {
-    return @"SimpleMDM Plugin";
+    return @"SimpleMDM plugin";
 }
 
 + (NSString *)credits
@@ -31,9 +41,9 @@
     return @"Taylor Boyko\nhttps://github.com/SimpleMDM/munki-plugin";
 }
 
-+ (NSArray *)components
++ (NSString *)gitHubURL
 {
-    return nil;
+    return @"https://api.github.com/repos/SimpleMDM/munki-plugin/releases";
 }
 
 + (NSString *)defaultRepository
@@ -41,14 +51,54 @@
     return @"https://github.com/SimpleMDM/munki-plugin.git";
 }
 
++ (NSString *)binary
+{
+    return @"/usr/local/munki/munkilib/munkirepo/SimpleMDMRepo.py";
+}
+
++ (NSArray *)components
+{
+    return @[
+        [self binary],
+         @"/usr/local/simplemdm/munki-plugin/config.plist",
+    ];
+}
+
++ (NSArray *)packageIdentifiers
+{
+    return @[ @"com.simplemdm.munki_plugin" ];
+}
+
 + (BOOL)isUninstallable
 {
-    return YES;
+    return NO;
 }
 
 + (NSString *)summaryResultKey
 {
-    return @"simplmdm_summary_result";
+    return @"simplemdm_summary_result";
+}
+#pragma mark - Instance overrides
+- (NSString *)installedVersion
+{
+    return [NSDictionary dictionaryWithContentsOfFile:@"/private/var/db/receipts/com.simplemdm.munki_plugin.plist"][@"PackageVersion"];
+}
+
+/**
+ *  Any custom install actions that need to be taken.
+ */
+- (void)customInstallActions:(void (^)(NSError *error))reply
+{
+    reply(nil);
+}
+
+- (void)customUninstallActions:(void (^)(NSError *))reply
+{
+    LGSimpleMDMDefaults *defaults = [LGSimpleMDMDefaults new];
+    // Set preferences back to their default settings.
+    defaults.SIMPLEMDM_API_KEY = nil;
+
+    reply(nil);
 }
 
 @end
@@ -57,30 +107,14 @@
 
 // SIMPLEMDM_API_KEY
 
-- (NSString*)runAsCommand {
-    NSPipe* pipe = [NSPipe pipe];
-
-    NSTask* task = [[NSTask alloc] init];
-    [task setLaunchPath: @"/bin/bash"];
-    [task setArguments:@[@"-c", [NSString stringWithFormat:@"export SIMPLEMDM_API_KEY=%@", self]]];
-    [task setStandardOutput:pipe];
-
-    NSFileHandle* file = [pipe fileHandleForReading];
-    [task launch];
-
-    return [[NSString alloc] initWithData:[file readDataToEndOfFile] encoding:NSUTF8StringEncoding];
-}
-
 - (NSString *)SIMPLEMDM_API_KEY
 {
-    return [self autoPkgDomainObject:NSStringFromSelector(@selector(SIMPLEMDM_API_KEY))];
-    NSString *output = [NSStringFromSelector(@selector(SIMPLEMDM_API_KEY)) runAsCommand];
-    return output;
+    return [self simpleMDMDomainObject:NSStringFromSelector(@selector(key))];
 }
 
 - (void)setSIMPLEMDM_API_KEY:(NSString *)SIMPLEMDM_API_KEY
 {
-    [self setAutoPkgDomainObject:SIMPLEMDM_API_KEY forKey:NSStringFromSelector(@selector(SIMPLEMDM_API_KEY))];
+    [self setSimpleMDMDomainObject:SIMPLEMDM_API_KEY forKey:NSStringFromSelector(@selector(key))];
 }
 
 @end

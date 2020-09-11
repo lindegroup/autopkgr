@@ -21,6 +21,7 @@
 #pragma mark - App Names
 extern NSString *const kLGApplicationName;
 extern NSString *const kLGAutoPkgPreferenceDomain;
+extern NSString *const kLGSimpleMDMPreferenceDomain;
 extern NSString *const kLGAutoPkgrPreferenceDomain;
 extern NSString *const kLGAutoPkgrHelperToolName;
 extern NSString *const kLGAutoPkgrLaunchDaemonPlist;

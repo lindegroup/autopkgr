@@ -37,7 +37,7 @@
 		2974CFA124E703B400EC0647 /* LGSimpleMDMIntegration.m in Sources */ = {isa = PBXBuildFile; fileRef = 2974CFA024E703B400EC0647 /* LGSimpleMDMIntegration.m */; };
 		2974CFA424E704A600EC0647 /* LGSimpleMDMIntegrationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2974CFA324E704A600EC0647 /* LGSimpleMDMIntegrationView.m */; };
 		2974CFA724E704DC00EC0647 /* LGSimpleMDMIntegrationView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2974CFA524E704DC00EC0647 /* LGSimpleMDMIntegrationView.xib */; };
-		29EFE49F24E6007600FAFA1E /* munki_installer_choices.xml in Resources */ = {isa = PBXBuildFile; fileRef = 29EFE49E24E6007600FAFA1E /* munki_installer_choices.xml */; };
+		29E9D06525019A56007D9509 /* munkichoices.xml in Resources */ = {isa = PBXBuildFile; fileRef = 29E9D06425019A55007D9509 /* munkichoices.xml */; };
 		5EF53CBDA5C7106F3847E9FD /* libPods-AutoPkgrTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9B419CA189BE572FD31F74E0 /* libPods-AutoPkgrTests.a */; };
 		6A53625D1988BE59008A949C /* LGTestPort.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A53625C1988BE59008A949C /* LGTestPort.m */; };
 		8B1AF8521BED81440013BE37 /* LGFileWaveIntegrationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B1AF8501BED81440013BE37 /* LGFileWaveIntegrationView.m */; };
@@ -338,7 +338,7 @@
 		2974CFA224E704A600EC0647 /* LGSimpleMDMIntegrationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGSimpleMDMIntegrationView.h; sourceTree = "<group>"; };
 		2974CFA324E704A600EC0647 /* LGSimpleMDMIntegrationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGSimpleMDMIntegrationView.m; sourceTree = "<group>"; };
 		2974CFA624E704DC00EC0647 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LGSimpleMDMIntegrationView.xib; sourceTree = "<group>"; };
-		29EFE49E24E6007600FAFA1E /* munki_installer_choices.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = munki_installer_choices.xml; sourceTree = "<group>"; };
+		29E9D06425019A55007D9509 /* munkichoices.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = munkichoices.xml; sourceTree = "<group>"; };
 		2C6986FE5B41226735CC0A32 /* Pods-AutoPkgr.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AutoPkgr.debug.xcconfig"; path = "Pods/Target Support Files/Pods-AutoPkgr/Pods-AutoPkgr.debug.xcconfig"; sourceTree = "<group>"; };
 		39CF6FA5E75D62254A994C22 /* libPods-AutoPkgr.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-AutoPkgr.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		45E6F02919946C3F73535515 /* Pods-AutoPkgrTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AutoPkgrTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-AutoPkgrTests/Pods-AutoPkgrTests.release.xcconfig"; sourceTree = "<group>"; };
@@ -805,7 +805,6 @@
 				BE3D94331C160F59001763D0 /* web_report.html */,
 				BE3D94361C1627F8001763D0 /* slack_report.md */,
 				BE3D94311C15FCFA001763D0 /* example_data.plist */,
-				29EFE49E24E6007600FAFA1E /* munki_installer_choices.xml */,
 				1AC69558195B59ED00D2BD81 /* AutoPkgr-Info.plist */,
 				1AC69559195B59ED00D2BD81 /* InfoPlist.strings */,
 				BE7EF2391B3350E4002037B1 /* Localizable.strings */,
@@ -858,6 +857,7 @@
 		1AC98423195DF6270071CAB3 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				29E9D06425019A55007D9509 /* munkichoices.xml */,
 				1AC69568195B59EE00D2BD81 /* Images.xcassets */,
 				1A2C7FAC19CC9F8300CFF472 /* scripts */,
 				8BB217F519709A2C00EF8B93 /* AutoPkgrIcon.png */,
@@ -1509,13 +1509,13 @@
 				8B86550E1CF670DA00B0A3FD /* LGSelectNotificationsWindowController.xib in Resources */,
 				8B8654F91CF66F1800B0A3FD /* LGJSSDistributionPointsPrefPanel.xib in Resources */,
 				8B86548E1CF64EE500B0A3FD /* LGScheduleViewController.xib in Resources */,
+				29E9D06525019A56007D9509 /* munkichoices.xml in Resources */,
 				8B8654F21CF66EB500B0A3FD /* LGTemplateRenderWindowController.xib in Resources */,
 				8B8654A51CF665DF00B0A3FD /* LGAbsoluteManageIntegrationView.xib in Resources */,
 				295D7358247336C1008B796A /* LGMicrosoftTeamsNotificationView.xib in Resources */,
 				8B8654B31CF6679900B0A3FD /* LGAutoPkgIntegrationView.xib in Resources */,
 				8B8654EB1CF66E5C00B0A3FD /* LGSlackNotificationView.xib in Resources */,
 				8B8654951CF6500400B0A3FD /* LGNotificationsViewController.xib in Resources */,
-				29EFE49F24E6007600FAFA1E /* munki_installer_choices.xml in Resources */,
 				1AC69567195B59EE00D2BD81 /* MainMenu.xib in Resources */,
 				BE7EF23B1B3350E4002037B1 /* Localizable.strings in Resources */,
 				BE57AC2A19BA3BBC00BB17B1 /* LocalizableError.strings in Resources */,

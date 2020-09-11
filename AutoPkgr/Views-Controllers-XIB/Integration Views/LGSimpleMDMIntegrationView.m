@@ -21,12 +21,19 @@
 #import "LGSimpleMDMIntegration.h"
 #import "LGSimpleMDMIntegrationView.h"
 
+#import "LGDefaults.h"
+#import "LGConstants.h"
+#import "LGAutoPkgTask.h"
+#import "LGAutopkgr.h"
+#import "LGInstaller.h"
+
 #import "NSTextField+safeStringValue.h"
 @interface LGSimpleMDMIntegrationView () <NSTextFieldDelegate>
 
 @property (weak) IBOutlet NSTextField *SimpleMDMApiKeyTF;
 
-@property (strong) LGSimpleMDMDefaults *defaults;
+@property (nonatomic, strong) LGSimpleMDMDefaults *defaults;
+@property (nonatomic, strong) LGSimpleMDMDefaults *SIMPLEMDM_API_KEY;
 @property BOOL customTokenEnabled;
 
 @end
@@ -66,5 +73,11 @@
         _defaults.SIMPLEMDM_API_KEY = [notification.object stringValue];
     }
 }
-@end
 
+@synthesize description;
+
+@synthesize hash;
+
+@synthesize superclass;
+
+@end

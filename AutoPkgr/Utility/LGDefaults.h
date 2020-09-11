@@ -87,6 +87,10 @@ typedef NS_OPTIONS(NSInteger, LGReportItems) {
 - (id)autoPkgDomainObject:(NSString *)key;
 - (void)setAutoPkgDomainObject:(id)object forKey:(NSString *)key;
 
+#pragma mark - SimpleMDM Accessor methods
+- (id)simpleMDMDomainObject:(NSString *)key;
+- (void)setSimpleMDMDomainObject:(id)object forKey:(NSString *)key;
+
 #pragma Class Methods
 + (BOOL)fixRelativePathsInAutoPkgDefaults:(NSError **)error neededFixing:(NSInteger *)neededFixing;
 

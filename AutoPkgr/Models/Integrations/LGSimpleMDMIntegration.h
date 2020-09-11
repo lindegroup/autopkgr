@@ -18,6 +18,7 @@
 //
 
 #import "LGDefaults.h"
+#import "LGConstants.h"
 #import "LGIntegration+Protocols.h"
 #import "LGIntegration.h"
 
@@ -28,10 +29,7 @@
 @interface LGSimpleMDMDefaults : LGDefaults
 
 @property (copy, nonatomic) NSString *SIMPLEMDM_API_KEY;
-
-@end
-
-@interface NSString (ShellExecution)
-- (NSString*)runAsCommand;
+@property (copy, nonatomic) NSString *simpleMDMDomainObject;
+@property (copy, nonatomic) NSString *setSimpleMDMDomainObject;
 
 @end
