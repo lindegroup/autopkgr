@@ -494,7 +494,9 @@ All notable changes to this project will be documented in this file. This projec
 - Initial public release of AutoPkgr.
 
 
-[unreleased]: https://github.com/lindegroup/autopkgr/compare/v1.5.3...HEAD
+[unreleased]: https://github.com/lindegroup/autopkgr/compare/v1.5.5...HEAD
+[1.5.5]: https://github.com/lindegroup/autopkgr/compare/v1.5.4...v1.5.5
+[1.5.4]: https://github.com/lindegroup/autopkgr/compare/v1.5.3...v1.5.4
 [1.5.3]: https://github.com/lindegroup/autopkgr/compare/v1.5.2...v1.5.3
 [1.5.2]: https://github.com/lindegroup/autopkgr/compare/v1.5.1...v1.5.2
 [1.5.1]: https://github.com/lindegroup/autopkgr/compare/v1.5...v1.5.1
