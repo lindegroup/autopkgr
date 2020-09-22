@@ -23,6 +23,7 @@
 #pragma mark - App Names
 NSString *const kLGApplicationName = @"AutoPkgr";
 NSString *const kLGAutoPkgPreferenceDomain = @"com.github.autopkg";
+NSString *const kLGSimpleMDMPreferenceDomain = @"/usr/local/simplemdm/munki-plugin/config.plist";
 NSString *const kLGAutoPkgrPreferenceDomain = @"com.lindegroup.AutoPkgr";
 NSString *const kLGAutoPkgrHelperToolName = @"com.lindegroup.AutoPkgr.helper";
 NSString *const kLGAutoPkgrLaunchDaemonPlist = @"com.lindegroup.AutoPkgr.schedule";

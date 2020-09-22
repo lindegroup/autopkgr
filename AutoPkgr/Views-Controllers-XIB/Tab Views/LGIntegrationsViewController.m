@@ -30,6 +30,7 @@
 #import "LGMacPatchIntegrationView.h"
 #import "LGMunkiIntegrationView.h"
 #import "LGTableCellViews.h"
+#import "LGSimpleMDMIntegrationView.h"
 #import "LGVirusTotalAnalyzerIntegrationView.h"
 
 #import "NSOpenPanel+typeChooser.h"
@@ -69,7 +70,7 @@
 
 - (NSString *)tabLabel
 {
-    return NSLocalizedString(@"Folders & Integration", @"Tab label");
+    return NSLocalizedString(@"Integrations", @"Tab label");
 }
 
 #pragma mark - Integration config

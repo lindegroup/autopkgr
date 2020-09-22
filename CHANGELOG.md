@@ -4,6 +4,19 @@ All notable changes to this project will be documented in this file. This projec
 
 ## [Unreleased](unreleased)
 
+## [1.5.5] - 2020-09-22
+
+### Added
+- AutoPkgr now integrates with the [SimpleMDM Munki repo plugin](https://github.com/SimpleMDM/munki-plugin). Big thanks to [@tboyko](https://github.com/tboyko) for a great collaboration!
+### Changed
+- Attention Munki Users: In order to eliminate confusion, AutoPkgr will no longer automatically add the MakeCatalogs.munki recipe to the end of your recipe list. If you would like to add it, you should create an override of the MakeCatalogs.munki recipe and add it to your recipe list. Since the introduction of [recipe trust information](https://github.com/autopkg/autopkg/wiki/Autopkg-and-recipe-parent-trust-info) in AutoPkg 1.0, we recommend that you create an override of MakeCatalogs.munki, instead of running the recipe itself. Make sure to check the box to include the MakeCatalogs.munki in your schedule. It will no longer be included automatically.
+- Updated the Folders & Integrations tab to "Integrations."
+- The minimum macOS build to run AutoPkgr is now macOS 10.13. It is recommended to run at least macOS 10.13.6 with AutoPkgr. 10.14.6 and above is even better. If you need to run below macOS 10.13, please consider using version 1.5.4 or below of AutoPkgr.
+- Updated ongoing development credits.
+### Fixed
+- Updated to Google Chat verbiage (in place of Hangouts).
+- Updated the "AutoPkgr Google Chat" Template. This no longer needs to be edited.
+
 ## [1.5.4] - 2020-07-28
 
 ### Added
@@ -481,7 +494,9 @@ All notable changes to this project will be documented in this file. This projec
 - Initial public release of AutoPkgr.
 
 
-[unreleased]: https://github.com/lindegroup/autopkgr/compare/v1.5.3...HEAD
+[unreleased]: https://github.com/lindegroup/autopkgr/compare/v1.5.5...HEAD
+[1.5.5]: https://github.com/lindegroup/autopkgr/compare/v1.5.4...v1.5.5
+[1.5.4]: https://github.com/lindegroup/autopkgr/compare/v1.5.3...v1.5.4
 [1.5.3]: https://github.com/lindegroup/autopkgr/compare/v1.5.2...v1.5.3
 [1.5.2]: https://github.com/lindegroup/autopkgr/compare/v1.5.1...v1.5.2
 [1.5.1]: https://github.com/lindegroup/autopkgr/compare/v1.5...v1.5.1

@@ -17,8 +17,8 @@
 
 "microsoftTeamsHelpInfoURL" = "https://docs.microsoft.com/en-us/microsoftteams/platform/concepts/connectors#setting-up-a-custom-incoming-webhook";
 
-"googleHangoutsInfoTitle" = "Google Hangouts Notifications";
-"googleHangoutsHelpInfo" = "Incoming Webhooks are a simple way to post messages from external sources into Google Hangouts. Navigate to the link below to view instructions on how to generate a Incoming Webhook URL.";
+"googleHangoutsInfoTitle" = "Google Notifications";
+"googleHangoutsHelpInfo" = "Incoming Webhooks are a simple way to post messages from external sources into Google Chat/Hangouts. Navigate to the link below to view instructions on how to generate a Incoming Webhook URL.";
 
 "googleHangoutsHelpInfoURL" = "https://developers.google.com/hangouts/chat/how-tos/webhooks";
 

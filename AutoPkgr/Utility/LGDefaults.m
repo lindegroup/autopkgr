@@ -318,6 +318,21 @@
                              (__bridge CFStringRef)(kLGAutoPkgPreferenceDomain));
 }
 
+#pragma mark - CFPrefs
+- (id)simpleMDMDomainObject:(NSString *)key
+{
+    id value = CFBridgingRelease(CFPreferencesCopyAppValue((__bridge CFStringRef)(key),
+                                                           (__bridge CFStringRef)(kLGSimpleMDMPreferenceDomain)));
+    return value;
+}
+
+- (void)setSimpleMDMDomainObject:(id)object forKey:(NSString *)key
+{
+    CFPreferencesSetAppValue((__bridge CFStringRef)(key),
+                             (__bridge CFTypeRef)(object),
+                             (__bridge CFStringRef)(kLGSimpleMDMPreferenceDomain));
+}
+
 #pragma mark - Class Methods
 + (NSString *)formattedDate:(NSDate *)date
 {

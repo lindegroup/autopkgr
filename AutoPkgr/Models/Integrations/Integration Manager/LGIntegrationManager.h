@@ -28,6 +28,7 @@
 #import "LGLANrevIntegration.h"
 #import "LGMacPatchIntegration.h"
 #import "LGMunkiIntegration.h"
+#import "LGSimpleMDMIntegration.h"
 #import "LGVirusTotalAnalyzerIntegration.h"
 
 @class LGIntegration;

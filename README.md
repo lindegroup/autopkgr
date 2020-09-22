@@ -193,7 +193,7 @@ To configure AutoPkgr to add updates directly into your Munki repository, follow
 
 You'll also want to make sure you have `.munki` recipes selected for each app you want to import. Once the new versions of apps appear in your Munki repo, you can add them to the appropriate catalogs and manifests to deploy them.
 
-When you select any `.munki` recipes selected, AutoPkgr will automatically add MakeCatalogs.munki to the end of your recipe list. MakeCatalogs is a special recipe that rebuilds your Munki catalogs after any items are imported.
+Once you have your `.munki` recipes selected, make sure to add MakeCatalogs.munki to your recipe list. MakeCatalogs is a special recipe that rebuilds your Munki catalogs after any items are imported.
 
 Since the introduction of [recipe trust information](https://github.com/autopkg/autopkg/wiki/Autopkg-and-recipe-parent-trust-info) in AutoPkg 1.0, we recommend that you create an override of MakeCatalogs instead of running the recipe itself. To do this, follow these steps:
 
@@ -202,7 +202,7 @@ Since the introduction of [recipe trust information](https://github.com/autopkg/
 
     ![MakeCatalogs Override](doc-images/makecatalogs_override.png)
 
-That's it! You only need to create that override once. And you do _not_ need to check the box to include MakeCatalogs.munki in your schedule. It will be included automatically.
+1. That's it! You only need to create that override once. Make sure to check the box to include the MakeCatalogs.munki in your schedule. It will no longer be included automatically.
 
 
 ### Integration with Jamf Pro
@@ -461,7 +461,7 @@ After uninstalling, you can drag the AutoPkgr app from your Applications folder 
 
 AutoPkgr was created at [Linde Group](http://www.lindegroup.com) in Emeryville, California. If you're a talented Mac admin looking for a job in the Bay Area, [check out our job listings](http://www.lindegroup.com/careers/). We've got a wonderful team of people and fantastic clients.
 
-AutoPkgr was originally created by James Barclay, Elliot Jordan, and Josh Senick in June 2014, and development was led by Eldon Ahrold until 2016. Current development is led by Shawn Honsberger and Elliot Jordan.
+AutoPkgr was originally created by James Barclay, Elliot Jordan, and Josh Senick in June 2014. Development was led by Eldon Ahrold until 2016 and Elliot Jordan until 2017. Elliot continued to contribute to development in 2020. Current development is led by Shawn Honsberger.
 
 Thanks to Guillaume Gete for helping with the French localization, and to Luis Giraldo for the Spanish localization.
 

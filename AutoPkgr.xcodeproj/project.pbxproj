@@ -34,6 +34,10 @@
 		295D7358247336C1008B796A /* LGMicrosoftTeamsNotificationView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 295D7354247336C1008B796A /* LGMicrosoftTeamsNotificationView.xib */; };
 		295D7359247336C1008B796A /* LGMicrosoftTeamsNotificationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 295D7356247336C1008B796A /* LGMicrosoftTeamsNotificationView.m */; };
 		295D735C24733742008B796A /* LGMicrosoftTeamsNotification.m in Sources */ = {isa = PBXBuildFile; fileRef = 295D735A24733742008B796A /* LGMicrosoftTeamsNotification.m */; };
+		2974CFA124E703B400EC0647 /* LGSimpleMDMIntegration.m in Sources */ = {isa = PBXBuildFile; fileRef = 2974CFA024E703B400EC0647 /* LGSimpleMDMIntegration.m */; };
+		2974CFA424E704A600EC0647 /* LGSimpleMDMIntegrationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2974CFA324E704A600EC0647 /* LGSimpleMDMIntegrationView.m */; };
+		2974CFA724E704DC00EC0647 /* LGSimpleMDMIntegrationView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2974CFA524E704DC00EC0647 /* LGSimpleMDMIntegrationView.xib */; };
+		29E9D06525019A56007D9509 /* munkichoices.xml in Resources */ = {isa = PBXBuildFile; fileRef = 29E9D06425019A55007D9509 /* munkichoices.xml */; };
 		5EF53CBDA5C7106F3847E9FD /* libPods-AutoPkgrTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9B419CA189BE572FD31F74E0 /* libPods-AutoPkgrTests.a */; };
 		6A53625D1988BE59008A949C /* LGTestPort.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A53625C1988BE59008A949C /* LGTestPort.m */; };
 		8B1AF8521BED81440013BE37 /* LGFileWaveIntegrationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B1AF8501BED81440013BE37 /* LGFileWaveIntegrationView.m */; };
@@ -329,6 +333,12 @@
 		295D7356247336C1008B796A /* LGMicrosoftTeamsNotificationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGMicrosoftTeamsNotificationView.m; sourceTree = "<group>"; };
 		295D735A24733742008B796A /* LGMicrosoftTeamsNotification.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGMicrosoftTeamsNotification.m; sourceTree = "<group>"; };
 		295D735B24733742008B796A /* LGMicrosoftTeamsNotification.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGMicrosoftTeamsNotification.h; sourceTree = "<group>"; };
+		2974CF9F24E703B400EC0647 /* LGSimpleMDMIntegration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGSimpleMDMIntegration.h; sourceTree = "<group>"; };
+		2974CFA024E703B400EC0647 /* LGSimpleMDMIntegration.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGSimpleMDMIntegration.m; sourceTree = "<group>"; };
+		2974CFA224E704A600EC0647 /* LGSimpleMDMIntegrationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGSimpleMDMIntegrationView.h; sourceTree = "<group>"; };
+		2974CFA324E704A600EC0647 /* LGSimpleMDMIntegrationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGSimpleMDMIntegrationView.m; sourceTree = "<group>"; };
+		2974CFA624E704DC00EC0647 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LGSimpleMDMIntegrationView.xib; sourceTree = "<group>"; };
+		29E9D06425019A55007D9509 /* munkichoices.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = munkichoices.xml; sourceTree = "<group>"; };
 		2C6986FE5B41226735CC0A32 /* Pods-AutoPkgr.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AutoPkgr.debug.xcconfig"; path = "Pods/Target Support Files/Pods-AutoPkgr/Pods-AutoPkgr.debug.xcconfig"; sourceTree = "<group>"; };
 		39CF6FA5E75D62254A994C22 /* libPods-AutoPkgr.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-AutoPkgr.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		45E6F02919946C3F73535515 /* Pods-AutoPkgrTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AutoPkgrTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-AutoPkgrTests/Pods-AutoPkgrTests.release.xcconfig"; sourceTree = "<group>"; };
@@ -847,6 +857,7 @@
 		1AC98423195DF6270071CAB3 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				29E9D06425019A55007D9509 /* munkichoices.xml */,
 				1AC69568195B59EE00D2BD81 /* Images.xcassets */,
 				1A2C7FAC19CC9F8300CFF472 /* scripts */,
 				8BB217F519709A2C00EF8B93 /* AutoPkgrIcon.png */,
@@ -1173,6 +1184,9 @@
 				8B8654BC1CF6695F00B0A3FD /* LGFileWaveIntegrationView.xib */,
 				BE32B0351B2735DF0071778B /* LGGitIntegrationView.h */,
 				BE32B0361B2735DF0071778B /* LGGitIntegrationView.m */,
+				2974CFA224E704A600EC0647 /* LGSimpleMDMIntegrationView.h */,
+				2974CFA324E704A600EC0647 /* LGSimpleMDMIntegrationView.m */,
+				2974CFA524E704DC00EC0647 /* LGSimpleMDMIntegrationView.xib */,
 				8BD9E7961C8E296A00BCB399 /* LGVirusTotalAnalyzerIntegrationView.h */,
 				8BD9E7971C8E296A00BCB399 /* LGVirusTotalAnalyzerIntegrationView.m */,
 				8B8654C31CF669A100B0A3FD /* LGVirusTotalAnalyzerIntegrationView.xib */,
@@ -1325,6 +1339,8 @@
 				BE2337C91B3E42EC00256F85 /* LGMacPatchIntegration.m */,
 				BE4DD53A1B11740900854FD8 /* LGMunkiIntegration.h */,
 				BE4DD53D1B11743700854FD8 /* LGMunkiIntegration.m */,
+				2974CF9F24E703B400EC0647 /* LGSimpleMDMIntegration.h */,
+				2974CFA024E703B400EC0647 /* LGSimpleMDMIntegration.m */,
 				8BD9E78D1C8E16F000BCB399 /* LGVirusTotalAnalyzerIntegration.h */,
 				8BD9E78E1C8E16F000BCB399 /* LGVirusTotalAnalyzerIntegration.m */,
 			);
@@ -1479,6 +1495,7 @@
 				8B8654CF1CF66B8E00B0A3FD /* LGJSSImporterIntegrationView.xib in Resources */,
 				8B8654871CF64CA400B0A3FD /* LGRecipeReposViewController.xib in Resources */,
 				8B8655001CF66F7400B0A3FD /* LGRecipeSearchResultsPanel.xib in Resources */,
+				2974CFA724E704DC00EC0647 /* LGSimpleMDMIntegrationView.xib in Resources */,
 				8B8655151CF6719F00B0A3FD /* LGViewWindowController.xib in Resources */,
 				8B8654801CF64A9600B0A3FD /* LGInstallViewController.xib in Resources */,
 				8B8654C81CF66B0F00B0A3FD /* LGGitIntegrationView.xib in Resources */,
@@ -1492,6 +1509,7 @@
 				8B86550E1CF670DA00B0A3FD /* LGSelectNotificationsWindowController.xib in Resources */,
 				8B8654F91CF66F1800B0A3FD /* LGJSSDistributionPointsPrefPanel.xib in Resources */,
 				8B86548E1CF64EE500B0A3FD /* LGScheduleViewController.xib in Resources */,
+				29E9D06525019A56007D9509 /* munkichoices.xml in Resources */,
 				8B8654F21CF66EB500B0A3FD /* LGTemplateRenderWindowController.xib in Resources */,
 				8B8654A51CF665DF00B0A3FD /* LGAbsoluteManageIntegrationView.xib in Resources */,
 				295D7358247336C1008B796A /* LGMicrosoftTeamsNotificationView.xib in Resources */,
@@ -2448,6 +2466,7 @@
 				BEEFE6CA1AEC760700882C89 /* LGAutoPkgIntegration.m in Sources */,
 				BE59D8971B61998D0037F3CA /* BSDProcessInfo.m in Sources */,
 				BEC1258919F046FA006696C4 /* main.m in Sources */,
+				2974CFA124E703B400EC0647 /* LGSimpleMDMIntegration.m in Sources */,
 				BED136B71AC3BE04003EBF0F /* NSArray+html_report.m in Sources */,
 				BEEFE6BB1AE9E8A600882C89 /* LGLogger.m in Sources */,
 				BE4DD53E1B11743700854FD8 /* LGMunkiIntegration.m in Sources */,
@@ -2470,6 +2489,7 @@
 				BE344F551ABFBEAB00500AAE /* LGAutoPkgReport.m in Sources */,
 				BE38EA8E1B0CFE68009FCBEB /* LGInstallViewController.m in Sources */,
 				295D735C24733742008B796A /* LGMicrosoftTeamsNotification.m in Sources */,
+				2974CFA424E704A600EC0647 /* LGSimpleMDMIntegrationView.m in Sources */,
 				BE38EA951B0CFE95009FCBEB /* LGRecipeReposViewController.m in Sources */,
 				1AC86D3D195E0AC6006FDD2B /* LGHostInfo.m in Sources */,
 				BEC1258719F0465F006696C4 /* LGAutoPkgTask.m in Sources */,
@@ -2691,6 +2711,14 @@
 			);
 			name = InfoPlist.strings;
 			path = .;
+			sourceTree = "<group>";
+		};
+		2974CFA524E704DC00EC0647 /* LGSimpleMDMIntegrationView.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				2974CFA624E704DC00EC0647 /* Base */,
+			);
+			name = LGSimpleMDMIntegrationView.xib;
 			sourceTree = "<group>";
 		};
 		8B8654821CF64A9600B0A3FD /* LGInstallViewController.xib */ = {
@@ -3117,8 +3145,8 @@
 				GCC_PREFIX_HEADER = "AutoPkgr/Supporting Files/AutoPkgr-Prefix.pch";
 				INFOPLIST_FILE = "AutoPkgr/Supporting Files/AutoPkgr-Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 10.9;
-				MARKETING_VERSION = 1.5.4;
+				MACOSX_DEPLOYMENT_TARGET = 10.13;
+				MARKETING_VERSION = 1.5.5;
 				OTHER_CODE_SIGN_FLAGS = "";
 				"OTHER_CODE_SIGN_FLAGS[sdk=*]" = "--options=runtime";
 				OTHER_LDFLAGS = (
@@ -3181,8 +3209,8 @@
 				GCC_PREFIX_HEADER = "AutoPkgr/Supporting Files/AutoPkgr-Prefix.pch";
 				INFOPLIST_FILE = "AutoPkgr/Supporting Files/AutoPkgr-Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 10.9;
-				MARKETING_VERSION = 1.5.4;
+				MACOSX_DEPLOYMENT_TARGET = 10.13;
+				MARKETING_VERSION = 1.5.5;
 				OTHER_CODE_SIGN_FLAGS = "";
 				"OTHER_CODE_SIGN_FLAGS[sdk=*]" = "--options=runtime";
 				OTHER_LDFLAGS = (
