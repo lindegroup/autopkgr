@@ -7,6 +7,35 @@ xmlns:dc="http://purl.org/dc/elements/1.1/">
     <description>Most recent changes with links to updates.</description>
     <language>en</language>
     <item>
+      <title>Version 1.5.5</title>
+      <description>
+        <![CDATA[
+                <h2>A Simple Integration</h2>
+                <p>AutoPkgr 1.5.5 now integrates with SimpleMDM! The SimpleMDM Munki repo plugin works with Munki and AutoPkg to import packages via .munki recipes. To get started with AutoPkgr and SimpleMDM, please check out the <a href="https://github.com/lindegroup/autopkgr/wiki/SimpleMDM">AutoPkgr Wiki</a>! For more information about the SimpleMDM Munki repo plugin, please review the <a href="https://github.com/SimpleMDM/munki-plugin/blob/main/README.md">README</a>.</p>
+                <h3>Added</h3>
+                <ul>
+                <li>AutoPkgr now integrates with the <a href="https://github.com/SimpleMDM/munki-plugin">SimpleMDM munki repo plugin</a>. Big thanks to <a href="https://github.com/tboyko">@tboyko</a> for a great collaboration!</li>
+                </ul>
+                <h3>Changed</h3>
+                <ul>
+                <li>Attention Munki Users: In order to eliminate confusion, AutoPkgr will no longer automatically add the MakeCatalogs.munki recipe to the end of your recipe list. If you would like to add it, you should create an override of the MakeCatalogs.munki recipe and add it to your recipe list. Since the introduction of <a href="https://github.com/autopkg/autopkg/wiki/Autopkg-and-recipe-parent-trust-info">recipe trust information</a> in AutoPkg 1.0, we recommend that you create an override of MakeCatalogs.munki, instead of running the recipe itself. Make sure to check the box to include the MakeCatalogs.munki in your schedule. It will no longer be included automatically.</li>
+                <li>Updated the Folders &amp; Integrations tab to "Integrations."</li>
+                <li>The minimum macOS build to run AutoPkgr is now macOS 10.13. It is recommended to run at least macOS 10.13.6 with AutoPkgr. 10.14.6 and above is even better. If you need to run below macOS 10.13, please consider using version 1.5.4 or below of AutoPkgr.</li>
+                <li>Updated ongoing development credits.</li>
+                </ul>
+                <h3>Fixed</h3>
+                <ul>
+                <li>Updated to Google Chat verbiage (in place of Hangouts).</li>
+                <li>Updated the "AutoPkgr Google Chat" Template. This no longer needs to be edited.</li>
+                </ul>
+                ]]>
+</description>
+      <sparkle:minimumSystemVersion>10.13</sparkle:minimumSystemVersion>
+      <pubDate>Tue, 22 September 2020 12:00:00 -0700</pubDate>
+      <enclosure url="https://github.com/lindegroup/autopkgr/releases/download/v1.5.5/AutoPkgr-1.5.5.dmg"
+      sparkle:version="1475" sparkle:shortVersionString="1.5.5" type="application/octet-stream" />
+    </item>
+    <item>
       <title>Version 1.5.4</title>
       <description>
         <![CDATA[
