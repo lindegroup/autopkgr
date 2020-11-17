@@ -279,7 +279,7 @@ static NSString *const kLGAutoPkgRecipeCurrentStatusKey = @"currentStatus";
         LGAutoPkgRecipe *recipe = _searchedRecipes[idx];
         [recipes addObject:recipe.Identifier];
         if ([predicate evaluateWithObject:recipe]) {
-            runMakeCatalogs = NO;
+            runMakeCatalogs = YES;
         }
     }];
 

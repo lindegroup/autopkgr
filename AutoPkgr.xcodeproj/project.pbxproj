@@ -1443,6 +1443,7 @@
 					1AC6956D195B59EE00D2BD81 = {
 						DevelopmentTeam = JVY2ZR6SEF;
 						ProvisioningStyle = Manual;
+						TestTargetID = 1AC6954C195B59ED00D2BD81;
 					};
 					BE05CE6619DAF26B0089068B = {
 						CreatedOnToolsVersion = 6.0.1;
@@ -3284,6 +3285,7 @@
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "AutoPkgr/Views-Controllers-XIB/Integration Views/AutoPkgrTests-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/AutoPkgr.app/Contents/MacOS/AutoPkgr";
 				WRAPPER_EXTENSION = xctest;
 			};
 			name = Debug;
@@ -3309,6 +3311,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "AutoPkgr/Views-Controllers-XIB/Integration Views/AutoPkgrTests-Bridging-Header.h";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/AutoPkgr.app/Contents/MacOS/AutoPkgr";
 				WRAPPER_EXTENSION = xctest;
 			};
 			name = Release;
