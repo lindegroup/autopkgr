@@ -333,6 +333,7 @@
 		295D7356247336C1008B796A /* LGMicrosoftTeamsNotificationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGMicrosoftTeamsNotificationView.m; sourceTree = "<group>"; };
 		295D735A24733742008B796A /* LGMicrosoftTeamsNotification.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGMicrosoftTeamsNotification.m; sourceTree = "<group>"; };
 		295D735B24733742008B796A /* LGMicrosoftTeamsNotification.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGMicrosoftTeamsNotification.h; sourceTree = "<group>"; };
+		296D653B2564A5AE00A70759 /* libPods-AutoPkgr.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = "libPods-AutoPkgr.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2974CF9F24E703B400EC0647 /* LGSimpleMDMIntegration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGSimpleMDMIntegration.h; sourceTree = "<group>"; };
 		2974CFA024E703B400EC0647 /* LGSimpleMDMIntegration.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGSimpleMDMIntegration.m; sourceTree = "<group>"; };
 		2974CFA224E704A600EC0647 /* LGSimpleMDMIntegrationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGSimpleMDMIntegrationView.h; sourceTree = "<group>"; };
@@ -758,6 +759,7 @@
 		1AC6954F195B59ED00D2BD81 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				296D653B2564A5AE00A70759 /* libPods-AutoPkgr.a */,
 				BE05CE8519DB35380089068B /* libAHKeychain.a */,
 				BE05CE8619DB35380089068B /* libPods-AutoPkgr-AHLaunchCtl.a */,
 				BE05CE8F19DB37E50089068B /* ServiceManagement.framework */,
@@ -1443,7 +1445,6 @@
 					1AC6956D195B59EE00D2BD81 = {
 						DevelopmentTeam = JVY2ZR6SEF;
 						ProvisioningStyle = Manual;
-						TestTargetID = 1AC6954C195B59ED00D2BD81;
 					};
 					BE05CE6619DAF26B0089068B = {
 						CreatedOnToolsVersion = 6.0.1;
@@ -3126,6 +3127,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.13;
+				ONLY_ACTIVE_ARCH = YES;
 				"OTHER_CODE_SIGN_FLAGS[sdk=*]" = "--options=runtime";
 				SDKROOT = macosx;
 				SKIP_INSTALL = YES;
@@ -3148,6 +3150,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				MARKETING_VERSION = 1.5.6;
+				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CODE_SIGN_FLAGS = "";
 				"OTHER_CODE_SIGN_FLAGS[sdk=*]" = "--options=runtime";
 				OTHER_LDFLAGS = (
@@ -3212,6 +3215,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				MARKETING_VERSION = 1.5.6;
+				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CODE_SIGN_FLAGS = "";
 				"OTHER_CODE_SIGN_FLAGS[sdk=*]" = "--options=runtime";
 				OTHER_LDFLAGS = (
@@ -3279,13 +3283,13 @@
 				);
 				INFOPLIST_FILE = "AutoPkgrTests/Supporting Files/AutoPkgrTests-Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				ONLY_ACTIVE_ARCH = YES;
 				"OTHER_CODE_SIGN_FLAGS[sdk=*]" = "--options=runtime";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.lindegroup.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "AutoPkgr/Views-Controllers-XIB/Integration Views/AutoPkgrTests-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/AutoPkgr.app/Contents/MacOS/AutoPkgr";
 				WRAPPER_EXTENSION = xctest;
 			};
 			name = Debug;
@@ -3306,12 +3310,12 @@
 				GCC_PREFIX_HEADER = "AutoPkgr/Supporting Files/AutoPkgr-Prefix.pch";
 				INFOPLIST_FILE = "AutoPkgrTests/Supporting Files/AutoPkgrTests-Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				ONLY_ACTIVE_ARCH = YES;
 				"OTHER_CODE_SIGN_FLAGS[sdk=*]" = "--options=runtime";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.lindegroup.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "AutoPkgr/Views-Controllers-XIB/Integration Views/AutoPkgrTests-Bridging-Header.h";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/AutoPkgr.app/Contents/MacOS/AutoPkgr";
 				WRAPPER_EXTENSION = xctest;
 			};
 			name = Release;
@@ -3322,7 +3326,7 @@
 			buildSettings = {
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CODE_SIGN_IDENTITY = "Developer ID Application";
-				CURRENT_PROJECT_VERSION = 1475;
+				CURRENT_PROJECT_VERSION = 1484;
 				DEVELOPMENT_TEAM = JVY2ZR6SEF;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -3337,6 +3341,7 @@
 				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				MARKETING_VERSION = 1.5.6;
 				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = (
 					"$(inherited)",
 					"-isystem",
@@ -3378,7 +3383,7 @@
 			buildSettings = {
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CODE_SIGN_IDENTITY = "Developer ID Application";
-				CURRENT_PROJECT_VERSION = 1475;
+				CURRENT_PROJECT_VERSION = 1484;
 				DEVELOPMENT_TEAM = JVY2ZR6SEF;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -3393,6 +3398,7 @@
 				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				MARKETING_VERSION = 1.5.6;
 				MTL_ENABLE_DEBUG_INFO = NO;
+				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = (
 					"$(inherited)",
 					"-isystem",
