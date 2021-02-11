@@ -46,7 +46,7 @@ AutoPkgr makes these tasks a piece of cake:
 - Installation of Git, which AutoPkg uses.
 - Discovery of and subscription to the repositories and recipes you need.
 - Automatic scheduled checks of the recipes you choose.
-- Email, Slack, or HipChat notifications when new software is packaged.
+- Email, Slack, Teams, Google Chat, or HipChat notifications when new software is packaged.
 - Ability to easily create and edit AutoPkg recipe overrides.
 - Easy access to common folders that AutoPkg admins need.
 - Basic integration of AutoPkg with popular software distribution frameworks like [Munki](https://www.munki.org/munki/), [Jamf Pro](https://www.jamf.com/products/jamf-pro/), [HEAT LANrev](https://heatsoftware.com/software-solutions/unified-endpoint-management/lanrev/), [FileWave](https://www.filewave.com/), and [MacPatch](https://macpatch.github.io/).
@@ -101,7 +101,7 @@ Download the [latest release](https://github.com/lindegroup/autopkgr/releases/la
 
     ![Notifications](doc-images/config_tab4.png)
 
-1.  Configure email, Slack, or HipChat notifications as desired.
+1.  Configure email, Slack, Teams, Google Chat, or HipChat notifications as desired.
 
 That's it! AutoPkgr will now check for the latest app updates you specified, and when an update is available you'll receive a notification.
 
@@ -202,7 +202,7 @@ Since the introduction of [recipe trust information](https://github.com/autopkg/
 
     ![MakeCatalogs Override](doc-images/makecatalogs_override.png)
 
-1. That's it! You only need to create that override once. Make sure to check the box to include the MakeCatalogs.munki in your schedule. It will no longer be included automatically.
+1. That's it! You only need to create that override once. AutoPkgr will automatically add the MakeCatalogs.munki recipe to the end of your recipe list and keep it there. You do not have to check the box to include the MakeCatalogs.munki in your schedule. It will be included automatically.
 
 
 ### Integration with Jamf Pro
