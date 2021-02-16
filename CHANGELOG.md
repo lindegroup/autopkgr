@@ -6,12 +6,13 @@ All notable changes to this project will be documented in this file. This projec
 
 ## [1.5.6] - 2021-02-23
 
-### Added
-- Updated default branch to avoid branch name issues.
+### Changed
+
 - Updated Sparkle and AutoUpdate to use Universal version. Please note that AutoPkgr is not a Universal app and requires Rosetta on Apple Silicon Macs, due to some legacy dependencies.
 
 ### Fixed
 - Attention Munki Users: AutoPkgr will once again automatically add the MakeCatalogs.munki recipe to the end of your recipe list and keep it there. You do not have to check the box to include the MakeCatalogs.munki in your schedule. It will be included automatically. Since the introduction of [recipe trust information](https://github.com/autopkg/autopkg/wiki/Autopkg-and-recipe-parent-trust-info) in AutoPkg 1.0, we recommend that you create an override of MakeCatalogs.munki, instead of running the recipe itself.
+- Updated default branch invocation to avoid branch name issues when working with repos.
 
 
 ## [1.5.5] - 2020-09-22
