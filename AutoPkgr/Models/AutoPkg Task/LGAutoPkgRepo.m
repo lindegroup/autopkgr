@@ -46,7 +46,7 @@ static NSArray *_popularRepos;
     if (self = [super init]) {
         _name = dictionary[@"name"];
         _cloneURL = [NSURL URLWithString:dictionary[@"clone_url"]];
-        _defaultBranch = dictionary[@"default_branch"] ?: @"master";
+        _defaultBranch = dictionary[@"default_branch"];
 
         _homeURL = [NSURL URLWithString:dictionary[@"html_url"]];
         _stars = [dictionary[@"stargazers_count"] integerValue];
@@ -114,7 +114,7 @@ static NSArray *_popularRepos;
 - (NSString *)defaultBranch
 {
     if (!_defaultBranch) {
-        _defaultBranch = @"master";
+        _defaultBranch = @"default_branch";
     }
     return _defaultBranch;
 }

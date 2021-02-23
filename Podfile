@@ -1,12 +1,12 @@
 source 'https://github.com/CocoaPods/Specs.git'
-platform :osx, "10.9"
+platform :osx, "10.13"
 
 AutoPkgr = ["AutoPkgr", "AutoPkgrTests"]
 
 AutoPkgr.each { |t|
     target t do
         pod 'AFNetworking', '~> 2.5.4'
-        pod 'Sparkle', '~> 1.14.0'
+        pod 'Sparkle', '~> 1.24.0'
         pod 'XMLDictionary', '~> 1.4'
         pod 'mailcore2-osx', '~> 0.5'
         pod 'GRMustache', '~> 7.3.2'
@@ -14,7 +14,7 @@ AutoPkgr.each { |t|
         pod 'MMMarkdown', '~> 0.5.1'
         pod 'AHProxySettings', '~> 0.1.1'
         pod 'AHKeychain', '~> 0.3.0'
-        pod 'OpenSSL-OSX'
+        pod 'OpenSSL-Universal'
         pod 'AHLaunchCtl', :git => 'https://github.com/eahrold/AHLaunchCtl.git'
     end
 }
