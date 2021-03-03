@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file. This projec
 
 ## [Unreleased](unreleased)
 
+## [1.5.7] - 2021-03-23
+
+### Fixed
+
+- Corrected default branch invocation to avoid issues when working with integrations and repos.
+
 ## [1.5.6] - 2021-02-23
 
 ### Changed
@@ -505,7 +511,8 @@ All notable changes to this project will be documented in this file. This projec
 - Initial public release of AutoPkgr.
 
 
-[unreleased]: https://github.com/lindegroup/autopkgr/compare/v1.5.6...HEAD
+[unreleased]: https://github.com/lindegroup/autopkgr/compare/v1.5.7...HEAD
+[1.5.7]: https://github.com/lindegroup/autopkgr/compare/v1.5.6...v1.5.7
 [1.5.6]: https://github.com/lindegroup/autopkgr/compare/v1.5.5...v1.5.6
 [1.5.5]: https://github.com/lindegroup/autopkgr/compare/v1.5.4...v1.5.5
 [1.5.4]: https://github.com/lindegroup/autopkgr/compare/v1.5.3...v1.5.4
