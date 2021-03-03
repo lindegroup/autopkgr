@@ -21,7 +21,7 @@
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
-	<string>1490</string>
+	<string>1492</string>
 	<key>LSApplicationCategoryType</key>
 	<string>public.app-category.utilities</string>
 	<key>LSMinimumSystemVersion</key>
@@ -44,7 +44,7 @@
 	<key>SMPrivilegedExecutables</key>
 	<dict>
 		<key>com.lindegroup.AutoPkgr.helper</key>
-		<string>identifier &quot;com.lindegroup.AutoPkgr.helper&quot; and anchor apple generic and certificate 1[field.1.2.840.113635.100.6.2.6] /* exists */ and certificate leaf[field.1.2.840.113635.100.6.1.13] /* exists */ and certificate leaf[subject.OU] = JVY2ZR6SEF</string>
+		<string>identifier "com.lindegroup.AutoPkgr.helper" and anchor apple generic and certificate 1[field.1.2.840.113635.100.6.2.6] /* exists */ and certificate leaf[field.1.2.840.113635.100.6.1.13] /* exists */ and certificate leaf[subject.OU] = JVY2ZR6SEF</string>
 	</dict>
 	<key>SUFeedURL</key>
 	<string>https://raw.githubusercontent.com/lindegroup/autopkgr/appcast/appcast.xml</string>
