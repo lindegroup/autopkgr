@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file. This projec
 
 ## [Unreleased](unreleased)
 
-## [1.5.7] - 2021-03-23
+## [1.5.7] - 2021-03-05
 
 ### Fixed
 
