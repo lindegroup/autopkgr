@@ -9,7 +9,7 @@
 	<key>CFBundleName</key>
 	<string>com.lindegroup.AutoPkgr.helper</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.5.6</string>
+	<string>1.5.7</string>
 	<key>CFBundleVersion</key>
 	<string>$(CURRENT_PROJECT_VERSION)</string>
 	<key>SMAuthorizedClients</key>

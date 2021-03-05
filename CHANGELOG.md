@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file. This projec
 
 ## [Unreleased](unreleased)
 
+## [1.5.7] - 2021-03-05
+
+### Fixed
+
+- Corrected default branch invocation to avoid issues when working with integrations and repos. This resolves issue [#665](https://github.com/lindegroup/autopkgr/issues/665) and [#668](https://github.com/lindegroup/autopkgr/issues/668). Thanks to [@apizz](https://github.com/apizz) and [@jaw4uz](https://github.com/jaw4uz) for the reports!
+- Issue [#666](https://github.com/lindegroup/autopkgr/issues/666), unrelated to AutoPkgr has been resolved by the release of [AutoPkg 2.3.1](https://github.com/autopkg/autopkg/releases/tag/v2.3.1). Thanks to [@homebysix](https://github.com/homebysix) for [#723](https://github.com/autopkg/autopkg/issues/723) and [#724](https://github.com/autopkg/autopkg/pull/724) for the reports and fixes!  
+
 ## [1.5.6] - 2021-02-23
 
 ### Changed
@@ -505,7 +512,8 @@ All notable changes to this project will be documented in this file. This projec
 - Initial public release of AutoPkgr.
 
 
-[unreleased]: https://github.com/lindegroup/autopkgr/compare/v1.5.6...HEAD
+[unreleased]: https://github.com/lindegroup/autopkgr/compare/v1.5.7...HEAD
+[1.5.7]: https://github.com/lindegroup/autopkgr/compare/v1.5.6...v1.5.7
 [1.5.6]: https://github.com/lindegroup/autopkgr/compare/v1.5.5...v1.5.6
 [1.5.5]: https://github.com/lindegroup/autopkgr/compare/v1.5.4...v1.5.5
 [1.5.4]: https://github.com/lindegroup/autopkgr/compare/v1.5.3...v1.5.4
