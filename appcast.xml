@@ -7,6 +7,24 @@ xmlns:dc="http://purl.org/dc/elements/1.1/">
     <description>Most recent changes with links to updates.</description>
     <language>en</language>
     <item>
+      <title>Version 1.5.7</title>
+      <description>
+        <![CDATA[
+                <h2>Fix it up!</h2>
+                <p>AutoPkgr 1.5.7 includes a bug fix for integration and repo compatibility.</p>
+                <h3>Fixed</h3>
+                <ul>
+                <li>Corrected default branch invocation to avoid issues when working with integrations and repos. This resolves issue <a href="https://github.com/lindegroup/autopkgr/issues/665" data-hovercard-type="issue" data-hovercard-url="/lindegroup/autopkgr/issues/665/hovercard">#665</a> and <a href="https://github.com/lindegroup/autopkgr/issues/668" data-hovercard-type="issue" data-hovercard-url="/lindegroup/autopkgr/issues/668/hovercard">#668</a>. Thanks to <a href="https://github.com/apizz">@apizz</a> and <a href="https://github.com/jaw4uz">@jaw4uz</a> for the reports!</li>
+                <li>Issue <a href="https://github.com/lindegroup/autopkgr/issues/666" data-hovercard-type="issue" data-hovercard-url="/lindegroup/autopkgr/issues/666/hovercard">#666</a>, unrelated to AutoPkgr has been resolved by the release of <a href="https://github.com/autopkg/autopkg/releases/tag/v2.3.1">AutoPkg 2.3.1</a>. Thanks to <a href="https://github.com/homebysix">@homebysix</a> for <a href="https://github.com/autopkg/autopkg/issues/723" data-hovercard-type="issue" data-hovercard-url="/autopkg/autopkg/issues/723/hovercard">#723</a> and <a href="https://github.com/autopkg/autopkg/pull/724" data-hovercard-type="pull_request" data-hovercard-url="/autopkg/autopkg/pull/724/hovercard">#724</a> for the reports and fixes!</li>
+                </ul>
+                ]]>
+</description>
+      <sparkle:minimumSystemVersion>10.13</sparkle:minimumSystemVersion>
+      <pubDate>Fri, 05 March 2021 12:00:00 -0700</pubDate>
+      <enclosure url="https://github.com/lindegroup/autopkgr/releases/download/v1.5.7/AutoPkgr-1.5.7.dmg"
+      sparkle:version="1492" sparkle:shortVersionString="1.5.7" type="application/octet-stream" />
+    </item>
+    <item>
       <title>Version 1.5.6</title>
       <description>
         <![CDATA[
