@@ -357,7 +357,7 @@ static NSMutableDictionary *_identifierURLStore = nil;
     NSMutableArray *recipes = [[NSMutableArray alloc] init];
 
     if (path && (access(path.UTF8String, F_OK) == 0)) {
-        NSString *matches = [NSString stringWithFormat:@"{%@/{*.recipe,*/*.recipe}}", path];
+        NSString *matches = [NSString stringWithFormat:@"{%@/{*.recipe,*/*.recipe,*.recipe.yaml,*/*.recipe.yaml,*.recipe.plist,*/*.recipe.plist}}", path];
 
         glob_t results;
         glob(matches.UTF8String, GLOB_BRACE | GLOB_NOSORT, NULL, &results);
