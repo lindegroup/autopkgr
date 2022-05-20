@@ -2,7 +2,7 @@
 //  LGIntegrationManager.m
 //  AutoPkgr
 //
-//  Copyright 2015 Eldon Ahrold
+//  Copyright 2015-2022 Linde Group.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -40,6 +40,7 @@ static void *XXInfoStatusChange = &XXInfoStatusChange;
             [LGAutoPkgIntegration class],
             [LGFileWaveIntegration class],
             [LGGitIntegration class],
+            [LGJamfUploaderIntegration class],
             [LGJSSImporterIntegration class],
             [LGLANrevIntegration class],
             [LGMacPatchIntegration class],

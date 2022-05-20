@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="16097.2" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="20037" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="16097.2"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="20037"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -29,7 +29,7 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <button translatesAutoresizingMaskIntoConstraints="NO" id="TPC-Gd-b8O">
-                    <rect key="frame" x="18" y="400" width="377" height="18"/>
+                    <rect key="frame" x="18" y="399" width="375" height="18"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="373" id="GRk-po-9NA"/>
                     </constraints>
@@ -42,7 +42,7 @@
                     </connections>
                 </button>
                 <button verticalHuggingPriority="750" placeholderIntrinsicWidth="158" placeholderIntrinsicHeight="21" translatesAutoresizingMaskIntoConstraints="NO" id="SZ2-Hj-GiD">
-                    <rect key="frame" x="395" y="391" width="170" height="32"/>
+                    <rect key="frame" x="394" y="391" width="172" height="33"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="158" id="1PZ-eJ-gIz"/>
                     </constraints>
@@ -203,7 +203,7 @@
                     </constraints>
                 </progressIndicator>
                 <button verticalHuggingPriority="752" translatesAutoresizingMaskIntoConstraints="NO" id="Bwp-ds-cik">
-                    <rect key="frame" x="148" y="286" width="241" height="20"/>
+                    <rect key="frame" x="150" y="288" width="237" height="16"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="14" id="8FV-20-VBc"/>
                         <constraint firstAttribute="width" constant="236" id="pIm-DI-X7f"/>
@@ -218,7 +218,7 @@
                     </connections>
                 </button>
                 <button verticalHuggingPriority="751" translatesAutoresizingMaskIntoConstraints="NO" id="6N3-g1-fHC">
-                    <rect key="frame" x="48" y="264" width="161" height="20"/>
+                    <rect key="frame" x="50" y="266" width="157" height="16"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="14" id="56j-Zn-Hvs"/>
                         <constraint firstAttribute="width" constant="156" id="RhN-mp-mwH"/>
@@ -310,7 +310,7 @@
                     </connections>
                 </secureTextField>
                 <button identifier="enableSlackCheckBox" translatesAutoresizingMaskIntoConstraints="NO" id="PWE-hu-Wcl">
-                    <rect key="frame" x="18" y="193" width="364" height="18"/>
+                    <rect key="frame" x="18" y="192" width="362" height="18"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="360" id="hxz-Zw-7Mk"/>
                     </constraints>
@@ -324,7 +324,7 @@
                     </connections>
                 </button>
                 <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="JJm-8E-4nN">
-                    <rect key="frame" x="382" y="184" width="123" height="32"/>
+                    <rect key="frame" x="381" y="185" width="125" height="32"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="111" id="Vlb-oP-KdS"/>
                     </constraints>
@@ -337,7 +337,7 @@
                     </connections>
                 </button>
                 <button identifier="enableHipChatCheckBox" translatesAutoresizingMaskIntoConstraints="NO" id="1Co-et-HoO">
-                    <rect key="frame" x="18" y="167" width="364" height="18"/>
+                    <rect key="frame" x="18" y="166" width="362" height="18"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="360" id="Q5j-If-VCc"/>
                     </constraints>
@@ -351,7 +351,7 @@
                     </connections>
                 </button>
                 <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="1w3-I4-mxd">
-                    <rect key="frame" x="382" y="158" width="123" height="32"/>
+                    <rect key="frame" x="381" y="159" width="125" height="32"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="111" id="MCY-lg-CCY"/>
                     </constraints>
@@ -375,7 +375,7 @@
                     </textFieldCell>
                 </textField>
                 <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="20B-Il-F8i" userLabel="Notification trigger customize button">
-                    <rect key="frame" x="382" y="55" width="123" height="32"/>
+                    <rect key="frame" x="381" y="56" width="125" height="32"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="111" id="nK7-NQ-3cC"/>
                     </constraints>
@@ -399,7 +399,7 @@
                     </textFieldCell>
                 </textField>
                 <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="vTZ-5S-fbP" userLabel="Notification template customize button">
-                    <rect key="frame" x="382" y="29" width="123" height="32"/>
+                    <rect key="frame" x="381" y="30" width="125" height="32"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="111" id="f8F-5T-pDM"/>
                     </constraints>
@@ -412,7 +412,7 @@
                     </connections>
                 </button>
                 <button translatesAutoresizingMaskIntoConstraints="NO" id="kd3-6Z-D9b">
-                    <rect key="frame" x="18" y="90" width="364" height="18"/>
+                    <rect key="frame" x="18" y="89" width="362" height="18"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="360" id="OBx-ju-edo"/>
                     </constraints>
@@ -425,7 +425,7 @@
                     </connections>
                 </button>
                 <button identifier="enableMicrosoftTeamsCheckBox" translatesAutoresizingMaskIntoConstraints="NO" id="iQQ-Qh-1Nw">
-                    <rect key="frame" x="18" y="142" width="364" height="18"/>
+                    <rect key="frame" x="18" y="141" width="362" height="18"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="360" id="L8q-Sg-r6a"/>
                     </constraints>
@@ -439,7 +439,7 @@
                     </connections>
                 </button>
                 <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Gwu-Ku-RWL">
-                    <rect key="frame" x="382" y="133" width="123" height="32"/>
+                    <rect key="frame" x="381" y="134" width="125" height="32"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="111" id="T3K-90-Abx"/>
                     </constraints>
@@ -452,7 +452,7 @@
                     </connections>
                 </button>
                 <button identifier="enableGoogleHangoutsCheckBox" translatesAutoresizingMaskIntoConstraints="NO" id="XOW-dG-IWx">
-                    <rect key="frame" x="18" y="116" width="364" height="18"/>
+                    <rect key="frame" x="18" y="115" width="362" height="18"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="360" id="B8x-hI-Hz0"/>
                     </constraints>
@@ -466,7 +466,7 @@
                     </connections>
                 </button>
                 <button verticalHuggingPriority="750" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Ubw-dh-ayZ">
-                    <rect key="frame" x="382" y="107" width="123" height="32"/>
+                    <rect key="frame" x="382" y="108" width="123" height="32"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="111" id="hor-Zq-axe"/>
                     </constraints>

@@ -49,7 +49,19 @@ Notification services such as Slack don't necessarily use full Markdown formatti
 {{# munki_importer.data_rows }}
 - *{{ name }}* (version {{ version }} imported into {{ catalogs }})
 {{/ munki_importer.data_rows }}
-{{/ munki_importer.data_rows.count }}{{# jss_importer.data_rows.count }}
+{{/ munki_importer.data_rows.count }}{{# jamfuploader.data_rows.count }}
+*{{ jamfuploader.summary_text }}*
+{{# jamfuploader.data_rows }}
+{{# category }}- Category: *{{ category }}*{{/ category }}{{# groups }}
+- Groups: *{{ groups }}*{{/ groups }}{{# icon }}
+- Icon: *{{ icon }}*{{/ icon }}{{# pkg_name }}
+- Pkg_name: *{{ pkg_name }}*{{/ pkg_name }}{{# version }}
+- Version: *{{ version }}*{{/ version }}{{# policy }}
+- Policy: *{{ policy }}*{{/ policy }}{{# template }}
+- Template: *{{ template }}*{{/ template }}{{# scripts }}
+- Scripts: *{{ scripts }}*{{/ scripts }}
+{{/ jamfuploader.data_rows }}
+{{/ jamfuploader.data_rows.count }}{{# jss_importer.data_rows.count }}
 *{{ jss_importer.summary_text }}*
 {{# jss_importer.data_rows }}
 {{# Categories }}- Category: *{{ Categories }}*{{/ Categories }}{{# Groups }}

@@ -232,6 +232,36 @@ value using the `summary_result.foo_summary_result` syntax.
                 </table>
             {{/ munki_importer.data_rows.count }}
 
+            <!-- Uploaded to Jamf Pro using JamfUploader -->
+            <!-- "report_fields": ["category", "groups", "icon", "pkg-name", "version", "policy", "template", "scripts"] -->
+            {{# jamfuploader.data_rows.count }}
+            <h3>{{ jamfuploader.summary_text }}</h3>
+            <table>
+                <tr>
+                    <th>category</th>
+                    <th>groups</th>
+                    <th>icon</th>
+                    <th>pkg_name</th>
+                    <th>version</th>
+                    <th>policy</th>
+                    <th>template</th>
+                    <th>scripts</th>
+                </tr>
+                {{# jamfuploader.data_rows }}
+                <tr>
+                    <td>{{ category }}</td>
+                    <td>{{ groups }}</td>
+                    <td>{{ icon }}</td>
+                    <td>{{ pkg_name }}</td>
+                    <td>{{ version }}</td>
+                    <td>{{ policy }}</td>
+                    <td>{{ template }}</td>
+                    <td>{{ scripts }}</td>
+                </tr>
+                {{/ jamfuploader.data_rows }}
+            </table>
+            {{/ jamfuploader.data_rows.count }}
+
             <!-- Imported to JSS (Casper) -->
             <!-- "report_fields": ["Package", "Categories", "Groups", "Scripts", "Extension Attributes", "Policy", "Icon"] -->
             {{# jss_importer.data_rows.count }}

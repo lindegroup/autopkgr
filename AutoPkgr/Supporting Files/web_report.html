@@ -86,6 +86,7 @@
 <!-- Packages created -->
 {{# pkg_creator.data_rows.count }}
 <strong>{{ pkg_creator.summary_text }}</strong>
+<ul>
 <table>
     <tr>
         <th>identifier</th>
@@ -100,6 +101,7 @@
     </tr>
     {{/ pkg_creator.data_rows }}
 </table>
+</ul>
 {{/ pkg_creator.data_rows.count }}
 
 <!-- Imported to Munki -->
@@ -112,11 +114,43 @@
 </ul>
 {{/ munki_importer.data_rows.count }}
 
+<!-- Uploaded to Jamf Pro using JamfUploader -->
+<!-- "report_fields": ["category", "groups", "icon", "pkg-name", "version", "policy", "template", "scripts"] -->
+{{# jamfuploader.data_rows.count }}
+<strong>{{ jamfuploader.summary_text }}</strong>
+<ul>
+<table>
+    <tr>
+        <th>category</th>
+        <th>groups</th>
+        <th>icon</th>
+        <th>pkg_name</th>
+        <th>version</th>
+        <th>policy</th>
+        <th>template</th>
+        <th>scripts</th>
+    </tr>
+    {{# jamfuploader.data_rows }}
+    <tr>
+        <td>{{ category }}</td>
+        <td>{{ groups }}</td>
+        <td>{{ icon }}</td>
+        <td>{{ pkg_name }}</td>
+        <td>{{ version }}</td>
+        <td>{{ policy }}</td>
+        <td>{{ template }}</td>
+        <td>{{ scripts }}</td>
+    </tr>
+    {{/ jamfuploader.data_rows }}
+</table>
+</ul>
+{{/ jamfuploader.data_rows.count }}
 
 <!-- Imported to JSS (Casper) -->
 <!-- "report_fields": ["Package", "Categories", "Groups", "Scripts", "Extension Attributes", "Policy", "Icon"] -->
 {{# jss_importer.data_rows.count }}
 <strong>{{ jss_importer.summary_text }}</strong>
+<ul>
 <table>
     <tr>
         <th>Categories</th>
@@ -137,6 +171,7 @@
     </tr>
     {{/ jss_importer.data_rows }}
 </table>
+</ul>
 {{/ jss_importer.data_rows.count }}
 
 <!-- Imported to Filewave -->

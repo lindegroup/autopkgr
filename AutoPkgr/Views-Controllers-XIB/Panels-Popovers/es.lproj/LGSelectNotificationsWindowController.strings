@@ -23,8 +23,8 @@
 /* Class = "NSButtonCell"; title = "Updates for integrated tools, at most:"; ObjectID = "OEp-t0-mfM"; */
 "OEp-t0-mfM.title" = "Actualizaciones para herramientas integradas, como máximo:";
 
-/* Class = "NSTextFieldCell"; title = "This includes AutoPkg, Git, Munki tools, etc."; ObjectID = "Q6A-On-Dwg"; */
-"Q6A-On-Dwg.title" = "Esto incluye AutoPkg, Git, Munki tools, etc.";
+/* Class = "NSTextFieldCell"; title = "This includes AutoPkg, Git, Munki, Jamf, etc."; ObjectID = "Q6A-On-Dwg"; */
+"Q6A-On-Dwg.title" = "Esto incluye AutoPkg, Git, Munki, Jamf, etc.";
 
 /* Class = "NSButtonCell"; title = "New package is built"; ObjectID = "Rrw-eM-Kne"; */
 "Rrw-eM-Kne.title" = "Nuevo paquete ha sido construido";
@@ -36,7 +36,7 @@
 "eQW-08-MtI.title" = "Cualquier acción";
 
 /* Class = "NSButtonCell"; title = "New software imported to Munki, JSS, or other server"; ObjectID = "iUL-bU-gWt"; */
-"iUL-bU-gWt.title" = "Nuevo software importado a Munki, JSS, u otro servidor";
+"iUL-bU-gWt.title" = "Nuevo software importado a Munki, Jamf, u otro servidor";
 
 /* Class = "NSButtonCell"; title = "Selected actions:"; ObjectID = "qPY-Ac-9c8"; */
 "qPY-Ac-9c8.title" = "Acciones seleccionadas:";

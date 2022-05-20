@@ -2,7 +2,7 @@
 //  LGIntegrationManager.h
 //  AutoPkgr
 //
-//  Copyright 2015 Eldon Ahrold
+//  Copyright 2015-2022 Linde Group.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -24,6 +24,7 @@
 #import "LGFileWaveIntegration.h"
 #import "LGGitIntegration.h"
 #import "LGIntegration.h"
+#import "LGJamfUploaderIntegration.h"
 #import "LGJSSImporterIntegration.h"
 #import "LGLANrevIntegration.h"
 #import "LGMacPatchIntegration.h"

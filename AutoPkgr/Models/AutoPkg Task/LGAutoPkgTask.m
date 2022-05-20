@@ -51,18 +51,7 @@ static NSString *const autopkg()
 // Return the correct python path
 static NSString *const python()
 {
-    NSFileManager *fm = [NSFileManager defaultManager];
-    NSString *autopkgReceipt = @"/private/var/db/receipts/com.github.autopkg.autopkg.plist";
-    NSString *_autopkgReceiptVersion;
-    NSDictionary *receiptDict;
-    if ([fm fileExistsAtPath:autopkgReceipt]) {
-        receiptDict = [NSDictionary dictionaryWithContentsOfFile:autopkgReceipt];
-        _autopkgReceiptVersion = receiptDict[@"PackageVersion"];
-        if([_autopkgReceiptVersion hasPrefix:@"2."]) {
-            return @"/usr/local/autopkg/python";
-        }
-    }
-    return @"/usr/bin/python";
+    return @"/usr/local/autopkg/python";
 }
 
 static NSDictionary *AutoPkgVerbStringToEnum()

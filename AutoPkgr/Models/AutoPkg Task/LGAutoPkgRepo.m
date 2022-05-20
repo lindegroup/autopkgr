@@ -47,6 +47,7 @@ static NSArray *_popularRepos;
         _name = dictionary[@"name"];
         _cloneURL = [NSURL URLWithString:dictionary[@"clone_url"]];
         _defaultBranch = dictionary[@"default_branch"] ?: @"master";
+        _defaultBranch = dictionary[@"default_branch"] ?: @"main";
 
         _homeURL = [NSURL URLWithString:dictionary[@"html_url"]];
         _stars = [dictionary[@"stargazers_count"] integerValue];
@@ -114,7 +115,8 @@ static NSArray *_popularRepos;
 - (NSString *)defaultBranch
 {
     if (!_defaultBranch) {
-        _defaultBranch = @"master";
+    _defaultBranch = @"master";
+    //_defaultBranch = @"main";
     }
     return _defaultBranch;
 }
@@ -370,6 +372,7 @@ static NSArray *_popularRepos;
                     @"https://github.com/autopkg/foigus-recipes.git",
                     @"https://github.com/autopkg/gerardkok-recipes.git",
                     @"https://github.com/autopkg/grahamgilbert-recipes.git",
+                    @"https://github.com/autopkg/grahampugh-recipes.git",
                     @"https://github.com/autopkg/gregneagle-recipes.git",
                     @"https://github.com/autopkg/hansen-m-recipes.git",
                     @"https://github.com/autopkg/hjuutilainen-recipes.git",
@@ -399,6 +402,7 @@ static NSArray *_popularRepos;
                     @"https://github.com/autopkg/scriptingosx-recipes.git",
                     @"https://github.com/autopkg/seansgm-recipes.git",
                     @"https://github.com/autopkg/sheagcraig-recipes.git",
+                    @"https://github.com/autopkg/smithjw-recipes.git",
                     @"https://github.com/autopkg/swy-recipes.git",
                     @"https://github.com/autopkg/timsutton-recipes.git",
                     @"https://github.com/autopkg/valdore86-recipes.git",
