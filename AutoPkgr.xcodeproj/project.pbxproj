@@ -362,7 +362,6 @@
 		2974CFA224E704A600EC0647 /* LGSimpleMDMIntegrationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGSimpleMDMIntegrationView.h; sourceTree = "<group>"; };
 		2974CFA324E704A600EC0647 /* LGSimpleMDMIntegrationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGSimpleMDMIntegrationView.m; sourceTree = "<group>"; };
 		2974CFA624E704DC00EC0647 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LGSimpleMDMIntegrationView.xib; sourceTree = "<group>"; };
-		2988BEBE283815C3006C8B72 /* AutoPkgr.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = AutoPkgr.entitlements; sourceTree = "<group>"; };
 		29CB21122804DBBA0075A4BB /* LGJamfUploaderIntegration.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LGJamfUploaderIntegration.h; sourceTree = "<group>"; };
 		29CB21132804DBD60075A4BB /* LGJamfUploaderIntegration.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LGJamfUploaderIntegration.m; sourceTree = "<group>"; };
 		29CB21142804E1C40075A4BB /* LGJamfUploaderIntegrationView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LGJamfUploaderIntegrationView.h; sourceTree = "<group>"; };
@@ -820,7 +819,6 @@
 		1AC69556195B59ED00D2BD81 /* AutoPkgr */ = {
 			isa = PBXGroup;
 			children = (
-				2988BEBE283815C3006C8B72 /* AutoPkgr.entitlements */,
 				1AC86D36195E0972006FDD2B /* Models */,
 				BE40CB7719D4441600A1DABD /* Views-Controllers-XIB */,
 				BE40CB7819D4444D00A1DABD /* Utility */,
@@ -3223,8 +3221,9 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_ENTITLEMENTS = AutoPkgr/AutoPkgr.entitlements;
+				CODE_SIGN_ENTITLEMENTS = "";
 				CODE_SIGN_IDENTITY = "Developer ID Application";
+				CODE_SIGN_INJECT_BASE_ENTITLEMENTS = YES;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = JVY2ZR6SEF;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -3289,8 +3288,9 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_ENTITLEMENTS = AutoPkgr/AutoPkgr.entitlements;
+				CODE_SIGN_ENTITLEMENTS = "";
 				CODE_SIGN_IDENTITY = "Developer ID Application";
+				CODE_SIGN_INJECT_BASE_ENTITLEMENTS = YES;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = JVY2ZR6SEF;
 				ENABLE_HARDENED_RUNTIME = YES;

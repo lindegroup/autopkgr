@@ -29,6 +29,7 @@
 @implementation LGJamfUploaderIntegration
 
 @synthesize gitHubInfo = _gitHubInfo;
+@synthesize installedVersion = _installedVersion;
 
 #pragma mark - Class overrides
 + (NSString *)name
@@ -58,12 +59,20 @@
 
 + (NSString *)binary
 {
-    return nil;
+    static NSString *const jamfUploaderBinary = @"~/Library/AutoPkg/RecipeRepos/com.github.autopkg.grahampugh-recipes/JamfUploaderProcessors/JamfUploaderLib/JamfUploaderBase.py";
+    return jamfUploaderBinary.stringByExpandingTildeInPath;
 }
 
 + (NSArray *)components
 {
-    return nil;
+    return @[
+        [self binary],
+    ];
+}
+
++ (NSArray *)packageIdentifiers
+{
+    return @[ @"com.github.autopkg.grahampugh-recipes"];
 }
 
 + (BOOL)isUninstallable
@@ -77,6 +86,22 @@
 }
 
 #pragma mark - Instance overrides.
+
+- (NSString *)installedVersion
+{
+    NSFileManager *fm = [NSFileManager defaultManager];
+
+    NSString *receipt = @"~/Library/AutoPkg/RecipeRepos/com.github.autopkg.grahampugh-recipes/JamfUploaderProcessors/JamfUploaderLib/JamfUploaderBase.py";
+
+
+    if ([[self class] isInstalled]) {
+        if ([fm fileExistsAtPath:receipt]) {
+        }
+        _installedVersion = @"is";
+    }
+
+    return _installedVersion;
+}
 
 - (void)customInstallActions:(void (^)(NSError *))reply
 {
