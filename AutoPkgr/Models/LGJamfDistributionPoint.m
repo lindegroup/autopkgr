@@ -52,6 +52,13 @@ NSDictionary *keyJamfInfoDict()
             kLGJamfDistPointPasswordKey,
         ];
         dictionary = @{
+            // CDP
+            @(kLGJamfTypeCDP) :
+                @{ kJamfTypeString : @"CDP",
+                   kJamfRequired : @[ kLGJamfDistPointTypeKey ],
+                   kJamfOptional : @[],
+                   kJamfExclusiveUnique : @[ kLGJamfDistPointTypeKey ] },
+            
             // Local
             @(kLGJamfTypeLocal) :
                 @{ kJamfTypeString : @"Local",
@@ -81,13 +88,6 @@ NSDictionary *keyJamfInfoDict()
             // JDS
             @(kLGJamfTypeJDS) :
                 @{ kJamfTypeString : @"JDS",
-                   kJamfRequired : @[ kLGJamfDistPointTypeKey ],
-                   kJamfOptional : @[],
-                   kJamfExclusiveUnique : @[ kLGJamfDistPointTypeKey ] },
-
-            // CDP
-            @(kLGJamfTypeCDP) :
-                @{ kJamfTypeString : @"CDP",
                    kJamfRequired : @[ kLGJamfDistPointTypeKey ],
                    kJamfOptional : @[],
                    kJamfExclusiveUnique : @[ kLGJamfDistPointTypeKey ] },
@@ -386,7 +386,7 @@ NSDictionary *keyJamfInfoDict()
     }
 
     LGJamfUploaderDefaults *defaults = [[LGJamfUploaderDefaults alloc] init];
-    NSMutableOrderedSet *repos = [[NSMutableOrderedSet alloc] initWithArray:defaults.JAMFRepos];
+    NSMutableOrderedSet *repos = [[NSMutableOrderedSet alloc] initWithArray:defaults.JSSRepos];
     NSUInteger index = [self findMatchInExisting:repos];
 
     if (index == NSNotFound) {
@@ -395,20 +395,20 @@ NSDictionary *keyJamfInfoDict()
     else {
         [repos replaceObjectAtIndex:index withObject:self.representation];
     }
-    defaults.JAMFRepos = repos.array;
+    defaults.JSSRepos = repos.array;
     return YES;
 }
 
 - (BOOL)remove
 {
     LGJamfUploaderDefaults *defaults = [[LGJamfUploaderDefaults alloc] init];
-    NSMutableOrderedSet *repos = [[NSMutableOrderedSet alloc] initWithArray:defaults.JAMFRepos];
+    NSMutableOrderedSet *repos = [[NSMutableOrderedSet alloc] initWithArray:defaults.JSSRepos];
 
     NSUInteger index = [self findMatchInExisting:repos];
 
     if (index != NSNotFound) {
         [repos removeObjectAtIndex:index];
-        defaults.JAMFRepos = repos.array;
+        defaults.JSSRepos = repos.array;
     }
     return YES;
 }
@@ -435,7 +435,7 @@ NSDictionary *keyJamfInfoDict()
 
 + (NSArray *)enabledDistributionPoints
 {
-    NSArray *array = [[[LGJamfUploaderDefaults alloc] init] JAMFRepos];
+    NSArray *array = [[[LGJamfUploaderDefaults alloc] init] JSSRepos];
     if (!array.count) {
         return nil;
     }
@@ -455,11 +455,11 @@ NSDictionary *keyJamfInfoDict()
     LGHTTPRequest *request = [[LGHTTPRequest alloc] init];
     LGJamfUploaderDefaults *defaults = [[LGJamfUploaderDefaults alloc] init];
 
-    LGHTTPCredential *credentials = [[LGHTTPCredential alloc] initWithServer:defaults.JAMFURL
-                                                                        user:defaults.JAMFAPIUsername
-                                                                    password:defaults.JAMFAPIPassword];
+    LGHTTPCredential *credentials = [[LGHTTPCredential alloc] initWithServer:defaults.JSSURL
+                                                                        user:defaults.JSSAPIUsername
+                                                                    password:defaults.JSSAPIPassword];
 
-    credentials.sslTrustSetting = defaults.JAMFVerifySSL ? kLGSSLTrustOSImplicitTrust : kLGSSLTrustUserConfirmedTrust;
+    credentials.sslTrustSetting = defaults.JSSVerifySSL ? kLGSSLTrustOSImplicitTrust : kLGSSLTrustUserConfirmedTrust;
 
     [request retrieveDistributionPoints:credentials
                                   reply:^(NSDictionary *dp, NSError *error) {

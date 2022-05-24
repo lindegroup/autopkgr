@@ -72,24 +72,24 @@
     [_jamfRemoveDistPointBT setEnabled:NO];
 
     // .safeStringValue is a NSTextField category that you can pass a nil value into.
-    _jamfAPIUsernameTF.safe_stringValue = defaults.JAMFAPIUsername;
-    _jamfAPIPasswordTF.safe_stringValue = defaults.JAMFAPIPassword;
-    _jamfURLTF.safe_stringValue = defaults.JAMFURL;
+    _jamfAPIUsernameTF.safe_stringValue = defaults.JSSAPIUsername;
+    _jamfAPIPasswordTF.safe_stringValue = defaults.JSSAPIPassword;
+    _jamfURLTF.safe_stringValue = defaults.JSSURL;
 
     _jamfReloadServerBT.action = @selector(getDistributionPoints:);
     _jamfReloadServerBT.title = @"Connect";
 
     __weak typeof(self) weakSelf = self;
     [self.jamfAPIPasswordTF textChanged:^(NSString *newVal) {
-        defaults.JAMFAPIPassword = newVal;
+        defaults.JSSAPIPassword = newVal;
     }];
 
     [_jamfAPIUsernameTF textChanged:^(NSString *newVal) {
-        defaults.JAMFAPIUsername = newVal;
+        defaults.JSSAPIUsername = newVal;
     }];
 
     [[self.jamfURLTF textChanged:^(NSString *newVal) {
-        defaults.JAMFURL = newVal;
+        defaults.JSSURL = newVal;
     }] editingEnded:^(NSTextField *jamfURLTF) {
         [self startStatusUpdate];
         LGTestPort *tester = [[LGTestPort alloc] init];
@@ -102,14 +102,14 @@
                         }];
     }];
 
-    _jamfVerifySSLBT.state = defaults.JAMFVerifySSL;
+    _jamfVerifySSLBT.state = defaults.JSSVerifySSL;
     [_jamfDistributionPointTableView reloadData];
 }
 
 #pragma mark - IBActions
 - (IBAction)verifySSL:(NSButton *)sender
 {
-    [[LGJamfUploaderDefaults new] setJAMFVerifySSL:_jamfVerifySSLBT.state];
+    [[LGJamfUploaderDefaults new] setJSSVerifySSL:_jamfVerifySSLBT.state];
 }
 
 - (IBAction)getDistributionPoints:(id)sender
@@ -227,7 +227,7 @@
 
     NSAlert *alert = [NSAlert alertWithMessageText:alertTitle defaultButton:defaultButton alternateButton:altButton otherButton:nil informativeTextWithFormat:@"%@", infoText];
 
-    [[LGJamfUploaderDefaults new] setJAMFVerifySSL:([alert runModal] == NSModalResponseOK)];
+    [[LGJamfUploaderDefaults new] setJSSVerifySSL:([alert runModal] == NSModalResponseOK)];
 }
 
 - (NSString *)promptForSharePassword:(NSString *)shareName
@@ -279,7 +279,7 @@
 
     if ([alert runModal] == NSAlertFirstButtonReturn) {
         _jamfURLTF.stringValue = redirectURL;
-        [[LGJamfUploaderDefaults new] setJAMFURL:redirectURL];
+        [[LGJamfUploaderDefaults new] setJSSURL:redirectURL];
     }
 }
 

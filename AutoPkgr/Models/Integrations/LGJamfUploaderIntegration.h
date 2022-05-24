@@ -33,10 +33,10 @@
 
 + (instancetype)standardUserDefaults __attribute__((unavailable("Cannot use the shared object in this subclass.")));
 
-@property (copy, nonatomic) NSString *JAMFURL;
-@property (copy, nonatomic) NSString *JAMFAPIUsername;
-@property (copy, nonatomic) NSString *JAMFAPIPassword;
-@property (copy, nonatomic) NSArray *JAMFRepos;
-@property (assign, nonatomic) BOOL JAMFVerifySSL;
+@property (copy, nonatomic) NSString *JSSURL;
+@property (copy, nonatomic) NSString *JSSAPIUsername;
+@property (copy, nonatomic) NSString *JSSAPIPassword;
+@property (copy, nonatomic) NSArray *JSSRepos;
+@property (assign, nonatomic) BOOL JSSVerifySSL;
 
 @end

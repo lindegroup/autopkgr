@@ -106,9 +106,9 @@
 - (void)customInstallActions:(void (^)(NSError *))reply
 {
     LGJamfUploaderDefaults *defaults = [[LGJamfUploaderDefaults alloc] init];
-    NSNumber *verifySSL = [defaults autoPkgDomainObject:@"JAMF_VERIFY_SSL"];
+    NSNumber *verifySSL = [defaults autoPkgDomainObject:@"JSS_VERIFY_SSL"];
     if (!verifySSL) {
-        defaults.JAMFVerifySSL = YES;
+        defaults.JSSVerifySSL = YES;
     }
     reply(nil);
 }
@@ -117,10 +117,10 @@
 {
     // Clear out the defaults.
     LGJamfUploaderDefaults *defaults = [[LGJamfUploaderDefaults alloc] init];
-    defaults.JAMFAPIPassword = nil;
-    defaults.JAMFAPIUsername = nil;
-    defaults.JAMFRepos = nil;
-    defaults.JAMFURL = nil;
+    defaults.JSSAPIPassword = nil;
+    defaults.JSSAPIUsername = nil;
+    defaults.JSSRepos = nil;
+    defaults.JSSURL = nil;
 
     reply(nil);
 }
@@ -131,53 +131,53 @@
 
 @implementation LGJamfUploaderDefaults
 
-- (NSString *)JAMFURL
+- (NSString *)JSSURL
 {
-    return [self autoPkgDomainObject:@"JAMF_URL"];
+    return [self autoPkgDomainObject:@"JSS_URL"];
 }
 
-- (void)setJAMFURL:(NSString *)JAMFURL
+- (void)setJSSURL:(NSString *)JSSURL
 {
-    [self setAutoPkgDomainObject:JAMFURL forKey:@"JAMF_URL"];
+    [self setAutoPkgDomainObject:JSSURL forKey:@"JSS_URL"];
 }
 
 #pragma mark -
-- (NSString *)JAMFAPIUsername
+- (NSString *)JSSAPIUsername
 {
     return [self autoPkgDomainObject:@"API_USERNAME"];
 }
 
-- (void)setJAMFAPIUsername:(NSString *)JAMFAPIUsername
+- (void)setJSSAPIUsername:(NSString *)JSSAPIUsername
 {
-    [self setAutoPkgDomainObject:JAMFAPIUsername forKey:@"API_USERNAME"];
+    [self setAutoPkgDomainObject:JSSAPIUsername forKey:@"API_USERNAME"];
 }
 
 #pragma mark -
-- (NSString *)JAMFAPIPassword
+- (NSString *)JSSAPIPassword
 {
     return [self autoPkgDomainObject:@"API_PASSWORD"];
 }
 
-- (void)setJAMFAPIPassword:(NSString *)JAMFAPIPassword
+- (void)setJSSAPIPassword:(NSString *)JSSAPIPassword
 {
-    [self setAutoPkgDomainObject:JAMFAPIPassword forKey:@"API_PASSWORD"];
+    [self setAutoPkgDomainObject:JSSAPIPassword forKey:@"API_PASSWORD"];
 }
 
 #pragma mark -
-- (NSArray *)JAMFRepos
+- (NSArray *)JSSRepos
 {
-    return [self autoPkgDomainObject:@"JAMF_REPOS"];
+    return [self autoPkgDomainObject:@"JSS_REPOS"];
 }
 
-- (void)setJAMFRepos:(NSArray *)JAMFRepos
+- (void)setJSSRepos:(NSArray *)JSSRepos
 {
-    [self setAutoPkgDomainObject:JAMFRepos forKey:@"JAMF_REPOS"];
+    [self setAutoPkgDomainObject:JSSRepos forKey:@"JSS_REPOS"];
 }
 
 #pragma mark -
-- (BOOL)JAMFVerifySSL
+- (BOOL)JSSVerifySSL
 {
-    NSNumber *verifySSL = [self autoPkgDomainObject:@"JAMF_VERIFY_SSL"];
+    NSNumber *verifySSL = [self autoPkgDomainObject:@"JSS_VERIFY_SSL"];
     if (verifySSL == nil) {
         return YES;
     }
@@ -185,10 +185,10 @@
     return [verifySSL boolValue];
 }
 
-- (void)setJAMFVerifySSL:(BOOL)JAMFVerifySSL
+- (void)setJSSVerifySSL:(BOOL)JSSVerifySSL
 {
-    DevLog(@"Setting JAMF_SSL_VERIFY to %@", JAMFVerifySSL ? @"YES" : @"NO");
-    [self setAutoPkgDomainObject:@(JAMFVerifySSL) forKey:@"JAMF_VERIFY_SSL"];
+    DevLog(@"Setting JSS_SSL_VERIFY to %@", JSSVerifySSL ? @"YES" : @"NO");
+    [self setAutoPkgDomainObject:@(JSSVerifySSL) forKey:@"JSS_VERIFY_SSL"];
 }
 
 @end
