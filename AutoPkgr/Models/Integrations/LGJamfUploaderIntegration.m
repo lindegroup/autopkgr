@@ -80,9 +80,9 @@
     return YES;
 }
 
-+ (NSString *)summaryResultKey
++ (NSArray *)summaryResultKey
 {
-    return @"jamfuploader_summary_result";
+    return @[ @"jamfcategoryuploader_summary_result", @"jamfcomputergroupuploader_summary_result", @"jamfdockitemuploader_summary_result", @"jamfextensionattributeuploader_summary_result",  @"jamfpackageuploader_summary_result", @"jamfpatchuploader_summary_result", @"jamfpolicyuploader_summary_result", @"jamfscriptuploader_summary_result" ];
 }
 
 #pragma mark - Instance overrides.

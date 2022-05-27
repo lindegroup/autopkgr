@@ -4,6 +4,34 @@ All notable changes to this project will be documented in this file. This projec
 
 ## [Unreleased](unreleased)
 
+## [1.6] - 2022-06-10
+
+AutoPkgr 1.6 adds integration for the great [JamfUploader](https://github.com/grahampugh/jamf-upload) by [@grahampugh](https://https://github.com/grahampugh), a shiny new icon, as well as new notification templates for JamfUploader processors with Slack, Teams, Google Chat, and email! To get started with AutoPkgr and JamfUploader, please check out the [AutoPkgr Wiki](https://github.com/lindegroup/autopkgr/wiki/Jamf-Pro)! For more information about JamfUploader processors, please review the [JamfUploader Wiki](https://github.com/grahampugh/jamf-upload/wiki).
+
+### Added
+
+- AutoPkgr 1.6 adds integration for the great [JamfUploader](https://github.com/grahampugh/jamf-upload) by [@grahampugh](https://https://github.com/grahampugh)!
+- AutoPkgr 1.6 adds a shiny new [icon](doc-images/AutoPkgrIcon.png)!
+- AutoPkgr 1.6 adds new notification templates for JamfUploader processors with Slack, Teams, Google Chat, and email! If your recipe uses one of the following processors, AutoPkgr will notify you with the `summary_result` of each!
+ - jamfcategoryuploader
+ - jamfcomputergroupuploader
+ - jamfdockitemuploader
+ - jamfextensionattributeuploader
+ - jamfpackageuploader
+ - jamfpatchuploader
+ - jamfpolicyuploader
+ - jamfscriptuploader
+
+### Changed
+
+- Due to the fact that macOS no longer ships with Python, you will now need to install [AutoPkg](https://github.com/autopkg/autopkg/releases) first on _new Macs before installing AutoPkgr_. This gives AutoPkgr the path to Python it needs to run smoothly. If you already have AutoPkg installed, you already have the built in Python that ships with AutoPkg and can just install AutoPkgr.
+- Due to the fact that there is no native YAML library for macOS, AutoPkgr does not support `.yaml` recipes and they will not display in the recipe list. However, AutoPkgr will be able to run any recipe you like via your recipe list (even if those recipes are `.yaml` and are added to your recipe list manually, or have parent recipes that are `.yaml`). AutoPkgr's recipe list is stored at `~/Library/Application Support/AutoPkgr/recipe_list.txt` and can be edited with any text editor.
+
+### Fixed
+
+- Set AutoPkgr's Python launchPath to `/usr/local/autopkg/python`. Using AutoPkgr should no longer cause macOS to warn that "AutoPkgr needs to be updated." This will also avoid issues as AutoPkg versions increase.
+- Corrected the formatting for the JSSImporter template. Please note that while still included as an integration, JSSImporter has now been deprecated and you should use [JamfUploader](https://github.com/grahampugh/jamf-upload) instead.
+
 ## [1.5.7] - 2021-03-05
 
 ### Fixed
@@ -512,7 +540,8 @@ All notable changes to this project will be documented in this file. This projec
 - Initial public release of AutoPkgr.
 
 
-[unreleased]: https://github.com/lindegroup/autopkgr/compare/v1.5.7...HEAD
+[unreleased]: https://github.com/lindegroup/autopkgr/compare/v1.6...HEAD
+[1.6]: https://github.com/lindegroup/autopkgr/compare/v1.5.7...v1.6
 [1.5.7]: https://github.com/lindegroup/autopkgr/compare/v1.5.6...v1.5.7
 [1.5.6]: https://github.com/lindegroup/autopkgr/compare/v1.5.5...v1.5.6
 [1.5.5]: https://github.com/lindegroup/autopkgr/compare/v1.5.4...v1.5.5

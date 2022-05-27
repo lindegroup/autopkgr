@@ -100,39 +100,24 @@ AutoPackagerError: Unknown processor &apos;io.github.hjuutilainen.VirusTotalAnal
 		<key>summary_text</key>
 		<string>The following packages were successfully installed:</string>
 	</dict>
-	<key>jamfuploader</key>
+	<key>jamfpolicyuploader</key>
 	<dict>
 		<key>data_rows</key>
 		<array>
 			<dict>
-				<key>category</key>
-				<string>Example Category</string>
-				<key>groups</key>
-				<string>Example-update-smart</string>
-				<key>pkg_name</key>
-				<string>Example.pkg</string>
-				<key>icon</key>
-				<string>Example.png</string>
-				<key>version</key>
-				<string>example_version</string>
 				<key>policy</key>
 				<string>Example Policy</string>
 				<key>template</key>
 				<string>Example Template</string>
-				<key>scripts</key>
-				<string>Example.sh</string>
+				<key>icon</key>
+				<string>Example.png</string>
 			</dict>
 		</array>
 		<key>header</key>
 		<array>
-			<string>category</string>
-			<string>groups</string>
-			<string>icon</string>
-			<string>pkg_name</string>
-			<string>version</string>
 			<string>policy</string>
 			<string>template</string>
-			<string>scripts</string>
+			<string>icon</string>
 		</array>
 		<key>summary_text</key>
 		<string>The following changes were made to Jamf Pro:</string>
@@ -325,39 +310,24 @@ AutoPackagerError: Unknown processor &apos;io.github.hjuutilainen.VirusTotalAnal
 			<key>summary_text</key>
 			<string>The following packages were successfully installed:</string>
 		</dict>
-		<key>jamfuploader_summary_result</key>
+		<key>jamfpolicyuploader_summary_result</key>
 		<dict>
 			<key>data_rows</key>
 			<array>
 				<dict>
-					<key>category</key>
-					<string>Example Category</string>
-					<key>groups</key>
-					<string>Example-update-smart</string>
-					<key>pkg_name</key>
-					<string>Example.pkg</string>
-					<key>icon</key>
-					<string>Example.png</string>
-					<key>version</key>
-					<string>example_version</string>
 					<key>policy</key>
 					<string>Example Policy</string>
 					<key>template</key>
 					<string>Example Template</string>
-					<key>scripts</key>
-					<string>Example.sh</string>
+					<key>icon</key>
+					<string>Example.png</string>
 				</dict>
 			</array>
 			<key>header</key>
 			<array>
-				<string>category</string>
-				<string>groups</string>
-				<string>icon</string>
-				<string>pkg_name</string>
-				<string>version</string>
 				<string>policy</string>
 				<string>template</string>
-				<string>scripts</string>
+				<string>icon</string>
 			</array>
 			<key>summary_text</key>
 			<string>The following changes were made to Jamf Pro:</string>
