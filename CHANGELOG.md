@@ -26,6 +26,7 @@ AutoPkgr 1.6 adds integration for the great [JamfUploader](https://github.com/gr
 
 - Due to the fact that macOS no longer ships with Python, you will now need to install [AutoPkg](https://github.com/autopkg/autopkg/releases) first on _new Macs before installing AutoPkgr_. This gives AutoPkgr the path to Python it needs to run smoothly. If you already have AutoPkg installed, you already have the built in Python that ships with AutoPkg and can just install AutoPkgr.
 - Due to the fact that there is no native YAML library for macOS, AutoPkgr does not support `.yaml` recipes and they will not display in the recipe list. However, AutoPkgr will be able to run any recipe you like via your recipe list (even if those recipes are `.yaml` and are added to your recipe list manually, or have parent recipes that are `.yaml`). AutoPkgr's recipe list is stored at `~/Library/Application Support/AutoPkgr/recipe_list.txt` and can be edited with any text editor.
+- Moved instructions from the README to the Wiki. If you need help, we recommend that you check out the [AutoPkgr Wiki](https://github.com/lindegroup/autopkgr/wiki)!
 
 ### Fixed
 
