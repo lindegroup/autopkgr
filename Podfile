@@ -8,7 +8,7 @@ AutoPkgr.each { |t|
         pod 'AFNetworking', '~> 2.5.4'
         pod 'Sparkle', '~> 1.24.0'
         pod 'XMLDictionary', '~> 1.4'
-        pod 'mailcore2-osx', '~> 0.5'
+        pod 'mailcore2-osx', '~> 0.6.4'
         pod 'GRMustache', '~> 7.3.2'
         pod 'ACEView', '~> 0.0.5'
         pod 'MMMarkdown', '~> 0.5.1'

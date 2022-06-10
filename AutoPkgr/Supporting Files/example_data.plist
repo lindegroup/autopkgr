@@ -55,7 +55,7 @@ AutoPackagerError: Unknown processor &apos;io.github.hjuutilainen.VirusTotalAnal
 		</dict>
 	</array>
 	<key>has_summary_results</key>
-	<integer>7</integer>
+	<integer>9</integer>
 	<key>install_from_dmg</key>
 	<dict>
 		<key>data_rows</key>
@@ -99,6 +99,28 @@ AutoPackagerError: Unknown processor &apos;io.github.hjuutilainen.VirusTotalAnal
 		</array>
 		<key>summary_text</key>
 		<string>The following packages were successfully installed:</string>
+	</dict>
+	<key>jamfpolicyuploader</key>
+	<dict>
+		<key>data_rows</key>
+		<array>
+			<dict>
+				<key>policy</key>
+				<string>Example Policy</string>
+				<key>template</key>
+				<string>Example Template</string>
+				<key>icon</key>
+				<string>Example.png</string>
+			</dict>
+		</array>
+		<key>header</key>
+		<array>
+			<string>policy</string>
+			<string>template</string>
+			<string>icon</string>
+		</array>
+		<key>summary_text</key>
+		<string>The following changes were made to Jamf Pro:</string>
 	</dict>
 	<key>jss_importer</key>
 	<dict>
@@ -245,7 +267,7 @@ AutoPackagerError: Unknown processor &apos;io.github.hjuutilainen.VirusTotalAnal
 		<string>The following packages were built:</string>
 	</dict>
 	<key>report_version</key>
-	<string>0.4.3</string>
+	<string>0.4.4</string>
 	<key>summary_results</key>
 	<dict>
 		<key>install_from_dmg_summary_result</key>
@@ -287,6 +309,28 @@ AutoPackagerError: Unknown processor &apos;io.github.hjuutilainen.VirusTotalAnal
 			</array>
 			<key>summary_text</key>
 			<string>The following packages were successfully installed:</string>
+		</dict>
+		<key>jamfpolicyuploader_summary_result</key>
+		<dict>
+			<key>data_rows</key>
+			<array>
+				<dict>
+					<key>policy</key>
+					<string>Example Policy</string>
+					<key>template</key>
+					<string>Example Template</string>
+					<key>icon</key>
+					<string>Example.png</string>
+				</dict>
+			</array>
+			<key>header</key>
+			<array>
+				<string>policy</string>
+				<string>template</string>
+				<string>icon</string>
+			</array>
+			<key>summary_text</key>
+			<string>The following changes were made to Jamf Pro:</string>
 		</dict>
 		<key>jss_importer_summary_result</key>
 		<dict>

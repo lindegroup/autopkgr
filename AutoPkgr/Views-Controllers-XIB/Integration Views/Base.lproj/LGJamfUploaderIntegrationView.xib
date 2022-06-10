@@ -6,18 +6,18 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
-        <customObject id="-2" userLabel="File's Owner" customClass="LGJSSImporterIntegrationView">
+        <customObject id="-2" userLabel="File's Owner" customClass="LGJamfUploaderIntegrationView">
             <connections>
-                <outlet property="jssAPIPasswordTF" destination="eEY-Hf-ysc" id="bNx-Gp-PIa"/>
-                <outlet property="jssAPIUsernameTF" destination="HqD-rL-S3O" id="bu0-53-2sb"/>
-                <outlet property="jssDistributionPointTableView" destination="Z5b-9F-2lZ" id="uFz-IT-Hjz"/>
-                <outlet property="jssEditDistPointBT" destination="tdL-wP-gx2" id="BRa-vc-IIt"/>
-                <outlet property="jssReloadServerBT" destination="INC-3f-REM" id="kt5-6i-tCR"/>
-                <outlet property="jssRemoveDistPointBT" destination="YtI-Sx-J6O" id="dMh-Li-h7i"/>
-                <outlet property="jssStatusLight" destination="n9u-rv-Mbf" id="T9W-yu-H01"/>
-                <outlet property="jssStatusSpinner" destination="OT5-hu-oZC" id="BFo-7b-HVd"/>
-                <outlet property="jssURLTF" destination="Kox-gt-MfQ" id="XxR-fu-xuE"/>
-                <outlet property="jssVerifySSLBT" destination="c5h-ql-lyI" id="fbr-pf-WOo"/>
+                <outlet property="jamfAPIPasswordTF" destination="eEY-Hf-ysc" id="VjV-GA-VxQ"/>
+                <outlet property="jamfAPIUsernameTF" destination="HqD-rL-S3O" id="MAU-3z-NUz"/>
+                <outlet property="jamfDistributionPointTableView" destination="Z5b-9F-2lZ" id="axV-xD-HgV"/>
+                <outlet property="jamfEditDistPointBT" destination="tdL-wP-gx2" id="AfC-Qc-m2v"/>
+                <outlet property="jamfReloadServerBT" destination="INC-3f-REM" id="pzb-yR-bGs"/>
+                <outlet property="jamfRemoveDistPointBT" destination="YtI-Sx-J6O" id="b1e-Ec-0Gi"/>
+                <outlet property="jamfStatusLight" destination="n9u-rv-Mbf" id="H3i-GR-7GA"/>
+                <outlet property="jamfStatusSpinner" destination="OT5-hu-oZC" id="3ro-Ta-2t3"/>
+                <outlet property="jamfURLTF" destination="Kox-gt-MfQ" id="E4i-5c-O8w"/>
+                <outlet property="jamfVerifySSLBT" destination="c5h-ql-lyI" id="aXP-Lv-Sgv"/>
                 <outlet property="view" destination="Hs1-wy-3Gl" id="OzK-YF-krQ"/>
             </connections>
         </customObject>
@@ -221,7 +221,7 @@
                 </button>
                 <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Kox-gt-MfQ">
                     <rect key="frame" x="89" y="206" width="316" height="21"/>
-                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" placeholderString="https://casper.yourdomain.example:8443/" drawsBackground="YES" id="xHX-mS-zNQ">
+                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" placeholderString="https://example.jamfcloud.com/" drawsBackground="YES" id="xHX-mS-zNQ">
                         <font key="font" metaFont="system"/>
                         <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                         <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -232,7 +232,7 @@
                     <constraints>
                         <constraint firstAttribute="width" constant="60" id="qjF-dj-gPE"/>
                     </constraints>
-                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="JSS URL:" id="XEU-IY-bVd">
+                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Jamf URL:" id="XEU-IY-bVd">
                         <font key="font" metaFont="system"/>
                         <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>

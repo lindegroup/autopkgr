@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="16096" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="20037" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="16096"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="20037"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -19,7 +19,7 @@
             <windowStyleMask key="styleMask" closable="YES" miniaturizable="YES" resizable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="196" y="240" width="481" height="299"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="2560" height="1417"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="2240" height="1235"/>
             <view key="contentView" id="se5-gp-TjO">
                 <rect key="frame" x="0.0" y="0.0" width="481" height="299"/>
                 <autoresizingMask key="autoresizingMask"/>
@@ -57,7 +57,7 @@
                         </cells>
                     </matrix>
                     <button tag="2" translatesAutoresizingMaskIntoConstraints="NO" id="kHJ-8E-Jr6">
-                        <rect key="frame" x="58" y="194" width="389" height="18"/>
+                        <rect key="frame" x="58" y="193" width="387" height="18"/>
                         <buttonCell key="cell" type="check" title="New software is downloaded" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="93b-UK-JQ9">
                             <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                             <font key="font" metaFont="system"/>
@@ -67,7 +67,7 @@
                         </connections>
                     </button>
                     <button tag="4" translatesAutoresizingMaskIntoConstraints="NO" id="AAi-Ly-vw6">
-                        <rect key="frame" x="58" y="174" width="389" height="18"/>
+                        <rect key="frame" x="58" y="171" width="387" height="18"/>
                         <buttonCell key="cell" type="check" title="New package is built" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="Rrw-eM-Kne">
                             <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                             <font key="font" metaFont="system"/>
@@ -77,8 +77,8 @@
                         </connections>
                     </button>
                     <button tag="64" translatesAutoresizingMaskIntoConstraints="NO" id="PTz-bS-pZc">
-                        <rect key="frame" x="58" y="134" width="389" height="18"/>
-                        <buttonCell key="cell" type="check" title="New software imported to Munki, JSS, or other server" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="iUL-bU-gWt">
+                        <rect key="frame" x="58" y="127" width="387" height="18"/>
+                        <buttonCell key="cell" type="check" title="New software imported to Munki, Jamf, or other server" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="iUL-bU-gWt">
                             <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                             <font key="font" metaFont="system"/>
                         </buttonCell>
@@ -87,7 +87,7 @@
                         </connections>
                     </button>
                     <button tag="16" translatesAutoresizingMaskIntoConstraints="NO" id="ad9-qn-QW0">
-                        <rect key="frame" x="58" y="114" width="389" height="18"/>
+                        <rect key="frame" x="58" y="105" width="387" height="18"/>
                         <buttonCell key="cell" type="check" title="Errors" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="MGr-wA-mKE">
                             <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                             <font key="font" metaFont="system"/>
@@ -97,7 +97,7 @@
                         </connections>
                     </button>
                     <button tag="32" translatesAutoresizingMaskIntoConstraints="NO" id="jGs-I5-LQa">
-                        <rect key="frame" x="58" y="94" width="389" height="18"/>
+                        <rect key="frame" x="58" y="83" width="387" height="18"/>
                         <buttonCell key="cell" type="check" title="Failures" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="VXM-yd-Y5e">
                             <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                             <font key="font" metaFont="system"/>
@@ -110,7 +110,7 @@
                         <rect key="frame" x="316" y="68" width="148" height="26"/>
                         <popUpButtonCell key="cell" type="push" title="Once per version" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" tag="2" imageScaling="proportionallyDown" inset="2" selectedItem="Fdo-BA-Js6" id="Xqj-mT-15z">
                             <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
-                            <font key="font" metaFont="system"/>
+                            <font key="font" metaFont="menu"/>
                             <menu key="menu" id="MsK-px-fRu">
                                 <items>
                                     <menuItem title="Once a week" id="yE4-Cq-TFS"/>
@@ -151,11 +151,11 @@
                         </connections>
                     </button>
                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="xeJ-hP-MvA">
-                        <rect key="frame" x="77" y="58" width="251" height="14"/>
+                        <rect key="frame" x="77" y="47" width="251" height="14"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="247" id="cJX-Yz-vJX"/>
                         </constraints>
-                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="This includes AutoPkg, Git, Munki tools, etc." id="Q6A-On-Dwg">
+                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="This includes AutoPkg, Git, Munki, Jamf, etc." id="Q6A-On-Dwg">
                             <font key="font" metaFont="controlContent" size="11"/>
                             <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                             <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
@@ -165,7 +165,7 @@
                         </textFieldCell>
                     </textField>
                     <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="LdM-NS-cWD">
-                        <rect key="frame" x="357" y="13" width="110" height="32"/>
+                        <rect key="frame" x="356" y="13" width="112" height="32"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="98" id="5Kq-Fz-pdF"/>
                         </constraints>
@@ -181,7 +181,7 @@ Gw
                         </connections>
                     </button>
                     <button tag="8" translatesAutoresizingMaskIntoConstraints="NO" id="mXz-OA-1lG">
-                        <rect key="frame" x="58" y="154" width="389" height="18"/>
+                        <rect key="frame" x="58" y="149" width="387" height="18"/>
                         <buttonCell key="cell" type="check" title="New software is installed" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="vpW-70-0of">
                             <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                             <font key="font" metaFont="system"/>
