@@ -7,6 +7,47 @@ xmlns:dc="http://purl.org/dc/elements/1.1/">
     <description>Most recent changes with links to updates.</description>
     <language>en</language>
     <item>
+      <title>Version 1.6</title>
+      <description>
+        <![CDATA[
+                <h2>To JamfUploader and Beyond!</h2>
+                <p>AutoPkgr 1.6 adds integration for the great <a href="https://github.com/grahampugh/jamf-upload">JamfUploader</a> by <a href="https://https://github.com/grahampugh" rel="nofollow">@grahampugh</a>, a shiny new <a href="/lindegroup/autopkgr/blob/untagged-5d3fccf69ea7719e2d1f/doc-images/AutoPkgrIcon.png">icon</a>, as well as new notification templates for JamfUploader processors with Slack, Teams, Google Chat, and email! To get started with AutoPkgr and JamfUploader, please check out the <a href="https://github.com/lindegroup/autopkgr/wiki/Jamf-Pro">AutoPkgr Wiki</a>! For more information about JamfUploader processors, please review the <a href="https://github.com/grahampugh/jamf-upload/wiki">JamfUploader Wiki</a>.</p>
+                <h3>Added</h3>
+                <ul>
+                <li>AutoPkgr 1.6 adds integration for the great <a href="https://github.com/grahampugh/jamf-upload">JamfUploader</a> by <a href="https://https://github.com/grahampugh" rel="nofollow">@grahampugh</a>!</li>
+                <li>AutoPkgr 1.6 adds a shiny new <a href="/lindegroup/autopkgr/blob/untagged-5d3fccf69ea7719e2d1f/doc-images/AutoPkgrIcon.png">icon</a>!</li>
+                <li>AutoPkgr 1.6 adds new notification templates for JamfUploader processors with Slack, Teams, Google Chat, and email! If your recipe uses one of the following processors, AutoPkgr will notify you with the <code>summary_result</code> of each!
+                <ul>
+                <li>jamfcategoryuploader</li>
+                <li>jamfcomputergroupuploader</li>
+                <li>jamfdockitemuploader</li>
+                <li>jamfextensionattributeuploader</li>
+                <li>jamfpackageuploader</li>
+                <li>jamfpatchuploader</li>
+                <li>jamfpolicyuploader</li>
+                <li>jamfscriptuploader</li>
+                </ul>
+                </li>
+                </ul>
+                <h3>Changed</h3>
+                <ul>
+                <li>Due to the fact that macOS no longer ships with Python, you will now need to install <a href="https://github.com/autopkg/autopkg/releases">AutoPkg</a> first on <em>new Macs before installing AutoPkgr</em>. This gives AutoPkgr the path to Python it needs to run smoothly. If you already have AutoPkg installed, you already have the built in Python that ships with AutoPkg and can just install AutoPkgr.</li>
+                <li>Due to the fact that there is no native YAML library for macOS, AutoPkgr does not support <code>.yaml</code> recipes and they will not display in the recipe list. However, AutoPkgr will be able to run any recipe you like via your recipe list (even if those recipes are <code>.yaml</code> and are added to your recipe list manually, or have parent recipes that are <code>.yaml</code>). AutoPkgr's recipe list is stored at <code>~/Library/Application Support/AutoPkgr/recipe_list.txt</code> and can be edited with any text editor.</li>
+                <li>Moved instructions from the README to the Wiki. If you need help, we recommend that you check out the <a href="https://github.com/lindegroup/autopkgr/wiki">AutoPkgr Wiki</a>!</li>
+                </ul>
+                <h3>Fixed</h3>
+                <ul>
+                <li>Set AutoPkgr's Python launchPath to <code>/usr/local/autopkg/python</code>. Using AutoPkgr should no longer cause macOS to warn that "AutoPkgr needs to be updated." This will also avoid issues as AutoPkg versions increase.</li>
+                <li>Corrected the formatting for the JSSImporter template. Please note that while still included as an integration, JSSImporter has now been deprecated and you should use <a href="https://github.com/grahampugh/jamf-upload">JamfUploader</a> instead.</li>
+                </ul>
+                ]]>
+</description>
+      <sparkle:minimumSystemVersion>10.13</sparkle:minimumSystemVersion>
+      <pubDate>Fri, 10 June 2022 12:00:00 -0700</pubDate>
+      <enclosure url="https://github.com/lindegroup/autopkgr/releases/download/v1.6/AutoPkgr-1.6.dmg"
+      sparkle:version="1506" sparkle:shortVersionString="1.6" type="application/octet-stream" />
+    </item>
+    <item>
       <title>Version 1.5.7</title>
       <description>
         <![CDATA[
