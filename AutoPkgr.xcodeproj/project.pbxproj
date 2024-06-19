@@ -1622,10 +1622,12 @@
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-AutoPkgrTests/Pods-AutoPkgrTests-frameworks.sh",
 				"${PODS_ROOT}/Sparkle/Sparkle.framework",
+				"${PODS_XCFRAMEWORKS_BUILD_DIR}/OpenSSL/OpenSSL.framework/OpenSSL",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Sparkle.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/OpenSSL.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -2058,10 +2060,12 @@
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-AutoPkgr/Pods-AutoPkgr-frameworks.sh",
 				"${PODS_ROOT}/Sparkle/Sparkle.framework",
+				"${PODS_XCFRAMEWORKS_BUILD_DIR}/OpenSSL/OpenSSL.framework/OpenSSL",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Sparkle.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/OpenSSL.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -3106,6 +3110,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = x86_64;
 				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
@@ -3137,6 +3142,7 @@
 				DEVELOPMENT_TEAM = JVY2ZR6SEF;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
+				EXCLUDED_ARCHS = "";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
@@ -3165,6 +3171,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = x86_64;
 				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
@@ -3197,6 +3204,7 @@
 				DEVELOPMENT_TEAM = JVY2ZR6SEF;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				EXCLUDED_ARCHS = "";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -3218,6 +3226,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 2C6986FE5B41226735CC0A32 /* Pods-AutoPkgr.debug.xcconfig */;
 			buildSettings = {
+				ARCHS = x86_64;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CLANG_ENABLE_MODULES = YES;
@@ -3225,6 +3234,7 @@
 				CODE_SIGN_IDENTITY = "Developer ID Application";
 				CODE_SIGN_INJECT_BASE_ENTITLEMENTS = YES;
 				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1520;
 				DEVELOPMENT_TEAM = JVY2ZR6SEF;
 				ENABLE_HARDENED_RUNTIME = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -3232,7 +3242,7 @@
 				INFOPLIST_FILE = "AutoPkgr/Supporting Files/AutoPkgr-Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.13;
-				MARKETING_VERSION = 1.6;
+				MARKETING_VERSION = 1.6.1;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CODE_SIGN_FLAGS = "";
 				"OTHER_CODE_SIGN_FLAGS[sdk=*]" = "--options=runtime";
@@ -3260,6 +3270,8 @@
 					"\"CoreServices\"",
 					"-framework",
 					"\"Foundation\"",
+					"-framework",
+					"\"OpenSSL\"",
 					"-framework",
 					"\"Security\"",
 					"-framework",
@@ -3285,6 +3297,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = D1C393755729ADE331CE085C /* Pods-AutoPkgr.release.xcconfig */;
 			buildSettings = {
+				ARCHS = x86_64;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CLANG_ENABLE_MODULES = YES;
@@ -3292,15 +3305,17 @@
 				CODE_SIGN_IDENTITY = "Developer ID Application";
 				CODE_SIGN_INJECT_BASE_ENTITLEMENTS = YES;
 				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1520;
 				DEVELOPMENT_TEAM = JVY2ZR6SEF;
 				ENABLE_HARDENED_RUNTIME = YES;
+				EXCLUDED_ARCHS = "";
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "AutoPkgr/Supporting Files/AutoPkgr-Prefix.pch";
 				INFOPLIST_FILE = "AutoPkgr/Supporting Files/AutoPkgr-Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.13;
-				MARKETING_VERSION = 1.6;
+				MARKETING_VERSION = 1.6.1;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CODE_SIGN_FLAGS = "";
 				"OTHER_CODE_SIGN_FLAGS[sdk=*]" = "--options=runtime";
@@ -3328,6 +3343,8 @@
 					"\"CoreServices\"",
 					"-framework",
 					"\"Foundation\"",
+					"-framework",
+					"\"OpenSSL\"",
 					"-framework",
 					"\"Security\"",
 					"-framework",
@@ -3371,6 +3388,43 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
 				ONLY_ACTIVE_ARCH = YES;
 				"OTHER_CODE_SIGN_FLAGS[sdk=*]" = "--options=runtime";
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-ObjC",
+					"-l\"ACEView\"",
+					"-l\"AFNetworking\"",
+					"-l\"AHKeychain\"",
+					"-l\"AHLaunchCtl\"",
+					"-l\"AHProxySettings\"",
+					"-l\"GRMustache\"",
+					"-l\"JRSwizzle\"",
+					"-l\"MMMarkdown\"",
+					"-l\"MailCore\"",
+					"-l\"XMLDictionary\"",
+					"-l\"c++\"",
+					"-l\"iconv\"",
+					"-l\"resolv\"",
+					"-l\"sasl2\"",
+					"-l\"tidy\"",
+					"-l\"xml2\"",
+					"-l\"z\"",
+					"-framework",
+					"\"CoreServices\"",
+					"-framework",
+					"\"Foundation\"",
+					"-framework",
+					"\"OpenSSL\"",
+					"-framework",
+					"\"Security\"",
+					"-framework",
+					"\"ServiceManagement\"",
+					"-framework",
+					"\"Sparkle\"",
+					"-framework",
+					"\"SystemConfiguration\"",
+					"-framework",
+					"\"WebKit\"",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.lindegroup.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -3398,6 +3452,43 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
 				ONLY_ACTIVE_ARCH = YES;
 				"OTHER_CODE_SIGN_FLAGS[sdk=*]" = "--options=runtime";
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-ObjC",
+					"-l\"ACEView\"",
+					"-l\"AFNetworking\"",
+					"-l\"AHKeychain\"",
+					"-l\"AHLaunchCtl\"",
+					"-l\"AHProxySettings\"",
+					"-l\"GRMustache\"",
+					"-l\"JRSwizzle\"",
+					"-l\"MMMarkdown\"",
+					"-l\"MailCore\"",
+					"-l\"XMLDictionary\"",
+					"-l\"c++\"",
+					"-l\"iconv\"",
+					"-l\"resolv\"",
+					"-l\"sasl2\"",
+					"-l\"tidy\"",
+					"-l\"xml2\"",
+					"-l\"z\"",
+					"-framework",
+					"\"CoreServices\"",
+					"-framework",
+					"\"Foundation\"",
+					"-framework",
+					"\"OpenSSL\"",
+					"-framework",
+					"\"Security\"",
+					"-framework",
+					"\"ServiceManagement\"",
+					"-framework",
+					"\"Sparkle\"",
+					"-framework",
+					"\"SystemConfiguration\"",
+					"-framework",
+					"\"WebKit\"",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.lindegroup.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -3410,9 +3501,10 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = F107A65717A3307E0BCA7341 /* Pods-com.lindegroup.AutoPkgr.helper.debug.xcconfig */;
 			buildSettings = {
+				ARCHS = x86_64;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CODE_SIGN_IDENTITY = "Developer ID Application";
-				CURRENT_PROJECT_VERSION = 1501;
+				CURRENT_PROJECT_VERSION = 1520;
 				DEVELOPMENT_TEAM = JVY2ZR6SEF;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -3425,7 +3517,7 @@
 				INSTALL_PATH = "";
 				"INSTALL_PATH[sdk=*]" = /Library/PrivilegedHelperTools/;
 				MACOSX_DEPLOYMENT_TARGET = 10.13;
-				MARKETING_VERSION = 1.5.7;
+				MARKETING_VERSION = 1.6.1;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = (
@@ -3467,9 +3559,10 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 06EB3E6636660212855850C6 /* Pods-com.lindegroup.AutoPkgr.helper.release.xcconfig */;
 			buildSettings = {
+				ARCHS = x86_64;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CODE_SIGN_IDENTITY = "Developer ID Application";
-				CURRENT_PROJECT_VERSION = 1501;
+				CURRENT_PROJECT_VERSION = 1520;
 				DEVELOPMENT_TEAM = JVY2ZR6SEF;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -3482,7 +3575,7 @@
 				INSTALL_PATH = "";
 				"INSTALL_PATH[sdk=*]" = /Library/PrivilegedHelperTools/;
 				MACOSX_DEPLOYMENT_TARGET = 10.13;
-				MARKETING_VERSION = 1.5.7;
+				MARKETING_VERSION = 1.6.1;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = (
