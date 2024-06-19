@@ -7,6 +7,34 @@ xmlns:dc="http://purl.org/dc/elements/1.1/">
     <description>Most recent changes with links to updates.</description>
     <language>en</language>
     <item>
+      <title>Version 1.6.1</title>
+      <description>
+        <![CDATA[
+                <h2>Don't Touch That Dial!</h2>
+                <p>AutoPkgr 1.6.1 updates the integration for the great <a href="https://github.com/grahampugh/jamf-upload">JamfUploader</a> by <a href="https://https://github.com/grahampugh" rel="nofollow">@grahampugh</a>. AutoPkgr 1.6.1 removes the <code>Connect</code> button from the integration as it is deprecated and no longer necessary. Simply select <code>Save and Close</code> to save your URL, credentials, and CDP to start autopkg-ing with JamfUploader! To get started with AutoPkgr and JamfUploader, please check out the <a href="https://github.com/lindegroup/autopkgr/wiki/Jamf-Pro">AutoPkgr Wiki</a>! For more information about JamfUploader processors, please review the <a href="https://github.com/grahampugh/jamf-upload/wiki">JamfUploader Wiki</a>.</p>
+                <a target="_blank" rel="noopener noreferrer" href="https://private-user-images.githubusercontent.com/20520337/341156617-63815757-3655-4742-b84b-c9578bb55b8c.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3MTg4MTc4MTYsIm5iZiI6MTcxODgxNzUxNiwicGF0aCI6Ii8yMDUyMDMzNy8zNDExNTY2MTctNjM4MTU3NTctMzY1NS00NzQyLWI4NGItYzk1NzhiYjU1YjhjLnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNDA2MTklMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjQwNjE5VDE3MTgzNlomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPWMxMzg1MmUyZTllZGZiM2FiZjY5ZWE2YjU0YTQ0Njc1YzlkMWZmNjFlYjQ1YjJlYTNhYzA5ODcxY2IzZDEyZTcmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0JmFjdG9yX2lkPTAma2V5X2lkPTAmcmVwb19pZD0wIn0.ELNOc5XHjh_RogNzBg-6SSazNV54M_S7m4l-ZO_c4bM"><img width="769" alt="Screenshot 2024-06-19 at 9 35 26 AM" src="https://private-user-images.githubusercontent.com/20520337/341156617-63815757-3655-4742-b84b-c9578bb55b8c.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3MTg4MTc4MTYsIm5iZiI6MTcxODgxNzUxNiwicGF0aCI6Ii8yMDUyMDMzNy8zNDExNTY2MTctNjM4MTU3NTctMzY1NS00NzQyLWI4NGItYzk1NzhiYjU1YjhjLnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNDA2MTklMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjQwNjE5VDE3MTgzNlomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPWMxMzg1MmUyZTllZGZiM2FiZjY5ZWE2YjU0YTQ0Njc1YzlkMWZmNjFlYjQ1YjJlYTNhYzA5ODcxY2IzZDEyZTcmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0JmFjdG9yX2lkPTAma2V5X2lkPTAmcmVwb19pZD0wIn0.ELNOc5XHjh_RogNzBg-6SSazNV54M_S7m4l-ZO_c4bM" content-type-secured-asset="image/png" style="max-width: 100%;"></a>
+                <h3>Changed</h3>
+                <ul>
+                <li>AutoPkgr 1.6.1 removes the <code>Connect</code> button from the integration as it is deprecated and no longer necessary. Simply select <code>Save and Close</code> to save your URL, credentials, and CDP to start autopkg-ing with JamfUploader!</li>
+                <li><strong>Friendly PSA for AutoPkgr and Jamf Pro v11.5 and above:</strong> You <em><strong>do not</strong></em> need to enable basic authentication in Jamf Pro in order for AutoPkgr to work with JamfUploader. In the JamfUploader Integration pane, just click Save and Close. JamfUploader still works with AutoPkgr in Jamf Pro v11.5 and above. This has been tested and still works as expected.</li>
+                <li>Updated the Jamf Pro integration instructions in the [AutoPkgr Wiki] (<a href="https://github.com/lindegroup/autopkgr/wiki/Jamf-Pro">https://github.com/lindegroup/autopkgr/wiki/Jamf-Pro</a>) to note that the Connect button is deprecated and has been removed.</li>
+                <li>Updated the versions of Sparkle and OpenSSL-Universal.</li>
+                <li>Due to the fact that macOS no longer ships with Python, you will now need to install <a href="https://github.com/autopkg/autopkg/releases">AutoPkg</a> <em>first</em> on new Macs <em>before installing AutoPkgr</em>. This gives AutoPkgr the path to Python it needs to run smoothly. If you already have AutoPkg installed, you already have the built in Python that ships with AutoPkg and can just install AutoPkgr.</li>
+                <li>Due to the fact that there is no native YAML library for macOS, AutoPkgr does not support <code>.yaml</code> recipes and they will not display in the recipe list. However, AutoPkgr will be able to run any recipe you like via your recipe list (even if those recipes are <code>.yaml</code> and are added to your recipe list manually, or have parent recipes that are <code>.yaml</code>). AutoPkgr's recipe list is stored at <code>~/Library/Application Support/AutoPkgr/recipe_list.txt</code> and can be edited with any text editor.</li>
+                </ul>
+                <h3>Fixed</h3>
+                <ul>
+                <li>Fixed an issue where placeholder text for the recipe checkbox was improperly rendered behind the text of recipe list entries.</li>
+                <li>Please note that JSSImporter has been deprecated and you should use <a href="https://github.com/grahampugh/jamf-upload">JamfUploader</a> instead. You can find the instructions to configure the Jamf Pro integration in the [AutoPkgr Wiki] (<a href="https://github.com/lindegroup/autopkgr/wiki/Jamf-Pro">https://github.com/lindegroup/autopkgr/wiki/Jamf-Pro</a>).</li>
+                </ul>
+                ]]>
+</description>
+      <sparkle:minimumSystemVersion>10.13</sparkle:minimumSystemVersion>
+      <pubDate>Thurs, 20 June 2024 09:00:00 -0700</pubDate>
+      <enclosure url="https://github.com/lindegroup/autopkgr/releases/download/v1.6.1/AutoPkgr-1.6.1.dmg"
+      sparkle:version="1509" sparkle:shortVersionString="1.6.1" type="application/octet-stream" />
+    </item>
+    <item>
       <title>Version 1.6</title>
       <description>
         <![CDATA[
