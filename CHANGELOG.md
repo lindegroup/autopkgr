@@ -6,12 +6,12 @@ All notable changes to this project will be documented in this file. This projec
 
 ## [1.6.1] - 2024-06-20
 
-AutoPkgr 1.6.1 updates the integration for the great [JamfUploader](https://github.com/grahampugh/jamf-upload) by [@grahampugh](https://https://github.com/grahampugh). To get started with AutoPkgr and JamfUploader, please check out the [AutoPkgr Wiki](https://github.com/lindegroup/autopkgr/wiki/Jamf-Pro)! For more information about JamfUploader processors, please review the [JamfUploader Wiki](https://github.com/grahampugh/jamf-upload/wiki).
+AutoPkgr 1.6.1 updates the integration for the great [JamfUploader](https://github.com/grahampugh/jamf-upload) by [@grahampugh](https://https://github.com/grahampugh). Simply select `Save and Close` to save your URL, credentials, and CDP to start autopkg-ing with JamfUploader! To get started with AutoPkgr and JamfUploader, please check out the [AutoPkgr Wiki](https://github.com/lindegroup/autopkgr/wiki/Jamf-Pro)! For more information about JamfUploader processors, please review the [JamfUploader Wiki](https://github.com/grahampugh/jamf-upload/wiki).
 
 ### Changed
 
 - AutoPkgr 1.6.1 removes the `Connect` button from the integration as it is deprecated and no longer necessary. Simply select `Save and Close` to save your URL, credentials, and CDP to start autopkg-ing with JamfUploader!
-- Friendly PSA for AutoPkgr and Jamf Pro v11.5 and above: You _do not_ need to enable basic authentication in Jamf Pro in order for AutoPkgr to work with JamfUploader. In the JamfUploader Integration pane, just click Save and Close. JamfUploader still works with AutoPkgr in Jamf Pro v11.5 and above. This has been tested and still works as expected.
+- **Friendly PSA for AutoPkgr and Jamf Pro v11.5 and above:** You _do not_ need to enable basic authentication in Jamf Pro in order for AutoPkgr to work with JamfUploader. In the JamfUploader Integration pane, just click Save and Close. JamfUploader still works with AutoPkgr in Jamf Pro v11.5 and above. This has been tested and still works as expected.
 - Updated the Jamf Pro integration instructions in the [AutoPkgr Wiki] (https://github.com/lindegroup/autopkgr/wiki/Jamf-Pro) to note that the Connect button is deprecated and has been removed.
 - Updated the versions of Sparkle and OpenSSL-Universal.
 - Due to the fact that macOS no longer ships with Python, you will now need to install [AutoPkg](https://github.com/autopkg/autopkg/releases) _first_ on new Macs _before installing AutoPkgr_. This gives AutoPkgr the path to Python it needs to run smoothly. If you already have AutoPkg installed, you already have the built in Python that ships with AutoPkg and can just install AutoPkgr.
@@ -559,7 +559,8 @@ AutoPkgr 1.6 adds integration for the great [JamfUploader](https://github.com/gr
 - Initial public release of AutoPkgr.
 
 
-[unreleased]: https://github.com/lindegroup/autopkgr/compare/v1.6...HEAD
+[unreleased]: https://github.com/lindegroup/autopkgr/compare/v1.6.1...HEAD
+[1.6.1]: https://github.com/lindegroup/autopkgr/compare/v1.6...v1.6.1
 [1.6]: https://github.com/lindegroup/autopkgr/compare/v1.5.7...v1.6
 [1.5.7]: https://github.com/lindegroup/autopkgr/compare/v1.5.6...v1.5.7
 [1.5.6]: https://github.com/lindegroup/autopkgr/compare/v1.5.5...v1.5.6
