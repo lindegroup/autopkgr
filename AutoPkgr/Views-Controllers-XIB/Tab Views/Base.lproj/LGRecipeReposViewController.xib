@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="20037" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="32700.99.1234" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="20037"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="22690"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -27,13 +27,13 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <scrollView autohidesScrollers="YES" horizontalLineScroll="19" horizontalPageScroll="10" verticalLineScroll="19" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9vg-XB-Pqv">
-                    <rect key="frame" x="17" y="251" width="592" height="74"/>
+                    <rect key="frame" x="17" y="228" width="621" height="51"/>
                     <clipView key="contentView" id="baD-Ze-qNS">
-                        <rect key="frame" x="1" y="1" width="590" height="72"/>
+                        <rect key="frame" x="1" y="1" width="619" height="49"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" columnSelection="YES" autosaveName="MainRepoTable" rowSizeStyle="automatic" headerView="A8F-FX-vOe" viewBased="YES" id="n0R-ew-DOT" customClass="LGTableView">
-                                <rect key="frame" x="0.0" y="0.0" width="590" height="49"/>
+                                <rect key="frame" x="0.0" y="0.0" width="619" height="26"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <size key="intercellSpacing" width="3" height="2"/>
                                 <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -72,7 +72,7 @@
                                             </tableCellView>
                                         </prototypeCellViews>
                                     </tableColumn>
-                                    <tableColumn identifier="cloneURL" width="448.8359375" minWidth="40" maxWidth="1000" id="A4c-aN-okl">
+                                    <tableColumn identifier="cloneURL" width="420" minWidth="40" maxWidth="1000" id="A4c-aN-okl">
                                         <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left" title="Repo Clone URL">
                                             <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
                                             <color key="backgroundColor" white="0.33333298560000002" alpha="1" colorSpace="calibratedWhite"/>
@@ -86,11 +86,11 @@
                                         <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                         <prototypeCellViews>
                                             <tableCellView id="Q27-MX-JbK">
-                                                <rect key="frame" x="29" y="1" width="449" height="17"/>
+                                                <rect key="frame" x="29" y="1" width="420" height="17"/>
                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                 <subviews>
-                                                    <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="zc1-gk-kUw">
-                                                        <rect key="frame" x="0.0" y="1" width="414" height="16"/>
+                                                    <textField focusRingType="none" verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="zc1-gk-kUw">
+                                                        <rect key="frame" x="0.0" y="1" width="385" height="16"/>
                                                         <textFieldCell key="cell" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" title="Table View Cell" id="EZH-eb-njv">
                                                             <font key="font" metaFont="system"/>
                                                             <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -122,10 +122,10 @@
                                         <sortDescriptor key="sortDescriptorPrototype" selector="compare:" sortKey="stars"/>
                                         <prototypeCellViews>
                                             <tableCellView id="AxP-sS-f4D">
-                                                <rect key="frame" x="481" y="1" width="50" height="17"/>
+                                                <rect key="frame" x="452" y="1" width="50" height="17"/>
                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                 <subviews>
-                                                    <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" allowsExpansionToolTips="YES" translatesAutoresizingMaskIntoConstraints="NO" id="YQN-z0-GZk">
+                                                    <textField focusRingType="none" verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" allowsExpansionToolTips="YES" translatesAutoresizingMaskIntoConstraints="NO" id="YQN-z0-GZk">
                                                         <rect key="frame" x="0.0" y="1" width="50" height="16"/>
                                                         <textFieldCell key="cell" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" id="7PB-W2-SNN">
                                                             <font key="font" metaFont="system"/>
@@ -154,7 +154,7 @@
                                         <sortDescriptor key="sortDescriptorPrototype" selector="compare:" sortKey="status"/>
                                         <prototypeCellViews>
                                             <tableCellView id="W23-WN-yYs" customClass="LGRepoStatusCellView">
-                                                <rect key="frame" x="534" y="1" width="54" height="17"/>
+                                                <rect key="frame" x="505" y="1" width="54" height="17"/>
                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                 <subviews>
                                                     <progressIndicator horizontalHuggingPriority="750" verticalHuggingPriority="750" maxValue="100" displayedWhenStopped="NO" bezeled="NO" indeterminate="YES" controlSize="small" style="spinning" translatesAutoresizingMaskIntoConstraints="NO" id="aYf-z7-H1o">
@@ -195,12 +195,12 @@
                         <autoresizingMask key="autoresizingMask"/>
                     </scroller>
                     <tableHeaderView key="headerView" wantsLayer="YES" id="A8F-FX-vOe">
-                        <rect key="frame" x="0.0" y="0.0" width="590" height="23"/>
+                        <rect key="frame" x="0.0" y="0.0" width="619" height="23"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </tableHeaderView>
                 </scrollView>
-                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="6E4-OJ-BCm">
-                    <rect key="frame" x="16" y="227" width="190" height="14"/>
+                <textField focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="6E4-OJ-BCm">
+                    <rect key="frame" x="16" y="204" width="190" height="14"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="186" id="kob-0A-5h7"/>
                     </constraints>
@@ -210,8 +210,8 @@
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                 </textField>
-                <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="PWu-1D-EW1">
-                    <rect key="frame" x="212" y="224" width="309" height="19"/>
+                <textField focusRingType="none" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="PWu-1D-EW1">
+                    <rect key="frame" x="212" y="201" width="338" height="19"/>
                     <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" continuous="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" placeholderString="" drawsBackground="YES" id="hVj-tR-yVr">
                         <font key="font" metaFont="smallSystem"/>
                         <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -219,28 +219,28 @@
                     </textFieldCell>
                 </textField>
                 <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="mla-ao-F4d">
-                    <rect key="frame" x="523" y="218" width="92" height="27"/>
-                    <constraints>
-                        <constraint firstAttribute="width" constant="80" id="Rux-Vg-2Tj"/>
-                    </constraints>
+                    <rect key="frame" x="552" y="195" width="92" height="27"/>
                     <buttonCell key="cell" type="push" title="Add" bezelStyle="rounded" alignment="center" controlSize="small" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="wxI-F8-DuU">
                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                         <font key="font" metaFont="smallSystem"/>
                     </buttonCell>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="80" id="Rux-Vg-2Tj"/>
+                    </constraints>
                     <connections>
                         <action selector="addAutoPkgRepoURL:" target="-2" id="Q5z-iA-mjw"/>
                     </connections>
                 </button>
-                <searchField wantsLayer="YES" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Su6-Sd-cOj">
-                    <rect key="frame" x="452" y="330" width="157" height="19"/>
+                <searchField wantsLayer="YES" focusRingType="none" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Su6-Sd-cOj">
+                    <rect key="frame" x="452" y="284" width="186" height="19"/>
                     <searchFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" borderStyle="bezel" placeholderString="Filter repos" usesSingleLineMode="YES" bezelStyle="round" sendsSearchStringImmediately="YES" id="kxU-o8-COd">
                         <font key="font" metaFont="smallSystem"/>
                         <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                         <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                     </searchFieldCell>
                 </searchField>
-                <searchField wantsLayer="YES" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="8hi-WA-S41">
-                    <rect key="frame" x="452" y="166" width="157" height="19"/>
+                <searchField wantsLayer="YES" focusRingType="none" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="8hi-WA-S41">
+                    <rect key="frame" x="452" y="143" width="186" height="19"/>
                     <searchFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" borderStyle="bezel" placeholderString="Filter recipes" usesSingleLineMode="YES" bezelStyle="round" sendsSearchStringImmediately="YES" id="oqD-5E-S2C">
                         <font key="font" metaFont="smallSystem"/>
                         <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -248,13 +248,13 @@
                     </searchFieldCell>
                 </searchField>
                 <scrollView autohidesScrollers="YES" horizontalLineScroll="19" horizontalPageScroll="10" verticalLineScroll="19" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FaV-GR-28e">
-                    <rect key="frame" x="17" y="86" width="592" height="75"/>
+                    <rect key="frame" x="17" y="86" width="621" height="52"/>
                     <clipView key="contentView" id="gzb-cW-veF">
-                        <rect key="frame" x="1" y="1" width="590" height="73"/>
+                        <rect key="frame" x="1" y="1" width="619" height="50"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnSelection="YES" columnResizing="NO" autosaveName="MainRecipeTable" rowSizeStyle="automatic" headerView="G9x-hV-Xkq" viewBased="YES" id="HAz-3M-Rgt" customClass="LGTableView">
-                                <rect key="frame" x="0.0" y="0.0" width="590" height="50"/>
+                                <rect key="frame" x="0.0" y="0.0" width="619" height="27"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <size key="intercellSpacing" width="3" height="2"/>
                                 <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -276,8 +276,8 @@
                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                 <subviews>
                                                     <button translatesAutoresizingMaskIntoConstraints="NO" id="3QO-zo-UhM">
-                                                        <rect key="frame" x="2" y="0.0" width="78" height="18"/>
-                                                        <buttonCell key="cell" type="check" title="Check" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="E3V-vd-4b3">
+                                                        <rect key="frame" x="2" y="0.0" width="80" height="18"/>
+                                                        <buttonCell key="cell" type="check" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="E3V-vd-4b3">
                                                             <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                                             <font key="font" metaFont="system"/>
                                                         </buttonCell>
@@ -294,7 +294,7 @@
                                             </tableCellView>
                                         </prototypeCellViews>
                                     </tableColumn>
-                                    <tableColumn identifier="Name" editable="NO" width="172" minWidth="40" maxWidth="1000" id="BlP-un-SwO">
+                                    <tableColumn identifier="Name" editable="NO" width="186.5" minWidth="40" maxWidth="1000" id="BlP-un-SwO">
                                         <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left" title="Recipe Name">
                                             <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
                                             <color key="backgroundColor" white="0.33333298560000002" alpha="1" colorSpace="calibratedWhite"/>
@@ -308,11 +308,11 @@
                                         <tableColumnResizingMask key="resizingMask" resizeWithTable="YES"/>
                                         <prototypeCellViews>
                                             <tableCellView id="HPM-Ey-cvB">
-                                                <rect key="frame" x="29" y="1" width="172" height="17"/>
+                                                <rect key="frame" x="29" y="1" width="187" height="17"/>
                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                 <subviews>
-                                                    <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="dow-wy-zzC">
-                                                        <rect key="frame" x="0.0" y="1" width="170" height="16"/>
+                                                    <textField focusRingType="none" verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="dow-wy-zzC">
+                                                        <rect key="frame" x="0.0" y="1" width="185" height="16"/>
                                                         <textFieldCell key="cell" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" title="Table View Cell" id="a1O-2f-lb3">
                                                             <font key="font" metaFont="system"/>
                                                             <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -331,7 +331,7 @@
                                             </tableCellView>
                                         </prototypeCellViews>
                                     </tableColumn>
-                                    <tableColumn identifier="Identifier" editable="NO" width="327" minWidth="10" maxWidth="3.4028234663852886e+38" id="Uhk-Q9-hWI">
+                                    <tableColumn identifier="Identifier" editable="NO" width="341.5" minWidth="10" maxWidth="3.4028234663852886e+38" id="Uhk-Q9-hWI">
                                         <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left" title="Recipe Identifier">
                                             <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
                                             <color key="backgroundColor" name="headerColor" catalog="System" colorSpace="catalog"/>
@@ -345,11 +345,11 @@
                                         <tableColumnResizingMask key="resizingMask" resizeWithTable="YES"/>
                                         <prototypeCellViews>
                                             <tableCellView id="qrF-hk-S9K">
-                                                <rect key="frame" x="204" y="1" width="327" height="17"/>
+                                                <rect key="frame" x="218.5" y="1" width="341" height="17"/>
                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                 <subviews>
-                                                    <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="jjs-oB-RUI">
-                                                        <rect key="frame" x="0.0" y="1" width="325" height="16"/>
+                                                    <textField focusRingType="none" verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="jjs-oB-RUI">
+                                                        <rect key="frame" x="0.0" y="1" width="339" height="16"/>
                                                         <textFieldCell key="cell" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" title="Table View Cell" id="NbP-w7-SGj">
                                                             <font key="font" metaFont="system"/>
                                                             <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -378,7 +378,7 @@
                                         <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                         <prototypeCellViews>
                                             <tableCellView hidden="YES" id="Nd2-QK-of1" customClass="LGRepoStatusCellView">
-                                                <rect key="frame" x="534" y="1" width="54" height="18"/>
+                                                <rect key="frame" x="563" y="1" width="54" height="18"/>
                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                 <subviews>
                                                     <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="xbA-pI-tvo">
@@ -420,24 +420,24 @@
                         <autoresizingMask key="autoresizingMask"/>
                     </scroller>
                     <tableHeaderView key="headerView" wantsLayer="YES" id="G9x-hV-Xkq">
-                        <rect key="frame" x="0.0" y="0.0" width="590" height="23"/>
+                        <rect key="frame" x="0.0" y="0.0" width="619" height="23"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </tableHeaderView>
                 </scrollView>
                 <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="jC6-S3-IWD">
-                    <rect key="frame" x="11" y="325" width="232" height="27"/>
-                    <constraints>
-                        <constraint firstAttribute="width" constant="220" id="H8q-Tf-rje"/>
-                    </constraints>
+                    <rect key="frame" x="11" y="279" width="232" height="27"/>
                     <buttonCell key="cell" type="push" title="Update Repos Now" bezelStyle="rounded" alignment="center" controlSize="small" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="8gs-7z-68M">
                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                         <font key="font" metaFont="smallSystem"/>
                     </buttonCell>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="220" id="H8q-Tf-rje"/>
+                    </constraints>
                     <connections>
                         <action selector="updateReposNow:" target="-2" id="hWs-Zf-z1s"/>
                     </connections>
                 </button>
-                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Nch-uS-qeG">
+                <textField focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Nch-uS-qeG">
                     <rect key="frame" x="15" y="62" width="191" height="14"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="187" id="idq-9K-ikh"/>
@@ -448,8 +448,8 @@
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                 </textField>
-                <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="otr-G5-TOW">
-                    <rect key="frame" x="212" y="59" width="309" height="19"/>
+                <textField focusRingType="none" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="otr-G5-TOW">
+                    <rect key="frame" x="212" y="59" width="338" height="19"/>
                     <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" continuous="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" placeholderString="" drawsBackground="YES" id="4Ri-aA-xst">
                         <font key="font" metaFont="smallSystem"/>
                         <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -457,7 +457,7 @@
                     </textFieldCell>
                 </textField>
                 <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="4WY-w1-VqU">
-                    <rect key="frame" x="523" y="52" width="92" height="27"/>
+                    <rect key="frame" x="552" y="52" width="92" height="27"/>
                     <buttonCell key="cell" type="push" title="Search" bezelStyle="rounded" alignment="center" controlSize="small" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="7va-qK-S1L">
                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                         <font key="font" metaFont="smallSystem"/>
@@ -470,45 +470,42 @@ DQ
                     </connections>
                 </button>
                 <button identifier="recipeTableInfo" horizontalHuggingPriority="750" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Dn1-yN-2IM" customClass="AHHelpPopoverButton">
-                    <rect key="frame" x="244" y="164" width="22" height="23"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="20" id="7zE-mg-FW7"/>
-                        <constraint firstAttribute="width" constant="20" id="B0x-yt-I8Z"/>
-                    </constraints>
+                    <rect key="frame" x="244" y="141" width="22" height="23"/>
                     <buttonCell key="cell" type="help" bezelStyle="helpButton" alignment="center" controlSize="small" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="qZs-UK-d2f">
                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                         <font key="font" metaFont="smallSystem"/>
                     </buttonCell>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="20" id="7zE-mg-FW7"/>
+                        <constraint firstAttribute="width" constant="20" id="B0x-yt-I8Z"/>
+                    </constraints>
                 </button>
                 <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Emc-dS-Tet">
-                    <rect key="frame" x="11" y="159" width="232" height="29"/>
-                    <constraints>
-                        <constraint firstAttribute="width" constant="220" id="H9v-eP-xp6"/>
-                    </constraints>
+                    <rect key="frame" x="11" y="136" width="232" height="29"/>
                     <buttonCell key="cell" type="push" title="Run Recipes Now" bezelStyle="rounded" alignment="center" controlSize="small" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="hfF-7L-UC7">
                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                         <font key="font" metaFont="smallSystem"/>
                     </buttonCell>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="220" id="H9v-eP-xp6"/>
+                    </constraints>
                     <connections>
                         <action selector="checkAppsNow:" target="-2" id="g55-ey-lwc"/>
                     </connections>
                 </button>
                 <button identifier="repoTableInfo" horizontalHuggingPriority="750" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="M6A-V7-7i1" customClass="AHHelpPopoverButton">
-                    <rect key="frame" x="244" y="328" width="22" height="23"/>
-                    <constraints>
-                        <constraint firstAttribute="width" constant="20" id="4CD-TL-3ld"/>
-                        <constraint firstAttribute="height" constant="20" id="ZPJ-Bh-EUU"/>
-                    </constraints>
+                    <rect key="frame" x="244" y="282" width="22" height="23"/>
                     <buttonCell key="cell" type="help" bezelStyle="helpButton" alignment="center" controlSize="small" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="GPh-uR-yFb">
                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                         <font key="font" metaFont="smallSystem"/>
                     </buttonCell>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="20" id="4CD-TL-3ld"/>
+                        <constraint firstAttribute="height" constant="20" id="ZPJ-Bh-EUU"/>
+                    </constraints>
                 </button>
                 <popUpButton verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="kpf-UU-qOy">
                     <rect key="frame" x="189" y="12" width="288" height="22"/>
-                    <constraints>
-                        <constraint firstAttribute="width" constant="280" id="5py-wJ-8O1"/>
-                    </constraints>
                     <popUpButtonCell key="cell" type="push" title="recipe_list" bezelStyle="rounded" alignment="left" controlSize="small" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="Uar-43-QQ0" id="wrh-at-jbk">
                         <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
                         <font key="font" metaFont="smallSystem"/>
@@ -518,11 +515,14 @@ DQ
                             </items>
                         </menu>
                     </popUpButtonCell>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="280" id="5py-wJ-8O1"/>
+                    </constraints>
                     <connections>
                         <action selector="recipeListSelectionChanged:" target="kUD-K3-5P5" id="t04-la-tLm"/>
                     </connections>
                 </popUpButton>
-                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="x5l-47-7Eb">
+                <textField focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="x5l-47-7Eb">
                     <rect key="frame" x="15" y="18" width="167" height="14"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="163" id="PIz-zy-hyd"/>
@@ -533,8 +533,8 @@ DQ
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                 </textField>
-                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="CgP-jA-Kra" userLabel="Recipe search status">
-                    <rect key="frame" x="372" y="42" width="236" height="14"/>
+                <textField focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="CgP-jA-Kra" userLabel="Recipe search status">
+                    <rect key="frame" x="401" y="42" width="236" height="14"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="232" id="IFe-w2-hAO"/>
                     </constraints>
@@ -546,28 +546,28 @@ DQ
                 </textField>
                 <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="T8G-Kw-Vzd">
                     <rect key="frame" x="481" y="15" width="18" height="21"/>
-                    <constraints>
-                        <constraint firstAttribute="width" constant="18" id="DzU-xl-wOP"/>
-                        <constraint firstAttribute="height" constant="19" id="t3G-w1-uUL"/>
-                    </constraints>
                     <buttonCell key="cell" type="smallSquare" bezelStyle="smallSquare" image="NSAddTemplate" imagePosition="overlaps" alignment="center" controlSize="small" lineBreakMode="truncatingTail" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="2RR-3A-EL7">
                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                         <font key="font" metaFont="smallSystem"/>
                     </buttonCell>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="18" id="DzU-xl-wOP"/>
+                        <constraint firstAttribute="height" constant="19" id="t3G-w1-uUL"/>
+                    </constraints>
                     <connections>
                         <action selector="addRecipeList:" target="kUD-K3-5P5" id="ztv-5u-03W"/>
                     </connections>
                 </button>
                 <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="JC7-Ty-t6b">
                     <rect key="frame" x="498" y="15" width="18" height="21"/>
-                    <constraints>
-                        <constraint firstAttribute="width" constant="18" id="BaD-02-Zba"/>
-                        <constraint firstAttribute="height" constant="19" id="iRW-sZ-gkf"/>
-                    </constraints>
                     <buttonCell key="cell" type="smallSquare" bezelStyle="smallSquare" image="NSRemoveTemplate" imagePosition="overlaps" alignment="center" controlSize="small" lineBreakMode="truncatingTail" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="ccn-0Q-vLx">
                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                         <font key="font" metaFont="smallSystem"/>
                     </buttonCell>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="18" id="BaD-02-Zba"/>
+                        <constraint firstAttribute="height" constant="19" id="iRW-sZ-gkf"/>
+                    </constraints>
                     <connections>
                         <action selector="removeRecipeList:" target="kUD-K3-5P5" id="2ku-lh-sYY"/>
                     </connections>
@@ -640,7 +640,7 @@ DQ
         <userDefaultsController representsSharedInstance="YES" id="McN-hN-Yyd"/>
     </objects>
     <resources>
-        <image name="NSAddTemplate" width="14" height="13"/>
-        <image name="NSRemoveTemplate" width="14" height="4"/>
+        <image name="NSAddTemplate" width="18" height="17"/>
+        <image name="NSRemoveTemplate" width="18" height="5"/>
     </resources>
 </document>
