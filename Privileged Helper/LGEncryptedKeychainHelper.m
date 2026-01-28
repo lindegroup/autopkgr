@@ -10,8 +10,8 @@
 #import "LGSharedConts.h"
 
 #import <AHKeychain/AHKeychain.h>
-#import <RNCryptor/RNDecryptor.h>
-#import <RNCryptor/RNEncryptor.h>
+#import <RNCryptor-objc/RNDecryptor.h>
+#import <RNCryptor-objc/RNEncryptor.h>
 
 #import <syslog.h>
 #import <pwd.h>

@@ -27,7 +27,7 @@ PODS:
   - mailcore2-osx (0.6.4)
   - MMMarkdown (0.5.5)
   - OpenSSL-Universal (1.1.1100)
-  - RNCryptor (2.2)
+  - RNCryptor-objc (3.0.6)
   - Sparkle (1.26.0)
   - XMLDictionary (1.4.1)
 
@@ -41,7 +41,7 @@ DEPENDENCIES:
   - mailcore2-osx (= 0.6.4)
   - MMMarkdown (~> 0.5.1)
   - OpenSSL-Universal
-  - RNCryptor (~> 2.2)
+  - RNCryptor-objc (~> 3.0.6)
   - Sparkle (= 1.26.0)
   - XMLDictionary (~> 1.4)
 
@@ -56,7 +56,7 @@ SPEC REPOS:
     - mailcore2-osx
     - MMMarkdown
     - OpenSSL-Universal
-    - RNCryptor
+    - RNCryptor-objc
     - Sparkle
     - XMLDictionary
 
@@ -71,19 +71,19 @@ CHECKOUT OPTIONS:
 
 SPEC CHECKSUMS:
   ACEView: cf3f665c61c8567d5dd04f395796342f58bad1a0
-  AFNetworking: 05edc0ac4c4c8cf57bcf4b84be5b0744b6d8e71e
+  AFNetworking: 407b0a35966776613924a869ef358b59f927d788
   AHKeychain: 5fe62fe1982192dee4bf0d218ff15adfe22e19ee
   AHLaunchCtl: 696233a41a9b968e0683ce2cc1b8686ff25ca5c7
   AHProxySettings: 03a09b33e2c8159342dfd3509c92ca4004c93bec
   GRMustache: ebe6104fd30a6d22c1f36af131e19e2dbf7cd292
-  JRSwizzle: dd5ead5d913a0f29e7f558200165849f006bb1e3
+  JRSwizzle: 2bef81a8176f9a93fb6d7ae96147654601efd860
   mailcore2-osx: 56890045e50f3b09b6530f5bd008eda67e1f6b82
   MMMarkdown: 1af97166ce0f6d6e0cb05695665492195d27c3f1
   OpenSSL-Universal: ebc357f1e6bc71fa463ccb2fe676756aff50e88c
-  RNCryptor: c68678461a2c7474a55db9a6a98834c22d51f535
+  RNCryptor-objc: d1b228f9c02e2173df063f0617684c134aed890e
   Sparkle: d56d028f4b0c123577825f5d1004f6140d77f90e
   XMLDictionary: fa07b6ff422b3a91d47a5de9bc82e3fc04fbd167
 
-PODFILE CHECKSUM: a046c23f27bb20a83db17121e2e7a7cc7953d9f7
+PODFILE CHECKSUM: b178e06ada65c1d120161a8231fd05885179def1
 
-COCOAPODS: 1.10.1
+COCOAPODS: 1.16.2
