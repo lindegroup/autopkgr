@@ -3110,7 +3110,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = x86_64;
+				ARCHS = "$(ARCHS_STANDARD)";
 				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
@@ -3159,7 +3159,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.13;
+				MACOSX_DEPLOYMENT_TARGET = 11.0;
 				ONLY_ACTIVE_ARCH = YES;
 				"OTHER_CODE_SIGN_FLAGS[sdk=*]" = "--options=runtime";
 				SDKROOT = macosx;
@@ -3171,7 +3171,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = x86_64;
+				ARCHS = "$(ARCHS_STANDARD)";
 				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
@@ -3214,8 +3214,8 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.13;
-				ONLY_ACTIVE_ARCH = YES;
+				MACOSX_DEPLOYMENT_TARGET = 11.0;
+				ONLY_ACTIVE_ARCH = NO;
 				"OTHER_CODE_SIGN_FLAGS[sdk=*]" = "--options=runtime";
 				SDKROOT = macosx;
 				SKIP_INSTALL = YES;
@@ -3226,7 +3226,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 2C6986FE5B41226735CC0A32 /* Pods-AutoPkgr.debug.xcconfig */;
 			buildSettings = {
-				ARCHS = x86_64;
+				ARCHS = "$(ARCHS_STANDARD)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CLANG_ENABLE_MODULES = YES;
@@ -3241,7 +3241,7 @@
 				GCC_PREFIX_HEADER = "AutoPkgr/Supporting Files/AutoPkgr-Prefix.pch";
 				INFOPLIST_FILE = "AutoPkgr/Supporting Files/AutoPkgr-Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 10.13;
+				MACOSX_DEPLOYMENT_TARGET = 11.0;
 				MARKETING_VERSION = 1.6.1;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CODE_SIGN_FLAGS = "";
@@ -3257,7 +3257,7 @@
 					"-l\"GRMustache\"",
 					"-l\"JRSwizzle\"",
 					"-l\"MMMarkdown\"",
-					"-l\"MailCore\"",
+					"-l\"curl\"",
 					"-l\"XMLDictionary\"",
 					"-l\"c++\"",
 					"-l\"iconv\"",
@@ -3297,7 +3297,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = D1C393755729ADE331CE085C /* Pods-AutoPkgr.release.xcconfig */;
 			buildSettings = {
-				ARCHS = x86_64;
+				ARCHS = "$(ARCHS_STANDARD)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CLANG_ENABLE_MODULES = YES;
@@ -3314,9 +3314,9 @@
 				GCC_PREFIX_HEADER = "AutoPkgr/Supporting Files/AutoPkgr-Prefix.pch";
 				INFOPLIST_FILE = "AutoPkgr/Supporting Files/AutoPkgr-Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 10.13;
+				MACOSX_DEPLOYMENT_TARGET = 11.0;
 				MARKETING_VERSION = 1.6.1;
-				ONLY_ACTIVE_ARCH = YES;
+				ONLY_ACTIVE_ARCH = NO;
 				OTHER_CODE_SIGN_FLAGS = "";
 				"OTHER_CODE_SIGN_FLAGS[sdk=*]" = "--options=runtime";
 				OTHER_LDFLAGS = (
@@ -3330,7 +3330,7 @@
 					"-l\"GRMustache\"",
 					"-l\"JRSwizzle\"",
 					"-l\"MMMarkdown\"",
-					"-l\"MailCore\"",
+					"-l\"curl\"",
 					"-l\"XMLDictionary\"",
 					"-l\"c++\"",
 					"-l\"iconv\"",
@@ -3399,7 +3399,7 @@
 					"-l\"GRMustache\"",
 					"-l\"JRSwizzle\"",
 					"-l\"MMMarkdown\"",
-					"-l\"MailCore\"",
+					"-l\"curl\"",
 					"-l\"XMLDictionary\"",
 					"-l\"c++\"",
 					"-l\"iconv\"",
@@ -3450,7 +3450,7 @@
 				GCC_PREFIX_HEADER = "AutoPkgr/Supporting Files/AutoPkgr-Prefix.pch";
 				INFOPLIST_FILE = "AutoPkgrTests/Supporting Files/AutoPkgrTests-Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
-				ONLY_ACTIVE_ARCH = YES;
+				ONLY_ACTIVE_ARCH = NO;
 				"OTHER_CODE_SIGN_FLAGS[sdk=*]" = "--options=runtime";
 				OTHER_LDFLAGS = (
 					"$(inherited)",
@@ -3463,7 +3463,7 @@
 					"-l\"GRMustache\"",
 					"-l\"JRSwizzle\"",
 					"-l\"MMMarkdown\"",
-					"-l\"MailCore\"",
+					"-l\"curl\"",
 					"-l\"XMLDictionary\"",
 					"-l\"c++\"",
 					"-l\"iconv\"",
@@ -3501,7 +3501,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = F107A65717A3307E0BCA7341 /* Pods-com.lindegroup.AutoPkgr.helper.debug.xcconfig */;
 			buildSettings = {
-				ARCHS = x86_64;
+				ARCHS = "$(ARCHS_STANDARD)";
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CODE_SIGN_IDENTITY = "Developer ID Application";
 				CURRENT_PROJECT_VERSION = 1520;
@@ -3516,7 +3516,7 @@
 				INFOPLIST_FILE = "$(SRCROOT)/Privileged Helper/helper-Info.plist";
 				INSTALL_PATH = "";
 				"INSTALL_PATH[sdk=*]" = /Library/PrivilegedHelperTools/;
-				MACOSX_DEPLOYMENT_TARGET = 10.13;
+				MACOSX_DEPLOYMENT_TARGET = 11.0;
 				MARKETING_VERSION = 1.6.1;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -3559,7 +3559,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 06EB3E6636660212855850C6 /* Pods-com.lindegroup.AutoPkgr.helper.release.xcconfig */;
 			buildSettings = {
-				ARCHS = x86_64;
+				ARCHS = "$(ARCHS_STANDARD)";
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CODE_SIGN_IDENTITY = "Developer ID Application";
 				CURRENT_PROJECT_VERSION = 1520;
@@ -3574,10 +3574,10 @@
 				INFOPLIST_FILE = "$(SRCROOT)/Privileged Helper/helper-Info.plist";
 				INSTALL_PATH = "";
 				"INSTALL_PATH[sdk=*]" = /Library/PrivilegedHelperTools/;
-				MACOSX_DEPLOYMENT_TARGET = 10.13;
+				MACOSX_DEPLOYMENT_TARGET = 11.0;
 				MARKETING_VERSION = 1.6.1;
 				MTL_ENABLE_DEBUG_INFO = NO;
-				ONLY_ACTIVE_ARCH = YES;
+				ONLY_ACTIVE_ARCH = NO;
 				OTHER_CFLAGS = (
 					"$(inherited)",
 					"-isystem",
