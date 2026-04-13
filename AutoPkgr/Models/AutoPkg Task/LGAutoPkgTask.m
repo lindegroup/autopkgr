@@ -267,6 +267,11 @@ typedef void (^AutoPkgReplyErrorBlock)(NSError *error);
 
 - (id)init
 {
+    // Don't initialize if AutoPkg is not installed
+    if (![[NSFileManager defaultManager] isExecutableFileAtPath:@"/usr/local/autopkg/python"]) {
+        return nil;
+    }
+    
     if (self = [super init]) {
         _internalArgs = [@[ autopkg() ] mutableCopy];
         _taskLock = [[NSRecursiveLock alloc] init];
@@ -1042,6 +1047,10 @@ typedef void (^AutoPkgReplyErrorBlock)(NSError *error);
 + (NSArray *)listRecipes
 {
     LGAutoPkgTask *task = [[LGAutoPkgTask alloc] initWithArguments:@[ @"list-recipes" ]];
+    if (!task) {
+        // AutoPkg not installed
+        return nil;
+    }
     [task launch];
     id results = [task results];
     return [results isKindOfClass:[NSArray class]] ? results : nil;
@@ -1098,6 +1107,10 @@ typedef void (^AutoPkgReplyErrorBlock)(NSError *error);
 + (NSArray *)repoList
 {
     LGAutoPkgTask *task = [[LGAutoPkgTask alloc] initWithArguments:@[ @"repo-list" ]];
+    if (!task) {
+        // AutoPkg not installed
+        return @[];
+    }
     [task launch];
     id results = [task results];
     return [results isKindOfClass:[NSArray class]] ? results : @[];
@@ -1107,6 +1120,10 @@ typedef void (^AutoPkgReplyErrorBlock)(NSError *error);
 + (NSArray *)listProcessors
 {
     LGAutoPkgTask *task = [[LGAutoPkgTask alloc] initWithArguments:@[ @"list-processors" ]];
+    if (!task) {
+        // AutoPkg not installed
+        return @[];
+    }
     [task launch];
     id results = [task results];
     return [results isKindOfClass:[NSArray class]] ? results : @[];
@@ -1360,18 +1377,30 @@ typedef void (^AutoPkgReplyErrorBlock)(NSError *error);
 {
     NSString *version;
 
+    // Check if AutoPkg is installed before trying to get version
+    if (![[NSFileManager defaultManager] isExecutableFileAtPath:@"/usr/local/autopkg/python"]) {
+        return @"0.0.0";
+    }
+
     NSTask *task = [[NSTask alloc] init];
 
     task = task;
     task.launchPath = python();
     task.arguments = @[ autopkg(), @"version" ];
     task.standardOutput = [NSPipe pipe];
-    [task launch];
-    [task waitUntilExit];
+    
+    @try {
+        [task launch];
+        [task waitUntilExit];
 
-    NSData *data = [[task.standardOutput fileHandleForReading] availableData];
-    if (data.length) {
-        version = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+        NSData *data = [[task.standardOutput fileHandleForReading] availableData];
+        if (data.length) {
+            version = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+        }
+    }
+    @catch (NSException *exception) {
+        DLog(@"Error getting AutoPkg version: %@", exception.reason);
+        return @"0.0.0";
     }
 
     return [version stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] ?: @"0.0.0";

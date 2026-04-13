@@ -63,6 +63,11 @@
     return NO;
 }
 
++ (BOOL)isInstalled
+{
+    return [[NSFileManager defaultManager] isExecutableFileAtPath:@"/usr/local/autopkg/python"];
+}
+
 #pragma mark - Instance overrides
 - (NSString *)installedVersion
 {
