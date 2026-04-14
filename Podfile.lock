@@ -24,7 +24,6 @@ PODS:
   - GRMustache (7.3.2):
     - JRSwizzle (~> 1.0)
   - JRSwizzle (1.0)
-  - mailcore2-osx (0.6.4)
   - MMMarkdown (0.5.5)
   - OpenSSL-Universal (1.1.1100)
   - RNCryptor-objc (3.0.6)
@@ -38,7 +37,6 @@ DEPENDENCIES:
   - AHLaunchCtl (from `https://github.com/eahrold/AHLaunchCtl.git`)
   - AHProxySettings (~> 0.1.1)
   - GRMustache (~> 7.3.2)
-  - mailcore2-osx (= 0.6.4)
   - MMMarkdown (~> 0.5.1)
   - OpenSSL-Universal
   - RNCryptor-objc (~> 3.0.6)
@@ -53,7 +51,6 @@ SPEC REPOS:
     - AHProxySettings
     - GRMustache
     - JRSwizzle
-    - mailcore2-osx
     - MMMarkdown
     - OpenSSL-Universal
     - RNCryptor-objc
@@ -77,13 +74,12 @@ SPEC CHECKSUMS:
   AHProxySettings: 03a09b33e2c8159342dfd3509c92ca4004c93bec
   GRMustache: ebe6104fd30a6d22c1f36af131e19e2dbf7cd292
   JRSwizzle: 2bef81a8176f9a93fb6d7ae96147654601efd860
-  mailcore2-osx: 56890045e50f3b09b6530f5bd008eda67e1f6b82
   MMMarkdown: 1af97166ce0f6d6e0cb05695665492195d27c3f1
   OpenSSL-Universal: ebc357f1e6bc71fa463ccb2fe676756aff50e88c
   RNCryptor-objc: d1b228f9c02e2173df063f0617684c134aed890e
   Sparkle: d56d028f4b0c123577825f5d1004f6140d77f90e
   XMLDictionary: fa07b6ff422b3a91d47a5de9bc82e3fc04fbd167
 
-PODFILE CHECKSUM: b178e06ada65c1d120161a8231fd05885179def1
+PODFILE CHECKSUM: 427853898ce48c0fce5b95714f778c432bf41923
 
 COCOAPODS: 1.16.2
