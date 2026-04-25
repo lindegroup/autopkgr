@@ -117,17 +117,7 @@ Notification services such as Slack don't necessarily use full Markdown formatti
 - P10: *{{ P10 }}*{{/ P10 }}{{# P11 }}
 - P11: *{{ P11 }}*{{/ P11 }}
 {{/ jamfscriptuploader.data_rows }}
-{{/ jamfscriptuploader.data_rows.count }}{{# jss_importer.data_rows.count }}
-*{{ jss_importer.summary_text }}*
-{{# jss_importer.data_rows }}
-{{# Categories }}- Category: *{{ Categories }}*{{/ Categories }}{{# Groups }}
-- Group: *{{ Groups }}*{{/ Groups }}{{# Icon }}
-- Icon: *{{ Icon }}*{{/ Icon }}{{# Package }}
-- Package: *{{ Package }}*{{/ Package }}{{# Policy }}
-- Policy: *{{ Policy }}*{{/ Policy }}{{# Scripts }}
-- Script: *{{ Scripts }}*{{/ Scripts }}
-{{/ jss_importer.data_rows }}
-{{/ jss_importer.data_rows.count }}{{# absolute_manage_export.data_rows.count }}
+{{/ jamfscriptuploader.data_rows.count }}{{# absolute_manage_export.data_rows.count }}
 *{{ absolute_manage_export.summary_text }}*
 {{# absolute_manage_export.data_rows }}
 - {{ Package }}

@@ -26,7 +26,6 @@
 #import "LGIntegrationWindowController.h"
 #import "LGIntegrationsViewController.h"
 #import "LGJamfUploaderIntegrationView.h"
-#import "LGJSSImporterIntegrationView.h"
 #import "LGLANrevIntegrationView.h"
 #import "LGMacPatchIntegrationView.h"
 #import "LGMunkiIntegrationView.h"
