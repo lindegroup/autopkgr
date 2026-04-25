@@ -22,8 +22,6 @@
 #import "LGGitHubJSONLoader.h"
 #import "LGInstaller.h"
 #import "LGIntegrationManager.h"
-#import "LGJSSDistributionPoint.h"
-#import "LGJSSImporterIntegration.h"
 #import <XCTest/XCTest.h>
 
 #import "LGAutoPkgErrorHandler.h"
@@ -70,24 +68,6 @@ static const BOOL _TEST_PRIVILEGED_HELPER = YES;
 }
 
 #pragma mark - LGAutoPkgTask
-- (void)testDP
-{
-
-    LGJSSImporterDefaults *defaults = [[LGJSSImporterDefaults alloc] init];
-    NSArray *arr = [LGJSSDistributionPoint enabledDistributionPoints];
-
-    [arr enumerateObjectsUsingBlock:^(LGJSSDistributionPoint *obj, NSUInteger idx, BOOL *_Nonnull stop) {
-        [obj remove];
-    }];
-    NSLog(@"%@", defaults.JSSRepos);
-
-    [arr enumerateObjectsUsingBlock:^(LGJSSDistributionPoint *obj, NSUInteger idx, BOOL *_Nonnull stop) {
-        [obj save];
-    }];
-
-    NSLog(@"%@", defaults.JSSRepos);
-}
-
 - (void)testSyncMethods
 {
     XCTAssertNotNil([LGAutoPkgTask repoList], @"Failed test");
@@ -269,26 +249,6 @@ static const BOOL _TEST_PRIVILEGED_HELPER = YES;
     XCTAssertTrue([@"0.4.1" version_isLessThanOrEqualTo:@"0.4.2"], @"wrong");
 }
 
-- (void)testCredentials
-{
-
-    XCTestExpectation *wait = [self expectationWithDescription:@"Web Credential Test"];
-
-    LGJSSImporterDefaults *defaults = [[LGJSSImporterDefaults alloc] init];
-
-    LGHTTPCredential *credentials = [LGHTTPCredential new];
-    credentials.server = defaults.JSSURL;
-    credentials.user = defaults.JSSAPIUsername;
-    credentials.password = defaults.JSSAPIPassword;
-
-    if (credentials.server.length && credentials.user.length && credentials.password.length) {
-        [credentials checkCredentialsForPath:@"JSSResource/distributionpoints" reply:^(LGHTTPCredential *cred, LGCredentialChallengeCode status, NSError *error) {
-            XCTAssertTrue(status == kLGCredentialChallengeSuccess, @"Authorization check failed: %@", error.localizedDescription);
-            [wait fulfill];
-        }];
-    }
-}
-
 - (void)testLoader
 {
     XCTestExpectation *expectation = [self expectationWithDescription:@"GitHub Release Async"];
@@ -331,11 +291,6 @@ static const BOOL _TEST_PRIVILEGED_HELPER = YES;
 {
     [self runReportTestWithResourceNamed:@"report_0.4.3" flags:kLGReportItemsAll];
 }
-
-//- (void)test0_4_3_reportLimited
-//{
-//    [self runReportTestWithResourceNamed:@"report_0.4.3" flags:kLGReportItemsJSSImports | kLGReportItemsNewInstalls];
-//}
 
 - (void)test_report_none
 {

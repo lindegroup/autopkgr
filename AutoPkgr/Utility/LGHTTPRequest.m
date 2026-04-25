@@ -20,7 +20,6 @@
 
 #import "LGAutoPkgr.h"
 #import "LGHTTPRequest.h"
-#import "LGJSSImporterIntegration.h"
 #import "LGServerCredentials.h"
 
 #import <AFNetworking/AFNetworking.h>
