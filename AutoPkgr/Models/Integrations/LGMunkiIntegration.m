@@ -19,6 +19,7 @@
 
 #import "LGIntegration+Protocols.h"
 #import "LGMunkiIntegration.h"
+#import "NSString+versionCompare.h"
 
 static NSString *const kLGMunkiimportDomain = @"com.googlecode.munki.munkiimport";
 // Define the protocols you intend to conform to.
@@ -67,9 +68,10 @@ static NSString *const kLGMunkiimportDomain = @"com.googlecode.munki.munkiimport
 {
     return @[ @"com.googlecode.munki.admin",
               @"com.googlecode.munki.app",
+              @"com.googlecode.munki.app_usage",
               @"com.googlecode.munki.core",
               @"com.googlecode.munki.launchd",
-              @"com.googlecode.munki.munkiwebadmin-scripts" ];
+              @"com.googlecode.munki.pythonlibs" ];
 }
 
 + (BOOL)isUninstallable
@@ -91,7 +93,20 @@ static NSString *const kLGMunkiimportDomain = @"com.googlecode.munki.munkiimport
 #pragma mark - Instance overrides
 - (NSString *)installedVersion
 {
-    return [[self versionTaskWithExec:[[self class] binary] arguments:@[ @"--version" ]] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    // Use the highest version across all sub-package receipts, matching how the
+    // Munki build script determines the metapackage version. Individual tool
+    // versions (e.g. munkiimport --version) can lag behind the metapackage when
+    // only non-CLI components changed in a release.
+    NSString *highestVersion = nil;
+    for (NSString *identifier in [[self class] packageIdentifiers]) {
+        NSString *receiptPath = [[@"/private/var/db/receipts/" stringByAppendingPathComponent:identifier] stringByAppendingPathExtension:@"plist"];
+        NSDictionary *receiptDict = [NSDictionary dictionaryWithContentsOfFile:receiptPath];
+        NSString *version = receiptDict[@"PackageVersion"];
+        if (version && (!highestVersion || [version version_isGreaterThan:highestVersion])) {
+            highestVersion = version;
+        }
+    }
+    return highestVersion;
 }
 
 - (NSString *)remoteVersion
