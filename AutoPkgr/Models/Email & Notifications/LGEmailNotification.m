@@ -50,11 +50,19 @@ static size_t lgCurlReadCallback(char *buffer, size_t size, size_t nitems, void 
     return toCopy;
 }
 
+NSString *LGSanitizeHeaderValue(NSString *value)
+{
+    if (!value) return @"";
+    NSCharacterSet *crlf = [NSCharacterSet characterSetWithCharactersInString:@"\r\n"];
+    return [[value componentsSeparatedByCharactersInSet:crlf] componentsJoinedByString:@""];
+}
+
 NSString *LGRfc2047Encode(NSString *value)
 {
+    value = LGSanitizeHeaderValue(value);
     if ([value canBeConvertedToEncoding:NSASCIIStringEncoding]) return value;
     NSData *utf8 = [value dataUsingEncoding:NSUTF8StringEncoding];
-    NSString *base64 = [utf8 base64EncodedStringWithOptions:0];
+    NSString *base64 = [utf8 base64EncodedStringWithOptions:NSDataBase64Encoding76CharacterLineLength];
     return [NSString stringWithFormat:@"=?UTF-8?B?%@?=", base64];
 }
 
@@ -64,6 +72,40 @@ NSString *LGRfc2822Date(void)
     fmt.locale = [[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"];
     fmt.dateFormat = @"EEE, dd MMM yyyy HH:mm:ss Z";
     return [fmt stringFromDate:[NSDate date]];
+}
+
+NSData *LGBuildSmtpMessage(NSString *subject, NSString *htmlBody,
+                           NSString *fromAddress, NSArray<NSString *> *toAddresses)
+{
+    fromAddress = LGSanitizeHeaderValue(fromAddress);
+    NSString *messageId = [NSString stringWithFormat:@"<%@.%@@%@>",
+                           @((NSUInteger)[[NSDate date] timeIntervalSince1970]),
+                           [[NSUUID UUID] UUIDString],
+                           LGSanitizeHeaderValue([[NSHost currentHost] name] ?: @"localhost")];
+
+    NSMutableArray *sanitizedTo = [NSMutableArray arrayWithCapacity:toAddresses.count];
+    for (NSString *addr in toAddresses) {
+        [sanitizedTo addObject:LGSanitizeHeaderValue(addr)];
+    }
+
+    // Base64-encode the HTML body to avoid dot-stuffing ambiguity and MTA line-length issues.
+    NSData *bodyData = [htmlBody dataUsingEncoding:NSUTF8StringEncoding];
+    NSString *encodedBody = [bodyData base64EncodedStringWithOptions:NSDataBase64Encoding76CharacterLineLength];
+
+    NSMutableString *raw = [NSMutableString string];
+    [raw appendFormat:@"From: AutoPkgr Notification <%@>\r\n", fromAddress];
+    [raw appendFormat:@"To: %@\r\n", [sanitizedTo componentsJoinedByString:@", "]];
+    [raw appendFormat:@"Date: %@\r\n", LGRfc2822Date()];
+    [raw appendFormat:@"Message-ID: %@\r\n", messageId];
+    [raw appendFormat:@"Subject: %@\r\n", LGRfc2047Encode(subject)];
+    [raw appendString:@"MIME-Version: 1.0\r\n"];
+    [raw appendString:@"Content-Type: text/html; charset=UTF-8\r\n"];
+    [raw appendString:@"Content-Transfer-Encoding: base64\r\n"];
+    [raw appendString:@"\r\n"];
+    [raw appendString:encodedBody];
+    [raw appendString:@"\r\n"];
+
+    return [raw dataUsingEncoding:NSASCIIStringEncoding];
 }
 
 @implementation LGEmailNotification {
@@ -223,24 +265,8 @@ NSString *LGRfc2822Date(void)
                                 userInfo:@{NSLocalizedDescriptionKey: @"No email recipients configured."}]);
         }
 
-        // Build the raw RFC 2822 message.
         NSString *fromAddress = _defaults.SMTPFrom ?: @"autopkgr@localhost";
-        NSString *messageId = [NSString stringWithFormat:@"<%@.%@@AutoPkgr>",
-                               @((NSUInteger)[[NSDate date] timeIntervalSince1970]),
-                               [[NSUUID UUID] UUIDString]];
-
-        NSMutableString *rawMessage = [NSMutableString string];
-        [rawMessage appendFormat:@"From: AutoPkgr Notification <%@>\r\n", fromAddress];
-        [rawMessage appendFormat:@"To: %@\r\n", [toAddresses componentsJoinedByString:@", "]];
-        [rawMessage appendFormat:@"Date: %@\r\n", LGRfc2822Date()];
-        [rawMessage appendFormat:@"Message-ID: %@\r\n", messageId];
-        [rawMessage appendFormat:@"Subject: %@\r\n", LGRfc2047Encode(subject)];
-        [rawMessage appendString:@"MIME-Version: 1.0\r\n"];
-        [rawMessage appendString:@"Content-Type: text/html; charset=UTF-8\r\n"];
-        [rawMessage appendString:@"\r\n"];
-        [rawMessage appendString:message];
-
-        NSData *messageData = [rawMessage dataUsingEncoding:NSUTF8StringEncoding];
+        NSData *messageData = LGBuildSmtpMessage(subject, message, fromAddress, toAddresses);
         BOOL tlsEnabled = _defaults.SMTPTLSEnabled;
 
         // Run the libcurl SMTP transfer on a background queue.
@@ -279,6 +305,9 @@ NSString *LGRfc2822Date(void)
     NSString *scheme = (tlsEnabled && credential.port == 465) ? @"smtps" : @"smtp";
     NSString *url = [NSString stringWithFormat:@"%@://%@:%ld", scheme, credential.server, (long)credential.port];
     curl_easy_setopt(curl, CURLOPT_URL, url.UTF8String);
+
+    curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, 1L);
+    curl_easy_setopt(curl, CURLOPT_SSL_VERIFYHOST, 2L);
 
     // Require STARTTLS when TLS is enabled but not using implicit TLS.
     if (tlsEnabled && credential.port != 465) {
