@@ -25,9 +25,13 @@
 
 #include <curl/curl.h>
 
-#pragma mark - libcurl read callback
+#pragma mark - libcurl helpers
 
-// Context for feeding message data to libcurl's SMTP upload.
+__attribute__((constructor))
+static void LGCurlGlobalInit(void) {
+    curl_global_init(CURL_GLOBAL_DEFAULT);
+}
+
 typedef struct {
     const char *data;
     size_t length;
@@ -44,6 +48,22 @@ static size_t lgCurlReadCallback(char *buffer, size_t size, size_t nitems, void 
     memcpy(buffer, ctx->data + ctx->offset, toCopy);
     ctx->offset += toCopy;
     return toCopy;
+}
+
+NSString *LGRfc2047Encode(NSString *value)
+{
+    if ([value canBeConvertedToEncoding:NSASCIIStringEncoding]) return value;
+    NSData *utf8 = [value dataUsingEncoding:NSUTF8StringEncoding];
+    NSString *base64 = [utf8 base64EncodedStringWithOptions:0];
+    return [NSString stringWithFormat:@"=?UTF-8?B?%@?=", base64];
+}
+
+NSString *LGRfc2822Date(void)
+{
+    NSDateFormatter *fmt = [[NSDateFormatter alloc] init];
+    fmt.locale = [[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"];
+    fmt.dateFormat = @"EEE, dd MMM yyyy HH:mm:ss Z";
+    return [fmt stringFromDate:[NSDate date]];
 }
 
 @implementation LGEmailNotification {
@@ -196,14 +216,25 @@ static size_t lgCurlReadCallback(char *buffer, size_t size, size_t nitems, void 
             if (addr.length) [toAddresses addObject:addr];
         }
 
+        if (toAddresses.count == 0) {
+            return didCompleteSendOperation(
+                [NSError errorWithDomain:kLGApplicationName
+                                    code:kLGErrorSendingEmail
+                                userInfo:@{NSLocalizedDescriptionKey: @"No email recipients configured."}]);
+        }
+
         // Build the raw RFC 2822 message.
         NSString *fromAddress = _defaults.SMTPFrom ?: @"autopkgr@localhost";
+        NSString *messageId = [NSString stringWithFormat:@"<%@.%@@AutoPkgr>",
+                               @((NSUInteger)[[NSDate date] timeIntervalSince1970]),
+                               [[NSUUID UUID] UUIDString]];
+
         NSMutableString *rawMessage = [NSMutableString string];
         [rawMessage appendFormat:@"From: AutoPkgr Notification <%@>\r\n", fromAddress];
-        for (NSString *addr in toAddresses) {
-            [rawMessage appendFormat:@"To: %@\r\n", addr];
-        }
-        [rawMessage appendFormat:@"Subject: %@\r\n", subject];
+        [rawMessage appendFormat:@"To: %@\r\n", [toAddresses componentsJoinedByString:@", "]];
+        [rawMessage appendFormat:@"Date: %@\r\n", LGRfc2822Date()];
+        [rawMessage appendFormat:@"Message-ID: %@\r\n", messageId];
+        [rawMessage appendFormat:@"Subject: %@\r\n", LGRfc2047Encode(subject)];
         [rawMessage appendString:@"MIME-Version: 1.0\r\n"];
         [rawMessage appendString:@"Content-Type: text/html; charset=UTF-8\r\n"];
         [rawMessage appendString:@"\r\n"];
@@ -254,10 +285,10 @@ static size_t lgCurlReadCallback(char *buffer, size_t size, size_t nitems, void 
         curl_easy_setopt(curl, CURLOPT_USE_SSL, (long)CURLUSESSL_ALL);
     }
 
-    // Authentication (credentials stay in-process, never visible in ps).
-    if (credential.user.length && credential.password.length) {
+    // Authentication — send credentials whenever a username is configured.
+    if (credential.user.length) {
         curl_easy_setopt(curl, CURLOPT_USERNAME, credential.user.UTF8String);
-        curl_easy_setopt(curl, CURLOPT_PASSWORD, credential.password.UTF8String);
+        curl_easy_setopt(curl, CURLOPT_PASSWORD, (credential.password ?: @"").UTF8String);
     }
 
     // Envelope sender and recipients.

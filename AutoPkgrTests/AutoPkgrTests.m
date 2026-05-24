@@ -39,6 +39,10 @@
 #import "LGSlackNotification.h"
 
 #import "LGUserNotification.h"
+#import "LGEmailNotification.h"
+
+extern NSString *LGRfc2047Encode(NSString *value);
+extern NSString *LGRfc2822Date(void);
 
 static const BOOL _TEST_PRIVILEGED_HELPER = YES;
 
@@ -519,6 +523,42 @@ static const BOOL _TEST_PRIVILEGED_HELPER = YES;
     [self waitForExpectationsWithTimeout:300 handler:^(NSError *error) {
         XCTAssertNil(error, @"Expectation Failed with error: %@", error);
     }];
+}
+
+#pragma mark - Email helpers
+- (void)testRfc2047EncodeAscii
+{
+    NSString *ascii = @"Test notification from AutoPkgr";
+    XCTAssertEqualObjects(LGRfc2047Encode(ascii), ascii, @"ASCII strings should pass through unchanged");
+}
+
+- (void)testRfc2047EncodeNonAscii
+{
+    NSString *input = @"Héllo Wörld";
+    NSString *encoded = LGRfc2047Encode(input);
+    XCTAssertTrue([encoded hasPrefix:@"=?UTF-8?B?"], @"Should use UTF-8 Base64 encoding prefix");
+    XCTAssertTrue([encoded hasSuffix:@"?="], @"Should end with ?= delimiter");
+
+    // Decode and verify round-trip.
+    NSString *base64Part = [[encoded stringByReplacingOccurrencesOfString:@"=?UTF-8?B?" withString:@""]
+                                     stringByReplacingOccurrencesOfString:@"?=" withString:@""];
+    NSData *decoded = [[NSData alloc] initWithBase64EncodedString:base64Part options:0];
+    NSString *roundTripped = [[NSString alloc] initWithData:decoded encoding:NSUTF8StringEncoding];
+    XCTAssertEqualObjects(roundTripped, input, @"Round-trip decode should match original");
+}
+
+- (void)testRfc2822DateFormat
+{
+    NSString *date = LGRfc2822Date();
+    XCTAssertNotNil(date, @"Date should not be nil");
+
+    // Verify it parses back with the same format.
+    NSDateFormatter *fmt = [[NSDateFormatter alloc] init];
+    fmt.locale = [[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"];
+    fmt.dateFormat = @"EEE, dd MMM yyyy HH:mm:ss Z";
+    NSDate *parsed = [fmt dateFromString:date];
+    XCTAssertNotNil(parsed, @"Date string should be valid RFC 2822 format");
+    XCTAssertEqualWithAccuracy([parsed timeIntervalSinceNow], 0, 5, @"Parsed date should be within 5 seconds of now");
 }
 
 #pragma mark - Utility
