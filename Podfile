@@ -48,15 +48,6 @@ post_install do |installer|
         end
     end
 
-    # Replace deprecated netinet6/in6.h import with netinet/in.h in pod sources
-    Dir.glob("Pods/**/*.{h,m}").each do |file|
-        content = File.read(file)
-        if content.include?('#import <netinet6/in6.h>')
-            FileUtils.chmod("u+w", file)
-            File.write(file, content.gsub('#import <netinet6/in6.h>', '#import <netinet/in.h>'))
-        end
-    end
-
     # Fix RNCryptor-objc SecRandomCopyBytes type conflict with macOS 15+ SDK
     rncryptor_file = "#{installer.sandbox.root}/RNCryptor/RNCryptor/RNCryptor.m"
     if File.exist?(rncryptor_file)
