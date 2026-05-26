@@ -39,6 +39,13 @@
 #import "LGSlackNotification.h"
 
 #import "LGUserNotification.h"
+#import "LGEmailNotification.h"
+
+extern NSString *LGSanitizeHeaderValue(NSString *value);
+extern NSString *LGRfc2047Encode(NSString *value);
+extern NSString *LGRfc2822Date(void);
+extern NSData *LGBuildSmtpMessage(NSString *subject, NSString *htmlBody,
+                                  NSString *fromAddress, NSArray<NSString *> *toAddresses);
 
 static const BOOL _TEST_PRIVILEGED_HELPER = YES;
 
@@ -519,6 +526,128 @@ static const BOOL _TEST_PRIVILEGED_HELPER = YES;
     [self waitForExpectationsWithTimeout:300 handler:^(NSError *error) {
         XCTAssertNil(error, @"Expectation Failed with error: %@", error);
     }];
+}
+
+#pragma mark - Email helpers
+- (void)testSanitizeHeaderStripsNewlines
+{
+    XCTAssertEqualObjects(LGSanitizeHeaderValue(@"clean"), @"clean");
+    XCTAssertEqualObjects(LGSanitizeHeaderValue(@"has\r\nnewline"), @"hasnewline");
+    XCTAssertEqualObjects(LGSanitizeHeaderValue(@"bare\nLF"), @"bareLF");
+    XCTAssertEqualObjects(LGSanitizeHeaderValue(@"bare\rCR"), @"bareCR");
+    XCTAssertEqualObjects(LGSanitizeHeaderValue(nil), @"");
+}
+
+- (void)testSanitizeHeaderBlocksInjection
+{
+    NSString *malicious = @"user@example.com\r\nBcc: attacker@evil.com";
+    NSString *sanitized = LGSanitizeHeaderValue(malicious);
+    XCTAssertFalse([sanitized containsString:@"\r"], @"Should not contain CR");
+    XCTAssertFalse([sanitized containsString:@"\n"], @"Should not contain LF");
+    XCTAssertTrue([sanitized containsString:@"Bcc:"], @"CRLF stripped, so 'Bcc:' becomes part of the flat value");
+}
+
+- (void)testRfc2047EncodeAscii
+{
+    NSString *ascii = @"Test notification from AutoPkgr";
+    XCTAssertEqualObjects(LGRfc2047Encode(ascii), ascii, @"ASCII strings should pass through unchanged");
+}
+
+- (void)testRfc2047EncodeNonAscii
+{
+    NSString *input = @"Héllo Wörld";
+    NSString *encoded = LGRfc2047Encode(input);
+    XCTAssertTrue([encoded hasPrefix:@"=?UTF-8?B?"], @"Should use UTF-8 Base64 encoding prefix");
+    XCTAssertTrue([encoded hasSuffix:@"?="], @"Should end with ?= delimiter");
+
+    NSString *base64Part = [[encoded stringByReplacingOccurrencesOfString:@"=?UTF-8?B?" withString:@""]
+                                     stringByReplacingOccurrencesOfString:@"?=" withString:@""];
+    NSData *decoded = [[NSData alloc] initWithBase64EncodedString:base64Part options:NSDataBase64DecodingIgnoreUnknownCharacters];
+    NSString *roundTripped = [[NSString alloc] initWithData:decoded encoding:NSUTF8StringEncoding];
+    XCTAssertEqualObjects(roundTripped, input, @"Round-trip decode should match original");
+}
+
+- (void)testRfc2047EncodeSanitizesCRLF
+{
+    NSString *injected = @"Hello\r\nBcc: evil@attacker.com";
+    NSString *encoded = LGRfc2047Encode(injected);
+    XCTAssertFalse([encoded containsString:@"\r"], @"Encoded value must not contain CR");
+    XCTAssertFalse([encoded containsString:@"\n"], @"Encoded value must not contain LF");
+}
+
+- (void)testRfc2822DateFormat
+{
+    NSString *date = LGRfc2822Date();
+    XCTAssertNotNil(date, @"Date should not be nil");
+
+    NSDateFormatter *fmt = [[NSDateFormatter alloc] init];
+    fmt.locale = [[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"];
+    fmt.dateFormat = @"EEE, dd MMM yyyy HH:mm:ss Z";
+    NSDate *parsed = [fmt dateFromString:date];
+    XCTAssertNotNil(parsed, @"Date string should be valid RFC 2822 format");
+    XCTAssertEqualWithAccuracy([parsed timeIntervalSinceNow], 0, 5, @"Parsed date should be within 5 seconds of now");
+}
+
+- (void)testBuildSmtpMessageContainsRequiredHeaders
+{
+    NSData *msg = LGBuildSmtpMessage(@"Test Subject", @"<p>Hello</p>",
+                                     @"sender@example.com", @[@"rcpt@example.com"]);
+    NSString *raw = [[NSString alloc] initWithData:msg encoding:NSASCIIStringEncoding];
+
+    XCTAssertTrue([raw containsString:@"From: AutoPkgr Notification <sender@example.com>\r\n"]);
+    XCTAssertTrue([raw containsString:@"To: rcpt@example.com\r\n"]);
+    XCTAssertTrue([raw containsString:@"Subject: Test Subject\r\n"]);
+    XCTAssertTrue([raw containsString:@"Date: "]);
+    XCTAssertTrue([raw containsString:@"Message-ID: <"]);
+    XCTAssertTrue([raw containsString:@"MIME-Version: 1.0\r\n"]);
+    XCTAssertTrue([raw containsString:@"Content-Type: text/html; charset=UTF-8\r\n"]);
+    XCTAssertTrue([raw containsString:@"Content-Transfer-Encoding: base64\r\n"]);
+}
+
+- (void)testBuildSmtpMessageBase64Body
+{
+    NSString *html = @"<p>Hello World</p>";
+    NSData *msg = LGBuildSmtpMessage(@"Sub", html, @"a@b.com", @[@"c@d.com"]);
+    NSString *raw = [[NSString alloc] initWithData:msg encoding:NSASCIIStringEncoding];
+
+    // Extract body after the blank line separating headers from body.
+    NSRange sep = [raw rangeOfString:@"\r\n\r\n"];
+    XCTAssertTrue(sep.location != NSNotFound, @"Headers and body must be separated by blank line");
+    NSString *body = [[raw substringFromIndex:NSMaxRange(sep)] stringByTrimmingCharactersInSet:
+                      [NSCharacterSet whitespaceAndNewlineCharacterSet]];
+
+    // Decode and verify round-trip.
+    NSData *decoded = [[NSData alloc] initWithBase64EncodedString:body options:NSDataBase64DecodingIgnoreUnknownCharacters];
+    NSString *roundTripped = [[NSString alloc] initWithData:decoded encoding:NSUTF8StringEncoding];
+    XCTAssertEqualObjects(roundTripped, html);
+}
+
+- (void)testBuildSmtpMessageSanitizesHeaders
+{
+    NSData *msg = LGBuildSmtpMessage(@"Normal", @"body",
+                                     @"ok@test.com\r\nBcc: evil@x.com",
+                                     @[@"rcpt@test.com\r\nBcc: evil@y.com"]);
+    NSString *raw = [[NSString alloc] initWithData:msg encoding:NSASCIIStringEncoding];
+    // After sanitization, \r\n is stripped so "Bcc:" is collapsed into the
+    // From/To value — not on its own line as a separate header.
+    XCTAssertFalse([raw containsString:@"\r\nBcc:"], @"Injected Bcc must not appear as a separate header");
+}
+
+- (void)testBuildSmtpMessageMultipleRecipients
+{
+    NSData *msg = LGBuildSmtpMessage(@"Sub", @"body", @"a@b.com", @[@"x@y.com", @"z@w.com"]);
+    NSString *raw = [[NSString alloc] initWithData:msg encoding:NSASCIIStringEncoding];
+    XCTAssertTrue([raw containsString:@"To: x@y.com, z@w.com\r\n"]);
+}
+
+- (void)testBuildSmtpMessageAllAscii
+{
+    NSData *msg = LGBuildSmtpMessage(@"Test", @"<b>Hi</b>", @"a@b.com", @[@"c@d.com"]);
+    // Entire message must be 7-bit safe (base64 body + ASCII headers).
+    const uint8_t *bytes = msg.bytes;
+    for (NSUInteger i = 0; i < msg.length; i++) {
+        XCTAssertTrue(bytes[i] < 128, @"Byte at offset %lu is not 7-bit safe: 0x%02x", (unsigned long)i, bytes[i]);
+    }
 }
 
 #pragma mark - Utility

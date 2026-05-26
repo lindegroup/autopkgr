@@ -23,7 +23,90 @@
 #import "LGServerCredentials.h"
 #import "LGUserNotification.h"
 
-#import <MailCore/MailCore.h>
+#include <curl/curl.h>
+
+#pragma mark - libcurl helpers
+
+__attribute__((constructor))
+static void LGCurlGlobalInit(void) {
+    curl_global_init(CURL_GLOBAL_DEFAULT);
+}
+
+typedef struct {
+    const char *data;
+    size_t length;
+    size_t offset;
+} LGCurlUploadContext;
+
+static size_t lgCurlReadCallback(char *buffer, size_t size, size_t nitems, void *userdata)
+{
+    LGCurlUploadContext *ctx = (LGCurlUploadContext *)userdata;
+    size_t remaining = ctx->length - ctx->offset;
+    size_t bufferSize = size * nitems;
+    size_t toCopy = (remaining < bufferSize) ? remaining : bufferSize;
+    if (toCopy == 0) return 0;
+    memcpy(buffer, ctx->data + ctx->offset, toCopy);
+    ctx->offset += toCopy;
+    return toCopy;
+}
+
+NSString *LGSanitizeHeaderValue(NSString *value)
+{
+    if (!value) return @"";
+    NSCharacterSet *crlf = [NSCharacterSet characterSetWithCharactersInString:@"\r\n"];
+    return [[value componentsSeparatedByCharactersInSet:crlf] componentsJoinedByString:@""];
+}
+
+NSString *LGRfc2047Encode(NSString *value)
+{
+    value = LGSanitizeHeaderValue(value);
+    if ([value canBeConvertedToEncoding:NSASCIIStringEncoding]) return value;
+    NSData *utf8 = [value dataUsingEncoding:NSUTF8StringEncoding];
+    NSString *base64 = [utf8 base64EncodedStringWithOptions:NSDataBase64Encoding76CharacterLineLength];
+    return [NSString stringWithFormat:@"=?UTF-8?B?%@?=", base64];
+}
+
+NSString *LGRfc2822Date(void)
+{
+    NSDateFormatter *fmt = [[NSDateFormatter alloc] init];
+    fmt.locale = [[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"];
+    fmt.dateFormat = @"EEE, dd MMM yyyy HH:mm:ss Z";
+    return [fmt stringFromDate:[NSDate date]];
+}
+
+NSData *LGBuildSmtpMessage(NSString *subject, NSString *htmlBody,
+                           NSString *fromAddress, NSArray<NSString *> *toAddresses)
+{
+    fromAddress = LGSanitizeHeaderValue(fromAddress);
+    NSString *messageId = [NSString stringWithFormat:@"<%@.%@@%@>",
+                           @((NSUInteger)[[NSDate date] timeIntervalSince1970]),
+                           [[NSUUID UUID] UUIDString],
+                           LGSanitizeHeaderValue([[NSHost currentHost] name] ?: @"localhost")];
+
+    NSMutableArray *sanitizedTo = [NSMutableArray arrayWithCapacity:toAddresses.count];
+    for (NSString *addr in toAddresses) {
+        [sanitizedTo addObject:LGSanitizeHeaderValue(addr)];
+    }
+
+    // Base64-encode the HTML body to avoid dot-stuffing ambiguity and MTA line-length issues.
+    NSData *bodyData = [htmlBody dataUsingEncoding:NSUTF8StringEncoding];
+    NSString *encodedBody = [bodyData base64EncodedStringWithOptions:NSDataBase64Encoding76CharacterLineLength];
+
+    NSMutableString *raw = [NSMutableString string];
+    [raw appendFormat:@"From: AutoPkgr Notification <%@>\r\n", fromAddress];
+    [raw appendFormat:@"To: %@\r\n", [sanitizedTo componentsJoinedByString:@", "]];
+    [raw appendFormat:@"Date: %@\r\n", LGRfc2822Date()];
+    [raw appendFormat:@"Message-ID: %@\r\n", messageId];
+    [raw appendFormat:@"Subject: %@\r\n", LGRfc2047Encode(subject)];
+    [raw appendString:@"MIME-Version: 1.0\r\n"];
+    [raw appendString:@"Content-Type: text/html; charset=UTF-8\r\n"];
+    [raw appendString:@"Content-Transfer-Encoding: base64\r\n"];
+    [raw appendString:@"\r\n"];
+    [raw appendString:encodedBody];
+    [raw appendString:@"\r\n"];
+
+    return [raw dataUsingEncoding:NSASCIIStringEncoding];
+}
 
 @implementation LGEmailNotification {
     LGDefaults *_defaults;
@@ -151,27 +234,9 @@
     }
 }
 
-- (NSArray *)smtpTo
-{
-    NSMutableArray *to = [[NSMutableArray alloc] init];
-    for (NSString *toAddress in _defaults.SMTPTo) {
-        if (toAddress.length) {
-            [to addObject:[MCOAddress addressWithMailbox:toAddress]];
-        }
-    }
-    return to;
-}
-
-- (MCOAddress *)smtpFrom
-{
-    return [MCOAddress addressWithDisplayName:@"AutoPkgr Notification"
-                                      mailbox:_defaults.SMTPFrom ?: @"AutoPkgr"];
-}
-
 #pragma mark - Primary sending method
 - (void)sendEmailNotification:(NSString *)subject message:(NSString *)message test:(BOOL)test
 {
-
     void (^didCompleteSendOperation)(NSError *) = ^(NSError *error) {
         if (error) {
             NSLog(@"Error sending email: %@", error);
@@ -183,55 +248,109 @@
 
     [self getMailCredentials:^(LGHTTPCredential *credential, NSError *error) {
         if (error) {
-            // An error here means there was a problem getting the password.
             NSLog(@"There was a problem getting the SMTP credentials: %@", error);
             return didCompleteSendOperation(error);
         }
 
-        // Build the message.
-        MCOMessageBuilder *builder = [[MCOMessageBuilder alloc] init];
-
-        builder.header.from = [self smtpFrom];
-        builder.header.to = [self smtpTo];
-        builder.header.subject = subject;
-        builder.htmlBody = message;
-
-        // Configure the session details.
-        MCOSMTPSession *session = [[MCOSMTPSession alloc] init];
-        session.hostname = credential.server;
-        session.port = (int)credential.port;
-        session.timeout = 15;
-
-        if (credential.user && credential.password) {
-            session.username = credential.user;
-            session.password = credential.password;
+        // Collect valid recipient addresses.
+        NSMutableArray *toAddresses = [NSMutableArray array];
+        for (NSString *addr in _defaults.SMTPTo) {
+            if (addr.length) [toAddresses addObject:addr];
         }
 
-        if (_defaults.SMTPTLSEnabled) {
-            DLog(@"SSL/TLS is enabled for %@.", _defaults.SMTPServer);
-            // If the SMTP port is 465, use MCOConnectionTypeTLS. Otherwise use MCOConnectionTypeStartTLS.
-            if (session.port == 465) {
-                session.connectionType = MCOConnectionTypeTLS;
-            }
-            else {
-                session.connectionType = MCOConnectionTypeStartTLS;
-            }
-        }
-        else {
-            DLog(@"SSL/TLS is _not_ enabled for %@.", _defaults.SMTPServer);
-            session.connectionType = MCOConnectionTypeClear;
+        if (toAddresses.count == 0) {
+            return didCompleteSendOperation(
+                [NSError errorWithDomain:kLGApplicationName
+                                    code:kLGErrorSendingEmail
+                                userInfo:@{NSLocalizedDescriptionKey: @"No email recipients configured."}]);
         }
 
-        MCOSMTPSendOperation *sendOperation = [session sendOperationWithData:builder.data];
-        [sendOperation start:^(NSError *error) {
-            if (test) {
-                [LGUserNotification sendNotificationOfTestEmailSuccess:error ? NO : YES error:error];
-            }
+        NSString *fromAddress = _defaults.SMTPFrom ?: @"autopkgr@localhost";
+        NSData *messageData = LGBuildSmtpMessage(subject, message, fromAddress, toAddresses);
+        BOOL tlsEnabled = _defaults.SMTPTLSEnabled;
 
-            // Call completed operation.
-            didCompleteSendOperation(error);
-        }];
+        // Run the libcurl SMTP transfer on a background queue.
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+            NSError *sendError = [self sendViaCurl:messageData
+                                       fromAddress:fromAddress
+                                       toAddresses:toAddresses
+                                        credential:credential
+                                        tlsEnabled:tlsEnabled];
+
+            dispatch_async(dispatch_get_main_queue(), ^{
+                if (test) {
+                    [LGUserNotification sendNotificationOfTestEmailSuccess:sendError ? NO : YES error:sendError];
+                }
+                didCompleteSendOperation(sendError);
+            });
+        });
     }];
+}
+
+#pragma mark - libcurl SMTP
+- (NSError *)sendViaCurl:(NSData *)messageData
+             fromAddress:(NSString *)from
+             toAddresses:(NSArray<NSString *> *)toAddresses
+              credential:(LGHTTPCredential *)credential
+              tlsEnabled:(BOOL)tlsEnabled
+{
+    CURL *curl = curl_easy_init();
+    if (!curl) {
+        return [NSError errorWithDomain:kLGApplicationName
+                                   code:kLGErrorSendingEmail
+                               userInfo:@{NSLocalizedDescriptionKey: @"Failed to initialize libcurl"}];
+    }
+
+    // Build the server URL: smtps:// for implicit TLS (port 465), smtp:// otherwise.
+    NSString *scheme = (tlsEnabled && credential.port == 465) ? @"smtps" : @"smtp";
+    NSString *url = [NSString stringWithFormat:@"%@://%@:%ld", scheme, credential.server, (long)credential.port];
+    curl_easy_setopt(curl, CURLOPT_URL, url.UTF8String);
+
+    curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, 1L);
+    curl_easy_setopt(curl, CURLOPT_SSL_VERIFYHOST, 2L);
+
+    // Require STARTTLS when TLS is enabled but not using implicit TLS.
+    if (tlsEnabled && credential.port != 465) {
+        curl_easy_setopt(curl, CURLOPT_USE_SSL, (long)CURLUSESSL_ALL);
+    }
+
+    // Authentication — send credentials whenever a username is configured.
+    if (credential.user.length) {
+        curl_easy_setopt(curl, CURLOPT_USERNAME, credential.user.UTF8String);
+        curl_easy_setopt(curl, CURLOPT_PASSWORD, (credential.password ?: @"").UTF8String);
+    }
+
+    // Envelope sender and recipients.
+    curl_easy_setopt(curl, CURLOPT_MAIL_FROM, from.UTF8String);
+    struct curl_slist *recipients = NULL;
+    for (NSString *addr in toAddresses) {
+        recipients = curl_slist_append(recipients, addr.UTF8String);
+    }
+    curl_easy_setopt(curl, CURLOPT_MAIL_RCPT, recipients);
+
+    // Provide the message body via read callback (no temp file needed).
+    LGCurlUploadContext ctx = {
+        .data = messageData.bytes,
+        .length = messageData.length,
+        .offset = 0,
+    };
+    curl_easy_setopt(curl, CURLOPT_READFUNCTION, lgCurlReadCallback);
+    curl_easy_setopt(curl, CURLOPT_READDATA, &ctx);
+    curl_easy_setopt(curl, CURLOPT_UPLOAD, 1L);
+
+    curl_easy_setopt(curl, CURLOPT_TIMEOUT, 30L);
+
+    CURLcode res = curl_easy_perform(curl);
+    curl_slist_free_all(recipients);
+    curl_easy_cleanup(curl);
+
+    if (res != CURLE_OK) {
+        NSString *detail = [NSString stringWithFormat:@"SMTP send failed: %s", curl_easy_strerror(res)];
+        return [NSError errorWithDomain:kLGApplicationName
+                                   code:kLGErrorSendingEmail
+                               userInfo:@{NSLocalizedDescriptionKey: detail}];
+    }
+    return nil;
 }
 
 @end
