@@ -49,7 +49,7 @@ post_install do |installer|
     end
 
     # Fix RNCryptor-objc SecRandomCopyBytes type conflict with macOS 15+ SDK
-    rncryptor_file = "#{installer.sandbox.root}/RNCryptor/RNCryptor/RNCryptor.m"
+    rncryptor_file = "#{installer.sandbox.root}/RNCryptor-objc/RNCryptor/RNCryptor.m"
     if File.exist?(rncryptor_file)
         FileUtils.chmod(0644, rncryptor_file)
         content = File.read(rncryptor_file)
