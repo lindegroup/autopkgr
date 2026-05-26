@@ -70,8 +70,7 @@ static NSString *const kLGMunkiimportDomain = @"com.googlecode.munki.munkiimport
               @"com.googlecode.munki.app",
               @"com.googlecode.munki.app_usage",
               @"com.googlecode.munki.core",
-              @"com.googlecode.munki.launchd",
-              @"com.googlecode.munki.pythonlibs" ];
+              @"com.googlecode.munki.launchd" ];
 }
 
 + (BOOL)isUninstallable
