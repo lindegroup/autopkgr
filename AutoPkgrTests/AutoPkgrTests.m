@@ -22,6 +22,7 @@
 #import "LGGitHubJSONLoader.h"
 #import "LGInstaller.h"
 #import "LGIntegrationManager.h"
+#import "NSString+versionCompare.h"
 #import <XCTest/XCTest.h>
 
 #import "LGAutoPkgErrorHandler.h"
@@ -247,6 +248,157 @@ static const BOOL _TEST_PRIVILEGED_HELPER = YES;
     XCTAssertFalse([@"0.4.2" version_isLessThanOrEqualTo:@"0.4.1"], @"wrong");
     XCTAssertTrue([@"0.4.1" version_isLessThanOrEqualTo:@"0.4.1"], @"wrong");
     XCTAssertTrue([@"0.4.1" version_isLessThanOrEqualTo:@"0.4.2"], @"wrong");
+}
+
+#pragma mark - Munki version detection
+
+- (NSArray *)munkiPackageIdentifiers
+{
+    return @[ @"com.googlecode.munki.admin",
+              @"com.googlecode.munki.app",
+              @"com.googlecode.munki.app_usage",
+              @"com.googlecode.munki.core",
+              @"com.googlecode.munki.launchd" ];
+}
+
+- (NSString *)munkiVersionFromReceiptsInDirectory:(NSString *)dir
+{
+    NSString *highestVersion = nil;
+    for (NSString *identifier in [self munkiPackageIdentifiers]) {
+        NSString *receiptPath = [[dir stringByAppendingPathComponent:identifier] stringByAppendingPathExtension:@"plist"];
+        NSDictionary *receiptDict = [NSDictionary dictionaryWithContentsOfFile:receiptPath];
+        NSString *version = receiptDict[@"PackageVersion"];
+        if (version && (!highestVersion || [version version_isGreaterThan:highestVersion])) {
+            highestVersion = version;
+        }
+    }
+    return highestVersion;
+}
+
+- (void)writeReceiptPlistAtPath:(NSString *)path version:(NSString *)version
+{
+    NSDictionary *receipt = @{
+        @"PackageIdentifier" : path.lastPathComponent.stringByDeletingPathExtension,
+        @"PackageVersion" : version,
+        @"InstallDate" : [NSDate date],
+        @"InstallPrefixPath" : @"/",
+    };
+    [receipt writeToFile:path atomically:YES];
+}
+
+- (void)testMunkiReceiptVersionMatchesMetapackage
+{
+    // Munki v6.6.0: metapackage was munkitools-6.6.0.4690.pkg but munkiimport
+    // --version reported 6.6.0.4686, because the code/client rev count was lower
+    // than the code/apps rev count used for the metapackage build number.
+    // Reading receipts should yield the correct metapackage version.
+    NSString *tmpDir = [NSTemporaryDirectory() stringByAppendingPathComponent:
+                        [[NSUUID UUID] UUIDString]];
+    [[NSFileManager defaultManager] createDirectoryAtPath:tmpDir
+                              withIntermediateDirectories:YES
+                                               attributes:nil
+                                                    error:nil];
+
+    NSString *metapackageVersion = @"6.6.0.4690";
+    for (NSString *identifier in [self munkiPackageIdentifiers]) {
+        NSString *path = [[tmpDir stringByAppendingPathComponent:identifier]
+                          stringByAppendingPathExtension:@"plist"];
+        if ([identifier isEqualToString:@"com.googlecode.munki.launchd"]) {
+            [self writeReceiptPlistAtPath:path version:@"6.5.0.4265"];
+        } else {
+            [self writeReceiptPlistAtPath:path version:metapackageVersion];
+        }
+    }
+
+    NSString *detectedVersion = [self munkiVersionFromReceiptsInDirectory:tmpDir];
+    XCTAssertEqualObjects(detectedVersion, metapackageVersion,
+        @"Receipt-based detection should return the metapackage version");
+
+    // munkiimport --version would have returned 6.6.0.4686 for this release,
+    // which is less than the metapackage version and would falsely trigger an update.
+    NSString *munkiimportVersion = @"6.6.0.4686";
+    XCTAssertTrue([metapackageVersion version_isGreaterThan:munkiimportVersion],
+        @"munkiimport --version (4686) is less than the metapackage (4690)");
+    XCTAssertFalse([metapackageVersion version_isGreaterThan:detectedVersion],
+        @"Receipt-based version should not falsely trigger an update");
+
+    [[NSFileManager defaultManager] removeItemAtPath:tmpDir error:nil];
+}
+
+- (void)testMunkiReceiptVersionWithDivergentBuildNumbers
+{
+    // Simulate real-world receipts where sub-packages have different build numbers.
+    // The launchd package often lags behind because its content changes less frequently.
+    NSString *tmpDir = [NSTemporaryDirectory() stringByAppendingPathComponent:
+                        [[NSUUID UUID] UUIDString]];
+    [[NSFileManager defaultManager] createDirectoryAtPath:tmpDir
+                              withIntermediateDirectories:YES
+                                               attributes:nil
+                                                    error:nil];
+
+    NSDictionary *receiptVersions = @{
+        @"com.googlecode.munki.admin"     : @"7.1.2.5700",
+        @"com.googlecode.munki.app"       : @"7.1.2.5700",
+        @"com.googlecode.munki.app_usage" : @"7.1.2.5700",
+        @"com.googlecode.munki.core"      : @"7.1.2.5700",
+        @"com.googlecode.munki.launchd"   : @"7.0.0.5320",
+    };
+    for (NSString *identifier in receiptVersions) {
+        NSString *path = [[tmpDir stringByAppendingPathComponent:identifier]
+                          stringByAppendingPathExtension:@"plist"];
+        [self writeReceiptPlistAtPath:path version:receiptVersions[identifier]];
+    }
+
+    NSString *detectedVersion = [self munkiVersionFromReceiptsInDirectory:tmpDir];
+    XCTAssertEqualObjects(detectedVersion, @"7.1.2.5700",
+        @"Should return the highest version across all receipts");
+
+    [[NSFileManager defaultManager] removeItemAtPath:tmpDir error:nil];
+}
+
+- (void)testMunkiReceiptVersionExcludesPythonlibs
+{
+    // The pythonlibs receipt can have a completely different version (e.g. 6.7.0.5293
+    // when the rest of Munki is 7.1.2.5700). Verify it is excluded from the
+    // identifier list so it cannot poison the version detection.
+    NSArray *identifiers = [self munkiPackageIdentifiers];
+    XCTAssertFalse([identifiers containsObject:@"com.googlecode.munki.pythonlibs"],
+        @"pythonlibs must not be in packageIdentifiers");
+}
+
+- (void)testMunkiReceiptVersionNoFalseUpdateForV660
+{
+    // Munki v6.6.0: the GitHub release asset is munkitools-6.6.0.4690.pkg, but
+    // munkiimport --version reports 6.6.0.4686 due to divergent build numbers.
+    // Using receipts yields 6.6.0.4690, matching the remote version correctly.
+    NSString *remoteVersion = @"6.6.0.4690";
+    NSString *munkiimportVersion = @"6.6.0.4686";
+    NSString *receiptVersion = @"6.6.0.4690";
+
+    // munkiimport --version reports a lower build number than the metapackage
+    XCTAssertTrue([remoteVersion version_isGreaterThan:munkiimportVersion],
+        @"munkiimport --version would falsely indicate an update is available");
+
+    // Receipt-based detection matches the metapackage version
+    XCTAssertFalse([remoteVersion version_isGreaterThan:receiptVersion],
+        @"Receipt-based version correctly matches, no false update");
+}
+
+- (void)testMunkiReceiptVersionMissingReceipts
+{
+    // When no receipts exist (Munki not installed), the method should return nil.
+    NSString *tmpDir = [NSTemporaryDirectory() stringByAppendingPathComponent:
+                        [[NSUUID UUID] UUIDString]];
+    [[NSFileManager defaultManager] createDirectoryAtPath:tmpDir
+                              withIntermediateDirectories:YES
+                                               attributes:nil
+                                                    error:nil];
+
+    NSString *detectedVersion = [self munkiVersionFromReceiptsInDirectory:tmpDir];
+    XCTAssertNil(detectedVersion,
+        @"Should return nil when no receipt plists exist");
+
+    [[NSFileManager defaultManager] removeItemAtPath:tmpDir error:nil];
 }
 
 - (void)testLoader
