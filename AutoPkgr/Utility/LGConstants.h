@@ -32,9 +32,7 @@ extern NSString *const kLGLocalizedHelpTable;
 #pragma mark - Static URLs
 extern NSString *const kLGAutoPkgReleasesJSONURL;
 extern NSString *const kLGGitReleasesJSONURL;
-extern NSString *const kLGJSSImporterJSONURL;
 extern NSString *const kLGAutoPkgRepositoriesJSONURL;
-extern NSString *const kLGJSSDefaultRepo;
 extern NSString *const kLGAutoPkgrWebsite;
 extern NSString *const kLGAutoPkgrHelpWebsite;
 

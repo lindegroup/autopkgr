@@ -381,7 +381,6 @@ static NSArray *_popularRepos;
                     @"https://github.com/autopkg/jleggat-recipes.git",
                     @"https://github.com/autopkg/joshua-d-miller-recipes.git",
                     @"https://github.com/autopkg/jps3-recipes.git",
-                    @"https://github.com/autopkg/jss-recipes.git",
                     @"https://github.com/autopkg/justinrummel-recipes.git",
                     @"https://github.com/autopkg/keeleysam-recipes.git",
                     @"https://github.com/autopkg/kitzy-recipes.git",

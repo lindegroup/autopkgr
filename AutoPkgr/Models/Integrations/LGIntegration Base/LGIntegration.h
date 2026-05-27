@@ -97,7 +97,7 @@ typedef NS_ENUM(OSStatus, LGIntegrationInstallStatus) {
 
 /**
  *  Components of the integration that indicate the integration is successful installed.
- *  @note it is unnecessary to list every item of the installer. If you have a integration that installs components in separate file system locations you should list one from each. For example JSSImporter.py exists in /Library/AutoPkg/autopkglib, but requires the python-jss library in /Library/Python/2.7/site-packages/python_jss-0.5.9-py2.7.egg/jss so each should be checked to determine if successfully installed
+ *  @note it is unnecessary to list every item of the installer. If you have an integration that installs components in separate file system locations you should list one from each.
  */
 + (NSArray *)components;
 

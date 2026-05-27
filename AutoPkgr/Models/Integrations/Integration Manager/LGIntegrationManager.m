@@ -41,7 +41,6 @@ static void *XXInfoStatusChange = &XXInfoStatusChange;
             [LGFileWaveIntegration class],
             [LGGitIntegration class],
             [LGJamfUploaderIntegration class],
-            [LGJSSImporterIntegration class],
             [LGLANrevIntegration class],
             [LGMacPatchIntegration class],
             [LGMunkiIntegration class],

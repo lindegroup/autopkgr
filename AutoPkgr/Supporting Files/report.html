@@ -410,32 +410,6 @@ value using the `summary_result.foo_summary_result` syntax.
                 </table>
             {{/ jamfscriptuploader.data_rows.count }}
             
-            <!-- Imported to JSS (Casper) -->
-            <!-- "report_fields": ["Package", "Categories", "Groups", "Scripts", "Extension Attributes", "Policy", "Icon"] -->
-            {{# jss_importer.data_rows.count }}
-                <h3>{{ jss_importer.summary_text }}</h3>
-                <table>
-                    <tr>
-                        <th>Categories</th>
-                        <th>Groups</th>
-                        <th>Icon</th>
-                        <th>Package</th>
-                        <th>Policy</th>
-                        <th>Scripts</th>
-                    </tr>
-                    {{# jss_importer.data_rows }}
-                    <tr>
-                        <td>{{ Categories }}</td>
-                        <td>{{ Groups }}</td>
-                        <td>{{ Icon }}</td>
-                        <td>{{ Package }}</td>
-                        <td>{{ Policy }}</td>
-                        <td>{{ Scripts }}</td>
-                    </tr>
-                    {{/ jss_importer.data_rows }}
-                </table>
-            {{/ jss_importer.data_rows.count }}
-
             <!-- Imported to Filewave -->
             <!-- 'report_fields': ['fw_fileset_id', 'fw_fileset_group', 'fw_fileset_name'] -->
             {{# filewave.data_rows.count }}
