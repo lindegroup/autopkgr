@@ -29,6 +29,7 @@
 #import "LGAutoPkgRecipeListManager.h"
 #import "LGAutoPkgReport.h"
 #import "LGAutoPkgTask.h"
+#import "LGMunkiIntegration.h"
 
 #import "LGPasswords.h"
 #import "LGServerCredentials.h"
@@ -54,18 +55,38 @@ static const BOOL _TEST_PRIVILEGED_HELPER = YES;
 
 @implementation AutoPkgrTests {
     LGUserNotificationsDelegate *_noteDelegate;
+    NSMutableArray *_tempDirs;
 }
 
 - (void)setUp
 {
     [super setUp];
     // Put setup code here. This method is called before the invocation of each test method in the class.
+    _tempDirs = [NSMutableArray array];
 }
 
 - (void)tearDown
 {
     // Put teardown code here. This method is called after the invocation of each test method in the class.
+    // Remove any temp dirs created via -createTempDirectory, even if a test
+    // assertion failed before reaching its own cleanup.
+    for (NSString *dir in _tempDirs) {
+        [[NSFileManager defaultManager] removeItemAtPath:dir error:nil];
+    }
     [super tearDown];
+}
+
+// Creates a unique temp directory that is automatically removed in -tearDown.
+- (NSString *)createTempDirectory
+{
+    NSString *tmpDir = [NSTemporaryDirectory() stringByAppendingPathComponent:
+                        [[NSUUID UUID] UUIDString]];
+    [[NSFileManager defaultManager] createDirectoryAtPath:tmpDir
+                              withIntermediateDirectories:YES
+                                               attributes:nil
+                                                    error:nil];
+    [_tempDirs addObject:tmpDir];
+    return tmpDir;
 }
 
 #pragma mark - LGAutoPkgTask
@@ -252,29 +273,6 @@ static const BOOL _TEST_PRIVILEGED_HELPER = YES;
 
 #pragma mark - Munki version detection
 
-- (NSArray *)munkiPackageIdentifiers
-{
-    return @[ @"com.googlecode.munki.admin",
-              @"com.googlecode.munki.app",
-              @"com.googlecode.munki.app_usage",
-              @"com.googlecode.munki.core",
-              @"com.googlecode.munki.launchd" ];
-}
-
-- (NSString *)munkiVersionFromReceiptsInDirectory:(NSString *)dir
-{
-    NSString *highestVersion = nil;
-    for (NSString *identifier in [self munkiPackageIdentifiers]) {
-        NSString *receiptPath = [[dir stringByAppendingPathComponent:identifier] stringByAppendingPathExtension:@"plist"];
-        NSDictionary *receiptDict = [NSDictionary dictionaryWithContentsOfFile:receiptPath];
-        NSString *version = receiptDict[@"PackageVersion"];
-        if (version && (!highestVersion || [version version_isGreaterThan:highestVersion])) {
-            highestVersion = version;
-        }
-    }
-    return highestVersion;
-}
-
 - (void)writeReceiptPlistAtPath:(NSString *)path version:(NSString *)version
 {
     NSDictionary *receipt = @{
@@ -292,15 +290,10 @@ static const BOOL _TEST_PRIVILEGED_HELPER = YES;
     // --version reported 6.6.0.4686, because the code/client rev count was lower
     // than the code/apps rev count used for the metapackage build number.
     // Reading receipts should yield the correct metapackage version.
-    NSString *tmpDir = [NSTemporaryDirectory() stringByAppendingPathComponent:
-                        [[NSUUID UUID] UUIDString]];
-    [[NSFileManager defaultManager] createDirectoryAtPath:tmpDir
-                              withIntermediateDirectories:YES
-                                               attributes:nil
-                                                    error:nil];
+    NSString *tmpDir = [self createTempDirectory];
 
     NSString *metapackageVersion = @"6.6.0.4690";
-    for (NSString *identifier in [self munkiPackageIdentifiers]) {
+    for (NSString *identifier in [LGMunkiIntegration packageIdentifiers]) {
         NSString *path = [[tmpDir stringByAppendingPathComponent:identifier]
                           stringByAppendingPathExtension:@"plist"];
         if ([identifier isEqualToString:@"com.googlecode.munki.launchd"]) {
@@ -310,7 +303,7 @@ static const BOOL _TEST_PRIVILEGED_HELPER = YES;
         }
     }
 
-    NSString *detectedVersion = [self munkiVersionFromReceiptsInDirectory:tmpDir];
+    NSString *detectedVersion = [LGMunkiIntegration installedVersionFromReceiptsInDirectory:tmpDir];
     XCTAssertEqualObjects(detectedVersion, metapackageVersion,
         @"Receipt-based detection should return the metapackage version");
 
@@ -321,20 +314,13 @@ static const BOOL _TEST_PRIVILEGED_HELPER = YES;
         @"munkiimport --version (4686) is less than the metapackage (4690)");
     XCTAssertFalse([metapackageVersion version_isGreaterThan:detectedVersion],
         @"Receipt-based version should not falsely trigger an update");
-
-    [[NSFileManager defaultManager] removeItemAtPath:tmpDir error:nil];
 }
 
 - (void)testMunkiReceiptVersionWithDivergentBuildNumbers
 {
     // Simulate real-world receipts where sub-packages have different build numbers.
     // The launchd package often lags behind because its content changes less frequently.
-    NSString *tmpDir = [NSTemporaryDirectory() stringByAppendingPathComponent:
-                        [[NSUUID UUID] UUIDString]];
-    [[NSFileManager defaultManager] createDirectoryAtPath:tmpDir
-                              withIntermediateDirectories:YES
-                                               attributes:nil
-                                                    error:nil];
+    NSString *tmpDir = [self createTempDirectory];
 
     NSDictionary *receiptVersions = @{
         @"com.googlecode.munki.admin"     : @"7.1.2.5700",
@@ -349,21 +335,23 @@ static const BOOL _TEST_PRIVILEGED_HELPER = YES;
         [self writeReceiptPlistAtPath:path version:receiptVersions[identifier]];
     }
 
-    NSString *detectedVersion = [self munkiVersionFromReceiptsInDirectory:tmpDir];
+    NSString *detectedVersion = [LGMunkiIntegration installedVersionFromReceiptsInDirectory:tmpDir];
     XCTAssertEqualObjects(detectedVersion, @"7.1.2.5700",
         @"Should return the highest version across all receipts");
-
-    [[NSFileManager defaultManager] removeItemAtPath:tmpDir error:nil];
 }
 
-- (void)testMunkiReceiptVersionExcludesPythonlibs
+- (void)testMunkiPackageIdentifiers
 {
-    // The pythonlibs receipt can have a completely different version (e.g. 6.7.0.5293
-    // when the rest of Munki is 7.1.2.5700). Verify it is excluded from the
-    // identifier list so it cannot poison the version detection.
-    NSArray *identifiers = [self munkiPackageIdentifiers];
+    // Guard against drift in the production identifier list. The pythonlibs
+    // receipt can have a completely different version (e.g. 6.7.0.5293 when
+    // the rest of Munki is 7.1.2.5700) and must not be in the list, or it
+    // would poison the version detection. app_usage must be in the list
+    // because it's part of the metapackage.
+    NSArray *identifiers = [LGMunkiIntegration packageIdentifiers];
     XCTAssertFalse([identifiers containsObject:@"com.googlecode.munki.pythonlibs"],
         @"pythonlibs must not be in packageIdentifiers");
+    XCTAssertTrue([identifiers containsObject:@"com.googlecode.munki.app_usage"],
+        @"app_usage must be in packageIdentifiers");
 }
 
 - (void)testMunkiReceiptVersionNoFalseUpdateForV660
@@ -387,18 +375,11 @@ static const BOOL _TEST_PRIVILEGED_HELPER = YES;
 - (void)testMunkiReceiptVersionMissingReceipts
 {
     // When no receipts exist (Munki not installed), the method should return nil.
-    NSString *tmpDir = [NSTemporaryDirectory() stringByAppendingPathComponent:
-                        [[NSUUID UUID] UUIDString]];
-    [[NSFileManager defaultManager] createDirectoryAtPath:tmpDir
-                              withIntermediateDirectories:YES
-                                               attributes:nil
-                                                    error:nil];
+    NSString *tmpDir = [self createTempDirectory];
 
-    NSString *detectedVersion = [self munkiVersionFromReceiptsInDirectory:tmpDir];
+    NSString *detectedVersion = [LGMunkiIntegration installedVersionFromReceiptsInDirectory:tmpDir];
     XCTAssertNil(detectedVersion,
         @"Should return nil when no receipt plists exist");
-
-    [[NSFileManager defaultManager] removeItemAtPath:tmpDir error:nil];
 }
 
 - (void)testLoader

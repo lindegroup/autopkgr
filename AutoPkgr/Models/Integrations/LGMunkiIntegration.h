@@ -21,6 +21,16 @@
 #import "LGIntegration.h"
 
 @interface LGMunkiIntegration : LGIntegration
+
+// Sub-package identifiers used to determine the installed Munki metapackage version.
++ (NSArray *)packageIdentifiers;
+
+// Returns the highest PackageVersion across all Munki sub-package receipts in
+// the given directory, or nil if none are present. -installedVersion delegates
+// here with /private/var/db/receipts/; the directory is parameterized so tests
+// can point it at a temp dir.
++ (NSString *)installedVersionFromReceiptsInDirectory:(NSString *)directory;
+
 @end
 
 // This is also a good place to add custom defaults.
