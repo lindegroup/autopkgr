@@ -317,7 +317,11 @@ static NSArray *LGYAMLRecipeURLsRecursivelyAtPath(NSString *path)
 {
     // Don't initialize anything if we can't determine a recipe identifier.
     NSDictionary *reciptPlist = [[self class] dictionaryFromRecipeURL:recipeFile];
-    NSString *identifier = reciptPlist[kLGAutoPkgRecipeIdentifierKey] ?: reciptPlist[@"Input"][@"IDENTIFIER"];
+    id identifierValue = reciptPlist[kLGAutoPkgRecipeIdentifierKey] ?: reciptPlist[@"Input"][@"IDENTIFIER"];
+
+    // YAML (or a malformed plist) can produce a non-string identifier (e.g. a
+    // number), so reject anything that isn't a string to avoid crashing on -length.
+    NSString *identifier = [identifierValue isKindOfClass:[NSString class]] ? identifierValue : nil;
 
     if (identifier.length && (self = [super init])) {
         _recipePlist = reciptPlist;
@@ -348,8 +352,13 @@ static NSArray *LGYAMLRecipeURLsRecursivelyAtPath(NSString *path)
 
 - (NSString *)ParentRecipe
 {
-    NSString *parentRecipe = _recipePlist[kLGAutoPkgRecipeParentKey];
-    return parentRecipe.length ? parentRecipe : nil;
+    // YAML (or a malformed plist) can produce a non-string ParentRecipe value;
+    // only treat an actual non-empty string as a valid parent identifier.
+    id parentRecipe = _recipePlist[kLGAutoPkgRecipeParentKey];
+    if ([parentRecipe isKindOfClass:[NSString class]] && [parentRecipe length]) {
+        return parentRecipe;
+    }
+    return nil;
 }
 
 - (NSArray *)ParentRecipes
@@ -366,7 +375,10 @@ static NSArray *LGYAMLRecipeURLsRecursivelyAtPath(NSString *path)
             NSURL *parentRecipeURL = [_identifierURLStore objectForKey:parentRecipeID];
             if (parentRecipeURL) {
                 NSDictionary *recipePlist = [[self class] dictionaryFromRecipeURL:parentRecipeURL];
-                parentRecipeID = recipePlist[kLGAutoPkgRecipeParentKey];
+                id parentRecipeValue = recipePlist[kLGAutoPkgRecipeParentKey];
+                // A non-string parent identifier (possible with YAML or a
+                // malformed plist) ends the chain rather than crashing on -length.
+                parentRecipeID = [parentRecipeValue isKindOfClass:[NSString class]] ? parentRecipeValue : nil;
                 if (parentRecipeID.length) {
                     [parents addObject:parentRecipeID];
                 }
@@ -568,7 +580,10 @@ static NSArray *LGYAMLRecipeURLsRecursivelyAtPath(NSString *path)
         }
     }
 
-    NSString *recipeOverridePath = defaults.autoPkgRecipeOverridesDir ?: @"~/Library/AutoPkg/RecipeOverrides".stringByExpandingTildeInPath;
+    // Expand the whole expression: the overrides dir read from AutoPkg's prefs
+    // may contain a "~", and it's later used with access()/glob() (which don't
+    // expand tildes) during the YAML preload below.
+    NSString *recipeOverridePath = (defaults.autoPkgRecipeOverridesDir ?: @"~/Library/AutoPkg/RecipeOverrides").stringByExpandingTildeInPath;
     [recipeSearchPaths addObject:recipeOverridePath];
     [self cacheDictionariesFromYAMLRecipesAtPaths:recipeSearchPaths];
     LGLaunchProfileLog(@"allRecipes YAML preload complete paths=%lu", (unsigned long)recipeSearchPaths.count);
