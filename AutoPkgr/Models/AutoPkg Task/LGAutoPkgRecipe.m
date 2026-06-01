@@ -342,12 +342,29 @@ static NSArray *LGYAMLRecipeURLsRecursivelyAtPath(NSString *path)
 
 - (NSString *)Description
 {
-    return _recipePlist[NSStringFromSelector(_cmd)] ?: [self objectForKey:NSStringFromSelector(_cmd) ofIdentifier:self.ParentRecipe];
+    return [self stringValueForKey:NSStringFromSelector(_cmd)];
 }
 
 - (NSString *)MinimumVersion
 {
-    return _recipePlist[NSStringFromSelector(_cmd)] ?: [self objectForKey:NSStringFromSelector(_cmd) ofIdentifier:self.ParentRecipe];
+    return [self stringValueForKey:NSStringFromSelector(_cmd)];
+}
+
+// These accessors are declared to return NSString * and feed
+// NSTextField.safe_stringValue (which sends -length), but YAML (or a malformed
+// plist) can yield a non-string scalar — e.g. `MinimumVersion: 3` parses as an
+// NSNumber. Coerce numbers to strings and reject other non-string types so we
+// never hand back something that crashes on -length.
+- (NSString *)stringValueForKey:(NSString *)key
+{
+    id value = _recipePlist[key] ?: [self objectForKey:key ofIdentifier:self.ParentRecipe];
+    if ([value isKindOfClass:[NSString class]]) {
+        return value;
+    }
+    if ([value isKindOfClass:[NSNumber class]]) {
+        return [value stringValue];
+    }
+    return nil;
 }
 
 - (NSString *)ParentRecipe

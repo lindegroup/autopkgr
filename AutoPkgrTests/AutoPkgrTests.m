@@ -178,6 +178,30 @@ static const BOOL _TEST_PRIVILEGED_HELPER = YES;
     XCTAssertEqualObjects(testingCatalog[@"testing"], @"");
 }
 
+- (void)testYAMLNumericScalarsCoerceToStringsForStringAccessors
+{
+    if (![self autoPkgPythonIsAvailable]) {
+        return;
+    }
+
+    // AutoPkg's YAML loader strips the float resolver, so `2.3` stays a string,
+    // but an integer scalar still parses as an NSNumber. The Description and
+    // MinimumVersion accessors are declared NSString * and feed
+    // NSTextField.safe_stringValue (which sends -length), so they must coerce.
+    NSString *tmpDir = [self createTempDirectory];
+    NSString *path = [self writeRecipeNamed:@"Numbery.download.recipe.yaml"
+                                   contents:@"Identifier: com.example.numbery\n"
+                                            "Description: 3\n"
+                                            "MinimumVersion: 3\n"
+                                            "Process: []\n"
+                                inDirectory:tmpDir];
+
+    LGAutoPkgRecipe *recipe = [[LGAutoPkgRecipe alloc] initWithRecipeFile:[NSURL fileURLWithPath:path] isOverride:NO];
+    XCTAssertNotNil(recipe);
+    XCTAssertEqualObjects(recipe.MinimumVersion, @"3");
+    XCTAssertEqualObjects(recipe.Description, @"3");
+}
+
 - (void)testYAMLRecipeInitializesWithLegacyInputIdentifier
 {
     if (![self autoPkgPythonIsAvailable]) {
