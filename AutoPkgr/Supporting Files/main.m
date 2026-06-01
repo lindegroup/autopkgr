@@ -27,12 +27,15 @@
 
 int main(int argc, const char *argv[])
 {
+    LGLaunchProfileStart();
+
     NSUserDefaults *args = [NSUserDefaults standardUserDefaults];
 
     NSString *reportItemKey = NSStringFromSelector(@selector(reportedItemFlags));
     [args registerDefaults:@{ reportItemKey : @(kLGReportItemsAll) }];
 
     if ([args boolForKey:@"runInBackground"]) {
+        LGLaunchProfileLog(@"background run requested; skipping window launch profile");
         NSLog(@"Running AutoPkgr in background...");
 
         NSURLCache *sharedCache = [[NSURLCache alloc] initWithMemoryCapacity:0
@@ -84,6 +87,7 @@ int main(int argc, const char *argv[])
         return 0;
     }
     else {
+        LGLaunchProfileLog(@"entering NSApplicationMain");
         return NSApplicationMain(argc, argv);
     }
 }

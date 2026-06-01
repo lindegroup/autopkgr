@@ -26,6 +26,7 @@
 #import <XCTest/XCTest.h>
 
 #import "LGAutoPkgErrorHandler.h"
+#import "LGAutoPkgRecipe.h"
 #import "LGAutoPkgRecipeListManager.h"
 #import "LGAutoPkgReport.h"
 #import "LGAutoPkgTask.h"
@@ -48,6 +49,11 @@ extern NSData *LGBuildSmtpMessage(NSString *subject, NSString *htmlBody,
                                   NSString *fromAddress, NSArray<NSString *> *toAddresses);
 
 static const BOOL _TEST_PRIVILEGED_HELPER = YES;
+
+@interface LGAutoPkgRecipe (AutoPkgrTests)
++ (NSDictionary *)dictionaryFromRecipeURL:(NSURL *)recipeURL;
++ (NSArray *)findRecipesRecursivelyAtPath:(NSString *)path isOverride:(BOOL)isOverride activeRecipes:(NSSet *)activeRecipes;
+@end
 
 @interface AutoPkgrTests : XCTestCase <LGProgressDelegate>
 
@@ -89,6 +95,21 @@ static const BOOL _TEST_PRIVILEGED_HELPER = YES;
     return tmpDir;
 }
 
+- (BOOL)autoPkgPythonIsAvailable
+{
+    return [[NSFileManager defaultManager] isExecutableFileAtPath:@"/usr/local/autopkg/python"];
+}
+
+- (NSString *)writeRecipeNamed:(NSString *)name contents:(NSString *)contents inDirectory:(NSString *)directory
+{
+    NSString *path = [directory stringByAppendingPathComponent:name];
+    NSError *error = nil;
+    BOOL success = [contents writeToFile:path atomically:YES encoding:NSUTF8StringEncoding error:&error];
+    XCTAssertTrue(success);
+    XCTAssertNil(error);
+    return path;
+}
+
 #pragma mark - LGAutoPkgTask
 - (void)testSyncMethods
 {
@@ -116,6 +137,191 @@ static const BOOL _TEST_PRIVILEGED_HELPER = YES;
     NSLog(@"%@", listManager.recipeLists);
 
     [listManager removeRecipeList:newList error:nil];
+}
+
+#pragma mark - LGAutoPkgRecipe
+- (void)testYAMLRecipeParsingMatchesAutoPkgMetadataSemantics
+{
+    if (![self autoPkgPythonIsAvailable]) {
+        return;
+    }
+
+    NSString *tmpDir = [self createTempDirectory];
+    NSString *path = [self writeRecipeNamed:@"Floaty.download.recipe.yaml"
+                                   contents:@"Identifier: com.example.floaty\n"
+                                            "MinimumVersion: 2.3\n"
+                                            "ParentRecipe:\n"
+                                            "Input:\n"
+                                            "  VERSION: 1.0\n"
+                                            "  NULL_LIST:\n"
+                                            "    -\n"
+                                            "  pkginfo:\n"
+                                            "    catalogs:\n"
+                                            "      - testing:\n"
+                                            "Process:\n"
+                                            "  - Processor: EndOfCheckPhase\n"
+                                inDirectory:tmpDir];
+
+    LGAutoPkgRecipe *recipe = [[LGAutoPkgRecipe alloc] initWithRecipeFile:[NSURL fileURLWithPath:path] isOverride:NO];
+    XCTAssertNotNil(recipe);
+    XCTAssertEqualObjects(recipe.Identifier, @"com.example.floaty");
+    XCTAssertEqualObjects(recipe.Name, @"Floaty.download");
+    XCTAssertEqualObjects(recipe.MinimumVersion, @"2.3");
+    XCTAssertNil(recipe.ParentRecipe);
+    XCTAssertFalse(recipe.isMissingParent);
+    XCTAssertEqualObjects(recipe.Input[@"VERSION"], @"1.0");
+    XCTAssertEqualObjects([recipe.Input[@"NULL_LIST"] firstObject], @"");
+
+    NSDictionary *pkginfo = recipe.Input[@"pkginfo"];
+    NSArray *catalogs = pkginfo[@"catalogs"];
+    NSDictionary *testingCatalog = catalogs.firstObject;
+    XCTAssertEqualObjects(testingCatalog[@"testing"], @"");
+}
+
+- (void)testYAMLRecipeInitializesWithLegacyInputIdentifier
+{
+    if (![self autoPkgPythonIsAvailable]) {
+        return;
+    }
+
+    NSString *tmpDir = [self createTempDirectory];
+    NSString *path = [self writeRecipeNamed:@"Legacy.recipe.yaml"
+                                   contents:@"Input:\n"
+                                            "  IDENTIFIER: com.example.legacy\n"
+                                            "  NAME: Legacy\n"
+                                            "Process: []\n"
+                                inDirectory:tmpDir];
+
+    LGAutoPkgRecipe *recipe = [[LGAutoPkgRecipe alloc] initWithRecipeFile:[NSURL fileURLWithPath:path] isOverride:NO];
+    XCTAssertNotNil(recipe);
+    XCTAssertEqualObjects(recipe.Identifier, @"com.example.legacy");
+}
+
+- (void)testInvalidYAMLRecipesDoNotInitialize
+{
+    if (![self autoPkgPythonIsAvailable]) {
+        return;
+    }
+
+    NSString *tmpDir = [self createTempDirectory];
+    NSString *malformedPath = [self writeRecipeNamed:@"Malformed.recipe.yaml"
+                                            contents:@"Identifier: [\n"
+                                         inDirectory:tmpDir];
+    NSString *listPath = [self writeRecipeNamed:@"List.recipe.yaml"
+                                       contents:@"- Identifier: com.example.list\n"
+                                    inDirectory:tmpDir];
+    NSString *nullIdentifierPath = [self writeRecipeNamed:@"NullIdentifier.recipe.yaml"
+                                                 contents:@"Identifier:\n"
+                                                          "Process: []\n"
+                                              inDirectory:tmpDir];
+
+    XCTAssertNil([[LGAutoPkgRecipe alloc] initWithRecipeFile:[NSURL fileURLWithPath:malformedPath] isOverride:NO]);
+    XCTAssertNil([[LGAutoPkgRecipe alloc] initWithRecipeFile:[NSURL fileURLWithPath:listPath] isOverride:NO]);
+    XCTAssertNil([[LGAutoPkgRecipe alloc] initWithRecipeFile:[NSURL fileURLWithPath:nullIdentifierPath] isOverride:NO]);
+}
+
+- (void)testRecipeNameStripsCanonicalRecipeExtensions
+{
+    NSString *tmpDir = [self createTempDirectory];
+    NSString *plistPath = [[tmpDir stringByAppendingPathComponent:@"Plisty.install.recipe"] stringByAppendingPathExtension:@"plist"];
+    NSDictionary *plistRecipe = @{ @"Identifier" : @"com.example.plisty" };
+    XCTAssertTrue([plistRecipe writeToFile:plistPath atomically:YES]);
+
+    LGAutoPkgRecipe *recipe = [[LGAutoPkgRecipe alloc] initWithRecipeFile:[NSURL fileURLWithPath:plistPath] isOverride:NO];
+    XCTAssertNotNil(recipe);
+    XCTAssertEqualObjects(recipe.Name, @"Plisty.install");
+}
+
+- (void)testRecipeDiscoveryUsesCanonicalYAMLRecipeExtension
+{
+    if (![self autoPkgPythonIsAvailable]) {
+        return;
+    }
+
+    NSString *tmpDir = [self createTempDirectory];
+    [self writeRecipeNamed:@"Valid.recipe.yaml"
+                  contents:@"Identifier: com.example.valid\nProcess: []\n"
+               inDirectory:tmpDir];
+    NSString *ignoredPath = [self writeRecipeNamed:@"Ignored.yaml"
+                                          contents:@"Identifier: com.example.ignored\nProcess: []\n"
+                                       inDirectory:tmpDir];
+
+    NSArray *recipes = [LGAutoPkgRecipe findRecipesRecursivelyAtPath:tmpDir isOverride:NO activeRecipes:nil];
+    NSArray *identifiers = [recipes valueForKey:@"Identifier"];
+    XCTAssertTrue([identifiers containsObject:@"com.example.valid"]);
+    XCTAssertFalse([identifiers containsObject:@"com.example.ignored"]);
+    XCTAssertNil([[LGAutoPkgRecipe alloc] initWithRecipeFile:[NSURL fileURLWithPath:ignoredPath] isOverride:NO]);
+}
+
+- (void)testBatchYAMLDiscoveryIsolatesInvalidRecipes
+{
+    if (![self autoPkgPythonIsAvailable]) {
+        return;
+    }
+
+    NSString *tmpDir = [self createTempDirectory];
+    [self writeRecipeNamed:@"Valid.recipe.yaml"
+                  contents:@"Identifier: com.example.batch.valid\nProcess: []\n"
+               inDirectory:tmpDir];
+    [self writeRecipeNamed:@"Malformed.recipe.yaml"
+                  contents:@"Identifier: [\n"
+               inDirectory:tmpDir];
+
+    NSArray *recipes = [LGAutoPkgRecipe findRecipesRecursivelyAtPath:tmpDir isOverride:NO activeRecipes:nil];
+    NSArray *identifiers = [recipes valueForKey:@"Identifier"];
+    XCTAssertTrue([identifiers containsObject:@"com.example.batch.valid"]);
+}
+
+- (void)testYAMLParentLookupWorksThroughDiscovery
+{
+    if (![self autoPkgPythonIsAvailable]) {
+        return;
+    }
+
+    NSString *tmpDir = [self createTempDirectory];
+    [self writeRecipeNamed:@"Parent.recipe.yaml"
+                  contents:@"Identifier: com.example.parent\n"
+                           "ParentRecipe:\n"
+                           "Process: []\n"
+               inDirectory:tmpDir];
+    [self writeRecipeNamed:@"Child.recipe.yaml"
+                  contents:@"Identifier: com.example.child\n"
+                           "ParentRecipe: com.example.parent\n"
+                           "Process: []\n"
+               inDirectory:tmpDir];
+
+    NSArray *recipes = [LGAutoPkgRecipe findRecipesRecursivelyAtPath:tmpDir isOverride:NO activeRecipes:nil];
+    NSPredicate *childPredicate = [NSPredicate predicateWithFormat:@"Identifier == %@", @"com.example.child"];
+    LGAutoPkgRecipe *child = [[recipes filteredArrayUsingPredicate:childPredicate] firstObject];
+    XCTAssertNotNil(child);
+    XCTAssertEqualObjects(child.ParentRecipes, (@[ @"com.example.parent" ]));
+}
+
+- (void)testYAMLRecipeCacheMissesWhenFileMetadataChanges
+{
+    if (![self autoPkgPythonIsAvailable]) {
+        return;
+    }
+
+    NSString *tmpDir = [self createTempDirectory];
+    NSString *path = [self writeRecipeNamed:@"Cached.recipe.yaml"
+                                   contents:@"Identifier: com.example.cache\nProcess: []\n"
+                                inDirectory:tmpDir];
+    NSURL *url = [NSURL fileURLWithPath:path];
+
+    NSDictionary *firstRead = [LGAutoPkgRecipe dictionaryFromRecipeURL:url];
+    XCTAssertEqualObjects(firstRead[@"Identifier"], @"com.example.cache");
+
+    NSError *error = nil;
+    NSString *updatedContents = @"Identifier: com.example.cache.updated\n"
+                                "Description: Updated cache fixture\n"
+                                "Process: []\n";
+    BOOL success = [updatedContents writeToFile:path atomically:YES encoding:NSUTF8StringEncoding error:&error];
+    XCTAssertTrue(success);
+    XCTAssertNil(error);
+
+    NSDictionary *secondRead = [LGAutoPkgRecipe dictionaryFromRecipeURL:url];
+    XCTAssertEqualObjects(secondRead[@"Identifier"], @"com.example.cache.updated");
 }
 
 #pragma mark - LGIntegrations

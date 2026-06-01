@@ -27,3 +27,6 @@ NSString *quick_pathJoin(NSArray *components);
 //
 void DLog(NSString *format, ...) NS_FORMAT_FUNCTION(1, 2);
 void DevLog(NSString *format, ...) NS_FORMAT_FUNCTION(1, 2);
+
+void LGLaunchProfileStart(void);
+void LGLaunchProfileLog(NSString *format, ...) NS_FORMAT_FUNCTION(1, 2);

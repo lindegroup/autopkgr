@@ -22,6 +22,7 @@
 #import "LGAutoPkgRecipeListManager.h"
 #import "LGAutoPkgReport.h"
 #import "LGAutoPkgTask.h"
+#import "LGAutoPkgIntegration.h"
 #import "LGAutoPkgr.h"
 #import "LGRecipeInfoView.h"
 #import "LGRecipeOverrides.h"
@@ -45,6 +46,7 @@
     NSMutableDictionary *_runTaskDictionary;
     NSString *_currentRunningRecipe;
     BOOL _isAwake;
+    BOOL _autoPkgWasInstalled;
 }
 
 static NSString *const kLGAutoPkgRecipeIsEnabledKey = @"isEnabled";
@@ -53,10 +55,12 @@ static NSString *const kLGAutoPkgRecipeCurrentStatusKey = @"currentStatus";
 - (void)awakeFromNib
 {
     if (!_isAwake) {
+        LGLaunchProfileLog(@"recipe table awakeFromNib start");
         _isAwake = YES;
 
         [_recipeSearchField setTarget:self];
         [_recipeSearchField setAction:@selector(executeAppSearch:)];
+        _autoPkgWasInstalled = [LGAutoPkgIntegration isInstalled];
 
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didCreateOverride:) name:kLGNotificationOverrideCreated object:nil];
 
@@ -64,10 +68,15 @@ static NSString *const kLGAutoPkgRecipeCurrentStatusKey = @"currentStatus";
 
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reload) name:kLGNotificationReposModified object:nil];
 
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didUpdateIntegrationStatus:) name:kLGNotificationIntegrationStatusDidChange object:nil];
+
+        LGLaunchProfileLog(@"recipe table initial recipe load start");
         _searchedRecipes = self.recipes;
+        LGLaunchProfileLog(@"recipe table initial recipe load complete count=%lu", (unsigned long)_searchedRecipes.count);
 
         _recipeList = [[LGAutoPkgRecipeListManager alloc] init];
         [self refreshRecipeList];
+        LGLaunchProfileLog(@"recipe table awakeFromNib end");
     }
 }
 
@@ -255,8 +264,11 @@ static NSString *const kLGAutoPkgRecipeCurrentStatusKey = @"currentStatus";
 - (NSMutableArray *)recipes
 {
     if (!_recipes) {
+        LGLaunchProfileLog(@"LGAutoPkgRecipe allRecipes start");
         _recipes = [[LGAutoPkgRecipe allRecipes] mutableCopy];
+        LGLaunchProfileLog(@"LGAutoPkgRecipe allRecipes complete count=%lu", (unsigned long)_recipes.count);
         [_recipes sortUsingDescriptors:_recipeTableView.sortDescriptors];
+        LGLaunchProfileLog(@"recipe table sort complete");
     }
 
     return _recipes;
@@ -487,6 +499,25 @@ static NSString *const kLGAutoPkgRecipeCurrentStatusKey = @"currentStatus";
     [[NSOperationQueue mainQueue] addOperationWithBlock:^{
         [self reload];
     }];
+}
+
+- (void)didUpdateIntegrationStatus:(NSNotification *)aNotification
+{
+    if (![aNotification.object isKindOfClass:[LGAutoPkgIntegration class]]) {
+        return;
+    }
+
+    // Re-scan only on the not-installed -> installed transition. YAML recipe
+    // parsing shells out to /usr/local/autopkg/python, which is exactly what
+    // +[LGAutoPkgIntegration isInstalled] checks for, so any YAML recipes found
+    // before AutoPkg was installed were silently skipped. Reloading here picks
+    // them up. The reverse transition is ignored: already-listed recipes don't
+    // need to be re-read just because AutoPkg was removed.
+    BOOL autoPkgIsInstalled = [LGAutoPkgIntegration isInstalled];
+    if (!_autoPkgWasInstalled && autoPkgIsInstalled) {
+        [self reload];
+    }
+    _autoPkgWasInstalled = autoPkgIsInstalled;
 }
 
 @end
