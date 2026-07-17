@@ -37,20 +37,28 @@
 
 - (instancetype)init
 {
+    LGLaunchProfileLog(@"configuration window init start");
     if (self = [super initWithWindowNibName:NSStringFromClass([self class])]) {
 
         _installView = [[LGInstallViewController alloc] initWithProgressDelegate:self];
+        LGLaunchProfileLog(@"install tab controller initialized");
         _scheduleView = [[LGScheduleViewController alloc] initWithProgressDelegate:self];
+        LGLaunchProfileLog(@"schedule tab controller initialized");
         _recipeRepoView = [[LGRecipeReposViewController alloc] initWithProgressDelegate:self];
+        LGLaunchProfileLog(@"recipes/repos tab controller initialized");
         _notificationView = [[LGNotificationsViewController alloc] initWithProgressDelegate:self];
+        LGLaunchProfileLog(@"notifications tab controller initialized");
         _integrationsView = [[LGIntegrationsViewController alloc] initWithProgressDelegate:self];
+        LGLaunchProfileLog(@"integrations tab controller initialized");
 
         // The integrationManager is required for the following views.
         _integrationManager = [[LGIntegrationManager alloc] init];
+        LGLaunchProfileLog(@"integration manager initialized");
 
         _installView.integrationManager = _integrationManager;
         _integrationsView.integrationManager = _integrationManager;
     }
+    LGLaunchProfileLog(@"configuration window init end");
     return self;
 }
 
@@ -67,11 +75,13 @@
 - (void)windowDidLoad
 {
     [super windowDidLoad];
+    LGLaunchProfileLog(@"configuration windowDidLoad");
 }
 
 - (void)awakeFromNib
 {
     if (!_awake) {
+        LGLaunchProfileLog(@"configuration window awakeFromNib start");
         // awakeFromNib can get called multiple times, but happens early.
         // Add code here that you want executed prior to the window showing.
         _awake = YES;
@@ -95,6 +105,7 @@
             tabItem.label = viewController.tabLabel;
             tabItem.view = viewController.view;
             [_tabViews addTabViewItem:tabItem];
+            LGLaunchProfileLog(@"configuration tab loaded: %@", tabItem.label);
         }
 
         // Make any modifications needed for specific integrations.
@@ -105,6 +116,7 @@
         _integrationsView.modalWindow = self.window;
         _recipeRepoView.modalWindow = self.window;
         _notificationView.modalWindow = self.window;
+        LGLaunchProfileLog(@"configuration window awakeFromNib end");
     }
 }
 

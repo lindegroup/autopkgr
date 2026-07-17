@@ -20,6 +20,13 @@
 
 #include "LGLogger.h"
 
+static NSTimeInterval _launchProfileStartTime = 0;
+
+static BOOL LGDebugLoggingEnabled(void)
+{
+    return [[NSUserDefaults standardUserDefaults] boolForKey:@"debug"];
+}
+
 NSString *quick_formatString(NSString *format, ...)
 {
     NSString *string = nil;
@@ -52,7 +59,7 @@ NSString *quick_pathJoin(NSArray *components)
 // Debug Logging Method
 void DLog(NSString *format, ...)
 {
-    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"debug"]) {
+    if (LGDebugLoggingEnabled()) {
         if (format) {
             va_list args;
             va_start(args, format);
@@ -72,4 +79,27 @@ void DevLog(NSString *format, ...)
         va_end(args);
     }
 #endif
+}
+
+void LGLaunchProfileStart(void)
+{
+    _launchProfileStartTime = [NSDate timeIntervalSinceReferenceDate];
+    DLog(@"Launch profile: +0.000s process entry");
+}
+
+void LGLaunchProfileLog(NSString *format, ...)
+{
+    if (!_launchProfileStartTime) {
+        _launchProfileStartTime = [NSDate timeIntervalSinceReferenceDate];
+    }
+
+    if (format && LGDebugLoggingEnabled()) {
+        va_list args;
+        va_start(args, format);
+        NSString *message = [[NSString alloc] initWithFormat:format arguments:args];
+        va_end(args);
+
+        NSTimeInterval elapsed = [NSDate timeIntervalSinceReferenceDate] - _launchProfileStartTime;
+        DLog(@"Launch profile: +%.3fs %@", elapsed, message);
+    }
 }

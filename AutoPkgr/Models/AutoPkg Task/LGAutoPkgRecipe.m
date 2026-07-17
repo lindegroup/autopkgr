@@ -20,12 +20,14 @@
 #import "LGAutoPkgRecipe.h"
 #import "LGAutoPkgRecipeListManager.h"
 #import "LGAutoPkgTask.h"
+#import "LGLogger.h"
 
 #import <glob.h>
 
 // MakeCatalogs recipe identifier string.
 static NSString *const kLGMakeCatalogsRecipeName = @"MakeCatalogs.munki";
 static NSString *const kLGMakeCatalogsIdentifier = @"com.github.autopkg.munki.makecatalogs";
+static NSString *const kLGAutoPkgPythonPath = @"/usr/local/autopkg/python";
 
 // Dispatch queue for enabling / disabling recipe.
 static dispatch_queue_t autopkgr_recipe_write_queue()
@@ -40,6 +42,61 @@ static dispatch_queue_t autopkgr_recipe_write_queue()
 }
 
 static NSMutableDictionary *_identifierURLStore = nil;
+static NSMutableDictionary *_recipeDictionaryCache = nil;
+
+static NSString *LGRecipeNameFromURL(NSURL *recipeURL)
+{
+    NSString *fileName = recipeURL.lastPathComponent;
+    NSString *lowercaseFileName = fileName.lowercaseString;
+    for (NSString *extension in @[ @".recipe.yaml", @".recipe.plist", @".recipe" ]) {
+        if ([lowercaseFileName hasSuffix:extension]) {
+            return [fileName substringToIndex:fileName.length - extension.length];
+        }
+    }
+    return [fileName stringByDeletingPathExtension];
+}
+
+static NSString *LGRecipeDictionaryCacheKey(NSURL *recipeURL)
+{
+    NSString *path = recipeURL.path;
+    NSDictionary *attributes = [[NSFileManager defaultManager] attributesOfItemAtPath:path error:nil];
+    NSDate *modificationDate = attributes[NSFileModificationDate];
+    NSNumber *fileSize = attributes[NSFileSize];
+
+    if (!path.length || !modificationDate || !fileSize) {
+        return nil;
+    }
+
+    return [NSString stringWithFormat:@"%@:%@:%@", path, @([modificationDate timeIntervalSinceReferenceDate]), fileSize];
+}
+
+static BOOL LGRecipeURLIsYAMLRecipe(NSURL *recipeURL)
+{
+    return [recipeURL.lastPathComponent.lowercaseString hasSuffix:@".recipe.yaml"];
+}
+
+static NSArray *LGYAMLRecipeURLsRecursivelyAtPath(NSString *path)
+{
+    NSMutableArray *recipeURLs = [[NSMutableArray alloc] init];
+
+    if (path && (access(path.UTF8String, F_OK) == 0)) {
+        NSString *matches = [NSString stringWithFormat:@"{%@/{*.recipe.yaml,*/*.recipe.yaml}}", path];
+
+        glob_t results;
+        glob(matches.UTF8String, GLOB_BRACE | GLOB_NOSORT, NULL, &results);
+        for (int i = 0; i < results.gl_matchc; i++) {
+            NSString *globPath = [NSString stringWithUTF8String:results.gl_pathv[i]];
+            NSURL *fileURL = [NSURL fileURLWithPath:globPath isDirectory:NO];
+
+            if (fileURL) {
+                [recipeURLs addObject:fileURL];
+            }
+        }
+        globfree(&results);
+    }
+
+    return [recipeURLs copy];
+}
 
 #pragma mark - Recipes
 //////////////////////////////////////////////////////////////////////////
@@ -58,6 +115,199 @@ static NSMutableDictionary *_identifierURLStore = nil;
 
 @synthesize Description = _Description, MinimumVersion = _MinimumVersion;
 
++ (NSDictionary *)dictionariesFromYAMLRecipeURLs:(NSArray *)recipeURLs
+{
+    NSTimeInterval startTime = [NSDate timeIntervalSinceReferenceDate];
+    NSMutableDictionary *recipeDictionariesByPath = [[NSMutableDictionary alloc] init];
+    NSMutableArray *pathsToParse = [[NSMutableArray alloc] init];
+    NSMutableDictionary *cacheKeysByPath = [[NSMutableDictionary alloc] init];
+
+    for (NSURL *recipeURL in recipeURLs) {
+        if (!LGRecipeURLIsYAMLRecipe(recipeURL) || !recipeURL.path.length) {
+            continue;
+        }
+
+        NSString *cacheKey = LGRecipeDictionaryCacheKey(recipeURL);
+        if (cacheKey) {
+            @synchronized(self) {
+                NSDictionary *cachedRecipe = _recipeDictionaryCache[cacheKey];
+                if (cachedRecipe) {
+                    recipeDictionariesByPath[recipeURL.path] = cachedRecipe;
+                    continue;
+                }
+            }
+            cacheKeysByPath[recipeURL.path] = cacheKey;
+        }
+
+        [pathsToParse addObject:recipeURL.path];
+    }
+
+    NSUInteger cachedRecipeCount = recipeDictionariesByPath.count;
+    if (!pathsToParse.count || ![[NSFileManager defaultManager] isExecutableFileAtPath:kLGAutoPkgPythonPath]) {
+        LGLaunchProfileLog(@"YAML recipe batch skipped parse requested=%lu cached=%lu elapsed=%.3fs",
+                           (unsigned long)recipeURLs.count,
+                           (unsigned long)cachedRecipeCount,
+                           [NSDate timeIntervalSinceReferenceDate] - startTime);
+        return [recipeDictionariesByPath copy];
+    }
+
+    LGLaunchProfileLog(@"YAML recipe batch parse start requested=%lu toParse=%lu cached=%lu",
+                       (unsigned long)recipeURLs.count,
+                       (unsigned long)pathsToParse.count,
+                       (unsigned long)cachedRecipeCount);
+
+    NSData *inputData = [NSPropertyListSerialization dataWithPropertyList:pathsToParse
+                                                                    format:NSPropertyListXMLFormat_v1_0
+                                                                   options:0
+                                                                     error:nil];
+    if (!inputData) {
+        LGLaunchProfileLog(@"YAML recipe batch parse aborted; failed to serialize path list elapsed=%.3fs",
+                           [NSDate timeIntervalSinceReferenceDate] - startTime);
+        return [recipeDictionariesByPath copy];
+    }
+
+    NSString *script = @"import plistlib\n"
+                       @"import sys\n"
+                       @"import yaml\n"
+                       @"try:\n"
+                       @"    sys.path.insert(0, \"/Library/AutoPkg\")\n"
+                       @"    from autopkglib.autopkgyaml import AutoPkgYAMLLoader\n"
+                       @"except Exception:\n"
+                       @"    class AutoPkgYAMLLoader(yaml.SafeLoader):\n"
+                       @"        pass\n"
+                       @"    AutoPkgYAMLLoader.yaml_implicit_resolvers = AutoPkgYAMLLoader.yaml_implicit_resolvers.copy()\n"
+                       @"    for first_letter, mappings in list(AutoPkgYAMLLoader.yaml_implicit_resolvers.items()):\n"
+                       @"        AutoPkgYAMLLoader.yaml_implicit_resolvers[first_letter] = [\n"
+                       @"            (tag, regexp) for tag, regexp in mappings\n"
+                       @"            if tag != \"tag:yaml.org,2002:float\"\n"
+                       @"        ]\n"
+                       @"def plist_serializer(obj):\n"
+                       @"    if isinstance(obj, dict):\n"
+                       @"        for key, value in obj.items():\n"
+                       @"            obj[key] = \"\" if value is None else plist_serializer(value)\n"
+                       @"    elif isinstance(obj, list):\n"
+                       @"        for index in range(len(obj)):\n"
+                       @"            obj[index] = \"\" if obj[index] is None else plist_serializer(obj[index])\n"
+                       @"    return obj\n"
+                       @"recipes = {}\n"
+                       @"for path in plistlib.loads(sys.stdin.buffer.read()):\n"
+                       @"    try:\n"
+                       @"        with open(path, \"rb\") as recipe_file:\n"
+                       @"            recipe = yaml.load(recipe_file, Loader=AutoPkgYAMLLoader)\n"
+                       @"        if not isinstance(recipe, dict):\n"
+                       @"            continue\n"
+                       @"        recipe = plist_serializer(recipe)\n"
+                       @"        plistlib.dumps(recipe, fmt=plistlib.FMT_XML)\n"
+                       @"        recipes[path] = recipe\n"
+                       @"    except Exception:\n"
+                       @"        pass\n"
+                       @"sys.stdout.buffer.write(plistlib.dumps(recipes, fmt=plistlib.FMT_XML))\n";
+
+    NSTask *task = [[NSTask alloc] init];
+    task.launchPath = kLGAutoPkgPythonPath;
+    task.arguments = @[ @"-c", script ];
+    task.standardInput = [NSPipe pipe];
+    task.standardOutput = [NSPipe pipe];
+    task.standardError = [NSFileHandle fileHandleWithNullDevice];
+
+    NSData *data = nil;
+    @try {
+        [task launch];
+        [[task.standardInput fileHandleForWriting] writeData:inputData];
+        [[task.standardInput fileHandleForWriting] closeFile];
+        data = [[task.standardOutput fileHandleForReading] readDataToEndOfFile];
+        [task waitUntilExit];
+    }
+    @catch (NSException *exception) {
+        if (task.isRunning) {
+            [task terminate];
+        }
+        LGLaunchProfileLog(@"YAML recipe batch parse exception %@ elapsed=%.3fs",
+                           exception.name,
+                           [NSDate timeIntervalSinceReferenceDate] - startTime);
+        return [recipeDictionariesByPath copy];
+    }
+
+    if (task.terminationStatus != 0 || data.length == 0) {
+        LGLaunchProfileLog(@"YAML recipe batch parse failed status=%d outputBytes=%lu elapsed=%.3fs",
+                           task.terminationStatus,
+                           (unsigned long)data.length,
+                           [NSDate timeIntervalSinceReferenceDate] - startTime);
+        return [recipeDictionariesByPath copy];
+    }
+
+    id recipes = [NSPropertyListSerialization propertyListWithData:data
+                                                           options:NSPropertyListImmutable
+                                                            format:nil
+                                                             error:nil];
+    if (![recipes isKindOfClass:[NSDictionary class]]) {
+        LGLaunchProfileLog(@"YAML recipe batch parse returned non-dictionary elapsed=%.3fs",
+                           [NSDate timeIntervalSinceReferenceDate] - startTime);
+        return [recipeDictionariesByPath copy];
+    }
+
+    @synchronized(self) {
+        if (!_recipeDictionaryCache) {
+            _recipeDictionaryCache = [[NSMutableDictionary alloc] init];
+        }
+        [recipes enumerateKeysAndObjectsUsingBlock:^(id path, id recipe, BOOL *stop) {
+            if (![recipe isKindOfClass:[NSDictionary class]]) {
+                return;
+            }
+
+            NSString *cacheKey = cacheKeysByPath[path];
+            if (cacheKey) {
+                _recipeDictionaryCache[cacheKey] = recipe;
+            }
+            recipeDictionariesByPath[path] = recipe;
+        }];
+    }
+
+    LGLaunchProfileLog(@"YAML recipe batch parse complete requested=%lu parsed=%lu cached=%lu elapsed=%.3fs",
+                       (unsigned long)recipeURLs.count,
+                       (unsigned long)[recipes count],
+                       (unsigned long)cachedRecipeCount,
+                       [NSDate timeIntervalSinceReferenceDate] - startTime);
+
+    return [recipeDictionariesByPath copy];
+}
+
++ (void)cacheDictionariesFromYAMLRecipesAtPaths:(NSArray *)paths
+{
+    NSMutableArray *recipeURLs = [[NSMutableArray alloc] init];
+
+    for (NSString *path in paths) {
+        [recipeURLs addObjectsFromArray:LGYAMLRecipeURLsRecursivelyAtPath(path)];
+    }
+
+    [[self class] dictionariesFromYAMLRecipeURLs:recipeURLs];
+}
+
++ (NSDictionary *)dictionaryFromRecipeURL:(NSURL *)recipeURL
+{
+    if (!LGRecipeURLIsYAMLRecipe(recipeURL)) {
+        // Standalone .yaml files aren't recipes; anything else is read as a plist.
+        NSString *lowercaseName = recipeURL.lastPathComponent.lowercaseString;
+        if ([lowercaseName hasSuffix:@".yaml"]) {
+            return nil;
+        }
+        return [NSDictionary dictionaryWithContentsOfURL:recipeURL];
+    }
+
+    NSString *cacheKey = LGRecipeDictionaryCacheKey(recipeURL);
+    if (cacheKey) {
+        @synchronized(self) {
+            NSDictionary *cachedRecipe = _recipeDictionaryCache[cacheKey];
+            if (cachedRecipe) {
+                return cachedRecipe;
+            }
+        }
+    }
+
+    NSString *path = recipeURL.path;
+    return path.length ? [[self class] dictionariesFromYAMLRecipeURLs:@[ recipeURL ]][path] : nil;
+}
+
 - (NSString *)description
 {
     return [NSString stringWithFormat:@"Name: %@ Identifier: %@ Parent: %@", _Name, _Identifier, self.ParentRecipe];
@@ -66,15 +316,19 @@ static NSMutableDictionary *_identifierURLStore = nil;
 - (instancetype)initWithRecipeFile:(NSURL *)recipeFile isOverride:(BOOL)isOverride
 {
     // Don't initialize anything if we can't determine a recipe identifier.
-    NSDictionary *reciptPlist = [NSDictionary dictionaryWithContentsOfURL:recipeFile];
-    NSString *identifier = reciptPlist[kLGAutoPkgRecipeIdentifierKey] ?: reciptPlist[@"Input"][@"IDENTIFIER"];
+    NSDictionary *reciptPlist = [[self class] dictionaryFromRecipeURL:recipeFile];
+    id identifierValue = reciptPlist[kLGAutoPkgRecipeIdentifierKey] ?: reciptPlist[@"Input"][@"IDENTIFIER"];
 
-    if (identifier && (self = [super init])) {
+    // YAML (or a malformed plist) can produce a non-string identifier (e.g. a
+    // number), so reject anything that isn't a string to avoid crashing on -length.
+    NSString *identifier = [identifierValue isKindOfClass:[NSString class]] ? identifierValue : nil;
+
+    if (identifier.length && (self = [super init])) {
         _recipePlist = reciptPlist;
         _Identifier = identifier;
 
         _recipeFileURL = recipeFile;
-        _Name = [[recipeFile lastPathComponent] stringByDeletingPathExtension];
+        _Name = LGRecipeNameFromURL(recipeFile);
 
         _FilePath = recipeFile.path;
         _isOverride = isOverride;
@@ -88,17 +342,40 @@ static NSMutableDictionary *_identifierURLStore = nil;
 
 - (NSString *)Description
 {
-    return _recipePlist[NSStringFromSelector(_cmd)] ?: [self objectForKey:NSStringFromSelector(_cmd) ofIdentifier:self.ParentRecipe];
+    return [self stringValueForKey:NSStringFromSelector(_cmd)];
 }
 
 - (NSString *)MinimumVersion
 {
-    return _recipePlist[NSStringFromSelector(_cmd)] ?: [self objectForKey:NSStringFromSelector(_cmd) ofIdentifier:self.ParentRecipe];
+    return [self stringValueForKey:NSStringFromSelector(_cmd)];
+}
+
+// These accessors are declared to return NSString * and feed
+// NSTextField.safe_stringValue (which sends -length), but YAML (or a malformed
+// plist) can yield a non-string scalar — e.g. `MinimumVersion: 3` parses as an
+// NSNumber. Coerce numbers to strings and reject other non-string types so we
+// never hand back something that crashes on -length.
+- (NSString *)stringValueForKey:(NSString *)key
+{
+    id value = _recipePlist[key] ?: [self objectForKey:key ofIdentifier:self.ParentRecipe];
+    if ([value isKindOfClass:[NSString class]]) {
+        return value;
+    }
+    if ([value isKindOfClass:[NSNumber class]]) {
+        return [value stringValue];
+    }
+    return nil;
 }
 
 - (NSString *)ParentRecipe
 {
-    return _recipePlist[kLGAutoPkgRecipeParentKey];
+    // YAML (or a malformed plist) can produce a non-string ParentRecipe value;
+    // only treat an actual non-empty string as a valid parent identifier.
+    id parentRecipe = _recipePlist[kLGAutoPkgRecipeParentKey];
+    if ([parentRecipe isKindOfClass:[NSString class]] && [parentRecipe length]) {
+        return parentRecipe;
+    }
+    return nil;
 }
 
 - (NSArray *)ParentRecipes
@@ -114,10 +391,16 @@ static NSMutableDictionary *_identifierURLStore = nil;
         while (true) {
             NSURL *parentRecipeURL = [_identifierURLStore objectForKey:parentRecipeID];
             if (parentRecipeURL) {
-                NSDictionary *recipePlist = [NSDictionary dictionaryWithContentsOfURL:parentRecipeURL];
-                parentRecipeID = recipePlist[kLGAutoPkgRecipeParentKey];
-                if (parentRecipeID) {
+                NSDictionary *recipePlist = [[self class] dictionaryFromRecipeURL:parentRecipeURL];
+                id parentRecipeValue = recipePlist[kLGAutoPkgRecipeParentKey];
+                // A non-string parent identifier (possible with YAML or a
+                // malformed plist) ends the chain rather than crashing on -length.
+                parentRecipeID = [parentRecipeValue isKindOfClass:[NSString class]] ? parentRecipeValue : nil;
+                if (parentRecipeID.length) {
                     [parents addObject:parentRecipeID];
+                }
+                else {
+                    break;
                 }
             }
             else {
@@ -276,7 +559,7 @@ static NSMutableDictionary *_identifierURLStore = nil;
 {
     NSURL *recipeURL = [_identifierURLStore objectForKey:identifier];
     if (recipeURL) {
-        return [NSDictionary dictionaryWithContentsOfURL:recipeURL];
+        return [[self class] dictionaryFromRecipeURL:recipeURL];
     }
     return nil;
 }
@@ -294,13 +577,34 @@ static NSMutableDictionary *_identifierURLStore = nil;
 
 + (NSArray *)allRecipesFilteringOverlaps:(BOOL)filterOverlaps
 {
+    NSTimeInterval startTime = [NSDate timeIntervalSinceReferenceDate];
+    LGLaunchProfileLog(@"allRecipes scan start filterOverlaps=%@", filterOverlaps ? @"YES" : @"NO");
+
     _identifierURLStore = [[NSMutableDictionary alloc] init];
+    @synchronized(self) {
+        _recipeDictionaryCache = [[NSMutableDictionary alloc] init];
+    }
     LGDefaults *defaults = [LGDefaults standardUserDefaults];
 
     NSMutableArray *allRecipes = [[NSMutableArray alloc] init];
     NSSet *activeRecipes = [self activeRecipes];
 
     NSArray *searchDirs = defaults.autoPkgRecipeSearchDirs;
+    NSMutableArray *recipeSearchPaths = [[NSMutableArray alloc] init];
+    for (NSString *searchDir in searchDirs) {
+        if (![searchDir isEqualToString:@"."]) {
+            [recipeSearchPaths addObject:searchDir.stringByExpandingTildeInPath];
+        }
+    }
+
+    // Expand the whole expression: the overrides dir read from AutoPkg's prefs
+    // may contain a "~", and it's later used with access()/glob() (which don't
+    // expand tildes) during the YAML preload below.
+    NSString *recipeOverridePath = (defaults.autoPkgRecipeOverridesDir ?: @"~/Library/AutoPkg/RecipeOverrides").stringByExpandingTildeInPath;
+    [recipeSearchPaths addObject:recipeOverridePath];
+    [self cacheDictionariesFromYAMLRecipesAtPaths:recipeSearchPaths];
+    LGLaunchProfileLog(@"allRecipes YAML preload complete paths=%lu", (unsigned long)recipeSearchPaths.count);
+
     for (NSString *searchDir in searchDirs) {
         if (![searchDir isEqualToString:@"."]) {
             NSArray *recipeArray = [self findRecipesRecursivelyAtPath:searchDir.stringByExpandingTildeInPath isOverride:NO activeRecipes:activeRecipes];
@@ -309,10 +613,10 @@ static NSMutableDictionary *_identifierURLStore = nil;
             }
         }
     }
-
-    NSString *recipeOverridePath = defaults.autoPkgRecipeOverridesDir ?: @"~/Library/AutoPkg/RecipeOverrides".stringByExpandingTildeInPath;
+    LGLaunchProfileLog(@"allRecipes repo scan complete count=%lu", (unsigned long)allRecipes.count);
 
     NSArray *overrideArray = [self findRecipesRecursivelyAtPath:recipeOverridePath isOverride:YES activeRecipes:activeRecipes];
+    LGLaunchProfileLog(@"allRecipes override scan complete count=%lu", (unsigned long)overrideArray.count);
     NSMutableArray *validOverrides = [[NSMutableArray alloc] init];
 
     for (LGAutoPkgRecipe * override in overrideArray) {
@@ -346,6 +650,9 @@ static NSMutableDictionary *_identifierURLStore = nil;
                                                                ascending:YES];
 
     [allRecipes sortUsingDescriptors:@[ descriptor ]];
+    LGLaunchProfileLog(@"allRecipes scan complete count=%lu elapsed=%.3fs",
+                       (unsigned long)allRecipes.count,
+                       [NSDate timeIntervalSinceReferenceDate] - startTime);
 
     validOverrides = nil;
 
@@ -355,12 +662,27 @@ static NSMutableDictionary *_identifierURLStore = nil;
 + (NSArray *)findRecipesRecursivelyAtPath:(NSString *)path isOverride:(BOOL)isOverride activeRecipes:(NSSet *)activeRecipes
 {
     NSMutableArray *recipes = [[NSMutableArray alloc] init];
+    if (!_identifierURLStore) {
+        _identifierURLStore = [[NSMutableDictionary alloc] init];
+    }
 
     if (path && (access(path.UTF8String, F_OK) == 0)) {
-        NSString *matches = [NSString stringWithFormat:@"{%@/{*.recipe,*/*.recipe,*.yaml,*/*.yaml,*.plist,*/*.plist}}", path];
+        NSString *matches = [NSString stringWithFormat:@"{%@/{*.recipe,*/*.recipe,*.recipe.yaml,*/*.recipe.yaml,*.plist,*/*.plist}}", path];
 
         glob_t results;
         glob(matches.UTF8String, GLOB_BRACE | GLOB_NOSORT, NULL, &results);
+        NSMutableArray *yamlRecipeURLs = [[NSMutableArray alloc] init];
+        for (int i = 0; i < results.gl_matchc; i++) {
+            NSString *globPath = [NSString stringWithUTF8String:results.gl_pathv[i]];
+            NSURL *fileURL = [NSURL fileURLWithPath:globPath isDirectory:NO];
+
+            if (LGRecipeURLIsYAMLRecipe(fileURL)) {
+                [yamlRecipeURLs addObject:fileURL];
+            }
+        }
+
+        [[self class] dictionariesFromYAMLRecipeURLs:yamlRecipeURLs];
+
         for (int i = 0; i < results.gl_matchc; i++) {
             NSString *globPath = [NSString stringWithUTF8String:results.gl_pathv[i]];
             NSURL *fileURL = [NSURL fileURLWithPath:globPath isDirectory:NO];

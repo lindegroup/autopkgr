@@ -50,6 +50,7 @@
 #pragma mark-- Launching --
 - (void)applicationWillFinishLaunching:(NSNotification *)notification
 {
+    LGLaunchProfileLog(@"applicationWillFinishLaunching");
 
     // Set up activation policy. By default set as menubar only.
     [[LGDefaults standardUserDefaults] registerDefaults:@{ kLGApplicationDisplayStyle : @(kLGDisplayStyleShowMenu | kLGDisplayStyleShowDock) }];
@@ -61,11 +62,13 @@
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {
+    LGLaunchProfileLog(@"applicationDidFinishLaunching start");
     NSLog(@"Welcome to AutoPkgr!");
     DLog(@"Verbose logging is active. To deactivate, click the AutoPkgr menu icon and uncheck Verbose Logs.");
 
     // Set up the status item.
     [self setupStatusItem];
+    LGLaunchProfileLog(@"status item setup complete");
 
     // Check if we're authorized to install helper tool. If not just quit.
     NSError *error;
@@ -78,6 +81,7 @@
         [NSApp presentError:[LGError errorWithCode:kLGErrorInstallingPrivilegedHelperTool]];
         [[NSApplication sharedApplication] terminate:self];
     }
+    LGLaunchProfileLog(@"helper authorization check complete");
 
     // Register to get background progress updates.
     LGAutoPkgrHelperConnection *backgroundMonitor = [[LGAutoPkgrHelperConnection alloc] initWithProgressDelegate:self];
@@ -100,12 +104,15 @@
 
         [[NSApplication sharedApplication] terminate:self];
     }
+    LGLaunchProfileLog(@"recipe identifier migration check complete");
 
     // Set up User Notification Delegate
     _notificationDelegate = [[LGUserNotificationsDelegate alloc] initAsDefaultCenterDelegate];
+    LGLaunchProfileLog(@"notification delegate setup complete");
 
     // Calling stopProgress: here is an easy way to get the menu reset to its default configuration.
     [self stopProgress:nil];
+    LGLaunchProfileLog(@"initial progress reset queued");
 
     [self showConfigurationWindow:self];
 }
@@ -242,21 +249,30 @@
 
 - (void)showConfigurationWindow:(id)sender
 {
+    LGLaunchProfileLog(@"showConfigurationWindow requested");
+
     // If the application was launched at login, defer loading the configuration window once.
     if ([[[NSProcessInfo processInfo] arguments] containsObject:kLGLaunchedAtLogin]) {
         if (!_configurationWindowDeferred) {
             _configurationWindowDeferred = YES;
+            LGLaunchProfileLog(@"configuration window load deferred for login launch");
             return;
         }
     }
 
     if (!_configurationWindowController) {
+        LGLaunchProfileLog(@"configuration window controller allocation start");
         _configurationWindowController = [[LGConfigurationWindowController alloc] initWithProgressDelegate:self];
+        LGLaunchProfileLog(@"configuration window controller allocation complete");
         _configurationWindowController.scheduleView.scheduleMenuItem = _autoCheckForUpdatesMenuItem;
     }
 
     [NSApp activateIgnoringOtherApps:YES];
     [self->_configurationWindowController.window makeKeyAndOrderFront:nil];
+    LGLaunchProfileLog(@"configuration window ordered front visible=%@", self->_configurationWindowController.window.isVisible ? @"YES" : @"NO");
+    dispatch_async(dispatch_get_main_queue(), ^{
+        LGLaunchProfileLog(@"configuration window next main-loop tick visible=%@", self->_configurationWindowController.window.isVisible ? @"YES" : @"NO");
+    });
     DLog(@"Activated AutoPkgr configuration window.");
 }
 
